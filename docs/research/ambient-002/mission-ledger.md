@@ -610,3 +610,84 @@ scope. A new full source-bound Linux/Windows/extracted/194 programme and a
 separately identified Foundry-only observation are required before the corrected
 candidate becomes the recommended evaluator. The existing a725 and AMBIENT-001
 evaluators remain preserved and qualified only for their recorded inputs.
+
+## Corrected application and independent observation freeze
+
+The minimal home-rest correction is frozen at
+`50c6df89528dc9ecdc5316d8c67abf203e192254`, tree
+`d9740be7cafb8ac7b7d6eee4a16219989745fd95`. Its loaded Godot subtree is
+`a54e0b0907c17b52e5c8d55683093097580cba24`. The three approved project
+changes are the selected-rest radius helper, thirty focused living-core checks
+and the one-word drive-label correction. The focused local candidate was
+verified against the actual published engine and test blobs. No profile, scene,
+registry, reducer, material, native library or movement actuator changes.
+
+The first recorded ref-update attempt had an uncertain/truncated response. A
+fresh GitHub ref read still showed a26cb9ca; no qualification was inferred from
+the local marker. The explicit non-forced expected-head update then succeeded,
+and the full [campaign45552786466](https://github.com/techrote/cybersand/actions/runs/45552786466)
+started against50c6. Linux job138997623356 and Windows job138997623535 bind the
+new source; at this checkpoint they are running, not passed.
+
+The separate external observation freeze is
+`52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b`, tree
+`0ad3197969f95326a7fa9efc0143c5f21c064ea6`. Only its workflow and explicit
+request marker differ from50c6; an independent root-tree read confirms the
+identical loaded Godot subtree. Both compile and execution require the full
+50c6 application SHA through the strict observer admission seam. The sixty-
+second Foundry-only [observation45552888360](https://github.com/techrote/cybersand/actions/runs/45552888360)
+is executing as job138997939605. One transient GitHub updateRefs missing-object
+error was followed by exact commit and branch-ref reads before the successful
+non-forced lease retry. No branch race, force update or application mutation
+was hidden.
+
+Specialist B owns the fresh194 primary-original and paired-delta audit. C owns
+actual source/extracted Windows, all58 image receipts, inner-ZIP streaming
+integrity and new Foundry media. A independently reads the selected home-rest
+geometry and drive phases. Earlier curiosity and thin-material probes retain
+their a725 execution identities. The fixed curiosity profile has no home-drive
+module and the selected-radius helper follows its unchanged ordinary path, but
+that does not convert an earlier execution into a new-source pass. The lead
+updates the review packet and authorizes no further application expansion
+during this final correction gate. Draft/HOLD and the eight-actor limit remain.
+
+## Actual corrected home-rest confirmation
+
+The separately pinned Foundry [run45552888360](https://github.com/techrote/cybersand/actions/runs/45552888360)
+completed successfully at application50c6 / observer52900f. The exact original
+[artifact14994329664](https://github.com/techrote/cybersand/actions/runs/45552888360/artifacts/14994329664)
+is25,590,794 bytes, SHA256
+`0c13de36d1d60935a6d1e4b20ce764da670851f7199d402caf5059d493bd9447`.
+It retains61 actual1920x1080 frames over60.016667 simulation seconds and3,601
+native/physical ticks. C verified full original custody, all image hashes,
+488 copied current actor positions, source/runtime identity and strict external
+compile-to-run admission. A and B independently read the untouched records.
+
+The flyer reaches the same copied home-rest positions at samples48–51, all
+between16 and20 cells from home. The corrected drive rises0.324055 to0.594055
+over the three one-second intervals, whereas the preserved a725 drive fell
+0.313915 to0.298981. All53 selected-actor positions at samples0–52 match exactly.
+The late path diverges and is retained without attributing every difference
+uniquely to recharge across separate hosted executions. The actual post-rest
+sample52-to60 net displacement is60.03634 cells. A's
+[drive-and-distance figure](evidence/sustained-watch-50c6/home-recharge-comparison.png)
+marks discrete sampled home-rest observations and the separate20/16-cell
+thresholds. The [complete confirmation](home-recharge-observation.md) and full
+original archive in three verified byte parts retain the source-bound result.
+
+The same authored scene, all eight initial copied actor states, observer
+GDScript, official engine and retained native/Rapier bytes are verified. The
+watcher did not hash initial native material bytes; no such exact byte-match
+claim is inferred. This confirmation does not add cases to the primary194
+registry, establish a population-wide home-return rate, solve the long beam
+constraint or count as physical NVIDIA playfeel acceptance. The lead personally
+reviewed the actual contact sheet, original frames48/60 and the new scientific
+figure; dense overlay labels and small actor scale remain visible.
+
+Both corrected-source platform suites and source graphical steps have passed.
+The full122-World primary programme and actual extracted Windows execution are
+still running at this checkpoint. A/B/C are reviewing fresh originals; older
+qualifications are not substituted. [Documentation/provenance45552901072](https://github.com/techrote/cybersand/actions/runs/45552901072)
+passed at observer52900f. The forthcoming closing packet and new evidence routes
+will receive their own final documentation check. All evidence additions keep
+the loaded application subtreea54e0b09 unchanged.

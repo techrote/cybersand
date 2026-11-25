@@ -1,0 +1,26 @@
+{
+  "application": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "observer": "52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b",
+  "verification": "Each exact file was independently retrieved through the GitHub file API at the published application ref and its returned Git blob compared with the local bytes. Engine/test exactly match the locally executed candidate; scene exactly matches frozena725.",
+  "files": [
+    {
+      "path": "godot/scripts/ambient/ambient_engine.gd",
+      "bytes": 21342,
+      "git_blob": "68081cf688e329284a3eed6dafbc136c04f66699",
+      "sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7"
+    },
+    {
+      "path": "godot/tests/test_ambient_living_engine.gd",
+      "bytes": 35608,
+      "git_blob": "33248ba63eb849f4654982b52dd008741fbd170c",
+      "sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2"
+    },
+    {
+      "path": "godot/examples/workbench/ambient2-settlement.json",
+      "bytes": 96009,
+      "git_blob": "f58e156157b703ef1222673405374745bf73e098",
+      "sha256": "07b71258be0470c001a3f414c01ea25192031cdd4734c303446cdc155543e64c"
+    }
+  ],
+  "current_physical_observation_status": "pending; this source receipt does not claim runtime qualification or physical recharge confirmation"
+}

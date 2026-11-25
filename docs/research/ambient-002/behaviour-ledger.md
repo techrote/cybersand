@@ -305,3 +305,56 @@ original archive distinguish that exact two-file local delta from the still
 pending published-source physical, Windows and extracted qualification. These
 pure checks add zero physical actor episodes; no performance benefit is inferred
 from their informational timing.
+
+## Published home-rest rule: physical confirmation — 2026-11-25
+
+The tested engine and living fixture were independently fetched at published
+application `50c6df89528dc9ecdc5316d8c67abf203e192254`; Git blobs `68081cf6…`
+and `33248ba6…` exactly match the locally executed candidate. Foundry's authored
+scene remains byte-identical to a725 (`f58e1561…`). A fresh ordinary Workbench
+observation used external observer `52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b`,
+run `45552888360`, and original artifact `14994329664`. Its 25,590,794 bytes have
+SHA-256 `0c13de36d1d60935a6d1e4b20ce764da670851f7199d402caf5059d493bd9447`.
+The authoring lane preserves and audits the complete original artifact; this
+lane independently reads the untouched copied phase/position/drive records.
+
+The new episode again selects actor 7's home-rest at samples 48–51. Distances
+from authored home are 18.367108, 16.492072, 16.489544 and 16.489544 cells, all
+inside the selected module's twenty-cell radius and outside the separately
+defined sixteen-cell geometric metric. Exploration drive now rises from
+0.324055 to 0.414055, 0.504055 and 0.594055. Each consecutive copied interval
+has one second of actor simulation time and a drive increase of 0.09, matching
+the unchanged recharge rate. Over samples 48–51 the corrected increase is
+0.270000; the preserved a725 decrease is 0.014934. The actual rule correction
+is therefore exercised in precisely the previously unsuccessful geometric band.
+
+Home goal key 1 retains the same phase, and its credited selected dwell advances
+from 0.1 to 3.1 seconds across those samples. Sample 52 resumes the previous
+exploration goal key 5 with its earlier 1.3 seconds of credited dwell retained;
+it is not a new goal and does not imply uninterrupted selection. The drive at
+sample 52 is 0.684055 because the update credits the preceding rest interval.
+The current actor's subsequent path diverges from the old run, and that
+divergence is retained. All eight initial copied actor observations match, and
+the selected actor's positions at samples 0–52 are exactly equal. The watcher
+does not hash initial native material bytes, so this comparison does not claim
+that independently measured equality or general physics determinism.
+
+The [independent readback](evidence/sustained-watch-50c6/independent-readback.json)
+binds both original report hashes, source/runtime identities, every copied
+selected sample and five actually viewed original graphics. The source reader
+also correctly reproduces the negative old intervals. The [comparison figure](evidence/sustained-watch-50c6/home-recharge-comparison.png)
+plots the original drive and home-distance records around samples 44–54, marks
+the discrete home-rest samples, separates the twenty/sixteen-cell criteria and
+keeps the changed later motion. Its SVG, plotter and plotted-record receipt are
+retained beside it. Original Follow frames at 48, 50, 52 and 60 and the contact
+sheet were inspected: the body and home/rest/departure geometry are legible,
+although overlay/model text can overlap and the body remains small. A prolonged
+beam constraint remains an actual behavioral limitation. Recharge is established
+by copied values, not rendered colors or an assumption of physical stillness.
+
+This is one repeated graphical scene, not an additional registry case or a
+population-wide return-rate claim. One-Hz snapshots cannot reconstruct every
+intervening policy decision or position. The source-specific full Linux,
+Windows and extracted evaluator campaign is a separate required qualification;
+the graphical pass alone does not replace those gates or grant NVIDIA playfeel
+acceptance. No scene, profile, actuator or physical law was retuned.
