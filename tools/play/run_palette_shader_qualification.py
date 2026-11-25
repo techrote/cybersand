@@ -608,7 +608,10 @@ def prepare_dependencies(output: Path, source: str, archive: Path | None, *, rea
                 for program in ('xvfb-run', 'Xvfb', 'xauth'):
                     c.require(shutil.which(program) is not None, 'Missing hosted graphical prerequisite: ' + program)
                 setup('actual-graphical-packages', ['dpkg-query', '-W', 'xvfb', 'xauth', 'libgl1-mesa-dri', 'libglx-mesa0'])
-                url = json.loads((ROOT / 'third_party/godot-runtime.lock.json').read_text())['editor']['origin_url']
+                # Use the official release asset rather than the redirector (403
+                # on hosted Linux). prepare_engine still verifies the locked
+                # archive size, SHA-256, ZIP integrity and engine version.
+                url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
             else:
                 c.require(sys.platform == 'win32', 'Unregistered hosted shader OS')
                 url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'

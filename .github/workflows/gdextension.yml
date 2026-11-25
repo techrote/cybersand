@@ -44,7 +44,8 @@ concurrency:
 
 env:
   CYBERSAND_CI_WATCHDOG_SCALE: "1"
-  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  # Official release asset, identical to the locked Linux editor bytes.
+  GODOT_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
   GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
@@ -535,16 +536,22 @@ jobs:
         if: always()
         env:
           SHARD_RESULT: ${{ needs.windows-regression.result }}
+          PLAN_RESULT: ${{ needs.execution-plan.result }}
+          SHARD_COUNT: ${{ needs.execution-plan.outputs.windows_shard_count }}
         run: |
           set -euo pipefail
           mkdir -p build
+          if [[ "$PLAN_RESULT" != success || ! "$SHARD_COUNT" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Windows coverage incomplete: execution plan failed or has no valid shard count (plan=$PLAN_RESULT)" | tee build/windows-coverage-verification.log
+            exit 1
+          fi
           python3 tools/ci/test_verify_windows_godot_shards.py
           python3 tools/ci/verify_windows_godot_shards.py \
             --root build/windows-coverage-input --native-candidate build/windows-candidate \
             --source-sha "${{ github.sha }}" \
             --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
-            --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} \
+            --shard-count "$SHARD_COUNT" \
             --output build/windows-coverage.json 2>&1 | tee build/windows-coverage-verification.log
           test "$SHARD_RESULT" = "success"
       - name: Retain Windows exact-coverage receipt
@@ -749,12 +756,20 @@ jobs:
         env:
           SHARD_RESULT: ${{ needs.linux-regression.result }}
           ART_SMOKE_RESULT: ${{ needs.art-graphical-smoke.result }}
+          PLAN_RESULT: ${{ needs.execution-plan.result }}
+          SHARD_COUNT: ${{ needs.execution-plan.outputs.linux_shard_count }}
         run: |
+          set -euo pipefail
+          mkdir -p build
+          if [[ "$PLAN_RESULT" != success || ! "$SHARD_COUNT" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Linux coverage incomplete: execution plan failed or has no valid shard count (plan=$PLAN_RESULT)" | tee build/linux-coverage-verification.log
+            exit 1
+          fi
           python3 tools/ci/verify_linux_godot_shards.py \
             --root build/linux-coverage-input --runtime build/linux-runtime \
             --source-sha "${{ github.sha }}" --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
-            --shard-count "${{ needs.execution-plan.outputs.linux_shard_count }}" \
+            --shard-count "$SHARD_COUNT" \
             --godot-version "$GODOT_VERSION" --output build/linux-coverage.json
           test "$SHARD_RESULT" = "success"
           test "$ART_SMOKE_RESULT" = "success"
@@ -765,6 +780,7 @@ jobs:
           name: linux-coverage-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/linux-coverage.json
+            build/linux-coverage-verification.log
             build/linux-play-readback/
           if-no-files-found: warn
           retention-days: 90
