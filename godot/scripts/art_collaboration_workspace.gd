@@ -391,7 +391,9 @@ func _build_context() -> void:
 	visual_caption.max_lines_visible = 3
 	visual_caption.hide()
 	body.add_child(visual_caption)
-	context_text.custom_minimum_size.y = 64
+	# This reader scrolls inside the Context page; image/options must not
+	# collapse its own content surface to a single heading.
+	context_text.custom_minimum_size.y = 160
 	_reader(body, context_text)
 	_pages(body, context_previous, context_page, context_next, _context_change_page)
 	authorize.text = "I reviewed this context and allow it to be sent"

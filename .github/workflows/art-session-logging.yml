@@ -191,7 +191,7 @@ jobs:
           display_failed=0
           export XDG_DATA_HOME="$RUNNER_TEMP/art-display-panel"
           mkdir -p "$XDG_DATA_HOME"
-          if ! xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_panel_ui.gd > evidence/art-panel-displayed.log 2>&1; then
+          if ! CYBERSAND_TEST_ARTIFACT_DIR="$GITHUB_WORKSPACE/evidence/art-panel-displayed" xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_panel_ui.gd > evidence/art-panel-displayed.log 2>&1; then
             cat evidence/art-panel-displayed.log
             display_failed=1
           fi
@@ -323,12 +323,15 @@ jobs:
           # unless every arm passes. Each process/profile remains isolated.
           $displayedFailures = [System.Collections.Generic.List[string]]::new()
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-panel'
-          New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+          $env:CYBERSAND_TEST_ARTIFACT_DIR = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-panel-displayed'
+          New-Item -ItemType Directory -Force $env:APPDATA,$env:CYBERSAND_TEST_ARTIFACT_DIR | Out-Null
           try {
             Invoke-CheckedGodot 'art-panel-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_panel_ui.gd') 240
           } catch {
             $displayedFailures.Add('Art panel: ' + $_.Exception.Message)
             Write-Warning $_.Exception.Message
+          } finally {
+            Remove-Item Env:CYBERSAND_TEST_ARTIFACT_DIR
           }
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-evaluator'
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null

@@ -27,7 +27,10 @@ libraries, source, dependencies and notices together. Ordinary evaluation needs
 no compiler, Git, Python or model server.
 
 Wait for first import and World initialization to finish. Open Art and select the
-collaborative page. The existing direct drawing route remains available. The
+collaborative page. Its first opening expands the untouched compact Art default to
+an 820×620 workspace when the host has room. Later mode changes respect your
+manual window size; the minimum remains 520×320 with the shared actions reachable.
+The existing direct drawing route remains available. The
 evaluator creates its own local profile, and opening the application or a panel
 sends no model request.
 

@@ -169,6 +169,7 @@ var collaboration: RefCounted
 var collaboration_workspace: Control
 var collaboration_button := Button.new()
 var collaboration_page := false
+var _collaboration_opened := false
 var _direct_controls: Array[Control] = []
 
 func _ready() -> void:
@@ -279,6 +280,7 @@ func _ready() -> void:
 		collaboration_workspace.set_material_options(choices)
 
 func show_collaboration(on: bool = true) -> void:
+	if on: _size_collaboration_first_open()
 	collaboration_page = on
 	collaboration_button.text = "Direct" if on else "Collaborate"
 	for control: Control in _direct_controls: control.visible = not on
@@ -292,6 +294,30 @@ func show_collaboration(on: bool = true) -> void:
 	tools_button.visible = not on and input_mode.selected != 2
 	if collaboration != null and collaboration.overlay != null:
 		collaboration.overlay.visible = on
+
+func _size_collaboration_first_open() -> void:
+	if _collaboration_opened: return
+	_collaboration_opened = true
+	# Direct keeps its compact default. The first explicit Collaborate action
+	# needs enough space for an inspectable context/proposal and its footer.
+	# Respect an owner-resized window, and never resize it again on a toggle.
+	var compact := Vector2i((Vector2(640,400)*content_scale_factor).ceil())
+	if size != compact: return
+	var bounds := Rect2i()
+	var ancestor := get_parent()
+	while ancestor != null:
+		if ancestor is Viewport and ancestor.gui_embed_subwindows:
+			bounds = Rect2i(Vector2i.ZERO,Vector2i(ancestor.get_visible_rect().size))
+			break
+		ancestor = ancestor.get_parent()
+	if not bounds.has_area():
+		bounds = DisplayServer.screen_get_usable_rect(current_screen)
+	var preferred := Vector2i((Vector2(820,620)*content_scale_factor).ceil())
+	if bounds.has_area():
+		preferred = preferred.min(Vector2i((Vector2(bounds.size)*0.9).floor()))
+	size = preferred.max(min_size)
+	if bounds.has_area():
+		position = bounds.position+(bounds.size-size)/2
 
 func _bind_selection() -> void:
 	if wb == null or wb.paint_editor == null or selection_editor == wb.paint_editor: return

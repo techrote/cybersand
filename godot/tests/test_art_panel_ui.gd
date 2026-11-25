@@ -177,6 +177,72 @@ func layout_checks() -> void:
 	root.size = original_root_size
 	panel.size = Vector2i(640,400)
 
+func collaboration_layout_checks() -> void:
+	var original_root_size := root.size
+	var original_focus: Rect2i = panel.rectangle(panel.fields)
+	var native_before: Dictionary = host.simulation_worker.paint_state()
+	var serial_before: int = panel.provider.serial
+	var requests_before: int = panel.provider.traffic.count('"kind":"request"')
+	root.size = Vector2i(1280,900)
+	panel.size = Vector2i(640,400)
+	panel.hide()
+	bench.open_art_batches()
+	for frame: int in 3: await process_frame
+	panel.show_collaboration(true)
+	var view = panel.collaboration_workspace
+	view.tabs.current_tab = 3
+	panel.collaboration.select_region("bounded")
+	panel.collaboration.inspect_context({"native":true,"knowledge":false,"recent":true,"image":false,"image_scope":"selected"})
+	await until(func() -> bool: return not panel.collaboration.busy(),"integrated context observation finishes")
+	for frame: int in 4: await process_frame
+	check(not panel.collaboration.context.is_empty() and not view.context_text.text.is_empty(),
+		"integrated Context displays actual bounded native observation")
+	check(panel.size == Vector2i(820,620) and panel.min_size == Vector2i(520,320),
+		"first explicit Collaborate expands only the compact default and preserves the minimum")
+	var scroll: ScrollContainer = view.context_text.get_parent().get_parent()
+	var popup_rect := window_screen_rect(panel)
+	var text_rect := control_screen_rect(view.context_text)
+	var scroll_rect := control_screen_rect(scroll)
+	var visible_text := text_rect.intersection(scroll_rect).intersection(popup_rect)
+	print("ART_COLLABORATION_INTEGRATED_LAYOUT ",JSON.stringify({"display":DisplayServer.get_name(),
+		"window_size":panel.size,"window_screen":popup_rect,"context_reader_screen":text_rect,
+		"context_scroll_screen":scroll_rect,"visible_context_text_screen":visible_text,
+		"native_source":panel.collaboration.context.get("source",{}),"provider_serial":panel.provider.serial}))
+	check(visible_text.size.y >= 160 and visible_text.size.x >= 400,
+		"first integrated Context exposes at least 160 visible reader pixels inside its clipping viewport")
+	check(window_screen_rect(root).encloses(popup_rect),
+		"first integrated collaboration window is centered inside the actual Workbench viewport")
+	for control: Control in [view.send_button,view.stop_button,view.authorize,panel.collaboration_button]:
+		check(popup_rect.encloses(control_screen_rect(control)),
+			"integrated default collaboration control is reachable: "+control.get_class())
+	var evidence := OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
+	if not evidence.is_empty() and DisplayServer.get_name() != "headless":
+		DirAccess.make_dir_recursive_absolute(evidence)
+		await RenderingServer.frame_post_draw
+		check(root.get_texture().get_image().save_png(evidence.path_join("art-integrated-context.png")) == OK,
+			"ordinary Workbench integrated Context framebuffer retained")
+	panel.size = Vector2i(600,420)
+	panel.show_collaboration(false)
+	panel.show_collaboration(true)
+	for frame: int in 3: await process_frame
+	check(panel.size == Vector2i(600,420),"later mode switches preserve the owner's manual window size")
+	panel.size = Vector2i(520,320)
+	for tab: int in 4:
+		view.tabs.current_tab = tab
+		for frame: int in 3: await process_frame
+		var compact_rect := window_screen_rect(panel)
+		for control: Control in [view.send_button,view.stop_button,panel.collaboration_button]:
+			check(compact_rect.encloses(control_screen_rect(control)),
+				"integrated minimum keeps shared actions reachable on tab "+str(tab))
+	check(panel.provider.serial == serial_before and panel.provider.traffic.count('"kind":"request"') == requests_before,
+		"opening, inspecting and resizing collaboration dispatches no HTTP or model request")
+	check(host.simulation_worker.paint_state().revision == native_before.revision,
+		"integrated layout and native context inspection perform no World mutation")
+	panel.show_collaboration(false)
+	panel.size = Vector2i(640,400)
+	panel.focus_selection(original_focus)
+	root.size = original_root_size
+
 func conversation_resize_checks() -> void:
 	# A normal short Note should use new vertical space when the owner resizes
 	# the dialog. The separate footer must remain reachable at both sizes.
@@ -651,6 +717,7 @@ func run() -> void:
 		await process_frame
 		await selection_checks()
 		await layout_checks()
+		await collaboration_layout_checks()
 		await conversation_resize_checks()
 		await scaled_layout_checks()
 		conversation_checks()
