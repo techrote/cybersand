@@ -5,7 +5,7 @@ Status: **Draft/HOLD independent experiment; execution pending at this source ch
 This branch begins at the qualified Architecture application source
 `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d` (tree
 `ea59a4a95d647c58820c943d37dd14e3d760b2f8`) and overlays five exact Art-owned
-files from principal Art candidate `2743f89a0df6f6afcf7484e859c10790d521e74b`:
+files from final Art application candidate `bcc92927ce3894a16d5544923cfbf7b1d0339fda`:
 `art_provider.gd`, `art_proposal_transport.gd`, `art_response_preparation.gd`,
 `art_redaction.gd` and `art_traffic_archive.gd`. Architecture's StageSession,
 Workflow, proposal bridge, planning parser, campaign, stage compiler, ordinary
@@ -76,3 +76,15 @@ This revised fixture submits its one-cell manual edit through the ordinary PAINT
 owner, verifies Setup validity, checks the actual Undo terminal receipt and
 compares the complete native region before the stopped construction with the
 complete region after Undo. The revised source requires its own fresh execution.
+
+## Final Art provider-closure refresh
+
+The earlier corrected 115-check execution remains tied to Art source 2743 and
+probe 804d. This source refresh overlays the exact five Art files from bcc92927,
+including the separately tested bounded conversation-value preparation owned by
+Provider. Architecture production, native StageSession and the successful native
+fixture remain unchanged. The runner now also directly compares every overlay
+byte with its declared Art Git source before and after execution. This checkpoint
+requires its own fresh execution and makes no combined Windows or production
+host-mount claim. The previous 109-check fixture misuse and corrected 115-check
+source/result both remain retained.

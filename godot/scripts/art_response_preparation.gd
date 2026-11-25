@@ -10,6 +10,10 @@ var request_body: Dictionary = {}
 var request_url := ""
 var request_key := "" # Main-thread dispatch only; never read by the worker.
 var request_seconds := 0.0
+var conversation_turns: Array = []
+var conversation_last_result := ""
+var conversation_bytes := 0
+var preparation_error := ""
 var encoded_payload := ""
 var encoded_payload_bytes := PackedByteArray()
 var transport_result := 0
@@ -84,7 +88,7 @@ func is_cancelled() -> bool:
 func start(provider: Node) -> void:
 	owner = weakref(provider)
 	asynchronous = true
-	task_id = WorkerThreadPool.add_task(_run,false,"Art response preparation")
+	task_id = WorkerThreadPool.add_task(_run,false,"Art "+direction+" preparation")
 	_pending[task_id] = self
 
 func prepare_inline() -> void:
@@ -107,6 +111,9 @@ func _prepare_values() -> void:
 	if is_cancelled(): return
 	if direction == "request":
 		_prepare_request_values()
+		return
+	if direction == "conversation_edit":
+		_prepare_conversation_values()
 		return
 	var stage := Time.get_ticks_usec()
 	var raw := bytes.get_string_from_utf8()
@@ -198,6 +205,38 @@ func _prepare_request_values() -> void:
 		stage = Time.get_ticks_usec()
 		encoded_data_bytes = encoded_data.to_utf8_buffer()
 		metrics.utf8_encode_usec = Time.get_ticks_usec()-stage
+
+func _prepare_conversation_values() -> void:
+	# The provider admitted a finite typed snapshot. This worker owns only
+	# copied values; current image/history authority is checked on the owner.
+	var redactor := Redactor.new()
+	redactor.secrets = secrets_snapshot
+	redactor.cancellation = is_cancelled
+	var stage := Time.get_ticks_usec()
+	var turns: Array = []
+	for original: Dictionary in conversation_turns:
+		if is_cancelled(): return
+		var turn := original.duplicate(true)
+		turn.content = redactor.redact(str(turn.content))
+		if is_cancelled(): return
+		conversation_bytes += str(turn.content).to_utf8_buffer().size()
+		if conversation_bytes > 16*1024*1024:
+			preparation_error = "Conversation exceeds the 16 MiB replay limit; nothing written."
+			return
+		turns.append(turn)
+	var result := redactor.redact(conversation_last_result)
+	if is_cancelled(): return
+	sanitized = {"turns":turns,"last_result":result}
+	metrics.sanitize_usec = Time.get_ticks_usec()-stage
+	stage = Time.get_ticks_usec()
+	encoded_data = JSON.stringify(sanitized)
+	metrics.encode_usec = Time.get_ticks_usec()-stage
+	if is_cancelled(): return
+	stage = Time.get_ticks_usec()
+	encoded_data_bytes = encoded_data.to_utf8_buffer()
+	metrics.utf8_encode_usec = Time.get_ticks_usec()-stage
+	if encoded_data_bytes.size() > 32*1024*1024:
+		preparation_error = "Conversation edit exceeds the 32 MiB audit record limit; nothing written."
 
 func _reap() -> void:
 	# No GUI-thread wait for CPU work: a notification can overtake the final

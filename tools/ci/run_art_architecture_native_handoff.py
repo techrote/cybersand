@@ -18,7 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 ARCHITECTURE = "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d"
-ART = "2743f89a0df6f6afcf7484e859c10790d521e74b"
+ART = "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
 FIXTURE = "tools/fixtures/art_architecture_native_handoff.gd"
 OVERLAYS = (
     "godot/scripts/art_provider.gd", "godot/scripts/art_response_preparation.gd",
@@ -69,6 +69,9 @@ def source_identity() -> dict:
     delta = set(git("diff", "--name-only", ARCHITECTURE, "HEAD").decode().splitlines())
     if delta != expected:
         raise ValueError("Combined candidate differs from the declared five-file Art overlay and three apparatus records: " + repr(sorted(delta)))
+    for name in OVERLAYS:
+        if (ROOT / name).read_bytes() != git("show", ART + ":" + name):
+            raise ValueError("Art overlay differs from its declared immutable source: " + name)
     unchanged = (
         "godot/scripts/batch_lab/architecture_stage_session.gd",
         "godot/scripts/batch_lab/architecture_workflow.gd",
