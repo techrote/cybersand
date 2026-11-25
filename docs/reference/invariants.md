@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 ---
 
 # Architectural and simulation invariants
@@ -27,7 +27,7 @@ Existing IDs are retained, including when an earlier description was corrected.
 | CUR-003 | Current: phased core/phase/effect order is deterministic | [Ordering](../architecture/determinism-and-boundary-transfers.md) |
 | CUR-004 | Current: native default chunk size is 128; compatible configured sizes are permitted | [Geometry](../architecture/chunk-tile-and-buffer-model.md) |
 | CUR-005 | Current: desktop may select fallback; Web requires native; no synchronized second authority | [Architecture](../architecture/overview.md) |
-| CUR-006 | Current default catalogue: every valid ID has descriptor/kernel selection and radius ≤2; inert entries use no rule. Opt-in Brine IN and isolated Water IN separately require radius3 | [Materials](../systems/materials-and-rule-kernels.md) |
+| CUR-006 | Current default catalogue: every valid ID has descriptor/kernel selection and radius ≤2; inert entries use no rule. Accepted opt-in Brine IN and Water IN separately require radius3 | [Materials](../systems/materials-and-rule-kernels.md) |
 | CUR-007 | Current: accepted external explosions commit in enqueue order at tick entry and are hashed while pending | [Ordering](../architecture/determinism-and-boundary-transfers.md) |
 | CUR-008 | Current: native leased bytes stay immutable; publication pressure retains dirty state | [Lifetimes](../architecture/data-ownership-and-lifetimes.md) |
 | CUR-009 | Current: rectangle samples create separate endpoint occupancy and bounded observations | [Coupling](../architecture/rigid-body-and-cellular-coupling.md) |
@@ -121,8 +121,9 @@ Source: [World `finish_tick`, `set_simulation_region`, `gather_active_cores`](..
 | INT-001 | Approved/Ambiguous: proposed 10%/20% margin semantics unresolved; Current desktop/Web use explicit pixel pairs |
 | INT-002 | Approved: region exit/re-entry must preserve meaningful state/eligibility; Current phased exclusion retains activity/quiet state; newly included resident blocks wake once at tick entry without catch-up; unchanged/equivalent coverage does not wake; serial ignores the region |
 
-The interest page links the focused defect probe. No recorded broad native
-suite pass overrides this failing behavior; it remains implementation work.
+The interest page describes the implemented re-entry correction and its focused
+fixtures. It does not claim elapsed-time catch-up or complete material-specific
+cadence/sleep coverage; those broader questions retain separate scope.
 
 ## Fidelity invariants
 
@@ -170,7 +171,7 @@ Source/tests: [native adapter](../../godot/native_extension/cyber_native_cell_wo
 
 ## Physical actor invariants
 
-For the [Workbench composition candidate](../systems/workbench-actor-composition.md),
+For the [accepted Workbench composition](../systems/workbench-actor-composition.md),
 inspection never grants human producer authority. Source switching uses existing
 takeover cancellation and generation fences without reconstructing the body.
 Eight logical slots, eight prepared parts per actor and 64 response bodies/mask
@@ -221,7 +222,7 @@ Sources: [profile](../../godot/scripts/physical_flight_profile.gd),
 | FLY-004 | Current: gravity compensation shares bounded total thrust; acceleration/braking, force response/slew and torque bounds are explicit, without an integral or extra extreme-motion actuator |
 | FLY-005 | Current: desired speed limits do not overwrite collision momentum; cancellation/expiry discard command/filter state and select passive assistance without deleting physical velocity |
 | FLY-006 | Current: copied capabilities and resolved profile/controller hashes identify tuning and controller code separately from requested/admitted/applied input and actual sampled motion |
-| FLY-007 | Current scope: four stable IDs share initial conformance numbers; three are uncalibrated placeholders, and neither profile identity nor a fixture supplies four-profile handling or learned-policy acceptance |
+| FLY-007 | Current scope: four stable IDs have distinct resolved 4LY-002 profiles, each retaining `candidate_4ly002` in its identity. Dated measured handling evidence is separate from owner-feel, target-PC and learned-policy acceptance; profile identity alone supplies none of those |
 | FLY-008 | Current: a flight session binds immutable prepared receipts to the actual bridge step counter; cancellation cannot invent consumption or reattribute a completed step to a later producer, and unexpected physical steps require replacement |
 
 ### Player material field invariants
@@ -285,7 +286,7 @@ Source/tests: [WorldConfig](../../native/include/cybersand/world.hpp),
 |---|---|
 | CAP-001 | Approved: explicit serializable/observable budgets; construction fields Current, general serialization Planned |
 | CAP-002 | Approved: reservations need not be permanent architectural limits; live growth remains Planned |
-| CAP-003 | Current native task/snapshot storage bounded/reused; transfer storage Planned, Godot emission queue dynamic |
+| CAP-003 | Current native task/snapshot storage bounded/reused; transfer storage Planned. Godot disc-emission and explicit-footprint queues each admit at most eight pending commands; admission does not acknowledge native application |
 | CAP-004 | Current: native capacity failures are explicit; partial progress is quarantined until reset/replacement, without rollback or automatic event replay |
 | CAP-005 | Approved, unimplemented live transition: structural growth only after affected jobs/views drain |
 
@@ -315,7 +316,7 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-009 | Current main native: W-CY holds `maximum()` Water per cell; fractional ingress refuses or uses explicit setup-only normalization, never a silent FreeMass fallback |
 | WATER-010 | Current main native: same-material reaction products reset family state and book gross actual Water inputs/products; species cell counts are separate units |
 | WATER-011 | Current main native: fixed job aggregates merge serially; checked external/generated overflow refuses before authority changes, while tick overflow quarantines partial progress |
-| WATER-012 | Current main native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
+| WATER-012 | Current main native: typed-v1 setup/run/attempt/accounting codecs preserve immutable native facts. Actual physical hash2–6 and CYPS2–5/unsupported0 follow the [instance-version contract](level-saves-and-replay.md#current-native-physical-state-versions); historical CYPS1 refuses; historical content/state hashes and C64-E8 layout are unchanged |
 | WATER-013 | Current main native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
 | WATER-014 | Current accepted #201-derived source: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
 | WATER-015 | Current #201 source: incomplete derived heads/index/member proofs select complete admitted reference evaluation; no stale/partial summary is consumed as a valid cached head |
@@ -326,15 +327,17 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-021 | #201 execution4 (PR #382): a cached/dormant wake-summary bit is set only by a complete negative state-only scan and is cleared by every wake-input path (±2 producer/host/mask rectangles across seams, changed final heads, every gas pass, rebuild/cold/restore, active blocks); elision needs `sleep_after_quiet_ticks >= 2`; wake decisions equal reference |
 | WATER-019 | Current #201 adapter source: copied unsigned budget/capacity/counter values use decimal strings without signed-u64 truncation; all adapter observations remain exclusive-owner calls, not worker-owned Godot APIs |
 
-## Water IN isolated native invariants
+<a id="water-in-isolated-native-invariants"></a>
+
+## Water IN native invariants
 
 | ID | Status and requirement |
 |---|---|
-| IN-WATER-001 | Current isolated source: Water/reference executes retained IN with actual precision maximum; the shared CY-or-IN whole-Water predicate refuses partial live/CYSD/CYPS ingress without rounding. Setup-only normalization keeps native gross counters and digest |
-| IN-WATER-002 | Current isolated source: immediate coupling returns the actual carrier after each pickup; subsequent submoves/probes/final state follow the Water tuple, with grain/vacancy state zero and exact compact/thermal payloads |
-| IN-WATER-003 | Current isolated source: complete original-owner helper reads/writes are bounded3/2, including second packing census and exchange bracing; explicit radius3 never expands protected Current2 automatically |
-| IN-WATER-004 | Current isolated source: original coherence and cadence gate horizontal-only opportunities; mandatory gravity, WaterUpdate, body/material/future work remain. Retained velocity and bounded q16 phase do not accrue catch-up debt |
-| IN-WATER-005 | Current isolated evidence: capability admission changes policy-bound hashes, while Current tuple/temperature bytes, quantity ledger and historical content/state controls remain exact. Actual sourceaa8af247 Windows/Linux publication is separately qualified; final ready CI/review, scientific and full-host acceptance remain separate |
+| IN-WATER-001 | Current accepted source: Water/reference executes retained IN with actual precision maximum; the shared CY-or-IN whole-Water predicate refuses partial live/CYSD/CYPS ingress without rounding. Setup-only normalization keeps native gross counters and digest |
+| IN-WATER-002 | Current accepted source: immediate coupling returns the actual carrier after each pickup; subsequent submoves/probes/final state follow the Water tuple, with grain/vacancy state zero and exact compact/thermal payloads |
+| IN-WATER-003 | Current accepted source: complete original-owner helper reads/writes are bounded3/2, including second packing census and exchange bracing; explicit radius3 never expands protected Current2 automatically |
+| IN-WATER-004 | Current accepted reference law: original coherence and cadence gate horizontal-only opportunities; mandatory gravity, WaterUpdate, body/material/future work remain. Retained velocity and bounded q16 phase do not accrue catch-up debt; the separately selected signed-vertical law has its own contract |
+| IN-WATER-005 | Dated publication evidence: capability admission changed policy-bound hashes, while the checkpoint's Current tuple/temperature bytes, quantity ledger and historical content/state controls remained exact. Actual sourceaa8af247 Windows/Linux publication retains its own scope; accepted PR #254 does not establish scientific, full-host or owner-feel acceptance |
 
 [Water semantics and qualification](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 own these rules; [dated evidence](../audits/2026-10-25-water-inertial-native.md)
@@ -344,9 +347,9 @@ records actual execution and retained failures.
 
 | ID | Status and requirement |
 |---|---|
-| IN-ADAPTER-001 | Current #212 branch: hash/save versions and IN parameters/digest are copied from the actual applied World; policy-only predictions are labelled separately |
-| IN-ADAPTER-002 | Current #212 branch: legacy factory defaults2, IN explicitly requests3, and ordinary/default/CYSD1 reconstruction resets2; insufficient/unsupported geometry preserves the old session |
-| IN-ADAPTER-003 | Current #212 branch: returned motion/parameter dictionaries own their copies; native pool workers call no Godot API; old dictionary receipt identity remains separate from qualified typed native-v1 host evidence |
+| IN-ADAPTER-001 | Current accepted source: hash/save versions and IN parameters/digest are copied from the actual applied World; policy-only predictions are labelled separately |
+| IN-ADAPTER-002 | Current accepted source: legacy factory defaults2, IN explicitly requests3, and ordinary/default/CYSD1 reconstruction resets2; insufficient/unsupported geometry preserves the old session |
+| IN-ADAPTER-003 | Current accepted source: returned motion/parameter dictionaries own their copies; native pool workers call no Godot API; old dictionary receipt identity remains separate from qualified typed native-v1 host evidence |
 
 The [standalone IN contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
 owns the exact interfaces. Local Windows execution does not qualify the full
@@ -434,7 +437,7 @@ state/eligibility table; the standalone model tests logical transitions only.
 |---|---|
 | SOL-001 | Approved: exactly one cells/region/aggregate material owner; precommit refusal preserves it and postcommit failure quarantines the committed owner |
 | SOL-002 | Approved: summary and stationary eligibility never manufacture dynamic granular cohesion |
-| SOL-003 | Current standalone journal: bounded complete tile publication, ABA revision, explicit capacity/failure and starvation protection; real producer completeness remains Planned |
+| SOL-003 | Current journal and opt-in World producer: bounded complete tile publication, ABA revision, explicit capacity/failure and starvation protection. Unknown, refused or capacity-blocked coverage cannot authorize complete regions; observer integration does not admit representation handoff or simulation skipping |
 | SOL-004 | Approved future fracture: partition exact membership into coherent children and only genuinely loose cells; account inherited momentum/rotation and any motion loss |
 
 ## Generation authoring invariants

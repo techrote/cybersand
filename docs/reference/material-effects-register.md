@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Register of presentation effects — implemented (Current), planned, potential and rejected — with stage, materials, inputs, motion, cost class and evidence
 canonical-for: [material-effects-register]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../systems/material-visual-pattern-library.md, ../systems/material-appearance-and-rendering.md, ../systems/building-material-catalogue.md, status-and-roadmap.md, ../audits/2026-10-18-material-readability-pass.md, ../audits/2026-10-18-material-fidelity-pass-2.md]
 ---
 
@@ -82,8 +82,14 @@ reshaped the effect:
 | Swirling chemical eddies, bubbles, fizz, froth; darker sludge with filaments | Acid, Toxic Sludge | — | yes | A | base/P6 |
 | Etching fizz on solids | Acid, Toxic Sludge | neighbours | yes | A | P3 |
 | Swirling liquid-metal reflections and pin highlights (replaces bands) | Mercury | — | yes | A | P6 |
-| Crust plates, seams, pops | Lava, Molten Glass | heat | yes | A | P2 |
+| Crust plates, seams, pops | Lava, Molten Glass | procedural heat appearance; Molten Glass cooling condition | yes | A | P2 |
 | Depth heat, molten skin, water flashes | Lava, Molten Glass | depth, neighbours | yes | R3 | P3 |
+
+Lava's projected condition byte is zero. Its hot appearance is procedural;
+Molten Glass additionally uses its selected cooling/state projection. Neither
+effect reads a general native temperature field, as shown by
+[`project_visual_state`](../../native/include/cybersand/material_appearance.hpp)
+and the shader's `flair == 31` branch.
 
 ### Fire, gases and atmosphere
 
