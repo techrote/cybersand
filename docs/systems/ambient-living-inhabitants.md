@@ -69,7 +69,7 @@ the following distinct mechanisms:
 | `patrol_route` | Advances through 2–16 home-relative waypoints with arrival dwell, finite leg deadlines and optional looping. Unreachable legs can expire. |
 | `prefer_region` | Makes finite attempts to enter an authored home or activity region; territoriality changes its utility. |
 | `avoid_region` | Selects the nearest supported exit direction while inside an authored avoidance region and its margin. |
-| `search_last_seen` | Searches bounded offsets around a formerly observed material after supported observation of target loss. Unavailable coverage does not prove disappearance. |
+| `search_last_seen` | Searches bounded offsets after an available query no longer observes a previously seen material. Unavailable or incomplete coverage does not prove that the material was destroyed. |
 | `exploration_destination` | Chooses and pursues a finite seeded destination, rather than continually changing heading. It does not require visited-space novelty. |
 | `withdraw_obstruction` | Uses accumulated, contact-supported failure records to retreat, pause and cool down after repeated unsuccessful approaches. |
 | `rest_resource` | Requests neutral input when an actual normalized rig-energy observation crosses its threshold, releasing on recovery or timeout. It does not create an invented fatigue resource. |

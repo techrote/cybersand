@@ -1,6 +1,6 @@
 {
-  "request": "prepared-001",
+  "request": "freeze-001-recovered",
   "disposition": "Draft/HOLD",
-  "execute": false,
-  "purpose": "Prepared source-bound final qualification; execution requires an explicit [ambient-002-qualify] commit."
+  "execute": true,
+  "purpose": "Source-bound full Linux and Windows qualification,29 actual framebuffer captures, extracted portable Windows execution, and194 registered physical actor episodes across122 fresh Worlds with original trace analysis."
 }

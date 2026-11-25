@@ -166,3 +166,43 @@ refused. Both owner guides and canonical ambient contracts ship with it. The
 predecessor evaluator and qualification tools remain unchanged. Final source
 qualification, independent image review and extracted Windows execution remain
 required before delivery.
+
+## Fresh execution after recovery
+
+The [new Linux checkpoint](evidence/authoring-recovered-linux.json) records fresh
+execution at recovered source `5bfde1634239a759cb7ab7388c71f7a007688a4c`.
+Ordinary Setup Save passed 282 assertions and a fresh process Reopen passed 289,
+including sixteen profiles, six refined scenes, forty actors and all forty
+conservative authored hull checks. The delivery custody suite passed 43 tests.
+The expanded editor, native-scene and capture scripts also passed parse-only
+checks. Their live-owner and graphical execution remains pending.
+
+The receipt records the actual engine/native/Rapier hashes, verifies every listed
+source input against its committed Git blob, and retains six new original logs.
+These are new process results after recovery, separate from the lost originals
+described above. Neither source clearance nor parse-only success counts as a
+physical scene, mounted live Apply or graphical pass.
+
+## Actual recovered native scene execution
+
+The [source-bound six-scene summary](evidence/native-scenes-d219a5f3-summary.json)
+records a fresh real Workbench campaign at source
+`d219a5f327cd6b34b294b0e2f969de01305785f5`, tree
+`de7acd8f1f323aa985694cb6739ce57aa479d960`. The successor qualifier passed all
+210 assertions and its complete input-custody checks. Forty physical actors
+were admitted across six normal native Worlds; every scene completed 240 native
+ticks and 240 Rapier steps. Original import/process receipts and logs are kept,
+and the original 3,178,886-byte report is retained with lossless gzip compression
+and both compressed and uncompressed SHA-256 identities.
+
+Pipe Orchard's scavenger 5 actually copied an Oil sample from inside the sealed
+cabinet. It also recorded 26 stalled active intervals during this four-second
+episode. That negative result is retained: observed attraction and admitted
+movement do not establish successful recovery or eventual habituation.
+
+The complete scoped qualifier took 106.345 wall seconds, including import and
+custody checks; the native scene process took 95.359 seconds. Each scene's
+wall-time record includes preparation, so it is not a rendering FPS measure.
+No framebuffer was rendered in this headless case. This recovered branch
+predates the final integrated behavioural refinements, which require their own
+frozen-source Linux and Windows campaigns.

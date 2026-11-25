@@ -109,3 +109,28 @@ These are newly committed source bytes, not asserted byte-identical recovery of
 the lost commits. A new living-engine regression suite and actual execution are
 required before qualification. The lead will checkpoint this complete source
 unit remotely before further local testing to limit another executor loss.
+
+## Fresh qualification after reconstruction
+
+The newly committed source `f76e29cc87a947a20f9397ecc79ba8a06d2ecbc8` passed
+**567/567 living-engine checks** and **895/895 predecessor-rule checks** in
+actual direct Linux execution with the official pinned Godot 4.7 binary. The
+[fresh receipt](evidence/reconstructed-behaviour/receipt.json) binds eight source
+inputs, the executable, both exact commands, result payloads and original
+console files. Those console files and the machine-readable living result are
+committed alongside the receipt, rather than left only in transient storage.
+
+Coverage includes all sixteen profile admissions and explicit upgrades, bounded
+memory capacity/forgetting, invalid newer-World observations preserving valid
+state, material geometry admission, no-hit and diagonal contact rejection,
+expired remembered destinations, selected versus suppressed finite dwell,
+curiosity/activity effects, bounded drives, actual-resource observation
+semantics, authored regions, preferred/neutral/avoided/explicit copied peers,
+preserved version-1 following, and 300 identical seeded decision comparisons
+with adversarial mutation of returned diagnostic copies. These remain pure
+copied-value regressions and contribute no physical actor episodes.
+
+The fresh informational eight-engine workload measured 960 eleven-module
+decisions at 322.26 microseconds each. Shared-host timing variation prevents
+interpreting differences from earlier local runs as a performance improvement.
+Sensor, native, Rapier, presentation and Windows qualification remain separate.

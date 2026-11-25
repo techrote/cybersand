@@ -1,0 +1,168 @@
+{
+  "schema": "ambient-002-authoring-recovered-checkpoint/v1",
+  "date_utc": "2026-11-25",
+  "source_commit": "5bfde1634239a759cb7ab7388c71f7a007688a4c",
+  "source_tree": "9c2fa1419525ece10f9cdd78f16fe3f7adb22740",
+  "scope": "Fresh execution after executor restart: actual Setup Save/fresh-process Reopen,16 profiles,6 refined scenes,40 actors and40 conservative initial AABB checks using the actual native catalogue. Delivery custody fixtures and parse-only checks. No full World progression, graphical rendering, Windows or playfeel qualification.",
+  "runtime": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "source_inputs_sha256": {
+    "godot/scripts/ambient/ambient_actuator.gd": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef",
+    "godot/scripts/ambient/ambient_authoring.gd": "42650450530f5169def0b601cfed41e85433ee7a6f1f839f81e0c651d6286a9f",
+    "godot/scripts/ambient/ambient_debug_overlay.gd": "a7807cef490a35160b66bd1f72c0182e61fb78639d723c6ae055dc9cfbc301d2",
+    "godot/scripts/ambient/ambient_engine.gd": "b0cfc768963b3408a0826fe61df5c7dc3049f2ed40639000a02a58c993f432eb",
+    "godot/scripts/ambient/ambient_examples.gd": "e7cd0230038ed7c50d575bfbbfa5ad6d4a84dca8705ddce21164118672501386",
+    "godot/scripts/ambient/ambient_living_examples.gd": "0fe05b85a0c079fd5e41db15104e700a157bde6ab173eeb38ff66601263b5e3b",
+    "godot/scripts/ambient/ambient_memory.gd": "3ff38251d146a7666cec2fddb5949e00ba90ddac1e4b118ee9b98fefd81d5931",
+    "godot/scripts/ambient/ambient_modules.gd": "889b3f45cff5657e463f85f7b4f78446641144dd9de6c1c040bd61a38d8d256b",
+    "godot/scripts/ambient/ambient_perception.gd": "61f4e05fe4441d2c83c26429463254d963aa6d1f2447b4351ad587f8fa11ef0b",
+    "godot/scripts/ambient/ambient_profile.gd": "460d3d28b06dc38292d4816fc013ffde99f51d715fefbee196b48632e4270cee",
+    "godot/scripts/ambient/ambient_profile_editor.gd": "24f5b101b37b506a3682806e61e24245478d90001413c3115f365718734e39ba",
+    "godot/scripts/ambient/ambient_stateful_modules.gd": "f5d43e45a8779807dc07c76dfe6e868ea4a5b54149f63807bb756dfbc70ac184",
+    "godot/scripts/workbench_setup.gd": "1aa4a84c835c148e1aab54acf6e002857b3f8713f8b25f6327fe8f640a517ce8",
+    "godot/scripts/workbench_actor_catalog.gd": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7",
+    "godot/data/ambient/profiles.json": "9b5cfcf22a653f7d76d9c9f205a6222c442ec577e90eabcff8ad9d46f39cfb87",
+    "godot/tests/test_ambient_living_authoring.gd": "602fe15a881173cacc09f672ca22436f9b1475ba31c76c81f81db80bcb0ebc68",
+    "godot/tests/test_ambient_living_editor.gd": "1ad53543c94a9d5ff1f7fc4a6f583cbd345090eac36fe74a5dd6f405c72fd3fd",
+    "godot/tests/test_ambient_living_examples_native.gd": "40ebfff44a11faca594d5df8e14c9104ad13cfe8a0f19a70bec674106d0702a2",
+    "godot/tests/capture_ambient_living_examples.gd": "b978f7cdb22be903c4876a34dd2329a25a6109dd7b38ca16de249f96d90aa1d2",
+    "tools/ci/test_ambient_living_delivery.py": "6c3cd8eafbe90e013fa048b2b8bfe13b537825d4623e9facf52fdd4f5fd27124",
+    "tools/qualify_ambient_living.py": "bbf5dc014e942dabff09ee344e138b8288449ad4c37ff20dcc80d9d7e754b336",
+    "tools/package_ambient_living_evaluator.py": "19654f8f29970cf299639940f1971645e537656a81c76dad96bb6b3aafbd49ce",
+    "godot/examples/workbench/ambient2-aerial-habitat.json": "b53ecfeb605f67aa6c8c68c01cad8f5ae32be3740eef6cb6d5dd2dcb946e87bd",
+    "godot/examples/workbench/ambient2-cavern.json": "7db3d8505e00b457783ce14bd47f32266fb6d628d39d92d9858ac3fe1f2bd78e",
+    "godot/examples/workbench/ambient2-courtyard.json": "99c16f9220f900cd0e83b7c7ea05c5851f82dff874601d55723b2d1411575bcd",
+    "godot/examples/workbench/ambient2-floodyard.json": "a0411403bb24dc2c6460896aeb4371a7b16ef5b3fe49cb96e55fa19209c6f56c",
+    "godot/examples/workbench/ambient2-refinery.json": "1e93704c0bfa4fa3ae6560755a66adefdeb4ecf1d23efeb854e8af824fedda04",
+    "godot/examples/workbench/ambient2-settlement.json": "07b71258be0470c001a3f414c01ea25192031cdd4734c303446cdc155543e64c"
+  },
+  "source_input_check": "All listed source bytes equal their Git blobs at source_commit.",
+  "cases": [
+    {
+      "name": "save",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/ambient-002/authoring/godot",
+        "--script",
+        "res://tests/test_ambient_living_authoring.gd",
+        "--",
+        "--save",
+        "ambient2-recovered-5bfde163"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.198,
+      "log_sha256": "e6439a8f2dd34452499fd061af039904eef0c7ad33ac58a1a99c1cb54b10d411",
+      "log_bytes": 312,
+      "terminal": {
+        "actors": 40,
+        "checks": 282,
+        "failures": [],
+        "profiles": 16,
+        "scenes": 6
+      },
+      "original_log": "authoring-recovered-save.log"
+    },
+    {
+      "name": "reopen",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/ambient-002/authoring/godot",
+        "--script",
+        "res://tests/test_ambient_living_authoring.gd",
+        "--",
+        "--reopen",
+        "ambient2-recovered-5bfde163"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.95,
+      "log_sha256": "bd89b16574132d04dc633b5dcf1779a22b4117a583d5db13f9f3a62f0db43162",
+      "log_bytes": 312,
+      "terminal": {
+        "actors": 40,
+        "checks": 289,
+        "failures": [],
+        "profiles": 16,
+        "scenes": 6
+      },
+      "original_log": "authoring-recovered-reopen.log"
+    },
+    {
+      "name": "delivery_custody",
+      "command": [
+        "python3",
+        "tools/ci/test_ambient_living_delivery.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.299,
+      "log_sha256": "38e62e5e78f5d95f2e3728f21a9b987d1cd5e3657029a388ced97d2f66c4f056",
+      "log_bytes": 6534,
+      "completed_tests": 43,
+      "original_log": "authoring-recovered-delivery_custody.log"
+    },
+    {
+      "name": "parse_test_ambient_living_editor",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/ambient-002/authoring/godot",
+        "--check-only",
+        "--script",
+        "res://tests/test_ambient_living_editor.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.573,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "log_bytes": 221,
+      "original_log": "authoring-recovered-parse_test_ambient_living_editor.log"
+    },
+    {
+      "name": "parse_test_ambient_living_examples_native",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/ambient-002/authoring/godot",
+        "--check-only",
+        "--script",
+        "res://tests/test_ambient_living_examples_native.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.556,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "log_bytes": 221,
+      "original_log": "authoring-recovered-parse_test_ambient_living_examples_native.log"
+    },
+    {
+      "name": "parse_capture_ambient_living_examples",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/ambient-002/authoring/godot",
+        "--check-only",
+        "--script",
+        "res://tests/capture_ambient_living_examples.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.592,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "log_bytes": 221,
+      "original_log": "authoring-recovered-parse_capture_ambient_living_examples.log"
+    }
+  ],
+  "failures": [],
+  "remaining_gates": [
+    "actual mounted editor live Apply/Revert and all-tab geometry",
+    "actual native six-scene progression and cabinet sensing",
+    "29 actual rendered captures and independent visual review",
+    "complete final Linux and Windows campaign plus independently extracted portable execution"
+  ]
+}

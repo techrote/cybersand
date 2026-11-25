@@ -30,7 +30,7 @@
     },
     {
       "reported_local_source": "89471d4290117b15547b823648d5060c5f2ae469",
-      "case": "Setup Save/fresh-process Reopen including40 authored AABB checks",
+      "case": "Setup Save/fresh-process Reopen including 40 authored AABB checks",
       "checks": [
         282,
         289
@@ -62,7 +62,7 @@
   ],
   "negative_findings": [
     "Initial v1 upgrades failed six checks because new dictionary dot assignments created StringName keys; strict String-key repair was preserved in hosted source.",
-    "Initial courtyard adjacent actors exceeded copied peer range; groups now begin at60-cell spacing.",
+    "Initial courtyard adjacent actors exceeded copied peer range; groups now begin at 60-cell spacing.",
     "Enriched flood-yard truss occupied six cells of flyer6's conservative source AABB; spawn and home were moved.",
     "Initial refinery raised Oil was outside ground material scope; a nearby sealed cabinet replaces it.",
     "Actual Control layout probes found default-height and minimum-width overflow; preserved hosted source includes repairs."

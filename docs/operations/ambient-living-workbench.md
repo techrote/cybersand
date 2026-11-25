@@ -126,8 +126,9 @@ These places express preferences. They do not create invisible walls, teleport
 actors, add material or provide global navigation. Moving a reusable profile to
 a different scene may require adjusting its coordinates.
 
-Tags describe affinities. Preferred and avoided tags filter actual copied peer
-observations. An optional peer ID focuses relevant modules on that observed
+Tags describe affinities. Preferred tags favour compatible peers, with neutral
+peers as a fallback; avoided tags exclude peers from ordinary approach modules
+and can drive explicit avoidance. These rules use actual copied peer observations. An optional peer ID focuses relevant modules on that observed
 inhabitant; it does not provide hidden access to absent actors. Peer-directed
 goals release when their target is no longer admitted; other modules resume.
 The material search module searches around a remembered material observation.

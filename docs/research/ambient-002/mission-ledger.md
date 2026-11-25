@@ -190,3 +190,44 @@ The runner isolates each campaign in a fresh process, binds complete source,
 runtime, registration, original console/report/receipt hashes, and refuses
 source aliases. Registration executes zero episodes. Figures and reductions
 will use only actually completed original traces; no result is implied here.
+
+
+At local5ac2486d / byte-identical published3ff7bf17, the recovered lead
+transactional group regression passed40 assertions, using two actual Rapier
+families and8 physical steps. The original qualifier record, process record and
+console are retained in `evidence/recovered-lead-group*`; the compressed original
+qualification JSON is lossless and its uncompressed hash is recorded. Complete
+input custody passed before and after execution. World-generation boundary
+probes remain explicitly synthetic; this is not native-material, graphical or
+Windows qualification. At this source the43 delivery custody and10 episode-tool
+unit tests also passed. Later final source must still complete the full matrix.
+
+
+## First complete recovered source freeze
+
+The coherent recovered application includes all29 reusable module types,16
+editable profiles, six substantial native environments, actual local material
+and peer observations, bounded memory/drives, staged individual/group authoring,
+29 planned framebuffer capture slots and the isolated194-episode programme.
+The reconstructed pure living suite passed567 checks and the original engine
+suite895 checks at its recorded local inputs. The recovered six-scene native
+preflight passed210 checks with40 actual actors and240 native/Rapier steps per
+scene; the revised refinery target was actually observed, while26 active stall
+intervals were retained as a negative result. These preflights do not replace
+full frozen-source qualification or establish interestingness by assertion count.
+
+The request marker now selects `freeze-001-recovered`. Its matching published
+commit will contain `[ambient-002-qualify]`, invoking both actual hosted Linux and
+Windows jobs while the PR stays Draft/HOLD. Windows packaging is conditional on
+complete source-bound headless and actual graphical results, followed by pristine
+extraction, actual gameplay/save-reopen/graphics, ordinary launcher execution and
+postlaunch input verification. Linux runs the complete scoped legacy/living matrix,
+actual graphics and the primary registered194-episode experiment with reductions.
+All original successful or failed evidence is uploaded. No result is claimed
+before those jobs finish and their original artifacts are independently reviewed.
+
+The preceding3ff7bf documentation job failed while downloading the pinned
+actionlint archive (`curl` connection failure), before executing the lint tool.
+No source error or pass follows from that infrastructure failure; the frozen head
+must complete its own documentation/provenance job. Current source-scope, Art and
+architectural generation checks passed at3ff; broad Draft-gated jobs were skipped.
