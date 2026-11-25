@@ -161,6 +161,10 @@
   ],
   "excluded": [
     {
+      "path": "research/gip014-goblin-002-decision.md",
+      "reason": "Branch-scoped GIP-014-goblin-002 Draft/HOLD owner decision packet, exact experimental source and qualification results; read explicitly, not accepted production authority."
+    },
+    {
       "path": "research/goblin002-replay-delivery-handover.md",
       "reason": "Draft/HOLD goblin successor implementation and qualification handover; not accepted production authority."
     },

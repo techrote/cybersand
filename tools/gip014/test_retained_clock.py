@@ -12,6 +12,17 @@ import qualify_retained_clock as diagnostic
 
 
 class RetainedClockEvidenceTests(unittest.TestCase):
+    def source_boundary(self):
+        receipt = {"armed": False, "burst_queued": False, "stream_enabled": False, "origin": [0, 0],
+                   "material": 0, "attempted": 0, "inserted": 0, "blocked": 0, "stream_ticks": 0}
+        observed = {"actor_ids": [], "actors": [], "paused": True,
+                    "native": {"generation": 3, "revision": 4, "tick": 0, "paused": True, "failed": False},
+                    "source": {"authored": [], "pending_commands": 1, "receipt": receipt}}
+        proof = {"phase": "initial", "index": -1, "bounded_copy_complete": True, "command_count": 1,
+                 "owner_generation": 3, "commands": [{"command": "stop", "origin": [0, 0], "material": 0}],
+                 "before": deepcopy(observed), "after": deepcopy(observed), "current_source_receipt": deepcopy(receipt)}
+        return observed, proof
+
     def capture(self):
         cells = [58 if x < 2 or x >= 46 or y < 2 or y >= 46 else
                  2 if 16 <= x < 24 and 8 <= y < 16 else 0 for y in range(48) for x in range(48)]
@@ -121,6 +132,68 @@ class RetainedClockEvidenceTests(unittest.TestCase):
             self.assertTrue(report["operator_cancelled"])
             self.assertEqual(report["retention_error"], "artificial archive failure")
             self.assertEqual(report["stages"][0]["process"], process)
+
+    def test_pending_stop_needs_actual_bound_queue_and_disarmed_owner(self):
+        observed, proof = self.source_boundary()
+        self.assertTrue(diagnostic.actor_free(observed, proof, "initial", -1))
+        self.assertFalse(diagnostic.actor_free(observed, {}, "initial", -1))
+        for kind in ("configure", "burst", "stream", "unknown"):
+            with self.subTest(command=kind):
+                altered = deepcopy(proof)
+                altered["commands"][0]["command"] = kind
+                self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+        for field, value in (("origin", [1, 0]), ("material", 2)):
+            with self.subTest(argument=field):
+                altered = deepcopy(proof)
+                altered["commands"][0][field] = value
+                self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+        for field, value in (("armed", True), ("burst_queued", True), ("stream_enabled", True),
+                             ("material", 2), ("inserted", 1), ("attempted", 1)):
+            with self.subTest(owner=field):
+                altered = deepcopy(proof)
+                altered["current_source_receipt"][field] = value
+                self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+
+    def test_pending_stop_rejects_stale_phase_source_and_count(self):
+        observed, proof = self.source_boundary()
+        for field, value in (("owner_generation", 2), ("index", 0), ("phase", "after_action"),
+                             ("command_count", 0), ("bounded_copy_complete", False), ("commands", [])):
+            with self.subTest(field=field):
+                altered = deepcopy(proof)
+                altered[field] = value
+                self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+        for side in ("before", "after"):
+            for field in ("generation", "revision", "tick"):
+                with self.subTest(side=side, native=field):
+                    altered = deepcopy(proof)
+                    altered[side]["native"][field] += 1
+                    self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+
+    def test_zero_queue_still_requires_current_disarmed_owner_and_phase(self):
+        observed, proof = self.source_boundary()
+        observed["source"]["pending_commands"] = 0
+        proof["command_count"] = 0
+        proof["commands"] = []
+        for side in ("before", "after"):
+            proof[side]["source"]["pending_commands"] = 0
+        self.assertTrue(diagnostic.actor_free(observed, proof, "initial", -1))
+        self.assertFalse(diagnostic.actor_free(observed, {}, "initial", -1))
+        for field, value in (("phase", "after_action"), ("index", 0), ("owner_generation", 2)):
+            altered = deepcopy(proof)
+            altered[field] = value
+            self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+        altered = deepcopy(proof)
+        altered["current_source_receipt"]["armed"] = True
+        altered["current_source_receipt"]["material"] = 2
+        self.assertFalse(diagnostic.actor_free(observed, altered, "initial", -1))
+        # Real running zero-queue observations may advance clocks; source
+        # generation and actual disarmed owner proof are still required.
+        observed["paused"] = observed["native"]["paused"] = False
+        for offset, side in enumerate(("before", "after"), 1):
+            proof[side]["paused"] = proof[side]["native"]["paused"] = False
+            proof[side]["native"]["tick"] += offset
+            proof[side]["native"]["revision"] += offset
+        self.assertTrue(diagnostic.actor_free(observed, proof, "initial", -1))
 
 
 if __name__ == "__main__":

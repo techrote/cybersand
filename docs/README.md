@@ -10,7 +10,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-GIP-014-goblin-002 Draft/HOLD: [persistent experimental playtester](research/gip014-goblin-002.md) extends the [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Its source capabilities, campaign evidence and defect adjudication remain separately scoped.
+GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/gip014-goblin-002-decision.md), then the [persistent experimental playtester ledger](research/gip014-goblin-002.md) and [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Exact source capabilities, campaign evidence and defect adjudication remain separately scoped.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 

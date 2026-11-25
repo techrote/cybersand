@@ -699,17 +699,28 @@ use the separately bounded Python reducer.
 
 ## Qualification and decision status
 
-**Pending for the corrected candidate:** a fresh matched-budget comparative
-programme, long-horizon completion and extracted package qualification, together
-with source-matched focused and graphical gates. Request 4 passed its complete
-declared Linux scope but failed the separate Windows extracted campaign because
-of the articulated-origin oracle defect. Prior passes remain attached to their
-exact published source. No successor Windows evaluator is yet qualified. The
-predecessor evaluator remains independently valid at its original source.
+**Qualified Windows evaluator:** request 8 at exact source
+`5ee5dffc78d59a721f62be49fd51d24b870556c7` passed focused native, graphical,
+replay, isolation and extracted-package gates. Independent delivery review passed
+3,841 custody checks; independent gameplay review passed 248 checks. The actual
+95,549,310-byte final evaluator has SHA-256
+`513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee`.
+The corrected-source Linux matrix and registered memory experiment are still in
+progress at this checkpoint. Their pending results receive no coverage credit.
 
-Qualification will retain every process, exit code, watchdog/cancellation result,
-source snapshot, native/runtime identity and raw terminal or incomplete tape. No
-novel production gameplay defect has yet been established by this successor.
+The earlier d849 Linux programme retained all 142 attempted episodes and 8,389
+completed actions, including 35 processes stopped by the subsequently corrected
+Monowheel test oracle. A separate exact-source historical programme reproduced
+that real finding and reduced its 44-action tape to one action with two fresh
+confirmations per accepted length. Its exported unchanged-oracle unittest fails
+as expected. It is a test-oracle defect, not a production gameplay defect.
+
+Every retained pass and failure remains bound to its actual source/runtime and
+process receipt. Later diagnostics and documents do not relabel the 5ee evaluator
+as qualification of their source. No novel production gameplay defect has yet
+been established. The predecessor evaluator remains independently valid at its
+original source. Draft/HOLD, no default activation and no physical NVIDIA claim
+remain explicit.
 
 ## Documentation impact
 
@@ -742,10 +753,21 @@ The native worker completed in140.553seconds with781647872bytes peak sampled pro
 
 ### Qualified Windows result and separate retained-clock hypothesis
 
-Request8 Windows completed successfully at exact source`5ee5dffc78d59a721f62be49fd51d24b870556c7`; the uploaded qualified evaluator is[artifact14994660661](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/14994660661). The actual inner evaluator ZIP is95549310bytes, SHA256`513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee`. Its base ZIP is separately identified by SHA256`a9efed4856bef37454bfc0c0169a252c639aeed7d80c97155942ac5ff7aabbd6`. Independent delivery/source/EOL custody review is still in progress at this checkpoint. The lead visually inspected all three actual1600×900extracted Windows screenshots: ordinary Workbench, green goblin pointer and scrollable Play/Discovery/Memory controls are visible and readable. Actual extracted campaigns completed64actions each for Control actor_workshop, Control save_reopen and Coverage Hunter alchemy. Portable64-action semantic replay passed; exact asynchronous observation identity was false, as separately reported. The actual47-record then64-record corpora exercised backup/import/clear while preserving two native archives. No physical NVIDIA acceptance is claimed.
+Request8 Windows completed successfully at exact source`5ee5dffc78d59a721f62be49fd51d24b870556c7`; the uploaded qualified evaluator is[artifact14994660661](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/14994660661). The actual inner evaluator ZIP is95549310bytes, SHA256`513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee`. Its base ZIP is separately identified by SHA256`a9efed4856bef37454bfc0c0169a252c639aeed7d80c97155942ac5ff7aabbd6`. Independent delivery/source/EOL custody review subsequently passed3,841checks over1,230base payload files and22supplements; source bindings and all36owned-process receipts matched, with no survivors. Five launcher files differ from raw Git only by exact attribute-authorized Windows archive newline conversion, individually proved. Report blob`e4321ad82203bb9a3a516cfa425795fa8cbd71d6` and reproducible audit packet`3bd9fcfe697e46fa046480ee0944aa22410a6dec` retain that proof. The lead visually inspected all three actual1600×900extracted Windows screenshots: ordinary Workbench, green goblin pointer and scrollable Play/Discovery/Memory controls are visible and readable. Actual extracted campaigns completed64actions each for Control actor_workshop, Control save_reopen and Coverage Hunter alchemy. Portable64-action semantic replay passed; exact asynchronous observation identity was false, as separately reported. The actual47-record then64-record corpora exercised backup/import/clear while preserving two native archives. No physical NVIDIA acceptance is claimed.
 
 The Linux comparison remains in progress. Source refresh reconfirmed main`00cdb02f103265b6dc5224c68283e9a0c8cb449f`, Draft/HOLD successor ancestry through all four recorded predecessor identities, and no imported candidate programmes. Current repository identity/docs checks passed; retained M11 integrity passed18records/28historical source hashes. The frozen retrieval set returned30/32canonical hits at k,19at rank1,MRR0.7292; these are retrieval metrics, not answer correctness or gameplay evidence.
 
 B's deeper lifecycle examination identified a new hypothesis, separate from all current qualification claims: retaining World replacement can copy evolved cells while publishing native tick zero, whereas ordinary Save writes the authored recipe. The current native-equality applicability oracle uses tick zero. A fixed nine-action diagnostic now compares an actor-free positive-tick Save/Reopen control with a fresh variant adding one actually offered response-mode replacement. Independent2304-cell captures establish initial geometry, real Sand movement, retained evolved cells and authored Reopen; named-file readback checks the original recipe. No production state is injected, and no oracle is altered. The added entrypoint is the only permitted Godot input difference from5ee; exact executed instrumentation/source archives are retained separately.
 
 A independently reviewed the GDS decision/capture fences. C reviewed the fixed driver and found an archive-retention exception could mask cancellation; B repaired it and five artificial controls passed. C withdrew an earlier cwd concern after verifying the existing wrapper supplies it. These are source/pure reviews only. The separate12-minute hosted diagnostic permits a120-second import then one90-second/3072MiB game process, with bounded reports/logs. A positive result remains an applicability candidate until raw evidence and product contracts are independently examined.
+
+
+### Retained-clock request 1 setup refusal and stricter observation proof
+
+[Diagnostic run45553057659](https://github.com/techrote/cybersand/actions/runs/45553057659) executed source`f97f694f407a64b9e6577a1e0c98ae3f55e693c7`, retaining the5ee product/oracle unchanged with one separately identified diagnostic entrypoint. Fresh import passed in5.712seconds; the game stopped in4.902seconds before any gameplay action, with644489216bytes peak sampled tree RSS and no surviving owned process. Its initial2,304-cell plane exactly matched the independently specified64Sand/368wall/1,872empty authored geometry at generation3/revision3/tick0. The observation reported no actors, no authored source, a disarmed zero-emission source receipt and one pending command. The diagnostic's zero-pending-only precondition rejected that setup. The raw record did **not** identify the pending command; ordinary source code's ability to queue an inert Stop is not evidence that this particular command was Stop.
+
+[Artifact14994352640](https://github.com/techrote/cybersand/actions/runs/45553057659/artifacts/14994352640) is2,816,450bytes, SHA-256`846d8bea66ab406466cfcf659148115a6774f10c10aab58285f0ee8864250f24`. SpecialistA's actual setup audit is`ed08590af02f28c353bc55bd200ff8e5793b2eb3`; B's independent11-check adjudication is`23f2a7c8373a41272fa9695503f3331d06f76ca3`; the complete job log is`846e0b839b1dcfc82d405671f53a34fb56feef70`. All classify the attempt as setup-unqualified with zero actions and no Save/Reopen hypothesis result.
+
+The revised diagnostic records bounded read-only source queue and current owner receipts under the existing worker mutex at the initial, action-started and action-observed boundaries. Positive counts require exact ordinary Stop entries, fully disarmed owner state, matching phase/count/generation and unchanged paused native fences. No queue or tape is mutated, and final state is never used as proof of a historical row. Independent review caught an initial zero-count shortcut that could trust stale published disarm without checking current owner state; the final revision closes that shortcut too. All eight artificial driver controls pass; A independently re-reviewed the actual queue/owner proof. Running zero-queue observations may legitimately advance their native clocks, so the stricter proof must distinguish generation identity from frozen tick identity.
+
+Request2 dispatch uses final diagnostic GDS blob`0d3b01ded8d674853139e6577859ef7b5c2badd8`, driver`fa36371f3a849ab26ebd11486cb9d5319975cacf` and controls`e51dcb3b03ccc5367b43b4c51c8cf81f22cb1f99`. A's final independent review is`09b1bbb21b46de2bd8e45bbc174763fbdc211b35`; C separately approved the repaired zero-count path and preserved cancellation/custody bounds. Root re-executed all eight artificial controls under a60-second/1024MiB owned process:0.303seconds,22,585,344bytes sampled peak, no survivors. CI provider and documentation checks passed. An initial root documentation command referenced a nonexistent script path; the corrected committed path passed and both command receipts remain retained. These are driver/source checks, not the still-pending native hypothesis result.

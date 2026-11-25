@@ -111,6 +111,49 @@ def automatic_bundle(profile: Path, raw: dict) -> dict:
             "bytes": paths[0].stat().st_size, "sha256": digest, "original_tape_exact": True}
 
 
+def disarmed_receipt(receipt) -> bool:
+    return (isinstance(receipt, dict) and receipt.get("armed") is False
+            and receipt.get("burst_queued") is False and receipt.get("stream_enabled") is False
+            and isinstance(receipt.get("origin"), list) and len(receipt["origin"]) == 2
+            and all(type(value) in (int, float) and value == 0 for value in receipt["origin"])
+            and all(type(receipt.get(key)) is int and receipt[key] == 0
+                    for key in ("material", "attempted", "inserted", "blocked", "stream_ticks")))
+
+
+def actor_free(observation: dict, proof: dict, phase: str, index: int) -> bool:
+    source, native = observation.get("source", {}), observation.get("native", {})
+    if (observation.get("actor_ids") != [] or observation.get("actors") != [] or source.get("authored") != []
+            or not disarmed_receipt(source.get("receipt"))):
+        return False
+    count = source.get("pending_commands")
+    if type(count) is not int or not 0 <= count <= 16:
+        return False
+    if (proof.get("phase") != phase or proof.get("index") != index or proof.get("bounded_copy_complete") is not True
+            or proof.get("command_count") != count or proof.get("owner_generation") != native.get("generation")
+            or native.get("failed") is not False
+            or not disarmed_receipt(proof.get("current_source_receipt"))):
+        return False
+    if count > 0 and (observation.get("paused") is not True or native.get("paused") is not True):
+        return False
+    for side in ("before", "after"):
+        boundary = proof.get(side, {})
+        if (boundary.get("native", {}).get("generation") != native.get("generation")
+                or boundary.get("native", {}).get("failed") is not False
+                or boundary.get("source", {}).get("pending_commands") != count
+                or not disarmed_receipt(boundary.get("source", {}).get("receipt"))):
+            return False
+        if count > 0 and (boundary.get("native") != native or boundary.get("paused") is not True):
+            return False
+    commands = proof.get("commands")
+    return (isinstance(commands, list) and len(commands) == count
+            and all(isinstance(command, dict) and set(command) == {"command", "material", "origin"}
+                    and command.get("command") == "stop" and type(command.get("material")) is int
+                    and command["material"] == 0 and isinstance(command.get("origin"), list)
+                    and len(command["origin"]) == 2
+                    and all(type(value) in (int, float) and value == 0 for value in command["origin"])
+                    for command in commands))
+
+
 def adjudicate(raw: dict, provenance: dict, custody: dict) -> dict:
     if (raw.get("schema") != "goblin-retained-clock-diagnostic-v1"
             or raw.get("base_game_source") != BASE_GAME_SOURCE
@@ -136,6 +179,13 @@ def adjudicate(raw: dict, provenance: dict, custody: dict) -> dict:
         checked = verify(tape)
         if not checked["valid"] or checked.get("unreported_failures"):
             raise ValueError("The actual tape fails independent structural/evidence validation")
+        source_evidence = case.get("source_queue_evidence", {})
+        if not actor_free(case.get("initial_observation", {}), source_evidence.get("initial", {}), "initial", -1):
+            raise ValueError("Initial absence of an emitting source lacks its actual queue/owner proof")
+        for action_index, row in enumerate(rows):
+            for side in ("before", "after"):
+                if not actor_free(row[side], source_evidence.get(side + "-" + str(action_index), {}), side + "_action", action_index):
+                    raise ValueError("A pending source operation is not a proven inert Stop at its actual action boundary")
         captures = case.get("captures", {})
         initial = capture_cells(captures.get("authored_start", {}), case.get("initial_observation", {}))
         evolved = capture_cells(captures.get("paused_after_play", {}), rows[1]["after"])
