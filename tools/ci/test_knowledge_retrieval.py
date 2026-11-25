@@ -24,10 +24,10 @@ def document(body='# Current contract\nQuarantine the world on failure.\n', **ov
 class KnowledgeRetrievalTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
-        self.root=Path(self.temp.name).resolve()
+        self.root=(Path(self.temp.name)/'source').resolve();self.root.mkdir()
         self.current=self.write('docs/systems/current.md',document())
         self.manifest=self.write('docs/reference/retrieval-corpus.json',json.dumps({'documents':['systems/current.md']}))
-        self.cache=self.root/'scratch-index.json'
+        self.cache=Path(self.temp.name)/'cache'/'index.json';self.cache.parent.mkdir()
 
     def write(self,path,text):
         p=self.root/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8');return p
@@ -121,6 +121,25 @@ class KnowledgeRetrievalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Duplicate JSON key'):knowledge.Retriever(self.root)
         with self.assertRaisesRegex(ValueError,'Duplicate corpus manifest key'):baseline.selected_paths(self.root)
         with self.assertRaisesRegex(ValueError,'Duplicate corpus manifest key'):baseline.chunk_document(self.current,self.root,30)
+
+    def test_cache_cannot_replace_source_manifest_or_git_metadata(self):
+        for path in [self.current,self.manifest,self.root/'.git'/'config',self.root/'untracked-cache.json']:
+            with self.subTest(path=path):
+                before=path.read_bytes() if path.is_file() else None
+                with self.assertRaisesRegex(ValueError,'Cache must be outside'):knowledge.Retriever(self.root,cache=path)
+                self.assertEqual(path.read_bytes() if path.is_file() else None,before)
+
+    def test_cache_cannot_replace_another_worktree_file(self):
+        other=Path(self.temp.name)/'other-worktree';other.mkdir();(other/'.git').write_text('gitdir: /unused\n')
+        target=other/'source.py';target.write_text('precious source\n')
+        with self.assertRaisesRegex(ValueError,'Cache must be outside every Git'):knowledge.Retriever(self.root,cache=target)
+        self.assertEqual(target.read_text(),'precious source\n')
+
+    def test_cache_symlink_to_source_is_refused(self):
+        self.cache.symlink_to(self.current)
+        before=self.current.read_bytes()
+        with self.assertRaisesRegex(ValueError,'Cache must be outside'):knowledge.Retriever(self.root,cache=self.cache)
+        self.assertTrue(self.cache.is_symlink());self.assertEqual(self.current.read_bytes(),before)
 
     def test_snapshot_creation_then_validated_reuse(self):
         first=knowledge.Retriever(self.root,cache=self.cache)

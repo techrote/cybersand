@@ -125,6 +125,16 @@ def source_snapshot(root: Path, historical: bool, max_words: int, *, include_chu
     return identity, chunks
 
 
+def validate_cache_path(root: Path, cache: Path) -> None:
+    """Derived snapshots may never replace repository source or Git metadata."""
+    resolved = cache.resolve()
+    if resolved.is_relative_to(root.resolve()):
+        raise ValueError('Cache must be outside the source repository')
+    for directory in (resolved.parent, *resolved.parents):
+        if directory.name == '.git' or (directory/'.git').exists() or ((directory/'HEAD').is_file() and (directory/'objects').is_dir() and (directory/'refs').is_dir()):
+            raise ValueError('Cache must be outside every Git worktree and metadata directory')
+
+
 def load_snapshot(root: Path, historical=False, max_words=420, cache: Path | None=None):
     """Validate persisted snapshots against fresh source; remove obsolete contexts.
 
@@ -132,6 +142,8 @@ def load_snapshot(root: Path, historical=False, max_words=420, cache: Path | Non
     vector store. The snapshot supports custody/reuse, not a promised speedup.
     No cache can supply text, selection or authority independently of source.
     """
+    if cache is not None:
+        validate_cache_path(root, cache)
     identity, chunks = source_snapshot(root, historical, max_words)
     state = 'not-requested'
     if cache is not None:

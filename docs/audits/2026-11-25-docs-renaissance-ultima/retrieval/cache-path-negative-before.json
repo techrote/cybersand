@@ -1,0 +1,11 @@
+{
+  "authority": "historical-non-authoritative",
+  "discovered_by": "Lead independent review",
+  "reproduced_by": "Specialist C",
+  "case": "cache aliases selected source document",
+  "scope": "Disposable temporary fixture only",
+  "before_sha256": "fe81fcea359e01c78ab63d50236e8d2a4209b85830c53a286a9fa0d755ad5ac0",
+  "after_sha256": "264732e4336be5b78b00b8449e9b0c823103a6692830682b8eca49b516438f49",
+  "source_was_overwritten": true,
+  "implementation_before": "9d5493f6"
+}

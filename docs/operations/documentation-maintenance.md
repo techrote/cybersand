@@ -112,8 +112,8 @@ compares manifest/helper/document and linked-code digests, and validates every
 cached chunk. Source changes, removal, renaming, a new exclusion or historical
 mode change rebuild the snapshot and remove formerly admitted text. Malformed
 current authority fails closed instead of serving an old cache. Explicit history
-uses a distinct identity and preserves its envelope. Cache files belong outside
-tracked source.
+uses a distinct identity and preserves its envelope. Cache files must be outside every Git worktree and Git metadata directory;
+source/manifest destinations and aliases are refused before any cache write.
 
 All current answer paths—manifest, fallback, direct chunking and the adapter—
 require complete metadata and a valid review date. Navigation and explicitly
