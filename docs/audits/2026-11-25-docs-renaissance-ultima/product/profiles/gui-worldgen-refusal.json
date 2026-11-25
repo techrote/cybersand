@@ -1,0 +1,15 @@
+{
+  "source_commit": "b698a2b2447ece2076bfa83ac56093f34487450f",
+  "all14_independent_test_inputs_equal": true,
+  "prior_profile_sha256": "890dea826f2cd040b0f949b5616bf1c3b5b8553a8d9d145b9a8015a715650135",
+  "prior_profile_bytes": 567,
+  "prior_profile_seed": 74391,
+  "previous_mode": "0o755",
+  "fault": "actual parent directory chmod0555; only disposable b-profile-gui files",
+  "refusal_observed_both_labels": true,
+  "after_refusal_sha256": "890dea826f2cd040b0f949b5616bf1c3b5b8553a8d9d145b9a8015a715650135",
+  "after_refusal_bytes": 567,
+  "after_refusal_seed": 74391,
+  "old_bytes_preserved": true,
+  "restored_mode": "0o755"
+}

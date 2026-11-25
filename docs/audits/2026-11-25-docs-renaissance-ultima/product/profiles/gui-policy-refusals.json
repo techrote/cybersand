@@ -1,0 +1,70 @@
+{
+  "before": [
+    {
+      "path": "/workspace/scratch/1c5fccfbe328/b-profile-gui/data/godot/app_userdata/Cyber Sand Reference Sandbox/transport-profile.json",
+      "bytes": 373,
+      "sha256": "a1feda136bc4c8b45e57d29ff418e7376e73beb88c2c0a5e6009f96764b685ed",
+      "parsed": {
+        "families": {
+          "liquid": {
+            "cadence": 1.0,
+            "carrying": 0.0,
+            "erosion": 0.0,
+            "horizontal": 2.0,
+            "permeability": 1.0
+          },
+          "powder": {
+            "mixing": 0.0,
+            "packing": 8.0,
+            "pickup": 64.0
+          }
+        },
+        "materials": {
+          "33": {
+            "permeability": 30.0
+          }
+        },
+        "name": "User copy",
+        "pairs": [],
+        "version": 1.0
+      }
+    },
+    {
+      "path": "/workspace/scratch/1c5fccfbe328/b-profile-gui/data/godot/app_userdata/Cyber Sand Reference Sandbox/water-experiment-policy.json",
+      "bytes": 176,
+      "sha256": "8a84333bef854c8c8117cd799d3f70d721a2e6b01b89595874d7d82210988370",
+      "parsed": {
+        "version": 1,
+        "mass_bits": 8,
+        "coherence_ticks": 12,
+        "rest_policy": "current-normalized-v1",
+        "render_fill_levels": 4,
+        "interface_mode": "coverage",
+        "scenario_id": "shallow-pool",
+        "seed": 0
+      }
+    }
+  ],
+  "directory": "/workspace/scratch/1c5fccfbe328/b-profile-gui/data/godot/app_userdata/Cyber Sand Reference Sandbox",
+  "previous_mode": "0o700",
+  "fault": "actual chmod0555 on disposable isolated application data directory",
+  "after_refusal": [
+    {
+      "path": "/workspace/scratch/1c5fccfbe328/b-profile-gui/data/godot/app_userdata/Cyber Sand Reference Sandbox/transport-profile.json",
+      "bytes": 373,
+      "sha256": "a1feda136bc4c8b45e57d29ff418e7376e73beb88c2c0a5e6009f96764b685ed",
+      "previous_bytes_preserved": true,
+      "format_json_readable": true
+    },
+    {
+      "path": "/workspace/scratch/1c5fccfbe328/b-profile-gui/data/godot/app_userdata/Cyber Sand Reference Sandbox/water-experiment-policy.json",
+      "bytes": 176,
+      "sha256": "8a84333bef854c8c8117cd799d3f70d721a2e6b01b89595874d7d82210988370",
+      "previous_bytes_preserved": true,
+      "format_json_readable": true
+    }
+  ],
+  "visible_transport_status": "Profile save: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory. Running profile unchanged.",
+  "visible_water_status": "Water policy save: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+  "restored_mode": "0o700"
+}

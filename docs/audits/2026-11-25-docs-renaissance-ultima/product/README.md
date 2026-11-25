@@ -214,6 +214,16 @@ output claim was corrected to the successful-result schema. The
 [reader-review receipt](accepted-ci-reader-review.json) retains exact reviewed
 hashes; it claims no new hosted campaign, publisher integration or authority.
 
+The late four-profile correction received an independent **16-case Linux**
+public-caller run at exact committed input bytes from b698a2b2. Real buffered-tail
+limits and permission refusals preserved the previous 3152/4570/373/176-byte files,
+which their actual format readers reloaded; normal retries saved the new value.
+The [profile review](profiles/independent-review.json) also records fresh real GUI
+Worldgen, Transport and Tower Save acknowledgements and permission refusals.
+Worldgen and Tower retries cleared their own failure feedback. Materials Lab
+export remains public-caller/headless evidence in this pass. No new durable PNG,
+natural GUI exit or Windows/physical result is inferred from these observations.
+
 ## Exact external boundaries and owner continuation
 
 **Rendered documentation remains blocked.** The connected browser extension
