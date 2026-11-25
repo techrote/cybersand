@@ -217,10 +217,25 @@ cancellation ends an observed drag through the ordinary Cancel control. Together
 the matrix and focused native evidence contain completed instances of all55
 contracts, without adding those focused rows to the matrix totals.
 
-All nine matched policies have12budget-complete episodes at64attempt slots,
+All nine matched policies have 12 budget-complete episodes at 64 attempt slots,
 using construction, liquid_channel, actor_workshop and history_edges with seeds
-13,605and1701. Refusals consume a slot. The following are **per-episode medians**,
-not unions or paired effect estimates.
+13, 605 and 1701. Refusals consume a slot.
+
+The baseline consists of **preserved predecessor decision procedures evaluated
+on the common expanded successor action menu**. Independent ancestry review
+compared nine immutable inputs and 12 function texts: the five legacy goal
+bodies, helpers/preconditions and RANDOM's uniform legal-menu selection retain
+their predecessor procedures. The shared menu now offers 55 rather than 26
+contracts, 18 rather than five materials, six rather than two actor models and a
+larger bounded logical-ID range. RANDOM samples menu entries, not uniformly
+distinct operation IDs. Curiosity was already count/state-guided and its
+unchanged general candidate arm can select the added operations. The four
+scripted baseline recipes remain unchanged, while admission and observations
+use the successor interface. No matched original-26-menu or predecessor-executable
+cohort was run. The [source ancestry review](https://api.github.com/repos/techrote/cybersand/git/blobs/3a3746110cfc3246d310bc24b668ccdd488741dd)
+also proves the policy file is identical between the 5ee and 6f sources.
+
+The following are **per-episode medians**, not unions or paired effect estimates.
 
 | Policy | Action IDs | Adjacent pairs | State transitions | Material interactions | Tool/material |
 | --- | ---: | ---: | ---: | ---: | ---: |

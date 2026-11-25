@@ -984,3 +984,64 @@ reader SHA-256 is
 `80c3d813938a38b9028db0ed7c0e77494b466ac2f0e25b682ab60f6fe4d63745`;
 the lead independently reviewed its six exact binding/label/count changes from
 the already used 5ee reader before outcomes. Acceptance rules are unchanged.
+
+
+### Baseline decision-procedure ancestry and comparison scope
+
+The lead challenged why Curiosity's matched median reaches 35 action IDs when
+its predecessor supported only 26. A independently compared nine exact source
+inputs and 12 function texts. Closing66ee and foundationd448 policy files are
+byte-identical; current5ee and corrected6f policy files are also byte-identical.
+The five legacy goal bodies, helpers/preconditions/state key and RANDOM's uniform
+legal-menu draw preserve the predecessor procedures. The successor's common menu
+adds 29 contracts, expands palette choices from five to18, actor model choices
+from two to six and bounded logical IDs from eight to64. Its reference-barrel
+menu placement also changes from288,128 to256,96. Curiosity's already adaptive
+8×action+3×pair+5×from-state scoring can select any offered candidate through its
+existing general arm. RANDOM samples actual menu entries, not uniform action IDs.
+
+The exact comparison is preserved predecessor decision procedures against new
+strategies on one common expanded successor interface. The four scripted baseline
+recipes retain their original palette and waypoints, while admission/observations
+and generic fallback use that interface. No matched original26-menu or unchanged
+predecessor-executable cohort was executed. The comparison remains useful at
+exact5ee but cannot establish an engine-version or original-action-universe
+performance improvement. The decision packet and machine index state this scope.
+
+Full14-file source/diff/review/receipt packet
+`3a3746110cfc3246d310bc24b668ccdd488741dd` preserves297,154decoded bytes;
+envelope SHA-256
+`499d46e9d1db2a6f43801252e30a3f9634bf1ce5f54f01ee3c9f07eac82c9ca3`.
+The review ran0.202seconds with12,570,624sampled RSS bytes and no survivor.
+It executed no policy, game, replay or new experiment. Campaign metrics are unchanged.
+
+### Local preservation interruption and independent hosted continuation
+
+After corrected Windows delivery, the local execution environment became
+unavailable during one bounded predecessor-evidence download. The launched
+process had300-second,512-MiB sampled-tree and16-MiB-log limits. The tool connection
+failed before its final receipt was observed; completion and survivors remain
+unknown. The lead's single minimal read-only probe confirmed that no usable
+execution environment was available. No cause is inferred and the download is
+not credited as successful. The interruption/actual metadata record is
+`79c047f717a6760912ae056c898c6e9239488037`; it contains no signed URL.
+
+The original predecessor run45474099351 remains independently successful at
+source`3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`,
+tree`3ee2a02e13cde1a1a4ff67321cb7c3d6f9bd1e37`.
+Its original qualified artifact14958249728 is92,570,931bytes, SHA-256
+`3d75ea0add4bb5a690c6c46c021f09f35b8e88e007c87df3107ac6b4a49a5fe3`;
+raw Windows evidence14959436637 is53,552,174bytes, SHA-256
+`c7ff1cda1e08750cd884d5b33dc324b7329594394a8d1569d4527479ace51952`.
+Those are verified remote artifact identities, not a completed local download.
+
+The qualified current Windows download and committed results remain available.
+The independently bounded GitHub Linux11 job continues at its original6f source.
+All specialist review closures and latest handovers were already preserved as
+exact Git blobs. The team is preparing a bounded passive hosted analysis and
+consolidation path using the frozen readers, exact artifact catalogue and
+read-only repository permissions. That fallback has not yet been launched at
+this checkpoint. It adds no gameplay execution, changes no acceptance rule and
+will retain failed/incomplete observations. Creating the final downloadable
+evidence archive through the file service still requires a supported executor;
+private upload credentials will not be transferred to a hosted workflow.

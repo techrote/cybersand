@@ -2,6 +2,18 @@
   "schema": "cybersand-goblin-002-decision-v1",
   "mission": "GIP-014-goblin-002",
   "reviewed": "2026-11-25",
+  "latest_infrastructure_observation": {
+    "classification": "infrastructure_failure",
+    "scope": "local evidence preservation, separate from hosted qualification",
+    "date": "2026-11-25",
+    "observed_status": "execution_environment_unavailable",
+    "bounded_predecessor_download_completion": null,
+    "surviving_owned_processes": null,
+    "record_blob": "79c047f717a6760912ae056c898c6e9239488037",
+    "qualified_windows_download_affected": false,
+    "hosted_linux_run_affected": false,
+    "passive_hosted_analysis_fallback": "preparing; not launched"
+  },
   "decision": "draft_hold",
   "pr": "https://github.com/techrote/cybersand/pull/781",
   "qualified_source": {
@@ -127,6 +139,20 @@
     "clean_powershell_child_passed": true
   },
   "linux_corrected": {
+    "baseline_policy_scope": {
+      "description": "Preserved predecessor decision procedures evaluated on the common expanded successor action menu",
+      "review_blob": "3a3746110cfc3246d310bc24b668ccdd488741dd",
+      "immutable_inputs_checked": 9,
+      "unchanged_function_texts": 12,
+      "predecessor_policy_sha256": "2182c6be15867626783601b6e1898db6eb05690d04d43381990c69aa970056b6",
+      "successor5ee_and6f_policy_sha256": "d0f16951d23f92ec3e582712acdb2b4edb243e96c603f10d3cd26afe32000a82",
+      "common_legal_action_contracts": 55,
+      "original_legal_action_contracts": 26,
+      "random_sampling_unit": "legal menu entry, not uniformly distinct action ID",
+      "curiosity_predecessor_already_count_and_state_guided": true,
+      "matched_original26_menu_cohort_executed": false,
+      "matched_predecessor_executable_cohort_executed": false
+    },
     "status": "completed_with_retained_time_limits_independently_reviewed",
     "run_id": 45550152509,
     "job_id": 138989207218,

@@ -462,3 +462,92 @@ monitoring, exact artifact identities and the owner-ready decision packet.
 All results remain Draft/HOLD. No default activation, merge, Ready promotion
 or physical NVIDIA acceptance is authorized by these tools. No novel production
 gameplay defect has been established by this handover.
+
+## Qualified owner delivery at source 6f359ce2b242
+
+The current self-contained Windows evaluator is qualified at source
+`6f359ce2b24291ee219810773c641d53802fd31d`, tree
+`a4f389cd3cc1a21dfe3d5566703eb946b66734ed`, by
+[request 11 run 45565621408](https://github.com/techrote/cybersand/actions/runs/45565621408),
+Windows job 139039653335. Later documentation commits do not change that runtime
+qualification identity. Earlier failed and unresolved attempts remain original
+evidence; this result supersedes their provisional delivery status only.
+
+| Identity | Exact value |
+| --- | --- |
+| Final owner ZIP | 95,816,253 bytes; SHA256 `daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e` |
+| Base ZIP before evidence sealing | 94,642,679 bytes; SHA256 `8e4a27ccbb389f4d06f73402aaba9f340333a2e08e88f4cbf639343c67ade950` |
+| Qualified artifact wrapper | Artifact 15001055330; SHA256 `edfa20c4d6aca64d32396139642db7bee3f70ff7d54e536ac616a4043b7ca7d6` |
+| Complete raw Windows artifact | Artifact 15000825524; 201,496,963 bytes; SHA256 `75c3e351e1c9459516c6708508adfdd2b669dc916d40af459c040fdacee67314` |
+| Pinned Godot | `4.7.stable.official.5b4e0cb0f`; executable SHA256 `b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8` |
+| Native extension | SHA256 `668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e` |
+| Rapier extension | SHA256 `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7` |
+
+The ordinary Workbench, native libraries and Godot are included. The owner can
+extract the package and launch **Open goblin.cmd** without installing an engine
+or compiler. The existing owner download was replaced with these exact bytes;
+the earlier qualified `5ee` version remains a distinct historical version.
+
+The actual source qualification passed **136 Python controls**. Its expanded
+native gate passed **2,030 checks over 86 attempts: 83 completed actions and three
+refusals**, with no failed assertions. All 55 supported action IDs have completed
+native evidence across the exact `6f` source campaigns and focused gates; this is
+observed vocabulary coverage, not a claim that every policy exercised each ID.
+The authored-lineage source gate and the extracted-package gate each completed
+four cases and 20 actions. Both fresh/Restore cases established positive native
+material equality; both simulation-exposed retained/reset cases correctly made
+that equality inapplicable while independently preserving the observed material
+divergence. The original `070` automatic candidate remains unchanged forensic
+history, with its later test-oracle adjudication kept separate.
+
+Independent C acceptance passed **3,995 checks** covering 1,243 tracked payload
+files, 24 sealed supplementary files, exact source/runtime identity, 38 retained
+process receipts and matching raw logs. Every audited launched-process receipt
+reported no surviving owned child. B separately passed 1,094 source checks,
+273 extracted lineage checks and 731 current action/origin checks. A independently
+verified the actual version 3 State projection and all nine recomputed coverage
+counts. Root individually inspected all three 1600-by900 Play, Discovery and
+Memory views. The C full reader/results packet is immutable blob
+`6dadaa33179ce4bb665daf7be7a5a1988f0ce0cf`; B's full current review packet is
+`621448b4456b77c0acab8a7eeb88b627a9561f12`; A's actual State review is
+`a4368dca6478402432c08e7c5fe1982df1afa5e1`. Their actual source bytes and full
+outputs are also being collected in the passive evidence archive.
+
+The portable catalogue contains **eight raw JSON serializations representing
+four parsed tapes**. Three originals contain 64 CONTROL actor-workshop actions,
+128 BUILDER liquid-channel actions and the seven-action
+`actor_reset_retains_evolved` case. All 199 original actions completed. The fourth
+tape is a 64-action semantic replay, giving **263 attempted and263 completed
+rows across distinct parsed tapes including replay**. These are not 263 episodes;
+serialization copies do not increase the experiment count. Exact asynchronous
+physics replay is not claimed.
+
+The extracted persistent-memory gate retained 47 then 64 records, validated
+imports into fresh isolated profiles, exercised the one-backup rule and cleared
+mutable memory while preserving two archived tapes. Qualification memory is not
+installed as the owner's default. The fixed authored-lineage child has a
+300-second bound; the extracted qualification's owned process-tree wrapper has
+1,200-second and3,072-MiB bounds with a 16-MiB log bound. These are measured,
+sampled owned-process limits, not global monitoring or physical NVIDIA evidence.
+Interactive campaigns retain the 1,024-action/32-MiB tape ceiling, at most
+900 seconds active time and a separately bounded absolute deadline. Interactive
+reduction admits 1..128 actions and reserves at most 12 fresh trials, each with
+30-second active and 60-second absolute limits. Its 240-second check bounds new
+reduction dispatch, not the completion time of an already dispatched probe.
+The observed legal 4-to-1 reduction and historical unchanged-oracle 44-to-1
+reproduction remain different scientific results. No production defect is
+established by either.
+
+The passive preservation plan currently contains ten original artifact ZIPs,
+including the complete newly qualified Windows raw artifact, plus full A/B/C
+reader-and-result bundles and six original predecessor tapes. It retains the
+request 9 parser failure, request 10 full-provenance comparison failure, unresolved
+diagnostic prerequisites, historical oracle-stopped campaigns and the transport
+failure before the first C request 11 audit dispatch. Root's single recovery run
+of the unchanged C reader passed; the initial failure was not rewritten.
+The separate exact `5ee` full 142 experiment remains 139 budget-complete episodes
+with three bounded long-horizon timeouts. Its results are not pooled into the
+new material-lineage source. The actual request 11 Linux long8, focused and memory
+artifact and final passive archive sealing remain pending at this handover.
+All delivery remains **Draft/HOLD**, with no default activation, merge, Ready
+promotion, physical NVIDIA acceptance or confirmed novel production defect.
