@@ -1,0 +1,45 @@
+{
+  "scope": "Read-only actual old/new guide boundary; no Godot/native execution or new package qualification.",
+  "delivery_source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "baseline_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "records": [
+    {
+      "case": "actual-qualified-bcc-guide",
+      "guide_sha256": "3e9cb2aea56d9623b901b969f989515893eaacba07cf911406239dddfffec1f5",
+      "admitted": false,
+      "expected": false,
+      "reason": "The owner guide references an absent immutable payload: ../systems/art-native-context-proposals.md"
+    },
+    {
+      "case": "corrected-3a0-guide",
+      "guide_sha256": "36a1b3e4f48383e332b4c34e13b43a29f4948930f208bb557bfe2b973799361a",
+      "admitted": true,
+      "expected": true,
+      "reason": ""
+    }
+  ],
+  "source_files": {
+    "docs/operations/art-workbench-collaborative-evaluation.md": "36a1b3e4f48383e332b4c34e13b43a29f4948930f208bb557bfe2b973799361a",
+    "tools/package_art_collaborative.py": "4a1b26b24a55d72d787639ef0cb2bce14c1bf70ef8e6250f5f5c0fe9e5ffaa26",
+    "tools/ci/test_art_collaborative_packaging.py": "f8dd4a757c7c53a491ca6c29fa42113bc45f8ac0aa8c7dc2a565218db65f0993"
+  },
+  "changed_paths": [
+    "docs/operations/art-workbench-collaborative-evaluation.md",
+    "tools/ci/test_art_collaborative_packaging.py",
+    "tools/package_art_collaborative.py"
+  ],
+  "application_and_native_code_unchanged": true,
+  "published_source_bytes_verified": true,
+  "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+  "wording_checked": [
+    "observed completion versus owner-side adoption",
+    "fresh game session between independent comparison arms",
+    "within-brief revision session retained",
+    "paused native source requirement",
+    "finite direct pacing/retry versus one-shot collaboration",
+    "all nine focus regions equal original final native results",
+    "24 brief prompttexts bundled at named path",
+    "optional online appendices source-pinned"
+  ],
+  "passed": true
+}
