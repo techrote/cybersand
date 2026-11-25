@@ -1,7 +1,7 @@
 name: AMBIENT-002 — sustained ordinary Workbench observation
 
 # Explicit owner-mission observation. The application remains the separately
-# frozen a725 source; external observation tools cannot change its project bytes.
+# frozen 50c6 source; external observation tools cannot change its project bytes.
 on:
   push:
     branches: [feature/ambient-002-living-inhabitants-20261125]
@@ -37,7 +37,7 @@ jobs:
       - name: Check out the exact frozen application
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: a7250e15495667b2fcf564cbed1eaa8dea217c45
+          ref: 50c6df89528dc9ecdc5316d8c67abf203e192254
           path: application
           persist-credentials: false
 
@@ -86,11 +86,11 @@ jobs:
 
       - name: Compile the external observer against frozen application
         run: |
-          python3 observer/tools/ambient/run_graphical_watch.py --application application --godot "$GODOT_EXE" --output evidence/observer-compile --check-only
+          python3 observer/tools/ambient/run_graphical_watch.py --application application --godot "$GODOT_EXE" --output evidence/observer-compile --application-revision 50c6df89528dc9ecdc5316d8c67abf203e192254 --check-only
 
-      - name: Observe three ordinary native settlements for sixty simulation seconds each
+      - name: Observe Foundry Row home-rest correction for sixty simulation seconds
         run: |
-          xvfb-run -a -s "-screen 0 1600x1000x24" python3 observer/tools/ambient/run_graphical_watch.py --application application --godot "$GODOT_EXE" --output evidence/graphical-watch --ffmpeg /usr/bin/ffmpeg
+          xvfb-run -a -s "-screen 0 1600x1000x24" python3 observer/tools/ambient/run_graphical_watch.py --application application --godot "$GODOT_EXE" --output evidence/graphical-watch --ffmpeg /usr/bin/ffmpeg --application-revision 50c6df89528dc9ecdc5316d8c67abf203e192254 --scene ambient2-settlement --seconds 60 --timeout-seconds 1800
 
       - name: Retain original frames, copied decisions, sampled videos and custody
         if: always()
