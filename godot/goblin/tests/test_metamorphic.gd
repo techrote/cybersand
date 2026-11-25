@@ -145,7 +145,7 @@ func finite_boundary_experiment() -> void:
 func install(id: String) -> bool:
 	var result: Dictionary = await adapter.install_fixture(id, Fixtures.build(id, adapter.policy()))
 	check(result.get("ok", false), "actual fixture installed: " + id)
-	oracle.reset()
+	oracle.reset(result)
 	return bool(result.get("ok", false))
 
 

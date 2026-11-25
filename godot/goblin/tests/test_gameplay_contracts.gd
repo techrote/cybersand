@@ -4,6 +4,7 @@ extends SceneTree
 ## controls, never evidence of in-game coverage or discovered production bugs.
 const Assertions = preload("res://goblin/goblin_assertions.gd")
 const Expanded = preload("res://goblin/goblin_gameplay_oracles.gd")
+const Lineage = preload("res://goblin/goblin_material_lineage.gd")
 var checks := 0
 var failures: Array[String] = []
 
@@ -149,7 +150,90 @@ func origin_controls() -> void:
 	outcome(Expanded.evaluate(row), "spawn_edit_keeps_live_poses", "pass", "Capture does not move an eccentric assembly")
 
 
+func lineage_receipt(generation: int) -> Dictionary:
+	# Artificial canonical-header control. This is never a native receipt claim.
+	var bytes := PackedByteArray()
+	bytes.resize(52)
+	for index: int in range(52): bytes[index] = 0
+	var domain := "cybersand-run-receipt-v1".to_utf8_buffer()
+	bytes[0] = 24
+	for index: int in range(24): bytes[index + 4] = domain[index]
+	bytes[28] = 1
+	bytes[30] = 2
+	bytes[31] = 1
+	bytes[32] = 15
+	for index: int in range(8): bytes[36 + index] = (generation >> (8 * index)) & 255
+	var hasher := HashingContext.new()
+	hasher.start(HashingContext.HASH_SHA256)
+	hasher.update(bytes)
+	return {"kind": "applied_run", "schema_version": 1, "session_generation": generation, "completed_tick": 0,
+		"canonical_bytes": Array(bytes), "receipt_hash": hasher.finish().hex_encode()}
+
+
+func lineage_controls() -> void:
+	var first := native()
+	var receipt := lineage_receipt(1)
+	check(Lineage.construction_receipt(receipt, first), "lineage tracker binds the canonical generation header")
+	check(Assertions._lineage_receipt(receipt, first), "independent oracle binds the canonical generation header")
+	var relabelled := receipt.duplicate(true)
+	relabelled.session_generation = 2
+	check(not Lineage.construction_receipt(relabelled, native(2)), "tracker rejects old hash with relabelled outer generation")
+	check(not Assertions._lineage_receipt(relabelled, native(2)), "oracle rejects old hash with relabelled outer generation")
+	for key: String in ["completed_tick", "session_generation", "schema_version"]:
+		var malformed := receipt.duplicate(true)
+		malformed[key] = false
+		check(not Lineage.construction_receipt(malformed, first) and not Assertions._lineage_receipt(malformed, first),
+			"lineage construction rejects Boolean " + key)
+	var tracker := Lineage.new()
+	check(tracker.authored(first, receipt, "fixture_install", true), "actual-style authored acknowledgement seeds tracker")
+	var installed_observation := {"native": first.duplicate(), "paused": true, "actor_ids": [], "actors": [],
+		"adapter_version": 3, "scene_identity": "artificial-lineage", "authored_digest": "artificial-lineage",
+		"material_lineage": tracker.observe(first, true)}
+	var oracle := Assertions.new()
+	oracle.reset({"ok": true, "observation": installed_observation, "native_receipt": receipt})
+	var selected := {"action": {"id": "select_material", "args": {"material": 7}}, "status": "completed",
+		"classification": "game_observation", "admission": {"accepted": true}, "native_receipt": {}, "interval": {},
+		"before": installed_observation.duplicate(true), "after": installed_observation.duplicate(true)}
+	selected.after.material = 7
+	outcome(oracle.evaluate(selected), "material_lineage_after", "pass", "oracle independently seeds an authored observation")
+	var unseeded := Assertions.new()
+	outcome(unseeded.evaluate(selected), "material_lineage_before", "fail", "producer fresh claim cannot replace initialization proof")
+	var progressed := first.duplicate()
+	progressed.tick = 4
+	progressed.revision = 34
+	progressed.paused = false
+	var exposed: Dictionary = tracker.observe(progressed, false)
+	check(exposed.state == "simulation_exposed", "positive native progression records exposure, not a movement claim")
+	progressed.paused = true
+	var before := {"native": progressed, "paused": true, "material_lineage": tracker.observe(progressed, true)}
+	var retained := native(2)
+	retained.revision = 35
+	var transition := {"action": {"id": "actor_reset", "args": {}}, "before": before,
+		"status": "completed", "admission": {"accepted": true}, "native_receipt": lineage_receipt(2)}
+	tracker.finish(transition, retained, true)
+	check(tracker.observe(retained, true).state == "simulation_exposed", "Reset selected retains exposure across a local clock reset")
+	transition.before = {"native": retained, "paused": true, "material_lineage": tracker.observe(retained, true)}
+	transition.action.id = "restore_start"
+	transition.native_receipt = lineage_receipt(3)
+	var restored := native(3)
+	tracker.finish(transition, restored, true)
+	check(tracker.observe(restored, true).state == "authored_compatible", "Restore start re-establishes authored compatibility")
+	# Simulate installation being seen before the enclosing row's missing
+	# acknowledgement: the final row must still fail closed.
+	tracker.authored(native(4), lineage_receipt(4), "fixture_install", true)
+	transition.before = {"native": restored, "paused": true, "material_lineage": {}}
+	transition.native_receipt = {}
+	tracker.finish(transition, native(4), true)
+	check(tracker.observe(native(4), true).state == "unknown", "missing final fresh receipt cannot retain an early compatibility claim")
+	tracker.authored(first, receipt, "fixture_install", true)
+	var running := first.duplicate()
+	running.paused = false
+	check(tracker.observe(running, false).state == "unknown", "unobserved running interval is not an authored proof")
+	check(tracker.observe(native(2), true).state == "unknown", "unacknowledged generation reset remains unknown")
+
+
 func run() -> void:
+	lineage_controls()
 	origin_controls()
 	var row := record("actor_remove")
 	row.after.native = native(2)

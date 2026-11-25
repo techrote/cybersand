@@ -80,6 +80,7 @@ func actor_origin_gate() -> void:
 	var installed: Dictionary = await adapter.install_fixture("history_edges", Fixtures.build("history_edges", adapter.policy()))
 	check(installed.get("ok", false), "actor-origin gate installs an actual paused disposable fixture")
 	if not installed.get("ok", false): return
+	oracle.reset(installed)
 	for model: String in ["kestrel", "reference_barrel", "runner", "crawler", "monowheel", "stuntbuggy"]:
 		var placed := await action("actor_place", {"model": model, "x": 256, "y": 96})
 		check_origin(placed, model, [256, 96])
@@ -144,6 +145,7 @@ func run() -> void:
 	if not installed.get("ok", false):
 		await finish()
 		return
+	oracle.reset(installed)
 	await action("select_tool", {"tool": "Rectangle"})
 	await action("brush_radius", {"radius": 2})
 	await action("select_material", {"material": 7})

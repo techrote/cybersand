@@ -3,12 +3,16 @@ extends RefCounted
 ## Bounded observational projection, never a world model. Missing observations
 ## remain "unknown". Exact identities are retained separately from novelty keys
 ## so increasing request/tick/actor IDs cannot manufacture unlimited novelty.
-const SCHEMA := "cybersand-goblin-state-v1"
+const SCHEMA := "cybersand-goblin-state-v2"
+const LEGACY_SCHEMA := "cybersand-goblin-state-v1"
+const UNSUPPORTED_SCHEMA := "cybersand-goblin-state-unsupported"
 const UNKNOWN := "unknown"
 const MAX_CAPTURE_CELLS := 4096
 const MAX_ACTORS := 8
 
 static func abstract(observation: Dictionary, capture: Dictionary = {}) -> Dictionary:
+	var version := projection_version(observation)
+	if version == 0: return {"schema": UNSUPPORTED_SCHEMA, "reason": "unsupported_adapter_version"}
 	var native: Dictionary = observation.get("native", {})
 	var camera: Dictionary = observation.get("camera", {})
 	var actors: Array = observation.get("actors", [])
@@ -31,12 +35,12 @@ static func abstract(observation: Dictionary, capture: Dictionary = {}) -> Dicti
 	actor_capabilities.sort()
 	var sample := sample_summary(capture, native)
 	if not sample.available: sample = probe_summary(observation.get("material_probe", {}), native)
-	var result := {"schema": SCHEMA, "fixture": str(observation.get("fixture_id", UNKNOWN)).left(80),
+	var result := {"schema": LEGACY_SCHEMA if version == 1 else SCHEMA, "fixture": str(observation.get("fixture_id", UNKNOWN)).left(80),
 		"world_size": _pair(observation.get("world_size", []), 1, 4096),
 		"paused": _truth(observation, "paused"), "tool": str(observation.get("tool", UNKNOWN)).left(64),
 		"material": observation.get("material", UNKNOWN), "brush_radius": observation.get("brush_radius", UNKNOWN),
 		"native_busy": _truth(native, "busy"), "native_failed": _truth(native, "failed"),
-		"progress_phase": _phase(native.get("tick")), "history": [_truth(observation, "undo_available"), _truth(observation, "redo_available")],
+		"progress_phase": _phase(native.get("tick"), version), "history": [_truth(observation, "undo_available"), _truth(observation, "redo_available")],
 		"selection": _area_bucket(observation.get("selection", []), true),
 		"clipboard": _area_bucket(observation.get("clipboard_size", []), false),
 		"actor_models": actor_modes, "actor_zones": actor_zones, "actor_controls": actor_controls, "actor_capabilities": actor_capabilities,
@@ -60,6 +64,7 @@ static func identity(observation: Dictionary) -> Dictionary:
 		"physical_epoch": observation.get("physical_epoch"), "snapshot_tick": observation.get("snapshot_tick")}
 
 static func observed(observation: Dictionary) -> bool:
+	if projection_version(observation) == 0: return false
 	var native: Variant = observation.get("native")
 	return observation.get("mounted", false) == true and native is Dictionary \
 		and _integer(native.get("generation"), 0, 2147483647) and _integer(native.get("tick"), 0, 2147483647)
@@ -132,9 +137,19 @@ static func _actor_role(observation: Dictionary, key: String) -> String:
 static func _truth(value: Dictionary, key: String) -> Variant:
 	return value[key] if typeof(value.get(key)) == TYPE_BOOL else UNKNOWN
 
-static func _phase(value: Variant) -> String:
+static func projection_version(observation: Dictionary) -> int:
+	# Preserve old coverage hashes exactly. "authored_start" is only a legacy
+	# key: tick zero never proves that retained native cells are authored cells.
+	# Future/invalid observation versions earn no coverage until supported.
+	if not observation.has("adapter_version"): return 1
+	var version: Variant = observation.adapter_version
+	if _integer(version, 1, 2): return 1
+	if _integer(version, 3, 3): return 2
+	return 0
+
+static func _phase(value: Variant, version: int) -> String:
 	if not _integer(value, 0, 2147483647): return UNKNOWN
-	if int(value) == 0: return "authored_start"
+	if int(value) == 0: return "authored_start" if version == 1 else "zero_tick"
 	if int(value) < 32: return "early"
 	if int(value) < 256: return "developing"
 	return "sustained"

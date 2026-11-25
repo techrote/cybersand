@@ -20,9 +20,26 @@ MAX_KEYS = 2048
 EDIT_ACTIONS = {"brush", "erase", "rectangle", "outline", "line", "paste", "fill", "undo", "redo", "stroke", "live_stroke", "interrupt_stroke"}
 PAINT_TOOLS = {"brush": "Brush", "rectangle": "Rectangle", "outline": "Outline", "line": "Line", "stroke": "Brush", "fill": "Fill"}
 UNKNOWN = "unknown"
+STATE_SCHEMA = "cybersand-goblin-state-v2"
+LEGACY_STATE_SCHEMA = "cybersand-goblin-state-v1"
+UNSUPPORTED_STATE_SCHEMA = "cybersand-goblin-state-unsupported"
+
+
+def projection_version(value: dict) -> int:
+    """Exact legacy keys, explicit current version, no future-version credit."""
+    if "adapter_version" not in value:
+        return 1
+    version = value["adapter_version"]
+    if bounded(version, 1, 2):
+        return 1
+    if bounded(version, 3, 3):
+        return 2
+    return 0
 
 
 def observed(value: dict) -> bool:
+    if projection_version(value) == 0:
+        return False
     native = value.get("native", {})
     return value.get("mounted") is True and isinstance(native, dict) and bounded(native.get("generation"), 0, 2147483647) and bounded(native.get("tick"), 0, 2147483647)
 
@@ -88,6 +105,9 @@ def godot_scalar(value):
 
 
 def state(value):
+    version = projection_version(value)
+    if version == 0:
+        return {"schema": UNSUPPORTED_STATE_SCHEMA, "reason": "unsupported_adapter_version"}
     def truth(obj, key):
         return obj[key] if type(obj.get(key)) is bool else UNKNOWN
     def pair(obj, low=1, high=4096):
@@ -108,9 +128,10 @@ def state(value):
     origin = camera.get("origin")
     coarse = [min(64, max(-64, math.floor(v / 64.0))) for v in origin] if isinstance(origin, list) and len(origin) == 2 and all(number(v) for v in origin) else UNKNOWN
     tick = native.get("tick")
-    phase = UNKNOWN if not bounded(tick, 0, 2147483647) else ("authored_start" if tick == 0 else ("early" if tick < 32 else ("developing" if tick < 256 else "sustained")))
+    zero_phase = "authored_start" if version == 1 else "zero_tick"
+    phase = UNKNOWN if not bounded(tick, 0, 2147483647) else (zero_phase if tick == 0 else ("early" if tick < 32 else ("developing" if tick < 256 else "sustained")))
     observed_actors = [a for a in actors[:8] if isinstance(a, dict) and a.get("observed") is True]
-    return {"schema": "cybersand-goblin-state-v1", "fixture": str(value.get("fixture_id", UNKNOWN))[:80],
+    return {"schema": LEGACY_STATE_SCHEMA if version == 1 else STATE_SCHEMA, "fixture": str(value.get("fixture_id", UNKNOWN))[:80],
             "world_size": pair(value.get("world_size")), "paused": truth(value, "paused"), "tool": str(value.get("tool", UNKNOWN))[:64],
             "material": value.get("material", UNKNOWN), "brush_radius": value.get("brush_radius", UNKNOWN),
             "native_busy": truth(native, "busy"), "native_failed": truth(native, "failed"), "progress_phase": phase,

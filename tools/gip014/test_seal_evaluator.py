@@ -105,6 +105,31 @@ class SealControls(unittest.TestCase):
                 self.perform()
         self.assertFalse(self.output.exists())
 
+    def test_v3_preserves_the_actual_lineage_report_and_log(self):
+        self.manifest["successor_contract_version"] = 3
+        self.write(package.MANIFEST, seal.encoded(self.manifest))
+        with zipfile.ZipFile(self.base, "w") as archive:
+            for name in [*self.manifest["files_sha256"], package.MANIFEST]:
+                archive.write(self.extracted / name, seal.ROOT_NAME + "/" + name)
+        lineage = {}
+        for key, name, content in (("report", "authored-lineage-test.json", b'{"synthetic_transport_only":true}'),
+                                   ("log", "authored-lineage.log", b"synthetic transport marker\n")):
+            path = "test-output/unit/" + name
+            self.write(path, content)
+            lineage[key], lineage[key + "_sha256"] = path, package.sha(self.extracted / path)
+        self.report["authored_lineage"] = lineage
+        self.report_path.write_bytes(seal.encoded(self.report))
+        # This isolates archive transport, not the separately tested native
+        # lineage acceptance; no synthetic tape becomes gameplay evidence.
+        with patch.object(package, "verify_extracted", return_value={"qualified": True, "scope": "synthetic only"}):
+            self.perform()
+        with zipfile.ZipFile(self.output) as archive:
+            record = json.loads(archive.read(seal.ROOT_NAME + "/" + seal.RECORD))
+            for key in ("report", "log"):
+                path = lineage[key]
+                self.assertEqual(record["supplementary_files_sha256"][path], lineage[key + "_sha256"])
+                self.assertEqual(archive.read(seal.ROOT_NAME + "/" + path), (self.extracted / path).read_bytes())
+
     def test_base_extra_member_and_case_alias_are_rejected(self):
         for name in ("CyberSand-goblin/untracked", "CyberSand-goblin/GODOT/project.godot", "../escape"):
             with self.subTest(name=name):

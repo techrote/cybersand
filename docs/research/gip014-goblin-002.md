@@ -659,7 +659,7 @@ The complete source catalogue is `godot/goblin/goblin_fixtures.gd`.
 | Actor workshop | Kestrel, passive barrel and a stepped route; investigate control, actor lifetime and obstacles |
 | Construction table | Wood frame and open space; build, erase, select, copy and revisit history |
 | Liquid channel | Water reservoir and editable Wood gate; compare release, containment and repair |
-| Save and reopen | Asymmetric material pattern and a barrel; compare authored persistence under its tick-zero preconditions |
+| Save and reopen | Asymmetric material pattern and a barrel; compare authored persistence only with proved compatible material history |
 | History and editing | Asymmetric Wood/Metal tiles and an empty translation control; check reversible operations |
 | World boundary laboratory | Hard boundary markers and narrow passages; exercise view clipping, replacement and refusals |
 | Material alchemy | Separate Oil, Water, Ice and Wood pockets; observe combinations without inventing a chemistry law |
@@ -699,6 +699,11 @@ use the separately bounded Python reducer.
 
 ## Qualification and decision status
 
+This committed ledger precedes execution of its own source. In a sealed evaluator,
+`OPEN-ME.md` and `delivery/qualified-delivery.json` record that package's later
+actual extracted qualification; this source guide retains earlier checkpoints
+without rewriting their results.
+
 **Qualified Windows evaluator:** request 8 at exact source
 `5ee5dffc78d59a721f62be49fd51d24b870556c7` passed focused native, graphical,
 replay, isolation and extracted-package gates. Independent delivery review passed
@@ -707,6 +712,9 @@ replay, isolation and extracted-package gates. Independent delivery review passe
 `513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee`.
 The corrected-source Linux matrix and registered memory experiment are still in
 progress at this checkpoint. Their pending results receive no coverage credit.
+The later070diagnostic independently established a Save/Reopen applicability
+defect in the5ee oracle. Its known limitation is retained beside that historical
+qualification; the version3 corrective evaluator requires its own qualification.
 
 The earlier d849 Linux programme retained all 142 attempted episodes and 8,389
 completed actions, including 35 processes stopped by the subsequently corrected
@@ -788,3 +796,40 @@ Request3 freezes diagnostic`e6faec53a1e005e51dec602cb82c30a9f8868bc1`, driver`fe
 Independent acceptance review of the qualified5ee package is`557bf1f12beaec62a6b43d9960f008bbb9720b70`. It found no package custody blocker and identified two documentation corrections: the GitHub artifact's actual inner member is `CyberSand-goblin.zip`, while the locally renamed audit copy has identical bytes; the interactive reducer's240-second threshold stops new deletion-loop iterations but is not a hard overall deadline for already admitted probes. Both are corrected in the decision packet. The actual final portable catalogue contains eight raw tape files but four unique parsed tapes: three original experiments totaling256completed actions and one64-action semantic replay. Duplicate serialized copies do not create new execution evidence. C's direct catalogue audit shares packet`19b8ac00e489de6a4018a196ddf9562f7138e066`.
 
 Final request3 metadata/source approvals are retained by A in`8ed9123a6115da9bebce4c78454867d65655a4d3` and C in`96baa822ee5e64af0abf49ff10ef941dbcd6f2f6`. Root's exact final ten artificial controls passed in0.015seconds (owned0.303seconds,22,663,168bytes peak sampled RSS, no survivors); documentation checks passed. These preparation receipts remain distinct from the forthcoming native result.
+
+
+### Retained-clock request 3: independently confirmed oracle applicability defect
+
+[Run45556434887](https://github.com/techrote/cybersand/actions/runs/45556434887) passed its separately instrumented nine-action diagnostic at`070addb0fdae2240f22e663a2299cef739f83c05`, tree`174e9dbf32a5e4014f731008461a310b3a723f37`. All20actual observation boundaries had their own valid mutex-copied queue/source evidence:19empty queues and one observed exact inert Stop at the control's initial boundary. The original callback race is not inferred away or relabelled; request2 remains unresolved.
+
+Both actual cases completed all prescribed actions. The positive-clock control paused after17native ticks and correctly treated evolved Save/Reopen equality as inapplicable. The variant paused after16ticks, preserved the exact evolved material plane through the ordinary response replacement at generation4/tick0, then reopened the authored material recipe into generation5/tick0. It triggered only the old `authored_reopen_materials` assertion. Different actual tick counts are reported; no cross-case asynchronous trajectory equality is assumed.
+
+B independently passed78checks and rendered the actual authored rectangles into a512-by-512material plane. Its SHA-256`acea5f8e573d757af5c560778bbd2222f96065c298e62fcfb8996817486da14a` matched both actual reopened full planes. In the isolated2,304-cell cell,64Sand cells and368walls remained conserved; Sand vertical-coordinate sums changed from736to1,794(control) and1,730(variant). The variant's saved evolved full plane had SHA-256`70fc348668c692888d972870afbae2ae349ec303375b12cdb29d06271627cdb1`. The product did what its authored-save contract requires. The independently established finding is a **test-oracle applicability defect**, not a production gameplay defect: a zero local World clock does not establish fresh authored material history.
+
+[Artifact14995732784](https://github.com/techrote/cybersand/actions/runs/45556434887/artifacts/14995732784) is2,872,758bytes, SHA-256`2f2dc54b6c8af392364e915776cdae4f384e3dacc8f8209dc97c2a7beef25fd8`, with19members/3,682,255uncompressed bytes. Import passed in7.955seconds with752,177,152bytes peak sampled tree RSS. The game passed in17.928seconds with648,253,440bytes; all owned-process receipts report no survivors and no diagnostics. Raw report SHA-256 is`138e320b6bc8d4477e7a702abb1994c25f5357b523f27d47cda28f89e3d49221`; the113,454-byte automatic candidate is`ff835fb875d2764345f6cc28e52af74aa8b7048b2b5b35522b02394e04364d62`. That original candidate remains an unchanged unresolved automatic record; independent triage is separately recorded.
+
+Independent review records: B adjudication`00cf2ff7900e72c7df38cf6db6945c3929014ac2` and auditor`ba8441d311516cf7995d1e2cc8ce494bd5e907de`; A atomic-source audit`d5025f1b7313951500b609313f621012cc2d3d82`; C2,942-check source/custody packet`c38779145bc4a61797df2d80ce3ba7e7d665b7f7`; complete hosted log`608d9fddd736ae39914ebe374be73f5cba197be2`. C verifies974staged inputs,814archived source files,105native and fourRapier source inputs, all7regional captures and the exact automatic candidate.
+
+The exact original five-action tape is now committed as bounded data at`tools/gip014/cases/retained-clock-070-original.json.gz`, with separate custody metadata. Original bytes107,553, SHA-256`d2e84a85941484e5090d27c56ea5c723722fae10bc4625f3463c67afcb02c914`; deterministic gzip11,539bytes, SHA-256`d5da6299fbb1ac372296436700f95799fff724b4d101e735bdfab5b97f17f81e`. It is a compact observed failure, not an automatically minimized case. Reproducing that historical oracle requires the exact070source; the fixed before-diagnostic driver intentionally rejects a later changed adapter/oracle. Corrected applicability is qualified by a separate new-source native gate.
+
+The corrective candidate tracks bounded material history across retaining World replacements. Positive observed native progression establishes simulation exposure, not necessarily material movement. Only a separately proved fresh authored installation/restore/reopen can re-establish authored compatibility; Reset selected retains cell history. Producer metadata and independent oracle/readback reconstruction remain separate. Four native Controller cases totaling20actions will check fresh equality, retained exposed inequality applicability, Restore start re-enabling equality, and actor Reset preserving exposure. The same fixed gate is required in the extracted Windows evaluator. At this checkpoint the corrective candidate is under implementation, not yet qualified; the earlier5ee qualification remains exact historical evidence with this subsequently identified oracle limitation.
+
+
+### Corrective request9 scope and independent source review
+
+The version3 candidate preserves fresh-authored equality but reconstructs material-history applicability from actual fixture installation, admitted actions, canonical construction receipts and native endpoints. A retaining response/actor operation cannot erase prior simulation exposure. Actor Reset is explicitly retaining; actual Restore start and Reopen are fresh constructions. The lead integrated initialization of the independent Assertions reader from the actual installed fixture and registered the new fixed native gate in both platform drivers.
+
+Independent review found and repaired two draft proof defects before execution: stale canonical receipt bytes could not be rebound merely by relabelling an outer generation, and an exposure witness must equal a recorded positive native endpoint rather than carry an invented identity. These are corrective-candidate evidence defects caught in source/artificial controls, not discoveries of game-engine bugs. Adapter, GDS assertions and Python readback retain independent reconstruction paths.
+
+The state projection explicitly versions the new observation contract. Absent/version1/version2 observations retain their exact historical state-v1 encoding, including its legacy phase label. Exact adapter version3 uses state-v2 with `zero_tick`, which makes no authored-history assertion. Unsupported versions produce no observed coverage. A's frozen four-file change and tests are independently reviewed by C; source review packet`f413b4c85ac4e6ad89b63314004a8027da5b10a8`, C approval`bb5c426d685a6d679f0eda49ee3750a4350beb2c`. Native GDS/Python parity remains a hosted gate, not a local claim.
+
+Request9 selects both platforms. Linux runs every focused/source gate, the four-case20-action native lineage regression, graphical QA, the separately registered seven-episode memory experiment, then the existing eight-episode long plan: RANDOM and COVERAGE_HUNTER at128,256,512 and1024actions. The finite committed-request selector now accepts `long` alongside the previously supported `full` and `smoke`; queue and process resource bounds are unchanged. Windows runs full source and extracted-package qualification. Package contract3 requires the actual four lineage tapes, captures, independent readback, strict positive equality and justified negative applicability before sealing. Contract2 evidence remains readable without retroactive requirements. The5ee full142comparison remains a separate exact-source cohort; request9 does not rerun or relabel it.
+
+The lead prepared a frozen descriptive cost supplement for the5ee142comparison, source blob`b05a70a4448feb4e35519a9555b60ea402bd9cfc`, SHA-256`584d523ee23ece26f86d35e6aec9ace259b0298db855035d146eac9771470e40`; A independent review`6e6a2eecae7258806beef48612da9336b603b839`. It requires the separately frozen primary analyzer's passing custody report and exact consumed-file hashes. It reports missing/latest attempts explicitly, uses only budget-complete episodes of at least128slots for positional comparisons, and compares admitted completed actions within equal action/arguments/fixture/paused strata having at least three observations in each quarter. Action time includes harness/native waiting and checkpoint I/O; neither an engine FPS claim nor causal slowdown/leak inference is supported. Four guard controls and five arithmetic/selection controls passed in bounded pure processes. No actual timing result is credited before the raw campaign is available.
+
+
+Request9 integration source review is complete. B froze13owned files in manifest blob`21f1f27c18bdc00a8eaec2f6afc215b6d3a9d002`;47focused pure controls passed, and independent before/after verification of23unique legacy tapes/1,187records was byte-for-byte equivalent, preserving historical failures (review`89beb59370de2f73ed3deb8f693287f5d6ea9581`). A's final review`0ff72f4834260f9df808c8632183a6da24320aff` binds the exact helper, adapter, independent GDS/Python reader, unit controls and20-action native gate. C's custody review`53d2cada24ea42c9627a027061fb86c2a1cac677` and final native/package contract review`b12d16e31995781c153b9aa9f2d72db71a540634` independently check exact literal action dictionaries, actual Controller dispatch, marker/report fields, provenance and package acceptance.
+
+The lead ran the combined pure integration suite once against unchanged candidate sources:130tests, one explicitly skipped GDS parity group,1.686seconds of test time and2.012seconds owned elapsed,34,205,696bytes peak sampled tree RSS, no diagnostic errors or surviving owned process. Source hashes, full log and process receipt are durable in blob`8366c62c5e4ac900005ec035aaa05680ac0220d6`. This is not native gameplay qualification. Both hosted platform drivers require the exact Godot parity group and all native gates before a new evaluator can be sealed.
+
+C also checked13actual retained construction receipts from four unique5eeWindows tapes against the new canonical header/source binding. All13were accepted at their actual source identities; this is read-only compatibility evidence, not new gameplay. Frozen-source addendum`59216f4a0c735aae92752df2222137ee462ad502` binds that check and confirms the reviewed gate/core hashes match B's final manifest.

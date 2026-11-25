@@ -35,7 +35,7 @@ if ($LASTEXITCODE -ne 0 -or $version -ne '4.7.stable.official.5b4e0cb0f') { thro
 Invoke-Python @('-m', 'pip', 'install', '-r', 'tools/gip014/requirements.txt') (Join-Path $outputPath 'process-monitor-dependency.log')
 $env:GOBLIN_PARITY_GODOT = $engine
 Invoke-Python @('-m', 'unittest', 'discover', '-s', 'tools/gip014', '-p', 'test_*.py') (Join-Path $outputPath 'python-contracts.log')
-$cases = @('unit', 'discovery', 'adapter', 'expanded', 'controller', 'laboratory', 'gameplay', 'metamorphic', 'baseline')
+$cases = @('unit', 'discovery', 'adapter', 'expanded', 'controller', 'laboratory', 'gameplay', 'metamorphic', 'authored_lineage', 'baseline')
 foreach ($case in $cases) {
     Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', $case, '--out', (Join-Path $sourceTests $case), '--timeout-seconds', '300') (Join-Path $outputPath ($case + '.log'))
 }

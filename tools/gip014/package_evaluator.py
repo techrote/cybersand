@@ -34,6 +34,25 @@ RAPIER = "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-wind
 GODOT = "Godot_v4.7-stable_win64.exe"
 CONSOLE = "Godot_v4.7-stable_win64_console.exe"
 REQUIRED_CASES = ("actor_workshop", "save_reopen")
+LINEAGE_SCHEMA = "cybersand-goblin-authored-lineage-test-v1"
+LINEAGE_SCRIPT = "godot/goblin/tests/test_authored_lineage.gd"
+LINEAGE_MARKER = "GOBLIN_AUTHORED_LINEAGE_RESULT "
+LINEAGE_CASES = {
+    "fresh_authored": ([{"id": "save_layout", "args": {}}, {"id": "reopen_layout", "args": {}}], True),
+    "retained_evolved": ([{"id": "play", "args": {"ticks": 16}}, {"id": "pause", "args": {}},
+                          {"id": "response_mode", "args": {"mode": "LA-EVENT-OFF"}},
+                          {"id": "save_layout", "args": {}}, {"id": "reopen_layout", "args": {}}], False),
+    "restore_authored": ([{"id": "play", "args": {"ticks": 16}}, {"id": "pause", "args": {}},
+                          {"id": "response_mode", "args": {"mode": "LA-EVENT-OFF"}}, {"id": "restore_start", "args": {}},
+                          {"id": "save_layout", "args": {}}, {"id": "reopen_layout", "args": {}}], True),
+    "actor_reset_retains_evolved": ([{"id": "actor_place", "args": {"model": "kestrel", "x": 256, "y": 96}},
+                                     {"id": "play", "args": {"ticks": 16}}, {"id": "pause", "args": {}},
+                                     {"id": "actor_reset", "args": {}}, {"id": "actor_remove", "args": {}},
+                                     {"id": "save_layout", "args": {}}, {"id": "reopen_layout", "args": {}}], False),
+}
+LINEAGE_CONTRACT = {"schema": LINEAGE_SCHEMA, "script": "res://goblin/tests/test_authored_lineage.gd",
+                    "fixture": "conservation_cell", "policy": "CONTROL", "seed": 13,
+                    "native_cases": list(LINEAGE_CASES), "actions": 20, "wall_seconds": 300}
 
 
 def sha(path: Path, algorithm: str = "sha256") -> str:
@@ -329,6 +348,143 @@ def verify_graphical(directory: Path, report: dict) -> None:
             raise ValueError("Graphical screenshot is missing or changed")
 
 
+def _lineage_checks(value) -> bool:
+    return isinstance(value, dict) and 0 < len(value) <= 4096 and all(item is True for item in value.values())
+
+
+def _lineage_capture(capture: dict, observation: dict) -> str:
+    """Check an actual full-plane capture independently of its applicability label."""
+    first, last, receipt, admission = (capture.get(key, {}) for key in
+                                      ("source_before", "source_after", "native_receipt", "admission"))
+    checksum = capture.get("material_sha256", "")
+    if (capture.get("source_matches") is not True or "error" in capture
+            or capture.get("region") != [0, 0, 512, 512] or capture.get("count") != 262144
+            or not isinstance(checksum, str) or re.fullmatch(r"[0-9a-f]{64}", checksum) is None
+            or admission.get("status") != "queued" or receipt.get("status") != "completed"
+            or receipt.get("kind") != "capture" or receipt.get("backend") != "CyberNativeCellWorld"
+            or receipt.get("region") != capture["region"] or receipt.get("operation_id") != admission.get("operation_id")
+            or type(admission.get("operation_id")) is not int or admission["operation_id"] < 0
+            or receipt.get("observed_generation") != first.get("generation")
+            or first.get("paused") is not True or last.get("paused") is not True
+            or first.get("failed") is not False or last.get("failed") is not False):
+        raise ValueError("Authored-lineage full native capture lacks actual source/receipt proof")
+    for key in ("generation", "revision", "tick"):
+        if (type(first.get(key)) is not int or first[key] < 0 or first[key] != last.get(key)
+                or first[key] != receipt.get(key) or first[key] != observation.get("native", {}).get(key)):
+            raise ValueError("Authored-lineage capture does not match its actual native observation")
+    return checksum
+
+
+def verify_authored_lineage(directory: Path, receipt: dict, manifest: dict) -> None:
+    """Require four real source-matched authored-lineage cases in a v3 evaluator.
+
+    The expected relationship comes from the fixed ordinary operation sequences:
+    fresh/Restore starts compare equal, while played material retained through
+    response/actor resets differs from its authored reopen. A pass label or a
+    newly suppressed assertion alone cannot satisfy this gate.
+    """
+    try:
+        if manifest.get("required_authored_lineage") != LINEAGE_CONTRACT:
+            raise ValueError("Unsupported fixed authored-lineage qualification contract")
+        if (not isinstance(receipt, dict) or receipt.get("status") != "pass"
+                or receipt.get("script") != LINEAGE_CONTRACT["script"]
+                or receipt.get("script_sha256") != manifest.get("files_sha256", {}).get(LINEAGE_SCRIPT)
+                or not isinstance(receipt.get("script_sha256"), str)
+                or re.fullmatch(r"[0-9a-f]{64}", receipt["script_sha256"]) is None
+                or receipt.get("wall_limit_seconds") != 300 or receipt.get("native_case_count") != 4
+                or receipt.get("attempted_actions") != 20 or receipt.get("completed_actions") != 20
+                or not isinstance(receipt.get("profile"), str)
+                or re.fullmatch(r"test-output/[0-9a-f]{32}", receipt["profile"]) is None):
+            raise ValueError("Extracted authored-lineage gate lacks fixed source/process accounting")
+        prefix = receipt["profile"] + "/"
+        if (receipt.get("log") != prefix + "authored-lineage.log"
+                or not isinstance(receipt.get("report"), str) or not receipt["report"].startswith(prefix)
+                or not receipt["report"].endswith("/goblin/authored-lineage-test.json")):
+            raise ValueError("Authored-lineage evidence is outside its fixed disposable profile")
+        paths = {}
+        for key, limit in (("log", 16 * 1024 * 1024), ("report", 8 * 1024 * 1024)):
+            path = checked_member(directory, receipt[key])
+            if not path.is_file() or not 0 < path.stat().st_size <= limit or sha(path) != receipt.get(key + "_sha256"):
+                raise ValueError("Authored-lineage evidence is missing, oversized or changed")
+            paths[key] = path
+        raw = json.loads(paths["report"].read_text(encoding="utf-8-sig"))
+        if (raw.get("schema") != LINEAGE_SCHEMA or raw.get("status") != "pass" or raw.get("failures") != []
+                or raw.get("provenance") != manifest.get("provenance") or raw["provenance"].get("source_dirty") is not False
+                or not _lineage_checks(raw.get("checks")) or receipt.get("checks") != len(raw["checks"])
+                or raw.get("actual_actions") != {"attempted": 20, "completed": 20}):
+            raise ValueError("Actual authored-lineage native report or exact provenance did not pass")
+        text = paths["log"].read_text(encoding="utf-8-sig")
+        markers = [line.removeprefix(LINEAGE_MARKER) for line in text.splitlines() if line.startswith(LINEAGE_MARKER)]
+        if len(markers) != 1 or any(marker in text for marker in ("SCRIPT ERROR:", "Parse Error:", "ERROR:", "Fatal signal", "Segmentation fault")):
+            raise ValueError("Authored-lineage native log lacks a unique clean completion")
+        terminal = json.loads(markers[0])
+        if terminal.get("status") != "pass" or terminal.get("failures") != [] or terminal.get("actual_actions") != raw["actual_actions"]:
+            raise ValueError("Authored-lineage native completion differs from the actual report")
+        cases = raw.get("native_cases")
+        if not isinstance(cases, list) or len(cases) != 4 or {row.get("id") for row in cases} != set(LINEAGE_CASES):
+            raise ValueError("All four distinct authored-lineage native cases are required")
+        total = 0
+        for case in cases:
+            actions, equality = LINEAGE_CASES[case["id"]]
+            tape = case.get("transcript", {})
+            rows = tape.get("steps", [])
+            header = tape.get("header", {})
+            if (case.get("status") != "pass" or not _lineage_checks(case.get("checks"))
+                    or case.get("expected_equality_applicable") is not equality
+                    or type(case.get("save_index")) is not int or case["save_index"] != len(actions) - 2
+                    or type(case.get("reopen_index")) is not int or case["reopen_index"] != len(actions) - 1
+                    or [row.get("action") for row in rows] != actions
+                    or header.get("fixture_id") != "conservation_cell" or header.get("policy") != "CONTROL"
+                    or header.get("seed") != 13 or header.get("budget") != len(actions)
+                    or header.get("evidence_kind") != "packaged_evaluator" or header.get("provenance") != manifest["provenance"]
+                    or header.get("pacing_ms") != 0 or tape.get("summary", {}).get("termination") != "budget_complete"
+                    or tape.get("summary", {}).get("attempted_actions") != len(actions)
+                    or tape.get("summary", {}).get("completed_actions") != len(actions)):
+                raise ValueError("Authored-lineage tape differs from its exact ordinary gameplay case")
+            checked = verify_tape(tape)
+            if not checked.get("valid") or checked.get("independent_failures") or checked.get("unreported_failures") or checked.get("summary", {}).get("failures"):
+                raise ValueError("Independent authored-lineage transcript readback failed")
+            for row in rows:
+                if (row.get("status") != "completed" or row.get("admission", {}).get("accepted") is not True
+                        or row.get("classification") != "game_observation"
+                        or row.get("before", {}).get("adapter_version") != 3 or row.get("after", {}).get("adapter_version") != 3
+                        or any(item.get("status") == "fail" for item in row.get("assertions", []))):
+                    raise ValueError("Authored-lineage case contains a refusal, partial effect or assertion failure")
+            saved, reopened = rows[-2:]
+            first = _lineage_capture(saved.get("persistence_capture", {}), saved["after"])
+            last = _lineage_capture(reopened.get("persistence_capture", {}), reopened["after"])
+            saved_proof, reopened_proof = saved.get("persistence", {}), reopened.get("persistence", {})
+            lineage = saved_proof.get("saved_material_lineage")
+            if (not isinstance(lineage, dict) or lineage.get("schema") != "cybersand-goblin-material-lineage-v1"
+                    or lineage.get("state") != ("authored_compatible" if equality else "simulation_exposed")
+                    or lineage.get("source") != {key: saved["after"]["native"].get(key) for key in ("generation", "revision", "tick")}
+                    or reopened_proof.get("saved_material_lineage") != lineage
+                    or reopened_proof.get("saved_capture") != saved["persistence_capture"]
+                    or saved_proof.get("material_sha256") != first or reopened_proof.get("saved_material_sha256") != first
+                    or reopened_proof.get("reopened_material_sha256") != last
+                    or saved_proof.get("saved_native_tick") != 0 or reopened_proof.get("saved_native_tick") != 0
+                    or saved["after"]["native"].get("tick") != 0
+                    or saved_proof.get("native_material_equality_applicable") is not equality
+                    or reopened_proof.get("native_material_equality_applicable") is not equality
+                    or (first == last) is not equality):
+                raise ValueError("Authored-lineage actual retained material/Save/Reopen relationship differs")
+            expected_reason = "available" if equality else "simulation_exposed_lineage"
+            assertion = [item for item in reopened.get("assertions", []) if item.get("id") == "authored_reopen_materials"]
+            if (saved_proof.get("native_material_equality_reason") != expected_reason
+                    or reopened_proof.get("native_material_equality_reason") != expected_reason
+                    or len(assertion) != 1 or assertion[0].get("status") != ("pass" if equality else "not_applicable")):
+                raise ValueError("Authored-lineage oracle applicability or positive equality was not established")
+            if case["id"] != "fresh_authored":
+                played = next(row for row in rows if row["action"]["id"] == "play")
+                if played["after"]["native"].get("tick", 0) < 16:
+                    raise ValueError("Authored-lineage evolved case lacks actual native progression")
+            total += len(rows)
+        if total != raw["actual_actions"]["completed"]:
+            raise ValueError("Authored-lineage report action totals differ from actual tapes")
+    except (KeyError, TypeError, IndexError, AttributeError) as error:
+        raise ValueError("Malformed authored-lineage native evidence") from error
+
+
 def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path, campaign_evidence: Path | None = None) -> dict:
     if git("status", "--porcelain", "--untracked-files=all"):
         raise ValueError("Evaluator packaging requires clean committed source")
@@ -388,8 +544,9 @@ def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path, cam
         manifest = {"schema": SCHEMA, "qualification": "unqualified candidate; extracted Windows self-tests required",
                     "source_commit": provenance["source_commit"], "source_tree": provenance["source_tree"], "provenance": provenance,
                     "godot_archive_sha512": pins["GODOT_SHA512"], "files_sha256": files,
-                    "import_descriptor_normalization": import_normalization, "successor_contract_version": 2,
+                    "import_descriptor_normalization": import_normalization, "successor_contract_version": 3,
                     "portable_replay_index": portable,
+                    "required_authored_lineage": LINEAGE_CONTRACT,
                     "required_discovery": {"fixture": "alchemy", "policy": "COVERAGE_HUNTER", "seed": 13, "budget": 64,
                                            "minimum_completed_features": 12, "minimum_expanded_features": 3},
                     "required_selftests": [{"fixture": name, "policy": "CONTROL", "seed": 13, "budget": 64} for name in REQUIRED_CASES]}
@@ -414,13 +571,19 @@ def verify_extracted(directory: Path, qualification: Path | None = None) -> dict
         path = checked_member(directory, name)
         if not path.is_file() or not isinstance(expected, str) or re.fullmatch(r"[0-9a-f]{64}", expected) is None or sha(path) != expected:
             raise ValueError("Extracted evaluator payload hash mismatch: " + name)
-    successor = manifest.get("successor_contract_version") == 2
+    version = manifest.get("successor_contract_version", 1)
+    if type(version) is not int or version not in (1, 2, 3):
+        raise ValueError("Unsupported evaluator qualification contract version")
+    successor = version in (2, 3)
     if successor:
         provenance = manifest.get("provenance", {})
         names = [name.removeprefix("godot/") for name in manifest["files_sha256"] if name.startswith("godot/")]
         if not replay_identity.valid(provenance) or replay_identity.build(provenance, directory / "godot", names) != provenance["replay_identity"]:
             raise ValueError("Portable replay identity differs from exact packaged game inputs")
         portable_index(directory, manifest)
+    if version == 3 and (manifest.get("required_authored_lineage") != LINEAGE_CONTRACT
+                         or LINEAGE_SCRIPT not in manifest["files_sha256"]):
+        raise ValueError("Fixed authored-lineage native contract is missing from the evaluator")
     if qualification is None:
         return {"payload_verified": True, "qualified": False, "files": len(manifest["files_sha256"])}
     report = json.loads(qualification.read_text(encoding="utf-8-sig"))
@@ -474,6 +637,8 @@ def verify_extracted(directory: Path, qualification: Path | None = None) -> dict
         verify_memory_roundtrip(directory, report.get("memory_roundtrip"), manifest)
         verify_portable_replay(directory, report, manifest)
         verify_graphical(directory, report)
+    if version == 3:
+        verify_authored_lineage(directory, report.get("authored_lineage"), manifest)
     return {"payload_verified": True, "qualified": True, "source_commit": manifest["source_commit"],
             "manifest_sha256": sha(manifest_path), "qualification_sha256": sha(qualification), "cases": len(rows),
             "scope": "hosted extracted Windows developer evaluator; no physical NVIDIA acceptance claim"}

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from copy import deepcopy
 import hashlib
 import json
 import math
@@ -99,6 +100,156 @@ def integer(value: Any) -> bool:
 
 def bounded(value: Any, minimum: int, maximum: int) -> bool:
     return integer(value) and minimum <= value <= maximum
+
+
+def adapter_version(observation: Any) -> int:
+    """Absent/v1/v2 retain their historical oracle; only exact v3 adds lineage."""
+    value = observation.get("adapter_version", 1) if isinstance(observation, dict) else None
+    return int(value) if bounded(value, 1, 3) else 0
+
+
+def lineage_source(observation: dict) -> dict:
+    native = observation.get("native", {})
+    if not isinstance(native, dict):
+        native = {}
+    return {key: native.get(key, -1) for key in ("generation", "revision", "tick")}
+
+
+def lineage_native_valid(observation: Any) -> bool:
+    if not isinstance(observation, dict) or not isinstance(observation.get("native"), dict):
+        return False
+    native = observation["native"]
+    return (all(bounded(native.get(key), 0, 2**63 - 1) for key in ("generation", "revision", "tick"))
+            and native.get("failed") is False)
+
+
+def lineage_construction(receipt: Any, observation: dict) -> bool:
+    """Independently bind a published construction receipt to its actual owner."""
+    if not isinstance(receipt, dict) or not lineage_native_valid(observation):
+        return False
+    values = receipt.get("canonical_bytes")
+    shape = (receipt.get("kind") == "applied_run" and bounded(receipt.get("schema_version"), 1, 1)
+            and bounded(receipt.get("completed_tick"), 0, 0)
+            and bounded(receipt.get("session_generation"), 0, 2**63 - 1)
+            and receipt["session_generation"] == observation["native"]["generation"]
+            and isinstance(values, list) and 52 <= len(values) <= 1048576
+            and all(bounded(value, 0, 255) for value in values))
+    if not shape:
+        return False
+    raw = bytes(int(value) for value in values)
+    # Primary native contract: liquid_run_receipt.hpp build_applied_run_receipt
+    # and prepared_setup_identity.hpp encoding::Writer use these exact LE
+    # header fields. An old hashed payload with relabelled outer facts fails.
+    return (raw[:28] == struct.pack("<I", 24) + b"cybersand-run-receipt-v1"
+            and struct.unpack_from("<H", raw, 28)[0] == 1
+            and struct.unpack_from("<Q", raw, 36)[0] == observation["native"]["generation"]
+            and struct.unpack_from("<Q", raw, 44)[0] == 0
+            and hashlib.sha256(raw).hexdigest() == receipt.get("receipt_hash"))
+
+
+class MaterialLineageEvidence:
+    """Reconstruct applicability from native tape evidence, never its boolean.
+
+    The product contract preserves live cells across retaining replacements.
+    Positive progression proves exposure, not necessarily changed inert cells.
+    Only acknowledged ordinary fresh construction can re-establish the authored
+    relationship. This reader does not call the adapter's implementation.
+    """
+    FRESH = frozenset({"reset_fixture", "replace_fixture", "restore_start", "reopen_layout"})
+    RETAINING = frozenset({"actor_place", "actor_reset", "actor_remove", "actor_move", "actor_replace",
+                          "actor_equipment", "response_mode", "actor_settings"})
+
+    def __init__(self, initialization: Any):
+        self.state, self.source, self.reset_witness = "unknown", {}, {}
+        self.exposure_source = {}
+        if not isinstance(initialization, dict):
+            return
+        observed, receipt = initialization.get("observation", {}), initialization.get("native_receipt", {})
+        if (initialization.get("ok") is True and isinstance(observed, dict) and isinstance(observed.get("native"), dict)
+                and observed.get("paused") is True and observed.get("native", {}).get("paused") is True
+                and observed.get("native", {}).get("tick") == 0 and observed.get("scene_identity")
+                and observed.get("authored_digest") == observed.get("scene_identity")
+                and lineage_construction(receipt, observed)):
+            self.state, self.source = "authored_compatible", lineage_source(observed)
+            self.reset_witness = {"source": self.source.copy(), "receipt_hash": receipt["receipt_hash"]}
+
+    def observe(self, observed: dict) -> None:
+        current = lineage_source(observed)
+        native = observed.get("native", {})
+        if not lineage_native_valid(observed):
+            self.state = "unknown"
+        elif current["tick"] > 0:
+            self.state = "simulation_exposed"
+            self.exposure_source = current.copy()
+        elif not self.source or current["generation"] != self.source.get("generation"):
+            self.state = "unknown"
+        elif self.state != "simulation_exposed" and (
+                observed.get("paused") is not True or native.get("paused") is not True
+                or current["tick"] < self.source.get("tick", 0) or current["revision"] < self.source.get("revision", 0)):
+            self.state = "unknown"
+        self.source = current
+
+    def claimed(self, observed: dict) -> bool:
+        claim, native = observed.get("material_lineage"), observed.get("native", {})
+        if (not isinstance(native, dict) or not isinstance(claim, dict)
+                or claim.get("schema") != "cybersand-goblin-material-lineage-v1"
+                or claim.get("state") != self.state or not isinstance(claim.get("source"), dict)
+                or set(claim["source"]) != {"generation", "revision", "tick"}
+                or any(not bounded(value, 0, 2**63 - 1) for value in claim["source"].values())
+                or claim["source"] != lineage_source(observed)):
+            return False
+        witness = claim.get("witness")
+        if not isinstance(witness, dict) or not isinstance(witness.get("source"), dict):
+            return False
+        origin = witness["source"]
+        if (set(origin) != {"generation", "revision", "tick"}
+                or any(not bounded(origin.get(key), 0, 2**63 - 1) for key in ("generation", "revision", "tick"))
+                or origin["generation"] > native.get("generation", -1)):
+            return False
+        if self.state == "authored_compatible":
+            return (witness.get("kind") == "authored_construction" and origin["tick"] == 0
+                    and witness.get("action") in self.FRESH | {"fixture_install"} and bool(self.reset_witness)
+                    and origin == self.reset_witness["source"]
+                    and witness.get("receipt_hash") == self.reset_witness["receipt_hash"])
+        if self.state == "simulation_exposed":
+            return (witness.get("kind") == "native_progress" and origin["tick"] > 0
+                    and bool(self.exposure_source) and origin == self.exposure_source)
+        return self.state == "unknown" and witness.get("kind") in {
+            "invalid_source", "unobserved_generation", "unobserved_running", "nonmonotonic_source",
+            "unproven_retained_lineage", "unacknowledged_replacement", "partial_native_effect"}
+
+    def record(self, row: dict, check) -> None:
+        before, after = row["before"], row["after"]
+        self.observe(before)
+        check(row, "material_lineage_before", self.claimed(before), "evidence")
+        prior, name = self.state, row["action"]["id"]
+        complete = row.get("status") == "completed" and row.get("admission", {}).get("accepted") is True
+        replaced = (lineage_native_valid(before) and lineage_native_valid(after)
+                    and after["native"]["generation"] > before["native"]["generation"])
+        if replaced and complete and name in self.FRESH | self.RETAINING:
+            receipt = row.get("native_receipt", {})
+            acknowledged = lineage_construction(receipt, after)
+            check(row, "material_lineage_replacement_evidence", acknowledged, "evidence")
+            if (name in self.FRESH and acknowledged and after.get("paused") is True
+                    and after["native"].get("paused") is True and after["native"]["tick"] == 0):
+                self.state, self.source = "authored_compatible", lineage_source(after)
+                self.reset_witness = {"source": self.source.copy(), "receipt_hash": receipt["receipt_hash"]}
+            elif name in self.RETAINING and acknowledged:
+                stable_start = (prior == "authored_compatible" and before.get("paused") is True
+                                and before["native"].get("paused") is True and after.get("paused") is True
+                                and after["native"].get("paused") is True
+                                and before["native"]["tick"] == after["native"]["tick"] == 0)
+                self.state = prior if prior == "simulation_exposed" or stable_start else "unknown"
+                self.source = lineage_source(after)
+            else:
+                self.state = "unknown"
+        elif replaced:
+            self.state = "unknown"
+        elif (not complete and lineage_native_valid(before) and lineage_native_valid(after)
+              and before["native"]["revision"] != after["native"]["revision"] and prior != "simulation_exposed"):
+            self.state = "unknown"
+        self.observe(after)
+        check(row, "material_lineage_after", self.claimed(after), "evidence")
 
 
 def canonical(value: Any) -> str:
@@ -242,10 +393,19 @@ def independent_failures(tape: dict) -> list[dict]:
     failures = []
     saved = None
     saved_tick, saved_capture, saved_observation = -1, {}, {}
+    saved_material_state, saved_material_lineage = "unknown", {}
+    material_lineage = MaterialLineageEvidence(tape.get("initialization", {}))
     def check(row, name, condition, kind="gameplay"):
         if not condition:
             failures.append({"step": row["index"], "id": name, "kind": kind})
     for row in tape["steps"]:
+        first_version, last_version = adapter_version(row["before"]), adapter_version(row["after"])
+        modern_lineage = first_version == last_version == 3
+        if not first_version or not last_version or (3 in (first_version, last_version) and not modern_lineage):
+            check(row, "adapter_observation_version", False, "evidence")
+            continue
+        if modern_lineage:
+            material_lineage.record(row, check)
         if row["classification"] in {"not_applicable", "invalid_action", "adapter_failure"}:
             continue
         name, args = row["action"]["id"], row["action"]["args"]
@@ -362,38 +522,57 @@ def independent_failures(tape: dict) -> list[dict]:
             saved = row.get("persistence", {}).get("read_authored_digest")
             check(row, "authored_save_readback", bool(saved) and saved == after.get("authored_digest"))
             saved_tick, saved_capture, saved_observation = end["tick"], row.get("persistence_capture", {}), after
+            if modern_lineage:
+                saved_material_state = material_lineage.state
+                saved_material_lineage = deepcopy(after.get("material_lineage", {}))
+                check(row, "save_material_lineage_identity", row.get("persistence", {}).get("saved_material_lineage") == saved_material_lineage, "evidence")
+                if "persistence_capture" not in row:
+                    check(row, "save_capture_evidence", False, "evidence")
             if "persistence_capture" in row:
                 state = persistence_capture_state(saved_capture, after)
                 persistence = row.get("persistence", {})
                 check(row, "save_capture_evidence", state != "invalid", "evidence")
                 check(row, "save_native_tick_identity", persistence.get("saved_native_tick") == saved_tick, "evidence")
                 check(row, "save_material_capture_identity", persistence.get("material_sha256", "") == saved_capture.get("material_sha256", ""), "evidence")
-                check(row, "save_material_applicability", persistence.get("native_material_equality_applicable") == (saved_tick == 0 and state == "completed"), "evidence")
+                compatible = saved_material_state == "authored_compatible" if modern_lineage else saved_tick == 0
+                expected = compatible and state == "completed"
+                claimed = persistence.get("native_material_equality_applicable")
+                check(row, "save_material_applicability", (claimed is expected) if modern_lineage else claimed == expected, "evidence")
         elif name == "reopen_layout":
             if saved:
                 check(row, "authored_reopen_identity", after.get("authored_digest") == saved)
             persistence = row.get("persistence", {})
+            if modern_lineage:
+                check(row, "reopen_saved_material_lineage", bool(saved_material_lineage) and persistence.get("saved_material_lineage") == saved_material_lineage, "evidence")
             saved_state = persistence_capture_state(saved_capture, saved_observation) if saved_capture else "unrecorded"
             current_state = persistence_capture_state(row.get("persistence_capture", {}), after) if "persistence_capture" in row else "unrecorded"
-            custody = True
+            custody = not modern_lineage
             if "persistence_capture" in row:
                 custody = saved_state in ("completed", "native_body_protection") and current_state in ("completed", "native_body_protection") and persistence.get("saved_capture") == saved_capture and persistence.get("saved_native_tick") == saved_tick
                 check(row, "reopen_capture_evidence", custody, "evidence")
                 check(row, "reopen_material_capture_identity", persistence.get("saved_material_sha256", "") == saved_capture.get("material_sha256", "") and persistence.get("reopened_material_sha256", "") == row["persistence_capture"].get("material_sha256", ""), "evidence")
+            if modern_lineage:
+                expected = saved_material_state == "authored_compatible" and custody and saved_state == current_state == "completed"
+                check(row, "reopen_material_applicability", persistence.get("native_material_equality_applicable") is expected, "evidence")
             if persistence.get("native_material_equality_applicable"):
-                check(row, "reopen_material_applicability", saved_tick == 0 and ("persistence_capture" not in row or custody and saved_state == current_state == "completed"), "evidence")
+                if not modern_lineage:
+                    check(row, "reopen_material_applicability", saved_tick == 0 and ("persistence_capture" not in row or custody and saved_state == current_state == "completed"), "evidence")
                 expected_materials = saved_capture.get("material_sha256", "") if "persistence_capture" in row else persistence.get("saved_material_sha256", "")
                 actual_materials = row["persistence_capture"].get("material_sha256", "") if "persistence_capture" in row else persistence.get("reopened_material_sha256", "")
                 check(row, "authored_reopen_materials", bool(expected_materials) and expected_materials == actual_materials)
             else:
                 reason = persistence.get("native_material_equality_reason", "")
-                justified = (saved_tick > 0 and reason in ("", "evolved_native_tick") and custody) or (reason == "native_body_protection" and custody and "native_body_protection" in (saved_state, current_state))
+                lineage_na = ((saved_material_state == "simulation_exposed" and reason == "simulation_exposed_lineage")
+                              or (saved_material_state == "unknown" and reason == "unknown_material_lineage"))
+                authored_na = lineage_na if modern_lineage else saved_tick > 0 and reason in ("", "evolved_native_tick")
+                justified = (authored_na and custody) or (reason == "native_body_protection" and custody and "native_body_protection" in (saved_state, current_state))
                 check(row, "reopen_material_na_evidence", justified, "evidence")
         elif name == "reset_fixture":
             check(row, "reset_authored_layout", bool(after.get("scene_identity")) and after.get("authored_digest") == after.get("scene_identity"))
             check(row, "reset_native_replacement", end["generation"] > start["generation"] and end["tick"] == 0)
             saved = None
             saved_tick, saved_capture, saved_observation = -1, {}, {}
+            saved_material_state, saved_material_lineage = "unknown", {}
     return failures
 
 

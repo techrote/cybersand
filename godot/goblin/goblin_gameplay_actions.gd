@@ -500,6 +500,7 @@ static func execute(a: Variant, action: Dictionary, row: Dictionary, started: in
 			if not result.get("ok", false):
 				return _result(a, row, started, "partial" if row.admission.get("accepted", false) else "refused",
 					str(result.get("error", "fixture replacement refused")), str(result.get("classification", "game_observation")))
+			row.native_receipt = result.get("native_receipt", {}).duplicate(true)
 	if id in REPLACEMENTS:
 		if not await a._until(a._ready_for_action, "main_ack_seconds", true):
 			return _result(a, row, started, "partial", a.last_error, a._wait_failure_classification())

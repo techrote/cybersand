@@ -14,7 +14,9 @@ related-documents: [gip014-goblin-002.md, goblin002-exploration-handover.md, gob
 55 typed gameplay operations, 16 policy identities, ten authored scenarios,
 observation-based discovery, bounded persistent memory, native game tapes and
 automatic reproduction/reduction tools. A self-contained Windows evaluator is
-qualified at the exact source below. No novel production gameplay defect has
+qualified at the exact source below. A later adversarial experiment identified
+a narrow oracle applicability defect; its corrective candidate is being
+qualified separately before replacing that evaluator. No novel production gameplay defect has
 been established. No merge, Ready promotion, default activation, unfinished
 programme integration or physical NVIDIA acceptance is authorized or claimed.
 
@@ -253,16 +255,26 @@ occurrence-bound regression acceptance, platform path/newline test-fixture
 assumptions and native expanded-test numeric/picker assumptions. The earlier
 Step/Save hypothesis did not reproduce. Capture/Reset placement differences
 lacked an authoritative idempotence contract and were not reported as a bug.
-The retained-clock Save/Reopen hypothesis remains a separate diagnostic.
-Request1 stopped before any action because its source-absence precondition
-rejected an unclassified pending command. Request2 completed all nine actions:
-the control passed, and the variant produced the expected material relation and
-failed equality assertion, but one queued command drained before the later
-proof callback. Its strict source-absence predicate therefore failed. Both
-attempts remain unresolved; the recorded vanished command is not inferred to be
-Stop. A narrowly pinned, read-only addition to the adapter will place actual
-queue contents and owner state in the same observation as their count before a
-fresh experiment. Its source is separate from qualified5ee.
+The retained-clock investigation established a second **test-oracle defect**.
+Its first two attempts remain setup-unqualified/unresolved. The third completed
+all nine actions with valid source evidence at all twenty actual observation
+boundaries. A retaining response-mode replacement copied evolved cells into a
+new World at tick zero. Save preserved the authored recipe and Reopen correctly
+restored it, while the old equality oracle incorrectly expected the evolved
+plane. Independent rendering of the actual authored rectangles matched both
+reopened native planes. B passed 78 independent contract checks; A checked the
+atomic source proof; C passed 2,942 source/custody checks.
+
+The [actual native diagnostic](https://github.com/techrote/cybersand/actions/runs/45556434887)
+and [committed original five-action tape](../../tools/gip014/cases/retained-clock-070-original.json.gz)
+retain the counterexample at source070addb0. The original automatic candidate
+remains unchanged and unresolved; independent classification is separate.
+A narrow corrective candidate now tracks simulation exposure across retaining
+replacements and requires actual fresh-authored proof before equality becomes
+applicable again. It preserves a positive fresh-equality gate. A new four-case,
+20-action native programme must pass in source and in the extracted Windows
+package before that candidate supersedes the qualified5ee evaluator. No new
+package qualification or unchanged-invariant production fix is claimed yet.
 
 ## Boundaries, remaining work and decision
 
@@ -290,5 +302,28 @@ Source capabilities are broader than the independently qualified combinations.
 No universal performance, reliability, behavioural-recognisability or training
 claim follows from these campaigns. The final owner decision remains **retain
 the qualified evaluator for experimental review and keep PR #781 Draft/HOLD**.
-Corrected Linux/memory analysis and the narrow retained-clock diagnostic must be
-resolved explicitly before their outcomes are added to this packet.
+Corrected Linux/memory analysis and the new material-history corrective
+candidate must complete their explicit gates before a replacement evaluator is
+qualified. The original5ee package retains its recorded pass and the newly
+identified oracle limitation.
+
+
+## Corrective qualification scope
+
+Request9 qualifies the material-history applicability correction independently.
+Linux runs all focused and graphical gates, four native lineage cases with20
+actual actions, the seven-episode memory experiment, and the existing eight long
+episodes at128/256/512/1024actions for RANDOM and COVERAGE_HUNTER. Windows runs
+full source, graphical, portable-replay, isolation and extracted qualification;
+package contract3 additionally requires the actual four lineage tapes and their
+material captures before sealing. The5ee142-episode comparison is not relabelled
+as a result of this source. State-v1 and state-v2 coverage remain separate, and
+cross-source path differences do not isolate the causal effect of the repair.
+
+A and C independently cleared the exact frozen corrective source and fixed
+package contracts. The lead's combined pure suite ran130tests with one GDS
+parity group explicitly skipped locally; all unskipped controls passed. Hosted
+Godot/native and extracted results remain required. The machine index retains
+review and process identities. The final sealed package's OPEN-ME.md and delivery
+record, generated from actual extracted observations, supersede a committed
+pre-execution status checkpoint without changing its historical evidence.

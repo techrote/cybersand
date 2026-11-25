@@ -251,6 +251,9 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		last_error = str(installed.get("error", "fixture installation failed"))
 		return await _finish("stopped" if stop_requested else "fixture_failure", replay)
 	transcript.header["fixture_state"] = "installed"
+	# Seed the independent material-history observer from the actual admitted
+	# authored installation, before any policy decision can retain evolved cells.
+	assertions.reset(installed)
 	var memory_identity: Dictionary = {"replay_identity": provenance.replay_identity, "source_dirty": provenance.source_dirty} \
 		if Transcript._valid_replay_identity(provenance) else provenance
 	var context := {"fixture_id": str(config.fixture_id), "fixture_version": Fixtures.VERSION,

@@ -296,7 +296,7 @@ func _make_memory_tab() -> void:
 	memory_buttons.append(_button(column, "Export memory", _export_memory))
 	memory_buttons.append(_button(column, "Import staged corpus", _import_memory))
 	memory_buttons.append(_button(column, "Clear experimental memory", _clear_memory))
-	_text(column, "Only fixed marked test files are read or written. The corpus stores authored action prefixes and observation identities; it contains no commands, arbitrary paths or full physical checkpoints.", 13)
+	_text(column, "Only fixed marked test files are read or written. The corpus stores authored action prefixes and observation identities; it contains no shell commands, arbitrary paths or full physical checkpoints.", 13)
 
 
 func _number(parent: Node, title: String, low: float, high: float, initial: float) -> SpinBox:

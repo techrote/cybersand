@@ -115,11 +115,33 @@ def referenced_evidence(directory: Path, report: dict, manifest: dict) -> dict[s
     add(imported["admission_log"], imported["admission_log_sha256"])
     for item in memory["archive_checks"]:
         add(item["path"], item["sha256"])
+    if manifest.get("successor_contract_version") == 3:
+        lineage = report["authored_lineage"]
+        for key in ("log", "report"):
+            add(lineage[key], lineage[key + "_sha256"])
     return result
 
 
 def owner_index(manifest: dict, report: dict, base_sha: str, report_sha: str) -> bytes:
     rows = "\n".join(f"| {row['fixture']} | {row['policy']} | {row['attempted_actions']} | {row['completed_actions']} | {row['elapsed_seconds']:.2f} |" for row in report["cases"])
+    lineage = ("\nThe extracted authored-lineage gate completed four additional native cases and 20\n"
+               "ordinary actions. Fresh and restored authored starts passed material equality;\n"
+               "material retained after actual simulation exposure stayed distinct from its\n"
+               "authored reopen, with the equality oracle explicitly inapplicable. The raw\n"
+               "source-bound report and all four tapes are retained beside this evaluator.\n") \
+        if manifest.get("successor_contract_version") == 3 else ""
+    historical_paths = ("tools/gip014/cases/retained-clock-070-original.json.gz",
+                        "tools/gip014/cases/retained-clock-070-custody.json")
+    historical = ("\n## Retained earlier oracle observation\n\n"
+                  "tools/gip014/cases/retained-clock-070-original.json.gz preserves the actual\n"
+                  "five-action failed tape at source 070addb0fdae2240f22e663a2299cef739f83c05.\n"
+                  "The adjacent retained-clock-070-custody.json records exact identities and\n"
+                  "the independent test-oracle applicability adjudication. These are forensic\n"
+                  "data; their original automatic candidate remains unresolved. Reproduction\n"
+                  "uses that recorded source/runtime. The current ReplayCase catalogue keeps\n"
+                  "its own exact package-identity guard. No automatic reduction or production\n"
+                  "gameplay-defect claim is attached to this five-action case.\n") \
+        if all(name in manifest["files_sha256"] for name in historical_paths) else ""
     text = f"""# CyberSand goblin developer evaluator
 
 This extracted Windows evaluator passed the retained hosted qualification.
@@ -158,6 +180,7 @@ trajectories are reported separately and are not promised across runs or platfor
 The persistent-memory gate saved two actual nonempty corpora, retained one backup,
 validated import into a fresh profile, and cleared memory while preserving native
 archives. The graphical gate includes actual Workbench screenshots.
+{lineage}
 
 ## Exact identities and evidence
 
@@ -174,6 +197,7 @@ scope. delivery/extracted-selftest.json and the referenced test-output files
 retain actual observations. The original evaluator manifest's initial candidate
 status is historical; its tracked bytes have not been changed. The later delivery
 record and fresh final extraction establish this package's qualification.
+{historical}
 """
     return text.encode()
 
@@ -214,7 +238,7 @@ def seal(base: Path, directory: Path, qualification: Path, output: Path, receipt
     if verified.get("qualified") is not True:
         raise ValueError("An unqualified evaluator cannot be sealed")
     manifest = json.loads((directory / package.MANIFEST).read_text(encoding="utf-8"))
-    if manifest.get("successor_contract_version") != 2:
+    if type(manifest.get("successor_contract_version")) is not int or manifest["successor_contract_version"] not in (2, 3):
         raise ValueError("Successor delivery contract is required")
     verify_base(base, directory, manifest)
     report = json.loads(qualification.read_text(encoding="utf-8-sig"))

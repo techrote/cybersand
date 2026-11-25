@@ -527,3 +527,134 @@ coverage. The committed expanded native gate adds six-model placement → Move �
 Reset → replacement coverage, plus one ordinary paused monowheel Capture/Reset
 observation. **Native corrected-source qualification is pending hosted request
 5**; the earlier interrupted local process does not supply it.
+
+## Subsequent native qualification and retained-clock oracle finding
+
+Request 8 qualified the corrected actor-origin contract on Windows at
+`5ee5dffc78d59a721f62be49fd51d24b870556c7`. The added six-model gate first
+required two test-only corrections: its own coordinate comparison had compared
+integer and floating-point Arrays, and it attempted replacement into a model
+absent from the ordinary compact picker. Neither failure justified changing the
+runtime oracle or picker authority. The repaired gate compares exact finite
+coordinates and uses same-model replacement for each model; the existing
+Runner-to-Kestrel case retains cross-model coverage. B's independent request-8
+native audit passed 248 checks: expanded 1,729 checks/86 attempts/83 completions,
+metamorphic 473 checks/36 attempts/33 completions, and the extracted Alchemy
+campaign's 64 completions. The five refusals and one published finite-edge partial
+remain distinct from completed actions. Review blob:
+`8088b38271d1238455fb5871406b125b684266b5`.
+
+A separate source review then identified an incorrect applicability assumption:
+a replacement owner's local tick zero does not establish that its material plane
+is still the authored start. `shared_workbench.gd:apply` (686, 694–697, 732–744)
+retains current native cells during ordinary settings and actor transactions.
+`save_setup` (1217–1236) saves the authored document and explicitly does not read
+the live World; `load_setup` (1242–1268) constructs that saved authored start.
+The old goblin comparison nevertheless treated every Save at current tick zero
+as eligible for exact equality with Reopen. Selected actor Reset is also a
+retaining transaction; it is not Restore start.
+
+The first two dedicated diagnostic attempts are preserved with their original
+dispositions. Request 1 dispatched zero actions because an initial source queue
+count of one was insufficient to prove its command was inert. Request 2 completed
+all nine actions, but one callback observed the queue only after an unobserved
+command had drained. Its material relationship was suggestive; the required
+actor/source absence proof remained unresolved. Neither attempt is relabelled as
+a qualified reproduction. A bounded read-only observation addition then copied
+queue contents, owner generation/pause and current source receipt inside the
+adapter's existing worker mutex, giving each actual recorded observation its own
+atomic proof. This changed instrumentation identity, not gameplay behavior.
+
+Request 3, source `070addb0fdae2240f22e663a2299cef739f83c05`, run
+`45556434887`, artifact `14995732784`, qualified all preconditions and reproduced
+the wrong oracle. Artifact SHA256:
+`2f2dc54b6c8af392364e915776cdae4f384e3dacc8f8209dc97c2a7beef25fd8`.
+The raw report SHA256 is
+`138e320b6bc8d4477e7a702abb1994c25f5357b523f27d47cda28f89e3d49221`.
+All nine ordinary actions completed. The four-action control played, paused,
+saved and reopened. The five-action variant inserted ordinary response-mode
+replacement before Save. All 20 recorded source proofs were coherent: 19 empty
+queues and one actually copied inert Stop, no actors or authored sources, and
+disarmed zero-emission receipts. The native process completed in 17.928 seconds,
+sampled 648,253,440 bytes peak owned-tree RSS, and left no owned process.
+
+The variant preserved its actually simulated cells across generation 3/tick 16
+to generation 4/tick zero. Its saved material SHA256 was
+`70fc348668c692888d972870afbae2ae349ec303375b12cdb29d06271627cdb1`.
+Reopen correctly reconstructed the authored plane, independently rendered from
+the finite rectangle recipe with SHA256
+`acea5f8e573d757af5c560778bbd2222f96065c298e62fcfb8996817486da14a`.
+The isolated 48-by-48 enclosure retained 64 Sand and 368 wall cells; the Sand
+vertical-coordinate sum changed from the authored 736 to the variant's 1,730,
+then returned to 736 on Reopen. No equality of asynchronous trajectories was
+assumed. The sole failed assertion was `authored_reopen_materials` at variant
+index 4. Its automatic original candidate remains intact, SHA256
+`ff835fb875d2764345f6cc28e52af74aa8b7048b2b5b35522b02394e04364d62`.
+B's independent 78-check adjudication is blob
+`00cf2ff7900e72c7df38cf6db6945c3929014ac2`; its repeatable audit is blob
+`ba8441d311516cf7995d1e2cc8ce494bd5e907de`.
+
+This is a **confirmed goblin test-oracle applicability defect**. The product
+performed its authored-persistence contract correctly. The original candidate's
+automatic unresolved classification and old expected hash are preserved; the
+reviewed classification is additive. No production gameplay issue or correction
+is claimed, and the repair is not a pass under an unchanged acceptance rule.
+
+## Material-lineage correction awaiting request-9 native qualification
+
+Adapter observation contract 3 adds bounded material-history evidence with three
+states: `authored_compatible`, `simulation_exposed`, and `unknown`. Positive
+native progress establishes simulation exposure, not necessarily cell movement.
+Fresh fixture construction, Restore start and Reopen can establish authored
+compatibility only with an actual acknowledged construction receipt. Ordinary
+retaining settings/actor transactions preserve prior exposure; unseen running
+intervals, unacknowledged replacement and partial effects cannot manufacture an
+authored-compatible claim. Selected actor Reset never clears material history.
+
+The adapter tracker, runtime assertions and external Python reader independently
+reconstruct these obligations. Construction receipts bind their full canonical
+SHA256 and their hashed header's domain/schema, little-endian generation and zero
+construction tick to the actual native observation. This follows
+`native/include/cybersand/liquid_run_receipt.hpp:build_applied_run_receipt`
+(310–337); changing only an old receipt's outer generation is rejected. The
+exposure witness means the latest actual positive observation: it exactly matches
+each recorded positive endpoint and is carried unchanged through a retained
+tick-zero replacement. Save copies its lineage immutably into Reopen evidence.
+An invented or stale witness cannot support a new claim.
+
+Fresh authored Save/Reopen still requires exact native material equality.
+Independently established exposure uses the explicit reason
+`simulation_exposed_lineage`; uncertain history uses `unknown_material_lineage`.
+Both retain actual capture/source custody requirements. Native body-protection
+refusal remains its separate exact justification. Original observation contracts
+1/2 keep their original interpretation, including the old wrong assertion in the
+retained request-3 tape. A read-only comparison of 23 unique retained tapes/1,187
+records found identical complete reader results before and after the versioned
+change; this is compatibility analysis, not new gameplay or retroactive success.
+State projection contract 3 labels its current generation's phase `zero_tick`;
+legacy projections retain their historical label. Lineage adds no nominal
+material-interaction coverage.
+
+The new fixed `test_authored_lineage.gd` gate runs four disposable ordinary
+Controller campaigns, with 20 literal admitted action requests in total:
+
+| Native case | Actions | Required independent relation |
+|---|---:|---|
+| Fresh authored | 2 | Save/Reopen equality is applicable and passes. |
+| Simulated, retained response change | 5 | Retained tick zero stays exposed; authored Reopen differs from the saved live plane and equality is explicitly inapplicable. |
+| Simulated, retained, Restore start | 6 | Actual Restore establishes a fresh authored lineage and mandatory equality passes again. |
+| Simulated actor, selected Reset, Remove | 7 | Reset and removal retain exposure; removal permits full-plane capture, with correctly inapplicable equality. |
+
+The report retains exact source-bound tapes, complete Save/Reopen capture
+receipts, independent whole-plane rectangle reconstruction and all runtime
+assertions. Its internal bound is 270 seconds and its external source/extracted
+runner bound is 300 seconds. A failed or incomplete gate cannot qualify from its
+summary alone. A and C independently reviewed the literal action path, report
+schema, source fences and relationships. Eleven targeted artificial lineage
+controls cover positive equality, stale canonical receipts, invented witnesses,
+missing initial proof, partial replacement, running gaps, version dispatch and
+Save/Reopen custody. The combined lineage/origin/package/evidence Python subset
+passed 47 tests in 0.403 monitored seconds, sampled 22,650,880 bytes peak RSS,
+and left no owned process. These controls ran no Godot or gameplay. Actual
+corrected-source GDScript parsing, native behavior, long-horizon campaigns and
+extracted Windows execution remain request-9 qualification obligations.

@@ -13,9 +13,15 @@ var _saved_native_tick := -1
 var _saved_capture: Dictionary = {}
 var _saved_observation: Dictionary = {}
 var _last_native: Dictionary = {}
+var _material_state := "unknown"
+var _material_source: Dictionary = {}
+var _material_reset: Dictionary = {}
+var _material_exposure: Dictionary = {}
+var _saved_material_state := "unknown"
+var _saved_material_lineage: Dictionary = {}
 
 
-func reset() -> void:
+func reset(initialization: Dictionary = {}) -> void:
 	_undo.clear()
 	_redo.clear()
 	_clipboard.clear()
@@ -24,6 +30,21 @@ func reset() -> void:
 	_saved_capture.clear()
 	_saved_observation.clear()
 	_last_native.clear()
+	_material_state = "unknown"
+	_material_source.clear()
+	_material_reset.clear()
+	_material_exposure.clear()
+	_saved_material_state = "unknown"
+	_saved_material_lineage.clear()
+	var observed: Dictionary = initialization.get("observation", {})
+	var native: Dictionary = observed.get("native", {})
+	var receipt: Dictionary = initialization.get("native_receipt", {})
+	if initialization.get("ok") == true and observed.get("paused") == true and native.get("paused") == true \
+		and native.get("tick") == 0 and not str(observed.get("scene_identity", "")).is_empty() \
+		and observed.get("authored_digest") == observed.get("scene_identity") and _lineage_receipt(receipt, native):
+		_material_state = "authored_compatible"
+		_material_source = _lineage_source(native)
+		_material_reset = {"source": _material_source.duplicate(true), "receipt_hash": receipt.receipt_hash}
 
 
 static func _assert(rows: Array[Dictionary], id: String, ok: bool, expected: Variant,
@@ -116,6 +137,126 @@ static func _native_valid(native: Dictionary) -> bool:
 	for key: String in ["generation", "revision", "tick"]:
 		if not _integer(native.get(key)) or native[key] < 0: return false
 	return native.get("failed") is bool
+
+
+static func _adapter_version(observation: Dictionary) -> int:
+	var value: Variant = observation.get("adapter_version", 1)
+	return int(value) if _integer(value) and value >= 1 and value <= 3 else 0
+
+
+static func _lineage_source(native: Dictionary) -> Dictionary:
+	return {"generation": native.get("generation", -1), "revision": native.get("revision", -1), "tick": native.get("tick", -1)}
+
+
+static func _lineage_receipt(receipt: Dictionary, native: Dictionary) -> bool:
+	# Independent receipt custody, without invoking the adapter's tracker.
+	if not _native_valid(native) or native.get("failed") != false or receipt.get("kind") != "applied_run" \
+		or not _integer(receipt.get("schema_version")) or receipt.schema_version != 1 \
+		or not _integer(receipt.get("completed_tick")) or receipt.completed_tick != 0 \
+		or not _integer(receipt.get("session_generation")) or receipt.session_generation != native.get("generation"): return false
+	var bytes: Variant = receipt.get("canonical_bytes")
+	if not bytes is Array or bytes.size() < 52 or bytes.size() > 1048576: return false
+	for value: Variant in bytes:
+		if not _integer(value) or value < 0 or value > 255: return false
+	var domain: PackedByteArray = "cybersand-run-receipt-v1".to_utf8_buffer()
+	if bytes[0] != 24 or bytes[1] != 0 or bytes[2] != 0 or bytes[3] != 0 \
+		or bytes[28] != 1 or bytes[29] != 0: return false
+	for index: int in range(24):
+		if bytes[index + 4] != domain[index]: return false
+	var encoded_generation: int = 0
+	for index: int in range(8):
+		encoded_generation |= int(bytes[index + 36]) << (index * 8)
+		if bytes[index + 44] != 0: return false
+	if encoded_generation != int(native.generation): return false
+	var digest := HashingContext.new()
+	digest.start(HashingContext.HASH_SHA256)
+	digest.update(PackedByteArray(bytes))
+	return digest.finish().hex_encode() == receipt.get("receipt_hash")
+
+
+func _lineage_observe(observation: Dictionary) -> void:
+	var native: Dictionary = observation.get("native", {})
+	if not _native_valid(native) or native.get("failed") != false:
+		_material_state = "unknown"
+	elif int(native.tick) > 0:
+		_material_state = "simulation_exposed"
+		_material_exposure = _lineage_source(native)
+	elif _material_source.is_empty() or _material_source.get("generation") != native.generation:
+		_material_state = "unknown"
+	elif _material_state != "simulation_exposed":
+		if observation.get("paused") != true or native.get("paused") != true \
+			or native.tick < _material_source.get("tick", 0) or native.revision < _material_source.get("revision", 0):
+			_material_state = "unknown"
+	_material_source = _lineage_source(native)
+
+
+func _lineage_claim_valid(observation: Dictionary) -> bool:
+	var lineage: Variant = observation.get("material_lineage")
+	var native: Dictionary = observation.get("native", {})
+	if not lineage is Dictionary or lineage.get("schema") != "cybersand-goblin-material-lineage-v1" \
+		or lineage.get("state") != _material_state or not lineage.get("source") is Dictionary \
+		or lineage.source.size() != 3 or not _same(lineage.source, _lineage_source(native)): return false
+	for key: String in ["generation", "revision", "tick"]:
+		if not _integer(lineage.source.get(key)) or lineage.source[key] < 0: return false
+	var witness: Variant = lineage.get("witness")
+	if not witness is Dictionary or not witness.get("source") is Dictionary: return false
+	var origin: Dictionary = witness.source
+	if origin.size() != 3: return false
+	for key: String in ["generation", "revision", "tick"]:
+		if not _integer(origin.get(key)) or origin[key] < 0: return false
+	if origin.generation > native.get("generation", -1): return false
+	match _material_state:
+		"authored_compatible":
+			return witness.get("kind") == "authored_construction" and origin.tick == 0 \
+				and witness.get("action") in ["fixture_install", "reset_fixture", "replace_fixture", "restore_start", "reopen_layout"] \
+				and not _material_reset.is_empty() and _same(origin, _material_reset.source) \
+				and witness.get("receipt_hash") == _material_reset.receipt_hash
+		"simulation_exposed":
+			return witness.get("kind") == "native_progress" and origin.tick > 0 \
+				and not _material_exposure.is_empty() and _same(origin, _material_exposure)
+		"unknown":
+			return witness.get("kind") in ["invalid_source", "unobserved_generation", "unobserved_running", "nonmonotonic_source",
+				"unproven_retained_lineage", "unacknowledged_replacement", "partial_native_effect"]
+	return false
+
+
+func _lineage_checks(record: Dictionary, rows: Array[Dictionary]) -> void:
+	var before: Dictionary = record.get("before", {})
+	var after: Dictionary = record.get("after", {})
+	var first: Dictionary = before.get("native", {})
+	var last: Dictionary = after.get("native", {})
+	_lineage_observe(before)
+	_assert(rows, "material_lineage_before", _lineage_claim_valid(before),
+		{"state": _material_state, "source": _material_source}, before.get("material_lineage"), "evidence")
+	var prior: String = _material_state
+	var id: String = str(record.get("action", {}).get("id", ""))
+	var complete: bool = record.get("status") == "completed" and record.get("admission", {}).get("accepted") == true
+	var replaced: bool = _native_valid(first) and _native_valid(last) and int(last.generation) > int(first.generation)
+	var fresh: bool = id in ["reset_fixture", "replace_fixture", "restore_start", "reopen_layout"]
+	var retaining: bool = id in ["actor_place", "actor_reset", "actor_remove", "actor_move", "actor_replace", "actor_equipment", "response_mode", "actor_settings"]
+	if replaced and complete and (fresh or retaining):
+		var receipt: Dictionary = record.get("native_receipt", {})
+		var acknowledged: bool = _lineage_receipt(receipt, last)
+		_assert(rows, "material_lineage_replacement_evidence", acknowledged,
+			"actual canonical construction receipt for this replacement generation", receipt.get("receipt_hash"), "evidence")
+		if fresh and acknowledged and after.get("paused") == true and last.get("paused") == true and last.get("tick") == 0:
+			_material_state = "authored_compatible"
+			_material_source = _lineage_source(last)
+			_material_reset = {"source": _material_source.duplicate(true), "receipt_hash": receipt.receipt_hash}
+		elif retaining and acknowledged:
+			if prior == "simulation_exposed": _material_state = prior
+			elif prior == "authored_compatible" and before.get("paused") == true and first.get("paused") == true \
+				and after.get("paused") == true and last.get("paused") == true and first.get("tick") == 0 and last.get("tick") == 0:
+				_material_state = prior
+			else: _material_state = "unknown"
+			_material_source = _lineage_source(last)
+		else: _material_state = "unknown"
+	elif replaced: _material_state = "unknown"
+	elif not complete and _native_valid(first) and _native_valid(last) and first.revision != last.revision \
+		and prior != "simulation_exposed": _material_state = "unknown"
+	_lineage_observe(after)
+	_assert(rows, "material_lineage_after", _lineage_claim_valid(after),
+		{"state": _material_state, "source": _material_source}, after.get("material_lineage"), "evidence")
 
 
 static func _point_key(x: int, y: int) -> String:
@@ -289,6 +430,15 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 	var last_native: Dictionary = after.get("native", {})
 	var status: String = str(record.get("status", ""))
 	var classification: String = str(record.get("classification", ""))
+	var before_version: int = _adapter_version(before)
+	var after_version: int = _adapter_version(after)
+	var modern_lineage: bool = before_version == 3 and after_version == 3
+	if before_version == 0 or after_version == 0 or ((before_version == 3 or after_version == 3) and not modern_lineage):
+		_assert(rows, "adapter_observation_version", false, "supported consistent observation contract", [before_version, after_version], "evidence")
+		return rows
+	if modern_lineage:
+		_assert(rows, "adapter_observation_version", true, 3, 3, "evidence")
+		_lineage_checks(record, rows)
 	if classification in ["not_applicable", "invalid_action", "adapter_failure"]:
 		_unavailable(rows, "gameplay_observation", str(record.get("error", classification)))
 		return rows
@@ -527,14 +677,24 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 				_saved_native_tick = int(last_native.tick)
 				_saved_capture = record.get("persistence_capture", {}).duplicate(true)
 				_saved_observation = after.duplicate(true)
+				if modern_lineage:
+					_saved_material_state = _material_state
+					_saved_material_lineage = after.get("material_lineage", {}).duplicate(true)
+			if modern_lineage:
+				_assert(rows, "save_material_lineage_identity", _same(persistence.get("saved_material_lineage"), _saved_material_lineage),
+					_saved_material_lineage, persistence.get("saved_material_lineage"), "evidence")
+				if not record.has("persistence_capture"):
+					_assert(rows, "save_capture_evidence", false, "actual source-fenced whole-layout capture", "missing", "evidence")
 			if record.has("persistence_capture"):
 				var capture_state: String = _persistence_capture_state(_saved_capture, after)
 				_assert(rows, "save_capture_evidence", capture_state != "invalid", "completed capture or exact observed body protection", capture_state, "evidence")
 				_assert(rows, "save_native_tick_identity", persistence.get("saved_native_tick") == last_native.tick, last_native.tick, persistence.get("saved_native_tick"), "evidence")
 				_assert(rows, "save_material_capture_identity", persistence.get("material_sha256", "") == _saved_capture.get("material_sha256", ""),
 					_saved_capture.get("material_sha256", ""), persistence.get("material_sha256", ""), "evidence")
-				_assert(rows, "save_material_applicability", persistence.get("native_material_equality_applicable") == (_saved_native_tick == 0 and capture_state == "completed"),
-					_saved_native_tick == 0 and capture_state == "completed", persistence.get("native_material_equality_applicable"), "evidence")
+				var authored_materials: bool = _saved_material_state == "authored_compatible" if modern_lineage else _saved_native_tick == 0
+				_assert(rows, "save_material_applicability", (not modern_lineage or persistence.get("native_material_equality_applicable") is bool) \
+					and persistence.get("native_material_equality_applicable") == (authored_materials and capture_state == "completed"),
+					authored_materials and capture_state == "completed", persistence.get("native_material_equality_applicable"), "evidence")
 		"reopen_layout":
 			if _saved_identity.is_empty():
 				_unavailable(rows, "authored_reopen_identity", "No independently observed Save in this tape.")
@@ -542,10 +702,14 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 				_assert(rows, "authored_reopen_identity", after.get("authored_digest") == _saved_identity,
 					_saved_identity, after.get("authored_digest"))
 			var persistence: Dictionary = record.get("persistence", {})
+			if modern_lineage:
+				_assert(rows, "reopen_saved_material_lineage", not _saved_material_lineage.is_empty() \
+					and _same(persistence.get("saved_material_lineage"), _saved_material_lineage),
+					_saved_material_lineage, persistence.get("saved_material_lineage"), "evidence")
 			var saved_state: String = _persistence_capture_state(_saved_capture, _saved_observation) if not _saved_capture.is_empty() else "unrecorded"
 			var current_capture: Dictionary = record.get("persistence_capture", {})
 			var current_state: String = _persistence_capture_state(current_capture, after) if record.has("persistence_capture") else "unrecorded"
-			var capture_custody := true
+			var capture_custody: bool = not modern_lineage
 			if record.has("persistence_capture"):
 				capture_custody = saved_state in ["completed", "native_body_protection"] and current_state in ["completed", "native_body_protection"] \
 					and _same(persistence.get("saved_capture"), _saved_capture) and persistence.get("saved_native_tick") == _saved_native_tick
@@ -554,18 +718,28 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 					and persistence.get("reopened_material_sha256", "") == current_capture.get("material_sha256", ""),
 					{"saved": _saved_capture.get("material_sha256", ""), "current": current_capture.get("material_sha256", "")},
 					{"saved": persistence.get("saved_material_sha256", ""), "current": persistence.get("reopened_material_sha256", "")}, "evidence")
+			if modern_lineage:
+				var expected_comparison: bool = _saved_material_state == "authored_compatible" and capture_custody \
+					and saved_state == "completed" and current_state == "completed"
+				_assert(rows, "reopen_material_applicability", persistence.get("native_material_equality_applicable") is bool \
+					and persistence.native_material_equality_applicable == expected_comparison,
+					expected_comparison, persistence.get("native_material_equality_applicable"), "evidence")
 			if persistence.get("native_material_equality_applicable", false):
-				_assert(rows, "reopen_material_applicability", _saved_native_tick == 0 and (not record.has("persistence_capture") \
-					or (capture_custody and saved_state == "completed" and current_state == "completed")), "captured authored native state at tick zero", _saved_native_tick, "evidence")
+				if not modern_lineage:
+					_assert(rows, "reopen_material_applicability", _saved_native_tick == 0 and (not record.has("persistence_capture") \
+						or (capture_custody and saved_state == "completed" and current_state == "completed")), "captured authored native state at tick zero", _saved_native_tick, "evidence")
 				var expected_materials: String = str(_saved_capture.get("material_sha256", "")) if record.has("persistence_capture") else str(persistence.get("saved_material_sha256", ""))
 				var actual_materials: String = str(current_capture.get("material_sha256", "")) if record.has("persistence_capture") else str(persistence.get("reopened_material_sha256", ""))
 				_assert(rows, "authored_reopen_materials", not expected_materials.is_empty() and expected_materials == actual_materials, expected_materials, actual_materials)
 			else:
 				var reason: String = str(persistence.get("native_material_equality_reason", ""))
-				var justified: bool = (_saved_native_tick > 0 and reason in ["", "evolved_native_tick"] and capture_custody) \
+				var lineage_na: bool = (_saved_material_state == "simulation_exposed" and reason == "simulation_exposed_lineage") \
+					or (_saved_material_state == "unknown" and reason == "unknown_material_lineage")
+				var justified: bool = ((lineage_na if modern_lineage else (_saved_native_tick > 0 and reason in ["", "evolved_native_tick"])) and capture_custody) \
 					or (reason == "native_body_protection" and capture_custody and (saved_state == "native_body_protection" or current_state == "native_body_protection"))
-				_assert(rows, "reopen_material_na_evidence", justified, "observed evolved Save tick or exact native body-protection refusal", {"reason": reason, "saved_tick": _saved_native_tick, "saved_capture": saved_state, "current_capture": current_state}, "evidence")
-				if justified: _unavailable(rows, "authored_reopen_materials", "Native body protection prevents full capture." if reason == "native_body_protection" else "Authored starts do not restore evolved material state.")
+				_assert(rows, "reopen_material_na_evidence", justified, "independently observed incompatible/unknown material lineage or exact body protection" if modern_lineage else "observed evolved Save tick or exact native body-protection refusal", {"reason": reason, "saved_tick": _saved_native_tick, "saved_capture": saved_state, "current_capture": current_state}, "evidence")
+				if justified: _unavailable(rows, "authored_reopen_materials", "Native body protection prevents full capture." if reason == "native_body_protection" else (
+					"Material equality needs independently established authored-compatible lineage." if modern_lineage else "Authored starts do not restore evolved material state."))
 			_undo.clear()
 			_redo.clear()
 			_clipboard.clear()
@@ -583,6 +757,8 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 			_saved_native_tick = -1
 			_saved_capture.clear()
 			_saved_observation.clear()
+			_saved_material_state = "unknown"
+			_saved_material_lineage.clear()
 	var actor_ids := {}
 	for actor: Dictionary in after.get("actors", []):
 		var actor_id: Variant = actor.get("id")

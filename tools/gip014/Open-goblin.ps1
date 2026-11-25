@@ -132,6 +132,69 @@ function Invoke-CampaignCase([string]$Fixture, [string]$Policy = 'CONTROL') {
               transcript = Get-Relative $transcriptPath; transcript_sha256 = Get-Sha $transcriptPath }
 }
 
+function Invoke-AuthoredLineage {
+    $profile = New-TestProfile 'conservation_cell' 'CONTROL' 20 'packaged_evaluator'
+    $entry = @{ status = 'running'; profile = Get-Relative $profile; wall_limit_seconds = 300;
+                script = 'res://goblin/tests/test_authored_lineage.gd';
+                script_sha256 = Get-Sha (Join-Path $packageRoot 'godot/goblin/tests/test_authored_lineage.gd') }
+    $report.authored_lineage = $entry
+    Write-Json $reportPath $report
+    try {
+        $run = Invoke-FixedGodot $profile 'authored-lineage' @('--headless', '--script', 'res://goblin/tests/test_authored_lineage.gd') 300
+        $lines = @($run.text -split '\r?\n' | Where-Object { $_.StartsWith('GOBLIN_AUTHORED_LINEAGE_RESULT ') })
+        if ($lines.Count -ne 1) { throw 'Authored-lineage native completion is missing or duplicated.' }
+        $files = @(Get-ChildItem -LiteralPath $profile -Recurse -File -Filter 'authored-lineage-test.json' | Where-Object { $_.Directory.Name -eq 'goblin' })
+        if ($files.Count -ne 1 -or $files[0].Length -lt 1 -or $files[0].Length -gt 8388608 -or
+            ($files[0].Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+            throw 'Authored-lineage native report is absent, linked, ambiguous or oversized.'
+        }
+        $native = [IO.File]::ReadAllText($files[0].FullName) | ConvertFrom-Json
+        if ($native.schema -cne 'cybersand-goblin-authored-lineage-test-v1' -or $native.status -cne 'pass' -or
+            @($native.checks.PSObject.Properties).Count -lt 1 -or @($native.failures).Count -ne 0 -or @($native.native_cases).Count -ne 4 -or
+            $native.actual_actions.attempted -ne 20 -or $native.actual_actions.completed -ne 20 -or
+            $native.provenance.source_dirty -ne $false) {
+            throw 'Authored-lineage native gate did not complete all four ordinary gameplay cases.'
+        }
+        foreach ($check in $native.checks.PSObject.Properties) {
+            if ($check.Value -isnot [bool] -or $check.Value -ne $true) { throw 'Authored-lineage precondition did not pass.' }
+        }
+        foreach ($key in @('source_commit', 'source_tree', 'platform', 'godot_version', 'godot_sha256', 'native_sha256', 'rapier_sha256', 'project_files_sha256')) {
+            if ([string]$native.provenance.$key -cne [string]$manifest.provenance.$key) { throw 'Authored-lineage report belongs to another source/runtime.' }
+        }
+        if ($native.provenance.replay_identity.game_sources_sha256 -cne $manifest.provenance.replay_identity.game_sources_sha256) {
+            throw 'Authored-lineage game-source identity differs.'
+        }
+        $expected = @('fresh_authored', 'retained_evolved', 'restore_authored', 'actor_reset_retains_evolved')
+        $seen = @{}
+        foreach ($case in $native.native_cases) {
+            if ($expected -cnotcontains [string]$case.id -or $seen.ContainsKey([string]$case.id) -or $case.status -cne 'pass') {
+                throw 'Authored-lineage native case identity or status differs.'
+            }
+            $seen[[string]$case.id] = $true
+        }
+        $entry.status = 'pass'
+        $entry.checks = @($native.checks.PSObject.Properties).Count
+        $entry.native_case_count = @($native.native_cases).Count
+        $entry.attempted_actions = $native.actual_actions.attempted
+        $entry.completed_actions = $native.actual_actions.completed
+        $entry.elapsed_seconds = $run.elapsed_seconds
+    } catch {
+        $entry.status = 'failed'
+        $entry.error = $_.Exception.Message
+        throw
+    } finally {
+        $log = Join-Path $profile 'authored-lineage.log'
+        if (Test-Path -LiteralPath $log -PathType Leaf) { $entry.log = Get-Relative $log; $entry.log_sha256 = Get-Sha $log }
+        $retained = @(Get-ChildItem -LiteralPath $profile -Recurse -File -Filter 'authored-lineage-test.json' | Where-Object { $_.Directory.Name -eq 'goblin' })
+        if ($retained.Count -eq 1 -and $retained[0].Length -le 8388608) {
+            $entry.report = Get-Relative ($retained[0].FullName)
+            $entry.report_sha256 = Get-Sha ($retained[0].FullName)
+        }
+        Write-Json $reportPath $report
+    }
+    return $entry
+}
+
 function Assert-CorpusShape([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw 'Corpus file is missing.' }
     $file = Get-Item -LiteralPath $Path
@@ -305,6 +368,8 @@ try {
                      manifest_sha256 = Get-Sha $manifestPath; platform = 'Windows'; cases = @();
                      import_log = Get-Relative $import.log; import_log_sha256 = Get-Sha $import.log;
                      graphical_smoke = @{ status = 'not_run' }; evidence_scope = 'hosted extracted package; no physical NVIDIA acceptance' }
+        Write-Json $reportPath $report
+        $report.authored_lineage = Invoke-AuthoredLineage
         Write-Json $reportPath $report
         foreach ($fixture in @('actor_workshop', 'save_reopen')) {
             $case = Invoke-CampaignCase $fixture

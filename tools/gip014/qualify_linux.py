@@ -35,8 +35,8 @@ def main(argv=None) -> int:
     if args.qualification_request:
         request = json.loads((run_goblin.ROOT / "tools/gip014/qualification-request-002.json").read_text(encoding="utf-8"))
         plan = request.get("linux_plan", "full")
-        if plan not in ("full", "smoke"):
-            parser.error("The committed qualification request must select the full or smoke Linux plan")
+        if plan not in ("full", "smoke", "long"):
+            parser.error("The committed qualification request must select the full, smoke or long Linux plan")
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=False)
     ledger = {"schema": "cybersand-goblin-linux-qualification-v2", "status": "running", "source_commit": run_goblin.git("rev-parse", "HEAD"),
@@ -83,7 +83,7 @@ def main(argv=None) -> int:
             return cancelled("python-contracts")
         okay = save("python-contracts", 0 if process["status"] == "pass" else 2)
         if okay:
-            for case in ("unit", "discovery", "adapter", "expanded", "controller", "laboratory", "gameplay", "metamorphic", "baseline"):
+            for case in ("unit", "discovery", "adapter", "expanded", "controller", "laboratory", "gameplay", "metamorphic", "authored_lineage", "baseline"):
                 code = run_goblin.main(["--godot", str(godot), "--out", str(out / "source-tests" / case), "--case", case,
                                         "--timeout-seconds", "300"])
                 okay = save(case, code) and okay

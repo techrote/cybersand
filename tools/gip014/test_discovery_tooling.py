@@ -10,6 +10,7 @@ import copy
 from collections import Counter
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -68,7 +69,7 @@ def artificial_row(name, arguments=None, before=None, after=None, status="comple
             "semantic_sha256": "", "observation_sha256": "", "error": ""}
 
 
-def artificial_fixtures():
+def artificial_fixtures(include_current=True):
     base = artificial_observation()
     rich = copy.deepcopy(base)
     rich.update(actors=[{"id": 1, "observed": True, "model": "runner", "position": [64.5, 80],
@@ -126,6 +127,17 @@ def artificial_fixtures():
     replaced.update(fixture_id="history_edges", scene_identity="synthetic-replacement")
     replaced["native"]["generation"] = 8
     rows.append(artificial_row("replace_fixture", {"fixture": "history_edges"}, rich, replaced))
+    if include_current:
+        explicit_legacy = dict(base, adapter_version=2)
+        current = dict(base, adapter_version=3)
+        exposed = copy.deepcopy(current)
+        exposed["material_lineage"] = {"state": "simulation_exposed"}
+        unsupported = dict(base, adapter_version=4)
+        observations.extend([explicit_legacy, dict(base, adapter_version=2.0), current,
+                             dict(base, adapter_version=3.0), exposed, unsupported,
+                             dict(base, adapter_version="3"), dict(base, adapter_version=True)])
+        rows.extend([artificial_row("pause", before=current, after=exposed),
+                     artificial_row("pause", before=unsupported, after=unsupported)])
     return {"observations": observations, "rows": rows,
             "context": {"fixture_id": "construction", "fixture_version": 2, "fixture_sha256": "1" * 64,
                         "provenance_sha256": "2" * 64, "seed": 13, "personality": "CONTROL"}}
@@ -254,6 +266,20 @@ class CrossLanguageControls(unittest.TestCase):
         self.assertFalse(self.actual["states"][3]["material_sample"]["available"])
         self.assertEqual(self.actual["states"][0]["world_size"], "unknown")
 
+    def test_explicit_current_and_legacy_versions_have_exact_parity(self):
+        states = self.actual["states"]
+        self.assertEqual(states[5], states[1])
+        self.assertEqual(states[6], states[1])
+        self.assertEqual(states[7]["schema"], "cybersand-goblin-state-v2")
+        self.assertEqual(states[7]["progress_phase"], "zero_tick")
+        self.assertEqual(states[7], states[8])
+        self.assertEqual(states[7], states[9])
+        self.assertTrue(all(v == {"schema": "cybersand-goblin-state-unsupported",
+                                  "reason": "unsupported_adapter_version"} for v in states[10:]))
+        unsupported = self.actual["per_row"][-1]
+        self.assertTrue(all(not keys for keys in unsupported["keys"].values()))
+        self.assertEqual(unsupported["summary"]["records_without_native_observation"], 1)
+
     def test_all_nine_coverage_key_sets_and_counts_match(self):
         expected = evidence.coverage({"steps": self.fixture["rows"]})
         self.assertEqual(self.actual["keys"], expected["keys"])
@@ -309,6 +335,50 @@ class CrossLanguageControls(unittest.TestCase):
         duplicate["records"].append(copy.deepcopy(duplicate["records"][0]))
         with self.assertRaisesRegex(ValueError, "duplicate"):
             corpus_io.validate_corpus(duplicate)
+
+
+class ObservationVersionControls(unittest.TestCase):
+    def test_qualified_legacy_projection_and_all_nine_key_sets_remain_exact(self):
+        # These values were independently recorded from the frozen 5ee reader
+        # before this source change. They qualify reader compatibility only.
+        fixture = artificial_fixtures(include_current=False)
+        expected = ["113293f210ca4d23c9643fe257014c531f2347525f8c1cfa502b1f87d856370d",
+                    "9b3327b0b0decad7edc6b802dc8e82123f93410b1b4bc81cc3b73325b3697e36",
+                    "5d0f027a86b854c8e410b868d824974a03784c9b7eb6d10c915999a4a861d355",
+                    "6858c91fc721f4f1bd2474ef8a4e59ee0f74683a7f0d33b9909339796517d984",
+                    "86ec08262049ea3243573bd30845519b11dfb906c4a2613a7b51f67d5b52bee5"]
+        self.assertEqual([evidence.digest(evidence.state(v)) for v in fixture["observations"]], expected)
+        for version in (1, 2, 2.0):
+            observation = dict(artificial_observation(), adapter_version=version)
+            self.assertEqual(evidence.digest(evidence.state(observation)), expected[1])
+            self.assertTrue(evidence.observed(observation))
+        keys = evidence.coverage({"steps": fixture["rows"]})["keys"]
+        self.assertEqual(hashlib.sha256(encoded(keys)).hexdigest(),
+                         "8b5d6cdb06ace1ca7e2b69c4634e0816a68b604f33eff7135890055b0bef08a6")
+
+    def test_current_zero_tick_is_not_authored_lineage_or_a_new_coverage_dimension(self):
+        legacy = evidence.state(artificial_observation())
+        expected = dict(legacy, schema="cybersand-goblin-state-v2", progress_phase="zero_tick")
+        for version in (3, 3.0):
+            observation = dict(artificial_observation(), adapter_version=version)
+            self.assertEqual(evidence.state(observation), expected)
+            self.assertTrue(evidence.observed(observation))
+            observation["material_lineage"] = {"state": "simulation_exposed"}
+            self.assertEqual(evidence.state(observation), expected)
+            observation["material_lineage"] = {"state": "authored_compatible"}
+            self.assertEqual(evidence.state(observation), expected)
+
+    def test_unsupported_versions_have_no_observed_coverage(self):
+        expected = {"schema": "cybersand-goblin-state-unsupported", "reason": "unsupported_adapter_version"}
+        for version in (0, -1, 4, 3.5, "3", True, None, math.inf, math.nan):
+            with self.subTest(version=version):
+                observation = dict(artificial_observation(), adapter_version=version)
+                self.assertEqual(evidence.state(observation), expected)
+                self.assertFalse(evidence.observed(observation))
+                result = evidence.coverage({"steps": [artificial_row("pause", before=observation, after=observation)]})
+                self.assertTrue(all(not keys for keys in result["keys"].values()))
+                self.assertEqual(result["admitted_observed_actions"], 0)
+                self.assertEqual(result["records_without_native_observation"], 1)
 
 
 class QueueCustodyControls(unittest.TestCase):

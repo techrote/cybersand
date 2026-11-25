@@ -64,6 +64,7 @@ func run() -> void:
 	if not check(installed.get("ok", false), "committed construction fixture installed"):
 		await finish()
 		return
+	oracle.reset(installed)
 	var setup: Array[Dictionary] = [{"id":"pause","args":{}},
 		{"id":"camera","args":{"x":0,"y":0,"width":480,"height":270}},
 		{"id":"select_material","args":{"material":0}},

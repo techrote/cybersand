@@ -12,6 +12,7 @@ const Gameplay = preload("res://goblin/goblin_gameplay_actions.gd")
 const GameplayOracles = preload("res://goblin/goblin_gameplay_oracles.gd")
 const Capabilities = preload("res://goblin/goblin_capabilities.gd")
 const Fixtures = preload("res://goblin/goblin_fixtures.gd")
+const MaterialLineage = preload("res://goblin/goblin_material_lineage.gd")
 const SAVE_NAME := "goblin-layout"
 const PROFILE_SCHEMA := "cybersand-goblin-profile-v1"
 const BODY_CAPTURE_REFUSAL := "Move or remove the body before editing or copying its covered cells."
@@ -61,6 +62,8 @@ var _saved_authored_digest := ""
 var _saved_material_digest := ""
 var _saved_native_tick := -1
 var _saved_capture: Dictionary = {}
+var _saved_material_lineage: Dictionary = {}
+var _material_history := MaterialLineage.new()
 var _last_edit_region := Rect2i(32, 32, 64, 64)
 var _probe_key := ""
 var _probe_counts: Dictionary = {}
@@ -225,6 +228,8 @@ func install_fixture(id: String, data: Dictionary, admission_row: Dictionary = {
 	_saved_material_digest = ""
 	_saved_native_tick = -1
 	_saved_capture.clear()
+	_saved_material_lineage.clear()
+	_material_history.authored(_capture_source(), json_value(host.tower_context.get("liquid_construction_receipt", {})), "fixture_install", host.paused)
 	_last_edit_region = Rect2i(32, 32, 64, 64)
 	return {"ok": true, "observation": observe(), "native_receipt": json_value(host.tower_context.get("liquid_construction_receipt", {}))}
 
@@ -245,6 +250,10 @@ func observe() -> Dictionary:
 		"owner_generation": worker._world_generation, "owner_paused": worker._paused,
 		"current_source_receipt": worker._workbench_source.receipt().duplicate(true)}
 	worker._mutex.unlock()
+	var native := {"generation": int(source.get("generation", -1)), "revision": int(source.get("revision", -1)),
+		"tick": int(source.get("tick", -1)), "paused": bool(source.get("paused", false)),
+		"busy": bool(source.get("busy", true)), "failed": worker.has_failed()}
+	var lineage: Dictionary = _material_history.observe(native, host.paused)
 	var actors: Array = []
 	var actor_ids: Array = []
 	var controllable_ids: Array = []
@@ -275,7 +284,7 @@ func observe() -> Dictionary:
 	return {"mounted": mounted, "fixture_id": fixture_id, "scene_identity": fixture_digest,
 		"progress_refusal": _observed_progress_refusal(source),
 		"world_size": json_value(Setup.extent_of(bench.applied)),
-		"adapter_version": 2, "feature_capabilities": Capabilities.negotiate(host, bench),
+		"adapter_version": 3, "material_lineage": lineage, "feature_capabilities": Capabilities.negotiate(host, bench),
 		"configuration": {"response": str(bench.applied.get("response", "")), "thruster_fire": bool(bench.applied.get("fire", false))},
 		"source": {"authored": json_value(bench.applied.get("source", [])),
 			"pending_commands": pending_source_commands,
@@ -286,9 +295,7 @@ func observe() -> Dictionary:
 		"paint_preview": {"dragging": bool(editor.dragging), "samples": editor.stroke.size(),
 			"anchor": json_value(editor.anchor), "cursor": json_value(editor.cursor)},
 		"material_probe": _material_probe(source),
-		"native": {"generation": int(source.get("generation", -1)), "revision": int(source.get("revision", -1)),
-			"tick": int(source.get("tick", -1)), "paused": bool(source.get("paused", false)),
-			"busy": bool(source.get("busy", true)), "failed": worker.has_failed()},
+		"native": native,
 		"paused": host.paused, "material": int(editor.material_id) if editor != null else -1,
 		"tool": editor.tool_name() if editor != null else "", "brush_radius": editor.radius() if editor != null else -1,
 		"selection": json_value(editor.selection) if editor != null else [],
@@ -310,6 +317,7 @@ func observe() -> Dictionary:
 		"authored_digest": digest(bench.applied) if bench != null else "",
 		"saved_authored_digest": _saved_authored_digest, "saved_material_digest": _saved_material_digest,
 		"saved_native_tick": _saved_native_tick,
+		"saved_material_lineage": _saved_material_lineage.duplicate(true),
 		"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1,
 		"snapshot_serial": int(host.latest_snapshot.serial) if host.latest_snapshot != null else -1,
 		"native_worker_request": int(host.latest_snapshot.native_worker_request) if host.latest_snapshot != null else -1,
@@ -600,11 +608,14 @@ func execute(action: Dictionary) -> Dictionary:
 			_saved_material_digest = str(material.get("material_sha256", ""))
 			_saved_native_tick = int(worker.paint_state().get("tick", -1))
 			_saved_capture = material.duplicate(true)
-			var comparison: bool = _saved_native_tick == 0 and not material.has("error")
+			_saved_material_lineage = observe().get("material_lineage", {}).duplicate(true)
+			var comparison: bool = _saved_material_lineage.get("state") == "authored_compatible" and not material.has("error")
 			row["persistence"] = {"name": SAVE_NAME, "read_authored_digest": _saved_authored_digest,
 				"material_sha256": _saved_material_digest, "saved_native_tick": _saved_native_tick,
+				"saved_material_lineage": _saved_material_lineage.duplicate(true),
 				"native_material_equality_applicable": comparison,
-				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(material) else "evolved_native_tick"),
+				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(material) else (
+					"simulation_exposed_lineage" if _saved_material_lineage.get("state") == "simulation_exposed" else "unknown_material_lineage")),
 				"semantics": "authored start, not evolved simulation"}
 		"reopen_layout":
 			if _saved_authored_digest.is_empty(): return _finish(row, started, "refused", "not_applicable", "no layout saved in this campaign")
@@ -618,15 +629,18 @@ func execute(action: Dictionary) -> Dictionary:
 			if int(worker.paint_state().generation) <= generation:
 				row["native_attempt"] = json_value(host.tower_context.get("liquid_construction_attempt", {}))
 				return _finish(row, started, "refused", "game_observation", str(host.microscenario_error))
+			row.native_receipt = json_value(host.tower_context.get("liquid_construction_receipt", {}))
 			var material: Dictionary = await capture(Rect2i(0, 0, 512, 512), false)
 			row["persistence_capture"] = material.duplicate(true)
-			var comparison: bool = _saved_native_tick == 0 and not _saved_material_digest.is_empty() and not material.has("error")
+			var comparison: bool = _saved_material_lineage.get("state") == "authored_compatible" and not _saved_material_digest.is_empty() and not material.has("error")
 			row["persistence"] = {"name": SAVE_NAME, "expected_authored_digest": _saved_authored_digest,
 				"reopened_authored_digest": digest(bench.applied), "saved_material_sha256": _saved_material_digest,
 				"reopened_material_sha256": material.get("material_sha256", ""),
 				"saved_native_tick": _saved_native_tick, "saved_capture": _saved_capture.duplicate(true),
+				"saved_material_lineage": _saved_material_lineage.duplicate(true),
 				"native_material_equality_applicable": comparison,
-				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(_saved_capture) or _body_protected_capture(material) else "evolved_native_tick"),
+				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(_saved_capture) or _body_protected_capture(material) else (
+					"simulation_exposed_lineage" if _saved_material_lineage.get("state") == "simulation_exposed" else "unknown_material_lineage")),
 				"semantics": "authored start, not evolved simulation"}
 			if material.has("error") and not _body_protected_capture(material):
 				return _finish(row, started, "partial", _capture_failure_classification(material), material.error)
@@ -635,6 +649,7 @@ func execute(action: Dictionary) -> Dictionary:
 			if not result.get("ok", false):
 				return _finish(row, started, "partial" if row.admission.get("accepted", false) else "refused",
 					result.get("classification", "game_observation"), result.get("error", "fixture reset refused"))
+			row.native_receipt = result.get("native_receipt", {}).duplicate(true)
 	if id in EDIT_IDS:
 		var receipt_status: String = str(row.native_receipt.get("status", ""))
 		if receipt_status != "completed":
@@ -664,6 +679,7 @@ func _finish(row: Dictionary, started: int, status: String, classification: Stri
 	row.status = status
 	row.classification = classification
 	row.error = error
+	if worker != null and host != null: _material_history.finish(row, _capture_source(), host.paused)
 	row.after = observe()
 	if status == "partial" and classification != "native_failure":
 		var interval: Dictionary = row.get("interval", {})

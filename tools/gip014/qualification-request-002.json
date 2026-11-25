@@ -1,19 +1,21 @@
 {
   "schema": "cybersand-goblin-discovery-qualification-request-v1",
   "mission": "GIP-014-goblin-002",
-  "request": 8,
+  "request": 9,
   "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
-  "previous_source": "1d096defba5e8c3d33f15a4307382ebe3b4ff49b",
-  "previous_run": 45547821984,
-  "linux_plan": "full",
-  "plan": "All Linux focused, regression-export, graphical, seven-episode memory and full142-episode comparative gates; all Windows source, extracted-package and final sealing gates.",
-  "comparative_campaign": "Requests5 and6 stopped at the new native test fixture before graphical/memory/comparative execution. The corrected full comparison has not yet run. Request8 starts the complete programme after repairing only that native fixture; original d849142-episode evidence remains separately retained.",
-  "changes": "Correct test-local authored coordinate type comparisons and exercise six supported actor models through Replace operations that are actually available in the ordinary compact picker. Preserve production gameplay, adapters, runtime oracles, policy generators and owner launchers. Retain all prior failures without relabeling them as production defects.",
+  "previous_source": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+  "previous_run": 45550152509,
+  "linux_plan": "long",
+  "plan": "All Linux focused, authored-lineage, regression-export, graphical and seven-episode memory gates, followed by the existing eight-episode long plan at128/256/512/1024actions. All Windows source, extracted-package, authored-lineage and final sealing gates.",
+  "comparative_campaign": "The142-episode comparison at5ee remains an independently reviewed exact-source cohort. Request9 tests the narrow authored-history oracle correction with eight registered long episodes; it does not claim a new142-episode policy comparison or pool state-v1 and state-v2 coverage.",
+  "changes": "Repair goblin Save/Reopen native-equality applicability: track actual authored-compatible, simulation-exposed or unknown material history and bind every proof to admitted observations. Preserve fresh-authored positive equality; retaining replacement and actor Reset must not erase exposure. Add20-action source and extracted native regression, independent readers, strict proof-custody controls, and explicit versioned state projection. No production-native implementation changes.",
   "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
   "evidence": "Retain every attempted process; production defects require independent reproduction and examination",
   "memory_experiment": "One actual Control64 cultivation supplies an unchanged corpus; two matched seeds compare fresh, imported hints, and explicit four-action prefix reuse in six Coverage Hunter64 episodes. Historical observations never count as fresh coverage.",
   "platforms": [
     "linux",
     "windows"
-  ]
+  ],
+  "before_case": "The unchanged070 diagnostic independently reproduced the old oracle failure with9completed actions and20qualified source boundaries. Preserve the exact five-action failing tape and all earlier incomplete attempts; classify it as a test-oracle defect, not a production gameplay defect.",
+  "package_contract": "Version3 requires four actual native lineage cases and their20action tapes in the extracted evaluator. Legacy contract2 remains readable; same-source replay identity rules remain unchanged."
 }

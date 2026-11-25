@@ -20,6 +20,7 @@ func _check(ok: bool, label: String) -> void:
 
 func _run() -> void:
 	_state_tests()
+	_version_tests()
 	_coverage_tests()
 	_corpus_tests()
 	_policy_tests()
@@ -71,6 +72,50 @@ func _state_tests() -> void:
 	configured.configuration = {"response":"LA"}
 	configured.camera.mode = 1
 	_check(State.abstract(configured).response_mode == "LA" and State.abstract(configured).camera_mode == 1, "configuration projection follows actual adapter observation fields")
+
+func _version_tests() -> void:
+	# This signature is the exact qualified 5ee v1 projection of the same
+	# synthetic state, independently retained before changing the reader.
+	var legacy := _observation()
+	legacy.native.tick = 0
+	legacy.material = 2
+	legacy.brush_radius = 0
+	legacy.undo_available = false
+	legacy.redo_available = false
+	legacy.camera.mode = "free"
+	legacy.paint_preview = {"dragging":false}
+	legacy.configuration = {"response":"DYNAMIC"}
+	legacy.source = {"authored":[]}
+	var legacy_signature := "9b3327b0b0decad7edc6b802dc8e82123f93410b1b4bc81cc3b73325b3697e36"
+	_check(State.signature(legacy) == legacy_signature, "absent-version historical projection keeps exact v1 bytes/hash")
+	for version: Variant in [1, 2, 2.0]:
+		legacy.adapter_version = version
+		_check(State.observed(legacy) and State.signature(legacy) == legacy_signature,
+			"explicit legacy observation version keeps exact v1 projection: " + str(version))
+	var current := legacy.duplicate(true)
+	current.adapter_version = 3
+	var projected: Dictionary = State.abstract(current)
+	_check(projected.schema == State.SCHEMA and projected.progress_phase == "zero_tick" and State.observed(current),
+		"current tick zero is a clock observation, not an authored material assertion")
+	current.adapter_version = 3.0
+	_check(State.abstract(current) == projected, "integral JSON current version retains the same projection")
+	current.material_lineage = {"state":"simulation_exposed"}
+	_check(State.abstract(current) == projected, "material lineage metadata creates no new coverage dimension")
+	var unsupported := current.duplicate(true)
+	unsupported.adapter_version = 4
+	var fixed_unknown: Dictionary = State.abstract(unsupported)
+	for version: Variant in [0, -1, 4, 3.5, "3", true, null, INF, NAN]:
+		unsupported.adapter_version = version
+		_check(not State.observed(unsupported) and State.abstract(unsupported) == fixed_unknown,
+			"unsupported observation version has one bounded projection and no coverage: " + str(version))
+	var no_credit: RefCounted = Coverage.new()
+	var row := _row("pause")
+	row.before.adapter_version = 4
+	row.after.adapter_version = 4
+	no_credit.observe(row)
+	_check(no_credit.summary().unique.action == 0 and no_credit.summary().unique.state_transition == 0
+		and no_credit.summary().records_without_native_observation == 1,
+		"nominal completed action with unsupported observation version earns no actual coverage")
 
 func _coverage_tests() -> void:
 	var coverage: RefCounted = Coverage.new()
@@ -140,6 +185,11 @@ func _coverage_tests() -> void:
 	for index: int in range(Coverage.MAX_PRIOR_KEYS + 1): excessive.variants[str(index)] = 1
 	_check(not prior.load_memory(excessive), "persistent hint maps enforce their independent capacity")
 	_check(prior.score({"id":"pause", "args":{}}, _observation()) < prior.score({"id":"line", "args":{}}, _observation()), "prior observed action counts influence search only")
+	var current_observation := _observation()
+	current_observation.adapter_version = 3
+	_check(prior.score({"id":"pause", "args":{}}, current_observation) < prior.score({"id":"line", "args":{}}, current_observation)
+		and prior.summary().unique.state_transition == 0 and prior.summary().completed_admitted_actions == 0,
+		"bounded legacy hints remain search hints for v3 and never create fresh evidence")
 	var malicious := {"schema":Coverage.SCHEMA, "action":{"pause":-1}}
 	_check(not prior.load_memory(malicious), "negative imported action count refuses")
 	var blind: RefCounted = Coverage.new()
