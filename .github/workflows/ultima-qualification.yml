@@ -11,6 +11,8 @@ on:
       - 'godot/tests/workbench_save_fault_child.gd'
       - 'tools/ci/run_workbench_save_qualification.py'
       - 'tools/ci/run_ultima_qualification.py'
+      - 'tools/ci/package_ultima_evaluator.py'
+      - 'tools/ci/test_package_ultima_evaluator.py'
       - 'godot/addons/cybersand_native/**'
       - 'godot/addons/godot-rapier2d/**'
   workflow_dispatch:
@@ -51,6 +53,11 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Check evaluator admission and integrity guards
+        run: |
+          set -euo pipefail
+          mkdir -p build/ultima
+          python tools/ci/test_package_ultima_evaluator.py -v 2>&1 | tee build/ultima/evaluator-guard-tests.log
       - name: Acquire exact official engine archive
         run: |
           set -euo pipefail
@@ -106,6 +113,11 @@ jobs:
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Check evaluator admission and integrity guards
+        run: |
+          set -euo pipefail
+          mkdir -p build/ultima
+          python tools/ci/test_package_ultima_evaluator.py -v 2>&1 | tee build/ultima/evaluator-guard-tests.log
       - name: Acquire exact official engine archive
         run: |
           set -euo pipefail
@@ -120,6 +132,56 @@ jobs:
             --godot-archive "$RUNNER_TEMP/ultima-godot.zip" \
             --expected-source-sha "$EXPECTED_SOURCE_SHA" \
             --output build/ultima
+      - name: Stage pinned notices and signed Windows redistribution dependencies
+        shell: pwsh
+        run: |
+          $dependencies = Join-Path $env:RUNNER_TEMP 'ultima-godot'
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notice download failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice download failed' }
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'ultima-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Signed VC runtime staging failed' }
+          Copy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies
+          Copy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies
+      - name: Prepare source-matched test-only Workbench evaluator
+        run: |
+          set -euo pipefail
+          python tools/ci/package_ultima_evaluator.py build \
+            --dependencies "$RUNNER_TEMP/ultima-godot" \
+            --qualification build/ultima/qualification.json \
+            --output "$RUNNER_TEMP/ultima-workbench-evaluator" \
+            --manifest build/ultima/evaluator-manifest.json
+      - name: Verify copied evaluator module loading with isolated disposable data
+        shell: pwsh
+        run: |
+          $probe = Join-Path $env:RUNNER_TEMP 'ultima-evaluator-probe'
+          Copy-Item -Recurse (Join-Path $env:RUNNER_TEMP 'ultima-workbench-evaluator') $probe
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'ultima-package-profile'
+          $env:LOCALAPPDATA = Join-Path $env:RUNNER_TEMP 'ultima-package-local'
+          $console = Join-Path $probe 'Godot_v4.7-stable_win64_console.exe'
+          & $console --headless --path (Join-Path $probe 'godot') --editor --quit *> build/ultima/evaluator-import.log
+          if ($LASTEXITCODE -ne 0) { throw 'Copied evaluator import failed' }
+          if (Select-String -Path build/ultima/evaluator-import.log -Pattern 'SCRIPT ERROR:|ERROR:|Parse Error') { throw 'Copied evaluator import emitted errors' }
+          & tools/ci/check_windows_package_modules.ps1 -Package $probe -Evidence build/ultima/evaluator-modules.json
+          if ($LASTEXITCODE -ne 0) { throw 'Copied evaluator loaded an unexpected module' }
+          $manifestHash = (Get-FileHash build/ultima/evaluator-manifest.json -Algorithm SHA256).Hash.ToLowerInvariant()
+          python tools/ci/package_ultima_evaluator.py verify $probe --expected-manifest-sha256 $manifestHash
+          if ($LASTEXITCODE -ne 0) { throw 'Copied evaluator changed original inputs' }
+      - name: Retain test-only Workbench evaluator for owner qualification
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ultima-workbench-test-only-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/ultima-workbench-evaluator/
+          if-no-files-found: error
+          retention-days: 90
       - name: Retain non-publishing qualification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
