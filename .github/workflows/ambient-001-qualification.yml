@@ -1,0 +1,166 @@
+name: AMBIENT-001 — scoped Windows qualification and evaluator
+
+# The explicit request marker is changed only after a coherent source freeze.
+# Ordinary branch pushes and Draft PR updates do not queue another campaign.
+# Retained native inputs must match exactly; no runtime build or publication.
+on:
+  push:
+    branches: [feature/ambient-001-20261124]
+    paths: ['tools/fixtures/ambient-001-qualification-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ambient-001-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+
+jobs:
+  windows:
+    name: Actual Windows ambient gameplay and portable evaluator
+    if: github.ref == 'refs/heads/feature/ambient-001-20261124'
+    runs-on: windows-2022
+    # Accepted hosted allowance leaves the owned-process watchdog time to write
+    # failure receipts and upload them before the job itself can be cancelled.
+    timeout-minutes: 180
+    steps:
+      - name: Check out the exact frozen host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify provider policy and unchanged retained Windows runtimes
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          git rev-parse HEAD | Set-Content evidence/source-commit.txt
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python tools/ci/test_ambient_delivery.py
+          if ($LASTEXITCODE -ne 0) { throw 'Ambient completion and delivery custody tests failed' }
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+          @'
+          import json, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import verify_retained_runtime
+          result = verify_retained_runtime(pathlib.Path.cwd())
+          pathlib.Path('evidence/retained-runtime.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched retained runtime verification failed' }
+
+      - name: Authenticate pinned Godot and portable Windows dependencies
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          $env:AMBIENT_GODOT_ARCHIVE = $archive
+          @'
+          import json, os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          executable, record = prepare_godot(pathlib.Path(os.environ['AMBIENT_GODOT_ARCHIVE']))
+          pathlib.Path('evidence/godot-archive.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+              stream.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot archive/version verification failed' }
+          $dependencies = Join-Path $env:RUNNER_TEMP 'godot-windows'
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notice download failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice download failed' }
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'ambient-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Portable VC runtime staging failed' }
+          Copy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies
+          Copy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies
+
+      - name: Execute scoped ambient and existing control regressions
+        shell: pwsh
+        run: |
+          python tools/qualify_ambient.py --godot $env:GODOT_EXE --output evidence/ambient
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows ambient qualification failed; original receipts retained' }
+
+      - name: Capture actual Windows ANGLE examples and profile editor
+        shell: pwsh
+        run: |
+          python tools/qualify_ambient.py --godot $env:GODOT_EXE --capture --output evidence/ambient-graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows graphical ambient examples failed; headless is not a substitute' }
+
+      - name: Build source-bound ordinary interactive Workbench evaluator
+        shell: pwsh
+        run: |
+          $archive = "build/CyberSand-AMBIENT-001-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          python tools/package_ambient_evaluator.py build --dependencies $env:WINDOWS_DEPENDENCIES --qualification evidence/ambient --graphical-qualification evidence/ambient-graphical --output build/ambient-evaluation --archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound evaluator construction failed' }
+          'AMBIENT_EVALUATION_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Pristine extraction, gameplay, save-reopen and ordinary launcher
+        shell: pwsh
+        run: |
+          $extracted = Join-Path $env:RUNNER_TEMP 'ambient owner package'
+          Expand-Archive -LiteralPath $env:AMBIENT_EVALUATION_ARCHIVE -DestinationPath $extracted
+          python tools/package_ambient_evaluator.py verify $extracted --pristine
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator identity failed' }
+          $console = Join-Path $extracted 'Godot_v4.7-stable_win64_console.exe'
+          python tools/qualify_ambient.py --godot $console --project (Join-Path $extracted 'godot') --case engine --case perception --case authoring_save --case authoring_reopen --case workbench --output evidence/extracted-package
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted Windows gameplay or reopening failed' }
+          python tools/qualify_ambient.py --godot $console --project (Join-Path $extracted 'godot') --capture --output evidence/extracted-graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine extracted package graphical launch failed' }
+          $start = New-Object System.Diagnostics.ProcessStartInfo
+          $start.FileName = $env:ComSpec
+          $start.Arguments = '/d /s /c ""' + (Join-Path $extracted 'Open Workbench.cmd') + '" --headless --quit-after 180"'
+          $start.UseShellExecute = $false
+          $start.RedirectStandardOutput = $true
+          $start.RedirectStandardError = $true
+          $process = New-Object System.Diagnostics.Process
+          $process.StartInfo = $start
+          [void]$process.Start()
+          $stdout = $process.StandardOutput.ReadToEndAsync()
+          $stderr = $process.StandardError.ReadToEndAsync()
+          if (!$process.WaitForExit(300000)) {
+            $process.Kill($true)
+            throw 'Ordinary packaged launcher exceeded300 seconds'
+          }
+          $stdout.Result | Set-Content evidence/packaged-launcher.stdout.log
+          $stderr.Result | Set-Content evidence/packaged-launcher.stderr.log
+          if ($process.ExitCode -ne 0 -or ($stdout.Result + $stderr.Result) -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|ERROR:') { throw 'Ordinary packaged launcher failed' }
+          if ($stdout.Result -notmatch 'SHARED_WORKBENCH_LAUNCH_READY') { throw 'Ordinary Workbench launch marker absent' }
+          python tools/package_ambient_evaluator.py verify $extracted
+          if ($LASTEXITCODE -ne 0) { throw 'Original evaluator input changed during execution' }
+
+      - name: Retain verified portable Windows evaluator
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-001-windows-${{ github.sha }}
+          path: |
+            build/CyberSand-AMBIENT-001-Windows-*.zip
+            build/CyberSand-AMBIENT-001-Windows-*.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Retain original source, runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-001-evidence-${{ github.sha }}
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30

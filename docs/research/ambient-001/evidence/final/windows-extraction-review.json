@@ -1,0 +1,104 @@
+{
+  "schema": "ambient-independent-extraction-stages-review/v1",
+  "reviewed_utc": "2026-11-24T20:10:16.304674+00:00",
+  "reviewer": "Specialist B; read-only receipt and original-log inspection",
+  "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+  "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+  "completed_execution_stages_status": "passed",
+  "completed_integrity_stages_status": "passed",
+  "prior_failed_gate": "Windows02 final postlaunch integrity rejected source-backed depth_composite.gdshader.uid; its failed workflow and reviews remain retained separately. The new exact-source gate completed both original and postlaunch integrity checks.",
+  "verified_manifest_file_count": 1172,
+  "verified_integrity_passes": 2,
+  "qualification_sha256": "fc928bd7e813fde5ea83ca7b12815fe4f22c0a7d48656f1d273956bbc77521e2",
+  "full_source_qualification_sha256": "b2ae02cf0eab5160aedf4abec7903c1fb2580d47bcd0d003d0676c0764f12960",
+  "full_source_independent_review_sha256": "e7fde19e51b03703019debea2531e6eb720ddd4d12043ffee471fa863e75e8be",
+  "program_sha256": "a6a5549387513936671e83b1d7180fcfeb996544da2cef075082a1a361691506",
+  "original_workflow_log_sha256": "69ac144ab22418744d82d312dd034daaea4603a0856c93fe91a576f5fe6912a6",
+  "source_inputs_rehashed": 1115,
+  "extracted_project_inputs_rehashed": 837,
+  "independent_checks": 2008,
+  "completed_cases": 5,
+  "fixture_assertions": 1548,
+  "cases": [
+    {
+      "name": "engine",
+      "seconds": 0.937,
+      "completion": {
+        "checks": 877,
+        "failures": 0
+      },
+      "process_sha256": "bf04b82c0ccda96fd75b1345cc7da2de7ef040542f552f507f810365ac8f0d79",
+      "log_sha256": "782c8ca24a72830193cf7becdf7bfa00529b501f5d327de7fae682b9ae9a7666"
+    },
+    {
+      "name": "perception",
+      "seconds": 1.969,
+      "completion": {
+        "checks": 130,
+        "failures": 0
+      },
+      "process_sha256": "3750c624228225191082dcdf2b3ad689fedb3125f9cabed9fa969af5d127b84c",
+      "log_sha256": "87506a03768ac37f95b04a5231c7af368dbd1dd7d2b33d84e92ddcc7e8f8df72"
+    },
+    {
+      "name": "authoring_save",
+      "seconds": 1.406,
+      "completion": {
+        "checks": 242,
+        "failures": 0
+      },
+      "process_sha256": "d9b39359f446b3639dd9d5ee18bb628b75f3bb220b479b8ca2202813ccc3ead2",
+      "log_sha256": "8b95cb7c518f60734a980820a83aadcb9e98842ac2100c3ed05ee07dfb353301"
+    },
+    {
+      "name": "authoring_reopen",
+      "seconds": 1.61,
+      "completion": {
+        "checks": 256,
+        "failures": 0
+      },
+      "process_sha256": "3a9fba2151270a6bdf5425188951aea2fa11d99dd7a69710ccda19f7eb7c511f",
+      "log_sha256": "d8cefd07cd3cf5433557abea1ab58a50128d839f5402b31bd19ce37047e0e7bd"
+    },
+    {
+      "name": "workbench",
+      "seconds": 31.234,
+      "completion": {
+        "checks": 43,
+        "failures": 0
+      },
+      "process_sha256": "dda57d0ecdf63734a4381d0c0f6fe6f5600dd3c5991da430bc0f6e79eb053ffc",
+      "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0"
+    }
+  ],
+  "native_material_edit_labels": [
+    "Oil right",
+    "Oil relocated left",
+    "Water x=524",
+    "Water x=544",
+    "Water x=548",
+    "Water x=544",
+    "Water x=536",
+    "Water x=-1"
+  ],
+  "workbench_phase_labels": [
+    "ordinary Oil approach with coupled native progression",
+    "two physical seconds of latched retreat",
+    "ten-second retreat",
+    "eight-actor actual ambient settlement",
+    "accepted capacity population"
+  ],
+  "launcher": {
+    "scope": "ordinary headless launcher smoke",
+    "ready_marker_count": 1,
+    "strict_console_errors": 0,
+    "stdout_sha256": "44f2e0098bfac17814189f2038725aa1fc41fa334640780b5af0ead98eb54f08",
+    "stderr_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+    "exit_status_evidence": "Original workflow reached final verifier after the explicit zero-exit/no-error/ready-marker checks; no separate launcher process.json is retained."
+  },
+  "limits": [
+    "Graphical source/extracted captures are separately reviewed by specialist C.",
+    "Archive download digest, full payload manifest custody and graphical delivery are independently reviewed by specialist C.",
+    "No hardware Windows/NVIDIA playfeel or cross-platform trajectory determinism claim."
+  ]
+}

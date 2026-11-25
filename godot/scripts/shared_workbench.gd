@@ -46,6 +46,10 @@ var _pilot_returns: Dictionary = {}
 var _roster_models: Array[String] = []
 var _model_ids: Array[String] = []
 var _actor_panel: Window
+var _ambient_profile_editor: Window
+var _ambient_overlay: Control
+var _ambient_overlay_id := 0
+var _pending_ambient_example := ""
 var _pending_actor_workshop := false
 var fire_enabled := false
 var step_requested := false
@@ -396,6 +400,38 @@ func _compact_model_ids() -> Array[String]:
 	for a: Dictionary in applied.get("actors",[]):
 		if str(a.model) not in result: result.append(str(a.model))
 	return result
+
+
+func open_ambient_profile(id: int) -> void:
+	var a := actor(applied, id)
+	if a.is_empty() or not ActorCatalog.AmbientActuator.supports(str(a.model)):
+		refuse("Inspect an actor with a supported procedural locomotion adapter.")
+		return
+	_cancel()
+	if not is_instance_valid(_ambient_profile_editor):
+		_ambient_profile_editor = preload("res://scripts/ambient/ambient_profile_editor.gd").new()
+		_ambient_profile_editor.hide()
+		add_child(_ambient_profile_editor)
+		_ambient_profile_editor.mount(self)
+	_ambient_profile_editor.open_for(id)
+
+
+func set_ambient_overlay(id: int, enabled: bool) -> void:
+	_ambient_overlay_id = id if enabled and not actor(applied, id).is_empty() else 0
+	if _ambient_overlay_id > 0 and not is_instance_valid(_ambient_overlay):
+		_ambient_overlay = preload("res://scripts/ambient/ambient_debug_overlay.gd").new()
+		host.get_node("Layout/World").add_child(_ambient_overlay)
+	if is_instance_valid(_ambient_overlay) and _ambient_overlay_id == 0: _ambient_overlay.hide()
+
+
+func load_ambient_example(example_id: String) -> bool:
+	if not _editable(): return false
+	var candidate: Dictionary = preload("res://scripts/ambient/ambient_examples.gd").make(example_id, PackedInt32Array(applied.liquid_policy))
+	if candidate.is_empty(): return refuse("Unknown ambient example.")
+	if not apply(candidate, false, 0, false, false, {}, {}, false): return false
+	_pending_ambient_example = example_id
+	message = "Preparing native ambient scene; existing materials and actor owners remain active until acknowledgement."
+	return true
 
 
 func _fill_roster() -> void:
@@ -826,6 +862,7 @@ func load_material_audition_demo(scene_id: String) -> Dictionary:
 func installed(candidate: Dictionary) -> void:
 	if art_batches != null: art_batches.executor.canvas_changed()
 	_pending_request_serial = 0
+	set_ambient_overlay(0, false)
 	if not _pending_retain_generated:
 		_pilot_returns.clear()
 	else:
@@ -956,6 +993,12 @@ func installed(candidate: Dictionary) -> void:
 		set_camera(2)
 		message = "%s · %s" % [str(scene.get("label","Material audition")),str(scene.get("help",""))]
 		_pending_material_demo = ""
+	if not _pending_ambient_example.is_empty():
+		_name.text = _pending_ambient_example
+		_pending_ambient_example = ""
+		_camera.select(2)
+		set_camera(2)
+		message = "Ambient scene ready. Play, paint Oil or Water nearby, inspect decisions, and edit Behaviour profile. Save stores the authored profile; runtime timers restart on reopen."
 	if is_instance_valid(_actor_panel): _actor_panel.refresh(true)
 	if not OS.get_environment("MAT_AUDITION_LAUNCHER_RECEIPT").is_empty():
 		preload("res://tests/support/material_audition_launcher_witness.gd").attach(self)
@@ -1554,6 +1597,9 @@ func _world_input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	if _ambient_overlay_id > 0 and is_instance_valid(_ambient_overlay):
+		var control: Dictionary = host.physical_actor_session.workbench_control(_ambient_overlay_id) if host.physical_actor_session != null else {}
+		_ambient_overlay.present(control.get("diagnostics", {}), host.camera_origin.floor(), host.current_view_size, host.view_content_rect())
 	_poll_flatten()
 	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
 	if step_pending:
@@ -1573,6 +1619,7 @@ func _process(_delta: float) -> void:
 		_pending_material_demo = ""
 		_pending_pilot_id = -1
 		_pending_actor_workshop = false
+		_pending_ambient_example = ""
 		_actor_action = ""
 		_liquid_action = false
 		_saved_view.clear()
