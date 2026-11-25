@@ -100,8 +100,12 @@ func exercise() -> void:
 	check(ambient_control().source == "human" and ambient_control().ambient == expected_ambient.ambient,
 		"Goblin pilot changes producer while retaining the authored ambient profile")
 	check(not session.submit(stale, &"policy"), "command captured before pause and pilot handoff stays fenced")
-	check(not session._ambient_sensor_active and session._ambient_perception.diagnostics().cache_bytes == 0,
-		"last ambient producer's pilot handoff retires its native material cache")
+	# Handoff changes authority synchronously; the ordinary Main owner retires
+	# unused publication buffers on its next process pass, including while paused.
+	# Observe that acknowledgement instead of calling the sensor owner ourselves.
+	check(await adapter._until(func() -> bool:
+		return not session._ambient_sensor_active and session._ambient_perception.diagnostics().cache_bytes == 0,
+		"operation_seconds"), "ordinary paused owner pass retires the former ambient material cache")
 	await action("play", {"ticks":8})
 	var driven := await action("actor_drive", {"direction":"right", "ticks":8})
 	check(driven.get("actor_delivery", {}).get("instance_id") == 1,
