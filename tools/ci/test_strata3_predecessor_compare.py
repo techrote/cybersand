@@ -1,9 +1,11 @@
 """Adversarial readers for raw native progression and paired source witnesses."""
 import hashlib
+import os
 import struct
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 import zlib
 
 import strata3_predecessor_compare as comparison
@@ -169,6 +171,22 @@ def test_png(raw, channels=4, width=2, height=2, depth=8, interlace=0):
 
 
 class OriginalPixelReader(unittest.TestCase):
+    def test_archive_eol_is_portable_without_mutating_inherited_configuration(self):
+        environment = {"GIT_CONFIG_COUNT":"1", "GIT_CONFIG_KEY_0":"core.eol", "GIT_CONFIG_VALUE_0":"crlf"}
+        with mock.patch.dict(os.environ, environment):
+            actual = comparison.archive_environment()
+            self.assertEqual(actual["GIT_CONFIG_COUNT"], "3")
+            self.assertEqual(actual["GIT_CONFIG_KEY_1"], "core.autocrlf")
+            self.assertEqual(actual["GIT_CONFIG_VALUE_1"], "false")
+            self.assertEqual(actual["GIT_CONFIG_KEY_2"], "core.eol")
+            self.assertEqual(actual["GIT_CONFIG_VALUE_2"], "lf")
+            self.assertEqual(actual["GIT_CONFIG_VALUE_0"], "crlf")
+            self.assertEqual(actual["GIT_LFS_SKIP_SMUDGE"], "1")
+            self.assertEqual(os.environ["GIT_CONFIG_COUNT"], "1")
+        with mock.patch.dict(os.environ, {"GIT_CONFIG_COUNT":"invalid"}):
+            with self.assertRaisesRegex(RuntimeError, "inherited Git"):
+                comparison.archive_environment()
+
     def test_portable_paths_reject_drive_relative_and_rooted_paths_on_every_host(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -149,10 +149,20 @@ func frequency_contract(renderer, source: SubViewport, output: SubViewport,
 	renderer.set_inspection({"bypass":true})
 	await settle()
 	var classic := output.get_texture().get_image()
+	save_capture("frequency-haze-opacity-classic",classic)
 	renderer.set_inspection({"bypass":false,"wipe":0.5})
 	await settle()
 	var wipe := output.get_texture().get_image()
-	expect(wipe.get_region(Rect2i(128,0,64,64)).get_data() == classic.get_region(Rect2i(128,0,64,64)).get_data(),
+	var classic_bytes := classic.get_region(Rect2i(128,0,64,64)).get_data()
+	var wipe_bytes := wipe.get_region(Rect2i(128,0,64,64)).get_data()
+	var changed_channels := 0
+	var maximum_delta := 0
+	for index: int in classic_bytes.size():
+		var delta := absi(int(classic_bytes[index])-int(wipe_bytes[index]))
+		if delta > 0: changed_channels += 1
+		maximum_delta = maxi(maximum_delta,delta)
+	print("STRATA003_CLASSIC_WIPE_PRECISION "+JSON.stringify({"changed_channels":changed_channels,"maximum_u8_delta":maximum_delta,"compared_bytes":classic_bytes.size()}))
+	expect(wipe_bytes == classic_bytes,
 		"Wipe Classic half remains exact under nonzero haze and parent opacity")
 	save_capture("frequency-haze-opacity-wipe",wipe)
 	renderer.set_inspection({"wipe":1.0})

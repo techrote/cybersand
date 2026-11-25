@@ -9,8 +9,8 @@
   "stacked_pr": 785,
   "base_pr": 776,
   "implementation_inputs_sha256": {
-    "godot/shaders/strata_optical_plane.gdshader": "b2dd5f0f2bf8b85c81444471605a1e90fde2fc804025b34014cdd023aaef137a",
-    "godot/scripts/depth/strata_optical_renderer.gd": "efb823dd079a1864bae1fa6a133b4e05316f62c77f820bd173f0a94fdb7acfc1",
+    "godot/shaders/strata_optical_plane.gdshader": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+    "godot/scripts/depth/strata_optical_renderer.gd": "ec1b2bc4f342a57be55a6e83a94df68094eac35b04d9c15e5492f35ee049345f",
     "godot/scripts/depth/strata_optical_profiles.gd": "91d696a1feac21638df8e207be4c8fe7d99a3a849dd6801705e95fda0784765e",
     "godot/scripts/depth/strata_optics_configuration.gd": "638d8fa83a41167a2e7402de2437d10a1a4f04329451e0ec5c14560165637397",
     "godot/scripts/depth/strata_optics_presets.gd": "693575bf302fb9f238de3a61ff4e061f6b2f37e527618776be9d2a2440094807",
@@ -21,7 +21,7 @@
     "godot/scripts/depth/strata_atmosphere.gd": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f",
     "godot/tools/qualify_workbench_strata3.gd": "294b57d418e7f0a763823f05fec80248a355ab16e149a4fcc3812eb54655c195",
     "tools/ci/qualify_strata3_workbench.py": "968b541967b9942dc74efcad136af7a7f23785f9601b469046e7c2e7ffde806e",
-    "tools/ci/strata3_predecessor_compare.py": "86456a23090632c9dd0ffba5deb511ec33270a713ee2826f59cf3450424d908e",
+    "tools/ci/strata3_predecessor_compare.py": "f01dbdd2f616f5bfb45e4295dd5a4f2a0001a2bc29c5035c2d1bf6c5f2e99568",
     "tools/build_strata3_gallery.py": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b",
     "tools/package_strata3_workbench.py": "2ef3d9cd6f529b6a5af7a6f506371012cd61fe99b405ddfade4f514a5b51f1df"
   },
@@ -147,7 +147,8 @@
     "blind-review-a-underworks-unmasked.json",
     "b-underworks-blind-review.json",
     "b-underworks-reveal-review.json",
-    "c-smoke-visual-review.json"
+    "c-smoke-visual-review.json",
+    "blend-precision-research/README.md"
   ],
   "preserved_negative_results": [
     "Original five extracted Windows45second admission misses:51619,66316,66200,59958,54804ms",
@@ -155,7 +156,8 @@
     "Typed Array[Rect2] dynamic call failure invalidated headless diagnostic despite positive wrapper checks",
     "Initial typed progression collector assignment caused script errors; reader rejects errors even with exit0",
     "Overview actor body remains too small; label/ring visibility is not body visibility",
-    "Root environment socket creation prohibited actual local display; hosted actual backends used without physicalNVIDIA claim"
+    "Root environment socket creation prohibited actual local display; hosted actual backends used without physicalNVIDIA claim",
+    "Actual Mesa partial-opacity/haze Classicwipe mismatch despite real-valued alpha algebra; fixed-function output blend precision isolated by separate EGL reproduction; exact pixel oracle retained"
   ],
   "remaining_acceptance": [
     "Final dense shader graphics, allnine scenes andmotion",
@@ -193,6 +195,21 @@
         "graphical_cases_executed": 0
       },
       "remedy": "After bounded LFS retries, download exact same two Linux objects from immutable GitHub media URL, require full committed size/SHA256 before replace. No runtime or source identity substitution."
+    },
+    {
+      "source": "146cead1ac41147efa993b0bf8b634da08695182",
+      "tree": "822866601a062d44969c462d951a40b4d4daf93d",
+      "run": 45720008446,
+      "request_sequence": 5,
+      "stage": "Actual Linux renderer 108checks with1exactClassicwipefailure; Windowsfullcampaigncontinues",
+      "linux": {
+        "job": 139575657516,
+        "artifact": 15070878821,
+        "actual_graphical_renderer_checks": 108,
+        "failed_checks": 1
+      },
+      "failure": "Algebraically equivalent premultiplied final blending differs from legacy straight-alpha blend by1encodedcolourlevel under haze0.3andparentopacity0.5. Dense aperture frequency/hue/highlight/coverage checks passed.",
+      "remedy": "Keep premultipliedinternalfilterandmix; use exactlegacyfinalblend andliteralClassicbranch. Preserveexactoracle,addClassicbaselinePNG+byte-diffdiagnostic. IndependentEGLreproduction retained inblend-precision-research. Also normalize original934 rawarchives viachild-onlyLFconversion beforecrosshostverification."
     }
   ]
 }

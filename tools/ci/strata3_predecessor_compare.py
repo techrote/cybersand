@@ -61,13 +61,28 @@ def digest(data: bytes):
     return hashlib.sha256(data).hexdigest()
 
 
+def archive_environment() -> dict[str, str]:
+    # Match the established portable packager: git archive applies checkout
+    # conversions, including core.eol for text without a specific attribute.
+    # The Linux receipt must reproduce byte-for-byte on the Windows packager.
+    environment = dict(os.environ, GIT_LFS_SKIP_SMUDGE="1")
+    count = environment.get("GIT_CONFIG_COUNT", "0")
+    require(count.isdecimal(), "Invalid inherited Git environment configuration count")
+    offset = int(count)
+    for key, value in (("core.autocrlf", "false"), ("core.eol", "lf")):
+        environment[f"GIT_CONFIG_KEY_{offset}"] = key
+        environment[f"GIT_CONFIG_VALUE_{offset}"] = value
+        offset += 1
+    environment["GIT_CONFIG_COUNT"] = str(offset)
+    return environment
+
+
 def original_archive() -> bytes:
     # Git archive can run the repository's LFS export filter. Keep unrelated
     # platform artifacts as original pointers; materialize only the two exact
     # current-platform dependencies below, after checking their source identity.
-    environment = dict(os.environ, GIT_LFS_SKIP_SMUDGE="1")
     return subprocess.check_output(["git", "-C", str(ROOT), "archive", "--format=tar", BASELINE, "godot"],
-                                   env=environment, timeout=60)
+                                   env=archive_environment(), timeout=60)
 
 
 def png_rgba(data: bytes) -> tuple[int, int, bytes]:

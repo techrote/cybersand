@@ -1,5 +1,5 @@
 shader_type canvas_item;
-render_mode unshaded, blend_premul_alpha;
+render_mode unshaded, blend_mix;
 
 // The existing frozen transparent SubViewport is a premultiplied RGBA source.
 // Never filter native material IDs or reconstruct a speculative depth image.
@@ -130,17 +130,19 @@ float actor_reveal(vec2 point) {
 }
 
 vec4 classic_output(vec4 source) {
-    // Exact algebra of Strata002 HAZE + ordinary straight-alpha blending.
-    // The all-Classic path restores the old material instead of this shader.
-    vec3 rgb = mix(source.rgb, vec3(0.055, 0.105, 0.15), classic_haze);
-    return vec4(rgb * source.a, source.a);
+    // Preserve the literal Strata002 HAZE expression and the same fixed-function
+    // straight-alpha blend. Algebraically equivalent premultiplied output can
+    // round differently in an RGBA8 target at nontrivial haze/parent opacity.
+    source.rgb = mix(source.rgb, vec3(0.055, 0.105, 0.15), classic_haze);
+    return source;
 }
 
 void fragment() {
     vec2 point = floor(UV * surface_size) + vec2(0.5);
     vec4 centre = sample_surface(surface_texture, point);
     vec4 classic = classic_output(centre);
-    vec4 output_colour = classic;
+    // The Classic wipe side must not enter a premultiply/unpremultiply roundtrip.
+    COLOR = classic * vertex_colour;
     if (SCREEN_UV.x <= comparison_wipe && effect_strength > 0.0) {
         float sample_radius = defocus_radius;
         if (detail_suppression > 0.0 || illumination_strength > 0.0) sample_radius = max(sample_radius, 1.0);
@@ -186,9 +188,11 @@ void fragment() {
             optical.rgb = min(optical.rgb, vec3(optical.a));
         }
         optical *= plane_opacity * (1.0 - clarity_strength * 0.5);
-        output_colour = mix(classic, optical, effect_strength);
+        // Filtering and effect interpolation remain premultiplied. Convert only
+        // at the final boundary, where the existing straight-alpha framebuffer
+        // blend applies source coverage and parent opacity exactly once.
+        vec4 output_colour = mix(vec4(classic.rgb * classic.a, classic.a), optical, effect_strength);
+        COLOR = vec4(straight_colour(output_colour) * vertex_colour.rgb,
+            output_colour.a * vertex_colour.a);
     }
-    // Parent plane opacity participates exactly once in both colour and alpha.
-    COLOR = vec4(output_colour.rgb * vertex_colour.rgb * vertex_colour.a,
-        output_colour.a * vertex_colour.a);
 }

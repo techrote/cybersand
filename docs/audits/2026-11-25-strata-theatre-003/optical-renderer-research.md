@@ -40,24 +40,54 @@ visibility oracle. The real actor overlays remain untouched.
 
 ## Alpha and sampling contract
 
-The transparent material SubViewport contains premultiplied RGBA. New processing
-uses `blend_premul_alpha`; colour filtering sums premultiplied samples, divides
-by positive coverage for colour transforms, then premultiplies the result once.
-Every sample explicitly refuses coordinates outside the source extent and
-addresses integer texel centres with nearest filtering. No material IDs are
-interpolated. Parent opacity scales RGB and alpha together exactly once.
+The transparent material SubViewport contains premultiplied RGBA. Colour
+filtering sums premultiplied samples, divides by positive coverage for colour
+transforms, then premultiplies the result once. Effect-strength interpolation
+also remains premultiplied. At the final framebuffer boundary only, the
+processed result converts to straight colour for `blend_mix`, which applies
+source coverage and parent opacity once. Every sample explicitly refuses
+coordinates outside the source extent and addresses integer texel centres with
+nearest filtering. No material IDs are interpolated.
 
 The original HAZE shader's historical blending is deliberately preserved in
-Classic. The one-pass wipe emulates that exact historical algebra on its Classic
-side. Its boundary uses viewport X. During a partial wipe, optical parallax
+Classic. The one-pass wipe executes the literal historical straight-colour
+expression and the same fixed-function blend on its Classic side, with no
+premultiply/unpremultiply roundtrip. Its boundary uses viewport X. During a partial wipe, optical parallax
 multipliers are temporarily suppressed so both sides use the Classic geometric
 transform; the effect itself is not rendered a second time. This is an optical
 treatment comparison, not two independently moving cameras.
 
 Godot's official [SubViewport texture tutorial](https://docs.godotengine.org/en/stable/tutorials/shaders/using_viewport_as_texture.html)
 and [CanvasItem shader reference](https://docs.godotengine.org/en/stable/tutorials/shaders/shader_reference/canvas_item_shader.html)
-establish the intended premultiplied blend contract. Actual rendered pixels are
-still required to establish this implementation's correctness.
+describe the premultiplied source and blend choices. Actual rendered pixels are
+required to establish this implementation's correctness, including integer
+framebuffer rounding rather than floating-point algebra alone.
+
+### Retained framebuffer-precision failure
+
+The initial implementation used `blend_premul_alpha` for the final output and
+an algebraically equivalent premultiplied expression for the Classic wipe.
+Source `146cead1ac41147efa993b0bf8b634da08695182`, hosted Linux run
+[45720008446](https://github.com/techrote/cybersand/actions/runs/45720008446),
+artifact `15070878821`, failed exactly one of 108 renderer checks: byte-exact
+Classic wipe under haze 0.3 and parent opacity 0.5. The actual backend was
+Godot 4.7 Compatibility, OpenGL 4.5 Mesa 25.2.8 llvmpipe LLVM 20.1.2. Dense
+checker progression and every tested thin-white hue/alpha relationship passed.
+
+The integration lead independently reproduced the mismatch in a separate
+surfaceless EGL blend probe. Fixed-function straight blending and shader-side
+premultiplication can round differently in an RGBA8 target even when their real
+number algebra is identical. That auxiliary probe is diagnostic evidence, not
+Godot qualification. The earlier source-only assertion review incorrectly
+treated algebraic equivalence as sufficient for exact bytes; this graphical
+negative supersedes that assumption.
+
+The focused correction preserves premultiplied filtering and interpolation,
+uses `blend_mix` at the final boundary, and gives Classic a direct legacy
+expression. The test's exact byte oracle is unchanged. It now saves both the
+Classic haze/opacity baseline and its wipe companion and reports changed
+channel count, maximum byte delta and compared byte count. The correction
+requires a fresh graphical campaign before qualification can be claimed.
 
 ## Initial execution and retained negative result
 

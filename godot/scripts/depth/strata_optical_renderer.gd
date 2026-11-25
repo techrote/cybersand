@@ -179,7 +179,7 @@ func statistics() -> Dictionary:
 		"native_captures":0, "native_writes":0, "texture_uploads":0,
 		"play_processed":false, "wipe_uses_classic_parallax":float(inspection.wipe) < 1.0,
 		"shader_sha256":OPTICAL_SHADER.code.sha256_text(),
-		"alpha_contract":"Frozen SubViewport premultiplied RGBA; bounded weighted premultiplied filtering; premultiplied output. Classic retains its original material."}
+		"alpha_contract":"Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material."}
 
 
 func restore() -> void:

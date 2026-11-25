@@ -1,0 +1,30 @@
+{
+  "schema": "strata3-blend-research-provenance-v1",
+  "application": "146cead1ac41147efa993b0bf8b634da08695182",
+  "run": 45720008446,
+  "linux_job": 139575657516,
+  "linux_artifact": 15070878821,
+  "artifact_zip_sha256": "247d1a7a6bdb2f88b983e6e13b3c202974fe29e39f9c89ef6ce96197d5056182",
+  "original_campaign_sha256": "8890ba18e53d5a254c2d6e92eb30fcf53dd214d43df2ff046b79885d7d8c06b7",
+  "original_renderer_process_log_sha256": "184f1da6dc7082eed3427b3ec42a370267b27bfa811d552f6d4fc0347a423eee",
+  "original_renderer_process_json_sha256": "eb46cd1d9cb255c998c0b0218e3ebc19c650281e76c324efb5cc1b23d136d451",
+  "actual_renderer_checks": 108,
+  "actual_renderer_failures": [
+    "ExactClassicwipeunderhaze0.3andparentopacity0.5"
+  ],
+  "dense_aperture_actual_checker_contrast_by_radius": {
+    "0": 0.800000004470348,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "6": 0.0
+  },
+  "files_sha256": {
+    "frequency-haze-opacity-wipe.png": "fbe6f0786fb78fc991438c502492497125d5fd4004c25a7c81a449f5489c2713",
+    "isolated_mesa_result.json": "224e2001dca4b2802e8d9086535d78fb5d6326ca3905c4adab12d662162286eb",
+    "isolated_mesa_blend.py": "edab21b56bedcfbf46c0ed8694f6c49500286255935cb94c7f18ceb7bc2d3a74",
+    "frequency-aperture-6.png": "427699ef32a85cc6b513285b59f8d527bc9be340c1449a20b9d60c48b43161b1",
+    "frequency-reference.png": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0"
+  },
+  "disposition": "Actual Linux failure retained; isolated local EGL arithmetic reproduction supports repair hypothesis, not a substitute for final Godot graphical qualification."
+}
