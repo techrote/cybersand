@@ -224,5 +224,173 @@
       "sha256": "35a0f528c920358943f2e4f8fabae774541c8764d68140ced44ca93879c4ec28"
     }
   ],
-  "physical_owner_acceptance": "pending"
+  "physical_owner_acceptance": "pending",
+  "archive_review": {
+    "reviewer": "Specialist A; independent byte inspection, distinct from hosted Windows execution",
+    "inner_zip": {
+      "bytes": 95569515,
+      "sha256": "7b96dbf667cde0e222957e84f75dd88638d92241fa8fe4af82e6178623303d73"
+    },
+    "manifest_sha256": "c2a2d574ce2e899e6f0e8ebbe93dc0f425ea679e46769c0bc33b9e38471fb3fc",
+    "immutable_files": 1195,
+    "all_hashes_recomputed": true,
+    "archive_exactly_manifest_and_declared_files": true,
+    "forbidden_populated_profile_or_provider_credential_paths": [],
+    "runtimes_sha256": {
+      "godot_gui": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "godot_console": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "cybersand_native": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "vc_runtime": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    "installed": {
+      "actual_launcher": true,
+      "display": "Windows",
+      "exit_code": 0,
+      "timed_out": false,
+      "automatic_model_requests": false,
+      "loaded_expected_modules_within_package": 4
+    },
+    "original_case_and_example_log_reparse": "passed",
+    "review_evidence_commit": "1223ef12493ba167d3e7c6a0de54a8de9d00dd5f",
+    "review_evidence_zip_sha256": "17db4fdf613125a0e01c09923939cd0ee37f717ce1dd12c2389f9a2138b839b1",
+    "original_case_logs": [
+      {
+        "mode": "headless",
+        "name": "test_art_owned_transport",
+        "checks": 155,
+        "log_sha256": "ffb689876f31db9e1d6c42e9719def0d586c17d5daea6856f3656de013ed6364"
+      },
+      {
+        "mode": "headless",
+        "name": "test_art_authoring_proposal",
+        "checks": 80,
+        "log_sha256": "c2faaec990c044201929ae04ee0b8c8f20d9148c9c58e1ef475b603c50b57096"
+      },
+      {
+        "mode": "headless",
+        "name": "test_art_creative_cohort",
+        "checks": 251,
+        "log_sha256": "34fbb31283ba954469263aa9ca3b60041e38a4bcdf1e1d0fcc7fbda3986a5728"
+      },
+      {
+        "mode": "headless",
+        "name": "test_art_collaborative_native",
+        "checks": 739,
+        "log_sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65"
+      },
+      {
+        "mode": "headless",
+        "name": "test_art_collaboration_authority",
+        "checks": 39,
+        "log_sha256": "84d73afc50eb365714d6773841ca785d404e2be186699ebab20c349cbce10319"
+      },
+      {
+        "mode": "headless",
+        "name": "test_art_collaboration_session",
+        "checks": 182,
+        "log_sha256": "189a4b47e62e6f33931d02b26d12bc398a51595218efc12af63826af0f715f88"
+      },
+      {
+        "mode": "headless",
+        "name": "test_art_collaboration_workspace",
+        "checks": 93,
+        "log_sha256": "7f8cc849c8e0698319eccef70596bbb5ecf357e58f2946191891bd484741b0cc"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_owned_transport",
+        "checks": 155,
+        "log_sha256": "6f5c861a3c62c55521ccd24b91456f4d22b6dc7d3dded3e6f0cae556b5749e77"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_authoring_proposal",
+        "checks": 80,
+        "log_sha256": "378e67b477b3462547033ff9e3d5632dfe2046c145840b40206cf44e3b8c0cab"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_creative_cohort",
+        "checks": 251,
+        "log_sha256": "3c182037d581c1dbe953715622db71c99a44af0d1bbd569c916b8710f240656a"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_collaborative_native",
+        "checks": 779,
+        "log_sha256": "2829d9cc9894a74038e661e83dafe1eaa787aa2deeb366c1383414fe51b51c22"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_collaboration_authority",
+        "checks": 39,
+        "log_sha256": "3c0dacf3406b10ff5e5035994455629fb37b3174744d26cf028e2818422cff07"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_collaboration_session",
+        "checks": 202,
+        "log_sha256": "3ec92e088c0fda0be2d454021faf49977f217c2f2529a9895188801a3a1f62e7"
+      },
+      {
+        "mode": "displayed",
+        "name": "test_art_collaboration_workspace",
+        "checks": 94,
+        "log_sha256": "9a55cbc2fa03613a688900e5abad52d1accc37cdb279910c031b6e6e1291881c"
+      }
+    ],
+    "native_example_files_verified": 73,
+    "native_source_inputs_verified": 105,
+    "installed_setups_sha256": {
+      "art02-industrial_repair": "070dae6e45bd830010cb9ef88deac6a24c5329937edde1046ae067603d7afe63",
+      "art02-palette_foundry": "24cef5145914a5f5dc806b9d07fd756da5ce90d855bbed2565f23e310bfeae4a",
+      "art02-protected_courtyard": "88d1af87bcb223a319f3878e25e72b47bc45288cc84d69e7444c4fbdbdf751b7",
+      "art02-revised_arcology": "d7e4e97946067176608bcfea050011826094721c95d10abd72f87cc616eb505b",
+      "art02-scifi_interior": "20a7cefebce49560b1e0fa242ef6cf4056a1e96498ab94dfeb02972d155a6454",
+      "art02-staged_megaframe": "d13c5836632ba122720ab95df8d75420a693f029d1aa57d279b529bf485f1a34",
+      "art02-stopped_workshop": "65fce1a58d0c6b397633696bf1582fa173de5e8397b1b38ea1087f94f2eeb57e",
+      "art02-structural_facade": "a2e2d4740cf1611f54ab658175f43c2bcd8319793167b9f752f323098e36d3b3",
+      "art02-xeno_vault": "d20a6fc943565aa82370ee41207fc00281346c50c8475016d80b609324edf37c"
+    },
+    "installed_result": {
+      "status": "passed",
+      "source_commit": "e536d128f85e948223b25e13931a7a801faf956d",
+      "actual_launcher": true,
+      "display": "Windows",
+      "automatic_model_requests": false
+    },
+    "installed_execution": {
+      "source_commit": "e536d128f85e948223b25e13931a7a801faf956d",
+      "timed_out": false,
+      "exit_code": 0,
+      "watchdog_seconds": 240
+    },
+    "observed_runtime_modules": [
+      {
+        "name": "Godot_v4.7-stable_win64.exe",
+        "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+      },
+      {
+        "name": "vcruntime140.dll",
+        "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+      },
+      {
+        "name": "cybersand_native.windows.x86_64.dll",
+        "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+      },
+      {
+        "name": "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      }
+    ],
+    "native_runtime_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+    "preserved_launcher_limits": {
+      "workbench_ready_seconds": 56.265125,
+      "startup_maximum_gap_seconds": 51.259956,
+      "visible_idle_maximum_gap_ms": 208.78,
+      "teardown_ms": 386.269,
+      "audio": "Hosted WASAPI initialization errors followed by explicit Dummy fallback"
+    }
+  }
 }

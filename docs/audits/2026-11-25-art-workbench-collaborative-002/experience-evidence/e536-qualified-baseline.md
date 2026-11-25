@@ -75,12 +75,48 @@ checked loaded native module paths/hashes, and ran the evaluated-start installer
 The extracted-launcher step ran from 04:10:23 through 04:11:42 UTC on
 2026-11-25 and passed its 240-second watchdog. It did not send a model request.
 
-Independent archive extraction is still in progress at this checkpoint.
-Its follow-up must record the exact inner ZIP, manifest, engine/native/Rapier
-and installed-example identities before final independent custody closure. Outer GitHub artifact ZIP hashes above are not substituted for the
-inner portable ZIP hash.
+Specialist A's [independent downloaded-artifact review](https://github.com/techrote/cybersand/blob/1223ef12493ba167d3e7c6a0de54a8de9d00dd5f/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/e536-windows-independent-review.md) closes
+the archive custody check at source `1223ef12493ba167d3e7c6a0de54a8de9d00dd5f`.
+It independently recomputed all 1,195 immutable file hashes, checked the exact
+archive inventory and CRCs, reparsed all fourteen original collaborative logs,
+matched all 73 native example files and all nine actually installed Setup hashes,
+and compared all 105 recorded native build-source inputs with canonical e536
+Git blobs. C read the source-pinned review and exact machine-readable receipts;
+A performed the byte extraction. Neither reviewer claims a local Windows run.
+
+| Delivered item | Exact SHA-256 |
+|---|---|
+| Inner portable ZIP, 95,569,515 bytes | `7b96dbf667cde0e222957e84f75dd88638d92241fa8fe4af82e6178623303d73` |
+| Immutable candidate manifest | `c2a2d574ce2e899e6f0e8ebbe93dc0f425ea679e46769c0bc33b9e38471fb3fc` |
+| Godot 4.7 GUI | `b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8` |
+| Godot 4.7 console | `d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c` |
+| CyberSand native Windows | `668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e` |
+| Rapier Windows | `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7` |
+| Visual C runtime | `d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066` |
+
+The engine is `4.7.stable.official.5b4e0cb0f`. The native DLL retains the qualified
+runtime from `c53fd6f9d3d0f2b3f39396c7e605654f65c17299`; exact compiled-input
+continuity establishes its source match without claiming a new C++ build.
+The four runtime-module witnesses resolve the expected GUI, native, Rapier and
+Visual C payloads within the pristine package. The original process exit is 0
+without timeout. The module probe's later deliberate owned-process cleanup is
+separate from the ordinary launcher's successful exit.
+
+The source-pinned review archive is 313,875 bytes, SHA-256
+`17db4fdf613125a0e01c09923939cd0ee37f717ce1dd12c2389f9a2138b839b1`.
+The accompanying machine-readable C checkpoint retains the exact nine Setup
+hashes and original case-log identities. Outer artifact ZIP hashes above remain
+distinct from the inner portable ZIP hash.
 
 ## Preserved negatives and acceptance limits
+
+The actual pristine Windows launch still reached Workbench readiness at
+56.265125 seconds, with a 51.259956-second maximum adjacent startup frame gap.
+Visible-idle maximum gap was 208.780 ms, and completed teardown was 386.269 ms.
+Its hosted software-rendered log contains WASAPI initialization errors followed
+by explicit Dummy-audio fallback. The successful launcher exit does not establish
+an error-free log or a solved cold start.
+
 
 The earlier source `2743f89a0df6f6afcf7484e859c10790d521e74b` passed its Linux
 campaign and retained Windows regressions, then refused both new Windows
