@@ -1,0 +1,186 @@
+{
+  "accepted_probe": "04ca36243614e89c44aa0e673b725a30d8b8cd7b",
+  "accepted_probe_tree": "e9ba7575b0f5775f042e23b52f1df6efb228cbf9",
+  "application": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "architecture_application": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "files": {
+    "accepted-04ca/inputs.json": {
+      "bytes": 3381,
+      "sha256": "608592d0ebe849780a91723db4f142172408c8f537eb1907479c2e4cdfbaeb6f"
+    },
+    "accepted-04ca/native-artifacts/after-material-ids.png": {
+      "bytes": 877,
+      "sha256": "66f0e177654d326b92ce336faea7519c6c31f8d385ed4aa8706bb879265786a1"
+    },
+    "accepted-04ca/native-artifacts/after.u16le": {
+      "bytes": 131072,
+      "sha256": "1b0c004d10992d0ce541e9c52d18b71e5ba84ef4048a83fec1ddbefbb5c36f11"
+    },
+    "accepted-04ca/native-artifacts/approved-proposal.json": {
+      "bytes": 4713,
+      "sha256": "3e1296ba085aa8ef9ac72a5b6d22138fa2c2a8bc5f42d755b5a94060b3df3fa2"
+    },
+    "accepted-04ca/native-artifacts/before-material-ids.png": {
+      "bytes": 773,
+      "sha256": "7ae066237f54e8216c4c592424f6d279a4a333ac17b85a712d686b8e2a9643ff"
+    },
+    "accepted-04ca/native-artifacts/before.u16le": {
+      "bytes": 131072,
+      "sha256": "fa43239bcee7b97ca62f007cc68487560a39e19f74f3dde7486db3f98df8e471"
+    },
+    "accepted-04ca/native-artifacts/bridge-history.json": {
+      "bytes": 11007,
+      "sha256": "164eae9e97f44053cdda35cfece32a86c3d025a9502db5fbcf1919e74bff0ca7"
+    },
+    "accepted-04ca/native-artifacts/construction-session.json": {
+      "bytes": 604677,
+      "sha256": "6a80b1f38f9eaa5b8d71323e64c6275863c5e9d25f0c03faf27e95f5fb50381c"
+    },
+    "accepted-04ca/native-artifacts/editable-workbench-start.json": {
+      "bytes": 8482,
+      "sha256": "a51a49be284cd091721be78022c9bdc5c8fe4e9790dd9a1e84a6025093d0b236"
+    },
+    "accepted-04ca/native-artifacts/native-stage-records.json": {
+      "bytes": 601203,
+      "sha256": "fe7cab6cfc79dcc7df8d31d3b57e8d210950c6b42a15901f776cb6c76036468c"
+    },
+    "accepted-04ca/native-artifacts/native-undo-restoration.json": {
+      "bytes": 414,
+      "sha256": "0f2f10a29d628c08099618f9d73f1ee289d611dbfc3bdad662ec8416f9b16d35"
+    },
+    "accepted-04ca/native-artifacts/probe-observations.json": {
+      "bytes": 1238,
+      "sha256": "9e1579af8fe64a89cfe2ed0762e1f17132d9995141d074de9aad767dfc8d303c"
+    },
+    "accepted-04ca/native-artifacts/result.json": {
+      "bytes": 932,
+      "sha256": "de2efb0b2705fb44f6c93c00178fda03a8538bd30b524d97dc528cf7fa9d7adf"
+    },
+    "accepted-04ca/native-artifacts/stopped-native-prefix.json": {
+      "bytes": 268838,
+      "sha256": "68b8afd63f3509651ff2b08ec0f61692cf11c7de8772095727629ae3736b8083"
+    },
+    "accepted-04ca/native-artifacts/workflow-history.json": {
+      "bytes": 9600,
+      "sha256": "bdee57849bc12c1bbd5fcf6d81e6cafd653abe58b32f29a517ef4b9bb734517e"
+    },
+    "accepted-04ca/process.log": {
+      "bytes": 11674,
+      "sha256": "e7a21d90dd5a75493b7dc01866dd4274a188bf184f91f5e168aee96013698f9c"
+    },
+    "accepted-04ca/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/27d86a2bac890d9355479e3c58d446b5.jsonl": {
+      "bytes": 35489,
+      "sha256": "9b2d7ff879b16ea2ef4cfa71cd450b4acc2fda10c247b3248e6bd985082bca6b"
+    },
+    "accepted-04ca/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 11560,
+      "sha256": "1d5470d82907e4f45cb70a02c87a2adbdbf6c0829e91bdb503e6b46c663e3f7e"
+    },
+    "accepted-04ca/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-art-architecture-native-handoff.json": {
+      "bytes": 8482,
+      "sha256": "a51a49be284cd091721be78022c9bdc5c8fe4e9790dd9a1e84a6025093d0b236"
+    },
+    "accepted-04ca/result.json": {
+      "bytes": 5430,
+      "sha256": "6d1fd50f000c91fa9bfa96538b82396c00abe164929b7c4cc3088bff60c34b7b"
+    },
+    "incomplete-826/incomplete-at-recovery.json": {
+      "bytes": 576,
+      "sha256": "ccd4613e2823e8bb85011903364ce2b9f884874fbca53c99958e53609f393bd8"
+    },
+    "incomplete-826/inputs.json": {
+      "bytes": 3381,
+      "sha256": "7e37463346946b4778bf42fa23d947dfe8d762b8412cd6bcaddbdfc084f25e44"
+    },
+    "incomplete-826/process.log": {
+      "bytes": 221,
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    "incomplete-826/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 107,
+      "sha256": "0704af3bd7170d415d3c694c1942394f00370015218778adba607eb75763efef"
+    },
+    "metadata-inconsistent-826-retry/inputs.json": {
+      "bytes": 3381,
+      "sha256": "7e37463346946b4778bf42fa23d947dfe8d762b8412cd6bcaddbdfc084f25e44"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/after-material-ids.png": {
+      "bytes": 877,
+      "sha256": "66f0e177654d326b92ce336faea7519c6c31f8d385ed4aa8706bb879265786a1"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/after.u16le": {
+      "bytes": 131072,
+      "sha256": "1b0c004d10992d0ce541e9c52d18b71e5ba84ef4048a83fec1ddbefbb5c36f11"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/approved-proposal.json": {
+      "bytes": 4713,
+      "sha256": "8d062d72cbc1ddc3a2ffe785351b312d49c3b8e6969513e23f52f0e87df4c486"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/before-material-ids.png": {
+      "bytes": 773,
+      "sha256": "7ae066237f54e8216c4c592424f6d279a4a333ac17b85a712d686b8e2a9643ff"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/before.u16le": {
+      "bytes": 131072,
+      "sha256": "fa43239bcee7b97ca62f007cc68487560a39e19f74f3dde7486db3f98df8e471"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/bridge-history.json": {
+      "bytes": 11007,
+      "sha256": "c50c68547a0b1fd30ddefc15897bab777cbbb387f74335a9428242df0da4adc8"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/construction-session.json": {
+      "bytes": 604677,
+      "sha256": "57105c79343849f73c0829c56e7bf58b4ff547bdc1a2eb15465f19e6c1228639"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/editable-workbench-start.json": {
+      "bytes": 8482,
+      "sha256": "a51a49be284cd091721be78022c9bdc5c8fe4e9790dd9a1e84a6025093d0b236"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/native-stage-records.json": {
+      "bytes": 601203,
+      "sha256": "571216c0e6849ee476cd12fa684a94ece516a27e4dfebe5c21fc3927ad0e831d"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/native-undo-restoration.json": {
+      "bytes": 414,
+      "sha256": "0f2f10a29d628c08099618f9d73f1ee289d611dbfc3bdad662ec8416f9b16d35"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/probe-observations.json": {
+      "bytes": 1243,
+      "sha256": "85d9c4025702a0a487a137370f4d89b4edc998d69e27a1288f6a017fe00c491d"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/result.json": {
+      "bytes": 932,
+      "sha256": "2d567de7f072501f9f2e6821dc071591222408137a1a13178573d7a9e60809e8"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/stopped-native-prefix.json": {
+      "bytes": 268839,
+      "sha256": "391711d0aa7517648302a66a6cdf348a09144fa96f4c0cfed2b5beb26d090a1f"
+    },
+    "metadata-inconsistent-826-retry/native-artifacts/workflow-history.json": {
+      "bytes": 9600,
+      "sha256": "cb24908d4b4c2618732122c75b2b0f2e4aef70e08291762fc60e69185e5294cc"
+    },
+    "metadata-inconsistent-826-retry/process.log": {
+      "bytes": 11674,
+      "sha256": "679b423b42ab5aca9de81faae3073e10cf70451d8623ee9c374afe514384b19f"
+    },
+    "metadata-inconsistent-826-retry/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/a2330b0e57d775fbe6fa692df6701d03.jsonl": {
+      "bytes": 35495,
+      "sha256": "9db467c0823e8031daeb360665410ff49428c9bc6c2fc4fd794dbbe3b136316f"
+    },
+    "metadata-inconsistent-826-retry/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 11560,
+      "sha256": "c2806381192dbdb673575d035e070c65cc7d2d06ea34b91ee5a625ecea5479d8"
+    },
+    "metadata-inconsistent-826-retry/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-art-architecture-native-handoff.json": {
+      "bytes": 8482,
+      "sha256": "a51a49be284cd091721be78022c9bdc5c8fe4e9790dd9a1e84a6025093d0b236"
+    },
+    "metadata-inconsistent-826-retry/result.json": {
+      "bytes": 5430,
+      "sha256": "79f2567a9318a7758d60c98f2c4acf31d38b588c63a043a7f3f3f2763c4c9243"
+    }
+  },
+  "format": "cybersand-art-architecture-final-closure-evidence-v1",
+  "scope": "Separate Linux headless real native/loopback fixture experiment; no combined Windows or graphical qualification, no genuine inference."
+}
