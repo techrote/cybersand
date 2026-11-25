@@ -6,7 +6,7 @@ status: Approved design
 scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 ---
 
 # Module boundaries
@@ -29,7 +29,7 @@ and [implementation](../../native/src/world.cpp).
 | MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; generated hard-surface/granular-load maps have accepted native consumers, while executable kernels remain inside World |
 | RenderBridge | Consume immutable simulation publication and update presentation | Native `RenderSnapshotExchange`, copied Godot packets and CPU-image consumer; GPU subregion writes are absent |
 | GameplayBridge | Translate intent into tick-boundary data and immutable results | Bounded emission/input/body paths, prepared construction transactions, native receipts and per-World liquid policy exist; a single generalized gameplay command framework remains separate work |
-| Rigid-body adapter | Own backend calls and translate body value data | `CyberRapierPhysicsBridge` plus native rectangle projection; general shape and torque interfaces are absent |
+| Rigid-body adapter | Own backend calls and translate body value data | `CyberRapierPhysicsBridge` plus native rectangle projection; Shared Workbench adds validated per-body impulse/torque wrenches through `workbench_physics_bridge.gd`; generalized contour coupling remains separate |
 
 Adding a native class is justified when it establishes a usable responsibility
 or lifetime boundary. A cosmetic rename is not architectural progress.
