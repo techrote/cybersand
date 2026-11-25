@@ -1,0 +1,26 @@
+{
+  "additional_offline_evidence_verifiers_sha256": {
+    "tools/ci/verify_art_apply_pair_evidence.py": "41aa996532d1287cf4f7ca85894b7692fc51cdf96338ccb4b6d6549a0578a472",
+    "tools/ci/verify_art_conversation_preparation_evidence.py": "89d8499d2e5406370825c176140c1acca560488647e94b5bbe946d82f941c33b"
+  },
+  "existing_non_documentation_entries_unchanged": 1879,
+  "manifest_bytes": 1542,
+  "manifest_files_verified": 5,
+  "manifest_sha256": "fb095deda67436840ede32683019a55a6eeb902e49265d089709da5d42583998",
+  "packet_bytes": 45903,
+  "packet_sha256": "8d3cfcd974ec12a8bfee5ff3bcd03b18e15dc9e651540177d1a9947de1fd5bb7",
+  "passed": true,
+  "primary_review_and_artifact_links_verified": [
+    "actions/runs/45556633896/artifacts/14997576786",
+    "blob/fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/d503-windows-independent-review.md",
+    "blob/fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/d503-provider-closure-review.json",
+    "blob/f4847680f22bfc60d8003e9a71a598dfe3a85e05/docs/audits/2026-11-25-art-workbench-collaborative-002/STRICT-DELIVERY-NATIVE-INDEPENDENT-REVIEW.md",
+    "blob/8d2ff13c179d7f3a48875378977d15f1588d6336/docs/audits/2026-11-25-art-workbench-collaborative-002/experience-evidence/d503-qualified-status.md",
+    "blob/9bbe820b041d3324f1ae2cb36bec24e49364b1bc/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/3a-first-attempt-independent-review.md"
+  ],
+  "principal_source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "principal_tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "scope": "Read-only final document/manifest/identity/claim readback; no runtime execution. Two additional offline evidence verifiers are explicitly distinguished from unchanged application/package source.",
+  "seal_commit": "adff36896074980c4cbbcbe953c4094f707effcb",
+  "seal_tree": "5e0a5cd305f12cdb2d865702d8bafbcc629f44d1"
+}
