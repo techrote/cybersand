@@ -12,6 +12,7 @@ const Fixtures = preload("res://goblin/goblin_fixtures.gd")
 const Policy = preload("res://goblin/goblin_policy.gd")
 const Assertions = preload("res://goblin/goblin_assertions.gd")
 const Transcript = preload("res://goblin/goblin_transcript.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const OUTPUT_DIR := "user://goblin"
 const TRANSCRIPT_PATH := "user://goblin/transcript.json"
 const SUMMARY_PATH := "user://goblin/summary.json"
@@ -369,17 +370,15 @@ func close() -> void:
 func _write_fixed(path: String, value: Dictionary) -> bool:
 	if path not in [TRANSCRIPT_PATH, SUMMARY_PATH, REPLAY_RESULT_PATH, _run_archive] or path.is_empty(): return false
 	if not Adapter.verify_profile().get("ok", false): return false
-	if DirAccess.make_dir_recursive_absolute(OUTPUT_DIR) != OK: return false
-	var pending: String = path + ".partial"
-	var file := FileAccess.open(pending, FileAccess.WRITE)
-	if file == null:
+	if DirAccess.make_dir_recursive_absolute(OUTPUT_DIR) != OK:
 		last_error = "could not export to the fixed test output location"
 		return false
-	file.store_string(JSON.stringify(value, "\t", true) + "\n")
-	file.flush()
-	var error: Error = file.get_error()
-	file.close()
-	if error != OK or DirAccess.rename_absolute(pending, path) != OK:
-		last_error = "could not atomically retain the observed transcript"
+	# The existing transcript/summary builders own shape and campaign budgets.
+	# Verify the complete formatted bytes before replacing this one audit file;
+	# separate transcript, summary and replay writes are not one transaction.
+	var encoded := JSON.stringify(value, "\t", true) + "\n"
+	var saved := FileTransaction.write_text(path, encoded, encoded.to_utf8_buffer().size())
+	if not saved.get("ok", false):
+		last_error = str(saved.get("error", "Audit output was not replaced."))
 		return false
 	return true
