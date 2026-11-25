@@ -29,7 +29,7 @@ static func parse_text(text: String) -> Dictionary:
 
 static func _unknown(value: Dictionary, keys: Array) -> bool:
 	for key: Variant in value:
-		if not key is String or key not in keys: return true
+		if not (key is String or key is StringName) or str(key) not in keys: return true
 	return false
 
 static func _text(value: Variant, capacity: int, allow_empty: bool = true) -> bool:
