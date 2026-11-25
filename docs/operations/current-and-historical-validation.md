@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Separate current source/runtime qualification from immutable historical M11 evidence and actual platform acceptance
 canonical-for: [current-validation-gates, m11-retention-policy]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [local-build-and-validation.md, github-development-and-release.md, testing-validation-and-replay.md, ../reference/validation-evidence.md]
 ---
 
@@ -87,7 +87,9 @@ Documentation CI also checks the retained historical record and retrieval
 contracts. Some frozen retrieval fixtures reference the pinned companion workspace;
 a standalone source checkout without those files must report that boundary,
 not rewrite the frozen questions or invent missing evidence. Historical hash
-reconciliation does not settle Web producer/consumer, template or browser gaps.
+reconciliation does not qualify a Web experiment's producer/consumer, templates
+or browser behavior. [The owner closed standing Web maintenance as not planned](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559);
+those experiment-specific gaps do not block desktop qualification or releases.
 
 ## Run and record the checks
 

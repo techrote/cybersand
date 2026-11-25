@@ -4,11 +4,17 @@ document-kind: runbook
 canonical-for: [web-worker-profiles, worker-reference-benchmark]
 status: Current
 scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [github-development-and-release.md, rapier-2d-migration-runbook.md, ../architecture/simulation-tick-and-threading.md, ../reference/configuration-reference.md, ../reference/validation-evidence.md]
 ---
 
 # Web worker profiles and reference tests
+
+**Owner scope:** Web is an occasional disposable experiment, under the
+[explicit closure of issue #3](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559).
+This page explains the retained implementation and requirements for a particular
+experiment. It does not create maintained Web CI, long-term reproducible Web
+release support, or a desktop release blocker.
 
 **Current:** compatibility Web uses one native cellular worker; optional threaded
 Web uses the existing phased pool. Both synchronously finish a cellular tick in
@@ -67,8 +73,9 @@ the separately required `--native-cpp`. The
 templates as `absent-and-unpinned`. A fresh source checkout therefore does not
 have a qualified reproducible Web export path merely because these tools exist.
 The [release guide](github-development-and-release.md#unresolved-ci-contradictions)
-owns these source-visible gaps. Fixing producer/consumer pins, templates or CI is
-a separately authorized implementation task.
+owns these source-visible gaps and their owner-deferred scope. An authorized
+future Web experiment must qualify the particular producer/consumer pins,
+templates and runtime paths it uses.
 
 For an **already produced, complete export** whose identity you have checked,
 serve it from the source root:

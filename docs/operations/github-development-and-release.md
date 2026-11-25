@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Contribution boundaries, Draft qualification, source-matched runtime publication and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ci-execution-and-performance.md, current-and-historical-validation.md]
 ---
 
@@ -162,8 +162,16 @@ the remote ruleset's configuration.
 
 ## Unresolved CI contradictions
 
-These are source-inspected Web configuration gaps at the recorded accepted source,
-not inferred failures of every existing Web artifact:
+**Owner scope:** [issue #3 was closed as not planned](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559).
+Web builds are occasional disposable experiments. Maintained Web CI and
+reproducible long-term Web releases are not standing requirements or desktop
+release blockers. A future authorized Web experiment repairs and qualifies what
+it actually needs; citing its result still requires exact source/artifact identity
+and honest execution coverage.
+
+The following source-inspected gaps remain in the manual/historical-branch Web
+workflows. They are experiment prerequisites, not an open desktop acceptance gate
+or evidence that every existing Web artifact fails:
 
 | Conflict | Source evidence | Separate required work |
 |---|---|---|
@@ -175,8 +183,9 @@ not inferred failures of every existing Web artifact:
 The companion wrapper's acquisition-base `source_commit` was a previously recorded
 identity limitation. Reinspect that separate workspace before treating it as a
 current fact; this source repository cannot attest an unseen local wrapper.
-Issue #3 and the canonical Web/build guides retain those release responsibilities.
-No native/Godot documentation pass resolves Web export or browser acceptance.
+The closed issue preserves the owner decision and original obligations; it must
+not be read as an active instruction to maintain Web support. No native/Godot
+documentation pass qualifies a new Web export or browser experiment.
 
 ## Release gates
 

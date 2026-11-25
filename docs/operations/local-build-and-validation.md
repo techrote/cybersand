@@ -871,6 +871,11 @@ does not assess visual GPU throughput or Windows/Web execution.
 
 ## Web compile, export and execution are different checks
 
+The [owner's issue #3 decision](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559)
+makes Web an occasional disposable experiment. These commands describe the
+retained experimental path, not a maintained CI/release obligation or a desktop
+acceptance gate. Qualify the exact inputs and coverage of each new experiment.
+
 From source, with the SDK active and paths adapted to the host:
 
 ```text
@@ -884,9 +889,10 @@ Both normal profiles package Rapier; `--cellular-only` is a diagnostic option.
 returns before runtime tests/export even if `--native-tests` is present.
 
 `--export-only` checks existing WASM structure, not freshness against source.
-The workspace wrapper still supplies the acquisition base as `--source-commit`;
-that export field is not current HEAD. Capture current source and artifact hashes
-separately until the producer is repaired in an implementation checkpoint.
+An older companion wrapper supplied the acquisition base as `--source-commit`;
+that historical export field is not proof of current HEAD. Inspect the actual
+wrapper used by a new experiment and capture its current source and artifact
+hashes; this repository cannot attest an unseen external wrapper.
 See [source identity](source-checkpoint-and-recovery.md).
 
 Preview generated output through HTTP with WASM MIME and profile headers, then
@@ -898,9 +904,10 @@ The [Web guide](web-threading.md) owns hosting requirements, and the
 ## How is the physics baseline rebuilt?
 
 Follow [physics characterization](physics-characterisation.md): rebuild the
-native CLI and adapter before running the deterministic P1–P4 matrices, then
-build/export both Web profiles and execute them in a real browser. Capture actual
-HEAD/local file hashes separately from legacy export acquisition labels.
+native CLI and adapter before running the deterministic P1–P4 matrices. If the
+experiment claims Web results, build/export its applicable profiles and execute
+them in a real browser. Capture actual HEAD/local file hashes separately from
+legacy export acquisition labels.
 The [2026-09-09 report](../audits/2026-09-09-physics-characterisation.md) records
 Windows/Web results and the unavailable Linux execution environment. Local
 rebuilt artifacts are measured inputs, not automatically updated published LFS
