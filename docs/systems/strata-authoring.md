@@ -97,9 +97,11 @@ is not claimed to be transparent or to encode authoritative rear planes.
 `strata_native_module.gd` validates `cybersand-strata-module-v1`. It stores exact
 uint16 little-endian material IDs separately from a write mask, with extent,
 anchor, material roles, permitted transforms, protected regions, clearances and
-source provenance. A zero mask bit is transparent/no-write. Explicit clearing
-is a separate placement choice; an Empty ID is not automatically a transparent
-cell. Modules may be mirrored or rotated by supported right angles without
+source provenance. A zero mask bit defaults to transparent/no-write; explicit
+native Replace/clear can request Empty at those cells. A one mask bit with
+material zero already means an explicit Empty write. This native write-mask
+contract is distinct from raster PNG selection masks, whose excluded pixels
+always remain no-write. Modules may be mirrored or rotated by supported right angles without
 interpolation of material IDs.
 
 The compatible `cybersand-native-module-v1` reader is a read-only contract pinned
@@ -130,8 +132,11 @@ material observations supply its initial state.
 The session first captures actual native materials, checks clearances and
 protection, projects each stage, and verifies native authored-layout and retained
 provenance capacity. This phase writes no material cells. The window offers each
-stage's copied Before and proposed After image plus a composited native-ID
-proposal. That small composite uses current copied material context, a fixed
+stage's copied Before and proposed After image in **Compose**, plus a composited
+native-ID proposal. **Import** instead presents Source, Mask and Proposed layout
+views, counts and the exact reviewed single-stage plane/region summary. A stale
+top-level conversion alias cannot override the stage's admitted region. That
+small Compose composite uses current copied material context, a fixed
 plane order and captured visibility/opacity. It labels any sampling stride and
 does not claim to be production shader, parallax, haze, glow or atmosphere output.
 Those appearances are inspected in the actual Workbench after approval.
@@ -142,8 +147,11 @@ owner, scene, generation, material revision, authored serial and permissions.
 Each native chunk then rechecks the same fences and exact before values. Counts
 advance only from a matching actual native ACK. The stage's full native region
 is read back afterward, including protected and no-write cells, and must match
-the acknowledged result. A dependency is complete only after that stage's
-acknowledged, read-back and published outcome; hiding it never completes it.
+the acknowledged result. A stage must request at least one explicit native write.
+Requested writes whose materials are already equal still use the ordinary owner
+acknowledgement and history path; changed-cell count is a distinct measure.
+A dependency is complete only after that stage's verified original
+acknowledgements, full native readback and publication; hiding it never completes it.
 
 There is no cross-plane transaction or group rollback. Stop abandons the
 unapplied suffix, waits for any already admitted chunk to acknowledge, and
@@ -180,7 +188,9 @@ completed, partial, cancelled, refused, failed and committed-with-stale-pixels
 outcomes, along with actual hashes, prefix counts and publication status.
 Historical owner IDs identify the operation's original source. Reopening a
 save never reuses them as a live approval, resumes a queue or asserts that the
-new owner is the old physical continuation.
+new owner is the old physical continuation. Native layouts and source metadata/
+digests persist; supplied original PNG bytes are not embedded in a scene save.
+Keep those originals separately for future remapping.
 
 ## Explicit resource and integration limits
 

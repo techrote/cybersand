@@ -1,0 +1,76 @@
+{
+  "checked_utc": "2026-11-25T00:46:45.483203+00:00",
+  "companion_pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_changes": "documentation only; full application digest equivalence recorded separately",
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "cwd": "/tmp/strata2-docs-workspace/source",
+      "exit_code": 0,
+      "seconds": 1.3916090779966908,
+      "original_log": "docs.log",
+      "output_tail": "{\n  \"status\": \"passed\",\n  \"documents\": 149,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 284,\n  \"local_links\": 4165,\n  \"heading_anchors\": 804,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n"
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "cwd": "/tmp/strata2-docs-workspace/source",
+      "exit_code": 0,
+      "seconds": 1.8748332250033855,
+      "original_log": "repository.log",
+      "output_tail": "er.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n"
+    },
+    {
+      "name": "historical-integrity",
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "cwd": "/tmp/strata2-docs-workspace/source",
+      "exit_code": 0,
+      "seconds": 0.33578189000400016,
+      "original_log": "historical-integrity.log",
+      "output_tail": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n"
+    },
+    {
+      "name": "retrieval",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "/tmp/strata2-evidence/docs-final-closure/retrieval-result.json"
+      ],
+      "cwd": "/tmp/strata2-docs-workspace/source",
+      "exit_code": 0,
+      "seconds": 0.8194993319993955,
+      "original_log": "retrieval.log",
+      "output_tail": "city-budgets.md :: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space\nQ21 rank=3 architecture/lcb-pressure-inertial-handoff.md :: LCB pressure and inertial implementation handoff > Inertial (`inertial_cellular_v1`, #212)\nQ22 rank=1 systems/water-design.md :: Water design > Coherent emission and surface adhesion\nQ23 rank=1 systems/water-design.md :: Water design > How should I diagnose a shimmering pool?\nQ24 rank=3 reference/invariants.md :: Architectural and simulation invariants > Fidelity invariants\nQ25 rank=1 architecture/principles-and-non-goals.md :: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?\nQ26 rank=2 architecture/overview.md :: Architecture overview > Are the named production modules already separate classes?\nQ27 rank=1 systems/smoke-heat-pressure-roadmap.md :: Smoke, heat, and pressure roadmap\nQ28 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands\nQ29 rank=3 operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Which earlier identity statements are historical?\nQ30 rank=1 reference/validation-evidence.md :: Validation evidence ledger > Which gates remain absent or failing?\nQ31 rank=1 operations/current-and-historical-validation.md :: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?\nQ32 rank=None operations/microscenarios-programme.md :: CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol\n"
+    },
+    {
+      "name": "retrieval-challenges",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "/tmp/strata2-evidence/docs-final-closure/retrieval-challenges-result.json"
+      ],
+      "cwd": "/tmp/strata2-docs-workspace/source",
+      "exit_code": 0,
+      "seconds": 1.6332722349980031,
+      "original_log": "retrieval-challenges.log",
+      "output_tail": "ication > Launch the shared session\nCI-SCHEDULING-01 rank=1 operations/ci-execution-and-performance.md :: CI execution watchdogs and advisory performance > Shared capacity and concurrency\nPLAY-RECOVERY-01 rank=1 systems/player-control-playground.md :: Player control playground > Stopped composed-session recovery\nATLAS-AGENT-01 rank=1 operations/atlas-agent-runner.md :: Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499)) > Live runs: what must be true first\nATLAS-AGENT-02 rank=1 operations/atlas-agent-runner.md :: Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499)) > Security model\nEXPLORE-001-PERSIST rank=1 systems/explore001-generated-playable-maps.md :: EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Ordinary workbench workflow > Authoring and reopen\nEXPLORE-001-DESKTOP rank=1 operations/explore001-desktop-playtest.md :: Windows candidate launch and acceptance > Manual acceptance procedure\nEXPLORE-001-CAPACITY rank=1 systems/explore001-generated-playable-maps.md :: EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Ordinary workbench workflow > Explicit first-version limits\nEXPLORE-001-LAYOUT rank=2 operations/explore001-desktop-playtest.md :: Windows candidate launch and acceptance > Manual acceptance procedure\nWB-AUTHORING-CONVERGENCE rank=1 architecture/shared-workbench-authoring-data.md :: Shared workbench authoring data and convergence > Approval and current boundary\nSTRATA-WB-01 rank=2 systems/depth-layers-and-parallax.md :: Depth layers and parallax prototypes > Standalone Strata Theatre controls\n"
+    }
+  ],
+  "all_passed": true,
+  "scope": "Local documentation/source provenance and lexical retrieval; no new graphical or native execution"
+}

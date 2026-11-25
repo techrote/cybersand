@@ -1,0 +1,731 @@
+{
+  "schema": "strata2-final-package-gallery-guide-review-b-v1",
+  "reviewed_at_utc": "2026-11-25T00:43:05.372051+00:00",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "run": 45509477752,
+  "reviewer": "Specialist B",
+  "pristine_payload_modified": false,
+  "browser_started": false,
+  "new_graphical_or_native_execution": false,
+  "scope": "Read-only final actual downloadable evaluator Gallery/guide/source/image link inspection, after C full payload and frozen verifier admission. B authored the gallery generator; C separately verified deterministic regeneration and all payload bytes.",
+  "package_artifact": {
+    "bytes": 208493785,
+    "id": 14978334114,
+    "name": "strata2-workbench-windows-evaluator-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+    "run_attempt": 1,
+    "run_id": 45509477752,
+    "sha256": "6d642a243fbe982dd07bc5ac3f79e65379221188ad2d6f59d27bed51e06f3645"
+  },
+  "inner_zip": {
+    "bytes": 208785019,
+    "name": "CyberSand-Strata2-Workbench-Windows-934cc0c0eef7.zip",
+    "sha256": "1a619b8b9c6af51529517f1609b457a7f25ed727deccbac8cd92269c7c23a547"
+  },
+  "payload_files": 1688,
+  "c_full_audit_sha256": "980939bdd95b9c5140962617c6194acb88ae5c7ff8d1725be4e4a2c76bc235d7",
+  "manifest_sha256": "82dbaa526b8cdb8f805162f1d5d5c73989a4cab2c44dd6411d584d7385b959b2",
+  "reviewed_payload_files": {
+    "Gallery.html": {
+      "sha256": "6c87018443e734e777999cb40ca25c4269938a815141d8ed3a4a9c2ae6a91c6a",
+      "bytes": 69352
+    },
+    "Gallery.inputs.json": {
+      "sha256": "bb7697525414aa99570aeb2a55996395ee74cc1415816af7882c1dbaf8da3c1e",
+      "bytes": 68560
+    },
+    "READ-ME.md": {
+      "sha256": "dc6f325fc24fe5c0e9d3af54bfb5d2280af852b0c768307b7d9ef4f1483cda96",
+      "bytes": 4724
+    },
+    "OWNER-EVALUATION.md": {
+      "sha256": "083cb3a3754423642032cdaef4b803fc775f045e25550e9185d5120cc72e8066",
+      "bytes": 784
+    },
+    "Open Workbench.cmd": {
+      "sha256": "fed431d83c531bedee2a30240be8e1e07db5ea0575a3c844096f3be15bc1e3bb",
+      "bytes": 558
+    },
+    "tools/build_strata2_gallery.py": {
+      "sha256": "420456e897cc73ca388d0f4f6b362c9af8bb0a0ec2d31134a54a5c25f221f47a",
+      "bytes": 28624
+    }
+  },
+  "source_files_sha256": {
+    "godot/data/strata2/abyss-foundry.json": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+    "godot/data/strata2/industrial-underworks.json": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+    "godot/data/strata2/neon-rain-arcology.json": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+    "godot/data/strata2/orbital-terminal.json": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+    "godot/data/strata2/vertical-transfer-spine.json": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+    "tools/build_strata2_gallery.py": "420456e897cc73ca388d0f4f6b362c9af8bb0a0ec2d31134a54a5c25f221f47a"
+  },
+  "checked_original_capture_and_report_hashes": {
+    "abyss-foundry/atmosphere-off.png": "6550943635537c6b9e7c80bb20da153f5ddeffc5d41cef57460a01d4ac815b5f",
+    "abyss-foundry/atmosphere-on.png": "8d0cac05fb7a3a09522d414d487fc94ad778ad879c5ef915415f5ebba89b1c51",
+    "abyss-foundry/detail-industrial-intrusion.png": "a623087b3e3e839ff31f4488c934b289b137c57e7100ce30705f94e6797bd3e2",
+    "abyss-foundry/detail-mist-and-rock-depth.png": "1f0afe8668a80a511a3d3dfba530f0cc3e0d46912b1637239e8c3ec5080eb123",
+    "abyss-foundry/install.json": "aed84240daa0b76b9692f2441af4497c4c319517baf82bb63d7b6bb25485e645",
+    "abyss-foundry/native-grid-play.png": "1631fd6dd582ef4337a2dca024e7fc6b6d0a371e0b6398a67f3ca6b8da0fbedf",
+    "abyss-foundry/native-grid-scripted.png": "95cb95047b7aed80488858d6d8d0f2a9dbfbeaf4960818d1140a81d2a1b2acd0",
+    "abyss-foundry/reference-composite.png": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+    "abyss-foundry/reference-plane-background.png": "f98ab89e3867b04702d12935fde153572efc6236bf440e580ddde1feda30ac25",
+    "abyss-foundry/reference-plane-effects.png": "d5ef41ca283f8395d801dcbef20aa31453b1759c53f1b2c4a4957a3e055bf3f9",
+    "abyss-foundry/reference-plane-play.png": "f2a6757c31bbc2843ca935b81bda2f22170cf90fede080ef552fe5e007c991f9",
+    "abyss-foundry/reference-plane-scripted.png": "3fe611a4440314dead5bf5cd36dc536b4f1c18b2608133565b0f49d60217387c",
+    "abyss-foundry/reopen.json": "cc56a1f9de777cc1f80de966a0cc287bf0eed954be968276d93934ba0afb67fe",
+    "industrial-underworks/atmosphere-off.png": "6287a08f8ad3b90c24d9da4239705160b1b3d34729a0b860888362e83f3e737a",
+    "industrial-underworks/atmosphere-on.png": "9bfc6d346a750b69febbd79c82bb78f9d39e67357fdc38e19df1d2e55fba49a7",
+    "industrial-underworks/detail-reactor-window.png": "f909a0c5eddb5f47368a5853e9ec8e8948cf8a99bf7a093d1d9e37e9498efaf4",
+    "industrial-underworks/detail-shaft-and-machinery.png": "fc937a583fb0bcd7ae12f2248d014f25d2a4be5b159397b574c11e74af3fbb3f",
+    "industrial-underworks/install.json": "c062f40c6290143cf0eb6ad72bf2487fa9e5bcdd0746b98c16c3466c0ceddd35",
+    "industrial-underworks/native-grid-play.png": "13985043f4ab322cc444ef4bd8e742f93df4618c9df78104ba8dda76a15f595d",
+    "industrial-underworks/native-grid-scripted.png": "880b6224e23ada56dbd2fe6605d837dab5d12cc4598e7859b1178b1222e82d9b",
+    "industrial-underworks/reference-composite.png": "7c8768ef846e8c3535e88e20eda15f59bba25219e6ac4fe70aeaf3d8e6967c1d",
+    "industrial-underworks/reference-plane-background.png": "60f60b869f2b96f2c3c1ec12cbcd4451637574bc8a2e2f723ff958e19e2b3830",
+    "industrial-underworks/reference-plane-effects.png": "b9e3da38e2d619519c4438863d69e4873e6fffebd78c5e20eed7ac7269849c54",
+    "industrial-underworks/reference-plane-play.png": "55b4f1db3cd749018f9ddbb69091fdd4dc631b7acc556cefdd4e0278b6c0d7bf",
+    "industrial-underworks/reference-plane-scripted.png": "514579a5d17cb40a7ecc2d176d62ad7d6e95d1c9c3277ce4328655488f758504",
+    "industrial-underworks/reopen.json": "7648007b3a63b1275ea660eb820cc3cb6224030cc669ee33c9990ee96d4e66e5",
+    "neon-rain-arcology/atmosphere-off.png": "93ed1ace525438fdc2e9404f042f8b44af18c8f9b0e73ee195de741e1996f863",
+    "neon-rain-arcology/atmosphere-on.png": "cab2de5076d13d8b00d5d7fc31e48f99a6968165e3d1f0d3d73322df47df9f69",
+    "neon-rain-arcology/detail-inhabited-rear-block.png": "c13c9a96a0dbb9f94af6dd3949f522ec235760e9e70f148a3d1ee7812aaa892b",
+    "neon-rain-arcology/detail-rain-and-signs.png": "f4b58d8a2cd797fdc734b2d120708d6b8c263b9494df0c84c8dd2b5b34d00b91",
+    "neon-rain-arcology/install.json": "6bdb7297bec35106f94564c9042e1419a0ee2d355d597ad45a8e643c04b5078b",
+    "neon-rain-arcology/native-grid-play.png": "cc5ed963c8a79767a848cffa29c23adf0518708fbc299bd1859d111d2546108b",
+    "neon-rain-arcology/native-grid-scripted.png": "bae4fdbbec16f45ff7a8867cace2fd59a44252c03da8bb5f840f33f3157fac93",
+    "neon-rain-arcology/reference-composite.png": "ccbf13e5c90958ae379d4dceb7e4f82c10f282fc99dcd88e5afdc5fa2064c568",
+    "neon-rain-arcology/reference-plane-background.png": "f828a262ae8ef64c1e50135c1d43b422307b7d71d83bce0c649f28b710e1c049",
+    "neon-rain-arcology/reference-plane-effects.png": "9f82873b766891bce737f6c258c64fe5f74e7e937d0e18955615cc505861c0ae",
+    "neon-rain-arcology/reference-plane-play.png": "cd5e5d233e3682f37b7d2371a0f618b9870e09eb747cc365ee6f74c248b56898",
+    "neon-rain-arcology/reference-plane-scripted.png": "82d25c30fb2e044a79911002af9414e566c29a264e5d1ce7453428cfc19be365",
+    "neon-rain-arcology/reopen.json": "75ee661694d95b39798ca40efa2df8c38cdb7e6e48f869944f416d5648318815",
+    "orbital-terminal/atmosphere-off.png": "bf5e0262b7a589d2170dff2527f26f4613abaff2a7eb8d06a8eb41f93ef00b60",
+    "orbital-terminal/atmosphere-on.png": "d37b7cff18a7dcad710007a615e6ff029e3c5d55b1a555231782605a451aef67",
+    "orbital-terminal/detail-cargo-and-truss.png": "e46174bdc14d473b4d40abfd5f7aa9e5a24925386e141a97772156c3d337eed1",
+    "orbital-terminal/detail-orbital-window.png": "cea9cd01bd6f093b43ddd7403c7a366d9f124d9c53af554cbfdf66a131a45728",
+    "orbital-terminal/install.json": "6c04730b181e4cd7929b91d02f990d87ad00d77d45909e699053f6def6b714c8",
+    "orbital-terminal/native-grid-play.png": "f9988ea218658e22e8efad47a6975127de27c592ecf03f5424bcc303834bccf0",
+    "orbital-terminal/native-grid-scripted.png": "939fc0a32cb77976b79525aad2abed1f8dd6193e884cf05b231a72d755573bb2",
+    "orbital-terminal/reference-composite.png": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+    "orbital-terminal/reference-plane-background.png": "6444d43f3c48dfbe3a983beb266b4828bc5c40b711f8ad25453f99368ccc1dcf",
+    "orbital-terminal/reference-plane-effects.png": "3e793e8b8775b3dcaac1ef423c3644640bf77ab51722d1979d275fc44c226800",
+    "orbital-terminal/reference-plane-play.png": "4d9c885c73614c14729a39f7ce88c8ec290cf3603c4c07a70d84a1506e755819",
+    "orbital-terminal/reference-plane-scripted.png": "00326e6038f99cb3207b975317838f42de9eb4cf49d030a8f62f69bc7fa24272",
+    "orbital-terminal/reopen.json": "547b3cae95b80d63fc72967662bbb308427214157d452f2ff19f5157ec5061e1",
+    "vertical-transfer-spine/atmosphere-off.png": "6418d3ae46720c5fe2708e7bfa4d50d371132955ae99f7f3990285c6a0ffc05b",
+    "vertical-transfer-spine/atmosphere-on.png": "2b138d67190b30b040b7c8482e2614375d3bbbfc72fa53a06a276aca936109d1",
+    "vertical-transfer-spine/detail-lower-service-deck.png": "8cf8db042ef588d81af288e03b580c9b9f65ba05d0a4a1cbb3f8154289f20aab",
+    "vertical-transfer-spine/detail-transfer-hoist.png": "8e6dfa855c5e2b67821c01f550cde121a700ffcb435f2bbf8a6165936c6e0d34",
+    "vertical-transfer-spine/install.json": "4b7a77caa0a3c8a9b015232c129cfc8632aefb6f5a44520c14e11a0874f1ed20",
+    "vertical-transfer-spine/native-grid-play.png": "316c5c74eb1511d51c806dee46ff6ae20bc252ba53073d43a6858f2b7d8c2a7f",
+    "vertical-transfer-spine/native-grid-scripted.png": "edabd171db2420195bbe3e4a884d32b6049cf1d099d87567a41aa8927468364d",
+    "vertical-transfer-spine/reference-composite.png": "26f1791361f9d3eb55e65ab71b2efb277464e49c734e1ddcf3bf19fcecb89779",
+    "vertical-transfer-spine/reference-plane-background.png": "a60fc709758a549cc8fa47a20185a5c11741ef73fe0d12d63b65370d17443ce3",
+    "vertical-transfer-spine/reference-plane-effects.png": "7121be4eeb75903d73ceafbfc44f6231229d48450bd8d823a67651458879ec1b",
+    "vertical-transfer-spine/reference-plane-play.png": "d2585ac44925a3802c78b6dc92c66be00e8515b10dbba6ef3bfafe2635584267",
+    "vertical-transfer-spine/reference-plane-scripted.png": "0c79fb800de365cea5eb4d489305845e5a569dac4b402faa5067942ffeca1f15",
+    "vertical-transfer-spine/reopen.json": "b25eadbc9f38186d6e1e670592b1e4c436d168bb1c3cfec9595d5a277ddd1458"
+  },
+  "checked_relative_links": {
+    "godot/data/strata2/orbital-terminal.json": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+    "qualification/windows/orbital-terminal/install.json": "6c04730b181e4cd7929b91d02f990d87ad00d77d45909e699053f6def6b714c8",
+    "qualification/windows/orbital-terminal/reopen.json": "547b3cae95b80d63fc72967662bbb308427214157d452f2ff19f5157ec5061e1",
+    "qualification/windows/orbital-terminal/reference-composite.png": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+    "qualification/windows/orbital-terminal/reference-plane-play.png": "4d9c885c73614c14729a39f7ce88c8ec290cf3603c4c07a70d84a1506e755819",
+    "qualification/windows/orbital-terminal/reference-plane-scripted.png": "00326e6038f99cb3207b975317838f42de9eb4cf49d030a8f62f69bc7fa24272",
+    "qualification/windows/orbital-terminal/reference-plane-effects.png": "3e793e8b8775b3dcaac1ef423c3644640bf77ab51722d1979d275fc44c226800",
+    "qualification/windows/orbital-terminal/reference-plane-background.png": "6444d43f3c48dfbe3a983beb266b4828bc5c40b711f8ad25453f99368ccc1dcf",
+    "qualification/windows/orbital-terminal/atmosphere-off.png": "bf5e0262b7a589d2170dff2527f26f4613abaff2a7eb8d06a8eb41f93ef00b60",
+    "qualification/windows/orbital-terminal/atmosphere-on.png": "d37b7cff18a7dcad710007a615e6ff029e3c5d55b1a555231782605a451aef67",
+    "qualification/windows/orbital-terminal/detail-cargo-and-truss.png": "e46174bdc14d473b4d40abfd5f7aa9e5a24925386e141a97772156c3d337eed1",
+    "qualification/windows/orbital-terminal/detail-orbital-window.png": "cea9cd01bd6f093b43ddd7403c7a366d9f124d9c53af554cbfdf66a131a45728",
+    "qualification/windows/orbital-terminal/native-grid-play.png": "f9988ea218658e22e8efad47a6975127de27c592ecf03f5424bcc303834bccf0",
+    "qualification/windows/orbital-terminal/native-grid-scripted.png": "939fc0a32cb77976b79525aad2abed1f8dd6193e884cf05b231a72d755573bb2",
+    "godot/data/strata2/neon-rain-arcology.json": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+    "qualification/windows/neon-rain-arcology/install.json": "6bdb7297bec35106f94564c9042e1419a0ee2d355d597ad45a8e643c04b5078b",
+    "qualification/windows/neon-rain-arcology/reopen.json": "75ee661694d95b39798ca40efa2df8c38cdb7e6e48f869944f416d5648318815",
+    "qualification/windows/neon-rain-arcology/reference-composite.png": "ccbf13e5c90958ae379d4dceb7e4f82c10f282fc99dcd88e5afdc5fa2064c568",
+    "qualification/windows/neon-rain-arcology/reference-plane-play.png": "cd5e5d233e3682f37b7d2371a0f618b9870e09eb747cc365ee6f74c248b56898",
+    "qualification/windows/neon-rain-arcology/reference-plane-scripted.png": "82d25c30fb2e044a79911002af9414e566c29a264e5d1ce7453428cfc19be365",
+    "qualification/windows/neon-rain-arcology/reference-plane-effects.png": "9f82873b766891bce737f6c258c64fe5f74e7e937d0e18955615cc505861c0ae",
+    "qualification/windows/neon-rain-arcology/reference-plane-background.png": "f828a262ae8ef64c1e50135c1d43b422307b7d71d83bce0c649f28b710e1c049",
+    "qualification/windows/neon-rain-arcology/atmosphere-off.png": "93ed1ace525438fdc2e9404f042f8b44af18c8f9b0e73ee195de741e1996f863",
+    "qualification/windows/neon-rain-arcology/atmosphere-on.png": "cab2de5076d13d8b00d5d7fc31e48f99a6968165e3d1f0d3d73322df47df9f69",
+    "qualification/windows/neon-rain-arcology/detail-rain-and-signs.png": "f4b58d8a2cd797fdc734b2d120708d6b8c263b9494df0c84c8dd2b5b34d00b91",
+    "qualification/windows/neon-rain-arcology/detail-inhabited-rear-block.png": "c13c9a96a0dbb9f94af6dd3949f522ec235760e9e70f148a3d1ee7812aaa892b",
+    "qualification/windows/neon-rain-arcology/native-grid-play.png": "cc5ed963c8a79767a848cffa29c23adf0518708fbc299bd1859d111d2546108b",
+    "qualification/windows/neon-rain-arcology/native-grid-scripted.png": "bae4fdbbec16f45ff7a8867cace2fd59a44252c03da8bb5f840f33f3157fac93",
+    "godot/data/strata2/industrial-underworks.json": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+    "qualification/windows/industrial-underworks/install.json": "c062f40c6290143cf0eb6ad72bf2487fa9e5bcdd0746b98c16c3466c0ceddd35",
+    "qualification/windows/industrial-underworks/reopen.json": "7648007b3a63b1275ea660eb820cc3cb6224030cc669ee33c9990ee96d4e66e5",
+    "qualification/windows/industrial-underworks/reference-composite.png": "7c8768ef846e8c3535e88e20eda15f59bba25219e6ac4fe70aeaf3d8e6967c1d",
+    "qualification/windows/industrial-underworks/reference-plane-play.png": "55b4f1db3cd749018f9ddbb69091fdd4dc631b7acc556cefdd4e0278b6c0d7bf",
+    "qualification/windows/industrial-underworks/reference-plane-scripted.png": "514579a5d17cb40a7ecc2d176d62ad7d6e95d1c9c3277ce4328655488f758504",
+    "qualification/windows/industrial-underworks/reference-plane-effects.png": "b9e3da38e2d619519c4438863d69e4873e6fffebd78c5e20eed7ac7269849c54",
+    "qualification/windows/industrial-underworks/reference-plane-background.png": "60f60b869f2b96f2c3c1ec12cbcd4451637574bc8a2e2f723ff958e19e2b3830",
+    "qualification/windows/industrial-underworks/atmosphere-off.png": "6287a08f8ad3b90c24d9da4239705160b1b3d34729a0b860888362e83f3e737a",
+    "qualification/windows/industrial-underworks/atmosphere-on.png": "9bfc6d346a750b69febbd79c82bb78f9d39e67357fdc38e19df1d2e55fba49a7",
+    "qualification/windows/industrial-underworks/detail-reactor-window.png": "f909a0c5eddb5f47368a5853e9ec8e8948cf8a99bf7a093d1d9e37e9498efaf4",
+    "qualification/windows/industrial-underworks/detail-shaft-and-machinery.png": "fc937a583fb0bcd7ae12f2248d014f25d2a4be5b159397b574c11e74af3fbb3f",
+    "qualification/windows/industrial-underworks/native-grid-play.png": "13985043f4ab322cc444ef4bd8e742f93df4618c9df78104ba8dda76a15f595d",
+    "qualification/windows/industrial-underworks/native-grid-scripted.png": "880b6224e23ada56dbd2fe6605d837dab5d12cc4598e7859b1178b1222e82d9b",
+    "godot/data/strata2/abyss-foundry.json": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+    "qualification/windows/abyss-foundry/install.json": "aed84240daa0b76b9692f2441af4497c4c319517baf82bb63d7b6bb25485e645",
+    "qualification/windows/abyss-foundry/reopen.json": "cc56a1f9de777cc1f80de966a0cc287bf0eed954be968276d93934ba0afb67fe",
+    "qualification/windows/abyss-foundry/reference-composite.png": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+    "qualification/windows/abyss-foundry/reference-plane-play.png": "f2a6757c31bbc2843ca935b81bda2f22170cf90fede080ef552fe5e007c991f9",
+    "qualification/windows/abyss-foundry/reference-plane-scripted.png": "3fe611a4440314dead5bf5cd36dc536b4f1c18b2608133565b0f49d60217387c",
+    "qualification/windows/abyss-foundry/reference-plane-effects.png": "d5ef41ca283f8395d801dcbef20aa31453b1759c53f1b2c4a4957a3e055bf3f9",
+    "qualification/windows/abyss-foundry/reference-plane-background.png": "f98ab89e3867b04702d12935fde153572efc6236bf440e580ddde1feda30ac25",
+    "qualification/windows/abyss-foundry/atmosphere-off.png": "6550943635537c6b9e7c80bb20da153f5ddeffc5d41cef57460a01d4ac815b5f",
+    "qualification/windows/abyss-foundry/atmosphere-on.png": "8d0cac05fb7a3a09522d414d487fc94ad778ad879c5ef915415f5ebba89b1c51",
+    "qualification/windows/abyss-foundry/detail-industrial-intrusion.png": "a623087b3e3e839ff31f4488c934b289b137c57e7100ce30705f94e6797bd3e2",
+    "qualification/windows/abyss-foundry/detail-mist-and-rock-depth.png": "1f0afe8668a80a511a3d3dfba530f0cc3e0d46912b1637239e8c3ec5080eb123",
+    "qualification/windows/abyss-foundry/native-grid-play.png": "1631fd6dd582ef4337a2dca024e7fc6b6d0a371e0b6398a67f3ca6b8da0fbedf",
+    "qualification/windows/abyss-foundry/native-grid-scripted.png": "95cb95047b7aed80488858d6d8d0f2a9dbfbeaf4960818d1140a81d2a1b2acd0",
+    "godot/data/strata2/vertical-transfer-spine.json": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+    "qualification/windows/vertical-transfer-spine/install.json": "4b7a77caa0a3c8a9b015232c129cfc8632aefb6f5a44520c14e11a0874f1ed20",
+    "qualification/windows/vertical-transfer-spine/reopen.json": "b25eadbc9f38186d6e1e670592b1e4c436d168bb1c3cfec9595d5a277ddd1458",
+    "qualification/windows/vertical-transfer-spine/reference-composite.png": "26f1791361f9d3eb55e65ab71b2efb277464e49c734e1ddcf3bf19fcecb89779",
+    "qualification/windows/vertical-transfer-spine/reference-plane-play.png": "d2585ac44925a3802c78b6dc92c66be00e8515b10dbba6ef3bfafe2635584267",
+    "qualification/windows/vertical-transfer-spine/reference-plane-scripted.png": "0c79fb800de365cea5eb4d489305845e5a569dac4b402faa5067942ffeca1f15",
+    "qualification/windows/vertical-transfer-spine/reference-plane-effects.png": "7121be4eeb75903d73ceafbfc44f6231229d48450bd8d823a67651458879ec1b",
+    "qualification/windows/vertical-transfer-spine/reference-plane-background.png": "a60fc709758a549cc8fa47a20185a5c11741ef73fe0d12d63b65370d17443ce3",
+    "qualification/windows/vertical-transfer-spine/atmosphere-off.png": "6418d3ae46720c5fe2708e7bfa4d50d371132955ae99f7f3990285c6a0ffc05b",
+    "qualification/windows/vertical-transfer-spine/atmosphere-on.png": "2b138d67190b30b040b7c8482e2614375d3bbbfc72fa53a06a276aca936109d1",
+    "qualification/windows/vertical-transfer-spine/detail-transfer-hoist.png": "8e6dfa855c5e2b67821c01f550cde121a700ffcb435f2bbf8a6165936c6e0d34",
+    "qualification/windows/vertical-transfer-spine/detail-lower-service-deck.png": "8cf8db042ef588d81af288e03b580c9b9f65ba05d0a4a1cbb3f8154289f20aab",
+    "qualification/windows/vertical-transfer-spine/native-grid-play.png": "316c5c74eb1511d51c806dee46ff6ae20bc252ba53073d43a6858f2b7d8c2a7f",
+    "qualification/windows/vertical-transfer-spine/native-grid-scripted.png": "edabd171db2420195bbe3e4a884d32b6049cf1d099d87567a41aa8927468364d",
+    "READ-ME.md": "dc6f325fc24fe5c0e9d3af54bfb5d2280af852b0c768307b7d9ef4f1483cda96",
+    "OWNER-EVALUATION.md": "083cb3a3754423642032cdaef4b803fc775f045e25550e9185d5120cc72e8066",
+    "qualification/windows/qualification.json": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978",
+    "Gallery.inputs.json": "bb7697525414aa99570aeb2a55996395ee74cc1415816af7882c1dbaf8da3c1e"
+  },
+  "displayed_captures": [
+    {
+      "scene": "orbital-terminal",
+      "id": "stack",
+      "url": "qualification/windows/orbital-terminal/reference-composite.png",
+      "sha256": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "play",
+      "url": "qualification/windows/orbital-terminal/reference-plane-play.png",
+      "sha256": "4d9c885c73614c14729a39f7ce88c8ec290cf3603c4c07a70d84a1506e755819"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "scripted",
+      "url": "qualification/windows/orbital-terminal/reference-plane-scripted.png",
+      "sha256": "00326e6038f99cb3207b975317838f42de9eb4cf49d030a8f62f69bc7fa24272"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "effects",
+      "url": "qualification/windows/orbital-terminal/reference-plane-effects.png",
+      "sha256": "3e793e8b8775b3dcaac1ef423c3644640bf77ab51722d1979d275fc44c226800"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "background",
+      "url": "qualification/windows/orbital-terminal/reference-plane-background.png",
+      "sha256": "6444d43f3c48dfbe3a983beb266b4828bc5c40b711f8ad25453f99368ccc1dcf"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "atmosphere-off",
+      "url": "qualification/windows/orbital-terminal/atmosphere-off.png",
+      "sha256": "bf5e0262b7a589d2170dff2527f26f4613abaff2a7eb8d06a8eb41f93ef00b60"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "atmosphere-on",
+      "url": "qualification/windows/orbital-terminal/atmosphere-on.png",
+      "sha256": "d37b7cff18a7dcad710007a615e6ff029e3c5d55b1a555231782605a451aef67"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "detail-cargo-and-truss",
+      "url": "qualification/windows/orbital-terminal/detail-cargo-and-truss.png",
+      "sha256": "e46174bdc14d473b4d40abfd5f7aa9e5a24925386e141a97772156c3d337eed1"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "detail-orbital-window",
+      "url": "qualification/windows/orbital-terminal/detail-orbital-window.png",
+      "sha256": "cea9cd01bd6f093b43ddd7403c7a366d9f124d9c53af554cbfdf66a131a45728"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "native-grid-play",
+      "url": "qualification/windows/orbital-terminal/native-grid-play.png",
+      "sha256": "f9988ea218658e22e8efad47a6975127de27c592ecf03f5424bcc303834bccf0"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "native-grid-scripted",
+      "url": "qualification/windows/orbital-terminal/native-grid-scripted.png",
+      "sha256": "939fc0a32cb77976b79525aad2abed1f8dd6193e884cf05b231a72d755573bb2"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "stack",
+      "url": "qualification/windows/neon-rain-arcology/reference-composite.png",
+      "sha256": "ccbf13e5c90958ae379d4dceb7e4f82c10f282fc99dcd88e5afdc5fa2064c568"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "play",
+      "url": "qualification/windows/neon-rain-arcology/reference-plane-play.png",
+      "sha256": "cd5e5d233e3682f37b7d2371a0f618b9870e09eb747cc365ee6f74c248b56898"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "scripted",
+      "url": "qualification/windows/neon-rain-arcology/reference-plane-scripted.png",
+      "sha256": "82d25c30fb2e044a79911002af9414e566c29a264e5d1ce7453428cfc19be365"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "effects",
+      "url": "qualification/windows/neon-rain-arcology/reference-plane-effects.png",
+      "sha256": "9f82873b766891bce737f6c258c64fe5f74e7e937d0e18955615cc505861c0ae"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "background",
+      "url": "qualification/windows/neon-rain-arcology/reference-plane-background.png",
+      "sha256": "f828a262ae8ef64c1e50135c1d43b422307b7d71d83bce0c649f28b710e1c049"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "atmosphere-off",
+      "url": "qualification/windows/neon-rain-arcology/atmosphere-off.png",
+      "sha256": "93ed1ace525438fdc2e9404f042f8b44af18c8f9b0e73ee195de741e1996f863"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "atmosphere-on",
+      "url": "qualification/windows/neon-rain-arcology/atmosphere-on.png",
+      "sha256": "cab2de5076d13d8b00d5d7fc31e48f99a6968165e3d1f0d3d73322df47df9f69"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "detail-rain-and-signs",
+      "url": "qualification/windows/neon-rain-arcology/detail-rain-and-signs.png",
+      "sha256": "f4b58d8a2cd797fdc734b2d120708d6b8c263b9494df0c84c8dd2b5b34d00b91"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "detail-inhabited-rear-block",
+      "url": "qualification/windows/neon-rain-arcology/detail-inhabited-rear-block.png",
+      "sha256": "c13c9a96a0dbb9f94af6dd3949f522ec235760e9e70f148a3d1ee7812aaa892b"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "native-grid-play",
+      "url": "qualification/windows/neon-rain-arcology/native-grid-play.png",
+      "sha256": "cc5ed963c8a79767a848cffa29c23adf0518708fbc299bd1859d111d2546108b"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "native-grid-scripted",
+      "url": "qualification/windows/neon-rain-arcology/native-grid-scripted.png",
+      "sha256": "bae4fdbbec16f45ff7a8867cace2fd59a44252c03da8bb5f840f33f3157fac93"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "stack",
+      "url": "qualification/windows/industrial-underworks/reference-composite.png",
+      "sha256": "7c8768ef846e8c3535e88e20eda15f59bba25219e6ac4fe70aeaf3d8e6967c1d"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "play",
+      "url": "qualification/windows/industrial-underworks/reference-plane-play.png",
+      "sha256": "55b4f1db3cd749018f9ddbb69091fdd4dc631b7acc556cefdd4e0278b6c0d7bf"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "scripted",
+      "url": "qualification/windows/industrial-underworks/reference-plane-scripted.png",
+      "sha256": "514579a5d17cb40a7ecc2d176d62ad7d6e95d1c9c3277ce4328655488f758504"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "effects",
+      "url": "qualification/windows/industrial-underworks/reference-plane-effects.png",
+      "sha256": "b9e3da38e2d619519c4438863d69e4873e6fffebd78c5e20eed7ac7269849c54"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "background",
+      "url": "qualification/windows/industrial-underworks/reference-plane-background.png",
+      "sha256": "60f60b869f2b96f2c3c1ec12cbcd4451637574bc8a2e2f723ff958e19e2b3830"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "atmosphere-off",
+      "url": "qualification/windows/industrial-underworks/atmosphere-off.png",
+      "sha256": "6287a08f8ad3b90c24d9da4239705160b1b3d34729a0b860888362e83f3e737a"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "atmosphere-on",
+      "url": "qualification/windows/industrial-underworks/atmosphere-on.png",
+      "sha256": "9bfc6d346a750b69febbd79c82bb78f9d39e67357fdc38e19df1d2e55fba49a7"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "detail-reactor-window",
+      "url": "qualification/windows/industrial-underworks/detail-reactor-window.png",
+      "sha256": "f909a0c5eddb5f47368a5853e9ec8e8948cf8a99bf7a093d1d9e37e9498efaf4"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "detail-shaft-and-machinery",
+      "url": "qualification/windows/industrial-underworks/detail-shaft-and-machinery.png",
+      "sha256": "fc937a583fb0bcd7ae12f2248d014f25d2a4be5b159397b574c11e74af3fbb3f"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "native-grid-play",
+      "url": "qualification/windows/industrial-underworks/native-grid-play.png",
+      "sha256": "13985043f4ab322cc444ef4bd8e742f93df4618c9df78104ba8dda76a15f595d"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "native-grid-scripted",
+      "url": "qualification/windows/industrial-underworks/native-grid-scripted.png",
+      "sha256": "880b6224e23ada56dbd2fe6605d837dab5d12cc4598e7859b1178b1222e82d9b"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "stack",
+      "url": "qualification/windows/abyss-foundry/reference-composite.png",
+      "sha256": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "play",
+      "url": "qualification/windows/abyss-foundry/reference-plane-play.png",
+      "sha256": "f2a6757c31bbc2843ca935b81bda2f22170cf90fede080ef552fe5e007c991f9"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "scripted",
+      "url": "qualification/windows/abyss-foundry/reference-plane-scripted.png",
+      "sha256": "3fe611a4440314dead5bf5cd36dc536b4f1c18b2608133565b0f49d60217387c"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "effects",
+      "url": "qualification/windows/abyss-foundry/reference-plane-effects.png",
+      "sha256": "d5ef41ca283f8395d801dcbef20aa31453b1759c53f1b2c4a4957a3e055bf3f9"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "background",
+      "url": "qualification/windows/abyss-foundry/reference-plane-background.png",
+      "sha256": "f98ab89e3867b04702d12935fde153572efc6236bf440e580ddde1feda30ac25"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "atmosphere-off",
+      "url": "qualification/windows/abyss-foundry/atmosphere-off.png",
+      "sha256": "6550943635537c6b9e7c80bb20da153f5ddeffc5d41cef57460a01d4ac815b5f"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "atmosphere-on",
+      "url": "qualification/windows/abyss-foundry/atmosphere-on.png",
+      "sha256": "8d0cac05fb7a3a09522d414d487fc94ad778ad879c5ef915415f5ebba89b1c51"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "detail-industrial-intrusion",
+      "url": "qualification/windows/abyss-foundry/detail-industrial-intrusion.png",
+      "sha256": "a623087b3e3e839ff31f4488c934b289b137c57e7100ce30705f94e6797bd3e2"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "detail-mist-and-rock-depth",
+      "url": "qualification/windows/abyss-foundry/detail-mist-and-rock-depth.png",
+      "sha256": "1f0afe8668a80a511a3d3dfba530f0cc3e0d46912b1637239e8c3ec5080eb123"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "native-grid-play",
+      "url": "qualification/windows/abyss-foundry/native-grid-play.png",
+      "sha256": "1631fd6dd582ef4337a2dca024e7fc6b6d0a371e0b6398a67f3ca6b8da0fbedf"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "native-grid-scripted",
+      "url": "qualification/windows/abyss-foundry/native-grid-scripted.png",
+      "sha256": "95cb95047b7aed80488858d6d8d0f2a9dbfbeaf4960818d1140a81d2a1b2acd0"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "stack",
+      "url": "qualification/windows/vertical-transfer-spine/reference-composite.png",
+      "sha256": "26f1791361f9d3eb55e65ab71b2efb277464e49c734e1ddcf3bf19fcecb89779"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "play",
+      "url": "qualification/windows/vertical-transfer-spine/reference-plane-play.png",
+      "sha256": "d2585ac44925a3802c78b6dc92c66be00e8515b10dbba6ef3bfafe2635584267"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "scripted",
+      "url": "qualification/windows/vertical-transfer-spine/reference-plane-scripted.png",
+      "sha256": "0c79fb800de365cea5eb4d489305845e5a569dac4b402faa5067942ffeca1f15"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "effects",
+      "url": "qualification/windows/vertical-transfer-spine/reference-plane-effects.png",
+      "sha256": "7121be4eeb75903d73ceafbfc44f6231229d48450bd8d823a67651458879ec1b"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "background",
+      "url": "qualification/windows/vertical-transfer-spine/reference-plane-background.png",
+      "sha256": "a60fc709758a549cc8fa47a20185a5c11741ef73fe0d12d63b65370d17443ce3"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "atmosphere-off",
+      "url": "qualification/windows/vertical-transfer-spine/atmosphere-off.png",
+      "sha256": "6418d3ae46720c5fe2708e7bfa4d50d371132955ae99f7f3990285c6a0ffc05b"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "atmosphere-on",
+      "url": "qualification/windows/vertical-transfer-spine/atmosphere-on.png",
+      "sha256": "2b138d67190b30b040b7c8482e2614375d3bbbfc72fa53a06a276aca936109d1"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "detail-transfer-hoist",
+      "url": "qualification/windows/vertical-transfer-spine/detail-transfer-hoist.png",
+      "sha256": "8e6dfa855c5e2b67821c01f550cde121a700ffcb435f2bbf8a6165936c6e0d34"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "detail-lower-service-deck",
+      "url": "qualification/windows/vertical-transfer-spine/detail-lower-service-deck.png",
+      "sha256": "8cf8db042ef588d81af288e03b580c9b9f65ba05d0a4a1cbb3f8154289f20aab"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "native-grid-play",
+      "url": "qualification/windows/vertical-transfer-spine/native-grid-play.png",
+      "sha256": "316c5c74eb1511d51c806dee46ff6ae20bc252ba53073d43a6858f2b7d8c2a7f"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "native-grid-scripted",
+      "url": "qualification/windows/vertical-transfer-spine/native-grid-scripted.png",
+      "sha256": "edabd171db2420195bbe3e4a884d32b6049cf1d099d87567a41aa8927468364d"
+    }
+  ],
+  "checked_displayed_capture_count": 55,
+  "checked_capture_and_report_count": 65,
+  "native_grid_literal_labels_and_actual_scale": [
+    {
+      "scene": "orbital-terminal",
+      "id": "native-grid-play",
+      "label": "Play · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.00042724609375,
+      "y": 1.00045776367188,
+      "sha256": "f9988ea218658e22e8efad47a6975127de27c592ecf03f5424bcc303834bccf0"
+    },
+    {
+      "scene": "orbital-terminal",
+      "id": "native-grid-scripted",
+      "label": "Rear architecture · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.00042724609375,
+      "y": 1.00045776367188,
+      "sha256": "939fc0a32cb77976b79525aad2abed1f8dd6193e884cf05b231a72d755573bb2"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "native-grid-play",
+      "label": "Play · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.0003662109375,
+      "y": 1.00045776367188,
+      "sha256": "cc5ed963c8a79767a848cffa29c23adf0518708fbc299bd1859d111d2546108b"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "id": "native-grid-scripted",
+      "label": "Rear architecture · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.0003662109375,
+      "y": 1.00045776367188,
+      "sha256": "bae4fdbbec16f45ff7a8867cace2fd59a44252c03da8bb5f840f33f3157fac93"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "native-grid-play",
+      "label": "Play · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.0008544921875,
+      "y": 1.00088500976563,
+      "sha256": "13985043f4ab322cc444ef4bd8e742f93df4618c9df78104ba8dda76a15f595d"
+    },
+    {
+      "scene": "industrial-underworks",
+      "id": "native-grid-scripted",
+      "label": "Rear architecture · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.0008544921875,
+      "y": 1.00088500976563,
+      "sha256": "880b6224e23ada56dbd2fe6605d837dab5d12cc4598e7859b1178b1222e82d9b"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "native-grid-play",
+      "label": "Play · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.0008544921875,
+      "y": 1.00088500976563,
+      "sha256": "1631fd6dd582ef4337a2dca024e7fc6b6d0a371e0b6398a67f3ca6b8da0fbedf"
+    },
+    {
+      "scene": "abyss-foundry",
+      "id": "native-grid-scripted",
+      "label": "Rear architecture · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.0008544921875,
+      "y": 1.00088500976563,
+      "sha256": "95cb95047b7aed80488858d6d8d0f2a9dbfbeaf4960818d1140a81d2a1b2acd0"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "native-grid-play",
+      "label": "Play · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.00091552734375,
+      "y": 1.00088500976563,
+      "sha256": "316c5c74eb1511d51c806dee46ff6ae20bc252ba53073d43a6858f2b7d8c2a7f"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "id": "native-grid-scripted",
+      "label": "Rear architecture · 1:1 capture",
+      "caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+      "x": 1.00091552734375,
+      "y": 1.00088500976563,
+      "sha256": "edabd171db2420195bbe3e4a884d32b6049cf1d099d87567a41aa8927468364d"
+    }
+  ],
+  "known_issue": {
+    "id": "gallery-native-grid-caption-precision",
+    "severity": "nonblocking Draft documentation erratum",
+    "literal_labels": "Play / Rear architecture · 1:1 capture",
+    "literal_caption": "Actual framebuffer crop: one native cell per captured pixel, no resampling. This page fits images by default; browser/OS scaling remains separate.",
+    "actual_contract": "Nominal near-1:1 framebuffer crops, each axis within 1% of unity; actual scales remain accurate in Gallery.inputs.json. They are unresampled but not mathematically exact 1:1.",
+    "example_scale": {
+      "scene": "orbital-terminal",
+      "x": 1.00042724609375,
+      "y": 1.00045776367188
+    },
+    "disposition": "Lead requested an explicit canonical packet/owner-guide/final-chat erratum. Preserve immutable verified archive/source. Literal shipped captions have not been corrected."
+  },
+  "guide_findings": [
+    "README identifies Draft/HOLD, exact source/tree and ordinary Open Workbench launch with Strata opt-in.",
+    "Sample Overlay/Replace and explicit PNG mask no-write semantics are stated accurately.",
+    "Native approval, bounded chunk ACK/readback, actual committed prefix, preserved Play ownership, authored save and visual-only atmosphere are distinguished.",
+    "Generated actor instruction remains generic; detailed Midge controls are in the canonical repository quick tour, not claimed as shipped README text.",
+    "OWNER-EVALUATION records hardware/scaling, real input/appearance/pacing, import/construction/history and fresh reopening; merge/Ready/default activation and physical acceptance remain separate."
+  ],
+  "extracted_execution": {
+    "report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac",
+    "status": "passed",
+    "cases": 28,
+    "new_execution_by_this_review": false,
+    "admission_results": [
+      {
+        "scene": "orbital-terminal",
+        "phase": "install",
+        "elapsed_ms": 51619,
+        "target_ms": 45000,
+        "target_met": false
+      },
+      {
+        "scene": "orbital-terminal",
+        "phase": "reopen",
+        "elapsed_ms": 8881,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      {
+        "scene": "neon-rain-arcology",
+        "phase": "install",
+        "elapsed_ms": 66316,
+        "target_ms": 45000,
+        "target_met": false
+      },
+      {
+        "scene": "neon-rain-arcology",
+        "phase": "reopen",
+        "elapsed_ms": 8891,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      {
+        "scene": "industrial-underworks",
+        "phase": "install",
+        "elapsed_ms": 66200,
+        "target_ms": 45000,
+        "target_met": false
+      },
+      {
+        "scene": "industrial-underworks",
+        "phase": "reopen",
+        "elapsed_ms": 7636,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      {
+        "scene": "abyss-foundry",
+        "phase": "install",
+        "elapsed_ms": 59958,
+        "target_ms": 45000,
+        "target_met": false
+      },
+      {
+        "scene": "abyss-foundry",
+        "phase": "reopen",
+        "elapsed_ms": 7622,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      {
+        "scene": "vertical-transfer-spine",
+        "phase": "install",
+        "elapsed_ms": 54804,
+        "target_ms": 45000,
+        "target_met": false
+      },
+      {
+        "scene": "vertical-transfer-spine",
+        "phase": "reopen",
+        "elapsed_ms": 7706,
+        "target_ms": 45000,
+        "target_met": true
+      }
+    ],
+    "scope": "Original C-audited actual pristine extracted Windows execution; timing misses remain distinct from functional PASS."
+  },
+  "decision": "PASS for reviewed file/source/link custody and useful guide scope, with explicit shipped-caption precision erratum. No runtime, image or package mutation defect found."
+}

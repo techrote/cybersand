@@ -1,0 +1,54 @@
+{
+  "schema": "strata2-c-source4-cross-lane-review-v1",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "run_id": 45509477752,
+  "platform": "win32",
+  "original_campaign_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978",
+  "reviewer": "Specialist C; did not author these scene recipes or atmosphere renderer",
+  "images_viewed": [
+    {
+      "path": "orbital-terminal/reference-composite.png",
+      "bytes": 927383,
+      "sha256": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+      "visual_observation": "The broad lower flight corridor and suspended bright Play gantries remain readable against dark rear trusses, machinery and the connected distant dock mass. Geometry is straight side elevation. This still image does not establish full-route traversal or owner display pacing."
+    },
+    {
+      "path": "industrial-underworks/reference-composite.png",
+      "bytes": 576478,
+      "sha256": "7c8768ef846e8c3535e88e20eda15f59bba25219e6ac4fe70aeaf3d8e6967c1d",
+      "visual_observation": "The central native annular turbine creates a distinct rear architectural mass; bright horizontal Play platforms and open lower route remain separable. The turbine is authored static native material, not a demonstrated physical machine."
+    },
+    {
+      "path": "industrial-underworks/reference-plane-play.png",
+      "bytes": 289742,
+      "sha256": "55b4f1db3cd749018f9ddbb69091fdd4dc631b7acc556cefdd4e0278b6c0d7bf",
+      "visual_observation": "The isolated Play capture visibly excludes the central rear turbine and pressure-column panels. It retains platforms, physical boundary, crates and Play pipework, supporting explicit decorative/physical separation."
+    },
+    {
+      "path": "neon-rain-arcology/reference-composite.png",
+      "bytes": 1200319,
+      "sha256": "ccbf13e5c90958ae379d4dceb7e4f82c10f282fc99dcd88e5afdc5fa2064c568",
+      "visual_observation": "Varied rear building heights and dark distant silhouettes supply a different city depth pattern, while neon Play ledges, gaps and lower flight space remain visible. Some far texture is deliberately subtle at Overview; physical owner brightness and readability remain acceptance judgments."
+    },
+    {
+      "path": "abyss-foundry/reference-composite.png",
+      "bytes": 767892,
+      "sha256": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+      "visual_observation": "The irregular near cavern rim and subdued distant surfaces read differently from the rectilinear showcases. Industrial inserts leave a large central void and a visible lower actor start. No perspective platform tops are present."
+    },
+    {
+      "path": "vertical-transfer-spine/reference-composite.png",
+      "bytes": 463459,
+      "sha256": "26f1791361f9d3eb55e65ab71b2efb277464e49c734e1ddcf3bf19fcecb89779",
+      "visual_observation": "The tall native extent uses repeated side landings, dim rear hoist panels and long open central space. The Overview shrinks fine detail, so the separate native-grid crop remains necessary for pixel inspection."
+    }
+  ],
+  "finding": "No blocking native-geometry/visual-layer contradiction identified in the inspected original Windows frames. This is a separate cross-lane visual inspection after full frozen campaign admission.",
+  "limits": [
+    "Still frames do not qualify moving Windows/NVIDIA playfeel, display FPS or subjective aesthetic acceptance.",
+    "The actor route witness proves real initial movement only; it does not prove complete traversal, load capacity or structural stability.",
+    "C implemented portions of the qualifier and does not present this review as independent certification of its own test design; A and lead performed those source/receipt reviews.",
+    "Pristine packaged execution and final downloadable archive audit remain pending at this checkpoint."
+  ]
+}

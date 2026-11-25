@@ -30,6 +30,8 @@ Godot and source-matched native/Rapier dependencies are included. Keep all files
 together. **Gallery.html** offers actual Windows Godot captures, isolated planes,
 matched atmosphere comparisons, native-pixel details and original receipt links.
 Those images document the packaged source; they are not concept-art substitutes.
+The [short visual tour](../audits/2026-11-24-strata-theatre-002/owner-visual-quick-tour.md)
+adds scene-specific comparisons and a first composition placement.
 
 1. Open **Strata Theatre…** from the ordinary toolbar, then **Scenes**.
 2. Choose a complete environment and load it. Loading replaces the authored
@@ -70,7 +72,10 @@ ordinary selection tool. Native import/harvest requires an editable target.
 
 Select and pilot the ordinary actor using the usual Workbench controls. Toggle
 Strata and atmosphere while moving, and observe whether identity, movement and
-input persist. Play imports require Pause; decorative editing does not acquire
+input persist. For the default Midge, **W/Space** supplies body-axis thrust,
+**A/D** rotates, **C** assists upright and **Ctrl** brakes; use the live Details
+or catalogue control hint for a different actor. A nearer view makes movement
+easier to judge than the full-scene Overview. Play imports require Pause; decorative editing does not acquire
 actor or Rapier ownership. **Reset presentation** restores visual settings
 without resetting Play or native layouts; authored atmosphere settings are kept.
 Closing the panel also preserves them.
@@ -89,8 +94,8 @@ not observed depth or recovered alpha. Original source art remains unmodified.
    IDs disable raster sampling controls and preserve their exact grid.
 3. Keep **Overlay · no write into cutouts** for transparent openings. Choose
    **Replace · explicitly write Empty** only when actual erasure is intended.
-   The threshold deterministically decides partial alpha. Mask-excluded pixels
-   always remain no-write in both modes. To expose a rear plane through an
+   The threshold deterministically decides partial alpha. Raster PNG selection-mask
+   exclusions always remain no-write in both modes. To expose a rear plane through an
    Overlay cutout, choose an empty destination region or separately approve
    explicit Empty writes; transparent source pixels preserve existing cells.
 4. Configure colour-to-native-material rows, maximum RGB distance and the
@@ -100,12 +105,14 @@ not observed depth or recovered alpha. Original source art remains unmodified.
    separate adverse fixtures exercise unknown opaque colours. Approximate
    palette matching never infers depth.
 5. Press **Preview proposed native placement**. Inspect extent, mapped/no-write/
-   explicit-Empty/unmapped counts, source and geometry digests, actual before
-   materials and the resulting proposal. Nothing has been written yet.
+   explicit-Empty/unmapped counts, source and geometry digests, and the Source,
+   Mask and Proposed layout views. The ready summary identifies the
+   selected plane and exact `[x, y, width, height]` region. Nothing has been written yet.
 6. Press **Approve reviewed placement**. The target is observed again and applied
-   through bounded native requests. Read the actual final status and readback;
-   **Stop · keep applied prefix** retains the acknowledged cells. It is not an
-   automatic rollback.
+   through bounded native requests. Read the actual final status and readback.
+   **Stop · keep applied prefix** prevents the next chunk; an already submitted
+   request must resolve its actual acknowledgement and readback, and its committed
+   prefix remains. It is not an automatic rollback.
 7. Solo the target and inspect the placed material pixels. Compare the opening
    with the rear plane, then use the target's ordinary Undo/Redo.
 
@@ -113,7 +120,14 @@ A crop is at most 512 × 512 source pixels; integer replication is 1–4 and the
 result is at most 262,144 cells. The preview reports the exact sampled extent.
 Each native write request contains at most 4096 cells. Large imports can exceed
 the 32-entry history window; the displayed warning tells how many older entries
-will be displaced. Do not expect one Undo to erase a multi-chunk import.
+will be displaced. Each retained chunk needs its own Undo. Once more than32
+chunks occupy the selected plane's history, earlier displaced chunks cannot be
+undone through that window; save a prior scene when a complete rollback matters.
+
+Native module masks are distinct from PNG selection masks. Their mask0 cells
+default to no-write, while explicit native Replace/clear may propose Empty for
+those cells. A mask1 cell with material0 already requests Empty. Review the
+clearing count and native proposal; bounds, protection and clearance still apply.
 
 ## Reuse and compose architecture
 
@@ -130,8 +144,10 @@ small composite is a native-ID proposal with current opacity and fixed order;
 it is explicitly not a prediction of haze, depth, glow or animated appearance.
 
 **Approve reviewed construction** executes the declared stages in order. Each
-dependency requires an actual native acknowledgement and readback; hiding it
-cannot mark it complete. Scene replacement, stale revisions or changed
+submitted mutation requires an actual native acknowledgement and readback;
+even an already-matching requested cell follows that owner/history path. A stage
+with no requested writes refuses. Hiding a dependency cannot mark it complete.
+Scene replacement, stale revisions or changed
 permissions invalidate approval. Partial/Stop outcomes retain their actual
 prefix and identify the unexecuted stages. No cross-plane atomic transaction or
 structural attachment/load-bearing solver is claimed.
@@ -185,6 +201,8 @@ settings and retained operation provenance. It preserves this session's history
 but does not serialize Undo stacks. Exit completely, relaunch the shipped
 launcher, and use **Load start** to open the named scene in a fresh process.
 Inspect each plane, imported openings, preset geometry and effect settings.
+The scene retains native geometry and source metadata/digests, not embedded
+original PNG files. Keep those originals separately if you want to remap them.
 
 New extensions use strict `CYSSTRAT` v2; v1 remains compatible. Invalid versions,
 unknown fields, bad native IDs, corrupt data or budget overflow are refused.
@@ -209,3 +227,14 @@ subjective playfeel, aesthetic acceptance or broad dense-simulation performance.
 Keep **HOLD**, request changes, or record acceptance for later merge review.
 Nothing in the evaluator automatically promotes, merges or changes the ordinary
 default presentation.
+
+## Qualified evaluator gallery erratum
+
+The final `934cc0c0eef7` evaluator's offline Gallery uses the labels **1:1 capture**
+and **one native cell per captured pixel** for ten detail views. Their actual
+recorded ratios are 1.0003662109375–1.00091552734375. Interpret those views as
+**nominal near-1:1, unresampled framebuffer crops within the qualified 1% scale
+tolerance**. Browser and operating-system scaling remain separate. The source
+images and payload hashes are valid; the verified ZIP was not silently amended.
+The [final decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md)
+records the exact archive, independent review and retained admission-budget misses.

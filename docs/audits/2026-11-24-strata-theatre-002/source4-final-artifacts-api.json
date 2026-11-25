@@ -1,0 +1,99 @@
+{
+  "artifacts": [
+    {
+      "id": 14978448778,
+      "name": "strata2-package-evidence-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "size_in_bytes": 223384971,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14978448778",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14978448778/zip",
+      "expired": false,
+      "created_at": "2026-11-25T00:34:36Z",
+      "expires_at": "2027-02-22T23:22:54Z",
+      "updated_at": "2026-11-25T00:34:36Z",
+      "digest": "sha256:2211905b26c4caf5db06fa8dd32a35b29194269de1069517032044b19682a52e",
+      "workflow_run": {
+        "id": 45509477752,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feat/strata-theatre-002-20261124",
+        "head_sha": "934cc0c0eef70dad528155e9a92eebe25e2757eb"
+      }
+    },
+    {
+      "id": 14978334114,
+      "name": "strata2-workbench-windows-evaluator-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "size_in_bytes": 208493785,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14978334114",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14978334114/zip",
+      "expired": false,
+      "created_at": "2026-11-25T00:34:23Z",
+      "expires_at": "2027-02-22T23:22:54Z",
+      "updated_at": "2026-11-25T00:34:23Z",
+      "digest": "sha256:6d642a243fbe982dd07bc5ac3f79e65379221188ad2d6f59d27bed51e06f3645",
+      "workflow_run": {
+        "id": 45509477752,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feat/strata-theatre-002-20261124",
+        "head_sha": "934cc0c0eef70dad528155e9a92eebe25e2757eb"
+      }
+    },
+    {
+      "id": 14976602377,
+      "name": "strata2-windows-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "size_in_bytes": 67120825,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14976602377",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14976602377/zip",
+      "expired": false,
+      "created_at": "2026-11-24T23:49:33Z",
+      "expires_at": "2027-02-22T23:22:54Z",
+      "updated_at": "2026-11-24T23:49:33Z",
+      "digest": "sha256:7f5c27a5b27674c6bfc7db21e6c382f8d0dbc33c2e48b0d32c740dcff626ecaf",
+      "workflow_run": {
+        "id": 45509477752,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feat/strata-theatre-002-20261124",
+        "head_sha": "934cc0c0eef70dad528155e9a92eebe25e2757eb"
+      }
+    },
+    {
+      "id": 14976537526,
+      "name": "strata2-dependencies-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "size_in_bytes": 85321005,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14976537526",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14976537526/zip",
+      "expired": false,
+      "created_at": "2026-11-24T23:49:37Z",
+      "expires_at": "2026-12-01T23:49:33Z",
+      "updated_at": "2026-11-24T23:49:37Z",
+      "digest": "sha256:c538f4477316220486177ff3c6eb3c4151ce0876e3a34485bf420d203d39674e",
+      "workflow_run": {
+        "id": 45509477752,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feat/strata-theatre-002-20261124",
+        "head_sha": "934cc0c0eef70dad528155e9a92eebe25e2757eb"
+      }
+    },
+    {
+      "id": 14975742969,
+      "name": "strata2-linux-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "size_in_bytes": 89063883,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14975742969",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14975742969/zip",
+      "expired": false,
+      "created_at": "2026-11-24T23:44:29Z",
+      "expires_at": "2027-02-22T23:22:54Z",
+      "updated_at": "2026-11-24T23:44:29Z",
+      "digest": "sha256:76f4006e9e633e5f81cc62e293642cc99696591196cb43c82456306156cd1646",
+      "workflow_run": {
+        "id": 45509477752,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feat/strata-theatre-002-20261124",
+        "head_sha": "934cc0c0eef70dad528155e9a92eebe25e2757eb"
+      }
+    }
+  ]
+}

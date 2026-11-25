@@ -1,0 +1,14 @@
+{
+  "schema": "strata2-documentation-closure-application-equivalence-v1",
+  "verified_utc": "2026-11-25T00:45:05.625797+00:00",
+  "qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "qualified_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "normalized_source_inputs": 1156,
+  "exact_png_mask_assets": 6,
+  "application_inputs_equal": true,
+  "changed_application_inputs": [],
+  "comparison": "Current working application identity compared in full with frozen934 source identity and its original admitted campaigns; documentation is outside the executed application input set.",
+  "application_identity_sha256": "6251f206a4e6321d4e00f8156abbaf58d7499e7755039ae3e94462a727a61164",
+  "runtime_review": "reviews/final-windows-runtime-byte-audit.json",
+  "git_tree_binding": "The final documentation-only commit and full non-documentation tree comparison are recorded in the supplemental archival-closure.json and final PR delivery comment. This record does not claim a new application execution."
+}

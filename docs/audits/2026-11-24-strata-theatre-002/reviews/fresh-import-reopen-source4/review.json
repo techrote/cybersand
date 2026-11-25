@@ -1,0 +1,91 @@
+{
+  "actual_native_hashes": {
+    "background": "fa71b2cddae06bb713e214f15db94370677b562a064208490c5883834c56d876",
+    "effects": "f354d69db4ddc6208190ac52f1d9392429858bb4dc01e503c1f57627a7df2b31",
+    "play": "563aad1004a14db0ed1258ff862860a9a4fb73dcff7e1952aa0830b4a0cd1a5d",
+    "scripted": "28e6291643ecdffa560a888e5373895956eb92aaa61bd0a4f2108edfb82eb875"
+  },
+  "actual_probes": {
+    "120.0,80.0": 58,
+    "121.0,81.0": 0,
+    "123.0,83.0": 0,
+    "126.0,81.0": 131
+  },
+  "application_identity_unchanged": true,
+  "checks": 79,
+  "elapsed_seconds": 8.144461631774902,
+  "files": {
+    "README.md": {
+      "bytes": 5293,
+      "sha256": "1336b1352bad08a381ae9e0bac8635176c7664d7473eff628e664d9bc2e89bb5"
+    },
+    "fresh_import_reopen.gd": {
+      "bytes": 5181,
+      "sha256": "c7e93d4f6deaab19f9379d8a317ac4b30f7697f5fe11eb587ca754f255397f29"
+    },
+    "oracle.json": {
+      "bytes": 252237,
+      "sha256": "4fbc368fd5e24e9f4b26ac6d231f9f27f3c03171da58de4fc694e994c33b1184"
+    },
+    "original-save-copy.cysstrat": {
+      "bytes": 66025,
+      "sha256": "eea04ef7ec9e20ff4df6680e02bdd2d303a237a4c78a38c733075cc79b856027"
+    },
+    "original.log": {
+      "bytes": 356,
+      "sha256": "c7c88b119fad10d4699996bfefc99682f810f6a2b8ac100258897aabfc550ae0"
+    },
+    "preparation-negative.json": {
+      "bytes": 346,
+      "sha256": "aad897e141ee1160ed91f01138e67d4885a14bebad103642873ad7fc5687a27c"
+    },
+    "prepare_fresh_import_reopen.py": {
+      "bytes": 6313,
+      "sha256": "94750a343bf7892ad6799ad8d02463e9e17d4c48dd4521b209e78391372507f7"
+    },
+    "process.json": {
+      "bytes": 284500,
+      "sha256": "3caebcd9d94d2a3349bbd7cb56af92deefaa0338fa83cb47a166d6a4b6d6c0c0"
+    },
+    "raster-oracle.json": {
+      "bytes": 1112,
+      "sha256": "bee4d192185b8d5b908debf4d208e13c64c82df5571bbd58f3f446180a8dd876"
+    },
+    "result.json": {
+      "bytes": 118141,
+      "sha256": "863f4c2b0bcd85a1eadc5c573d128da414bf3862d9161d9ebd68917ea3862ae7"
+    },
+    "strata2-alpha-input.png": {
+      "bytes": 118,
+      "sha256": "30aed4710ecadd79c3bb5522a64dcac5d25b76485515aef711837e86dcaef434"
+    },
+    "writer-processes.json": {
+      "bytes": 6689,
+      "sha256": "658cca87346e5e035ccceaf1e7e2235ac83534a05fb874918d210b846fc00122"
+    },
+    "writer-workflow.json": {
+      "bytes": 81884,
+      "sha256": "25cb7e6ee1ed1cb86076212dfbd56acba2a67d7dd0753b7c142feb7cb9d557a9"
+    }
+  },
+  "original_save": {
+    "bytes": 66025,
+    "mtime_ns": 1795561693567175678,
+    "mtime_utc": "2026-11-24T23:08:13.567176+00:00",
+    "path": "/home/agent/.local/share/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-strata2-native-import-history.json",
+    "sha256": "eea04ef7ec9e20ff4df6680e02bdd2d303a237a4c78a38c733075cc79b856027"
+  },
+  "original_save_unchanged": true,
+  "processes": {
+    "reader": 26,
+    "reader_start_id": 3086090,
+    "writer": 82
+  },
+  "provenance_records": 17,
+  "schema": "strata2-supplemental-import-fresh-reopen-review-v1",
+  "scope": "Fresh headless ordinary Main/Workbench load of an unchanged prior writer save; actual native readback, no new authoring, graphical or physical-owner claim.",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "status": "passed",
+  "writer_binding_limit": "Writer report source_revision is empty. Original wrapper base plus five exact blobs equals source934. The save is retrospectively bound by exact17-record provenance, unique historical owner, four native hashes, settings and mtime; the writer did not record save SHA at execution."
+}

@@ -1,0 +1,546 @@
+{
+  "schema": "strata2-visual-review-b-v1",
+  "status": "Draft/HOLD; original campaign failed",
+  "review_scope": "Original Godot native framebuffer images and source-exact report; no new render or physical owner acceptance.",
+  "archive_note": "New reviewer archive reconstructed after executor reset from immutable audit logs and visual observations completed before reset; not represented as a byte-identical recovered local review.",
+  "source": {
+    "commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+    "tree": "8cecb1df9dee26e3b0730e5ddda4824da4a03aaf"
+  },
+  "original": {
+    "run_id": 45493745153,
+    "artifact_id": 14967949955,
+    "platform": "linux",
+    "campaign_status": "failed",
+    "scene_statuses": {
+      "orbital-terminal": "failed install; one source-colour assertion",
+      "neon-rain-arcology": "passed install/reopen",
+      "industrial-underworks": "passed install/reopen",
+      "abyss-foundry": "passed install/reopen",
+      "vertical-transfer-spine": "passed install/reopen"
+    }
+  },
+  "transport": {
+    "run_id": 45497618505,
+    "job_id": 138812166052,
+    "recovered_log_characters": 7903542,
+    "source_bytes_unmodified": true,
+    "independent_original_png_bytes_and_sha256_verified_before_reset": true,
+    "verifier": "Strict base64 chunk assembly and pure-JS SHA-256; empty, abc and multi-block reference vectors passed. Ten PNG byte counts/digests and original report/log UTF-8 hashes were independently matched before image display.",
+    "scope": "Read-only artifact inspection and lossless log transport; no new rendering."
+  },
+  "images": [
+    {
+      "base64_chars": 1239408,
+      "bytes": 929555,
+      "campaign_status": "failed",
+      "chunks": 303,
+      "id": "orbital-terminal/stack",
+      "path": "orbital-terminal/reference-composite.png",
+      "sha256": "bfe733f09896f3bea3eea9784548dce9608e6148856bbb98832ca54bce417ac4",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "bfe733f09896f3bea3eea9784548dce9608e6148856bbb98832ca54bce417ac4",
+      "viewed": true,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "base64_chars": 770924,
+      "bytes": 578192,
+      "campaign_status": "failed",
+      "chunks": 189,
+      "id": "industrial-underworks/stack",
+      "path": "industrial-underworks/reference-composite.png",
+      "sha256": "240846cebe7e00936dc34a53b3030272fe065c6d90fa76f62ba44fb2c878138f",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "240846cebe7e00936dc34a53b3030272fe065c6d90fa76f62ba44fb2c878138f",
+      "viewed": true,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "base64_chars": 1025924,
+      "bytes": 769442,
+      "campaign_status": "failed",
+      "chunks": 251,
+      "id": "abyss-foundry/stack",
+      "path": "abyss-foundry/reference-composite.png",
+      "sha256": "02ee5c14bf776e5799a34bbc2502cbf3a9e640b2ebc87d2920111d6c8f208144",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "02ee5c14bf776e5799a34bbc2502cbf3a9e640b2ebc87d2920111d6c8f208144",
+      "viewed": true,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "base64_chars": 619876,
+      "bytes": 464905,
+      "campaign_status": "failed",
+      "chunks": 152,
+      "id": "vertical-transfer-spine/stack",
+      "path": "vertical-transfer-spine/reference-composite.png",
+      "sha256": "b238d3ccdfae1601a0dbf2b0acfc9b283e4d6a35039070911bbdf7f8e34f4abe",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "b238d3ccdfae1601a0dbf2b0acfc9b283e4d6a35039070911bbdf7f8e34f4abe",
+      "viewed": true,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "base64_chars": 1250120,
+      "bytes": 937588,
+      "campaign_status": "failed",
+      "chunks": 306,
+      "id": "orbital/atmosphere-off",
+      "path": "orbital-terminal/atmosphere-off.png",
+      "sha256": "c690f9a2f32223b5c5504879cb29c61bd824b0245a03982ac0b99e4d447f611d",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "c690f9a2f32223b5c5504879cb29c61bd824b0245a03982ac0b99e4d447f611d",
+      "viewed": true,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "base64_chars": 1253896,
+      "bytes": 940422,
+      "campaign_status": "failed",
+      "chunks": 307,
+      "id": "orbital/atmosphere-on",
+      "path": "orbital-terminal/atmosphere-on.png",
+      "sha256": "3286a6385a404d986462a2d873f051a00a002ec65ba7c82a6845c6e290c63517",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "3286a6385a404d986462a2d873f051a00a002ec65ba7c82a6845c6e290c63517",
+      "viewed": true,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "base64_chars": 390700,
+      "bytes": 293024,
+      "campaign_status": "failed",
+      "chunks": 96,
+      "id": "orbital/native-grid-play",
+      "path": "orbital-terminal/native-grid-play.png",
+      "sha256": "61d18c95fe339ec8b9acf5f431c33811704a8ef681e744595aa387831629a6a1",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "61d18c95fe339ec8b9acf5f431c33811704a8ef681e744595aa387831629a6a1",
+      "viewed": true,
+      "width": 1566,
+      "height": 751
+    },
+    {
+      "base64_chars": 516984,
+      "bytes": 387738,
+      "campaign_status": "failed",
+      "chunks": 127,
+      "id": "orbital/native-grid-scripted",
+      "path": "orbital-terminal/native-grid-scripted.png",
+      "sha256": "c055322d12f3881fd4773cafe086848499bcdf2422b941a1d072d93f6a9d7d96",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "c055322d12f3881fd4773cafe086848499bcdf2422b941a1d072d93f6a9d7d96",
+      "viewed": true,
+      "width": 1566,
+      "height": 751
+    },
+    {
+      "base64_chars": 233692,
+      "bytes": 175268,
+      "campaign_status": "failed",
+      "chunks": 58,
+      "id": "orbital/import-review",
+      "path": "orbital-terminal/reference-import-asteroid-service-gallery-review.png",
+      "sha256": "a18229612ec2024675abac8562d89e6b4bd5643fa5bf772f354dea413d79f390",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "a18229612ec2024675abac8562d89e6b4bd5643fa5bf772f354dea413d79f390",
+      "viewed": true,
+      "width": 817,
+      "height": 634
+    },
+    {
+      "base64_chars": 154480,
+      "bytes": 115859,
+      "campaign_status": "failed",
+      "chunks": 38,
+      "id": "orbital/compose-ui",
+      "path": "orbital-terminal/workflow-tab-2.png",
+      "sha256": "14cda577b854ea124e3f93aa91b3143da25affc32b7a60f0a615066f74082e1d",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "independently_verified_sha256": "14cda577b854ea124e3f93aa91b3143da25affc32b7a60f0a615066f74082e1d",
+      "viewed": true,
+      "width": 817,
+      "height": 634
+    },
+    {
+      "path": "neon-rain-arcology/atmosphere-off.png",
+      "bytes": 1224655,
+      "sha256": "4b173c64249f6b06ceb1012251a1748cc6c997485db9ba09fb326739237bab6d",
+      "width": 1600,
+      "height": 900,
+      "id": "neon-rain-arcology/atmosphere-off",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "campaign_status": "failed",
+      "independently_verified_sha256": "4b173c64249f6b06ceb1012251a1748cc6c997485db9ba09fb326739237bab6d",
+      "viewed": true,
+      "transport": "Direct original artifact extraction; original campaign ledger matched"
+    },
+    {
+      "path": "neon-rain-arcology/atmosphere-on.png",
+      "bytes": 1226975,
+      "sha256": "45ebcec3f84940ecdb6accc5433de6e529b55220d6cb809249a95992814529fb",
+      "width": 1600,
+      "height": 900,
+      "id": "neon-rain-arcology/atmosphere-on",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "campaign_status": "failed",
+      "independently_verified_sha256": "45ebcec3f84940ecdb6accc5433de6e529b55220d6cb809249a95992814529fb",
+      "viewed": true,
+      "transport": "Direct original artifact extraction; original campaign ledger matched"
+    },
+    {
+      "path": "neon-rain-arcology/reference-composite.png",
+      "bytes": 1201639,
+      "sha256": "21ed2cce7dd39025400808c2b5911d8a69946bd64f8d82f0312dbcc582dfcaf0",
+      "width": 1600,
+      "height": 900,
+      "id": "neon-rain-arcology/stack",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "campaign_status": "failed",
+      "independently_verified_sha256": "21ed2cce7dd39025400808c2b5911d8a69946bd64f8d82f0312dbcc582dfcaf0",
+      "viewed": true,
+      "transport": "Direct original artifact extraction; original campaign ledger matched"
+    },
+    {
+      "path": "neon-rain-arcology/reference-plane-background.png",
+      "bytes": 391498,
+      "sha256": "4b9ea088d49c5e00d25935fe7917b30fbd61c02496f578aabfebc1dda1f0f1ff",
+      "width": 1600,
+      "height": 900,
+      "id": "neon-rain-arcology/plane-background",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "campaign_status": "failed",
+      "independently_verified_sha256": "4b9ea088d49c5e00d25935fe7917b30fbd61c02496f578aabfebc1dda1f0f1ff",
+      "viewed": true,
+      "transport": "Direct original artifact extraction; original campaign ledger matched"
+    },
+    {
+      "path": "neon-rain-arcology/reference-plane-play.png",
+      "bytes": 447599,
+      "sha256": "621434bfe24dcf8f688c25ce6fceb94fe967903fbe387a4766f137b7a98ee406",
+      "width": 1600,
+      "height": 900,
+      "id": "neon-rain-arcology/plane-play",
+      "source_commit": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "campaign_status": "failed",
+      "independently_verified_sha256": "621434bfe24dcf8f688c25ce6fceb94fe967903fbe387a4766f137b7a98ee406",
+      "viewed": true,
+      "transport": "Direct original artifact extraction; original campaign ledger matched"
+    }
+  ],
+  "original_texts": [
+    {
+      "path": "orbital-terminal/install.json",
+      "sha256": "671f3e8e0fa41a2052f303f3c58bb53f8ddb862157f02a0e0b482080f6096a65",
+      "bytes": 78933
+    },
+    {
+      "path": "orbital-terminal/install/process.log",
+      "sha256": "a37f6de658a467beba5eb3ac6cb8d78f7988f8923b3b1152887b8ad1a754426d",
+      "bytes": 3067
+    }
+  ],
+  "visual_findings": [
+    {
+      "scene": "orbital-terminal",
+      "observation": "Connected far dock/hull and structural arms replace the disconnected upper outline. Bright Play decks and broad lower flight void remain legible. Dark rear geometry retains a sparse fabrication-hall character.",
+      "limit": "The long corridor was not fully traversed by this review."
+    },
+    {
+      "scene": "industrial-underworks",
+      "observation": "The native rear turbine and pressure columns substantially improve the earlier hollow-box scene. Bright service decks remain distinct from rear masses.",
+      "limit": "The turbine is static decorative native geometry, not physical machine simulation."
+    },
+    {
+      "scene": "abyss-foundry",
+      "observation": "Continuous far ceiling/side rock reinforces the cavern depth around the large central void. Purple mineral edges, bright industrial platforms and dark rear surfaces remain separable.",
+      "limit": "Small white decorative dust motifs can resemble isolated material pixels at overview; owner appearance judgment remains open."
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "observation": "Carriage cages, continuous hoist cables and pulley give the repeated shaft a coherent structure. Lower rear panels now terminate within the chamber.",
+      "limit": "Fit-to-world portrait reduces the native grid substantially; individual material pixels require detail inspection."
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "observation": "Taller stepped distant towers are visibly present between the nearer inhabited blocks and through foreground openings. The isolated Play frame shows large physical flight voids; the background frame is a separate editable native skyline. Uneven roof levels and cyan/magenta/yellow accents give this scene a distinct city character.",
+      "limit": "Rain and haze are sparse presentation accents in the matched overview; the strong diagonal facade pattern is also present with atmosphere OFF and must not be described as simulated rain. Full-course flight and physical owner appearance remain unqualified.",
+      "recovery": "Initially omitted by the log audit's 1 MiB image cap, then directly extracted from the original SHA-verified 89,677,038-byte artifact ZIP and checked against its qualification ledger. All five new Arcology PNGs were visually inspected."
+    }
+  ],
+  "atmosphere": {
+    "pair": [
+      "orbital/atmosphere-off",
+      "orbital/atmosphere-on"
+    ],
+    "observation": "Restrained teal horizontal haze/steam and small signal accents are visible without obscuring bright decks; the effect is deliberately subtle at overview.",
+    "changed_world_samples": 2659,
+    "total_samples": 279377,
+    "solo_leakage_samples": 0,
+    "native_capture_delta": 0,
+    "all_native_hashes_unchanged": true,
+    "limits": [
+      "Stills do not establish perceived motion or frame pacing.",
+      "This matched pair follows qualifier edits; it is not represented as the pristine reference-composite geometry.",
+      "No physical Windows/NVIDIA appearance acceptance."
+    ],
+    "arcology_followup": {
+      "observation": "Sparse visible blue rain segments in open space and low haze/signal accents; native facade texture remains in the OFF control.",
+      "visual_difference": {
+        "changed_samples": 3390,
+        "max_channel_delta": 0.485916137695312,
+        "samples": 279377,
+        "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+        "stride": 2,
+        "threshold": 0.003
+      },
+      "solo_leakage": {
+        "changed_samples": 0,
+        "max_channel_delta": 0,
+        "samples": 279377,
+        "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+        "stride": 2,
+        "threshold": 0.003
+      },
+      "native_capture_delta": 0,
+      "native_hashes_unchanged": true
+    }
+  },
+  "native_grid": {
+    "images": [
+      "orbital/native-grid-play",
+      "orbital/native-grid-scripted"
+    ],
+    "observation": "Original framebuffer crops show clean material texture pixels and separate Play/rear content.",
+    "original_metadata": [
+      {
+        "camera_origin": [
+          0,
+          259.5
+        ],
+        "framebuffer_crop": [
+          17,
+          135,
+          1566,
+          751
+        ],
+        "pixels_per_cell_x": 1.00042724609375,
+        "pixels_per_cell_y": 1.00045776367188,
+        "plane": "play",
+        "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+        "view_size": [
+          1566,
+          751
+        ]
+      },
+      {
+        "camera_origin": [
+          0,
+          259.5
+        ],
+        "framebuffer_crop": [
+          17,
+          135,
+          1566,
+          751
+        ],
+        "pixels_per_cell_x": 1.00042724609375,
+        "pixels_per_cell_y": 1.00045776367188,
+        "plane": "scripted",
+        "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+        "view_size": [
+          1566,
+          751
+        ]
+      }
+    ],
+    "limit": "Native-cell/framebuffer-pixel ratio comes from the original execution receipt; Chat/browser/OS display scaling is separate."
+  },
+  "ui": {
+    "images": [
+      "orbital/import-review",
+      "orbital/compose-ui"
+    ],
+    "observation": "Readable source/target/crop/transform and module/preset controls appear in the upper scroll viewport.",
+    "gap": "Before/after/source/mask previews, counts and approval controls are below the captured viewport. A lower-section review capture was requested during the concrete qualifier repair; this is not a finding that the controls do not exist."
+  },
+  "original_orbital_execution": {
+    "completed": true,
+    "checks": 2435,
+    "failures": [
+      "background remains visible with exact opaque source colour"
+    ],
+    "reference_import": {
+      "mapped": 19552,
+      "no_write": 103328,
+      "chunks": 5,
+      "actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+      "expected_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+      "restored_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+      "before_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+      "play_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e"
+    },
+    "route": {
+      "forward_cells": 13.9254150390625,
+      "completed_native_ticks": 59,
+      "completed_rapier_ticks": 60,
+      "elapsed_usec": 14748319,
+      "scope": "Real actuation and initial route segment only; not full-route completion, load capacity or physical owner playfeel."
+    },
+    "cost": [
+      {
+        "mode": "disabled",
+        "atmosphere_enabled": false,
+        "samples": 44,
+        "p50_usec": 198761,
+        "p95_usec": 244769,
+        "native_captures": 0,
+        "decorative_uploads": 0,
+        "godot_tracked_static_memory_bytes": 173948014,
+        "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+      },
+      {
+        "mode": "flat",
+        "atmosphere_enabled": false,
+        "samples": 44,
+        "p50_usec": 203469,
+        "p95_usec": 230016,
+        "native_captures": 0,
+        "decorative_uploads": 0,
+        "godot_tracked_static_memory_bytes": 173959602,
+        "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+      },
+      {
+        "mode": "stack",
+        "atmosphere_enabled": false,
+        "samples": 44,
+        "p50_usec": 208759,
+        "p95_usec": 249841,
+        "native_captures": 0,
+        "decorative_uploads": 0,
+        "godot_tracked_static_memory_bytes": 173962866,
+        "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+      },
+      {
+        "mode": "stack",
+        "atmosphere_enabled": true,
+        "samples": 44,
+        "p50_usec": 208472,
+        "p95_usec": 225799,
+        "native_captures": 0,
+        "decorative_uploads": 0,
+        "godot_tracked_static_memory_bytes": 173968062,
+        "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+      }
+    ]
+  },
+  "conclusion": "All five revised environments were visually inspected from original source-exact Godot captures and show useful architectural depth and clean Play silhouettes. The exact campaign remains failed pending the background source-colour witness investigation. No passing final evaluator, full-route traversal, structural load result or physical owner aesthetic acceptance is inferred.",
+  "direct_artifact_followup": {
+    "archive_path": "/tmp/strata2-evidence/campaign2-linux.zip",
+    "archive_sha256": "0f2c10d46b1a5da76af436f0517090653211a8375e8adeb46730c2e4835b4b4f",
+    "archive_bytes": 89677038,
+    "members": [
+      {
+        "path": "neon-rain-arcology/atmosphere-off.png",
+        "bytes": 1224655,
+        "sha256": "4b173c64249f6b06ceb1012251a1748cc6c997485db9ba09fb326739237bab6d",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "path": "neon-rain-arcology/atmosphere-on.png",
+        "bytes": 1226975,
+        "sha256": "45ebcec3f84940ecdb6accc5433de6e529b55220d6cb809249a95992814529fb",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "path": "neon-rain-arcology/install.json",
+        "bytes": 74170,
+        "sha256": "d938263bd964a79b681952969054006dbb1ddb2424adc922e9df10573b6b3561"
+      },
+      {
+        "path": "neon-rain-arcology/reference-composite.png",
+        "bytes": 1201639,
+        "sha256": "21ed2cce7dd39025400808c2b5911d8a69946bd64f8d82f0312dbcc582dfcaf0",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "path": "neon-rain-arcology/reference-plane-background.png",
+        "bytes": 391498,
+        "sha256": "4b9ea088d49c5e00d25935fe7917b30fbd61c02496f578aabfebc1dda1f0f1ff",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "path": "neon-rain-arcology/reference-plane-play.png",
+        "bytes": 447599,
+        "sha256": "621434bfe24dcf8f688c25ce6fceb94fe967903fbe387a4766f137b7a98ee406",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "path": "neon-rain-arcology/reopen.json",
+        "bytes": 13997,
+        "sha256": "19af55c03720d3df5b88c7a79e85fef0108913cd5a819a27ec5333e519775e78"
+      },
+      {
+        "path": "qualification.json",
+        "bytes": 924295,
+        "sha256": "28f879ad4dd67f31edddf169475100c0e50d0c948f4cbbea66c6436a57d26259"
+      }
+    ],
+    "campaign_source": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+    "campaign_status": "failed",
+    "original_ledger_verified": true
+  },
+  "original_arcology_execution": {
+    "install_completed": true,
+    "install_failures": [],
+    "reopen_completed": true,
+    "reopen_failures": [],
+    "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "source": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+    "showcase_native_hashes": {
+      "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+      "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+      "play": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+      "scripted": "f7b0d095e9e09f5fc38e509353a5b5dfc5f297dbe8bd2be4efdb503de2a26878"
+    },
+    "atmosphere": {
+      "visual_difference": {
+        "changed_samples": 3390,
+        "max_channel_delta": 0.485916137695312,
+        "samples": 279377,
+        "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+        "stride": 2,
+        "threshold": 0.003
+      },
+      "solo_leakage": {
+        "changed_samples": 0,
+        "max_channel_delta": 0,
+        "samples": 279377,
+        "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+        "stride": 2,
+        "threshold": 0.003
+      },
+      "native_capture_delta": 0,
+      "native_hashes_unchanged": true
+    }
+  },
+  "reviewer": {
+    "id": "specialist-b",
+    "authored_scene_and_atmosphere_subject": true,
+    "independent_scope": "Original-byte transport verification and independent reading of C-owned execution receipts.",
+    "visual_scope": "Author visual QA; independent art cross-review belongs to separate specialist A/root reviews."
+  }
+}

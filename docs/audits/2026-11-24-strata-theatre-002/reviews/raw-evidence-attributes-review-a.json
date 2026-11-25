@@ -1,0 +1,35 @@
+{
+  "schema": "strata2-narrow-raw-evidence-attributes-review-a.v1",
+  "status": "approved_exact_scope_and_bytes",
+  "scope": "Only two raw audit JSON files; global/root attributes and all application/runtime inputs unchanged. -text preserves actual shipped/API bytes; one CRLF rule and one trailing-blank-line exception remain file-specific.",
+  "rows": [
+    {
+      "path": "docs/audits/2026-11-24-strata-theatre-002/.gitattributes",
+      "bytes": 361,
+      "sha256": "97fbd93f34e8b506682afbd5adfea8ac6a147ba469d8173f6a84021b022fee99",
+      "raw_blob": "18fea772d4bdf51a292ee2bdd141aedf2ca13b35",
+      "git_clean_filter_blob": "18fea772d4bdf51a292ee2bdd141aedf2ca13b35",
+      "index_present": true,
+      "index_bytes_equal": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-strata-theatre-002/windows-evaluation-manifest.json",
+      "bytes": 232548,
+      "sha256": "82dbaa526b8cdb8f805162f1d5d5c73989a4cab2c44dd6411d584d7385b959b2",
+      "raw_blob": "7536865e58cfdfb72d2540dcce750bbe40ee2783",
+      "git_clean_filter_blob": "7536865e58cfdfb72d2540dcce750bbe40ee2783",
+      "index_present": true,
+      "index_bytes_equal": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-strata-theatre-002/reviews/ancestry-api-986c9d4.json",
+      "bytes": 3563,
+      "sha256": "6da15696a0e4e7369bb4ed85545f793533b75e8c80b0412079a1eea08036fcca",
+      "raw_blob": "598f768b9de85dc19d6c56ea51589d9fec43224c",
+      "git_clean_filter_blob": "598f768b9de85dc19d6c56ea51589d9fec43224c",
+      "index_present": true,
+      "index_bytes_equal": true
+    }
+  ],
+  "ordinary_application_and_decision_json_text_normalization_retained": true
+}

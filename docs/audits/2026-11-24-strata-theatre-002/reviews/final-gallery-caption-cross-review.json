@@ -1,0 +1,90 @@
+{
+  "schema": "strata2-c-independent-gallery-caption-erratum-v1",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "status": "confirmed-wording-correction-required",
+  "gallery_html_sha256": "6c87018443e734e777999cb40ca25c4269938a815141d8ed3a4a9c2ae6a91c6a",
+  "gallery_inputs_sha256": "bb7697525414aa99570aeb2a55996395ee74cc1415816af7882c1dbaf8da3c1e",
+  "native_grid_views": [
+    {
+      "scene": "orbital-terminal",
+      "view": "native-grid-play",
+      "pixels_per_cell_x": 1.00042724609375,
+      "pixels_per_cell_y": 1.00045776367188,
+      "image_sha256": "f9988ea218658e22e8efad47a6975127de27c592ecf03f5424bcc303834bccf0"
+    },
+    {
+      "scene": "orbital-terminal",
+      "view": "native-grid-scripted",
+      "pixels_per_cell_x": 1.00042724609375,
+      "pixels_per_cell_y": 1.00045776367188,
+      "image_sha256": "939fc0a32cb77976b79525aad2abed1f8dd6193e884cf05b231a72d755573bb2"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "view": "native-grid-play",
+      "pixels_per_cell_x": 1.0003662109375,
+      "pixels_per_cell_y": 1.00045776367188,
+      "image_sha256": "cc5ed963c8a79767a848cffa29c23adf0518708fbc299bd1859d111d2546108b"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "view": "native-grid-scripted",
+      "pixels_per_cell_x": 1.0003662109375,
+      "pixels_per_cell_y": 1.00045776367188,
+      "image_sha256": "bae4fdbbec16f45ff7a8867cace2fd59a44252c03da8bb5f840f33f3157fac93"
+    },
+    {
+      "scene": "industrial-underworks",
+      "view": "native-grid-play",
+      "pixels_per_cell_x": 1.0008544921875,
+      "pixels_per_cell_y": 1.00088500976563,
+      "image_sha256": "13985043f4ab322cc444ef4bd8e742f93df4618c9df78104ba8dda76a15f595d"
+    },
+    {
+      "scene": "industrial-underworks",
+      "view": "native-grid-scripted",
+      "pixels_per_cell_x": 1.0008544921875,
+      "pixels_per_cell_y": 1.00088500976563,
+      "image_sha256": "880b6224e23ada56dbd2fe6605d837dab5d12cc4598e7859b1178b1222e82d9b"
+    },
+    {
+      "scene": "abyss-foundry",
+      "view": "native-grid-play",
+      "pixels_per_cell_x": 1.0008544921875,
+      "pixels_per_cell_y": 1.00088500976563,
+      "image_sha256": "1631fd6dd582ef4337a2dca024e7fc6b6d0a371e0b6398a67f3ca6b8da0fbedf"
+    },
+    {
+      "scene": "abyss-foundry",
+      "view": "native-grid-scripted",
+      "pixels_per_cell_x": 1.0008544921875,
+      "pixels_per_cell_y": 1.00088500976563,
+      "image_sha256": "95cb95047b7aed80488858d6d8d0f2a9dbfbeaf4960818d1140a81d2a1b2acd0"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "view": "native-grid-play",
+      "pixels_per_cell_x": 1.00091552734375,
+      "pixels_per_cell_y": 1.00088500976563,
+      "image_sha256": "316c5c74eb1511d51c806dee46ff6ae20bc252ba53073d43a6858f2b7d8c2a7f"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "view": "native-grid-scripted",
+      "pixels_per_cell_x": 1.00091552734375,
+      "pixels_per_cell_y": 1.00088500976563,
+      "image_sha256": "edabd171db2420195bbe3e4a884d32b6049cf1d099d87567a41aa8927468364d"
+    }
+  ],
+  "observed_ratio_range": [
+    1.0003662109375,
+    1.00091552734375
+  ],
+  "original_labels": [
+    "1:1 capture",
+    "one native cell per captured pixel"
+  ],
+  "correction": "Nominal native-grid framebuffer crop; measured scale is within 1% of one physical framebuffer pixel per native cell. The saved crop is unresampled; literal mathematical 1:1 and browser/OS display scale are not certified.",
+  "impact": "Caption precision only. Actual source-bound image bytes, ratios, native hashes, full package custody and application source remain unchanged. No repackaging or browser rendering claim."
+}

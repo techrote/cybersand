@@ -1,0 +1,341 @@
+{
+  "artifact": {
+    "bytes": 66570656,
+    "id": 14974382540,
+    "member_count": 583,
+    "name": "strata2-windows-986c9d4117bf755799178790e67e8ef6597aaf5f-1",
+    "run_attempt": 1,
+    "run_id": 45502846309,
+    "sha256": "b99143cbc4723de993870969d2ef18abd624cda19e755ff678e05d458e45c0a1",
+    "source_commit": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+    "source_tree": "4f61de7919e8a67f3622e0642cbb7e53ee3f778c"
+  },
+  "diagnosis_scope": "Exact source3 producer/UI source and observed displayed strings support the same edge-whitespace assertion mismatch on both platforms; source3 did not record the raw backend_message. Source4 records both strings and validates the actual displayed complete region.",
+  "recorded_utc": "2026-11-24T23:25:12.993313+00:00",
+  "scenes": [
+    {
+      "background_probe": {
+        "camera_origin": [
+          160.0,
+          80.0
+        ],
+        "expected_rgba": [
+          0.61176472902298,
+          0.596078455448151,
+          0.552941203117371,
+          1.0
+        ],
+        "max_rgb_error": 0.0,
+        "native_inspection_required": true,
+        "observed_rgba": [
+          0.61176472902298,
+          0.596078455448151,
+          0.552941203117371,
+          1.0
+        ],
+        "physical_pixel": [
+          701,
+          352
+        ],
+        "pixels_per_cell": [
+          1.30499267578125,
+          1.30499267578125
+        ],
+        "projected_native_centre": [
+          701.474243164063,
+          352.278625488281
+        ],
+        "requested_cell": [
+          596,
+          246
+        ],
+        "sampled_material": 131,
+        "sampled_native_cell": [
+          596,
+          246
+        ],
+        "scope": "Actual framebuffer pixel and copied baked native texel; no threshold relaxation.",
+        "tolerance": 0.08,
+        "view_size": [
+          1024,
+          576
+        ]
+      },
+      "campaign_scene_status": "failed",
+      "checks": 3242,
+      "compose_stop_assertions": {
+        "applied_cells": 0,
+        "cancelled_without_approval": true,
+        "four_native_plane_hashes_unchanged": true,
+        "token_retired": true
+      },
+      "composition_review": {
+        "approval_enabled": true,
+        "approval_visible": true,
+        "approved": false,
+        "backend_token": "e0adc547dbb974a2b9c0b8f14d27a222d1c4cead3dcb6abf82010c7fb62c3f20",
+        "cancelled_without_approval": true,
+        "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+        "filename": "composition-ready-approval.png",
+        "id": "factory-service-bay",
+        "native_hashes_after": {
+          "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+          "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+          "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+          "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+        },
+        "native_hashes_before": {
+          "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+          "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+          "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+          "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+        },
+        "proposal_visible": true,
+        "reviewed_token": "e0adc547dbb974a2b9c0b8f14d27a222d1c4cead3dcb6abf82010c7fb62c3f20",
+        "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+        "scroll_vertical": 727,
+        "stage_count": 4,
+        "status": "ready",
+        "stop": {
+          "applied_cells": 0,
+          "approval_disabled": true,
+          "can_approve": false,
+          "status": "cancelled",
+          "token": ""
+        }
+      },
+      "failures": [
+        "Compose visible status describes the ready proposal",
+        "Import visible status describes the ready native projection"
+      ],
+      "has_fresh_process_reopen": false,
+      "install_admission_ms": 52798,
+      "install_target_met": false,
+      "native_readback_assertions": {
+        "actual_matches_independent_expected": true,
+        "history_chunks": 5,
+        "native_actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+        "native_before_and_restored_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+        "play_unchanged": true,
+        "ready_token_matches_native_approval": true,
+        "region": [
+          128,
+          128,
+          384,
+          320
+        ],
+        "undo_restores_original": true
+      },
+      "reference_import": {
+        "actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+        "expected_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+        "id": "asteroid-service-gallery",
+        "ready_review": {
+          "approval_enabled": true,
+          "approval_visible": true,
+          "backend_token": "6a7c708a4a708301808fe138e70afef9a046213c03e285e53161f44653790a43",
+          "changed_counts": "Target: scripted \u00b7 region \u2014\nChanged cells: 19087 \u00b7 mapped: 19552 \u00b7 no-write: 103328 \u00b7 explicit Empty: 0 \u00b7 unmapped: 172\nSource: 3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9\nProposed geometry: be679be04382f5046c31d9fa88dfcc44f0ef482b4d63052cba91fbee1774fd7c",
+          "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+          "filename": "reference-import-asteroid-service-gallery-approval.png",
+          "proposal_visible": true,
+          "reviewed_token": "6a7c708a4a708301808fe138e70afef9a046213c03e285e53161f44653790a43",
+          "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+          "scroll_vertical": 831,
+          "status": "ready"
+        }
+      },
+      "scene": "orbital-terminal"
+    },
+    {
+      "campaign_scene_status": "failed",
+      "checks": 2146,
+      "failures": [
+        "Import visible status describes the ready native projection"
+      ],
+      "has_fresh_process_reopen": false,
+      "install_admission_ms": 52613,
+      "install_target_met": false,
+      "native_readback_assertions": {
+        "actual_matches_independent_expected": true,
+        "history_chunks": 7,
+        "native_actual_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+        "native_before_and_restored_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+        "play_unchanged": true,
+        "ready_token_matches_native_approval": true,
+        "region": [
+          128,
+          128,
+          512,
+          320
+        ],
+        "undo_restores_original": true
+      },
+      "reference_import": {
+        "actual_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+        "expected_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+        "id": "rocket-hangar-frame",
+        "ready_review": {
+          "approval_enabled": true,
+          "approval_visible": true,
+          "backend_token": "02b1c0befb70d80ec977539eca52485c8e1c12a38358c88fc6012a844ccef869",
+          "changed_counts": "Target: scripted \u00b7 region \u2014\nChanged cells: 27427 \u00b7 mapped: 27582 \u00b7 no-write: 136258 \u00b7 explicit Empty: 0 \u00b7 unmapped: 2526\nSource: 7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960\nProposed geometry: c4dea27b412044774969da0295965c0a8cbb04cfa12882c2f9d5b0cd05ef6db2",
+          "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+          "filename": "reference-import-rocket-hangar-frame-approval.png",
+          "proposal_visible": true,
+          "reviewed_token": "02b1c0befb70d80ec977539eca52485c8e1c12a38358c88fc6012a844ccef869",
+          "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+          "scroll_vertical": 831,
+          "status": "ready"
+        }
+      },
+      "scene": "neon-rain-arcology"
+    },
+    {
+      "campaign_scene_status": "passed",
+      "checks": 1328,
+      "failures": [],
+      "fresh_process_native_hashes_equal": true,
+      "fresh_settings_equal": true,
+      "has_fresh_process_reopen": true,
+      "install_admission_ms": 48529,
+      "install_target_met": false,
+      "reopen_admission_ms": 7549,
+      "reopen_target_met": true,
+      "scene": "industrial-underworks"
+    },
+    {
+      "campaign_scene_status": "passed",
+      "checks": 1328,
+      "failures": [],
+      "fresh_process_native_hashes_equal": true,
+      "fresh_settings_equal": true,
+      "has_fresh_process_reopen": true,
+      "install_admission_ms": 46716,
+      "install_target_met": false,
+      "reopen_admission_ms": 7882,
+      "reopen_target_met": true,
+      "scene": "abyss-foundry"
+    },
+    {
+      "campaign_scene_status": "passed",
+      "checks": 1712,
+      "failures": [],
+      "fresh_process_native_hashes_equal": true,
+      "fresh_settings_equal": true,
+      "has_fresh_process_reopen": true,
+      "install_admission_ms": 51350,
+      "install_target_met": false,
+      "reopen_admission_ms": 8042,
+      "reopen_target_met": true,
+      "scene": "vertical-transfer-spine"
+    }
+  ],
+  "schema": "strata2-source3-windows-original-independent-review-v1",
+  "scope": "Independent API metadata, outer archive bytes and selected original receipt/PNG ledger verification. No new execution and no final-source qualification claim.",
+  "selected_files": {
+    "abyss-foundry/install.json": {
+      "bytes": 69279,
+      "original_evidence_ledger_verified": true,
+      "sha256": "d4a50c17cedce3bd65960e026bc16ef4df0939fbe3c194e84996638c80bc5547"
+    },
+    "abyss-foundry/reopen.json": {
+      "bytes": 14060,
+      "original_evidence_ledger_verified": true,
+      "sha256": "db93ca60f6e3df4c80a907fcf0a7ffbe2df5c3ef5efcdc04a218aea016aea877"
+    },
+    "industrial-underworks/install.json": {
+      "bytes": 69190,
+      "original_evidence_ledger_verified": true,
+      "sha256": "659d408fc62a1c9fc05d10a7e1f7f7773aeec7c118bbb1ec583d9a1e5435df73"
+    },
+    "industrial-underworks/reopen.json": {
+      "bytes": 14092,
+      "original_evidence_ledger_verified": true,
+      "sha256": "db7c79706d1bc6f1d429d4b546c0f03cb4484cdfcc62394b961e9c6ecd7e26ad"
+    },
+    "neon-rain-arcology/install.json": {
+      "bytes": 75531,
+      "original_evidence_ledger_verified": true,
+      "sha256": "6cc438f7977978e0c280cd805d9957ec2227c3d9b79721cf55317099a498c15c"
+    },
+    "neon-rain-arcology/install/process.log": {
+      "bytes": 3212,
+      "original_evidence_ledger_verified": true,
+      "sha256": "773dd2af3e0356a0776a80a50e858fe162572cbf89b312f5bdee3551c10df2b8"
+    },
+    "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png": {
+      "bytes": 187431,
+      "original_evidence_ledger_verified": true,
+      "sha256": "c062e2874deacf18951ce919defd13cfd0874f2835cce0d9c47fd16941eda175"
+    },
+    "orbital-terminal/composition-ready-approval.png": {
+      "bytes": 140739,
+      "original_evidence_ledger_verified": true,
+      "sha256": "9afe2c882bc7cff3c727a5c84b7f0a6ce930f5b75228737bd0a6e5a1e7fe74ef"
+    },
+    "orbital-terminal/install.json": {
+      "bytes": 82644,
+      "original_evidence_ledger_verified": true,
+      "sha256": "807c5157b43eb84beb6a81c889c46ee5e1b0e58b72897d5a4121a6d77151a827"
+    },
+    "orbital-terminal/install/process.log": {
+      "bytes": 4471,
+      "original_evidence_ledger_verified": true,
+      "sha256": "9c21506c1fb01bfd4a4ae90a73ec77dc3a3ad892e5b1cd9db7afbb10e0caba96"
+    },
+    "orbital-terminal/reference-import-asteroid-service-gallery-approval.png": {
+      "bytes": 178400,
+      "original_evidence_ledger_verified": true,
+      "sha256": "f15bf18f1066ef80705c819796818799f437eaa0a12a3f2d1c69b799f0a4d3bb"
+    },
+    "qualification.json": {
+      "bytes": 797437,
+      "original_evidence_ledger_verified": false,
+      "sha256": "c4c4ba46facdafd7ccda062912397db742c694fc37b60c3b8e334f64db0161e0"
+    },
+    "vertical-transfer-spine/install.json": {
+      "bytes": 68983,
+      "original_evidence_ledger_verified": true,
+      "sha256": "6076c9c88ae46d9821d457d50c57a434fe64dad33df1894120daa3569249350f"
+    },
+    "vertical-transfer-spine/reopen.json": {
+      "bytes": 13718,
+      "original_evidence_ledger_verified": true,
+      "sha256": "c60a2f6000153d7548da3f3afa173713df4341dc1c732411f95d8d84f9f97949"
+    }
+  },
+  "source3_campaign_status": "failed",
+  "source3_case_failures": [
+    {
+      "exit_code": 1,
+      "label": "orbital-terminal/install",
+      "status": "failed"
+    },
+    {
+      "exit_code": 1,
+      "label": "neon-rain-arcology/install",
+      "status": "failed"
+    }
+  ],
+  "source3_cases": 26,
+  "status": "failed-original-campaign-retained",
+  "visual_review": {
+    "findings": [
+      {
+        "file": "orbital-terminal/composition-ready-approval.png",
+        "observed": "Before/After native-ID images, composite proposal, exact native region, explicit atmosphere replacement warning, enabled construction approval and ready footer are visible together. No visible product layout failure."
+      },
+      {
+        "file": "orbital-terminal/reference-import-asteroid-service-gallery-approval.png",
+        "observed": "Source image, explicit selection mask, native material proposal, complete mapping/count/digest summary and enabled approval are simultaneously visible. Source3 summary region is an em dash; corrected by the separately reviewed source4 UI delta."
+      },
+      {
+        "file": "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png",
+        "observed": "Source, explicit mask preserving the large central opening, native-ID proposal, accounting and approval are visible. Same known region omission and otherwise readable ready footer."
+      }
+    ],
+    "kind": "Independent viewing of three original Windows Godot captures with exact original evidence-ledger hashes.",
+    "limits": "These source3 captures are original evidence from a failed hosted Windows campaign. They do not qualify source4 or physical Windows/NVIDIA appearance, interaction or pacing.",
+    "performed_by": "specialist-A"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "strata2-final-packet-semantic-and-source-review-a.v1",
+  "reviewed_at_utc": "2026-11-25T00:47:29.596709+00:00",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "status": "no_material_semantic_finding",
+  "packet_md_sha256": "2eccc4ae4d19361aba5fc108a0ef928b4ce19cb68eb2350af0a8e39cfff4a650",
+  "packet_json_sha256": "c6ca31f13c0aaad195ca0b3caf435e6e9ac74e461beea6504ae5003215f6740d",
+  "scope": "Read-only review of canonical packet and full current application input maps against original source-admitted Windows report. Final documentation Git commit is not yet asserted.",
+  "normalized_inputs": 1156,
+  "raw_png_assets": 6,
+  "all_input_hashes_equal_original_campaign": true,
+  "local_application_delta": [],
+  "tracked_changes_outside_docs": [],
+  "reviewed_claims": [
+    "Actual source/runtime identity and all1688-file complete audit attribution",
+    "Separate functional PASS and five extracted45-second admission misses",
+    "Every requested native chunk ACK/history/readback, including zero-changed writes; empty stage refused",
+    "Raster no-write versus explicit native clearing and author-selected plane authority",
+    "Newest32 history entries and historical provenance after Undo",
+    "Graphical Undo-before-Save versus separately scoped79-check surviving-import fresh loader",
+    "V1/V2 authored-only persistence, original artwork not embedded, interrupted-save/durability unexecuted",
+    "216 round trips per scene and actual viewport-event readback in two full-interaction scenes; physical DPI pending",
+    "Four local ordinary default-OFF512\u00b2 Flatten author/reopen processes only",
+    "Near1:1 Gallery caption erratum acknowledged without changing immutable payload",
+    "Source4 qualified application distinguished from forthcoming documentation-only closure"
+  ],
+  "minor_clarity_recommendation": "Refer to the first successor campaign specifically when describing its five original Windows admission misses; source4 original Windows met the target."
+}

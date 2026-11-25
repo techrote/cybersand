@@ -1,0 +1,242 @@
+{
+  "schema": "strata2-independent-focused-Flatten-supplement-review-v1",
+  "reviewed_at_utc": "2026-11-25T00:31:08.955018+00:00",
+  "status": "passed",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "cases": [
+    {
+      "label": "test_workbench_flatten-author",
+      "checks": 194,
+      "pid": 32,
+      "elapsed_seconds": 17.1812372280001,
+      "exit_code": 0,
+      "log_sha256": "20341d0f13cb6d2168b44ca0364b9e2f79c1f2037c586e7618669ff8931d6ce1",
+      "result_sha256": "7956fe333f8bc47bb5b63e68a2e7dab3f27f19fe0c0c08241eb44f60f3379504"
+    },
+    {
+      "label": "test_workbench_flatten-reopen",
+      "checks": 43,
+      "pid": 255,
+      "elapsed_seconds": 8.801016498000536,
+      "exit_code": 0,
+      "log_sha256": "5c2ea3c85cce89e0a31838d8d405df8c196c16d6534ff28605abefb9566d353f",
+      "result_sha256": "60a2220c2058f5f9993c9c0c2e797bc900fbcbe39626618160015a03b418bc4c"
+    },
+    {
+      "label": "test_workbench_flatten_owner_failure-author",
+      "checks": 53,
+      "pid": 482,
+      "elapsed_seconds": 7.23904218700045,
+      "exit_code": 0,
+      "log_sha256": "2985a3ff2175557368e124f5244856f9f3c9cf3c188d5641ebfae334ec43c839",
+      "result_sha256": "5c247da08aa1ac865780118f22b0f33d6bbde3ceaf9923a2f35707bb8879fcf8"
+    },
+    {
+      "label": "test_workbench_flatten_owner_failure-reopen",
+      "checks": 44,
+      "pid": 706,
+      "elapsed_seconds": 7.747768706998613,
+      "exit_code": 0,
+      "log_sha256": "f7929d694d982f3b8cf2450bffc39cb4311dd4d8bf22e4fa9ee43681c864bf56",
+      "result_sha256": "6d8c98b5df9684896f6101bede016a3afa4029a3e6959674292632d4ff0eddec"
+    }
+  ],
+  "scope": "Existing unchanged ordinary Workbench512\u00b2/1worker Flatten and native-owner-failure author/reopen tests; local Linux headless; four real Godot processes, distinct author/reopen identities.",
+  "application_identity": {
+    "text_inputs": 1156,
+    "raw_assets": 6,
+    "local_delta": [],
+    "unchanged_before_after": true
+  },
+  "runtime_sha256": {
+    "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "/tmp/strata2-recovered/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "/tmp/strata2-recovered/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "ordinary": {
+    "author_pid": 32,
+    "reopen_pid": 255,
+    "author_instance": "ee9a27a834057f7148898fda6df755b7",
+    "reopen_instance": "6a9593f1b6a65efc4caf78be2a076d09",
+    "source_identity_equal": true,
+    "material_sha256": "bcb90e4d8688ef61f6142c531caef5cc0cf1cca0f52f02043c4446d94255db65",
+    "saved_baseline_sha256": "fd3639e69b3b4f4b31205ae7e49e0a1eee3b4579f227d137e733334a24c3256c",
+    "saved_file_sha256": "f121fe95c245191cc93250a3785b5b31fd02fb935c6a06937285079de525405f",
+    "native_capture_hashes": [
+      {
+        "label": "before-refusals",
+        "sha256": "f43e54cccca343fd56606dd6df732e9a049575e784d4ec77c6b13a3c2a92ec14",
+        "bytes": 524288,
+        "tick": 0,
+        "revision": 16156
+      },
+      {
+        "label": "after-refusals",
+        "sha256": "f43e54cccca343fd56606dd6df732e9a049575e784d4ec77c6b13a3c2a92ec14",
+        "bytes": 524288,
+        "tick": 0,
+        "revision": 16156
+      },
+      {
+        "label": "after-injected-failures",
+        "sha256": "f43e54cccca343fd56606dd6df732e9a049575e784d4ec77c6b13a3c2a92ec14",
+        "bytes": 524288,
+        "tick": 0,
+        "revision": 16156
+      },
+      {
+        "label": "before-simulation",
+        "sha256": "2bf3d81dea26e2798dbbd1e9e20fee37a78ca9f397ff0cf1597e80ec1eea83dc",
+        "bytes": 524288,
+        "tick": 0,
+        "revision": 16639
+      },
+      {
+        "label": "simulation-derived-materials",
+        "sha256": "fb5d8b1455958aef3493327774dc1ade3a1937a50022160c91714f4336c0d38c",
+        "bytes": 524288,
+        "tick": 13,
+        "revision": 16652
+      },
+      {
+        "label": "after-flatten",
+        "sha256": "fb5d8b1455958aef3493327774dc1ade3a1937a50022160c91714f4336c0d38c",
+        "bytes": 524288,
+        "tick": 13,
+        "revision": 16652
+      },
+      {
+        "label": "post-flatten-edits-before-later-simulation",
+        "sha256": "568a9a13198e412982ef7bb03f2068578e6f19b14afc31f08d6218d62711f985",
+        "bytes": 524288,
+        "tick": 16,
+        "revision": 16665
+      },
+      {
+        "label": "later-simulation-excluded-from-save",
+        "sha256": "56c7f1ad4b326852ddf446e8eef9efaf5768e143b91913cf71b8dcb7f0f81ef2",
+        "bytes": 524288,
+        "tick": 25,
+        "revision": 16674
+      }
+    ],
+    "generator_profile": "gen007-deepworks"
+  },
+  "actual_owner_failure": {
+    "author_pid": 482,
+    "reopen_pid": 706,
+    "failure_reason": "simulation_tick failed: active scheduling-core capacity exhausted",
+    "failure_count": 1,
+    "owner_preserved_by_save": true,
+    "native_pre_fault_saved_and_reopened_sha256": "c3c3539252b1fc959405f6d4421fea004808158b20abfa99b7e933c2e07e4fb7",
+    "saved_baseline_sha256": "2add19eacb335e632ebb704e3810c3e1a995ed64df987ced372476734b6b0d16",
+    "saved_file_sha256": "358500650bebf3754c6dc92f20fdac88494a4df49c447f31851c8bff9d678a1d",
+    "continued_native_authoring": true,
+    "fence_checks": {
+      "failed_flatten": true,
+      "failed_reset": true,
+      "failed_restore": true,
+      "native_capture_lease": true,
+      "pending_agent_edit": true,
+      "pending_flatten": true,
+      "pending_manual_edit": true,
+      "pending_step": true,
+      "prepared_transaction": true,
+      "unconfirmed_legacy_recipe": true
+    }
+  },
+  "limits": [
+    "These fixtures leave Strata default-OFF; no new active-four-plane Flatten execution is claimed.",
+    "Local Linux/headless only; not hosted Windows/graphical, NVIDIA, or additional package qualification.",
+    "No interrupted-save, disk-full, power-loss or storage-fault-wrapper execution; existing broader historical Flatten programme remains separate.",
+    "Only512\u00b2 and1worker; no new1024/2048 or4worker Flatten qualification.",
+    "An external Python wrapper syntax typo was corrected before any Godot process; original preparation negative is retained. No application/test edit or failed native rerun."
+  ],
+  "inventory": {
+    "preparation-negative.json": {
+      "bytes": 258,
+      "sha256": "49acc9d42e211ff34d7461f409631426d1cbf786c631f37afef25d8ac80211d5"
+    },
+    "report.json": {
+      "bytes": 291357,
+      "sha256": "c01ace73f4d58ce762d531d67e68a7f0b452cf7dee2c1601534082285bffec1f"
+    },
+    "run_focused_flatten_934.py": {
+      "bytes": 6854,
+      "sha256": "9857ef961ddf78b9d68b1d002354a6a84cc3301dbd89a3c0bfaef67168071279"
+    },
+    "test_workbench_flatten-author/original.log": {
+      "bytes": 7826,
+      "sha256": "20341d0f13cb6d2168b44ca0364b9e2f79c1f2037c586e7618669ff8931d6ce1"
+    },
+    "test_workbench_flatten-author/process.json": {
+      "bytes": 1493,
+      "sha256": "75f63310f568b22113dc7709da6223285ce13fb927ebae15e4644ba2158e1d8e"
+    },
+    "test_workbench_flatten-author/result.json": {
+      "bytes": 9178,
+      "sha256": "7956fe333f8bc47bb5b63e68a2e7dab3f27f19fe0c0c08241eb44f60f3379504"
+    },
+    "test_workbench_flatten-reopen/original.log": {
+      "bytes": 2796,
+      "sha256": "5c2ea3c85cce89e0a31838d8d405df8c196c16d6534ff28605abefb9566d353f"
+    },
+    "test_workbench_flatten-reopen/process.json": {
+      "bytes": 1494,
+      "sha256": "8e26b8cdfcc03fad2f16de21cc6632c8a3939a25d9e4328370f5996f4ec5bcef"
+    },
+    "test_workbench_flatten-reopen/result.json": {
+      "bytes": 2559,
+      "sha256": "60a2220c2058f5f9993c9c0c2e797bc900fbcbe39626618160015a03b418bc4c"
+    },
+    "test_workbench_flatten-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/gen008-flatten-expectation.json": {
+      "bytes": 2749,
+      "sha256": "e4d91773debf580bdc909d132bf3abfa3b89beb8d8c32d7f41e0ca01cef5cb92"
+    },
+    "test_workbench_flatten-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/gen008-flatten-expected.u16le": {
+      "bytes": 524288,
+      "sha256": "bcb90e4d8688ef61f6142c531caef5cc0cf1cca0f52f02043c4446d94255db65"
+    },
+    "test_workbench_flatten-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-gen008-flatten-acceptance.json": {
+      "bytes": 525350,
+      "sha256": "f121fe95c245191cc93250a3785b5b31fd02fb935c6a06937285079de525405f"
+    },
+    "test_workbench_flatten_owner_failure-author/original.log": {
+      "bytes": 4917,
+      "sha256": "2985a3ff2175557368e124f5244856f9f3c9cf3c188d5641ebfae334ec43c839"
+    },
+    "test_workbench_flatten_owner_failure-author/process.json": {
+      "bytes": 1577,
+      "sha256": "265f99b074dff560e1c46ab0ae9f73584a085c2111e7ed2f18761a2422658114"
+    },
+    "test_workbench_flatten_owner_failure-author/result.json": {
+      "bytes": 5428,
+      "sha256": "5c247da08aa1ac865780118f22b0f33d6bbde3ceaf9923a2f35707bb8879fcf8"
+    },
+    "test_workbench_flatten_owner_failure-reopen/original.log": {
+      "bytes": 3229,
+      "sha256": "f7929d694d982f3b8cf2450bffc39cb4311dd4d8bf22e4fa9ee43681c864bf56"
+    },
+    "test_workbench_flatten_owner_failure-reopen/process.json": {
+      "bytes": 1578,
+      "sha256": "3b2f7383f63db93573b1426d2421e8839809fd06b674c1f96232daab1ffb771f"
+    },
+    "test_workbench_flatten_owner_failure-reopen/result.json": {
+      "bytes": 3243,
+      "sha256": "6d8c98b5df9684896f6101bede016a3afa4029a3e6959674292632d4ff0eddec"
+    },
+    "test_workbench_flatten_owner_failure-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/gen008-flatten-owner-failure-expectation.json": {
+      "bytes": 5052,
+      "sha256": "a58f15164a416ca1d8a795bb7d68e7ba8b979974ffd827c5d802bc86b63e4662"
+    },
+    "test_workbench_flatten_owner_failure-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/gen008-flatten-owner-failure-expected.u16le": {
+      "bytes": 524288,
+      "sha256": "c3c3539252b1fc959405f6d4421fea004808158b20abfa99b7e933c2e07e4fb7"
+    },
+    "test_workbench_flatten_owner_failure-userdata/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-gen008-flatten-owner-failure.json": {
+      "bytes": 525356,
+      "sha256": "358500650bebf3754c6dc92f20fdac88494a4df49c447f31851c8bff9d678a1d"
+    }
+  }
+}

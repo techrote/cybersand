@@ -1,0 +1,3226 @@
+{
+  "auditor_sha256": "647ef7f080e9e5b5187d2eb6a5dfee3daa09469e260c97bb222bdc6c1bb89224",
+  "campaigns": [
+    {
+      "all_process_resources": {
+        "abyss-foundry/install": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 751.8125,
+          "original_resources_sha256": "759c2efc75c3294ef1fc7e6aa4814ee61541393b7660fcecfa0cecbb60437347",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1098428416,
+          "samples": 548,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 301.797
+        },
+        "abyss-foundry/reopen": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 85.296875,
+          "original_resources_sha256": "ecb74f5d890b86c20f4534d16c5c1935c92647cd0fd08d80d09150e4948f36d9",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 825847808,
+          "samples": 55,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 30.328
+        },
+        "import": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 11.875,
+          "original_resources_sha256": "6e24b801fc2f4e1d14be304d3e110eb16468a79112e90c5986ac4a7b797cbdeb",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 750747648,
+          "samples": 25,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 12.141
+        },
+        "industrial-underworks/install": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 772.171875,
+          "original_resources_sha256": "f6a52cfad96a77d96dadc0f322034c7247cb90cbb58bb52fab3e1aca400694b4",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1069117440,
+          "samples": 585,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 320.391
+        },
+        "industrial-underworks/reopen": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 85.984375,
+          "original_resources_sha256": "2f85aa2cd89fe4e811c579f8e5d44b61cc1e6895e7bf0cff31a6cbbe1e947158",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 811728896,
+          "samples": 56,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 30.734
+        },
+        "maximum": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 343.25,
+          "original_resources_sha256": "df399061eaa9a45b95dd247c20bfb8334004b54ae93445112db9de28ad699e64",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1472425984,
+          "samples": 301,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 164.375
+        },
+        "neon-rain-arcology/install": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 1303.5625,
+          "original_resources_sha256": "1ed508938ae5b8749c99647befa1776aceaab30a0e94475d97f4f14d7605f43a",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1073926144,
+          "samples": 838,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 478.062
+        },
+        "neon-rain-arcology/reopen": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 100.46875,
+          "original_resources_sha256": "6c28ff330df90dbf7bf75dfe452438f8cc025d03fc7683bc5864a3fc3436bf12",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 945057792,
+          "samples": 70,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 38.703
+        },
+        "orbital-terminal/install": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 1460.203125,
+          "original_resources_sha256": "7955ff1bb57c52220af28ef42a3fe9d914f7c02c90fe76833d431c3aa93a790b",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1157693440,
+          "samples": 889,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 516.828
+        },
+        "orbital-terminal/reopen": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 99.953125,
+          "original_resources_sha256": "13bb80a57ad3c9c043d275c4329da3c6bde9b1699913ecc5c8325a80ae8e6646",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 945303552,
+          "samples": 70,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 38.422
+        },
+        "test_depth_compositor": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 3.984375,
+          "original_resources_sha256": "d678d163edd6bbfa7631e4a32a76ee042a1fb7f0d615a3c8c05e90aefe46250a",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 161214464,
+          "samples": 9,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 4.343
+        },
+        "test_depth_dimensions_render": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 57.328125,
+          "original_resources_sha256": "14deeb6009198a16b148b1a1a45c05c8ec73dfd9c7257e7d974aafcc46b4ef13",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 354131968,
+          "samples": 109,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 54.828
+        },
+        "test_strata2_actor_route": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 58.1875,
+          "original_resources_sha256": "6c4610a838d0eef3f202b694761e6e94ae836d3c6305f35a15ef738bb051646e",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 762413056,
+          "samples": 39,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 20.547
+        },
+        "test_strata2_authoring_ui": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 0.53125,
+          "original_resources_sha256": "269921cee88b15356fe3a44ec6dde46b2250bca9cfd681cbbc02ac1939e3004b",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 179900416,
+          "samples": 2,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 0.734
+        },
+        "test_strata2_mounted_failures": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 80.546875,
+          "original_resources_sha256": "a69992e5d43b418ccee620fd7d72cc709e2af5b4a7aeb911271660ec473ee506",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 763797504,
+          "samples": 116,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 58.672
+        },
+        "test_strata2_workflow": {
+          "observation_errors": [
+            "process_observation_unavailable:6628:PermissionError",
+            "older_process_cannot_be_descendant:6676"
+          ],
+          "observed_process_tree_cpu_seconds": 227.15625,
+          "original_resources_sha256": "dd00ea31728ba39be6795cc5162baab2c5c89dde1f7188c420087f89bb1e73b4",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 717537280,
+          "samples": 130,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 70.234
+        },
+        "test_strata_atmosphere": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 0.0,
+          "original_resources_sha256": "26c5b4d33b94cb587dd4cf1d5cadd9b813648864b08e944bdd07a08dc192108c",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 2633728,
+          "samples": 1,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 0.469
+        },
+        "test_strata_authoring_library": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 3.015625,
+          "original_resources_sha256": "bd08fb38bd5c9a28d8c32452a281d31cf6f1b82693d21e6fb0e77b6beceff497",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 142757888,
+          "samples": 7,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 3.062
+        },
+        "test_strata_construction_session": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 1.03125,
+          "original_resources_sha256": "566e6b71ed734c34154bdc59b38d26e45ee4e03aed96e0f8416f7eccf0a00942",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 176263168,
+          "samples": 3,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 1.219
+        },
+        "test_strata_import_codec": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 0.484375,
+          "original_resources_sha256": "4f96fac34864dad7996db961c228789c6f6a18450a9e3e281dd945778e6d91e2",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 139124736,
+          "samples": 2,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 0.656
+        },
+        "test_strata_reference_imports": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 2.046875,
+          "original_resources_sha256": "3e0068b297272e244bec4ccc53db1a9a1b3017a30d47a7ff7f4898fbd4666ed5",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 143638528,
+          "samples": 5,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 2.313
+        },
+        "test_strata_showcases": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 1.484375,
+          "original_resources_sha256": "316e5bd4fe705cfb57a252ae73a65886dd5ddedbdea485a346cfa26d6812aa97",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 153059328,
+          "samples": 4,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 1.953
+        },
+        "test_workbench_deferred_paint": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 33.109375,
+          "original_resources_sha256": "e0074ee666d977f177161b67ef8ddcf4648edd2abe8e836d7f67c8f5363b5601",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 748359680,
+          "samples": 27,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 13.984
+        },
+        "test_workbench_edit_ordering": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 2.984375,
+          "original_resources_sha256": "543871d60fc3f463eaf4d1c800ef3bd5862b2b691fdc5b9f49fe436c4092105c",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 253100032,
+          "samples": 7,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 3.266
+        },
+        "test_workbench_strata_document": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 1.015625,
+          "original_resources_sha256": "1a01f067cb953b97d9a061cef59fc1e055a496a086beaf64ae6422ae7e673e08",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 286916608,
+          "samples": 3,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 1.203
+        },
+        "test_workbench_strata_layers": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 1.0,
+          "original_resources_sha256": "e47e138e3b0ff718f43908f17c173bf549ac96343ea93353b94c53a1be9f28de",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 219492352,
+          "samples": 3,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 1.407
+        },
+        "vertical-transfer-spine/install": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 781.4375,
+          "original_resources_sha256": "f0cb093624888c752bce86c905a7f68de2aa83adc95b18716b89bfbfbd27469b",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1170083840,
+          "samples": 551,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 308.078
+        },
+        "vertical-transfer-spine/reopen": {
+          "observation_errors": [
+            "process_observation_unavailable:6628:PermissionError",
+            "older_process_cannot_be_descendant:6676"
+          ],
+          "observed_process_tree_cpu_seconds": 88.984375,
+          "original_resources_sha256": "89b2bd0ac1417d981317b8e7f6657d050ddcadef95aa5f0545070f7330a45a63",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 890023936,
+          "samples": 61,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 33.375
+        }
+      },
+      "original_report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac",
+      "paused_maximum": {
+        "resources": {
+          "observation_errors": [],
+          "observed_process_tree_cpu_seconds": 343.25,
+          "original_resources_sha256": "df399061eaa9a45b95dd247c20bfb8334004b54ae93445112db9de28ad699e64",
+          "sample_interval_seconds": 0.5,
+          "sampled_peak_process_tree_rss_bytes": 1472425984,
+          "samples": 301,
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+          "whole_process_elapsed_seconds": 164.375
+        },
+        "result": {
+          "bootstrap_elapsed_ms": 53418,
+          "checks": 82,
+          "completed": true,
+          "cost": {
+            "callback_intervals_usec": [
+              462911,
+              397195,
+              545059,
+              453701,
+              397803,
+              383216,
+              550228,
+              518163,
+              446848,
+              486394,
+              448444,
+              455627,
+              330191,
+              608496,
+              329204,
+              597127,
+              396394,
+              471709,
+              553326,
+              321572,
+              599410,
+              423133,
+              513818,
+              462804,
+              324732,
+              615063,
+              320331,
+              606146,
+              466767,
+              317214,
+              616931,
+              320915,
+              619669,
+              470604,
+              301688,
+              466067,
+              615197,
+              461062,
+              327449,
+              545303,
+              387458,
+              546267,
+              390203,
+              609953
+            ],
+            "callback_max_usec": 619669,
+            "callback_p50_usec": 462911,
+            "callback_p95_usec": 615197,
+            "decorative_uploads_during_sample": 0,
+            "elapsed_usec": 20633656,
+            "godot_process_seconds": [
+              0.359328,
+              0.355854,
+              0.355854,
+              0.390591,
+              0.390591,
+              0.314907,
+              0.314907,
+              0.314907,
+              0.45228,
+              0.45228,
+              0.332262,
+              0.332262,
+              0.320261,
+              0.320261,
+              0.462095,
+              0.462095,
+              0.461054,
+              0.461054,
+              0.406889,
+              0.406889,
+              0.405828,
+              0.405828,
+              0.405828,
+              0.461819,
+              0.461819,
+              0.323896,
+              0.323896,
+              0.459918,
+              0.459918,
+              0.457998,
+              0.457998,
+              0.467788,
+              0.467788,
+              0.467629,
+              0.467629,
+              0.312596,
+              0.312596,
+              0.312596,
+              0.465316,
+              0.465316,
+              0.466833,
+              0.466833,
+              0.464574,
+              0.464574,
+              0.461288
+            ],
+            "godot_tracked_static_memory_bytes": 198018132.0,
+            "mode": "stack",
+            "native_snapshots_during_sample": 0,
+            "resource_state": "composition resources retained in disabled, flat and stack",
+            "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+          },
+          "display_server": "Windows",
+          "extent": [
+            2048,
+            2048
+          ],
+          "failures": [],
+          "final_diagnostics": {
+            "active_layer": "play",
+            "actor_ids": [
+              1
+            ],
+            "enabled": true,
+            "layers": {
+              "cache_hits": 0,
+              "construction_usec": 119725,
+              "generation": 1,
+              "last_edit_usec": 597,
+              "layers": {
+                "background": {
+                  "cached_bytes": 8388608,
+                  "clock_mode": "static",
+                  "dirty": false,
+                  "error": "",
+                  "failed": false,
+                  "native_instance_id": -9223371608045902882,
+                  "native_revision": 115,
+                  "native_tick": 0,
+                  "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:background",
+                  "paused": true,
+                  "publication_serial": 2,
+                  "rate_hz": 0,
+                  "ready": true,
+                  "redo": 0,
+                  "revision": 2,
+                  "undo": 1
+                },
+                "effects": {
+                  "cached_bytes": 8388608,
+                  "clock_mode": "static",
+                  "dirty": false,
+                  "error": "",
+                  "failed": false,
+                  "native_instance_id": -9223371608096234519,
+                  "native_revision": 115,
+                  "native_tick": 0,
+                  "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:effects",
+                  "paused": true,
+                  "publication_serial": 2,
+                  "rate_hz": 0,
+                  "ready": true,
+                  "redo": 0,
+                  "revision": 2,
+                  "undo": 1
+                },
+                "scripted": {
+                  "cached_bytes": 8388608,
+                  "clock_mode": "static",
+                  "dirty": false,
+                  "error": "",
+                  "failed": false,
+                  "native_instance_id": -9223371608180120597,
+                  "native_revision": 115,
+                  "native_tick": 0,
+                  "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:scripted",
+                  "paused": true,
+                  "publication_serial": 2,
+                  "rate_hz": 0,
+                  "ready": true,
+                  "redo": 0,
+                  "revision": 2,
+                  "undo": 1
+                }
+              },
+              "native_snapshot_calls": 6,
+              "native_world_count": 3,
+              "owns_play_world": false,
+              "pending_native_world_count": 0,
+              "pending_token": -1,
+              "retired_worlds": 0,
+              "session_id": "f9db9b64b6ce53a77db227ded3408474"
+            },
+            "pending": false,
+            "physical_session_id": 358394889765,
+            "play_apply_serial": 0,
+            "play_generation": 3,
+            "play_revision": 3,
+            "play_tick": 0,
+            "presentation": {
+              "active_shader_instance_id": -9223371606049414087,
+              "additional_native_play_worlds": 0,
+              "additional_play_texture_uploads": 0,
+              "camera_origin": "(0.0, 0.0)",
+              "content_rect": "[P: (489.0, 0.0), S: (902.0, 902.0)]",
+              "decorative_rg8_capacity_bytes": 25165824,
+              "decorative_rgba_capacity_bytes": 50331648,
+              "decorative_surface_count": 3,
+              "enabled": true,
+              "extent": "(2048, 2048)",
+              "full_rg8_uploaded_bytes": 50331648,
+              "full_rg8_uploads": 6,
+              "last_error": "",
+              "layers": {
+                "background": {
+                  "accepted_packets": 2,
+                  "atmosphere": {
+                    "active": true,
+                    "additional_native_worlds": 0,
+                    "advance_calls": 0,
+                    "category": "presentation-only",
+                    "clamped_seconds": 0.0,
+                    "clock_semantics": "Visible unpaused presentation time; each callback contributes at most 0.1 seconds; no catch-up; phase not persisted.",
+                    "configuration_sha256": "19252ee234815b1259dd9d8109d70370216750c4336ff512d5618154e63f1fa2",
+                    "draw_calls": 0,
+                    "effect_count": 0,
+                    "enabled": false,
+                    "last_draw_primitives": 0,
+                    "motif_count": 0,
+                    "native_captures": 0,
+                    "native_material_writes": 0,
+                    "paused": false,
+                    "phase_seconds": 0.0,
+                    "plane": "background",
+                    "processing": false,
+                    "texture_uploads": 0
+                  },
+                  "bake_requests": 2,
+                  "copied_patch_bytes": 16777216,
+                  "effective_visible": true,
+                  "expected": {
+                    "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:background",
+                    "reset_generation": 1,
+                    "revision": 2
+                  },
+                  "identity": {
+                    "extent": [
+                      2048,
+                      2048
+                    ],
+                    "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:background",
+                    "reset_generation": 1,
+                    "revision": 2,
+                    "serial": 2
+                  },
+                  "last_rejection": "",
+                  "layer_id": "background",
+                  "layer_tick": 0,
+                  "material_surface_size": "(2048, 2048)",
+                  "native_texture_size": "(2048, 2048)",
+                  "rejected_packets": 0,
+                  "render_enabled": false,
+                  "reset_generation": 1,
+                  "static_bake": true,
+                  "upload_count": 2,
+                  "uploaded_bytes": 16777216,
+                  "viewport_update_mode": 1
+                },
+                "effects": {
+                  "accepted_packets": 2,
+                  "atmosphere": {
+                    "active": true,
+                    "additional_native_worlds": 0,
+                    "advance_calls": 0,
+                    "category": "presentation-only",
+                    "clamped_seconds": 0.0,
+                    "clock_semantics": "Visible unpaused presentation time; each callback contributes at most 0.1 seconds; no catch-up; phase not persisted.",
+                    "configuration_sha256": "19252ee234815b1259dd9d8109d70370216750c4336ff512d5618154e63f1fa2",
+                    "draw_calls": 0,
+                    "effect_count": 0,
+                    "enabled": false,
+                    "last_draw_primitives": 0,
+                    "motif_count": 0,
+                    "native_captures": 0,
+                    "native_material_writes": 0,
+                    "paused": false,
+                    "phase_seconds": 0.0,
+                    "plane": "effects",
+                    "processing": false,
+                    "texture_uploads": 0
+                  },
+                  "bake_requests": 2,
+                  "copied_patch_bytes": 16777216,
+                  "effective_visible": true,
+                  "expected": {
+                    "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:effects",
+                    "reset_generation": 1,
+                    "revision": 2
+                  },
+                  "identity": {
+                    "extent": [
+                      2048,
+                      2048
+                    ],
+                    "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:effects",
+                    "reset_generation": 1,
+                    "revision": 2,
+                    "serial": 2
+                  },
+                  "last_rejection": "",
+                  "layer_id": "effects",
+                  "layer_tick": 0,
+                  "material_surface_size": "(2048, 2048)",
+                  "native_texture_size": "(2048, 2048)",
+                  "rejected_packets": 0,
+                  "render_enabled": false,
+                  "reset_generation": 1,
+                  "static_bake": true,
+                  "upload_count": 2,
+                  "uploaded_bytes": 16777216,
+                  "viewport_update_mode": 1
+                },
+                "scripted": {
+                  "accepted_packets": 2,
+                  "atmosphere": {
+                    "active": true,
+                    "additional_native_worlds": 0,
+                    "advance_calls": 0,
+                    "category": "presentation-only",
+                    "clamped_seconds": 0.0,
+                    "clock_semantics": "Visible unpaused presentation time; each callback contributes at most 0.1 seconds; no catch-up; phase not persisted.",
+                    "configuration_sha256": "19252ee234815b1259dd9d8109d70370216750c4336ff512d5618154e63f1fa2",
+                    "draw_calls": 0,
+                    "effect_count": 0,
+                    "enabled": false,
+                    "last_draw_primitives": 0,
+                    "motif_count": 0,
+                    "native_captures": 0,
+                    "native_material_writes": 0,
+                    "paused": false,
+                    "phase_seconds": 0.0,
+                    "plane": "scripted",
+                    "processing": false,
+                    "texture_uploads": 0
+                  },
+                  "bake_requests": 2,
+                  "copied_patch_bytes": 16777216,
+                  "effective_visible": true,
+                  "expected": {
+                    "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:scripted",
+                    "reset_generation": 1,
+                    "revision": 2
+                  },
+                  "identity": {
+                    "extent": [
+                      2048,
+                      2048
+                    ],
+                    "owner_id": "f9db9b64b6ce53a77db227ded3408474:1:scripted",
+                    "reset_generation": 1,
+                    "revision": 2,
+                    "serial": 2
+                  },
+                  "last_rejection": "",
+                  "layer_id": "scripted",
+                  "layer_tick": 0,
+                  "material_surface_size": "(2048, 2048)",
+                  "native_texture_size": "(2048, 2048)",
+                  "rejected_packets": 0,
+                  "render_enabled": false,
+                  "reset_generation": 1,
+                  "static_bake": true,
+                  "upload_count": 2,
+                  "uploaded_bytes": 16777216,
+                  "viewport_update_mode": 1
+                }
+              },
+              "original_shader_instance_id": -9223371955837598150,
+              "play_effective_visible": true,
+              "play_glow_source_sha256": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+              "play_glow_variant_bound": true,
+              "play_glow_variant_sha256": "e1a27dcfd6e2c5143ba4c4ece42d7fddb510d416cee16c19ba55ebbb25a07997",
+              "play_overlay_instance_ids": [
+                127741726158,
+                126533766539,
+                119336340483,
+                127892721106,
+                132607119009,
+                141717147743,
+                141750702177,
+                141784256611,
+                141817811045,
+                152051913352,
+                247094846186
+              ],
+              "play_shader_source_sha256": "7e5650cb807825e8febebd402dcba262d0df10baf02d478ee3c30f99ca3d460d",
+              "play_shader_variant_bound": true,
+              "play_shader_variant_sha256": "ca404b435194ef415526f17665ed891a5de1fff868062b8575642b5d9fd0bd4b",
+              "play_texture_instance_id": -9223371684784893317,
+              "prepared": true,
+              "rejected_packets": 0,
+              "view_size": "(2048.0, 2048.0)"
+            },
+            "simulation_worker_id": -9223371955669826048
+          },
+          "framebuffers": {
+            "maximum-before-background": {
+              "content_scale_factor": 1.0,
+              "pixels": [
+                1600,
+                900
+              ],
+              "window_size": [
+                1600,
+                1000
+              ]
+            },
+            "maximum-before-effects": {
+              "content_scale_factor": 1.0,
+              "pixels": [
+                1600,
+                900
+              ],
+              "window_size": [
+                1600,
+                1000
+              ]
+            },
+            "maximum-before-scripted": {
+              "content_scale_factor": 1.0,
+              "pixels": [
+                1600,
+                900
+              ],
+              "window_size": [
+                1600,
+                1000
+              ]
+            },
+            "maximum-brush-background": {
+              "content_scale_factor": 1.0,
+              "pixels": [
+                1600,
+                900
+              ],
+              "window_size": [
+                1600,
+                1000
+              ]
+            },
+            "maximum-brush-effects": {
+              "content_scale_factor": 1.0,
+              "pixels": [
+                1600,
+                900
+              ],
+              "window_size": [
+                1600,
+                1000
+              ]
+            },
+            "maximum-brush-scripted": {
+              "content_scale_factor": 1.0,
+              "pixels": [
+                1600,
+                900
+              ],
+              "window_size": [
+                1600,
+                1000
+              ]
+            }
+          },
+          "identity": {
+            "after": {
+              "actor_body_ids": [
+                "358512330262"
+              ],
+              "actor_session_id": "358394889765",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371955669826048",
+              "world_generation": 3
+            },
+            "before": {
+              "actor_body_ids": [
+                "358512330262"
+              ],
+              "actor_session_id": "358394889765",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371955669826048",
+              "world_generation": 3
+            }
+          },
+          "ordinary_disabled_baseline": {
+            "callback_intervals_usec": [
+              260540,
+              129582,
+              178636,
+              272599,
+              288390,
+              272889,
+              276194,
+              283139,
+              270828,
+              280000,
+              269917,
+              280356,
+              278148,
+              287179,
+              282190,
+              292842,
+              283734,
+              278148,
+              287040,
+              274153,
+              282296,
+              268124,
+              274751,
+              277514,
+              281613,
+              269111,
+              283524,
+              266841,
+              274882
+            ],
+            "extent": [
+              2048,
+              2048
+            ],
+            "godot_process_seconds": [
+              0.037055,
+              0.037055,
+              0.037055,
+              0.037055,
+              0.037055,
+              0.283513,
+              0.283513,
+              0.283513,
+              0.283513,
+              0.27818,
+              0.27818,
+              0.27818,
+              0.275544,
+              0.275544,
+              0.275544,
+              0.275544,
+              0.28802,
+              0.28802,
+              0.28802,
+              0.2821,
+              0.2821,
+              0.2821,
+              0.2821,
+              0.277471,
+              0.277471,
+              0.277471,
+              0.277471,
+              0.27853,
+              0.27853,
+              0.27853
+            ],
+            "godot_tracked_static_memory_after": 128528404,
+            "godot_tracked_static_memory_before": 128522040,
+            "native_tick_after": 0,
+            "native_tick_before": 0,
+            "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+            "snapshot_serial_after": 3221,
+            "snapshot_serial_before": 2953,
+            "strata_initialized": false
+          },
+          "ordinary_workbench": true,
+          "phase": "maximum",
+          "planes": {
+            "background": {
+              "extent": [
+                2048,
+                2048
+              ],
+              "native_material": 131,
+              "owner": "-9223371608045902882",
+              "pixel_delta": 0.10980392806232
+            },
+            "effects": {
+              "extent": [
+                2048,
+                2048
+              ],
+              "native_material": 131,
+              "owner": "-9223371608096234519",
+              "pixel_delta": 0.10980392806232
+            },
+            "scripted": {
+              "extent": [
+                2048,
+                2048
+              ],
+              "native_material": 131,
+              "owner": "-9223371608180120597",
+              "pixel_delta": 0.10980392806232
+            }
+          },
+          "play_hash_after": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+          "play_hash_before": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+          "process_id": 2740,
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "rendering_method": "gl_compatibility",
+          "schema": "strata-maximum-execution-v1",
+          "source_revision": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+          "teardown": {
+            "cache_hits": 0,
+            "construction_usec": 119725,
+            "generation": 2,
+            "last_edit_usec": 597,
+            "layers": {},
+            "native_snapshot_calls": 6,
+            "native_world_count": 0,
+            "owns_play_world": false,
+            "pending_native_world_count": 0,
+            "pending_token": -1,
+            "retired_worlds": 3,
+            "session_id": "f9db9b64b6ce53a77db227ded3408474"
+          },
+          "world_count": {
+            "decorative_owned": 3,
+            "play_borrowed": 1
+          }
+        }
+      },
+      "platform": "win32",
+      "report": "/tmp/strata2-evidence/final-evaluator-audit/original-execution/extracted/qualification.json",
+      "scenes": [
+        {
+          "admission": {
+            "install": {
+              "elapsed_ms": 51619,
+              "met": false,
+              "target_ms": 45000
+            },
+            "reopen": {
+              "elapsed_ms": 8881,
+              "met": true,
+              "target_ms": 45000
+            }
+          },
+          "cost_samples": [
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 461019,
+              "callback_p50_usec": 403930,
+              "callback_p95_usec": 444024,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178292169.0,
+              "interval_count": 44,
+              "mode": "disabled",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                357499,
+                447986,
+                400915,
+                391300,
+                437124,
+                396121,
+                390778,
+                406091,
+                410838,
+                416914,
+                397340,
+                412585,
+                398381,
+                402199,
+                400934,
+                411277,
+                397489,
+                363202,
+                444024,
+                408956,
+                419240,
+                398846,
+                410373,
+                401502,
+                413164,
+                396890,
+                393811,
+                419665,
+                411979,
+                399011,
+                405585,
+                433120,
+                384269,
+                411331,
+                397135,
+                402580,
+                347379,
+                461019,
+                408468,
+                422969,
+                398241,
+                403930,
+                411854,
+                339355
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 17853082
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 439052,
+              "callback_p50_usec": 409602,
+              "callback_p95_usec": 429134,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178303741.0,
+              "interval_count": 44,
+              "mode": "flat",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                413266,
+                404069,
+                411309,
+                402520,
+                410559,
+                418542,
+                399682,
+                406556,
+                407214,
+                416080,
+                429134,
+                406285,
+                416877,
+                407438,
+                388095,
+                439052,
+                411875,
+                419617,
+                432808,
+                401693,
+                403002,
+                393848,
+                413864,
+                406294,
+                396521,
+                409602,
+                404697,
+                408224,
+                399321,
+                404123,
+                415172,
+                412454,
+                399915,
+                402467,
+                425133,
+                413919,
+                407970,
+                410572,
+                415757,
+                407207,
+                410137,
+                418476,
+                401998,
+                424907
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 18127761
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 481886,
+              "callback_p50_usec": 423391,
+              "callback_p95_usec": 455816,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178306965.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                407646,
+                423663,
+                425592,
+                428609,
+                395717,
+                462388,
+                410973,
+                405195,
+                437842,
+                409609,
+                408955,
+                452631,
+                419848,
+                423714,
+                431905,
+                443954,
+                421072,
+                419388,
+                381531,
+                451909,
+                455816,
+                435023,
+                425123,
+                438869,
+                422093,
+                430974,
+                432933,
+                419566,
+                405801,
+                398891,
+                481886,
+                411979,
+                414363,
+                423214,
+                425312,
+                423923,
+                423391,
+                409401,
+                418975,
+                410611,
+                425518,
+                418281,
+                426197,
+                419600
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 18739538
+            },
+            {
+              "atmosphere_enabled": true,
+              "callback_max_usec": 464756,
+              "callback_p50_usec": 427650,
+              "callback_p95_usec": 453990,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178312161.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                425052,
+                431193,
+                427650,
+                431241,
+                422690,
+                422887,
+                431039,
+                414037,
+                426396,
+                425571,
+                415590,
+                397995,
+                447022,
+                428127,
+                412125,
+                420238,
+                399159,
+                429348,
+                441344,
+                402233,
+                439151,
+                462112,
+                413852,
+                448042,
+                371594,
+                453990,
+                439346,
+                432575,
+                419768,
+                445218,
+                431191,
+                421937,
+                416656,
+                435767,
+                434158,
+                416356,
+                422698,
+                431703,
+                421894,
+                431420,
+                390627,
+                380847,
+                442536,
+                464756
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 18799013
+            }
+          ],
+          "extent": [
+            2048,
+            1024
+          ],
+          "fresh_process": {
+            "authored_settings_sha256": "959d08e5e46c83e0269c1753adac27d529020134dc7369ec02e03c4f0d078000",
+            "different_pids": true,
+            "explicit_saved_authoring": {
+              "atmosphere": {
+                "effects": [
+                  {
+                    "colour": [
+                      0.3,
+                      0.59,
+                      0.72,
+                      0.7
+                    ],
+                    "count": 32,
+                    "direction": [
+                      1.0,
+                      0.02
+                    ],
+                    "enabled": true,
+                    "id": "terminal-haze",
+                    "kind": "haze",
+                    "plane": "effects",
+                    "region": [
+                      80,
+                      570,
+                      1850,
+                      300
+                    ],
+                    "seed": 1,
+                    "speed": 4.0,
+                    "strength": 0.43
+                  },
+                  {
+                    "colour": [
+                      0.58,
+                      0.78,
+                      0.88,
+                      0.78
+                    ],
+                    "count": 28,
+                    "direction": [
+                      0.12,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "vent-left",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      436,
+                      572,
+                      96,
+                      204
+                    ],
+                    "seed": 2,
+                    "speed": 22.0,
+                    "strength": 0.85
+                  },
+                  {
+                    "colour": [
+                      0.62,
+                      0.76,
+                      0.83,
+                      0.7
+                    ],
+                    "count": 26,
+                    "direction": [
+                      -0.1,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "vent-right",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      1228,
+                      560,
+                      98,
+                      214
+                    ],
+                    "seed": 3,
+                    "speed": 18.0,
+                    "strength": 0.75
+                  },
+                  {
+                    "colour": [
+                      1.0,
+                      0.36,
+                      0.08,
+                      0.85
+                    ],
+                    "count": 8,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "overhead-signal",
+                    "kind": "beacon",
+                    "plane": "scripted",
+                    "region": [
+                      110,
+                      236,
+                      1810,
+                      16
+                    ],
+                    "seed": 4,
+                    "speed": 1.0,
+                    "strength": 0.82
+                  },
+                  {
+                    "colour": [
+                      0.2,
+                      0.9,
+                      0.95,
+                      0.8
+                    ],
+                    "count": 20,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "conveyor-lights",
+                    "kind": "machinery",
+                    "plane": "scripted",
+                    "region": [
+                      90,
+                      798,
+                      1836,
+                      6
+                    ],
+                    "seed": 5,
+                    "speed": 18.0,
+                    "strength": 0.8
+                  }
+                ],
+                "enabled": true,
+                "paused": true,
+                "seed": 240711,
+                "version": 1
+              },
+              "atmosphere_sha256": "dcc0ee611447605d15b2e4745231dd24d655ec174d756656459a2c3fdadf3fff",
+              "authoring_records": 1,
+              "authoring_sha256": "aff09ea6094dea3bb223448735fc3c9f03a00fcba1f87fc7ce25839d2fe0ef73",
+              "native_marker": {
+                "material": 131,
+                "plane": "background",
+                "point": [
+                  96,
+                  96
+                ]
+              },
+              "raster_imports": [
+                {
+                  "actual_sha256": "3e4c26ee50a8d4015a3934da1f754f28cea85654ee182b867f0269b3514c1926",
+                  "geometry_sha256": "be679be04382f5046c31d9fa88dfcc44f0ef482b4d63052cba91fbee1774fd7c",
+                  "historical": true,
+                  "plane": "scripted",
+                  "source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+                  "status": "completed"
+                }
+              ],
+              "scope": "Authored native edits, historical approved import metadata and effect settings; no evolved physics or animation-phase continuation."
+            },
+            "save_sha256": "d577f4328c400fc1bb8756a9bb05481d0fbc934a82e20a4011f57dc5f0aa14d5",
+            "saved_native_hashes": {
+              "background": "e940f418a36c8d52c76d8f63a22cf25bbf4567df094d21a6a6ef1034d5b9494d",
+              "effects": "245030be0ef87b416156f031cdc68a03ed06af43c8526a4af68d7e9c6350fffa",
+              "play": "a415da32335a66b60f3793a94a6aed6fc9397a1395c7323c9e871c9ef6df072d",
+              "scripted": "b8367525259e977dbe3f77ee4cf5d4643c6b15f2531022a7dfd0e9999d282fb8"
+            },
+            "scope": "Install hashes were captured for Save before the later physical route probe; this demonstrates authored-layout reopening, not continuation of evolved Play state."
+          },
+          "install_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 1460.203125,
+            "original_resources_sha256": "7955ff1bb57c52220af28ef42a3fe9d914f7c02c90fe76833d431c3aa93a790b",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 1157693440,
+            "samples": 889,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 516.828
+          },
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "reopen_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 99.953125,
+            "original_resources_sha256": "13bb80a57ad3c9c043d275c4329da3c6bde9b1699913ecc5c8325a80ae8e6646",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 945303552,
+            "samples": 70,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 38.422
+          },
+          "route": {
+            "actual_edit_undo": true,
+            "callbacks": 65,
+            "elapsed_usec": 29916758,
+            "forward_cells": 13.9254150390625,
+            "identity_unchanged": true,
+            "native_ticks": 59,
+            "rapier_ticks": 60,
+            "scope": "End-to-end finite route trial includes resume, pilot control, toggles, native decoration edit/Undo and final pause settling; not isolated tick cost or complete-route traversal."
+          },
+          "scene": "orbital-terminal"
+        },
+        {
+          "admission": {
+            "install": {
+              "elapsed_ms": 66316,
+              "met": false,
+              "target_ms": 45000
+            },
+            "reopen": {
+              "elapsed_ms": 8891,
+              "met": true,
+              "target_ms": 45000
+            }
+          },
+          "cost_samples": [
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 470028,
+              "callback_p50_usec": 404707,
+              "callback_p95_usec": 437340,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178740791.0,
+              "interval_count": 44,
+              "mode": "disabled",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                413321,
+                401863,
+                329172,
+                470028,
+                399201,
+                401953,
+                409752,
+                398936,
+                411273,
+                348185,
+                437340,
+                400166,
+                405995,
+                395793,
+                411588,
+                389127,
+                425771,
+                404707,
+                394885,
+                424153,
+                406334,
+                410650,
+                394906,
+                418173,
+                393392,
+                414686,
+                399837,
+                399992,
+                393026,
+                409744,
+                401129,
+                394241,
+                406406,
+                396443,
+                412533,
+                400324,
+                343535,
+                444450,
+                404229,
+                405631,
+                411901,
+                395719,
+                427641,
+                417334
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 17852776
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 439517,
+              "callback_p50_usec": 411387,
+              "callback_p95_usec": 430550,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178752363.0,
+              "interval_count": 44,
+              "mode": "flat",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                412810,
+                401622,
+                390367,
+                439517,
+                415602,
+                407972,
+                401336,
+                397124,
+                407200,
+                420520,
+                423211,
+                429493,
+                393065,
+                433196,
+                415679,
+                402548,
+                414405,
+                411093,
+                406222,
+                425559,
+                411387,
+                409188,
+                412666,
+                410099,
+                410151,
+                415621,
+                418706,
+                398627,
+                396823,
+                426162,
+                382681,
+                424601,
+                425702,
+                430550,
+                403339,
+                407426,
+                395034,
+                416068,
+                405969,
+                429818,
+                413973,
+                403029,
+                417080,
+                393684
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 18187250
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 480035,
+              "callback_p50_usec": 425022,
+              "callback_p95_usec": 464073,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178755587.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                405180,
+                432508,
+                425484,
+                421001,
+                437933,
+                412201,
+                414755,
+                408124,
+                439303,
+                415604,
+                428424,
+                429383,
+                355287,
+                479901,
+                447103,
+                428716,
+                422730,
+                423214,
+                431905,
+                413032,
+                411121,
+                419281,
+                391503,
+                449379,
+                393929,
+                464073,
+                426818,
+                415872,
+                416777,
+                428417,
+                372904,
+                398631,
+                480035,
+                426784,
+                415253,
+                431597,
+                409296,
+                404025,
+                430986,
+                451330,
+                435947,
+                419477,
+                429082,
+                425022
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 18699520
+            },
+            {
+              "atmosphere_enabled": true,
+              "callback_max_usec": 484939,
+              "callback_p50_usec": 424686,
+              "callback_p95_usec": 460581,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 178773839.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                425315,
+                423114,
+                419633,
+                397379,
+                448495,
+                425418,
+                420133,
+                432875,
+                427111,
+                422929,
+                424142,
+                356043,
+                484939,
+                421643,
+                419143,
+                424587,
+                425228,
+                440298,
+                434025,
+                431415,
+                417919,
+                420628,
+                434124,
+                430612,
+                418689,
+                422026,
+                424247,
+                405926,
+                442131,
+                363677,
+                460581,
+                457886,
+                412705,
+                395326,
+                428571,
+                459240,
+                382468,
+                464114,
+                424686,
+                432372,
+                423978,
+                445489,
+                434103,
+                421988
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 18807829
+            }
+          ],
+          "extent": [
+            2048,
+            1024
+          ],
+          "fresh_process": {
+            "authored_settings_sha256": "370e888c30378fa506f2cb173a11a67bbe9a1f8b12b3893d2eb3b35d6119c04f",
+            "different_pids": true,
+            "explicit_saved_authoring": {
+              "atmosphere": {
+                "effects": [
+                  {
+                    "colour": [
+                      0.4,
+                      0.74,
+                      0.98,
+                      0.85
+                    ],
+                    "count": 96,
+                    "direction": [
+                      0.22,
+                      1.0
+                    ],
+                    "enabled": true,
+                    "id": "western-rain",
+                    "kind": "rain",
+                    "plane": "effects",
+                    "region": [
+                      60,
+                      70,
+                      925,
+                      790
+                    ],
+                    "seed": 8,
+                    "speed": 54.0,
+                    "strength": 0.43
+                  },
+                  {
+                    "colour": [
+                      0.48,
+                      0.68,
+                      0.92,
+                      0.85
+                    ],
+                    "count": 96,
+                    "direction": [
+                      0.2,
+                      1.0
+                    ],
+                    "enabled": true,
+                    "id": "eastern-rain",
+                    "kind": "rain",
+                    "plane": "effects",
+                    "region": [
+                      1020,
+                      60,
+                      950,
+                      810
+                    ],
+                    "seed": 9,
+                    "speed": 48.0,
+                    "strength": 0.8
+                  },
+                  {
+                    "colour": [
+                      0.45,
+                      0.25,
+                      0.66,
+                      0.75
+                    ],
+                    "count": 40,
+                    "direction": [
+                      1.0,
+                      -0.03
+                    ],
+                    "enabled": true,
+                    "id": "street-haze",
+                    "kind": "haze",
+                    "plane": "effects",
+                    "region": [
+                      72,
+                      775,
+                      1860,
+                      135
+                    ],
+                    "seed": 10,
+                    "speed": 7.0,
+                    "strength": 0.75
+                  },
+                  {
+                    "colour": [
+                      0.91,
+                      0.14,
+                      0.64,
+                      0.85
+                    ],
+                    "count": 5,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "roof-signals",
+                    "kind": "beacon",
+                    "plane": "scripted",
+                    "region": [
+                      450,
+                      126,
+                      826,
+                      10
+                    ],
+                    "seed": 11,
+                    "speed": 0.65,
+                    "strength": 0.8
+                  }
+                ],
+                "enabled": true,
+                "paused": true,
+                "seed": 244982,
+                "version": 1
+              },
+              "atmosphere_sha256": "593c9adcf9008a4ed848109df7dd762fa9447fb75c3ed542b8026eaf6918a0b3",
+              "authoring_records": 1,
+              "authoring_sha256": "338311b3b30e088060736d6030fbc1521e30e3070d1d66b00ae8c4e06126c754",
+              "native_marker": {
+                "material": 131,
+                "plane": "background",
+                "point": [
+                  96,
+                  96
+                ]
+              },
+              "raster_imports": [
+                {
+                  "actual_sha256": "49327ca04431dc2f1bca25d1b3d0dd59f5a7441eeee3de8c0d47e8285983ffd5",
+                  "geometry_sha256": "c4dea27b412044774969da0295965c0a8cbb04cfa12882c2f9d5b0cd05ef6db2",
+                  "historical": true,
+                  "plane": "scripted",
+                  "source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+                  "status": "completed"
+                }
+              ],
+              "scope": "Authored native edits, historical approved import metadata and effect settings; no evolved physics or animation-phase continuation."
+            },
+            "save_sha256": "ebf2e35eb5b53563be8de1448188287297bd1dcec029e2e0592f50019ccad8ed",
+            "saved_native_hashes": {
+              "background": "21dc913f1298d0868a552ad80b9c5722258de9a4e31a505ae6b16f2f8fb429dd",
+              "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+              "play": "4bf4ae1a53e7854f587b18c9cf6b98cfbb4aeb03368bf73d1d96ca810dfbe5e3",
+              "scripted": "0be41e5d1afdc02651e1cabcfc5ab4d9d54abf08b33fe2d1f696549b947e61ce"
+            },
+            "scope": "Install hashes were captured for Save before the later physical route probe; this demonstrates authored-layout reopening, not continuation of evolved Play state."
+          },
+          "install_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 1303.5625,
+            "original_resources_sha256": "1ed508938ae5b8749c99647befa1776aceaab30a0e94475d97f4f14d7605f43a",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 1073926144,
+            "samples": 838,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 478.062
+          },
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "reopen_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 100.46875,
+            "original_resources_sha256": "6c28ff330df90dbf7bf75dfe452438f8cc025d03fc7683bc5864a3fc3436bf12",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 945057792,
+            "samples": 70,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 38.703
+          },
+          "route": {
+            "actual_edit_undo": true,
+            "callbacks": 68,
+            "elapsed_usec": 31202053,
+            "forward_cells": 13.9254150390625,
+            "identity_unchanged": true,
+            "native_ticks": 59,
+            "rapier_ticks": 60,
+            "scope": "End-to-end finite route trial includes resume, pilot control, toggles, native decoration edit/Undo and final pause settling; not isolated tick cost or complete-route traversal."
+          },
+          "scene": "neon-rain-arcology"
+        },
+        {
+          "admission": {
+            "install": {
+              "elapsed_ms": 66200,
+              "met": false,
+              "target_ms": 45000
+            },
+            "reopen": {
+              "elapsed_ms": 7636,
+              "met": true,
+              "target_ms": 45000
+            }
+          },
+          "cost_samples": [
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 328588,
+              "callback_p50_usec": 293372,
+              "callback_p95_usec": 323136,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 146621044.0,
+              "interval_count": 44,
+              "mode": "disabled",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                290757,
+                292562,
+                300216,
+                292367,
+                284548,
+                291953,
+                298967,
+                288475,
+                287162,
+                301529,
+                291729,
+                291384,
+                258420,
+                328588,
+                294135,
+                292716,
+                290776,
+                289797,
+                293277,
+                294033,
+                289816,
+                293372,
+                296309,
+                289871,
+                297419,
+                291331,
+                294865,
+                288930,
+                295202,
+                290680,
+                294006,
+                296305,
+                299243,
+                268840,
+                323136,
+                297816,
+                295873,
+                297444,
+                296934,
+                297626,
+                292858,
+                295965,
+                269234,
+                326063
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 12956436
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 320089,
+              "callback_p50_usec": 295165,
+              "callback_p95_usec": 305115,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 146632616.0,
+              "interval_count": 44,
+              "mode": "flat",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                295222,
+                292834,
+                300426,
+                299810,
+                310451,
+                300627,
+                293872,
+                291843,
+                298724,
+                295916,
+                293850,
+                298745,
+                300254,
+                293594,
+                294800,
+                293617,
+                295119,
+                302907,
+                292139,
+                287951,
+                294891,
+                299270,
+                299005,
+                304428,
+                290864,
+                295165,
+                299320,
+                294249,
+                297727,
+                294845,
+                291201,
+                293662,
+                301137,
+                296229,
+                301442,
+                288884,
+                294446,
+                292078,
+                296021,
+                305115,
+                292227,
+                291832,
+                269340,
+                320089
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13076681
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 329049,
+              "callback_p50_usec": 303102,
+              "callback_p95_usec": 310829,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 146635840.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                309684,
+                298678,
+                303518,
+                302834,
+                299926,
+                294049,
+                309239,
+                308734,
+                295652,
+                305547,
+                308003,
+                309937,
+                305441,
+                299756,
+                304985,
+                299544,
+                301058,
+                310829,
+                296461,
+                304649,
+                302744,
+                297576,
+                303102,
+                311242,
+                303439,
+                298420,
+                298850,
+                308671,
+                307990,
+                302838,
+                309742,
+                299276,
+                271589,
+                329049,
+                306820,
+                300722,
+                305492,
+                304619,
+                299215,
+                303052,
+                304531,
+                301760,
+                300199,
+                301117
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13382984
+            },
+            {
+              "atmosphere_enabled": true,
+              "callback_max_usec": 324732,
+              "callback_p50_usec": 303500,
+              "callback_p95_usec": 311329,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 146641124.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                311329,
+                309217,
+                305088,
+                305111,
+                306270,
+                301757,
+                304468,
+                307047,
+                300525,
+                307113,
+                298634,
+                298791,
+                296517,
+                294798,
+                318311,
+                288184,
+                324732,
+                302712,
+                302410,
+                302439,
+                300533,
+                308047,
+                301210,
+                307963,
+                300222,
+                303500,
+                303302,
+                302516,
+                306937,
+                308824,
+                302484,
+                306228,
+                299438,
+                302376,
+                298831,
+                303871,
+                304234,
+                305960,
+                303063,
+                304832,
+                306283,
+                300000,
+                307210,
+                299011
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13414360
+            }
+          ],
+          "extent": [
+            1024,
+            1024
+          ],
+          "fresh_process": {
+            "authored_settings_sha256": "005581371aeb6ef2a18ab07ccaf5e5d40c821bf375667be18754e82ebc6ec3e6",
+            "different_pids": true,
+            "explicit_saved_authoring": {
+              "atmosphere": {
+                "effects": [
+                  {
+                    "colour": [
+                      0.67,
+                      0.81,
+                      0.82,
+                      0.85
+                    ],
+                    "count": 30,
+                    "direction": [
+                      0.1,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "left-vent",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      308,
+                      480,
+                      82,
+                      223
+                    ],
+                    "seed": 21,
+                    "speed": 19.0,
+                    "strength": 0.43
+                  },
+                  {
+                    "colour": [
+                      0.65,
+                      0.74,
+                      0.79,
+                      0.85
+                    ],
+                    "count": 26,
+                    "direction": [
+                      -0.14,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "right-vent",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      640,
+                      498,
+                      86,
+                      205
+                    ],
+                    "seed": 22,
+                    "speed": 22.0,
+                    "strength": 0.9
+                  },
+                  {
+                    "colour": [
+                      1.0,
+                      0.3,
+                      0.06,
+                      0.9
+                    ],
+                    "count": 3,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "reactor-warning",
+                    "kind": "beacon",
+                    "plane": "scripted",
+                    "region": [
+                      410,
+                      182,
+                      185,
+                      13
+                    ],
+                    "seed": 23,
+                    "speed": 0.8,
+                    "strength": 0.95
+                  },
+                  {
+                    "colour": [
+                      0.95,
+                      0.58,
+                      0.12,
+                      0.8
+                    ],
+                    "count": 18,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "rear-service-signal",
+                    "kind": "machinery",
+                    "plane": "background",
+                    "region": [
+                      98,
+                      801,
+                      810,
+                      11
+                    ],
+                    "seed": 24,
+                    "speed": 20.0,
+                    "strength": 0.8
+                  },
+                  {
+                    "colour": [
+                      0.87,
+                      0.72,
+                      0.49,
+                      0.8
+                    ],
+                    "count": 44,
+                    "direction": [
+                      0.55,
+                      -0.12
+                    ],
+                    "enabled": true,
+                    "id": "service-dust",
+                    "kind": "dust",
+                    "plane": "effects",
+                    "region": [
+                      100,
+                      250,
+                      824,
+                      620
+                    ],
+                    "seed": 25,
+                    "speed": 2.5,
+                    "strength": 0.65
+                  }
+                ],
+                "enabled": true,
+                "paused": true,
+                "seed": 245921,
+                "version": 1
+              },
+              "atmosphere_sha256": "2910f7bf102c35033d2892631eab9712e1680f81d682bfd03e8d89490bf47de3",
+              "authoring_records": 0,
+              "authoring_sha256": "77d4115bf19d3fa61f519451d938ad576b78ceac615355303082072d0e44e677",
+              "native_marker": {
+                "material": 131,
+                "plane": "background",
+                "point": [
+                  96,
+                  96
+                ]
+              },
+              "raster_imports": [],
+              "scope": "Authored native edits, historical approved import metadata and effect settings; no evolved physics or animation-phase continuation."
+            },
+            "save_sha256": "c32ec71758530f0c80cedf68293e0fd3c970f3d42e03611395527884c8157b62",
+            "saved_native_hashes": {
+              "background": "de39473a6e982dc28ea8be7813f8a49e092a23a35f42d19ef7b0ee7c70168f6c",
+              "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+              "play": "b63c8efdf8c26262eb8d8ffa7717104d67e82bfbc816ac70fb31f953a97988ba",
+              "scripted": "159ba15a4a4c66bd599f23d03bf490855e9ecd08d5d939ccc94ac61feb3e392a"
+            },
+            "scope": "Install hashes were captured for Save before the later physical route probe; this demonstrates authored-layout reopening, not continuation of evolved Play state."
+          },
+          "install_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 772.171875,
+            "original_resources_sha256": "f6a52cfad96a77d96dadc0f322034c7247cb90cbb58bb52fab3e1aca400694b4",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 1069117440,
+            "samples": 585,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 320.391
+          },
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "reopen_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 85.984375,
+            "original_resources_sha256": "2f85aa2cd89fe4e811c579f8e5d44b61cc1e6895e7bf0cff31a6cbbe1e947158",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 811728896,
+            "samples": 56,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 30.734
+          },
+          "route": {
+            "actual_edit_undo": true,
+            "callbacks": 62,
+            "elapsed_usec": 19969233,
+            "forward_cells": 58.9102172851563,
+            "identity_unchanged": true,
+            "native_ticks": 59,
+            "rapier_ticks": 60,
+            "scope": "End-to-end finite route trial includes resume, pilot control, toggles, native decoration edit/Undo and final pause settling; not isolated tick cost or complete-route traversal."
+          },
+          "scene": "industrial-underworks"
+        },
+        {
+          "admission": {
+            "install": {
+              "elapsed_ms": 59958,
+              "met": false,
+              "target_ms": 45000
+            },
+            "reopen": {
+              "elapsed_ms": 7622,
+              "met": true,
+              "target_ms": 45000
+            }
+          },
+          "cost_samples": [
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 320303,
+              "callback_p50_usec": 298016,
+              "callback_p95_usec": 305698,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 147245398.0,
+              "interval_count": 44,
+              "mode": "disabled",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                206374,
+                320303,
+                292454,
+                291952,
+                291866,
+                305277,
+                292514,
+                294126,
+                285266,
+                294798,
+                300069,
+                292504,
+                301729,
+                303144,
+                296472,
+                293334,
+                306403,
+                303051,
+                298016,
+                302125,
+                298464,
+                295412,
+                300851,
+                294510,
+                298992,
+                295918,
+                299958,
+                296640,
+                301586,
+                294757,
+                293682,
+                288830,
+                301457,
+                299284,
+                294875,
+                302285,
+                302282,
+                292692,
+                305698,
+                294232,
+                302445,
+                297921,
+                303505,
+                300031
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13065796
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 315507,
+              "callback_p50_usec": 300115,
+              "callback_p95_usec": 307069,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 147256970.0,
+              "interval_count": 44,
+              "mode": "flat",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                301788,
+                292177,
+                285611,
+                304377,
+                315507,
+                295232,
+                306456,
+                302125,
+                292006,
+                300259,
+                295337,
+                293148,
+                300758,
+                305095,
+                302849,
+                298554,
+                300115,
+                291396,
+                306882,
+                298512,
+                307069,
+                299041,
+                294648,
+                294966,
+                295833,
+                302806,
+                293447,
+                300145,
+                303780,
+                293664,
+                294722,
+                280564,
+                304575,
+                294592,
+                288275,
+                309418,
+                293904,
+                304113,
+                303174,
+                292138,
+                302085,
+                295305,
+                302419,
+                300123
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13179428
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 320582,
+              "callback_p50_usec": 305954,
+              "callback_p95_usec": 313706,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 147260194.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                307354,
+                301509,
+                309873,
+                296165,
+                302973,
+                310109,
+                308076,
+                307621,
+                304890,
+                303931,
+                300022,
+                305079,
+                308595,
+                308508,
+                296717,
+                300382,
+                300149,
+                299074,
+                313706,
+                302777,
+                311471,
+                305954,
+                309531,
+                303657,
+                296320,
+                308415,
+                299020,
+                309320,
+                305184,
+                310718,
+                308193,
+                307964,
+                296815,
+                308648,
+                304468,
+                304386,
+                304273,
+                320582,
+                305375,
+                317311,
+                298665,
+                310991,
+                310749,
+                309852
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13495856
+            },
+            {
+              "atmosphere_enabled": true,
+              "callback_max_usec": 319029,
+              "callback_p50_usec": 307696,
+              "callback_p95_usec": 313469,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 147265390.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                306819,
+                312280,
+                307170,
+                306018,
+                312720,
+                300546,
+                319029,
+                311569,
+                300225,
+                297975,
+                312884,
+                306793,
+                304253,
+                303801,
+                298660,
+                302000,
+                316893,
+                299920,
+                307087,
+                304671,
+                309963,
+                310966,
+                304567,
+                308006,
+                309877,
+                305480,
+                311516,
+                310079,
+                310575,
+                308262,
+                309248,
+                304136,
+                308128,
+                307696,
+                299934,
+                308924,
+                302849,
+                311185,
+                305134,
+                303163,
+                313469,
+                311833,
+                307138,
+                307971
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13561785
+            }
+          ],
+          "extent": [
+            1024,
+            1024
+          ],
+          "fresh_process": {
+            "authored_settings_sha256": "3446d6b83d1febb4358752038322b6a03ebec22c67856901fc11a2e9a4fb39c9",
+            "different_pids": true,
+            "explicit_saved_authoring": {
+              "atmosphere": {
+                "effects": [
+                  {
+                    "colour": [
+                      0.28,
+                      0.65,
+                      0.72,
+                      0.88
+                    ],
+                    "count": 38,
+                    "direction": [
+                      0.75,
+                      0.05
+                    ],
+                    "enabled": true,
+                    "id": "abyss-mist",
+                    "kind": "haze",
+                    "plane": "effects",
+                    "region": [
+                      110,
+                      646,
+                      800,
+                      232
+                    ],
+                    "seed": 31,
+                    "speed": 3.5,
+                    "strength": 0.43
+                  },
+                  {
+                    "colour": [
+                      0.72,
+                      0.68,
+                      0.45,
+                      0.75
+                    ],
+                    "count": 58,
+                    "direction": [
+                      0.35,
+                      -0.12
+                    ],
+                    "enabled": true,
+                    "id": "mineral-dust",
+                    "kind": "dust",
+                    "plane": "effects",
+                    "region": [
+                      130,
+                      160,
+                      740,
+                      650
+                    ],
+                    "seed": 32,
+                    "speed": 2.8,
+                    "strength": 0.8
+                  },
+                  {
+                    "colour": [
+                      0.32,
+                      0.71,
+                      0.8,
+                      0.8
+                    ],
+                    "count": 22,
+                    "direction": [
+                      0.16,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "left-fissure",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      190,
+                      470,
+                      98,
+                      170
+                    ],
+                    "seed": 33,
+                    "speed": 13.0,
+                    "strength": 0.8
+                  },
+                  {
+                    "colour": [
+                      0.42,
+                      0.68,
+                      0.72,
+                      0.8
+                    ],
+                    "count": 18,
+                    "direction": [
+                      -0.12,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "right-fissure",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      719,
+                      320,
+                      98,
+                      159
+                    ],
+                    "seed": 34,
+                    "speed": 11.0,
+                    "strength": 0.75
+                  },
+                  {
+                    "colour": [
+                      1.0,
+                      0.56,
+                      0.12,
+                      0.8
+                    ],
+                    "count": 3,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "service-pulse",
+                    "kind": "beacon",
+                    "plane": "scripted",
+                    "region": [
+                      160,
+                      340,
+                      145,
+                      12
+                    ],
+                    "seed": 35,
+                    "speed": 0.45,
+                    "strength": 0.75
+                  }
+                ],
+                "enabled": true,
+                "paused": true,
+                "seed": 246209,
+                "version": 1
+              },
+              "atmosphere_sha256": "920628c2d5984f90da5796a3fdc80a6d0fef3f1e5643909002d76232fce868d7",
+              "authoring_records": 0,
+              "authoring_sha256": "77d4115bf19d3fa61f519451d938ad576b78ceac615355303082072d0e44e677",
+              "native_marker": {
+                "material": 131,
+                "plane": "background",
+                "point": [
+                  96,
+                  96
+                ]
+              },
+              "raster_imports": [],
+              "scope": "Authored native edits, historical approved import metadata and effect settings; no evolved physics or animation-phase continuation."
+            },
+            "save_sha256": "2b61280567bc8e58b131e181971d1b183a72cd2193d943f144d47be73ca843f4",
+            "saved_native_hashes": {
+              "background": "9c111a47a6bf1ebf140cdb10644d148975c3f38102a43c022e055f2d090f1fe7",
+              "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+              "play": "31031014ddeb70009d7d74d07dd36ce9b3a5ad8ab58883e9811cb52a96053d3c",
+              "scripted": "26e07110d5a3404c15e8962c592fab646d558dcd618186b193fc4af47e94ce68"
+            },
+            "scope": "Install hashes were captured for Save before the later physical route probe; this demonstrates authored-layout reopening, not continuation of evolved Play state."
+          },
+          "install_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 751.8125,
+            "original_resources_sha256": "759c2efc75c3294ef1fc7e6aa4814ee61541393b7660fcecfa0cecbb60437347",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 1098428416,
+            "samples": 548,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 301.797
+          },
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "reopen_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 85.296875,
+            "original_resources_sha256": "ecb74f5d890b86c20f4534d16c5c1935c92647cd0fd08d80d09150e4948f36d9",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 825847808,
+            "samples": 55,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 30.328
+          },
+          "route": {
+            "actual_edit_undo": true,
+            "callbacks": 60,
+            "elapsed_usec": 19223235,
+            "forward_cells": 58.9102172851563,
+            "identity_unchanged": true,
+            "native_ticks": 59,
+            "rapier_ticks": 60,
+            "scope": "End-to-end finite route trial includes resume, pilot control, toggles, native decoration edit/Undo and final pause settling; not isolated tick cost or complete-route traversal."
+          },
+          "scene": "abyss-foundry"
+        },
+        {
+          "admission": {
+            "install": {
+              "elapsed_ms": 54804,
+              "met": false,
+              "target_ms": 45000
+            },
+            "reopen": {
+              "elapsed_ms": 7706,
+              "met": true,
+              "target_ms": 45000
+            }
+          },
+          "cost_samples": [
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 347684,
+              "callback_p50_usec": 301243,
+              "callback_p95_usec": 313170,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 156393091.0,
+              "interval_count": 44,
+              "mode": "disabled",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                304873,
+                302285,
+                302135,
+                299389,
+                298380,
+                293115,
+                273931,
+                336294,
+                292644,
+                297410,
+                300465,
+                297772,
+                305010,
+                302729,
+                301243,
+                303639,
+                302216,
+                295268,
+                294249,
+                301968,
+                297727,
+                309945,
+                296436,
+                259647,
+                347684,
+                300587,
+                302109,
+                298116,
+                303912,
+                299103,
+                304780,
+                300135,
+                304059,
+                305138,
+                299181,
+                298599,
+                296753,
+                297199,
+                303071,
+                300309,
+                305835,
+                304498,
+                304674,
+                313170
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13303209
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 319286,
+              "callback_p50_usec": 301858,
+              "callback_p95_usec": 308235,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 156404623.0,
+              "interval_count": 44,
+              "mode": "flat",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                303521,
+                302180,
+                305213,
+                301682,
+                306227,
+                307927,
+                300538,
+                303728,
+                290570,
+                319286,
+                306012,
+                297540,
+                299658,
+                304562,
+                301858,
+                301432,
+                299804,
+                304113,
+                299728,
+                299870,
+                299421,
+                306649,
+                299018,
+                313353,
+                302041,
+                297569,
+                298191,
+                305423,
+                301600,
+                304918,
+                301585,
+                306924,
+                301712,
+                302415,
+                297961,
+                308235,
+                298711,
+                299851,
+                300164,
+                300278,
+                306021,
+                297111,
+                307407,
+                302360
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13374945
+            },
+            {
+              "atmosphere_enabled": false,
+              "callback_max_usec": 359248,
+              "callback_p50_usec": 307468,
+              "callback_p95_usec": 312716,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 156407847.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                305562,
+                311789,
+                307428,
+                307742,
+                304821,
+                305276,
+                302628,
+                307104,
+                308646,
+                311918,
+                309121,
+                309120,
+                308451,
+                309648,
+                311518,
+                263473,
+                359248,
+                306683,
+                307087,
+                308421,
+                301150,
+                308687,
+                308204,
+                306374,
+                303421,
+                309393,
+                310099,
+                312716,
+                308544,
+                271398,
+                345407,
+                303336,
+                306031,
+                305467,
+                307468,
+                310057,
+                306584,
+                307530,
+                307238,
+                307440,
+                302213,
+                310599,
+                299884,
+                307288
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13593303
+            },
+            {
+              "atmosphere_enabled": true,
+              "callback_max_usec": 326783,
+              "callback_p50_usec": 309429,
+              "callback_p95_usec": 317531,
+              "decorative_upload_delta": 0,
+              "godot_tracked_static_memory_bytes": 156413043.0,
+              "interval_count": 44,
+              "mode": "stack",
+              "native_snapshot_delta": 0,
+              "raw_intervals_usec": [
+                317531,
+                311305,
+                309637,
+                304866,
+                303534,
+                313132,
+                308437,
+                311483,
+                317035,
+                309909,
+                316827,
+                310687,
+                305712,
+                311817,
+                310550,
+                310713,
+                307766,
+                306050,
+                307391,
+                310818,
+                304611,
+                302859,
+                312959,
+                303533,
+                308138,
+                311570,
+                309429,
+                310084,
+                305560,
+                311210,
+                304720,
+                304795,
+                306083,
+                318721,
+                303949,
+                309538,
+                305258,
+                289898,
+                326783,
+                303459,
+                308714,
+                301990,
+                308532,
+                310151
+              ],
+              "scope": "Sequential paused-scene callback window; p50 upper-middle and p95 nearest-rank. No presented physical GPU FPS or steady-state Play throughput.",
+              "window_elapsed_usec": 13647346
+            }
+          ],
+          "extent": [
+            1024,
+            1536
+          ],
+          "fresh_process": {
+            "authored_settings_sha256": "1cf46cfeb7c094f3b07fa27cffa0c35a4b0bc955f40ee14f5c7806d3f8a4b091",
+            "different_pids": true,
+            "explicit_saved_authoring": {
+              "atmosphere": {
+                "effects": [
+                  {
+                    "colour": [
+                      0.28,
+                      0.55,
+                      0.75,
+                      0.8
+                    ],
+                    "count": 42,
+                    "direction": [
+                      0.3,
+                      -0.4
+                    ],
+                    "enabled": true,
+                    "id": "shaft-haze",
+                    "kind": "haze",
+                    "plane": "effects",
+                    "region": [
+                      180,
+                      210,
+                      660,
+                      1180
+                    ],
+                    "seed": 41,
+                    "speed": 4.0,
+                    "strength": 0.43
+                  },
+                  {
+                    "colour": [
+                      0.18,
+                      0.85,
+                      0.96,
+                      0.85
+                    ],
+                    "count": 18,
+                    "direction": [
+                      0.0,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "hoist-signals",
+                    "kind": "machinery",
+                    "plane": "scripted",
+                    "region": [
+                      168,
+                      170,
+                      9,
+                      1210
+                    ],
+                    "seed": 42,
+                    "speed": 22.0,
+                    "strength": 0.9
+                  },
+                  {
+                    "colour": [
+                      0.62,
+                      0.76,
+                      0.82,
+                      0.8
+                    ],
+                    "count": 34,
+                    "direction": [
+                      -0.05,
+                      -1.0
+                    ],
+                    "enabled": true,
+                    "id": "rear-vent",
+                    "kind": "steam",
+                    "plane": "effects",
+                    "region": [
+                      760,
+                      1050,
+                      100,
+                      320
+                    ],
+                    "seed": 43,
+                    "speed": 20.0,
+                    "strength": 0.85
+                  },
+                  {
+                    "colour": [
+                      1.0,
+                      0.38,
+                      0.09,
+                      0.9
+                    ],
+                    "count": 6,
+                    "direction": [
+                      1.0,
+                      0.0
+                    ],
+                    "enabled": true,
+                    "id": "top-warning",
+                    "kind": "beacon",
+                    "plane": "scripted",
+                    "region": [
+                      200,
+                      147,
+                      620,
+                      13
+                    ],
+                    "seed": 44,
+                    "speed": 0.7,
+                    "strength": 0.85
+                  }
+                ],
+                "enabled": true,
+                "paused": true,
+                "seed": 246735,
+                "version": 1
+              },
+              "atmosphere_sha256": "7ce34652cf8046df42f5324dd43f203e6d4919680245ead6a8a60841637105f7",
+              "authoring_records": 0,
+              "authoring_sha256": "77d4115bf19d3fa61f519451d938ad576b78ceac615355303082072d0e44e677",
+              "native_marker": {
+                "material": 131,
+                "plane": "background",
+                "point": [
+                  96,
+                  96
+                ]
+              },
+              "raster_imports": [],
+              "scope": "Authored native edits, historical approved import metadata and effect settings; no evolved physics or animation-phase continuation."
+            },
+            "save_sha256": "332ee90598cb25279815af98183c89cc1075ff265cfb11155be6da2c9d84f8e2",
+            "saved_native_hashes": {
+              "background": "17bed2bf11027fcef85e3eff533c7f220f17dde463d8ce316eeab3452d10b812",
+              "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+              "play": "349fecb87ca73812eb0a2786c8355d31595af322610e9512f784b8a96d6d0a65",
+              "scripted": "fabb5941d59bef3937c95fde271dab203b448bfe29be0e3f9d304db6e2babfd5"
+            },
+            "scope": "Install hashes were captured for Save before the later physical route probe; this demonstrates authored-layout reopening, not continuation of evolved Play state."
+          },
+          "install_process": {
+            "observation_errors": [],
+            "observed_process_tree_cpu_seconds": 781.4375,
+            "original_resources_sha256": "f0cb093624888c752bce86c905a7f68de2aa83adc95b18716b89bfbfbd27469b",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 1170083840,
+            "samples": 551,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 308.078
+          },
+          "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "reopen_process": {
+            "observation_errors": [
+              "process_observation_unavailable:6628:PermissionError",
+              "older_process_cannot_be_descendant:6676"
+            ],
+            "observed_process_tree_cpu_seconds": 88.984375,
+            "original_resources_sha256": "89b2bd0ac1417d981317b8e7f6657d050ddcadef95aa5f0545070f7330a45a63",
+            "sample_interval_seconds": 0.5,
+            "sampled_peak_process_tree_rss_bytes": 890023936,
+            "samples": 61,
+            "scope": "observed_process_and_descendants",
+            "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+            "whole_process_elapsed_seconds": 33.375
+          },
+          "route": {
+            "actual_edit_undo": true,
+            "callbacks": 63,
+            "elapsed_usec": 21179112,
+            "forward_cells": 58.91064453125,
+            "identity_unchanged": true,
+            "native_ticks": 59,
+            "rapier_ticks": 60,
+            "scope": "End-to-end finite route trial includes resume, pilot control, toggles, native decoration edit/Undo and final pause settling; not isolated tick cost or complete-route traversal."
+          },
+          "scene": "vertical-transfer-spine"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Sequential single windows do not establish statistical performance equivalence or an isolated atmosphere cost.",
+    "Godot tracked static memory, whole-process sampled RSS, per-process CPU and GPU memory are different quantities; GPU residency was not measured.",
+    "Cold ordinary diagnostic is512x512 before Strata allocation; disabled matched samples retain all allocated scene resources.",
+    "No per-import or candidate-allocation marginal peak was independently measured.",
+    "Maximum2048-square case is paused; no sustained dense maximum-size Play or native decorative dynamics is qualified.",
+    "Physical Windows/NVIDIA appearance, interaction and actual displayed pacing remain owner acceptance gates."
+  ],
+  "schema": "strata2-independent-observation-audit-v1",
+  "scope": "Independent arithmetic, source/report identity and original resource/sample/readback checks. Original full qualification verifier and final package audit remain distinct. No new native/Godot execution.",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "status": "raw-observations-verified"
+}

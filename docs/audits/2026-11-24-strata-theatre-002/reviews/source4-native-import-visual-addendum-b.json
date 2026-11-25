@@ -1,0 +1,168 @@
+{
+  "schema": "strata2-source4-native-import-visual-addendum-b-v1",
+  "reviewed_at_utc": "2026-11-25T00:13:51.685639+00:00",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "run": 45509477752,
+  "platform": "windows",
+  "artifact": 14976602377,
+  "archive_sha256": "7f5c27a5b27674c6bfc7db21e6c382f8d0dbc33c2e48b0d32c740dcff626ecaf",
+  "parent_review_blobs": {
+    "markdown": "f8029a42b25e5a349dbffefd209fca15f53a5022",
+    "json": "c3f7aeaa0703240010faeba319fb00711506f330"
+  },
+  "images": [
+    {
+      "path": "orbital-terminal/reference-import-asteroid-service-gallery-before.png",
+      "sha256": "1b3d29976106d6b9c84c01a3e79b05354279cc503e4af6df87467c14fa584932",
+      "bytes": 116311,
+      "visually_inspected": true
+    },
+    {
+      "path": "orbital-terminal/reference-import-asteroid-service-gallery-native-output.png",
+      "sha256": "03e8f67f2a7df6c39437da66fd2b83b7a45a2c8f2963590b7babe32c21ed0a1f",
+      "bytes": 177914,
+      "visually_inspected": true
+    },
+    {
+      "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-before.png",
+      "sha256": "89af8bd2e9d5f373a963727e8c0ab4bfa2b558137f87bea754640a113fb68ee2",
+      "bytes": 347643,
+      "visually_inspected": true
+    },
+    {
+      "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-native-output.png",
+      "sha256": "d2a8822f59053edb4a28528ac820365d1e92d4ea5c27c7a7437df351e4b9b9c2",
+      "bytes": 388671,
+      "visually_inspected": true
+    }
+  ],
+  "new_execution": false,
+  "application_changed": false,
+  "independence": "Independent B visual review of A/C native import and Workbench output; the explicit source masks were authored by B.",
+  "observations": {
+    "asteroid-service-gallery": "Native output adds material-textured irregular frame and bright accents; the prior native X-truss remains visible through the explicit central mask exclusion. Status labels Scripted static decoration and 19552 cells acknowledged/read back.",
+    "rocket-hangar-frame": "Native output adds overhead frame, left upright and right crane/side structures. Prior native building surfaces/windows remain visible through the excluded central opening; source blue background and rocket are not automatically imported. Status labels Scripted static decoration and 27582 cells acknowledged/read back."
+  },
+  "scope": [
+    "The four directly viewed frames are magnified actual Godot Workbench material rendering, distinct from native-ID proposal colours.",
+    "Before/after frames have matching camera composition within each pair; no new geometry was inferred from a composite screenshot.",
+    "The associated original target material hashes equal independent expected readback, while Play hashes are unchanged; exact Undo returns the original target hash.",
+    "No dedicated post-Undo image was inspected or claimed. Undo is a native readback witness.",
+    "No full reference-gallery import coverage, native simulation, physical collision on decorative planes or owner aesthetic acceptance is implied."
+  ],
+  "original_native_receipts": {
+    "orbital-terminal": {
+      "actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+      "approved_token": "523593fa272b20ed2bfec9c40b46bdff1d095b125919022436b0c305f90f311f",
+      "before_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+      "completed_status": "completed",
+      "expected_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+      "geometry_sha256": "1c4f7f23c9356ecb170be460dc23eb92b8793b88b8768ac5181a0d7a59667740",
+      "history_chunks": 5,
+      "id": "asteroid-service-gallery",
+      "mapped": 19552,
+      "mask_sha256": "e2de46497c90616aa6fda207ca6b16b5fac805682e446d34d3549bb5db239605",
+      "no_write": 103328,
+      "original_source_sha256": "e663ce4379554b49c168447b023f24481ad7df3dc9106bddcd29ed40c952cf28",
+      "plane": "scripted",
+      "play_after_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+      "play_before_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+      "ready_review": {
+        "approval_enabled": true,
+        "approval_visible": true,
+        "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+        "backend_token": "523593fa272b20ed2bfec9c40b46bdff1d095b125919022436b0c305f90f311f",
+        "changed_counts": "Target: scripted · region [128, 128, 384, 320]\nChanged cells: 19087 · mapped: 19552 · no-write: 103328 · explicit Empty: 0 · unmapped: 172\nSource: 3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9\nProposed geometry: be679be04382f5046c31d9fa88dfcc44f0ef482b4d63052cba91fbee1774fd7c",
+        "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+        "expected_region": [
+          128,
+          128,
+          384,
+          320
+        ],
+        "filename": "reference-import-asteroid-service-gallery-approval.png",
+        "proposal_visible": true,
+        "region_label": "Target: scripted · region [128, 128, 384, 320]",
+        "reviewed_token": "523593fa272b20ed2bfec9c40b46bdff1d095b125919022436b0c305f90f311f",
+        "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+        "scroll_vertical": 831,
+        "status": "ready"
+      },
+      "region": [
+        128,
+        128,
+        384,
+        320
+      ],
+      "restored_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+      "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+      "source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+      "visual_difference": {
+        "changed_samples": 28055,
+        "max_channel_delta": 0.980392156168818,
+        "samples": 167104,
+        "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+        "stride": 2,
+        "threshold": 0.003
+      },
+      "write_mask_sha256": "8ac096a521e8f28aad3bdf1de8af3572bc31e42565b2c37c9bff7b773df3c674"
+    },
+    "neon-rain-arcology": {
+      "actual_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+      "approved_token": "1e56e003716c6c7614a2a9cec491d95a0cdd0dfd2a127cbfe53d29160eda0c57",
+      "before_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+      "completed_status": "completed",
+      "expected_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+      "geometry_sha256": "a3df87bcdfd9ec8e8a7dc694906c7dcb3955c5299660acb90d913078f4e67650",
+      "history_chunks": 7,
+      "id": "rocket-hangar-frame",
+      "mapped": 27582,
+      "mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+      "no_write": 136258,
+      "original_source_sha256": "033534dc0971a8250f27a7d9a91e60af6230559a872107505f574c33e1420fef",
+      "plane": "scripted",
+      "play_after_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+      "play_before_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+      "ready_review": {
+        "approval_enabled": true,
+        "approval_visible": true,
+        "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+        "backend_token": "1e56e003716c6c7614a2a9cec491d95a0cdd0dfd2a127cbfe53d29160eda0c57",
+        "changed_counts": "Target: scripted · region [128, 128, 512, 320]\nChanged cells: 27427 · mapped: 27582 · no-write: 136258 · explicit Empty: 0 · unmapped: 2526\nSource: 7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960\nProposed geometry: c4dea27b412044774969da0295965c0a8cbb04cfa12882c2f9d5b0cd05ef6db2",
+        "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+        "expected_region": [
+          128,
+          128,
+          512,
+          320
+        ],
+        "filename": "reference-import-rocket-hangar-frame-approval.png",
+        "proposal_visible": true,
+        "region_label": "Target: scripted · region [128, 128, 512, 320]",
+        "reviewed_token": "1e56e003716c6c7614a2a9cec491d95a0cdd0dfd2a127cbfe53d29160eda0c57",
+        "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+        "scroll_vertical": 831,
+        "status": "ready"
+      },
+      "region": [
+        128,
+        128,
+        512,
+        320
+      ],
+      "restored_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+      "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+      "source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+      "visual_difference": {
+        "changed_samples": 41219,
+        "max_channel_delta": 0.980392156168818,
+        "samples": 223427,
+        "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+        "stride": 2,
+        "threshold": 0.003
+      },
+      "write_mask_sha256": "5d48a36f27a74049fd4777238deeb4b7382db393adf96f5ba995adc1dbf486e3"
+    }
+  }
+}

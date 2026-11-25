@@ -1,0 +1,12 @@
+{
+  "all_20_scene_admissions_met_45000_ms": true,
+  "independent_raw_audit_sha256": "4663bb1c17f89b122d1dacb99cc4dc9c23e214aeed1b21a5045991140fe591dd",
+  "install_and_reopen_admissions_compared": 20,
+  "scene_pairs_compared": 10,
+  "schema": "strata2-independent-qualified-observation-cross-review-v1",
+  "scope": "Independent reconstruction from raw callback arrays and original per-process sample rows, actual completed tick counters, native hashes and settings; then exact comparison to C summary. No new Godot, GPU or final-package execution.",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "specialist_c_summary_sha256": "4440aa8ff71d1d0a8bcf4926aebae8c497516e827c658cfb3494ae49adc1ffcb",
+  "status": "passed"
+}

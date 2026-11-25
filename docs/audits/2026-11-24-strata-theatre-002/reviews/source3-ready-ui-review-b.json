@@ -1,0 +1,216 @@
+{
+  "source_commit": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+  "source_tree": "4f61de7919e8a67f3622e0642cbb7e53ee3f778c",
+  "campaign_status": "failed",
+  "images": [
+    {
+      "path": "orbital-terminal/composition-ready-approval.png",
+      "sha256": "4d5080c402b1a1bd15149af5cc02527d0aaa2b7010f4ebdccb5513bc96d8c01c",
+      "bytes": 145906,
+      "dimensions": [
+        817,
+        634
+      ]
+    },
+    {
+      "path": "orbital-terminal/reference-import-asteroid-service-gallery-approval.png",
+      "sha256": "3ab89d8856c891adf7fb7cbe912a94b6eeccf108eb53a0412a91a8b91c3bee48",
+      "bytes": 183201,
+      "dimensions": [
+        817,
+        634
+      ]
+    },
+    {
+      "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png",
+      "sha256": "b3e702569c498a8dfa7c21f54e515ae06be18ef312e796ed7070a8d0616084bb",
+      "bytes": 191597,
+      "dimensions": [
+        817,
+        634
+      ]
+    }
+  ],
+  "qualification_sha256": "d7e9a7efeaa96f4cf97d57418d6942191fbec18610ae80f17f4912b97e88cd78",
+  "unmodified_original_images": true,
+  "inspection_scope": "Historical failed source-3 original Linux captures; no new rendering.",
+  "format": "cybersand-strata-review-v1",
+  "reviewer": "Specialist B, independent cross-review of C-owned actual UI capture and lead/A/C native authoring interface",
+  "run_id": 45502846309,
+  "artifact_id": 14973098171,
+  "archive_sha256": "5a567d77baf48966db0a4e9124e6984420472976736e07b8ba7bc931e3f0d240",
+  "archive_bytes": 86892203,
+  "status": "Historical source-3 review; human-visible ready controls pass visual inspection; original campaign remains failed.",
+  "observations": {
+    "import": [
+      "Source, explicit mask and proposed native-ID image are visible together.",
+      "Changed/mapped/no-write/explicit Empty/unmapped counts and source/proposal hashes are readable.",
+      "Approve reviewed placement and Stop controls are visible; Ready instruction is clear.",
+      "The summary displays region —; crop and placement are present in upper controls, not repeated in this lower capture."
+    ],
+    "compose": [
+      "Selected stage shows actual native-ID Before and proposed After side by side.",
+      "Composite is labelled fixed plane order/current opacity and explicitly differs from Workbench rendering.",
+      "Native proposal region and separate depth/atmosphere settings are displayed.",
+      "The text explicitly says the separate appearance approval replaces the current atmosphere configuration.",
+      "Approve reviewed construction, Stop and Ready instruction are visible."
+    ]
+  },
+  "limitations": [
+    "This is source3, not the upcoming normalized-oracle source4 and not a passing final package.",
+    "The three original status-equality checks failed; visual review does not override those recorded failures.",
+    "Native-ID thumbnail colours are proposal encodings, not actual material-surface appearance, glow, haze or animation.",
+    "Location summary region — is a nonblocking usability limitation; live placement must be reviewed in upper crop/origin controls.",
+    "Physical Windows display scaling, keyboard/mouse feel and subjective readability remain owner checks."
+  ],
+  "original_receipts": {
+    "orbital-terminal": {
+      "failures": [
+        "Compose visible status describes the ready proposal",
+        "Import visible status describes the ready native projection"
+      ],
+      "reference_import": {
+        "actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+        "approved_token": "ce8f49a22e8920b27e88571613d324c0571f75f9818605e24e9452d57b676dcb",
+        "before_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+        "completed_status": "completed",
+        "expected_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+        "geometry_sha256": "1c4f7f23c9356ecb170be460dc23eb92b8793b88b8768ac5181a0d7a59667740",
+        "history_chunks": 5,
+        "id": "asteroid-service-gallery",
+        "mapped": 19552,
+        "mask_sha256": "e2de46497c90616aa6fda207ca6b16b5fac805682e446d34d3549bb5db239605",
+        "no_write": 103328,
+        "original_source_sha256": "e663ce4379554b49c168447b023f24481ad7df3dc9106bddcd29ed40c952cf28",
+        "plane": "scripted",
+        "play_after_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+        "play_before_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+        "ready_review": {
+          "approval_enabled": true,
+          "approval_visible": true,
+          "backend_token": "ce8f49a22e8920b27e88571613d324c0571f75f9818605e24e9452d57b676dcb",
+          "changed_counts": "Target: scripted · region —\nChanged cells: 19087 · mapped: 19552 · no-write: 103328 · explicit Empty: 0 · unmapped: 172\nSource: 3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9\nProposed geometry: be679be04382f5046c31d9fa88dfcc44f0ef482b4d63052cba91fbee1774fd7c",
+          "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+          "filename": "reference-import-asteroid-service-gallery-approval.png",
+          "proposal_visible": true,
+          "reviewed_token": "ce8f49a22e8920b27e88571613d324c0571f75f9818605e24e9452d57b676dcb",
+          "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+          "scroll_vertical": 799,
+          "status": "ready"
+        },
+        "region": [
+          128,
+          128,
+          384,
+          320
+        ],
+        "restored_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+        "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+        "source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+        "visual_difference": {
+          "changed_samples": 28055,
+          "max_channel_delta": 0.982009887695312,
+          "samples": 167104,
+          "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+          "stride": 2,
+          "threshold": 0.003
+        },
+        "write_mask_sha256": "8ac096a521e8f28aad3bdf1de8af3572bc31e42565b2c37c9bff7b773df3c674"
+      },
+      "composition_review": {
+        "approval_enabled": true,
+        "approval_visible": true,
+        "approved": false,
+        "backend_token": "f198c1c15960479f6e2bf809d646d3a5dab8675d8be4e97b66d4ec0021dc7414",
+        "cancelled_without_approval": true,
+        "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+        "filename": "composition-ready-approval.png",
+        "id": "factory-service-bay",
+        "native_hashes_after": {
+          "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+          "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+          "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+          "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+        },
+        "native_hashes_before": {
+          "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+          "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+          "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+          "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+        },
+        "proposal_visible": true,
+        "reviewed_token": "f198c1c15960479f6e2bf809d646d3a5dab8675d8be4e97b66d4ec0021dc7414",
+        "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+        "scroll_vertical": 695,
+        "stage_count": 4,
+        "status": "ready",
+        "stop": {
+          "applied_cells": 0,
+          "approval_disabled": true,
+          "can_approve": false,
+          "status": "cancelled",
+          "token": ""
+        }
+      }
+    },
+    "neon-rain-arcology": {
+      "failures": [
+        "Import visible status describes the ready native projection"
+      ],
+      "reference_import": {
+        "actual_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+        "approved_token": "7da80912f92397c76dd34388aa81bf9464c2ab92c4cf4e24ced0760507a426b3",
+        "before_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+        "completed_status": "completed",
+        "expected_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+        "geometry_sha256": "a3df87bcdfd9ec8e8a7dc694906c7dcb3955c5299660acb90d913078f4e67650",
+        "history_chunks": 7,
+        "id": "rocket-hangar-frame",
+        "mapped": 27582,
+        "mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+        "no_write": 136258,
+        "original_source_sha256": "033534dc0971a8250f27a7d9a91e60af6230559a872107505f574c33e1420fef",
+        "plane": "scripted",
+        "play_after_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+        "play_before_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+        "ready_review": {
+          "approval_enabled": true,
+          "approval_visible": true,
+          "backend_token": "7da80912f92397c76dd34388aa81bf9464c2ab92c4cf4e24ced0760507a426b3",
+          "changed_counts": "Target: scripted · region —\nChanged cells: 27427 · mapped: 27582 · no-write: 136258 · explicit Empty: 0 · unmapped: 2526\nSource: 7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960\nProposed geometry: c4dea27b412044774969da0295965c0a8cbb04cfa12882c2f9d5b0cd05ef6db2",
+          "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+          "filename": "reference-import-rocket-hangar-frame-approval.png",
+          "proposal_visible": true,
+          "reviewed_token": "7da80912f92397c76dd34388aa81bf9464c2ab92c4cf4e24ced0760507a426b3",
+          "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+          "scroll_vertical": 799,
+          "status": "ready"
+        },
+        "region": [
+          128,
+          128,
+          512,
+          320
+        ],
+        "restored_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+        "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+        "source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+        "visual_difference": {
+          "changed_samples": 41210,
+          "max_channel_delta": 0.982009887695312,
+          "samples": 223427,
+          "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+          "stride": 2,
+          "threshold": 0.003
+        },
+        "write_mask_sha256": "5d48a36f27a74049fd4777238deeb4b7382db393adf96f5ba995adc1dbf486e3"
+      }
+    }
+  },
+  "follow_up": {
+    "status": "pending_source4_execution",
+    "decision": "Lead is repairing Import summary to show exact single Session stage plane/region while separately refreezing the status-comparison fix; multi-stage directs to Compose.",
+    "historical_capture_unchanged": true,
+    "source4_image_or_execution_claim": false
+  }
+}

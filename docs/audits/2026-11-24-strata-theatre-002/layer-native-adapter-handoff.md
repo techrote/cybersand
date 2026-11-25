@@ -3,9 +3,11 @@
 **Draft/HOLD, 24 November 2026.** This is a source-pinned integration handoff for
 WORLD-STEER and DOCS-RENAISSANCE, not authority to enable provider writes, absorb an
 active branch, merge Strata, or promote any native content. It describes application
-checkpoint `338be3e6b90cca45c2f9fdc8afe9cbe920dcd56f`, tree
-`0292028d2275dc05208dd2a647befda49877ad6c`. The final decision packet must reconcile
-later changes and platform evidence. Source defines the current callable contract.
+freeze `934cc0c0eef70dad528155e9a92eebe25e2757eb`, tree
+`0c30ea3eaea61c5091c23b984837f29d7b7c828e`. The [decision packet](decision-packet.md)
+records its actual platform/package evidence and any subsequent documentation-only
+closure. Source defines the current callable contract. Active WORLD-STEER M6–M7
+PR #777, its #770 foundation and DOCS-RENAISSANCE #774 remain separate owners.
 
 ## Ownership boundary
 
@@ -44,6 +46,14 @@ scheduler or consume the Play worker's result slot.
 | `export_module(id, path)` | Validated native JSON through the established atomic file-replacement service |
 | `module_catalogue()`, `composition_catalogue()`, `import_fixture_catalogue()` | Current shipped/harvested choices and explicit sample mapping options |
 
+Ready Import summaries derive the plane and `[x,y,width,height]` from the exact
+single reviewed stage. A top-level conversion alias is not an authoritative
+region. A multi-stage proposal requires the explicit Compose stage list; no
+invented union rectangle may substitute for those independently targeted regions.
+Current graphical receipts retain the raw backend message and the entire UI
+message after its documented edge-whitespace trimming, together with the exact
+approval token and source-fixture-derived region.
+
 Raster `options` are `plane`, `crop:[x,y,w,h]`, `origin:[x,y]`, integer `scale`,
 `transform`, `alpha_mode`, `alpha_threshold`, `palette`, `color_distance`,
 `unmapped`, and optional `mask_path`. Each palette row is
@@ -56,6 +66,11 @@ explicitly proposes Empty, subject to the same bounds and protection. An exclude
 external mask pixel always remains no-write. Native import retains its own exact
 mask, full grid and IDs; raster palette, crop resampling and external PNG masks
 do not reinterpret native geometry.
+
+This raster selection-mask rule is distinct from a native module's write mask.
+Native mask0 defaults to no-write, but explicit native `empty_mode:"clear"` can
+request Empty there. Native mask1 with material0 already means an Empty write.
+All requested clears remain subject to bounds, native protection and clearance.
 
 Native part options use `plane`, `origin`, optional `transform`, role `palette`,
 `empty_mode:"preserve"|"clear"`, `count:1..16` and exact signed `step:[x,y]`.
@@ -133,12 +148,14 @@ host may never replace the original ACK's revision with a later observed one.
 | Raster sampling | Integer scale 1–4; output at most 262,144 cells and 2048 per side |
 | Finite plan | At most 16 stages, 32 modules, 262,144 proposed writes, 1,048,576 inspected region cells and 8 MiB |
 | Copied capture / mutation | At most 64×64 cells per capture and 4096 cells per existing-owner mutation |
-| History | Existing 32-entry per-plane windows; each acknowledged chunk is a history operation |
+| History | Existing 32-entry per-plane windows; each acknowledged chunk is a history operation. Displaced older chunks are no longer undoable through that window. |
 | Provenance | At most 64 historical records, 256 KiB total, 8192 bytes of metadata per record; no silent eviction |
 
 Stop is suffix cancellation, not cross-plane rollback. A later refusal cannot
 undo an earlier acknowledged prefix. Missing ACKs stay pending; a 15-second notice
-does not invent failure/completion. Malformed mutation receipts are failed and
+does not invent failure/completion. Only an actual subsequently validated ACK
+clears that provisional waiting notice; an invalid owner/revision/result still
+refuses. Malformed mutation receipts are failed and
 explicitly unverified, never reported as zero-write. Full-stage readback checks
 the acknowledged prefix including no-write/protected cells. `completed` and
 `committed_stale_pixels` distinguish native completion from publication freshness.
@@ -149,6 +166,36 @@ before/projected/actual region checksums use the copied row-major
 runtime. Do not compare these different checksum domains as if their encodings
 were the same. Retained provenance is operation history; it cannot authorize a
 new write, resume a queue or attest later live/evolved geometry.
+
+A stage with no requested writes refuses at compilation. A stage whose requested
+materials already match can have zero changed cells, but its explicit chunks
+still follow the ordinary owner acknowledgement and history path. Requested,
+applied and changed counts are different facts. Every requested chunk needs the
+original owner receipt and independent readback before its dependency can complete.
+
+## Shared source seams to reconcile in a future union
+
+Outside `godot/scripts/depth/`, this successor changes only these two application
+scripts relative to #769. Reconcile their exact owned operations before a future
+combined candidate; do not install another completion consumer.
+
+| Shared script | Strata-owned change and invariant |
+| --- | --- |
+| `godot/scripts/workbench_paint_editor_controller.gd` | `strata_capture`, `strata_commit`, `strata_stop` and `strata_operation_finished` borrow the ordinary paint queue. The editor remains the sole consumer of the native worker receipt and forwards the original copied acknowledgement with the operation token. Existing history remains authoritative. |
+| `godot/scripts/shared_workbench.gd` | Refuse scene replacement while native Strata authoring is pending, and retain existing lazy controller, ordinary Save/Load and Play identity seams. Strata does not gain a second World, worker or actor owner. |
+
+Play preflight applies the exact same sorted 4096-cell partitions to a private
+copied authored Setup that the ordinary editor will later acknowledge. Its
+`authored_serial` observes the actual copied authored layout; even same-material
+ordinary or legacy stamps invalidate an old proposal when history changed.
+Consumers must not replace that fence with material-pixel equality alone.
+
+Document v2 owns atmosphere configuration and bounded historical provenance.
+It does not replace Play Setup, GEN-008/Flatten or a future RAMCACHE format.
+The native module bridge consumes the frozen #770 schema without importing its
+planner. Required unresolved attachments remain refused. Ordinary Art continues
+to use Play only; a future explicit layer proposal needs its own selected-plane
+adapter and source-bound combined qualification.
 
 ## Qualification and future reconciliation
 

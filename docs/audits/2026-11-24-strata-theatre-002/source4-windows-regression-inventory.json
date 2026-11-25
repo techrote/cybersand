@@ -1,0 +1,236 @@
+{
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "platform": "win32",
+  "original_qualification_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978",
+  "regressions": [
+    {
+      "label": "test_depth_compositor",
+      "status": "passed",
+      "elapsed_seconds": 2.547,
+      "records": [],
+      "log_sha256": "b71b05f661dd26a9384e54f5309304398bb0b27ddd3d7a9efb5476cd5d08753e"
+    },
+    {
+      "label": "test_workbench_strata_layers",
+      "status": "passed",
+      "elapsed_seconds": 1.078,
+      "records": [
+        {
+          "marker": "STRATA_LAYER_REGRESSION",
+          "checks": 111,
+          "failures": 0,
+          "passed": null
+        }
+      ],
+      "log_sha256": "040ea532eece73e7d0403b7dc9be27e45b6ed5dfeb43e377db44bf6142dafc45"
+    },
+    {
+      "label": "test_workbench_strata_document",
+      "status": "passed",
+      "elapsed_seconds": 1.0,
+      "records": [
+        {
+          "marker": "STRATA_DOCUMENT",
+          "checks": 176,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "4fba858b204ebaab9e91fe25e5106ad4931d0887a1421471ba41fa5670979d89"
+    },
+    {
+      "label": "test_depth_dimensions_render",
+      "status": "passed",
+      "elapsed_seconds": 32.359,
+      "records": [],
+      "log_sha256": "528df918a6343c44fc71f8a31096c556ca24c8a73be80b8a53cf0966cc348938"
+    },
+    {
+      "label": "test_workbench_edit_ordering",
+      "status": "passed",
+      "elapsed_seconds": 2.25,
+      "records": [
+        {
+          "marker": "EDIT_ORDER_RESULT",
+          "checks": 144,
+          "failures": 0,
+          "passed": null
+        }
+      ],
+      "log_sha256": "b2f3ff30a285d886fb1f1cda5cde1ee5391f9486d28a56c4c3e2da9aea39e6d7"
+    },
+    {
+      "label": "test_workbench_deferred_paint",
+      "status": "passed",
+      "elapsed_seconds": 9.265,
+      "records": [
+        {
+          "marker": "WB_DEFERRED_PAINT",
+          "checks": 49,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "c0b1b8e97a8f9662c50e5cd72cf7770c0a9bc8da3fbdea09931225c099df3aa4"
+    },
+    {
+      "label": "test_strata_import_codec",
+      "status": "passed",
+      "elapsed_seconds": 0.5,
+      "records": [
+        {
+          "marker": "STRATA_IMPORT",
+          "checks": 232,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "c45b3ca6d93ca652d3e73b1546106f146de5b74df78cc9dea0498b81b3b06227"
+    },
+    {
+      "label": "test_strata_reference_imports",
+      "status": "passed",
+      "elapsed_seconds": 1.422,
+      "records": [
+        {
+          "marker": "STRATA_REFERENCE_IMPORTS",
+          "checks": 27,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "e761f5bb6720e146524554d1ad3abad9fe2b4821f15b00fec3129e6c434cbda1"
+    },
+    {
+      "label": "test_strata_construction_session",
+      "status": "passed",
+      "elapsed_seconds": 0.891,
+      "records": [
+        {
+          "marker": "STRATA_SESSION",
+          "checks": 85,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "21d07027f8f472747120e118cd787a66aff536a43131e5d5c4966e52ecf83ccc"
+    },
+    {
+      "label": "test_strata_authoring_library",
+      "status": "passed",
+      "elapsed_seconds": 1.89,
+      "records": [
+        {
+          "marker": "STRATA_AUTHORING_LIBRARY",
+          "checks": 162,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "069413bb73016de9cebbf6d7d0d1b9c0ee2f8128137c4190565eef30263d16e9"
+    },
+    {
+      "label": "test_strata_atmosphere",
+      "status": "passed",
+      "elapsed_seconds": 0.39,
+      "records": [
+        {
+          "marker": "STRATA_ATMOSPHERE",
+          "checks": 58,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "70f40afc8ebf185799c5a3b5f40df6da4f0418764bf97c8bbab2327f7a211266"
+    },
+    {
+      "label": "test_strata_showcases",
+      "status": "passed",
+      "elapsed_seconds": 1.219,
+      "records": [
+        {
+          "marker": "STRATA_SHOWCASES",
+          "checks": 71,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "8b12acf73065f2d0b4695879fa8d5c2ae57c8a01474755e71f9a7e526c2326bf"
+    },
+    {
+      "label": "test_strata2_authoring_ui",
+      "status": "passed",
+      "elapsed_seconds": 0.5,
+      "records": [
+        {
+          "marker": "STRATA2_UI_RESULT",
+          "checks": 48,
+          "failures": null,
+          "passed": true
+        }
+      ],
+      "log_sha256": "fbcd3aa2f9e451419e40df193cbfb328f25b567affd6d398aa11f2fe12f0d242"
+    },
+    {
+      "label": "test_strata2_mounted_failures",
+      "status": "passed",
+      "elapsed_seconds": 40.891,
+      "records": [
+        {
+          "marker": "STRATA2_MOUNTED_FAILURES",
+          "checks": 57,
+          "failures": [],
+          "passed": null
+        },
+        {
+          "marker": "STRATA_WORKBENCH",
+          "checks": 58,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "5d921803b3a0f666416032e47f6a5b17ecfb0ca1ab3046395f39932ef29caeda"
+    },
+    {
+      "label": "test_strata2_workflow",
+      "status": "passed",
+      "elapsed_seconds": 45.469,
+      "records": [
+        {
+          "marker": "STRATA2_WORKFLOW",
+          "checks": 430,
+          "failures": [],
+          "passed": null
+        },
+        {
+          "marker": "STRATA_WORKBENCH",
+          "checks": 431,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "314504fb9988e9115ac3187ce214b9d03452152018315793ccf69e416c094af5"
+    },
+    {
+      "label": "test_strata2_actor_route",
+      "status": "passed",
+      "elapsed_seconds": 14.063,
+      "records": [
+        {
+          "marker": "STRATA2_ACTOR_ROUTE",
+          "checks": 25,
+          "failures": [],
+          "passed": null
+        },
+        {
+          "marker": "STRATA_WORKBENCH",
+          "checks": 26,
+          "failures": [],
+          "passed": null
+        }
+      ],
+      "log_sha256": "1bd6a502846a2d1399b21aa1f17e8af20c418e250ed70eae26d21c4aa70332b2"
+    }
+  ]
+}

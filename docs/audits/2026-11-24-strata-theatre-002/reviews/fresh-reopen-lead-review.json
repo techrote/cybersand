@@ -1,0 +1,23 @@
+{
+  "schema": "strata2-lead-independent-fresh-reopen-review-v1",
+  "status": "passed",
+  "reviewer": "lead",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "actual_fresh_reader_checks": 79,
+  "reader_elapsed_seconds": 8.144461631774902,
+  "save_sha256": "eea04ef7ec9e20ff4df6680e02bdd2d303a237a4c78a38c733075cc79b856027",
+  "native_hashes_recomputed_from_saved_layouts": {
+    "play": "563aad1004a14db0ed1258ff862860a9a4fb73dcff7e1952aa0830b4a0cd1a5d",
+    "scripted": "28e6291643ecdffa560a888e5373895956eb92aaa61bd0a4f2108edfb82eb875",
+    "effects": "f354d69db4ddc6208190ac52f1d9392429858bb4dc01e503c1f57627a7df2b31",
+    "background": "fa71b2cddae06bb713e214f15db94370677b562a064208490c5883834c56d876"
+  },
+  "all_17_records_exact": true,
+  "surviving_import_hash_equals_writer": true,
+  "completed_decorative_composition_hashes_equal_writer": true,
+  "fixture_source_review": "External fixture invokes actual Main and ordinary wb.load_setup; captures all native materials without explicit edits; new process and owner identity; static decorative clocks and save-byte immutability checked. Native readback uses established worker/layer owners. Flags alone are not accepted without all checks/log hashes.",
+  "independent_scope": "Read-only source/receipt review and independent Python dense-layout replay; reviewer did not rerun Godot. Actual reader is a separate local headless process, not graphical/package qualification.",
+  "writer_binding_limit": "Original writer source_revision empty; original wrapper base986 plus exactfive published934 blobs, matching17 historical records/owner/settings/fullnativehashes and original timestamps bind saved bytes retrospectively. Original writer didnot record saveSHA at execution.",
+  "original_preparation_negative": "Reviewer A first expected console430 instead of finalreport431; preparation assertion fixed before reader execution. No application change."
+}
