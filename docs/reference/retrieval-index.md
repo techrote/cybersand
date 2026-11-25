@@ -12,6 +12,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 ## Editable Strata layers in ordinary Workbench
 
+For **STRATA-THEATRE-003 Draft/HOLD**, retrieve the [optical rendering and persistence contract](../systems/strata-optics.md),
+[composition guide](../operations/strata-optical-composition.md) and [owner walkthrough](../operations/strata-optics-evaluation.md).
+Optical depth is independent of native geometry; Play stays unprocessed, old documents open in Classic,
+and temporary inspection is excluded from scene saves. Hosted evidence does not decide physical GPU acceptance.
+
 For the **STRATA-THEATRE-002 Draft/HOLD successor** native scenes, reusable
 composition library, bounded presentation-only atmosphere and exact reference
 image/mask provenance, retrieve [Strata environments](../systems/strata-environments.md).

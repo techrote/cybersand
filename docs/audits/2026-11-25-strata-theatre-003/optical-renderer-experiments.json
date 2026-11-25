@@ -318,6 +318,107 @@
         "wipe_geometry": "Classic parallax while partial wipe is active",
         "play_processing": false
       }
+    },
+    {
+      "id": "A008-dense-monotone-aperture",
+      "implementation": {
+        "source_commit": "0338b80146444bdeac30589b61cea3296c1c2eac",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "904bc846c8f0c1dafd495d1517790af9705ba4dc916d18a42cd5eda188d2e65a",
+          "godot/shaders/strata_optical_plane.gdshader": "b2dd5f0f2bf8b85c81444471605a1e90fde2fc804025b34014cdd023aaef137a",
+          "godot/tests/test_strata_optical_renderer.gd": "cf36cb4a80f09a2e47b570bfa930bb2e814d3150b4661d6a9c684d7caf1c8fc7"
+        }
+      },
+      "hypothesis": "Positive dense binomial cross kernels prevent fine-detail contrast return during focus changes while preserving integer pixel sampling and bounded single-pass cost.",
+      "parameters": [
+        "defocus",
+        "dof_width",
+        "focus_distance",
+        "planes.*.depth",
+        "planes.*.defocus",
+        "quality"
+      ],
+      "applicable_scenes": [
+        "one-cell checker and thin white impulse fixture",
+        "all Strata002/003 scenes using pixel lens"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "maximum_surface_samples_per_fragment": {
+          "low": 5,
+          "balanced": 13,
+          "high": 25
+        },
+        "maximum_radius_native_cells": {
+          "low": 1,
+          "balanced": 3,
+          "high": 6
+        },
+        "scalar_weights_per_plane": 7,
+        "cost_kind": "source-bound upper bound; no timing benefit claimed"
+      },
+      "correctness_evidence": {
+        "headless_checks": 21,
+        "headless_failures": 0,
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "normalization_positive_weights": "25 fractional radii",
+        "monotone_transfer": "81 frequency pairs over the same radius progression",
+        "actual_pixel_gate": "checker contrast and pure-hue/coverage at0/1/2/3/6; pending next hosted campaign"
+      },
+      "graphical_evidence": {
+        "status": "pending_new_exact_source_campaign",
+        "captures": []
+      },
+      "artistic_assessment": "The cross filter retains directional anisotropy; actual scene comparison after replacement remains required.",
+      "disposition": "selected_bounded_candidate_pending_graphical_and_performance_qualification",
+      "research_record": "optical-filter-spectral-review.md"
+    },
+    {
+      "id": "A009-published-actor-bounds",
+      "implementation": {
+        "source_commit": "333e9a73525e0ecf8928bb792407fd45386c5795",
+        "files": {
+          "godot/scripts/actor_presentation_bounds.gd": "928f511488669d9cc623004cd72f7cb082ac85ac94d5766e5247edfbc164c0c0",
+          "godot/scripts/physical_actor_overlay.gd": "0e6c7be717b97a7a2dedf5cbd6c3adc152b8ef8231dd279a6741d7ad5f5bbe3c",
+          "godot/scripts/actor_prototype_overlay.gd": "fb344346413d1feb86f641b26e06c53c1833462e664623a5c183fa29d4107ec9",
+          "godot/tests/test_actor_presentation_bounds.gd": "904dfc8fc1846dfa5fbfbf445f38e0dedd3c4036bb45a44a16a492a439d876dc"
+        }
+      },
+      "hypothesis": "Read-only bounds of already-presented physical and prototype actors can attenuate nearby rear architecture without changing actor authority or adding native observations.",
+      "parameters": [
+        "clarity",
+        "inspection.clarity"
+      ],
+      "applicable_scenes": [
+        "ordinary native Workbench actors",
+        "sampled prototype actors",
+        "multiple-actor adversarial fixture"
+      ],
+      "capacity": {
+        "active_actor_rectangles": 8,
+        "physical_parts_inspected": 64,
+        "actor_identity_magnitude": "Any nonnegative integer; cap applies to distinct active count.",
+        "additional_native_queries": 0,
+        "additional_render_targets": 0
+      },
+      "correctness_evidence": {
+        "pure_helper_checks": 29,
+        "failures": 0,
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "scope": [
+          "Rotated/compound displayed bounds",
+          "Legacy and extended prototype states",
+          "High monotonic instance IDs including8/100",
+          "Malformed/nonfinite source omission",
+          "Source immutability and empty retirement"
+        ]
+      },
+      "graphical_evidence": {
+        "status": "pending_next_integrated_source",
+        "registered_witness": "Near/far local attenuation, retired actor reveal clearing, multiple-actor native scene motion."
+      },
+      "artistic_assessment": "Conservative unions can include empty gaps between articulated parts; no perfect foreground occlusion or collision mask is claimed.",
+      "disposition": "implemented_bounded_candidate_pending_integrated_graphical_qualification"
     }
   ],
   "retained_negative_results": [
@@ -350,6 +451,71 @@
       "observation": "Local graphical display unavailable; Xvfb socket creation denied EPERM.",
       "repair": "Use authorized exact-source hosted Linux/Windows graphical campaign.",
       "status": "local graphical blocked; no physical GPU claims"
+    },
+    {
+      "id": "A-negative-sparse-spectral-return",
+      "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "shader_sha256": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+      "finding": "Sparse expanding cross restores one-cell checker contrast at even integer radii; smooth ring interpolation does not prevent texture contrast from reappearing during focus.",
+      "evidence_kind": "Exact kernel transfer derivation; first flat-bar graphical fixture could not expose this.",
+      "disposition": "Replaced by dense positive binomial cross; original captures/source retained."
+    },
+    {
+      "id": "A-negative-typed-empty-bounds",
+      "source_commit": "692b4edf",
+      "finding": "Integrated presenter passed an untyped empty Array through a dynamic call requiring Array[Rect2]; repeated runtime errors invalidate positive harness assertion counts.",
+      "reviewer": "Specialist C",
+      "fix_commit": "41adff8d",
+      "disposition": "Explicitly typed local before renderer call; next integrated runtime qualification required."
+    },
+    {
+      "id": "A-negative-actor-id-range",
+      "source_commit": "692b4edf",
+      "finding": "Initial helper conflated the eight-active-actor budget with numeric identity range0..7; later monotonic IDs such as8 and100 could be omitted.",
+      "reviewer": "Integration lead",
+      "fix_commit": "333e9a73525e0ecf8928bb792407fd45386c5795",
+      "disposition": "Bound eight distinct active nonnegative identities and64parts; stable sorted output;29pure checks pass."
+    }
+  ],
+  "subsequent_evidence": [
+    {
+      "id": "hosted-renderer-01",
+      "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45711742479",
+      "renderers": [
+        "ANGLE/Microsoft Basic Render Driver",
+        "Mesa llvmpipe"
+      ],
+      "checks_per_platform": 59,
+      "failures_per_platform": 0,
+      "scope": "Isolated premultiplied alpha, sparse aperture, flat-detail silhouette, diffusion, eleven material-mask witnesses, Classic restoration, wipe, focus and material reuse.",
+      "review": "renderer-campaign-01/README.md",
+      "data": "renderer-campaign-01/review.json",
+      "limits": [
+        "Flat bars do not establish detail-frequency suppression.",
+        "No physical GPU performance claim.",
+        "Predates dense kernel and published actor bounds."
+      ]
+    },
+    {
+      "id": "underworks-profile-01",
+      "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45712854522",
+      "artifacts": {
+        "linux": 15067809163,
+        "windows": 15067754459
+      },
+      "checks_per_platform": 913,
+      "failures_per_platform": 0,
+      "scope": "One integrated native scene; eleven matched profiles; exact Classic return on each backend; zero decorative native-capture/upload delta from optical controls.",
+      "review": "blind-review-a-underworks-unmasked.json",
+      "frozen_review": "blind-review-a-underworks.json",
+      "limits": [
+        "Earlier sparse lens source.",
+        "One paused overview per profile, not a human navigation study.",
+        "Whole-scene Linux/Windows pixels differ; each same-backend Classic return is exact.",
+        "A/B artistic ordering differs and ties remain."
+      ]
     }
   ]
 }

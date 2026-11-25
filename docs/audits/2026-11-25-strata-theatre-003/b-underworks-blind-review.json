@@ -1,0 +1,190 @@
+{
+  "axes": [
+    "physical_route_distinction",
+    "selected_actor_localization",
+    "retained_rear_architectural_detail",
+    "perceived_layer_depth",
+    "absence_of_visible_artifacts"
+  ],
+  "blinding": {
+    "key_opened_before_scoring": false,
+    "named_profile_paths_opened_before_scoring": false,
+    "visible_ui_leak": "No profile name was visible; all images show the same generic optical-presentation status. The reviewer authored the catalogue and can infer some palette/blur styles. This is a randomized-label AI critique, not a blinded human study."
+  },
+  "capture_scope": "Eleven original full-frame 1600 by 900 hosted Linux Workbench stills provided in randomized frame order. Lead reports matched camera, native geometry, paused actor and visual time. Original named campaign receipts will be checked after this score record is saved.",
+  "frames": [
+    {
+      "id": "frame-01",
+      "initial_disposition": "Suitable as an optional lens treatment; compare movement before using it for ordinary play.",
+      "original_png_sha256": "8b77ae51eb5291e9f205f987f4a109811a41d5696440d0f82badee0d3b2d4ea7",
+      "scores": {
+        "absence_of_visible_artifacts": 4,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 4,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "The six bright Play shelves retain exact hard rims while the rear wheel and tank silhouettes have visibly softened detail. The soft dark wheel still reads as a machine, although its rim and diagonal spokes lose crisp material texture. The horizontal rear bars at y312 and y728 feel more subordinate. Strong visual depth, with a modest architectural-detail penalty."
+    },
+    {
+      "id": "frame-02",
+      "initial_disposition": "Strongest physical-priority candidate in this still; some environmental richness is sacrificed.",
+      "original_png_sha256": "41758ed292112dfd0deb616dac6a0182ef2db74c100050572cec0290b3c6c249",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 5,
+        "retained_rear_architectural_detail": 4,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "The rear machinery and bottom truss are darkest in this group. Play lips at y360, y510 and y700 are the most immediate features. Wheel spokes remain visible but fine internal machinery at the left and right is less rewarding to inspect. Separation is largely luminance and detail hierarchy rather than a strong colour cast."
+    },
+    {
+      "id": "frame-03",
+      "initial_disposition": "Most distinctive atmospheric colour treatment in this environment; clear silhouette hierarchy but not the most conservative gameplay choice.",
+      "original_png_sha256": "a5973c8ee4836ff1806fc2f4dcd26211609d5c3d70c20930aec8c3997534d448",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 5,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "The violet wheel and upper tanks, cyan lamps and quiet warm rear trim form a distinct atmospheric palette. Rear grids, wheel spokes and the top truss remain recognizable. The broader rear tank silhouettes are lifted enough to become more visually present, so the repeated rear rail edges still need judgement."
+    },
+    {
+      "id": "frame-04",
+      "initial_disposition": "Best raw material-texture reference; weakest physical-versus-decorative separation in this comparison.",
+      "original_png_sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 2,
+        "physical_route_distinction": 3,
+        "retained_rear_architectural_detail": 5,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "The orange bottom rear truss and vertical central pipe are strongly saturated and sharply textured. The top truss and rear frame borders share the crisp material language of physical shelf edges. Construction detail is excellent, but the picture gives fewer visual reasons to classify the lower truss or short internal rails as decoration."
+    },
+    {
+      "id": "frame-05",
+      "initial_disposition": "Strong balanced candidate: construction remains detailed and the playable structure dominates.",
+      "original_png_sha256": "9a7f269ba23118c509d0bb8b645540a7a8b17a558928bc42130dc78735d11a7c",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 5,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "Rear machinery stays crisp while its orange trim and internal rails are restrained. The central wheel retains its hatch texture and spoke edges without competing strongly with the Play platforms. The lower rear truss is readable but has less authority than the silver floor and shelf lips."
+    },
+    {
+      "id": "frame-06",
+      "initial_disposition": "Attractive industrial mood; slightly less architectural discrimination than the crisp neutral candidates.",
+      "original_png_sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 4,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "A subdued warm-grey atmosphere lifts large rear tank and wheel silhouettes. The wheel and panel interiors remain distinct, although their colour/material differences are compressed. The result feels warm and spatial without broad blur, but it can make large decorative shapes occupy more visual weight."
+    },
+    {
+      "id": "frame-07",
+      "initial_disposition": "Strong physical-priority alternative with a deliberately austere atmosphere.",
+      "original_png_sha256": "1b403756470eb46a5db6686f9518f42159fa58c02cf6750d983663edb581a42b",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 5,
+        "retained_rear_architectural_detail": 4,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "Near-monochrome rear machinery makes bright Play shelves and the remaining warm physical edge at the right easy to prioritize. The rear bottom truss loses its strong false-platform colour cue. Wheel and tank shapes remain legible; very fine trim is subdued. Tonal hierarchy supplies separation alongside the palette reduction."
+    },
+    {
+      "id": "frame-08",
+      "initial_disposition": "Useful warm architectural atmosphere; compare in a sunlit or more open scene before asserting a distinct benefit here.",
+      "original_png_sha256": "4748ecbe7c2a951fa8902652e1f5f74d0c6d7dce940cf3811cf2b544b466bd06",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 5,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "The rear planes are gently warm and lifted, with clear grids and readable wheel spokes. Warm environmental mass contrasts with cold bright Play edges. The upper rear truss is more prominent than in the darker variants and could still be mistaken for accessible architecture. At this overview its differences from frame 06 are subtle."
+    },
+    {
+      "id": "frame-09",
+      "initial_disposition": "Readable optional lens study. The loss of microdetail is a meaningful tradeoff, not a universal improvement.",
+      "original_png_sha256": "308ee0d63a842866fc0046a308f168fbc9f5b2b9bd5fb6c3141015df41eb170e",
+      "scores": {
+        "absence_of_visible_artifacts": 4,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 4,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "The wheel rim and spokes soften while the near shelf edges stay hard. Machinery texture is reduced more than the architectural outline, so the central turbine remains identifiable. The rear grid panels are still readable. Blur is restrained here, but it makes the distant wheel less interesting than the crisp balanced images."
+    },
+    {
+      "id": "frame-10",
+      "initial_disposition": "Strong balanced architectural candidate; its advantage over frame 05 is too small to call confidently from this still.",
+      "original_png_sha256": "c0302a611fc5a94f6e5322b77e175d596127f862cb38c01d5fd62f089479441b",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 4,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 5,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "Neutral-cool distant geometry retains clean material pixels and thin mechanical lines. The wheel is dark enough to sit behind the mid-level decks, and rear orange trim is restrained. No broad haze or conspicuous edge halo is visible at this scale. The impression is close to frame 05, with small palette/value differences."
+    },
+    {
+      "id": "frame-11",
+      "initial_disposition": "Conservative detailed presentation, useful when clarity gains must remain restrained.",
+      "original_png_sha256": "38b87def4195903bb143a6496968f0cef2bfa253b2a0b74f9e2878cb66329ec1",
+      "scores": {
+        "absence_of_visible_artifacts": 5,
+        "perceived_layer_depth": 3,
+        "physical_route_distinction": 4,
+        "retained_rear_architectural_detail": 5,
+        "selected_actor_localization": 3
+      },
+      "visual_assessment": "Most rear construction detail remains sharp and fairly close in appearance to the crisp reference. The wheel stays dark and the warm rear trim is reduced, but the top truss and lower rear bridge remain prominent linear forms. Better hierarchy than frame 04, with a smaller spatial effect than the softer or more subdued variants."
+    }
+  ],
+  "initial_selection": {
+    "balanced_finalists": [
+      "frame-05",
+      "frame-10"
+    ],
+    "distinctive_atmosphere": "frame-03",
+    "optional_lens_studies": [
+      "frame-01",
+      "frame-09"
+    ],
+    "physical_priority_finalists": [
+      "frame-02",
+      "frame-07"
+    ],
+    "rejected_as_universal_default": "Frames 01 and 09 sacrifice some wheel material texture; frame 04 retains strong false-route cues. None is proposed as an automatic default.",
+    "rich_detail_but_ambiguous": "frame-04"
+  },
+  "reviewer": "Specialist B \u2014 profile and atmospheric author, independent inspection of integrated rendering",
+  "saved_before_key_reveal_utc": "2026-11-25T22:33:02.988926+00:00",
+  "scene": "industrial-underworks",
+  "schema": "strata3-blind-order-artistic-review-v1",
+  "scoring_scale": "1 weak, 3 usable with material reservations, 5 strong in this captured view. Scores concern this still only and do not establish general perceptual success.",
+  "shared_limitations": [
+    "The selected actor at roughly x800,y752 is located mainly by its label and selection ring. None of these stills establishes independent visibility for an unselected actor or a crowd.",
+    "The low orange rear bridge around x545..1045,y770..798 remains a potential false platform in every view; reduced prominence is not proof that a first-time player understands its collision status.",
+    "The top rear truss and three framed machinery panels still use the same rectilinear language as Play. Geometry-authority understanding requires Play Solo/assistance and ordinary interaction.",
+    "The tested overview compresses material pixels. Fine artefacts, parallax stability, camera rotation and moving Water/Sand cannot be judged from these stills.",
+    "Frames 05/10/11 and frames 06/08 have subtle differences at this overview; distinct parameter sets do not by themselves prove distinct perceptual benefits."
+  ],
+  "source_commit_supplied_by_lead": "a57aaeeabfb5bde47276a6e2981ea80823759730"
+}

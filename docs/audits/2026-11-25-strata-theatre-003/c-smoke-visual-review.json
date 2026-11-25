@@ -1,0 +1,398 @@
+{
+  "actual_lab_png_size": [
+    817,
+    607
+  ],
+  "actual_profile_png_size": [
+    1600,
+    900
+  ],
+  "auxiliary_captures": [
+    {
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "filename": "clarity-assistance.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "id": "clarity-assistance",
+      "scope": "Temporary decorative suppression; physical Play material remains unchanged.",
+      "sha256": "e45c9b5659f737d8a18aa22571c3ac327984cb34ebd57f0e5c6cd75ba762aedd"
+    },
+    {
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "filename": "optics-lab.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "id": "optics-lab",
+      "scope": "Actual separate Strata window and controls; not a matched world capture.",
+      "sha256": "a1f80e4ff529149355f6a2ff0f6ecc23b02ec6ed8079fa3d93046f36ba3b5943"
+    }
+  ],
+  "campaign_sha256": "da13e1b88e4ac1254157cfe445b32a9cc7b451f8d4671642612b96be0d97d461",
+  "display_server": "Windows",
+  "findings": {
+    "best_architecture_compromise_observed": "Architectural and Cinematic Deep Focus preserve fan/grate/conduit identity with moderate separation.",
+    "detail_loss": "Gameplay Clarity reduces central fan and orange rear conduit identity; temporary assistance stronger still.",
+    "diorama": "Softens thin rear bars and retains large fan silhouette; optional optical inspection rather than strongest platform cue.",
+    "most_readable_observed": "Gameplay Clarity and temporary Show physical Play; reduced decorative contrast makes exact bright Play shelves dominant.",
+    "motion_review": "Not performed: smoke stills contain no continuous ordinary movement sequence.",
+    "perceptual_acceptance": "Owner gate remains open.",
+    "physical_gpu_acceptance": false,
+    "remaining_false_platform": "Rear bottom truss remains a long horizontal connecting form in several artistic profiles.",
+    "ui": "Readable scrolling Lab with native edit target explicit; no observed horizontal clipping; disabled Fixed Play focal controls apparent.",
+    "unresolved_actor_body": "Overview actor body is too small to judge; yellow pilot label/ring identifies location."
+  },
+  "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+  "native_readbacks_before_after_equal": true,
+  "profile_captures": [
+    {
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "filename": "profile-classic.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "image_metrics": {
+        "mean_horizontal_two_pixel_luma_difference": 0.039489802438023,
+        "mean_srgb_luma": 0.131740754070359,
+        "near_black_fraction": 0.602991220795562,
+        "near_white_fraction": 5.71935142554834e-05,
+        "sample_count": 34969,
+        "sample_stride_pixels": 4,
+        "scope": "supporting composited image statistics in encoded sRGB; includes all planes; not human readability or linear-light photometry"
+      },
+      "profile": "classic",
+      "sha256": "467bd6ed2d9052c2bfdacbfee0f209b14edfed7b6a6419e1c7d07ce511cf2b4b"
+    },
+    {
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "filename": "profile-gameplay_clarity.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "image_metrics": {
+        "mean_horizontal_two_pixel_luma_difference": 0.0287061128191288,
+        "mean_srgb_luma": 0.121175700680092,
+        "near_black_fraction": 0.603048414309817,
+        "near_white_fraction": 5.71935142554834e-05,
+        "sample_count": 34969,
+        "sample_stride_pixels": 4,
+        "scope": "supporting composited image statistics in encoded sRGB; includes all planes; not human readability or linear-light photometry"
+      },
+      "profile": "gameplay_clarity",
+      "sha256": "ebce568775d7aa391f2b724b1d84ee92edbf5a13a377238ccfb5bcbedaa6b760"
+    },
+    {
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c",
+      "filename": "profile-architectural.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "image_metrics": {
+        "mean_horizontal_two_pixel_luma_difference": 0.0376765514102214,
+        "mean_srgb_luma": 0.140370298216949,
+        "near_black_fraction": 0.602705253224284,
+        "near_white_fraction": 5.71935142554834e-05,
+        "sample_count": 34969,
+        "sample_stride_pixels": 4,
+        "scope": "supporting composited image statistics in encoded sRGB; includes all planes; not human readability or linear-light photometry"
+      },
+      "profile": "architectural",
+      "sha256": "42de5595299b9839f3889cfecedbc387928e43a958d5d3049f662a494139d537"
+    },
+    {
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "filename": "profile-cinematic_deep_focus.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "image_metrics": {
+        "mean_horizontal_two_pixel_luma_difference": 0.0376536301371806,
+        "mean_srgb_luma": 0.139166799184325,
+        "near_black_fraction": 0.600531899682576,
+        "near_white_fraction": 5.71935142554834e-05,
+        "sample_count": 34969,
+        "sample_stride_pixels": 4,
+        "scope": "supporting composited image statistics in encoded sRGB; includes all planes; not human readability or linear-light photometry"
+      },
+      "profile": "cinematic_deep_focus",
+      "sha256": "a075e26e739374f74250dc78cdffc400ab862439bbee89517f0677e6025e2821"
+    },
+    {
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "filename": "profile-diorama.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "image_metrics": {
+        "mean_horizontal_two_pixel_luma_difference": 0.0338518450583536,
+        "mean_srgb_luma": 0.142357180345534,
+        "near_black_fraction": 0.513168806657325,
+        "near_white_fraction": 5.71935142554834e-05,
+        "sample_count": 34969,
+        "sample_stride_pixels": 4,
+        "scope": "supporting composited image statistics in encoded sRGB; includes all planes; not human readability or linear-light photometry"
+      },
+      "profile": "diorama",
+      "sha256": "61d7240ab22f022c9f0b8f9efbbcc20d71e97f481e4587ddfe39ba97ee8aa28e"
+    },
+    {
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976563,
+          751.666625976563
+        ]
+      },
+      "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1",
+      "filename": "profile-noir.png",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "image_metrics": {
+        "mean_horizontal_two_pixel_luma_difference": 0.0329012850347277,
+        "mean_srgb_luma": 0.128278403412745,
+        "near_black_fraction": 0.599273642368955,
+        "near_white_fraction": 5.71935142554834e-05,
+        "sample_count": 34969,
+        "sample_stride_pixels": 4,
+        "scope": "supporting composited image statistics in encoded sRGB; includes all planes; not human readability or linear-light photometry"
+      },
+      "profile": "noir",
+      "sha256": "7f08aa46e79e81b546fbee67c05a833a275335f554f886eab15e05623a12d12c"
+    }
+  ],
+  "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+  "requested_window_size": [
+    1600,
+    1000
+  ],
+  "result_sha256": "0d501906917f76f1e01c85be832001683617ec9cc93e4da49cd3f65dc87f2b53",
+  "review_kind": "named-profile technical visual critique; not blinded and not a human player study",
+  "reviewer": "Specialist C / gameplay legibility and authoring UX",
+  "scene": "industrial-underworks",
+  "schema": "strata003-independent-c-review-v1",
+  "source_campaign_relative_path": "windows/campaign.json",
+  "source_revision": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+  "world_crop": [
+    424,
+    135,
+    751,
+    751
+  ]
+}

@@ -57,13 +57,13 @@ All eleven profiles use one modular renderer and remain editable. They are compl
 | Alien Bioluminescence | Organic silhouettes and sparse local luminous accents | Does colourful illumination compete with Play geometry? |
 | Sunlit Megastructure | Broad warm scattering and large architectural silhouettes | Is distant contrast reduced enough without turning the whole image beige? |
 
-Classic restores the unchanged presentation. **Bypass / before** temporarily shows Classic while retaining your authored values. The runtime **Processed share** wipe compares the optical treatment on one shared camera transform, with Classic parallax used for the split comparison. The offline Gallery also has a wipe, but it compares two original PNGs rather than rerendering the world.
+Classic restores the unchanged presentation. **Bypass / before** temporarily shows Classic while retaining your authored values. The runtime **Processed share** wipe compares the architectural optical treatment on one shared camera transform, with Classic parallax used for the split comparison. During a partial wipe, separately authored steam, shafts and other atmosphere motifs keep their Classic strength across the whole image. Compare full Classic and full processed views to judge their opacity and clarity fade. The offline Gallery also has a wipe, but it compares two original PNGs rather than rerendering the world.
 
 ## Focus should explain depth
 
 **Fixed Play focus** is the stable gameplay starting point. It does not follow the mouse, selected actor or changing materials. **Manual optical distance** lets you move the focal region through the authored depth coordinates. **Selected focal plane** follows an explicit plane choice; it does not change the paint target. **Follow authoring plane** follows the existing edit selection, while the temporary **Inspection focus** override restores the authored focus when released.
 
-**Sharp focus width** is the optical-depth interval that remains in focus. Widening it preserves more planes without requiring their depths to become equal. **Defocus amount** is an aperture-like artistic strength; the actual radius also depends on distance outside the focal region and per-plane response. The renderer caps its kernel at six source cells, or one in Low quality. These are artistic approximations, not calibrated physical lenses.
+**Sharp focus width** is the optical-depth interval that remains in focus. Widening it preserves more planes without requiring their depths to become equal. **Defocus amount** is an aperture-like artistic strength; the actual radius also depends on distance outside the focal region and per-plane response. The renderer caps kernel support at one source cell in Low, three in Balanced and six in High quality. These are artistic approximations, not calibrated physical lenses.
 
 The three methods make different tradeoffs:
 
@@ -77,9 +77,11 @@ A strong Diorama setting can be useful for a still or temporary inspection and s
 
 ## Use atmosphere locally
 
-**Atmospheric density** in Optics is an attenuation of plane colour toward a chosen scattering colour. The colour need not be blue. Warm amber or muted olive may suit machinery; violet may separate cave depth; a neutral grey can give strong non-colour separation. The useful amount depends on optical depth and each plane's atmosphere contribution.
+**Atmospheric density** in Optics is an attenuation of architectural material colour toward a chosen scattering colour. The colour need not be blue. Warm amber or muted olive may suit machinery; violet may separate cave depth; a neutral grey can give strong non-colour separation. The useful amount depends on optical depth and each plane's atmosphere contribution.
 
 Authored atmosphere regions remain separate. The **Atmosphere** tab controls haze, steam, rain, dust, warning signals, machinery lights, architectural light shafts and local light pools. Optics does not silently replace those regions or their authored seeds. Their motion is presentation time, not native gas, rain mass, physical illumination or a second simulation.
+
+In the full processed view, a plane's optical opacity and Play-separation strength also fade its atmosphere motifs. This keeps strong steam or shafts subordinate during clarity inspection. Their colours, lens softness and scattering remain controlled separately: changing optical tint, focus or density treats architecture, while the Atmosphere tab still determines each motif's own appearance. Classic and temporary bypass restore their ordinary authored strength. The fade changes presentation only and does not rewrite the authored atmosphere settings.
 
 Place a light shaft near an authored opening, then inspect it against all four planes. The approximation uses eight clipped native-grid bands per source; it does not discover openings or calculate occlusion. Local light pools use four restrained diffusion bands behind Play. Both new kinds are static by default. Optional speed adds gentle breathing, rather than moving their source through the environment. Regions remain within the shared 12-region and 384-motif limits.
 
@@ -91,7 +93,7 @@ Architectural shadows sample already published Play material data. They provide 
 
 Use short offsets for close interior separation. Longer offsets can suggest strong directional illumination in an open megastructure, but they may also look detached from the source edge. Always compare after panning and zooming. A shadow that appears physically convincing in one static camera pose may be too conspicuous elsewhere.
 
-**Play separation** and **Show physical Play** suppress competing rear content without reducing physical material opacity. They combine broad decorative attenuation with local treatment near available Play silhouette and selected-player presentation information. They do not create a new foreground World or guarantee visibility for every actor in a crowd. Existing actor labels, camera scale and composition remain important.
+**Play separation** and **Show physical Play** suppress competing rear content without reducing physical material opacity. They combine broad decorative attenuation with local treatment near available Play silhouettes and actor presentation bounds, plus a bounded fade of authored atmospheric motifs. They do not create a new foreground World or guarantee visibility for every actor in a crowd. Existing actor labels, camera scale and composition remain important.
 
 Use a colour-independent check: temporarily choose Noir or strongly reduce rear saturation, then ask whether real platforms, real gaps and decorative stairs are still distinguishable. An attractive hue contrast alone is not a sufficient gameplay cue.
 

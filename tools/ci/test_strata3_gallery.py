@@ -63,6 +63,8 @@ class GalleryCustody(unittest.TestCase):
                     "diagnostic_headless":False,"rendering_method":"gl_compatibility","display_server":"Windows",
                     "rendering_adapter":"SYNTHETIC UNIT FIXTURE, NOT AN ADAPTER","process_id":100+index*2+(phase=="reopen"),
                     "fresh_process_reopen":phase=="reopen","extent":[512,512],
+                    "admission_elapsed_ms":50000 if phase=="install" else 40000,
+                    "admission_target_ms":45000,"admission_target_met":phase=="reopen",
                     "plane_native_hashes_before":native,"plane_native_hashes_after":native,
                     "native_hashes_canonical_json":native_json,"profile_captures":[],"additional_captures":[],
                     "saved_optics":{"sha256":gallery.digest(b'{}'),"configuration_canonical_json":"{}"}}
@@ -87,6 +89,7 @@ class GalleryCustody(unittest.TestCase):
                     "output_dir":output_dir,"exit_code":0,"result":result}
                 self.report["cases"].append(case)
                 self.save_case(case)
+        self.motion_case()
         self.evidence("process-original.log",b"SYNTHETIC UNIT FIXTURE ONLY\n")
         self.save_report()
 
@@ -122,6 +125,45 @@ class GalleryCustody(unittest.TestCase):
         mutator(case["result"])
         self.save_case(case)
         self.save_report()
+
+    def progression_case(self):
+        result=copy.deepcopy(self.report["cases"][0]["result"])
+        result.update(phase="progression",process_id=999,profile_captures=[],additional_captures=[],
+            progression_registration={"scope":"Synthetic unit fixture, no measured physical claim.","repeats":1},
+            progression_samples=[{"profile":"classic","repeat":0,"elapsed_usec":1000,"callbacks":2,
+                "physical_distribution_usec":{"count":1,"p50":500,"p95":500,"p99":500,"max":500},
+                "observer_scope":"Synthetic unit fixture only.","physical_gpu_acceptance":False}])
+        scene=gallery.SCENES[0]
+        case={"label":scene+"-progression","scene":scene,"phase":"progression",
+              "result_path":scene+"/progression/result.json","output_dir":scene+"/progression","exit_code":0,"result":result}
+        self.report["cases"].append(case)
+        self.save_case(case);self.save_report()
+        return case
+
+    def motion_case(self):
+        result=copy.deepcopy(self.report["cases"][-2]["result"])
+        result.update(phase="motion",process_id=998,profile_captures=[],additional_captures=[],motion_sequences=[])
+        scene="optics-readability-challenge";output_dir=scene+"/motion"
+        for profile in gallery.MOTION_PROFILES:
+            config={"profile":profile,"enabled":profile!="classic","planes":{"play":{"participates":False}}}
+            serialized=canonical(config)
+            sequence={"profile":profile,"configuration":config,"configuration_canonical_json":serialized,
+                      "configuration_sha256":gallery.digest(serialized.encode()),"quality":"balanced",
+                      "scope":"Synthetic motion unit fixture only, never graphical or performance evidence.","frames":[]}
+            for index in range(10):
+                name=f"motion-{profile}-{index:02d}.png";self.evidence(output_dir+"/"+name,PIXEL)
+                sequence["frames"].append({"index":index,"filename":name,"sha256":gallery.digest(PIXEL),"actual_image_size":[1,1],
+                    "camera":{"origin":[index,0],"view_size":[512,512],"world_rect":[0,0,1,1]},
+                    "actor_state":{"position":[256+index,256]},"native_tick":10+index,"rapier_tick":20+index,"captured_usec":1000+index*1000})
+            result["motion_sequences"].append(sequence)
+        case={"label":scene+"-motion","scene":scene,"phase":"motion","result_path":output_dir+"/result.json",
+              "output_dir":output_dir,"exit_code":0,"result":result}
+        self.report["cases"].append(case);self.save_case(case);self.save_report()
+        return case
+
+    def changed_motion(self,mutator):
+        case=next(c for c in self.report["cases"] if c["phase"]=="motion")
+        mutator(case["result"]);self.save_case(case);self.save_report()
 
     def test_complete_deterministic_build(self):
         data=self.prepare()
@@ -178,7 +220,7 @@ class GalleryCustody(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"eleven matched"):self.prepare()
 
     def test_missing_fresh_process_refuses(self):
-        self.report["cases"]=self.report["cases"][:-1];self.save_report()
+        self.report["cases"]=[case for case in self.report["cases"] if not(case["scene"]==gallery.SCENES[-1] and case["phase"]=="reopen")];self.save_report()
         with self.assertRaisesRegex(ValueError,"fresh-process reopen"):self.prepare()
 
     def test_same_process_reopen_refuses(self):
@@ -256,6 +298,114 @@ class GalleryCustody(unittest.TestCase):
         changed=bytearray(PIXEL);changed[30]^=1
         with self.assertRaisesRegex(ValueError,"CRC"):gallery.png_extent(bytes(changed))
         with self.assertRaisesRegex(ValueError,"after original PNG end"):gallery.png_extent(PIXEL+b"extra")
+
+    def test_admission_failures_remain_visible_in_passing_functional_campaign(self):
+        performance=self.prepare()["scenes"][0]["performance"]
+        self.assertEqual(performance["admission"]["install"]["elapsed_ms"],50000)
+        self.assertIs(performance["admission"]["install"]["target_met"],False)
+        self.assertIs(performance["admission"]["reopen"]["target_met"],True)
+        self.assertEqual(performance["admission"]["install"]["target_ms"],45000)
+
+    def test_missing_performance_is_unrecorded_never_zero_cost(self):
+        performance=self.prepare()["scenes"][0]["performance"]
+        self.assertEqual(performance["progression"]["status"],"not_recorded")
+        self.assertIsNone(performance["optical_cost_observations"])
+        self.assertEqual(performance["progression"]["reports"],[])
+
+    def test_missing_admission_is_not_assumed_zero(self):
+        self.changed_case(lambda r:r.pop("admission_elapsed_ms"))
+        with self.assertRaisesRegex(ValueError,"actual observation"):self.prepare()
+
+    def test_admission_target_cannot_be_weakened_or_miss_hidden(self):
+        self.changed_case(lambda r:r.update(admission_target_ms=60000,admission_target_met=True))
+        with self.assertRaisesRegex(ValueError,"45-second target"):self.prepare()
+
+    def test_progression_report_is_linked_and_keeps_observer_scope(self):
+        case=self.progression_case()
+        data=self.prepare()
+        progression=data["scenes"][0]["performance"]["progression"]
+        self.assertEqual(progression["status"],"recorded")
+        self.assertEqual(progression["reports"][0]["sha256"],case["report_sha256"])
+        self.assertEqual(progression["reports"][0]["url"],"qualification/windows/"+case["result_path"])
+        self.assertEqual(progression["reports"][0]["samples"][0]["observer_scope"],"Synthetic unit fixture only.")
+        self.assertEqual(data["scenes"][1]["performance"]["progression"]["status"],"not_recorded")
+        self.assertIn("Original physical progression report",gallery.render(data))
+
+    def test_progression_report_requires_actual_source_witness(self):
+        case=self.progression_case()
+        case["result"]["source_revision"]="f"*40
+        self.save_case(case);self.save_report()
+        with self.assertRaisesRegex(ValueError,"source-bound ordinary"):self.prepare()
+
+    def test_progression_cannot_claim_physical_gpu_acceptance(self):
+        case=self.progression_case()
+        case["result"]["progression_samples"][0]["physical_gpu_acceptance"]=True
+        self.save_case(case);self.save_report()
+        with self.assertRaisesRegex(ValueError,"hosted scope"):self.prepare()
+
+    def test_progression_report_copy_cannot_replace_original(self):
+        case=self.progression_case()
+        case["result"]["progression_samples"][0]["elapsed_usec"]=2000
+        self.save_report()
+        with self.assertRaisesRegex(ValueError,"original campaign witness"):self.prepare()
+
+    def test_duplicate_progression_observation_rejected(self):
+        case=self.progression_case()
+        case["result"]["progression_samples"]*=2
+        self.save_case(case);self.save_report()
+        with self.assertRaisesRegex(ValueError,"Duplicate profile/repeat"):self.prepare()
+
+    def test_boolean_is_not_an_actual_process_exit_code(self):
+        self.report["cases"][0]["exit_code"]=False;self.save_report()
+        with self.assertRaisesRegex(ValueError,"actual execution case"):self.prepare()
+
+    def test_motion_originals_retain_moving_camera_actor_and_arbitrary_review_scope(self):
+        data=self.prepare();motion=data["scenes"][-1]["motion"]
+        self.assertEqual(len(motion["sequences"]),4)
+        sequence=motion["sequences"][0]
+        self.assertEqual(len(sequence["frames"]),10)
+        self.assertNotEqual(sequence["frames"][0]["camera"],sequence["frames"][1]["camera"])
+        self.assertNotEqual(sequence["frames"][0]["actor_state"],sequence["frames"][1]["actor_state"])
+        self.assertIn("not matched paused",sequence["comparison_limit"])
+        self.assertIn("arbitrary cadence",gallery.render(data))
+        self.assertIsNone(data["scenes"][0]["motion"])
+
+    def test_missing_motion_report_refuses_full_gallery(self):
+        self.report["cases"]=[case for case in self.report["cases"] if case["phase"]!="motion"];self.save_report()
+        with self.assertRaisesRegex(ValueError,"instrumented motion inspection report"):self.prepare()
+
+    def test_motion_duplicate_or_missing_profile_refuses(self):
+        self.changed_motion(lambda r:r["motion_sequences"].pop())
+        with self.assertRaisesRegex(ValueError,"four original profile sequences"):self.prepare()
+
+    def test_motion_cannot_relabel_still_as_progress(self):
+        def mutate(r):r["motion_sequences"][0]["frames"][1]["rapier_tick"]=20
+        self.changed_motion(mutate)
+        with self.assertRaisesRegex(ValueError,"strictly advancing"):self.prepare()
+
+    def test_motion_timestamp_must_advance(self):
+        def mutate(r):r["motion_sequences"][0]["frames"][1]["captured_usec"]=1000
+        self.changed_motion(mutate)
+        with self.assertRaisesRegex(ValueError,"strictly advancing"):self.prepare()
+
+    def test_motion_framebuffer_receipt_must_match_original_png(self):
+        def mutate(r):r["motion_sequences"][0]["frames"][1]["actual_image_size"]=[1600,1000]
+        self.changed_motion(mutate)
+        with self.assertRaisesRegex(ValueError,"actual framebuffer dimensions"):self.prepare()
+
+    def test_motion_configuration_is_source_bound(self):
+        def mutate(r):r["motion_sequences"][0]["configuration"]["enabled"]=True
+        self.changed_motion(mutate)
+        with self.assertRaisesRegex(ValueError,"original protected-Play configuration"):self.prepare()
+
+    def test_motion_original_hash_refuses_relabelled_bytes(self):
+        def mutate(r):r["motion_sequences"][0]["frames"][1]["sha256"]="e"*64
+        self.changed_motion(mutate)
+        with self.assertRaisesRegex(ValueError,"Motion image bytes"):self.prepare()
+
+    def test_motion_never_requires_frozen_play_materials(self):
+        self.changed_motion(lambda r:r.update(plane_native_hashes_after={p:"e"*64 if p=="play" else HASH for p in gallery.PLANES}))
+        self.assertEqual(len(self.prepare()["scenes"][-1]["motion"]["sequences"]),4)
 
 
 if __name__=="__main__":

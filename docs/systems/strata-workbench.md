@@ -4,13 +4,15 @@ status: Current
 document-kind: contract
 scope: Draft opt-in four-plane authored composition, native import and construction, presentation-only atmosphere, ownership and versioned persistence
 canonical-for: [workbench-strata-composition, workbench-strata-ownership, workbench-strata-persistence]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [strata-authoring.md, strata-environments.md, depth-layers-and-parallax.md, ../architecture/shared-workbench-authoring-data.md, ../operations/strata-workbench-evaluation.md, ../decisions/2026-11-14-owner-authoring-intent.md]
 ---
 
 # Strata Theatre in the Shared Workbench
 
 ## Scope and disposition
+
+The stacked **STRATA-THEATRE-003 Draft/HOLD** candidate adds [optical presentation and the Strata Optics Lab](strata-optics.md) without changing the four-plane native ownership described here. Its explicit optical edit upgrades an authored document to v3; older documents retain Classic. The following Strata 002 ancestry and evidence remain independently preserved.
 
 **Current successor, Draft/HOLD:** STRATA-THEATRE-002 in
 [PR #776](https://github.com/techrote/cybersand/pull/776) extends the immutable
@@ -205,8 +207,8 @@ and GEN-008 readers. Older nonlayered files keep their original readers.
 
 | Envelope section | Meaning and limit |
 | --- | --- |
-| 52-byte header | Eight-byte magic, explicit version 1 or 2, manifest/payload lengths, SHA-256 over both sections |
-| UTF-8 JSON manifest, at most 8 MiB | Exact version-specific keys; unchanged starting Setup, four explicit plane records and presentation settings, identified play source; v2 adds authored atmosphere and operation provenance |
+| 52-byte header | Eight-byte magic, explicit version 1, 2 or 3, manifest/payload lengths, SHA-256 over both sections |
+| UTF-8 JSON manifest, at most 8 MiB | Exact version-specific keys; unchanged starting Setup, four explicit plane records and presentation settings, identified play source; v2 adds authored atmosphere and operation provenance; v3 adds a complete validated optical configuration |
 | Optional play payload, at most 8 MiB | Existing copied generated material bytes or exact GEN-008 uint16 material baseline bytes |
 | Decorative layout | At most 32,768 existing material rectangles and 16,777,216 construction cell writes per plane |
 

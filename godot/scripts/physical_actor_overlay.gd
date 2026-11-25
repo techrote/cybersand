@@ -3,6 +3,7 @@ extends Control
 
 # Filled polygons use the actual rectangle or circle shape and the bridge's
 # authoritative physics transform. This node owns no gameplay or collision.
+const PresentationBounds = preload("res://scripts/actor_presentation_bounds.gd")
 var outlines: bool = true
 var _parts: Array = []
 var source_origin: Vector2 = Vector2.INF
@@ -25,6 +26,12 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
 	queue_redraw()
+
+
+func presentation_bounds(limit: int = 8) -> Array[Rect2]:
+	# Evaluated only when a caller needs visual assistance. Reuses the displayed
+	# part poses, including existing presentation interpolation, without queries.
+	return PresentationBounds.physical(_parts, limit)
 
 
 func show_actor_labels(labels: Dictionary) -> void:

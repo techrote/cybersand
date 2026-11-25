@@ -1,0 +1,605 @@
+{
+  "campaigns": [
+    {
+      "campaign_sha256": "c4cdfc525e146659da3982ada2d66bbce8e167f071bac3c15c0b39b495b09e73",
+      "campaign_suite": "shader",
+      "captures": [
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/classic-alpha.png",
+          "sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/detail-preserving.png",
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              146,
+              0,
+              146
+            ],
+            "40,20": [
+              0,
+              146,
+              0,
+              146
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/highlight-diffusion.png",
+          "sha256": "3011e24bb1e7587f7072a128cb93fa24ecb23e8e193b7730eb811355f9479764"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              32,
+              0,
+              0,
+              32
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/pixel-aperture.png",
+          "sha256": "544babdaf4d32212dbe1099914cf2d04c0794a524861ab911baba68aa963b926"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/processed-alpha.png",
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/wipe-alpha.png",
+          "sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7"
+        }
+      ],
+      "godot": {
+        "path": "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "win32",
+      "process_log_sha256": "27938d5b62aec72bc1f9ce27d5595df3d130880f508a9e07afb0fb543baec38b",
+      "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+      "source_tree": "329824985795de0286c2eecd5b15c9572c798f41"
+    },
+    {
+      "campaign_sha256": "33ca3cf10df116d3f05262463bb3d5d08bb3db18391bc5c189f5d5d78fc8e9f2",
+      "campaign_suite": "shader",
+      "captures": [
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/classic-alpha.png",
+          "sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/detail-preserving.png",
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              146,
+              0,
+              146
+            ],
+            "40,20": [
+              0,
+              146,
+              0,
+              146
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/highlight-diffusion.png",
+          "sha256": "3011e24bb1e7587f7072a128cb93fa24ecb23e8e193b7730eb811355f9479764"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              32,
+              0,
+              0,
+              32
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/pixel-aperture.png",
+          "sha256": "544babdaf4d32212dbe1099914cf2d04c0794a524861ab911baba68aa963b926"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/processed-alpha.png",
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492"
+        },
+        {
+          "decoded_rgba8": {
+            "0,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "16,20": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "168,20": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "40,20": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "63,20": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "7,20": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "dimensions": [
+            192,
+            64
+          ],
+          "path": "regressions/test_strata_optical_renderer/wipe-alpha.png",
+          "sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7"
+        }
+      ],
+      "godot": {
+        "path": "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "platform": "linux",
+      "process_log_sha256": "74d35e97a6cb237dc2681e33effc875b24f7d8650c67dab1ce2b9f0cef4a7bbc",
+      "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+      "source_tree": "329824985795de0286c2eecd5b15c9572c798f41"
+    }
+  ],
+  "disposition": "TECHNICAL FIXTURE SUPPORT ONLY \u2014 INTEGRATED ARTISTIC AND PHYSICAL ACCEPTANCE OPEN",
+  "execution_run": "https://github.com/techrote/cybersand/actions/runs/45711742479",
+  "follow_up": [
+    "Specialist A is adding a high-frequency/bright-impulse rendered witness and explicit non-unit parent-opacity checks.",
+    "Review actual matched Underworks and other scene frames before tuning or recommending profiles."
+  ],
+  "inspection": "Original six Windows PNGs visually inspected; original Windows and Linux PNG bytes decoded for exact pixel measurements. No image was edited, generated or resampled. Every hash was matched against the original campaign ledger.",
+  "observations": [
+    "All six corresponding original PNGs are byte-identical on hosted Windows ANGLE/Microsoft Basic Render Driver and Linux llvmpipe. This small fixture does not establish equivalence for every scene or GPU.",
+    "Classic half-opacity green has encoded RGBA8 [0,64,0,128]; processed green has [0,128,0,128]. The technical fixture intentionally preserves the historical Classic double-alpha appearance while using premultiplied composition for processed planes.",
+    "At pixel 7,20 the pixel aperture produces [32,0,0,32], a pure-red fringe with matched premultiplied coverage. The sampled border pixels remain exactly transparent.",
+    "detail-preserving.png is byte-identical to processed-alpha.png on these flat rectangles. Coverage preservation is witnessed; frequency-selective detail reduction is not demonstrated by this fixture.",
+    "Highlight diffusion raises the half-opacity green centre to [0,146,0,146]. This is an intentional stylised highlight/coverage contribution, not physical light transport or unchanged alpha.",
+    "Wipe shows processed green on the left and historical Classic green on the right. Full test source separately checks exact Classic restoration.",
+    "No architecture, actor, false-platform ambiguity, scene admission, ordinary movement, native state or physical NVIDIA performance is judged from these 192 by 64 technical images."
+  ],
+  "review_date": "2026-11-25",
+  "reviewer": "Specialist B \u2014 atmospheric composition and artistic critique",
+  "schema": "strata3-independent-shader-witness-review-v1"
+}

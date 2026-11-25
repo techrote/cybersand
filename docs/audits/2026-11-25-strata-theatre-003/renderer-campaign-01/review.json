@@ -1,0 +1,687 @@
+{
+  "schema": "cybersand-strata003-renderer-pixel-review-v1",
+  "reviewer": "specialist-a",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45711742479",
+  "scope": "Original isolated application shader captures; no native scene or physical GPU acceptance claim.",
+  "platforms": {
+    "linux": {
+      "source": {
+        "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+        "source_tree": "329824985795de0286c2eecd5b15c9572c798f41",
+        "local_delta": []
+      },
+      "godot": {
+        "path": "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "runtime": {
+        "cybersand_runtime": {
+          "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "size": 5253776
+        },
+        "rapier_runtime": {
+          "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "size": 117275416
+        },
+        "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+      },
+      "source_files": {
+        "scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+        "shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+        "tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+      },
+      "renderer": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+      "result": "STRATA003_OPTICAL_RENDERER graphical_required=false checks=59 failures=0",
+      "process": {
+        "command": [
+          "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--path",
+          "/home/runner/work/cybersand/cybersand/godot",
+          "--script",
+          "res://tests/test_strata_optical_renderer.gd",
+          "--",
+          "--output=/home/runner/work/cybersand/cybersand/build/strata3-linux/regressions/test_strata_optical_renderer"
+        ],
+        "exit_code": 0,
+        "log_sha256": "74d35e97a6cb237dc2681e33effc875b24f7d8650c67dab1ce2b9f0cef4a7bbc",
+        "pid": 3214,
+        "resources": {
+          "available": true,
+          "observation_errors": [],
+          "observed_cpu_seconds": 1.08,
+          "observer_wall_seconds": 0.01412001299968324,
+          "peak_observed_tree_rss_bytes": 322420736,
+          "process_identities": [
+            [
+              3214,
+              126778
+            ]
+          ],
+          "root_pid": 3214,
+          "root_start_id": 126778,
+          "sample_count": 3,
+          "sample_interval_seconds": 0.5,
+          "schema": "strata-process-resources-v1",
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+        },
+        "resources_sha256": "9d083de04b95c955f30730c60b630d30cbdddbd3249510115be1409030684c80",
+        "seconds": 1.329,
+        "status": "passed",
+        "timeout_seconds": 600
+      },
+      "campaign_sha256": "33ca3cf10df116d3f05262463bb3d5d08bb3db18391bc5c189f5d5d78fc8e9f2"
+    },
+    "windows": {
+      "source": {
+        "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+        "source_tree": "329824985795de0286c2eecd5b15c9572c798f41",
+        "local_delta": []
+      },
+      "godot": {
+        "path": "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "runtime": {
+        "cybersand_runtime": {
+          "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "size": 5820416
+        },
+        "rapier_runtime": {
+          "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "size": 9987072
+        },
+        "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+      },
+      "source_files": {
+        "scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+        "shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+        "tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+      },
+      "renderer": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "result": "STRATA003_OPTICAL_RENDERER graphical_required=false checks=59 failures=0",
+      "process": {
+        "command": [
+          "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+          "--audio-driver",
+          "Dummy",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--path",
+          "D:\\a\\cybersand\\cybersand\\godot",
+          "--script",
+          "res://tests/test_strata_optical_renderer.gd",
+          "--",
+          "--output=D:\\a\\cybersand\\cybersand\\build\\strata3-windows\\regressions\\test_strata_optical_renderer"
+        ],
+        "exit_code": 0,
+        "log_sha256": "27938d5b62aec72bc1f9ce27d5595df3d130880f508a9e07afb0fb543baec38b",
+        "pid": 4108,
+        "resources": {
+          "available": true,
+          "observation_errors": [],
+          "observed_cpu_seconds": 2.6875,
+          "observer_wall_seconds": 0.014999999999986358,
+          "peak_observed_tree_rss_bytes": 177856512,
+          "process_identities": [
+            [
+              4108,
+              134401186215611303
+            ],
+            [
+              7488,
+              134401186215665054
+            ]
+          ],
+          "root_pid": 4108,
+          "root_start_id": 134401186215611303,
+          "sample_count": 7,
+          "sample_interval_seconds": 0.5,
+          "schema": "strata-process-resources-v1",
+          "scope": "observed_process_and_descendants",
+          "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+        },
+        "resources_sha256": "d2167875d9fbfedcaa3df1dfb6ff3139bc7dfab55fbbd41e39eb0d4b68a5f20b",
+        "seconds": 3.093,
+        "status": "passed",
+        "timeout_seconds": 600
+      },
+      "campaign_sha256": "c4cdfc525e146659da3982ada2d66bbce8e167f071bac3c15c0b39b495b09e73"
+    }
+  },
+  "captures": [
+    {
+      "filename": "classic-alpha.png",
+      "platforms": {
+        "linux": {
+          "sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              64,
+              0,
+              128
+            ]
+          }
+        },
+        "windows": {
+          "sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              64,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              64,
+              0,
+              128
+            ]
+          }
+        }
+      },
+      "cross_renderer_rgba8_equal": true,
+      "max_channel_difference_u8": 0
+    },
+    {
+      "filename": "processed-alpha.png",
+      "platforms": {
+        "linux": {
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              128,
+              0,
+              128
+            ]
+          }
+        },
+        "windows": {
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              128,
+              0,
+              128
+            ]
+          }
+        }
+      },
+      "cross_renderer_rgba8_equal": true,
+      "max_channel_difference_u8": 0
+    },
+    {
+      "filename": "pixel-aperture.png",
+      "platforms": {
+        "linux": {
+          "sha256": "544babdaf4d32212dbe1099914cf2d04c0794a524861ab911baba68aa963b926",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              32,
+              0,
+              0,
+              32
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              128,
+              0,
+              128
+            ]
+          }
+        },
+        "windows": {
+          "sha256": "544babdaf4d32212dbe1099914cf2d04c0794a524861ab911baba68aa963b926",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              32,
+              0,
+              0,
+              32
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              128,
+              0,
+              128
+            ]
+          }
+        }
+      },
+      "cross_renderer_rgba8_equal": true,
+      "max_channel_difference_u8": 0
+    },
+    {
+      "filename": "detail-preserving.png",
+      "platforms": {
+        "linux": {
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              128,
+              0,
+              128
+            ]
+          }
+        },
+        "windows": {
+          "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              128,
+              0,
+              128
+            ]
+          }
+        }
+      },
+      "cross_renderer_rgba8_equal": true,
+      "max_channel_difference_u8": 0
+    },
+    {
+      "filename": "highlight-diffusion.png",
+      "platforms": {
+        "linux": {
+          "sha256": "3011e24bb1e7587f7072a128cb93fa24ecb23e8e193b7730eb811355f9479764",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              146,
+              0,
+              146
+            ],
+            "far_right_green": [
+              0,
+              146,
+              0,
+              146
+            ]
+          }
+        },
+        "windows": {
+          "sha256": "3011e24bb1e7587f7072a128cb93fa24ecb23e8e193b7730eb811355f9479764",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              146,
+              0,
+              146
+            ],
+            "far_right_green": [
+              0,
+              146,
+              0,
+              146
+            ]
+          }
+        }
+      },
+      "cross_renderer_rgba8_equal": true,
+      "max_channel_difference_u8": 0
+    },
+    {
+      "filename": "wipe-alpha.png",
+      "platforms": {
+        "linux": {
+          "sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              64,
+              0,
+              128
+            ]
+          }
+        },
+        "windows": {
+          "sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+          "dimensions": [
+            192,
+            64
+          ],
+          "rgba8": {
+            "empty": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_rim": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "red_centre": [
+              255,
+              0,
+              0,
+              255
+            ],
+            "half_green": [
+              0,
+              128,
+              0,
+              128
+            ],
+            "far_right_green": [
+              0,
+              64,
+              0,
+              128
+            ]
+          }
+        }
+      },
+      "cross_renderer_rgba8_equal": true,
+      "max_channel_difference_u8": 0
+    }
+  ],
+  "limitations": [
+    "Uniform rectangles do not demonstrate frequency-selective detail suppression.",
+    "Balanced radius2 aperture is rendered; high-quality diagonals/maxradius still need explicit pixel witnesses.",
+    "Native ownership, integrated Workbench, multiple actors, zoom, sustained motion and physical progression are not established by this isolated test.",
+    "Actor reveal extension692b4edf is later source and is not covered by this campaign.",
+    "Hosted Windows Microsoft Basic Render Driver and Linux llvmpipe are software backends, not owner NVIDIA hardware."
+  ]
+}

@@ -5,6 +5,17 @@ extends RefCounted
 const OPTICAL_SHADER = preload("res://shaders/strata_optical_plane.gdshader")
 const REAR_IDS := ["background", "effects", "scripted"]
 const IDS := ["play", "scripted", "effects", "background"]
+# One-dimensional normalized binomial rows, centre followed by positive offsets.
+# The shader averages horizontal and vertical convolutions, reusing the centre.
+# Each row has nonnegative weights and a monotone spatial-frequency response.
+const APERTURE_WEIGHTS := [
+	[1.0,0.0,0.0,0.0,0.0,0.0,0.0],
+	[0.5,0.25,0.0,0.0,0.0,0.0,0.0],
+	[0.375,0.25,0.0625,0.0,0.0,0.0,0.0],
+	[0.3125,0.234375,0.09375,0.015625,0.0,0.0,0.0],
+	[0.2734375,0.21875,0.109375,0.03125,0.00390625,0.0,0.0],
+	[0.24609375,0.205078125,0.1171875,0.0439453125,0.009765625,0.0009765625,0.0],
+	[0.2255859375,0.193359375,0.120849609375,0.0537109375,0.01611328125,0.0029296875,0.000244140625]]
 
 var settings: Dictionary = {}
 var quality := "balanced"
@@ -22,6 +33,7 @@ var _focus_initialized := false
 var _configuration_count := 0
 var _uniform_writes := 0
 var _focus_updates := 0
+var _actor_rectangle_count := 0
 
 
 func register_plane(id: String, drawable: TextureRect) -> void:
@@ -87,7 +99,7 @@ func advance(delta: float) -> void:
 
 
 func sync_view(extent: Vector2i, origin: Vector2, view_size: Vector2,
-		parallax_strength: float, play_material: ShaderMaterial) -> void:
+		parallax_strength: float, play_material: ShaderMaterial, actor_bounds: Array[Rect2] = []) -> void:
 	if not active() or not _needs_play_mask(): return
 	var texture: Variant = play_material.get_shader_parameter("current_world_texture") if play_material != null else null
 	var player_rect := Vector4(-4096.0, -4096.0, 0.0, 0.0)
@@ -96,6 +108,14 @@ func sync_view(extent: Vector2i, origin: Vector2, view_size: Vector2,
 		var player_size: Variant = play_material.get_shader_parameter("player_size_px")
 		if player_origin is Vector2 and player_size is Vector2:
 			player_rect = Vector4(player_origin.x, player_origin.y, player_size.x, player_size.y)
+	var rectangles := PackedVector4Array()
+	if actor_reveal_active():
+		for bounds: Rect2 in actor_bounds:
+			if rectangles.size() >= 8: break
+			if not bounds.position.is_finite() or not bounds.size.is_finite() or not bounds.has_area(): continue
+			rectangles.append(Vector4(bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y))
+	_actor_rectangle_count = rectangles.size()
+	rectangles.resize(8)
 	var camera_delta := origin + view_size * 0.5 - Vector2(extent) * 0.5
 	for id: String in REAR_IDS:
 		if not _using_optics(id): continue
@@ -104,6 +124,24 @@ func sync_view(extent: Vector2i, origin: Vector2, view_size: Vector2,
 		_uniform(id, "play_mask_available", texture is Texture2D)
 		if texture is Texture2D: _uniform(id, "play_cells", texture)
 		_uniform(id, "player_rectangle", player_rect)
+		_uniform(id, "actor_rectangle_count", _actor_rectangle_count)
+		if _actor_rectangle_count > 0: _uniform(id, "actor_rectangles", rectangles)
+
+
+func actor_reveal_active() -> bool:
+	return active() and (bool(inspection.clarity) or float(settings.get("clarity", 0.0)) > 0.0)
+
+
+func atmosphere_opacity(id: String) -> float:
+	# Authored procedural motifs are separate CanvasItems, not pixels in the
+	# frozen material texture. Share only bounded opacity/clarity; never imply
+	# that their colour or lens treatment passed through the optical shader.
+	# The one-draw material wipe keeps motifs Classic on both sides.
+	if not _using_optics(id) or float(inspection.wipe) < 1.0: return 1.0
+	var clarity := 1.0 if bool(inspection.clarity) else float(settings.get("clarity",0.0))
+	var strength := 1.0 if bool(inspection.clarity) else float(settings.get("strength",1.0))
+	var opacity := float(_plane_optics(id).get("opacity",1.0))
+	return lerpf(1.0,opacity*(1.0-0.65*clarity),strength)
 
 
 func parallax_scale(id: String) -> float:
@@ -133,6 +171,10 @@ func statistics() -> Dictionary:
 		"inspection":inspection.duplicate(true), "active_planes":active_planes,
 		"defocus_cells":radii, "material_count":_materials.size(), "uniform_writes":_uniform_writes,
 		"configuration_updates":_configuration_count, "focus_updates":_focus_updates,
+		"actor_reveal_rectangles":_actor_rectangle_count if actor_reveal_active() else 0,
+		"actor_reveal_source":"Published visual bounds only; up to eight actors plus the sampled player.",
+		"aperture_kernel":"Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+		"aperture_max_radius_cells":_quality_radius(),
 		"additional_worlds":0, "additional_viewports":0, "additional_textures":0,
 		"native_captures":0, "native_writes":0, "texture_uploads":0,
 		"play_processed":false, "wipe_uses_classic_parallax":float(inspection.wipe) < 1.0,
@@ -170,14 +212,32 @@ func _needs_play_mask() -> bool:
 
 
 func _using_optics(id: String) -> bool:
-	return id in REAR_IDS and active() and bool(_plane_optics(id).get("participates", true))
+	# Explicit physical inspection covers every decorative plane temporarily,
+	# including a plane excluded from its authored artistic profile.
+	return id in REAR_IDS and active() and (bool(inspection.clarity) or bool(_plane_optics(id).get("participates", true)))
 
 
 func _defocus_radius(id: String) -> float:
 	if not _using_optics(id) or not _effect("defocus"): return 0.0
 	var plane := _plane_optics(id)
 	var distance := maxf(0.0, absf(float(plane.get("depth", 0.0)) - _focus) - float(settings.get("dof_width", 0.25)) * 0.5)
-	return clampf(distance * float(settings.get("defocus", 0.0)) * float(plane.get("defocus", 1.0)) * 3.0, 0.0, 1.0 if quality == "low" else 6.0)
+	return clampf(distance * float(settings.get("defocus", 0.0)) * float(plane.get("defocus", 1.0)) * 3.0, 0.0, _quality_radius())
+
+
+func _quality_radius() -> float:
+	return 1.0 if quality == "low" else (3.0 if quality == "balanced" else 6.0)
+
+
+static func aperture_weights(radius: float) -> PackedFloat32Array:
+	var bounded := clampf(radius,0.0,6.0)
+	var lower := floori(bounded)
+	var upper := mini(lower+1,6)
+	var blend := bounded-float(lower)
+	var weights := PackedFloat32Array()
+	weights.resize(7)
+	for index: int in 7:
+		weights[index] = lerpf(float(APERTURE_WEIGHTS[lower][index]),float(APERTURE_WEIGHTS[upper][index]),blend)
+	return weights
 
 
 func _apply() -> void:
@@ -204,13 +264,19 @@ func _apply() -> void:
 		var colour: Array = settings.get("scattering_color", [0.055, 0.105, 0.15])
 		var tint: Array = plane.get("tint", [1.0, 1.0, 1.0])
 		var offset: Array = settings.get("shadow_offset", [5.0, 8.0])
+		var radius := _defocus_radius(id)
+		var detail := clampf(float(settings.get("detail", 0.0)) * depth, 0.0, 0.85) if _effect("detail") else 0.0
+		var illumination := float(settings.get("illumination", 0.0)) * float(plane.get("glow", 1.0)) if _effect("illumination") else 0.0
+		var sample_radius := maxf(radius,1.0) if detail > 0.0 or illumination > 0.0 else radius
 		_uniform(id, "effect_strength", 1.0 if bool(inspection.clarity) else float(settings.get("strength", 1.0)))
 		_uniform(id, "comparison_wipe", float(inspection.wipe))
 		_uniform(id, "quality_tier", ["low", "balanced", "high"].find(quality))
 		_uniform(id, "classic_haze", float(_classic[id].get_shader_parameter("haze")))
 		_uniform(id, "lens_method", ["pixel", "diffusion", "detail"].find(str(settings.get("defocus_method", "pixel"))))
-		_uniform(id, "defocus_radius", _defocus_radius(id))
-		_uniform(id, "detail_suppression", clampf(float(settings.get("detail", 0.0)) * depth, 0.0, 0.85) if _effect("detail") else 0.0)
+		_uniform(id, "defocus_radius", radius)
+		_uniform(id, "aperture_extent", ceili(sample_radius))
+		_uniform(id, "aperture_weights", aperture_weights(sample_radius))
+		_uniform(id, "detail_suppression", detail)
 		_uniform(id, "plane_contrast", float(plane.get("contrast", 1.0)) * (1.0 - minf(depth * tonal * 0.38, 0.65)) if _effect("tonal") else 1.0)
 		_uniform(id, "black_lift", minf(depth * tonal * 0.065, 0.18))
 		_uniform(id, "highlight_compression", depth * tonal * 0.65)
@@ -219,11 +285,14 @@ func _apply() -> void:
 		_uniform(id, "plane_tint", Vector3.ONE.lerp(Vector3(float(tint[0]), float(tint[1]), float(tint[2])), chromatic))
 		_uniform(id, "atmospheric_density", density)
 		_uniform(id, "scattering_colour", Vector3(float(colour[0]), float(colour[1]), float(colour[2])))
-		_uniform(id, "illumination_strength", float(settings.get("illumination", 0.0)) * float(plane.get("glow", 1.0)) if _effect("illumination") else 0.0)
+		_uniform(id, "illumination_strength", illumination)
 		_uniform(id, "shadow_strength", float(settings.get("shadow", 0.0)) * minf(depth * 1.8, 1.0) if _effect("shadows") else 0.0)
 		_uniform(id, "shadow_offset", Vector2(float(offset[0]), float(offset[1])) * maxf(depth, 0.05))
 		_uniform(id, "shadow_softness", float(settings.get("shadow_softness", 0.0)) * (0.5 + depth))
 		_uniform(id, "clarity_strength", clarity)
+		if clarity <= 0.0:
+			_actor_rectangle_count = 0
+			_uniform(id, "actor_rectangle_count", 0)
 		_uniform(id, "plane_opacity", float(plane.get("opacity", 1.0)))
 
 

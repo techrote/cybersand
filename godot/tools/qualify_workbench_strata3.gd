@@ -6,6 +6,8 @@ const COMPARATIVE_PROFILES := ["classic","gameplay_clarity","architectural","cin
 const PROGRESSION_REPEATS := 3
 const PROGRESSION_CALLBACKS := 90
 const PROGRESSION_WATCHDOG_USEC := 90000000
+const MOTION_PROFILES := ["classic","gameplay_clarity","cinematic_deep_focus","diorama"]
+const MOTION_FRAMES := 10
 
 class OpticsObservedHost extends RouteHost:
 	var optics_observe := false
@@ -166,6 +168,8 @@ func _optics_controls() -> void:
 	check(strata.select_optics_profile("gameplay_clarity"),"readability profile selected for comparison")
 	var authored := _canonical(_configuration())
 	check(strata.set_optics_inspection({"bypass":true,"clarity":true}),"bypass with simultaneous assistance request")
+	for plane: String in ["scripted","effects","background"]:
+		check(strata.presenter._atmospheres[plane].self_modulate == Color.WHITE,"Classic bypass restores exact procedural motif modulation "+plane)
 	await _settle_focus()
 	if not diagnostic_headless:
 		var bypassed: Image = await _extra_capture("classic-return","Classic bypass wins over other transient effects; same geometry, camera, actor and frozen visual time.")
@@ -173,8 +177,12 @@ func _optics_controls() -> void:
 		check(record.classic_return.exact_equal,"Classic bypass exactly restores every world-view framebuffer pixel")
 	check(_canonical(_configuration()) == authored,"bypass does not rewrite authored optics")
 	check(strata.set_optics_inspection({"bypass":false,"clarity":false,"wipe":0.5}),"single-draw wipe comparison")
+	for plane: String in ["scripted","effects","background"]:
+		check(strata.presenter._atmospheres[plane].self_modulate == Color.WHITE,"material comparison wipe retains Classic motifs "+plane)
 	await _extra_capture("compare-wipe","One-draw Classic/processed wipe; optical parallax temporarily matches Classic.")
 	check(strata.set_optics_inspection({"wipe":1.0,"clarity":true}),"temporary non-colour-only Play assistance")
+	for plane: String in ["scripted","effects","background"]:
+		check(strata.presenter._atmospheres[plane].self_modulate.a <= 0.350001,"clarity also subordinates existing procedural motifs "+plane)
 	await _extra_capture("clarity-assistance","Temporary decorative suppression; physical Play material remains unchanged.")
 	check(strata.set_optics_inspection({"clarity":false}),"release assistance")
 	var edit_target := str(strata.active_layer())
@@ -366,6 +374,7 @@ func _progression_sample(id: String, repeat_index: int) -> Dictionary:
 	var expected_play := reference_bytes(wb.applied.edits,Setup.extent_of(wb.applied))
 	check(initial_play == expected_play,"timed sample starts from exact authored native Play material bytes")
 	check(strata.select_optics_profile(id),"comparative live profile "+id)
+	check(strata.set_optics_quality("high" if id == "diorama" else "balanced"),"registered optical quality for "+id)
 	await _settle_focus()
 	var actor: Dictionary = host.physical_actor_session.workbench_actor_state(wb.selected_id())
 	var start_position: Vector2 = actor.position
@@ -449,10 +458,161 @@ func _progression() -> void:
 				record.progression_samples.append(sample)
 	check(record.progression_samples.size() == PROGRESSION_REPEATS*COMPARATIVE_PROFILES.size(),"all registered comparative physical samples retained")
 	record.progression_registration = {"repeats":PROGRESSION_REPEATS,"callbacks_per_sample":PROGRESSION_CALLBACKS,
+		"quality_by_profile":{"classic":"balanced","gameplay_clarity":"balanced","architectural":"balanced","cinematic_deep_focus":"balanced","diorama":"high"},
 		"per_sample_watchdog_usec":PROGRESSION_WATCHDOG_USEC,"order":"forward/reverse/forward",
 		"geometry_reset_between_samples":true,"warmup":"six display callbacks while physically paused; no native evolution before timed window",
 		"confound":"Fresh authored scene and native Play hash per sample; same input control observer and callback budget. Wall-clock phase and shared hosted CPU load can vary, so repeat spread and software-renderer limitations remain material.",
 		"physical_scope":"Hosted renderer; physical owner acceptance remains open."}
+
+
+func _decorative_identity() -> Dictionary:
+	var result := {}
+	var state: Dictionary = strata.layer_owner.stats()
+	for id: String in ["scripted","effects","background"]:
+		var layer: Dictionary = state.layers[id]
+		result[id] = {"owner_id":str(layer.owner_id),"native_instance_id":str(layer.native_instance_id),
+			"native_tick":int(layer.native_tick),"native_revision":int(layer.native_revision)}
+	return result
+
+
+func _evolved_native_hashes() -> Dictionary:
+	# This deliberately does not use all_native_hashes(), whose exact recipe
+	# assertion is valid only before physical evolution. Read actual live Play
+	# bytes and continue to check each static decorative plane independently.
+	var result := {"play":digest(await play_bytes())}
+	var extent: Vector2i = Setup.extent_of(wb.applied)
+	for id: String in ["scripted","effects","background"]:
+		var cells := decorative_bytes(id)
+		check(cells == reference_bytes(Document.plane(strata.document(),id).rectangles,extent),"motion static native "+id+" retains authored materials")
+		result[id] = digest(cells)
+	return result
+
+
+func _motion_sequence(id: String, source: Dictionary) -> Dictionary:
+	var generation := int(host.latest_snapshot.render_world_generation)
+	if not check(strata.load_document(source),"fresh native motion composition "+id): return {}
+	if not await until(func() -> bool: return idle() and strata.has_document() and host.physical_actor_session != null and int(host.latest_snapshot.render_world_generation) != generation,"motion scene admission",180000): return {}
+	check(strata.select_layer("play"),"motion retains actual Play edit target")
+	check(strata.select_optics_profile(id),"motion presentation profile "+id)
+	check(strata.set_optics_quality("high" if id == "diorama" else "balanced"),"motion profile quality "+id)
+	# The deliberately aligned fixture normally has zero parallax. Exercise the
+	# existing presentation controls explicitly without altering any native cell.
+	check(strata.set_presentation({"parallax_strength":0.65}),"motion presentation parallax strength")
+	for plane: String in ["scripted","effects","background"]:
+		check(strata.set_layer_settings(plane,{"depth":{"scripted":0.15,"effects":0.4,"background":0.7}[plane]}),"motion authored presentation depth "+plane)
+	check(strata.set_atmosphere_settings({"paused":false}),"motion atmosphere remains live")
+	await _settle_focus()
+	# These are the existing ordinary camera operations, with a closer starting
+	# view so actual actor shape can be judged rather than only a pilot label.
+	wb._zoom = 0
+	wb.set_camera(1)
+	await settle()
+	var hashes_before := await all_native_hashes()
+	var owner_before := play_identity()
+	var decorative_before := _decorative_identity()
+	var config := _configuration()
+	var config_json := _canonical(config)
+	var capture_count: int = strata.layer_owner.stats().native_snapshot_calls
+	var upload_count: int = strata.presenter.diagnostics().full_rg8_uploads
+	var state: Dictionary = host.physical_actor_session.workbench_actor_state(wb.selected_id())
+	var start_position: Vector2 = state.position
+	var actor_count: int = wb.applied.actors.size()
+	check(actor_count == 3,"motion has three ordinary authoritative actors")
+	host.optics_completed.clear()
+	host.optics_publications.clear()
+	host.optics_last_native_tick = -1
+	host.optics_observer_overflow = false
+	host.optics_observe = true
+	host.qualification_action = _route_action(state,Vector2.RIGHT,start_position)
+	check(wb.toggle_pause(),"motion starts ordinary native and physical progression")
+	var frames: Array[Dictionary] = []
+	var last_tick := int(host.physical_actor_session.tick)
+	var last_native := int(host.latest_snapshot.tick_index)
+	for index: int in MOTION_FRAMES:
+		var target_tick := last_tick+6
+		if not await until(func() -> bool: return int(host.physical_actor_session.tick) >= target_tick and int(host.latest_snapshot.tick_index) > last_native,"actual physical motion before capture "+str(index),30000): break
+		state = host.physical_actor_session.workbench_actor_state(wb.selected_id())
+		host.qualification_action = _route_action(state,Vector2.RIGHT,start_position)
+		if index == 4: wb.zoom_by(1)
+		if index == 8: wb.zoom_by(-1)
+		# Follow plus a restrained manual pan through the existing native view
+		# adapter. No body position, native geometry or collision is injected.
+		var pan := Vector2(lerpf(-18.0,24.0,float(index)/float(MOTION_FRAMES-1)),0.0)
+		wb._set_view(Vector2(state.position)-Vector2(host.current_view_size)*0.5+pan,host.current_view_size)
+		var filename := "motion-"+id+"-"+str(index).pad_zeros(2)+".png"
+		var size := Vector2i.ZERO
+		if diagnostic_headless:
+			await settle()
+		else:
+			var actual: Image = await capture(filename.trim_suffix(".png"))
+			size = actual.get_size()
+		var actor := _actor_state()
+		var point := Vector2(actor.position[0],actor.position[1])
+		var screen: Vector2 = strata.presenter.layer_to_screen(point,"play")
+		var recovered: Vector2 = strata.presenter.screen_to_layer(screen,"play")
+		var picking_error := recovered.distance_to(point)
+		check(picking_error < 0.01,"motion pan and zoom retain native Play picking "+str(index))
+		var identity := play_identity()
+		stable_identity(owner_before,identity,"motion frame "+str(index))
+		var optical: Dictionary = strata.presenter.optics_statistics()
+		if id == "gameplay_clarity": check(int(optical.actor_reveal_rectangles) >= 3,"clarity uses all three published physical actor bounds")
+		check(strata.active_layer() == "play" and _canonical(_configuration()) == config_json,"motion camera and piloting preserve edit authority and authored optical configuration")
+		frames.append({"index":index,"filename":filename,"sha256":"" if diagnostic_headless else FileAccess.get_sha256(output.path_join(filename)),
+			"actual_image_size":[size.x,size.y],"camera":_camera_state(),"actor_state":actor,
+			"native_tick":int(identity.native_tick),"rapier_tick":int(identity.rapier_tick),"captured_usec":Time.get_ticks_usec(),
+			"optics_statistics":optical,"picking_error":picking_error,
+			"submitted_action":{"move":[host.qualification_action.move.x,host.qualification_action.move.y],
+				"primary":bool(host.qualification_action.primary),"effort":float(host.qualification_action.effort)}})
+		last_tick = int(identity.rapier_tick)
+		last_native = int(identity.native_tick)
+	host.qualification_action = {}
+	check(wb.toggle_pause(),"motion pauses ordinary physical progression")
+	await until(idle,"motion final pause settles")
+	host.optics_observe = false
+	var owner_after := play_identity()
+	var captures_after: int = strata.layer_owner.stats().native_snapshot_calls
+	var uploads_after: int = strata.presenter.diagnostics().full_rg8_uploads
+	var hashes_after := await _evolved_native_hashes()
+	var decorative_after := _decorative_identity()
+	stable_identity(owner_before,owner_after,"complete native motion sequence")
+	check(decorative_before == decorative_after,"motion retains all decorative native owner identities and static revisions")
+	for plane: String in ["scripted","effects","background"]: check(hashes_before[plane] == hashes_after[plane],"motion preserves static native material plane "+plane)
+	check(captures_after == capture_count and uploads_after == upload_count,"motion optics and camera cause no decorative native recapture or upload")
+	check(frames.size() == MOTION_FRAMES and not host.optics_observer_overflow,"complete bounded actual motion sequence")
+	var completed: Array = host.optics_completed.duplicate(true)
+	check(completed.size() == int(owner_after.rapier_tick)-int(owner_before.rapier_tick),"motion observes every actual completed physical step")
+	for index: int in completed.size(): check(int(completed[index].rapier_tick) == int(owner_before.rapier_tick)+index+1,"motion actual completion observer has no gaps")
+	return {"profile":id,"configuration":config,"configuration_canonical_json":config_json,
+		"configuration_sha256":config_json.sha256_text(),"quality":strata.optics_state().quality,
+		"scope":"Instrumented actual framebuffer readback sequence. Review cadence is arbitrary; no rendering FPS or performance claim.",
+		"frames":frames,"actor_count":actor_count,"plane_native_hashes_before":hashes_before,"plane_native_hashes_after":hashes_after,
+		"identity_before":owner_before,"identity_after":owner_after,"decorative_identity_before":decorative_before,"decorative_identity_after":decorative_after,
+		"completed_physical_steps":completed,"native_capture_delta":captures_after-capture_count,"decorative_upload_delta":uploads_after-upload_count,
+		"native_pose_injected":false,"extra_worlds":0,"physical_gpu_acceptance":false,
+		"capture_state_scope":"Actor, camera and tick witnesses sampled in the same SceneTree turn immediately after actual framebuffer readback. Readback costs perturb cadence."}
+
+
+func _motion() -> void:
+	var source: Dictionary = _loaded_source.duplicate(true) if not _loaded_source.is_empty() else {"setup":wb.applied.duplicate(true),"document":strata.document()}
+	var first_actor: Dictionary = source.setup.actors[0]
+	var start: Vector2 = Vector2(first_actor.spawn[0],first_actor.spawn[1])
+	# Additional ordinary authored actors are explicit in this presentation-only
+	# motion fixture variant. Native terrain recipes remain byte-for-byte equal.
+	source.setup.actors = [first_actor.duplicate(true),Setup.instance(Setup.Fleet.stable_id(0),2,start+Vector2(-38,0)),
+		Setup.instance(Setup.Fleet.stable_id(0),3,start+Vector2(38,12))]
+	source.setup.next_id = 4
+	record.motion_registration = {"profiles":MOTION_PROFILES,"frames_per_sequence":MOTION_FRAMES,
+		"native_geometry":"Original scene material recipes unchanged; Play Sand/Water and physical actors evolve normally while running.",
+		"actor_variant":source.setup.actors.duplicate(true),"actor_count":3,
+		"presentation_variant":{"parallax_strength":0.65,"layer_depths":{"scripted":0.15,"effects":0.4,"background":0.7}},
+		"camera":"Ordinary close240x135 view; pan and existing zoom operations to480x270 and back.",
+		"frame_spacing":"At least six additional actual completed Rapier steps per frame; live framebuffer readbacks perturb time.",
+		"scope":"Instrumented presentation sequence, separate from all timing windows. No presented FPS or physical GPU acceptance."}
+	record.motion_sequences = []
+	for id: String in MOTION_PROFILES:
+		var sequence := await _motion_sequence(id,source)
+		if check(sequence.has("frames") and sequence.frames.size() == MOTION_FRAMES,"complete motion report "+id): record.motion_sequences.append(sequence)
+	check(record.motion_sequences.size() == MOTION_PROFILES.size(),"all registered motion profiles captured")
 
 
 func run() -> void:
@@ -467,7 +627,7 @@ func run() -> void:
 		"rendering_adapter":RenderingServer.get_video_adapter_name(),"process_id":OS.get_process_id(),
 		"diagnostic_headless":diagnostic_headless,"admission_target_ms":45000}
 	if not check(DisplayServer.get_name() != "headless" or diagnostic_headless,"actual display required unless explicitly diagnostic") \
-		or not check(phase in ["install","reopen","progression"] and not scene_id.is_empty() and not output.is_empty(),"explicit optics execution identity"):
+		or not check(phase in ["install","reopen","progression","motion"] and not scene_id.is_empty() and not output.is_empty(),"explicit optics execution identity"):
 		finish(); return
 	DirAccess.make_dir_recursive_absolute(output)
 	root.size = Vector2i(1600,1000)
@@ -509,6 +669,8 @@ func run() -> void:
 	check(_profile_ids.size() >= 8 and _profile_ids[0] == "classic","substantial editable catalogue retains Classic first")
 	if phase == "progression":
 		await _progression()
+	elif phase == "motion":
+		await _motion()
 	else:
 		_freeze_visual_motion()
 		_native_hashes = await all_native_hashes()

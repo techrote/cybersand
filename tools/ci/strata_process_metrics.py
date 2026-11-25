@@ -234,9 +234,13 @@ class ProcessTree:
                              "OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."}
 
 
-def execute(command: list[str], location: Path, environment: dict, timeout: float) -> dict:
+def execute(command: list[str], location: Path, environment: dict, timeout: float,
+            *, maximum_timeout: float = 600) -> dict:
     """The custody.execute API, with original logs plus bounded resource samples."""
-    custody.require(type(timeout) in (int, float) and math.isfinite(timeout) and 0 < timeout <= 600,
+    custody.require(type(maximum_timeout) in (int, float) and math.isfinite(maximum_timeout)
+                    and 0 < maximum_timeout <= 1800,
+                    "Invalid explicitly bounded observation ceiling")
+    custody.require(type(timeout) in (int, float) and math.isfinite(timeout) and 0 < timeout <= maximum_timeout,
                     "Invalid resource-observation process timeout")
     location.mkdir(parents=True, exist_ok=False)
     log = location / "process.log"

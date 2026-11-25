@@ -4,6 +4,7 @@ extends Control
 # Bounded presentation of immutable owner-published rigs. No World/Input reads,
 # articulated bodies or presentation-derived collisions live here.
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
+const PresentationBounds = preload("res://scripts/actor_presentation_bounds.gd")
 const STRIDE: int = 16
 const RIG_STRIDE: int = 40
 const MAX_ACTORS: int = 8
@@ -39,6 +40,10 @@ func world_to_overlay(point: Vector2) -> Vector2:
 	if _view_size.x <= 0.0 or _view_size.y <= 0.0:
 		return Vector2.ZERO
 	return (point - _origin) * size / _view_size
+
+
+func presentation_bounds(limit: int = MAX_ACTORS) -> Array[Rect2]:
+	return PresentationBounds.prototype(_states, _rig_states, limit)
 
 
 func _value(index: int, field: int) -> float:

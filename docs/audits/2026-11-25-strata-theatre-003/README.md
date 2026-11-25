@@ -51,3 +51,11 @@ host-variance results. Require actual graphical captures, native readback and
 resource/lifecycle evidence. Windows package delivery requires the actual
 pristine shipped commands on Windows; owner Windows 11/NVIDIA acceptance stays
 separate. This checkpoint makes no completion or measured performance claim.
+
+## Integrated full-campaign checkpoint
+
+The [unified machine-readable register](experiment-register.json) joins shader, atmosphere, authoring, native and performance hypotheses to exact implementation digests and the two completed published campaigns. Source `a57aaeea` passed actual Underworks913install/415fresh-reopen checks on both hosted platforms, with564001exactClassic world-view pixels. Those receipts do not qualify the subsequent dense-kernel, multiple-actor or motif-clarity additions.
+
+Current accepted main was refreshed to `c8421a81b8f7f61516ed055f3200b49aee57bd65`; #776 remains open Draft at its original archive. #785 therefore retains the explicit #776 stack. Native runtime inputs remain unchanged; no active programme was imported or promoted.
+
+Local final native preflight passed842checks with explicit headless scope. Current documentation/repository checks and historical M11 integrity passed; the six new retrieval routes were found within topfive, with source-fact review separate from lexical ranking. Full graphical/native/performance/package qualification is requested by sequence3; outcomes remain pending until original artifacts are independently verified.

@@ -151,7 +151,10 @@
     "systems/strata-workbench.md",
     "systems/strata-environments.md",
     "systems/strata-authoring.md",
-    "operations/strata-workbench-evaluation.md"
+    "operations/strata-workbench-evaluation.md",
+    "systems/strata-optics.md",
+    "operations/strata-optical-composition.md",
+    "operations/strata-optics-evaluation.md"
   ],
   "navigation": [
     "README.md",

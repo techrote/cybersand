@@ -1,0 +1,167 @@
+{
+  "schema": "strata3-unified-experiment-register-v1",
+  "stage": "integrated application awaiting full source-frozen graphical and portable qualification",
+  "draft_hold": true,
+  "principal_qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "principal_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "accepted_main_refresh": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+  "accepted_main_refresh_utc": "2026-11-25T22:50:12Z",
+  "stacked_pr": 785,
+  "base_pr": 776,
+  "implementation_inputs_sha256": {
+    "godot/shaders/strata_optical_plane.gdshader": "b2dd5f0f2bf8b85c81444471605a1e90fde2fc804025b34014cdd023aaef137a",
+    "godot/scripts/depth/strata_optical_renderer.gd": "efb823dd079a1864bae1fa6a133b4e05316f62c77f820bd173f0a94fdb7acfc1",
+    "godot/scripts/depth/strata_optical_profiles.gd": "91d696a1feac21638df8e207be4c8fe7d99a3a849dd6801705e95fda0784765e",
+    "godot/scripts/depth/strata_optics_configuration.gd": "638d8fa83a41167a2e7402de2437d10a1a4f04329451e0ec5c14560165637397",
+    "godot/scripts/depth/strata_optics_presets.gd": "693575bf302fb9f238de3a61ff4e061f6b2f37e527618776be9d2a2440094807",
+    "godot/scripts/depth/workbench_strata_presentation.gd": "e2ff24a17ad153a9df371104f81d6fa5216197ffa53a6db611d005794f0f971b",
+    "godot/scripts/depth/workbench_strata_controller.gd": "b8fbc0b8a207194c5c0d3128bc5418e7b04fc701e350a23622e60235ce14d5ed",
+    "godot/scripts/depth/workbench_strata_optics_panel.gd": "192ff99cbb5c3e287e4599115f43ac5615ca16e32873a40050fa223d9a9558b7",
+    "godot/scripts/actor_presentation_bounds.gd": "928f511488669d9cc623004cd72f7cb082ac85ac94d5766e5247edfbc164c0c0",
+    "godot/scripts/depth/strata_atmosphere.gd": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f",
+    "godot/tools/qualify_workbench_strata3.gd": "294b57d418e7f0a763823f05fec80248a355ab16e149a4fcc3812eb54655c195",
+    "tools/ci/qualify_strata3_workbench.py": "0c77238e1d69f311783cd5ceaf4008a683ef699a21e874caf34c592d832318b5",
+    "tools/ci/strata3_predecessor_compare.py": "6686663cefe0a12d4ad57b7a731d543eb3ff323dcd952773565894a051786ce2",
+    "tools/build_strata3_gallery.py": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b",
+    "tools/package_strata3_workbench.py": "2ef3d9cd6f529b6a5af7a6f506371012cd61fe99b405ddfade4f514a5b51f1df"
+  },
+  "unchanged_original_scene_bytes_sha256": {
+    "godot/data/strata2/orbital-terminal.json": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+    "godot/data/strata2/neon-rain-arcology.json": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+    "godot/data/strata2/industrial-underworks.json": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+    "godot/data/strata2/abyss-foundry.json": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+    "godot/data/strata2/vertical-transfer-spine.json": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262"
+  },
+  "completed_campaigns": [
+    {
+      "source": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+      "run": 45711742479,
+      "scope": "shader",
+      "linux_artifact": 15066339610,
+      "windows_artifact": 15066274858,
+      "renderer_checks_each": 59
+    },
+    {
+      "source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "run": 45712854522,
+      "scope": "Underworks matched profiles and actual UI/fresh reopen",
+      "linux_artifact": 15067809163,
+      "windows_artifact": 15067754459,
+      "install_checks_each": 913,
+      "reopen_checks_each": 415,
+      "classic_world_pixels_exact": 564001
+    }
+  ],
+  "experiments": [
+    {
+      "id": "S003-01",
+      "treatment": "Explicit authored plane depth and discrete focal modes",
+      "hypothesis": "Use authoritative plane identities for stable spatial cues without touching native geometry.",
+      "disposition": "selected",
+      "qualification_scope": "configuration/focus transitions; actual initial shader and Underworks controls passed; final dense source pending"
+    },
+    {
+      "id": "S003-02",
+      "treatment": "Dense positive binomial cross aperture",
+      "hypothesis": "Eliminate sparse-kernel checker contrast return while retaining nearest-cell and alpha boundaries.",
+      "disposition": "selected-pending-final-graphical",
+      "qualification_scope": "Low1/5reads, Balanced3/13reads, High6/25reads; sparse expanding rings retained as rejected lens implementation"
+    },
+    {
+      "id": "S003-03",
+      "treatment": "Silhouette-preserving detail suppression",
+      "hypothesis": "Subordinate interior frequency contrast without erasing architectural coverage.",
+      "disposition": "selected-pending-frequency-witness",
+      "qualification_scope": "Initial alpha witness passed; flat rectangles were explicitly insufficient to prove frequency suppression"
+    },
+    {
+      "id": "S003-04",
+      "treatment": "Tonal/chromatic hierarchy and atmospheric transmission",
+      "hypothesis": "Combine modest value, saturation, tint and exponential scattering rather than relying on blur.",
+      "disposition": "selected",
+      "qualification_scope": "Eleven editable profiles; original Underworks randomized-label critiques favour different crisp balances"
+    },
+    {
+      "id": "S003-05",
+      "treatment": "Play-mask architectural shadows",
+      "hypothesis": "Offset existing published solid material masks to separate close rear construction.",
+      "disposition": "selected",
+      "qualification_scope": "Initial real positive/negative solid-ID shader checks passed; no native occupancy scans or physical light transport"
+    },
+    {
+      "id": "S003-06",
+      "treatment": "Local highlight diffusion",
+      "hypothesis": "Spread selected bright machinery highlights within one bounded plane kernel.",
+      "disposition": "optional",
+      "qualification_scope": "Initial half-alpha hue witness passed; actual isolated impulse and new-scene light review pending"
+    },
+    {
+      "id": "S003-07",
+      "treatment": "Light shafts and local pools",
+      "hypothesis": "Use existing bounded atmosphere nodes to connect native architecture across depth.",
+      "disposition": "selected-pending-showcase-review",
+      "qualification_scope": "8/4bands per motif, existing12region384motif limit, static by default; geometric band appearance retained as risk"
+    },
+    {
+      "id": "S003-08",
+      "treatment": "Local silhouette/actor clarity and motif suppression",
+      "hypothesis": "Preserve physical edge and actor visibility without changing Play colour or opacity.",
+      "disposition": "selected-pending-multiple-actor-graphical",
+      "qualification_scope": "Existing published8actor/64part bounds; count rather than identity-number bound; explicit assistance covers excluded planes; motifopacity update-only"
+    },
+    {
+      "id": "S003-09",
+      "treatment": "Optical parallax and single-draw wipe",
+      "hypothesis": "Convey depth during ordinary pan/zoom with unchanged Play mapping.",
+      "disposition": "selected",
+      "qualification_scope": "Intermediate wipe uses Classic material alignment and Classic procedural motifs; no duplicate rendering"
+    },
+    {
+      "id": "S003-10",
+      "treatment": "Optics Lab and CYSSTRAT v3/preset domains",
+      "hypothesis": "Make experiments editable and reusable without storing temporary inspection as scene art.",
+      "disposition": "selected",
+      "qualification_scope": "Atomic named presets, quality preference separate; initial Underworks actual UI and fresh reopen passed"
+    },
+    {
+      "id": "S003-11",
+      "treatment": "Nine native scenes and adversarial truth probes",
+      "hypothesis": "Judge false platforms, passages, architectural detail and actor visibility against actual native authority.",
+      "disposition": "selected-pending-full-corpus",
+      "qualification_scope": "Originalfive exact geometry hashes preserved; threenewshowcases andreadabilityfixture; motion adds3ordinaryactors explicitly"
+    },
+    {
+      "id": "S003-12",
+      "treatment": "Matched completed-physics and predecessor comparisons",
+      "hypothesis": "Separate appearance/per-frame callbacks from real physical progression and disabled-path regression.",
+      "disposition": "qualification-pending",
+      "qualification_scope": "15windows on1024x768challenge;6interleaved original934/candidateClassic processes on1024squareUnderworks; allrawsteps/tails retained"
+    }
+  ],
+  "specialist_registers": [
+    "optical-renderer-experiments.json",
+    "b-optical-experiments.json"
+  ],
+  "independent_reviews": [
+    "blind-review-a-underworks.json",
+    "blind-review-a-underworks-unmasked.json",
+    "b-underworks-blind-review.json",
+    "b-underworks-reveal-review.json",
+    "c-smoke-visual-review.json"
+  ],
+  "preserved_negative_results": [
+    "Original five extracted Windows45second admission misses:51619,66316,66200,59958,54804ms",
+    "Sparse aperture checker contrast returns at even radii; replaced, oldcapture/source preserved",
+    "Typed Array[Rect2] dynamic call failure invalidated headless diagnostic despite positive wrapper checks",
+    "Initial typed progression collector assignment caused script errors; reader rejects errors even with exit0",
+    "Overview actor body remains too small; label/ring visibility is not body visibility",
+    "Root environment socket creation prohibited actual local display; hosted actual backends used without physicalNVIDIA claim"
+  ],
+  "remaining_acceptance": [
+    "Final dense shader graphics, allnine scenes andmotion",
+    "Balanced physical cost and matched originalClassic comparison",
+    "Pristine extracted Windows commands and payload",
+    "Physical Windows11/NVIDIA owner and artistic acceptance"
+  ],
+  "notes": "Implementation file digests identify the integrated source before publication. Final qualification and evaluator manifests bind exact published application commit/tree. Local specialist commit annotations are research checkpoints; they are not substituted for executed published source identities."
+}

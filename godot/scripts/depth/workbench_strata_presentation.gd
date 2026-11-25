@@ -222,6 +222,7 @@ func apply_optics(configuration: Dictionary) -> bool:
 	if not _document.has("atmosphere"): _document["atmosphere"] = AtmosphereProfiles.default_configuration()
 	if not _document.has("authoring"): _document["authoring"] = AuthoringProvenance.default_configuration()
 	_optics.configure(_document.optics, str(_document.presentation.active), _document.planes, _enabled)
+	_apply_optical_atmosphere()
 	sync_view()
 	return _accept()
 
@@ -305,8 +306,20 @@ func sync_view() -> void:
 		drawable.position = _logical_for_layer(Vector2.ZERO, id) / _view_size * _content.size
 		drawable.size = Vector2(extent) / _view_size * _content.size
 		_atmospheres[id].scale = drawable.size / Vector2(extent)
+	var actor_bounds: Array[Rect2] = []
+	if _optics.actor_reveal_active(): actor_bounds = _presented_actor_bounds()
 	_optics.sync_view(extent, _origin, _view_size,
-		float(_document.get("presentation", {}).get("parallax_strength", 0.75)), _private_shader)
+		float(_document.get("presentation", {}).get("parallax_strength", 0.75)), _private_shader, actor_bounds)
+
+
+func _presented_actor_bounds() -> Array[Rect2]:
+	var bounds: Array[Rect2] = []
+	for property: String in ["physical_actor_overlay", "actor_prototype_overlay"]:
+		var overlay: Variant = host.get(property)
+		if not is_instance_valid(overlay) or not overlay.visible or not overlay.has_method("presentation_bounds"): continue
+		bounds.append_array(overlay.presentation_bounds(8-bounds.size()))
+		if bounds.size() >= 8: break
+	return bounds
 
 func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
 	# Input may follow a pan/zoom/resize in the same event batch, before our
@@ -403,10 +416,20 @@ func _apply_visibility() -> void:
 			_surfaces[id].render_target_update_mode = SubViewport.UPDATE_ONCE
 	_optics.configure(_document.get("optics", {}), str(_document.get("presentation", {}).get("active", "play")),
 		_document.get("planes", []), _enabled)
+	_apply_optical_atmosphere()
+
+
+func _apply_optical_atmosphere() -> void:
+	# Three existing nodes only, on authored/inspection updates. No recurring
+	# callback, redraw source capture, material change or atmosphere recompile.
+	for id: String in REAR_IDS:
+		var colour := Color(1.0,1.0,1.0,_optics.atmosphere_opacity(id))
+		if _atmospheres[id].self_modulate != colour: _atmospheres[id].self_modulate = colour
 
 
 func set_optics_inspection(patch: Dictionary) -> bool:
 	if not _optics.set_inspection(patch): return _reject("Unsupported optical inspection settings")
+	_apply_optical_atmosphere()
 	sync_view()
 	return _accept()
 

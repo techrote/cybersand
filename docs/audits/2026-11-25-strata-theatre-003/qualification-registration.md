@@ -90,6 +90,35 @@ repeated profile switching, scene replacement, disable and teardown. RSS alone
 cannot establish GPU residency or memory leaks; include actual resource identity
 and count observations.
 
+### Original application paired observation
+
+The dedicated `strata3_predecessor_compare.py` comparison uses the exact qualified
+`934cc0c0eef70dad528155e9a92eebe25e2757eb` application and candidate Classic in the
+same hosted job. Reconstruct the original Godot project from its Git archive;
+materialize only its exact native/Rapier LFS bytes after checking all native
+source inputs. Load the same separately hashed external diagnostic SceneTree
+against both projects. Never replace original production scripts with successor
+scripts. Preserve both project identities before and after execution.
+
+Run Industrial Underworks in six fresh processes, ordered predecessor/candidate,
+candidate/predecessor, predecessor/candidate. Each process has isolated user data,
+the same 1600×1000 Overview camera, paused atmosphere, six physically paused
+warm-up callbacks, and90display callbacks of actual controlled physical movement.
+Require exact initial native material hashes, actor pose and world-view pixels
+across the six runs. The hook after the existing completed Rapier step records
+every actual completion; immutable native snapshots are observed without
+additional requests. Callback timing cannot substitute for either progression
+measure. Retain raw process logs, CPU/RSS samples, all step timestamps and native
+publications, actual image bytes and all admission misses.
+
+Apply the registered rate/p95 thresholds above to the three independent windows
+per source. Report per-window populations and spread. An observed threshold pass
+does not make this short hosted observation sustained physical hardware
+qualification. Original002 admission targets and physical owner acceptance stay
+open. The main optical cohort uses Balanced quality for Classic, Gameplay
+Clarity, Architectural and Cinematic Deep Focus, and **High** quality for the
+explicitly expensive optional Diorama case.
+
 ## Independent perceptual assessment
 
 Compare actual matched application captures and movement sequences. Record
@@ -112,3 +141,28 @@ paint/erase, native import/composition, Undo/Redo, Pause/Step, replacement,
 Save/Load, fresh-process reopen, retired resources and shutdown. Record any
 unexecuted cell explicitly. Existing Strata 002 passes retain their original
 source scope and cannot be counted as new successor execution.
+
+## Separate actual motion capture population
+
+The `motion` phase is a separate presentation observation with deliberately
+instrumented framebuffer readbacks, never a performance sample. It records ten
+actual PNG frames for each of Classic, Gameplay Clarity, Cinematic Deep Focus
+and Diorama. It uses three ordinary authored Midge instances on the existing
+challenge terrain, explicit existing layer depths0.15/0.4/0.7 and parallax
+strength0.65, and the ordinary close240×135 view with pan/zoom to480×270 and back.
+These scene variants are recorded in the report; original scene material recipes
+and all four World ownership roles remain unchanged. Only the selected actor
+receives the existing bounded pilot action. No body pose is injected.
+
+Require at least six further actual completed Rapier steps before each frame,
+monotonic actual native/physical ticks, exact saved-image hashes and decoded
+image extent, actor/camera/configuration witnesses and accurate Play picking.
+Keep all actual step records and native owner identities. Static decorative
+material hashes must remain equal; Play hashes may evolve because Sand/Water
+and physical interaction run normally. The sequence must not incur decorative
+native captures or uploads between its deliberate before/after readbacks.
+
+The offline gallery may replay these original frames at an explicitly arbitrary
+inspection cadence. That playback speed is not recorded gameplay FPS, and the
+readback-perturbed sequence is not a substitute for sustained interactive owner
+play on physical hardware.

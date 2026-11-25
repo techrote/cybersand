@@ -12,6 +12,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Strata Theatre in ordinary Workbench
 
+**STRATA-THEATRE-003 Draft/HOLD** adds the integrated [Strata Optics Lab](systems/strata-optics.md),
+eleven editable profiles and presentation-only depth, atmosphere and clarity controls.
+Use the [optical composition guide](operations/strata-optical-composition.md) and
+[portable owner walkthrough](operations/strata-optics-evaluation.md). The original
+five native layouts and exact Classic presentation remain the reference; actual
+source-bound graphical evidence and physical owner acceptance are separate.
+
 The separately developed **STRATA-THEATRE-002 Draft/HOLD successor** adds a
 [native environment and atmosphere library](systems/strata-environments.md).
 Its five scenes, reusable parts and explicit raster masks are candidate content;

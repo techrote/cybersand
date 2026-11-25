@@ -93,3 +93,58 @@ the complete currently admitted native Solid set (excluding reserved ID10),
 including all building IDs38–131; gases, liquids and powders remain negative.
 The focused graphical test now contains eleven material-mask witnesses. Glass
 uses the same stylised solid mask; physical glass transmission is not modelled.
+
+## Published actor reveal extension
+
+The initial primary sampled-player rectangle did not cover the ordinary Midge
+and other physical Workbench actors. The extension reads only the data already
+held by `physical_actor_overlay` and `actor_prototype_overlay`. A pure
+`actor_presentation_bounds.gd` helper merges the displayed transforms into at
+most eight axis-aligned actor bounds. It inspects at most 64 physical render
+parts, matching the current admitted native mask/part budget, or eight copied
+prototype records. Existing rotated and interpolated display poses are reused;
+the helper does not call the actor session, Rapier, World, worker or input.
+
+The presenter asks for those bounds only while clarity assistance is active.
+The same three plane shaders receive eight fixed rectangle slots and a live
+count. A retired/empty publication clears that count immediately. The original
+sampled-player path remains available. No actor colour, transform, collision,
+edit target or physical opacity changes. This is local attenuation of rear
+content; it creates no front-of-Play plane and adds no texture or render pass.
+
+The conservative union can include empty space between articulated parts. That
+is a presentation limitation, not collision information. The scope is eight
+published actors plus the primary sampled player, without claiming visibility
+for arbitrary unregistered overlays. Multiple rectangles add bounded scalar
+shader work only in the explicit clarity path, requiring comparative timing.
+
+The pure helper's pinned-engine headless test passes 26 checks covering rotated
+compound bounds, legacy and extended prototype records, nonfinite/malformed
+inputs, source immutability, eight-actor and 64-part limits, and empty retirement.
+The focused renderer still passes its 18 headless checks. New actual-renderer
+assertions and an `actor-reveal.png` capture check local attenuation and removal
+of stale reveal; these need a subsequent hosted graphical source identity.
+
+Specialist C's integrated diagnostic caught a real adapter error after this
+extension: a ternary expression produced an untyped empty `Array` when clarity
+was off, while the dynamically called renderer required `Array[Rect2]`. Its
+positive assertion count did not override repeated runtime errors. The fix
+(`41adff8d`) uses an explicitly typed local array before the call. This is
+retained as a failed integration attempt; the pure helper and renderer tests
+alone had not exercised that presenter boundary.
+
+## Frequency and quality witness extension
+
+The first hosted 59-check source (`12b6beed`, campaign `45711742479`) passed its
+actual alpha checks on both ANGLE/Microsoft Basic and llvmpipe. All six PNGs were
+byte-identical. Independent A/B inspection also found an evidence limitation:
+flat rectangles cannot establish frequency-selective detail suppression.
+
+The focused test now includes an actual one-cell checkerboard, isolated white
+impulse, texture-edge impulse and partial-alpha blue patch. It checks reduced
+interior checker contrast with exact retained alpha; bounded white diffusion;
+high-quality diagonal sampling at the six-cell maximum; low-quality one-cell
+sampling; parent opacity applied once; and pixel-exact Classic wipe algebra
+under nonzero legacy haze and parent opacity. Six additional original captures
+record these distinct paths. The extension parses/runs its 18 headless checks
+locally but its new pixel assertions require the next hosted graphical run.

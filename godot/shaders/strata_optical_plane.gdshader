@@ -11,6 +11,8 @@ uniform float comparison_wipe = 1.0;
 uniform int quality_tier = 1;
 uniform int lens_method = 0; // 0 pixel aperture, 1 highlight diffusion, 2 detail.
 uniform float defocus_radius = 0.0; // Native material cells, bounded to six.
+uniform float aperture_weights[7];
+uniform int aperture_extent = 0;
 uniform float detail_suppression = 0.0;
 uniform float plane_contrast = 1.0;
 uniform float plane_saturation = 1.0;
@@ -33,6 +35,8 @@ uniform float shadow_strength = 0.0;
 uniform vec2 shadow_offset = vec2(5.0, 8.0);
 uniform float shadow_softness = 0.0;
 uniform vec4 player_rectangle = vec4(-4096.0, -4096.0, 0.0, 0.0);
+uniform vec4 actor_rectangles[8];
+uniform int actor_rectangle_count = 0;
 varying vec4 vertex_colour;
 
 void vertex() {
@@ -52,33 +56,23 @@ vec3 straight_colour(vec4 source) {
     return source.a > 0.00001 ? source.rgb / source.a : vec3(0.0);
 }
 
-// Integer texel centres prevent bilinear colour bleeding from transparent
-// borders. Adjacent integer kernels crossfade for continuous focus transitions.
-vec4 aperture(sampler2D source, vec2 point, float radius, vec4 centre) {
-    if (radius < 0.5) return centre;
-    vec4 sum = centre * 4.0;
-    sum += sample_surface(source, point + vec2(radius, 0.0));
-    sum += sample_surface(source, point - vec2(radius, 0.0));
-    sum += sample_surface(source, point + vec2(0.0, radius));
-    sum += sample_surface(source, point - vec2(0.0, radius));
-    float weight = 8.0;
-    if (quality_tier >= 2) {
-        sum += sample_surface(source, point + vec2(radius, radius)) * 0.5;
-        sum += sample_surface(source, point + vec2(-radius, radius)) * 0.5;
-        sum += sample_surface(source, point + vec2(radius, -radius)) * 0.5;
-        sum += sample_surface(source, point - vec2(radius, radius)) * 0.5;
-        weight = 10.0;
-    }
-    return sum / weight;
-}
-
 vec4 focused_sample(sampler2D source, vec2 point, float radius, vec4 centre) {
-    float bounded = clamp(radius, 0.0, quality_tier == 0 ? 1.0 : 6.0);
-    float lower = floor(bounded);
-    float blend = fract(bounded);
-    vec4 low = aperture(source, point, lower, centre);
-    if (blend < 0.001) return low;
-    return mix(low, aperture(source, point, lower + 1.0, centre), blend);
+    // Dense positive binomial cross: sample every integer distance up to the
+    // bounded support. Adjacent integer weight rows interpolate continuously.
+    // Unlike sparse expanding rings, fine contrast cannot return at even radii.
+    // One shared centre + four taps per distance; maximum25 source reads.
+    if (radius <= 0.0 || aperture_extent == 0) return centre;
+    vec4 sum = centre * aperture_weights[0];
+    for (int index = 1; index <= 6; index++) {
+        if (index > aperture_extent) break;
+        float offset = float(index);
+        vec4 neighbours = sample_surface(source, point + vec2(offset, 0.0))
+            + sample_surface(source, point - vec2(offset, 0.0))
+            + sample_surface(source, point + vec2(0.0, offset))
+            + sample_surface(source, point - vec2(0.0, offset));
+        sum += neighbours * aperture_weights[index] * 0.5;
+    }
+    return sum;
 }
 
 float play_material(vec2 point) {
@@ -119,11 +113,20 @@ float local_silhouette(vec2 point) {
     return max(neighbours - centre, 0.0);
 }
 
-float player_reveal(vec2 point) {
-    if (player_rectangle.z <= 0.0 || player_rectangle.w <= 0.0) return 0.0;
-    vec2 centre = player_rectangle.xy + player_rectangle.zw * 0.5;
-    vec2 distance_to_box = max(abs(point - centre) - player_rectangle.zw * 0.5, vec2(0.0));
+float rectangle_reveal(vec2 point, vec4 rectangle) {
+    if (rectangle.z <= 0.0 || rectangle.w <= 0.0) return 0.0;
+    vec2 centre = rectangle.xy + rectangle.zw * 0.5;
+    vec2 distance_to_box = max(abs(point - centre) - rectangle.zw * 0.5, vec2(0.0));
     return 1.0 - smoothstep(2.0, 9.0, length(distance_to_box));
+}
+
+float actor_reveal(vec2 point) {
+    float reveal = rectangle_reveal(point, player_rectangle);
+    for (int index = 0; index < 8; index++) {
+        if (index >= actor_rectangle_count) break;
+        reveal = max(reveal, rectangle_reveal(point, actor_rectangles[index]));
+    }
+    return reveal;
 }
 
 vec4 classic_output(vec4 source) {
@@ -167,7 +170,7 @@ void fragment() {
         }
         float separation = 0.0;
         if (clarity_strength > 0.0 && play_mask_available) {
-            separation = max(local_silhouette(point + play_offset), player_reveal(point + play_offset));
+            separation = max(local_silhouette(point + play_offset), actor_reveal(point + play_offset));
         }
         colour *= 1.0 - clarity_strength * (0.16 + 0.36 * separation);
         optical = vec4(clamp(colour, vec3(0.0), vec3(1.0)) * optical.a, optical.a);

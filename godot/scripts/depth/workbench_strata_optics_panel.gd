@@ -77,17 +77,17 @@ func mount(mediator: Node, tabs: TabContainer) -> void:
 	_rows.add_child(_profile_description)
 	var comparisons := HBoxContainer.new()
 	_rows.add_child(comparisons)
-	_button(comparisons, "Classic", "Restore exact Strata 002 optics-disabled settings.", func() -> void: _invoke("reset_optics"))
+	_button(comparisons, "Classic", "Reset the authored scene presentation to exact Strata 002 optics-disabled settings. Use Bypass for a temporary comparison that preserves your settings.", func() -> void: _invoke("reset_optics"))
 	_bypass.text = "Bypass / before"
 	_bypass.tooltip_text = "Temporary exact Classic view. Your authored optical settings remain available when released and are not overwritten."
 	_bypass.toggled.connect(func(value: bool) -> void: _inspect({"bypass":value}))
 	comparisons.add_child(_bypass)
 	_clarity.text = "Show physical Play"
-	_clarity.tooltip_text = "Temporary non-colour-only readability assistance. Reduce competing decorative content without changing physical material opacity."
+	_clarity.tooltip_text = "Temporary readability assistance through contrast and visibility. Suppress competing rear architecture and reduce authored atmosphere visibility; physical materials stay unchanged. Bypass restores Classic."
 	_clarity.toggled.connect(func(value: bool) -> void: _inspect({"clarity":value}))
 	_rows.add_child(_clarity)
 	_wipe = _number(_rows, "Processed share", 0.0, 1.0, 0.01,
-		"One-draw comparison: 0 is Classic, 1 is fully processed. Intermediate values reveal a vertical comparison boundary and temporarily match Classic parallax; geometry and camera are shared.",
+		"0 is Classic, 1 is fully processed. Processed architecture occupies the left side of the screen. During a split, authored atmosphere stays Classic across the view and parallax matches Classic; geometry and camera are shared.",
 		func(value: float) -> void: _inspect({"wipe":value}))
 	_add_global(_rows, "strength", "Overall strength", 0.0, 1.0, 0.01, "Blend optical treatment with the reference appearance; native colours are unchanged.")
 	_heading(_rows, "Lens and focus")
@@ -101,7 +101,7 @@ func mount(mediator: Node, tabs: TabContainer) -> void:
 	_rows.add_child(_focal_plane)
 	_add_global(_rows, "focus_distance", "Focus distance", -1.0, 2.0, 0.01, "Artistic optical-depth units. Active in manual focus mode; separate from native cell coordinates.")
 	_add_global(_rows, "dof_width", "Sharp focus width", 0.0, 2.0, 0.01, "Optical-depth interval retained in focus. Wider values keep more architectural planes crisp.")
-	_add_global(_rows, "defocus", "Defocus amount", 0.0, 3.0, 0.05, "Aperture-like artistic strength. Radius also depends on distance from focus and per-plane response, capped at six source cells (one at Low). Play is never defocused.")
+	_add_global(_rows, "defocus", "Defocus amount", 0.0, 3.0, 0.05, "Aperture-like artistic strength. Radius also depends on distance from focus and per-plane response. Limits: Low one source cell, Balanced three, High six. Play is never defocused.")
 	_add_global(_rows, "transition_speed", "Focus response", 0.0, 12.0, 0.1, "Focus interpolation response per second. Zero switches immediately; larger values settle faster. No mouse-driven focus hunting.")
 	_inspection_focus.add_item("Inspection focus · none")
 	for title: String in NAMES: _inspection_focus.add_item("Inspect · " + title)
@@ -111,13 +111,13 @@ func mount(mediator: Node, tabs: TabContainer) -> void:
 	_heading(_rows, "Depth and atmosphere")
 	_add_global(_rows, "tonal", "Tonal separation", 0.0, 1.0, 0.01, "Compress distant contrast and preserve the physical silhouette hierarchy.")
 	_add_global(_rows, "chromatic", "Colour separation", 0.0, 1.0, 0.01, "Depth-weighted saturation and tint treatment. Readability must remain useful without relying on colour alone.")
-	_add_global(_rows, "atmosphere", "Atmospheric density", 0.0, 2.0, 0.01, "Artistic optical attenuation toward the scattering colour; existing authored steam/rain regions remain separate.")
+	_add_global(_rows, "atmosphere", "Atmospheric density", 0.0, 2.0, 0.01, "Blend architectural material colours toward the scattering colour. The Atmosphere tab separately controls authored steam, rain, light shafts and pools.")
 	_add_global(_rows, "illumination", "Light diffusion", 0.0, 2.0, 0.01, "Bounded decorative highlight spread. Does not introduce native lighting or full-screen bloom.")
-	_add_global(_rows, "clarity", "Play separation", 0.0, 1.0, 0.01, "Suppress competing rear detail around authoritative Play features without changing Play materials.")
+	_add_global(_rows, "clarity", "Play separation", 0.0, 1.0, 0.01, "Suppress competing rear architecture around Play features and actors. Fully processed views also reduce authored atmosphere visibility. Play materials stay unchanged.")
 	_quality.add_item("Quality · low")
 	_quality.add_item("Quality · balanced")
 	_quality.add_item("Quality · high / experimental")
-	_quality.tooltip_text = "Application performance preference, separate from the authored scene. High enables the largest bounded sample set."
+	_quality.tooltip_text = "Application performance preference, separate from the authored scene. Low: up to one source-cell radius and five samples. Balanced: three cells and thirteen samples. High: six cells and twenty-five samples."
 	_quality.item_selected.connect(func(index: int) -> void:
 		if not _syncing: _invoke("set_optics_quality", [["low","balanced","high"][index]]))
 	_rows.add_child(_quality)
@@ -156,7 +156,7 @@ func mount(mediator: Node, tabs: TabContainer) -> void:
 	_rows.add_child(_plane_advanced)
 	_plane_advanced_toggle.toggled.connect(func(value: bool) -> void: _plane_advanced.visible = value)
 	_add_plane(_plane_advanced, "glow", "Light response", 0.0, 2.0, 0.01, "Relative contribution to bounded decorative highlight spreading.")
-	_add_plane(_plane_advanced, "opacity", "Optical opacity", 0.0, 1.0, 0.01, "Additional presentation opacity while optical processing is active; original plane visibility remains authoritative.")
+	_add_plane(_plane_advanced, "opacity", "Optical opacity", 0.0, 1.0, 0.01, "Additional architectural visibility while optics is active. Fully processed views also apply this to authored atmosphere; split comparison keeps atmosphere at Classic visibility. Native editing permissions do not change.")
 	_add_plane(_plane_advanced, "parallax", "Parallax response", 0.0, 2.0, 0.01, "Optical multiplier of this decorative plane's existing camera parallax. Play mapping remains exact.")
 	var tint_row := HBoxContainer.new()
 	_plane_advanced.add_child(tint_row)

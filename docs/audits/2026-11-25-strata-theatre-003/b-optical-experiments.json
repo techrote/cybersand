@@ -29,16 +29,77 @@
         "industrial-underworks",
         "vertical-transfer-spine"
       ],
-      "comparative_captures": [],
+      "comparative_captures": [
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-classic.png",
+          "profile": "classic",
+          "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-architectural.png",
+          "profile": "architectural",
+          "sha256": "38b87def4195903bb143a6496968f0cef2bfa253b2a0b74f9e2878cb66329ec1"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-gameplay_clarity.png",
+          "profile": "gameplay_clarity",
+          "sha256": "41758ed292112dfd0deb616dac6a0182ef2db74c100050572cec0290b3c6c249"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-cinematic_deep_focus.png",
+          "profile": "cinematic_deep_focus",
+          "sha256": "c0302a611fc5a94f6e5322b77e175d596127f862cb38c01d5fd62f089479441b"
+        }
+      ],
       "performance_evidence": [],
       "correctness_evidence": [
-        "Profile strict-schema/native-Play-protection/value-copy suite97 checks passed at pinned official Godot4.7; no live rendered conclusion."
+        "Profile strict-schema/native-Play-protection/value-copy suite97 checks passed at pinned official Godot4.7; no live rendered conclusion.",
+        "Underworks actual913-check install/415-check fresh reopen passed on hosted Linux and Windows; exact four-plane native hashes and saved optics preserved. Source/configuration/capture custody independently checked byB; see b-underworks-reveal-review.json."
       ],
       "artistic_assessment": {
-        "status": "pending-actual-capture-review",
-        "human_acceptance": false
+        "status": "provisional-source-bound-single-scene-review",
+        "human_acceptance": false,
+        "review": "b-underworks-blind-review.json",
+        "reveal": "b-underworks-reveal-review.json",
+        "limitation": "Initial scores are unchanged after reveal. Actor readability relies on label/ring; rear false routes remain. Broader environments and movement remain open."
       },
-      "disposition": "implemented-pending-integrated-graphical-review"
+      "disposition": "implemented-provisional-artistic-evidence-awaiting-final-corpus"
     },
     {
       "id": "B-LENS-DISTINCTION",
@@ -65,16 +126,77 @@
         "neon-rain-arcology",
         "industrial-underworks"
       ],
-      "comparative_captures": [],
+      "comparative_captures": [
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-classic.png",
+          "profile": "classic",
+          "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-optical_lens.png",
+          "profile": "optical_lens",
+          "sha256": "308ee0d63a842866fc0046a308f168fbc9f5b2b9bd5fb6c3141015df41eb170e"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-diorama.png",
+          "profile": "diorama",
+          "sha256": "8b77ae51eb5291e9f205f987f4a109811a41d5696440d0f82badee0d3b2d4ea7"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-atmospheric_industrial.png",
+          "profile": "atmospheric_industrial",
+          "sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa"
+        }
+      ],
       "performance_evidence": [],
       "correctness_evidence": [
-        "Catalogue contains distinct full parameter configurations; shader correctness is SpecialistA scope."
+        "Catalogue contains distinct full parameter configurations; shader correctness is SpecialistA scope.",
+        "Underworks actual913-check install/415-check fresh reopen passed on hosted Linux and Windows; exact four-plane native hashes and saved optics preserved. Source/configuration/capture custody independently checked byB; see b-underworks-reveal-review.json."
       ],
       "artistic_assessment": {
-        "status": "pending-actual-capture-review",
-        "human_acceptance": false
+        "status": "provisional-source-bound-single-scene-review",
+        "human_acceptance": false,
+        "review": "b-underworks-blind-review.json",
+        "reveal": "b-underworks-reveal-review.json",
+        "limitation": "Initial scores are unchanged after reveal. Actor readability relies on label/ring; rear false routes remain. Broader environments and movement remain open. OpticalLens/Diorama visibly soften wheel material texture; no conclusion is transferred to the pending dense aperture revision."
       },
-      "disposition": "implemented-pending-integrated-graphical-review"
+      "disposition": "historical-sparse-kernel-observation-awaiting-dense-kernel-requalification"
     },
     {
       "id": "B-ENVIRONMENT-COLOUR",
@@ -99,16 +221,91 @@
         "xeno-resonance-grotto",
         "lunar-terminator-observatory"
       ],
-      "comparative_captures": [],
+      "comparative_captures": [
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-classic.png",
+          "profile": "classic",
+          "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-atmospheric_industrial.png",
+          "profile": "atmospheric_industrial",
+          "sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-alien_bioluminescence.png",
+          "profile": "alien_bioluminescence",
+          "sha256": "a5973c8ee4836ff1806fc2f4dcd26211609d5c3d70c20930aec8c3997534d448"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-cold_orbital.png",
+          "profile": "cold_orbital",
+          "sha256": "9a7f269ba23118c509d0bb8b645540a7a8b17a558928bc42130dc78735d11a7c"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-sunlit_megastructure.png",
+          "profile": "sunlit_megastructure",
+          "sha256": "4748ecbe7c2a951fa8902652e1f5f74d0c6d7dce940cf3811cf2b544b466bd06"
+        }
+      ],
       "performance_evidence": [],
       "correctness_evidence": [
-        "Complete profiles preserve unprocessed Play and canonical JSON precision; actual appearance pending."
+        "Complete profiles preserve unprocessed Play and canonical JSON precision; actual appearance pending.",
+        "Underworks actual913-check install/415-check fresh reopen passed on hosted Linux and Windows; exact four-plane native hashes and saved optics preserved. Source/configuration/capture custody independently checked byB; see b-underworks-reveal-review.json."
       ],
       "artistic_assessment": {
-        "status": "pending-actual-capture-review",
-        "human_acceptance": false
+        "status": "provisional-source-bound-single-scene-review",
+        "human_acceptance": false,
+        "review": "b-underworks-blind-review.json",
+        "reveal": "b-underworks-reveal-review.json",
+        "limitation": "Initial scores are unchanged after reveal. Actor readability relies on label/ring; rear false routes remain. Broader environments and movement remain open."
       },
-      "disposition": "implemented-pending-integrated-graphical-review"
+      "disposition": "implemented-provisional-artistic-evidence-awaiting-final-corpus"
     },
     {
       "id": "B-LIGHT-SHAFTS",
@@ -330,6 +527,16 @@
           "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
           "path": "tools/ci/test_strata3_gallery.py",
           "sha256": "1675c13ad42aff9b0d5fae893e7f91a07d86d844bafd27c5b2ddd1374db24837"
+        },
+        {
+          "commit": "8b841a40d66ec9d76147c91a22d6380df2647164",
+          "path": "tools/build_strata3_gallery.py",
+          "sha256": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b"
+        },
+        {
+          "commit": "8b841a40d66ec9d76147c91a22d6380df2647164",
+          "path": "tools/ci/test_strata3_gallery.py",
+          "sha256": "1703dc3c05eed7004565687c9970a2be2b10f180a21476b66beb89377c18db93"
         }
       ],
       "parameters": {
@@ -347,7 +554,11 @@
           "cold_orbital",
           "alien_bioluminescence",
           "sunlit_megastructure"
-        ]
+        ],
+        "motion_profiles": 4,
+        "motion_frames_per_profile": 10,
+        "motion_review_frames_per_second": 3,
+        "motion_playback_is_runtime_fps": false
       },
       "applicable_scenes": [
         "all9"
@@ -356,13 +567,15 @@
       "performance_evidence": [],
       "correctness_evidence": [
         "26 synthetic document-builder tests passed. They are not graphical or native execution.",
-        "Rejects changed evidence/source/configuration, unmatched camera/actor/geometry, missing fresh-process/supplementals, path/link/PNG/HTML failures."
+        "Rejects changed evidence/source/configuration, unmatched camera/actor/geometry, missing fresh-process/supplementals, path/link/PNG/HTML failures.",
+        "45 synthetic custody tests passed after admission/progression/motion additions; generated JavaScript syntax checked.",
+        "Ten-frame sequences require original bytes and dimensions, exact profile configuration, camera/actor witnesses and strictly advancing completed native/Rapier ticks. No invariant Play hash is required while physics evolves."
       ],
       "artistic_assessment": {
         "status": "pending-actual-capture-review",
         "human_acceptance": false
       },
-      "disposition": "implemented-pending-integrated-graphical-review"
+      "disposition": "implemented-awaiting-final-real-gallery-and-browser-inspection"
     }
   ],
   "retained_corrections": [
@@ -383,12 +596,343 @@
       "observation": "Root reported local graphical display creation denied by environment sockets.",
       "action": "No bypass attempted. Await hosted source-pinned actual graphical captures.",
       "kind": "environment qualification limitation"
+    },
+    {
+      "id": "B-WHOLE-SCENE-BACKEND-EQUALITY",
+      "observation": "Simple192x64 shader witnesses are byte-identical across hosted Windows/Linux, but native Underworks world pixels are not. Most differences are1u8 with sparse larger fine-edge differences also present inClassic.",
+      "action": "Retain exact per-platform Classic restoration separately; do not generalise simple-fixture parity to whole scenes or physical NVIDIA.",
+      "kind": "independent original-PNG numerical inspection; b-underworks-reveal-review.json"
     }
   ],
   "limitations": [
-    "No new optical aesthetic result is marked PASS before actual source-bound captures are reviewed.",
+    "Actual artistic findings are bound to their reviewed source, scene and stills; no final full-corpus or revised dense-kernel qualification is inferred from earlier captures.",
     "No human perceptual or physical Windows/NVIDIA acceptance.",
     "Original five Strata002 admission misses retain unchanged45-second target.",
     "All three new scene route probes are authoring geometry checks, not actual physical traversal."
+  ],
+  "review_checkpoints": [
+    {
+      "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "scene": "industrial-underworks",
+      "reviewed_profile_count": 11,
+      "review_receipts": [
+        {
+          "path": "docs/audits/2026-11-25-strata-theatre-003/b-shader-witness-review.json",
+          "sha256": "3db8ef931250592726c3c6d10d865ba0733cd185fd8c32e5ac72a8a0c332c26f"
+        },
+        {
+          "path": "docs/audits/2026-11-25-strata-theatre-003/b-underworks-blind-review.json",
+          "sha256": "1427de030576acf1d6f947e28d1bf2be1c9fa74a846bcb624de30cd8dd203ab5"
+        },
+        {
+          "path": "docs/audits/2026-11-25-strata-theatre-003/b-underworks-reveal-review.json",
+          "sha256": "b387d5224eb3ec7fd4301da536c5f1c12e7b0be2dac879694133dd0b5e9e8145"
+        }
+      ],
+      "blind_order_scores_saved_before_key": true,
+      "human_study": false,
+      "status": "provisional-single-scene-artistic-assessment",
+      "pending_renderer_change": "Lead reports denser aperture sampling under investigation after high-frequency sparse-kernel aliasing. Prior lens judgements apply only to the captured source until the revised renderer is graphically reviewed."
+    }
+  ],
+  "provisional_underworks_preferences": {
+    "balanced": [
+      "cold_orbital",
+      "cinematic_deep_focus"
+    ],
+    "physical_priority": [
+      "gameplay_clarity",
+      "noir"
+    ],
+    "distinctive_colour": "alien_bioluminescence",
+    "optional_lens": [
+      "optical_lens",
+      "diorama"
+    ],
+    "compatibility_default": "classic",
+    "no_automatic_default_change": true,
+    "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+    "ordinary_movement_qualified": false
+  },
+  "new_showcase_review_queue": [
+    {
+      "priority": 1,
+      "scene": "xeno-resonance-grotto",
+      "recipe_path": "godot/data/strata3/xeno-resonance-grotto.json",
+      "recipe_sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b",
+      "capture_location": "<final campaign>/xeno-resonance-grotto/install/profile-<id>.png",
+      "profiles": [
+        "classic",
+        "gameplay_clarity",
+        "alien_bioluminescence",
+        "noir",
+        "cinematic_deep_focus",
+        "diorama"
+      ],
+      "light_motifs": [
+        {
+          "id": "organic-light",
+          "kind": "light_pool",
+          "plane": "effects",
+          "region": [
+            118,
+            212,
+            800,
+            580
+          ],
+          "seed": 11,
+          "count": 6,
+          "speed": 0.22,
+          "strength": 0.62,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.21,
+            0.84,
+            0.66,
+            0.42
+          ],
+          "enabled": true
+        },
+        {
+          "id": "ceiling-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            340,
+            156,
+            360,
+            700
+          ],
+          "seed": 14,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            -0.08,
+            1.0
+          ],
+          "colour": [
+            0.42,
+            0.55,
+            0.78,
+            0.4
+          ],
+          "enabled": true
+        }
+      ],
+      "native_detail_views": [
+        {
+          "id": "physical-shelf-and-organic-rib",
+          "center": [
+            298,
+            350
+          ],
+          "zoom": 1.4
+        },
+        {
+          "id": "luminous-relic-and-void",
+          "center": [
+            644,
+            654
+          ],
+          "zoom": 1.25
+        }
+      ],
+      "review_questions": [
+        "Dark physical basalt shelves must dominate rear mineral-ring edges.",
+        "Cyan-green pools and violet mist must retain horizontal traversable openings and avoid tinted-block appearance.",
+        "Dense background rectangle budget requires actual scene-admission timing."
+      ],
+      "status": "awaiting-final-actual-captures"
+    },
+    {
+      "priority": 2,
+      "scene": "sunward-freight-megastructure",
+      "recipe_path": "godot/data/strata3/sunward-freight-megastructure.json",
+      "recipe_sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5",
+      "capture_location": "<final campaign>/sunward-freight-megastructure/install/profile-<id>.png",
+      "profiles": [
+        "classic",
+        "architectural",
+        "cinematic_deep_focus",
+        "atmospheric_industrial",
+        "sunlit_megastructure",
+        "gameplay_clarity"
+      ],
+      "light_motifs": [
+        {
+          "id": "sun-shafts",
+          "kind": "light_shaft",
+          "plane": "effects",
+          "region": [
+            330,
+            155,
+            900,
+            680
+          ],
+          "seed": 3,
+          "count": 4,
+          "speed": 0.0,
+          "strength": 0.6,
+          "direction": [
+            0.26,
+            1.0
+          ],
+          "colour": [
+            1.0,
+            0.82,
+            0.48,
+            0.45
+          ],
+          "enabled": true
+        },
+        {
+          "id": "machine-pools",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            126,
+            670,
+            1280,
+            105
+          ],
+          "seed": 4,
+          "count": 5,
+          "speed": 0.0,
+          "strength": 0.7,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.26,
+            0.7,
+            0.84,
+            0.42
+          ],
+          "enabled": true
+        }
+      ],
+      "native_detail_views": [
+        {
+          "id": "physical-terrace-rear-crane",
+          "center": [
+            500,
+            590
+          ],
+          "zoom": 1.1
+        },
+        {
+          "id": "freight-light-and-silhouette",
+          "center": [
+            1080,
+            390
+          ],
+          "zoom": 1.25
+        }
+      ],
+      "review_questions": [
+        "Physical terraces and central shaft must remain distinct from rear crane cages.",
+        "Eight-band local shafts must suggest illumination rather than solid geometry or broad rectangular overpainting.",
+        "Cool machinery pools should stay local and preserve warm/cool depth hierarchy."
+      ],
+      "status": "awaiting-final-actual-captures"
+    },
+    {
+      "priority": 3,
+      "scene": "lunar-terminator-observatory",
+      "recipe_path": "godot/data/strata3/lunar-terminator-observatory.json",
+      "recipe_sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24",
+      "capture_location": "<final campaign>/lunar-terminator-observatory/install/profile-<id>.png",
+      "profiles": [
+        "classic",
+        "cold_orbital",
+        "cinematic_deep_focus",
+        "sunlit_megastructure",
+        "gameplay_clarity",
+        "optical_lens"
+      ],
+      "light_motifs": [
+        {
+          "id": "instrument-light",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            510,
+            360,
+            640,
+            155
+          ],
+          "seed": 21,
+          "count": 3,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.32,
+            0.6,
+            0.85,
+            0.38
+          ],
+          "enabled": true
+        },
+        {
+          "id": "sunward-rim-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            320,
+            100,
+            940,
+            530
+          ],
+          "seed": 22,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.32,
+          "direction": [
+            0.42,
+            1.0
+          ],
+          "colour": [
+            0.92,
+            0.82,
+            0.59,
+            0.32
+          ],
+          "enabled": true
+        }
+      ],
+      "native_detail_views": [
+        {
+          "id": "physical-deck-rear-instrument",
+          "center": [
+            350,
+            418
+          ],
+          "zoom": 1.3
+        },
+        {
+          "id": "solar-lattice-and-rim",
+          "center": [
+            994,
+            364
+          ],
+          "zoom": 1.3
+        }
+      ],
+      "review_questions": [
+        "Large quiet sky must remain negative space; no tint should bleed into transparent native surfaces.",
+        "Rear instrument frames and solar lattices must not appear to extend physical observation decks.",
+        "Subtle shafts/pools must remain subordinate to the stepped planetary rim and physical deck lips."
+      ],
+      "status": "awaiting-final-actual-captures"
+    }
   ]
 }

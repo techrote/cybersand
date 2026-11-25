@@ -28,6 +28,7 @@ PROFILES = {"classic":"Classic", "architectural":"Architectural", "gameplay_clar
             "alien_bioluminescence":"Alien Bioluminescence", "sunlit_megastructure":"Sunlit Megastructure"}
 PLANES = ("play", "scripted", "effects", "background")
 SUPPLEMENTAL = {"classic-return", "compare-wipe", "clarity-assistance", "focus-play", "focus-scripted", "focus-effects", "focus-background", "optics-lab"}
+MOTION_PROFILES = ("classic", "gameplay_clarity", "cinematic_deep_focus", "diorama")
 HASH = re.compile(r"[0-9a-f]{64}\Z")
 COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 IDENTITY = re.compile(r"[a-z0-9][a-z0-9_-]{0,79}\Z")
@@ -111,6 +112,68 @@ def validate_camera(value: object) -> dict:
     return value
 
 
+def admission_observation(result: dict) -> dict:
+    elapsed = result.get("admission_elapsed_ms")
+    require(type(elapsed) in (int, float) and math.isfinite(elapsed) and elapsed >= 0
+            and result.get("admission_target_ms") == 45000
+            and result.get("admission_target_met") is (elapsed <= 45000),
+            "Scene admission must retain the actual observation and unchanged 45-second target")
+    return {"elapsed_ms":elapsed, "target_ms":45000, "target_met":elapsed <= 45000,
+            "scope":"Observed scene admission in this process; a target miss remains a performance limitation even when functional checks pass."}
+
+
+def motion_observations(result: dict, case: dict, evidence) -> list[dict]:
+    sequences = result.get("motion_sequences")
+    require(isinstance(sequences, list) and len(sequences) == len(MOTION_PROFILES)
+            and {item.get("profile") for item in sequences} == set(MOTION_PROFILES),
+            "Motion inspection requires all four original profile sequences")
+    observations = []
+    for sequence in sequences:
+        profile = sequence["profile"]
+        config = sequence.get("configuration")
+        serialized = sequence.get("configuration_canonical_json")
+        require(isinstance(config, dict) and isinstance(serialized, str) and json.loads(serialized) == config
+                and digest(serialized.encode()) == sequence.get("configuration_sha256")
+                and config.get("profile") == profile
+                and config.get("planes", {}).get("play", {}).get("participates") is False,
+                "Motion settings differ from their original protected-Play configuration")
+        if profile == "classic": require(config.get("enabled") is False, "Classic motion must remain disabled")
+        require(sequence.get("quality") in ("low", "balanced", "high")
+                and isinstance(sequence.get("scope"), str) and sequence["scope"],
+                "Motion requires actual quality and an explicit instrumented scope")
+        frames = sequence.get("frames")
+        require(isinstance(frames, list) and len(frames) == 10, "Motion sequence requires ten actual frames")
+        originals, previous, pixels = [], None, None
+        for index, frame in enumerate(frames):
+            filename = "motion-" + profile + "-" + f"{index:02d}" + ".png"
+            require(isinstance(frame, dict) and type(frame.get("index")) is int and frame["index"] == index
+                    and frame.get("filename") == filename, "Motion frame order or original filename changed")
+            camera = validate_camera(frame.get("camera"))
+            require(isinstance(frame.get("actor_state"), dict) and bool(frame["actor_state"])
+                    and all(type(frame.get(name)) is int and frame[name] >= 0 for name in ("native_tick", "rapier_tick", "captured_usec")),
+                    "Motion frame lacks actual actor, completed ticks or monotonic time")
+            if previous is not None:
+                require(all(frame[name] > previous[name] for name in ("native_tick", "rapier_tick", "captured_usec")),
+                        "Motion frames must retain actual strictly advancing physical observations")
+            raw, url = evidence(case["output_dir"] + "/" + filename)
+            extent = png_extent(raw)
+            require(digest(raw) == frame.get("sha256") and frame.get("actual_image_size") == extent,
+                    "Motion image bytes or actual framebuffer dimensions differ from receipt")
+            if pixels is None: pixels = extent
+            require(extent == pixels, "Motion framebuffer extent changed within one review sequence")
+            originals.append({"index":index, "url":url, "image_sha256":digest(raw), "pixels":extent,
+                              "camera":camera, "actor_state":frame["actor_state"],
+                              **{name:frame[name] for name in ("native_tick", "rapier_tick", "captured_usec")},
+                              "picking_error":frame.get("picking_error"), "submitted_action":frame.get("submitted_action")})
+            previous = frame
+        observations.append({"id":profile, "label":PROFILES[profile], "configuration":config,
+                             "configuration_sha256":sequence["configuration_sha256"], "quality":sequence["quality"],
+                             "scope":sequence["scope"], "frames":originals,
+                             "comparison_limit":"Original instrumented moving-world frames. Camera and physical state evolve; these are not matched paused profile stills. Playback cadence is arbitrary and establishes no rendering FPS or performance result."})
+    observations.sort(key=lambda item:MOTION_PROFILES.index(item["id"]))
+    return observations
+
+
 def source_metadata(identity: str) -> tuple[dict, str]:
     if identity == "optics-readability-challenge":
         return {"id":identity, "title":"Physical readability challenge", "description":"Adversarial exact-native platforms, stairs and passages with deliberate decorative overlap. Read the fixture probes to establish actual Play authority."}, "godot/scripts/depth/strata_optics_fixtures.gd"
@@ -183,14 +246,18 @@ def prepare(campaign: Path, output: Path) -> dict:
     require(isinstance(cases, list) and bool(cases), "Missing original execution cases")
     labels = []
     scene_cases: dict[tuple[str, str], dict] = {}
+    scene_processes = set()
+    progression_reports = []
+    motion_reports = []
     for case in cases:
         require(isinstance(case, dict) and isinstance(case.get("label"), str)
-                and case["label"] not in labels and case.get("exit_code") == 0,
+                and case["label"] not in labels and type(case.get("exit_code")) is int and case["exit_code"] == 0,
                 "Duplicate or failed actual execution case")
         labels.append(case["label"])
-        if case.get("phase") not in ("install", "reopen"): continue
+        if case.get("phase") not in ("install", "reopen", "progression", "motion"): continue
         key = (case.get("scene"), case.get("phase"))
-        require(key[0] in SCENES and key not in scene_cases, "Unexpected or duplicate scene process")
+        require(key[0] in SCENES and key not in scene_processes, "Unexpected or duplicate scene process")
+        scene_processes.add(key)
         raw, url = evidence(case.get("result_path", ""))
         result = json.loads(raw)
         require(digest(raw) == case.get("report_sha256") and result == case.get("result"),
@@ -205,9 +272,42 @@ def prepare(campaign: Path, output: Path) -> dict:
                 "Scene is not passing source-bound ordinary graphical execution")
         require(isinstance(case.get("output_dir"), str), "Missing original case output directory")
         safe_path(campaign, case["output_dir"])
+        if key[1] == "motion":
+            require(key[0] == "optics-readability-challenge", "Motion inspection must use the admitted native challenge")
+            motion_reports.append({"scene":key[0], "url":url, "sha256":digest(raw),
+                                   "sequences":motion_observations(result, case, evidence)})
+            continue
+        if key[1] == "progression":
+            registration, samples = result.get("progression_registration"), result.get("progression_samples")
+            require(isinstance(registration, dict) and bool(registration)
+                    and isinstance(samples, list) and bool(samples), "Missing registered physical progression observations")
+            summaries, sample_ids = [], set()
+            for sample in samples:
+                require(isinstance(sample, dict) and sample.get("profile") in PROFILES
+                        and type(sample.get("repeat")) is int and sample["repeat"] >= 0
+                        and type(sample.get("elapsed_usec")) is int and sample["elapsed_usec"] > 0
+                        and type(sample.get("callbacks")) is int and sample["callbacks"] > 0
+                        and isinstance(sample.get("physical_distribution_usec"), dict)
+                        and isinstance(sample.get("observer_scope"), str) and sample["observer_scope"]
+                        and sample.get("physical_gpu_acceptance") is False,
+                        "Progression observation lacks its actual profile, duration or hosted scope")
+                sample_id = (sample["profile"], sample["repeat"])
+                require(sample_id not in sample_ids, "Duplicate profile/repeat progression observation")
+                sample_ids.add(sample_id)
+                fields = ("profile", "repeat", "quality", "elapsed_usec", "callbacks", "initial_native_play_sha256",
+                          "scene_admission_elapsed_ms", "scene_admission_target_met", "callback_distribution_usec",
+                          "physical_distribution_usec", "native_publication_interval_distribution_usec",
+                          "native_ticks_per_second", "rapier_ticks_per_second", "actor_distance_cells",
+                          "native_capture_delta", "decorative_upload_delta", "godot_tracked_memory_bytes",
+                          "resource_count", "observer_scope", "physical_gpu_acceptance")
+                summaries.append({name:sample[name] for name in fields if name in sample})
+            progression_reports.append({"label":case["label"], "scene":key[0], "url":url,
+                                        "sha256":digest(raw), "registration":registration, "samples":summaries})
+            continue
         scene_cases[key] = {"case":case, "report":result, "url":url}
     require(set(scene_cases) == {(scene, phase) for scene in SCENES for phase in ("install", "reopen")},
             "All nine native scenes require install and fresh-process reopen")
+    require(len(motion_reports) == 1, "Gallery requires the original instrumented motion inspection report")
     scenes = []
     for identity in SCENES:
         install = scene_cases[(identity, "install")]
@@ -291,8 +391,13 @@ def prepare(campaign: Path, output: Path) -> dict:
                        "views":views, "additional_views":additional, "camera":camera, "actor_state":actor,
                        "native_hashes":before, "geometry_group_sha256":geometry_group,
                        "install_report":install["url"], "reopen_report":reopen["url"], "recipe_path":recipe_path,
+                       "motion":next((item for item in motion_reports if item["scene"] == identity), None),
                        "rendering_adapter":str(result.get("rendering_adapter", "unreported")),
-                       "performance":result.get("performance", result.get("cost_samples", []))})
+                       "performance":{"admission":{"install":admission_observation(result), "reopen":admission_observation(reopened)},
+                                      "optical_cost_observations":result.get("performance", result.get("cost_samples")),
+                                      "progression":{"status":"recorded" if any(item["scene"] == identity for item in progression_reports) else "not_recorded",
+                                                     "reports":[item for item in progression_reports if item["scene"] == identity],
+                                                     "scope":"Missing observations are unrecorded, not zero cost. Hosted software rendering and scene admission do not establish physical Windows/NVIDIA responsiveness."}}})
     return {"schema":"strata3-offline-optical-gallery-v1", "draft_hold":True,
             "source_commit":source["source_commit"], "source_tree":source["source_tree"], "platform":platform,
             "godot":engine, "runtime":{name:runtime[name] for name in ("cybersand_runtime", "rapier_runtime")},
@@ -300,7 +405,7 @@ def prepare(campaign: Path, output: Path) -> dict:
             "campaign_report":(prefix + "/campaign.json" if prefix != "." else "campaign.json"),
             "campaign_report_sha256":digest(report_path.read_bytes()), "source_inputs_sha256":source_hashes,
             "capture_inputs_sha256":dict(sorted(used.items())), "inputs_receipt":output.with_suffix(".inputs.json").name,
-            "scenes":scenes,
+            "scenes":scenes, "progression_reports":progression_reports,
             "scope":"Original ordinary Workbench graphical captures on " + platform + ". Profile stills share actual native geometry, camera and actor state. No human perception, motion quality or physical Windows/NVIDIA performance acceptance is implied."}
 
 
@@ -310,11 +415,26 @@ STYLE = r"""
 
 SCRIPT = r"""
 const data=JSON.parse(document.getElementById('gallery-data').textContent),byId=id=>document.getElementById(id);
-let sceneIndex=0,profileId='architectural',comparison=true,actual=false;
+let sceneIndex=0,profileId='architectural',comparison=true,actual=false,motionTimer=null,motionFrame=0;
+function stopMotion(){if(motionTimer!==null)clearInterval(motionTimer);motionTimer=null;byId('motion-play').textContent='Play inspection';byId('motion-play').setAttribute('aria-pressed','false');}
+function resetMotion(){stopMotion();byId('motion').value='';for(const id of ['motion-frame','motion-prev','motion-next','motion-play'])byId(id).disabled=true;byId('motion-position').textContent='Choose a sequence';}
 function updateWipe(){const amount=Number(byId('wipe').value);byId('processed').style.clipPath=comparison?'inset(0 0 0 '+amount+'%)':'none';byId('divider').style.left=amount+'%';}
-function viewProfile(){const scene=data.scenes[sceneIndex],classic=scene.views.find(v=>v.id==='classic'),view=scene.views.find(v=>v.id===profileId);byId('reference').src=classic.url;byId('reference').alt=scene.title+' — Classic';byId('processed').src=view.url;byId('processed').alt=scene.title+' — '+view.label;byId('selected-label').textContent=view.label;byId('view-scope').textContent=view.scope;byId('original-link').href=view.url;byId('original-link').textContent='Open original '+view.label+' PNG · '+view.pixels.join(' × ');byId('image-digest').textContent='PNG SHA-256 '+view.image_sha256;byId('settings').textContent=JSON.stringify(view.configuration,null,2);byId('supplement').value='';byId('image-stack').classList.toggle('single',!comparison);byId('wipe').disabled=!comparison;updateWipe();}
-function selectScene(index){sceneIndex=index;const scene=data.scenes[index];byId('scene').value=String(index);byId('scene-title').textContent=scene.title;byId('scene-description').textContent=scene.description;byId('extent').textContent=scene.extent.join(' × ')+' native cells · '+scene.rendering_adapter;byId('install').href=scene.install_report;byId('reopen').href=scene.reopen_report;byId('native').textContent=JSON.stringify({material_hashes:scene.native_hashes,camera:scene.camera,actor_state:scene.actor_state},null,2);byId('performance').textContent=JSON.stringify(scene.performance,null,2);const extras=byId('supplement');extras.replaceChildren(new Option('Focus, comparison and actual Lab captures…',''));for(const item of scene.additional_views)extras.add(new Option(item.label,item.id));document.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.scene)===index)));viewProfile();}
-byId('scene').addEventListener('change',e=>selectScene(Number(e.target.value)));byId('profile').addEventListener('change',e=>{profileId=e.target.value;viewProfile()});byId('wipe').addEventListener('input',updateWipe);byId('comparison').addEventListener('click',()=>{comparison=!comparison;byId('comparison').textContent=comparison?'Classic / processed wipe':'Processed only';byId('comparison').setAttribute('aria-pressed',String(comparison));viewProfile()});byId('sizing').addEventListener('click',()=>{actual=!actual;byId('image-stack').classList.toggle('actual',actual);byId('sizing').textContent=actual?'Image 100% · click to fit':'Fit image · click for 100%';byId('sizing').setAttribute('aria-pressed',String(actual))});byId('supplement').addEventListener('change',e=>{const view=data.scenes[sceneIndex].additional_views.find(v=>v.id===e.target.value);if(!view){viewProfile();return}byId('processed').src=view.url;byId('processed').alt=view.label;byId('image-stack').classList.add('single');byId('processed').style.clipPath='none';byId('wipe').disabled=true;byId('selected-label').textContent=view.label;byId('view-scope').textContent=view.scope;byId('original-link').href=view.url;byId('original-link').textContent='Open original supplemental PNG · '+view.pixels.join(' × ');byId('image-digest').textContent='PNG SHA-256 '+view.image_sha256;byId('settings').textContent=JSON.stringify({scope:view.scope,camera:view.camera,geometry_group_sha256:view.geometry_group_sha256},null,2)});document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>{selectScene(Number(b.dataset.scene));byId('viewer').scrollIntoView({behavior:'smooth',block:'start'})}));selectScene(0);
+function viewProfile(){resetMotion();const scene=data.scenes[sceneIndex],classic=scene.views.find(v=>v.id==='classic'),view=scene.views.find(v=>v.id===profileId);byId('reference').src=classic.url;byId('reference').alt=scene.title+' — Classic';byId('processed').src=view.url;byId('processed').alt=scene.title+' — '+view.label;byId('selected-label').textContent=view.label;byId('view-scope').textContent=view.scope;byId('original-link').href=view.url;byId('original-link').textContent='Open original '+view.label+' PNG · '+view.pixels.join(' × ');byId('image-digest').textContent='PNG SHA-256 '+view.image_sha256;byId('settings').textContent=JSON.stringify(view.configuration,null,2);byId('supplement').value='';byId('image-stack').classList.toggle('single',!comparison);byId('wipe').disabled=!comparison;updateWipe();}
+function showMotion(){
+const motion=data.scenes[sceneIndex].motion,sequence=motion&&motion.sequences.find(item=>item.id===byId('motion').value);if(!sequence){viewProfile();return}
+motionFrame=Math.max(0,Math.min(sequence.frames.length-1,motionFrame));const frame=sequence.frames[motionFrame];byId('processed').src=frame.url;byId('processed').alt=sequence.label+' motion inspection frame '+(motionFrame+1);byId('image-stack').classList.add('single');byId('processed').style.clipPath='none';byId('wipe').disabled=true;byId('supplement').value='';byId('selected-label').textContent=sequence.label+' · motion inspection';byId('view-scope').textContent=sequence.scope+' '+sequence.comparison_limit;byId('original-link').href=frame.url;byId('original-link').textContent='Open original motion PNG · '+frame.pixels.join(' × ');byId('image-digest').textContent='PNG SHA-256 '+frame.image_sha256;byId('settings').textContent=JSON.stringify({configuration:sequence.configuration,configuration_sha256:sequence.configuration_sha256,quality:sequence.quality,frame:frame},null,2);byId('motion-frame').max=String(sequence.frames.length-1);byId('motion-frame').value=String(motionFrame);byId('motion-position').textContent='Frame '+(motionFrame+1)+' / '+sequence.frames.length;for(const id of ['motion-frame','motion-prev','motion-next','motion-play'])byId(id).disabled=false;
+}
+function admissionText(label,observation){return label+' '+(observation.elapsed_ms/1000).toFixed(3)+' s · '+(observation.target_met?'met':'exceeded')+' unchanged 45 s target';}
+function selectScene(index){
+sceneIndex=index;const scene=data.scenes[index];byId('scene').value=String(index);byId('scene-title').textContent=scene.title;byId('scene-description').textContent=scene.description;byId('extent').textContent=scene.extent.join(' × ')+' native cells · '+scene.rendering_adapter;byId('install').href=scene.install_report;byId('reopen').href=scene.reopen_report;byId('native').textContent=JSON.stringify({material_hashes:scene.native_hashes,camera:scene.camera,actor_state:scene.actor_state},null,2);byId('performance').textContent=JSON.stringify(scene.performance,null,2);
+byId('admission').textContent=admissionText('Install',scene.performance.admission.install)+'; '+admissionText('fresh reopen',scene.performance.admission.reopen)+'.';
+byId('progression-scope').textContent=scene.performance.progression.status==='recorded'?'Physical progression observations were recorded for this scene; inspect the original registration, repeat spread and software-renderer scope.':'Physical progression is unrecorded for this scene. Missing observations do not mean zero optical cost; observations from other scenes do not establish this scene’s responsiveness.';
+const progressionLinks=byId('progression-links');progressionLinks.replaceChildren();for(const report of data.progression_reports){const line=document.createElement('p'),link=document.createElement('a');link.href=report.url;link.textContent='Original physical progression report · '+report.scene;line.append(link);progressionLinks.append(line)}
+const motion=byId('motion');motion.replaceChildren(new Option('Choose an original movement sequence…',''));byId('motion-controls').hidden=!scene.motion;byId('motion-unavailable').hidden=Boolean(scene.motion);if(scene.motion){for(const sequence of scene.motion.sequences)motion.add(new Option(sequence.label,sequence.id));byId('motion-report').href=scene.motion.url}
+const extras=byId('supplement');extras.replaceChildren(new Option('Focus, comparison and actual Lab captures…',''));for(const item of scene.additional_views)extras.add(new Option(item.label,item.id));document.querySelectorAll('[data-scene]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.scene)===index)));viewProfile();}
+byId('scene').addEventListener('change',e=>selectScene(Number(e.target.value)));byId('profile').addEventListener('change',e=>{profileId=e.target.value;viewProfile()});byId('wipe').addEventListener('input',updateWipe);byId('comparison').addEventListener('click',()=>{comparison=!comparison;byId('comparison').textContent=comparison?'Classic / processed wipe':'Processed only';byId('comparison').setAttribute('aria-pressed',String(comparison));viewProfile()});byId('sizing').addEventListener('click',()=>{actual=!actual;byId('image-stack').classList.toggle('actual',actual);byId('sizing').textContent=actual?'Image 100% · click to fit':'Fit image · click for 100%';byId('sizing').setAttribute('aria-pressed',String(actual))});byId('supplement').addEventListener('change',e=>{resetMotion();const view=data.scenes[sceneIndex].additional_views.find(v=>v.id===e.target.value);if(!view){viewProfile();return}byId('processed').src=view.url;byId('processed').alt=view.label;byId('image-stack').classList.add('single');byId('processed').style.clipPath='none';byId('wipe').disabled=true;byId('selected-label').textContent=view.label;byId('view-scope').textContent=view.scope;byId('original-link').href=view.url;byId('original-link').textContent='Open original supplemental PNG · '+view.pixels.join(' × ');byId('image-digest').textContent='PNG SHA-256 '+view.image_sha256;byId('settings').textContent=JSON.stringify({scope:view.scope,camera:view.camera,geometry_group_sha256:view.geometry_group_sha256},null,2)});
+byId('motion').addEventListener('change',()=>{stopMotion();motionFrame=0;showMotion()});byId('motion-frame').addEventListener('input',e=>{stopMotion();motionFrame=Number(e.target.value);showMotion()});byId('motion-prev').addEventListener('click',()=>{stopMotion();motionFrame--;showMotion()});byId('motion-next').addEventListener('click',()=>{stopMotion();motionFrame++;showMotion()});byId('motion-play').addEventListener('click',()=>{if(motionTimer!==null){stopMotion();return}byId('motion-play').textContent='Pause inspection';byId('motion-play').setAttribute('aria-pressed','true');motionTimer=setInterval(()=>{const sequence=data.scenes[sceneIndex].motion.sequences.find(item=>item.id===byId('motion').value);motionFrame=(motionFrame+1)%sequence.frames.length;showMotion()},1000/3)});
+document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>{selectScene(Number(b.dataset.scene));byId('viewer').scrollIntoView({behavior:'smooth',block:'start'})}));selectScene(0);
 """
 
 
@@ -336,11 +456,12 @@ def render(data: dict) -> str:
 <div class="viewport"><div class="image-stack" id="image-stack"><img id="reference" src="{escape(first['views'][0]['url'])}" alt="Original Classic capture"><img class="processed" id="processed" src="{escape(first['views'][1]['url'])}" alt="Original processed capture"><div class="divider" id="divider"></div></div></div>
 <div class="comparison-bar"><span>Classic · left</span><input type="range" id="wipe" min="0" max="100" value="50" aria-label="Classic versus processed image wipe"><span id="selected-label">Architectural · right</span></div>
 <div class="supplement"><label for="supplement">Additional original captures</label><select id="supplement"></select></div>
+<div id="motion-controls" hidden><div class="supplement"><label for="motion">Movement and camera inspection</label><select id="motion"></select><button id="motion-prev" disabled aria-label="Previous captured movement frame">Previous</button><button id="motion-play" disabled aria-pressed="false">Play inspection</button><button id="motion-next" disabled aria-label="Next captured movement frame">Next</button></div><div class="comparison-bar"><span id="motion-position">Choose a sequence</span><input id="motion-frame" type="range" min="0" max="9" value="0" disabled aria-label="Captured movement frame"><span>Review at 3 frames/s · arbitrary cadence</span></div><p class="muted">These original framebuffer readbacks interrupt execution. Playback is for visual inspection and does not reproduce actual movement speed or establish rendering FPS. <a id="motion-report" href="#">Original instrumented motion report</a></p></div><p id="motion-unavailable" class="muted">Select Physical Readability Challenge to inspect original movement and camera sequences.</p>
 <div class="details"><div><strong>Comparison scope</strong><p id="view-scope"></p><p><a id="original-link" href="{escape(first['views'][0]['url'])}">Open original PNG</a></p><div id="image-digest" class="digest"></div></div><div><strong>Read physical geometry first</strong><p>Play alone owns collision and actor physics. Bright or sharp rear architecture can still be decoration. Compare Gameplay Clarity and the temporary clarity-assistance capture, then inspect or pilot the actual Workbench. Colour is only one depth cue.</p><p><a id="install" href="{escape(first['install_report'])}">Original install report</a> · <a id="reopen" href="{escape(first['reopen_report'])}">Fresh-process reopen report</a></p></div></div>
 <h2>Five retained places and four new challenges</h2><div class="scenes">{cards}</div>
 <div class="note"><strong>Still images do not prove playfeel.</strong> These hosted {escape(data['platform'])} captures establish what the application rendered under the recorded conditions. Human perception, moving-camera clarity, physical progression and Windows 11/NVIDIA acceptance remain separate. The predecessor's five scene-admission misses against the unchanged 45-second target remain recorded.</div>
 <details class="custody"><summary>Selected optical settings and native comparison witnesses</summary><p class="muted">The captured preset values remain editable in the Lab. The original PNG is never altered by this gallery.</p><pre id="settings"></pre><pre id="native"></pre></details>
-<details class="custody"><summary>Recorded performance observations and their scope</summary><p class="muted">Per-scene original observations only. Callback intervals, upload timing and hosted software rendering are not physical GPU FPS or proof of responsive native progression.</p><pre id="performance"></pre></details>
+<details class="custody"><summary>Recorded performance observations and their scope</summary><p id="admission"></p><p class="muted" id="progression-scope"></p><div id="progression-links"></div><p class="muted">Original observations only. Callback intervals, upload timing and hosted software rendering are not physical GPU FPS or proof of responsive native progression. The linked reports retain the full completed-step sequences; this panel shows recorded summaries without declaring a performance winner.</p><pre id="performance"></pre></details>
 <details class="custody"><summary>Executed source, runtime and complete input custody</summary><p><a href="{escape(data['campaign_report'])}">Original campaign</a> · <a href="{escape(data['inputs_receipt'])}">Gallery input manifest</a></p><pre>{escape(json.dumps(proof,indent=2))}</pre><p class="muted">All ledger-listed process receipts, logs and PNGs were byte-checked before this gallery was emitted. The package manifest separately covers these HTML and manifest bytes.</p></details>
 <noscript><p class="note">Local JavaScript enables the comparison controls. The original scene thumbnails and source links remain available without it.</p></noscript></main></div>
 <script id="gallery-data" type="application/json">{encoded}</script><script>{SCRIPT}</script></body></html>\n'''
