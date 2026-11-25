@@ -95,6 +95,59 @@ func case_region(index: int) -> Rect2i:
 	if index == 7: return Rect2i(960,32,512,512)
 	return Rect2i(480,512,384,256)
 
+
+func matched_direct_control(index: int, entry: Dictionary, example: Dictionary, compiled: Dictionary, expected_sha: String, region: Rect2i) -> Dictionary:
+	var shift := Vector2i(0,1024)
+	var target := Rect2i(region.position+shift,region.size)
+	var baseline: Array = []
+	for operation: Dictionary in example.setup_operations: baseline.append(Proposal._translate(operation,shift))
+	var start_result: Dictionary = executor.submit(baseline,target,[],[0,58])
+	check(start_result.status=="queued","matched direct baseline admission "+entry.id)
+	await until(func(): return not executor.active,"matched direct baseline native completion")
+	var operations: Array = []
+	for stage: Dictionary in compiled.stages:
+		for operation: Dictionary in stage.operations: operations.append(Proposal._translate(operation,shift))
+	var guards: Array = []
+	for guard: Rect2i in example.protected: guards.append(Rect2i(guard.position+shift,guard.size))
+	var receipts: Array = []
+	var on_receipt := func(receipt: Dictionary) -> void: receipts.append(receipt.duplicate(true))
+	executor.native_receipt.connect(on_receipt)
+	var started := Time.get_ticks_usec()
+	var admitted: Dictionary = executor.submit(operations,target,guards,[0,28,58])
+	check(admitted.status=="queued","existing direct matched-geometry submission "+entry.id)
+	await until(func(): return not executor.active,"existing direct matched-geometry terminal")
+	var elapsed := Time.get_ticks_usec()-started
+	executor.native_receipt.disconnect(on_receipt)
+	check(executor.result.status=="completed","existing direct authoritative completion")
+	var after: Dictionary = await capture_region(target)
+	var matches := after.get("status","")=="completed" and Context.hash_materials(after.materials)==expected_sha
+	check(matches,"matched direct and staged native material planes are identical "+entry.id)
+	var changed := 0
+	var checked := 0
+	for receipt: Dictionary in receipts:
+		check(receipt.get("backend","")=="CyberNativeCellWorld","matched direct uses the real native backend")
+		changed += int(receipt.get("changed",0))
+		checked += int(receipt.get("checked",0))
+	write_json("%02d-%s-direct-original-native-receipts.json" % [index,entry.id],receipts)
+	return {"arm":"existing_direct_matched_geometry","region":Context.rect_values(target),
+		"native_changed":changed,"native_checked":checked,"native_chunks":receipts.size(),
+		"elapsed_usec":elapsed,"complete_material_plane_matches":matches,
+		"material_sha256":Context.hash_materials(after.get("materials",PackedInt32Array())),
+		"interpretation":"Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity."}
+
+func frozen_context_ablation(example: Dictionary, before: Dictionary, rules: Dictionary, expected_sha: String) -> Dictionary:
+	var without_rules := rules.duplicate(true)
+	without_rules.include_knowledge = false
+	var without_context := Context.build(before,without_rules)
+	var without_compiled := Proposal.compile(example.proposal,without_context,without_rules)
+	var without_result: Dictionary = await build_preview(without_compiled,without_context)
+	var same := without_result.get("ok",false) and without_result.predicted_materials_sha256==expected_sha
+	check(same,"identical proposal knowledge ablation yields identical predicted geometry")
+	check(without_context.model.knowledge.cards.is_empty(),"knowledge-disabled context sends no knowledge cards")
+	return {"arm":"knowledge_disabled_fixed_proposal","same_predicted_material_plane":same,
+		"context_bytes":without_context.inspector.bytes,"model_calls":0,
+		"interpretation":"Frozen identical packets; no causal retrieval or creative improvement can be inferred."}
+
 func exercise(index: int, entry: Dictionary) -> void:
 	var region := case_region(index)
 	var example := Examples.make(entry.id,region,[0,28,58])
@@ -173,6 +226,9 @@ func exercise(index: int, entry: Dictionary) -> void:
 	check(after_sha==predicted.predicted_materials_sha256,"final entire native material plane matches predicted geometry")
 	native_png("%02d-%s-after-native.png" % [index,entry.id],latest)
 	await render_scene(region,"%02d-%s-after-workbench.png" % [index,entry.id])
+	var staged_elapsed := Time.get_ticks_usec()-started
+	var direct_comparison: Dictionary = await matched_direct_control(index,entry,example,compiled,after_sha,region)
+	var context_comparison: Dictionary = await frozen_context_ablation(example,before,rules,after_sha)
 	wb._name.text = "art-collaborative-"+str(entry.id)
 	check(wb.save_setup(),"ordinary native authored-start Save "+entry.id+" / "+str(wb.message))
 	if not output.is_empty():
@@ -185,7 +241,8 @@ func exercise(index: int, entry: Dictionary) -> void:
 		"stages":compiled.stages.size(),"native_chunks":native_chunks.size(),"native_checked":checked,
 		"native_changed":changed,"preview_changed":predicted.predicted_changed,
 		"constraint_preservation":protected_unchanged,"static_clearance":empty_routes,
-		"route_claim":example.route_claim,"elapsed_usec":Time.get_ticks_usec()-started,
+		"route_claim":example.route_claim,"elapsed_usec":staged_elapsed,
+		"comparisons":[direct_comparison,context_comparison],
 		"source_before":Context.source_of(before),"source_after":Context.source_of(latest),
 		"context_inspector":context.inspector,"proposal":compiled.proposal,"preview":predicted}
 	outcomes.append(outcome)
