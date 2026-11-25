@@ -358,35 +358,51 @@ func _update_conversation_guard() -> void:
 		conversation_editor.notice.text = blocked if not blocked.is_empty() else (conversation_error if not conversation_error.is_empty() else ConversationEditor.HELP)
 
 func _apply_conversation_edits() -> void:
+	# Separate measurement fork only; production logic below is unchanged.
+	var probe_begin := Time.get_ticks_usec()
 	conversation_editor.flush_message()
+	var probe_flush := Time.get_ticks_usec()
 	conversation_error = ""
 	var blocked := _conversation_block_reason(true)
+	var probe_guard := Time.get_ticks_usec()
 	if not blocked.is_empty():
 		conversation_editor.notice.text = blocked
 		return
 	var clean: Variant = Provider.checked_conversation(conversation_editor.draft)
+	var probe_validate := Time.get_ticks_usec()
 	if clean == null:
 		conversation_error = "Invalid conversation. Only user/assistant text and retained image references are supported."
 		_update_conversation_guard()
 		return
 	for entry: Dictionary in clean: entry.content = provider.redact(entry.content)
+	var probe_redact := Time.get_ticks_usec()
 	if clean == conversation:
 		conversation_editor.hide()
 		return
+	var probe_equality := Time.get_ticks_usec()
 	# One append-only snapshot: never truncate original requests, replies or native receipts.
 	if not provider.log_event("conversation_edited",{"turns":clean,"last_result":last_result}):
 		conversation_error = "Could not save conversation edits; live history is unchanged. "+provider.log_warning
 		_update_conversation_guard()
 		return
+	var probe_audit := Time.get_ticks_usec()
 	if not persist_traffic_path():
 		conversation_error = "Could not save the conversation checkpoint; live history is unchanged."
 		_update_conversation_guard()
 		return
+	var probe_checkpoint := Time.get_ticks_usec()
 	conversation = clean
 	conversation_revision += 1
 	last_image = "" # The next request must not rely on an image removed from context.
 	conversation_editor.hide()
 	input_error = "Conversation updated for future requests; no canvas edits were executed."
+	var probe_end := Time.get_ticks_usec()
+	print("ART_APPLY_COMPONENT_PROFILE ",JSON.stringify({"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"flush_usec":probe_flush-probe_begin,"guard_usec":probe_guard-probe_flush,
+		"validate_usec":probe_validate-probe_guard,"explicit_redact_usec":probe_redact-probe_validate,
+		"equality_usec":probe_equality-probe_redact,"audit_usec":probe_audit-probe_equality,
+		"checkpoint_usec":probe_checkpoint-probe_audit,"assignment_hide_usec":probe_end-probe_checkpoint,
+		"total_usec":probe_end-probe_begin,"scope":"Separate instrumentation fork; ordinary Apply logic unchanged."}))
 
 func mount_tools(actions: HBoxContainer) -> void:
 	var options := Window.new()
