@@ -142,7 +142,7 @@ func run() -> void:
 			var without_context := Context.build(capture,without_rules)
 			var without_compiled := Proposal.compile(raw,without_context,without_rules)
 			var without_result: Dictionary = await predict(without_compiled,without_context)
-			var same := without_result.ok and without_result.predicted_materials_sha256==result.predicted_materials_sha256
+			var same: bool = bool(without_result.ok) and without_result.predicted_materials_sha256==result.predicted_materials_sha256
 			check(same,"fixed-packet knowledge ablation does not invent a geometry effect "+brief.id)
 			ablation = {"same_geometry":same,"with_knowledge_bytes":context.inspector.bytes,
 				"without_knowledge_bytes":without_context.inspector.bytes,"causal_creativity_claim":false}

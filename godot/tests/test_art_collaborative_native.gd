@@ -120,7 +120,7 @@ func matched_direct_control(index: int, entry: Dictionary, example: Dictionary, 
 	executor.native_receipt.disconnect(on_receipt)
 	check(executor.result.status=="completed","existing direct authoritative completion")
 	var after: Dictionary = await capture_region(target)
-	var matches := after.get("status","")=="completed" and Context.hash_materials(after.materials)==expected_sha
+	var matches: bool = after.get("status","")=="completed" and Context.hash_materials(after.materials)==expected_sha
 	check(matches,"matched direct and staged native material planes are identical "+entry.id)
 	var changed := 0
 	var checked := 0
@@ -141,7 +141,7 @@ func frozen_context_ablation(example: Dictionary, before: Dictionary, rules: Dic
 	var without_context := Context.build(before,without_rules)
 	var without_compiled := Proposal.compile(example.proposal,without_context,without_rules)
 	var without_result: Dictionary = await build_preview(without_compiled,without_context)
-	var same := without_result.get("ok",false) and without_result.predicted_materials_sha256==expected_sha
+	var same: bool = bool(without_result.get("ok",false)) and without_result.predicted_materials_sha256==expected_sha
 	check(same,"identical proposal knowledge ablation yields identical predicted geometry")
 	check(without_context.model.knowledge.cards.is_empty(),"knowledge-disabled context sends no knowledge cards")
 	return {"arm":"knowledge_disabled_fixed_proposal","same_predicted_material_plane":same,

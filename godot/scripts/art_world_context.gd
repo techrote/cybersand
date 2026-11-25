@@ -38,7 +38,8 @@ static func policy_error(policy: Dictionary) -> String:
 	for guard: Variant in guards:
 		if not guard is Rect2i or not guard.has_area() or not Rect2i(Vector2i.ZERO,extent).encloses(guard):
 			return "Protected regions must be finite native rectangles inside the World."
-	var allowed: Variant = policy.get("allowed",[0,58])
+	if not policy.has("allowed"): return "The host must explicitly supply the permitted material palette."
+	var allowed: Variant = policy.get("allowed",[])
 	if not allowed is Array or allowed.is_empty() or allowed.size() > 32:
 		return "Select between one and 32 permitted material IDs."
 	var seen := {}
@@ -60,6 +61,8 @@ static func policy_error(policy: Dictionary) -> String:
 	var variation: Variant = policy.get("variation",0.0)
 	if not (variation is int or variation is float) or not is_finite(float(variation)) or variation < 0 or variation > 1:
 		return "Variation must be a finite value between zero and one."
+	if policy.has("material_names") and not policy.material_names is Dictionary:
+		return "Material names must be a bounded native-name dictionary supplied by the host."
 	var pins: Variant = policy.get("pinned_constraints",[])
 	if not pins is Array or pins.size() > 16: return "Pin at most 16 creative constraints."
 	for pin: Variant in pins:

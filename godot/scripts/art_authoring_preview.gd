@@ -21,8 +21,10 @@ var _changed := 0
 var _unchanged := 0
 var _started_usec := 0
 var _maximum_poll_usec := 0
+var _configure_usec := 0
 
 func configure(compiled: Dictionary, context: Dictionary) -> bool:
+	var configure_started := Time.get_ticks_usec()
 	if active: return false
 	if not compiled.get("ok",false) or not context.get("ok",false) \
 			or not context.has("_capture") or compiled.get("context_digest") != context.get("digest") \
@@ -54,6 +56,7 @@ func configure(compiled: Dictionary, context: Dictionary) -> bool:
 	result = {"ok":true,"status":"previewing","stage":0,"stages":compiled.stages.size(),
 		"requested":0,"zero_native_writes":true}
 	_begin_stage()
+	_configure_usec = Time.get_ticks_usec()-configure_started
 	return true
 
 func _begin_stage() -> void:
@@ -114,7 +117,6 @@ func poll() -> Dictionary:
 					_stage_stats.introduced[desired] = int(_stage_stats.introduced.get(desired,0))+1
 					_stage_stats.removed[before] = int(_stage_stats.removed.get(before,0))+1
 					_materials[index] = desired
-	_maximum_poll_usec = maxi(_maximum_poll_usec,Time.get_ticks_usec()-began)
 	if _plan.exhausted():
 		_stage_stats.after_materials_sha256 = Context.hash_materials(_materials)
 		_stages.append(_stage_stats.duplicate(true))
@@ -127,6 +129,10 @@ func poll() -> Dictionary:
 			else:
 				_finish("ready","")
 		else: _begin_stage()
+	_maximum_poll_usec = maxi(_maximum_poll_usec,Time.get_ticks_usec()-began)
+	if not active:
+		result.maximum_poll_usec = _maximum_poll_usec
+		result.elapsed_usec = Time.get_ticks_usec()-_started_usec
 	if active:
 		result = {"ok":true,"status":"previewing","stage":_index,"stages":_compiled.stages.size(),
 			"requested":_requested,"predicted_changed":_changed,"conflicts":_conflict_count,
@@ -145,7 +151,7 @@ func _finish(status: String, error: String) -> void:
 		"predicted_unchanged":_unchanged,"conflict_count":_conflict_count,"conflicts":_conflicts.duplicate(true),
 		"conflicts_omitted":maxi(0,_conflict_count-_conflicts.size()),
 		"predicted_materials_sha256":Context.hash_materials(_materials),
-		"maximum_poll_usec":_maximum_poll_usec,"elapsed_usec":Time.get_ticks_usec()-_started_usec,
+		"maximum_poll_usec":_maximum_poll_usec,"configure_usec":_configure_usec,"elapsed_usec":Time.get_ticks_usec()-_started_usec,
 		"zero_native_writes":true,
 		"notice":"Predictions from copied materials, not execution receipts. Fresh source validation and explicit approval are still required."}
 	_plan = null
