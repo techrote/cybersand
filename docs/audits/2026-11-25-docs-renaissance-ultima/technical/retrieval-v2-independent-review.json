@@ -1,0 +1,196 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "implementer": "Specialist C",
+  "reviewed_commit": "004e5cba3a1328458a24f0ada26b4d3d16d5a481",
+  "executed_projection": "e9e0e0da3a370c98ea4be04ede82fd9812cf1f7e",
+  "verdict": "APPROVE within reference-retrieval scope",
+  "source_review": "Read complete two-file diff, tokenization and BM25 query calculation, freshness and source-follow boundaries, preregistration and experiment. The new distinct-query-term coverage factor scales only the existing extra heading/title bonus; BM25, document diversity and declared primary-intent routing are unchanged. There is no query-ID/path dispatch, fixture lookup, corpus wording change or evaluator/expectation edit. METHOD changes to v2 so old snapshots/live instances invalidate.",
+  "independent_execution": {
+    "adapter_tests": 36,
+    "adapter_tests_status": "PASS",
+    "adapter_log_sha256": "aeabae9e8f9f6f1a01abd3f3a3413d14abcf370b5109d34d68d48d73fc88be90",
+    "public_queries": 248,
+    "development_queries": 20,
+    "actual_v2_id_score_context_rank_equivalence": 268,
+    "v1_original_public_id_score_equivalence": 248,
+    "wrong_authority": 0,
+    "execution_receipt": "retrieval-v2-independent-execution.json",
+    "execution_receipt_sha256": "3e0fb430a77e801589c9b73abae52747e8ef3d0aa2164eab1396a21e4ad436b1",
+    "execution_script": "retrieval-v2-independent-execution.py",
+    "execution_script_sha256": "aa682729c76e3a36c8f4ef32808929e789c55dbf732b843e0a762f0ec638d26f"
+  },
+  "metrics": [
+    {
+      "suite": "frozen",
+      "fixture_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "metrics": {
+        "v1": {
+          "questions": 32,
+          "top1": 25,
+          "top3": 30,
+          "top5": 31,
+          "mrr_at_5": 0.862
+        },
+        "field-bonus-rollback": {
+          "questions": 32,
+          "top1": 19,
+          "top3": 28,
+          "top5": 32,
+          "mrr_at_5": 0.7484
+        },
+        "coverage-scaled-field-bonus": {
+          "questions": 32,
+          "top1": 23,
+          "top3": 29,
+          "top5": 32,
+          "mrr_at_5": 0.8359
+        }
+      }
+    },
+    {
+      "suite": "challenges",
+      "fixture_sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "metrics": {
+        "v1": {
+          "questions": 164,
+          "top1": 131,
+          "top3": 160,
+          "top5": 163,
+          "mrr_at_5": 0.8833
+        },
+        "field-bonus-rollback": {
+          "questions": 164,
+          "top1": 124,
+          "top3": 158,
+          "top5": 161,
+          "mrr_at_5": 0.8556
+        },
+        "coverage-scaled-field-bonus": {
+          "questions": 164,
+          "top1": 129,
+          "top3": 160,
+          "top5": 163,
+          "mrr_at_5": 0.8766
+        }
+      }
+    },
+    {
+      "suite": "renaissance",
+      "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "metrics": {
+        "v1": {
+          "questions": 36,
+          "top1": 29,
+          "top3": 32,
+          "top5": 35,
+          "mrr_at_5": 0.8639
+        },
+        "field-bonus-rollback": {
+          "questions": 36,
+          "top1": 27,
+          "top3": 33,
+          "top5": 35,
+          "mrr_at_5": 0.8412
+        },
+        "coverage-scaled-field-bonus": {
+          "questions": 36,
+          "top1": 29,
+          "top3": 32,
+          "top5": 35,
+          "mrr_at_5": 0.8653
+        }
+      }
+    },
+    {
+      "suite": "owner-intent",
+      "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "metrics": {
+        "v1": {
+          "questions": 6,
+          "top1": 1,
+          "top3": 5,
+          "top5": 6,
+          "mrr_at_5": 0.5139
+        },
+        "field-bonus-rollback": {
+          "questions": 6,
+          "top1": 1,
+          "top3": 4,
+          "top5": 4,
+          "mrr_at_5": 0.3889
+        },
+        "coverage-scaled-field-bonus": {
+          "questions": 6,
+          "top1": 1,
+          "top3": 5,
+          "top5": 6,
+          "mrr_at_5": 0.5139
+        }
+      }
+    },
+    {
+      "suite": "historical",
+      "fixture_sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "metrics": {
+        "v1": {
+          "questions": 10,
+          "top1": 7,
+          "top3": 10,
+          "top5": 10,
+          "mrr_at_5": 0.8333
+        },
+        "field-bonus-rollback": {
+          "questions": 10,
+          "top1": 7,
+          "top3": 9,
+          "top5": 10,
+          "mrr_at_5": 0.825
+        },
+        "coverage-scaled-field-bonus": {
+          "questions": 10,
+          "top1": 7,
+          "top3": 10,
+          "top5": 10,
+          "mrr_at_5": 0.8333
+        }
+      }
+    },
+    {
+      "suite": "development",
+      "fixture_sha256": "c3cbbdee8ee16be8afc7a5b2bc75fa03f6d9efef6975e3549b1510a0fc2c3cbd",
+      "metrics": {
+        "v1": {
+          "questions": 20,
+          "top1": 13,
+          "top3": 16,
+          "top5": 18,
+          "mrr_at_5": 0.7392
+        },
+        "field-bonus-rollback": {
+          "questions": 20,
+          "top1": 13,
+          "top3": 17,
+          "top5": 20,
+          "mrr_at_5": 0.7683
+        },
+        "coverage-scaled-field-bonus": {
+          "questions": 20,
+          "top1": 13,
+          "top3": 17,
+          "top5": 18,
+          "mrr_at_5": 0.7458
+        }
+      }
+    }
+  ],
+  "tradeoffs": "Coverage scaling restores the original frozen32 top-five recall without losing challenge recall relative to v1, but lowers frozen/challenge MRR and top-one counts. Full field-bonus rollback obtains20/20 natural development recall versus18/20 for v1/v2, while losing challenge and owner-intent recall. These rejected-control benefits remain visible. Top-k recall does not establish answer sufficiency.",
+  "integrity": "The lead had executed v1 heldout evaluation before authorizing this public-fixture-triggered correction. C had no access to heldout questions, targets, contexts, aggregate outcomes or results. A completed and sealed30 original partially-blinded context judgments before reviewing this diff. No heldout input was used by the experiment or independent268-query execution. Preserve the v1 treatment and separately label any v2 holdout rerun.",
+  "limits": [
+    "No generative model or external deployed index was run.",
+    "Independent268-query execution checks actual reference-adapter outputs and authority; it is not268 authored answer-accuracy judgments.",
+    "Execution script retains exact original workspace locations as an audit record; for a relocated rerun set root to162b8097+004e5cba, base to the retained C experiment records and v1 packet, and choose a fresh output.",
+    "All recorded results are source-qualified candidate research, not owner acceptance or runtime release."
+  ]
+}
