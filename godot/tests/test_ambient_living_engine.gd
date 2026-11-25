@@ -385,6 +385,154 @@ func _expiry_and_sequences() -> void:
 	check(expired and not false_completion,"suppressed phase has a finite interruption deadline without a completion claim")
 
 
+func home_recharge_profile(radius: float = 20.0) -> Dictionary:
+	var p: Dictionary = profile(["seek_home_drive"])
+	p.drives_enabled = true
+	p.modules[0].id = "authored_home"
+	p.modules[0].params.trigger = 1.0
+	p.modules[0].params.arrival_radius = radius
+	p.modules[0].params.rest_seconds = 8.0
+	return p
+
+
+func _home_recharge() -> void:
+	# The ordinary sustained Foundry observation settled 16.49 cells from a home
+	# with arrival_radius20, selected home_rest, and nevertheless depleted drive.
+	# Reproduce that composition with copied geometry, not a new physical episode.
+	var p: Dictionary = home_recharge_profile()
+	var e = engine(p,FLIGHT)
+	var o: Dictionary = observation()
+	o.position = Vector2(118,100)
+	var result: Dictionary = e.step(o,0.0)
+	check(result.selected_goal == "authored_home" and result.goal_phase == "home_rest",
+		"configured twenty-cell home accepts an actual eighteen-cell arrival")
+	var before: float = e.diagnostics().drives.exploration
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) > before,
+		"selected home rest recharges inside its authored radius beyond ordinary sixteen-cell rest")
+	before = e.diagnostics().drives.exploration
+	o.position = Vector2(120,100)
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) > before,"selected home recharge includes its exact authored boundary")
+	before = e.diagnostics().drives.exploration
+	o.position = Vector2(120.01,100)
+	result = advance(e,o)
+	check(result.goal_phase == "home_rest" and float(e.diagnostics().drives.exploration) < before,
+		"physical drift outside the selected radius cannot recharge even while finite rest remains selected")
+	var paused: Dictionary = e.diagnostics().drives.duplicate(true)
+	e.step(o,0.0)
+	check(e.diagnostics().drives == paused,"unchanged inspection cannot replenish drive")
+
+	# An unrelated candidate cannot widen the selected instance's smaller home.
+	p = home_recharge_profile(14.0)
+	var other: Dictionary = Profile.make_module("seek_home_drive")
+	other.id = "unselected_wide_home"
+	other.weight = 0.01
+	other.params.trigger = 1.0
+	other.params.arrival_radius = 60.0
+	p.modules.append(other)
+	e = engine(p,FLIGHT)
+	o = observation()
+	o.position = Vector2(112,100)
+	result = e.step(o,0.0)
+	check(result.selected_goal == "authored_home" and result.goal_phase == "home_rest",
+		"multiple home instances retain the actual winning authored identity")
+	before = e.diagnostics().drives.exploration
+	o.position = Vector2(115,100)
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) < before,
+		"selected fourteen-cell radius is not widened by ordinary sixteen-cell rest or a sixty-cell candidate")
+	for disabled: bool in [true,false]:
+		p = home_recharge_profile(60.0)
+		p.modules[0].enabled = not disabled
+		p.modules[0].weight = 1.0 if disabled else 0.0
+		e = engine(p,FLIGHT)
+		o = observation()
+		o.position = Vector2(118,100)
+		result = e.step(o,0.0)
+		before = e.diagnostics().drives.exploration
+		advance(e,o)
+		check(result.selected_goal.is_empty() and float(e.diagnostics().drives.exploration) < before,
+			"disabled or zero-weight home candidates cannot lend a recharge radius")
+
+	# Resource rest is an actual neutral override, not a homeward goal. It must
+	# not inherit the wider home radius after interrupting a selected home rest.
+	p = home_recharge_profile()
+	other = Profile.make_module("rest_resource")
+	other.id = "actual_energy_rest"
+	other.priority = 120
+	p.modules.append(other)
+	e = engine(p,FLIGHT)
+	o = observation()
+	o.position = Vector2(118,100)
+	e.step(o,0.0)
+	o.resources = {"available":true,"energy":0.1}
+	result = advance(e,o)
+	check(result.active_override == "actual_energy_rest" and result.pace == 0.0,
+		"actual-resource neutral override can interrupt selected home rest")
+	before = e.diagnostics().drives.exploration
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) < before and float(o.resources.energy) == 0.1,
+		"interrupted home rest cannot recharge an unrelated neutral override or invent actual energy")
+
+	p = profile([])
+	p.drives_enabled = true
+	e = engine(p,FLIGHT)
+	o = observation()
+	o.position = Vector2(116,100)
+	e.step(o,0.0)
+	before = e.diagnostics().drives.exploration
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) > before,"ordinary neutral behavior retains sixteen-cell home recharge")
+	before = e.diagnostics().drives.exploration
+	o.position = Vector2(116.01,100)
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) < before,"ordinary neutral behavior has no enlarged recharge radius")
+
+	p = home_recharge_profile()
+	var ground = engine(p,GROUND)
+	var flyer = engine(p,FLIGHT)
+	o = observation()
+	o.position = Vector2(118,200)
+	var grounded_home: Dictionary = ground.step(o,0.0)
+	var airborne_home: Dictionary = flyer.step(o,0.0)
+	check(grounded_home.goal_phase == "home_rest" and airborne_home.goal_phase == "approach",
+		"ground home geometry remains horizontal while flight requires two-axis arrival")
+	var copy: Dictionary = o.duplicate(true)
+	advance(ground,o)
+	advance(flyer,copy)
+	check(float(ground.diagnostics().drives.exploration) > 0.85 and float(flyer.diagnostics().drives.exploration) < 0.85,
+		"recharge uses the same capability-appropriate geometry as home arrival")
+
+	p.drives_enabled = false
+	e = engine(p,FLIGHT)
+	o = observation()
+	o.position = Vector2(118,100)
+	e.step(o,0.0)
+	before = e.diagnostics().drives.exploration
+	advance(e,o)
+	check(float(e.diagnostics().drives.exploration) == before,"disabled drives remain fixed even during selected home rest")
+
+	p = home_recharge_profile()
+	e = engine(p,FLIGHT)
+	o = observation()
+	o.position = Vector2(118,100)
+	e.step(o,0.0)
+	for index: int in range(30): advance(e,o)
+	check(float(e.diagnostics().drives.exploration) == 1.0,"authored home recharge remains bounded to one")
+	o.world_generation += 1
+	o.tick = 0
+	o.simulation_time_seconds = 0.0
+	e.step(o,0.0)
+	check(float(e.diagnostics().drives.exploration) == 0.85,"World replacement resets recharge history before a new home intention")
+	p.modules[0].params.arrival_radius = 14.0
+	check(bool(e.configure(p,{"actor_id":101,"home":Vector2(100,100),"capabilities":FLIGHT}).ok),
+		"reconfigured narrower home is admitted")
+	result = e.step(o,0.0)
+	check(result.goal_phase == "approach" and float(e.diagnostics().drives.exploration) == 0.85,
+		"profile handoff cannot retain the prior selected home's wider radius or accumulated drive")
+
+
 func _traits_and_modules() -> void:
 	var low: Dictionary = profile(["investigate_material","exploration_destination"])
 	low.personality.enabled = true
@@ -583,6 +731,7 @@ func run() -> void:
 	_geometry_and_obstruction()
 	_obstacle_commitment()
 	_expiry_and_sequences()
+	_home_recharge()
 	_traits_and_modules()
 	_affinity()
 	_determinism_and_copy()

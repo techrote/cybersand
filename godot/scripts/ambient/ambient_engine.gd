@@ -308,6 +308,22 @@ func _effective_module(module: Dictionary) -> Dictionary:
 	return result
 
 
+func _rest_recharge_radius() -> float:
+	# Recharge the completed interval of the actually selected home-rest instance.
+	# Other candidates cannot lend it a larger arrival region; ordinary neutral
+	# behavior keeps its existing radius. Current geometry is checked by the caller.
+	var selected: String = str(_last_intent.get("selected_module",""))
+	if selected.is_empty() or str(_last_intent.get("selected_goal","")) != selected \
+		or str(_last_intent.get("goal_phase","")) != "home_rest" \
+		or not str(_last_intent.get("active_override","")).is_empty():
+		return 16.0
+	var module: Dictionary = _effective_modules.get(selected,{})
+	if str(module.get("type","")) != "seek_home_drive" \
+		or not bool(module.get("enabled",false)) or float(module.get("weight",0.0)) <= 0.0:
+		return 16.0
+	return float(module.params.arrival_radius)
+
+
 func _update_drives(observation: Dictionary, delta: float) -> void:
 	if int(_profile.version) < 2: return
 	if not bool(_profile.get("drives_enabled",true)):
@@ -317,7 +333,7 @@ func _update_drives(observation: Dictionary, delta: float) -> void:
 		return
 	var home_delta: Vector2 = observation.position - _context.home
 	if not bool(_context.capabilities.get("vertical",false)): home_delta.y = 0.0
-	var at_home: bool = home_delta.length() <= 16.0
+	var at_home: bool = home_delta.length() <= _rest_recharge_radius()
 	var moving: bool = _has_position and delta > 0.0 and delta <= 0.25 \
 		and (observation.position as Vector2).distance_to(_last_position) / delta > 1.0
 	var restful: bool = float(_last_intent.get("pace",0.0)) <= 0.05 \

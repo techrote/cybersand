@@ -99,9 +99,10 @@ candidate remains visible in diagnostics, including reasons for inactivity.
 Candidate deadlines are simulation-time opportunities: eligibility is not proof
 that the actor executed that goal, reached a waypoint or remained physically
 still. Scientific intention occupancy counts the selected result, not all active
-candidates. Selected dwell advances only for the same previously selected module,
-goal key and phase with continuous admitted time. Interrupted inspection does
-not accumulate contact or patrol/rest dwell in the background. An absolute
+candidates. Only valid intervals credited to the previously selected module,
+goal key and phase advance dwell. Suppressed or unsupported time adds none;
+partial credited dwell may resume before the finite deadline. Interrupted
+inspection does not accumulate contact or patrol/rest dwell in the background. An absolute
 opportunity deadline still releases interrupted work, so low-priority candidates
 cannot wait indefinitely and stale interests cannot sustain a permanent hold.
 
@@ -133,7 +134,17 @@ defaults for a matched ablation.
 Exploration drive starts at 0.85 and social drive at 0.45. Both remain in [0, 1].
 Exploration recovers by 0.09 per simulated second while near home with a restful
 intention; otherwise it declines at `0.006 + 0.018 × activity` per second of
-observed movement, or 35% of that rate without observed movement. Social drive
+observed movement, or 35% of that rate without observed movement. During an
+actually selected `seek_home_drive` / `home_rest` interval, the current copied
+position must lie within that exact enabled, positive-weight instance's validated
+`arrival_radius`. Other neutral or restful behavior keeps its existing 16-cell
+recharge radius. An inactive, overridden, disabled or zero-weight home candidate
+cannot enlarge another intention's recharge region. Ground/wheel containment
+uses horizontal distance and flight uses Euclidean distance. Integration uses
+the prior admitted intention and current position; it is a bounded procedural
+preference, not proof of uninterrupted occupancy across missing observations.
+
+Social drive
 declines by 0.06 per second near an admitted compatible peer and accumulates by
 `0.005 + 0.01 × sociability` per second otherwise. These are procedural drives,
 separate from actual rig energy. Disabling drives fixes them at exploration 0.65

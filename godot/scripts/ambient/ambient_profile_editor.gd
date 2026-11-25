@@ -640,7 +640,7 @@ func _show_living_settings() -> void:
 		_button(_living_body, "Enable living settings in this draft", enable_living_settings)
 		return
 	_note(_living_body, "Traits change documented decision mechanisms. They are authored settings; private drives and remembered places restart after Apply, Reset or Reopen.")
-	_bool_field(_living_body, _draft, "drives_enabled", "Allow finite exploration and rest drives to accumulate with physical simulation time. Disable for a matched drive ablation.")
+	_bool_field(_living_body, _draft, "drives_enabled", "Allow finite exploration and social drives to accumulate with physical simulation time. Disable for a matched drive ablation.")
 	for key: String in Profile.personality_specs():
 		var spec: Dictionary = Profile.personality_specs()[key]
 		if str(spec.get("type", "")) in ["bool", "boolean"]:
