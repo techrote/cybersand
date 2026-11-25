@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Accepted native Architectural Generator, Gentek catalogue, preview, installation and authored save workflow
 canonical-for: [architectural-generator-owner-evaluation]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../systems/architectural-generator.md, workbench-saving.md, explore001-desktop-playtest.md, ../images/gentek80-integration/README.md]
 ---
 
@@ -148,8 +148,13 @@ while previewing, installing, painting, saving or reopening.
 
 This walkthrough was checked against `architectural_generator_dialog.gd`,
 `architectural_generator_project.gd` and `workbench_generator_dialog.gd`; its
-native illustrations were executed headlessly. Fresh pointer-driven GUI testing
-was blocked in the documentation environment. The original
+native illustrations were executed headlessly. The ULTIMA review additionally
+exercised the ordinary three-style preview, cancellation, explicit installation,
+painting and saved-recipe reopening in a real Linux window with software OpenGL.
+The [graphical report](../audits/2026-11-25-docs-renaissance-ultima/product/README.md)
+records exact source/runtime identities, observed results and the narrower
+scope of each automated fixture. This does not establish all 80 styles or
+physical Windows/NVIDIA acceptance. The original
 [Phase A/B qualification walkthrough](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/architectural-generator-playtest.md)
 retains the earlier dated evaluation history. It does not put accepted #582,
 #684 or #691 back under an old candidate merge hold.

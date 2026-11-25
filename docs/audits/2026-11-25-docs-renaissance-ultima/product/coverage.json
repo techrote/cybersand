@@ -1,0 +1,949 @@
+{
+  "schema_version": 1,
+  "reviewer": "Specialist B",
+  "date": "2026-11-25",
+  "reviewed_branch_head": "14c0b26ddc98a7eed9e6a967f06a5b2e6437494b",
+  "scope": "Product/user route and assigned product-heavy system semantic review. This inventory distinguishes full-text reading from selected source checks, actual execution and inherited evidence. It is not a claim that every numerical sentence or every platform was independently executed.",
+  "summary": {
+    "documents": 37,
+    "full_text": 31,
+    "selected_sections": 6
+  },
+  "documents": [
+    {
+      "path": "README.md",
+      "document_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "review_depth": "full-text reader journey and image-provenance review",
+      "consequential_claims_reviewed": "Front-door identity, actual routes, representative image captions and accepted/candidate boundaries. Browser rendering is recorded separately.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/feature_launcher.gd",
+          "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+        },
+        {
+          "path": "godot/project.godot",
+          "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+        }
+      ],
+      "qualification_limit": "Source routes and selected actual Workbench launch; not every feature executed."
+    },
+    {
+      "path": "docs/README.md",
+      "document_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "review_depth": "full-text reader journey and image-provenance review",
+      "consequential_claims_reviewed": "Front-door identity, actual routes, representative image captions and accepted/candidate boundaries. Browser rendering is recorded separately.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/feature_launcher.gd",
+          "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+        },
+        {
+          "path": "godot/project.godot",
+          "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+        }
+      ],
+      "qualification_limit": "Source routes and selected actual Workbench launch; not every feature executed."
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "document_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "review_depth": "full-text semantic review with actual interactive task execution",
+      "consequential_claims_reviewed": "Launch prerequisites, fresh canvas, paused tools, palette labels, camera recovery, ordinary Save/reopen.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/feature_launcher.gd",
+          "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_controller.gd",
+          "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e"
+        },
+        {
+          "path": "third_party/godot-runtime.lock.json",
+          "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        }
+      ],
+      "qualification_limit": "Linux llvmpipe task matrix; no Windows owner playfeel."
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "document_sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+      "review_depth": "full-text semantic review with actual interactive task execution",
+      "consequential_claims_reviewed": "Launch prerequisites, fresh canvas, paused tools, palette labels, camera recovery, ordinary Save/reopen.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/feature_launcher.gd",
+          "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_controller.gd",
+          "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e"
+        },
+        {
+          "path": "third_party/godot-runtime.lock.json",
+          "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        }
+      ],
+      "qualification_limit": "Linux llvmpipe task matrix; no Windows owner playfeel."
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "document_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "review_depth": "full-text semantic review and selected source-contract tracing",
+      "consequential_claims_reviewed": "Queue versus completion, paused precise edits, partial cancellation, source fences, finite Fill/Copy and shared history.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_paint_editor_controller.gd",
+          "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_history.gd",
+          "sha256": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_executor.gd",
+          "sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4"
+        },
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
+        }
+      ],
+      "qualification_limit": "Actual Line/Brush/Undo/Redo; no claim that every shape/Fill adversary was manually exercised."
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "document_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "review_depth": "full-text semantic review and selected source-contract tracing",
+      "consequential_claims_reviewed": "Queue versus completion, paused precise edits, partial cancellation, source fences, finite Fill/Copy and shared history.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_paint_editor_controller.gd",
+          "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_history.gd",
+          "sha256": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_executor.gd",
+          "sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4"
+        },
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
+        }
+      ],
+      "qualification_limit": "Actual Line/Brush/Undo/Redo; no claim that every shape/Fill adversary was manually exercised."
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "document_sha256": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a",
+      "review_depth": "full-text semantic review, source tracing and independent actual OS-fault reproduction",
+      "consequential_claims_reviewed": "Ordinary/generated/project replacement versus material-only Flatten and physical continuation; candidate/accepted writer distinction.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_file_transaction.gd",
+          "sha256": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac"
+        },
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
+        }
+      ],
+      "qualification_limit": "Actual ordinary/generated/Flatten Save/reopen and before/after RLIMIT_FSIZE. Full platform fault matrix belongs A."
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "document_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+      "review_depth": "full-text semantic review, selected source tracing and non-generative UI exercise",
+      "consequential_claims_reviewed": "Direct JSON, source-material58 policy, native receipt/cancellation, shared history, session-only conversation and provider availability.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3"
+        },
+        {
+          "path": "godot/scripts/art_batch_executor.gd",
+          "sha256": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        }
+      ],
+      "qualification_limit": "Actual Direct JSON success/invalid JSON; no provider/model call or paid inference."
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "document_sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+      "review_depth": "full-text semantic review, selected source tracing and non-generative UI exercise",
+      "consequential_claims_reviewed": "Direct JSON, source-material58 policy, native receipt/cancellation, shared history, session-only conversation and provider availability.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3"
+        },
+        {
+          "path": "godot/scripts/art_batch_executor.gd",
+          "sha256": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        }
+      ],
+      "qualification_limit": "Actual Direct JSON success/invalid JSON; no provider/model call or paid inference."
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "document_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "review_depth": "full-text semantic review, selected source tracing and non-generative UI exercise",
+      "consequential_claims_reviewed": "Direct JSON, source-material58 policy, native receipt/cancellation, shared history, session-only conversation and provider availability.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3"
+        },
+        {
+          "path": "godot/scripts/art_batch_executor.gd",
+          "sha256": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        }
+      ],
+      "qualification_limit": "Actual Direct JSON success/invalid JSON; no provider/model call or paid inference."
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "document_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "review_depth": "full-text semantic and route review",
+      "consequential_claims_reviewed": "Distinct scene owners, F2 session boundary, atlas versus native dimensions, retained image provenance.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/feature_launcher.gd",
+          "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+        },
+        {
+          "path": "godot/scripts/feature_navigation.gd",
+          "sha256": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c"
+        }
+      ],
+      "qualification_limit": "Source-checked navigation; actual individual showcase observations recorded separately."
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "document_sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573",
+      "review_depth": "full-text semantic review, selected source tracing and real native GUI workflow",
+      "consequential_claims_reviewed": "Gentek/variant/preset/composition, preview versus explicit install, cancelled-label and embedded-recipe fixes, exact source/material verification, authored save and project distinction.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_project.gd",
+          "sha256": "b2faa6d4de1f02dbd7d8326db2a62c36219b7fe8f6163ddc638563e269ede332"
+        },
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "sha256": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        }
+      ],
+      "qualification_limit": "Real three-style preview/install/edit/reopen; display-backed author73/0 and focused discovery29/0; no all80-style fresh campaign."
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "document_sha256": "33b98ea01957c4627788519f5b4891e7b2edc187c509e80d08a57f873bb75e53",
+      "review_depth": "full-text semantic review, selected source tracing and real native GUI workflow",
+      "consequential_claims_reviewed": "Gentek/variant/preset/composition, preview versus explicit install, cancelled-label and embedded-recipe fixes, exact source/material verification, authored save and project distinction.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_project.gd",
+          "sha256": "b2faa6d4de1f02dbd7d8326db2a62c36219b7fe8f6163ddc638563e269ede332"
+        },
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "sha256": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        }
+      ],
+      "qualification_limit": "Real three-style preview/install/edit/reopen; display-backed author73/0 and focused discovery29/0; no all80-style fresh campaign."
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "document_sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac",
+      "review_depth": "full-text semantic review, selected source tracing and real native GUI workflow",
+      "consequential_claims_reviewed": "Gentek/variant/preset/composition, preview versus explicit install, cancelled-label and embedded-recipe fixes, exact source/material verification, authored save and project distinction.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_project.gd",
+          "sha256": "b2faa6d4de1f02dbd7d8326db2a62c36219b7fe8f6163ddc638563e269ede332"
+        },
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "sha256": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        }
+      ],
+      "qualification_limit": "Real three-style preview/install/edit/reopen; display-backed author73/0 and focused discovery29/0; no all80-style fresh campaign."
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "document_sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "review_depth": "full-text semantic review with selected native API and ownership checks",
+      "consequential_claims_reviewed": "Immutable proposal/compiled state, scalar versus typed graphs, finite route/domain guarantees, explicit four-plane ownership, work budgets versus timing, receipt identity and live-World admission separation.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "native/include/cybersand/generation_fields.hpp",
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        {
+          "path": "native/include/cybersand/generation_typed_fields.hpp",
+          "sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+        },
+        {
+          "path": "native/include/cybersand/generation_grammar.hpp",
+          "sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+        },
+        {
+          "path": "native/include/cybersand/generation_planes.hpp",
+          "sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        }
+      ],
+      "qualification_limit": "Public API/selected owning paths checked; numerical operator inventory and every native algorithm were not freshly re-proven or rerun by B. Dated measurements remain historical."
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "document_sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "review_depth": "full-text semantic review with selected native API and ownership checks",
+      "consequential_claims_reviewed": "Immutable proposal/compiled state, scalar versus typed graphs, finite route/domain guarantees, explicit four-plane ownership, work budgets versus timing, receipt identity and live-World admission separation.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "native/include/cybersand/generation_fields.hpp",
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        {
+          "path": "native/include/cybersand/generation_typed_fields.hpp",
+          "sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+        },
+        {
+          "path": "native/include/cybersand/generation_grammar.hpp",
+          "sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+        },
+        {
+          "path": "native/include/cybersand/generation_planes.hpp",
+          "sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        }
+      ],
+      "qualification_limit": "Public API/selected owning paths checked; numerical operator inventory and every native algorithm were not freshly re-proven or rerun by B. Dated measurements remain historical."
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "document_sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "review_depth": "full-text semantic review with selected native API and ownership checks",
+      "consequential_claims_reviewed": "Immutable proposal/compiled state, scalar versus typed graphs, finite route/domain guarantees, explicit four-plane ownership, work budgets versus timing, receipt identity and live-World admission separation.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "native/include/cybersand/generation_fields.hpp",
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        {
+          "path": "native/include/cybersand/generation_typed_fields.hpp",
+          "sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+        },
+        {
+          "path": "native/include/cybersand/generation_grammar.hpp",
+          "sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+        },
+        {
+          "path": "native/include/cybersand/generation_planes.hpp",
+          "sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        }
+      ],
+      "qualification_limit": "Public API/selected owning paths checked; numerical operator inventory and every native algorithm were not freshly re-proven or rerun by B. Dated measurements remain historical."
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "document_sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "review_depth": "full-text semantic review with selected native API and ownership checks",
+      "consequential_claims_reviewed": "Immutable proposal/compiled state, scalar versus typed graphs, finite route/domain guarantees, explicit four-plane ownership, work budgets versus timing, receipt identity and live-World admission separation.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "native/include/cybersand/generation_fields.hpp",
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        {
+          "path": "native/include/cybersand/generation_typed_fields.hpp",
+          "sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+        },
+        {
+          "path": "native/include/cybersand/generation_grammar.hpp",
+          "sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+        },
+        {
+          "path": "native/include/cybersand/generation_planes.hpp",
+          "sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        }
+      ],
+      "qualification_limit": "Public API/selected owning paths checked; numerical operator inventory and every native algorithm were not freshly re-proven or rerun by B. Dated measurements remain historical."
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "document_sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "review_depth": "full-text semantic review with selected native API and ownership checks",
+      "consequential_claims_reviewed": "Immutable proposal/compiled state, scalar versus typed graphs, finite route/domain guarantees, explicit four-plane ownership, work budgets versus timing, receipt identity and live-World admission separation.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "native/include/cybersand/generation_fields.hpp",
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        {
+          "path": "native/include/cybersand/generation_typed_fields.hpp",
+          "sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+        },
+        {
+          "path": "native/include/cybersand/generation_grammar.hpp",
+          "sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+        },
+        {
+          "path": "native/include/cybersand/generation_planes.hpp",
+          "sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        }
+      ],
+      "qualification_limit": "Public API/selected owning paths checked; numerical operator inventory and every native algorithm were not freshly re-proven or rerun by B. Dated measurements remain historical."
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "document_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "review_depth": "full-text semantic review with selected native API and ownership checks",
+      "consequential_claims_reviewed": "Immutable proposal/compiled state, scalar versus typed graphs, finite route/domain guarantees, explicit four-plane ownership, work budgets versus timing, receipt identity and live-World admission separation.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "native/include/cybersand/generation_fields.hpp",
+          "sha256": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+        },
+        {
+          "path": "native/include/cybersand/generation_typed_fields.hpp",
+          "sha256": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+        },
+        {
+          "path": "native/include/cybersand/generation_grammar.hpp",
+          "sha256": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+        },
+        {
+          "path": "native/include/cybersand/generation_planes.hpp",
+          "sha256": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        }
+      ],
+      "qualification_limit": "Public API/selected owning paths checked; numerical operator inventory and every native algorithm were not freshly re-proven or rerun by B. Dated measurements remain historical."
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "document_sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "review_depth": "full-text semantic review with selected material/presentation source checks",
+      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/material.hpp",
+          "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        {
+          "path": "native/include/cybersand/material_appearance.hpp",
+          "sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        {
+          "path": "native/src/material_rules.cpp",
+          "sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+        },
+        {
+          "path": "godot/scripts/material_appearance_lut.gd",
+          "sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        {
+          "path": "godot/shaders/material_palette.gdshader",
+          "sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        }
+      ],
+      "qualification_limit": "Source/visual distinctions and selected constants checked. No new all-material shader benchmark or chemical acceptance campaign."
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "document_sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "review_depth": "full-text semantic review with selected material/presentation source checks",
+      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/material.hpp",
+          "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        {
+          "path": "native/include/cybersand/material_appearance.hpp",
+          "sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        {
+          "path": "native/src/material_rules.cpp",
+          "sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+        },
+        {
+          "path": "godot/scripts/material_appearance_lut.gd",
+          "sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        {
+          "path": "godot/shaders/material_palette.gdshader",
+          "sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        }
+      ],
+      "qualification_limit": "Source/visual distinctions and selected constants checked. No new all-material shader benchmark or chemical acceptance campaign."
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "document_sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "review_depth": "full-text semantic review with selected material/presentation source checks",
+      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/material.hpp",
+          "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        {
+          "path": "native/include/cybersand/material_appearance.hpp",
+          "sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        {
+          "path": "native/src/material_rules.cpp",
+          "sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+        },
+        {
+          "path": "godot/scripts/material_appearance_lut.gd",
+          "sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        {
+          "path": "godot/shaders/material_palette.gdshader",
+          "sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        }
+      ],
+      "qualification_limit": "Source/visual distinctions and selected constants checked. No new all-material shader benchmark or chemical acceptance campaign."
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "document_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "review_depth": "full-text semantic review with selected material/presentation source checks",
+      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/material.hpp",
+          "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+        },
+        {
+          "path": "native/include/cybersand/material_appearance.hpp",
+          "sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+        },
+        {
+          "path": "native/src/material_rules.cpp",
+          "sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+        },
+        {
+          "path": "godot/scripts/material_appearance_lut.gd",
+          "sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+        },
+        {
+          "path": "godot/shaders/material_palette.gdshader",
+          "sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+        }
+      ],
+      "qualification_limit": "Source/visual distinctions and selected constants checked. No new all-material shader benchmark or chemical acceptance campaign."
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "document_sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "review_depth": "full-text semantic review with selected ownership/source checks",
+      "consequential_claims_reviewed": "Standalone four-plane dimensions/clocks, frozen background, explicit event links, ordinary Workbench integration status.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/depth/depth_lab.gd",
+          "sha256": "8692dc3227e8cf3921c171f65cf2fbccb4963fef0aa3b8d665e9187b5d963b13"
+        },
+        {
+          "path": "godot/scripts/depth/semantic_plane_runtime.gd",
+          "sha256": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d"
+        },
+        {
+          "path": "godot/scripts/exhibition/deepworks_map.gd",
+          "sha256": "e0a66f9ea2300ea00a26b501ce70817a1763ab1e277a640a862e3b9968286722"
+        }
+      ],
+      "qualification_limit": "No ordinary Workbench four-plane availability inferred; no fresh physical Strata acceptance."
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "document_sha256": "ef1b0bb1ae9bac86a03eca944cbb3e136623222fe39936e0e8abd2de9cfc75a5",
+      "review_depth": "full-text semantic review and focused catalogue qualification",
+      "consequential_claims_reviewed": "Sampled virtual combat versus physical apparatus, actual46rigpicker, source-bound observations, untrained/mock model boundaries.",
+      "source_locators": [
+        {
+          "path": "godot/examples/thunderbowl/physical_thunderbowl_scene.gd",
+          "sha256": "7076e53909af8b510ad0f052ded3803ee0d8b64458bde8b325f28b5a4547a23a"
+        },
+        {
+          "path": "godot/scripts/physical_actor_catalog.gd",
+          "sha256": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8"
+        },
+        {
+          "path": "godot/scripts/thunderbowl_contract.gd",
+          "sha256": "1eb1c5cfcd6ec5db398a9677413ec1afefcaf0c2337427d51c6c545a21391218"
+        }
+      ],
+      "qualification_limit": "Physical actor catalogue6267assertions/0failures; no trained-policy efficacy or physical playfeel claim."
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "document_sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "review_depth": "full-text semantic review with selected UI/catalogue/authority checks",
+      "consequential_claims_reviewed": "59models versus actor/part/proxy capacities, inspected actor versus pilot, lease/source change, authored composition versus physical continuation; unmerged successors separate.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_actor_catalog.gd",
+          "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927"
+        },
+        {
+          "path": "godot/scripts/workbench_actor_panel.gd",
+          "sha256": "6f455dd8844a2780ffd693a2eddfb3acd65a978790cce0c2fabe8223ef386aee"
+        },
+        {
+          "path": "godot/scripts/physical_actor_session.gd",
+          "sha256": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1"
+        },
+        {
+          "path": "godot/scripts/workbench_actor_control.gd",
+          "sha256": "f7a839765111f2494e5e141a1dc5037fd1b85fd0aad1167d3da33732807acc97"
+        }
+      ],
+      "qualification_limit": "Actual Midge placement receipt and visible actor; full mixed-roster/handoff/equipment matrix not freshly executed by B."
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "document_sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "review_depth": "full-text semantic review with selected UI/catalogue/authority checks",
+      "consequential_claims_reviewed": "59models versus actor/part/proxy capacities, inspected actor versus pilot, lease/source change, authored composition versus physical continuation; unmerged successors separate.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_actor_catalog.gd",
+          "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927"
+        },
+        {
+          "path": "godot/scripts/workbench_actor_panel.gd",
+          "sha256": "6f455dd8844a2780ffd693a2eddfb3acd65a978790cce0c2fabe8223ef386aee"
+        },
+        {
+          "path": "godot/scripts/physical_actor_session.gd",
+          "sha256": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1"
+        },
+        {
+          "path": "godot/scripts/workbench_actor_control.gd",
+          "sha256": "f7a839765111f2494e5e141a1dc5037fd1b85fd0aad1167d3da33732807acc97"
+        }
+      ],
+      "qualification_limit": "Actual Midge placement receipt and visible actor; full mixed-roster/handoff/equipment matrix not freshly executed by B."
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "document_sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "review_depth": "full-text semantic review and selected actual UI tasks",
+      "consequential_claims_reviewed": "Requested/applied law, Wave gameplay defaults, comparison reset, physical versus material state and source-package fixtures.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_water_lab.gd",
+          "sha256": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d"
+        },
+        {
+          "path": "godot/scripts/workbench_water_spray_panel.gd",
+          "sha256": "e47f1ddc48090fa08dc182c389dfb36d459eb15f6d9db4b6928e7efa06c91894"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        }
+      ],
+      "qualification_limit": "Actual Wave applied readback and two-crests512scene running/pause; not full solver/parameter sweep."
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "document_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "review_depth": "full-text semantic review and selected actual UI tasks",
+      "consequential_claims_reviewed": "Main sandbox versus Lab versus Workbench; effective-consumer inspection, isolated candidates, real test-world results, no live-current-scene activation.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/material_lab_panel.gd",
+          "sha256": "ef8630df18316f8e094712df73bd9e145b17554e01168486a2a701601e88abc5"
+        },
+        {
+          "path": "godot/scripts/material_lab_experiment.gd",
+          "sha256": "f3512c6eb4663f629d790795be2f259f6484928d16cb1fbf0f52e0b7ada2c34e"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84"
+        },
+        {
+          "path": "godot/scripts/web_demo_controller.gd",
+          "sha256": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb"
+        }
+      ],
+      "qualification_limit": "Actual Water inspection and120tickisolatedWater/Salt experiment; no candidate compilation or provider service."
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "document_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "review_depth": "full-text semantic review and selected actual UI tasks",
+      "consequential_claims_reviewed": "Main sandbox versus Lab versus Workbench; effective-consumer inspection, isolated candidates, real test-world results, no live-current-scene activation.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/material_lab_panel.gd",
+          "sha256": "ef8630df18316f8e094712df73bd9e145b17554e01168486a2a701601e88abc5"
+        },
+        {
+          "path": "godot/scripts/material_lab_experiment.gd",
+          "sha256": "f3512c6eb4663f629d790795be2f259f6484928d16cb1fbf0f52e0b7ada2c34e"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84"
+        },
+        {
+          "path": "godot/scripts/web_demo_controller.gd",
+          "sha256": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb"
+        }
+      ],
+      "qualification_limit": "Actual Water inspection and120tickisolatedWater/Salt experiment; no candidate compilation or provider service."
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "document_sha256": "59455b29c4b437113a0d3ce7c3dc603ecb264a0eac933c283e201249c3be8d48",
+      "review_depth": "selected consequential sections; not full-document claim",
+      "consequential_claims_reviewed": "First-launch pins, source-only/companion distinction and cheap validation/C-header commands; selected renderer/profile instructions. Parent owns remaining operational sections.",
+      "source_locators": [
+        {
+          "path": "third_party/godot-runtime.lock.json",
+          "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        },
+        {
+          "path": "third_party/native-toolchain.lock.json",
+          "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414"
+        },
+        {
+          "path": "Makefile",
+          "sha256": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7"
+        },
+        {
+          "path": "tools/ci/check_repository.py",
+          "sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983"
+        }
+      ],
+      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "document_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066",
+      "review_depth": "selected consequential sections; not full-document claim",
+      "consequential_claims_reviewed": "Authored formats, Flatten and complete new save replacement contract; other ownership sections are independently assigned A.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_file_transaction.gd",
+          "sha256": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac"
+        },
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        }
+      ],
+      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "document_sha256": "3f40b00906d08488a46221df6a9a5f6ff3efd430f35203c0bd9a7a2f6d0c9884",
+      "review_depth": "selected consequential sections; not full-document claim",
+      "consequential_claims_reviewed": "Authored reconstruction and candidate replacement distinction; native physical-version matrix assigned A.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        }
+      ],
+      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "document_sha256": "ffa060d60479ca981571136c9bfc31d22d30e6d540b207b55fe516908d006d90",
+      "review_depth": "selected consequential sections; not full-document claim",
+      "consequential_claims_reviewed": "Accepted/candidate rows, LCB foundation and custody routes; full reference review assigned C.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_actor_catalog.gd",
+          "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927"
+        }
+      ],
+      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "document_sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
+      "review_depth": "selected consequential sections; not full-document claim",
+      "consequential_claims_reviewed": "Device/nozzle user controls and explicit unmerged#724 boundary; native equipment contract assigned A.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_water_lab.gd",
+          "sha256": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d"
+        }
+      ],
+      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "document_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "review_depth": "selected consequential sections; not full-document claim",
+      "consequential_claims_reviewed": "Complete actual retrieved manual acceptance sequence and generated first-open layout facts; full remaining file not claimed.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "sha256": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d"
+        }
+      ],
+      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+    }
+  ],
+  "cross_lane_reviews": [
+    "A persistence helper and all three callers: source review plus independent RLIMIT_FSIZE before/after",
+    "A module boundaries/coupling torque correction3af3370d: source/path and language review",
+    "A Wave catch_falling correction: exact age/config branch read",
+    "C maintenance/index and explicit reference-adapter CLI/cache35test qualification",
+    "C owner Web policy: primary owner comment5593128559 independently read"
+  ],
+  "unread_product_routes_for_lead_assignment": [
+    "docs/operations/gentek80-evaluation.md (actual supplied TestIt passage read; full file not newly reviewed)",
+    "docs/operations/gentek-showcase-integration-001.md",
+    "docs/operations/gentek-rosework-showcase.md",
+    "docs/operations/deepworks-exhibition.md (currentmap/context passage read; full file not newly reviewed)",
+    "docs/operations/blacksite-nine-demo.md",
+    "docs/operations/neon-reliquary-demo.md",
+    "docs/operations/semantic-depth-authoring.md",
+    "docs/operations/experiment-tower.md"
+  ],
+  "remaining_execution": "Rendered documentation and final integrated GUI source binding are separate follow-up receipts."
+}

@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-007 final play plane to existing prepared finite shared-workbench World
 keywords: [EXPLORE-001, GEN-007, playable, workbench, native, map, save, reopen]
 canonical-for: [generated-playable-map-admission, generated-playable-map-persistence]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [generation-workbench-2.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/github-development-and-release.md]
 ---
 
@@ -92,11 +92,14 @@ process), and `python3 tools/ci/test_workbench_profile_packaging.py`.
    painting/erasure. A saved start records actor spawn and the authored ordered
    brush marks, not the live evolved native state.
 6. In the painting row, enter a valid name and click **Save start [Ctrl+S]**.
-   After the complete bounded JSON and material source have been checked, the
-   versioned generated-map manifest is written to a temporary file and renamed
-   to `user://workbench/setup-<name>.json`. This Godot rename path does not provide
-   the material-baseline writer's stronger failed-replacement preservation
-   guarantee. Use a new name to retain an earlier generated start.
+   The versioned generated-map manifest is saved to
+   `user://workbench/setup-<name>.json`; a new name keeps an earlier start as a
+   separate save. **ULTIMA candidate:** after payload validation, the shared
+   writer checks the closed staging file's exact bytes before native replacement.
+   A refused replacement preserves the old destination under the verified I/O
+   failure model. The accepted predecessor's Godot-only writer lacks that
+   guarantee. [Save-file replacement](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+   owns the candidate boundary, recovery feedback and durability limits.
 7. Close Godot. Start it in a **new process**, select Shared Workbench, enter
    that name and click **Load start**. The same dialog re-generates the original
    native play-plane with the saved exact recipe and verifies all source identities

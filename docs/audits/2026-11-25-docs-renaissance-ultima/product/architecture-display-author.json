@@ -1,0 +1,140 @@
+{
+	"cases": [
+		{
+			"capture": "architecture-form-overview.png",
+			"case": "architectural-form-view",
+			"display": "X11",
+			"embedded": true,
+			"preset_id": "industrial-service",
+			"root_size": [
+				1280,
+				720
+			],
+			"slot": 0
+		},
+		{
+			"capture": "architecture-form-overview.png",
+			"case": "architectural-form-view",
+			"display": "X11",
+			"embedded": true,
+			"preset_id": "habitation-arcology",
+			"root_size": [
+				1280,
+				720
+			],
+			"slot": 1
+		},
+		{
+			"capture": "architecture-form-overview.png",
+			"case": "architectural-form-view",
+			"display": "X11",
+			"embedded": true,
+			"preset_id": "overgrown-ruins",
+			"root_size": [
+				1280,
+				720
+			],
+			"slot": 2
+		},
+		{
+			"capture": "architecture-form-overview.png",
+			"case": "architectural-form-view",
+			"display": "X11",
+			"embedded": true,
+			"preset_id": "disabled-placeholder",
+			"root_size": [
+				1280,
+				720
+			],
+			"slot": 3
+		},
+		{
+			"capture": "architecture-form-overview.png",
+			"case": "architectural-form-view",
+			"display": "X11",
+			"embedded": true,
+			"preset_id": "disabled-placeholder",
+			"root_size": [
+				1280,
+				720
+			],
+			"slot": 4
+		},
+		{
+			"case": "ui-preview-latency",
+			"display": "X11",
+			"extent": [
+				512,
+				512
+			],
+			"first_frame_drawn_us": 18774936,
+			"label": "architecture-preview-512",
+			"material_sha256": "d6cb5efe74941abc0b2b7a5dead03b6126b00d36f1c5e48102edb079a302f15b",
+			"native_configure_to_ready_us": 3080581,
+			"ready_us": 18670803,
+			"recipe_sha256": "35f3c16dbf4df54b3662a62005c9715488c0b989696eb0eac90eef94bd64f102",
+			"request_started_us": 15588043,
+			"request_to_first_drawn_frame_us": 3186893,
+			"request_to_ready_us": 3082760,
+			"scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+			"seed": 161803,
+			"status": "Verified native proposal · 512x512 · 37944 nonempty cells · 16 source receipts · 3.08s to preview. Install replaces unsaved work."
+		},
+		{
+			"case": "ui-preview-latency",
+			"display": "X11",
+			"extent": [
+				1024,
+				1024
+			],
+			"first_frame_drawn_us": 31698429,
+			"label": "architecture-preview-new",
+			"material_sha256": "2d0c8f6eaa9b094f4ad0eecf6cc75b8ce2d1163e41e11142c681e7f447e28a0b",
+			"native_configure_to_ready_us": 12758311,
+			"ready_us": 31652129,
+			"recipe_sha256": "26559b25d84185497555a58ee9c995c35c1005974bb1bc892ed8111255411835",
+			"request_started_us": 18890794,
+			"request_to_first_drawn_frame_us": 12807635,
+			"request_to_ready_us": 12761335,
+			"scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+			"seed": 161803,
+			"status": "Verified native proposal · 1024x1024 · 152913 nonempty cells · 64 source receipts · 12.76s to preview. Install replaces unsaved work."
+		},
+		{
+			"case": "ui-preview-latency",
+			"display": "X11",
+			"extent": [
+				1024,
+				1024
+			],
+			"first_frame_drawn_us": 44122070,
+			"label": "architecture-preview-changed",
+			"material_sha256": "f17d7b07a7a770cbf12f9e2657a625de36e32ad06a9460df2bf9fa00c791d62b",
+			"native_configure_to_ready_us": 12034641,
+			"ready_us": 44067976,
+			"recipe_sha256": "ec2b6daea939c6c24ab6b97298a2e5db9e4ae11260cac9a746e6cb9d1abc2ec4",
+			"request_started_us": 32031124,
+			"request_to_first_drawn_frame_us": 12090946,
+			"request_to_ready_us": 12036852,
+			"scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+			"seed": 271828,
+			"status": "Verified native proposal · 1024x1024 · 152971 nonempty cells · 64 source receipts · 12.03s to preview. Install replaces unsaved work."
+		},
+		{
+			"case": "author",
+			"display": "X11",
+			"native_receipts": 64,
+			"recipe_sha256": "ec2b6daea939c6c24ab6b97298a2e5db9e4ae11260cac9a746e6cb9d1abc2ec4",
+			"saved_edits": 2,
+			"source_sha256": "f17d7b07a7a770cbf12f9e2657a625de36e32ad06a9460df2bf9fa00c791d62b"
+		}
+	],
+	"checks": 73,
+	"display": "X11",
+	"elapsed_us": 44599885,
+	"failures": 0,
+	"godot": "4.7-stable (official)",
+	"os": "Linux",
+	"phase": "author",
+	"schema": 1
+}
