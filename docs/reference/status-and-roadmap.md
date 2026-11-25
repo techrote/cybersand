@@ -10,7 +10,7 @@ related-documents: [product-intent-and-priorities.md, validation-evidence.md, in
 
 # Status and foundational roadmap
 
-**Source baseline: accepted main `5e29b111be6202a76c0042976f74de98bd8ead78`,
+**Source baseline: accepted main `c8421a81b8f7f61516ed055f3200b49aee57bd65`,
 rechecked 25 November 2026.** This register answers what is in that source, what
 remains a candidate, and where to find the owning contract. It is not a promise
 that every feature has passed physical owner evaluation on every platform.
@@ -56,13 +56,15 @@ automatically close or satisfy its whole programme.
 | Rendering and recording | Native material snapshots and Godot presentation, with existing recording/diagnostic paths | [Rendering](../architecture/rendering-and-gameplay-bridges.md). Render FPS, tick counters and recorded presentation do not by themselves prove physical progression or complete replay. |
 | Standalone exhibitions | Deepworks, Blacksite Nine, Neon Reliquary, player playground, Thunderbowl and Strata Theatre retain their own entry points and owners | [Showcases](../operations/showcase-guide.md). Four-layer Strata is not yet ordinary Workbench layer editing. |
 | World Art | Accepted shared renderer, viewer, capture tools and source-bound evaluator support | [World Art](../tools/art-pipeline-unification.md). Art-only extents and exports do not raise native simulation/import limits. Hosted graphics do not establish physical NVIDIA acceptance. |
+| Optional Goblin gameplay QA | A separate developer scene, bounded ordinary-game actions, seeded policies, transcript and semantic replay/reduction tooling | [Accepted foundation and explicit research record](../research/gip014-goblin-gameplay-qa.md). Ordinary Workbench startup is unchanged. Use the isolated-profile launcher and exact source/runtime identity; persistent experiment memory remains a successor. |
 
 ### Accepted foundations behind this map
 
 These live merge records were checked independently of their titles. The list
 captures the major documentation transitions; it is not a complete release log.
 The 25 November accepted merges change Palette CI scheduling, Windows evaluator
-tooling and CI coordination, custody and acquisition. They leave the inspected
+tooling, CI coordination, custody and acquisition, and the optional Goblin QA
+foundation. They leave the inspected
 native simulation, ordinary application runtime source and dependency pins from
 `00cdb02f` unchanged; the dated technical source inspections remain applicable.
 
@@ -85,6 +87,7 @@ native simulation, ordinary application runtime source and dependency pins from
 | Palette Windows cohort scheduling | [#736](https://github.com/techrote/cybersand/pull/736) | The qualified Windows cohort parallelism change is accepted CI tooling; it adds no product capability. |
 | Source-exact Gentek Windows owner tooling | [#758](https://github.com/techrote/cybersand/pull/758) | Offline archive/source verification, packaging and acceptance tooling are accepted. Use the [explicit owner guide](../operations/gentek80-physical-owner-acceptance.md) with the exact archive/source/digest handoff. A historical ZIP is not a new-main build, and physical Windows/NVIDIA acceptance remains outstanding. |
 | CI closure and qualification recovery | [#771](https://github.com/techrote/cybersand/pull/771), [#778](https://github.com/techrote/cybersand/pull/778); programmes [#706](https://github.com/techrote/cybersand/issues/706), [#761](https://github.com/techrote/cybersand/issues/761) | The read-only coordination/custody helpers, pinned-engine acquisition and planner/reducer corrections are accepted tooling. Active publisher adoption and product acceptance remain programme-specific; the helpers grant neither. |
+| Optional Goblin gameplay QA foundation | [#772](https://github.com/techrote/cybersand/pull/772) | The separate developer scene and source-bound observation/replay tooling are accepted. Default ordinary gameplay is unchanged, and historical campaign or evaluator results remain bound to their original source. |
 
 ## Active candidates and integration boundaries
 
@@ -97,7 +100,7 @@ reported evaluator results do not admit its application into accepted main.
 
 | Programme | Principal record | Boundary for accepted-main documentation |
 |---|---|---|
-| ULTIMA save safety and practical documentation | Successor [#783](https://github.com/techrote/cybersand/pull/783), retained predecessor [#774](https://github.com/techrote/cybersand/pull/774); [candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Verified staged-byte replacement, retrieval/authority corrections and practical UX repairs are candidate changes. Accepted `5e29b111` does not acquire them through documentation. The compact successor preserves the full predecessor's evidence lineage. |
+| ULTIMA save safety and practical documentation | Successor [#783](https://github.com/techrote/cybersand/pull/783), retained predecessor [#774](https://github.com/techrote/cybersand/pull/774); [candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Verified staged-byte replacement, retrieval/authority corrections and practical UX repairs are candidate changes. Accepted `c8421a81` does not acquire them through documentation. The compact successor preserves the full predecessor's evidence lineage. |
 | PUBPRES physical progression and presentation | [#717](https://github.com/techrote/cybersand/issues/717), current finisher [#767](https://github.com/techrote/cybersand/pull/767), predecessor [#757](https://github.com/techrote/cybersand/pull/757) | Do not claim publication stalls or physical freezes are resolved by accepted main. |
 | ObjectShard moving destructible materials | [#754](https://github.com/techrote/cybersand/pull/754) | Moving native chemistry, mutable body ownership and ordinary Workbench integration are candidate behavior. |
 | Actor Compose continuous play and pilot recovery | [#762](https://github.com/techrote/cybersand/pull/762) | Preserve accepted #683 controls and disclose successor repair scope. |
@@ -106,7 +109,7 @@ reported evaluator results do not admit its application into accepted main.
 | Consolidated Gentek SWARM-004/005/006 | [#729](https://github.com/techrote/cybersand/pull/729) | Accepted Gentek generation does not imply accepted reciprocal negotiation/recovery. |
 | Collaborative Art and provider/window repairs | Collaborative successor [#780](https://github.com/techrote/cybersand/pull/780), retained finisher [#773](https://github.com/techrote/cybersand/pull/773), owner issue [#744](https://github.com/techrote/cybersand/issues/744); earlier donors [#765](https://github.com/techrote/cybersand/pull/765), [#766](https://github.com/techrote/cybersand/pull/766), [#756](https://github.com/techrote/cybersand/pull/756), [#763](https://github.com/techrote/cybersand/pull/763) | Proposal/development/review stages, context inspection and successor provider/window repairs remain unmerged. The candidate distinguishes deterministic response fixtures from genuine-model creative acceptance and retains physical Windows/NVIDIA checks as owner-pending. |
 | WORLD-STEER / Batch Lab | M6–M7 successor [#777](https://github.com/techrote/cybersand/pull/777), M3–M5 [#770](https://github.com/techrote/cybersand/pull/770), predecessor [#720](https://github.com/techrote/cybersand/pull/720), [#579](https://github.com/techrote/cybersand/issues/579) | Native module harvesting, architectural knowledge retrieval, structural parts and staged construction remain candidate work. |
-| goblin experimental gameplay testing | Persistent laboratory successor [#781](https://github.com/techrote/cybersand/pull/781), real-game predecessor [#772](https://github.com/techrote/cybersand/pull/772); retained contract-model prototype [#749](https://github.com/techrote/cybersand/pull/749) | Workbench QA operations, experiment memory, semantic replay and reduction remain unmerged candidate capabilities. The candidate retains long-run timeouts and distinguishes semantic replay from exact asynchronous physical replay. The earlier Python contract model is not native runtime evidence. |
+| Goblin persistent laboratory and experiment memory | Persistent laboratory successor [#781](https://github.com/techrote/cybersand/pull/781), accepted foundation [#772](https://github.com/techrote/cybersand/pull/772); retained contract-model prototype [#749](https://github.com/techrote/cybersand/pull/749) | Persistent laboratory/experiment-memory capabilities remain unmerged; the separate QA scene and foundational replay/reduction tooling are already accepted through #772. Semantic replay is not exact asynchronous physical replay. The earlier Python contract model is not native runtime evidence. |
 | Ambient procedural actors | Living-inhabitants successor [#779](https://github.com/techrote/cybersand/pull/779), based on the retained [#775](https://github.com/techrote/cybersand/pull/775) lineage | Personalities, spatial memory, drives, local social behavior and Behaviour authoring remain candidate capabilities. #779's base is itself unmerged; neither its predecessor nor its reported evaluator admits them into main. Accepted actor control and its eight-actor limit remain the current contract. |
 | Materials Lab current-scene audition | [#768](https://github.com/techrote/cybersand/pull/768) | Approved live-audition intent is not satisfied by advertising the existing isolated Lab as that feature. |
 | Workbench Strata Theatre | Layered authoring and atmosphere successor [#776](https://github.com/techrote/cybersand/pull/776), foundation [#769](https://github.com/techrote/cybersand/pull/769), owner intent [#588](https://github.com/techrote/cybersand/issues/588) | Four-plane painting/composition and environmental atmosphere in ordinary Workbench remain unmerged candidates, distinct from the available standalone exhibition. |
