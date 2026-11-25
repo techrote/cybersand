@@ -1,0 +1,223 @@
+{
+  "schema": "art-windows-render-profile-summary-v1",
+  "campaign": 45550363681,
+  "artifact": 14993970171,
+  "artifact_sha256": "8515813ed298f3d1aa5eba9c4eea7456e36af6b96eeb86307495d63b9ebfaf4d",
+  "diagnostic_source": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+  "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "checks_per_arm": 27,
+  "first_profile_shader_files": 34,
+  "warm_input_cache_exactly_matches_first_output": true,
+  "all_three_bounded_context_digests_equal_across_arms": true,
+  "arms": [
+    {
+      "label": "graphical-first",
+      "fresh_profile": true,
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "INTEL(R) XEON(R) PLATINUM 8573C",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 14068312,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "Intel64 Family 6 Model 207 Stepping 2, GenuineIntel",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1328919,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 64430,
+        "load_context_resource_usec": 14,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 246182,
+        "ordinary_art_open_usec": 149548,
+        "ready_to_first_completed_draw_usec": 41955,
+        "remaining_native_install_wait_usec": 49008617,
+        "resource_load_main_usec": 1733471,
+        "root_viewport_pixels": [
+          1028,
+          749
+        ],
+        "scene_instantiate_usec": 34830,
+        "workbench_ready_elapsed_usec": 52113567
+      },
+      "maximum_render_interval": {
+        "end_elapsed_usec": 51129216,
+        "index": 0,
+        "start_elapsed_usec": 3240105,
+        "wall_usec": 47889111
+      },
+      "first_render_interval": {
+        "end_elapsed_usec": 51129216,
+        "index": 0,
+        "start_elapsed_usec": 3240105,
+        "wall_usec": 47889111
+      },
+      "maximum_observed_frame_gap_usec": 47892064,
+      "profile_shader_cache_before": 0,
+      "profile_shader_cache_after": 34,
+      "original_result_sha256": "d5c41780bbdfbd6783f5577b81b5b6162fa43b090a298f76692afba748f07088"
+    },
+    {
+      "label": "graphical-reused-profile",
+      "fresh_profile": false,
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "INTEL(R) XEON(R) PLATINUM 8573C",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 14322224,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "Intel64 Family 6 Model 207 Stepping 2, GenuineIntel",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1285833,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 68767,
+        "load_context_resource_usec": 17,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 247478,
+        "ordinary_art_open_usec": 139697,
+        "ready_to_first_completed_draw_usec": 6016,
+        "remaining_native_install_wait_usec": 1661632,
+        "resource_load_main_usec": 1740253,
+        "root_viewport_pixels": [
+          1028,
+          749
+        ],
+        "scene_instantiate_usec": 33851,
+        "workbench_ready_elapsed_usec": 4728312
+      },
+      "maximum_render_interval": {
+        "end_elapsed_usec": 4387049,
+        "index": 3,
+        "start_elapsed_usec": 3504843,
+        "wall_usec": 882206
+      },
+      "first_render_interval": {
+        "end_elapsed_usec": 3406079,
+        "index": 0,
+        "start_elapsed_usec": 3199156,
+        "wall_usec": 206923
+      },
+      "maximum_observed_frame_gap_usec": 3196733,
+      "profile_shader_cache_before": 34,
+      "profile_shader_cache_after": 35,
+      "original_result_sha256": "5ea4696bf94c5cdc5511c034eb33edf9b1d581ba30f7a9ffc992772184913f09"
+    },
+    {
+      "label": "headless-after-graphical",
+      "fresh_profile": true,
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "INTEL(R) XEON(R) PLATINUM 8573C",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 14324996,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "Intel64 Family 6 Model 207 Stepping 2, GenuineIntel",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1223068,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 5973,
+        "load_context_resource_usec": 11,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 87007,
+        "ordinary_art_open_usec": 85555,
+        "remaining_native_install_wait_usec": 1017755,
+        "resource_load_main_usec": 1754143,
+        "root_viewport_pixels": [
+          64,
+          64
+        ],
+        "scene_instantiate_usec": 31489,
+        "workbench_ready_elapsed_usec": 4027805
+      },
+      "maximum_render_interval": {},
+      "first_render_interval": null,
+      "maximum_observed_frame_gap_usec": 3133733,
+      "profile_shader_cache_before": 0,
+      "profile_shader_cache_after": 0,
+      "original_result_sha256": "ed9060187fc9bd05184d110f8b90acb53c129131c4700a42c96db23bd7407c2c"
+    }
+  ],
+  "limits": [
+    "One fixed-order pair, whole generated profile reused, uncontrolled OS cache.",
+    "Render interval is not a GPU-only or shader-compiler function profile.",
+    "Fresh-profile cost remains in the unchanged production application.",
+    "Diagnostic fixture time starts after engine bootstrap, not OS process creation.",
+    "Different CPU allocation from first four-arm run; no cross-host source-causal claim."
+  ]
+}
