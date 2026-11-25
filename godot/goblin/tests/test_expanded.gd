@@ -40,6 +40,18 @@ func action(id: String, args: Dictionary = {}, expected: String = "completed") -
 	return row
 
 
+func same_point(actual: Variant, expected: Array) -> bool:
+	# Authored JSON numbers and actual Vector2 coordinates can use different
+	# Variant numeric types. Compare exact finite values, never array type tags.
+	if not actual is Array or actual.size() != 2 or expected.size() != 2: return false
+	for index: int in range(2):
+		if not (actual[index] is int or actual[index] is float) \
+			or not (expected[index] is int or expected[index] is float): return false
+		if not is_finite(float(actual[index])) or not is_finite(float(expected[index])) \
+			or float(actual[index]) != float(expected[index]): return false
+	return true
+
+
 func check_origin(row: Dictionary, model: String, spawn: Array) -> void:
 	# Independent native gate expectation, deliberately not the oracle helper.
 	# The finite supported catalogue has one eccentric root: monowheel's cab.
@@ -48,14 +60,14 @@ func check_origin(row: Dictionary, model: String, spawn: Array) -> void:
 	for actor: Dictionary in row.get("after", {}).get("actors", []):
 		if actor.get("id") == row.after.get("selected_actor"): selected = actor
 	var parts: Array = selected.get("state", {}).get("retained_parts", [])
-	check(selected.get("model") == model and selected.get("authored_spawn") == spawn,
+	check(selected.get("model") == model and same_point(selected.get("authored_spawn"), spawn),
 		"actual authored assembly origin / " + model + " / " + str(row.action.id))
-	check(selected.get("position") == expected and selected.get("state", {}).get("position") == expected,
+	check(same_point(selected.get("position"), expected) and same_point(selected.get("state", {}).get("position"), expected),
 		"actual first body matches independently expected root offset / " + model)
-	check(not parts.is_empty() and parts[0].get("position") == expected,
+	check(not parts.is_empty() and same_point(parts[0].get("position"), expected),
 		"actual retained first part matches root / " + model)
 	if model == "monowheel":
-		check(parts.size() >= 2 and parts[1].get("position") == spawn, "actual monowheel rim remains at assembly origin")
+		check(parts.size() >= 2 and same_point(parts[1].get("position"), spawn), "actual monowheel rim remains at assembly origin")
 	check(row.after.get("actor_tick") == 0 and row.after.get("native", {}).get("tick") == 0 \
 		and row.after.get("paused") == true, "origin relation observed before physical progression")
 	actor_origin_experiments.append({"action_record": records.size() - 1, "action": row.action.duplicate(true),
@@ -87,13 +99,21 @@ func actor_origin_gate() -> void:
 				"authored_origin_before_capture": [264, 112], "captured_physical_root": [264.0, 113.5],
 				"reset_physical_root": [264.0, 115.0], "idempotence_contract_established": false,
 				"scope": "existing Capture reads the first body; Reset interprets that saved value as assembly origin"}
-		var replacement_model := "runner" if model == "monowheel" else "monowheel"
-		var replaced := await action("actor_replace", {"model": replacement_model})
-		check_origin(replaced, replacement_model, spawn)
+		# The ordinary compact picker includes a placed non-flyer, not every
+		# supported placement model. Same-model Replace creates a new instance
+		# through that real picker; Runner -> Kestrel is exercised above.
+		var replaced := await action("actor_replace", {"model": model})
+		check_origin(replaced, model, spawn)
 		await action("actor_remove")
 
 
 func run() -> void:
+	check(same_point([256.0, 96.0], [256, 96]), "test origin comparison admits equal numeric coordinates")
+	check(not same_point([264.0, 113.50001], [264, 113.5]), "test origin comparison rejects any unequal coordinate")
+	check(not same_point([true, 96], [1, 96]) and not same_point(["256", 96], [256, 96]),
+		"test origin comparison rejects nonnumeric coordinates")
+	check(not same_point([INF, 96], [INF, 96]) and not same_point([256], [256, 96]),
+		"test origin comparison rejects nonfinite and malformed coordinates")
 	check(Adapter.ACTION_IDS.size() == 55, "55 distinct bounded operations are declared")
 	check(Fixtures.IDS.size() >= 8, "at least eight committed authored scenarios")
 	for invalid: Dictionary in [

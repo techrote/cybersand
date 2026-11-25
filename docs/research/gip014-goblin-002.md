@@ -520,6 +520,50 @@ The independent gameplay audit and auditor are preserved in blob
 `e3633f538977bfd025f5c5d238c3a1d31d71769700aec24d4e141208d478e9a4`.
 The corrected-source full comparison remains separately pending.
 
+### Native fixture correction and request 8
+
+Completed request-5 and request-6 Linux evidence supersedes the earlier running
+status: both stopped at the newly expanded six-model gate, before graphical,
+memory or comparative execution. Request 5 retained 86 native rows and 1,621
+test checks with 50 test-local failures. Every row's runtime oracle assertions
+passed. Two assumptions in the added test were wrong: exact Variant-array
+equality distinguished expected integer coordinates from observed float
+coordinates, and the test requested replacement into an absent non-flyer model.
+
+The ordinary compact picker intentionally contains flyers, the barrel and
+currently placed non-flyers. Its six refused replacements were legal. The
+repair compares finite numeric coordinate components exactly, with no tolerance,
+and performs same-model Replace for each of the six lifecycle cycles. Those
+models are actually present in the picker and each replacement creates a fresh
+actor identity. The pre-existing Runner-to-Kestrel cross-model test remains.
+Only the native test fixture changes; the corrected runtime oracles, gameplay
+adapters, policies and product code remain unchanged. Independent source review
+confirmed the authority and exact comparison; a native pass is still required.
+
+Request-5 Linux evidence is
+[14991816351](https://github.com/techrote/cybersand/actions/runs/45546330774/artifacts/14991816351),
+25,889,266 bytes, SHA-256
+`535f955d4f2bd1f378d58bc038eb5d77db8da8a9bbadc90437b24056531572a7`.
+Request-6 Linux evidence is
+[14991867139](https://github.com/techrote/cybersand/actions/runs/45546944291/artifacts/14991867139),
+25,887,507 bytes, SHA-256
+`270fb06e878cdcb450d9b4a227e6e9e767c34b2fafc9e7c34acb22bf37e5c8c8`.
+
+[Request 7](https://github.com/techrote/cybersand/actions/runs/45547821984) verified
+the finite Windows-only selection and both Python-fixture repairs: all 103
+controls passed in 3.014 seconds on Windows. Unit, discovery and adapter native
+groups passed, then the same expanded native fixture failed before packaging.
+Its artifact
+[14992221745](https://github.com/techrote/cybersand/actions/runs/45547821984/artifacts/14992221745)
+is 24,637,570 bytes, SHA-256
+`25d17227a77ef95affb07139fbde6f0c9e3a3d6384e22ad58b9da7e02177d2d4`.
+
+Request 8 explicitly selects both platforms, including a complete new 142-episode
+Linux comparison and the separate seven-episode memory programme after focused
+and graphical gates pass. The historical d849 campaign remains the only
+completed full comparative programme at this checkpoint. No successor evaluator
+is yet qualified, and no new production defect has been established.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing

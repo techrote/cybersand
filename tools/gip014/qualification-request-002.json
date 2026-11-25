@@ -1,18 +1,19 @@
 {
   "schema": "cybersand-goblin-discovery-qualification-request-v1",
   "mission": "GIP-014-goblin-002",
-  "request": 7,
+  "request": 8,
   "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
-  "previous_source": "955a7fb89302d0aaa733e8868b047f3b82061e8d",
-  "previous_run": 45546944291,
-  "linux_plan": "smoke",
-  "plan": "Windows-only: all source, extracted-package, memory, graphical, replay, sealing and fresh-final-extraction gates. Existing request5 full Linux and request6 focused/memory/smoke runs retain their exact source identities.",
-  "comparative_campaign": "Request5 retains the complete142-episode corrected-oracle Linux comparison at7097b338; request6 retains focused/memory/smoke at955a7fb8. All game and launcher bytes are unchanged by this test-fixture-only repair. A finite platform selector avoids another equivalent Linux rerun without relabeling either prior attempt.",
-  "changes": "Author the two synthetic archived-source fixture members as explicit LF bytes on every platform, retaining strict archive-byte assertions. Add finite declarative workflow platform selection; Windows still runs every original gate. No production runner, game, oracle, policy, launcher or runtime changes.",
+  "previous_source": "1d096defba5e8c3d33f15a4307382ebe3b4ff49b",
+  "previous_run": 45547821984,
+  "linux_plan": "full",
+  "plan": "All Linux focused, regression-export, graphical, seven-episode memory and full142-episode comparative gates; all Windows source, extracted-package and final sealing gates.",
+  "comparative_campaign": "Requests5 and6 stopped at the new native test fixture before graphical/memory/comparative execution. The corrected full comparison has not yet run. Request8 starts the complete programme after repairing only that native fixture; original d849142-episode evidence remains separately retained.",
+  "changes": "Correct test-local authored coordinate type comparisons and exercise six supported actor models through Replace operations that are actually available in the ordinary compact picker. Preserve production gameplay, adapters, runtime oracles, policy generators and owner launchers. Retain all prior failures without relabeling them as production defects.",
   "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
   "evidence": "Retain every attempted process; production defects require independent reproduction and examination",
   "memory_experiment": "One actual Control64 cultivation supplies an unchanged corpus; two matched seeds compare fresh, imported hints, and explicit four-action prefix reuse in six Coverage Hunter64 episodes. Historical observations never count as fresh coverage.",
   "platforms": [
+    "linux",
     "windows"
   ]
 }
