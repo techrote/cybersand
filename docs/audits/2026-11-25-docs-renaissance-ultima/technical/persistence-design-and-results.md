@@ -27,7 +27,7 @@ fault injection or observed data loss; this mission supplies new evidence.
 
 | Finding | Observed or traced failure | Correction |
 |---|---|---|
-| A-ULT-01 / LIMIT-03 | Pinned Windows `DirAccess.rename_absolute` removes an existing destination before `MoveFileW`; a subsequent failure can lose the previous file. This mechanism is source-confirmed; Windows execution is a separate gate. | Reuse the existing native same-directory replacement primitive in all three affected writers. |
+| A-ULT-01 / LIMIT-03 | Pinned Windows `DirAccess.rename_absolute` removes an existing destination before `MoveFileW`; a subsequent failure can lose the previous file. This old mechanism is source-confirmed; new-source Windows lock tests are independently verified below. | Reuse the existing native same-directory replacement primitive in all three affected writers. |
 | A-ULT-02 / LIMIT-03 | Pinned Godot `flush()` discards `fflush` errors and `close()` exposes no `fclose` result. A buffered short write can leave `get_error()==OK`; the real Linux reproduction silently committed truncated bytes. | Check `store_buffer`, flush state and closed-file readback. Require exact length and exact bytes before native replacement. |
 | A-ULT-03 / LIMIT-03 | Generated/project errors claimed atomic replacement or prior-file preservation without the required mechanism. | Shared refusal says this save did not replace the previous file; failed cleanup additionally identifies retained staging. Success is emitted only after native commit. |
 
@@ -125,7 +125,45 @@ the user should reopen the named save to determine its contents.
 
 ## Executed qualification
 
-The [final Linux OS matrix](persistence-linux-final.json), at source
+The exact integrated checkpoint
+`bfa40c84964b10b8bc15b2d836ce93d389f20836` (tree
+`6f7e761d64db191d0bc94f3568440ca017274047`) passed the non-publishing
+[Linux and Windows hosted workflow](https://github.com/techrote/cybersand/actions/runs/45697930828).
+The [independent archive readback](hosted-independent-review.json) verifies all
+three archive digests/CRCs, every recorded normal-process log digest and all
+57 public-writer result records directly against their archived log lines.
+This readback is an independent review of actual hosted execution, not a new run.
+
+| Platform and observed scope | Fault matrix | Normal functional regression |
+|---|---|---|
+| GitHub Linux x86-64, glibc2.39 | 13 cases; 84 focused checks. Real file-size limit, directory permissions, post-staging rename refusal, process kill/retry and concurrent complete writes. | Nine workflows plus import, all natural exit 0, no skipped cases. |
+| GitHub Windows Server 2022, build 20348 | 10 cases; 75 focused checks. Actual destination locks for all three writers, staging lock with unlocked destination, process termination/retry and concurrent complete writes. POSIX symlink checks are excluded. | The same nine workflows plus import, all natural exit 0, no skipped cases. |
+
+The normal-workflow assertion counts on **that checkpoint** are material
+baseline 102, architectural project 61, generator discovery 27, painting 1884 and
+fresh-process reopen 1920, canvas 199 and reopen 23, generated authoring 77 and
+reopen 24; all report zero failures. Later UI fixtures retain their own source
+identities and results instead of being attributed to this earlier hosted run.
+
+On Windows, delete-access probes for all locked targets return error 32; actual
+replacement refuses with error 5, and old material 2/project seed 123 bytes remain
+loadable. After unlocking, retries store material 14/seed 456. The stronger
+negative control locks only the complete staging file and leaves the existing
+destination unlocked. Native replacement then returns error 32, retains the old
+46-byte file and its digest, and honestly reports retained staging. Removing
+the lock permits a successful retry. This directly exercises the point at
+which a delete-then-move strategy could lose the old file.
+
+Both platform input maps contain 4,215 tracked paths. Their 417 differing
+working-file digests are independently proved to be LF/CRLF checkout conversion
+of the exact Git blobs; the remaining 3,798 digests match. The separate map
+digests preserve the actual tested bytes. All 18 LFS objects are materialized;
+identity verification remains distinct from runtime execution. The Windows
+native DLL SHA-256 is
+`668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e`.
+No hosted result here claims a physical NVIDIA host or power-loss durability.
+
+The earlier [final Linux OS matrix](persistence-linux-final.json), at source
 `fb0ebc9e`, has **13 passed cases** and **84 focused checks**, including three-format fresh-process save/reload, three real limited
 write refusals, three permission-denied refusals, real native rename refusal,
 forced precommit process termination/retry and concurrent complete replacement.
@@ -182,8 +220,17 @@ predecessor checkout and disposable `XDG_DATA_HOME`. Run `SAVE_PHASE=prepare`
 normally; run `SAVE_PHASE=refusal` in a Python child with
 `resource.setrlimit(resource.RLIMIT_FSIZE, (128, 128))` and
 `signal.signal(signal.SIGXFSZ, signal.SIG_IGN)` in `preexec_fn`.
-The Windows old-source deletion case remains a platform execution task until
-its actual hosted receipt is recorded. A source trace alone is not a Windows run.
+The old Windows Godot delete-then-move implementation is source-traced; it was
+not executed as an old-source control. The new-source hosted lock controls above
+were actually executed. These evidence classes are deliberately separate.
+
+To independently verify downloaded hosted archives against the retained receipt:
+
+```bash
+python docs/audits/2026-11-25-docs-renaissance-ultima/technical/verify_hosted_archives.py \
+  --archives /absolute/path/to/downloaded-archives \
+  --repository . --output /absolute/path/to/readback.json
+```
 
 Independent B/C review and final integrated hosted results belong to the final
 mission review ledger. This implementation report does not grant merge, Ready,

@@ -1,0 +1,9 @@
+{
+  "issue": "stale live Retriever object returns current-authority text after source reclassified Historical",
+  "before_authority": "current-documentation",
+  "after_authority": "current-documentation",
+  "after_status": "Current",
+  "after_text": "Document: Test\nPath: systems/current.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Current instruction\ncanonical-for: [test]\nlast-reviewed: 2026-11-25\nSection: Current\nResume simulation immediately.",
+  "fingerprint_unchanged": true,
+  "fresh_constructor_refuses": true
+}

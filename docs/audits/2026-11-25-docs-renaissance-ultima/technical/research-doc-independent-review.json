@@ -1,0 +1,21 @@
+{
+  "reviewer": "A",
+  "review_type": "independent source+actual chunk envelope",
+  "rows": [
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "2ef9c449a3e165fd4b861dd2998382c2417cc8d0e1773f4b088b0f1620ae0899",
+      "chunks": 13,
+      "old_instruction_chunks": 1,
+      "every_selected_chunk_retains_historical_scope": true
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "3a247783431ff151e9a07fe4fe8eb373eb1a785109926861f2017dc070868673",
+      "chunks": 20,
+      "old_instruction_chunks": 1,
+      "every_selected_chunk_retains_historical_scope": true
+    }
+  ],
+  "verdict": "APPROVE bounded documentary scope. Current is reference maintenance status; original research pre-execution/branch instructions are explicitly historical in every chunk metadata envelope. No new experiment or broader physics authority."
+}
