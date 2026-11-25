@@ -1,0 +1,66 @@
+{
+  "schema": "art-lead-visual-review-v1",
+  "application_source": "e536d128f85e948223b25e13931a7a801faf956d",
+  "campaign": 45541065622,
+  "artifact": 14991291608,
+  "artifact_bytes": 11942803,
+  "artifact_sha256": "1d6e44d8d39317a440a8308d931f05326b3760b0d064d29fbb44a72abb9cc080",
+  "inspection": "Lead viewed eleven original PNGs directly; no generated or altered images. Qualitative review only, not another native execution or model cohort.",
+  "files": [
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/01-art-ordinary-proposal.png",
+      "bytes": 105387,
+      "sha256": "5f075b10e288bfa8606566fbf2a08efea7b1d4b38d64fd50e085bf0f081bdcd6"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/00-industrial_repair-after-workbench.png",
+      "bytes": 95865,
+      "sha256": "8ce5dd3ddaa354525e4bd96e4ceffdfada0acfda2156d0f79acb81d4b32b483f"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/01-structural_facade-after-workbench.png",
+      "bytes": 114560,
+      "sha256": "9a78e6ccaf250fc13db7cfbd24cd5abd10e27b8c35a1e5dd457608f8c1d7aa24"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/02-scifi_interior-after-workbench.png",
+      "bytes": 111167,
+      "sha256": "c9cfefb4066e3acde8722597362d2bf0814c85d31683675a2fca865148dd5269"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/03-revised_arcology-after-workbench.png",
+      "bytes": 91845,
+      "sha256": "a1b403f7f3255b963ae3c07c7f72c25ebe1058ca722f1e64b370f4442b2270d4"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/04-protected_courtyard-after-workbench.png",
+      "bytes": 98254,
+      "sha256": "1120525eb889d37c77c3ad1899d29467d8991d5d1974e5b5099488be5281322f"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/05-palette_foundry-after-workbench.png",
+      "bytes": 106895,
+      "sha256": "15d7bf39e5120c12b829f8336da7a1e064bef5422e3f33ddc0b9aac43860f0f9"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/06-stopped_workshop-after-workbench.png",
+      "bytes": 172316,
+      "sha256": "6b0a87a86c1ba6610a0a85a295deb846a0ca34fc84a993cb85ed7c3ed60c42f9"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/07-staged_megaframe-after-workbench.png",
+      "bytes": 383109,
+      "sha256": "781a682b949295ad70467f334234b48438719fef3b48726f767faaf0966af017"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaborative_native/08-xeno_vault-after-workbench.png",
+      "bytes": 110888,
+      "sha256": "83e353cae6b01ea9f4e01572f6c4c7b58525b71eac4a3e094316f24bf3028c9f"
+    },
+    {
+      "path": "art-panel-displayed/art-integrated-context.png",
+      "bytes": 134869,
+      "sha256": "402b1d926b5df28ab6ca8e13da2fc4bca8e1554b162938b6b612eec9a6b1e5a8"
+    }
+  ]
+}
