@@ -102,8 +102,65 @@ The result file is `context-scan-comparison.json`; terminal marker is
 to model disclosure or schema intentionally make exact comparison fail instead
 of silently ignoring changed context.
 
-**At this checkpoint the packed candidate and paired benchmark have not yet
-executed. No improvement or graphical responsiveness result is asserted.**
-A worker-thread lifecycle change remains deferred until this smaller change's
-measured residual cost is known. The existing independently qualified source
-and original evidence remain separate.
+## Completed paired result
+
+The lead brokered exact candidate
+`3f56020b3a0ed59da2a8387788a89ffe342f34d8`, tree
+`ab315123888553e912ce8d2bb62591e8a1c240e4`, with clean tracked source.
+The paired comparison passed **168 checks, zero failures**. Every one of the
+40 pairs preserved exact model bytes, context and policy digests, source,
+private capture and all non-timing inspector fields. The separate synthetic
+authoring-proposal suite passed **107 checks, zero failures**.
+
+The original [paired JSON](https://github.com/techrote/cybersand/blob/1cd4576ead2a28feada07a36677579b358c6073c/docs/audits/2026-11-25-art-workbench-collaborative-002/context-scan-comparison/context-scan-comparison.json)
+and [execution record](https://github.com/techrote/cybersand/blob/1cd4576ead2a28feada07a36677579b358c6073c/docs/audits/2026-11-25-art-workbench-collaborative-002/context-scan-comparison/execution.json)
+retain all samples, exact source, command, runtime and file identities.
+Their SHA-256 values are respectively
+`67b3b02688b461054409ec2e00d3eaf29b89e5803dd9247d3ad7d09d1fcd19ac` and
+`a63d7b034b22b314f9e3cf152c1b5e76fa555f765e93a182451ab97bb06666e0`.
+
+| Original observed plane | Nonempty / captured cells | Baseline median | Packed median | Median reduction | All packed samples |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Industrial before | 3,889 / 49,152 | 20.289 ms | 5.893 ms | 71.0% | 5.698–6.544 ms |
+| Workshop before | 3,830 / 98,304 | 39.931 ms | 10.513 ms | 73.7% | 10.004–11.850 ms |
+| Megaframe before | 10,220 / 262,144 | 106.629 ms | 27.551 ms | 74.2% | 26.917–30.248 ms |
+| Xeno before | 3,830 / 98,304 | 40.350 ms | 10.634 ms | 73.6% | 9.998–10.917 ms |
+| Megaframe after | 106,957 / 262,144 | 110.728 ms | 32.593 ms | 70.6% | 31.523–35.451 ms |
+
+The packed scan was faster in each observed pair. The completed megaframe's
+106,957 nonempty cells provide a materially denser real input than its before
+plane. Per-phase medians show the intended mechanism: its native scan declined
+from 104.496 to 27.364 ms while material hashing remained near 4.4–4.8 ms.
+This is a controlled result for Context.build over these recorded values;
+it is not a native-execution, provider-throughput or rendering benchmark.
+
+The execution custody reports an Intel Xeon Platinum 8573C CPU and 10,206,468 kB
+of container memory. The Godot binary SHA-256 is
+`f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`.
+This is not an owner Windows/NVIDIA measurement.
+
+The specialist independently fetched both records, recomputed their SHA-256
+values, checked the exact baseline/candidate/knowledge script identities,
+reconciled native input hashes with the original campaign and model digests
+with the separate baseline run, and recomputed order balance, every phase sum
+and every reported median. **238 checks, zero failures** are retained in
+[context-scan-independent-review.json](context-scan-independent-review.json).
+
+## Integration decision and remaining boundary
+
+The small packed scan is ready for integration while retaining the existing
+synchronous Context lifecycle. An asynchronous context worker would introduce
+additional ownership and cancellation paths; this measured reduction does not
+require that change for the present candidate.
+
+The remaining maximum-size median is **27.551–32.593 ms**, with an observed
+packed tail of **35.451 ms** in this paired run. This can still exceed one
+60 Hz frame interval. Actual ordinary Workbench frame latency, native capture,
+image creation and UI disclosure publication are outside this measurement and
+must not be inferred from it. Preserve these limits and the earlier baseline's
+106.552 ms host tail.
+
+The optimized source still needs the principal combined-source/native and
+Windows qualification gates. The independently qualified baseline and original
+evidence remain separate; Draft/HOLD and the original physical owner acceptance
+requirements remain in force.
