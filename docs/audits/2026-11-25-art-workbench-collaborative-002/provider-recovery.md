@@ -69,3 +69,20 @@ No paid or genuine model inference was used in these observations. The predecess
 ## Reconstructed mechanism apparatus
 
 The separately named `tools/ci/compare_art_transport_pump_recovered.py` and `tools/fixtures/art_transport_pump_recovered.gd` were reimplemented from the required mechanism contract after recovery; they are not represented as byte-identical copies of the lost runner. Each records its own source hashes and full original process log. The first development arm reported 25 checks but emitted native hashing errors for empty cancellation/refusal text. Independent log inspection rejected that attempt despite its initial wrapper result. The fixture now avoids hashing an empty update, records callback-entry time before validation work, and the wrapper rejects any engine `ERROR:` line. The original failed development log and receipt remain separate from subsequent observations. Fresh comparison results will be added only after the committed apparatus runs.
+
+## Fresh committed four-arm comparison
+
+The reconstructed apparatus committed at `6ecfb83e6146758ce4d9e0cd20102c844ccf3186` completed four fresh processes, **25 checks / zero failures each**. The complete original comparison, four process logs, four complete redacted audit streams (losslessly compressed), failed development attempt and file manifest are now retained in [provider-recovered-evidence](provider-recovered-evidence/files-sha256.json). The complete comparison SHA-256 is `45b9e3a349640a0a4ae621b762eae7a923c031ee777597395420571dc210b626`.
+
+| Frame cap | Read chunk | Transport ms | Callback entry ms | Maximum frame ms | P95 frame ms | Actual no-headers Stop ms |
+| --- | --- | --- | --- | --- | --- | --- |
+| 60 fps | 64 KiB | 1084.025 | 2186.214 | 119.285 | 16.942 | 0.940 |
+| 60 fps | 256 KiB | 284.345 | 1360.333 | 143.202 | 17.085 | 0.991 |
+| 5 fps | 64 KiB | 13131.776 | 14150.801 | 223.728 | 203.247 | 1.325 |
+| 5 fps | 256 KiB | 3502.261 | 4534.303 | 235.310 | 204.688 | 1.318 |
+
+All arms used the same 4,190,448-byte response, SHA-256 `1fdf50cf46644389b7f0858f215407b23214bcd7467446d6b93a4931c0434673`, with full assistant SHA-256 `63b673968544a3f3bb234b8815455eb665dc945df22b63a4a771cd6a0359047d`. This payload is explicitly different from the lost cohort's fixture. The production provider source is `9d32d4ad…`; the baseline arm changes only the pump constant back to 64 KiB, giving `210245a0dac634a5b812231dca3b7e4cca265b631726805a4da69412b908ff41`. Every copied closure file, runner, fixture, engine and native library has its own recorded hash.
+
+Each real server saw exactly three authorized synthetic requests: complete success, accepted socket without headers and an oversized response header. Each owned request had one terminal consumer; ordinary completion count stayed zero. The actual HTTPRequest stayed nonthreaded, its cap remained 16 MiB, both full response-envelope and assistant audit values matched the expected complete text, and no audit contained the synthetic credential. Decompressing each `.jsonl.gz` restores the exact original stream whose SHA-256 is recorded in the fixture receipt.
+
+This second cohort reproduces the bounded transport mechanism and fast scoped Stop. It does not establish a reduction in maximum frame time: both 256 KiB arms had a slightly higher maximum frame than their paired 64 KiB arms. It contains no native World, displayed UI, Windows run or genuine inference, and no 16 MiB successful paired improvement claim. All full application and physical owner acceptance boundaries remain separate.
