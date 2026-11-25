@@ -10,6 +10,33 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## AMBIENT-001 scoped gameplay qualification
+
+The opt-in [ambient implementation](../systems/ambient-actors.md) reuses the
+retained native and Rapier binaries only when all covered native source inputs
+and binary hashes match their published provenance. Commit the gameplay inputs,
+then run the focused sequential campaign with the repository-pinned Godot 4.7:
+
+```sh
+python3 tools/qualify_ambient.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-ambient-evidence
+```
+
+The runner checks source before and after execution and retains every process
+receipt, log, save/reopen pair and available gameplay report. `--allow-source-delta`
+is an explicitly labelled development run and cannot authorize packaging.
+`--case` supports narrow debugging or extracted-package checks; the package
+builder requires the complete committed-source campaign. Headless native/Rapier
+motion is distinct from rendered or physical Windows/NVIDIA playfeel acceptance.
+
+The [dedicated workflow](../../.github/workflows/ambient-001-qualification.yml)
+uses `windows-2022` and exact retained-runtime verification. It runs only on an
+explicit qualification-request marker change on the mission branch, or manual
+dispatch. It performs no native rebuild, runtime publication or Ready transition.
+The [package tool](../../tools/package_ambient_evaluator.py) records host source
+and original DLL build identity separately, includes ordinary authored examples
+and checksums, and verifies pristine extraction before delivery. Actual results
+and blockers belong to the [mission ledger](../research/ambient-001/mission-ledger.md).
+
 ## Large authored Workbench landscape admission
 
 **Draft/HOLD candidate, 2026-11-20:** WORKBENCH-HOST-CLAIMS-001 keeps the

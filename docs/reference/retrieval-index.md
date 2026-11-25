@@ -24,6 +24,14 @@ are separate from the frozen evaluation set.
 
 ## Independently controlled actors in ordinary Shared Workbench
 
+For **Procedural NPC / Ambient**, material sensing, module composition, timers,
+capability adapters and extension rules, use the
+[ambient contract](../systems/ambient-actors.md). For profile editing, six
+personalities, five playable examples, painting and authored save/reopen, use the
+[ambient owner guide](../operations/ambient-workbench.md). The
+[focused ambient questions](retrieval-questions-ambient-001.json) are additive to
+the unchanged frozen evaluation set. This feature remains opt-in Draft/HOLD.
+
 For actor families, safe composition capacity, controller authority, live
 takeover, copied policy observations and the research boundary, use the
 [actor composition contract](../systems/workbench-actor-composition.md). For

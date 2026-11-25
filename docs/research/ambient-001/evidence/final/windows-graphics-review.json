@@ -1,0 +1,528 @@
+{
+  "schema": "ambient-independent-windows-evidence-review/v1",
+  "reviewer": "specialist-C",
+  "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+  "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+  "source_inputs_verified_against_immutable_git_blobs": 1115,
+  "project_inputs_cross_checked": 837,
+  "runtime_lfs_pointers_verified": true,
+  "receipt_and_image_hashes_verified": true,
+  "results": {
+    "ambient": {
+      "elapsed_seconds": 192.203,
+      "qualification_sha256": "b2ae02cf0eab5160aedf4abec7903c1fb2580d47bcd0d003d0676c0764f12960",
+      "import": {
+        "seconds": 11.25,
+        "pid": 7560,
+        "log_sha256": "a97842b18438020d188ff7e2fb71c5f3a213e701074e109d2bafaf943ab7d72b",
+        "process_sha256": "622925d24482ddfe7ef2cb7b433148669f1e47ec013ac8314f34f1ab2ed6c6a7"
+      },
+      "cases": [
+        {
+          "seconds": 0.937,
+          "pid": 5864,
+          "log_sha256": "23633830a074a943ae3a4a2b2cefeb7afb179466de24eac86d7fda96c5bce03f",
+          "process_sha256": "20980859795acded34bc613f793c7f1e9b2bb0ffff10cd9627b7cf32d9f1ea28",
+          "name": "engine",
+          "checks": 877
+        },
+        {
+          "seconds": 0.468,
+          "pid": 7308,
+          "log_sha256": "a4fdfe8de44f6fd66826a615d11e9ed1575f7364b0918f94ae1271487d60996b",
+          "process_sha256": "09fc7e7ca25f9296e9caf2676f4a03bb2c0022bd06786e04043e9110a477c80c",
+          "name": "independent",
+          "checks": 214
+        },
+        {
+          "seconds": 1.859,
+          "pid": 5068,
+          "log_sha256": "623da3f680f7f18334e87afb8b494039e4484c85e0adee71819e7f43fceaaf1d",
+          "process_sha256": "d99aa4aed68c586234918d6791d14f1a6e2f715e64340a9aa877eb9fdcb92107",
+          "report_sha256": "6c07873fac3c7ae7ab3d36f4d571c45fc3c7b573c61a9625854014c26ce69f86",
+          "name": "perception",
+          "checks": 130
+        },
+        {
+          "seconds": 0.656,
+          "pid": 5256,
+          "log_sha256": "bba3bcc8d60528a0b8e6a5e8a2a7f9170b7f4af3bb4710d6a30f467816d5963a",
+          "process_sha256": "851147a5464a1c6ec7fd3ef640663c38d4a94ab1941763db9a96d9d1f40b325a",
+          "name": "ledge_geometry",
+          "checks": 15
+        },
+        {
+          "seconds": 1.031,
+          "pid": 5104,
+          "log_sha256": "e129543631ad42885dfd266878ef11b732b120c77ed55411307fbd88918ad2c6",
+          "process_sha256": "76820ab01936f483cc555d60483217ecd66d5aaf05776fd126799a0cb782cfa1",
+          "name": "clock",
+          "checks": 21
+        },
+        {
+          "seconds": 1.406,
+          "pid": 7864,
+          "log_sha256": "8b95cb7c518f60734a980820a83aadcb9e98842ac2100c3ed05ee07dfb353301",
+          "process_sha256": "0948f3543fb6fec77a91c5b9280ff8418d3db47bec458fb5ceeaac0085ae0c61",
+          "name": "authoring_save",
+          "checks": 242
+        },
+        {
+          "seconds": 1.39,
+          "pid": 1244,
+          "log_sha256": "d8cefd07cd3cf5433557abea1ab58a50128d839f5402b31bd19ce37047e0e7bd",
+          "process_sha256": "b3a3f8383f7fb10074a5dd4a6b34c10f1d4045ea92530a29485143797704145a",
+          "name": "authoring_reopen",
+          "checks": 256
+        },
+        {
+          "seconds": 8.297,
+          "pid": 1116,
+          "log_sha256": "097f819b983b582110e12cb2d29ea5072506658ad83342635344bccc103f1eb0",
+          "process_sha256": "8016aa2dcf6a332a33cf7a341934723e929a376f63419ca06508ef6f4b615abe",
+          "report_sha256": "e4ea963973a611ffa8767575fce0a55f000780205a9dd778411a7c785e7f945a",
+          "name": "editor",
+          "checks": 46
+        },
+        {
+          "seconds": 6.344,
+          "pid": 1264,
+          "log_sha256": "38644484bcac3b9f7b9a218a4420d43a87c44a1d7d70d5d48b7760d7014c0654",
+          "process_sha256": "157f4b48378f8eb9c822ea5708e02028c0a0a4970444ffe60fcc6c518ae0dd72",
+          "report_sha256": "094bf646cac92aa77cdc39942e8e14d13009764ffba3d8046161d4a1ab238f64",
+          "name": "native_motion",
+          "checks": 306
+        },
+        {
+          "seconds": 14.875,
+          "pid": 5980,
+          "log_sha256": "f1d0615186b31c50c1a718f26d676a689fa2ed1c30780ef7afab837f63744e68",
+          "process_sha256": "a92072b5cdc88af2a833207a17a4c7fb4da7c000b033be4093f957b932b5801a",
+          "report_sha256": "a80b7b9d3bbe49a2ceeca59baa3cfd657c1a320f40cd5aaf17d4e26c76ef6e2f",
+          "name": "personalities",
+          "checks": 2877
+        },
+        {
+          "seconds": 31.313,
+          "pid": 7152,
+          "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0",
+          "process_sha256": "6cd275d37153b697869a88fa08e3a21aa9c4d3033a2f3937cb38be8c76af636d",
+          "report_sha256": "f1852defae6c676ae9cb1fa0f0027fe9572f3d111fb4ec672d59c1bcfa953e8a",
+          "name": "workbench",
+          "checks": 43
+        },
+        {
+          "seconds": 62.062,
+          "pid": 1068,
+          "log_sha256": "a588c1ffbea48963ef5e44e174116a8eccfa04106bb1171254970c954af587aa",
+          "process_sha256": "f4f1c9ae4d27ee08af63c1debfdbcd597cd229262d77cd80e4bf874fe5b5018b",
+          "report_sha256": "b108f85fa61c2b20a986a9142c85c340ef6f20bf8b79bb0b619af7bdea3af308",
+          "name": "examples",
+          "checks": 121
+        },
+        {
+          "seconds": 1.047,
+          "pid": 6132,
+          "log_sha256": "60c439e4288679f1d01c6e6837149481a65f180a839ef686a2e4676e866251ea",
+          "process_sha256": "311cc9bc232a953ea942ccc0f5f44271a6bc39da4da51a26a18fb30aa11f5bf8",
+          "name": "legacy_catalog",
+          "checks": 415
+        },
+        {
+          "seconds": 44.61,
+          "pid": 4480,
+          "log_sha256": "d27c3bbae921852889661b61a431f1ab4c33f794317ea891feb4e0dfcf7d2045",
+          "process_sha256": "66fa6a1eacde18b0cebff78a115efa073bbb2e9417b32c2b972359f9d137b5a6",
+          "name": "legacy_composition",
+          "checks": 199
+        },
+        {
+          "seconds": 1.125,
+          "pid": 8016,
+          "log_sha256": "d384e20fac6d6090022a4f39e214d960231d1237c1c9a74aa9583b7b967da8f9",
+          "process_sha256": "186c6e78e3fbbe00cda33756a299596762bd9eb3483c33287ee246123b946f09",
+          "name": "legacy_session",
+          "checks": 84
+        },
+        {
+          "seconds": 1.031,
+          "pid": 7860,
+          "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+          "process_sha256": "166d64102156a0d35fb3714d4aa24f40359eeea4438e57c635f93d3d90ddfc48",
+          "name": "legacy_physical",
+          "checks": 113
+        }
+      ],
+      "case_count": 16,
+      "assertions": 5959
+    },
+    "ambient-graphical": {
+      "elapsed_seconds": 195.422,
+      "qualification_sha256": "a9e3ea284db7cd925b9e9e89bc38071bf8e16d41e4afaf5367cd29f07fdfb9d7",
+      "import": {
+        "seconds": 5.375,
+        "pid": 7524,
+        "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+        "process_sha256": "2e19c19f8cc40bc360e266ca8ebf07612a6ec0be13c264218cafd8021bd06d96"
+      },
+      "cases": [],
+      "case_count": 0,
+      "assertions": 0,
+      "graphical": {
+        "seconds": 187.766,
+        "pid": 1528,
+        "log_sha256": "617f93296dcab221f8a2128ce29c2e0e79204b30da82229a327b9586c4ffd88d",
+        "process_sha256": "b62cbc4ed86a1dfa93067b4d238aea984897bee52dcda22bc53a5284cc26a9d9",
+        "report_sha256": "51af15d8adba0ad1c4c55c899e9af516e3ea41557dfbdf912609a51a3a789930",
+        "image_count": 12,
+        "dimensions": {
+          "ambient-oil-water-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-oil-water-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-oil-water-overlay.png": [
+            1028,
+            578
+          ],
+          "ambient-behaviour-profile-editor.png": [
+            1028,
+            578
+          ],
+          "ambient-ledge-walkway-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-ledge-walkway-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-industrial-yard-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-industrial-yard-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-settlement-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-settlement-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-flight-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-flight-playing.png": [
+            1028,
+            578
+          ]
+        },
+        "phase_count": 5,
+        "phases": [
+          {
+            "example": "ambient-oil-water",
+            "memory_bytes": 114084320,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 22055260
+          },
+          {
+            "example": "ambient-ledge-walkway",
+            "memory_bytes": 119066840,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 20204893
+          },
+          {
+            "example": "ambient-industrial-yard",
+            "memory_bytes": 120114428,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 21084911
+          },
+          {
+            "example": "ambient-settlement",
+            "memory_bytes": 120966150,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19632130
+          },
+          {
+            "example": "ambient-flight",
+            "memory_bytes": 118026590,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 20408053
+          }
+        ],
+        "matched_displayed_frames": 12,
+        "playing_minimum_actor_decisions": 21,
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "physical_display_acceptance": false
+      }
+    },
+    "extracted-package": {
+      "elapsed_seconds": 48.078,
+      "qualification_sha256": "fc928bd7e813fde5ea83ca7b12815fe4f22c0a7d48656f1d273956bbc77521e2",
+      "import": {
+        "seconds": 8.422,
+        "pid": 5680,
+        "log_sha256": "496b46f75d8922523adcfecbcc9da5b84532b07553fe7fc6eb9b9f7ade1fd051",
+        "process_sha256": "da9255a572ca1492e88ce0edb15aa1cd2ba86817a9ccbdd7fe608353d09f14ac"
+      },
+      "cases": [
+        {
+          "seconds": 0.937,
+          "pid": 7852,
+          "log_sha256": "782c8ca24a72830193cf7becdf7bfa00529b501f5d327de7fae682b9ae9a7666",
+          "process_sha256": "bf04b82c0ccda96fd75b1345cc7da2de7ef040542f552f507f810365ac8f0d79",
+          "name": "engine",
+          "checks": 877
+        },
+        {
+          "seconds": 1.969,
+          "pid": 4480,
+          "log_sha256": "87506a03768ac37f95b04a5231c7af368dbd1dd7d2b33d84e92ddcc7e8f8df72",
+          "process_sha256": "3750c624228225191082dcdf2b3ad689fedb3125f9cabed9fa969af5d127b84c",
+          "report_sha256": "eeadd8bea5dd107d89a7c4a53213ba51c7ed28b80cf482517a828b59ab8107fc",
+          "name": "perception",
+          "checks": 130
+        },
+        {
+          "seconds": 1.406,
+          "pid": 2904,
+          "log_sha256": "8b95cb7c518f60734a980820a83aadcb9e98842ac2100c3ed05ee07dfb353301",
+          "process_sha256": "d9b39359f446b3639dd9d5ee18bb628b75f3bb220b479b8ca2202813ccc3ead2",
+          "name": "authoring_save",
+          "checks": 242
+        },
+        {
+          "seconds": 1.61,
+          "pid": 6832,
+          "log_sha256": "d8cefd07cd3cf5433557abea1ab58a50128d839f5402b31bd19ce37047e0e7bd",
+          "process_sha256": "3a9fba2151270a6bdf5425188951aea2fa11d99dd7a69710ccda19f7eb7c511f",
+          "name": "authoring_reopen",
+          "checks": 256
+        },
+        {
+          "seconds": 31.234,
+          "pid": 2596,
+          "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0",
+          "process_sha256": "dda57d0ecdf63734a4381d0c0f6fe6f5600dd3c5991da430bc0f6e79eb053ffc",
+          "report_sha256": "2833a365bd675eb63e5cc09bfa1a3df8fa031cf54cb6e3cb7cf81248975d8892",
+          "name": "workbench",
+          "checks": 43
+        }
+      ],
+      "case_count": 5,
+      "assertions": 1548
+    },
+    "extracted-graphical": {
+      "elapsed_seconds": 189.844,
+      "qualification_sha256": "dae42fe4a81cffbfa54ca836f6cbbf519cdf1501c563a88e7e4a9b0f6d1235e2",
+      "import": {
+        "seconds": 5.281,
+        "pid": 3876,
+        "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+        "process_sha256": "30ac95ace6542dd20c3cb59ef35d4e04e2b2ef0475e4a2b417bb280a7fa20729"
+      },
+      "cases": [],
+      "case_count": 0,
+      "assertions": 0,
+      "graphical": {
+        "seconds": 182.297,
+        "pid": 2268,
+        "log_sha256": "6f51e60cea0b7a5b316b7e0bed93305fc2bc41f1e347cef62bf7fd14268e5d51",
+        "process_sha256": "a25a1d30b819cb261686099bf257d5651ec0b319fa5a04f51109eb1a3e92d5e7",
+        "report_sha256": "61d1ea5d0908b101194046e3e91f361758ab37c8fa647aad52f2dac027da4d7e",
+        "image_count": 12,
+        "dimensions": {
+          "ambient-oil-water-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-oil-water-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-oil-water-overlay.png": [
+            1028,
+            578
+          ],
+          "ambient-behaviour-profile-editor.png": [
+            1028,
+            578
+          ],
+          "ambient-ledge-walkway-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-ledge-walkway-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-industrial-yard-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-industrial-yard-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-settlement-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-settlement-playing.png": [
+            1028,
+            578
+          ],
+          "ambient-flight-authored.png": [
+            1028,
+            578
+          ],
+          "ambient-flight-playing.png": [
+            1028,
+            578
+          ]
+        },
+        "phase_count": 5,
+        "phases": [
+          {
+            "example": "ambient-oil-water",
+            "memory_bytes": 114081768,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 21149873
+          },
+          {
+            "example": "ambient-ledge-walkway",
+            "memory_bytes": 117995954,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19800379
+          },
+          {
+            "example": "ambient-industrial-yard",
+            "memory_bytes": 121304937,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 21612009
+          },
+          {
+            "example": "ambient-settlement",
+            "memory_bytes": 120597422,
+            "native_ticks": 120,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 18911222
+          },
+          {
+            "example": "ambient-flight",
+            "memory_bytes": 117801550,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 20152978
+          }
+        ],
+        "matched_displayed_frames": 12,
+        "playing_minimum_actor_decisions": 21,
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "physical_display_acceptance": false
+      }
+    }
+  },
+  "launcher": {
+    "ready_terminal_present": true,
+    "stderr_empty_after_whitespace": true,
+    "stdout_sha256": "44f2e0098bfac17814189f2038725aa1fc41fa334640780b5af0ead98eb54f08",
+    "stderr_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+    "kind": "ordinary launcher headless startup; distinct actual graphical capture is recorded separately"
+  },
+  "limits": [
+    "Workflow completion is a separate gate; this review does not override its final disposition.",
+    "No physical Windows/NVIDIA playfeel or owner aesthetic acceptance.",
+    "No claim of cross-platform physical trajectory identity."
+  ],
+  "workflow": {
+    "run_id": 45475439737,
+    "job_id": 138734297896,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45475439737",
+    "overall_conclusion": "success",
+    "all_steps_succeeded": true,
+    "pristine_verification_files": 1172,
+    "postlaunch_verification_files": 1172,
+    "delivery_unit_methods_passed": 41,
+    "decoded_job_log_sha256": "69ac144ab22418744d82d312dd034daaea4603a0856c93fe91a576f5fe6912a6",
+    "decoded_job_log_byte_semantics": "GitHub decoded text preserved with LF newlines; not claimed as original binary log bytes"
+  },
+  "visual_review": {
+    "reviewer": "specialist-C",
+    "reviewed_actual_images": [
+      "extracted-graphical/captures/ambient-behaviour-profile-editor.png",
+      "extracted-graphical/captures/ambient-oil-water-overlay.png",
+      "extracted-graphical/captures/ambient-settlement-playing.png",
+      "extracted-graphical/captures/ambient-ledge-walkway-playing.png",
+      "extracted-graphical/captures/ambient-industrial-yard-playing.png",
+      "extracted-graphical/captures/ambient-flight-playing.png"
+    ],
+    "observed_resolution": [
+      1028,
+      578
+    ],
+    "observations": [
+      "Profile editor controls, module list, actual native material picker, Apply/Revert and live runtime inspector are visible; parameter scrollbar is available.",
+      "No concrete missing-font, overlapping-control or clipping blocker observed in these final captures.",
+      "Material radius and steering overlay is visible over the selected actor.",
+      "Ordinary native scene geometry, flowing liquid publication, eight-actor settlement and two flying rigs are visible."
+    ],
+    "limitations": [
+      "Small text at hosted1028x578 is not physical owner-display or usability acceptance.",
+      "Static images demonstrate rendered states; separate native/physical receipts establish progression.",
+      "No product edits or extra native executions occurred in this independent review."
+    ]
+  },
+  "prior_failures_preserved": [
+    {
+      "source": "f80aab91d31ce5e753eb6056d679100d83c7b7e7",
+      "run_id": 45470109757,
+      "conclusion": "failure",
+      "cause": "Strict graphical log guard rejected WASAPI initialization errors despite exit0; repaired by explicit Dummy audio for the capture harness."
+    },
+    {
+      "source": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+      "run_id": 45472012444,
+      "conclusion": "failure",
+      "cause": "Final post-launch inventory rejected expected shader UID metadata; repaired by admission only when original shader is already manifested, with six additional refusal/admission unit cases."
+    }
+  ],
+  "download_verification_sha256": "434c1e64b510a05661c83ee34ba31ab1771eecd4f3354f1548afcd69da4f222e",
+  "inner_archive_verification_sha256": "20e946bc15a1d813e4acc1fcf5fa3421f1c3659865d25dff089a8c5ba249db8a"
+}

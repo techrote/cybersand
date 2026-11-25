@@ -10,6 +10,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## AMBIENT-001 modular procedural actors — 24 November 2026
+
+**Opt-in implementation candidate, Draft/HOLD:** the
+[ambient actor contract](../systems/ambient-actors.md) and
+[owner guide](../operations/ambient-workbench.md) describe eleven reusable modules,
+six profiles, five ordinary authored scenes and a staged per-actor profile editor.
+The existing policy producer, issued observations, leases, native material
+publications and physical movement mechanisms remain authoritative. Accepted
+population capacity stays eight. The [mission ledger](../research/ambient-001/mission-ledger.md)
+owns exact source/platform qualification, independent findings and remaining
+Windows/visual/owner acceptance. Global pathfinding, arbitrary script execution,
+physical immunity, inferred capabilities and exact physical-state continuation
+are outside this candidate.
+
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
 The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)

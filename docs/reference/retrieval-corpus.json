@@ -150,7 +150,9 @@
     "tools/art-pipeline-unification.md",
     "tools/world-art-preview.md",
     "tools/world-art-capture.md",
-    "tools/world-art-evaluation.md"
+    "tools/world-art-evaluation.md",
+    "systems/ambient-actors.md",
+    "operations/ambient-workbench.md"
   ],
   "navigation": [
     "README.md",
@@ -726,6 +728,22 @@
     {
       "path": "research/gentek-80-integration-001.md",
       "reason": "Draft/HOLD integration source reconciliation and dated qualification; not accepted-main or merge authority."
+    },
+    {
+      "path": "research/ambient-001/authoring-ledger.md",
+      "reason": "Dated AMBIENT-001 Draft/HOLD source and qualification evidence; current module and owner answers belong to systems/ambient-actors.md and operations/ambient-workbench.md. Read directly for explicit evidence review."
+    },
+    {
+      "path": "research/ambient-001/behaviour-ledger.md",
+      "reason": "Dated AMBIENT-001 Draft/HOLD source and qualification evidence; current module and owner answers belong to systems/ambient-actors.md and operations/ambient-workbench.md. Read directly for explicit evidence review."
+    },
+    {
+      "path": "research/ambient-001/mission-ledger.md",
+      "reason": "Dated AMBIENT-001 Draft/HOLD source and qualification evidence; current module and owner answers belong to systems/ambient-actors.md and operations/ambient-workbench.md. Read directly for explicit evidence review."
+    },
+    {
+      "path": "research/ambient-001/perception-ledger.md",
+      "reason": "Dated AMBIENT-001 Draft/HOLD source and qualification evidence; current module and owner answers belong to systems/ambient-actors.md and operations/ambient-workbench.md. Read directly for explicit evidence review."
     },
     {
       "path": "operations/gentek80-physical-owner-acceptance.md",

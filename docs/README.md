@@ -12,6 +12,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/gip014-goblin-002-decision.md), then the [persistent experimental playtester ledger](research/gip014-goblin-002.md) and [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Exact source capabilities, campaign evidence and defect adjudication remain separately scoped.
 
+**AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
+[Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),
+and [exact-source qualification and remaining acceptance](research/ambient-001/mission-ledger.md).
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
