@@ -105,6 +105,8 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 	var count := region.size.x*region.size.y
 	if materials.size() != count or count > MAX_CAPTURE_CELLS:
 		return {"ok":false,"error":"The complete native material plane is required within the capture budget."}
+	var validation_usec := Time.get_ticks_usec()-started
+	var scan_started := Time.get_ticks_usec()
 	var histogram := {}
 	var coarse := PackedInt32Array()
 	coarse.resize(GRID_SIDE*GRID_SIDE*3)
@@ -120,6 +122,7 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		coarse[bucket] += 1
 		if id != 0: coarse[bucket+1] += 1
 		if id in SOURCE_POLICY: coarse[bucket+2] += 1
+	var scan_usec := Time.get_ticks_usec()-scan_started
 	var material_rows: Array = []
 	var ids: Array = histogram.keys()
 	ids.sort()
@@ -153,7 +156,9 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 	for i: int in range(maxi(0,decisions.size()-MAX_DECISIONS),decisions.size()):
 		if decisions[i] is String: memory.append(str(decisions[i]).left(256))
 	var source := source_of(capture)
+	var hash_started := Time.get_ticks_usec()
 	var materials_sha := hash_materials(materials)
+	var material_hash_usec := Time.get_ticks_usec()-hash_started
 	var envelope := policy_envelope(policy)
 	var model := {"schema":"cybersand-art-context-v1","authority":"Copied native stored-material observation; Play plane only.",
 		"source":source,"world_size":envelope.world_size,"region":envelope.region,
@@ -176,12 +181,16 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		model.erase("coarse_occupancy")
 		model.erase("native_samples")
 		model.erase("native_sampling")
+	var knowledge_started := Time.get_ticks_usec()
 	model.knowledge = Knowledge.select(str(policy.get("objective",""))+" "+str(policy.get("style","")),bool(policy.get("include_knowledge",true)))
+	var knowledge_usec := Time.get_ticks_usec()-knowledge_started
 	model.tool_state = {"tool":str(policy.get("tool","Unspecified by host")).left(64)}
 	if policy.get("tool_material") is int and int(policy.tool_material) >= 0 and int(policy.tool_material) <= 255:
 		model.tool_state.material_id = int(policy.tool_material)
+	var json_started := Time.get_ticks_usec()
 	var body := JSON.stringify(model)
 	var bytes := body.to_utf8_buffer().size()
+	var json_usec := Time.get_ticks_usec()-json_started
 	var omitted: Array = ["Full desktop and unrelated windows","Provider credentials and private files",
 		"Historical audit contents","Unselected World regions","Full native material plane",
 		"Automatic cross-session conversation restoration","Actor/physics inferences not observed by the capture"]
@@ -195,13 +204,20 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		return {"ok":false,"error":"Selected context exceeds 24576 UTF-8 bytes; shorten the creative brief or pinned constraints.","bytes":bytes}
 	var digest := JSON.stringify({"source":source,"region":envelope.region,
 		"materials_sha256":materials_sha,"policy_digest":policy_digest(policy),"model_sha256":body.sha256_text()}).sha256_text()
-	return {"ok":true,"error":"","model":model,"digest":digest,"source":source,
+	var result := {"ok":true,"error":"","model":model,"digest":digest,"source":source,
 		"region":region,"policy_digest":policy_digest(policy),
 		"inspector":{"included":included,
 			"omitted":omitted,"bytes":bytes,"budget_bytes":MAX_CONTEXT_BYTES,"captured_cells":count,
 			"source":source,"materials_sha256":materials_sha,"context_sha256":digest,
 			"knowledge":model.knowledge.duplicate(true),"native_sampling":sampling.duplicate(true),
 			"provenance":"workbench_paint_editor_executor.gd native capture; no image-to-material inference",
-			"elapsed_usec":Time.get_ticks_usec()-started},
+			"elapsed_usec":0},
 		"_capture":{"region":region,"materials":materials.duplicate(),"source":source.duplicate(),
 			"materials_sha256":materials_sha},"_policy":policy_envelope(policy)}
+	var total_usec := Time.get_ticks_usec()-started
+	result.inspector.elapsed_usec = total_usec
+	result.inspector.timings_usec = {"validation":validation_usec,"native_scan":scan_usec,
+		"material_hash":material_hash_usec,"knowledge":knowledge_usec,"json_encoding":json_usec,
+		"assembly_and_copy":maxi(0,total_usec-validation_usec-scan_usec-material_hash_usec-knowledge_usec-json_usec),
+		"total":total_usec}
+	return result
