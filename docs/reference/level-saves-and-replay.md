@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Authored Workbench starts and material-only Flatten, CYSD1 finite-level exchange, native CYPS2–5 continuation, Wave save refusal and remaining full-application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -34,6 +34,12 @@ Source inspection at accepted main `00cdb02f` checks
 [`World`](../../native/include/cybersand/world.hpp).
 Save, Flatten, Reset/Restore and native physical export are different actions.
 A successful round-trip of one format does not qualify another.
+
+On-disk replacement safety is a separate contract from the contents of these
+formats. The [ULTIMA save-file correction](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+adds complete staged-byte validation and failure-safe native replacement to the
+three JSON writers without expanding what their saves preserve. It remains
+candidate behavior until accepted; it does not add exact physical continuation.
 
 ## Authored Save and physical continuation
 

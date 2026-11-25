@@ -180,7 +180,7 @@ state what remains unresolved.
 
 The complete previous handover remains at
 [its immutable accepted-source revision](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/cybersand-codex-development-handover.md)
-and in the [documentation preservation record](../audits/2026-11-24-docs-renaissance/README.md).
+and in the [documentation preservation record](https://github.com/techrote/cybersand/blob/20170bd6259498c3d2774ab274567febb043fc1d/docs/audits/2026-11-24-docs-renaissance/README.md).
 It retains former branch assignments, Windows paths, source hashes, failures and
 qualification instructions in their original dated scope. Use it deliberately
 for evidence recovery, not as an automatic task queue.

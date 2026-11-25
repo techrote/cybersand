@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Accepted-main implementation, separately identified candidates, approved direction and unresolved decisions
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [product-intent-and-priorities.md, validation-evidence.md, invariants.md, ../operations/cybersand-codex-development-handover.md, ../operations/documentation-maintenance.md, ../operations/github-development-and-release.md]
 ---
 
@@ -64,6 +64,7 @@ captures the major documentation transitions; it is not a complete release log.
 
 | Foundation | Accepted record | Documentation consequence |
 |---|---|---|
+| LCB-000 bounded admission | [Final Gates A–E outcome and #213 closure](../audits/2026-10-24-lcb000-landed-status-reconciliation.md), 24 October 2026 | Gates A–E passed within bounded admission. This admitted a separately scoped opt-in foundation, not production-default changes, general pressure/inertial acceptance or new Rapier forces. Later accepted implementations are governed by the [current family policy](../architecture/liquid-solver-family-policy.md). |
 | Generated Shared Workbench | [#542](https://github.com/techrote/cybersand/pull/542) | Ordinary authoring has a common native destination. |
 | Materials Lab and native capability consumers | [#562](https://github.com/techrote/cybersand/pull/562), [#563](https://github.com/techrote/cybersand/pull/563) | “Lab unimplemented” and “metadata only/no production consumer” are obsolete blanket claims. |
 | Integrated PAINT and Art | [#564](https://github.com/techrote/cybersand/pull/564), [#565](https://github.com/techrote/cybersand/pull/565) | Painting and direct agent authoring are accepted capabilities; newer repairs need their own acceptance. |
@@ -86,6 +87,7 @@ register deliberately does not duplicate their changing job lists or PR heads.
 
 | Programme | Principal record | Boundary for accepted-main documentation |
 |---|---|---|
+| ULTIMA save safety and practical documentation | [Candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Complete staged-byte verification, native replacement for ordinary/generated/project saves and corrected preview cancellation feedback are candidate changes. Accepted `00cdb02f` does not acquire them through documentation. |
 | PUBPRES physical progression and presentation | [#717](https://github.com/techrote/cybersand/issues/717), current finisher [#767](https://github.com/techrote/cybersand/pull/767), predecessor [#757](https://github.com/techrote/cybersand/pull/757) | Do not claim publication stalls or physical freezes are resolved by accepted main. |
 | ObjectShard moving destructible materials | [#754](https://github.com/techrote/cybersand/pull/754) | Moving native chemistry, mutable body ownership and ordinary Workbench integration are candidate behavior. |
 | Actor Compose continuous play and pilot recovery | [#762](https://github.com/techrote/cybersand/pull/762) | Preserve accepted #683 controls and disclose successor repair scope. |
@@ -175,6 +177,6 @@ The former page contained a long sequence of September–November development
 checkpoints, including instructions to continue branches that have since merged.
 Its complete original text and headings remain at
 [the frozen accepted-source page](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/status-and-roadmap.md)
-and in the [preservation record](../audits/2026-11-24-docs-renaissance/README.md).
+and in the [preservation record](https://github.com/techrote/cybersand/blob/20170bd6259498c3d2774ab274567febb043fc1d/docs/audits/2026-11-24-docs-renaissance/README.md).
 Those dated checkpoints are historical evidence. They do not override this
 current synthesis or the scoped source/owner decisions in the owning contract.

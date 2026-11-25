@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Accepted shared-workbench liquid equipment, current Water Lab controls, authored geometry, worker-owned device state, native quantity accounting, built-in starts and persistence limits; pending Equipment recovery remains separate
 canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
 ---
 
@@ -31,6 +31,12 @@ ballistic owner (`inject_water_parcel`), so the native quantity ledger
 remains the authority and closes by itself.
 
 ## Devices
+
+These are the accepted devices at `00cdb02f`. The unmerged
+[Equipment recovery successor #724](https://github.com/techrote/cybersand/pull/724)
+has separate repairs and qualification; its presence does not extend the
+contracts below. See the [status boundary](#status-and-boundary) before selecting
+a candidate evaluator or assuming a ballistic/equipment repair has landed.
 
 | Device | Authored as | Operation |
 |---|---|---|

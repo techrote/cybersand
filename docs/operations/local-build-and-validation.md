@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -16,6 +16,12 @@ Use this repository's launcher and retained runtime for a first exploration. A
 native rebuild is a separate development task. The [player getting-started
 guide](getting-started.md) walks through opening the Workbench; this page owns
 the build, identity and validation procedure.
+
+The required engine is **Godot `4.7.stable.official.5b4e0cb0f`**. Native builds
+use **godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496` and API `4.7`**;
+another 4.7 patch executable or a different binding checkout is not the same
+input. The [complete input table](#which-build-inputs-are-required) links the
+authoritative locks and platform toolchains.
 
 From a new checkout with Git and Git LFS installed:
 
@@ -57,7 +63,7 @@ use an explicit executable path:
 ```sh
 CYBERSAND_GODOT=/absolute/path/to/Godot_v4.7-stable_linux.x86_64
 "$CYBERSAND_GODOT" --version
-"$CYBERSAND_GODOT" --headless --editor --path godot --import
+"$CYBERSAND_GODOT" --headless --editor --path godot --import --quit
 "$CYBERSAND_GODOT" --path godot
 ```
 
@@ -83,10 +89,22 @@ before work. The companion workspace contains optional host-specific wrappers;
 this source repository contains the application, tests and native build entry
 points. [Source identity](source-checkpoint-and-recovery.md) owns that boundary.
 
-A quick bounded interface probe is `make c-header-check`. `make -n test` displays
-the current native test build/run plan without compiling or running it. Neither
-command qualifies gameplay. Use the smallest meaningful subsystem test during
-iteration; a full matrix belongs to the applicable implementation gate.
+For a bounded first validation pass from the repository root:
+
+```sh
+python3 tools/ci/check_docs.py
+python3 tools/ci/check_repository.py --require-materialized
+make c-header-check
+make -n test
+```
+
+The C-header probe needs Make and a C compiler. It compiles
+`native/tests/test_c_header.c` with `-std=c11 -Wall -Wextra -Wpedantic`, the native
+include directory and `-fsyntax-only`; it checks the public header as C without
+linking a game or running simulation. `make -n test` displays the native
+build/run plan without executing it. Use the smallest meaningful subsystem test
+during iteration, following [test selection](testing-validation-and-replay.md);
+the full applicable matrix remains the implementation gate.
 
 ## Isolated test data and diagnostics
 

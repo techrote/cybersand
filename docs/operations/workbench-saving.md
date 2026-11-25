@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Ordinary Workbench Save and Load, generated starts, material-only Flatten, recovery and persistence limits
 canonical-for: [workbench-saving-user-guide]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [workbench-painting-and-history.md, gen008-flatten-qualification.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -28,6 +28,10 @@ version. There is no separate overwrite-confirmation step.
 | **Reset selected [R]** | Resets the selected actor through its current control path; this is not a global file load. |
 | **Flatten / Bake History…** | Captures the current native stored material plane as a new authored baseline and discards prior construction/Undo history. The live World continues. |
 | **Menu [F2] / exit** | Ends the session. Saving is explicit. |
+
+After ordinary **Load start** or **Restore start**, select **Overview** if the
+canvas appears empty. Reconstruction can reset **Free camera** to the origin;
+the view is not evidence that authored cells were lost.
 
 ## Save a generated scene
 
@@ -100,6 +104,21 @@ Pending native operations, unconsumed results, partial edits, prepared
 replacements and pending Flatten can block Save. Read the refusal, Stop/wait
 where appropriate, and use the offered recovery path. A queued request is not
 confirmation that its result is in the saved document.
+
+**ULTIMA candidate behavior:** ordinary starts, generated starts and architectural
+project **Save…** now check a complete staged file before replacing the named
+destination. If one of these writes refuses, it reports that this save did not
+replace the previous file. Fix the reported path/storage problem and retry, or
+save under a new name. A cleanup warning identifies an ignored staging file;
+it is not a successful save and should not be renamed over a valued file.
+
+This correction is part of the unmerged ULTIMA candidate. The preceding accepted
+writer could report success after a buffered short write, so its old success
+message alone did not establish a valid replacement. Keep a separate copy of
+valuable starts when using that older build. The
+[file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+records the verified Linux failure model, format compatibility and remaining
+platform limits. Neither writer promises survival of power loss or disk damage.
 
 After a native owner fault, a settled flattened document with acknowledged edits
 has a specific authored-data recovery route: Save, close the process, reopen and

@@ -107,7 +107,7 @@ current implementation drift belongs in a separate current validation result.
 The complete previous page, including original workspace/source histories and
 October LCB publication/recovery sequences, is preserved at
 [the frozen accepted-source revision](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/source-checkpoint-and-recovery.md)
-and in the [preservation packet](../audits/2026-11-24-docs-renaissance/README.md).
+and in the [preservation packet](https://github.com/techrote/cybersand/blob/20170bd6259498c3d2774ab274567febb043fc1d/docs/audits/2026-11-24-docs-renaissance/README.md).
 Read those branch instructions only to recover their original evidence. The
 [current handover](cybersand-codex-development-handover.md) and
 [state register](../reference/status-and-roadmap.md) route current work.

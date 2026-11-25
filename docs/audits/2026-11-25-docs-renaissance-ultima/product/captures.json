@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "captures": [
+    {
+      "path": "captures/reloaded-authored.png",
+      "bytes": 52636,
+      "sha256": "04d1400597948c8bf289af2406b54dac079295bd0bd33832a0fba06bdbcd1b61",
+      "class": "actual Linux native Workbench window",
+      "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "renderer": "Mesa llvmpipe, OpenGL Compatibility"
+    },
+    {
+      "path": "captures/art-direct-completed.png",
+      "bytes": 86213,
+      "sha256": "4c5d52220e7865ed538a95fd6c822f5c903b64b0e71f7e4b11f25ef1ab4b0ccb",
+      "class": "actual Linux native Workbench window",
+      "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "renderer": "Mesa llvmpipe, OpenGL Compatibility"
+    },
+    {
+      "path": "captures/cancelled-preview.png",
+      "bytes": 85770,
+      "sha256": "cfb64ee3b8fa9b4fa76d7b6b8bfb3f52f9efdecf8c085cc1b685d7983859f63d",
+      "class": "actual Linux native Workbench window",
+      "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "renderer": "Mesa llvmpipe, OpenGL Compatibility"
+    },
+    {
+      "path": "captures/architecture-preview.png",
+      "bytes": 128124,
+      "sha256": "71be16bf3dedbeef618e2d226335a1c366d3bd0e88d897f519788442075f2b56",
+      "class": "actual Linux native Workbench window",
+      "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "renderer": "Mesa llvmpipe, OpenGL Compatibility"
+    }
+  ]
+}

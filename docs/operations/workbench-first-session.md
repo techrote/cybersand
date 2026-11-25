@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: A small paused material authoring tutorial with simulation, saving and fresh-session reconstruction
 canonical-for: [workbench-first-session]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [getting-started.md, workbench-painting-and-history.md, workbench-saving.md, architectural-generator-playtest.md, workbench-water-lab.md]
 ---
 
@@ -32,7 +32,8 @@ inside it. There is no need to populate the whole canvas for this exercise.
 
 ## Build a container
 
-1. Choose **Hard Wall** in the material picker. Set a modest radius such as 2.
+1. Choose **Reinforced Concrete · 58** in the main material picker. Set a modest
+   radius such as 2. Art's separate picker calls this same material **Hard wall (58)**.
 2. Choose **Line** and drag a horizontal floor. Draw one short wall upward at
    each end, leaving the top open. Wait for the native completion status after
    each gesture.
@@ -78,8 +79,10 @@ valuable work.
 2. Use **Menu [F2]** or close Godot. Returning to the launcher closes the session.
 3. Open Development workbench again, enter `first-container` and click
    **Load start**.
-4. Wait for reconstruction. Check the material layout and authored actors, then
-   paint a small new mark to confirm the scene is editable.
+4. Wait for reconstruction, then choose **Overview** again. Load and Restore can
+   reset the camera to **Free camera** at the origin; a construction outside that
+   view has not necessarily disappeared. Check the material layout and authored
+   actors, then paint a small new mark to confirm the scene is editable.
 
 Undo/Redo stacks and the Art conversation are session-local. They are not
 restored by loading the authored start. A flattened save rebuilds initial
@@ -98,5 +101,8 @@ Genteks, presets, apertures and project files.
 Controls and transitions are implemented by
 [`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd) and
 [`workbench_paint_editor_controller.gd`](../../godot/scripts/workbench_paint_editor_controller.gd).
-This tutorial is checked against accepted source. It intentionally uses a small
-construction; it is not a performance or physical acceptance benchmark.
+This tutorial was exercised through the ordinary graphical Workbench on
+25 November 2026 with pinned Godot 4.7, source-matched retained Linux libraries
+and llvmpipe software rendering. The [task record](../audits/2026-11-25-docs-renaissance-ultima/product/README.md)
+separates observed steps from source review and later candidate fixes. This small
+construction is not a performance or physical Windows/NVIDIA acceptance benchmark.

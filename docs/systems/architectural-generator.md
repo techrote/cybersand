@@ -5,7 +5,7 @@ document-kind: contract
 scope: Opt-in schema-4 architectural controls, versioned native geometry and bounded one-to-five-style project compilation
 canonical-for: [architectural-generator-controls, architectural-style-projects, architectural-zone-coverage]
 keywords: [architecture, GEN-007, styles, zones, coverage, tunnels, doors, windows, Hilbert, Arcology, Vault]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [procedural-world-generation.md, procedural-typed-spatial-fields.md, procedural-hierarchical-generation.md, generation-workbench-2.md, explore001-generated-playable-maps.md, ../operations/architectural-generator-playtest.md]
 ---
 
@@ -295,11 +295,14 @@ Extended materials and aperture metadata are available on hover.
 is a separate user-authored example: different bay/floor dimensions, masonry
 materials, no shaft and an explicit window override. **Import style JSON** places
 the complete validated definition into a selected slot. **Save…** writes the
-complete validated authoring configuration to a temporary file and then uses
-Godot's rename operation; **Load…** validates and restores the configuration.
-This project writer does not establish preservation of an existing destination
-for every I/O failure, despite the current failure message's broader wording.
-Save to a new filename when the previous project must remain available.
+complete validated authoring configuration; **Load…** validates and restores it.
+The unmerged ULTIMA candidate uses the shared
+[verified file-replacement helper](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+for this project save as well as ordinary/generated starts. It checks complete
+closed staging bytes before native replacement and reports refusal without
+deleting the old destination. This is a candidate correction to the preceding
+Godot-rename writer, whose failure handling did not guarantee preservation.
+Use a new filename to retain an earlier version even after a successful save.
 The generated map itself stores the resolved recipe, so reopening never needs
 the original project or external preset file.
 

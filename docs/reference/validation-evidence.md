@@ -158,6 +158,6 @@ UI defect. Never publish provider credentials.
 The full prior ledger, including original timings, exact commands, preserved
 failures and LCB publication sequences, remains at
 [its immutable accepted-source revision](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/validation-evidence.md)
-and in the [preservation packet](../audits/2026-11-24-docs-renaissance/README.md).
+and in the [preservation packet](https://github.com/techrote/cybersand/blob/20170bd6259498c3d2774ab274567febb043fc1d/docs/audits/2026-11-24-docs-renaissance/README.md).
 Consult it deliberately for those historical questions. Keep new evidence under
 its own dated identity instead of rewriting old totals or broadening their scope.

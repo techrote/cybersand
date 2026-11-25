@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation
 canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../systems/explore001-generated-playable-maps.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, data-ownership-and-lifetimes.md, liquid-prepared-setup-and-receipts.md, ../operations/github-development-and-release.md]
 ---
 
@@ -76,6 +76,44 @@ exact-cell authoring uses acknowledged application and explicit capacity/failure
 outcomes in the native PAINT/direct-Art paths. The live disc brush has its own
 bounded authored-stamp recording; it is not a paused before/after transaction
 and does not acquire paused Undo/Redo merely because its queue accepts a sample.
+
+## Save-file replacement and failure handling
+
+**ULTIMA candidate, 25 November 2026; not yet accepted main.** The ordinary
+Setup-v2, generated-start-v1 and architectural project writers share
+[`workbench_file_transaction.gd`](../../godot/scripts/workbench_file_transaction.gd).
+Their file formats, names, size bounds and readers are unchanged. Each logical
+save is one complete file; generated recipes are embedded rather than committed
+through a separate companion-file transaction.
+
+The caller validates the complete payload before writing. The helper creates a
+uniquely named sibling staging file, writes and closes it, then reopens it and
+compares its length and every byte with the intended UTF-8 payload. It calls the
+existing native same-directory replacement primitive only after that check.
+The primitive uses POSIX `rename` or Windows `MoveFileExW` with replacement,
+without deleting the destination first or falling back to copy/delete. A
+destination that is a directory or symlink is refused. The separate binary
+material-baseline writer retains its existing implementation and contract below.
+
+This corrects a reproduced Linux defect in the preceding writer: with an actual
+128-byte process file-size limit, Godot's buffered write/flush could report no
+error, and the writer replaced a valid 475-byte ordinary start with truncated
+JSON while returning success. The closed-file byte check catches that failure
+before replacement. Failed staging, validation or replacement reports that this
+save did not replace the previous file. Cleanup removes only this attempt's
+staging path; if cleanup also fails, the response names the retained ignored
+staging file. It is not admitted as a named save.
+
+Independent processes use separate staging names. Successful concurrent saves
+have complete-file, last-successful-replacement semantics, not edit merging or
+cross-process locking. Termination before replacement can leave an ignored
+staging file; it cannot make that staging path a valid named start. The
+[technical qualification](../audits/2026-11-25-docs-renaissance-ultima/technical/persistence-design-and-results.md)
+records actual versus injected faults and the source/runtime identities.
+Linux tests establish the recorded process/I/O outcomes. Native Windows lock and
+failure cases require their own execution evidence. No directory fsync,
+power-loss durability, hostile concurrent filesystem-writer protection or
+physical-media guarantee is claimed.
 
 ## Authoring lifecycle at a glance
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Accepted desktop drawing, native completion, Stop, shared PAINT ordering, Undo/Redo and authored persistence
 canonical-for: [workbench-direct-art-batches]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md, ../operations/cybersand-codex-development-handover.md]
 ---
 
@@ -22,7 +22,8 @@ model-free drawing and configured providers.
 ### Repair checkpoint — 2026-11-11
 
 The original repair established native `stored_material_at` readback and explicit
-body-mask exclusion. Native masked Wall is ID 1; UI Hard Wall is 58. Current
+body-mask exclusion. Native masked Wall is ID 1; Art's legacy **Hard wall (58)**
+is the same ID shown as **Reinforced Concrete · 58** in the main Paint palette. Current
 receipts use stored IDs rather than rendered masks, colours or requested values.
 The original false-success diagnosis was not claimed reproduced at every old
 head; its negative evidence is preserved in the

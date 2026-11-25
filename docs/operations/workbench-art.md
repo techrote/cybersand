@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Direct drawing and configured provider use, native result handling, session lifetime and private traffic
 canonical-for: [workbench-art-user-guide]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [workbench-painting-and-history.md, workbench-saving.md, ../systems/workbench-art-providers.md, ../systems/workbench-direct-art-batches.md]
 ---
 
@@ -29,13 +29,17 @@ small clear work area so the result is easy to inspect.
 ```
 
 4. Click **Draw** and wait for the terminal native result. The rectangle is
-   filled with Hard Wall; the disc erases a hole. Existing bodies and protected
+   filled with material 58; the disc erases a hole. Existing bodies and protected
    source regions can refuse or exclude cells.
 5. **Undo** reverses the latest recorded edit while its source is still valid.
    Use **Save start** in the Workbench to preserve the authored result.
 
+Art's **Hard wall (58)** label is the legacy name for material 58, shown as
+**Reinforced Concrete · 58** in the main Paint palette. The ID is the same;
+the two pickers currently use different names.
+
 Ordinary Art draws over source cells only when their stored material is Empty
-(0) or Hard Wall (58). Existing Sand, Water and other material IDs are excluded,
+(0) or material 58. Existing Sand, Water and other material IDs are excluded,
 even if the selected output material is permitted. Body, source and protected
 area guards apply separately. Human painting has a different admission path.
 
