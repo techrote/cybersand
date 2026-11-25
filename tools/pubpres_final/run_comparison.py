@@ -36,8 +36,15 @@ from observer_support import (DIRECTORY as OBSERVER_DIRECTORY, PROBE as PRESENTA
                               SELECTOR as PRESENTATION_SELECTOR, observer_bundle,
                               execute_with_resources, validate_observers, calibration_measurements)
 
+# Additive retained-input custody: original build identities remain unchanged.
+# Without a source-bound reuse sidecar this delegates to the frozen exact gate.
+sys.path.insert(0, str(ROOT / "tools/pubpres_final_recovery"))
+from retained_runtime import validate_runtime
+
 OBSERVER = "tests/pubpres_final_gameplay.gd"
-MODES = ("source-abba", "slots-abba", "observer-abba", "single")
+MODES = ("source-abba", "slots-abba", "observer-abba", "sample-idle-abba", "single")
+SAMPLE_IDLE_SELECTOR = "CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE"
+SAMPLE_IDLE_REGISTRATION = ROOT / "tools/pubpres_recovery/sample_idle_registration.json"
 
 
 def driver_identity() -> dict:
@@ -55,6 +62,10 @@ def driver_identity() -> dict:
     observer_identity = observer_bundle.identity()
     identity["files_sha256"].update(observer_identity["files_sha256"])
     identity["supplementary_observer_bundle"] = observer_identity
+    retained_relative = "tools/pubpres_final_recovery/retained_runtime.py"
+    retained_bytes = subprocess.check_output(["git", "-C", str(ROOT), "show", "HEAD:" + retained_relative])
+    need((ROOT / retained_relative).read_bytes() == retained_bytes, "Retained runtime reader differs from committed driver")
+    identity["files_sha256"][retained_relative] = digest(ROOT / retained_relative)
     return identity
 
 
@@ -68,7 +79,39 @@ def comparison_plan(mode: str, slots: int) -> list[dict]:
     if mode == "observer-abba":
         need(slots == 2, "Observer calibration must retain two Full slots")
         return [{"role": "C", "slots": 2, "presentation_observer": value} for value in (False, True, True, False)]
+    if mode == "sample-idle-abba":
+        need(slots == 2, "Sample idle comparison must retain two Full slots")
+        return [{"role": "C", "slots": 2, "sample_idle": value} for value in (False, True, True, False)]
     return [{"role": "C", "slots": slots}]
+
+
+def validate_sample_idle(data: dict, expected: bool) -> dict:
+    """Read only actual worker observations; idle counts never grant physical credit."""
+    need(type(expected) is bool, "Sample idle selector must be explicit")
+    values = []
+    for phase in ("selectors_before", "selectors_after"):
+        selected = data[phase]
+        need(selected["requested"].get(SAMPLE_IDLE_SELECTOR) == ("1" if expected else "0"),
+             "Sample idle requested selector changed")
+        value = selected.get("workbench_sample_idle")
+        need(isinstance(value, dict) and type(value.get("enabled")) is bool and value["enabled"] is expected,
+             "Sample idle actual worker selector is absent or differs")
+        need(type(value.get("heartbeat_usec")) is int and value["heartbeat_usec"] == 250000
+             and type(value.get("physical_credit")) is int and value["physical_credit"] == 0,
+             "Sample idle boundary or physical-credit contract changed")
+        need(all(type(value.get(key)) is int and value[key] >= 0 for key in ("waits", "wait_usec")),
+             "Invalid sample idle measurement domain")
+        values.append(value)
+    need(values[1]["waits"] >= values[0]["waits"] and values[1]["wait_usec"] >= values[0]["wait_usec"],
+         "Sample idle counters regressed")
+    if expected:
+        need(values[1]["waits"] > values[0]["waits"] and values[1]["wait_usec"] > values[0]["wait_usec"],
+             "Sample idle candidate did not actually wait during capture")
+    else:
+        need(all(value["waits"] == 0 and value["wait_usec"] == 0 for value in values),
+             "Sample idle control unexpectedly exercised treatment")
+    return {"enabled": expected, "capture_waits": values[1]["waits"]-values[0]["waits"],
+            "capture_wait_usec": values[1]["wait_usec"]-values[0]["wait_usec"], "physical_credit": 0}
 
 
 def validate_registered_sources(sources: dict, driver: dict, registration: dict, mode: str):
@@ -173,6 +216,8 @@ def validate_final_cohort(arms: list[dict], mode: str, plan: list[dict]) -> dict
         need(arm["slots"]["requested_slots"] == treatment["slots"], "Final cohort slot order differs")
         need(arm["observers"]["presentation_enabled"] is treatment["presentation_observer"],
              "Final cohort supplementary observer treatment differs")
+        if mode == "sample-idle-abba":
+            need(arm["sample_idle"]["enabled"] is treatment["sample_idle"], "Sample idle order differs")
     return parity
 
 
@@ -201,6 +246,16 @@ def main() -> int:
     registration = json.loads((HERE / "registration.json").read_bytes())
     need(registration["schema"] == "pubpres-playability-final-registration-v1", "Unknown final registration")
     plan = comparison_plan(args.mode, args.slots)
+    sample_idle_registration = None
+    if args.mode == "sample-idle-abba":
+        sample_idle_registration = json.loads(SAMPLE_IDLE_REGISTRATION.read_bytes())
+        committed = subprocess.check_output(["git", "-C", str(ROOT), "show",
+                                            "HEAD:tools/pubpres_recovery/sample_idle_registration.json"])
+        need(committed == SAMPLE_IDLE_REGISTRATION.read_bytes(), "Uncommitted sample idle registration")
+        need(sample_idle_registration["schema"] == "pubpres-recovery-sample-idle-registration-v1"
+             and sample_idle_registration["order"] == ["0", "1", "1", "0"]
+             and set(args.case) <= set(sample_idle_registration["primary_cases"])
+             and args.presentation_observer, "Sample idle comparison requires registered primaries and pose observer")
     observer_registration = None
     if args.mode == "observer-abba":
         observer_registration = json.loads((HERE / "observer_registration.json").read_bytes())
@@ -237,6 +292,8 @@ def main() -> int:
               "complete": False, "physical_acceptance": "HOLD", "sustained": args.sustained,
               "scope": observer_registration["scope"] if observer_registration else registration["scope"],
               "observer_registration": observer_registration,
+              "sample_idle_registration": sample_idle_registration,
+              "sample_idle_registration_sha256": digest(SAMPLE_IDLE_REGISTRATION) if sample_idle_registration else None,
               "observer_registration_sha256": digest(HERE / "observer_registration.json") if observer_registration else None}
     write_json(output / "SUMMARY.json", report)
     templates = {}
@@ -261,6 +318,7 @@ def main() -> int:
             settings["CYBERSAND_DIAG_FULL_IMAGE_SLOTS"] = str(slots)
             settings["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"] = "0"
             settings[PRESENTATION_SELECTOR] = "1" if treatment["presentation_observer"] else "0"
+            settings[SAMPLE_IDLE_SELECTOR] = "1" if treatment.get("sample_idle", False) else "0"
             arguments = ["--path", str(project), "--rendering-method", "gl_compatibility",
                          "--rendering-driver", rendering_driver, "--render-thread", "safe", "--audio-driver", "Dummy",
                          "--log-file", str(folder / "godot.log"), "--script", "res://" + OBSERVER, "--",
@@ -283,6 +341,7 @@ def main() -> int:
                 analysis = reduce_receipt(receipt, campaign, project=project, engine=engine, arm_letter="C")
                 analysis["material_deadline_baseline"] = validate_deadline_baseline(data, required=role == "C")
                 observers = validate_observers(receipt, process, project, treatment["presentation_observer"])
+                sample_idle = validate_sample_idle(data, treatment["sample_idle"]) if args.mode == "sample-idle-abba" else None
                 events = [json.loads(line) for line in receipt.with_name("receipt-events.jsonl").read_text().splitlines()]
                 slot_evidence = validate_slot_treatment(data, events, slots,
                                                         require_status=args.mode == "slots-abba" or slots == 3,
@@ -297,9 +356,10 @@ def main() -> int:
                 write_json(folder / "supplementary.json", supplement)
                 write_json(folder / "observers.json", observers)
                 write_json(folder / "process.json", process)
-                arm_role = ("D" if index in (0, 3) else "C") if args.mode in ("slots-abba", "observer-abba") else role
+                arm_role = ("D" if index in (0, 3) else "C") if args.mode in ("slots-abba", "observer-abba", "sample-idle-abba") else role
                 arms.append({"arm": arm_role, "index": index, "source_role": role, "statistics": analysis,
                              "supplementary": supplement, "slots": slot_evidence, "process": process,"observers":observers,
+                             "sample_idle": sample_idle,
                              "receipt_sha256": digest(receipt)})
                 shutil.rmtree(project)
             except Exception as error:

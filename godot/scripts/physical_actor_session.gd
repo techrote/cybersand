@@ -1013,6 +1013,7 @@ func render_parts(display_frame: Dictionary = {}, presentation_poses: Dictionary
 			var shape: Shape2D = body.get_child(0).shape
 			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
 			var presented: Dictionary = {"actor_id": index, "part_id": str(parts[part_index].id),
+				"physical_body_index": body_index,
 				"transform": physical_pose,
 				"size": dimensions, "color": parts[part_index].color,
 				"shape": "circle" if shape is CircleShape2D else "rectangle"}

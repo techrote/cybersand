@@ -1,0 +1,121 @@
+{
+  "schema": "pubpres-progression-runtime-original-custody-v1",
+  "reader": {
+    "frozen_file_sha256": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+    "frozen_function_sha256": "d3105e0376bdff5929625c55a7dcbe6962f4d6cf3e38326807baff411357ca69",
+    "derived_function_sha256": "66259c126c4548e85b7781858e9854c3ced8b76c048fd80698d8ee281e4a6bc4",
+    "changes": "Explicit recorded target replaces exactly three execution-host platform selections; signature and error label identify offline replay. Every source/tree, native closure, binary, build log, toolchain and dependency predicate is retained.",
+    "scope": "Read-only artifact custody. No binary execution, runtime admission on this host, historical workflow rewrite or new gameplay qualification."
+  },
+  "records": [
+    {
+      "platform": "linux",
+      "role": "C",
+      "original_source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+      "original_tree": "0e9be155adfc408641e391c6d184e01fce235866",
+      "custody": {
+        "manifest_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-linux/C/PUBPRES-RUNTIME.json",
+        "manifest_sha256": "22e92240a35b2edb20a2c8e735bf553dc9be62573584ee1d29ac8171ddc51cc0",
+        "binary_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "binary_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-linux/C/libcybersand_native.linux.x86_64.so",
+        "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "checked_source_files": 105,
+        "build_commit": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+        "source_inputs_sha256": "304c2f19a63bf245bc12f4b0d665ecb10b6acf29466088bb602091901012e62d",
+        "dependency_builder_commit": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+        "toolchain": {
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+          "godot_cpp_dependency_sha256": "3d4345565eae7a5f8ba6eaa4006e0b59007fc4edc20efda980e4165bd2cf8e71",
+          "compiler_command": "/usr/bin/g++-13",
+          "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+          "toolchain_drift_allowed": false
+        },
+        "experimental_build": true
+      },
+      "current_native_inputs_equal_f408": true
+    },
+    {
+      "platform": "windows",
+      "role": "C",
+      "original_source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+      "original_tree": "0e9be155adfc408641e391c6d184e01fce235866",
+      "custody": {
+        "manifest_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-windows/C/PUBPRES-RUNTIME.json",
+        "manifest_sha256": "d53024d905c8081a1b7ee9a07754fe540853cee6baad8d323d51cdf8603e0f9c",
+        "binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+        "binary_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-windows/C/cybersand_native.windows.x86_64.dll",
+        "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "checked_source_files": 105,
+        "build_commit": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+        "source_inputs_sha256": "304c2f19a63bf245bc12f4b0d665ecb10b6acf29466088bb602091901012e62d",
+        "dependency_builder_commit": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+        "toolchain": {
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "208e26e90a04420aacc095171cbaf1df7b1d03019f66853e7f13774ef162b807",
+          "godot_cpp_dependency_sha256": "cf2d98bb8302bb9b78a459c179e3049f6388c2902c24faa2c08063bc76bc16c4",
+          "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+          "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+          "toolchain_drift_allowed": false
+        },
+        "experimental_build": true
+      },
+      "current_native_inputs_equal_f408": true
+    },
+    {
+      "platform": "linux",
+      "role": "D",
+      "original_source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "original_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+      "custody": {
+        "manifest_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-linux/D/PUBPRES-RUNTIME.json",
+        "manifest_sha256": "07c6cb0270c726731efefd47edb6b1e30005c054a2c1116f623b70d22ca16508",
+        "binary_sha256": "bc5cdbf4832d09f8b14f6ff2ed7cf1e182343d55a3a4ebc4dc1d93894d660d59",
+        "binary_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-linux/D/libcybersand_native.linux.x86_64.so",
+        "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "checked_source_files": 105,
+        "build_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+        "source_inputs_sha256": "12c9df66fb0e58feee45ab3b676c6fc1d36b1fb62a92befb8b9326ba068b2b5c",
+        "dependency_builder_commit": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+        "toolchain": {
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+          "godot_cpp_dependency_sha256": "3d4345565eae7a5f8ba6eaa4006e0b59007fc4edc20efda980e4165bd2cf8e71",
+          "compiler_command": "/usr/bin/g++-13",
+          "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+          "toolchain_drift_allowed": false
+        },
+        "experimental_build": true
+      },
+      "frozen_donor_preserved": true
+    },
+    {
+      "platform": "windows",
+      "role": "D",
+      "original_source": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "original_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+      "custody": {
+        "manifest_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-windows/D/PUBPRES-RUNTIME.json",
+        "manifest_sha256": "53927f43f14b12397f2f6cfa6e76c60ae3fed04b0016be178d1a26d2ce4f2bfc",
+        "binary_sha256": "7467c28edfc28d28bd0174834e5823a72363ac2bf0a84495d70bbf5b9c6d90f2",
+        "binary_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-windows/D/cybersand_native.windows.x86_64.dll",
+        "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "checked_source_files": 105,
+        "build_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+        "source_inputs_sha256": "12c9df66fb0e58feee45ab3b676c6fc1d36b1fb62a92befb8b9326ba068b2b5c",
+        "dependency_builder_commit": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+        "toolchain": {
+          "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+          "godot_cpp_library_sha256": "208e26e90a04420aacc095171cbaf1df7b1d03019f66853e7f13774ef162b807",
+          "godot_cpp_dependency_sha256": "cf2d98bb8302bb9b78a459c179e3049f6388c2902c24faa2c08063bc76bc16c4",
+          "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+          "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+          "toolchain_drift_allowed": false
+        },
+        "experimental_build": true
+      },
+      "frozen_donor_preserved": true
+    }
+  ],
+  "scope": "Offline original source/build/binary custody; no new execution or current-application qualification."
+}

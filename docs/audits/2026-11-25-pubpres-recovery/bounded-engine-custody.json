@@ -1,0 +1,392 @@
+{
+  "schema": "pubpres-recovery-retained-bounded-engine-custody-v1",
+  "complete": true,
+  "original_build_admission": {
+    "build_source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+    "build_run": 45483865013,
+    "build_attempt": 1,
+    "proof_sha256": "be97e02ee3fb178eaea384dd1b9105d4dd45939bf018cdb5b6f63d313a550bc0"
+  },
+  "artifacts": [
+    {
+      "id": 14965449517,
+      "name": "bounded-engine",
+      "sha256": "e2a8752b70ae4dfed5192a90b6b115d0aac2703f36d09c34519ed5e514d8ce0c"
+    },
+    {
+      "id": 14965534401,
+      "name": "bounded-engine-proof",
+      "sha256": "5290ce8b0295503ec6f9d4f14e4b9570b01c03dba0f8d8d74c8db5e32ae66cb1"
+    }
+  ],
+  "reader": "tools/pubpres_final_frame_budget/payload.py",
+  "reader_sha256": "b32ac21febeda8bde72fa1611a96d14903998a6419b81cb82e4b7737c7b96eca",
+  "original_build_provenance": {
+    "api_dumps": {
+      "custom": {
+        "extension_api.json": {
+          "bytes": 6965091,
+          "sha256": "440cff71c492e9bc34fa5ad50a5f7e677e37bb9af850e1f07ab25b0a0ae4aeeb"
+        },
+        "gdextension_interface.h": {
+          "bytes": 142425,
+          "sha256": "640b48188708ba0016f8d7ace9e0e1d3279a41fa1226c59ff3193b15538bd254"
+        },
+        "gdextension_interface.json": {
+          "bytes": 328021,
+          "sha256": "7d8c0a039d9743eb8ebf88681ae0c641d8d3aa5ffca11081745a84da803e09a1"
+        }
+      },
+      "official": {
+        "extension_api.json": {
+          "bytes": 6965055,
+          "sha256": "53d37f85be32b6d10fb2266ca51f6ef0c3a55728acdb7c8301b1458a93c00943"
+        },
+        "gdextension_interface.h": {
+          "bytes": 142425,
+          "sha256": "640b48188708ba0016f8d7ace9e0e1d3279a41fa1226c59ff3193b15538bd254"
+        },
+        "gdextension_interface.json": {
+          "bytes": 328021,
+          "sha256": "7d8c0a039d9743eb8ebf88681ae0c641d8d3aa5ffca11081745a84da803e09a1"
+        }
+      }
+    },
+    "application_and_graphical_qualification": "Pending separate exact-source Windows gates; not implied by this build.",
+    "application_source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+    "build_name": "cybersand_egl_font_bounded",
+    "builder": {
+      "bytes": 22685,
+      "sha256": "26d0981f0953dedbccb1be672245f8e57687dd32261ae07f0e15d31452192e67"
+    },
+    "combined_patch": {
+      "bytes": 29012,
+      "sha256": "17c070dcf1a653f60d0732e8bb1dcd932064f9d9b08eb4e2094f8d721e18d54a"
+    },
+    "complete": true,
+    "console_executable": "bin/godot.windows.editor.x86_64.console.exe",
+    "custom_engine": true,
+    "dependency_archives": {
+      "accesskit": {
+        "bytes": 95929259,
+        "sha256": "02a08691b78fc6f8f88f6546e997b9f90b4ecbedf5ca5c621dbab144a4b18964"
+      },
+      "angle": {
+        "bytes": 31123250,
+        "sha256": "ccca7ac3d989858f853ad1a84d1a791f10ae5ced0b3b88cadc27204ffe34147b"
+      },
+      "official_reference": {
+        "bytes": 83764371,
+        "sha256": "02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71"
+      },
+      "scons": {
+        "bytes": 4136069,
+        "sha256": "bd9d1c52f908d874eba92a8c0c0a8dcf2ed9f3b88ab956d0fce1da479c4e7126"
+      }
+    },
+    "executables": {
+      "godot.windows.editor.x86_64.console.exe": {
+        "bytes": 293376,
+        "pe": {
+          "certificate_table_bytes": 0,
+          "delay_imports": [],
+          "imports": [
+            "api-ms-win-core-version-l1-1-0.dll",
+            "api-ms-win-core-version-l1-1-1.dll",
+            "kernel32.dll",
+            "shlwapi.dll"
+          ],
+          "machine": "x86_64",
+          "scope": "Static import closure only; runtime LoadLibrary paths require actual Windows execution.",
+          "subsystem": 3,
+          "unresolved_non_system_imports": []
+        },
+        "sha256": "aa3d5849b0ef8ed4bb9134115359826a0f1e40930261ac51fa1f11c55e627ac3"
+      },
+      "godot.windows.editor.x86_64.exe": {
+        "bytes": 159839232,
+        "pe": {
+          "certificate_table_bytes": 0,
+          "delay_imports": [],
+          "imports": [
+            "advapi32.dll",
+            "api-ms-win-core-synch-l1-2-0.dll",
+            "api-ms-win-core-winrt-error-l1-1-1.dll",
+            "api-ms-win-core-winrt-l1-1-0.dll",
+            "api-ms-win-shcore-scaling-l1-1-1.dll",
+            "avrt.dll",
+            "bcrypt.dll",
+            "combase.dll",
+            "crypt32.dll",
+            "dbghelp.dll",
+            "dwmapi.dll",
+            "dwrite.dll",
+            "dxgi.dll",
+            "gdi32.dll",
+            "hid.dll",
+            "imm32.dll",
+            "iphlpapi.dll",
+            "kernel32.dll",
+            "ntdll.dll",
+            "ole32.dll",
+            "oleaut32.dll",
+            "shell32.dll",
+            "shlwapi.dll",
+            "uiautomationcore.dll",
+            "user32.dll",
+            "winmm.dll",
+            "ws2_32.dll",
+            "wsock32.dll"
+          ],
+          "machine": "x86_64",
+          "scope": "Static import closure only; runtime LoadLibrary paths require actual Windows execution.",
+          "subsystem": 2,
+          "unresolved_non_system_imports": []
+        },
+        "sha256": "1d27e0fa28a2484713cb082f047feb3dc95b73060292b08b3cf44b472758fe23"
+      }
+    },
+    "gui_executable": "bin/godot.windows.editor.x86_64.exe",
+    "initial_core_autocrlf": "false",
+    "input_admission": {
+      "application_source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+      "builder_sha256": "26d0981f0953dedbccb1be672245f8e57687dd32261ae07f0e15d31452192e67",
+      "files_sha256": {
+        "third_party/patches/godot-egl-current-window.patch": "29a74947a3128ed93eeea0c6ab7274d10f45c194627fb516d7db6b511413e9a1",
+        "third_party/workbench-godot.lock.json": "f828469561d88530dc3bb2779ce7a3ea19b3d97af7910e38f2784278bd6657c3",
+        "tools/ci/build_workbench_godot.py": "9bd4f14084b1fdeb49056a64a435adeb2f693b9ab8208d04d0c3b4a867db4cbe",
+        "tools/pubpres_final_engine/build_engine.py": "6cd87237c706489d054889f13914c201fdf408a43ed6d3db0d610d1a2bdfb40c",
+        "tools/pubpres_final_engine/engine.lock.json": "dccb79949d4f335c8322141c60837325046390e201a0163084a6325f84688878",
+        "tools/pubpres_final_engine/engine_contract.py": "13c4c67c440b8a6e07672ad3d9d0bf59d18491b610f82da97cdc9f926e575175",
+        "tools/pubpres_final_engine/godot-font-image-snapshot.patch": "49f06da6478582499adf5f466daec1d20981c5facbd2ef5a0acfa61cc6f788a6",
+        "tools/pubpres_final_engine/payload.py": "45931b78d5c0600b693a72b3112a323b50cadd8e39a266917c879e62ee6abe73",
+        "tools/pubpres_final_frame_budget/build_engine.py": "26d0981f0953dedbccb1be672245f8e57687dd32261ae07f0e15d31452192e67",
+        "tools/pubpres_final_frame_budget/cybersand_frame_budget.h": "afbc233d67cb5d22a23825299c4e288c3f8bc77a9edf954954bed1ca59c8d0a3",
+        "tools/pubpres_final_frame_budget/engine.lock.json": "a7fb5f8c8212d663452e93c3b35fd961261df3241c3725088bb29428d293b3ac",
+        "tools/pubpres_final_frame_budget/engine_contract.py": "3d0ba420e6ad277518354579ecbfc72fe2b19bd38351c0daeddcf1d2ce61c843",
+        "tools/pubpres_final_frame_budget/godot-bounded-main-turns.patch": "23b6b04ea228a8ec7da73eae3802840f9d21e472459ba152fa41e634c7c74087",
+        "tools/pubpres_final_frame_budget/payload.py": "b32ac21febeda8bde72fa1611a96d14903998a6419b81cb82e4b7737c7b96eca",
+        "tools/pubpres_final_frame_budget/request_contract.py": "9c36103f1da56c8527c3ccfcc3c50fcd315528b1ae4fe03be2f41c3739ec61da",
+        "tools/pubpres_final_frame_budget/test_engine_contract.py": "b7be72c76623138e1215ed9e677cb43ff4a501a9275041bb2e7d5d1304c5eca9",
+        "tools/pubpres_final_frame_budget/test_frame_budget.cpp": "0f4e319910e4c8018122f33659eca515f85e25fa7e15f91f4bed0f7e2ca199aa",
+        "tools/pubpres_final_frame_budget/test_payload.py": "2d30a199caeeb9d25f14f584f5787eeea15011e0f7545cb83c5af6c7febee3f7"
+      },
+      "lock_sha256": "a7fb5f8c8212d663452e93c3b35fd961261df3241c3725088bb29428d293b3ac",
+      "original_builder_sha256": "9bd4f14084b1fdeb49056a64a435adeb2f693b9ab8208d04d0c3b4a867db4cbe",
+      "patches": [
+        {
+          "files": {
+            "drivers/egl/egl_manager.cpp": {
+              "after_sha256": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e",
+              "before_sha256": "65f6cb972cd6f8d3242663589e213f96d3a51dcf9f65e745d5d0ca34986d8de7"
+            }
+          },
+          "path": "third_party/patches/godot-egl-current-window.patch",
+          "sha256": "29a74947a3128ed93eeea0c6ab7274d10f45c194627fb516d7db6b511413e9a1"
+        },
+        {
+          "files": {
+            "modules/text_server_adv/text_server_adv.cpp": {
+              "after_sha256": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b",
+              "before_sha256": "f156a5b0100ab39d588a3abc09a013c468b49dbff0ed085b7cb9c2a3e577cfcf"
+            },
+            "modules/text_server_fb/text_server_fb.cpp": {
+              "after_sha256": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1",
+              "before_sha256": "b1a6a009a89007bcbf48f3c70a8a02da037e9aef6d9cf9fa22b9f003c756a6d7"
+            }
+          },
+          "path": "tools/pubpres_final_engine/godot-font-image-snapshot.patch",
+          "sha256": "49f06da6478582499adf5f466daec1d20981c5facbd2ef5a0acfa61cc6f788a6"
+        },
+        {
+          "files": {
+            "main/main.cpp": {
+              "after_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491",
+              "before_sha256": "2fa6ef2736aa28e2feced47ca872bce1a95e3e6c56bb6002a96660a008df8992"
+            },
+            "servers/rendering/rendering_server_default.cpp": {
+              "after_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32",
+              "before_sha256": "60cdf149a4cb8c8c7b49d562edcce2273e028e4a0a6cb067c7c478054a3dc3c9"
+            },
+            "servers/rendering/rendering_server_default.h": {
+              "after_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed",
+              "before_sha256": "eff3cdd80dcfdb7643d5651f3a96fac12011414e4d5f8ecb3645638dfb43481b"
+            }
+          },
+          "path": "tools/pubpres_final_frame_budget/godot-bounded-main-turns.patch",
+          "sha256": "23b6b04ea228a8ec7da73eae3802840f9d21e472459ba152fa41e634c7c74087"
+        }
+      ],
+      "scope": "Exact predecessor build/compiler/dependency/source/ABI/PE gates retained; additive default-off bounded Main/draw scheduling only. No gameplay acceptance is implied.",
+      "source_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "version": "4.7.stable.cybersand_egl_font_bounded.5b4e0cb0f"
+    },
+    "lock": {
+      "bytes": 6032,
+      "sha256": "a7fb5f8c8212d663452e93c3b35fd961261df3241c3725088bb29428d293b3ac"
+    },
+    "patched_sources": {
+      "drivers/egl/egl_manager.cpp": {
+        "bytes": 17936,
+        "sha256": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e"
+      },
+      "main/main.cpp": {
+        "bytes": 211389,
+        "sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491"
+      },
+      "modules/text_server_adv/text_server_adv.cpp": {
+        "bytes": 311622,
+        "sha256": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b"
+      },
+      "modules/text_server_fb/text_server_fb.cpp": {
+        "bytes": 184902,
+        "sha256": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1"
+      },
+      "servers/rendering/rendering_server_default.cpp": {
+        "bytes": 26986,
+        "sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32"
+      },
+      "servers/rendering/rendering_server_default.h": {
+        "bytes": 56002,
+        "sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed"
+      }
+    },
+    "patches": [
+      {
+        "files": {
+          "drivers/egl/egl_manager.cpp": {
+            "after_sha256": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e",
+            "before_sha256": "65f6cb972cd6f8d3242663589e213f96d3a51dcf9f65e745d5d0ca34986d8de7"
+          }
+        },
+        "path": "third_party/patches/godot-egl-current-window.patch",
+        "sha256": "29a74947a3128ed93eeea0c6ab7274d10f45c194627fb516d7db6b511413e9a1"
+      },
+      {
+        "files": {
+          "modules/text_server_adv/text_server_adv.cpp": {
+            "after_sha256": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b",
+            "before_sha256": "f156a5b0100ab39d588a3abc09a013c468b49dbff0ed085b7cb9c2a3e577cfcf"
+          },
+          "modules/text_server_fb/text_server_fb.cpp": {
+            "after_sha256": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1",
+            "before_sha256": "b1a6a009a89007bcbf48f3c70a8a02da037e9aef6d9cf9fa22b9f003c756a6d7"
+          }
+        },
+        "path": "tools/pubpres_final_engine/godot-font-image-snapshot.patch",
+        "sha256": "49f06da6478582499adf5f466daec1d20981c5facbd2ef5a0acfa61cc6f788a6"
+      },
+      {
+        "files": {
+          "main/main.cpp": {
+            "after_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491",
+            "before_sha256": "2fa6ef2736aa28e2feced47ca872bce1a95e3e6c56bb6002a96660a008df8992"
+          },
+          "servers/rendering/rendering_server_default.cpp": {
+            "after_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32",
+            "before_sha256": "60cdf149a4cb8c8c7b49d562edcce2273e028e4a0a6cb067c7c478054a3dc3c9"
+          },
+          "servers/rendering/rendering_server_default.h": {
+            "after_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed",
+            "before_sha256": "eff3cdd80dcfdb7643d5651f3a96fac12011414e4d5f8ecb3645638dfb43481b"
+          }
+        },
+        "path": "tools/pubpres_final_frame_budget/godot-bounded-main-turns.patch",
+        "sha256": "23b6b04ea228a8ec7da73eae3802840f9d21e472459ba152fa41e634c7c74087"
+      }
+    ],
+    "payload_files": {
+      "api-equivalence.json": {
+        "bytes": 731,
+        "sha256": "9cf1b4c5abf06689cbcd1c051578b08ed073dfa72141c4165bd86349e5adb441"
+      },
+      "bin/godot.windows.editor.x86_64.console.exe": {
+        "bytes": 293376,
+        "sha256": "aa3d5849b0ef8ed4bb9134115359826a0f1e40930261ac51fa1f11c55e627ac3"
+      },
+      "bin/godot.windows.editor.x86_64.exe": {
+        "bytes": 159839232,
+        "sha256": "1d27e0fa28a2484713cb082f047feb3dc95b73060292b08b3cf44b472758fe23"
+      },
+      "engine-source.patch": {
+        "bytes": 29012,
+        "sha256": "17c070dcf1a653f60d0732e8bb1dcd932064f9d9b08eb4e2094f8d721e18d54a"
+      },
+      "notices/COPYRIGHT.txt": {
+        "bytes": 100108,
+        "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+      },
+      "notices/LICENSE.txt": {
+        "bytes": 1149,
+        "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+      },
+      "notices/accesskit/accesskit-c-0.21.2/LICENSE-APACHE": {
+        "bytes": 9723,
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+      },
+      "notices/accesskit/accesskit-c-0.21.2/LICENSE-MIT": {
+        "bytes": 1023,
+        "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+      },
+      "notices/accesskit/accesskit-c-0.21.2/LICENSE.chromium": {
+        "bytes": 1559,
+        "sha256": "845022e0c1db1abb41a6ba4cd3c4b674ec290f3359d9d3c78ae558d4c0ed9308"
+      },
+      "workbench-godot.lock.json": {
+        "bytes": 6032,
+        "sha256": "a7fb5f8c8212d663452e93c3b35fd961261df3241c3725088bb29428d293b3ac"
+      }
+    },
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "public_api_equivalent": true,
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "schema": "workbench-godot-build-provenance-v1",
+    "scons_flags": [
+      "platform=windows",
+      "arch=x86_64",
+      "target=editor",
+      "windows_subsystem=gui",
+      "use_mingw=no",
+      "use_llvm=no",
+      "msvc_version=14.3",
+      "production=yes",
+      "optimize=speed",
+      "lto=none",
+      "debug_symbols=no",
+      "dev_build=no",
+      "precision=single",
+      "use_static_cpp=yes",
+      "opengl3=yes",
+      "angle=yes",
+      "vulkan=yes",
+      "use_volk=yes",
+      "d3d12=no",
+      "accesskit=yes",
+      "winrt=yes",
+      "scu_build=yes",
+      "scu_limit=8",
+      "threads=yes",
+      "disable_3d=no",
+      "tests=no",
+      "compiledb=yes",
+      "angle_libs=D:\\a\\cybersand\\cybersand\\build\\pubpres-frame-budget-engine\\proof\\dependencies\\angle",
+      "accesskit_sdk_path=D:\\a\\cybersand\\cybersand\\build\\pubpres-frame-budget-engine\\proof\\dependencies\\accesskit\\accesskit-c-0.21.2"
+    ],
+    "scope": {
+      "custom_engine": true,
+      "d3d12": "Explicitly disabled to avoid unrelated Mesa/DXC/Agility dependencies. Vulkan, native OpenGL and static ANGLE remain enabled; no module is disabled.",
+      "gdextension": "Single precision public API equivalence and actual native/Rapier loading must both be checked; API equivalence alone does not qualify gameplay or physical hardware.",
+      "official_binary_reproduction": false,
+      "performance": "No build-time or runtime performance claim is made by this lock.",
+      "source_fix": "Preserves the original EGL handoff and font Image ownership repairs. Adds a default-off, GL Separate-owner experiment allowing at most4 deferred Main sync/draw opportunities per actual outstanding render draw, followed by the original barrier. Requires an actual current-process presentation-submission transaction connection. Preserves all physical work, real draw signals and elapsed shader/particle time. The bound permits at most5 subsequent producer turns before the barrier; it is not an absolute byte cap. CPU draw completion is not GPU completion or physical display presentation. All application, graphical and physical hardware acceptance remains pending."
+    },
+    "upstream_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "upstream_tree": "a74f51b5f510fdacf72be7d8f8d598e7b7c192cd",
+    "version": "4.7.stable.cybersand_egl_font_bounded.5b4e0cb0f",
+    "workers": 2,
+    "workflow_attempt": "1",
+    "workflow_run": "45483865013"
+  },
+  "scope": "Original engine component payload/proof identity verification only. No application transaction, actual gameplay, owner hardware acceptance or default selection is inherited. Exact original source and binaries remain unchanged.",
+  "physical_acceptance": "HOLD"
+}

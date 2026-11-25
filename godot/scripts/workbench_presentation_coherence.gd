@@ -48,11 +48,12 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 		previous_world_pixels: Image = null, require_footprint_clear: bool = false,
 		current_material_bytes: PackedByteArray = PackedByteArray(),
 		previous_material_bytes: PackedByteArray = PackedByteArray(),
-		max_empty_scan_cells: int = 0, refine_material_contacts: bool = false) -> Dictionary:
+		max_empty_scan_cells: int = 0, refine_material_contacts: bool = false,
+		compose_water: bool = false) -> Dictionary:
 	var coarse: Dictionary = _assess_motion(bound_pose,live_pose,rectangles,
 		world_pixels,previous_occupied,previous_unknown,previous_blend_active,
 		max_scan_cells,deadline_usec,previous_world_pixels,require_footprint_clear,
-		current_material_bytes,previous_material_bytes,max_empty_scan_cells,0)
+		current_material_bytes,previous_material_bytes,max_empty_scan_cells,0,compose_water)
 	if not refine_material_contacts or bool(coarse.safe) \
 			or coarse.reason != "material_in_swept_mask" \
 			or float(coarse.get("dilation_cells",0.0)) == 0.0 \
@@ -76,7 +77,7 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 			world_pixels,previous_occupied,previous_unknown,previous_blend_active,
 			mini(max_scan_cells,remaining),deadline_usec,previous_world_pixels,require_footprint_clear,
 			current_material_bytes,previous_material_bytes,
-			remaining if max_empty_scan_cells > 0 else 0,MAX_SWEEP_STEPS)
+			remaining if max_empty_scan_cells > 0 else 0,MAX_SWEEP_STEPS,compose_water)
 	# Both passes spend the same shared allowance and cooperative deadline.
 	refined.scanned = int(refined.scanned)+int(coarse.scanned)
 	refined.refined = true
@@ -93,7 +94,7 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 		previous_world_pixels: Image, require_footprint_clear: bool,
 		current_material_bytes: PackedByteArray,
 		previous_material_bytes: PackedByteArray,
-		max_empty_scan_cells: int, minimum_steps: int) -> Dictionary:
+		max_empty_scan_cells: int, minimum_steps: int, compose_water: bool = false) -> Dictionary:
 	if world_pixels == null or world_pixels.is_empty() or rectangles.is_empty():
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
@@ -218,6 +219,7 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 			or (old_stride > 0 and previous_material_bytes.size() != width*height*old_stride):
 		return _refuse("material_bytes_unbounded",pre_scanned)
 	var scanned: int = 0
+	var water_cells: int = 0
 	for y: int in range(first_y,last_y+1):
 		for x: int in range(first_x,last_x+1):
 			scanned += 1
@@ -230,21 +232,30 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 			# covers active crossfade material; the small-patch map is retained
 			# for legacy callers without an image.
 			var cell_index: int = y*width+x
-			var occupied: bool = current_material_bytes[cell_index*stride] != 0 \
-				if stride > 0 else world_pixels.get_pixel(x,y).r8 != 0
-			if not occupied and previous_blend_active:
-				occupied = previous_material_bytes[cell_index*old_stride] != 0 if old_stride > 0 \
-					else (previous_world_pixels.get_pixel(x,y).r8 != 0 if previous_world_pixels != null \
-					else previous_occupied.has(cell_index))
-			if not occupied: continue
+			var current_id: int = int(current_material_bytes[cell_index*stride]) \
+				if stride > 0 else int(world_pixels.get_pixel(x,y).r8)
+			var previous_id: int = 0
+			if previous_blend_active:
+				previous_id = int(previous_material_bytes[cell_index*old_stride]) if old_stride > 0 \
+					else (int(previous_world_pixels.get_pixel(x,y).r8) if previous_world_pixels != null \
+					else (1 if previous_occupied.has(cell_index) else 0))
+			if current_id == 0 and previous_id == 0: continue
+			# This flag is a presentation composition proof, never empty-space
+			# permission. The caller must separately prove the current completed
+			# pose/native dependency and use the Water-only clipped draw layer.
+			var composable: bool = compose_water and current_id in [0,3] and previous_id in [0,3]
 			var cell := Vector2(float(x)+0.5,float(y)+0.5)
 			for inverse_pose: Transform2D in inverse_poses:
 				var local: Vector2 = inverse_pose*cell
 				for box: Vector4 in boxes:
 					if absf(local.x-box.x)<=box.z and absf(local.y-box.y)<=box.w:
+						if composable:
+							water_cells += 1
+							continue
 						var refused: Dictionary = _refuse("material_in_swept_mask",pre_scanned+scanned)
 						refused.steps = steps
 						refused.dilation_cells = padding
 						return refused
-	return {"safe":true,"reason":"empty_swept_mask","scanned":pre_scanned+scanned,
+	return {"safe":true,"reason":"water_composed_swept_mask" if water_cells > 0 else "empty_swept_mask",
+		"scanned":pre_scanned+scanned,"water_contacts":water_cells,
 		"steps":steps,"dilation_cells":padding}

@@ -33,6 +33,9 @@ func effective_selectors() -> Dictionary:
 	result.requested["CYBERSAND_DIAG_PRESENTATION_OBSERVER"] = OS.get_environment("CYBERSAND_DIAG_PRESENTATION_OBSERVER")
 	result.requested["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"] = OS.get_environment("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ")
 	result.requested["CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL"] = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL")
+	result.requested["CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE"] = OS.get_environment("CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE")
+	result["workbench_sample_idle"] = host.simulation_worker.workbench_sample_idle_status() \
+		if host.simulation_worker.has_method("workbench_sample_idle_status") else null
 	result["material_steps_api_present"] = host.has_method("material_step_status")
 	result["material_steps"] = host.call("material_step_status") if host.has_method("material_step_status") else null
 	result["material_deadline"] = host.call("material_deadline_status") if host.has_method("material_deadline_status") else null

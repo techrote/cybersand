@@ -10,6 +10,7 @@ const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WorkbenchPresentationCoherence = preload("res://scripts/workbench_presentation_coherence.gd")
+const WorkbenchWaterComposition = preload("res://scripts/workbench_water_composition.gd")
 const WorkbenchMaterialTimeline = preload("res://scripts/workbench_material_timeline.gd")
 const WorkbenchPresentationHistory = preload("res://scripts/workbench_presentation_history.gd")
 const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
@@ -102,6 +103,7 @@ var _workbench_sample_identity: Array = []
 var _workbench_presentation_history = WorkbenchPresentationHistory.new()
 var _workbench_completed_step: int = -1
 var _workbench_completed_step_usec: int = 0
+var _workbench_water_dependencies: Dictionary = {}
 var engine_lab_wait_native_sample: bool = true
 var engine_lab_ack_delay_frames: int = 0
 var _engine_lab_pending_ack_serial: int = 0
@@ -2453,6 +2455,7 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 			if physical_actor_session.tick > before_completed_tick:
 				_workbench_completed_step = physical_actor_session.tick
 				_workbench_completed_step_usec = cadence_step_completed_usec
+				_capture_workbench_water_dependencies(physics_snapshot)
 				_record_completed_playable_course_step()
 				_cadence_rapier_completed(cadence_step_started_usec,cadence_step_completed_usec,physics_snapshot)
 	_publish_physical_body_state()
@@ -3789,6 +3792,90 @@ func _assess_workbench_presented_sweep(start: Transform2D, target: Transform2D,
 	return result
 
 
+func _workbench_water_composition_enabled() -> bool:
+	return OS.get_environment("CYBERSAND_DIAG_WATER_COMPOSITION") == "1" \
+		and _workbench_presentation_mode() == "coherent"
+
+
+func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) -> void:
+	_workbench_water_dependencies.clear()
+	if not _workbench_water_composition_enabled() or physical_actor_session == null or snapshot == null:
+		return
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge or bridge != rapier_bridge or snapshot.simulation_failed \
+			or snapshot.rigid_body_epoch != bridge._epoch \
+			or snapshot.last_native_tick_world_generation != snapshot.physics_world_generation:
+		return
+	var application: Dictionary = bridge.last_application
+	if application.get("accepted",false) != true or not str(application.get("refusal","")).is_empty() \
+			or application.get("snapshot",-1) != snapshot.serial:
+		return
+	var sample: int = snapshot.last_native_tick_body_sample
+	var packet: Dictionary = snapshot.lab_context.get("workbench_gcr",{})
+	if sample < 0 or snapshot.last_native_tick_completed_usec <= 0 \
+			or snapshot.lab_context.get("workbench_completed_sample",-1) != sample \
+			or packet.get("session",-1) != bridge._session or packet.get("epoch",-1) != bridge._epoch \
+			or not packet.get("valid",false) or bridge._history.is_empty(): return
+	var history: Dictionary = bridge._history[sample % bridge._history.size()]
+	if history.get("serial",-1) != sample or history.get("bodies",[]).size() != bridge._members.size(): return
+	for action: Dictionary in bridge.last_application.get("bodies",[]):
+		var slot: int = int(action.get("id",0))-1
+		if slot < 0 or slot >= bridge._members.size() or action.has("refusal") \
+				or action.get("sample",-1) != sample: continue
+		var member: Dictionary = bridge._members[slot]
+		_workbench_water_dependencies[slot] = {"bridge":bridge.get_instance_id(),
+			"session":bridge._session,"epoch":bridge._epoch,"world":snapshot.physics_world_generation,
+			"step":physical_actor_session.tick,"native_tick":snapshot.tick_index,"sample":sample,
+			"instance_id":member.instance_id,"generation":member.generation,
+			"native_response_applied":true,"input_pose":history.bodies[slot].pose,
+			"output_pose":bridge.body_transform(slot),"completed_usec":_workbench_completed_step_usec,
+			"native_completed_usec":snapshot.last_native_tick_completed_usec}
+
+
+func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary,
+		observation: Dictionary) -> Dictionary:
+	if not _workbench_water_composition_enabled() or not _valid_workbench_mask_frame(frame) \
+			or not _workbench_frame_error.is_empty() or simulation_worker.has_failed() \
+			or not _physical_terrain_ready or _actor_reset_receipt != 0 \
+			or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null:
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if bridge != rapier_bridge or slot < 0 or slot >= bridge._members.size() \
+			or physical_actor_session.tick != _workbench_completed_step \
+			or int(observation.get("completed_usec",-1)) != _workbench_completed_step_usec \
+			or _workbench_sample_identity != [bridge._session,bridge._epoch] \
+			or int(frame.get("native_completed_usec",0)) <= 0:
+		return {}
+	var serial: int = int(entry.get("sample",-1))
+	var sampled: Dictionary = _workbench_bound_sample(entry).duplicate()
+	if serial < 0 or bridge._history.is_empty(): return {}
+	var history: Dictionary = bridge._history[serial % bridge._history.size()]
+	if history.get("serial",-1) == serial and history.get("bodies",[]).size() == bridge._members.size():
+		sampled.merge({"pose":history.bodies[slot].pose,"session":bridge._session,"epoch":bridge._epoch})
+	var context: Dictionary = {"bridge":bridge.get_instance_id(),"session":bridge._session,
+		"epoch":bridge._epoch,"world":last_uploaded_world_generation,"revision":last_uploaded_revision,
+		"step":physical_actor_session.tick,"native_tick":int(frame.get("tick",-1)),"sample":serial,
+		"native_completed_usec":int(frame.get("native_completed_usec",-1))}
+	return WorkbenchWaterComposition.dependency(context,bridge._members[slot],entry,
+		observation,sampled,_workbench_water_dependencies.get(slot,{}))
+
+
+func _assess_workbench_water_sweep(start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary, summary: Dictionary) -> Dictionary:
+	var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
+	if remaining <= 0 or Time.get_ticks_usec() >= int(context.deadline_usec):
+		summary.budget_vetoes += 1
+		return {"safe":false,"reason":"shared_budget","scanned":0}
+	var result: Dictionary = WorkbenchPresentationCoherence.assess(start,target,
+		rectangles,image,_presentation_previous_occupied,_presentation_previous_unknown,
+		context.previous_blend_active,mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),
+		context.deadline_usec,_presentation_previous_image,true,
+		_presentation_current_bytes,_presentation_previous_bytes,remaining,true,true)
+	summary.cells_examined += int(result.scanned)
+	if str(result.reason) in ["scan_budget","time_budget","shared_budget"]: summary.budget_vetoes += 1
+	return result
+
+
 func _workbench_visible_material_contents(previous_active: bool) -> Array[int]:
 	var contents: Array[int] = []
 	if _presentation_current_content_id <= 0:
@@ -3824,7 +3911,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"mask_frame":{},"poses":{},"sources":{},"selected_steps":{},"desired_steps":{},
 		"reasons":{},"intentional_holds":{},"timeline_resets":{},"parts":[],
 		"hold_age_usec":{},"selected_observations":{},"recovery_attempts":{},"explicit_reentries":{},
-		"recovery_ceilings":{},
+		"recovery_ceilings":{},"water_proofs":{},"water_composition":{},
 		"follow_instance_id":shared_workbench.selected_id() if shared_workbench != null else -1,
 		"follow_target":Vector2.INF,"follow_source_step":-1,"follow_held":false,
 		"session":-1,"epoch":-1,"world_generation":last_uploaded_world_generation,
@@ -3924,8 +4011,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					target = target_observation.pose
 					target_step = int(target_observation.step)
 			resolved.recovery_ceilings[slot] = ceiling
-			var certificate_valid: bool = not initial and _workbench_material_certificate_covers(
-				previous.get("material_contents",[]),material_contents)
+			var certificate_valid: bool = not initial and not previous.get("water_composed",false) \
+				and _workbench_material_certificate_covers(previous.get("material_contents",[]),material_contents)
 			var selected: Variant = null
 			var selected_step: int = -1
 			var selected_observation: Dictionary = {}
@@ -3945,6 +4032,21 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 				# material behind that state cannot invalidate elapsed motion.
 				if recovering: resolved.recovery_attempts[slot] += 1
 				decision = _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
+			if not bool(decision.safe) and _workbench_water_composition_enabled() \
+					and target_step == physical_actor_session.tick and target == desired \
+					and str(decision.reason) in ["material_in_swept_mask","bounded_pose_delta"]:
+				var water_proof: Dictionary = _workbench_water_dependency(slot,frame,entry,desired_observation)
+				if not water_proof.is_empty():
+					# A withheld actual submission permits explicit endpoint reentry;
+					# consecutive visible poses still require the full continuous sweep.
+					var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
+					var water_start: Transform2D = desired if initial or water_reentry else anchor
+					var water_check: Dictionary = _assess_workbench_water_sweep(water_start,desired,bridge._rects[slot],resolved,summary)
+					if bool(water_check.safe):
+						water_proof["coverage"] = water_check.duplicate()
+						resolved.water_proofs[slot] = water_proof
+						resolved.explicit_reentries[slot] = water_reentry
+						decision = {"safe":true,"reason":"water_composed:"+str(water_proof.kind)}
 			if bool(decision.safe):
 				selected = target
 				selected_step = target_step
@@ -4070,6 +4172,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					"desired_step":physical_actor_session.tick,
 					"instance_id":member.instance_id,"generation":member.generation,"material_contents":certified_contents.duplicate(),
 					"observation":selected_observation,"withheld_frames":0,
+					"water_composed":resolved.water_proofs.has(slot),
 					"origin_current":bool(previous.get("origin_current",false)) \
 						if resolved.sources[slot] == "held" else selected_step == physical_actor_session.tick,
 					"hold_started_usec":hold_started_usec if resolved.sources[slot] == "held" else 0}
@@ -4083,6 +4186,12 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		for slot: int in range(bridge._members.size()):
 			if not resolved.poses.has(slot): render_frame.instances.erase(int(bridge._members[slot].instance_id))
 		resolved.parts = physical_actor_session.render_parts(render_frame,resolved.poses,true)
+		if not resolved.water_proofs.is_empty():
+			resolved.water_composition = {"enabled":true,"current_texture":texture,
+				"previous_texture":previous_texture,"world_size":image.get_size(),
+				"previous_active":resolved.previous_blend_active,"snapshot_blend":resolved.snapshot_blend}
+			for part: Dictionary in resolved.parts:
+				part["water_composed"] = resolved.water_proofs.has(int(part.get("physical_body_index",-1)))
 		var pilot_slot: int = physical_actor_session.slot_for_instance(int(resolved.follow_instance_id))
 		if resolved.poses.has(pilot_slot):
 			resolved.follow_target = resolved.poses[pilot_slot].origin
@@ -4134,6 +4243,7 @@ func _resolve_workbench_camera_mapping() -> void:
 
 func _submit_workbench_presentation_frame() -> void:
 	var resolved: Dictionary = workbench_presentation_frame
+	physical_actor_overlay.set_water_composition(resolved.get("water_composition",{}))
 	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect)
 	if workbench_pose_trace.active and physical_actor_session != null:
 		_workbench_trace_presentation_frame(resolved.original_mask_frame,resolved.mask_frame,
@@ -5294,6 +5404,7 @@ func _close_physical_actors() -> void:
 	_workbench_presentation_history.clear()
 	_workbench_completed_step = -1
 	_workbench_completed_step_usec = 0
+	_workbench_water_dependencies.clear()
 	_workbench_follow_state.clear()
 	workbench_presentation_frame.clear()
 	_workbench_mapping_locked = false

@@ -10,6 +10,10 @@ var equipment_markers: Dictionary = {}
 var actor_labels: Dictionary = {}
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
+var _water_layer: CyberPhysicalActorOverlay = null
+var _water_state: Dictionary = {}
+var _is_water_layer: bool = false
+const WATER_COMPOSITION_SHADER = preload("res://shaders/workbench_water_actor_composition.gdshader")
 
 
 func _ready() -> void:
@@ -24,7 +28,46 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	position = content.position
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
+	if not _is_water_layer and _water_layer != null:
+		var water_parts: Array = []
+		for part: Dictionary in _parts:
+			if part.get("water_composed", false): water_parts.append(part)
+		_water_layer.outlines = outlines
+		var shader: ShaderMaterial = _water_layer.material
+		shader.set_shader_parameter("world_origin", _origin)
+		shader.set_shader_parameter("view_size", _view_size)
+		shader.set_shader_parameter("overlay_size", size.max(Vector2.ONE))
+		_water_layer.present(water_parts, origin, view_size, Rect2(Vector2.ZERO, size))
 	queue_redraw()
+
+
+func set_water_composition(state: Dictionary) -> void:
+	if _is_water_layer: return
+	var enabled: bool = state.get("enabled", false) and state.get("current_texture") is Texture2D \
+		and state.get("previous_texture") is Texture2D and state.get("world_size") is Vector2i
+	if not enabled:
+		_water_state.clear()
+		if _water_layer != null:
+			_water_layer.queue_free()
+			_water_layer = null
+		return
+	if _water_layer == null:
+		_water_layer = CyberPhysicalActorOverlay.new()
+		_water_layer.name = "ProvenWaterActors"
+		_water_layer._is_water_layer = true
+		_water_layer.show_behind_parent = true
+		var shader := ShaderMaterial.new()
+		shader.shader = WATER_COMPOSITION_SHADER
+		_water_layer.material = shader
+		add_child(_water_layer)
+	if state == _water_state: return
+	_water_state = state.duplicate()
+	var shader: ShaderMaterial = _water_layer.material
+	shader.set_shader_parameter("current_material", state.current_texture)
+	shader.set_shader_parameter("previous_material", state.previous_texture)
+	shader.set_shader_parameter("world_size", Vector2(state.world_size))
+	shader.set_shader_parameter("previous_active", bool(state.get("previous_active", false)))
+	shader.set_shader_parameter("snapshot_blend", float(state.get("snapshot_blend", 1.0)))
 
 
 func show_actor_labels(labels: Dictionary) -> void:
@@ -128,6 +171,7 @@ func _draw() -> void:
 		draw_polyline(outline,Color("80e9d1"),1.0)
 	if not equipment_markers.is_empty(): _draw_equipment()
 	for part: Dictionary in _parts:
+		if not _is_water_layer and part.get("water_composed", false): continue
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color
 		draw_colored_polygon(vertices, color.darkened(0.18))

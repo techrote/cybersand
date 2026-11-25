@@ -21,6 +21,7 @@ const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
 const LOCKSTEP_POLL_USEC: int = 100
 const WORKBENCH_SAMPLE_POLL_USEC: int = 250
+const WORKBENCH_IDLE_HEARTBEAT_USEC: int = 250000
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
 const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
@@ -978,6 +979,15 @@ var _published_physics_snapshot: CyberSimulationSnapshot
 var _combined_physics_publication: bool = OS.get_environment("CYBERSAND_DIAG_PHYSICS_PUBLICATION") != "early"
 var _publication_detail_trace: bool = OS.get_environment("CYBERSAND_DIAG_COMMON_OBSERVER") != "1"
 var _physics_causal_trace: bool = OS.get_environment("CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE") == "1"
+# Default-off PUBPRES recovery treatment. This parks only an owner whose actual
+# body sample has already completed; the ordinary native-sample fence therefore
+# forbids another material tick. Commands, fresh samples and due render capture
+# still wake it. A bounded heartbeat retains ordinary status/diagnostic service.
+var _workbench_sample_idle_enabled: bool = OS.get_environment("CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE") == "1"
+var _workbench_sample_idle_waits: int = 0 # Mutex-owned readback, never physical credit.
+var _workbench_sample_idle_usec: int = 0
+var _workbench_sample_idle_last_wake: String = ""
+var _workbench_sample_idle_active: bool = false
 var _snapshot_serial: int = 0
 var _snapshot_cells: PackedByteArray = PackedByteArray()
 var _snapshot_world_revision: int = -1
@@ -1367,6 +1377,82 @@ func _workbench_owner_work_pending(pause_request: bool, settings_revision: int,
 				or _engine_lab_ack_gated_publication != _published_snapshot.render_publication_ack_gated)))
 	_mutex.unlock()
 	return pending
+
+
+func workbench_sample_idle_status() -> Dictionary:
+	_mutex.lock()
+	var result := {"enabled":_workbench_sample_idle_enabled,
+		"heartbeat_usec":WORKBENCH_IDLE_HEARTBEAT_USEC,
+		"waits":_workbench_sample_idle_waits,"wait_usec":_workbench_sample_idle_usec,
+		"last_wake":_workbench_sample_idle_last_wake,
+		"active":_workbench_sample_idle_active,
+		"physical_credit":0}
+	_mutex.unlock()
+	return result
+
+
+func _wait_for_completed_workbench_sample(pause_request: bool, settings_revision: int,
+		paint_epoch: int, art_epoch: int, pixel_interval_usec: int, render_interval_usec: int,
+		interest_center: Vector2i, view_origin: Vector2i, body_epoch: int,
+		trace_generation: int, trace_active: bool) -> bool:
+	# Only the exclusive owner calls this after publishing its actual completion.
+	# Do not affect paused authoring, no-body worlds, failed/refused worlds, initial
+	# preparation, or a deliberately timer-paced Workbench. The retained sample
+	# is not permission to execute additional physics or material evolution.
+	if (not _workbench_sample_idle_enabled or pause_request or _simulation_failed
+			or _workbench_extent == Vector2i.ZERO or _workbench_completed_sample < 0
+			or _workbench_prepared_sample != _workbench_completed_sample
+			or _workbench_consumed_sample.is_empty() or not _workbench_refusal.is_empty()
+			or not bool(_workbench_result.get("valid",false))):
+		return false
+	var started_usec: int = Time.get_ticks_usec()
+	var deadline_usec: int = started_usec + WORKBENCH_IDLE_HEARTBEAT_USEC
+	# A completed material turn may precede its next render deadline. Never delay
+	# that required capture merely because the matching body sample is complete.
+	if _world.revision != _last_attempted_render_revision:
+		deadline_usec = mini(deadline_usec, _last_render_snapshot_usec + render_interval_usec)
+	if deadline_usec <= started_usec: return false
+	var waited: bool = false
+	var wake_reason: String = "heartbeat_or_render_deadline"
+	_mutex.lock()
+	_workbench_sample_idle_active = true
+	_mutex.unlock()
+	while Time.get_ticks_usec() < deadline_usec:
+		if _workbench_owner_work_pending(pause_request, settings_revision,
+				paint_epoch, art_epoch, pixel_interval_usec, render_interval_usec, true):
+			wake_reason = "owner_work"
+			break
+		_mutex.lock()
+		# Origins and tracing are not construction-setting revisions. Epoch and
+		# publication retirement must also interrupt without waiting for heartbeat.
+		var changed: bool = (_interest_center != interest_center or _view_origin != view_origin
+			or _physical_effect_epoch != body_epoch or _rigid_body_epoch != body_epoch
+			or _render_cadence_trace_generation != trace_generation
+			or _render_cadence_trace_active != trace_active
+			or not _prepared_physical_publication.is_empty()
+			or not _prepared_physical_frame_hold.is_empty())
+		_mutex.unlock()
+		if changed:
+			wake_reason = "identity_view_or_trace"
+			break
+		waited = true
+		OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+	var completed_usec: int = Time.get_ticks_usec()
+	_mutex.lock()
+	_workbench_sample_idle_active = false
+	if waited:
+		_workbench_sample_idle_waits += 1
+		_workbench_sample_idle_usec += completed_usec - started_usec
+		_workbench_sample_idle_last_wake = wake_reason
+		if trace_active and trace_generation == _render_cadence_trace_generation:
+			_append_render_cadence_event_locked({"kind":"completed_sample_idle_wait",
+				"start_usec":started_usec,"completed_usec":completed_usec,
+				"world_generation":_world_generation,"body_sample":_workbench_completed_sample,
+				"tick_index":int(_world.tick_index),"heartbeat_usec":WORKBENCH_IDLE_HEARTBEAT_USEC,
+				"wake_reason":wake_reason},
+				trace_generation)
+	_mutex.unlock()
+	return true
 
 func set_workbench_sample(value: Dictionary) -> Dictionary:
 	# Body masks and ACT-005 geometry are one copied publication. The worker
@@ -2690,6 +2776,8 @@ func _worker_loop() -> void:
 		var local_paint_epoch: int = 0
 		var local_art_epoch: int = 0
 		var local_trace_generation: int = 0
+		var local_idle_trace_generation: int = 0
+		var local_idle_trace_active: bool = false
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
@@ -2733,6 +2821,8 @@ func _worker_loop() -> void:
 		local_pixel_target_hz = _engine_lab_pixel_target_hz
 		local_sample_wake = _engine_lab_sample_wake
 		local_trace_generation = _render_cadence_trace_generation if _render_cadence_trace_active else 0
+		local_idle_trace_generation = _render_cadence_trace_generation
+		local_idle_trace_active = _render_cadence_trace_active
 		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
@@ -3098,6 +3188,15 @@ func _worker_loop() -> void:
 
 		if lockstep_ticked:
 			# Main's publications pace a fenced owner; no wall-clock deadline.
+			next_tick_usec = Time.get_ticks_usec()
+			continue
+		if local_sample_wake and _wait_for_completed_workbench_sample(local_pause_request,
+				local_settings_revision, local_paint_epoch, local_art_epoch,
+				local_pixel_interval_usec, local_render_snapshot_interval_usec,
+				local_interest_center, local_view_origin, local_rigid_body_epoch,
+				local_idle_trace_generation, local_idle_trace_active):
+			# The completed sample already forbids another tick. When a new sample
+			# or command wakes this wait, immediately run the unchanged owner path.
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		next_tick_usec += local_pixel_interval_usec
