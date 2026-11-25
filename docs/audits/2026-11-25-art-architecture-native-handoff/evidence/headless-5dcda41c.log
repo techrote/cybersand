@@ -1,0 +1,115 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_ARCHITECTURE_NATIVE_CHECK ordinary unchanged Workbench initializes true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary New blank admits bounded 512-square World true
+ART_ARCHITECTURE_NATIVE_CHECK actual native 512-square World is installed true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary startup has no Art provider instance true
+ART_ARCHITECTURE_NATIVE_CHECK opening Architecture creates no hidden Art provider true
+ART_ARCHITECTURE_NATIVE_CHECK Art-owned seam binds the existing ordinary panel provider true
+ART_ARCHITECTURE_NATIVE_CHECK unchanged qualified Architecture bridge binds the explicit host mount true
+ART_ARCHITECTURE_NATIVE_CHECK opening both panels and binding sends no HTTP or audit event true
+ART_ARCHITECTURE_NATIVE_CHECK actual native inspection supplies source-bound proposal context true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK save complete native material plane before true
+ART_ARCHITECTURE_NATIVE_CHECK save material-ID diagnostic before true
+ART_ARCHITECTURE_NATIVE_CHECK real loopback server binds true
+ART_ARCHITECTURE_NATIVE_CHECK explicit owner proposal reaches the one real Art transport true
+ART_ARCHITECTURE_NATIVE_CHECK explicit owner request reaches a real accepted socket true
+ART_ARCHITECTURE_NATIVE_CHECK unchanged qualified Architecture recipe validates the deterministic proposal true
+ART_ARCHITECTURE_NATIVE_CHECK proposal-only HTTP response completes true
+ART_ARCHITECTURE_NATIVE_CHECK real request uses the actual Art-owned configuration snapshot true
+ART_ARCHITECTURE_NATIVE_CHECK typed response has one Architecture consumer and no ordinary paint completion true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK proposal receipt has zero native writes and does not adopt a plan true
+ART_ARCHITECTURE_NATIVE_CHECK owner explicitly adopts the finite typed campaign true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK adopting a proposal still has zero native writes true
+ART_ARCHITECTURE_NATIVE_CHECK selected finite campaign has three independently approved stages true
+ART_ARCHITECTURE_NATIVE_CHECK owner selects stage 1 true
+ART_ARCHITECTURE_NATIVE_CHECK stage cannot execute without its own current preview true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK real StageSession preview succeeds / Zero-write preview: 4120 checked / 4120 distinct / 4120 changed cells. Approve, Revise or Skip. true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK full native plane unchanged by this stage preview true
+ART_ARCHITECTURE_NATIVE_CHECK fresh owner approval queues without claiming native completion true
+ART_ARCHITECTURE_NATIVE_CHECK real native stage retires with readback true
+ART_ARCHITECTURE_NATIVE_CHECK native stage completes / Completed: Complete native receipts and authoritative material readback match every approved change. true
+ART_ARCHITECTURE_NATIVE_CHECK native receipt accounting matches exact approved stage work true
+ART_ARCHITECTURE_NATIVE_CHECK real native owner and full readback bind actual construction true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK actual full material plane equals this separately approved projection true
+ART_ARCHITECTURE_NATIVE_CHECK owner selects stage 2 true
+ART_ARCHITECTURE_NATIVE_CHECK stage cannot execute without its own current preview true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK real StageSession preview succeeds / Zero-write preview: 488 checked / 488 distinct / 488 changed cells. Approve, Revise or Skip. true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK full native plane unchanged by this stage preview true
+ART_ARCHITECTURE_NATIVE_CHECK fresh owner approval queues without claiming native completion true
+ART_ARCHITECTURE_NATIVE_CHECK real native stage retires with readback true
+ART_ARCHITECTURE_NATIVE_CHECK native stage completes / Completed: Complete native receipts and authoritative material readback match every approved change. true
+ART_ARCHITECTURE_NATIVE_CHECK native receipt accounting matches exact approved stage work true
+ART_ARCHITECTURE_NATIVE_CHECK real native owner and full readback bind actual construction true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK actual full material plane equals this separately approved projection true
+ART_ARCHITECTURE_NATIVE_CHECK owner selects stage 3 true
+ART_ARCHITECTURE_NATIVE_CHECK stage cannot execute without its own current preview true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK real StageSession preview succeeds / Zero-write preview: 12 checked / 12 distinct / 12 changed cells. Approve, Revise or Skip. true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK full native plane unchanged by this stage preview true
+ART_ARCHITECTURE_NATIVE_CHECK fresh owner approval queues without claiming native completion true
+ART_ARCHITECTURE_NATIVE_CHECK real native stage retires with readback true
+ART_ARCHITECTURE_NATIVE_CHECK native stage completes / Completed: Complete native receipts and authoritative material readback match every approved change. true
+ART_ARCHITECTURE_NATIVE_CHECK native receipt accounting matches exact approved stage work true
+ART_ARCHITECTURE_NATIVE_CHECK real native owner and full readback bind actual construction true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK actual full material plane equals this separately approved projection true
+ART_ARCHITECTURE_NATIVE_CHECK all three finite native stages completed with separate approvals true
+ART_ARCHITECTURE_NATIVE_CHECK actual native material capture completes true
+ART_ARCHITECTURE_NATIVE_CHECK save complete native material plane after true
+ART_ARCHITECTURE_NATIVE_CHECK save material-ID diagnostic after true
+ART_ARCHITECTURE_NATIVE_CHECK actual native construction changed the material World true
+ART_ARCHITECTURE_NATIVE_CHECK approved lower-passage material clearances remain empty; no actor traversal claim true
+ART_ARCHITECTURE_NATIVE_CHECK native stages reuse the one provider owner and dispatch no extra model request true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence approved-proposal.json true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence native-stage-records.json true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence workflow-history.json true
+ART_ARCHITECTURE_NATIVE_CHECK exact native construction session saved true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary editable authored start saved true
+ART_ARCHITECTURE_NATIVE_CHECK editable start bytes captured true
+ART_ARCHITECTURE_NATIVE_CHECK negative-control plan receives real native preview true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary manual cell edit is admitted while Art remains open true
+ART_ARCHITECTURE_NATIVE_CHECK manual edit is acknowledged by native authority true
+ART_ARCHITECTURE_NATIVE_CHECK stale preview approval refuses without native stage work true
+ART_ARCHITECTURE_NATIVE_CHECK large real native stage is separately previewed and approved true
+ART_ARCHITECTURE_NATIVE_CHECK actual native prefix acknowledgement arrives true
+ART_ARCHITECTURE_NATIVE_CHECK Architecture Stop drains actual prefix and final native readback true
+ART_ARCHITECTURE_NATIVE_CHECK Stop retains actual acknowledged prefix without inventing its unexecuted suffix true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence stopped-native-prefix.json true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary native Undo admits recovery of the stopped prefix true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary prefix Undo retires true
+ART_ARCHITECTURE_NATIVE_CHECK fresh native context is captured for cancellation probes true
+ART_ARCHITECTURE_NATIVE_CHECK real loopback server binds true
+ART_ARCHITECTURE_NATIVE_CHECK actual Architecture dispatch enters asynchronous Art preparation true
+ART_ARCHITECTURE_NATIVE_CHECK unrelated scoped cancellation cannot retire the actual owner request true
+ART_ARCHITECTURE_NATIVE_CHECK Architecture Stop retires actual asynchronous provider preparation true
+ART_ARCHITECTURE_NATIVE_CHECK preparation Stop sends zero HTTP and leaves no hidden consumer true
+ART_ARCHITECTURE_NATIVE_CHECK fresh native inspection precedes a real no-headers request true
+ART_ARCHITECTURE_NATIVE_CHECK real loopback server binds true
+ART_ARCHITECTURE_NATIVE_CHECK explicit owner request reaches a real accepted socket true
+ART_ARCHITECTURE_NATIVE_CHECK actual Art request is accepted without response headers true
+ART_ARCHITECTURE_NATIVE_CHECK ordinary Art Stop retires the exclusive Architecture request within two seconds true
+ART_ARCHITECTURE_NATIVE_CHECK native context re-inspected before World replacement true
+ART_ARCHITECTURE_NATIVE_CHECK real loopback server binds true
+ART_ARCHITECTURE_NATIVE_CHECK World replacement begins with an actual preparation job true
+ART_ARCHITECTURE_NATIVE_CHECK owner replaces the actual Workbench World true
+ART_ARCHITECTURE_NATIVE_CHECK new native World installs and old provider job retires true
+ART_ARCHITECTURE_NATIVE_CHECK eventual dispatch guard refuses replaced native context before any HTTP true
+ART_ARCHITECTURE_NATIVE_CHECK all combined paths keep one provider and one response owner per request true
+ART_ARCHITECTURE_NATIVE_CHECK complete shared Art audit excludes its credential true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence bridge-history.json true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence probe-observations.json true
+ART_ARCHITECTURE_NATIVE_CHECK write evidence result.json true
+ART_ARCHITECTURE_NATIVE_RESULT {"actual_http_exchanges":2,"adapter_sha256":"aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001","architecture_application_source":"17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d","architecture_bridge_sha256":"3430e24c80a81fd5672a68113acee83151d505f692bd1c976dfec4c0645c83b8","art_overlay_source":"2743f89a0df6f6afcf7484e859c10790d521e74b","checks":109,"display":"headless","failures":[],"format":"cybersand-art-architecture-native-handoff-v1","godot":"4.7-stable (official)","model_calls":0,"native_stages_completed":3,"ordinary_completions":0,"platform":"Linux","provider_sha256":"9d32d4ad89f5dd9bc330bfa3dc91a689ffc1720bf4fc31d933d4614d49638438","scope":"Separate combined native Workbench fixture experiment; not principal Art or Architecture evaluator qualification.","source_revision":"5dcda41ceb1856e50cd844fafefa18c70aae3c50","stage_session_sha256":"464f1ae5f907b258f0779bac2099536019eeeac93aa9fa52d8cb135887f7dc3a"}
