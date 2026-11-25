@@ -1,0 +1,132 @@
+{
+  "checks": [
+    {
+      "label": "Optics is one integrated scrollable tab",
+      "passed": true
+    },
+    {
+      "label": "refresh and mount issue no mutation",
+      "passed": true
+    },
+    {
+      "label": "panel has no recurring processing",
+      "passed": true
+    },
+    {
+      "label": "native target explicitly differs from optics selector",
+      "passed": true
+    },
+    {
+      "label": "Play focus default disables unused manual distance and focal plane",
+      "passed": true
+    },
+    {
+      "label": "Classic has immediate bypass and explicit reset controls",
+      "passed": true
+    },
+    {
+      "label": "advanced effects hidden initially",
+      "passed": true
+    },
+    {
+      "label": "advanced controls can be revealed independently",
+      "passed": true
+    },
+    {
+      "label": "inspecting Play does not change edit target or dispatch mutation",
+      "passed": true
+    },
+    {
+      "label": "Play shading controls and participation are disabled",
+      "passed": true
+    },
+    {
+      "label": "Play optical depth is editable with explicit safety explanation",
+      "passed": true
+    },
+    {
+      "label": "UI cannot bypass Play crisp guard",
+      "passed": true
+    },
+    {
+      "label": "Play depth reaches optical-only API",
+      "passed": true
+    },
+    {
+      "label": "decorative optical edit addresses explicit plane",
+      "passed": true
+    },
+    {
+      "label": "manual mode exposes distance without authoring mutation",
+      "passed": true
+    },
+    {
+      "label": "manual focal plane controls optics only",
+      "passed": true
+    },
+    {
+      "label": "comparison and inspection do not mutate authored optics",
+      "passed": true
+    },
+    {
+      "label": "quality preference is separate from authored optics",
+      "passed": true
+    },
+    {
+      "label": "one effect toggle retains all effect fields",
+      "passed": true
+    },
+    {
+      "label": "empty custom name refuses before mediator",
+      "passed": true
+    },
+    {
+      "label": "named copy trims and sends actual configuration",
+      "passed": true
+    },
+    {
+      "label": "built-in profile deletion refused in UI",
+      "passed": true
+    },
+    {
+      "label": "custom catalogue updates without stale selection",
+      "passed": true
+    },
+    {
+      "label": "only exact selected custom ID is removed",
+      "passed": true
+    },
+    {
+      "label": "asynchronous refresh retains focused numeric text",
+      "passed": true
+    },
+    {
+      "label": "Save commits focused typed value before copying preset",
+      "passed": true
+    },
+    {
+      "label": "layered-off indicator names effective Play edit target",
+      "passed": true
+    }
+  ],
+  "failures": 0,
+  "passed": true,
+  "schema": "cybersand.strata3-ui.v1",
+  "scope": "actual controls with synthetic mediator; no native, framebuffer, persistence or physical GPU claim",
+  "tested_at_utc": "2026-11-25T22:01:37.838420+00:00",
+  "source_base": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "local_delta_inputs": {
+    "godot/scripts/depth/workbench_strata_optics_panel.gd": "12604650be7d05587d38e50912934f7b5b61978d2c95c2338ae4111884ea0b4c",
+    "godot/tests/test_strata_optics_ui.gd": "e0e794d193586b1134661b78731bf84ccb857ff7ca980d9c404bdb714f80e5cc",
+    "godot/scripts/depth/strata_optics_configuration.gd": "638d8fa83a41167a2e7402de2437d10a1a4f04329451e0ec5c14560165637397"
+  },
+  "engine": {
+    "version": "4.7.stable.official.5b4e0cb0f",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "command": "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/test_strata_optics_ui.gd",
+  "initial_diagnostic_failures": [
+    "Test constant Panel shadowed native Godot class; renamed OpticsPanel.",
+    "Test compared UI floating value as exact dictionary; replaced with approximate numeric equality. Production API routing was correct."
+  ]
+}

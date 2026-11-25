@@ -60,7 +60,7 @@ func _run() -> void:
 	panel.mount(mediator)
 	await process_frame
 	var ui: Node = panel._authoring
-	_check("coherent five-tab workflow", panel._tabs.get_tab_count() == 5)
+	_check("coherent workflow plus appended Optics Lab", panel._tabs.get_tab_count() == 6)
 	_check("source catalogue keeps successor identity", panel._demo_ids == ["successor-scene"])
 	_check("initial authoring loop idle", not ui.is_processing())
 	var options: Dictionary = ui._import_options()

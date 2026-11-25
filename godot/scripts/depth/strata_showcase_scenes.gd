@@ -26,6 +26,16 @@ static func metadata(id: String) -> Dictionary:
 static func make(id: String, policy: PackedInt32Array) -> Dictionary:
 	var raw := _read(id)
 	if raw.has("error"): return raw
+	return make_source(raw, id, policy)
+
+
+static func make_source(raw: Dictionary, id: String, policy: PackedInt32Array,
+		admitted_ids: Array = IDS, generator_path: String = "tools/strata2_build_showcases.py",
+		maximum_generator_version: int = 2) -> Dictionary:
+	# Additional source-pinned catalogues reuse the exact same native admission
+	# contract with explicit identities. Original catalogue defaults stay strict.
+	var source_reason := validate_source(raw, id, admitted_ids, generator_path, maximum_generator_version)
+	if not source_reason.is_empty(): return {"error":source_reason}
 	var extent := Vector2i(int(raw.extent[0]), int(raw.extent[1]))
 	var setup := Setup.fresh(policy, extent)
 	setup.edits = raw.play_rectangles.duplicate(true)
@@ -54,7 +64,10 @@ static func make(id: String, policy: PackedInt32Array) -> Dictionary:
 	if not reason.is_empty(): return {"error":"Showcase layer layout refused: " + reason}
 	return {"setup":setup, "document":document, "title":str(raw.title),
 		"description":str(raw.description), "id":id,
-		"source_metadata":metadata(id)}
+		"source_metadata":{"id":id, "title":raw.title, "description":raw.description,
+			"extent":raw.extent.duplicate(), "spawn":raw.spawn.duplicate(),
+			"route_probes":raw.route_probes.duplicate(true), "detail_views":raw.detail_views.duplicate(true),
+			"provenance":raw.provenance.duplicate(true)}}
 
 
 static func _read(id: String) -> Dictionary:
@@ -69,9 +82,10 @@ static func _read(id: String) -> Dictionary:
 	return raw
 
 
-static func validate_source(raw: Variant, expected_id: String) -> String:
+static func validate_source(raw: Variant, expected_id: String, admitted_ids: Array = IDS,
+		generator_path: String = "tools/strata2_build_showcases.py", maximum_generator_version: int = 2) -> String:
 	if not _keys(raw, ROOT_KEYS) or raw.format != "cybersand-strata-showcase" \
-			or not Setup._integer(raw.version, 1, 1) or raw.id != expected_id or expected_id not in IDS:
+			or not Setup._integer(raw.version, 1, 1) or raw.id != expected_id or expected_id not in admitted_ids:
 		return "Unsupported showcase fields, version or identity."
 	if not raw.title is String or raw.title.is_empty() or raw.title.length() > 128 \
 			or not raw.description is String or raw.description.length() > 2048:
@@ -119,8 +133,8 @@ static func validate_source(raw: Variant, expected_id: String) -> String:
 	if not _keys(raw.provenance, ["kind", "generator", "generator_version", "seed", "source_art", "geometry_semantics", "physical_claim", "plane_roles", "plane_geometry_sha256", "ordered_rectangles", "authored_write_cells"]):
 		return "Showcase provenance fields are unsupported."
 	if raw.provenance.kind != "original-native-material-construction" \
-			or raw.provenance.generator != "tools/strata2_build_showcases.py" \
-			or not Setup._integer(raw.provenance.generator_version, 1, 2) \
+			or raw.provenance.generator != generator_path \
+			or not Setup._integer(raw.provenance.generator_version, 1, maximum_generator_version) \
 			or not Setup._integer(raw.provenance.seed, 0, 2147483647) \
 			or raw.provenance.source_art != "none":
 		return "Showcase provenance identity is invalid."

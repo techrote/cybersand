@@ -6,6 +6,7 @@ const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const NAMES: Array[String] = ["Play · actors and collision", "Rear architecture", "Atmosphere / effects", "Background"]
 const DEMOS: Array[String] = ["industrial-assembly", "arcology", "cavern"]
 const AuthoringPanel = preload("res://scripts/depth/workbench_strata_authoring_panel.gd")
+const OpticsPanel = preload("res://scripts/depth/workbench_strata_optics_panel.gd")
 var controller: Node
 var _syncing: bool = false
 var _active := OptionButton.new()
@@ -25,6 +26,7 @@ var _demo := OptionButton.new()
 var _values: Dictionary = {}
 var _tabs := TabContainer.new()
 var _authoring: Node
+var _optics: Node
 var _demo_ids: Array[String] = []
 var _scene_description := Label.new()
 
@@ -122,6 +124,10 @@ func mount(mediator: Node) -> void:
 	scene_note.text = "Loading replaces the authored scene through the ordinary Workbench. Save existing work first. Stack / Flat and atmosphere switches preserve the current Play World; a complete scene load deliberately installs a new authored start."
 	scene_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	scene_rows.add_child(scene_note)
+	# Append to preserve established Layers/Import/Parts/Atmosphere/Scenes routes.
+	_optics = OpticsPanel.new()
+	add_child(_optics)
+	_optics.mount(controller,_tabs)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.add_theme_color_override("font_color", Color("cad5e0"))
 	outer.add_child(_status)
@@ -163,6 +169,7 @@ func refresh(document: Dictionary, status: String = "") -> void:
 	_status.text = status
 	_syncing = false
 	if is_instance_valid(_authoring): _authoring.refresh(document, status)
+	if is_instance_valid(_optics): _optics.refresh(document,status)
 
 func _page(title: String) -> VBoxContainer:
 	var scroll := ScrollContainer.new()
@@ -174,6 +181,11 @@ func _page(title: String) -> VBoxContainer:
 	rows.add_theme_constant_override("separation", 8)
 	scroll.add_child(rows)
 	return rows
+
+
+func refresh_optics(document: Dictionary, status: String = "") -> void:
+	_status.text = status
+	if is_instance_valid(_optics): _optics.refresh(document,status)
 
 func _slider(parent: Control, caption: String, slider: HSlider, low: float, high: float,
 		step: float, action: Callable) -> void:

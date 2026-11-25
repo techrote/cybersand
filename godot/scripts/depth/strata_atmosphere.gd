@@ -110,7 +110,7 @@ func _should_animate() -> bool:
 	for effect: Dictionary in _effects:
 		if bool(effect.enabled) and int(effect.count) > 0 and float(effect.speed) > 0.0 \
 				and float(effect.strength) > 0.0 and float(effect.colour[3]) > 0.0:
-			if effect.kind == "beacon" or float(effect.direction[0]) != 0.0 or float(effect.direction[1]) != 0.0:
+			if effect.kind in ["beacon", "light_shaft", "light_pool"] or float(effect.direction[0]) != 0.0 or float(effect.direction[1]) != 0.0:
 				return true
 	return false
 
@@ -161,6 +161,27 @@ func _draw() -> void:
 					var pulse := 0.12 + 0.88 * pow(maxf(0.0, sin(_phase * speed * TAU * 0.2 + particle.x * 1.1)), 3.0)
 					_box(region, Rect2(centre - Vector2(width, 3), Vector2(width * 2, 6)), _alpha(colour, pulse * 0.08))
 					_box(region, Rect2(centre - Vector2(width * 0.5, 1), Vector2(width, 2)), _alpha(colour, pulse))
+				"light_shaft":
+					# Fixed source positions and eight bands keep geometry bounded.
+					# Direction chooses tilt/up/down; speed only adds gentle breathing.
+					var source_x := region.position.x + (index + 0.5) * region.size.x / maxf(particles.size(), 1.0)
+					var base_width := minf(region.size.x / maxf(particles.size(), 1.0) * 0.35, 48.0)
+					var breathing := 1.0 if speed <= 0.0 else 0.90 + 0.10 * sin(_phase * speed * TAU * 0.04 + particle.z * TAU)
+					for band: int in 8:
+						var progress := (band + 0.5) / 8.0
+						var height := maxf(region.size.y / 8.0, 1.0)
+						var y := region.position.y + (band if direction.y >= 0.0 else 7 - band) * height
+						var width := base_width * (0.4 + 1.6 * progress)
+						var x := source_x + direction.x * region.size.y * progress * 0.5 - width * 0.5
+						_box(region, Rect2(x, y, width, height), _alpha(colour, (1.0 - progress * 0.75) * breathing * 0.20))
+				"light_pool":
+					var centre := region.position + Vector2((index + 0.5) * region.size.x / maxf(particles.size(), 1.0), region.size.y * (0.35 + particle.y * 0.30))
+					var radius := Vector2(minf(region.size.x / maxf(particles.size(), 1.0) * 0.70, 72.0), minf(region.size.y * 0.48, 72.0))
+					var breathing := 1.0 if speed <= 0.0 else 0.90 + 0.10 * sin(_phase * speed * TAU * 0.04 + particle.z * TAU)
+					for band: int in 4:
+						var scale_factor := 1.0 - band * 0.22
+						var size := radius * scale_factor * 2.0
+						_box(region, Rect2(centre - size * 0.5, size), _alpha(colour, breathing * (0.025 + band * 0.012)))
 				"machinery":
 					var width := minf(9.0, region.size.x / maxf(particles.size(), 1.0) * 0.45)
 					_box(region, Rect2(point, Vector2(width, 2.0)), _alpha(colour, 0.65))

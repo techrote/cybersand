@@ -417,7 +417,7 @@ func successor_panel() -> void:
 	await panel_controls()
 	strata.open_panel()
 	var panel: PanelContainer = strata._panel
-	check(panel._tabs.get_tab_count() == 5,"ordinary Strata exposes five coherent workflow tabs")
+	check(panel._tabs.get_tab_count() == 6,"ordinary Strata retains five workflow routes and appends Optics Lab")
 	for index: int in range(1,5):
 		panel._tabs.current_tab = index
 		await settle()

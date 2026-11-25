@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "sequence": 1,
+  "suite": "shader",
+  "purpose": "First actual Linux and Windows pixel/alpha correctness and integrated control regression; no owner package yet"
+}

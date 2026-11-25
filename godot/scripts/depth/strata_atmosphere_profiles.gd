@@ -7,7 +7,7 @@ const MAX_EFFECTS := 12
 const MAX_MOTIFS := 384
 const MAX_PER_EFFECT := 96
 const PLANES := ["scripted", "effects", "background"]
-const KINDS := ["haze", "steam", "rain", "dust", "beacon", "machinery"]
+const KINDS := ["haze", "steam", "rain", "dust", "beacon", "machinery", "light_shaft", "light_pool"]
 const CONFIG_KEYS := ["version", "enabled", "paused", "seed", "effects"]
 const EFFECT_KEYS := ["id", "plane", "kind", "region", "seed", "count", "speed", "strength", "direction", "colour", "enabled"]
 
@@ -23,7 +23,9 @@ static func presets() -> Array[Dictionary]:
 		{"id":"slant_rain", "label":"Slant rain", "kind":"rain", "description":"Sparse directional streaks behind the Play plane; no native Water."},
 		{"id":"suspended_dust", "label":"Suspended dust", "kind":"dust", "description":"Small seeded motes for scale and quiet movement; no native Dust."},
 		{"id":"warning_beacons", "label":"Warning beacons", "kind":"beacon", "description":"Low-frequency colour pulses; no physical light transport."},
-		{"id":"conveyor_lights", "label":"Conveyor lights", "kind":"machinery", "description":"Repeating travelling signal bars; no moving collision geometry."}
+		{"id":"conveyor_lights", "label":"Conveyor lights", "kind":"machinery", "description":"Repeating travelling signal bars; no moving collision geometry."},
+		{"id":"architectural_light_shafts", "label":"Architectural light shafts", "kind":"light_shaft", "description":"Eight clipped native-grid bands per ray suggest light through openings; static by default, no native light transport."},
+		{"id":"local_light_pools", "label":"Local light pools", "kind":"light_pool", "description":"Four restrained diffusion bands around fixed sources, behind Play; static by default, no screen-wide bloom."}
 	]
 
 
@@ -35,7 +37,9 @@ static func make_effect(preset_id: String, plane: String, region: Rect2i,
 		"slant_rain": ["rain", 72, 44.0, 0.60, [0.18, 1.0], [0.46, 0.70, 0.86, 0.60]],
 		"suspended_dust": ["dust", 40, 3.0, 0.45, [0.70, -0.16], [0.84, 0.65, 0.36, 0.70]],
 		"warning_beacons": ["beacon", 4, 1.0, 0.55, [1.0, 0.0], [1.0, 0.33, 0.10, 0.70]],
-		"conveyor_lights": ["machinery", 12, 14.0, 0.60, [1.0, 0.0], [0.20, 0.76, 0.85, 0.60]]
+		"conveyor_lights": ["machinery", 12, 14.0, 0.60, [1.0, 0.0], [0.20, 0.76, 0.85, 0.60]],
+		"architectural_light_shafts": ["light_shaft", 3, 0.0, 0.55, [0.18, 1.0], [1.0, 0.82, 0.51, 0.45]],
+		"local_light_pools": ["light_pool", 3, 0.0, 0.65, [0.0, 0.0], [0.35, 0.82, 0.95, 0.45]]
 	}
 	if not choices.has(preset_id): return {}
 	var value: Array = choices[preset_id]

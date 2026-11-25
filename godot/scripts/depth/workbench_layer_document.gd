@@ -8,11 +8,13 @@ const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const Atmosphere = preload("res://scripts/depth/strata_atmosphere_profiles.gd")
 const Provenance = preload("res://scripts/depth/strata_authoring_provenance.gd")
+const Optics = preload("res://scripts/depth/strata_optics_configuration.gd")
 const IDS := ["play", "scripted", "effects", "background"]
 const FORMAT := "cybersand-strata-workbench"
 const SCENE_FORMAT := "cybersand-strata-scene"
 const VERSION := 2
 const LEGACY_VERSION := 1
+const OPTICAL_VERSION := 3
 const MAGIC := [67, 89, 83, 83, 84, 82, 65, 84] # CYSSTRAT
 const HEADER_SIZE := 52
 const MANIFEST_LIMIT := 8 * 1024 * 1024
@@ -57,6 +59,17 @@ static func upgraded(document: Dictionary) -> Dictionary:
 	return result
 
 
+static func with_optics(document: Dictionary, configuration: Dictionary) -> Dictionary:
+	# Existing v1/v2 documents keep their version and exact Classic meaning until
+	# an explicit optical edit. Version 3 adds only a checked presentation field.
+	if not Optics.validate(configuration).is_empty(): return {}
+	var result := upgraded(document)
+	if result.is_empty(): return {}
+	result.version = OPTICAL_VERSION
+	result.optics = Optics.canonical(configuration)
+	return result
+
+
 static func extent_of(document: Dictionary) -> Vector2i:
 	return Vector2i(int(document.extent[0]), int(document.extent[1]))
 
@@ -70,9 +83,10 @@ static func plane(document: Dictionary, id: String) -> Dictionary:
 
 
 static func validate(document: Variant) -> String:
-	if not document is Dictionary or not Setup._integer(document.get("version"), LEGACY_VERSION, VERSION):
+	if not document is Dictionary or not Setup._integer(document.get("version"), LEGACY_VERSION, OPTICAL_VERSION):
 		return "Unsupported Strata scene version."
-	var keys: Array = SCENE_KEYS + EXTENSION_KEYS if int(document.version) == VERSION else SCENE_KEYS
+	var keys: Array = SCENE_KEYS + EXTENSION_KEYS if int(document.version) >= VERSION else SCENE_KEYS
+	if int(document.version) == OPTICAL_VERSION: keys = keys + ["optics"]
 	if not Setup._keys(document, keys) or not document.format is String \
 			or document.format != SCENE_FORMAT \
 			or not document.content_domain is String \
@@ -84,11 +98,14 @@ static func validate(document: Variant) -> String:
 		if not Setup._integer(side, 512, 2048) or int(side) % 64 != 0:
 			return "Strata canvas sides must be 512–2048 cells in multiples of 64."
 	var extent := extent_of(document)
-	if int(document.version) == VERSION:
+	if int(document.version) >= VERSION:
 		var extension_error: String = Atmosphere.validate(document.atmosphere, extent)
 		if not extension_error.is_empty(): return extension_error
 		extension_error = Provenance.validate(document.authoring)
 		if not extension_error.is_empty(): return extension_error
+	if int(document.version) == OPTICAL_VERSION:
+		var optical_error: String = Optics.validate(document.optics)
+		if not optical_error.is_empty(): return optical_error
 	var presentation: Variant = document.presentation
 	if not Setup._keys(presentation, PRESENTATION_KEYS) \
 			or not presentation.enabled is bool or not presentation.mode is String \
@@ -147,9 +164,11 @@ static func canonical(document: Dictionary) -> Dictionary:
 		row.clock.rate_hz = 0
 		for index: int in row.rectangles.size():
 			row.rectangles[index] = Array(PackedInt32Array(row.rectangles[index]))
-	if int(result.version) == VERSION:
+	if int(result.version) >= VERSION:
 		result.atmosphere = Atmosphere.canonical(result.atmosphere)
 		result.authoring = Provenance.canonical(result.authoring)
+	if int(result.version) == OPTICAL_VERSION:
+		result.optics = Optics.canonical(result.optics)
 	return result
 
 
@@ -217,7 +236,7 @@ static func write_named(label: String, setup: Dictionary, generated: Dictionary,
 	if extent_of(document) != Setup.extent_of(setup): return "Play and Strata canvas dimensions differ."
 	var version := int(document.version)
 	var manifest := JSON.stringify({"format": FORMAT, "version": version,
-		"starting_setup": setup, "scene": document, "play_source": source.metadata}, "", true, version == VERSION).to_utf8_buffer()
+		"starting_setup": setup, "scene": document, "play_source": source.metadata}, "", true, version >= VERSION).to_utf8_buffer()
 	var payload: PackedByteArray = source.payload
 	if manifest.is_empty() or manifest.size() > MANIFEST_LIMIT or payload.size() > PAYLOAD_LIMIT:
 		return "The complete Strata scene exceeds its bounded save capacity."
@@ -267,7 +286,7 @@ static func read_named(label: String) -> Dictionary:
 		return _refuse("Strata scene is truncated or exceeds its bounded capacity.")
 	file.seek(0)
 	var header := file.get_buffer(HEADER_SIZE)
-	if header.size() != HEADER_SIZE or int(header.decode_u32(8)) not in [LEGACY_VERSION, VERSION]:
+	if header.size() != HEADER_SIZE or int(header.decode_u32(8)) not in [LEGACY_VERSION, VERSION, OPTICAL_VERSION]:
 		return _refuse("Unsupported or truncated Strata envelope version.")
 	var manifest_size := int(header.decode_u32(12))
 	var payload_size := int(header.decode_u32(16))

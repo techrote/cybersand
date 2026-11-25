@@ -1,0 +1,153 @@
+name: Strata Theatre 003 optical and graphical qualification
+
+# Explicit bounded Draft/HOLD evaluation on the owner's isolated feature branch.
+# Retained native inputs must remain exact. No runtime publication or promotion.
+on:
+  push:
+    branches: [feat/strata-theatre-003-20261125]
+    paths:
+      - '.github/workflows/strata-theatre-003.yml'
+      - 'tools/ci/strata3-qualification-request.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: strata-theatre-003-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  linux:
+    name: Actual Linux optical shaders and ordinary Workbench
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate scope and fetch unchanged retained native inputs
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_strata3_gallery.py
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+      - name: Prepare official pinned Godot and graphical display
+        run: |
+          set -euo pipefail
+          missing=()
+          command -v Xvfb >/dev/null || missing+=(xvfb)
+          command -v xauth >/dev/null || missing+=(xauth)
+          for package in libgl1 libegl1 libxrandr2 libxi6 libxinerama1 libxcursor1 libasound2t64; do
+            [[ $(dpkg-query -W -f='${Status}' "$package" 2>/dev/null) == 'install ok installed' ]] || missing+=("$package")
+          done
+          if (( ${#missing[@]} )); then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends "${missing[@]}"
+          fi
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/godot47.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot47.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot47.zip" -d "$RUNNER_TEMP/godot47"
+          chmod +x "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64"
+      - name: Execute actual graphical native readback, identity and fresh reopening
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/qualify_strata3_workbench.py --request tools/ci/strata3-qualification-request.json --godot "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64" --output build/strata3-linux
+      - name: Preserve original Linux receipts including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata3-linux-${{ github.sha }}-${{ github.run_attempt }}
+          path: build/strata3-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    name: Actual Windows optical shaders and ordinary Workbench
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate scope and fetch retained Windows runtime
+        shell: pwsh
+        run: |
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python tools/ci/test_strata3_gallery.py
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence adverse controls failed' }
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+      - name: Authenticate pinned Godot and complete portable dependencies
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          $env:STRATA_GODOT_ARCHIVE = $archive
+          @'
+          import os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          executable, record = prepare_godot(pathlib.Path(os.environ['STRATA_GODOT_ARCHIVE']))
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+              stream.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Godot pin verification failed' }
+          $dependencies = Join-Path $env:RUNNER_TEMP 'godot-windows'
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Godot notice download failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice download failed' }
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'strata-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime staging failed' }
+          Copy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies
+          Copy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies
+      - name: Execute ordinary graphical Workbench and source-bound optical graphical campaign
+        shell: pwsh
+        run: |
+          python tools/ci/qualify_strata3_workbench.py --request tools/ci/strata3-qualification-request.json --godot $env:GODOT_EXE --output build/strata3-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Windows Strata qualification failed' }
+      - name: Preserve original Windows receipts including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata3-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: build/strata3-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain authenticated portable dependencies for the same source
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata3-dependencies-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.WINDOWS_DEPENDENCIES }}/
+          if-no-files-found: error
+          retention-days: 7

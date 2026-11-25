@@ -1,0 +1,355 @@
+{
+  "schema": "cybersand-strata003-specialist-experiment-register-v1",
+  "created_utc_date": "2026-11-25",
+  "owner": "Specialist A",
+  "integration_note": "Lead must bind final application/platform evidence before changing dispositions. All local graphical fields are pending.",
+  "experiments": [
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A001-pixel-aperture",
+      "hypothesis": "Integer-centred premultiplied kernels can suggest lens depth while avoiding bilinear material-pixel bleeding.",
+      "parameters": [
+        "defocus",
+        "dof_width",
+        "focus_distance",
+        "planes.*.depth",
+        "planes.*.defocus",
+        "quality"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "all five Strata002 environments"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "maximum_surface_samples_per_fragment": {
+          "low": 5,
+          "balanced": 9,
+          "high": 17
+        },
+        "maximum_radius_native_cells": 6,
+        "cost_kind": "source-bound upper bound, not a GPU timing measurement"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A002-detail-preservation",
+      "hypothesis": "Attenuating fine interior colour contrast while preserving alpha retains useful architectural silhouettes.",
+      "parameters": [
+        "defocus_method=detail",
+        "detail",
+        "planes.*.depth"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "vertical-transfer-spine",
+        "industrial-underworks"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "reuses_aperture_samples": true,
+        "alpha_silhouette": "original source coverage"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A003-highlight-diffusion",
+      "hypothesis": "Bounded bright-pixel spread can imply atmospheric optics without uncontrolled fullscreen bloom.",
+      "parameters": [
+        "defocus_method=diffusion",
+        "illumination",
+        "planes.*.glow"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "neon-rain-arcology",
+        "abyss-foundry"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "reuses_aperture_samples": true,
+        "native_emission_classifier": false
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A004-tonal-chromatic-air",
+      "hypothesis": "Contrast hierarchy, chromatic attenuation and exponential scattering can establish depth while keeping lens radius zero.",
+      "parameters": [
+        "tonal",
+        "chromatic",
+        "atmosphere",
+        "scattering_color",
+        "planes.*.contrast",
+        "planes.*.saturation",
+        "planes.*.tint",
+        "planes.*.brightness"
+      ],
+      "applicable_scenes": [
+        "all five Strata002 environments"
+      ],
+      "cost_contract": {
+        "extra_texture_samples_for_colour_only": 0,
+        "tone_pivot": 0.5,
+        "colour_space": "existing non-HDR material-surface working colour, no physically calibrated radiance claim"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A005-architectural-projection-shadow",
+      "hypothesis": "Existing published Play solid silhouettes can cast bounded presentation shadows onto authored rear architecture.",
+      "parameters": [
+        "shadow",
+        "shadow_offset",
+        "shadow_softness",
+        "planes.*.depth"
+      ],
+      "applicable_scenes": [
+        "11 material-mask witnesses",
+        "abyss-foundry",
+        "lunar-terminator-observatory"
+      ],
+      "cost_contract": {
+        "native_captures": 0,
+        "maximum_play_reads_per_fragment": 5,
+        "occluder_definition": "all admitted native MaterialState::Solid IDs except reserved10",
+        "physical_transmission": false
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A006-local-clarity",
+      "hypothesis": "Rear attenuation near physical silhouettes and the published primary-player rectangle can reduce false-platform emphasis without changing Play opacity.",
+      "parameters": [
+        "clarity",
+        "inspection.clarity",
+        "planes.*.opacity"
+      ],
+      "applicable_scenes": [
+        "readability-fixture",
+        "all five Strata002 environments"
+      ],
+      "cost_contract": {
+        "native_captures": 0,
+        "maximum_play_reads_per_fragment": 5,
+        "actor_scope": "published primary-player rectangle; no complete arbitrary-rig visibility oracle"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A007-one-pass-comparison-focus",
+      "hypothesis": "A shared shader can compare Classic and processed pixels without duplicate rendering or new edit authority.",
+      "parameters": [
+        "inspection.bypass",
+        "inspection.wipe",
+        "inspection.focus_override",
+        "focus_mode",
+        "transition_speed",
+        "planes.*.parallax"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "ordinary Workbench lifecycle"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "extra_full_scene_renders": 0,
+        "wipe_geometry": "Classic parallax while partial wipe is active",
+        "play_processing": false
+      }
+    }
+  ],
+  "retained_negative_results": [
+    {
+      "id": "A-NEG01-built-in-sampler",
+      "observation": "Initial headless compiler emitted !actions.custom_samplers.has(function->arguments[j].tex_builtin) while test exit code alone remained zero.",
+      "repair": "Named surface_texture alias of existing SubViewport texture. No texture allocation/copy.",
+      "status": "compiler error removed; graphical behavior not inferred from exit code"
+    },
+    {
+      "id": "A-NEG02-geometry-copy",
+      "observation": "First helper cached complete plane dictionaries including authored rectangles on optical configuration changes.",
+      "repair": "Cache only validated depth metadata; settings-only presenter API.",
+      "status": "source bounded; end-to-end slider timing pending"
+    },
+    {
+      "id": "A-NEG03-incomplete-shadow-family",
+      "observation": "B review found MAT002 basal/metal building IDs omitted by old relief-derived classifier.",
+      "repair": "Full admitted native Solid range and eleven rendered material-mask witnesses.",
+      "status": "source repaired; rendered witnesses pending"
+    },
+    {
+      "id": "A-NEG04-alpha-compatibility",
+      "observation": "Original HAZE normal blending is mathematically different from premultiplied filtering; changing it would alter Classic.",
+      "repair": "Restore exact original materials for Classic; separate premultiplied processed path and equivalent Classic branch in wipe.",
+      "status": "actual half-alpha capture and exact restoration checks pending"
+    },
+    {
+      "id": "A-NEG05-host-display",
+      "observation": "Local graphical display unavailable; Xvfb socket creation denied EPERM.",
+      "repair": "Use authorized exact-source hosted Linux/Windows graphical campaign.",
+      "status": "local graphical blocked; no physical GPU claims"
+    }
+  ]
+}

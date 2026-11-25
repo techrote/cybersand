@@ -234,6 +234,22 @@ func update_extensions(patch: Dictionary) -> bool:
 	return true
 
 
+func set_optics(configuration: Dictionary) -> bool:
+	# Settings-only commit: no native call, publication, history or revision edit.
+	if _document.is_empty() or not _pending.is_empty():
+		last_error = "Finish scene preparation before changing optical settings."
+		return false
+	last_error = Document.Optics.validate(configuration)
+	if not last_error.is_empty(): return false
+	# The admitted private document already has valid geometry. Live sliders
+	# replace only a copied optical value; do not rescan/copy every rectangle.
+	if int(_document.version) == Document.LEGACY_VERSION:
+		_document = Document.upgraded(_document)
+	_document.version = Document.OPTICAL_VERSION
+	_document.optics = Document.Optics.canonical(configuration)
+	return true
+
+
 func preview_visual_settings(patch: Dictionary) -> Dictionary:
 	# Validate one complete visual candidate before adopting any settings. This
 	# operation cannot replace native layouts, owners, revision or history.

@@ -26,7 +26,7 @@ func run() -> void:
 		var effect: Dictionary = Profiles.make_effect(preset.id, "effects", Rect2i(24, 36, 256, 192), 17, preset.id)
 		check(not effect.is_empty(), "each offered preset has an implementation")
 		config.effects.append(effect)
-	check(Profiles.validate(config, extent).is_empty(), "all six authored presets fit the shared budget")
+	check(Profiles.validate(config, extent).is_empty(), "all authored presets fit the shared budget")
 	var numeric: Dictionary = config.duplicate(true)
 	numeric.effects[0].speed = 18
 	numeric.effects[0].strength = 1
@@ -62,6 +62,24 @@ func run() -> void:
 		var bad: Dictionary = config.duplicate(true)
 		bad.effects[0][entry[0]] = entry[1]
 		check(not Profiles.validate(bad, extent).is_empty(), "invalid atmosphere effect refused: " + str(entry[0]))
+	for preset_id: String in ["architectural_light_shafts", "local_light_pools"]:
+		var lighting := Profiles.default_configuration()
+		lighting.enabled = true
+		lighting.effects = [Profiles.make_effect(preset_id, "effects", Rect2i(16, 32, 128, 96), 3, "light")]
+		var light_node := Atmosphere.new()
+		root.add_child(light_node)
+		check(light_node.configure(lighting, extent, "effects"), preset_id + " bounded presentation configuration admitted")
+		light_node.set_plane_active(true)
+		check(not light_node.is_processing(), preset_id + " static default has no recurring callback")
+		light_node.advance(1.0)
+		check(light_node.diagnostics().phase_seconds == 0.0, preset_id + " static source phase remains fixed")
+		lighting.effects[0].speed = 0.5
+		check(light_node.configure(lighting, extent, "effects") and light_node.is_processing(), preset_id + " optional breathing starts visible presentation callback")
+		light_node.advance(0.05)
+		check(is_equal_approx(light_node.diagnostics().phase_seconds, 0.05), preset_id + " breathing advances only presentation phase")
+		light_node.set_plane_active(false)
+		check(not light_node.is_processing(), preset_id + " hidden plane stops optional breathing")
+		light_node.free()
 	var duplicate: Dictionary = config.duplicate(true)
 	duplicate.effects[1].id = duplicate.effects[0].id
 	check(not Profiles.validate(duplicate, extent).is_empty(), "duplicate effect identity refused")

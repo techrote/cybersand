@@ -9,6 +9,9 @@ const Appearance = preload("res://scripts/material_appearance_lut.gd")
 const Document = preload("res://scripts/depth/workbench_layer_document.gd")
 const Atmosphere = preload("res://scripts/depth/strata_atmosphere.gd")
 const AtmosphereProfiles = preload("res://scripts/depth/strata_atmosphere_profiles.gd")
+const OpticalRenderer = preload("res://scripts/depth/strata_optical_renderer.gd")
+const OpticalConfiguration = preload("res://scripts/depth/strata_optics_configuration.gd")
+const AuthoringProvenance = preload("res://scripts/depth/strata_authoring_provenance.gd")
 const IDS: Array[String] = ["play", "scripted", "effects", "background"]
 const REAR_IDS: Array[String] = ["background", "effects", "scripted"]
 const HAZE_SHADER: String = "shader_type canvas_item; render_mode unshaded; uniform float haze = 0.0; varying vec4 vertex_colour; void vertex() { vertex_colour = COLOR; } void fragment() { vec4 c = texture(TEXTURE, UV); c.rgb = mix(c.rgb, vec3(0.055,0.105,0.15), haze); COLOR = c * vertex_colour; }"
@@ -51,6 +54,7 @@ var _content := Rect2()
 var _origin := Vector2.ZERO
 var _view_size := Vector2.ONE
 var _rejected_packets: int = 0
+var _optics = OpticalRenderer.new()
 
 func prepare(authored_extent: Vector2i) -> bool:
 	if _prepared:
@@ -101,6 +105,7 @@ func prepare(authored_extent: Vector2i) -> bool:
 		drawable.material = haze
 		_clip.add_child(drawable)
 		_drawables[id] = drawable
+		_optics.register_plane(id, drawable)
 		var atmosphere := Atmosphere.new()
 		atmosphere.name = "VisualAtmosphere_" + id
 		drawable.add_child(atmosphere)
@@ -205,6 +210,21 @@ func apply_document(candidate: Dictionary) -> bool:
 	sync_view()
 	return _accept()
 
+
+func apply_optics(configuration: Dictionary) -> bool:
+	# Scene/native admission already validated the geometry. A presentation-only
+	# slider validates/copies only its bounded settings, never the plane layouts.
+	var reason: String = OpticalConfiguration.validate(configuration)
+	if not reason.is_empty(): return _reject(reason)
+	if not _prepared or _document.is_empty(): return _reject("Prepare a Strata document before optical changes")
+	_document["optics"] = OpticalConfiguration.canonical(configuration)
+	_document["version"] = Document.OPTICAL_VERSION
+	if not _document.has("atmosphere"): _document["atmosphere"] = AtmosphereProfiles.default_configuration()
+	if not _document.has("authoring"): _document["authoring"] = AuthoringProvenance.default_configuration()
+	_optics.configure(_document.optics, str(_document.presentation.active), _document.planes, _enabled)
+	sync_view()
+	return _accept()
+
 func expect_sources(sources: Dictionary) -> bool:
 	# Binding is separate from a copied publication: an arbitrary packet cannot
 	# appoint itself the owner of a plane, even with a larger serial/generation.
@@ -285,6 +305,8 @@ func sync_view() -> void:
 		drawable.position = _logical_for_layer(Vector2.ZERO, id) / _view_size * _content.size
 		drawable.size = Vector2(extent) / _view_size * _content.size
 		_atmospheres[id].scale = drawable.size / Vector2(extent)
+	_optics.sync_view(extent, _origin, _view_size,
+		float(_document.get("presentation", {}).get("parallax_strength", 0.75)), _private_shader)
 
 func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
 	# Input may follow a pan/zoom/resize in the same event batch, before our
@@ -293,7 +315,7 @@ func screen_to_layer(local_position: Vector2, id: String) -> Vector2:
 	if id not in IDS or not local_position.is_finite() or not _content.has_area() or not _content.has_point(local_position): return Vector2(-1, -1)
 	var logical: Vector2 = (local_position - _content.position) / _content.size * _view_size
 	var depth: float = 0.0 if id == "play" else float(_plane(id).get("depth", 0.0))
-	var strength: float = float(_document.get("presentation", {}).get("parallax_strength", 0.75))
+	var strength: float = float(_document.get("presentation", {}).get("parallax_strength", 0.75)) * _optics.parallax_scale(id)
 	return Transform.logical_to_layer(logical, Vector2(extent), _view_size, _origin, 1.0, 1.0 - depth, strength)
 
 func layer_to_screen(point: Vector2, id: String) -> Vector2:
@@ -340,10 +362,12 @@ func diagnostics() -> Dictionary:
 		"play_glow_source_sha256":_prepared_glow_shader.code.sha256_text() if _prepared_glow_shader != null else "",
 		"play_glow_variant_sha256":_private_glow_shader.shader.code.sha256_text() if _private_glow_shader != null else "",
 		"play_glow_variant_bound":_private_glow_shader != null and _private_glow_shader.shader.code == _glow_variant_code(_prepared_glow_shader),
+		"optics":_optics.statistics(),
 		"play_overlay_instance_ids":_overlay_modulates.keys()}
 
 func detach() -> void:
 	for atmosphere: Node2D in _atmospheres.values(): atmosphere.set_plane_active(false)
+	_optics.restore()
 	_set_enabled(false)
 	if is_instance_valid(_view):
 		_view.self_modulate = _original_modulate
@@ -372,11 +396,34 @@ func _apply_visibility() -> void:
 		var plane: Dictionary = _plane(id)
 		drawable.modulate = Color(1.0, 1.0, 1.0, float(plane.get("opacity", 1.0)))
 		var fog: float = float(_document.get("presentation", {}).get("fog_strength", 0.2))
-		(drawable.material as ShaderMaterial).set_shader_parameter("haze", clampf(fog * float(plane.get("depth", 0.0)), 0.0, 0.9))
+		_optics.set_classic_haze(id, clampf(fog * float(plane.get("depth", 0.0)), 0.0, 0.9))
 		if not drawable.visible:
 			_surfaces[id].render_target_update_mode = SubViewport.UPDATE_DISABLED
 		elif not was_visible and _accepted.has(id):
 			_surfaces[id].render_target_update_mode = SubViewport.UPDATE_ONCE
+	_optics.configure(_document.get("optics", {}), str(_document.get("presentation", {}).get("active", "play")),
+		_document.get("planes", []), _enabled)
+
+
+func set_optics_inspection(patch: Dictionary) -> bool:
+	if not _optics.set_inspection(patch): return _reject("Unsupported optical inspection settings")
+	sync_view()
+	return _accept()
+
+
+func set_optics_quality(value: String) -> bool:
+	if not _optics.set_quality(value): return _reject("Optics quality must be low, balanced or high")
+	sync_view()
+	return _accept()
+
+
+func optics_statistics() -> Dictionary:
+	return _optics.statistics()
+
+
+func advance_optics(delta: float) -> void:
+	# Called by the existing enabled Strata callback; no independent clock.
+	_optics.advance(delta)
 
 func _set_enabled(value: bool) -> void:
 	if not is_instance_valid(_view):
@@ -439,7 +486,7 @@ func _restore_overlays() -> void:
 
 func _logical_for_layer(point: Vector2, id: String) -> Vector2:
 	var depth: float = 0.0 if id == "play" else float(_plane(id).get("depth", 0.0))
-	var strength: float = float(_document.get("presentation", {}).get("parallax_strength", 0.75))
+	var strength: float = float(_document.get("presentation", {}).get("parallax_strength", 0.75)) * _optics.parallax_scale(id)
 	return Transform.layer_to_logical(point, Vector2(extent), _view_size, _origin, 1.0, 1.0 - depth, strength)
 
 func _plane(id: String) -> Dictionary:
@@ -522,4 +569,5 @@ func _packet_reject(error: String) -> bool:
 	return _reject(error)
 
 func _exit_tree() -> void:
+	_optics.restore()
 	_set_enabled(false)

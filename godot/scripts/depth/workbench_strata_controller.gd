@@ -11,6 +11,11 @@ const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Atmosphere = preload("res://scripts/depth/strata_atmosphere_profiles.gd")
 const Authoring = preload("res://scripts/depth/workbench_strata_authoring.gd")
+const Optics = preload("res://scripts/depth/strata_optics_configuration.gd")
+const OpticalProfiles = preload("res://scripts/depth/strata_optical_profiles.gd")
+const OpticalPresets = preload("res://scripts/depth/strata_optics_presets.gd")
+const OpticalShowcases = preload("res://scripts/depth/strata_optical_showcase_scenes.gd")
+const OpticalFixtures = preload("res://scripts/depth/strata_optics_fixtures.gd")
 const MAX_EDIT_CELLS := 16384
 const MAX_STROKE_POINTS := 1024
 const NONPLAY := ["scripted", "effects", "background"]
@@ -39,6 +44,11 @@ var cursor := Vector2i(-1,-1)
 var clipboard: Dictionary = {}
 var _closed := false
 var _authoring: RefCounted
+var _optics_inspection := Optics.inspection_defaults()
+var _optics_quality := "balanced"
+var _optics_preferences_loaded := false
+var _optics_catalogue: Dictionary = {}
+var _optics_catalogue_error := ""
 
 
 func mount(workbench: Control) -> void:
@@ -193,6 +203,10 @@ func _adopt() -> bool:
 	_layer_ready = true
 	_pending = {}
 	presenter.apply_document(_document)
+	if _optics_preferences_loaded: presenter.set_optics_quality(_optics_quality)
+	# Comparison and temporary focus never leak from a replaced scene.
+	_optics_inspection = Optics.inspection_defaults()
+	presenter.set_optics_inspection(_optics_inspection)
 	presenter.sync_view()
 	cancel_gesture()
 	selection = Rect2i()
@@ -328,7 +342,9 @@ func load_document(record: Dictionary) -> bool:
 
 func load_demo(id: String) -> bool:
 	if wb.busy(): return _refuse("Finish the current Workbench transaction first.")
-	var scene: Dictionary = Scenes.make(id,PackedInt32Array(wb.applied.liquid_policy))
+	var policy := PackedInt32Array(wb.applied.liquid_policy)
+	var scene: Dictionary = OpticalShowcases.make(id,policy) if id in OpticalShowcases.ids() else Scenes.make(id,policy)
+	if id == OpticalFixtures.ID: scene = OpticalFixtures.make(policy)
 	if scene.has("error"): return _refuse(str(scene.error))
 	if not load_document(scene): return false
 	_demo_overview = true
@@ -621,9 +637,10 @@ func key_input(event: InputEvent) -> bool:
 	return false
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _authoring != null and _authoring.busy(): _authoring.step()
 	if enabled():
+		presenter.advance_optics(delta)
 		presenter.sync_view()
 		if is_instance_valid(_overlay): _overlay.queue_redraw()
 	if not enabled() and not authoring_busy(): set_process(false)
@@ -654,6 +671,7 @@ func _clear_scene() -> void:
 	_history_state.clear()
 	_publication_errors.clear()
 	_document = {}
+	_optics_inspection = Optics.inspection_defaults()
 	selection = Rect2i()
 	clipboard.clear()
 	cancel_gesture()
@@ -757,6 +775,14 @@ func fit_scene() -> bool:
 
 func scene_catalogue() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
+	var challenge := OpticalFixtures.metadata()
+	challenge.label = "Optics readability challenge · adversarial native scene"
+	result.append(challenge)
+	for id: String in OpticalShowcases.ids():
+		var entry := OpticalShowcases.metadata(id)
+		if entry.has("error"): continue
+		entry.label = "%s · optics study · %d × %d" % [entry.title,entry.extent[0],entry.extent[1]]
+		result.append(entry)
 	for id: String in Scenes.Showcase.ids():
 		var entry: Dictionary = Scenes.Showcase.metadata(id)
 		if entry.has("error"): continue
@@ -859,3 +885,147 @@ func reset_atmosphere_phase() -> bool:
 	if not is_instance_valid(presenter): return _refuse("Enable Strata before restarting visual motion.")
 	presenter.reset_atmosphere_phase()
 	return _say("Visual atmosphere restarted from its deterministic seed; authored geometry and history are unchanged.")
+
+
+func _load_optics_preferences() -> void:
+	if _optics_preferences_loaded: return
+	_optics_preferences_loaded = true
+	_optics_quality = OpticalPresets.read_quality()
+	var read: Dictionary = OpticalPresets.read_catalogue()
+	_optics_catalogue_error = str(read.get("error",""))
+	_optics_catalogue = read.get("catalogue",OpticalPresets.empty_catalogue())
+	if is_instance_valid(presenter): presenter.set_optics_quality(_optics_quality)
+
+
+func _say_optics(text: String) -> bool:
+	# Live sliders must not duplicate a pending native import/construction preview
+	# through the unrelated authoring tabs on every value change.
+	_status = text
+	if is_instance_valid(wb): wb.message = text
+	if is_instance_valid(_panel): _panel.refresh_optics(_document,text)
+	return true
+
+
+func optics_state() -> Dictionary:
+	_load_optics_preferences()
+	var customs: Array = []
+	for row: Dictionary in _optics_catalogue.presets:
+		customs.append({"id":row.id,"label":row.name,"description":"Custom optical preset · editable scene values","custom":true})
+	return {"configuration":_document.get("optics",Optics.defaults()).duplicate(true),
+		"inspection":_optics_inspection.duplicate(true),"quality":_optics_quality,
+		"custom_presets":customs,"preset_error":_optics_catalogue_error,
+		"statistics":presenter.optics_statistics() if is_instance_valid(presenter) else {}}
+
+
+func optics_profiles() -> Array:
+	var result: Array = OpticalProfiles.list_profiles()
+	result.append_array(optics_state().custom_presets)
+	return result
+
+
+func _commit_optics(configuration: Dictionary) -> bool:
+	var error := Optics.validate(configuration)
+	if not error.is_empty(): return _refuse(error)
+	if wb.busy() or not _pending.is_empty() or _apply_serial > 0:
+		return _refuse("Finish scene admission before changing optical settings.")
+	if not _ensure_current(): return false
+	# Optical parallax can change a decorative projection, so end any unfinished
+	# gesture before applying the new projection. The edit target never changes.
+	cancel_gesture()
+	if wb.paint_editor != null: wb.paint_editor.cancel_preview()
+	if not layer_owner.set_optics(configuration): return _refuse(layer_owner.last_error)
+	if int(_document.version) == Document.LEGACY_VERSION: _document = Document.upgraded(_document)
+	_document.version = Document.OPTICAL_VERSION
+	_document.optics = Optics.canonical(configuration)
+	if not presenter.apply_optics(_document.optics):
+		return _say("Optical settings saved; display update failed. Save and reopen the scene. " + presenter.last_error)
+	set_process(enabled() or authoring_busy())
+	return _say_optics("Optical presentation updated · edit target %s · Play materials and physics preserved." % active_layer().to_upper())
+
+
+func set_optics(patch: Dictionary) -> bool:
+	var current: Dictionary = _document.get("optics",Optics.defaults())
+	var result := Optics.patched(current,patch)
+	if result.has("error"): return _refuse(str(result.error))
+	return _commit_optics(result.configuration)
+
+
+func set_plane_optics(id: String, patch: Dictionary) -> bool:
+	# Play exposes only its artistic focus anchor; every shading/mapping control
+	# remains the existing physical renderer's responsibility.
+	if id == "play":
+		for key: Variant in patch:
+			if key != "depth": return _refuse("Play optics exposes focal depth only; its material renderer stays crisp.")
+	var current: Dictionary = _document.get("optics",Optics.defaults())
+	var result := Optics.patched(current,patch,id)
+	if result.has("error"): return _refuse(str(result.error))
+	return _commit_optics(result.configuration)
+
+
+func select_optics_profile(id: String) -> bool:
+	_load_optics_preferences()
+	var configuration := OpticalProfiles.configuration(id)
+	if configuration.is_empty():
+		for row: Dictionary in _optics_catalogue.presets:
+			if row.id == id: configuration = row.configuration.duplicate(true)
+	if configuration.is_empty(): return _refuse("Unknown optical profile; current settings are retained.")
+	if not _commit_optics(configuration): return false
+	# Explicit profile selection leaves temporary comparisons in a predictable state.
+	_optics_inspection = Optics.inspection_defaults()
+	presenter.set_optics_inspection(_optics_inspection)
+	if is_instance_valid(_panel): _panel.refresh_optics(_document,_status)
+	return true
+
+
+func reset_optics() -> bool:
+	return select_optics_profile("classic")
+
+
+func set_optics_inspection(patch: Dictionary) -> bool:
+	var candidate := _optics_inspection.duplicate(true)
+	for key: Variant in patch:
+		if key not in candidate: return _refuse("Unsupported temporary optical comparison.")
+		candidate[key] = patch[key]
+	var error := Optics.validate_inspection(candidate)
+	if not error.is_empty(): return _refuse(error)
+	if not _ensure_current(): return false
+	cancel_gesture()
+	if wb.paint_editor != null: wb.paint_editor.cancel_preview()
+	if not presenter.set_optics_inspection(candidate): return _refuse(presenter.last_error)
+	_optics_inspection = candidate
+	return _say_optics("Temporary optical comparison · authored optics and native edit target retained.")
+
+
+func set_optics_quality(quality: String) -> bool:
+	if quality not in Optics.QUALITIES: return _refuse("Choose Low, Balanced or High optical quality.")
+	_load_optics_preferences()
+	var error := OpticalPresets.write_quality(quality)
+	if not error.is_empty(): return _refuse(error)
+	_optics_quality = quality
+	if is_instance_valid(presenter): presenter.set_optics_quality(quality)
+	return _say_optics("Optical quality: %s · application preference; authored scene settings unchanged." % quality.capitalize())
+
+
+func save_optics_preset(label: String) -> bool:
+	if wb.busy() or not _pending.is_empty() or _apply_serial > 0:
+		return _refuse("Finish scene admission before saving an optical preset.")
+	if not _ensure_current(): return false
+	var config: Dictionary = _document.get("optics",Optics.defaults())
+	var saved := OpticalPresets.save(label,config)
+	if saved.has("error"): return _refuse(str(saved.error))
+	_optics_catalogue = saved.catalogue
+	_optics_catalogue_error = ""
+	# Named copies retain their own identity while the embedded scene settings
+	# remain independent of future catalogue editing/removal.
+	config = config.duplicate(true)
+	config.profile = saved.id
+	if not _commit_optics(config): return false
+	return _say_optics("Saved editable optical preset · " + label.strip_edges())
+
+
+func delete_optics_preset(id: String) -> bool:
+	var removed := OpticalPresets.remove(id)
+	if removed.has("error"): return _refuse(str(removed.error))
+	_optics_catalogue = removed.catalogue
+	_optics_catalogue_error = ""
+	return _say_optics("Removed the named optical preset. The current scene retains its complete optical settings.")
