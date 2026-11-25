@@ -1,0 +1,25 @@
+{
+  "schema": "art-delivery-independent-artifact-metadata-v1",
+  "campaign": 45553413100,
+  "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+  "github_api": "https://api.github.com/repos/techrote/cybersand/actions/runs/45553413100/artifacts",
+  "artifacts": [
+    {
+      "id": 14995036920,
+      "name": "art-workbench-linux-3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "bytes": 17140236,
+      "sha256": "007a008531860110fa552d377748a99548b63d94300c634ab3f237dd7f7f7236",
+      "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "actions_url": "https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995036920"
+    },
+    {
+      "id": 14995010265,
+      "name": "art-workbench-qualification-scope-3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "bytes": 2733,
+      "sha256": "fc7216da4ede7f7874fbf69b105732e05c958b502c16049f87be574f7c20d04e",
+      "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "actions_url": "https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995010265"
+    }
+  ]
+}

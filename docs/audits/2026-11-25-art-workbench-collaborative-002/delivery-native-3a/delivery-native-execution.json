@@ -1,0 +1,78 @@
+{
+  "schema": "art-delivery-native-independent-execution-v1",
+  "operator": "Specialist B direct executor",
+  "recorded_at_utc": "2026-11-25T05:43:23.954678+00:00",
+  "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+  "campaign": 45553413100,
+  "method": "Read-only original-byte replay and source/runtime comparison. No Godot, native World, provider or model run. Derived-only publication; original archives remain in Actions.",
+  "raw_verifier_sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9",
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+        "/tmp/art-3a-linux-custody/extracted/art-collaborative-headless",
+        "--expected-source",
+        "3a0ec3659f23d8e997e6721aa754d5a8ebe48512"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-3a-linux-headless-raw-review.json"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+        "/tmp/art-3a-linux-custody/extracted/art-collaborative-displayed",
+        "--expected-source",
+        "3a0ec3659f23d8e997e6721aa754d5a8ebe48512"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-3a-linux-displayed-raw-review.json"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/reconcile_delivery_native.py",
+        "--review-dir",
+        "/workspace/scratch/75c442a4089a/art-native-independent",
+        "--candidate-root",
+        "/tmp/art-3a-linux-custody",
+        "--baseline-extraction",
+        "/tmp/art-bcc-linux-custody/extracted",
+        "--source-repo",
+        "/tmp/art-c-delivery-doc",
+        "--platform",
+        "linux"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-3a-linux-comparison.json",
+      "checks": 445,
+      "failures": 0
+    }
+  ],
+  "files": {
+    "reconcile_delivery_native.py": {
+      "bytes": 10640,
+      "sha256": "9057cc457f9bf18c7366fa6e1c229897d73696aeab8045f05d2bef5d3a3007b9"
+    },
+    "delivery-artifact-metadata.json": {
+      "bytes": 1120,
+      "sha256": "9ae016ad7f6a6f703f308e500ba386642643bb0efd574aec80cc8d6450bca63a"
+    },
+    "final-3a-linux-headless-raw-review.json": {
+      "bytes": 14586,
+      "sha256": "40cccdca3791a28ce2d662018856ff64ed4ff66c5df2afd71e4567eea43fe599"
+    },
+    "final-3a-linux-displayed-raw-review.json": {
+      "bytes": 16656,
+      "sha256": "0945b35959e0f2e0d585b9899c4e17e31a5354bfddb50fd44702ad20e74fc305"
+    },
+    "final-3a-linux-comparison.json": {
+      "bytes": 14274,
+      "sha256": "2ac8322c9b953150b34080791b3f8384a659f5dc66d62a8683ea6ceaf4f0a782"
+    }
+  },
+  "application_files_modified": false,
+  "windows_review": "pending"
+}
