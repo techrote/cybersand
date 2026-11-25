@@ -1,6 +1,8 @@
 class_name CyberTransportProfilePanel
 extends Control
 
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
+
 var host: Variant
 var draft: Dictionary = CyberTransportProfiles.preset(0)
 var editor: TextEdit
@@ -127,10 +129,16 @@ func validate_editor() -> void:
 func save_copy() -> void:
 	var result: Dictionary=CyberTransportProfiles.parse(editor.text)
 	if not result.ok: status.text=str(result.error);return
-	draft=result.profile;draft.name="User copy"
-	var file: FileAccess=FileAccess.open(CyberTransportProfiles.LOCAL_PATH,FileAccess.WRITE)
-	if file==null: status.text="Profile save failed; running profile unchanged";return
-	file.store_string(JSON.stringify(draft,"  "));refresh();status.text="User copy saved to "+CyberTransportProfiles.LOCAL_PATH
+	var candidate: Dictionary=result.profile
+	candidate.name="User copy"
+	var saved := FileTransaction.write_text(CyberTransportProfiles.LOCAL_PATH,
+		JSON.stringify(candidate,"  "),65536)
+	if not saved.ok:
+		status.text="Profile save: "+str(saved.error)+" Running profile unchanged."
+		return
+	draft=candidate
+	refresh()
+	status.text="User copy saved to "+CyberTransportProfiles.LOCAL_PATH
 
 func load_copy() -> void:
 	if not FileAccess.file_exists(CyberTransportProfiles.LOCAL_PATH): status.text="No saved user copy";return

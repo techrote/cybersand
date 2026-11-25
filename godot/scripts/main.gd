@@ -308,6 +308,7 @@ var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
 var _water_exit_request_serial: int = 0
 var water_policy_available: bool = true
+var water_policy_save_status: String = ""
 
 var brush_shape: String = "circle"
 var brush_size_px: int = 9
@@ -1233,10 +1234,20 @@ func water_lab_reset() -> void:
 func water_lab_save_profile() -> bool:
 	if (not water_policy_available or not water_policy_resolved.get("ok",false)
 		or not water_blind_set.is_empty()
-		or not water_active_blind_label.is_empty()): return false
-	var file: FileAccess=FileAccess.open(WATER_POLICY_PATH,FileAccess.WRITE)
-	if file==null: return false
-	file.store_string(str(water_policy_resolved.canonical_json)+"\n")
+		or not water_active_blind_label.is_empty()):
+		water_policy_save_status="Water policy save refused: no validated unblinded policy is available."
+		return false
+	var encoded: String=str(water_policy_resolved.get("canonical_json",""))+"\n"
+	var checked: Dictionary=CyberWaterExperimentProfiles.parse_profile(encoded)
+	if not checked.get("ok",false):
+		water_policy_save_status="Water policy save refused: "+str(checked.get("error","invalid policy"))
+		return false
+	var saved := CaptureFileTransaction.write_text(WATER_POLICY_PATH,encoded,
+		CyberWaterExperimentProfiles.MAX_PROFILE_BYTES)
+	if not saved.ok:
+		water_policy_save_status="Water policy save: "+str(saved.error)
+		return false
+	water_policy_save_status="Water policy saved to "+WATER_POLICY_PATH
 	return true
 
 func _water_blind_application_allowed(result: Dictionary, blind_label: String) -> bool:

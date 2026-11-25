@@ -6,6 +6,7 @@ extends Control
 const Preview = preload("res://scripts/worldgen_preview.gd")
 const Palette = preload("res://scripts/material_appearance_lut.gd")
 const WorkbenchTools = preload("res://scripts/worldgen_workbench_tools.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const MAX_CACHE_CHUNKS: int = 32
 const MAX_QUEUED_CHUNKS: int = 24
 const MAX_UNDO: int = 16
@@ -1872,18 +1873,16 @@ func save_profile(path: String) -> bool:
 	if active_revision < 0:
 		_set_error("There is no accepted generation profile to save.")
 		return false
-	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
-	if file == null:
-		_set_error("Cannot save profile: %s" % error_string(FileAccess.get_open_error()))
+	var saved := FileTransaction.write_text(path,
+		JSON.stringify(active_recipe, "  ", true, true) + "\n", MAX_PROFILE_BYTES)
+	if not saved.ok:
+		_set_error("Profile save: " + str(saved.error))
 		return false
-	file.store_string(JSON.stringify(active_recipe, "  ", true, true) + "\n")
-	file.flush()
-	var error: Error = file.get_error()
-	file.close()
-	if error != OK:
-		_set_error("Profile write failed: %s" % error_string(error))
-		return false
-	profile_status.text = "Saved accepted revision %d to %s." % [active_revision, path.get_file()]
+	var message := "Saved accepted revision %d to %s." % [active_revision, path.get_file()]
+	if last_error.begins_with("Profile save: "):
+		last_error = ""
+		_set_status(message)
+	profile_status.text = message
 	return true
 
 static func _material_label(id: int) -> String:

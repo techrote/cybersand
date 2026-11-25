@@ -6,6 +6,7 @@ const Catalogue = preload("res://scripts/material_lab_catalogue.gd")
 const Experiment = preload("res://scripts/material_lab_experiment.gd")
 const Service = preload("res://scripts/material_lab_service.gd")
 const WorldPanel = preload("res://scripts/material_lab_world_panel.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const EFFECT_KINDS: Array[String] = ["replace_with_defaults","keep_existing","set_state"]
 var catalogue := Catalogue.new()
 var experiment := Experiment.new()
@@ -1193,12 +1194,10 @@ func _file_selected(path: String) -> void:
 			if data.is_empty():
 				_status.text = experiment.last_error if not experiment.last_error.is_empty() else "Prepare a valid native test before saving."
 				return
-			var file := FileAccess.open(path,FileAccess.WRITE)
-			if file == null:
-				_status.text = "Could not save the test case."
+			var saved := FileTransaction.write_text(path,data + "\n",Experiment.Contract.MAX_JSON_BYTES)
+			if not saved.ok:
+				_status.text = "Test case save: " + str(saved.error)
 				return
-			file.store_string(data + "\n")
-			file.close()
 			_status.text = "Saved reproducible test case: " + path
 
 func _commit_candidate_fields() -> void:

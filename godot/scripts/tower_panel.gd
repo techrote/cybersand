@@ -9,6 +9,7 @@ var labels: Array[Label] = []
 var label_points: Array[Vector2] = []
 var shown_floor: int = -1
 var water_save_button: Button
+var water_save_status: Label
 var release_buttons: Array[Button] = []
 var blind_button: Button
 var water_policy_button: Button
@@ -37,7 +38,7 @@ func setup(controller: Control) -> void:
 	button(row,"Tuning",func() -> void: host.tower_tuning())
 	button(row,"Water Feel",func() -> void: host.water_lab_reset())
 	water_policy_button=button(row,"Water policy",func() -> void: host.water_lab_open())
-	water_save_button=button(row,"Save Water policy",func() -> void: host.water_lab_save_profile())
+	water_save_button=button(row,"Save Water policy",_save_water_policy)
 	var release: HBoxContainer = HBoxContainer.new()
 	add_child(release)
 	tube_picker = OptionButton.new()
@@ -53,7 +54,16 @@ func setup(controller: Control) -> void:
 	info = Label.new()
 	info.add_theme_font_size_override("font_size",14)
 	add_child(info)
+	water_save_status=Label.new()
+	water_save_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	water_save_status.visible=false
+	add_child(water_save_status)
 	visible = false
+
+func _save_water_policy() -> void:
+	host.water_lab_save_profile()
+	water_save_status.text=host.water_policy_save_status
+	water_save_status.visible=true
 
 func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 	visible = active
