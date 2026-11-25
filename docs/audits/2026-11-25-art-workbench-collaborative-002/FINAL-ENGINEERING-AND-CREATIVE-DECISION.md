@@ -1,10 +1,11 @@
 # ART-WORKBENCH-COLLABORATIVE-002 — engineering and creative decision
 
-**Draft/HOLD. The working application has a qualified baseline. Final delivery
-qualification is repeating after a retained Windows native-progress failure.**
-This working packet will be sealed only after the exact successor's complete
-source, application and pristine-package checks finish. The already qualified
-bcc application, its original Windows ZIP and the failed 3a attempt remain preserved.
+**Draft/HOLD. The final collaborative Art application and portable Windows
+evaluator are qualified for owner review at the exact source below.**
+Linux, Windows, the actual pristine extracted launcher and independent payload
+review passed. The earlier 3a Windows native-progress failure remains preserved;
+the strict repeat passed without an application or test change. Physical
+Windows/NVIDIA and genuine-model creative acceptance remain owner-pending.
 
 The mission delivers a coherent Art workspace in the ordinary CyberSand
 Workbench: discussion, the retained direct-paint route, typed proposals,
@@ -37,13 +38,18 @@ Ready promotion, production-default activation or paid inference has occurred.
 | Final delivery source | `d503d824aac4128968f7dfba5dccd540c3c07b59` |
 | Final delivery tree | `464c60288d5461d61578b000ae68ac029cffb5bd` |
 | Full application/package campaign | [45556633896](https://github.com/techrote/cybersand/actions/runs/45556633896) |
-| Principal Windows evaluator | [Artifact {{FINAL_ARTIFACT}}](https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/{{FINAL_ARTIFACT}}) |
+| Principal Windows evaluator | [Artifact 14997576786](https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14997576786) |
 | Portable ZIP | `art-workbench-collaborative-002-windows.zip` |
-| Inner ZIP size / SHA-256 | {{FINAL_INNER_BYTES}} bytes / `{{FINAL_INNER_SHA}}` |
-| Outer GitHub artifact size / SHA-256 | {{FINAL_OUTER_BYTES}} bytes / `{{FINAL_OUTER_SHA}}` |
-| Immutable manifest SHA-256 | `{{FINAL_MANIFEST_SHA}}` |
-| Immutable payload files | {{FINAL_PAYLOAD_FILES}} |
+| Inner ZIP size / SHA-256 | 95,606,841 bytes / `4d2f73c41ad79a3a1199736410369e91a3b52f63934e6ba54347991ef4f2afb5` |
+| Outer GitHub artifact size / SHA-256 | 94,411,108 bytes / `a6b1a453e63f51721e7232277fe18facef14e05a26fc1b21f7af941f8fbad433` |
+| Immutable manifest SHA-256 | `eac1ef9682280b7273e3c834d8da00ec3b9e850cea2f18cb9b9657089b6f6161` |
+| Immutable payload files | 1,200, plus the manifest |
 | Engine | `4.7.stable.official.5b4e0cb0f` |
+
+The [machine-readable identity](FINAL-QUALIFICATION-IDENTITY.json) and
+[packet manifest](FINAL-PACKET-MANIFEST.json) bind these delivery and independent
+review records. This decision packet is an evidence-only seal; it does not
+change the qualified application commit or repack its evaluator.
 
 GitHub wraps the portable ZIP inside its artifact download. Extract the outer
 download, then extract the entire inner ZIP to a writable directory and run
@@ -76,7 +82,7 @@ The final delivery follow-up corrects an identified offline guide/link defect;
 its application behavior is unchanged. The first corrected candidate, `3a0ec365`,
 passed Linux but failed a retained Windows displayed-progress gate before the
 new Windows suite or packaging. The current `d503d824` adds only the original
-negative to the mission ledger and runs one fresh full campaign with every
+negative to the mission ledger and passed one fresh full campaign with every
 application, native, test, workflow, guide and packaging byte unchanged from 3a.
 Each artifact retains its own manifest and source receipt.
 
@@ -95,6 +101,15 @@ interpreted as owner acceptance. The original qualified package source
 [evaluator 14968792395](https://github.com/techrote/cybersand/actions/runs/45497650568/artifacts/14968792395)
 remain intact. The earlier successful e536 successor evaluator is also retained.
 
+The [independent foundation check](https://github.com/techrote/cybersand/blob/f38fcfe43eb564ced67af11799c5b34d2d69e46c/docs/audits/2026-11-25-art-workbench-collaborative-002/FOUNDATION-SOURCE-RELATIONSHIP.md)
+confirms accepted session source `64a9ff4c` and merge `00cdb02f` are genuine
+ancestors through #773. The #720 Batch Lab → #770 qualified Batch → #777
+Architecture lineage remains separately owned. Its StageSession and native
+module library are not imported into the principal Art source. The separately
+identified native handoff uses those existing owners; Art primitives continue
+through the retained Art/PAINT executor. No Batch ancestry is invented from the
+similarity of the executor filenames.
+
 ## The owner experience
 
 Art remains one ordinary Workbench window with a shared conversation and provider.
@@ -110,6 +125,8 @@ The existing direct-authoring page stays available for convenient bounded work.
 | Approve next stage | Inspect host-computed effects, then approve one applicable finite stage. | Fresh source, policy, dependencies and material-plane checks before native execution. |
 | Review | Discuss current observations and acknowledged native work. | A suggested improvement still needs a fresh proposal/approval cycle. |
 
+Direct runs use their existing work-area, material, erase and protected-rectangle
+controls. Multi-region creative-brief constraints govern collaborative proposals.
 The Creative brief has explicit Apply/Cancel. It records objectives, style,
 complexity, variation, palette, target region, protected rectangles and destructive
 permission. Unapplied changes block Send, avoiding ambiguity about which brief
@@ -186,13 +203,17 @@ files remained byte-identical. This actual Linux headless native test passed **1
 made two real loopback HTTP exchanges, delivered zero ordinary paint completions
 and used zero genuine inference calls.
 
-Three separately approved stages changed 4,120, 488 and 12 native cells. A larger
+Three stages, each explicitly approved by the fixture through the existing
+stage owner, changed 4,120, 488 and 12 native cells. A larger
 stage stopped after a real 4,096-cell prefix; ordinary Undo restored the complete
 153,600-byte affected plane. Proposal receipt and preview wrote nothing; manual
 changes invalidated approval, and stale preparation/World replacement prevented
 eventual HTTP admission. The
 [complete final proof](https://github.com/techrote/cybersand/blob/765afb7c33e593eee3e83c957a0af7ec05278023/docs/audits/2026-11-25-art-architecture-native-handoff/final-provider-closure-result.md)
-retains the earlier interrupted and metadata-inconsistent attempts.
+retains the earlier interrupted and metadata-inconsistent attempts. The
+[final delivered five-file closure](https://github.com/techrote/cybersand/blob/fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/d503-provider-closure-review.json)
+independently proves exact equality across the delivered payload, d503, 3a, bcc
+and the actual 04ca probe, without claiming a new combined execution.
 
 The [implementation and evidence handoff to #777](https://github.com/techrote/cybersand/pull/777#issuecomment-7153373778)
 was delivered. No separate counterpart acceptance acknowledgment has been observed.
@@ -296,15 +317,17 @@ original receipts, matched direct controls and editable saved starts:
 | Industrial repair | Extend a framed industrial room with braced bays and contrasting inserts. | Native material repair, not a simulated machine. |
 | Structural façade | Repeated bays, floor bands and diagonal supports. | Visible architectural hierarchy, not a load calculation. |
 | Science-fiction interior | Distinct compartments and preserved clear spaces. | Static clearance, not proven actor traversal. |
-| Revised arcology | Stepped massing and a differentiated upper silhouette. | Fixture composition; real conversational semantics require a model cohort. |
+| Arcology composition | Stepped massing and a differentiated upper silhouette. | Fixture composition; real conversational semantics require a model cohort. |
 | Protected courtyard | Preserve a central landmark while modifying surrounding geometry. | Preservation established by exact native bytes. |
 | Palette foundry | Consistent material treatment and bounded repeated detail. | Coherent but deliberately restricted palette. |
-| Stopped workshop | Substantial construction suitable for prefix/continuation testing. | Stop custody is proved by the separate actual lifecycle test, not its final screenshot. |
+| Completed fabrication hall | Substantial construction suitable for prefix/continuation testing. | Stop custody is proved by the separate actual lifecycle test, not its final screenshot. |
 | Staged megaframe | A large multi-level composition with repeated structural elements. | Finite stages with separate approvals. |
 | Xeno vault | Asymmetric angular enclosure and circular interior forms. | Distinct silhouette; not a finished organic simulation. |
 
-Each native campaign's structured arm constructs **25 separately approved
-stages**. Both the structured arm and its flattened direct controls record
+Each native campaign's structured arm constructs **25 separately admitted,
+fixture-authorized native stages**. The creative harness submits guarded native
+stages against fresh captured sources; actual ordinary UI approval and session
+controls are exercised separately by the displayed collaboration tests. Both the structured arm and its flattened direct controls record
 **184,396 acknowledged cell changes and 188,617 checked cells per arm**. The
 direct controls are not another set of 25 stage approvals. Cell addresses may change in multiple stages;
 these are not unique occupied-cell totals. All nine paired direct controls match
@@ -340,7 +363,7 @@ detail and limited material diversity. Those qualitative observations are
 explicitly reviewer judgments, not owner aesthetic acceptance.
 
 The [creative synthesis](https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/audits/2026-11-25-art-workbench-collaborative-002/NATIVE-CREATIVE-EVIDENCE-SYNTHESIS.md)
-and [independent final native replay](https://github.com/techrote/cybersand/blob/b817670a66c7b114900a6510b73787785ab444c6/docs/audits/2026-11-25-art-workbench-collaborative-002/FINAL-NATIVE-INDEPENDENT-REVIEW.md)
+and [independent final native replay](https://github.com/techrote/cybersand/blob/f4847680f22bfc60d8003e9a71a598dfe3a85e05/docs/audits/2026-11-25-art-workbench-collaborative-002/STRICT-DELIVERY-NATIVE-INDEPENDENT-REVIEW.md)
 retain individual scenarios, all failed/refused cases and the actual evidence
 scope.
 
@@ -385,6 +408,23 @@ controlled local pair: near-cap Apply returned in **13.972 ms**, reached owner-s
 and native ticks continued during that transport. These values do not establish
 physical monitor latency or a source-causal improvement across different hosts.
 
+The final d503 hosted Windows observations are separately retained:
+
+| Final source observation | Measured result |
+| --- | --- |
+| Complete 16,769,024-byte Apply | 14.183 ms click return; 628.111 ms owner adoption; 644.167 ms driver-observed completion |
+| Maximum frame in that Apply | 220.611 ms; durable audit append 26.275 ms |
+| 16,773,391-byte complete-valid response | 11.109743 s transport; 14.800202 s full case; 392.747 ms maximum frame |
+| Distinct 16,773,283-byte large-assistant preparation case | 11.381302 s transport; 15.894171 s full case; 544.613 ms maximum frame |
+| Pristine Workbench readiness / startup maximum gap | 39.035133 s / 35.481468 s |
+| Strict retained sparse-polygon progress | 1,367 ms; 151 checks, zero failures; earlier 2,187 ms failure remains |
+
+The complete-valid response's maximum is not the maximum across every large-
+response scenario. These are source-specific software-ANGLE observations, not
+controlled source comparisons or physical NVIDIA results. The [lead's exact
+original-record reduction](lead-independent-evidence/final-d503-timing-review.json)
+keeps the different observation boundaries and original file hashes.
+
 The separate startup investigation preserved four fresh-profile Windows arms
 and then three render/profile-cache arms, with production code unchanged. In the
 follow-up, first graphical readiness took **52.114 seconds** and the actual first
@@ -407,12 +447,19 @@ large native captures remain known boundaries.
 
 ## Qualification and independent review
 
-The final delivery's complete campaign is `45556633896`; its exact platform
-and package receipts are linked in the identity table. The bcc application
-baseline independently passed the retained 23 core groups, the predecessor's
-distinct network/preparation/lifecycle/large-value/displayed cases, all nine
-new groups headless and displayed on both platforms, and the actual pristine
-extracted Windows launcher/module/installed-example checks.
+The final delivery's complete campaign [45556633896](https://github.com/techrote/cybersand/actions/runs/45556633896)
+passed all three jobs at exact source d503. It passed the retained 23 core groups,
+the predecessor's distinct network/preparation/lifecycle/large-value/displayed
+cases, all nine new groups headless and displayed on both platforms, and the
+actual pristine extracted Windows launcher, loaded-module and installed-example
+checks. The bcc baseline retains its independent earlier qualification.
+
+The principal actual launcher exited **0**, with no timeout, one source-matched
+Workbench marker and zero automatic model requests. Its separate module-enumeration
+process was deliberately terminated after successful verification and recorded
+owned cleanup exit **−1**, environment restored and no cleanup error. These are
+separate processes and outcomes. All four tracked import descriptors matched
+canonical source, package and before/after-import bytes exactly.
 
 The new groups cover exclusive owned transport, Provider conversation
 preparation, ordinary Workbench prepared Apply, typed proposal/context contracts,
@@ -422,38 +469,60 @@ zero writes for Discuss/preview, eventual pre-dispatch invalidation, exact
 consumer identity, source replacement, manual stale refusal, protection,
 partial Stop, complete auditing and credential isolation.
 
-At bcc the common headless counts were 155 / 66 / 154 / 107 / 251 / 739 / 39 /
-182 / 93. Displayed native counts were 757 on Linux and 764 on Windows; ordinary
-session/workspace counts were 202/94. Scheduling-dependent per-chunk assertions
-explain the varying native counts. The native campaign source is byte-identical
-to the earlier original, and every scenario, plane and cell-total requirement
-remains present. Counting fewer native chunks is not removal of coverage.
+Final d503 check counts are:
+
+| New group | Headless, each platform | Linux displayed | Windows displayed |
+| --- | ---: | ---: | ---: |
+| Exclusive owned transport | 155 | 155 | 155 |
+| Provider conversation preparation | 66 | 66 | 66 |
+| Ordinary Workbench prepared Apply | 154 | 154 | 154 |
+| Typed proposal/context contracts | 107 | 107 | 107 |
+| Creative brief cohort | 251 | 251 | 251 |
+| Actual native scenes and controls | 739 | 762 | 763 |
+| Native execution authority | 39 | 39 | 39 |
+| Ordinary collaboration session | 182 | 202 | 202 |
+| Workspace UI | 93 | 94 | 94 |
+
+All report zero failures. Scheduling-dependent per-chunk assertions explain
+native counts differing from bcc's displayed 757/764. The fixture source and all
+scene, plane, protection and cell-total requirements remain unchanged. Each
+campaign's actual native receipt chain is valid; matching scenario boundaries
+does not assert every intermediate cross-run revision is identical.
 
 Independent work went beyond reading green workflow badges:
 
 - Specialist A rehashed every immutable Windows payload, compared 1,092 shipped
-  source files with canonical bcc blobs, matched both materialized DLLs to LFS
+  source files with canonical final d503 blobs, matched both materialized DLLs to LFS
   identities, verified 105 native and four Rapier input hashes, reparsed all
   18 original Windows case logs and joined actual loaded-module and installed
   Setup receipts to the delivered bytes.
-- Specialist B replayed all four bcc native campaigns from original cell arrays,
-  stage receipts and diagnostic PNG material bytes: 1,508,936 exact rows in total,
-  with nine scenes and 25 stages in each campaign. Every direct control, source
-  chain, protected region and final plane matched.
+- Specialist B replayed all four final d503 native campaigns from original cell arrays,
+  stage receipts and diagnostic PNG material bytes: 1,508,936 exact rows and
+  256 original native files in total,
+  with nine scenes and 25 stages in each campaign. Its two platform comparisons
+  passed 445 independent evidence checks each. Every direct control and final
+  plane matched; protections remained intact and each campaign's source chain
+  validated.
 - Specialist C independently checked both platform archives, all 36 new-case
   logs, full near-cap Apply audit values and displayed Context/Proposal frames.
 - Cross-reviews found and closed genuine lifecycle/receipt/privacy defects,
   rather than only inspecting self-authored happy paths. The lead additionally
-  inspected native images, integrated host ownership and original-byte Apply
-  reviews, and conducted the separate startup investigation.
+  inspected native images and the final Windows Context/Proposal frames,
+  integrated host ownership and original-byte Apply reviews, and conducted the
+  separate startup investigation.
 
 The bcc package audit is
 [c888fcf6](https://github.com/techrote/cybersand/blob/c888fcf6b0da41d760a50837034328501e766f25/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/bcc-windows-independent-review.md).
-The corrected delivery requires its own original artifact audit, recorded below
-at final sealing: **{{FINAL_INDEPENDENT_REVIEW}}**.
+The corrected delivery's original artifact audit passed: **[Final d503 independent Windows package review](https://github.com/techrote/cybersand/blob/fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/d503-windows-independent-review.md)**.
 
-Documentation/provenance passed for bcc in run 45546845599. Native source-scope
-advisory and the Architecture guard job also passed. Draft-skipped broad native
+The [final experience review](https://github.com/techrote/cybersand/blob/8d2ff13c179d7f3a48875378977d15f1588d6336/docs/audits/2026-11-25-art-workbench-collaborative-002/experience-evidence/d503-qualified-status.md)
+independently reparsed all 36 new case logs, reviewed 24 retained report/process
+records, checked four complete near-cap edited snapshots and actually viewed
+four final platform Context/Proposal frames. Raw Actions artifacts remain the
+authority; the published final reviews contain derived source/hash/status records.
+
+Documentation/provenance passed for d503 in run 45556633508. Native source-scope
+advisory 45556633537 and the Architecture guard job 45556633909 also passed. Draft-skipped broad native
 C++/GDExtension/palette jobs are not relabelled as executed. Actual native Worlds
 were exercised through source-matched retained runtimes in the Art campaign.
 
@@ -484,7 +553,9 @@ Original negative findings and failed experiments remain in the mission ledger:
   relabelled as recovered original evidence.
 - The first corrected delivery 3a failed the unchanged retained displayed sparse-
   polygon progress predicate: 151 checks, one failure and first visible progress
-  at 2,187 ms against a less-than-2,000 ms requirement. Early native receipt and
+  at 2,187 ms against a less-than-2,000 ms requirement. This timer spans native
+  submission, receipt consumption and the `main.image` material-pixel publication;
+  it is not a physical-monitor or isolated worker timer. Early native receipt and
   displayed pixel checks passed; the additional `art.active` operand was not
   separately printed. All nine new Windows groups and packaging were correctly
   skipped. Original [artifact 14995049040](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040)
@@ -492,6 +563,8 @@ Original negative findings and failed experiments remain in the mission ledger:
   remain preserved. Earlier bcc/e536 observations of 1,363/1,693 ms passed, but
   these distinct hosted runs do not prove the cause. A later pass cannot erase
   this responsiveness failure or establish a universal two-second guarantee.
+  Final d503 passed that same predicate at 1,367 ms with 151 checks and zero
+  failures; no threshold or application code was changed for the strict repeat.
 - The qualified bcc ZIP's guide contained three relative links to unbundled
   appendices. The final documentation successor corrects this concrete delivery
   defect and strengthens the packaging boundary; the original ZIP stays intact.
@@ -540,7 +613,7 @@ PUBPRES #767 remained at `f4089809c7294336db26cf576b0ac3c57fc54775`. The startup
 finding was [handed over](https://github.com/techrote/cybersand/pull/767#issuecomment-7153864857)
 as a separate stock-engine diagnostic, not as adoption of
 unfinished scheduler changes. AMBIENT #779 was refreshed at
-`a26cb9ca0521198c8ed1bb4c374be7523c021ce5`; ObjectShard #754 at documentation/evidence
+`62a05adf12dfddb744a1e043c2bb4581c7b334e7` at final readback; ObjectShard #754 at documentation/evidence
 head `75865127fee19c56dacb0ae80307f438dd866cd1`, preserving qualified application
 `5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a`. Their ownership and evaluators remain
 independent. The [Docs coordination](https://github.com/techrote/cybersand/pull/774#issuecomment-7149638550),

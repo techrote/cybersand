@@ -2,9 +2,9 @@
   "schema": "cybersand.art-collaborative-002.decision.v1",
   "mission": "ART-WORKBENCH-COLLABORATIVE-002",
   "disposition": "Draft/HOLD",
-  "record_status": "strict final delivery repeat pending after preserved first-candidate Windows failure",
-  "observed_at_utc": "2026-11-25T05:57:26.947740+00:00",
-  "qualified_source": null,
+  "record_status": "qualified final delivery and independently reviewed decision; Draft/HOLD",
+  "observed_at_utc": "2026-11-25T06:39:39.009597+00:00",
+  "qualified_source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
   "candidate": {
     "commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
     "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
@@ -32,11 +32,11 @@
     "run_id": 45556633896,
     "mode": "full_required",
     "reuse": false,
-    "source_decision": "pending",
-    "linux": "pending",
-    "windows": "pending",
-    "pristine_windows_launcher": "pending",
-    "package": "pending",
+    "source_decision": "passed full_required",
+    "linux": "passed",
+    "windows": "passed",
+    "pristine_windows_launcher": "passed",
+    "package": "passed independent immutable/source/runtime/guide audit",
     "auxiliary_runs": {
       "documentation": 45556633508,
       "source_scope_advisory": 45556633537,
@@ -46,9 +46,72 @@
       "Native C++ validation",
       "GDExtension build and current Godot regression",
       "Palette shader actual backend qualification"
-    ]
+    ],
+    "jobs": {
+      "source": 139010151836,
+      "linux": 139010327379,
+      "windows": 139010327480
+    },
+    "new_group_checks": {
+      "headless_each_platform": [
+        155,
+        66,
+        154,
+        107,
+        251,
+        739,
+        39,
+        182,
+        93
+      ],
+      "linux_displayed": [
+        155,
+        66,
+        154,
+        107,
+        251,
+        762,
+        39,
+        202,
+        94
+      ],
+      "windows_displayed": [
+        155,
+        66,
+        154,
+        107,
+        251,
+        763,
+        39,
+        202,
+        94
+      ]
+    },
+    "failures_in_final_campaign": 0
   },
-  "principal_windows_package": null,
+  "principal_windows_package": {
+    "artifact_id": 14997576786,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14997576786",
+    "outer_bytes": 94411108,
+    "outer_sha256": "a6b1a453e63f51721e7232277fe18facef14e05a26fc1b21f7af941f8fbad433",
+    "inner_filename": "art-workbench-collaborative-002-windows.zip",
+    "inner_bytes": 95606841,
+    "inner_sha256": "4d2f73c41ad79a3a1199736410369e91a3b52f63934e6ba54347991ef4f2afb5",
+    "manifest_sha256": "eac1ef9682280b7273e3c834d8da00ec3b9e850cea2f18cb9b9657089b6f6161",
+    "immutable_files": 1200,
+    "zip_members": 1201,
+    "payload_bytes": 224692963,
+    "canonical_source_files_verified": 1092,
+    "materialized_lfs_dlls_verified": 2,
+    "native_source_inputs_verified": 105,
+    "rapier_source_inputs_verified": 4,
+    "native_example_files_verified": 73,
+    "native_example_original_bytes": 18938665,
+    "installed_editable_starts_verified": 9,
+    "guide_sha256": "36a1b3e4f48383e332b4c34e13b43a29f4948930f208bb557bfe2b973799361a",
+    "complete_brief_count": 24,
+    "windows_path_uniqueness_and_no_symlinks_verified": true
+  },
   "runtime": {
     "godot_version": "4.7.stable.official.5b4e0cb0f",
     "windows": {
@@ -105,7 +168,8 @@
     "handoff_comment_id": 7153373778,
     "counterpart_acceptance_observed": false,
     "production_factory_in_principal_art_package": false,
-    "combined_windows_qualification_claimed": false
+    "combined_windows_qualification_claimed": false,
+    "approval_scope": "each native stage explicitly fixture-approved through the existing Architecture stage owner; no human acceptance claimed"
   },
   "creative_evidence": {
     "model_kind": "deterministic fixture responses and recipes",
@@ -122,7 +186,14 @@
     "future_owner_model_holdouts": 4,
     "fixture_holdout_generalization_claimed": false,
     "causal_retrieval_benefit_claimed": false,
-    "physical_traversal_or_structural_stability_claimed": false
+    "physical_traversal_or_structural_stability_claimed": false,
+    "final_original_native_rows_reviewed": 1508936,
+    "final_original_native_files_reviewed": 256,
+    "independent_platform_reconciliation_checks": [
+      445,
+      445
+    ],
+    "stage_authorization_scope": "separately admitted, fixture-authorized native stages through guarded executor; ordinary UI/session approvals separately tested"
   },
   "startup_investigation": {
     "pr": 782,
@@ -153,7 +224,11 @@
     "native_baseline": "b817670a66c7b114900a6510b73787785ab444c6",
     "experience_baseline": "6fc1702e0a6f41e93dc2287f76006e7ff7a51531",
     "guide_and_startup": "d8c627d584f30c8393af5956ef1c19e8bba17ce5",
-    "final_delivery": null,
+    "final_delivery": {
+      "provider_package": "fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7",
+      "native_four_campaigns": "f4847680f22bfc60d8003e9a71a598dfe3a85e05",
+      "experience": "8d2ff13c179d7f3a48875378977d15f1588d6336"
+    },
     "partial_3a_linux": "eff36fdc783056731e19129e830e8090b6db07a1"
   },
   "owner_pending_acceptance": [
@@ -199,7 +274,9 @@
     "package_built": false,
     "independent_review_commit": "9bbe820b041d3324f1ae2cb36bec24e49364b1bc",
     "cause_proven": false,
-    "threshold_relaxed": false
+    "threshold_relaxed": false,
+    "timer_scope": "native submit through receipt consumption and main.image material-pixel publication; not physical monitor or isolated worker",
+    "second_independent_review_commit": "f38fcfe43eb564ced67af11799c5b34d2d69e46c"
   },
   "cross_programme_comments": {
     "architecture": 7153373778,
@@ -207,5 +284,130 @@
     "pubpres_startup": 7153864857,
     "ambient": 7150673057,
     "objectshard": 7150673413
-  }
+  },
+  "foundation_relationships": {
+    "review_commit": "f38fcfe43eb564ced67af11799c5b34d2d69e46c",
+    "session_727": {
+      "source": "64a9ff4cfc5758998e315c250d1c443f83385331",
+      "accepted_merge": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "actual_art_ancestor": true
+    },
+    "batch_720": {
+      "source": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "actual_art_ancestor": false
+    },
+    "batch_770": {
+      "application_source": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "archival_source": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "actual_art_ancestor": false,
+      "actual_777_ancestor": true
+    },
+    "native_tree_unchanged": "e6946f5c5d47eddd6118696b124470737cdd385e",
+    "materials_tree_unchanged": "0402173c387905f1a3a910750edb62f3fb3613a6",
+    "batch_stage_session_in_principal_art_source": false
+  },
+  "original_final_artifacts": {
+    "linux": {
+      "id": 14996501724,
+      "bytes": 17155267,
+      "sha256": "7bec2f9d085041466eb1edf7dd6d9d4f6369b9069939ea071eff22a45f2009af"
+    },
+    "windows": {
+      "id": 14997800871,
+      "bytes": 12812235,
+      "sha256": "582fefeb91865e62b96420fedffc31b95bb1ddb7462213638f55447dada73009"
+    },
+    "scope": {
+      "id": 14995418392,
+      "bytes": 2738,
+      "sha256": "39078a548ef62d546eb1a3babc32ab35abfe12d167c76baba18a85ae1fb0d57e"
+    }
+  },
+  "performance_final_windows": {
+    "classification": "lead read-only reduction of exact original final-source Windows timing records; no new execution",
+    "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "run_id": 45556633896,
+    "artifact_id": 14997800871,
+    "original_files": [
+      {
+        "path": "installed-evaluator/art-responsiveness.json",
+        "bytes": 2898,
+        "sha256": "29955905e497e468a28e56a3a29fbd6217629fa286f83b476d8c838724467deb"
+      },
+      {
+        "path": "art-final-displayed-network/report.json",
+        "bytes": 118550,
+        "sha256": "53aaac017fa6dfd0b4de4cb405af92f1130b45b317b870c68d1b8a3bc3bf4830"
+      },
+      {
+        "path": "art-final-displayed-preparation/report.json",
+        "bytes": 15186,
+        "sha256": "472a5a0e93dc71119bffc27eed655e51fba4ef6ca7f8cdf89df44412a93de0ee"
+      }
+    ],
+    "pristine_launcher": {
+      "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "display": "Windows",
+      "automatic_requests": false,
+      "ready_usec": 39035133,
+      "startup_max_frame_usec": 35481468,
+      "idle_max_frame_usec": 163006,
+      "teardown_completed": true,
+      "teardown_usec": 334351
+    },
+    "displayed_apply": {
+      "edited_bytes": 16769024,
+      "edited_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+      "click_return_usec": 14183,
+      "owner_adoption_usec": 628111,
+      "driver_observed_completion_usec": 644167,
+      "commit_usec": 27842,
+      "audit_total_usec": 26275,
+      "max_frame_usec": 220611
+    },
+    "large_response_cases": [
+      {
+        "case": "near-limit-complete-valid-response",
+        "response_bytes": 16773391,
+        "transport_usec": 11109743,
+        "case_elapsed_usec": 14800202,
+        "frames": {
+          "frames": 97,
+          "max_usec": 392747,
+          "p95_usec": 172282
+        },
+        "http_code": 200,
+        "status": "completed"
+      },
+      {
+        "case": "near-limit-successful-assistant",
+        "response_bytes": 16773283,
+        "transport_usec": 11381302,
+        "case_elapsed_usec": 15894171,
+        "frames": {
+          "frames": 102,
+          "max_usec": 544613,
+          "p95_usec": 172255
+        },
+        "http_code": 200,
+        "status": "completed"
+      }
+    ],
+    "limits": [
+      "Distinct cases and observation boundaries remain separate. The network case maximum is not the maximum across all large-response cases.",
+      "These hosted software-ANGLE observations are not a source-controlled performance pair, a physical NVIDIA result or a cause attribution.",
+      "The earlier 3a 2187 ms sparse-polygon progress failure remains independently retained; d503 passed the unchanged predicate at 1367 ms."
+    ]
+  },
+  "cross_programme_heads_at_final_readback": {
+    "773": "1c2d084cba2e44e455f6ffe7d269007519829102",
+    "777": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+    "774": "20170bd6259498c3d2774ab274567febb043fc1d",
+    "767": "f4089809c7294336db26cf576b0ac3c57fc54775",
+    "779": "62a05adf12dfddb744a1e043c2bb4581c7b334e7",
+    "754": "75865127fee19c56dacb0ae80307f438dd866cd1",
+    "782": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+    "sandmapsreference/216": "b9535405853a5cd16e4bba968ec7167222861c42"
+  },
+  "sealed_at_utc": "2026-11-25T06:41:58.093559+00:00"
 }

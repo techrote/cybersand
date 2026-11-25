@@ -1,0 +1,36 @@
+{
+  "schema": "cybersand.art-collaborative-002.final-decision-manifest.v1",
+  "classification": "evidence-only final decision files; does not change qualified application or evaluator",
+  "application_source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "application_tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "qualification_run": 45556633896,
+  "evaluator_artifact": 14997576786,
+  "independent_reviews": {
+    "provider_package": "fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7",
+    "native_four_campaigns": "f4847680f22bfc60d8003e9a71a598dfe3a85e05",
+    "experience": "8d2ff13c179d7f3a48875378977d15f1588d6336"
+  },
+  "files": {
+    "FINAL-ENGINEERING-AND-CREATIVE-DECISION.md": {
+      "bytes": 45903,
+      "sha256": "8d3cfcd974ec12a8bfee5ff3bcd03b18e15dc9e651540177d1a9947de1fd5bb7"
+    },
+    "FINAL-QUALIFICATION-IDENTITY.json": {
+      "bytes": 15681,
+      "sha256": "9ae3091656ae2a1502c8f37ca0e1f8e6ec20aba80d4fe337023f60d5c45e70d4"
+    },
+    "README.md": {
+      "bytes": 32332,
+      "sha256": "dd149967446b053672aeb555e38d37f2c9d06411f083b0246b6bace2892859bf"
+    },
+    "lead-independent-evidence/final-d503-timing-review.json": {
+      "bytes": 2578,
+      "sha256": "be3e1bafd158b15be69d0c466f3b6c7202a2187c43d716b07875e51b84334d12"
+    },
+    "lead-independent-evidence/visual-review-d503-windows.json": {
+      "bytes": 1440,
+      "sha256": "4cc985fb8d8c1cb3a2f392df9a1b513f2bc29f5223d50960da164583dbe0222c"
+    }
+  },
+  "manifest_self_hash_policy": "Self excluded; exact Git blob/tree identify this manifest."
+}

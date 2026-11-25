@@ -1,0 +1,76 @@
+{
+  "classification": "lead read-only reduction of exact original final-source Windows timing records; no new execution",
+  "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "run_id": 45556633896,
+  "artifact_id": 14997800871,
+  "original_files": [
+    {
+      "path": "installed-evaluator/art-responsiveness.json",
+      "bytes": 2898,
+      "sha256": "29955905e497e468a28e56a3a29fbd6217629fa286f83b476d8c838724467deb"
+    },
+    {
+      "path": "art-final-displayed-network/report.json",
+      "bytes": 118550,
+      "sha256": "53aaac017fa6dfd0b4de4cb405af92f1130b45b317b870c68d1b8a3bc3bf4830"
+    },
+    {
+      "path": "art-final-displayed-preparation/report.json",
+      "bytes": 15186,
+      "sha256": "472a5a0e93dc71119bffc27eed655e51fba4ef6ca7f8cdf89df44412a93de0ee"
+    }
+  ],
+  "pristine_launcher": {
+    "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "display": "Windows",
+    "automatic_requests": false,
+    "ready_usec": 39035133,
+    "startup_max_frame_usec": 35481468,
+    "idle_max_frame_usec": 163006,
+    "teardown_completed": true,
+    "teardown_usec": 334351
+  },
+  "displayed_apply": {
+    "edited_bytes": 16769024,
+    "edited_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+    "click_return_usec": 14183,
+    "owner_adoption_usec": 628111,
+    "driver_observed_completion_usec": 644167,
+    "commit_usec": 27842,
+    "audit_total_usec": 26275,
+    "max_frame_usec": 220611
+  },
+  "large_response_cases": [
+    {
+      "case": "near-limit-complete-valid-response",
+      "response_bytes": 16773391,
+      "transport_usec": 11109743,
+      "case_elapsed_usec": 14800202,
+      "frames": {
+        "frames": 97,
+        "max_usec": 392747,
+        "p95_usec": 172282
+      },
+      "http_code": 200,
+      "status": "completed"
+    },
+    {
+      "case": "near-limit-successful-assistant",
+      "response_bytes": 16773283,
+      "transport_usec": 11381302,
+      "case_elapsed_usec": 15894171,
+      "frames": {
+        "frames": 102,
+        "max_usec": 544613,
+        "p95_usec": 172255
+      },
+      "http_code": 200,
+      "status": "completed"
+    }
+  ],
+  "limits": [
+    "Distinct cases and observation boundaries remain separate. The network case maximum is not the maximum across all large-response cases.",
+    "These hosted software-ANGLE observations are not a source-controlled performance pair, a physical NVIDIA result or a cause attribution.",
+    "The earlier 3a 2187 ms sparse-polygon progress failure remains independently retained; d503 passed the unchanged predicate at 1367 ms."
+  ]
+}

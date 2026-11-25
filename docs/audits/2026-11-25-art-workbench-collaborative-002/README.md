@@ -375,3 +375,69 @@ name the strict-repeat source. The lead directly reviewed the original final-3a
 Linux Context/Proposal frames and retained their exact hashes in a derived
 visual record. The new Windows evaluator and final independent review fields
 remain pending. No new application execution is claimed by this evidence commit.
+
+
+## Final qualified delivery and independent seal
+
+Final application d503d824aac4128968f7dfba5dccd540c3c07b59, tree
+464c60288d5461d61578b000ae68ac029cffb5bd, completed fresh campaign
+45556633896 successfully on both Linux and Windows. The actual pristine
+extracted Open Workbench.cmd completed with exit 0, no timeout and no automatic
+model request. The separate loaded-module probe's owned cleanup exit -1 is not
+the principal launch result. All four import descriptors remain byte-identical
+before/after import and to source/package.
+
+Principal evaluator artifact14997576786 contains the 95,606,841-byte inner ZIP
+art-workbench-collaborative-002-windows.zip, SHA-256
+4d2f73c41ad79a3a1199736410369e91a3b52f63934e6ba54347991ef4f2afb5.
+The outer artifact is 94,411,108 bytes, SHA-256
+a6b1a453e63f51721e7232277fe18facef14e05a26fc1b21f7af941f8fbad433.
+Manifest SHA-256 is
+eac1ef9682280b7273e3c834d8da00ec3b9e850cea2f18cb9b9657089b6f6161.
+Every one of 1,200 immutable payload files was independently rehashed; 1,092
+shipped source files, both materialized LFS DLLs, 105 native and four Rapier
+source inputs match. The corrected complete guide and README, all 24 briefs,
+73 original example files and nine actual installed starts are verified.
+
+A's final custody seal is fe3c6b4aa0e5da4ee07c9b70e456d02d94fc83b7.
+B's final native seal is f4847680f22bfc60d8003e9a71a598dfe3a85e05:
+Linux native 739/762 and Windows 739/763, all zero failures, with 1,508,936
+original readback rows and 256 native files replayed across the four executions.
+Each platform comparison passed 445 independent evidence checks. Actual
+intermediate receipt chains are validated individually, not asserted identical
+across different chunk schedules. C's final experience seal is
+8d2ff13c179d7f3a48875378977d15f1588d6336: 36 new-case log reparses, 24 retained
+report/process sets, four complete near-cap edited snapshots and four actual
+final Context/Proposal screenshot reviews. The lead also directly viewed the
+final Windows frames and joined the exact original timing boundaries.
+
+The nine-scene creative harness uses 25 separately admitted, fixture-authorized
+native stages per campaign. This is not a claim of 25 human or UI approvals;
+ordinary approval controls are exercised by separate session/UI tests. Fixture
+semantics, zero genuine inference, static-clearance limits and 17 ready/six
+refused/one stale-refused brief outcomes remain explicit.
+
+The original 3a displayed native-progress failure at 2,187 ms remains preserved.
+The unchanged strict predicate passed at 1,367 ms in the d503 full repeat. This
+repeat changed only the historical negative ledger; no latency cause, native
+repair or universal two-second guarantee is inferred. Prepared large Apply
+still trades lower click/frame stalls for 24.543 ms slower total completion
+in the controlled pair. The final Windows large-assistant case retained a
+544.613 ms maximum frame, and pristine readiness took 39.035133 seconds.
+
+The final [decision packet](FINAL-ENGINEERING-AND-CREATIVE-DECISION.md),
+[identity record](FINAL-QUALIFICATION-IDENTITY.json) and
+[manifest](FINAL-PACKET-MANIFEST.json) contain all exact delivery links,
+independent seals, preserved failures, native/provider authority, Architecture
+handoff status and owner real-model procedure. This evidence commit changes
+no application or qualified evaluator. The rejected duplicate raw aggregate
+was not rerouted; final independent records are derived-only and point to
+original Actions byte authorities.
+
+Final GitHub readback keeps #780 open, actually Draft and unmerged at d503.
+#773 remains open/unmerged with actual draft=false, without interpreting it as
+acceptance or changing it. Architecture/Docs/PUBPRES/ObjectShard owner branches
+remain unchanged by Art; AMBIENT's independent head advanced to62a05adf during
+this mission and was not imported. Draft/HOLD remains. Physical Windows/NVIDIA
+absent-listener acceptance, genuine-model creativity and production Architecture
+factory/combined Windows acceptance remain owner decisions.

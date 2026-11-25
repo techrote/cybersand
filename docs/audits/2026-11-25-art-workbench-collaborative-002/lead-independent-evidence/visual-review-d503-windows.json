@@ -1,0 +1,28 @@
+{
+  "classification": "lead direct visual review of original final Windows Context and Proposal frames; no new execution",
+  "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "run_id": 45556633896,
+  "artifact_id": 14997800871,
+  "reviewed_at_utc": "2026-11-25T06:32:19.439496+00:00",
+  "originals": [
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/00-art-ordinary-context.png",
+      "bytes": 138660,
+      "sha256": "247297e7dbd6309233598197ddbd82093bc109017d3f08bb2c1516ed75ace628"
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/01-art-ordinary-proposal.png",
+      "bytes": 105387,
+      "sha256": "5f075b10e288bfa8606566fbf2a08efea7b1d4b38d64fd50e085bf0f081bdcd6"
+    }
+  ],
+  "observations": [
+    "Ordinary Workbench toolbar and canvas remain present around the Art window.",
+    "Context shows readable inclusion/omission summary, native/knowledge/session/image choices, explicit authorization, pagination, prompt, Send and Stop.",
+    "Proposal shows two named stages, 72 host-computed candidate cells, preview-only state, one-stage approval, revise/skip/cancel and full Copy controls."
+  ],
+  "limits": [
+    "These two fixture frames are not real-model creativity or physical owner-hardware acceptance.",
+    "Native results and interaction outcomes come from the separately identified original execution and independent receipt/cell replays."
+  ]
+}
