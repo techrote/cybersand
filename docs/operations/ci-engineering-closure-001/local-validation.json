@@ -1,0 +1,215 @@
+{
+  "schema": "cybersand-ci-closure-local-validation-v1",
+  "finished_at": "2026-11-24T17:29:25.260232+00:00",
+  "integration_parent": "10377b1cfab497027db4a65b963a53ae9ddd34b0",
+  "working_tree_changes": "CI_REQUEST_LEDGER.json handoff/status only; no execution-source changes during tests",
+  "qualification": "local focused contracts only; materialized provenance and full hosted source-matched execution remain pending",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_ci_campaign_status.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 0.967,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c5f013ea35399e54c7d1005dea63e9c4b9b06a7cdb4056c125fa0671d73839cb",
+      "result_tail": "............................\n----------------------------------------------------------------------\nRan 28 tests in 0.042s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_ci_run_metrics.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 0.474,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "6ff8cb6673e52248481ba0fa0eca3657ce430b443dbc93e93c7a3e25938b7877",
+      "result_tail": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.013s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_ci_scheduling_policy.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 8.437,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ac59b52c39b7167956ed31a167ef6118a63a1cd01ecf212ac0cb5d0e587a4b42",
+      "result_tail": "..........\n----------------------------------------------------------------------\nRan 10 tests in 7.719s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 4.447,
+      "stdout_sha256": "56264136d67014a03e566f43d41c774093f82f72da4e1267227b765ffe708032",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result_tail": "tions\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [],\n  \"unmaterialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 0.712,
+      "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result_tail": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "build/ci-closure-integration/retrieval-frozen.json"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 2.216,
+      "stdout_sha256": "42a57231cbc1585e774d04df4227125b68310549a754c2a537848421fe56511a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result_tail": "d :: Profiling, observability, and performance > Avoid common misreadings\nQ18 rank=1 architecture/chunk-tile-and-buffer-model.md :: Chunk, tile, and buffer model > Are simulation tiles double buffered?\nQ19 rank=None tools/world-art-capture.md :: World Art unattended capture \u2014 real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels\nQ20 rank=1 operations/configuration-and-capacity-budgets.md :: Configuration and capacity budgets > Explosion queue rejection and exhausted simulation space\nQ21 rank=3 architecture/lcb-pressure-inertial-handoff.md :: LCB pressure and inertial implementation handoff > Inertial (`inertial_cellular_v1`, #212)\nQ22 rank=1 systems/water-design.md :: Water design > Coherent emission and surface adhesion\nQ23 rank=1 systems/water-design.md :: Water design > How should I diagnose a shimmering pool?\nQ24 rank=3 reference/invariants.md :: Architectural and simulation invariants > Fidelity invariants\nQ25 rank=1 architecture/principles-and-non-goals.md :: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?\nQ26 rank=2 architecture/overview.md :: Architecture overview > Are the named production modules already separate classes?\nQ27 rank=1 systems/smoke-heat-pressure-roadmap.md :: Smoke, heat, and pressure roadmap\nQ28 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands\nQ29 rank=3 operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Which earlier identity statements are historical?\nQ30 rank=1 reference/validation-evidence.md :: Validation evidence ledger > Which gates remain absent or failing?\nQ31 rank=1 operations/current-and-historical-validation.md :: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?\nQ32 rank=None operations/microscenarios-programme.md :: CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol\nCI-CLOSURE-001 rank=1 operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md :: CI-ENGINEERING-CLOSURE-001 \u2014 final decision packet > Shared capacity and operational interpretation\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "build/ci-closure-integration/retrieval-challenges.json"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 5.421,
+      "stdout_sha256": "0679cfa6141802862af5bf2481a757487a28b49d19d3f6c53ffd0018c5010d7e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result_tail": "k=1 operations/github-development-and-release.md :: Repository development and release > Isolated Water inertial runtime publication > Actual publication and remaining final-head gates\nLCB-HOST-UNION-01 rank=1 architecture/liquid-prepared-setup-and-receipts.md :: Native liquid prepared setup, receipts and quantity accounting > Final application source union\nLCB-TRIAL-BODY-01 rank=1 operations/lcb-manual-comparison-ux.md :: LCB manual liquid comparison UX flow > Desktop barrel and Ripper selection\nPLAY-MANUAL270-01 rank=1 operations/play-desktop-manual-qualification.md :: PLAY desktop physical and human qualification\nPLAY-UI007-01 rank=2 operations/play-desktop-manual-qualification.md :: PLAY desktop physical and human qualification > Launch the shared session\nCI-SCHEDULING-01 rank=1 operations/ci-execution-and-performance.md :: CI execution watchdogs and advisory performance > Shared capacity and concurrency\nPLAY-RECOVERY-01 rank=1 systems/player-control-playground.md :: Player control playground > Stopped composed-session recovery\nATLAS-AGENT-01 rank=1 operations/atlas-agent-runner.md :: Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499)) > Live runs: what must be true first\nATLAS-AGENT-02 rank=1 operations/atlas-agent-runner.md :: Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499)) > Security model\nEXPLORE-001-PERSIST rank=1 systems/explore001-generated-playable-maps.md :: EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Ordinary workbench workflow > Authoring and reopen\nEXPLORE-001-DESKTOP rank=1 operations/explore001-desktop-playtest.md :: Windows candidate launch and acceptance > Manual acceptance procedure\nEXPLORE-001-CAPACITY rank=1 systems/explore001-generated-playable-maps.md :: EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Ordinary workbench workflow > Explicit first-version limits\nEXPLORE-001-LAYOUT rank=2 operations/explore001-desktop-playtest.md :: Windows candidate launch and acceptance > Manual acceptance procedure\nWB-AUTHORING-CONVERGENCE rank=1 architecture/shared-workbench-authoring-data.md :: Shared workbench authoring data and convergence > Approval and current boundary\n"
+    },
+    {
+      "command": [
+        "../actionlint/actionlint",
+        "-shellcheck=",
+        "-pyflakes="
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "elapsed_seconds": 0.347,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result_tail": ""
+    }
+  ],
+  "custody": {
+    "command": [
+      "python3",
+      "tools/ci/test_publication_custody.py"
+    ],
+    "timeout_seconds": 300,
+    "started_at": "2026-11-24T17:26:14.171747+00:00",
+    "finished_at": "2026-11-24T17:27:35.767888+00:00",
+    "elapsed_seconds": 81.596,
+    "exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "2d210b4d441332dfd1728c4bf949d2ab09904d9099ede7512b8b74f72c0ec30f",
+    "result_tail": ".......................................\n----------------------------------------------------------------------\nRan 39 tests in 81.031s\n\nOK\n",
+    "source_sha256": {
+      "tools/ci/publication_custody.py": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873",
+      "tools/ci/test_publication_custody.py": "97f9d570d27cc92af4c883aee574306955c3ac5b642d6eadcd752f50aa897376"
+    }
+  },
+  "documentation": {
+    "status": "passed",
+    "documents": 148,
+    "navigation_link_documents": 8,
+    "canonical_claims": 277,
+    "local_links": 4156,
+    "heading_anchors": 804,
+    "questions": 33,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "workflow_inventory": {
+    "status": "passed",
+    "workflow_count": 93,
+    "sha256": "3b1e9e6d5fa7d0e5f0502e9d6762f759165230ebf42dc68077b874544816d4ab",
+    "scope": "All existing workflows audited with unchanged provider/scheduling policy."
+  },
+  "source_comparison": {
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "product_source_runtime_fixtures_changed": false,
+    "workflow_changes": [
+      "One additive Documentation unit-suite step; all existing steps preserved.",
+      "Palette Windows max-parallel 2 to 3 only; Linux remains 2."
+    ],
+    "historical_vs_current_gde_case_counts": [
+      653,
+      657
+    ]
+  },
+  "repository_admission_scope": "check_repository.py passed in pointer-only checkout; 18 runtime files unmaterialized. This is not --require-materialized and not execution qualification.",
+  "retrieval": {
+    "frozen": {
+      "created_utc": "2026-11-24T17:29:19.699566+00:00",
+      "fixture_sha256": "e056df8e611a01efa341835d5d958391fd64b0295e17bbd7b221b7a5f783dae7",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "corpus_manifest_sha256": "ab3d4fbcc94f4bc6f8094c9bd4a4a7b2e93a4cb03d1e8892ab750fb85fd98c08",
+      "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+      "document_count": 148,
+      "chunk_count": 1967,
+      "summary": {
+        "questions": 33,
+        "canonical_hit_at_1": 20,
+        "canonical_hit_at_k": 31,
+        "mrr_at_k": 0.7374,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "unchanged_preexisting_misses": [
+        "Q19",
+        "Q32"
+      ],
+      "new_question_rank": 1
+    },
+    "challenges": {
+      "created_utc": "2026-11-24T17:29:25.129917+00:00",
+      "fixture_sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "corpus_manifest_sha256": "ab3d4fbcc94f4bc6f8094c9bd4a4a7b2e93a4cb03d1e8892ab750fb85fd98c08",
+      "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+      "document_count": 148,
+      "chunk_count": 1967,
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 127,
+        "canonical_hit_at_k": 162,
+        "mrr_at_k": 0.8655,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  },
+  "execution_source_sha256": {
+    ".github/workflows/documentation.yml": "025a6ed7e5ecaf5b4c8bfaf7de7aa553501841db1994879820dd46542de9d82f",
+    ".github/workflows/palette-shader-qualification.yml": "0250e3618af6e56f8b21b5f1e310e4d0fdf85fdb6e134d4c2690743fbfc64431",
+    "tools/ci/ci_campaign_status.py": "fc88a08b5c74dacf4bf105776ed47891e63b6366e36c405c7e56dcabe50779c6",
+    "tools/ci/ci_run_metrics.py": "2bd1523b35e43ffb94fc0d5efbdd4c42abd852bb770ebe296a9e7f34141af706",
+    "tools/ci/publication_custody.py": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873",
+    "tools/ci/test_ci_campaign_status.py": "e77fa892af05cd1398710a08003c3ed2233ab0e33d3fa8d9d60e60b665708f6f",
+    "tools/ci/test_ci_run_metrics.py": "8cd64960316233ed2e787b07194196bdad2f9850878426cf2c8a878097db52b6",
+    "tools/ci/test_publication_custody.py": "97f9d570d27cc92af4c883aee574306955c3ac5b642d6eadcd752f50aa897376"
+  }
+}
