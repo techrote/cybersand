@@ -265,3 +265,47 @@ seven and adding provider and actual editor preparation lifecycle. All 21 packag
 unit tests and the repository's GitHub-hosted CI policy check passed during
 integration. The complete successor platform/package campaign remains required.
 No counterpart branch, independent evaluator or readiness state was changed.
+
+
+## Corrected delivery: retained Windows negative and strict repeat
+
+The bcc application source `bcc92927ce3894a16d5544923cfbf7b1d0339fda` completed
+its full campaign [45546845554](https://github.com/techrote/cybersand/actions/runs/45546845554),
+including the actual pristine extracted Windows launcher. Its evaluator
+[14992534811](https://github.com/techrote/cybersand/actions/runs/45546845554/artifacts/14992534811)
+remains intact. The delivery-only successor `3a0ec3659f23d8e997e6721aa754d5a8ebe48512`,
+tree `99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf`, corrected the offline guide and
+added immutable local-link closure validation; all 25 packaging unit checks passed.
+Its application, native, tests and workflow bytes are identical to bcc.
+
+The fresh full-required campaign
+[45553413100](https://github.com/techrote/cybersand/actions/runs/45553413100) passed
+Linux, documentation/provenance, source-scope advisory and the Architecture guard.
+Windows job `138999860117` failed the retained displayed
+`test_art_batch_native.gd`: **151 checks, one failure**,
+`sparse polygon makes visible progress before raster completes`.
+`ART_FIRST_PROGRESS_MS` was **2187**, exceeding the unchanged **less-than-2000 ms**
+requirement. Both the early native receipt and first displayed sparse-pixel
+checks passed. The predicate also requires `art.active`, whose value was not
+separately printed; no value is inferred for that operand. The following
+retained displayed groups continued with zero failures, and aggregate failure
+correctly prevented all nine new Windows groups, packaging and the actual
+extracted-launcher gate. **No corrected evaluator was produced.**
+
+The original failed evidence is
+[artifact 14995049040](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040),
+4,393,990 bytes, SHA-256
+`195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94`.
+The unchanged test, raster plan, executor and workflow were independently
+compared between bcc and 3a. Earlier displayed observations were 1363 ms at bcc
+and 1693 ms at e536; these different hosted runs do not prove a cause for the
+2187 ms result. The original failure remains a performance negative.
+
+This one-file ledger descendant starts **one fresh full qualification campaign**
+with identical application, native, test, workflow, guide and packaging code.
+The two-second requirement and all other gates remain unchanged. The new source
+identity prevents artifact-name collisions with the preserved failed run. A
+subsequent pass may qualify that exact delivery attempt; it cannot erase this
+negative or establish a universal latency guarantee. No cause is attributed,
+no failed artifact is overwritten, and no prior application receipt is silently
+reused. Draft/HOLD and physical Windows/NVIDIA owner acceptance remain in force.
