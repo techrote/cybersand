@@ -181,6 +181,18 @@
       },
       "graphical_cases_executed": 0,
       "remedy": "Validate canonical relative components before platform Path normalization; repair same predecessor reader seam; preserve failing controls and retry unchanged LFS downloads at most3times. Sequence4 repeats full campaign."
+    },
+    {
+      "source": "dd7f22adc6a82ea48974c3ae57401c51d7d74bd3",
+      "tree": "621fff70b9f06bf43e79ad30d8c00822973c63fd",
+      "run": 45719457895,
+      "request_sequence": 4,
+      "stage": "Linux preparation failed after3Git LFS batch timeouts; Windows graphical work continues independently",
+      "linux": {
+        "job": 139573809479,
+        "graphical_cases_executed": 0
+      },
+      "remedy": "After bounded LFS retries, download exact same two Linux objects from immutable GitHub media URL, require full committed size/SHA256 before replace. No runtime or source identity substitution."
     }
   ]
 }

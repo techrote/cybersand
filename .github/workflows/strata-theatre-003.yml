@@ -67,7 +67,37 @@ jobs:
             fi
             if (( attempt < 3 )); then sleep "$((attempt * 5))"; fi
           done
-          [[ $downloaded == true ]]
+          if [[ $downloaded != true ]]; then
+            # GitHub's LFS batch service can time out while its immutable media
+            # endpoint remains available. Accept only the exact committed OIDs.
+            python3 - <<'PYTHON'
+          import hashlib,pathlib,re,subprocess,urllib.request
+          revision=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip()
+          assert re.fullmatch('[0-9a-f]{40}',revision)
+          names=('godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+                 'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so')
+          for name in names:
+              pointer=subprocess.check_output(['git','show','HEAD:'+name]).decode()
+              match=re.fullmatch(r'version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize (\d+)\n',pointer)
+              assert match,'Expected committed LFS identity: '+name
+              expected,size=match.group(1),int(match.group(2))
+              target=pathlib.Path(name)
+              if target.stat().st_size==size and hashlib.sha256(target.read_bytes()).hexdigest()==expected:continue
+              temporary=target.with_suffix(target.suffix+'.download')
+              digest,count=hashlib.sha256(),0
+              try:
+                  with urllib.request.urlopen('https://media.githubusercontent.com/media/techrote/cybersand/'+revision+'/'+name,timeout=120) as response,temporary.open('wb') as output:
+                      while block:=response.read(1024*1024):
+                          count+=len(block)
+                          assert count<=size,'Runtime download exceeded committed size'
+                          digest.update(block);output.write(block)
+                  assert count==size and digest.hexdigest()==expected,'Runtime download differs from committed identity'
+                  temporary.replace(target)
+                  print('Verified immutable media fallback:',name,size,expected)
+              finally:
+                  temporary.unlink(missing_ok=True)
+          PYTHON
+          fi
       - name: Prepare official pinned Godot and graphical display
         run: |
           set -euo pipefail
