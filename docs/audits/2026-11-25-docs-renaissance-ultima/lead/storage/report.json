@@ -1,0 +1,657 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "Actual disposable Linux write failures and bounded integrity checks; no Windows, GUI, model or power-loss claim in this packet",
+  "implementing_lane": "lead",
+  "reviewers": [
+    "C (source and independent 6 Art failures / 278 checks)",
+    "B (Art user-facing contract)",
+    "A (Goblin source contract)"
+  ],
+  "art": {
+    "implementation_commit": "f6335800",
+    "source_owner_coordination": "https://github.com/techrote/cybersand/pull/780#issuecomment-7176449903",
+    "export_method_sha256_at_accepted_main_and_780": "eb323527b43088cbd96ab3b4cc9460c99590d5a4d7260fede6c4e87a7921b779",
+    "before": {
+      "schema": 1,
+      "scope": "actual disposable storage faults; no GPU, power-loss or physical acceptance",
+      "platform": "linux",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "source_head": "570fd4c8a83b54424a99faf1d546226b52f38f45",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "inputs": {
+        "scripts/art_provider.gd": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+        "scripts/art_traffic_archive.gd": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+        "tests/art_storage_fault_child.gd": "ff5be72bb0f73ec3b97e2a7a589601a6f127adc96054c69f48a78929c65092f5"
+      },
+      "runner_sha256": "1eea6e36400d689b5bdba0502d6e0860317b2696066bdbb4d6e2ce6874d18c61",
+      "cases": [
+        {
+          "passed": true,
+          "operation": "export",
+          "fault": "none",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 84,
+            "old_sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+            "operation": "export",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-before/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl"
+          },
+          "result": {
+            "bytes": 2660,
+            "expected_export_equal": true,
+            "last_event_stored": false,
+            "log_path_empty": true,
+            "message": "",
+            "old_prefix_preserved": false,
+            "old_preserved": false,
+            "operation": "export",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "0f1ebf5bdc7498b98b1b62ec84203d46933be1bb85d7dca78f65d2f7dbac9f5d"
+        },
+        {
+          "passed": false,
+          "operation": "export",
+          "fault": "short-write",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 84,
+            "old_sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+            "operation": "export",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-before/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl"
+          },
+          "result": {
+            "bytes": 128,
+            "expected_export_equal": false,
+            "last_event_stored": false,
+            "log_path_empty": true,
+            "message": "",
+            "old_prefix_preserved": false,
+            "old_preserved": false,
+            "operation": "export",
+            "partial_files": [],
+            "recovered_count": 0,
+            "replay_ok": false,
+            "sha256": "7155fc3066ef37812a6458546ecd9c00d8d44d3d78951b9d58c7e00984ec8e02",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "f36e6f2bcf6464c0cc97566870c2438a59aa2c2d9f31bdd0b30b80f5a10f177f"
+        },
+        {
+          "passed": true,
+          "operation": "new-event",
+          "fault": "none",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 0,
+            "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "operation": "new-event",
+            "target": ""
+          },
+          "result": {
+            "bytes": 2915,
+            "expected_export_equal": false,
+            "last_event_stored": true,
+            "log_path_empty": false,
+            "message": "",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "new-event",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "5fe27a164b27fa227f45a34e363e6639b2b8df1259f5b2b506bfa9f84bf59ab2",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "6b7c9e3ea15bc0874b2ca5e1cb0583b2de316326ee4d0ca1f8220e7512f91ee1"
+        },
+        {
+          "passed": false,
+          "operation": "new-event",
+          "fault": "short-write",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 0,
+            "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "operation": "new-event",
+            "target": ""
+          },
+          "result": {
+            "bytes": 128,
+            "expected_export_equal": false,
+            "last_event_stored": true,
+            "log_path_empty": false,
+            "message": "",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "new-event",
+            "partial_files": [],
+            "recovered_count": 0,
+            "replay_ok": false,
+            "sha256": "d9a5aa24a9677ddc2fcceb8ae72509e0c030ee64be438fee9a693a0603982354",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "642a9d1f3bf216a2dfec91d0c0ad2ef17cf504e0806a7e19723a17c47f7d9a13"
+        },
+        {
+          "passed": true,
+          "operation": "append",
+          "fault": "none",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 338,
+            "old_sha256": "c855ba939d14bc41091c7e8f29930ea05eb319a5561eb6500da58b4632eaa50c",
+            "operation": "append",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-before/append-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/2a7a6aa3d75e0e9a3adf588f3c7587a7.jsonl"
+          },
+          "result": {
+            "bytes": 3159,
+            "expected_export_equal": false,
+            "last_event_stored": true,
+            "log_path_empty": false,
+            "message": "",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "append",
+            "partial_files": [],
+            "recovered_count": 2,
+            "replay_ok": true,
+            "sha256": "2a17fcc1c2ae09b5832f87bf2c91860f4aad0c60f8f387d4b93836f281128c05",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "01a088340b5fb9ad0967bfad278d00f4afb2c61b186257d760e96304423e2110"
+        },
+        {
+          "passed": false,
+          "operation": "append",
+          "fault": "short-write",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 338,
+            "old_sha256": "0ae3915e9557e521e8bab7a8a286874c9e5ce644ebf5ca197619e8fd2e560f7d",
+            "operation": "append",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-before/append-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/97125d4e6735afbba1b6945b733f866a.jsonl"
+          },
+          "result": {
+            "bytes": 466,
+            "expected_export_equal": false,
+            "last_event_stored": true,
+            "log_path_empty": false,
+            "message": "",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "append",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "450faad59ca9dc1f197037210358ef069f6143b25e1d0f4dff688b844553ddc3",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "740b4f06e9088c78d0bbf1233c9f191d99a2183f76f17b90e9e10b5c6a743454"
+        }
+      ],
+      "passed": false,
+      "status": "failed",
+      "completed": true
+    },
+    "after": {
+      "schema": 1,
+      "scope": "actual disposable storage faults; no GPU, power-loss or physical acceptance",
+      "platform": "linux",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "source_head": "becd8328926fdd0300ebead8a93647f1e93ae8c2",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "inputs": {
+        "scripts/art_provider.gd": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+        "scripts/art_traffic_archive.gd": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+        "tests/art_storage_fault_child.gd": "ff5be72bb0f73ec3b97e2a7a589601a6f127adc96054c69f48a78929c65092f5"
+      },
+      "runner_sha256": "1eea6e36400d689b5bdba0502d6e0860317b2696066bdbb4d6e2ce6874d18c61",
+      "cases": [
+        {
+          "passed": true,
+          "operation": "export",
+          "fault": "none",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 84,
+            "old_sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+            "operation": "export",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-linux/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl"
+          },
+          "result": {
+            "bytes": 2660,
+            "expected_export_equal": true,
+            "last_event_stored": false,
+            "log_path_empty": true,
+            "message": "",
+            "old_prefix_preserved": false,
+            "old_preserved": false,
+            "operation": "export",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "2a1cc2cfad64a702d048f7671c656413b4bd71ac142964ed6c55a25954c9109a"
+        },
+        {
+          "passed": true,
+          "operation": "export",
+          "fault": "short-write",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 84,
+            "old_sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+            "operation": "export",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-linux/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl"
+          },
+          "result": {
+            "bytes": 84,
+            "expected_export_equal": false,
+            "last_event_stored": false,
+            "log_path_empty": true,
+            "message": "Export refused; this export did not replace the destination. The closed output is incomplete; check free space and write permissions.",
+            "old_prefix_preserved": true,
+            "old_preserved": true,
+            "operation": "export",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+            "source_unchanged": true,
+            "success": false
+          },
+          "log_sha256": "7746e61e41481b9f079cdf5993c4968e18a9bf5cbb4076d24968e51b4a3c22c6"
+        },
+        {
+          "passed": true,
+          "operation": "new-event",
+          "fault": "none",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 0,
+            "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "operation": "new-event",
+            "target": ""
+          },
+          "result": {
+            "bytes": 2915,
+            "expected_export_equal": false,
+            "last_event_stored": true,
+            "log_path_empty": false,
+            "message": "",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "new-event",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "b9de85928bf713e599b44861b02c9b00e80c1f396ac1e90945d0f9f9163c6454",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "a5bf1cded1908329b8f1ff0dbadfe92ac74cc7a715d2881ed13f3bf3511498e7"
+        },
+        {
+          "passed": true,
+          "operation": "new-event",
+          "fault": "short-write",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 0,
+            "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "operation": "new-event",
+            "target": ""
+          },
+          "result": {
+            "bytes": 0,
+            "expected_export_equal": false,
+            "last_event_stored": false,
+            "log_path_empty": true,
+            "message": "Traffic write failed; the new event was not confirmed. Prior complete events remain in the session log.",
+            "old_prefix_preserved": true,
+            "old_preserved": true,
+            "operation": "new-event",
+            "partial_files": [],
+            "recovered_count": -1,
+            "replay_ok": false,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "source_unchanged": true,
+            "success": false
+          },
+          "log_sha256": "c478414efad797d0832e2bb40e692b2905541512aebe873cab4093ecd7fd0aaf"
+        },
+        {
+          "passed": true,
+          "operation": "append",
+          "fault": "none",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 338,
+            "old_sha256": "6508c03bb2108ac1b384baffc33f94ad9b7c9a8d19515111b8344aa2f042e415",
+            "operation": "append",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-linux/append-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/b28f8201dab304eb10cb36fe3ff81a92.jsonl"
+          },
+          "result": {
+            "bytes": 3159,
+            "expected_export_equal": false,
+            "last_event_stored": true,
+            "log_path_empty": false,
+            "message": "",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "append",
+            "partial_files": [],
+            "recovered_count": 2,
+            "replay_ok": true,
+            "sha256": "7b4e6c4519ed2cafc86bfb6d6cda02282db59f641ef1ab6e29255f1fa1c36575",
+            "source_unchanged": true,
+            "success": true
+          },
+          "log_sha256": "088f52115f28d86e822d351d53d4ff83fb88637c91465305c57f17f0ec5febec"
+        },
+        {
+          "passed": true,
+          "operation": "append",
+          "fault": "short-write",
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+            "--script",
+            "res://tests/art_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "windows_lock": null,
+          "ready": {
+            "old_bytes": 338,
+            "old_sha256": "12613a40b609e7b666538d6d7118cf53c9c4a20a6d65b1902752fdc5cfe758cb",
+            "operation": "append",
+            "target": "/workspace/scratch/1c5fccfbe328/lead-results/art-storage-final-linux/append-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1c50523c05e52958e532195be336fa36.jsonl"
+          },
+          "result": {
+            "bytes": 466,
+            "expected_export_equal": false,
+            "last_event_stored": false,
+            "log_path_empty": false,
+            "message": "Traffic write failed; the new event was not confirmed. Prior complete events remain in the session log.",
+            "old_prefix_preserved": true,
+            "old_preserved": false,
+            "operation": "append",
+            "partial_files": [],
+            "recovered_count": 1,
+            "replay_ok": true,
+            "sha256": "a78ed7d72efaa2fbd7a465db66962bfe2c89f16e1cc1be0b1852f72376c43fc3",
+            "source_unchanged": true,
+            "success": false
+          },
+          "log_sha256": "86c9171751a396b0f659eea73d0cd04eeee5b811aa50a21bb0ef2e616f837693"
+        }
+      ],
+      "passed": true,
+      "status": "passed",
+      "completed": true
+    },
+    "integrity_checks": 19,
+    "integrity_failures": 0,
+    "independent_receipt": "../../retrieval/review-art-storage-by-c.json"
+  },
+  "goblin": {
+    "implementation_commit": "34ae4faa",
+    "before": {
+      "source_head": "5b13750df715bff7ea424cc05df7c85827e7f041",
+      "controller_sha256": "2b080ba1d4418e2a789f6ad4254457bd877edbb8cd450aa75ef7f8ed11629f4d",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "cases": [
+        {
+          "fault": "none",
+          "returncode": 0,
+          "observed": [
+            {
+              "acknowledged": true,
+              "bytes": 1658,
+              "error": "",
+              "loadable": true,
+              "sha256": "4d439c673b390a4858cbedff23758c403d42dc5091a3f398b3a752579bb0d75c"
+            }
+          ],
+          "old_bytes": 1833,
+          "old_sha256": "d1bf92011c733aee290e041e803f9243756d4ed096227a237d81840a60272dc9",
+          "old_preserved": false
+        },
+        {
+          "fault": "short-write",
+          "returncode": 0,
+          "observed": [
+            {
+              "acknowledged": true,
+              "bytes": 128,
+              "error": "",
+              "loadable": false,
+              "sha256": "952a44dcb360a398d529f63d66ab20f35e1b6bc28aed6987c238e553c6db52c5"
+            }
+          ],
+          "old_bytes": 1833,
+          "old_sha256": "d1bf92011c733aee290e041e803f9243756d4ed096227a237d81840a60272dc9",
+          "old_preserved": false
+        }
+      ]
+    },
+    "after": {
+      "source_head": "99415af096d446d1750c7ffa396fc17419584323",
+      "controller_sha256": "6d539462faa10e70e66dc111fc015c57b24b26d728aa7691f08a8f3557261a17",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "cases": [
+        {
+          "fault": "none",
+          "returncode": 0,
+          "observed": [
+            {
+              "acknowledged": true,
+              "bytes": 1658,
+              "error": "",
+              "loadable": true,
+              "sha256": "4d439c673b390a4858cbedff23758c403d42dc5091a3f398b3a752579bb0d75c"
+            }
+          ],
+          "old_bytes": 1833,
+          "old_sha256": "d1bf92011c733aee290e041e803f9243756d4ed096227a237d81840a60272dc9",
+          "old_preserved": false
+        },
+        {
+          "fault": "short-write",
+          "returncode": 0,
+          "observed": [
+            {
+              "acknowledged": false,
+              "bytes": 1833,
+              "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+              "loadable": true,
+              "sha256": "d1bf92011c733aee290e041e803f9243756d4ed096227a237d81840a60272dc9"
+            }
+          ],
+          "old_bytes": 1833,
+          "old_sha256": "d1bf92011c733aee290e041e803f9243756d4ed096227a237d81840a60272dc9",
+          "old_preserved": true
+        }
+      ]
+    },
+    "qualification_limit": "Direct guarded writer probe; full controller and expanded OS matrix are separate subsequent evidence."
+  },
+  "experiment_corrections": [
+    "Initial Art stdout file inherited RLIMIT and lost diagnostic output; repeated with PIPE, retaining original attempt.",
+    "Initial Art larger-than-stdio-buffer payload was correctly rejected by existing code; smaller buffered tail reproduced false success.",
+    "Initial expected-corrupt/empty fixture digest handling emitted engine diagnostics; corrected harness before final baseline without changing production code."
+  ],
+  "archive": {
+    "file": "lead-storage-originals.json.gz",
+    "files": 169,
+    "expanded_file_bytes": 261077,
+    "serialized_bytes": 382226,
+    "compressed_bytes": 50283,
+    "sha256": "c746dc03abd8c18f79a04dafd391b79db537c82e0fd1769d37202434f7f8d679",
+    "reconstruction": "Python gzip.decompress + json.loads; base64-decode each files[].base64; verify size and sha256 before writing beneath a fresh disposable directory. No owner data included."
+  }
+}
