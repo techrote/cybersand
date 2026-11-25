@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
 canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-25
 related-documents: [github-development-and-release.md, profiling-observability-and-performance.md, testing-validation-and-replay.md, ../audits/2026-10-31-execution-watchdog-modernization.md, ../audits/2026-11-03-linux-display-mesa-utils-removal.md]
 ---
 
@@ -64,8 +64,8 @@ only when that case's full allowance fits the remaining execution boundary.
 Unstarted cases are explicitly incomplete and fail coverage; an underestimate
 never shortens a running case's watchdog or silently counts missing work.
 
-The source inventory at intake is 246 Linux cases, including 13 rendered cases,
-and 233 applicable Windows cases. Machine discovery remains authoritative as
+The source inventory at the 1 November scheduling intake was 246 Linux cases,
+including 13 rendered cases, and 233 applicable Windows cases. Machine discovery remains authoritative as
 the game expands. The dated [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md)
 records estimator inputs, selected counts, original results and limitations.
 The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains
@@ -78,7 +78,8 @@ jobs per platform. A failed execution plan must leave both required coverage
 aggregates failed with an explicit missing-plan diagnostic; it cannot become a
 successful skipped gate.
 
-**2026-11-25 Ready qualification repair (candidate, hosted validation pending):**
+**Accepted 25 November 2026 through [#771](https://github.com/techrote/cybersand/pull/771)
+and [#778](https://github.com/techrote/cybersand/pull/778):**
 the official Godot 4.7 Linux release asset is used for the GDExtension and
 Palette acquisition routes after the download redirector returned HTTP 403.
 GitHub release asset 451175419 declares 75,664,355 bytes and SHA-256
@@ -87,6 +88,10 @@ matching the existing editor lock. The engine version, digest, ZIP verification,
 runtime custody and historical lock are unchanged. This is an acquisition
 route correction, not a new engine or permission to omit any case. Original
 failed campaigns remain failed; actual resulting-source runs are required.
+The accepted source also includes [read-only campaign coordination](ci-campaign-coordination.md)
+and the additive [publication custody verifier](publication-custody.md). Neither
+metadata observation nor custody verification grants runtime publication or
+replaces an owning programme's source-matched semantic and platform gates.
 
 The six Native families retain the same 20 command obligations and scientific
 inputs; the two worldgen commands add output grouping as described below.

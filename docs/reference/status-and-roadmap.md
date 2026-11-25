@@ -10,7 +10,7 @@ related-documents: [product-intent-and-priorities.md, validation-evidence.md, in
 
 # Status and foundational roadmap
 
-**Source baseline: accepted main `be87b18b30506ccead610c7035ae1ffa8e65a347`,
+**Source baseline: accepted main `5e29b111be6202a76c0042976f74de98bd8ead78`,
 rechecked 25 November 2026.** This register answers what is in that source, what
 remains a candidate, and where to find the owning contract. It is not a promise
 that every feature has passed physical owner evaluation on every platform.
@@ -61,10 +61,10 @@ automatically close or satisfy its whole programme.
 
 These live merge records were checked independently of their titles. The list
 captures the major documentation transitions; it is not a complete release log.
-The latest two accepted merges change Palette CI scheduling and Windows evaluator
-tooling. They leave the inspected native simulation, ordinary application runtime
-source and dependency pins from `00cdb02f` unchanged; the dated technical source
-inspections remain applicable.
+The 25 November accepted merges change Palette CI scheduling, Windows evaluator
+tooling and CI coordination, custody and acquisition. They leave the inspected
+native simulation, ordinary application runtime source and dependency pins from
+`00cdb02f` unchanged; the dated technical source inspections remain applicable.
 
 | Foundation | Accepted record | Documentation consequence |
 |---|---|---|
@@ -84,6 +84,7 @@ inspections remain applicable.
 | Session-only Art traffic | [#727](https://github.com/techrote/cybersand/pull/727) | One current-session JSONL audit; do not follow the superseded linked-history restore instructions. |
 | Palette Windows cohort scheduling | [#736](https://github.com/techrote/cybersand/pull/736) | The qualified Windows cohort parallelism change is accepted CI tooling; it adds no product capability. |
 | Source-exact Gentek Windows owner tooling | [#758](https://github.com/techrote/cybersand/pull/758) | Offline archive/source verification, packaging and acceptance tooling are accepted. Use the [explicit owner guide](../operations/gentek80-physical-owner-acceptance.md) with the exact archive/source/digest handoff. A historical ZIP is not a new-main build, and physical Windows/NVIDIA acceptance remains outstanding. |
+| CI closure and qualification recovery | [#771](https://github.com/techrote/cybersand/pull/771), [#778](https://github.com/techrote/cybersand/pull/778); programmes [#706](https://github.com/techrote/cybersand/issues/706), [#761](https://github.com/techrote/cybersand/issues/761) | The read-only coordination/custody helpers, pinned-engine acquisition and planner/reducer corrections are accepted tooling. Active publisher adoption and product acceptance remain programme-specific; the helpers grant neither. |
 
 ## Active candidates and integration boundaries
 
@@ -96,7 +97,7 @@ reported evaluator results do not admit its application into accepted main.
 
 | Programme | Principal record | Boundary for accepted-main documentation |
 |---|---|---|
-| ULTIMA save safety and practical documentation | Successor [#783](https://github.com/techrote/cybersand/pull/783), retained predecessor [#774](https://github.com/techrote/cybersand/pull/774); [candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Verified staged-byte replacement, retrieval/authority corrections and practical UX repairs are candidate changes. Accepted `be87b18b` does not acquire them through documentation. The compact successor preserves the full predecessor's evidence lineage. |
+| ULTIMA save safety and practical documentation | Successor [#783](https://github.com/techrote/cybersand/pull/783), retained predecessor [#774](https://github.com/techrote/cybersand/pull/774); [candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Verified staged-byte replacement, retrieval/authority corrections and practical UX repairs are candidate changes. Accepted `5e29b111` does not acquire them through documentation. The compact successor preserves the full predecessor's evidence lineage. |
 | PUBPRES physical progression and presentation | [#717](https://github.com/techrote/cybersand/issues/717), current finisher [#767](https://github.com/techrote/cybersand/pull/767), predecessor [#757](https://github.com/techrote/cybersand/pull/757) | Do not claim publication stalls or physical freezes are resolved by accepted main. |
 | ObjectShard moving destructible materials | [#754](https://github.com/techrote/cybersand/pull/754) | Moving native chemistry, mutable body ownership and ordinary Workbench integration are candidate behavior. |
 | Actor Compose continuous play and pilot recovery | [#762](https://github.com/techrote/cybersand/pull/762) | Preserve accepted #683 controls and disclose successor repair scope. |
@@ -110,7 +111,6 @@ reported evaluator results do not admit its application into accepted main.
 | Materials Lab current-scene audition | [#768](https://github.com/techrote/cybersand/pull/768) | Approved live-audition intent is not satisfied by advertising the existing isolated Lab as that feature. |
 | Workbench Strata Theatre | Layered authoring and atmosphere successor [#776](https://github.com/techrote/cybersand/pull/776), foundation [#769](https://github.com/techrote/cybersand/pull/769), owner intent [#588](https://github.com/techrote/cybersand/issues/588) | Four-plane painting/composition and environmental atmosphere in ordinary Workbench remain unmerged candidates, distinct from the available standalone exhibition. |
 | PAINT latency and physical evaluator | [#703](https://github.com/techrote/cybersand/pull/703), [#711](https://github.com/techrote/cybersand/pull/711) | Native fill speed and usable end-to-end responsiveness are separate measurements. |
-| CI engineering and publication closure | Consolidated candidate [#771](https://github.com/techrote/cybersand/pull/771), programmes [#706](https://github.com/techrote/cybersand/issues/706), [#761](https://github.com/techrote/cybersand/issues/761); bounded recovery donor [#778](https://github.com/techrote/cybersand/pull/778), adopted into [#783](https://github.com/techrote/cybersand/pull/783) | #778's exact pinned-engine acquisition, planner-test and reducer-error corrections are separate from feature acceptance and the broader CI programme. Their use in ULTIMA does not merge the donor or replace existing publication controls. Other candidate scheduling changes and retained rejected experiments do not become defaults. |
 
 ## Approved direction and unresolved choices
 
