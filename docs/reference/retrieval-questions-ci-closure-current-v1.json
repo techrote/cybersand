@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "scope": "Additive current-source correction to accepted revision-sensitive CI-CLOSURE-001; original33 and historical frozen32 remain byte-exact and scored separately. Not a ranking-development or holdout case.",
+  "source_commit": "5e29b111be6202a76c0042976f74de98bd8ead78",
+  "supersedes_expected_facts_only_for": "CI-CLOSURE-001",
+  "questions": [
+    {
+      "id": "CI-CLOSURE-001-CURRENT-20261125",
+      "query": "Which CyberSand CI experiments were selected, what runner capacity is actually known, and what exact-source gates remain for CI engineering closure?",
+      "canonical": [
+        "operations/ci-execution-and-performance.md",
+        "operations/ci-campaign-coordination.md",
+        "operations/publication-custody.md"
+      ],
+      "facts": [
+        "Windows Palette cap three entered accepted main through #736; GDExtension remains eight/eight and Linux Palette remains two. #771/#778 closure tooling and Ready recovery entered accepted main at 5e29b111.",
+        "The accepted CI coordination and publication custody tools are standalone, read-only helpers. Their output does not replace programme-specific semantic qualification, dispatch work, authorize publication or establish physical acceptance.",
+        "Historical experiment cohorts and the 24 November Draft/HOLD packet retain their original source scope. They cannot qualify a later source or override actual subsequent merges.",
+        "A new candidate must satisfy the applicable existing source-exact CI and provenance gates; a historical packet or green metadata summary is not a waiver or a new test result.",
+        "The previously stated forty-slot ceiling remains owner-reported; bounded repository job observations do not authenticate current account capacity.",
+        "No owner-approved higher GDExtension fan-out, RAM-storage default or migration of an active programme publisher follows from these tooling merges."
+      ],
+      "sources": [
+        "../.github/workflows/palette-shader-qualification.yml",
+        "../.github/workflows/gdextension.yml",
+        "../tools/ci/ci_campaign_status.py",
+        "../tools/ci/publication_custody.py"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

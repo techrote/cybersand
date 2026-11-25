@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Bounded repository job observations and explicit source/run/attempt request ledgers; no execution, acceptance, cancellation or publication authority
 canonical-for: [ci-campaign-coordination]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [ci-execution-and-performance.md, github-development-and-release.md, publication-custody.md, ci-engineering-closure-001/FINAL-DECISION-PACKET.md]
 ---
 
@@ -16,10 +16,10 @@ an already authenticated `gh`, or reduces saved responses from the approved
 GitHub connector. Every online request is an explicit GET. It cannot dispatch,
 cancel, rerun, reprioritize, publish, promote or merge work.
 
-This additive helper belongs to the CI-ENGINEERING-CLOSURE-001 Draft candidate.
-Existing concurrency, filters, source admission, required reducers and owner gates
-remain authoritative. Its output is coordination information, never an acceptance
-status.
+This helper entered accepted main through [the CI closure merge](https://github.com/techrote/cybersand/commit/5e29b111be6202a76c0042976f74de98bd8ead78)
+on 25 November 2026. Existing concurrency, filters, source admission, required
+reducers and owner gates remain authoritative. Its output is coordination
+information, never an acceptance status.
 
 ## Collection and offline use
 
@@ -129,9 +129,11 @@ source and evidence.
 
 ## Request discipline
 
-The lead owns the [CI request ledger](ci-engineering-closure-001/CI_REQUEST_LEDGER.json).
-Before heavy execution, refresh ownership, source, required inventory, prior cost,
-capacity observations and valid evidence. Stagger optional requests when required
+Each current programme lead maintains its own explicit CI request ledger. The
+[24 November closure ledger](ci-engineering-closure-001/CI_REQUEST_LEDGER.json)
+is a dated example and retained evidence, not a live queue or new execution
+authority. Before heavy execution, refresh ownership, source, required inventory,
+prior cost, capacity observations and valid evidence. Stagger optional requests when required
 work is waiting. No observed queue is not permission to occupy the whole account.
 
 This helper changes no active publisher or frozen campaign. Ordinary supersession
