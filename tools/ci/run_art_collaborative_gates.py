@@ -23,6 +23,7 @@ SCHEMA = "art-collaborative-gates-v1"
 TESTS = {
     "test_art_owned_transport": "ART_OWNED_TRANSPORT_RESULT",
     "test_art_authoring_proposal": "ART_PROPOSAL_RESULT",
+    "test_art_creative_cohort": "ART_CREATIVE_COHORT_RESULT",
     "test_art_collaborative_native": "ART_COLLABORATIVE_NATIVE_RESULT",
     "test_art_collaboration_authority": "ART_COLLABORATION_AUTHORITY_RESULT",
     "test_art_collaboration_session": "ART_COLLABORATION_SESSION_RESULT",
@@ -50,24 +51,50 @@ def git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True, timeout=60).strip()
 
 
+def untracked_source_rows(status: str) -> list[str]:
+    rejected = []
+    for row in status.split("\0"):
+        if not row:
+            continue
+        if row.startswith("?? evidence/"):
+            continue
+        if row.startswith("?? godot/") and row.endswith((".gd.uid", ".gdshader.uid")):
+            continue
+        if row.startswith("?? "):
+            rejected.append(row)
+    return rejected
+
+
 def source_identity() -> dict:
     tracked = git("status", "--porcelain=v1", "--untracked-files=no")
     if tracked:
         raise ValueError("Commit tracked source changes before this qualification campaign")
+    status = subprocess.check_output(
+        ["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"],
+        cwd=ROOT, text=True, timeout=60)
+    if untracked_source_rows(status):
+        raise ValueError("Commit or remove untracked source before qualification; only evidence/ and generated Godot UID sidecars are excluded")
     return {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
             "tracked_source_clean": True}
 
 
+def no_failures(value: object) -> bool:
+    return (type(value) is int and value == 0) or (type(value) is list and not value)
+
+
 def parse_case_output(text: str, marker: str) -> dict:
+    if any(signature in text for signature in ("SCRIPT ERROR:", "Parse Error:", "Failed to load script",
+                                                "Failed loading resource:", "Error loading resource:")):
+        raise ValueError("Original process log contains a script, parse or resource-loading failure")
     rows = [line.split(marker, 1)[1].strip() for line in text.splitlines() if line.startswith(marker + " ")]
     if len(rows) != 1:
         raise ValueError("Expected exactly one complete result marker: " + marker)
     result = json.loads(rows[0])
-    if not isinstance(result, dict) or not isinstance(result.get("checks"), int) or result["checks"] <= 0:
+    if not isinstance(result, dict) or type(result.get("checks")) is not int or result["checks"] <= 0:
         raise ValueError("Missing positive assertion count: " + marker)
-    if not isinstance(result.get("failures"), list) or result["failures"]:
+    if not no_failures(result.get("failures")):
         raise ValueError("Reported test failure: " + marker)
-    if result.get("model_calls", 0) != 0:
+    if type(result.get("model_calls", 0)) is not int or result.get("model_calls", 0) != 0:
         raise ValueError("This fixture cohort cannot claim genuine model calls")
     return result
 
@@ -76,9 +103,9 @@ def validate_receipt(receipt: dict, *, commit: str, tree: str, platform_name: st
                      graphical: bool) -> dict:
     if not isinstance(receipt, dict) or receipt.get("schema") != SCHEMA:
         raise ValueError("Unexpected collaborative qualification schema")
-    if receipt.get("status") != "passed" or receipt.get("model_calls") != 0:
+    if receipt.get("status") != "passed" or type(receipt.get("model_calls")) is not int or receipt.get("model_calls") != 0:
         raise ValueError("Collaborative qualification did not pass the fixture-only contract")
-    if receipt.get("source") != {"commit": commit, "tree": tree, "tracked_source_clean": True}:
+    if receipt.get("source") != {"commit": commit, "tree": tree, "tracked_source_clean": True} or receipt.get("source", {}).get("tracked_source_clean") is not True:
         raise ValueError("Collaborative evidence source differs from the package")
     if receipt.get("platform") != platform_name or receipt.get("graphical") is not graphical:
         raise ValueError("Collaborative evidence platform/display scope differs")
@@ -89,14 +116,14 @@ def validate_receipt(receipt: dict, *, commit: str, tree: str, platform_name: st
     if len(names) != len(cases) or len(set(names)) != len(names) or set(names) != REQUIRED_TESTS:
         raise ValueError("Missing, duplicate or unknown collaborative test case")
     for case in cases:
-        if case.get("status") != "passed" or case.get("exit_code") != 0 or case.get("timed_out"):
+        if case.get("status") != "passed" or (type(case.get("exit_code")) is not int or case.get("exit_code") != 0) or case.get("timed_out"):
             raise ValueError("Failed or unexecuted collaborative test: " + case["name"])
         if case.get("marker") != TESTS[case["name"]]:
             raise ValueError("Case marker identity differs")
         result = case.get("result")
-        if not isinstance(result, dict) or not isinstance(result.get("checks"), int) or result["checks"] <= 0:
+        if not isinstance(result, dict) or type(result.get("checks")) is not int or result["checks"] <= 0:
             raise ValueError("Case assertion proof is absent")
-        if result.get("failures") != [] or result.get("model_calls", 0) != 0:
+        if not no_failures(result.get("failures")) or type(result.get("model_calls", 0)) is not int or result.get("model_calls", 0) != 0:
             raise ValueError("Case contains a failure or a model-call claim")
         if not re.fullmatch(r"[0-9a-f]{64}", str(case.get("log_sha256", ""))):
             raise ValueError("Case log identity is absent")
@@ -163,6 +190,7 @@ def main() -> int:
             if os.name == "nt":
                 command += ["--rendering-driver", "opengl3_angle"]
         command += ["--script", "res://tests/" + name + ".gd"]
+        case_timeout = max(args.timeout, 1800) if name == "test_art_collaborative_native" else args.timeout
         began = time.monotonic()
         timed_out = False
         exit_code = None
@@ -171,7 +199,7 @@ def main() -> int:
         with log.open("w", encoding="utf-8") as stream:
             process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=stream, stderr=subprocess.STDOUT)
             try:
-                exit_code = process.wait(timeout=args.timeout)
+                exit_code = process.wait(timeout=case_timeout)
             except subprocess.TimeoutExpired:
                 timed_out = True
                 if os.name == "nt":
@@ -189,7 +217,7 @@ def main() -> int:
         except (ValueError, json.JSONDecodeError) as failure:
             error = str(failure)
         case = {"name": name, "marker": marker, "command": command,
-                "exit_code": exit_code, "timed_out": timed_out, "timeout_seconds": args.timeout,
+                "exit_code": exit_code, "timed_out": timed_out, "timeout_seconds": case_timeout,
                 "elapsed_seconds": round(time.monotonic() - began, 6),
                 "log_sha256": digest(log), "result": result,
                 "artifacts_sha256": {path.name: digest(path) for path in sorted(case_dir.iterdir())

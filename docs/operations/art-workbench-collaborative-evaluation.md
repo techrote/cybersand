@@ -5,7 +5,7 @@ document-kind: guide
 scope: Draft/HOLD collaborative Art, source-specific evaluator and physical owner acceptance
 canonical-for: [art-workbench-collaborative-evaluation]
 last-reviewed: 2026-11-25
-related-documents: [art-workbench-final-evaluation.md, ../systems/workbench-art-providers.md, ../systems/workbench-direct-art-batches.md]
+related-documents: [art-workbench-final-evaluation.md, ../systems/workbench-art-providers.md, ../systems/workbench-direct-art-batches.md, ../systems/art-native-context-proposals.md]
 ---
 
 # Collaborative Art Workbench evaluation
@@ -63,8 +63,10 @@ history or the redacted audit.
 
 ## Set the creative brief
 
-Use the Creative brief page to record the objective, style, complexity and
-variation. Choose available materials, pin constraints and protect native
+Use **Focus viewport** or **Use selection** to choose a bounded native region.
+If a zoomed-out region exceeds the context capacity, zoom in or select a smaller
+area before inspection. Use the Creative brief page to record the objective,
+style, complexity and variation. Choose available materials, pin constraints and protect native
 rectangles. **Apply brief** accepts the draft. **Cancel edits** restores the last
 applied brief. Unapplied edits block Send so there is no ambiguity about which
 constraints are being sent.
@@ -78,7 +80,12 @@ admission.
 Destructive permission is off initially. Enabling it does not create a new
 material overwrite authority: the existing native owner still decides what can
 be written, carved or preserved. Unsupported geometry or material changes refuse
-with a visible explanation.
+with a visible explanation. The current Art native route can replace Empty and
+Hard Wall cells; occupied Metal, Stone and other materials remain protected,
+even when destructive edits are permitted. Revising a proposal before execution
+can change its material choices; replacing already installed protected material
+requires its owning ordinary editor. The [native context/proposal contract](../systems/art-native-context-proposals.md)
+records the exact capacities and supported authority.
 
 A brief belongs to the current game session. Hiding Art preserves the session;
 a new Workbench game session starts a new conversation. No historical World
@@ -136,6 +143,21 @@ contacts a provider nor pretends to be an LLM. Start with a small repair, then
 inspect a façade, a traversable interior, a protected-region edit and a staged
 composition. Compare the original scene, the proposal, zero-write preview and
 actual material result.
+
+The ZIP also contains exact evaluated native results. To open a saved example,
+close Workbench, double-click **Install evaluated starts.cmd**, reopen Workbench,
+enter a listed name such as **art02-industrial_repair** or
+**art02-xeno_vault** in the setup-name field, and click **Load start**.
+The installer copies only the nine declared starts into the package's own
+profile and preserves existing saved files. The last example contains the
+complete constructed atlas and paired direct controls. Its result file
+identifies the focus region. No provider is needed.
+
+The examples folder contains original before/after native observations,
+displayed Workbench screenshots, editable Setup-v2 starts and acknowledged
+native receipts. Native diagnostic images and actual framebuffers have
+different explicit filenames. The paired direct controls use matched fixture
+geometry; identical geometry is not evidence that retrieval improved a model.
 
 Use the bundled creative briefs to vary intent: preserve a passage, substitute
 a material, reduce excessive detail, increase irregularity, or resolve

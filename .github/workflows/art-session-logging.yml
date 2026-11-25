@@ -1,7 +1,20 @@
-name: Art Workbench final qualification
+name: Art Workbench collaborative qualification
 on:
   pull_request:
     paths:
+      - 'godot/scripts/art_*.gd'
+      - 'godot/scripts/simulation_worker.gd'
+      - 'godot/tests/test_art_collaborat*.gd'
+      - 'godot/tests/test_art_authoring_proposal.gd'
+      - 'godot/tests/test_art_owned_transport.gd'
+      - 'godot/tests/test_art_creative_cohort.gd'
+      - 'godot/tests/run_art_collaborative.gd'
+      - 'godot/data/art_collaborative_briefs.json'
+      - 'tools/ci/run_art_collaborative_gates.py'
+      - 'tools/ci/run_art_collaborative.py'
+      - 'tools/package_art_collaborative.py'
+      - 'tools/ci/test_art_collaborative_packaging.py'
+      - 'docs/operations/art-workbench-collaborative-evaluation.md'
       - 'godot/scripts/art_batch_panel.gd'
       - 'godot/scripts/art_conversation_editor.gd'
       - 'godot/scripts/art_conversation_text_edit.gd'
@@ -77,6 +90,7 @@ jobs:
           mkdir -p evidence
           python3 tools/ci/test_art_evaluator_qualification_scope.py > evidence/application-qualification-tests.log 2>&1
           python3 tools/ci/test_art_evaluator_packaging.py > evidence/evaluator-packaging-tests.log 2>&1
+          python3 tools/ci/test_art_collaborative_packaging.py > evidence/collaborative-packaging-tests.log 2>&1
       - name: Prove reuse or require full application qualification
         id: scope
         shell: bash
@@ -95,9 +109,9 @@ jobs:
   linux:
     needs: qualification-scope
     if: needs.qualification-scope.outputs.reuse != 'true'
-    name: Linux 4.7 native and displayed Art Workbench
+    name: Linux 4.7 native and displayed collaborative Art
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -151,6 +165,11 @@ jobs:
           done
           python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output evidence/art-final-process-exit --group preparation-exit
           python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output evidence/art-final-request-exit --group request-preparation-exit
+      - name: Execute fresh collaborative native and owner-control gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_art_collaborative_gates.py --godot "$GODOT" --project godot --output evidence/art-collaborative-headless
       - name: Exercise displayed Godot UI and native authoring
         shell: bash
         run: |
@@ -189,6 +208,9 @@ jobs:
               display_failed=1
             fi
           done
+          if ! xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/ci/run_art_collaborative_gates.py --godot "$GODOT" --project godot --output evidence/art-collaborative-displayed --graphical; then
+            display_failed=1
+          fi
           if [ "$display_failed" -ne 0 ]; then exit 1; fi
       - name: Retain evidence
         if: always()
@@ -199,12 +221,14 @@ jobs:
           if-no-files-found: warn
   windows:
     needs: qualification-scope
-    name: Windows 4.7 displayed Art and installed evaluator
+    name: Windows 4.7 collaborative Art and installed evaluator
     runs-on: windows-2022
     # Software ANGLE advances nonblocking 64 KiB reads with displayed frames.
     # Allow all finite large-body groups and installed-launcher gates to finish;
     # individual two-second frame/cancellation checks remain unchanged.
-    timeout-minutes: 45
+    # Added finite native creative/direct pairs retain their 1800-second case
+    # allowance; existing two-second interaction gates are unchanged.
+    timeout-minutes: 120
     steps:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -311,6 +335,18 @@ jobs:
             }
           }
           if ($displayedFailures.Count -gt 0) { throw ('Displayed qualification failures: ' + ($displayedFailures -join '; ')) }
+      - name: Execute fresh collaborative native and displayed owner-control gates
+        if: needs.qualification-scope.outputs.reuse != 'true'
+        shell: pwsh
+        run: |
+          python tools/ci/test_art_collaborative_packaging.py *> evidence/collaborative-packaging-tests.log
+          if ($LASTEXITCODE -ne 0) { throw 'Collaborative package boundary regression failed' }
+          $failures = [System.Collections.Generic.List[string]]::new()
+          python tools/ci/run_art_collaborative_gates.py --godot $env:GODOT_EXE --project godot --output evidence/art-collaborative-headless
+          if ($LASTEXITCODE -ne 0) { $failures.Add('headless collaborative gates') }
+          python tools/ci/run_art_collaborative_gates.py --godot $env:GODOT_EXE --project godot --output evidence/art-collaborative-displayed --graphical
+          if ($LASTEXITCODE -ne 0) { $failures.Add('displayed collaborative gates') }
+          if ($failures.Count -gt 0) { throw ('Collaborative qualification failed: ' + ($failures -join '; ')) }
       - name: Download verified application qualification decision
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -356,29 +392,31 @@ jobs:
           ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
           $qualification = Join-Path $env:GITHUB_WORKSPACE 'evidence/qualification-scope/application-qualification-reuse.json'
-          python tools/package_art_workbench_final.py build --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --qualification-source $qualification --output build/art-workbench-final-windows
+          $headless = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-collaborative-headless/summary.json'
+          $displayed = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-collaborative-displayed/summary.json'
+          python tools/package_art_collaborative.py build --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --qualification-source $qualification --headless-receipt $headless --displayed-receipt $displayed --output build/art-workbench-collaborative-002-windows
           if ($LASTEXITCODE -ne 0) { throw 'Art evaluator packaging refused' }
-          python tools/package_art_workbench_final.py zip --output build/art-workbench-final-windows
+          python tools/package_art_collaborative.py zip --output build/art-workbench-collaborative-002-windows
           if ($LASTEXITCODE -ne 0) { throw 'Art evaluator archive refused' }
       - name: Exercise actual delivered launcher from an extracted installation
         shell: pwsh
         working-directory: packaging-source
         run: |
           $installationRoot = Join-Path $env:RUNNER_TEMP 'Art Evaluator Fresh Installation'
-          Expand-Archive -Path build/art-workbench-final-windows.zip -DestinationPath $installationRoot
-          $package = Join-Path $installationRoot 'art-workbench-final-windows'
+          Expand-Archive -Path build/art-workbench-collaborative-002-windows.zip -DestinationPath $installationRoot
+          $package = Join-Path $installationRoot 'art-workbench-collaborative-002-windows'
           $installedEvidence = Join-Path $env:GITHUB_WORKSPACE 'evidence/installed-evaluator'
-          python tools/package_art_workbench_final.py smoke --output $package --evidence $installedEvidence
+          python tools/package_art_collaborative.py smoke --output $package --evidence $installedEvidence
           if ($LASTEXITCODE -ne 0) { throw 'Installed Art evaluator failed' }
           ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence (Join-Path $installedEvidence 'runtime-modules.json')
       - name: Retain qualified Windows evaluator
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: art-workbench-final-windows-${{ github.event.pull_request.head.sha || github.sha }}
+          name: art-workbench-collaborative-002-windows-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
-            packaging-source/build/art-workbench-final-windows.zip
-            packaging-source/build/art-workbench-final-windows.zip.sha256
+            packaging-source/build/art-workbench-collaborative-002-windows.zip
+            packaging-source/build/art-workbench-collaborative-002-windows.zip.sha256
           if-no-files-found: error
       - name: Retain evidence
         if: always()

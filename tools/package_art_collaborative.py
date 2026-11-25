@@ -13,6 +13,8 @@ import json
 from pathlib import Path
 import sys
 import zipfile
+import shutil
+import subprocess
 
 import package_art_workbench_final as retained
 
@@ -24,6 +26,103 @@ PROGRAMME = "ART-WORKBENCH-COLLABORATIVE-002"
 GUIDE = "docs/operations/art-workbench-collaborative-evaluation.md"
 QUALIFICATION_DIR = "qualification"
 PACKAGED_TOOLS = ("tools/package_art_collaborative.py", "tools/ci/run_art_collaborative_gates.py")
+
+
+SCENARIO_IDS = (
+    "industrial_repair", "structural_facade", "scifi_interior", "revised_arcology",
+    "protected_courtyard", "palette_foundry", "stopped_workshop", "staged_megaframe", "xeno_vault",
+)
+EXAMPLE_SUFFIXES = (
+    "before-native.png", "after-native.png", "before-workbench.png", "after-workbench.png",
+    "editable-setup.json", "result.json", "original-native-receipts.json", "direct-original-native-receipts.json",
+)
+EXAMPLE_DIRECTORY = "examples/art-collaborative-evaluated"
+MAX_EXAMPLE_FILE_BYTES = 16 * 1024 * 1024
+MAX_EXAMPLE_TOTAL_BYTES = 256 * 1024 * 1024
+
+
+def stage_example_artifacts(output: Path, receipt_path: Path, displayed: dict) -> dict:
+    """Copy only the declared synthetic-fixture native results, never a profile."""
+    case = next(item for item in displayed["cases"] if item["name"] == "test_art_collaborative_native")
+    source_dir = receipt_path.parent / "test_art_collaborative_native"
+    hashes = case.get("artifacts_sha256", {})
+    names = [f"{index:02d}-{name}-{suffix}"
+             for index, name in enumerate(SCENARIO_IDS) for suffix in EXAMPLE_SUFFIXES]
+    names.append("creative-native-summary.json")
+    target_dir = output / EXAMPLE_DIRECTORY
+    target_dir.mkdir(parents=True)
+    total = 0
+    verified = {}
+    for name in names:
+        source = source_dir / name
+        if source.is_symlink() or not source.is_file() or source.stat().st_size > MAX_EXAMPLE_FILE_BYTES:
+            raise ValueError("Required bounded native example is missing or unsafe: " + name)
+        total += source.stat().st_size
+        if total > MAX_EXAMPLE_TOTAL_BYTES:
+            raise ValueError("Native example cohort exceeds its package budget")
+        actual = retained.sha(source)
+        if hashes.get(name) != actual:
+            raise ValueError("Native example differs from the displayed qualification receipt: " + name)
+        if source.suffix == ".png":
+            with source.open("rb") as stream:
+                if stream.read(8) != b"\x89PNG\r\n\x1a\n":
+                    raise ValueError("Native example image is not a PNG: " + name)
+        else:
+            if not isinstance(json.loads(source.read_text(encoding="utf-8")), (dict, list)):
+                raise ValueError("Native example JSON has no object/array document: " + name)
+        shutil.copyfile(source, target_dir / name)
+        verified[EXAMPLE_DIRECTORY + "/" + name] = actual
+    labels = {f"art02-{name}": f"{index:02d}-{name}-editable-setup.json"
+              for index, name in enumerate(SCENARIO_IDS)}
+    lines = [
+        "@echo off", "setlocal",
+        'set "ART_EXAMPLE_DEST=%~dp0profile\\Godot\\app_userdata\\Cyber Sand Reference Sandbox\\workbench"',
+        'if not exist "%ART_EXAMPLE_DEST%" mkdir "%ART_EXAMPLE_DEST%"',
+        "if errorlevel 1 exit /b 1",
+    ]
+    for label, name in labels.items():
+        lines += [
+            'if not exist "%ART_EXAMPLE_DEST%\\setup-' + label + '.json" copy /b "%~dp0examples\\art-collaborative-evaluated\\' + name + '" "%ART_EXAMPLE_DEST%\\setup-' + label + '.json" >nul',
+            "if errorlevel 1 exit /b 1",
+        ]
+    lines += ["echo Evaluated starts installed without replacing existing saved starts.",
+              "echo In Workbench, enter one of these names and click Load start:"]
+    lines += ["echo " + label for label in labels]
+    lines += ["exit /b 0"]
+    (output / "Install evaluated starts.cmd").write_bytes(("\r\n".join(lines) + "\r\n").encode("utf-8"))
+    readme = (
+        "# Evaluated native examples\n\n"
+        "These are exact deterministic-fixture outputs from the displayed Windows "
+        "qualification of this package source. They are editable ordinary Setup-v2 "
+        "authored starts, not runtime continuation or model-generated creative evidence.\n\n"
+        "Close the Workbench, double-click **Install evaluated starts.cmd**, open "
+        "**Open Workbench.cmd**, enter a name below in Workbench's setup-name field, "
+        "then click **Load start**. Existing saved starts of the same name are preserved.\n\n"
+        + "\n".join("- " + label for label in labels)
+        + "\n\nEach later start includes the earlier atlas constructions. "
+        "The per-case result identifies its focus region. Native PNGs encode actual "
+        "material observations; Workbench PNGs are actual rendered framebuffers. "
+        "Native receipts record acknowledged work, including partial/refused outcomes. "
+        "The paired direct controls are deterministic fixed-geometry comparisons, "
+        "not evidence of a causal retrieval or real-model creativity improvement.\n"
+    )
+    (target_dir / "READ-ME.md").write_text(readme, encoding="utf-8")
+    return {"kind": "actual native deterministic fixture outputs", "model_calls": 0,
+            "scenario_ids": list(SCENARIO_IDS), "setup_labels": labels,
+            "original_files_sha256": verified, "original_bytes": total,
+            "source_receipt": "qualification/collaborative-displayed.json"}
+
+
+def verify_installed_examples(output: Path, identity: dict) -> dict:
+    directory = output / "profile/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench"
+    checked = {}
+    for label, filename in identity["creative_examples"]["setup_labels"].items():
+        source = output / EXAMPLE_DIRECTORY / filename
+        destination = directory / ("setup-" + label + ".json")
+        if not destination.is_file() or retained.sha(destination) != retained.sha(source):
+            raise ValueError("Actual evaluated-starts CMD did not install the exact named setup: " + label)
+        checked[label] = retained.sha(destination)
+    return {"actual_installer": True, "package_local_only": True, "setups_sha256": checked}
 
 
 def receipt(path: Path, commit: str, tree: str, graphical: bool, check_logs: bool = True) -> dict:
@@ -85,7 +184,8 @@ def build(args: argparse.Namespace) -> dict:
     console = output / "Godot_v4.7-stable_win64_console.exe"
     if headless["runtime"]["godot_sha256"] != retained.sha(console):
         raise ValueError("Qualified Godot differs from delivered console engine")
-    identity.update(programme=PROGRAMME,
+    creative_examples = stage_example_artifacts(output, args.displayed_receipt, displayed)
+    identity.update(programme=PROGRAMME, creative_examples=creative_examples,
         collaborative_qualification={
             "kind": "fresh source-exact deterministic fixture application",
             "source_commit": source, "source_tree": tree, "model_calls": 0,
@@ -124,6 +224,15 @@ def verify(output: Path) -> dict:
         values.append(receipt(output / relative, identity["source_commit"], identity["source_tree"],
                               graphical, check_logs=False))
     validate_pair(*values)
+    examples = identity.get("creative_examples", {})
+    if examples.get("scenario_ids") != list(SCENARIO_IDS) or examples.get("model_calls") != 0:
+        raise ValueError("Native example cohort identity differs")
+    native_case = next(case for case in values[1]["cases"] if case["name"] == "test_art_collaborative_native")
+    expected_names = [f"{index:02d}-{name}-{suffix}" for index, name in enumerate(SCENARIO_IDS) for suffix in EXAMPLE_SUFFIXES]
+    expected_names.append("creative-native-summary.json")
+    expected = {EXAMPLE_DIRECTORY + "/" + name: native_case.get("artifacts_sha256", {}).get(name) for name in expected_names}
+    if examples.get("original_files_sha256") != expected or any(identity["files_sha256"].get(name) != digest for name, digest in expected.items()):
+        raise ValueError("Native example files are not bound to displayed original evidence")
     for relative in (retained.NATIVE, retained.retained.RAPIER):
         if values[0]["runtime"]["payloads"].get(relative) != retained.sha(output / relative):
             raise ValueError("Delivered runtime differs from application qualification")
@@ -156,7 +265,12 @@ def main() -> None:
             parser.error("smoke requires evidence")
         verify(args.output)
         retained.smoke(args)
-        verify(args.output)
+        with (args.evidence / "installed-examples.log").open("w", encoding="utf-8") as stream:
+            subprocess.run(["cmd.exe", "/d", "/c", str(args.output.resolve() / "Install evaluated starts.cmd")],
+                           cwd=args.output, stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=30)
+        identity = verify(args.output)
+        result = verify_installed_examples(args.output, identity)
+        (args.evidence / "installed-examples.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     elif args.command == "zip":
         identity = verify(args.output)
         destination = args.output.with_suffix(".zip")

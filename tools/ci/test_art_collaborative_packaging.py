@@ -50,6 +50,24 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
             value = fixture(graphical)
             self.assertIs(self.validate(value, graphical), value)
 
+    def test_integer_zero_failure_count_is_accepted_without_rewriting(self):
+        value = fixture()
+        value["cases"][1]["result"]["failures"] = 0
+        self.assertIs(self.validate(value), value)
+        marker = "ZERO_FAILURES"
+        self.assertEqual(gates.parse_case_output(marker + ' {"checks":3,"failures":0}', marker)["failures"], 0)
+
+    def test_failure_and_check_types_do_not_coerce_booleans_or_strings(self):
+        for bad in (False, True, 0.0, "0", {}, None):
+            value = fixture()
+            value["cases"][0]["result"]["failures"] = bad
+            with self.subTest(failures=bad), self.assertRaises(ValueError):
+                self.validate(value)
+        value = fixture()
+        value["cases"][0]["result"]["checks"] = True
+        with self.assertRaises(ValueError):
+            self.validate(value)
+
     def test_incomplete_or_duplicate_case_inventory_refuses(self):
         for mutation in ("missing", "duplicate", "unknown"):
             value = fixture()
@@ -127,6 +145,24 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
             with self.subTest(content=content[:40]), self.assertRaises((ValueError, json.JSONDecodeError)):
                 gates.parse_case_output(content, marker)
 
+    def test_success_marker_cannot_hide_script_or_resource_errors(self):
+        marker = "FIXTURE_RESULT"
+        success = marker + ' {"checks":5,"failures":[]}'
+        for signature in ("SCRIPT ERROR:", "Parse Error:", "Failed to load script",
+                          "Failed loading resource:", "Error loading resource:"):
+            with self.subTest(signature=signature), self.assertRaises(ValueError):
+                gates.parse_case_output(signature + " retained negative\n" + success, marker)
+
+    def test_untracked_source_guard_only_exempts_declared_generated_outputs(self):
+        status = "\0".join([
+            "?? evidence/case/summary.json", "?? godot/scripts/example.gd.uid",
+            "?? godot/shaders/example.gdshader.uid", "?? godot/scripts/foreign.gd",
+            "?? tools/ci/foreign.py", "?? foreign_root.py", "?? build/foreign.py",
+            "?? docs/unchecked-guide.md", ""])
+        self.assertEqual(gates.untracked_source_rows(status), [
+            "?? godot/scripts/foreign.gd", "?? tools/ci/foreign.py", "?? foreign_root.py",
+            "?? build/foreign.py", "?? docs/unchecked-guide.md"])
+
     def test_packager_requires_complete_original_logs(self):
         value = fixture()
         with tempfile.TemporaryDirectory() as directory:
@@ -150,6 +186,59 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
             log.unlink()
             with self.assertRaises(ValueError):
                 package.receipt(path, COMMIT, TREE, False)
+
+    def _creative_artifacts(self, root: Path) -> tuple[Path, dict]:
+        path = root / "evidence/summary.json"
+        source = path.parent / "test_art_collaborative_native"
+        source.mkdir(parents=True)
+        value = fixture(True)
+        native = next(case for case in value["cases"] if case["name"] == "test_art_collaborative_native")
+        native["artifacts_sha256"] = {}
+        names = [f"{index:02d}-{name}-{suffix}" for index, name in enumerate(package.SCENARIO_IDS)
+                 for suffix in package.EXAMPLE_SUFFIXES] + ["creative-native-summary.json"]
+        for name in names:
+            data = b"\x89PNG\r\n\x1a\nsynthetic unit bytes" if name.endswith(".png") else json.dumps({"synthetic_unit_fixture": name}).encode()
+            (source / name).write_bytes(data)
+            native["artifacts_sha256"][name] = hashlib.sha256(data).hexdigest()
+        return path, value
+
+    def test_only_declared_creative_artifacts_are_packaged(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path, value = self._creative_artifacts(root)
+            source = path.parent / "test_art_collaborative_native"
+            (source / "unrelated-private-profile.json").write_text('{"must_not_copy":true}')
+            output = root / "package"
+            output.mkdir()
+            result = package.stage_example_artifacts(output, path, value)
+            self.assertEqual(len(result["original_files_sha256"]), len(package.SCENARIO_IDS) * len(package.EXAMPLE_SUFFIXES) + 1)
+            self.assertFalse((output / package.EXAMPLE_DIRECTORY / "unrelated-private-profile.json").exists())
+            installer = (output / "Install evaluated starts.cmd").read_text()
+            self.assertEqual(installer.count('if not exist "%ART_EXAMPLE_DEST%\\setup-'), 9)
+            self.assertNotIn("http", installer)
+            self.assertTrue(installer.count("%~dp0profile") == 1)
+            for label, name in result["setup_labels"].items():
+                self.assertLessEqual(len(label), 48)
+                self.assertTrue((output / package.EXAMPLE_DIRECTORY / name).is_file())
+
+    def test_missing_or_changed_native_example_refuses(self):
+        for mutation in ("missing", "changed", "unhashed"):
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                path, value = self._creative_artifacts(root)
+                name = "00-industrial_repair-after-native.png"
+                source = path.parent / "test_art_collaborative_native" / name
+                if mutation == "missing":
+                    source.unlink()
+                elif mutation == "changed":
+                    source.write_bytes(b"changed")
+                else:
+                    native = next(case for case in value["cases"] if case["name"] == "test_art_collaborative_native")
+                    native["artifacts_sha256"].pop(name)
+                output = root / "package"
+                output.mkdir()
+                with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                    package.stage_example_artifacts(output, path, value)
 
     def test_graphical_receipt_requires_actual_ui_backend_field(self):
         value = fixture(True)

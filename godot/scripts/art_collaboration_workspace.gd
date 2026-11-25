@@ -199,6 +199,7 @@ func _button(parent: Control, text: String, callback: Callable) -> Button:
 
 func _reader(parent: Control, editor: TextEdit) -> void:
 	editor.editable = false
+	editor.add_theme_color_override("font_readonly_color", Color(0.88,0.92,0.96))
 	editor.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	editor.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	editor.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -289,11 +290,12 @@ func _build_brief() -> void:
 	_label(body, "Preserve these native rectangles")
 	preserve.custom_minimum_size.y = 56
 	body.add_child(preserve)
-	row = HBoxContainer.new()
-	_button(row, "Protect selection", func() -> void: selection_requested.emit("preserve"))
-	_button(row, "Use selection as focus", func() -> void: selection_requested.emit("focus"))
-	_button(row, "Remove selected protection", _remove_preserve)
-	body.add_child(row)
+	var selection_actions := HFlowContainer.new()
+	_button(selection_actions, "Focus viewport", func() -> void: selection_requested.emit("viewport"))
+	_button(selection_actions, "Use selection", func() -> void: selection_requested.emit("focus"))
+	_button(selection_actions, "Protect selection", func() -> void: selection_requested.emit("preserve"))
+	_button(selection_actions, "Remove protection", _remove_preserve)
+	body.add_child(selection_actions)
 	brief_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	brief_notice.max_lines_visible = 2
 	box.add_child(brief_notice)
