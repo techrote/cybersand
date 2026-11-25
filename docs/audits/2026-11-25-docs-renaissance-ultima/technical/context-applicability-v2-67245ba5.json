@@ -1,0 +1,928 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "review_date": "2026-11-25",
+  "source_head": "67245ba5456956c86c6360e7cf54258f15068feb",
+  "source_tree": "7bcc1791eb206fad6a00859b05c45a1c540dcc18",
+  "input_packet_sha256": "04f2427c1a51fb000cc1ca8005aa18d4cb1547256f0357e25d81690d5bc3a71e",
+  "fixture_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+  "method": "source-bound-field-bm25-v2",
+  "source_identity": {
+    "schema": 1,
+    "method": "source-bound-field-bm25-v2",
+    "policy": "historical-isolation-v4",
+    "historical": false,
+    "max_words": 420,
+    "manifest_sha256": "d58641656500401b5815d9b64767dedd3142e67ada6dc572f1b7b226ea677c1a",
+    "helpers": {
+      "knowledge_retrieval.py": "d92d14c178b13af99c902a66f22f4349e9b297a5ae972e22ebd0fcffd1206e00",
+      "retrieval_eval.py": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+      "retrieval_policy.py": "ab2eca7e2be79cda5741d7c3896aaeb9c603ca30ffdf27786afef4afb004f158"
+    },
+    "source_fingerprint": "2d5fda0b6707077babf643a10d71f30da5932fd87654ef4339cb51d972610770"
+  },
+  "review_scope": "Independent paired actual-context review of DR13\u201324. Nine newly selected passages were read in full;51remaining passages are byte-identical to previously fully reviewed v1 contexts. Two ordered sets are identical and two only reordered. No retriever implementation, generative model or frozen fixture change was made by this review.",
+  "summary": {
+    "questions": 12,
+    "passages": 60,
+    "first_pass_sufficient": 11,
+    "first_pass_partial": 1,
+    "wrong_context_questions": 0,
+    "wrong_authority_questions": 0,
+    "explicit_source_follow_executions": 1,
+    "sufficient_after_explicit_follow": 12,
+    "generated_answers_evaluated": 0
+  },
+  "source_identity_sha256": "e74de30c920b01c267738b15b80b36e4ae36874d0c0cdc131f6d85f31ad259d3",
+  "functional_source_head": "67245ba5456956c86c6360e7cf54258f15068feb",
+  "functional_source_retrieval_identity_equal": true,
+  "identity_digest_encoding": "JSON sorted keys, compact separators, ASCII escaping",
+  "unmeasured": [
+    "Generated-model answer accuracy and unsupported-model-claim rates were not measured.",
+    "Manual explicit source-follow result is reported separately; it does not convert top-five partial into first-pass sufficient or claim autonomous agent execution."
+  ],
+  "prior_v1_review_sha256": "098aaea422bbaeeea22aaaa3aaf96444a1d028dc0cab8a16e93f9f0df6fc1421",
+  "results": [
+    {
+      "id": "DR13",
+      "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+      "required_facts": [
+        "Queue acceptance is not native application or visible publication.",
+        "Follow native acknowledgements and applicable session/generation/sequence identity before claiming applied state."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "All required facts are present: queue admission differs from native application and visible publication, with session/generation/sequence and completion evidence.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "be607c6af2e6b5b920908205cc95f7dc0af7e419c88b99a6819f4758e0221ba6",
+          "path": "systems/workbench-direct-art-batches.md",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Ownership, capacities and completion",
+          "source_sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+          "context_sha256": "5ee1c8315124b3db232ad98f4fe37d7a4cf45cc03c06dde439c87582f573cdbb",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct core facts: native ownership and receipt identity."
+        },
+        {
+          "rank": 2,
+          "id": "e6415a156b828cd55c03129adc5217b23d6ea858db3cdadab3e8da8c4703228e",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Provider/native boundary and Stop",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+          "context_sha256": "6ba0852c9aaf22f437b029e8e6191a4a1dbaf000631ad2f81c166ab3ca2d8a4a",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct completion/Stop boundary."
+        },
+        {
+          "rank": 3,
+          "id": "5dfdb67eb7a5d88e2c6708b349b7713704ba6f8d09453b3786fffbb203d32886",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "source_sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269",
+          "context_sha256": "970e993cf1d27543f5ee0da90bca99fa1ea6e7e651b2c70f9104b1310d506f8b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting distinctions for applied/displayed diagnostics."
+        },
+        {
+          "rank": 4,
+          "id": "86b86f3f81a128c57d675d0d78a84dc3e9c2e7474bc7d35ed025a92dd81e5882",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Source and verification scope",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "3b75855ed5301fb194b4c3d56724ef252bb699ecc5cf0c555dd9ef6aaa5fa86b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting source-qualified user route."
+        },
+        {
+          "rank": 5,
+          "id": "0ce372f67cfeb08b3386783e48f59972c739c9c37d2d075c3772705098b91895",
+          "path": "reference/interfaces-and-message-contracts.md",
+          "heading": "Interfaces and message contracts > Physical actor control and effects > Retained direct physical effects",
+          "source_sha256": "c6b6bc3d060a0ade58daa526316693d30f1887e4e3b70d987e248fd45873de9f",
+          "context_sha256": "72398555c798cb8fe9340546db8fe8ccb6daea599fc12069e7a8508804df7430",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Physical actor effect/coupling admission is a separate interface and not used to infer Art completion. The direct Art/provider passages still give both required facts."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR14",
+      "query": "If I press Stop during a long paint or Art operation, does that roll back everything already applied?",
+      "required_facts": [
+        "Stop cancels pending work according to the contract; already applied work can remain.",
+        "Report partial native receipts/history outcomes and use supported Undo where applicable; do not promise rollback."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "Stop can leave a confirmed prefix; actual receipts and settled shared history support bounded Undo rather than rollback.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "157dea0ba3b737d5f76333f3912665fc55e275df7c882aee85df1ff05294b1e3",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Stop, Hide and native results",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "5514cd91df07485c20ee86654602a36065a22663873c8e1c5b04151e7ebeb4ae",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct Stop/partial/Undo answer."
+        },
+        {
+          "rank": 2,
+          "id": "0baba36f5db783923578a593abc97bf559c85c9b6be096662c23f9ac2866ccaa",
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Shared agent and manual Undo/Redo \u2014 current implementation",
+          "source_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+          "context_sha256": "6174a2a51f60b3d2446d26c01362a807c952c2a69f2f89a24a7205fcbb2d2e18",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct chronological shared-history constraints."
+        },
+        {
+          "rank": 3,
+          "id": "fa8b3d3f6647fd23a4723a2f6568de4026187e80b76c3ed18f218dbd30d9f616",
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "heading": "PAINT-001 \u2014 bounded painting editor > Ownership and native execution",
+          "source_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+          "context_sha256": "1a5b34197b9c52ddfd378b5f02c133f929d72de1b3a83e48217fde451239ebaf",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting manual painting completion and partial boundaries."
+        },
+        {
+          "rank": 4,
+          "id": "b97263c2b48fab364bce6875fb2add4fd0beadd9f5a15bd20de5fee1897deeaf",
+          "path": "systems/player-control-playground.md",
+          "heading": "Player control playground > Acrobat movement chains and cancels",
+          "source_sha256": "06267c18af62ab933c9b0349aa0940e91121da5b8f54c8e082af3b2e412347da",
+          "context_sha256": "d8914151dc324a32ffa4f7e5e5c618c8f23b8542456219e3b9fd332961893401",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Unrelated actor movement-chain cancellation; not used to infer Art rollback."
+        },
+        {
+          "rank": 5,
+          "id": "691496851d81d36c03b630df99f4275b61bd455d28f30c73ba3b2f9f8e513866",
+          "path": "systems/workbench-direct-art-batches.md",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Save semantics and existing format boundary",
+          "source_sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+          "context_sha256": "9e64a54649ed9d746856804e1391d90742d89c0c2932681dba65f797fd29ef80",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Explicitly preserves confirmed prefix after Stop and excludes cancelled tail from Save/reopen; reinforces no total rollback promise."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR15",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "required_facts": [
+        "Authored setup/layout persistence differs from exact evolved physical continuation.",
+        "Do not promise all live actors, queues or provider/conversation state; consult explicit format and separate checkpoint contracts."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "Authored start versus exact physical continuation and session-local Art lifetime are explicit in the supplied passages.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "dfc651a2eaffe3086116c79d2ac5d38aabc915b7b03f0ed631b7e8e728cabf6f",
+          "path": "reference/level-saves-and-replay.md",
+          "heading": "Level saves and exact replay > Authored Save and physical continuation",
+          "source_sha256": "3f40b00906d08488a46221df6a9a5f6ff3efd430f35203c0bd9a7a2f6d0c9884",
+          "context_sha256": "a13b753b3aa2fe436c5afc486f9a4a942ed885df181e6d945ab02a0f71b1c16e",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct authored/physical continuation distinction."
+        },
+        {
+          "rank": 2,
+          "id": "87e094cea700346268bd39d17449e746218e83c945d5073cd2a7832bb38094ad",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Lazy reopening and traffic storage",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+          "context_sha256": "cf9995e8de0f126656e2ed99df20c359b81e0b087bec9c53af954d7ef532b0e3",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Compatibility heading; body supplies current session-only boundary."
+        },
+        {
+          "rank": 3,
+          "id": "9729d68b9490ae542617bef5bdb56bc0a14fa0bf92874d00bd43868122001dbb",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "cfed6c7231c0ce3f540ba2e064e88b62646ba9d016cebdef20c08e5b40c715ef",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct current Art session lifetime."
+        },
+        {
+          "rank": 4,
+          "id": "434672e647e545f196154aab42ee833fbf0baa00b8854e1c34ed6723e23a5cfb",
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Close and reopen",
+          "source_sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+          "context_sha256": "1b3f7f3ffa71ae0929e24778b6bd6f64b816afab1400a14812370d434a109d4b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct fresh-session reconstruction and omitted state."
+        },
+        {
+          "rank": 5,
+          "id": "357a8ad0632e2035be4b20049cdcb4107464db0504988071df2d43edaba3a080",
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Current implementation map",
+          "source_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+          "context_sha256": "af1ca1a968adc1581c608ff3b42db57cd0ed654917ed06d9618153251aaea25e",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Accepted implementation map distinguishes authored persistence from full physical checkpoint and session-only Art conversation."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR16",
+      "query": "What does Flatten Bake History store, and should plants stop growing automatically afterwards?",
+      "required_facts": [
+        "The material baseline stores uint16 material identities, two bytes per cell, without preserving full live simulation metadata.",
+        "Flatten history and authored Save are distinct; do not promise plant energy reset or exact physical continuation unless source implements it."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "The material-only two-byte identity plane, ongoing live World, separate Save and fresh plant initialization are explained; the contexts do not promise freezing plant growth.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "bbd9b1443857fb3ca73171241185bd26e6a23b04dbe2329e1c04b2c34077d7b2",
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > Windows owner acceptance",
+          "source_sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+          "context_sha256": "3c4f441ebdf17048427d57cd8fe645ff5f53d1456dc4ce462d4dab4dd8af54be",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting owner check distinguishes IDs, live state and reopen."
+        },
+        {
+          "rank": 2,
+          "id": "c60cae53daa22c2811be05acc789870b3713df9217fafeb19fd5a57aaaa83192",
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "source_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+          "context_sha256": "fceb7327cd48d2f24f5c89a6f8ba48296ba62e1e6368fbc16983a5590d03e6b0",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Corrected passage explicitly distinguishes unmerged ULTIMA verified closed-byte/native replacement from predecessor Godot rename, while retaining authored/live/history/session boundaries. Former stale claim is absent."
+        },
+        {
+          "rank": 3,
+          "id": "2a5dd5440a3d54bfad443d9b8350073af5995ac4a9ea682fa09592196f5b0d49",
+          "path": "operations/workbench-saving.md",
+          "heading": "Saving authored worlds > Capture a changed material layout with Flatten",
+          "source_sha256": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a",
+          "context_sha256": "caa2a5d9f8bcf071c41d7373c49e59610c5fc5b9c6bc8502c4f3dce0d8415068",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct Flatten/Save and plant/live-state answer."
+        },
+        {
+          "rank": 4,
+          "id": "a1455c125c69c935a562c9a81b006c1a44e2e4c0cf2c06cbb96c55d2ddb94d2c",
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Save what you mean",
+          "source_sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+          "context_sha256": "ce72e22c3b0fd13648a1eb75c5fb2278c770e543889613847e18ec32b76a663a",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting task-level Save/Flatten boundary."
+        },
+        {
+          "rank": 5,
+          "id": "328623a30a80f02cd94b8588a11383cbf4835e3d5d53f9d2f7f9035420f14ab9",
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > How does authoring become a running scene?",
+          "source_sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+          "context_sha256": "426df7d9775bf329673b848002820961dd130b5ecc76071d5ea9114d6fbdd913",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Explicit material-only Flatten, unchanged live World/Rapier and separate Save; no complete continuation."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR17",
+      "query": "Are eighty Genteks current, and what are Gentek, Variant, Preset and Composition?",
+      "required_facts": [
+        "Accepted catalogue and controls are source-backed and separate from unmerged SWARM negotiation.",
+        "Use the owner terminology without implying live Workbench Gentek rule authoring or every future Composition capability."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "Accepted eighty-Gentek catalogue, legacy/other controls and vocabulary are distinguished from unmerged negotiation and future authoring.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "6c7027da2dcded1ed6ce0e11ceba39194811fc929f8eeb1d03c48139838cb236",
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Choose a Gentek and its parameters",
+          "source_sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573",
+          "context_sha256": "add9f8d8a3816f61d4bdff4825915d0c868b54d6467820d33ae3725f3a0ec527",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct catalogue counts and controls."
+        },
+        {
+          "rank": 2,
+          "id": "b42ef440c3a14db147e99f62d6ce6c0db9c39123c1ff930d97ae3247844a27f6",
+          "path": "reference/glossary.md",
+          "heading": "Glossary > Authoring and acceptance",
+          "source_sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+          "context_sha256": "11d96620d13e2512d6db2f110a925188beed0c1ed3e08ab978876ca296751ee3",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct Gentek/Variant/Preset/Composition terminology."
+        },
+        {
+          "rank": 3,
+          "id": "f35279bd2454586a38669241da2357d64a2a835f6e7c6ed8dad7713136fc2c43",
+          "path": "operations/gentek80-evaluation.md",
+          "heading": "GENTEK 80 \u2014 Windows evaluation",
+          "source_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+          "context_sha256": "4ad9b5e2fad2ce2c80ed62cce6e5fe5618cfe720f1ec2d56cbca9137607c42b3",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting dated evaluator scope."
+        },
+        {
+          "rank": 4,
+          "id": "dd98d8d4669c824962106418158f6f1bb9e8a57f1a1298f591d4a322eb616b87",
+          "path": "systems/architectural-generator.md",
+          "heading": "Architectural Generator \u2014 Phase A and bounded Phase B",
+          "source_sha256": "33b98ea01957c4627788519f5b4891e7b2edc187c509e80d08a57f873bb75e53",
+          "context_sha256": "e27c243b61f879a99e5a7478b2bc58ac86991dabc25327e803a65112ac9fbed0",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Accepted80-Gentek foundation, exact authoring terminology, bounded composition and separate pending SWARM are all explicit."
+        },
+        {
+          "rank": 5,
+          "id": "703c6cc8e9c15486e919e3535ed120da59631a9711f1e9574ad0159d0be58de2",
+          "path": "operations/showcase-guide.md",
+          "heading": "Explore the showcases > Native architectural variation",
+          "source_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+          "context_sha256": "f2b4a185e3beb163f465d8943e8b0251d1ca14a4b23811857a45e08d26250e0d",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting representative accepted native-generation scope."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR18",
+      "query": "Can I use reciprocal SWARM-004/005/006 negotiation in accepted main because a candidate has passing tests?",
+      "required_facts": [
+        "The consolidated SWARM candidate remains unmerged at the recorded source.",
+        "Passing candidate tests and an evaluator do not imply accepted-main availability or physical owner acceptance."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "The status register explicitly identifies SWARM #729 as an active unmerged candidate; green candidate tests are not acceptance.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "bb11a496cf5339d1c7204d6e27d6f380cf4fe59242ea5e0f594e0954b0b48409",
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Active candidates and integration boundaries",
+          "source_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+          "context_sha256": "3992c802923f1c9dc915faaf057959aeec2144045e014797f2e5f918b77ea5df",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct pending SWARM and integration boundary."
+        },
+        {
+          "rank": 2,
+          "id": "d972a14ce233e99341e2319ce537567d521077a7459b5f9085827d6e2227210e",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > World extent, persistence and time",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa",
+          "context_sha256": "2ee43bcd6c8eb1fd887fd5f265c0b68ada56e66c1a38c3e0129f5fe5203d4329",
+          "authority": "owner-confirmed-intent",
+          "text_changed_from_v1_set": false,
+          "review_note": "Related owner-intent scope; no SWARM acceptance assertion."
+        },
+        {
+          "rank": 3,
+          "id": "3fe89b9c40c01fad3494853da3b18c609a60c392e2884dfd6418e2139e4e6afd",
+          "path": "operations/physical-actor-programme.md",
+          "heading": "Physical actors and combined feature trials > Shared free-flight training family",
+          "source_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+          "context_sha256": "e3fbbb8e2d70217f467dce50dda202170b393e4fb0656bf9fa3db2bdddecf965",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Unrelated physical training family; not used to answer."
+        },
+        {
+          "rank": 4,
+          "id": "eb1d04e60d97a992c6d6f404e91233650e0917d66cc7817914fa38c565cb788c",
+          "path": "reference/invariants.md",
+          "heading": "Architectural and simulation invariants > Bridge invariants",
+          "source_sha256": "330c28bc57266f63fe46f3cf2d3acade2c86a97ba9f95f1402aa2c3e31e7b72a",
+          "context_sha256": "cea4cfad5c299a5933931febdd848d2ea77ff133bc8512d9b8844cd2c69b50db",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "General bridge constraints; not evidence of SWARM acceptance."
+        },
+        {
+          "rank": 5,
+          "id": "58c68196fa81d2ab62f6cc4454166846d28c79d32f5ffe00f38868b5f135d22c",
+          "path": "decisions/ADR-006-gpu-compute-deferral.md",
+          "heading": "ADR-006: GPU compute deferral > What would justify a new decision?",
+          "source_sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+          "context_sha256": "70d26fe4f6048a5637fddcb1521da2ce4a53ca4ac4d629ebaf709a7fad829b9d",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Unrelated GPU decision boundary; not used as SWARM evidence."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR19",
+      "query": "Does Shared Workbench support independent actors now, and is the later Actor Compose finisher already accepted?",
+      "required_facts": [
+        "Accepted actor composition exposes the existing model catalogue and per-instance control within its bounded contract.",
+        "Separate merged #683 from unmerged final/repair successors such as #762; do not infer availability from title."
+      ],
+      "canonical_rank": 2,
+      "first_pass": "sufficient",
+      "reason": "Accepted #683 actor composition and bounded controls are present alongside explicit pending #762 repair status.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "2c0f84bd80618f201d77839c0172ea6c0508204b47f14920ee490c5ad03e6b98",
+          "path": "systems/physical-actor-rigs.md",
+          "heading": "Articulated Rapier actors and shared physical control > Which actors are physical?",
+          "source_sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+          "context_sha256": "1ae2ce3e2dc7de6a9c0a4424d29e78250dc6b2f31d60b3032d1d55eae4f2dfe4",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting model catalogue and scene-roster distinction."
+        },
+        {
+          "rank": 2,
+          "id": "536abcfed8d6fbd39105d8be91b41741db855627e94ad2c763e5b94c3b2a5fc9",
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Implementation and scope",
+          "source_sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+          "context_sha256": "d57922388eb62ebcb73ea726f83dbbf504d03ff30f8405abb8a9e34b9d81cc26",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct accepted composition implementation and boundaries."
+        },
+        {
+          "rank": 3,
+          "id": "112db0d2c23c1756bba1d30b30935ff0949384717e4f2e2185017b752410824e",
+          "path": "operations/physical-actor-programme.md",
+          "heading": "Physical actors and combined feature trials",
+          "source_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+          "context_sha256": "8e3d83be607482c463f21d573a131e93caa2aa70b5b7c7b406ae2dc2cdca590c",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting physical-programme context."
+        },
+        {
+          "rank": 4,
+          "id": "9d570e343f2982a386abacf04038656f042e4c3f080179b19e842fd2436dfa7e",
+          "path": "operations/workbench-actor-composition.md",
+          "heading": "Mixed Actor Workshop owner procedure",
+          "source_sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+          "context_sha256": "1c8bb539c5fdfdeb7e3b22a349913fb0c971e52d521504d5d872b5368c088f1a",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct practical actor composition procedure."
+        },
+        {
+          "rank": 5,
+          "id": "f4fee3110247dd1729279e9f1a5b31a754753d9638689fd12813a9f0ebf7c40d",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > What the owner wants Workbench to become",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa",
+          "context_sha256": "68fa16e5cfbb4a3bde1eedaf1f0bc316dd041d9e377af5ca353d52b2a0b0dcd5",
+          "authority": "owner-confirmed-intent",
+          "text_changed_from_v1_set": true,
+          "review_note": "Owner intent distinguishes creative integration from implemented extent; accepted#683 and unmerged successor facts remain in technical passages."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR20",
+      "query": "Do all physical rigs accept every liquid or ballistic equipment tool?",
+      "required_facts": [
+        "Equipment has explicit actor/model/control and capacity admission; not every rig/tool combination is supported.",
+        "Distinguish accepted equipment paths from pending recovery work."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "partial",
+      "reason": "Actual equipment/model/control limits are present, but first-pass contexts do not identify the pending recovery record. A declared source route supplies that missing status in a separately measured step.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "7116bc6807c84be8ca8448b0963bfb6d8ea4754977516dcd02fd7436d3c19012",
+          "path": "systems/workbench-liquid-equipment.md",
+          "heading": "Workbench liquid equipment \u2014 valves, drain, nozzle and pump > Desktop controls",
+          "source_sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
+          "context_sha256": "82a48a3279b000e677380da12d651f4e3b4d1659acabc04a6cef4e449b224dfb",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Current liquid controls; scope says recovery is separate without identifying the pending record."
+        },
+        {
+          "rank": 2,
+          "id": "c00a4993884f73b372fd6598189a7b2405634f7a6a3dd3f4d056e4b3b11a0ee5",
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Physical equipment and material authority",
+          "source_sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+          "context_sha256": "e7038b304d3970ca9d911b05cc2f9851ed1825a50ebfec64a22473d6b3b63816",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct physical mount/material/capacity admission."
+        },
+        {
+          "rank": 3,
+          "id": "6622819ca8803cf70669bc9645aa84ac67cecc9415d654387ea2485f62162ed4",
+          "path": "systems/actor-rigs.md",
+          "heading": "Provisional actor rigs and shared control interface > Which actor rigs are available?",
+          "source_sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+          "context_sha256": "69f3ba4ca5dee6ab5b711cd1f596c67307e1608ecb79d862bc41885375953d8f",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Related control/model catalogue; no blanket equipment guarantee."
+        },
+        {
+          "rank": 4,
+          "id": "5eca5fd3c52c5ae20770aed67b9663432feeb58d46dc3c10b93a960e9e3fbf67",
+          "path": "systems/physical-actor-rigs.md",
+          "heading": "Articulated Rapier actors and shared physical control > How do I select and control them?",
+          "source_sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+          "context_sha256": "f4d01642eaeb01e02b4bee3f799fa437f543d6b36366ba67887e104eadafca57",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Actor/part/control limits; not proof of every tool combination."
+        },
+        {
+          "rank": 5,
+          "id": "53bb1f31100d9669523819b7739fa1c8aacd9fd272856271e31ef2458ba83cb8",
+          "path": "systems/thunderbowl-control-reference.md",
+          "heading": "Thunderbowl actor arena and control reference > Physical Thunderbowl v2 > Physical usable course",
+          "source_sha256": "ef1b0bb1ae9bac86a03eca944cbb3e136623222fe39936e0e8abd2de9cfc75a5",
+          "context_sha256": "f0c187c778f215bcfb624ac75794f7053870fe95386e61ace8b8b2aed988968c",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Usable course describes retained model loadouts and bounded actions, without universal tool admission. Does not supply pending Equipment-recovery status; first pass remains partial."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR21",
+      "query": "How do I configure a local LM Studio endpoint and custom model without sending a paid cloud request?",
+      "required_facts": [
+        "Provider selection, endpoint and model are explicit settings; use the documented local provider path.",
+        "A documentation walkthrough must not dispatch paid inference or expose credentials; model availability/errors are separate from geometry application."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "Explicit LM Studio endpoint/model configuration, loaded-model requirement and privacy/no implied paid-dispatch boundary are supplied.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "7235746caae9eaecfa0df7675b5bdba32a11eb2091dfc62ef6999a8acc259d1d",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Connect a provider you already use",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "a9d20ab1818ccca7b7dea52d4d27a517547fda7f2a5a795edc68ef81bf523082",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct editable local endpoint, model and key settings."
+        },
+        {
+          "rank": 2,
+          "id": "506102265749ff613a56248ab91c46e57201ed246d2bfbcf7e740f82ec01eee3",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Current candidate and controls",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+          "context_sha256": "152dff96ddb4ac4622c9ccd6767c8bb1592f14157329368edf71e6ad03cb9827",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct provider protocol/preset, no fabricated token and error/native boundary."
+        },
+        {
+          "rank": 3,
+          "id": "fb25cf47bb80b117d91784fa34710138669f6d0e167078e6000f15d6441efad0",
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Qualification and reproducibility",
+          "source_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+          "context_sha256": "49c410ad0284d26707c1a3e44c9b05690123c81d106712bd50be1b03d0ba0886",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Deterministic local HTTP can test protocol/editor behavior without paid inference; it does not establish model quality."
+        },
+        {
+          "rank": 4,
+          "id": "7ca2f8ed60b626c2994c9e6790d578e3dbbeaf2e63f88722206cf886c7d6905b",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Generation and model-assisted authoring",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa",
+          "context_sha256": "31a6703e82e2362315dc3f32c6d2ca4c8e2d3b8cbf62ec1479404c9944b789a8",
+          "authority": "owner-confirmed-intent",
+          "text_changed_from_v1_set": false,
+          "review_note": "Owner intent explicitly does not authorize paid inference."
+        },
+        {
+          "rank": 5,
+          "id": "4a251be3dfd394d66320ffae375c192a3fa523bf988caebbbc228c044458cde3",
+          "path": "operations/atlas-agent-runner.md",
+          "heading": "Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499))",
+          "source_sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+          "context_sha256": "77a8c1bdefd2aa3698db7e99f7f0d729b43425588137851cd36b70e290fd712b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": true,
+          "review_note": "Atlas paid workflow is explicitly separate from Art Workbench and new spending is unauthorized; not used as the local-provider recipe."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR22",
+      "query": "Does hiding the Art window mean its request was stopped?",
+      "required_facts": [
+        "Hide and Stop have different semantics; do not describe window visibility as cancellation.",
+        "Use the documented Stop/request state and native receipts to determine remaining work."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "Hiding preserves the session; Stop has separate cancellation/partial-result semantics and requires actual native completion evidence.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "84ef04d138876921ee9fc469705eeed35763331d07462a961efe9984f914687c",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+          "context_sha256": "11d0dcefe5a2173235e264a18a1ce1e254ce3d95c0a38a9d40b4be9cfba297e1",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting hiding/reopening same-session lifetime."
+        },
+        {
+          "rank": 2,
+          "id": "157dea0ba3b737d5f76333f3912665fc55e275df7c882aee85df1ff05294b1e3",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Stop, Hide and native results",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "5514cd91df07485c20ee86654602a36065a22663873c8e1c5b04151e7ebeb4ae",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct Hide versus Stop, confirmed prefix and receipt answer."
+        },
+        {
+          "rank": 3,
+          "id": "c60cae53daa22c2811be05acc789870b3713df9217fafeb19fd5a57aaaa83192",
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "source_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+          "context_sha256": "fceb7327cd48d2f24f5c89a6f8ba48296ba62e1e6368fbc16983a5590d03e6b0",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Corrected passage explicitly distinguishes unmerged ULTIMA verified closed-byte/native replacement from predecessor Godot rename, while retaining authored/live/history/session boundaries. Former stale claim is absent."
+        },
+        {
+          "rank": 4,
+          "id": "d511a94b6541b9211f48fa438a4b9bf38f3cb1bde02df6a33cf69e4fc3936e48",
+          "path": "operations/troubleshooting.md",
+          "heading": "Troubleshooting simulation and integration > First launch and ordinary Workbench problems",
+          "source_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+          "context_sha256": "72b159eae59b7965d0a918a3fff0ea3d60e4356e00ac080ab6fbc29e590f22e3",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting symptom route; text tail is truncated but direct answer already present."
+        },
+        {
+          "rank": 5,
+          "id": "9d43716767cd0225fa7a35d42077d7f4d421d226ad4dce8a6e33186e70389269",
+          "path": "systems/workbench-direct-art-batches.md",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Shared Undo and Redo",
+          "source_sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+          "context_sha256": "f6172a26f7612c96ff68adb383eb79b028f7e043d9b703e1994dfe18d97675af",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting settled shared Undo/receipt requirements."
+        }
+      ],
+      "ordered_passages_equal_to_v1": false
+    },
+    {
+      "id": "DR23",
+      "query": "After accepted ART-SESSION-LOG-001, are yesterday\u2019s Art conversation messages automatically restored on the next game launch?",
+      "required_facts": [
+        "Accepted #727 uses session-only conversation lifetime and one JSONL audit per game session.",
+        "Old lazy conversation restore instructions from #681 are superseded for the current accepted path; old audit files are not an implicit chat restore."
+      ],
+      "canonical_rank": 1,
+      "first_pass": "sufficient",
+      "reason": "Current empty-session conversation, one new JSONL and preserved but unattached old archives are explicit; no old automatic restore instruction is promoted.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "9729d68b9490ae542617bef5bdb56bc0a14fa0bf92874d00bd43868122001dbb",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "cfed6c7231c0ce3f540ba2e064e88b62646ba9d016cebdef20c08e5b40c715ef",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct current lifecycle and one new audit file per session."
+        },
+        {
+          "rank": 2,
+          "id": "ce926fbccdc6ea2b885aa56c0adbc203d9701ca00e61ef6b8effa3a2b3a0201b",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Collaboration, scanline and pacing preview",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+          "context_sha256": "63ceebca3388a90a0ebdc2e5856435f88a09b18cf4d91039eaaf13985e1b4abf",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting context controls for current-session messages."
+        },
+        {
+          "rank": 3,
+          "id": "c60cae53daa22c2811be05acc789870b3713df9217fafeb19fd5a57aaaa83192",
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "source_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+          "context_sha256": "fceb7327cd48d2f24f5c89a6f8ba48296ba62e1e6368fbc16983a5590d03e6b0",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Corrected passage explicitly distinguishes unmerged ULTIMA verified closed-byte/native replacement from predecessor Godot rename, while retaining authored/live/history/session boundaries. Former stale claim is absent."
+        },
+        {
+          "rank": 4,
+          "id": "da484393dc1f529bb154c8029537eb9cdcf40d4822a426dddb8a07ca408af4ab",
+          "path": "operations/troubleshooting.md",
+          "heading": "Troubleshooting simulation and integration > First launch and ordinary Workbench problems",
+          "source_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+          "context_sha256": "72252023247c87fc6093887a44f9de1ba7924ec1a020a336160dab5261ee8fd1",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting continuation of session-restore troubleshooting row."
+        },
+        {
+          "rank": 5,
+          "id": "434672e647e545f196154aab42ee833fbf0baa00b8854e1c34ed6723e23a5cfb",
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Close and reopen",
+          "source_sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+          "context_sha256": "1b3f7f3ffa71ae0929e24778b6bd6f64b816afab1400a14812370d434a109d4b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct fresh-session authored reopen omits chat and undo state."
+        }
+      ],
+      "ordered_passages_equal_to_v1": true
+    },
+    {
+      "id": "DR24",
+      "query": "Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?",
+      "required_facts": [
+        "Traffic and prompts can be private; inspect and redact exported logs instead of treating all diagnostics as safe.",
+        "Share minimal source/runtime/error evidence and synthetic reproduction data; never include credentials."
+      ],
+      "canonical_rank": 2,
+      "first_pass": "sufficient",
+      "reason": "All contexts consistently require minimal source/runtime/error data and synthetic reproduction, inspection/redaction, and exclusion of credentials/private archives.",
+      "wrong_context_answer": false,
+      "wrong_authority": false,
+      "passages": [
+        {
+          "rank": 1,
+          "id": "e35ecce191b2e5870afb468d3ebed703516ff0ffe5fdf71ebf7b0e520d6cb8b1",
+          "path": "operations/troubleshooting.md",
+          "heading": "Troubleshooting simulation and integration > A useful failure report",
+          "source_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+          "context_sha256": "92d9e8e21a8b3dd1b6d68dbe3d7db54d509c6557cefa0e68ca4b1ab1c900320c",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct minimal sanitized failure report."
+        },
+        {
+          "rank": 2,
+          "id": "3db431a539ad1fb23c93c2ca0c8970d33b08f3d73f30ec596d747cf1ab051a35",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+          "context_sha256": "d7c02c77d3ff4dd71a0c728d3c6c0dd705f341fb365666bb2f48813a3abf972b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct traffic contents/redaction limits."
+        },
+        {
+          "rank": 3,
+          "id": "5dfdb67eb7a5d88e2c6708b349b7713704ba6f8d09453b3786fffbb203d32886",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "source_sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269",
+          "context_sha256": "970e993cf1d27543f5ee0da90bca99fa1ea6e7e651b2c70f9104b1310d506f8b",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Direct isolated diagnostics, source/runtime and synthetic fixture advice."
+        },
+        {
+          "rank": 4,
+          "id": "9729d68b9490ae542617bef5bdb56bc0a14fa0bf92874d00bd43868122001dbb",
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "source_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+          "context_sha256": "cfed6c7231c0ce3f540ba2e064e88b62646ba9d016cebdef20c08e5b40c715ef",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting privacy and no automatic restore."
+        },
+        {
+          "rank": 5,
+          "id": "e78a1a7925e6b34262c0b9918bfb6c2a8432ef86be88e48f80895440a9be4817",
+          "path": "reference/validation-evidence.md",
+          "heading": "Validation evidence ledger > Platform limits and honest outcomes",
+          "source_sha256": "c6e31c1a6dc9d092d6f4cec3dde36a1880a0520e45ccce49c3488018245a86ff",
+          "context_sha256": "22e714f441fd57cd20d74f27e27a24956a8284cc232d46d2376c25f925500d02",
+          "authority": "current-documentation",
+          "text_changed_from_v1_set": false,
+          "review_note": "Supporting honest platform outcomes and minimal safe evidence."
+        }
+      ],
+      "ordered_passages_equal_to_v1": true
+    }
+  ],
+  "source_follow": {
+    "question": "DR20",
+    "execution": "actual Retriever.query followed by supported read_source on an explicitly returned source route; reviewer selected route, no generative model",
+    "path": "docs/reference/status-and-roadmap.md",
+    "source_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+    "bytes": 23252,
+    "authority": "source-inspection-not-acceptance",
+    "permission": "Reading this source grants no execution permission",
+    "first_pass_hit_ids_identical": true,
+    "after_follow": "sufficient",
+    "missing_fact_supplied": "Active candidate Equipment recovery #724 is separate; historical #561 merge does not prove every later ballistic-solid/equipment path present or correct.",
+    "scope": "Status is the frozen source record, not a fresh GitHub acceptance decision. Parent mission intake separately refreshes live status.",
+    "execution_head": "67245ba5456956c86c6360e7cf54258f15068feb",
+    "actual_first_pass_hit_ids_identical": true,
+    "execution_tree": "7bcc1791eb206fad6a00859b05c45a1c540dcc18",
+    "actual_source_fingerprint": "2d5fda0b6707077babf643a10d71f30da5932fd87654ef4339cb51d972610770",
+    "actual_source_receipt_sha256": "46175d9c2a9f429ff67a18d9625fbe791f559601ef3e9bfa7c4e74fba32a6ca5",
+    "returned_source_bytes_identical_to_v1_review": true
+  },
+  "comparison_counts": {
+    "questions": 12,
+    "passages": 60,
+    "new_passages_read": 9,
+    "byte_identical_previously_reviewed": 51,
+    "ordered_sets_equal": 2,
+    "reordered_identical_sets": 2,
+    "changed_sets": 8
+  }
+}
