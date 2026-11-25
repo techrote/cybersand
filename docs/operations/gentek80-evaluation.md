@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Accepted 80-Gentek selection and comparison, with separately qualified Windows evaluator and historical package evidence
 canonical-for: [gentek80-selection-and-evaluation]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../systems/architectural-generator.md, architectural-generator-playtest.md, ../research/gentek-80-integration-001.md]
 ---
 
@@ -32,12 +32,17 @@ Current Art conversation starts empty in each new Workbench session after
 accepted #727. Old automatic traffic-restoration procedures are not current
 startup instructions; use [the Art guide](workbench-art.md).
 
-**Evaluator snapshot, 24 November 2026:** the separate
-[#758 Windows evaluator](https://github.com/techrote/cybersand/pull/758) remains
-unmerged. Its package, source/runtime manifest and physical evaluation belong to
-that candidate. Consult the [current-state register](../reference/status-and-roadmap.md#active-candidates-and-integration-boundaries)
-before using a later package. This page does not guarantee an old ZIP remains
-available or that any evaluator was accepted by the owner.
+**Tooling acceptance, 25 November 2026:**
+[#758](https://github.com/techrote/cybersand/pull/758) merged source-exact Windows
+evaluation and owner-acceptance tooling at
+[`be87b18b`](https://github.com/techrote/cybersand/commit/be87b18b30506ccead610c7035ae1ffa8e65a347).
+The [physical owner-acceptance guide](gentek80-physical-owner-acceptance.md)
+explains independent archive/manifest verification, isolated launch and local
+evidence collection. This tooling merge does not qualify a new ZIP or establish
+physical Windows/NVIDIA acceptance. Each package still needs its exact source,
+runtime manifest and executed qualification; historical ZIPs retain their own
+evidence and availability. Consult the [current-state register](../reference/status-and-roadmap.md#active-candidates-and-integration-boundaries)
+before using a later package.
 
 **Historical #691 qualification:** the original integration record reconciled
 `69209acaffb34ebe18c45e19290b5976b7fb2c82` and documented a then-current Art
