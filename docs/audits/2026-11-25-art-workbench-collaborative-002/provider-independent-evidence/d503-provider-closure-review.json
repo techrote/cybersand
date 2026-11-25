@@ -1,0 +1,49 @@
+{
+  "architecture_source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "exact_five_file_closure_equal": true,
+  "files_sha256": {
+    "godot/scripts/art_proposal_transport.gd": {
+      "corrected_delivery_first_attempt": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "delivered_payload": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "delivery": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "linux_native_handoff_probe": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "qualified_prior_application": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001"
+    },
+    "godot/scripts/art_provider.gd": {
+      "corrected_delivery_first_attempt": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+      "delivered_payload": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+      "delivery": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+      "linux_native_handoff_probe": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+      "qualified_prior_application": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891"
+    },
+    "godot/scripts/art_redaction.gd": {
+      "corrected_delivery_first_attempt": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "delivered_payload": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "delivery": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "linux_native_handoff_probe": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "qualified_prior_application": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269"
+    },
+    "godot/scripts/art_response_preparation.gd": {
+      "corrected_delivery_first_attempt": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+      "delivered_payload": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+      "delivery": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+      "linux_native_handoff_probe": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+      "qualified_prior_application": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2"
+    },
+    "godot/scripts/art_traffic_archive.gd": {
+      "corrected_delivery_first_attempt": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "delivered_payload": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "delivery": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "linux_native_handoff_probe": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "qualified_prior_application": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162"
+    }
+  },
+  "passed": true,
+  "scope": "Exact Git and final payload byte identity. The independently recorded 04ca 115-check result remains Linux headless actual-native host-mount evidence over unchanged Architecture 17c; no additional runtime execution, production factory mount or combined Windows qualification is claimed.",
+  "sources": {
+    "corrected_delivery_first_attempt": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "delivery": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "linux_native_handoff_probe": "04ca36243614e89c44aa0e673b725a30d8b8cd7b",
+    "qualified_prior_application": "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+  }
+}

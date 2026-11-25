@@ -1,0 +1,52 @@
+{
+  "files": {
+    "d503-provider-closure-review.json": {
+      "bytes": 3530,
+      "sha256": "74f3c03ab2b29bad8a6f99c2658203df6eb40a70b15446895de4c598f6162497"
+    },
+    "d503-windows-artifact-identities.json": {
+      "bytes": 1016,
+      "sha256": "798b1b57d0bdb5f9cbe66e8ed726b25c439cec5426bb6907b744c1c31274621d"
+    },
+    "d503-windows-guide-review.json": {
+      "bytes": 2340,
+      "sha256": "2a504b177a4fa7d11f280c459e47bd83994bf52fb66652c5c9333a9da4a3ada9"
+    },
+    "d503-windows-independent-review.md": {
+      "bytes": 11538,
+      "sha256": "06f1c017174e11f70df9fb46bfd97fb088b660be04e9cc15e8d154900bc85595"
+    },
+    "d503-windows-native-source-review.json": {
+      "bytes": 14041,
+      "sha256": "6adef5780d80e7064575a4685ab59bdc4ee5e3670c96632e588425c21878b284"
+    },
+    "d503-windows-payload-auditor.py": {
+      "bytes": 20923,
+      "sha256": "a22192711b18a7aeada770718c3722722bbef4f50e6a4752ba494f5b601a3bf3"
+    },
+    "d503-windows-payload-review.json": {
+      "bytes": 6324,
+      "sha256": "91a074164054da709b49b518b9eccdf9d9a5407d57506fc8e31c7788df72d4d6"
+    },
+    "d503-windows-receipt-review.json": {
+      "bytes": 8154,
+      "sha256": "2580cd26f844a3264b6573f066087364139aa9d6092b60d84f799f3635c8132d"
+    },
+    "d503-windows-source-guide-auditor.py": {
+      "bytes": 8945,
+      "sha256": "3198c0f4e5876b1c35bc3f6f80a37283eb3758ec4549eb6f398a3fa19f88f3d0"
+    },
+    "d503-windows-source-payload-comparison.json": {
+      "bytes": 70287,
+      "sha256": "cf32a3a01471c7ec0307c659e60adcc78e27f1ffcdd8223508159c7a07b26f62"
+    },
+    "final-provider-claims-map.md": {
+      "bytes": 9173,
+      "sha256": "7bf1699e2869ddafa19f9a27474712b83d17685d02ae4518eec5df05ce1b8394"
+    }
+  },
+  "publication_scope": "Derived identity/status/reduction reports and auditor source only. No new raw logs, journals, profiles, screenshots or aggregate archive are published. Original Actions artifacts are linked by exact id/hash.",
+  "run_id": 45556633896,
+  "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "source_tree": "464c60288d5461d61578b000ae68ac029cffb5bd"
+}

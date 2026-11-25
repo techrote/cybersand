@@ -1,0 +1,222 @@
+{
+  "actual_launcher_log": {
+    "bytes": 1413,
+    "marker_automatic_requests": false,
+    "marker_display": "Windows",
+    "marker_source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "sha256": "8f221c8f049be409ed3cb1475f8f91793df357afcef85b7c7a71fbba862e29fb",
+    "sole_marker": true
+  },
+  "cases": [
+    {
+      "artifacts_verified": 0,
+      "checks": 155,
+      "log_sha256": "78b3b458f15141dcf36a4f8900e48a69ab356ae9a9af79361362283ed63ed0b5",
+      "name": "test_art_owned_transport",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 66,
+      "log_sha256": "c80bfcd94ba7cb815b5c5f07834ad3fb515605e7d88b1794844c0152c2125c32",
+      "name": "test_art_conversation_preparation",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 154,
+      "log_sha256": "3ed79b144625db24807c7544795eddd9f0f278da8c75381f14a234d7ddcd11b8",
+      "name": "test_art_conversation_apply_preparation",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 107,
+      "log_sha256": "a0beb4e7273a41cf27c4ee814cf0424cce061efc9b7987d750cc476748581a9e",
+      "name": "test_art_authoring_proposal",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 1,
+      "checks": 251,
+      "log_sha256": "34fbb31283ba954469263aa9ca3b60041e38a4bcdf1e1d0fcc7fbda3986a5728",
+      "name": "test_art_creative_cohort",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 55,
+      "checks": 739,
+      "log_sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65",
+      "name": "test_art_collaborative_native",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 39,
+      "log_sha256": "84d73afc50eb365714d6773841ca785d404e2be186699ebab20c349cbce10319",
+      "name": "test_art_collaboration_authority",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 182,
+      "log_sha256": "189a4b47e62e6f33931d02b26d12bc398a51595218efc12af63826af0f715f88",
+      "name": "test_art_collaboration_session",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 93,
+      "log_sha256": "7f8cc849c8e0698319eccef70596bbb5ecf357e58f2946191891bd484741b0cc",
+      "name": "test_art_collaboration_workspace",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 155,
+      "log_sha256": "50b7c0911d6aa2fda0379ed99d513fa3362b08167589a2e4fdeb136c8492d155",
+      "name": "test_art_owned_transport",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 66,
+      "log_sha256": "e15d635e986f5aa7da239649ee1a23b6d091c02893e7ec867d6f6fce91935f78",
+      "name": "test_art_conversation_preparation",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 154,
+      "log_sha256": "0575598686b21e32cc231f9ac997a154e3d1b4b7af07e0569e76b6a3dca390a3",
+      "name": "test_art_conversation_apply_preparation",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 107,
+      "log_sha256": "96099c95a3460b7f078cd05af0245beec24c09181cda7b75f738dad83de0caca",
+      "name": "test_art_authoring_proposal",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 1,
+      "checks": 251,
+      "log_sha256": "3c182037d581c1dbe953715622db71c99a44af0d1bbd569c916b8710f240656a",
+      "name": "test_art_creative_cohort",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 73,
+      "checks": 763,
+      "log_sha256": "5c4ee0ff894295c936bc4331d29309585b0d2ac88599a4102960571f7fcf4dcc",
+      "name": "test_art_collaborative_native",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 39,
+      "log_sha256": "861b87d2a8174c2d19f14400039b754e078a144935ee2bc34e14e601ba6a26a4",
+      "name": "test_art_collaboration_authority",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 4,
+      "checks": 202,
+      "log_sha256": "749873047f2a689ecf801b2d12451b39f2e1e259e363b6596630417427ce0f41",
+      "name": "test_art_collaboration_session",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 1,
+      "checks": 94,
+      "log_sha256": "9a55cbc2fa03613a688900e5abad52d1accc37cdb279910c031b6e6e1291881c",
+      "name": "test_art_collaboration_workspace",
+      "scope": "displayed"
+    }
+  ],
+  "host": {
+    "logical_cpus": 4,
+    "machine": "AMD64",
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "processor": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD"
+  },
+  "installed_execution": {
+    "exit_code": 0,
+    "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "timed_out": false,
+    "watchdog_seconds": 240
+  },
+  "installed_import_descriptors": {
+    "files": {
+      "godot/addons/godot-rapier2d/Radial2D.svg.import": {
+        "before_after_source_and_payload_identical": true,
+        "bytes": 1074,
+        "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82"
+      },
+      "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+        "before_after_source_and_payload_identical": true,
+        "bytes": 1077,
+        "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e"
+      },
+      "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+        "before_after_source_and_payload_identical": true,
+        "bytes": 1070,
+        "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0"
+      },
+      "godot/addons/godot-rapier2d/logo_square_2d.png.import": {
+        "before_after_source_and_payload_identical": true,
+        "bytes": 968,
+        "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+      }
+    },
+    "record_sha256": "f92733e83f0deabc3ed0e8fd7c6fbb9abd6640e7ca03d4532c16c3cb22a11e57"
+  },
+  "installed_launch": {
+    "actual_launcher": true,
+    "automatic_model_requests": false,
+    "display": "Windows",
+    "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "status": "passed"
+  },
+  "installed_setup_sha256": {
+    "art02-industrial_repair": "ff4c8e8e42e85f702406ac6e2852240fa6fc2d3518dee675517f966c116bb9f0",
+    "art02-palette_foundry": "edab99034ce99b19a50ac527e04a6fe9d106d187117f55cfd8ac450c67731755",
+    "art02-protected_courtyard": "729105cebd76723c56605197189a6290226893ddf7ac776999138f80dc88b7bd",
+    "art02-revised_arcology": "37cae728b8c5996f2a45d94c1a30a54cafc9a10d0c15a1f3c04cdff4d32c5058",
+    "art02-scifi_interior": "bf0344b58090a11b457312518abfaf8e6d73b718c98ee9bed7acf0b333561bf1",
+    "art02-staged_megaframe": "584ebd2b07d2d039335c85352ca8f2ef27c43e3f2d5787bd45ea10847c194309",
+    "art02-stopped_workshop": "d4a44f8e069df78aa655da34ea835ef984a5fd9d39f4b561cb7772761b05a325",
+    "art02-structural_facade": "6ea8b1a77254da40c58293c471c996b29a06bfc3926c60a3cf1d53e179096e65",
+    "art02-xeno_vault": "2c04cc27d89b95a605aebd4658c95f785983f58e4cd6007e2b277cfa99501685"
+  },
+  "module_probe_cleanup": {
+    "environment_restored": true,
+    "error": null,
+    "exit_code": -1,
+    "terminated_owned_process": true
+  },
+  "module_verification_status": "passed",
+  "passed": true,
+  "physical_owner_acceptance": "pending",
+  "retained_displayed_native_progress": {
+    "checks": 151,
+    "earlier_3a_attempt": {
+      "artifact_id": 14995049040,
+      "checks": 151,
+      "failures": 1,
+      "first_progress_ms": 2187,
+      "run_id": 45553413100
+    },
+    "failures": 0,
+    "first_progress_ms": 1367,
+    "predicate": "art.active and first_progress_ms < 2000",
+    "predicate_reported_pass": true,
+    "scope": "Separate exact-source strict repeat. No cause, correction or universal latency guarantee is inferred; the original 3a negative remains retained.",
+    "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "c8af32516c96ae24a885850eb5ae44ad38bed0c9bb8d7b8c83e12f3e1fa95646"
+  },
+  "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "source_tree": "464c60288d5461d61578b000ae68ac029cffb5bd"
+}
