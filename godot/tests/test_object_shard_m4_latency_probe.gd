@@ -82,6 +82,16 @@ func _run() -> void:
 		"Instrumentation is bounded during sustained input, not disk-growing")
 	_expect(not probe.export_jsonl("res://never-write.json").ok,
 		"Explicit export cannot write into checked-out project tree")
+	var stopped_stages: Dictionary = probe.summary().stages
+	var stopped_events: int = probe.events.size()
+	probe.configure(false)
+	_expect(probe.summary().stages == stopped_stages and probe.events.size() == stopped_events,
+		"Stopping preserves the bounded recording for explicit export")
+	_expect(not probe.record_duration("scene_callback", 1, 2) and probe.mark_input(Vector2i.ZERO,"erase") == 0,
+		"Stopped instrumentation remains inert")
+	probe.configure(true)
+	_expect(probe.events.is_empty() and probe.summary().stages.is_empty(),
+		"Restarting cannot mix a new recording with stopped samples")
 	var cadence: CyberObjectShardM4LatencyProbe = Probe.new()
 	cadence.configure(true)
 	_expect(cadence.observe_workload(3, false, "overview"), "Record owned-body workload independently of rendering")

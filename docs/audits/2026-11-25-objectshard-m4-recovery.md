@@ -110,5 +110,65 @@ recorded before accepting a result.
 
 Next: reproduce the provenance mismatch in a bounded fixture, repair its
 contract, verify negative cases, complete the diagnostics change and then
-qualify the integrated source. No replacement campaign has been launched at
-this checkpoint.
+qualify the integrated source. No replacement campaign had been launched at
+that intake checkpoint.
+
+## Integrated corrective checkpoint
+
+The original package failure is reproduced and repaired as an exact one-path
+relocation contract. Both verifiers require the retained reference and the
+actual candidate schema, source, build, payload size and input identities.
+Package replay also demands the engine inside the selected extraction. Twelve
+new bounded Python cases and eight actual Windows verifier-refusal cases cover
+missing, stale, incorrect and tampered provenance. The Linux workflow now uses
+the official pinned release asset directly, with the unchanged hash plus
+bounded retries, archive size, ZIP integrity and exact engine-version checks.
+These source fixes still require the replacement hosted campaign.
+
+Ordinary performance recording is now off by default. The real Structures
+checkbox and separate CLI option start a fresh bounded recording; stopping
+preserves the completed samples for explicit export. Native/Rapier authority,
+runtime stage counters and all ACK barriers are unchanged. Rich profiles
+explicitly record, and light sampling can independently enable or disable the
+probe. A native tower with ObjectShard disabled supplies a control with matched
+authoring and camera inputs; the original four enabled paused/running windows
+remain intact. The enabled fixture additionally observes paired shard/World
+publication coherence. Thus the disabled/enabled difference includes that
+qualification-observer cost and is not pure product overhead. The light tower
+recording on/off pair retains the same fixture observers in both conditions.
+
+The independently registered replacement inventory contains **42 primary,
+31 subsequent graphical-lane, and 16 extracted-package processes**. The
+graphical lane includes actual renderer cases and separately identified
+repeated headless checks; its whole count is not a count of rendered cases.
+All original registered case names remain, with four added cases per primary
+and graphical lane. There are no reduced deadlines, body populations,
+material laws or scientific limits.
+
+Local integrated qualification-contract tests pass **78/78**. Provider policy,
+all **102 workflow policies**, material compatibility, documentation with the
+exact pinned companion files and historical M11 integrity pass. The ordinary
+repository check still rejects the existing retained production runtime's stale
+source inputs; this is preserved as an unpassed production-runtime condition,
+not silently counted as candidate-runtime qualification. The portable evaluator
+has its own source-built runtime custody and actual platform gates.
+
+The lead's independent artifact reviewer verified all original Windows source
+maps, **65 process logs and their registered completion receipts**, and four
+actual launcher paths. Original archive integrity passes; original aggregate
+application qualification remains failed/incomplete. Independent adversity
+found and corrected acceptance weaknesses in this new reviewer: it now requires
+complete Git-derived input key sets, registered footer schemas and an explicit
+complete process inventory before accepting a campaign.
+
+Source-only review approves the bounded native-preservation, delivery and
+optional-recording changes for qualification. The initial remotely preserved
+recovery checkpoint is `d1da95b619d3e149ec82661de90eeb6c5b03fd27`, with tree
+`3b4ac9df37cabf43b61ae938e7ceb5e6ceaca2b4`, exactly matching local
+`af660bb7b12b9c598c708bfeaff3beb260e159a5`. Its ObjectShard campaign correctly
+skipped because no qualification marker was supplied. Its ordinary automatic
+PR checks do not qualify the later repair.
+
+Next: freeze the integrated source, refresh the branch lease and live campaign
+queue, publish one existing marker-gated qualification request, and independently
+review original native, Linux, Windows and actual delivered-ZIP artifacts.

@@ -36,8 +36,23 @@ var _cadence_capacity_drops: int = 0
 
 
 func configure(requested: bool) -> void:
-	if requested != enabled:
+	if requested == enabled:
+		return
+	if requested:
+		# Each explicit start is a fresh recording. Stopping preserves the
+		# completed sample window for Save diagnostics without collecting more.
+		epoch += 1
+		events.clear()
+		_samples.clear()
+		_last_worker_metrics.clear()
+		_last_upload.clear()
+		_last_snapshot_serial = 0
+		_snapshot_world = -1
+		_post_draw_candidate_count = 0
+		_input_sequence = 0
 		_reset_cadence()
+	else:
+		_last_upload.clear()
 	enabled = requested
 
 

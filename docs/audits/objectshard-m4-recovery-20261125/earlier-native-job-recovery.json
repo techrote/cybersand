@@ -1,0 +1,49 @@
+{
+  "benchmark_input_digest": "dca9d77a0428a94eb5a34e185f2af6c078198087b92175e8c830c15ffe895e1f",
+  "classification": "Harness output-path safety refusal after passing native suites; aggregate remains failed",
+  "current_applicability": "Historical failed predecessor only; later native source and successful final f5b7 campaign have their own independently recovered evidence.",
+  "decoded_log_filename": "original-native-job-138593807280.log",
+  "decoded_log_sha256": "c173f75226f9fbe8acb212dcd6a2ee2c64793fc729d6451281757b8beecd0ac4",
+  "decoded_log_size": 140428,
+  "exit_code": 1,
+  "failed_command": "python3 tools/material_catalogue/check_native_parity.py --output evidence/material-native-parity.json",
+  "job_id": 138593807280,
+  "limits": [
+    "Decoded log observations are not a fresh native execution.",
+    "Earliest 134 MB native archive was not downloaded in this review; its digest is attributed to original upload log.",
+    "The original failed job must not be promoted to passed because underlying sanitizer and benchmark checks passed."
+  ],
+  "log_recorded_artifact": {
+    "downloaded_in_this_review": false,
+    "id": 14942303025,
+    "sha256": "e4e52276d16974570dffcae8b4e9bbb1fe8d5a0c155cacd66fd1205dd2ec628d",
+    "size": 134835249
+  },
+  "original_log_observations": {
+    "benchmark_checks": 4276351,
+    "benchmark_failures": 0,
+    "objectshard_sanitizer_checks": 95563,
+    "objectshard_sanitizer_failures": 0,
+    "registered_benchmark_failures": [],
+    "registered_benchmark_limits": 74,
+    "world_test_cases": 192,
+    "world_test_failures": 0
+  },
+  "retrieval": "GitHub fetch_workflow_job_logs connector; decoded original job text preserved outside repository",
+  "schema": "objectshard-m4-earlier-native-job-recovery-v1",
+  "source_commit": "f4a2176f1f7688273956c2f25821488c227e90f3",
+  "source_input_digest": "cc370af243177d2058a5626f99ba31834f96f549cdf0d1ff6e1988ccd221dff6",
+  "superseding_correction": {
+    "behavior": "Write check_native_parity output under build/objectshard-m4-material-parity.json, then copy into evidence/material-native-parity.json; preserve guard.",
+    "local_changes": [
+      "f7367f1bec93ff4c9974c5bae67e23d2e408f044",
+      "989de432e1ea5fe0839fc46147acfc2277538cb7"
+    ],
+    "published_source": "0f013ba4826730cce64bd37cf9ca95f7dcaab603"
+  },
+  "terminal_error": "native parity: --output inside the repository must be beneath build/; refusing a source overwrite",
+  "terminal_error_time": "2026-11-24T16:37:20.3184360Z",
+  "terminal_result": "failure",
+  "url": "https://github.com/techrote/cybersand/actions/runs/45435990124/job/138593807280",
+  "workflow_run": 45435990124
+}

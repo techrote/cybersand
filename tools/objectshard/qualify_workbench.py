@@ -28,6 +28,7 @@ from process_resources import run_observed_case
 
 FOCUSED = (
     ("test_object_shard_m4_latency_probe", "objectshard-m4-workbench-probe-test-v1"),
+    ("test_object_shard_m4_optional_diagnostics", "objectshard-m4-optional-diagnostics-v1"),
     ("test_object_shard_m4_same_world_extension", "objectshard-m4-actual-godot-sameworld-v1"),
     ("test_object_shard_m4_shared_main_rapier", "objectshard-m4-existing-main-rapier-v1"),
     ("test_object_shard_m4_same_world_physical_chain", "objectshard-m4-sameworld-rapier-physical-chain-v1"),
@@ -79,6 +80,14 @@ def validate_profile(value: dict, source: str, rendered: bool) -> None:
     """Reject a successful-looking footer with no actual physical workload."""
     if value.get("source_commit") != source or value.get("scene") not in SCENES or value.get("camera") not in ("overview", "zoom"):
         raise ValueError("Profile workload or source identity mismatch")
+    if value.get("sampling") not in ("cohorts", "light") or type(value.get("recording_enabled")) is not bool:
+        raise ValueError("Profile must identify independent callback sampling and diagnostic recording")
+    latency = value.get("latency", {})
+    if latency.get("enabled") is not value["recording_enabled"]:
+        raise ValueError("Profile recording state disagrees with its actual probe")
+    if value["recording_enabled"] and (type(latency.get("events_retained")) is not int or latency["events_retained"] <= 0
+                                      or not latency.get("cadence", {}).get("native_progress_delivery")):
+        raise ValueError("Enabled profile has no actual diagnostic events or native delivery intervals")
     for field, minimum in (("completed_semantic_ticks", 180), ("actual_physics_steps", 1),
                            ("native_pose_acknowledgements", 1), ("active_body_count_max", 1), ("elapsed_usec", 1)):
         if type(value.get(field)) is not int or value[field] < minimum:
@@ -132,6 +141,29 @@ def validate_render_control(value: dict, source: str) -> None:
         raise ValueError("Detached renderer control never observed an awake body")
 
 
+def validate_disabled_control(value: dict, source: str, rendered: bool) -> None:
+    if value.get("source_commit") != source or value.get("scene") != "tower" or value.get("camera") != "overview":
+        raise ValueError("Disabled control workload/source mismatch")
+    if rendered == (value.get("display_driver") == "headless"):
+        raise ValueError("Disabled control graphical/headless scope mismatch")
+    if value.get("canvas_extent") != [512, 512] or not re.fullmatch(r"[0-9a-f]{64}", value.get("authored_rectangles_sha256", "")):
+        raise ValueError("Disabled control lacks its exact native authoring identity")
+    rows = value.get("windows", [])
+    if [row.get("label") for row in rows] != ["disabled_intact_paused", "disabled_intact_playing"]:
+        raise ValueError("Disabled control is missing its complete pause/play pair")
+    for row in rows:
+        if row.get("elapsed_usec", 0) < 12_000_000 or row.get("objectshard_enabled") is not False or row.get("objectshard_native_attached") is not False:
+            raise ValueError("Disabled control is incomplete or attached ObjectShard")
+        if row.get("material_body_count") != 0 or row.get("ordinary_actor_count") != 1 or row.get("worker_snapshot_calls") != 0:
+            raise ValueError("Disabled control changed the declared physical workload")
+        submissions = row.get("render_submissions")
+        if type(submissions) is not int or (submissions <= 0 if rendered else submissions != 0):
+            raise ValueError("Disabled control lacks a valid renderer witness")
+        ticks, steps = row.get("semantic_ticks"), row.get("actual_physics_steps")
+        if type(ticks) is not int or type(steps) is not int or (ticks != 0 or steps != 0 if row["label"].endswith("paused") else ticks <= 0 or steps <= 0):
+            raise ValueError("Disabled control native/Rapier progression contradicts pause/play")
+
+
 def committed_inputs() -> dict[str, str]:
     scopes = ("godot", "tools/objectshard", "tools/ci", "materials/catalogue")
     paths = subprocess.check_output(["git", "ls-files", "-z", "--", *scopes], cwd=ROOT).decode().split("\0")
@@ -146,6 +178,15 @@ def committed_inputs() -> dict[str, str]:
     if dirty:
         raise ValueError("Qualification source is not committed: " + ", ".join(dirty))
     return {p: runner.sha256(ROOT / p) for p in selected}
+
+
+def verify_packaged_engine(package: Path, engine: Path, manifest: dict) -> Path:
+    """Package replay must execute the manifest-bound engine in this extraction."""
+    from verify_package import safe_path
+    shipped = safe_path(package, "Godot_v4.7-stable_win64_console.exe").resolve()
+    if engine.resolve() != shipped or runner.sha256(shipped) != manifest["godot"]["console_sha256"]:
+        raise ValueError("Package replay requires its shipped console engine")
+    return shipped
 
 
 def qualify(args: argparse.Namespace) -> dict:
@@ -167,15 +208,13 @@ def qualify(args: argparse.Namespace) -> dict:
         report.update(source_tree=tree, native_source_inputs=inputs, executed_script_inputs=script_inputs)
         executed_root = ROOT
         if args.package:
-            from verify_workbench_package import verify
+            from verify_workbench_package import verify, verify_committed_godot_inputs
             manifest = verify(args.package)
             if manifest["source_commit"] != commit or manifest["source_tree"] != tree or manifest["native"]["source_inputs"] != inputs:
                 raise ValueError("Packaged native source differs from qualification checkout")
             executed_root = args.package.resolve()
-            # All committed Godot source must be the exact shipped bytes.
-            for p, digest in script_inputs.items():
-                if p.startswith("godot/") and runner.sha256(executed_root / p) != digest:
-                    raise ValueError("Packaged Godot source differs: " + p)
+            report["packaged_godot_input_locations"] = verify_committed_godot_inputs(executed_root, script_inputs)
+            verify_packaged_engine(executed_root, args.godot, manifest)
             report["package_manifest_sha256"] = runner.sha256(executed_root / "objectshard-workbench-manifest.json")
         runner.ROOT = executed_root
         native_path, rapier_path = runner.runtime_paths()
@@ -204,9 +243,20 @@ def qualify(args: argparse.Namespace) -> dict:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
             flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz", "completed_sample", "equipment_completion", "long_burn")):
+            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz", "completed_sample", "equipment_completion", "long_burn", "optional_diagnostics")):
                 flags += ("--", "--objectshard-m4-workbench")
-            cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
+            graphical_diagnostics = args.render and name.endswith("optional_diagnostics")
+            if graphical_diagnostics:
+                flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
+            cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0,
+                                      graphical_diagnostics), schema))
+        diagnostics_cli_flags = ("--script", "res://tests/test_object_shard_m4_optional_diagnostics.gd", "--",
+                                 "--objectshard-m4-workbench", "--objectshard-diagnostics")
+        if args.render:
+            diagnostics_cli_flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + diagnostics_cli_flags
+        cases.append((runner.Case("test_object_shard_m4_optional_diagnostics_cli",
+            diagnostics_cli_flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0, args.render),
+            "objectshard-m4-optional-diagnostics-v1"))
         if args.regressions:
             for name in REGRESSIONS:
                 cases.append((runner.Case(name, ("--script", "res://tests/" + name + ".gd"),
@@ -215,6 +265,13 @@ def qualify(args: argparse.Namespace) -> dict:
                 "--objectshard-profile=" + str(output / "retained_lab_profile.json")),
                 int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-lab-profile-v1"))
         if args.profile:
+            disabled_flags = ("--script", "res://tests/profile_object_shard_m4_disabled_control.gd", "--",
+                              "--output=" + str(output / "m4_disabled_controls.json"))
+            if args.render:
+                disabled_flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + disabled_flags
+            cases.append((runner.Case("m4_disabled_controls", disabled_flags,
+                          int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, args.render),
+                          "objectshard-m4-disabled-control-v1"))
             if args.render:
                 # Godot 4.7 DummyRenderer texture_2d_update is a no-op; real
                 # ImageTexture pixel readback belongs only to a renderer lane.
@@ -242,12 +299,20 @@ def qualify(args: argparse.Namespace) -> dict:
             for scene in ("tower", "stress"):
                 name = f"m4_workbench_{scene}_overview_light_" + ("render" if args.render else "headless")
                 flags = ("--script", "res://tests/profile_object_shard_m4_workbench.gd", "--",
-                         "--objectshard-m4-workbench", "--scene=" + scene, "--camera=overview", "--sampling=light",
+                         "--objectshard-m4-workbench", "--scene=" + scene, "--camera=overview", "--sampling=light", "--recording=off",
                          "--output=" + str(output / (name + ".json")))
                 if args.render:
                     flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
                 cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("graphical_case_seconds")),
                                           0, args.render), "objectshard-m4-workbench-profile-v1"))
+                if scene == "tower":
+                    recorded_name = "m4_workbench_tower_overview_light_recording_" + ("render" if args.render else "headless")
+                    recorded_flags = tuple("--recording=on" if flag == "--recording=off" else
+                                           "--output=" + str(output / (recorded_name + ".json")) if flag.startswith("--output=") else flag
+                                           for flag in flags)
+                    cases.append((runner.Case(recorded_name, recorded_flags,
+                                  int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, args.render),
+                                  "objectshard-m4-workbench-profile-v1"))
         for case, schema in cases:
             user_root = output / "isolated-user-data" / case.name
             user_root.mkdir(parents=True)
@@ -260,6 +325,8 @@ def qualify(args: argparse.Namespace) -> dict:
                         validate_profile(record["receipt"], commit, case.requires_display)
                     elif schema == "objectshard-m4-render-control-v1":
                         validate_render_control(record["receipt"], commit)
+                    elif schema == "objectshard-m4-disabled-control-v1":
+                        validate_disabled_control(record["receipt"], commit, case.requires_display)
                     elif schema == "objectshard-lab-profile-v1":
                         from lab_performance import check as check_lab_budget
                         profile = json.loads((output / "retained_lab_profile.json").read_text(encoding="utf-8"))
@@ -274,6 +341,13 @@ def qualify(args: argparse.Namespace) -> dict:
             if failed:
                 report["failures"].append(case.name)
             save(output / "qualification.json", report)
+        if args.render and args.profile and not report["failures"]:
+            disabled = json.loads((output / "m4_disabled_controls.json").read_text(encoding="utf-8"))
+            enabled = json.loads((output / "m4_render_controls.json").read_text(encoding="utf-8"))
+            control_fields = ("scene", "camera", "canvas_extent", "control_view", "authored_rectangles_sha256")
+            if any(disabled.get(key) != enabled.get(key) for key in control_fields):
+                raise ValueError("Disabled/enabled renderer controls do not have matching authoring and camera inputs")
+            report["disabled_enabled_control_identity"] = {key: enabled[key] for key in control_fields}
         if committed_inputs() != script_inputs or native.source(ROOT) != (commit, tree, inputs):
             raise ValueError("Source changed during qualification")
         report["status"] = "passed" if not report["failures"] else "failed"

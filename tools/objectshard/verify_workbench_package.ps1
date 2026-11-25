@@ -26,10 +26,14 @@ if ($manifest.entry.scene -ne 'godot/main.tscn' -or $manifest.entry.startup_scen
 }
 $nativeRelative = 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
 $rapierRelative = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+$retainedReference = 'godot/addons/cybersand_native/retained-runtime-provenance.reference.json'
+if (Test-Path -LiteralPath (Join-Path $root 'godot/addons/cybersand_native/runtime-provenance.json')) {
+    throw 'Active retained runtime provenance is forbidden in an evaluator'
+}
 $required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', 'Godot_v4.7-stable_win64_console.exe',
     'Godot-LICENSE.txt', 'Godot-COPYRIGHT.txt', 'vcruntime140.dll',
     'Microsoft-Visual-C-Runtime-LICENSE.docx', 'Microsoft-Visual-Studio-2022-LICENSE.docx',
-    'source-built-candidate-provenance.json', 'godot/project.godot', 'godot/main.tscn',
+    'source-built-candidate-provenance.json', $retainedReference, 'godot/project.godot', 'godot/main.tscn',
     'godot/feature_launcher.tscn', 'godot/scripts/feature_launcher.gd',
     'godot/scripts/main.gd', 'godot/scripts/shared_workbench.gd', 'godot/scripts/simulation_worker.gd',
     'godot/scripts/object_shard_m4_runtime.gd', 'godot/scripts/object_shard_workbench_scenes.gd',
@@ -81,8 +85,20 @@ if ($manifest.godot.version -ne '4.7.stable.official.5b4e0cb0f' -or
     $manifest.godot.console_sha256 -ne $manifest.files_sha256.'Godot_v4.7-stable_win64_console.exe') { throw 'Engine identity mismatch' }
 if ($manifest.vc_runtime_sha256 -ne $manifest.files_sha256.'vcruntime140.dll') { throw 'VC runtime identity mismatch' }
 $candidate = Get-Content -LiteralPath (Join-Path $root 'source-built-candidate-provenance.json') -Raw | ConvertFrom-Json
+$nativeFile = Get-Item -LiteralPath (Join-Path $root $nativeRelative)
+if (($candidate.schema_version -isnot [int] -and $candidate.schema_version -isnot [long]) -or
+    $candidate.schema_version -ne 1 -or $candidate.kind -ne 'source-built-windows-candidate' -or
+    $candidate.artifact -ne $nativeRelative -or
+    ($candidate.size -isnot [int] -and $candidate.size -isnot [long]) -or $candidate.size -ne $nativeFile.Length) {
+    throw 'Native candidate provenance contract mismatch'
+}
+$nativeStream = [IO.File]::OpenRead($nativeFile.FullName)
+try {
+    if ($nativeStream.ReadByte() -ne 77 -or $nativeStream.ReadByte() -ne 90) { throw 'Native candidate is not a Windows PE runtime' }
+} finally { $nativeStream.Dispose() }
 if ($candidate.source_commit -ne $manifest.source_commit -or $candidate.source_tree -ne $manifest.source_tree -or
     $candidate.sha256 -ne $manifest.native.sha256) { throw 'Candidate source identity mismatch' }
+if ($candidate.build_commit -ne $manifest.source_commit) { throw 'Candidate build identity mismatch' }
 $sourceCount = 0
 foreach ($entry in $manifest.native.source_inputs.PSObject.Properties) {
     $relative = $entry.Name

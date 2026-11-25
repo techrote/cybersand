@@ -10,6 +10,7 @@ var output: String = ""
 var seconds: float = 12.0
 var submissions: Array[int] = []
 var rows: Array[Dictionary] = []
+var control_identity: Dictionary = {}
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
@@ -86,9 +87,12 @@ func _run() -> void:
 	f=Fixture.new(self)
 	if not await f.open("tower"):
 		await _finish(); return
-	f.host.object_shard_m4_probe.configure(false)
+	f.bench.set_object_shard_diagnostics_enabled(false)
 	await f.pause()
 	await f.until(f.whole_canvas_coherent,"render control starts with a complete paired native image")
+	control_identity = {"scene":"tower","camera":"overview","canvas_extent":[512,512],
+		"authored_rectangles_sha256":JSON.stringify(Array(preload("res://scripts/workbench_setup.gd").rectangles(f.bench.applied).runs)).sha256_text(),
+		"control_view":{"origin":[f.host.camera_origin.x,f.host.camera_origin.y],"size":[f.host.current_view_size.x,f.host.current_view_size.y]}}
 	var baseline: Dictionary = {"wood":f.material_count(7),"brick":f.material_count(43)}
 	f.expect(f.body_count()==0,"intact ordinary supports keep the tower in World")
 	await _measure("intact_paused")
@@ -119,6 +123,7 @@ func _finish() -> void:
 		"seconds_per_window":seconds,"windows":rows,"display_coherence":f.display_witness(),
 		"checks":f.checks,"failures":f.failures,"inventory_witnesses":f.inventory_witnesses,
 		"scope":"ordinary renderer submissions and actual native progression; awake counts observed only at window boundaries; physical seconds count completed 1/60 intervals; no per-callback full diagnostics, latency probe disabled; physical monitor presentation OWNER-PENDING"}
+	result.merge(control_identity)
 	await f.close()
 	if not output.is_empty():
 		var file:=FileAccess.open(output,FileAccess.WRITE)

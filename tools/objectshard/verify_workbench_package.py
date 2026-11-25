@@ -12,6 +12,9 @@ from verify_package import NATIVE, RAPIER, digest, safe_path
 MANIFEST = "objectshard-workbench-manifest.json"
 SCHEMA = "objectshard-m4-workbench-package-v1"
 RENDERING_DRIVER = "opengl3_angle"
+RETAINED_PROVENANCE = "godot/addons/cybersand_native/runtime-provenance.json"
+RETAINED_REFERENCE = "godot/addons/cybersand_native/retained-runtime-provenance.reference.json"
+CANDIDATE_PROVENANCE = "source-built-candidate-provenance.json"
 ENTRY = {"scene": "godot/main.tscn", "startup_scene": "godot/feature_launcher.tscn", "host": "ordinary-workbench",
          "launcher": "Open Workbench.cmd", "opt_in": True, "rendering_driver": RENDERING_DRIVER,
          "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}
@@ -19,7 +22,7 @@ REQUIRED = {
     NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe",
     "Godot-LICENSE.txt", "Godot-COPYRIGHT.txt", "vcruntime140.dll",
     "Microsoft-Visual-C-Runtime-LICENSE.docx", "Microsoft-Visual-Studio-2022-LICENSE.docx",
-    "source-built-candidate-provenance.json", "godot/project.godot", "godot/main.tscn",
+    CANDIDATE_PROVENANCE, RETAINED_REFERENCE, "godot/project.godot", "godot/main.tscn",
     "godot/feature_launcher.tscn", "godot/scripts/feature_launcher.gd",
     "godot/scripts/main.gd", "godot/scripts/shared_workbench.gd", "godot/scripts/simulation_worker.gd",
     "godot/scripts/object_shard_m4_runtime.gd", "godot/scripts/object_shard_workbench_scenes.gd",
@@ -36,6 +39,55 @@ REQUIRED = {
     "godot/addons/godot-rapier2d/runtime-provenance.windows.json", "READ-ME.md",
     "Open Workbench.cmd", "Verify Workbench.cmd", "tools/objectshard/verify_workbench_package.ps1",
 }
+
+
+def verify_committed_godot_inputs(root: Path, expected: dict[str, str]) -> dict[str, str]:
+    """Bind shipped source bytes, including the deliberately renamed old ledger.
+
+    The production ledger describes another retained DLL. Packaging preserves
+    those exact committed bytes only as a reference; the candidate ledger owns
+    the executable DLL. This is an exact one-path relocation, never a fallback
+    to the checkout or permission to omit a provenance assertion.
+    """
+    if (root / RETAINED_PROVENANCE).exists():
+        raise ValueError("Active retained runtime provenance is forbidden in an evaluator")
+    if RETAINED_PROVENANCE not in expected:
+        raise ValueError("Committed retained provenance is absent from source custody")
+    locations = {}
+    for relative, expected_digest in expected.items():
+        if not relative.startswith("godot/"):
+            continue
+        shipped = RETAINED_REFERENCE if relative == RETAINED_PROVENANCE else relative
+        if digest(safe_path(root, shipped)) != expected_digest:
+            raise ValueError("Packaged Godot source differs: " + relative + " -> " + shipped)
+        locations[relative] = shipped
+    return locations
+
+
+def verify_candidate(root: Path, manifest: dict) -> None:
+    """Require the actual source-built Windows ledger, not a lookalike manifest."""
+    inventory = manifest["files_sha256"]
+    binary = safe_path(root, NATIVE)
+    candidate = json.loads(safe_path(root, CANDIDATE_PROVENANCE).read_text(encoding="utf-8"))
+    if (type(candidate.get("schema_version")) is not int or candidate["schema_version"] != 1
+            or candidate.get("kind") != "source-built-windows-candidate"
+            or candidate.get("artifact") != NATIVE
+            or type(candidate.get("size")) is not int or candidate["size"] != binary.stat().st_size):
+        raise ValueError("Native candidate provenance contract mismatch")
+    with binary.open("rb") as stream:
+        if stream.read(2) != b"MZ":
+            raise ValueError("Native candidate is not a Windows PE runtime")
+    for field in ("source_commit", "source_tree"):
+        if candidate.get(field) != manifest[field]:
+            raise ValueError("Candidate source identity mismatch")
+    if candidate.get("build_commit") != manifest["source_commit"]:
+        raise ValueError("Candidate build identity mismatch")
+    inputs = manifest["native"].get("source_inputs", {})
+    if not inputs or candidate.get("source_inputs") != inputs or candidate.get("sha256") != inventory[NATIVE]:
+        raise ValueError("Native build ledger mismatch")
+    for relative, expected in inputs.items():
+        if relative not in inventory or digest(safe_path(root, relative), source=True) != expected:
+            raise ValueError("Native source differs from built candidate: " + relative)
 
 
 def verify_inventory(root: Path, inventory: dict) -> None:
@@ -68,6 +120,8 @@ def verify(root: Path) -> dict:
         raise ValueError("Incomplete ordinary Workbench entry contract")
     if manifest.get("ordinary_production_defaults_changed") is not False:
         raise ValueError("Evaluator must retain opt-in activation")
+    if (root / RETAINED_PROVENANCE).exists():
+        raise ValueError("Active retained runtime provenance is forbidden in an evaluator")
     inventory = manifest.get("files_sha256", {})
     if not isinstance(inventory, dict) or not REQUIRED.issubset(inventory):
         raise ValueError("Incomplete Workbench package inventory: " + str(sorted(REQUIRED - inventory.keys())))
@@ -91,16 +145,7 @@ def verify(root: Path) -> dict:
             raise ValueError("Windows engine identity mismatch")
     if manifest.get("vc_runtime_sha256") != inventory["vcruntime140.dll"]:
         raise ValueError("VC runtime identity mismatch")
-    candidate = json.loads(safe_path(root, "source-built-candidate-provenance.json").read_text(encoding="utf-8"))
-    for field in ("source_commit", "source_tree"):
-        if candidate.get(field) != manifest[field]:
-            raise ValueError("Candidate source identity mismatch")
-    inputs = manifest["native"].get("source_inputs", {})
-    if not inputs or candidate.get("source_inputs") != inputs or candidate.get("sha256") != inventory[NATIVE]:
-        raise ValueError("Native build ledger mismatch")
-    for relative, expected in inputs.items():
-        if relative not in inventory or digest(safe_path(root, relative), source=True) != expected:
-            raise ValueError("Native source differs from built candidate: " + relative)
+    verify_candidate(root, manifest)
     return manifest
 
 

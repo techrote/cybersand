@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Draft/HOLD same-World destructible architecture, main-space Rapier, composed occupancy, moving edits and scoped lifecycle; qualification is source-bound and physical owner acceptance is separate
 canonical-for: [objectshard-m4-workbench-integration, objectshard-m4-owner-protocol, objectshard-m4-performance-evidence]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [objectshard-001.md, objectshard-m3-preflight.md, ../operations/objectshard-workbench-playtest.md, ../audits/2026-11-24-objectshard-m4-source-recovery.md, ../audits/2026-11-24-objectshard-m4-world-transition.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md]
 ---
 
@@ -345,6 +345,21 @@ change breaks the interval clock. Headless callback cadence is explicitly
 labelled headless, and all callback summaries report hardware presentation as
 unverified.
 
+Performance recording is independent of ObjectShard enablement and is off in
+ordinary evaluator play. The **Record performance timings** control or explicit
+`--objectshard-diagnostics` flag enables bounded observation. Stopping disconnects
+the post-draw observer and preserves the last recording for an explicit local
+save; restarting begins a new recording epoch with fresh timing buffers. No
+native ownership, simulation interval, chemistry or physical acknowledgement
+depends on this setting. Qualification profiles declare callback sampling and
+recording independently; every recording-enabled profile requires actual
+recorded events and native delivery intervals. Matched light tower profiles
+measure recording on/off with identical per-callback sampling. An additional
+disabled ordinary tower control matches the enabled control's native authoring
+digest, canvas and view. The ordinary diagnostics fixture exercises both the
+checkbox and separate CLI flag through real Main/worker execution, including
+actual post-draw observations in graphical qualification.
+
 The [source recovery ledger](../audits/2026-11-24-objectshard-m4-source-recovery.md)
 preserves the November 23 evidence: 44 physical-chain checks, 134 Windows checks,
 eliminated full rasterizations and approximately 26–30 headless semantic ticks/s
@@ -374,3 +389,13 @@ or a retained production binary is not an interchangeable identity. Final
 evidence must separately state implementation failures, passing engineering
 checks and physical owner questions. No document or passing automation confers
 default activation, runtime publication, Ready or merge authority.
+
+The evaluator keeps the committed old production ledger only as
+`retained-runtime-provenance.reference.json`; its executable DLL is attested by
+`source-built-candidate-provenance.json`. Extracted-package replay compares the
+old ledger's exact committed bytes at that deliberate reference location,
+requires the selected extraction's own manifest-bound engine, and refuses an
+active production ledger inside the candidate. The
+[25 November delivery recovery](../audits/2026-11-25-objectshard-m4-delivery-recovery.md)
+records the prior zero-case replay failure, its focused repair and new execution
+requirements without relabelling the failed campaign.

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Opt-in ObjectShard M4 candidate controls, authored-save scope and physical Windows evaluation
 canonical-for: [objectshard-m4-workbench-playtest]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [objectshard-m3-preflight-playtest.md, ../research/objectshard-001.md, ../audits/2026-11-24-objectshard-m4-source-recovery.md]
 ---
 
@@ -133,11 +133,29 @@ the exact frame displayed by the NVIDIA driver. Headless runs cannot establish
 displayed FPS. Do not use a headless 60 Hz callback as acceptance of the earlier
 owner-observed active-body rate below 10 FPS.
 
-Open **Structures… → Save diagnostics** to write a local JSON snapshot of the
-scene, camera, source identity, renderer, native/physics receipts and separate
-progression/display timings. The panel shows the saved path; **Open diagnostics
-folder** opens that directory. Save a snapshot during an active collapse and
-another after pausing when comparing responsiveness.
+Performance recording is **off by default**, including in the portable
+evaluator. Ordinary play retains the full native, Rapier, chemistry and
+publication protocol. Open **Structures… → Record performance timings
+(optional)** to start a fresh bounded recording. Play the comparison, then turn
+recording off and select **Save diagnostics**. Stopping preserves the recorded
+timings while normal play continues; starting another recording clears the
+previous timing samples. The explicit `--objectshard-diagnostics` launch flag
+is an alternative to the checkbox.
+
+**Save diagnostics** writes a local JSON snapshot of the current scene, camera,
+source identity, renderer and native/physics receipts, together with the
+recorded timings when available. Saving while recording is off remains useful
+for ownership/refusal diagnosis; an empty timing section means no recording was
+made. No files are written automatically. The panel shows the saved path;
+**Open diagnostics folder** opens that directory.
+
+For an inexpensive comparison, keep the same window size, renderer and camera.
+Record about fifteen seconds with the intact tower paused, fifteen seconds
+with it playing, then remove the supports and repeat during the fall and while
+paused with the detached body. Save each recording separately. Repeat with the
+eight-body scene if ordinary input remains usable. First assess play with
+recording off, then compare with recording on; recording changes only
+observation and must not change the body population or simulation settings.
 
 Water contact can extinguish moving Wood; Sand can lodge in supported pockets
 and contribute to mass. This candidate does not add buoyancy, fluid drag or

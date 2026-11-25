@@ -1855,12 +1855,10 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
-	object_shard_m4_probe.configure("--objectshard-m4-workbench" in OS.get_cmdline_user_args())
+	set_object_shard_diagnostics_enabled("--objectshard-diagnostics" in OS.get_cmdline_user_args())
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--object-shard-scene="):
 			_object_shard_launch_scene = argument.trim_prefix("--object-shard-scene=")
-	if object_shard_m4_probe.enabled:
-		RenderingServer.frame_post_draw.connect(_object_shard_m4_post_draw, CONNECT_DEFERRED)
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
@@ -2041,6 +2039,16 @@ func _object_shard_m4_post_draw() -> void:
 	if object_shard_m4_probe.enabled and shared_workbench != null \
 			and OS.get_thread_caller_id() == OS.get_main_thread_id():
 		object_shard_m4_probe.observe_post_draw(Time.get_ticks_usec())
+
+
+func set_object_shard_diagnostics_enabled(recording: bool) -> void:
+	# Recording is independent of structure ownership, native time and Rapier.
+	# Disconnect the callback as well as making the bounded probe inert.
+	object_shard_m4_probe.configure(recording)
+	if recording and not RenderingServer.frame_post_draw.is_connected(_object_shard_m4_post_draw):
+		RenderingServer.frame_post_draw.connect(_object_shard_m4_post_draw, CONNECT_DEFERRED)
+	elif not recording and RenderingServer.frame_post_draw.is_connected(_object_shard_m4_post_draw):
+		RenderingServer.frame_post_draw.disconnect(_object_shard_m4_post_draw)
 
 
 func _notification(what: int) -> void:

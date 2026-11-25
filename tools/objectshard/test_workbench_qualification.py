@@ -54,6 +54,8 @@ class WorkbenchCompletionTests(unittest.TestCase):
 class ActualWorkloadTests(unittest.TestCase):
     def profile(self, rendered: bool = False) -> dict:
         return {"source_commit": "a" * 40, "scene": "tower", "camera": "overview",
+                "sampling": "cohorts", "recording_enabled": True,
+                "latency": {"enabled": True, "events_retained": 10, "cadence": {"native_progress_delivery": [{"units_observed": 180}]}},
                 "completed_semantic_ticks": 180, "actual_physics_steps": 720,
                 "native_pose_acknowledgements": 720, "active_body_count_max": 1,
                 "native_pose_echo_checks": 720,
@@ -78,6 +80,18 @@ class ActualWorkloadTests(unittest.TestCase):
                          {"before_cut_supports": {"material_bodies_before_cut": 1, "missing_support_cells": 0, "support_cells": 800}},
                          {"elapsed_usec": True}, {"semantic_ticks_per_wall_second": float("nan")},
                          {"shard_dimensions": []}, {"active_body_cohorts": {}}):
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                qualify_workbench.validate_profile({**self.profile(), **mutation}, "a" * 40, False)
+
+    def test_recording_is_independent_of_callback_sampling_and_cannot_be_empty(self) -> None:
+        for sampling in ("cohorts", "light"):
+            value = {**self.profile(), "sampling": sampling}
+            qualify_workbench.validate_profile(value, "a" * 40, False)
+            value.update(recording_enabled=False, latency={"enabled": False})
+            qualify_workbench.validate_profile(value, "a" * 40, False)
+        for mutation in ({"sampling": "unknown"}, {"recording_enabled": 1}, {"latency": {"enabled": False}},
+                         {"latency": {"enabled": True, "events_retained": 0}},
+                         {"latency": {"enabled": True, "events_retained": 2, "cadence": {}}}):
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):
                 qualify_workbench.validate_profile({**self.profile(), **mutation}, "a" * 40, False)
 
@@ -106,6 +120,30 @@ class ActualWorkloadTests(unittest.TestCase):
 
 
 class RenderControlTests(unittest.TestCase):
+    def disabled(self, rendered: bool) -> dict:
+        return {"source_commit": "a" * 40, "scene": "tower", "camera": "overview",
+                "canvas_extent": [512, 512], "authored_rectangles_sha256": "b" * 64,
+                "display_driver": "windows" if rendered else "headless",
+                "windows": [{"label": "disabled_intact_" + state, "elapsed_usec": 12_100_000,
+                             "objectshard_enabled": False, "objectshard_native_attached": False,
+                             "material_body_count": 0, "ordinary_actor_count": 1, "worker_snapshot_calls": 0,
+                             "render_submissions": 40 if rendered else 0,
+                             "semantic_ticks": 0 if state == "paused" else 10,
+                             "actual_physics_steps": 0 if state == "paused" else 40}
+                            for state in ("paused", "playing")]}
+
+    def test_disabled_controls_require_absent_attachment_and_real_ordinary_progress(self):
+        for rendered in (False, True):
+            value = self.disabled(rendered)
+            qualify_workbench.validate_disabled_control(value, "a" * 40, rendered)
+            for change in ({"objectshard_enabled": True}, {"objectshard_native_attached": True},
+                           {"worker_snapshot_calls": 1}, {"material_body_count": 1}, {"ordinary_actor_count": 0},
+                           {"elapsed_usec": 11_000_000}, {"semantic_ticks": 0}, {"actual_physics_steps": 0}):
+                bad = copy.deepcopy(value)
+                bad["windows"][1].update(change)
+                with self.subTest(change=change), self.assertRaises(ValueError):
+                    qualify_workbench.validate_disabled_control(bad, "a" * 40, rendered)
+
     def test_actual_graphical_pause_play_controls_reject_missing_progress(self):
         rows = []
         for label in ("intact_paused", "intact_playing", "detached_paused", "detached_playing"):

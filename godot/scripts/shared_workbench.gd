@@ -43,6 +43,7 @@ var object_shard_m4_port = ObjectShardM4Port.new()
 var _object_shard_window: Window
 var _object_shard_export_label: Label
 var _object_shard_export_folder: Button
+var _object_shard_recording: CheckButton
 var _object_shard_scene: String = ""
 var _pending_object_shard_scene: String = ""
 var _object_shard_seen_result: Vector2i = Vector2i.ZERO
@@ -1540,9 +1541,6 @@ func enable_object_shard() -> bool:
 		_tool.add_item("Cut moving")
 		_tool.add_item("Ignite moving")
 		_tool.add_item("Settle into canvas")
-	host.object_shard_m4_probe.configure(true)
-	if not RenderingServer.frame_post_draw.is_connected(host._object_shard_m4_post_draw):
-		RenderingServer.frame_post_draw.connect(host._object_shard_m4_post_draw,CONNECT_DEFERRED)
 	host.object_shard_m4_runtime.enable(host)
 	message = "Structures enabled for this session. Press Play to attach to the existing native World. Supported canvases are 512 or 1024 cells per side."
 	return true
@@ -1565,7 +1563,7 @@ func open_object_shard_controls() -> void:
 	if _object_shard_window == null:
 		_object_shard_window = Window.new()
 		_object_shard_window.title = "Destructible structures · experimental"
-		_object_shard_window.size = Vector2i(740,430)
+		_object_shard_window.size = Vector2i(740,470)
 		_object_shard_window.transient = true
 		_object_shard_window.close_requested.connect(func() -> void: _object_shard_window.hide())
 		add_child(_object_shard_window)
@@ -1580,6 +1578,11 @@ func open_object_shard_controls() -> void:
 			var id: String = ObjectShardScenes.IDS[i]
 			_button(column,ObjectShardScenes.LABELS[i],func() -> void:
 				if load_object_shard_scene(id): _object_shard_window.hide())
+		_object_shard_recording = CheckButton.new()
+		_object_shard_recording.text = "Record performance timings (optional)"
+		_object_shard_recording.tooltip_text = "Start a fresh bounded recording. Stop to keep the last recording, then Save diagnostics. No files are written automatically."
+		_object_shard_recording.toggled.connect(set_object_shard_diagnostics_enabled)
+		column.add_child(_object_shard_recording)
 		var exports := HBoxContainer.new()
 		column.add_child(exports)
 		_button(exports,"Save diagnostics",save_object_shard_diagnostics)
@@ -1589,9 +1592,19 @@ func open_object_shard_controls() -> void:
 		_object_shard_export_folder.disabled = not DirAccess.dir_exists_absolute("user://objectshard-diagnostics")
 		_object_shard_export_label = Label.new()
 		_object_shard_export_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_object_shard_export_label.text = "Diagnostics are saved locally only when you press Save diagnostics."
+		_object_shard_export_label.text = "Timings are off for ordinary play. Enable recording for a comparison, then Save diagnostics."
 		column.add_child(_object_shard_export_label)
+	_object_shard_recording.set_pressed_no_signal(host.object_shard_m4_probe.enabled)
 	_object_shard_window.popup_centered()
+
+func set_object_shard_diagnostics_enabled(recording: bool) -> bool:
+	if host == null or not host.has_method("set_object_shard_diagnostics_enabled"): return false
+	host.set_object_shard_diagnostics_enabled(recording)
+	if _object_shard_recording != null:
+		_object_shard_recording.set_pressed_no_signal(recording)
+	message = "Performance recording started. Play normally, then Save diagnostics." if recording else "Performance recording stopped. Save diagnostics retains the recorded timings."
+	if _object_shard_export_label != null: _object_shard_export_label.text = message
+	return true
 
 func save_object_shard_diagnostics() -> Dictionary:
 	if host == null or not host.has_method("object_shard_m4_latency_report"):

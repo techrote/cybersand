@@ -10,7 +10,8 @@ import shutil
 import sys
 
 from package_windows_lab import ROOT, copy_committed_tree, git, native, sha, stage_vc_runtime, verify_vc_runtime, windows
-from verify_workbench_package import ENTRY, MANIFEST, RENDERING_DRIVER, SCHEMA, verify
+from verify_workbench_package import (CANDIDATE_PROVENANCE, ENTRY, MANIFEST, RENDERING_DRIVER,
+                                      RETAINED_PROVENANCE, RETAINED_REFERENCE, SCHEMA, verify)
 
 
 def launchers(source: str) -> dict[str, str]:
@@ -57,9 +58,8 @@ def package(args: argparse.Namespace) -> dict:
     for name in ("LICENSE.txt", "COPYRIGHT.txt"):
         shutil.copyfile(args.engine_notices / name, args.output / ("Godot-" + name))
     vc_hash = stage_vc_runtime(args.vc_runtime, args.output)
-    shutil.copyfile(args.native_candidate / native.NAME, args.output / "source-built-candidate-provenance.json")
-    retained = args.output / "godot/addons/cybersand_native/runtime-provenance.json"
-    retained.rename(retained.with_name("retained-runtime-provenance.reference.json"))
+    shutil.copyfile(args.native_candidate / native.NAME, args.output / CANDIDATE_PROVENANCE)
+    (args.output / RETAINED_PROVENANCE).rename(args.output / RETAINED_REFERENCE)
     shutil.copyfile(args.output / args.guide, args.output / "READ-ME.md")
     for name, content in launchers(candidate["source_commit"]).items():
         (args.output / name).write_text(content, encoding="utf-8", newline="\r\n")

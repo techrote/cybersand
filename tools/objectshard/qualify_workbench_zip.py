@@ -14,7 +14,8 @@ import time
 import zipfile
 
 from qualify_windows_zip import extract
-from verify_workbench_package import MANIFEST, verify
+from verify_workbench_package import (CANDIDATE_PROVENANCE, MANIFEST, RETAINED_PROVENANCE,
+                                      RETAINED_REFERENCE, verify)
 
 PATHS = {"spaces": "Workbench evaluation with spaces", "parentheses": "Workbench (1)",
          "unicode": "Workbench_日本語_é", "nested": "nested/owner evaluation/longer directory/Workbench"}
@@ -29,6 +30,65 @@ def create_archive(package: Path, archive: Path) -> dict:
         for member in sorted(identity["files_sha256"]) + [MANIFEST]:
             z.write(package / member, member)
     return identity
+
+
+def qualify_provenance_refusals(target: Path, output: Path, timeout: int) -> list[dict]:
+    """Exercise the shipped verifier against deliberately defective ledgers.
+
+    Only this disposable extraction is changed. Candidate-field mutations also
+    update its payload hash so the structural custody checks, rather than just
+    the outer file checksum, must reject a stale or unrelated native ledger.
+    """
+    paths = {"candidate": target / CANDIDATE_PROVENANCE,
+             "manifest": target / MANIFEST, "reference": target / RETAINED_REFERENCE}
+    original = {name: path.read_bytes() for name, path in paths.items()}
+    active_retained = target / RETAINED_PROVENANCE
+    if active_retained.exists():
+        raise ValueError("Provenance refusal fixture would overwrite an active ledger")
+    cases = (
+        ("missing-candidate", None, "Missing package file:"),
+        ("tampered-candidate", None, "Package file changed:"),
+        ("incorrect-candidate-kind", {"kind": "retained-runtime"}, "Native candidate provenance contract mismatch"),
+        ("stale-candidate-source", {"source_commit": "0" * 40}, "Candidate source identity mismatch"),
+        ("stale-candidate-build", {"build_commit": "0" * 40}, "Candidate build identity mismatch"),
+        ("wrong-candidate-runtime", {"sha256": "0" * 64}, "Candidate source identity mismatch"),
+        ("missing-retained-reference", None, "Missing package file:"),
+        ("active-retained-provenance", None, "Active retained runtime provenance is forbidden"),
+    )
+    observations = []
+    try:
+        for name, mutation, expected in cases:
+            for key, path in paths.items():
+                path.write_bytes(original[key])
+            active_retained.unlink(missing_ok=True)
+            if mutation is not None:
+                candidate = json.loads(original["candidate"])
+                candidate.update(mutation)
+                paths["candidate"].write_text(json.dumps(candidate), encoding="utf-8")
+                manifest = json.loads(original["manifest"])
+                manifest["files_sha256"][CANDIDATE_PROVENANCE] = hashlib.sha256(paths["candidate"].read_bytes()).hexdigest()
+                paths["manifest"].write_text(json.dumps(manifest), encoding="utf-8")
+            elif name == "missing-candidate":
+                paths["candidate"].unlink()
+            elif name == "tampered-candidate":
+                paths["candidate"].write_bytes(original["candidate"] + b"\nDeliberate provenance tamper.\n")
+            elif name == "missing-retained-reference":
+                paths["reference"].unlink()
+            elif name == "active-retained-provenance":
+                active_retained.write_bytes(original["reference"])
+            cmd = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", "call", "Verify Workbench.cmd", "--noninteractive"]
+            run = subprocess.run(cmd, cwd=target, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+            log_name = "provenance-" + name + "-refusal.log"
+            (output / log_name).write_bytes(run.stdout)
+            if run.returncode == 0 or expected.encode() not in run.stdout:
+                raise ValueError("Shipped verifier did not specifically refuse " + name)
+            observations.append({"case": name, "exit_code": run.returncode, "expected_refusal": expected, "log": log_name})
+    finally:
+        for key, path in paths.items():
+            path.write_bytes(original[key])
+        active_retained.unlink(missing_ok=True)
+    verify(target)
+    return observations
 
 
 def qualify(args: argparse.Namespace) -> dict:
@@ -102,6 +162,7 @@ def qualify(args: argparse.Namespace) -> dict:
                     row["unlisted_input_refused"] = True
                 finally:
                     unexpected.unlink(missing_ok=True)
+                row["provenance_refusals"] = qualify_provenance_refusals(target, output, args.timeout)
             verify(target)
         if hashlib.sha256(args.zip.read_bytes()).hexdigest() != archive_hash:
             raise ValueError("Delivered archive changed during qualification")

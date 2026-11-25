@@ -67,8 +67,8 @@ func _run() -> void:
 	var original_native_instance: int = world.get_instance_id()
 	var initial_world_generation: int = int(host.latest_snapshot.render_world_generation)
 	_expect(bench._tool.item_count == 7, "Two M4-only options exist behind explicit flag")
-	_expect(bench.object_shard_m4_port.enabled and host.object_shard_m4_probe.enabled,
-		"Both optional modules obey the owner-provided flag")
+	_expect(bench.object_shard_m4_port.enabled and host.object_shard_m4_probe.enabled == ("--objectshard-diagnostics" in OS.get_cmdline_user_args()),
+		"Structures and optional performance recording obey their independent flags")
 	var capability: Dictionary = bench.object_shard_m4_status()
 	_expect(capability.get("outcome") == "CompetingOrUnattachedWorld" and
 		not capability.get("ready", true), "No fake same-World adapter is reported as ready")

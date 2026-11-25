@@ -19,6 +19,8 @@ var scene_id: String = "tower"
 var camera: String = "overview"
 var output: String = ""
 var sampling: String = "cohorts"
+var recording_override: String = ""
+var recording_enabled: bool = true
 
 func _initialize() -> void:
 	for arg: String in OS.get_cmdline_user_args():
@@ -26,6 +28,7 @@ func _initialize() -> void:
 		elif arg.begins_with("--camera="): camera = arg.trim_prefix("--camera=")
 		elif arg.begins_with("--output="): output = arg.trim_prefix("--output=")
 		elif arg.begins_with("--sampling="): sampling = arg.trim_prefix("--sampling=")
+		elif arg.begins_with("--recording="): recording_override = arg.trim_prefix("--recording=")
 	_run.call_deferred()
 
 func _post_draw() -> void:
@@ -93,14 +96,18 @@ func _authored_support_witness() -> Dictionary:
 
 func _run() -> void:
 	f = Fixture.new(self)
+	recording_enabled = sampling != "light" if recording_override.is_empty() else recording_override == "on"
 	var result: Dictionary = {"schema":"objectshard-m4-workbench-profile-v1","scene":scene_id,"camera":camera,"sampling":sampling,
+		"recording_enabled":recording_enabled,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"display_driver":DisplayServer.get_name(),
 		"rendering_method":RenderingServer.get_current_rendering_method(),"platform":OS.get_name(),
 		"performance_scope":"process callbacks and actual renderer frame_post_draw submissions; physical GPU presentation OWNER-PENDING"}
+	if not f.expect(sampling in ["cohorts","light"] and recording_override in ["","on","off"],"profile sampling and recording options are explicitly valid"):
+		await _finish(result); return
 	if not await f.open(scene_id):
 		await _finish(result)
 		return
-	if sampling == "light": f.host.object_shard_m4_probe.configure(false)
+	f.expect(f.bench.set_object_shard_diagnostics_enabled(recording_enabled),"profile explicitly selects its declared diagnostic recording")
 	await f.pause()
 	await f.until(f.whole_canvas_coherent,"baseline whole canvas material+pose coherence")
 	result.before_cut_supports = _authored_support_witness()
@@ -153,7 +160,8 @@ func _run() -> void:
 		body_counts.append(f.body_count())
 		if sampling != "light":
 			# Exactly one full diagnostic readback per sampled callback. The
-			# fresh-scene light controls omit this readback and disable the probe.
+			# fresh-scene light controls omit this readback. Recording is an
+			# independent option so matched light controls isolate its cost.
 			var state: Dictionary = f.diagnostics()
 			_cohort(state,now-previous_usec,f.tick()-previous_tick,int(state.physical_steps)-previous_steps,
 				int(state.native_pose_acknowledgements)-previous_acknowledgements)
@@ -237,8 +245,14 @@ func _run() -> void:
 		f.expect(int(result.material_contact_deltas.relocated_sand_cells)>0,
 			"mixed falling structure commits real conservative native Sand displacement")
 	result.material_interaction_scope = "committed native carrier relocation, source-bound chemistry/exposure and optional Sand custody; no cellular fluid force or buoyancy transfer to Rapier is implemented"
-	result.instrumentation_scope = "one diagnostic state readback per callback plus enabled ordinary latency probe" if sampling != "light" else "no per-callback physics readback and ordinary latency probe disabled; callback timestamps retained"
-	if f.host.has_method("object_shard_m4_latency_report"): result.latency = f.host.object_shard_m4_latency_report()
+	result.instrumentation_scope = ("one diagnostic state readback per callback" if sampling != "light" else "no per-callback physics readback; callback timestamps retained") \
+		+ ("; ordinary latency probe enabled" if recording_enabled else "; ordinary latency probe disabled")
+	if f.host.has_method("object_shard_m4_latency_report"):
+		result.latency = f.host.object_shard_m4_latency_report()
+		f.expect(bool(result.latency.enabled) == recording_enabled,"profile instrumentation state matches declared recording")
+		if recording_enabled:
+			f.expect(int(result.latency.events_retained)>0 and not result.latency.cadence.native_progress_delivery.is_empty(),
+				"enabled profile actually records bounded timing events and native progression")
 	await f.pause()
 	f.bench.set_camera(2)
 	# Ordinary Workbench keeps its complete native canvas active and uploaded
