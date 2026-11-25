@@ -5,6 +5,7 @@ extends "res://tests/test_ambient_default_off_integration.gd"
 # fixture helpers retain their established operation watchdogs and never read
 # the worker's live native World from the main thread.
 const MaterialScenes = preload("res://scripts/workbench_material_audition_scenes.gd")
+const IntegrationWatchdogs = preload("res://tests/support/ci_execution_policy.gd")
 var panel: Control
 var initial_owners := {}
 var initial_bodies: Array = []
@@ -33,6 +34,14 @@ func active_density() -> int:
 func wait_panel(label: String) -> bool:
 	if not await until(func() -> bool: return panel._pending.is_empty(), label): return false
 	return check(panel.last_receipt.get("ok",false), label + ": actual owner receipt accepted")
+
+
+func ordinary_installed() -> bool:
+	# Material demonstrations intentionally contain no actors. Requiring the
+	# actor-bearing fixture's non-null Rapier session would reject a successful
+	# ordinary replacement after the old actor session was correctly retired.
+	return bench != null and not bench.applied.is_empty() and not bench.busy() \
+		and host.pending_microscenario_apply.is_empty()
 
 
 func same_owners(label: String) -> void:
@@ -135,7 +144,9 @@ func exercise() -> void:
 		"old material authority cannot affect the newly owned actor scene")
 	var demo_id: String = str(MaterialScenes.SCENES[0].id)
 	check(bench.load_material_audition_demo(demo_id).get("ok",false), "material demo enters the shared authored replacement path")
-	if not await until(installed,"material demo acknowledgement"): return
+	if not await until(ordinary_installed,"material demo acknowledgement"): return
+	check(bench.applied.actors.is_empty() and host.physical_actor_session == null,
+		"actor-free material demo retires the previous Rapier actor owner")
 	check(bench._name.text == "materials-" + demo_id and bench._pending_material_demo.is_empty() and bench._pending_ambient_example.is_empty(),
 		"material demo acknowledgement consumes only its own completion metadata")
 	check(bench.load_ambient_example("ambient-oil-water"), "ambient example enters the same authored replacement path")
@@ -149,6 +160,7 @@ func exercise() -> void:
 func finish() -> void:
 	print("MATERIAL_AMBIENT_INTEGRATION ", JSON.stringify(Catalog._json_value({"checks":checks,"failures":failures,
 		"phases":phases,"elapsed_msec":Time.get_ticks_msec()-begun,"godot":Engine.get_version_info(),
+		"operation_watchdog_seconds":IntegrationWatchdogs.seconds("operation_seconds"),
 		"limits":["Actual Linux native/Rapier/Workbench integration; Windows combined source and physical owner acceptance remain separate",
 			"No PUBPRES, ObjectShard, SWARM or Actor Capacity implementation included"]})))
 	if host != null:
