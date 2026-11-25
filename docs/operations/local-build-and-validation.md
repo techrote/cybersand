@@ -232,8 +232,9 @@ baseline targets. The [Makefile](../../Makefile) is the executable inventory;
 `make sanitize` and `make thread-sanitize` have distinct target coverage, so do
 not claim that either alone executes every subsystem sanitizer. Focused generation
 and soliding sanitizer targets remain available. The default AddressSanitizer
-configuration enables leak detection; a historical hosted exception is not a
-new default.
+configuration enables leak detection. Existing hosted wrappers explicitly
+disable LeakSanitizer under their scoped execution policy; that exception is not
+the default for a local build.
 
 These commands may compile substantial native source. They are procedures, not
 pass claims. Set a budget appropriate to the selected target and host; do not reuse
@@ -469,7 +470,7 @@ actor proposals. Run it with the ordinary generation suite:
 
 ```sh
 make worldgen-test
-ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-sanitize
 godot --headless --path godot --script res://tests/test_worldgen_planes.gd
 godot --headless --path godot --script res://tests/test_semantic_planes_runtime.gd
 godot --headless --path godot --script res://tests/test_semantic_planes_examples.gd
@@ -711,7 +712,7 @@ iterating, then the combined generation and sanitizer targets:
 
 ```sh
 make worldgen-test
-ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-sanitize
 godot --headless --path godot --script res://tests/test_worldgen_grammar.gd
 ```
 
@@ -786,15 +787,17 @@ to the same native targets:
 
 ```sh
 make worldgen-test
-ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-sanitize
 make worldgen-demo
 ./build/worldgen_demo --output build/worldgen-plain.ppm --seed 314159 --plain
 ```
 
-The explicit sanitizer command disables leak detection for environments where
-LeakSanitizer cannot inspect processes under ptrace. Without that override the
-sanitizer runtime enables it; use `detect_leaks=1` in a supported execution
-environment. The [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md) and
+The ordinary commands above retain the Makefile's leak-enabled sanitizer default.
+The existing [hosted native execution policy](../../tools/ci/native_execution_policy.py)
+sets an explicit `detect_leaks=0` exception for its runner environment; it does not
+qualify leak detection. If LeakSanitizer cannot inspect processes under ptrace on
+a local host, retain that infrastructure failure and report leak checking as
+unexecuted rather than silently changing the ordinary recipe. The [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md) and
 [GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md) evidence distinguish
 actual LeakSanitizer infrastructure failures from passing ASan/UBSan results.
 The PPM contains actual generated material pixels from Strata, Flow Network
