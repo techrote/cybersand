@@ -9,6 +9,8 @@ on:
       - 'docs/audits/2026-11-05-in-tools-361-successor-salvage.md'
       - 'docs/operations/in-tools-fixtures-and-playtest.md'
       - 'godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-07.json'
+      - 'godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-25.json'
+      - 'godot/tests/test_liquid_desktop_default_host.gd'
       - 'tools/lcb/in_tools_current_main_admission.py'
       - 'tools/lcb/test_in_tools_current_main_admission.py'
       - 'tools/play/run_in_tools_successor_windows_gate.py'
@@ -30,6 +32,7 @@ jobs:
         shell: bash
     env:
       GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       GODOT_SILENCE_ROOT_WARNING: '1'
       PYTHONUTF8: '1'
     steps:
@@ -69,7 +72,7 @@ jobs:
         id: causal_gate
         run: |
           set +e
-          python tools/play/run_in_tools_successor_windows_gate.py             --godot-archive "$RUNNER_TEMP/godot-windows.zip"             --expected-source-sha "$(git rev-parse HEAD)"             --output build/in-tools-windows-gate
+          python tools/play/run_in_tools_successor_windows_gate.py             --godot-archive "$RUNNER_TEMP/godot-windows.zip"             --expected-source-sha "$EXPECTED_SOURCE_SHA"             --output build/in-tools-windows-gate
           code=$?
           echo "$code" > build/in-tools-windows-gate/wrapper-exit.txt
           exit "$code"

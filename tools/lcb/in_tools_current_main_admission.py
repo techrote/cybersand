@@ -12,8 +12,12 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
-RECORD = ROOT / "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-07.json"
-SCHEMA = "in-tools-current-main-admission-v2"
+LEGACY_RECORD = ROOT / "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-07.json"
+RECORD = ROOT / "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-25.json"
+SCHEMA = "in-tools-current-main-admission-v3"
+ADOPTED_MAIN = "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+LEGACY_MAIN = "24a8bbe8ccf0d17196ebbab580b924930a964584"
+CAUSAL_FIXTURE = "godot/tests/test_liquid_desktop_default_host.gd"
 EXPECTED_AUTHORITY_COUNT = 13
 EXPECTED_AUTHORITY_PATHS = frozenset({
     "godot/scripts/usable_catalog.gd",
@@ -89,16 +93,20 @@ def validate_record(record: dict[str, Any]) -> None:
         "adopted_main", "authority", "current", "planned", "required_contracts",
         "gameplay_qualified", "runtime_qualified", "windows_gate", "authority_count",
     }
+    legacy = record.get("schema") == "in-tools-current-main-admission-v2"
+    if not legacy:
+        required |= {"supersedes_registration", "causal_fixture"}
     if set(record) != required:
         raise AdmissionError(
             f"record keys differ: missing={sorted(required-set(record))} "
             f"extra={sorted(set(record)-required)}"
         )
-    if record["schema"] != SCHEMA:
+    if record["schema"] not in {SCHEMA, "in-tools-current-main-admission-v2"}:
         raise AdmissionError("unexpected schema")
     if record["parent_issue"] != 361:
         raise AdmissionError("wrong parent issue")
-    if record["id"] != "in-tools-361-main-a01-successor-20261107":
+    expected_id = "in-tools-361-main-a01-successor-20261107" if legacy else "in-tools-361-main-a02-successor-20261125"
+    if record["id"] != expected_id:
         raise AdmissionError("unexpected successor registration id")
     predecessor = record["predecessor"]
     if predecessor != {
@@ -116,10 +124,23 @@ def validate_record(record: dict[str, Any]) -> None:
         "disposition": "historical-draft-a01-source-witnessed-unmerged",
     }:
         raise AdmissionError("historical A01 successor identity changed")
-    if record["assignment_pin"] != "24a8bbe8ccf0d17196ebbab580b924930a964584":
+    if record["assignment_pin"] != (LEGACY_MAIN if legacy else ADOPTED_MAIN):
         raise AdmissionError("assignment pin changed")
     if record["adopted_main"] != record["assignment_pin"]:
         raise AdmissionError("adopted main differs from authenticated assignment pin")
+    if not legacy:
+        if record["supersedes_registration"] != {
+            "path": "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-07.json",
+            "git_blob": "50e66122f4900f86221a7c9be766574d9d01ac84",
+            "adopted_main": LEGACY_MAIN,
+            "disposition": "immutable-historical-registration; not current-source admission",
+        }:
+            raise AdmissionError("historical registration custody changed")
+        fixture = record["causal_fixture"]
+        if not isinstance(fixture, dict) or set(fixture) != {"path", "git_blob"} or fixture["path"] != CAUSAL_FIXTURE:
+            raise AdmissionError("causal fixture authority differs")
+        if not isinstance(fixture["git_blob"], str) or len(fixture["git_blob"]) != 40 or any(c not in "0123456789abcdef" for c in fixture["git_blob"]):
+            raise AdmissionError("invalid causal fixture blob")
     authority = record["authority"]
     if not isinstance(authority, list) or len(authority) != EXPECTED_AUTHORITY_COUNT:
         raise AdmissionError("authority count differs from minimal reviewed set")
@@ -181,7 +202,10 @@ def check(record: dict[str, Any] | None = None, root: Path = ROOT) -> dict[str, 
         raise AdmissionError("successor HEAD is not a descendant of adopted main")
 
     checked: list[dict[str, str]] = []
-    for row in record["authority"]:
+    protected = list(record["authority"])
+    if "causal_fixture" in record:
+        protected.append(record["causal_fixture"])
+    for row in protected:
         path = row["path"]
         expected = row["git_blob"]
         base_blob = _git(root, "rev-parse", f"{base}:{path}")
@@ -200,14 +224,21 @@ def check(record: dict[str, Any] | None = None, root: Path = ROOT) -> dict[str, 
             raise AdmissionError(f"successor modifies production authority path: {path}")
         checked.append({"path": path, "git_blob": expected})
 
+    if "supersedes_registration" in record:
+        legacy = record["supersedes_registration"]
+        legacy_path, legacy_blob = legacy["path"], legacy["git_blob"]
+        if _git(root, "rev-parse", f"HEAD:{legacy_path}") != legacy_blob or _git(root, "hash-object", f"--path={legacy_path}", legacy_path) != legacy_blob:
+            raise AdmissionError("historical registration source bytes changed")
+
     return {
-        "schema": "in-tools-current-main-admission-result-v2",
+        "schema": "in-tools-current-main-admission-result-v3" if "causal_fixture" in record else "in-tools-current-main-admission-result-v2",
         "status": "admitted",
         "source_commit": head,
         "source_tree": tree,
         "adopted_main": base,
-        "authority_count": len(checked),
-        "authority": checked,
+        "authority_count": len(record["authority"]),
+        "authority": checked[:len(record["authority"])],
+        "causal_fixture": checked[-1] if "causal_fixture" in record else None,
         "planned_count": len(record["planned"]),
         "planned_execution": "NOT_RUN",
         "gameplay_qualified": False,

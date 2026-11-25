@@ -20,13 +20,15 @@ sys.path.insert(0, str(ROOT / "tools/ci"))
 
 import run_godot_regressions as runner
 import run_windows_godot_regressions as windows
+sys.path.insert(0, str(ROOT / "tools/lcb"))
+import in_tools_current_main_admission as admission
 
 FIXTURE = "test_liquid_desktop_default_host"
 HISTORICAL_EXIT = 0xC0000005
 HISTORICAL_PR = 379
 HISTORICAL_RUN = 41920193030
 HISTORICAL_HEAD = "e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1"
-ADOPTED_MAIN = "24a8bbe8ccf0d17196ebbab580b924930a964584"
+ADOPTED_MAIN = admission.ADOPTED_MAIN
 
 
 def git(*args: str) -> str:
@@ -92,6 +94,9 @@ def main() -> int:
         ).returncode == 0:
             raise RuntimeError("successor head is not descended from adopted main")
 
+        # The entry point enforces source authority itself; a caller cannot
+        # omit the workflow pre-step and still obtain a causal receipt.
+        report["source_admission"] = admission.check()
         report["runtime_identity"] = windows.verify_retained_runtime(ROOT)
         godot, identity = windows.prepare_godot(args.godot_archive.resolve())
         report["godot_identity"] = identity
