@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "authority": "historical-non-authoritative",
-  "source_head": "f7b4fbcb40546e776184d6b61f86e69ee5bed9e9",
+  "source_head": "32eb3e86de2095db1323d3ddf405509224225175",
   "documents": [
     {
       "path": "docs/operations/architecture-programme-water-feel-addendum.md",
@@ -205,7 +205,7 @@
       "path": "docs/operations/local-build-and-validation.md",
       "reviewer": "Astra lead",
       "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
-      "document_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992",
+      "document_sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269",
       "check_groups": [
         "build-and-ci"
       ]
@@ -398,6 +398,16 @@
       "check_groups": [
         "authoring-and-evidence-workflows"
       ]
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "check_groups": [
+        "current-runtime-contracts"
+      ],
+      "specific_scope": "All289lines; current WaterLab versus original evaluator/standalone paths, native-v2 versus gameplay defaults, approved acceptance boundaries and no exact Wave continuation. Selected bounds corroborated with the source-qualified Wave contract and panel definitions; historical144comparisons not rerun."
     }
   ],
   "review_groups": {
@@ -569,5 +579,8 @@
     "Full-text review is distinct from checking every claim against source and distinct from runtime or GUI execution.",
     "Recorded document hashes identify integrated content after independently reviewed patches; historical experiment counts remain dated evidence.",
     "All graphical observations are SpecialistB evidence; lead did not simulate an independent physical walkthrough."
-  ]
+  ],
+  "latest_review": {
+    "local_build_sanitizer_correction": "All three copyable recipes retain Makefile leak-enabled default; hosted exception is explicitly scoped. Lead inspected source and dry-run; B independently reviewed. 21 worldgen inventory tests passed. Full sanitizer binaries were not executed for this documentation-only correction."
+  }
 }

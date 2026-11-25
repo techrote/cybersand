@@ -1,119 +1,891 @@
 {
-  "schema": 1,
+  "schema": 2,
   "authority": "historical-non-authoritative",
   "disposition": "HOLD \u2014 INCOMPLETE",
+  "scope": "Interim integrated register; final hosted packaging and ranking adjudication pending. One-to-one predecessor IDs retained; fixed statuses refer to delivered local topology and the explicitly scoped executed evidence, not owner acceptance.",
   "findings": [
     {
       "id": "LIMIT-01",
       "priority": "P2",
       "owner": "C",
-      "title": "Primary-record recall and ranking",
+      "title": "Primary-record recall, canonical misses and ranking",
       "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "observed_failure_or_question": "Primary-record recall, canonical misses and ranking",
+      "implemented_outcome": "Unchanged historical baselines reproduced; general reference adapter improves several frozen suites. Final known Q01 field-score regression is being repaired and independently reviewed; original method/results remain visible.",
+      "evidence": [
+        "retrieval/baseline-reproduction.json",
+        "retrieval/README.md"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": []
     },
     {
       "id": "LIMIT-02",
       "priority": "P2",
-      "owner": "C/B/A",
-      "title": "Actual-context sufficiency",
+      "owner": "A/B/C",
+      "title": "Sufficiency of actual supplied context",
       "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "observed_failure_or_question": "Sufficiency of actual supplied context",
+      "implemented_outcome": "All36 actual contexts independently reviewed at final corpus. First-pass deficiencies are distinguished from executed explicit source-follow; final scoring repair requires fresh passage identity reconciliation.",
+      "evidence": [
+        "technical/context-applicability-final.json",
+        "product/context-applicability-81817f84.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": []
     },
     {
       "id": "LIMIT-03",
       "priority": "P1",
       "owner": "A",
-      "title": "Failure-safe ordinary/generated/project save",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "title": "Failure-safe ordinary/generated/project saves",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Failure-safe ordinary/generated/project saves",
+      "implemented_outcome": "Shared byte-verified sibling staging and accepted native replacement preserve prior complete save on tested failures. Linux/Windows normal, lock, termination, concurrent and injected cases passed; no fsync/power-loss promise.",
+      "evidence": [
+        "technical/persistence-design-and-results.md",
+        "technical/persistence-linux-final.json",
+        "technical/hosted-independent-review.json",
+        "technical/product-ui-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": []
     },
     {
       "id": "LIMIT-04",
       "priority": "P2",
       "owner": "B",
       "title": "Fresh graphical and physical qualification",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "status": "external-blocker",
+      "observed_failure_or_question": "Fresh graphical and physical qualification",
+      "implemented_outcome": "Executed native Linux X11/llvmpipe Workbench workflow matrix, real permission refusal/recovery and display-backed architecture author/reopen.",
+      "evidence": [
+        "product/final-gui-receipt.json",
+        "product/final-permission-ui.json",
+        "product/captures.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Physical owner Windows/NVIDIA host unavailable. Documentation browser rendering was blocked by explicit browser-security denial after extension unavailable/local connection refusal; no bypass attempted. Owner steps are required for these distinct evidence classes.",
+      "locators": []
     },
     {
       "id": "LIMIT-05",
       "priority": "P2",
       "owner": "C",
-      "title": "Reference adapter/index and model applicability",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "title": "External retrieval and generative applicability",
+      "status": "external-blocker",
+      "observed_failure_or_question": "External retrieval and generative applicability",
+      "implemented_outcome": "Implemented and tested actual local query/read_source adapter, authority propagation and persistent cache rebuild/refusal. Executed contexts are independently audited; no deployed model evaluation is claimed.",
+      "evidence": [
+        "retrieval/consumer-scope.json",
+        "technical/retrieval-independent-review.json",
+        "retrieval/authority-negative-after.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": "No supported production documentation-RAG deployment or local model executor/weights identified in inspected environment. No paid or third-party inference authorized/invoked.",
+      "locators": []
     },
     {
       "id": "LIMIT-06",
       "priority": "P1",
       "owner": "lead",
-      "title": "Ancillary Godot acquisition and source authority",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "title": "Ancillary engine acquisition and causal source identity",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Ancillary engine acquisition and causal source identity",
+      "implemented_outcome": "Adopted exact qualified#778 acquisition corrections; unchanged pins/checksums verified. Added separately authenticated current accepted-source causal record while preserving legacy specimen/guard. Actual Windows unchanged86-assertion causal fixture and affected Linux jobs passed. Corrected separate stale A01 assertion-count receipt.",
+      "evidence": [
+        "lead/godot-acquisition.json",
+        "lead/in-tools-source-drift.json",
+        "technical/in-tools-independent-review.json",
+        "technical/hosted-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Latest integration jobs and test-only package are checked separately; old Windows crash cause is not retrospectively explained by a successful current run. Six planned gameplay fixtures remain NOT_RUN.",
+      "locators": []
     },
     {
       "id": "LIMIT-07",
       "priority": "P2",
       "owner": "lead",
-      "title": "Materialized/runtime qualification while Draft",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "title": "Runtime provenance while candidate remains Draft",
+      "status": "owner-decision-required",
+      "observed_failure_or_question": "Runtime provenance while candidate remains Draft",
+      "implemented_outcome": "All18 tracked runtime objects materialized and verified; actual Linux/Windows native/Rapier execution and non-publishing qualification implemented. Test-only evaluator requires exact-source full Windows records and payload integrity.",
+      "evidence": [
+        "lead/materialized-intake.json",
+        "technical/hosted-independent-review.json",
+        "technical/package-independent-review.json",
+        "technical/additional-cross-review-receipts.json"
+      ],
+      "independent_reviewers": [
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Published-runtime gate remains skipped under Draft policy; Ready/release/merge require owner authorization. Final test-only packaging execution is not yet adjudicated in this interim register.",
+      "locators": []
     },
     {
       "id": "LIMIT-08",
       "priority": "P3",
       "owner": "lead",
-      "title": "Missing original conversation and decision",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+      "title": "Unavailable original conversation and decision",
+      "status": "external-blocker",
+      "observed_failure_or_question": "Unavailable original conversation and decision",
+      "implemented_outcome": "Preserved predecessor recovery ledger and immutable originals; new findings derive from independently inspected source and actual experiments. No transcript or owner decision was fabricated.",
+      "evidence": [
+        "retrieval/predecessor-custody.json",
+        "intake.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Missing original conversation was not available from inspected sources. Owner may supply it; product corrections do not require reconstructing it.",
+      "locators": []
     },
     {
       "id": "ULT-PERSIST-01",
       "priority": "P1",
       "owner": "A",
-      "title": "Buffered write failure silently replaces valid ordinary save with truncated JSON",
-      "status": "unresolved",
+      "title": "Buffered flush can replace a valid authored save with truncated JSON while reporting success",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Buffered flush can replace a valid authored save with truncated JSON while reporting success",
+      "implemented_outcome": "Real Linux RLIMIT_FSIZE reproduction established the defect; post-close exact-length/byte verification now refuses before commit. UI acknowledgement follows committed outcome.",
       "evidence": [
-        "technical/before-buffered-flush.json"
+        "technical/before-buffered-flush.json",
+        "technical/persistence-linux-final.json",
+        "product/persistence-independent.json"
       ],
-      "reviewer": null,
-      "scope": "Actual Linux RLIMIT_FSIZE=128 reproduction with SIGXFSZ ignored on pinned Godot; disposable fixture only."
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-02",
+        "A-ULT-03"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
+        },
+        {
+          "path": "godot/scripts/workbench_file_transaction.gd",
+          "sha256": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a"
+        }
+      ]
+    },
+    {
+      "id": "ULT-PERSIST-02",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Pinned Windows Godot rename can remove the sole valid old destination before move failure",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Pinned Windows Godot rename can remove the sole valid old destination before move failure",
+      "implemented_outcome": "Reuse existing native same-directory replacement primitive; no delete-old fallback. Actual target/source locks preserve old bytes and expose retained staging accurately. Formats and native ABI unchanged.",
+      "evidence": [
+        "technical/independent-observations.json",
+        "technical/hosted-independent-review.json",
+        "technical/persistence-design-and-results.md"
+      ],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-01",
+        "A-ULT-04"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/native_extension/material_baseline_file.cpp",
+          "sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873"
+        },
+        {
+          "path": "godot/scripts/workbench_file_transaction.gd",
+          "sha256": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CAPTURE-01",
+      "priority": "P1",
+      "owner": "A",
+      "title": "UI and CLI MicroScenario capture silently replace valid reports with buffered-tail truncation",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "UI and CLI MicroScenario capture silently replace valid reports with buffered-tail truncation",
+      "implemented_outcome": "Both public writers use the shared byte-verified replacement and commit-only acknowledgement. Actual Linux6 cases cover normal, permission, buffered-tail failures, retry, stale temp and relative output compatibility.",
+      "evidence": [
+        "technical/microscenario-capture-before.json",
+        "technical/microscenario-capture-linux.json",
+        "retrieval/review-capture-by-c.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Fresh Windows public-caller lock cases are required by final non-publishing qualification; no power-loss or formal blind-study claim.",
+      "locators": [
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        },
+        {
+          "path": "godot/tests/run_microscenario.gd",
+          "sha256": "17b60c51f554fa3a7749e7f2430e842714c5586b072f42b9ca1c3cdafda6d79e"
+        },
+        {
+          "path": "tools/ci/run_microscenario_capture_qualification.py",
+          "sha256": "0063fad09aacde7904730c72788ebd7c3f610aba1eb0bc316304a46ffe5b95d1"
+        }
+      ]
+    },
+    {
+      "id": "ULT-RECORD-01",
+      "priority": "P1",
+      "owner": "B",
+      "title": "Recorder acknowledges short writes and can overwrite an existing named recording session",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Recorder acknowledges short writes and can overwrite an existing named recording session",
+      "implemented_outcome": "Exclusive new session directory, safe leaf names, verified closed frame bytes and transactional manifest replacement. Failed writes/finalization cannot report complete. A recording remains a multi-file session, not a single atomic transaction.",
+      "evidence": [
+        "product/recorder/before.json",
+        "product/recorder/os-after.json",
+        "product/recorder/unit-after.json",
+        "technical/recorder-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Native safe replacement is now required for persisted manifests; in-memory writer-disabled tests remain independent. Fresh Windows lock propagation is part of final qualification.",
+      "locators": [
+        {
+          "path": "godot/scripts/gameplay_recorder.gd",
+          "sha256": "4e66f09c3c640221c86595ca7289e7d8b4cf85cd710c31faeace65a05d40f97f"
+        },
+        {
+          "path": "godot/tests/test_gameplay_recorder.gd",
+          "sha256": "3212cf766ba07ff5f01e77be16313622d8e53748972fbc8335a59456028a885c"
+        },
+        {
+          "path": "tools/ci/run_recorder_storage_qualification.py",
+          "sha256": "6ecc2ee537bc48b27edeaecff02c8ecd6ff2831bbea88df8ff3bbb6923c82141"
+        }
+      ]
     },
     {
       "id": "ULT-AUTH-01",
       "priority": "P1",
       "owner": "C",
-      "title": "Malformed/contradictory metadata admits historical/evidence chunks as current",
+      "title": "Malformed, duplicated or contradictory authority metadata can enter current context",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Malformed, duplicated or contradictory authority metadata can enter current context",
+      "implemented_outcome": "Shared strict admission fails closed and agrees across manifest, fallback and direct selection. History/audit remain explicitly non-authoritative.",
+      "evidence": [
+        "retrieval/authority-negative-before.json",
+        "retrieval/authority-negative-after.json",
+        "technical/retrieval-malformed-metadata-before.json",
+        "technical/retrieval-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/docs/retrieval_policy.py",
+          "sha256": "ab2eca7e2be79cda5741d7c3896aaeb9c603ca30ffdf27786afef4afb004f158"
+        },
+        {
+          "path": "tools/ci/test_historical_retrieval.py",
+          "sha256": "3622a7b5947e31b1a0df38133057ae85047a2c45cb72a850fe781508068c7164"
+        },
+        {
+          "path": "tools/ci/test_current_retrieval_selection.py",
+          "sha256": "29f08fde45d6c6c76f940f9a565e4fe5583a50ea811f7b90bc3dd900c7f7db49"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CACHE-01",
+      "priority": "P1",
+      "owner": "C",
+      "title": "Stale live indexes and unsafe cache destinations can retain superseded authority or overwrite source",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Stale live indexes and unsafe cache destinations can retain superseded authority or overwrite source",
+      "implemented_outcome": "Revalidate source identity before query/read_source; rebuild stale/corrupt persisted cache and refuse paths in Git worktrees/metadata or symlink aliases.",
+      "evidence": [
+        "retrieval/cache-path-negative-before.json",
+        "technical/retrieval-live-stale-before.json",
+        "technical/retrieval-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/docs/knowledge_retrieval.py",
+          "sha256": "839bf5e3afffd97cc415a09a33f9cf3fd3024457d69d933071aa51390d841972"
+        },
+        {
+          "path": "tools/ci/test_knowledge_retrieval.py",
+          "sha256": "bd2d621239077bd827f0ae52c8ab3ad60a41ce989c4b73f1f2219c141893594c"
+        }
+      ]
+    },
+    {
+      "id": "ULT-RETRIEVE-01",
+      "priority": "P2",
+      "owner": "C",
+      "title": "Unsaturated field bonuses regress frozen Q01 to irrelevant recovery contexts",
       "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Fresh negative controls; guard corrections in progress."
+      "observed_failure_or_question": "Unsaturated field bonuses regress frozen Q01 to irrelevant recovery contexts",
+      "implemented_outcome": "Negative result retained; independently designed coverage-scaled field bonus is undergoing review on unchanged frozen/development suites. Holdout remains unseen to implementer.",
+      "evidence": [
+        "retrieval/README.md"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/docs/knowledge_retrieval.py",
+          "sha256": "839bf5e3afffd97cc415a09a33f9cf3fd3024457d69d933071aa51390d841972"
+        },
+        {
+          "path": "tools/docs/evaluate_knowledge.py",
+          "sha256": "93b2df7e2df9bd67e6cebff51884f1a5c7f2fd47205189aaa8d76dec3853e74f"
+        }
+      ]
+    },
+    {
+      "id": "ULT-PROV-01",
+      "priority": "P1",
+      "owner": "C",
+      "title": "Linux physics evidence hashes Windows pointer files and silently omits missing artifacts",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Linux physics evidence hashes Windows pointer files and silently omits missing artifacts",
+      "implemented_outcome": "Select actual Linux/Windowsx86_64 extension paths, require materialized files and pinned engine version, retain descriptor/engine/runtime hashes and verify unchanged at completion. Existing outputs are not overwritten.",
+      "evidence": [
+        "retrieval/physics-provenance.json",
+        "retrieval/physics-provenance-originals.zip",
+        "technical/additional-cross-review-receipts.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/physics/runtime_identity.py",
+          "sha256": "e12720f5c0b12f9395fe2a7e398c5892f8010a95827214b6daab66a0e9a9bf6e"
+        },
+        {
+          "path": "tools/physics/run.py",
+          "sha256": "8de559870667babf05628c4bb06c9a339ebaeb8e8fba27f68847b1ca501ac174"
+        },
+        {
+          "path": "tools/physics/capture.py",
+          "sha256": "d1c6fe32f9f45eb6415b08eb088345e45937a430f54c9067fc8c23d6e9fc104d"
+        },
+        {
+          "path": "tools/physics/issue10.py",
+          "sha256": "6127a8b7a7bff09e4cd868a2a77a56baa324e64c50eab8cd9c5ff5cd23994f3f"
+        },
+        {
+          "path": "tools/physics/test_runtime_identity.py",
+          "sha256": "a6e02556e671efb734c10b0db821785cd2a779c939928879859a86a23c5bd356"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CI-01",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Linux pinned-engine download403 blocks ancillary jobs",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Linux pinned-engine download403 blocks ancillary jobs",
+      "implemented_outcome": "Use exact official release asset identity via existing verified lock/checksum; scoped#778 changes carried discretely. Actual PLAY/GUI/unattended jobs passed.",
+      "evidence": [
+        "lead/godot-acquisition.json",
+        "technical/hosted-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": ".github/workflows/gdextension.yml",
+          "sha256": "7ce419097b5e5c0c0b3584bf1b0b42650c78fae650aa8647736b8fa5f58087b3"
+        },
+        {
+          "path": ".github/workflows/play-desktop-packet.yml",
+          "sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3"
+        },
+        {
+          "path": ".github/workflows/world-art-preview.yml",
+          "sha256": "c879591d8765cba023b268d98267e510f445e2df233668eaf162eb4aae2336af"
+        },
+        {
+          "path": ".github/workflows/world-art-capture.yml",
+          "sha256": "548e6a4b5cabf06f449f452c21866511b7a984dc1aaa4898d70fe54902633cb0"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CI-02",
+      "priority": "P1",
+      "owner": "lead",
+      "title": "Current causal runner is admitted against an obsolete frozen source specimen",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Current causal runner is admitted against an obsolete frozen source specimen",
+      "implemented_outcome": "Preserve historical v2 guard and add independently source-qualified v3 for accepted main with exact13-file pins. Unchanged causal fixture passes on actual Linux and Windows; mutations still refuse.",
+      "evidence": [
+        "lead/in-tools-source-drift.json",
+        "technical/in-tools-independent-review.json",
+        "technical/hosted-independent-review.json"
+      ],
+      "independent_reviewers": [
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/lcb/in_tools_current_main_admission.py",
+          "sha256": "a4115e4023ac79017909278bdea6c210f03e7b0993c01ce89260f2ace6c6e85a"
+        },
+        {
+          "path": "tools/lcb/test_in_tools_current_main_admission.py",
+          "sha256": "0b799835b2b4968137d81ab3c8c3fc5eb697c2ebe2444df38fd8061a4c2c96dd"
+        },
+        {
+          "path": "tools/play/run_in_tools_successor_windows_gate.py",
+          "sha256": "2706afa1f81a13389c29a3bb8ede3b624e8315fd18cff0f7a25d32c1d04be19e"
+        },
+        {
+          "path": "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-25.json",
+          "sha256": "0f51cceed94f70a6d16ab6dffb5dc2b95f2fe367cd323bd1534fcd07a5c71b7f"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CI-03",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "A01 wrapper expects15 assertions while current fixture executes19",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "A01 wrapper expects15 assertions while current fixture executes19",
+      "implemented_outcome": "Reconcile current19-assertion expectation and explicit source environment; immutable historical14-assertion specimen unchanged. Final hosted wrapper rerun is separately reported.",
+      "evidence": [
+        "technical/additional-cross-review-receipts.json"
+      ],
+      "independent_reviewers": [
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": ".github/workflows/in-tools-361-a01-independent-qualification.yml",
+          "sha256": "1b06830273a03ba8b83cc7488df03f6fbde87a307cfa9c1b2af6e80fb173cd52"
+        }
+      ]
     },
     {
       "id": "ULT-UX-01",
       "priority": "P2",
       "owner": "B",
-      "title": "First-session material label differs from native palette; camera reset hides restored work",
-      "status": "unresolved",
-      "evidence": [],
-      "reviewer": null,
-      "scope": "Fresh actual Linux GUI observation; source/guide correction in progress."
+      "title": "First-session material/camera guidance differs from actual Workbench",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "First-session material/camera guidance differs from actual Workbench",
+      "implemented_outcome": "Use actual native palette labels and documented camera recovery; preserve legacy Art label where it exists. Actual first-session paint/history/save/reload completed.",
+      "evidence": [
+        "product/coverage.json",
+        "product/final-gui-receipt.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/operations/getting-started.md",
+          "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e"
+        },
+        {
+          "path": "docs/operations/workbench-first-session.md",
+          "sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a"
+        }
+      ]
+    },
+    {
+      "id": "ULT-UX-02",
+      "priority": "P2",
+      "owner": "B/C",
+      "title": "Preview cancellation, saved recipe, catalogue count and player refusal labels misreport state",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Preview cancellation, saved recipe, catalogue count and player refusal labels misreport state",
+      "implemented_outcome": "Truthful cancelled-preview status, embedded saved-recipe caption, catalogue-derived46 presets and actual sampled-player picker label. Focused regressions and actual GUI readbacks distinguish displayed state from operation acknowledgement.",
+      "evidence": [
+        "product/generator-discovery-final.log.txt",
+        "product/physical-catalog-final.log.txt",
+        "product/final-gui-receipt.json",
+        "technical/product-ui-independent-review.json",
+        "retrieval/cross-review-c.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "sha256": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        }
+      ]
+    },
+    {
+      "id": "ULT-SOURCE-01",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Docs collapse ordinary and Workbench torque paths, deny integrated discovery and imply unbounded queues",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Docs collapse ordinary and Workbench torque paths, deny integrated discovery and imply unbounded queues",
+      "implemented_outcome": "Source-qualified owner/torque distinctions, integrated optional discovery and eight-entry per-queue limits replace inherited assertions; no unrelated runtime redesign.",
+      "evidence": [
+        "technical/technical-review-coverage.json",
+        "technical/cross-review-source-receipts.json"
+      ],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-05",
+        "A-ULT-06",
+        "A-ULT-07"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/architecture/data-ownership-and-lifetimes.md",
+          "sha256": "c382c04501c3e728ddd4563eeec840a616503e6719cdd497300f482d999c87f3"
+        },
+        {
+          "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+          "sha256": "2024bd87238db198680e64e8b6777e9532589f42b33033fb063e60dced64e928"
+        },
+        {
+          "path": "docs/systems/settled-region-discovery.md",
+          "sha256": "3ce104b7fe9e0b537f6805ba862517ac02836b64eac359cf042b3f40e82bab5f"
+        }
+      ]
+    },
+    {
+      "id": "ULT-SOURCE-02",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Water guides misstate accepted families, physical versions, capacities and prepared normalization",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Water guides misstate accepted families, physical versions, capacities and prepared normalization",
+      "implemented_outcome": "Reconcile actual codec/hash getters, schema2 in-flight ledger,2048Workbench prepared capacity, accepted IN/Pressure/cache routes and Wave parcel contact/default limits. Historical scientific controls remain dated.",
+      "evidence": [
+        "technical/technical-review-coverage.json",
+        "retrieval/cross-review-c.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-08",
+        "A-ULT-09",
+        "A-ULT-10"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/architecture/liquid-solver-family-policy.md",
+          "sha256": "eb3515d1a77f3d6c1def6badfe1fc8c692df0782f05a6a8ba3f77676a91338a8"
+        },
+        {
+          "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+          "sha256": "883f61c74979f243f10cbe2e7f409af569b6eff8175dee9476e0367906d30c07"
+        },
+        {
+          "path": "docs/architecture/pressure-flow-v1.md",
+          "sha256": "18e325b6c36f15d00879c37e70c1b01079666302f7341b0bf4d2f1be47d876bd"
+        },
+        {
+          "path": "docs/architecture/wave-flow-v1.md",
+          "sha256": "c29922e5faf37b41cecc6383ac62d666679a056af5c3182ef21ec8c79bd90017"
+        }
+      ]
+    },
+    {
+      "id": "ULT-OWNER-01",
+      "priority": "P1",
+      "owner": "lead/C/B",
+      "title": "Retained programme instructions override later owner priorities or imply formal study readiness",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Retained programme instructions override later owner priorities or imply formal study readiness",
+      "implemented_outcome": "Scope dated holds, Web policy and source states; preserve November authoring direction, owner-deferred Web and#84not-planned. Ordinary revealed engineering captures are explicitly distinct from formal blind research.",
+      "evidence": [
+        "lead/coverage.json",
+        "retrieval/coverage-c.json",
+        "product/coverage.json",
+        "technical/additional-cross-review-receipts.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/reference/product-intent-and-priorities.md",
+          "sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "path": "docs/operations/architecture-programme.md",
+          "sha256": "1c1e28b76a7b0deb0256624748f8f85e88e26b5882ebb13d5398389c66a700b3"
+        },
+        {
+          "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+          "sha256": "51e2b5b789476c8da9ce33706ceba3ec4fc6b2fca61cd866bc3822c78d8d2a88"
+        },
+        {
+          "path": "docs/operations/experiment-tower.md",
+          "sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8"
+        }
+      ]
+    },
+    {
+      "id": "ULT-DOC-01",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Comparison manual mixes old planning chronology with current practical controls",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Comparison manual mixes old planning chronology with current practical controls",
+      "implemented_outcome": "Replace with compact verified current workflow, eight presets/two setups, applied/pending and normalization boundaries; immutable predecessor retains complete chronology and inbound canonical anchor.",
+      "evidence": [
+        "lead/coverage.json",
+        "retrieval/cross-review-c.json",
+        "product/README.md"
+      ],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/operations/lcb-manual-comparison-ux.md",
+          "sha256": "155555f1c6c8bb5049d1b204b43f961886ca89bc7a3e7c4d80b88458b2ad4ddc"
+        },
+        {
+          "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+          "sha256": "08e898438a60ea861d9a769374513685f67bc7fdfd1a72047304325203e56826"
+        }
+      ]
+    },
+    {
+      "id": "ULT-SOURCE-03",
+      "priority": "P1",
+      "owner": "lead",
+      "title": "Catalogue rollback/protected-source and finite-adapter status guidance is obsolete",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Catalogue rollback/protected-source and finite-adapter status guidance is obsolete",
+      "implemented_outcome": "Correct unsafe tools-only rollback after accepted generated consumers, merged#371 status, actual extent_ clipping and accepted bounded REM-002 bearing. Broader thermal/gameplay adoption remains separate.",
+      "evidence": [
+        "lead/coverage.json",
+        "technical/additional-cross-review-receipts.json",
+        "retrieval/cross-review-c.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/operations/material-catalogue-shadow.md",
+          "sha256": "1c8debbfdc152a2f810edd7036c29ddc93a5fbe754716be40bd8f97acabc69ed"
+        },
+        {
+          "path": "docs/systems/world-storage-and-interest-region.md",
+          "sha256": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b"
+        },
+        {
+          "path": "docs/systems/materials-and-rule-kernels.md",
+          "sha256": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CUSTODY-01",
+      "priority": "P2",
+      "owner": "C/lead",
+      "title": "Predecessor evidence adds170MB to ordinary checkout and competing retrieval material",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Predecessor evidence adds170MB to ordinary checkout and competing retrieval material",
+      "implemented_outcome": "Compact accepted-main-based successor retains82 originals, immutable697-file custody map and full#774 lineage; omits167919138working-tree bytes without claiming history deletion. Strict authority excludes audit evidence.",
+      "evidence": [
+        "retrieval/predecessor-custody.json",
+        "retrieval/evidence-measurement.json",
+        "retrieval/README.md"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B",
+        "lead"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/docs/evidence_custody.py",
+          "sha256": "d7506ecc178cf250c31f06d39785774af169fffdbce7a9b69cda76c409c27f77"
+        }
+      ]
+    },
+    {
+      "id": "ULT-THERMAL-01",
+      "priority": "P2",
+      "owner": "existing#354 programme",
+      "title": "Existing MoltenGlass intrinsic cooling opportunity can be lost after sleep",
+      "status": "owner-decision-required",
+      "observed_failure_or_question": "Existing MoltenGlass intrinsic cooling opportunity can be lost after sleep",
+      "implemented_outcome": "Independently confirmed source still schedules compact-pair/Ice deadlines rather than intrinsic cooling. Corrected misleading programme/status/rollback guidance; retained existing PhaseA findings and owner scope. No thermal law or protected native source changed.",
+      "evidence": [
+        "lead/coverage.json",
+        "technical/technical-review-coverage.json"
+      ],
+      "independent_reviewers": [
+        "lead",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": "Existing#354explicitly admits PhaseA tests/tooling/documentation; production cooling-deadline and protected-runtime transition belong to that owning programme. This mission does not absorb its semantic/native-publication adoption. Exact next action: qualify the admitted deadline design and preserve180heated states,shared deadlines,workers and interest semantics under#354 before any guarded runtime transition.",
+      "locators": [
+        {
+          "path": "native/src/world.cpp",
+          "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+        },
+        {
+          "path": "docs/operations/material-liveness-investigation.md",
+          "sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CI-04",
+      "priority": "P2",
+      "owner": "Astra lead",
+      "title": "Ordinary local validation recipes silently disabled leak checking",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Three generic copyable worldgen-sanitize recipes set detect_leaks=0 despite the Makefile default enabling leak detection. A linked-source holdout review exposed the inconsistency.",
+      "implemented_outcome": "Removed the three environment overrides; documented the existing hosted execution exception separately and require an explicit unexecuted/infrastructure disposition when local LeakSanitizer is blocked.",
+      "evidence": [
+        "lead/sanitizer-recipe/receipt.json",
+        "lead/sanitizer-recipe/worldgen-build-inventory-tests.log",
+        "lead/sanitizer-recipe/worldgen-sanitizer-dry-run.log"
+      ],
+      "independent_reviewers": [
+        "Specialist B"
+      ],
+      "aliases": [],
+      "remaining_boundary": "The documentation correction was source-checked and dry-run/inventory-tested; no fresh native sanitizer execution is claimed. Heldout first-treatment records remain unchanged.",
+      "locators": [
+        {
+          "path": "docs/operations/local-build-and-validation.md",
+          "sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269"
+        },
+        {
+          "path": "Makefile",
+          "sha256": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7"
+        },
+        {
+          "path": "tools/ci/native_execution_policy.py",
+          "sha256": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb"
+        }
+      ]
     }
   ]
 }
