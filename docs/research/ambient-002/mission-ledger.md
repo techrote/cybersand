@@ -691,3 +691,102 @@ qualifications are not substituted. [Documentation/provenance45552901072](https:
 passed at observer52900f. The forthcoming closing packet and new evidence routes
 will receive their own final documentation check. All evidence additions keep
 the loaded application subtreea54e0b09 unchanged.
+
+## Final application qualification, independent review and owner delivery
+
+The complete corrected-source
+[campaign 45552786466](https://github.com/techrote/cybersand/actions/runs/45552786466)
+finished successfully at application
+`50c6df89528dc9ecdc5316d8c67abf203e192254`, source tree
+`d9740be7cafb8ac7b7d6eee4a16219989745fd95`. Linux job 138997623356 and
+Windows job 138997623535 both completed successfully. Each source platform
+passed 24 cases and 15,349 assertions, including 648 living-core and 895
+predecessor-core assertions. Freshly extracted Windows separately passed 8 cases
+and 9,300 assertions. Both Windows mounted-editor receipts pass 96 checks and
+retain the admitted control generations 4, 5, 5, 6. Original and extracted ordinary
+launcher checks, pristine and post-launch payload inventories, Save/Reopen,
+authority/lifecycle and actual graphical gates all passed.
+
+The final registered programme contains 194 actual actor episodes in 122 fresh
+World campaigns: 178 subjects and 16 passive companions, 4,560 World simulation
+seconds and 6,720 actor-seconds. Those jointly instantiated actors are clustered
+within their Worlds; they are not 194 statistically independent treatments.
+The programme completed 273,600 native/Rapier steps, 62,400 accepted commands,
+zero rejected commands and zero actor-center canvas incidents, with at most
+eight actual actors. B independently joined all 122 original process/receipt
+chains, recomputed 2,910 metrics, checked 67,200 copied actor samples and 40 exact
+ablations, and reproduced both frozen reducers byte-for-byte. The complete
+original Linux artifact is 42,796,506 bytes, SHA256
+`e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac`;
+[verified byte parts and reconstruction](evidence/hosted-50c6-complete/README.md)
+retain every original member rather than only selected favorable reports.
+
+The old-to-new comparison establishes identical registered starting materials,
+actor poses, geometry, seeds, profiles and fixed observer configuration in all
+122 matched Worlds. 191 of 194 complete traces and 66,213 of 67,200 copied positions
+match. Two 120-second flyer trajectories change; Homebody Keeper changes drive
+values while retaining all copied positions. Both final flyer arms show two
+separated home-rest windows with replenishing exploration drive. Their separate
+strict 16-cell geometric return counts are one stateful versus two memory-off;
+all three crossings occur later under exploration or investigation, not at the
+selected homeward phase. This is not a population-wide intentional return-home
+rate. Main exploration, adverse-route and social counterexamples remain in the
+[final analysis](evidence/hosted-50c6-independent/scientific-findings.md) and
+[paired source comparison](evidence/hosted-50c6-independent/old-to-new-comparison.md).
+The earlier curiosity and thin-material experiments keep their actual a725
+source labels and are not counted as new 50c6 executions.
+
+C independently verified the complete original Windows evidence artifact,
+28,268,700 bytes, SHA256
+`5d12ce325cc0c3024a7c60e4e303e8fed8ef55a437596def809624c561c1101d`,
+including all 29 source and 29 extracted original images. All 58 were individually
+viewed and bound to their displayed material/actor states and capture receipts.
+Their complete original archive is preserved in three verified byte parts under
+[windows-50c6-complete](evidence/windows-50c6-complete/archive-manifest.json).
+A independently joined the four living-core/editor process chains; its scope
+complements C's whole-payload and graphical review. Linux additionally produced
+29 actual graphical captures. Actual hosted rendering remains software-backed:
+Linux llvmpipe at 1920 × 1080 and Windows ANGLE/Microsoft Basic Render Driver at
+1028 × 578. It establishes execution and visible results, not physical NVIDIA,
+monitor latency or owner playfeel acceptance.
+
+The recommended portable evaluator is
+`CyberSand-AMBIENT-002-Windows-50c6df89528d.zip`, exactly 259,734,965 bytes,
+SHA256 `54a4dc71c10a6ca77dcc8ba48a1fb5be39cc0e63ae33099b3dd0d452e9c71a5a`.
+C verified all 1,473 payload files, every member hash/CRC and the exact manifest.
+The package retains the ordinary Workbench, all 16 profiles and 11 native examples,
+required engine/native/Rapier/Windows dependencies, guides, notices, source
+identities and `Open Workbench.cmd`. A durable owner download has been created
+from those exact already-qualified inner-ZIP bytes. The public
+[Actions artifact 14995966187](https://github.com/techrote/cybersand/actions/runs/45552786466/artifacts/14995966187)
+is the separate outer envelope, 259,389,255 bytes, SHA256
+`8be206e40ad48f467d16b8f618a415169f5c80f2456f56b9caca06cf3d472608`.
+Neither the predecessor evaluator nor the earlier a725 evaluator was modified,
+deleted or relabeled. Owner access does not depend on building from source.
+
+The closing [decision packet](decision-packet.md) is 57,667 bytes, SHA256
+`1e6478c683912f2429465a1dbe626269b0ada6257f2692d3fdb483da1996b153`,
+Git blob `ca1a6be654b5c8d9a588a422d22643922a025262`. A independently reviewed
+mechanisms, selected-home timing, comparison interpretation and the four
+corrected wording issues; B reviewed every quantitative group and measurement
+limit; C reviewed owner delivery, authored controls, platform/payload and
+hardware limits. Their exact-snapshot receipts are
+[A](evidence/a-final-packet-review-50c6.json),
+[B](evidence/b-final-50c6-packet-review.json) and
+[C](evidence/c-final-owner-platform-review-1e6478c6.json). The lead reconciled the
+source identities, retained original failures, checked every final staged
+manifest entry against its local byte count, SHA256 and Git object identity,
+and preserved each specialist's explicit review scope.
+
+Documentation/provenance
+[45555137431](https://github.com/techrote/cybersand/actions/runs/45555137431)
+passed at checkpoint 353c973e. The closing documentation/evidence additions
+receive a further documentation gate after publication; its exact result belongs
+in the PR handoff, avoiding a recursive documentation-only commit merely to
+record its own future workflow identity. All closing paths are documentation or
+evidence. The loaded application subtree remains
+`a54e0b0907c17b52e5c8d55683093097580cba24`. PR 779 remains open Draft/HOLD,
+with no Ready/merge transition, default activation, model calls, training,
+physics change or capacity import. The owner receives a usable evaluator with
+explicit limits on long-horizon navigation, repeated attention, social
+interpretation, dense overlays, hosted performance and eight-actor capacity.

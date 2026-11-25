@@ -1,0 +1,192 @@
+{
+  "source_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "qualifier_sha256": "b50380cebd6786d6601bf8b35866e8d163ea838f2e13e2121f6adc92f410e4a5",
+  "CASES": [
+    [
+      "engine",
+      "test_ambient_engine",
+      []
+    ],
+    [
+      "independent",
+      "test_ambient_independent",
+      []
+    ],
+    [
+      "perception",
+      "test_ambient_perception",
+      []
+    ],
+    [
+      "ledge_geometry",
+      "test_ambient_ledge_geometry",
+      []
+    ],
+    [
+      "clock",
+      "test_ambient_clock",
+      []
+    ],
+    [
+      "authoring_save",
+      "test_ambient_authoring",
+      [
+        "--save",
+        "ambient-qualified"
+      ]
+    ],
+    [
+      "authoring_reopen",
+      "test_ambient_authoring",
+      [
+        "--reopen",
+        "ambient-qualified"
+      ]
+    ],
+    [
+      "editor",
+      "test_ambient_profile_editor",
+      []
+    ],
+    [
+      "native_motion",
+      "test_ambient_native_motion",
+      []
+    ],
+    [
+      "personalities",
+      "test_ambient_personalities_native",
+      []
+    ],
+    [
+      "workbench",
+      "test_ambient_workbench",
+      []
+    ],
+    [
+      "examples",
+      "test_ambient_examples_native",
+      []
+    ],
+    [
+      "living_authoring_save",
+      "test_ambient_living_authoring",
+      [
+        "--save",
+        "ambient-living-qualified"
+      ]
+    ],
+    [
+      "living_authoring_reopen",
+      "test_ambient_living_authoring",
+      [
+        "--reopen",
+        "ambient-living-qualified"
+      ]
+    ],
+    [
+      "living_editor",
+      "test_ambient_living_editor",
+      []
+    ],
+    [
+      "living_engine",
+      "test_ambient_living_engine",
+      []
+    ],
+    [
+      "living_group",
+      "test_ambient_group_transaction",
+      []
+    ],
+    [
+      "living_spatial",
+      "test_ambient2_spatial",
+      []
+    ],
+    [
+      "living_episodes",
+      "test_ambient2_episodes",
+      []
+    ],
+    [
+      "living_examples",
+      "test_ambient_living_examples_native",
+      []
+    ],
+    [
+      "legacy_catalog",
+      "test_workbench_actor_catalog",
+      []
+    ],
+    [
+      "legacy_composition",
+      "test_workbench_actor_composition",
+      []
+    ],
+    [
+      "legacy_session",
+      "test_workbench_actor_composition_session",
+      []
+    ],
+    [
+      "legacy_physical",
+      "test_physical_actor_session",
+      []
+    ]
+  ],
+  "REPORTS": {
+    "living_episodes": "CYBERSAND_AMBIENT2_EPISODES_REPORT",
+    "living_engine": "CYBERSAND_AMBIENT_LIVING_ENGINE_REPORT",
+    "living_spatial": "CYBERSAND_AMBIENT2_SPATIAL_REPORT",
+    "living_editor": "CYBERSAND_AMBIENT_LIVING_EDITOR_REPORT",
+    "living_examples": "CYBERSAND_AMBIENT_LIVING_EXAMPLES_REPORT",
+    "perception": "CYBERSAND_AMBIENT_PERCEPTION_REPORT",
+    "editor": "CYBERSAND_AMBIENT_EDITOR_REPORT",
+    "native_motion": "CYBERSAND_AMBIENT_MOTION_REPORT",
+    "personalities": "CYBERSAND_AMBIENT_PERSONALITIES_REPORT",
+    "workbench": "CYBERSAND_AMBIENT_WORKBENCH_REPORT",
+    "examples": "CYBERSAND_AMBIENT_EXAMPLES_REPORT"
+  },
+  "TERMINALS": {
+    "living_episodes": "AMBIENT2_EPISODES",
+    "living_engine": "AMBIENT_LIVING_ENGINE_RESULT",
+    "living_group": "AMBIENT_GROUP",
+    "living_spatial": "AMBIENT2_SPATIAL",
+    "living_authoring_save": "AMBIENT_LIVING_AUTHORING",
+    "living_authoring_reopen": "AMBIENT_LIVING_AUTHORING",
+    "living_editor": "AMBIENT_LIVING_EDITOR",
+    "engine": "AMBIENT_ENGINE_RESULT",
+    "independent": "AMBIENT_INDEPENDENT",
+    "perception": "AMBIENT_PERCEPTION",
+    "ledge_geometry": "AMBIENT_LEDGE_GEOMETRY",
+    "clock": "AMBIENT_CLOCK",
+    "authoring_save": "AMBIENT_AUTHORING",
+    "authoring_reopen": "AMBIENT_AUTHORING",
+    "editor": "AMBIENT_EDITOR",
+    "native_motion": "AMBIENT_NATIVE_MOTION",
+    "personalities": "AMBIENT_PERSONALITIES",
+    "legacy_composition": "WB_ACTOR_COMPOSE"
+  },
+  "TEXT_TERMINALS": {
+    "living_examples": "^AMBIENT_LIVING_EXAMPLES checks=(\\d+) failures=(\\d+) cases=6$",
+    "workbench": "^AMBIENT_WORKBENCH checks=(\\d+) failures=(\\d+) phases=\\d+$",
+    "examples": "^AMBIENT_EXAMPLES checks=(\\d+) failures=(\\d+) cases=5$",
+    "legacy_catalog": "^WB_ACTOR_CATALOG checks=(\\d+) failures=(\\d+) models=\\d+ prepared_workshop_bodies=\\d+$",
+    "legacy_session": "^Workbench actor composition session: (\\d+) checks, (\\d+) failures$",
+    "legacy_physical": "^Physical actor session: (\\d+) assertions, (\\d+) failures$"
+  },
+  "EXAMPLES": [
+    "ambient-flight",
+    "ambient-industrial-yard",
+    "ambient-ledge-walkway",
+    "ambient-oil-water",
+    "ambient-settlement",
+    "ambient2-aerial-habitat",
+    "ambient2-cavern",
+    "ambient2-courtyard",
+    "ambient2-floodyard",
+    "ambient2-refinery",
+    "ambient2-settlement"
+  ]
+}

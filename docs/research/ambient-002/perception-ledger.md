@@ -484,4 +484,95 @@ Sampled timelapses are assembled from real PNGs, not continuous-video or FPS
 evidence. The material/actor labels and diagnostic overlay can overlap even in
 Follow view; the original frames and these limitations remain available.
 
+## Coherent home rest: exact final-source requalification
 
+The actual Foundry negative above motivated one shared-rule correction. The
+engine now uses the exact selected, enabled, positive-weight home module's
+validated arrival radius only while its admitted phase is `home_rest`, with
+current copied physical containment still required. Ordinary neutral rest
+retains sixteen cells. Drive rates, physical laws, rigs, sampling, scenes and
+profiles are unchanged. The prior-intent integration rule across observation
+gaps remains explicitly documented; it does not prove continuous rest during
+unobserved time.
+
+B independently reviewed the exact engine/test source and the separate one-word
+editor-help correction. The [focused original readback](evidence/b-home-recharge-focused-readback.json)
+verifies actual Linux 648 living and 895 predecessor core checks, and the old
+a725 engine failing exactly five new recharge assertions under the identical
+new test fixture. These focused tests add no physical episode count. The
+preserved old failure was not overwritten or relabeled.
+
+Application `50c6df89528dc9ecdc5316d8c67abf203e192254`, tree
+`d9740be7cafb8ac7b7d6eee4a16219989745fd95`, completed full run
+`45552786466` on Linux and Windows. B independently read Linux artifact
+`14995028842`: 42,796,506 bytes, SHA-256
+`e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac`.
+All 719 original members pass CRC. The full Linux 24-case campaign has 15,349
+checks and zero failures. Original logs, process receipts, unique completion
+markers and parsed reports agree. All 29 graphical capture hashes and their
+copied material/displayed-actor identity contracts agree.
+
+The [final scientific readback](evidence/hosted-50c6-independent/scientific-findings.md)
+uniquely joins all 122 physical process receipts to the 194-actor aggregate,
+checks 2,910 independently recomputed metrics, 67,200 copied-peer samples and 40
+exact ablation groups, and reproduces both hosted analysis outputs byte for
+byte. The original raw aggregate is 119,622,604 bytes, SHA-256
+`1cfb085b65c9fbf295294fbf5360d7d8f0ac78f9b95039c384fe416bdc889137`;
+summary SHA-256 is
+`298cc3977a5c318ab8530e983a05ce9c298f17a105a5690fd4bb3018b1938a91`.
+All 1,143 qualified source and 855 loaded project inputs agree across actual
+headless, graphical and physical receipts. Relative to a725, only the three
+approved Godot files differ; the separate qualification-request source marker
+is explicitly pinned too. B's local mutable checkout was used only for
+SHA-pinned Python analysis, never represented as a clean runtime qualification.
+
+The [old-to-new tables](evidence/hosted-50c6-independent/old-to-new-comparison.md)
+retain unchanged main-policy medians, paired memory/trait/perception contrasts,
+adverse cases, social/grouping outcomes and catalogue physical/selection
+summaries. The two 120-second flying trajectories differ. Stateful now reaches
+193.009 horizontal cells/38 stable bins, 1.35% active stalls and one 16-cell
+geometric return; memory-disabled reaches 168.660/36 bins, 1.01% stalls and two
+returns. The old two-versus-one return comparison reverses, so it is not retained as
+a memory advantage. Both new flyers have two accepted twenty-cell home-rest windows,
+each gaining approximately 0.36 drive over four seconds. Their fixed sixteen-cell
+crossings occur later under exploration or material investigation. Those
+geometric counts are deliberately distinct from intentional home arrival/rest.
+The blocked-route failure records still last occur at 12.6 seconds, before the
+new wall at 15 seconds; later withdrawal does not demonstrate new-wall learning.
+
+In this a725/50c6 pair of source-specific executions, 66,213/67,200 copied positions and
+191/194 complete trace records match. Only the two long-flyer position traces
+change; Homebody Keeper has a drive-only trace difference. This does not erase
+the earlier same-source host-variability negative or promise bit determinism.
+Eight-actor stateful production sensor/core/advance costs are 116.613/30.797/
+285.319 milliseconds per simulation second; native/Rapier calls are 0.181/1.476
+milliseconds per physical tick. These are actual elapsed-call costs, with
+sensor/core nested in advance. Hosted timing differences are not isolated
+causal performance changes or owner display acceptance.
+
+External observer `52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b` repeated only
+Foundry at the new frozen application in run 45552888360. The [independent B
+physical readback](evidence/graphical-watch-50c6-independent/physical-readback.json)
+confirms identical copied initial states for all eight actors and exact actor 7
+positions at all 53 requested seconds 0–52. Its 49–52 sampled path remains
+0.00420945 cells. At 48–51 the actor remains inside the authored 20-cell arrival
+and outside the separate 16-cell metric while exploration drive rises
+0.324055→0.594055; the old trace declined. Later divergence is described without
+attributing every future difference to recharge. The direct inspected evidence
+is the new contact sheet and original frame 50, alongside all numeric samples;
+C independently preserves all 61 images and the entire distinct observation
+artifact. This is separate qualitative evidence, not additional registered
+physical-treatment credit.
+
+B directly inspected all five final scientific figures, which preserve the
+full 512×256 canvas, honest short ground extents, exact selected-module labels,
+and the near-stationary random social control. The complete final Linux
+original artifact is now [durably retained in five raw byte parts](evidence/hosted-50c6-complete/README.md)
+with an actually executed reconstruction verifier. The compact 49-member
+original-custody/analysis archive is 1,875,766 bytes, SHA-256
+`3e7c4004182fc539259b9b575527eb0b5490bde651a1ad82fa11b262eb8fe606`.
+All source-specific earlier evaluators, local/hosted raw campaigns, thin-patch
+proof, curiosity supplement and adverse findings remain preserved. Thin-patch
+and curiosity execution remain attributed to a725, not relabeled as 50c6. B
+performed no new engine execution during this final artifact audit. The
+qualified population limit remains eight and successor disposition Draft/HOLD.

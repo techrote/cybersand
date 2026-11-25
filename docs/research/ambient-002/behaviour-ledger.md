@@ -358,3 +358,54 @@ intervening policy decision or position. The source-specific full Linux,
 Windows and extracted evaluator campaign is a separate required qualification;
 the graphical pass alone does not replace those gates or grant NVIDIA playfeel
 acceptance. No scene, profile, actuator or physical law was retuned.
+
+## Final-source independent readbacks — 2026-11-25
+
+The new Windows evidence at application `50c6df89…`, artifact `14995491989`,
+independently reproduces **648 living-core checks and 96 mounted-editor checks**
+in each of the source and freshly extracted package locations. Four distinct
+process receipts exit successfully; their complete terminal JSON agrees with
+the original report, and qualifier/process/log/report hashes join correctly.
+Both editors retain control generations `4 → 5 → 5 → 6`, preserving resumed
+and unapplied configuration before acknowledged Apply. Complete source/project
+inventories and runtime hashes agree between source and extraction, including
+the exact repaired engine and fixture. This [targeted readback](evidence/windows-50c6-independent/spotcheck.json)
+does not replace the authoring lane's full payload, launcher and graphical audit.
+The editor fixtures mount actual UI/native owners headlessly; they are not
+manual display or NVIDIA acceptance.
+
+A [separate original-shard review](evidence/final-home-memory-independent/readback.json)
+at the final Linux source independently recomputes eighteen main memory-pair
+episodes: median within-seed X-range differences remain +0.313385 Runner,
++0.073669 Monowheel and zero flyer. Both blocked-route seeds retain five failure
+events last observed at 12.6 seconds, before the actual native wall intervention
+at fifteen seconds. Later withdrawal reuses earlier evidence.
+
+The two-minute flyer outcome changes and remains mixed. Both stateful and
+memory-disabled profiles use the same twenty-cell home arrival radius and show
+two separated selected home-rest windows. Each final-source window gains 0.36
+drive between its first and last copied samples over four seconds; the earlier
+first windows failed to recharge outside sixteen cells. Yet the separately
+defined forty-cell-departure/sixteen-cell-return count is now **one stateful
+versus two memory-disabled**, not the earlier two-versus-one. Every new
+sixteen-cell crossing occurs after rest under exploration or material
+investigation, not while the home module is selected. These are geometric
+crossings rather than at-crossing intentional home returns. Primary traces
+contain module/phase labels, not unique goal keys, so separated rest windows
+are not relabelled as independently identified goal instances.
+
+The first version of this independent reader incorrectly compared the complete
+post-run outcome-observer diagnostic dictionary as if it contained only input
+scope. Actual query work and elapsed times legitimately differed. The original
+failed reader and diagnostic are retained beside the corrected reader, which
+compares fixed observer configuration, exact initial materials/poses/geometry
+and all authored fields except the declared memory flag. This was an audit
+expectation error, not a Godot failure or a change to experimental input. The
+corrected selected-shard readback passes without modifying any original record.
+
+Final owner-language review also corrected four distinctions: peer-observation
+module occupancy includes approach and is not pure watch-phase duration;
+unchanged module labels do not identify unique goals; camera visibility does
+not gate policy progression; unchanged actuators/physics do not imply unchanged
+resulting movement. All new analysis remains source-bound and adds no physical
+episode credit.
