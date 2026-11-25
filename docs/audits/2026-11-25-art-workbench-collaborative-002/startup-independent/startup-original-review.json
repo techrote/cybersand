@@ -1,0 +1,239 @@
+{
+  "schema": "art-independent-startup-original-review-v1",
+  "evidence_source": "30c4d2bdead3bae8491b1f6a7c766c97df36970b",
+  "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "application_tree": "517164084860a19f18b36cb94f77597eb3220578",
+  "reviewer": "Specialist B; independent read-only Python/source review of lead-authored diagnostic",
+  "script_sha256": "a3f1b38025ec2e5158526f3fc42e24b0887bccf3654f88893f68c3bb34a6521d",
+  "checks": 876,
+  "checks_by_category": {
+    "source": 35,
+    "pinned_evidence": 6,
+    "archive": 15,
+    "derived_index": 19,
+    "original_bytes": 183,
+    "compact_bytes": 44,
+    "omissions": 245,
+    "measurements": 49,
+    "host": 22,
+    "timing": 148,
+    "native_context": 71,
+    "cache_chain": 39
+  },
+  "failures": [],
+  "passed": true,
+  "original_fixture_arms": 7,
+  "original_archive_members_verified": 183,
+  "context_identities": [
+    {
+      "region": [
+        0,
+        0,
+        64,
+        64
+      ],
+      "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+      "wire_bytes": 7438
+    },
+    {
+      "region": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+      "wire_bytes": 8003
+    },
+    {
+      "region": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+      "wire_bytes": 8528
+    }
+  ],
+  "campaigns": [
+    {
+      "label": "four-arm",
+      "source": {
+        "sha": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+        "tree": "e7a3557e2983bb596fabe3f226e3939baf353a47",
+        "parents": [
+          "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+        ]
+      },
+      "original_archive": {
+        "file": "original-artifact.zip",
+        "bytes": 4981131,
+        "sha256": "c79ffd7960cb02c66d66e1e09d3c6fc167aa288d101b748771b5af2def7ffe1f",
+        "members_verified": 130
+      },
+      "compact_archive": {
+        "file": "original-measurements.zip",
+        "bytes": 55211,
+        "sha256": "fcd42328682e977c4d6422a7ae6f5bd5da8d0e87ced0ef7cb460f3303c43717b",
+        "original_members": 26,
+        "omitted_members": 104
+      },
+      "arms": [
+        {
+          "label": "graphical-first",
+          "checks": 27,
+          "workbench_ready_usec": 42630759,
+          "phase_sum_usec": 42624143,
+          "unallocated_fixture_overhead_usec": 6616,
+          "maximum_frame_gap_usec": 39129875,
+          "process_wall_seconds": 50.328,
+          "original_result_sha256": "d67ca699d95e6856c1d138d6cf89970c652bca331e9aea672da940dadbbe063b"
+        },
+        {
+          "label": "graphical-repeat",
+          "checks": 27,
+          "workbench_ready_usec": 38979483,
+          "phase_sum_usec": 38973402,
+          "unallocated_fixture_overhead_usec": 6081,
+          "maximum_frame_gap_usec": 35501181,
+          "process_wall_seconds": 46.110000000000014,
+          "original_result_sha256": "65afc276aa0834113c578f6b1021907db80b12d8ad03f117d34e2912b3de3b04"
+        },
+        {
+          "label": "graphical-after-import",
+          "checks": 27,
+          "workbench_ready_usec": 40161100,
+          "phase_sum_usec": 40154746,
+          "unallocated_fixture_overhead_usec": 6354,
+          "maximum_frame_gap_usec": 36696808,
+          "process_wall_seconds": 46.797,
+          "original_result_sha256": "1cab8196b92975e21e3679df567c7093db7b50d37cd06335983f131d77719f04"
+        },
+        {
+          "label": "headless-after-graphical",
+          "checks": 27,
+          "workbench_ready_usec": 3510985,
+          "phase_sum_usec": 3509654,
+          "unallocated_fixture_overhead_usec": 1331,
+          "maximum_frame_gap_usec": 2689900,
+          "process_wall_seconds": 5.375,
+          "original_result_sha256": "686748892dbe9de4303a228a431913992cc1dd60a999f4374ec5e060ad15e632"
+        }
+      ],
+      "profile_chain": null
+    },
+    {
+      "label": "render-profile",
+      "source": {
+        "sha": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+        "tree": "f52fd14241738ec20bba1ea5590e9a888c5ee785",
+        "parents": [
+          "8ce9bbd780df7ac1a82caf1ae1598fed27371138"
+        ]
+      },
+      "original_archive": {
+        "file": "render-profile-artifact.zip",
+        "bytes": 619916,
+        "sha256": "8515813ed298f3d1aa5eba9c4eea7456e36af6b96eeb86307495d63b9ebfaf4d",
+        "members_verified": 53
+      },
+      "compact_archive": {
+        "file": "render-profile-measurements.zip",
+        "bytes": 58530,
+        "sha256": "064378dc64c6a41dd390bf17caf8c7bc5ced82b5314527af265edc443bcfcec2",
+        "original_members": 18,
+        "omitted_members": 35
+      },
+      "arms": [
+        {
+          "label": "graphical-first",
+          "checks": 27,
+          "workbench_ready_usec": 52113567,
+          "phase_sum_usec": 52105837,
+          "unallocated_fixture_overhead_usec": 7730,
+          "maximum_frame_gap_usec": 47892064,
+          "process_wall_seconds": 60.110000000000014,
+          "original_result_sha256": "d5c41780bbdfbd6783f5577b81b5b6162fa43b090a298f76692afba748f07088",
+          "first_render_interval": {
+            "end_elapsed_usec": 51129216,
+            "index": 0,
+            "start_elapsed_usec": 3240105,
+            "wall_usec": 47889111
+          },
+          "maximum_render_interval": {
+            "end_elapsed_usec": 51129216,
+            "index": 0,
+            "start_elapsed_usec": 3240105,
+            "wall_usec": 47889111
+          },
+          "stored_render_intervals": 38,
+          "stored_startup_frames": 39,
+          "cache_before": 0,
+          "cache_after": 34
+        },
+        {
+          "label": "graphical-reused-profile",
+          "checks": 27,
+          "workbench_ready_usec": 4728312,
+          "phase_sum_usec": 4721569,
+          "unallocated_fixture_overhead_usec": 6743,
+          "maximum_frame_gap_usec": 3196733,
+          "process_wall_seconds": 9.0,
+          "original_result_sha256": "5ea4696bf94c5cdc5511c034eb33edf9b1d581ba30f7a9ffc992772184913f09",
+          "first_render_interval": {
+            "end_elapsed_usec": 3406079,
+            "index": 0,
+            "start_elapsed_usec": 3199156,
+            "wall_usec": 206923
+          },
+          "maximum_render_interval": {
+            "end_elapsed_usec": 4387049,
+            "index": 3,
+            "start_elapsed_usec": 3504843,
+            "wall_usec": 882206
+          },
+          "stored_render_intervals": 41,
+          "stored_startup_frames": 42,
+          "cache_before": 34,
+          "cache_after": 35
+        },
+        {
+          "label": "headless-after-graphical",
+          "checks": 27,
+          "workbench_ready_usec": 4027805,
+          "phase_sum_usec": 4026455,
+          "unallocated_fixture_overhead_usec": 1350,
+          "maximum_frame_gap_usec": 3133733,
+          "process_wall_seconds": 5.9529999999999745,
+          "original_result_sha256": "ed9060187fc9bd05184d110f8b90acb53c129131c4700a42c96db23bd7407c2c",
+          "first_render_interval": null,
+          "maximum_render_interval": {},
+          "stored_render_intervals": 0,
+          "stored_startup_frames": 64,
+          "cache_before": 0,
+          "cache_after": 0
+        }
+      ],
+      "profile_chain": {
+        "identical_cache_input_files": 34,
+        "before_draw_gap_usec": 2394,
+        "first_draw_usec": 47889111,
+        "after_draw_gap_usec": 559,
+        "outside_draw_interval_usec": 2953,
+        "whole_profile_reused": true,
+        "os_cache_controlled": false
+      }
+    }
+  ],
+  "limits": [
+    "No application, native World or model rerun was performed by this verifier.",
+    "Native context digest equality concerns three bounded disclosed contexts, not every hidden World byte.",
+    "Recorded runtime hashes are joined to source LFS identities; executable binaries are not present in these measurement archives.",
+    "Diagnostic elapsed time begins after engine bootstrap; process wall is a separate clock.",
+    "The first-draw bracket localizes wall time, not GPU-only execution or a shader function.",
+    "Profile reuse is one fixed-order pair of whole generated profiles; OS caches and host contention are uncontrolled.",
+    "Different AMD and Intel allocations do not support a cross-host causal source comparison.",
+    "Neither production startup repair nor physical Windows/NVIDIA acceptance is claimed."
+  ]
+}
