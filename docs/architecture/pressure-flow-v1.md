@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Current-main opt-in Water pressure family — admission, state, gas topology, heads, kernel laws, lifecycle, physical identity and persistence; merged cached/dormant mechanisms and comparison hosts have separate canonical owners and source-bound acceptance
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, pressure-optimization.md]
 ---
 
@@ -133,13 +133,14 @@ or is reused; the sentinel is not an allocatable identity.
 ## Tick structure
 
 ```text
-begin_tick → explosions → prepare_pressure_tick()      (serial, deterministic)
+begin_tick → explosions → prepare_pressure_tick()      (serialized owner)
                1. resolve_gas_topology()   (gas_enabled only)
                2. compute_pressure_heads() (+ state-only wake of sleeping blocks)
           → active-chunk list → unchanged phased kernels → update_water_pressure()
 ```
 
-Preparation runs before the active-chunk list, so its wakes take effect in the
+Preparation is deterministic and can use the accepted Workbench pooled
+subpasses described below. It runs before the active-chunk list, so its wakes take effect in the
 same tick. Kernels read the immutable head snapshot plus their own rule radius
 (x±2 reads, ±1 writes), exactly like the Current kernels, so 1 and 4 workers
 produce identical physical states.
@@ -201,7 +202,7 @@ plugged chamber sealed at gauge −38 before and ≥ 0 after). The Godot pressur
 policy, LCB contract, scenario-catalogue, WEX-001 and Water Feel regressions are
 unchanged. Evidence: [PF dormant + ballistic record](../audits/2026-11-06-pf-ballistic-tick-cost.md).
 
-**Masked labels at retirement (Current repair branch, acceptance pending).**
+**Masked labels at retirement (accepted source correction).**
 A transient body excludes an Empty cell from gas volume and overlap; it does
 not replace the stored cell. After the identity reducer installs the next live
 table, the existing resident relabel pass changes any unvisited positive label
@@ -296,7 +297,7 @@ still publishes dirty/wake/discovery witnesses if its pressure state changed.
 | start / moving dead band | 128 / 10 (per 255 of a row) | fixed, scaled by `maximum()` |
 | overfill limit | `maximum()` | fixed |
 | `kOverfillStiffnessRows` | 0 | fixed |
-| compartment volume limit / capacity / history | 16 384 / 1024 / 64 | fixed |
+| compartment volume limit / base capacity / history | 16 384 / 1024 / 64 | Base defaults; the separately admitted gas-capacity profile uses 2048 compartments and CYPS5 |
 
 These are **Proposed** values chosen with the characterization harness, not
 owner-frozen. p_atm = 32 keeps the gauge noise of one integer amount unit in a
@@ -319,6 +320,8 @@ records them.
 
 ## Physical-state hash v2
 
+This section describes the base pressure extension. Newer IN, ballistic and
+gas-capacity combinations select the actual-instance versions linked above.
 `World::physical_state_hash()` (`kPhysicalStateHashVersion = 2`, 64-bit FNV-1a,
 16 hex digits through GDExtension) covers the tick clock, epoch, interest/core
 regions, physics configuration (chunk/scheduler geometry, interaction, Water,
@@ -453,4 +456,4 @@ they do not describe source `349d593`.
 
 ## Desktop development workbench execution
 
-On Draft #394, the workbench reference variant can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. On the #406 branch (2026-11-06), the cached and cached_dormant variants also take this route, and the row repair/wake pass also runs as sub-band tasks. Both stay exact to the serial pass, including certificate and work counters. Gas topology labelling (the BFS and the compartment reducer) still runs on the owner. Since a later #406 change, its whole-world seed scan uses a read-only pooled pre-pass that marks seed candidates, and its label pass runs one pool task per chunk, with identical labels and gas work counters ([evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)). The base scientific host retains its existing execution path. The workbench "Fine cores" option is a separate, non-exact geometry choice. Measurements are in the [tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).
+Accepted Workbench source can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. The cached and cached_dormant variants also take this route, and the row repair/wake pass can run as sub-band tasks when its ownership guards admit pooling. Both preserve the serial pass's certificate and work counters. Gas topology labelling (the BFS and the compartment reducer) still runs on the owner. Its whole-world seed scan uses a read-only pooled pre-pass that marks seed candidates, and its label pass runs one pool task per chunk, with identical labels and gas work counters. These paths entered through the historical #394/#406 work ([dated evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)); their presence in accepted source is distinct from a new performance measurement. The base scientific host retains its existing execution path. The Workbench "Fine cores" option is a separate, non-exact geometry choice. Measurements are in the [tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).

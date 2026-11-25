@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current-main Water and Brine inertial reference, retained integer momentum, whole-cell admission, carrier ownership, radius and state costs; source-bound native/application evidence remains distinct from scientific comparison and human acceptance
 canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
@@ -133,8 +133,8 @@ physics. Old source-bound facts and failures remain historical.
 
 ## Separate Water publication
 
-The [Water successor publisher](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
-is an isolated005/001 profile on its own branch. Reviewed profile24a is followed
+**Historical Water publication sequence:** the [Water successor publisher](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
+used an isolated005/001 profile on its candidate branch. Reviewed profile24a is followed
 by request sequence1/source4b588279 and actual run40166210470, then four-path
 botC9e52b52. Later sequence2/sourceaa8af247/run40220697738/bot03cccd8f
 republishes the reviewed native activity/storage/pool repairs. It retains all15
@@ -226,7 +226,7 @@ Without newer extensions, non-IN Worlds use physical hash2/CYPS2 and ordinary IN
 
 `capture_native_facts` remains the exclusive native boundary. It adds family4/state-contract1/extension-identity1 with the complete actual parameter identity digest through the existing outer receipt-v1 extension field. Its physical hash version comes from the actual instance. Host source/runtime claims remain explicitly unverified. Exact continuation retains clocks, actual epochs, activity/deadlines, interest and pending work; content plus completed tick does not reconstruct those obligations. Host-owned masks/actors and settled discovery retain their existing persistence refusals/ownership limits. This does not implement GEN-006 streaming.
 
-Static-rest observations require zero vx/vy/ax/ay and stable physical content. The complete continuation hash still changes with advancing clocks. The shared diagnostic projections are now integrated on this IN branch: `PressureVariantEquivalenceV1` normalizes only the PF implementation variant, and `QuiescentPhysicalContentV1` additionally excludes declared clocks, epochs, activity aging and cumulative quantity diagnostics. Both retain the actual IN parameter identity and every vx/vy/ax/ay field, including signed subcell state with identical visible pixels. They bind the actual instance version3; non-IN instances retain version2. IN ledgers remain separately compared. A constant diagnostic observation never grants future rest or permission to skip material/body work. No historical `content_hash`, `state_hash` or raw continuation byte stream is changed by these projections.
+Static-rest observations require zero vx/vy/ax/ay and stable physical content. The complete continuation hash still changes with advancing clocks. The accepted diagnostic projections are `PressureVariantEquivalenceV1`, which normalizes only the PF implementation variant, and `QuiescentPhysicalContentV1`, which additionally excludes declared clocks, epochs, activity aging and cumulative quantity diagnostics. Both retain the actual IN parameter identity and every vx/vy/ax/ay field, including signed subcell state with identical visible pixels. They bind `World::physical_state_hash_version()`: the original ordinary-IN checkpoint used3 and non-IN2, while newer extensions follow the current version table above. IN ledgers remain separately compared. A constant diagnostic observation never grants future rest or permission to skip material/body work. No historical `content_hash`, `state_hash` or raw continuation byte stream is changed by these projections.
 
 ## Standalone Godot readback and explicit geometry
 
@@ -260,7 +260,7 @@ copies, with no native pool worker calling Godot:
 | `get_liquid_run_receipt(setup)` | The older experimental dictionary identity includes the actual instance hash version and, for IN only, actual parameter identity. It remains distinct from typed native-v1 host proof. |
 
 The legacy `CyberDemoBridge.build_liquid_policy_world` has an optional final
-`maximum_rule_radius`, accepting exactly2 or3 and defaulting to2. Brine IN must
+`maximum_rule_radius`, accepting exactly2 or3 and defaulting to2. Brine or Water IN must
 explicitly request3; the older six-argument call refuses without replacing the
 live World. There is no automatic geometry upgrade. `build_world`,
 `build_tuned_world`, `build_water_feel_world`, `reset_demo_world` and CYSD1
@@ -274,8 +274,8 @@ and pressure substitution, closed density exchanges, readback isolation, CYPS3
 continuation and unchanged Current reconstruction. Its six completed sections
 are source-bound in the [dated adapter ledger](../audits/2026-10-25-lcb005-standalone-adapter.md).
 The new fixture is `godot/tests/fixtures/lcb/inertial-adapter-parameters.json`;
-it is an observation oracle, not a new native schema. Water quantity remains
-visible+overfill, while whole-cell Oil/Brine populations use cell counts.
+it is an observation oracle, not a new native schema. That fixture's ballistic-disabled
+Water quantity is visible+overfill, while whole-cell Oil/Brine populations use cell counts.
 
 That standalone checkpoint added no prepared token, UI, constructor coordinator,
 verified provenance, Web qualification or new physics. Its then-pending merge
