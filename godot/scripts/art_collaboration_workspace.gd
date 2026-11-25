@@ -121,6 +121,8 @@ func _ready() -> void:
 	add_child(header)
 	request_state.text = "Idle · no request sent"
 	request_state.max_lines_visible = 2
+	request_state.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	request_state.tooltip_text = request_state.text
 	request_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(request_state)
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -158,12 +160,23 @@ func _ready() -> void:
 	actions.add_child(examples)
 	add_child(actions)
 	notice.max_lines_visible = 2
+	notice.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	notice.text = "Discuss and preview never draw. Every construction stage needs its own approval."
+	notice.tooltip_text = notice.text
 	add_child(notice)
 	_ready_done = true
 	set_brief(_brief)
 	_mode_changed(0)
+	resized.connect(_sync_compact_layout)
+	_sync_compact_layout()
+
+func _sync_compact_layout() -> void:
+	# At the ordinary Art minimum, keep a usable scrolling page between the
+	# fixed actions. Complete request/notice values remain in their tooltips.
+	var visible_lines := 1 if size.y < 400.0 else 2
+	for label: Label in [request_state, notice]:
+		if label.max_lines_visible != visible_lines: label.max_lines_visible = visible_lines
 
 func _tab(title_text: String) -> VBoxContainer:
 	var box := VBoxContainer.new()

@@ -234,6 +234,21 @@ func collaboration_layout_checks() -> void:
 		for control: Control in [view.send_button,view.stop_button,panel.collaboration_button]:
 			check(compact_rect.encloses(control_screen_rect(control)),
 				"integrated minimum keeps shared actions reachable on tab "+str(tab))
+		if tab == 1:
+			check(compact_rect.encloses(control_screen_rect(view.brief_apply)) and compact_rect.encloses(control_screen_rect(view.brief_cancel)),
+				"integrated minimum keeps brief Apply and Cancel reachable")
+		elif tab == 2:
+			for control: Control in [view.preview_button,view.approve_button,view.revise_button,view.skip_button,view.proposal_copy]:
+				check(compact_rect.encloses(control_screen_rect(control)),
+					"integrated minimum keeps proposal action reachable: "+control.name)
+		elif tab == 3:
+			var visible_scroll := control_screen_rect(scroll).intersection(compact_rect)
+			check(visible_scroll.size.y > 0 and visible_scroll.size.x > 0,
+				"integrated minimum retains a visible scroll viewport for Context controls and disclosure")
+			check(view.request_state.max_lines_visible == 1 and view.notice.max_lines_visible == 1,
+				"compact integrated status uses one line to preserve page space")
+			check(not view.request_state.tooltip_text.is_empty() and not view.notice.tooltip_text.is_empty(),
+				"compact status and notice retain their complete tooltip text")
 	check(panel.provider.serial == serial_before and panel.provider.traffic.count('"kind":"request"') == requests_before,
 		"opening, inspecting and resizing collaboration dispatches no HTTP or model request")
 	check(host.simulation_worker.paint_state().revision == native_before.revision,
