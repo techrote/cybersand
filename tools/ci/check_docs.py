@@ -188,27 +188,33 @@ def check(root: Path) -> dict:
                 other = texts.setdefault(resolved, resolved.read_text(encoding="utf-8-sig"))
                 if unquote(url.fragment) not in anchors(other):
                     errors.append(f"{relative}: missing heading anchor {target}")
-    fixture_path = docs / "reference/retrieval-questions.json"
+    # Accepted main appended a revision-sensitive CI case to its original file.
+    # Keep that 33-case input unchanged as dated evidence. Current structural
+    # checks use the byte-preserved original 32 and the separately reviewed CI
+    # correction; every checked case still requires an admitted current route.
+    fixture_paths = [docs / "reference/retrieval-questions-frozen32.json",
+                     docs / "reference/retrieval-questions-ci-closure-current-v1.json"]
     question_count = 0
-    try:
-        fixture = json.loads(fixture_path.read_text(encoding="utf-8-sig"))
-        seen = set()
-        for question in fixture["questions"]:
-            question_count += 1
-            qid = question["id"]
-            if qid in seen:
-                errors.append(f"Duplicate retrieval question ID: {qid}")
-            seen.add(qid)
-            if not question.get("facts") or not question.get("query"):
-                errors.append(f"{qid}: retrieval fixture requires a query and expected facts")
-            if not any(c in selected for c in question.get("canonical", [])):
-                errors.append(f"{qid}: no canonical route exists in the retrieval corpus")
-            for source in question.get("sources", []):
-                source_path = source.split("::", 1)[0]
-                if not (docs / source_path).exists():
-                    errors.append(f"{qid}: missing expected-fact source {source_path}")
-    except (OSError, ValueError, KeyError, TypeError) as exc:
-        errors.append(f"Cannot validate retrieval questions: {exc}")
+    seen = set()
+    for fixture_path in fixture_paths:
+        try:
+            fixture = json.loads(fixture_path.read_text(encoding="utf-8-sig"))
+            for question in fixture["questions"]:
+                question_count += 1
+                qid = question["id"]
+                if qid in seen:
+                    errors.append(f"Duplicate retrieval question ID: {qid}")
+                seen.add(qid)
+                if not question.get("facts") or not question.get("query"):
+                    errors.append(f"{qid}: retrieval fixture requires a query and expected facts")
+                if not any(c in selected for c in question.get("canonical", [])):
+                    errors.append(f"{qid}: no canonical route exists in the retrieval corpus")
+                for source in question.get("sources", []):
+                    source_path = source.split("::", 1)[0]
+                    if not (docs / source_path).exists():
+                        errors.append(f"{qid}: missing expected-fact source {source_path}")
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"Cannot validate retrieval questions from {fixture_path.relative_to(docs)}: {exc}")
     # Isolated history is not answer material, but its maintained records and
     # generated views still need a normal CI integrity gate.
     if (docs / "history/engineering/coverage.json").is_file():
@@ -217,7 +223,7 @@ def check(root: Path) -> dict:
             errors.extend("Historical capture: " + error for error in history["errors"])
         except (OSError, ValueError, KeyError, TypeError) as exc:
             errors.append(f"Cannot validate historical capture: {exc}")
-    return {"status":"failed" if errors else "passed", "documents":len(paths), "navigation_link_documents":len(link_paths)-len(paths), "canonical_claims":len(owners), "local_links":link_count, "heading_anchors":anchor_count, "questions":question_count, "errors":errors,"warnings":warnings,
+    return {"status":"failed" if errors else "passed", "documents":len(paths), "navigation_link_documents":len(link_paths)-len(paths), "canonical_claims":len(owners), "local_links":link_count, "heading_anchors":anchor_count, "questions":question_count, "question_fixtures":[p.relative_to(docs).as_posix() for p in fixture_paths], "errors":errors,"warnings":warnings,
             "limitations":["Does not verify source semantics or runtime claims", "Does not fetch external URLs", "Does not rewrite or reattest historical audits", "Retrieval quality requires the separate lexical evaluation and expected-fact review"]}
 
 def main() -> int:

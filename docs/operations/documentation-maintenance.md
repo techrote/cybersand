@@ -146,7 +146,7 @@ of completing the answer from an old audit or an inferred decision.
 
 ```sh
 python -m unittest discover -s tools/ci -p test_knowledge_retrieval.py
-python tools/docs/knowledge_retrieval.py --queries docs/reference/retrieval-questions.json --output /tmp/cybersand-reference-evaluation.json
+python tools/docs/knowledge_retrieval.py --queries docs/reference/retrieval-questions-frozen32.json --output /tmp/cybersand-reference-evaluation.json
 ```
 
 Compare the proposed method and unchanged baseline separately on frozen and
@@ -223,7 +223,7 @@ python tools/ci/check_m11_consistency.py
 python -m unittest discover -s tools/ci -p test_historical_retrieval.py
 python -m unittest discover -s tools/ci -p test_current_retrieval_selection.py
 python -m unittest discover -s tools/ci -p test_knowledge_retrieval.py
-python tools/docs/retrieval_eval.py --output <local-output.json>
+python tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-frozen32.json --output <local-output.json>
 git diff --check
 ```
 
@@ -235,7 +235,16 @@ and explicit strict historical comparison are [separate gates](current-and-histo
 report integrity failures and current-file drift with their distinct scope.
 
 [retrieval_eval.py](../../tools/docs/retrieval_eval.py) evaluates deterministic
-heading chunks with BM25 against the [frozen questions](../reference/retrieval-questions.json).
+heading chunks with BM25 against the [frozen questions](../reference/retrieval-questions-frozen32.json).
+Accepted main later appended one revision-sensitive CI question to
+`retrieval-questions.json`. That accepted 33-case input remains unchanged as a
+dated fixture; the original 32 bytes now live in `retrieval-questions-frozen32.json`.
+A separately reviewed `retrieval-questions-ci-closure-current-v1.json` records the
+subsequent accepted-tooling facts. Structural checks validate the frozen 32 and
+that current correction without admitting the historical packet as an answer.
+Report each suite separately; do not attribute an additive case to the original
+frozen result.
+
 Report hit@1/hit@5 and rank metrics with manual expected-fact sufficiency. A
 canonical hit alone can still omit a crucial qualifier. This is a development-set
 lexical baseline, not proof about an embedding model, a deployed vector database,

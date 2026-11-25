@@ -25,7 +25,7 @@ except ImportError:
     import knowledge_retrieval as proposed
 
 SUITES = {
-    'frozen':'docs/reference/retrieval-questions.json',
+    'frozen':'docs/reference/retrieval-questions-frozen32.json',
     'challenges':'docs/reference/retrieval-challenges.json',
     'renaissance':'docs/reference/retrieval-questions-docs-renaissance-v1.json',
     'owner-intent':'docs/reference/owner-intent-retrieval-questions.json',
@@ -92,7 +92,7 @@ def run(root, output, contexts=False):
     result={'schema':1,'runner_sha256':sha(__file__),'authority':'historical-non-authoritative','source_head':git('rev-parse','HEAD'),
             'source_tree':git('rev-parse','HEAD^{tree}'),'dirty_paths':git('status','--porcelain').splitlines(),
             'scope':'Both methods on the same working corpus, unchanged frozen fixtures and original lexical scorer. No model run or inferred answer accuracy.',
-            'method_selection':'Small disclosed field/diversity/link variants were compared on development-familiar frozen suites; sealed holdout is separate and receives no tuning.',
+            'method_selection':'Ranking development uses disclosed frozen/development inputs; read the accompanying independent review and holdout chronology separately.',
             'current_identity':shared.identity,
             'historical_identity':retriever.identity,
             'reports':reports}

@@ -165,6 +165,33 @@ class CurrentRetrievalSelectionTests(unittest.TestCase):
         self.assertEqual(chunk["authority"], HISTORICAL_AUTHORITY)
         self.assertIn("NOT current instructions", chunk["text"])
 
+    def test_structural_fixture_migration_keeps_current_route_requirement(self):
+        self.manifest.write_text(json.dumps({"documents": ["systems/current.md"],
+                                             "excluded": ["operations/packet.md"]}))
+        def question(qid, route):
+            return {"id": qid, "query": "Which current contract applies?",
+                    "facts": ["Use admitted current source."], "canonical": [route]}
+        self.write("docs/reference/retrieval-questions.json", json.dumps({"questions": [question("DATED", "operations/packet.md")]}))
+        frozen = self.write("docs/reference/retrieval-questions-frozen32.json", json.dumps({"questions": [question("FROZEN", "systems/current.md")]}))
+        corrected = self.write("docs/reference/retrieval-questions-ci-closure-current-v1.json", json.dumps({"questions": [question("CORRECTED", "systems/current.md")]}))
+        result = check_docs.check(self.root)
+        self.assertEqual(result["errors"], [])
+        self.assertEqual(result["questions"], 2)
+        for path, qid in ((frozen, "FROZEN"), (corrected, "CORRECTED")):
+            with self.subTest(fixture=path.name):
+                original = path.read_bytes()
+                path.write_text(json.dumps({"questions": [question(qid, "operations/packet.md")]}))
+                self.assertIn(qid + ": no canonical route exists in the retrieval corpus", check_docs.check(self.root)["errors"])
+                path.write_bytes(original)
+
+    def test_structural_fixture_migration_requires_both_inputs(self):
+        self.manifest.write_text(json.dumps({"documents": ["systems/current.md"],
+                                             "excluded": ["operations/packet.md"]}))
+        self.write("docs/reference/retrieval-questions-frozen32.json", json.dumps({"questions": []}))
+        result = check_docs.check(self.root)
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(any("retrieval-questions-ci-closure-current-v1.json" in error for error in result["errors"]))
+
     def test_repository_fallback_matches_manifest_without_extra_packets(self):
         source = Path(__file__).resolve().parents[2]
         expected = {p.relative_to(source).as_posix() for p in retrieval.selected_paths(source)}

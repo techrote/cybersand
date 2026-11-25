@@ -106,7 +106,7 @@ route users and stay outside default answer chunks.
 
 Use separate fixtures for separate questions:
 
-- [Frozen original questions](retrieval-questions.json) and
+- [Frozen original 32 questions](retrieval-questions-frozen32.json) and
   [challenge set](retrieval-challenges.json) retain their original scope.
 - [Owner-intent questions](owner-intent-retrieval-questions.json) test the
   authoring/world decision route.
@@ -114,6 +114,10 @@ Use separate fixtures for separate questions:
   onboarding, authoring, material, status and authority counterexamples.
 - Focused implementation question files remain beside these fixtures; an additive
   suite does not replace or rewrite a frozen one.
+- The accepted [33-question CI input](retrieval-questions.json) preserves its
+  dated CI closure expectations. The [current CI correction](retrieval-questions-ci-closure-current-v1.json)
+  is separate; its newer source facts do not alter the frozen 32 or rewrite the
+  accepted original. Structural checks validate the frozen 32 and this correction.
 
 For an explicit historical question, use the
 [engineering history index](../history/engineering/README.md) and the evaluator's
