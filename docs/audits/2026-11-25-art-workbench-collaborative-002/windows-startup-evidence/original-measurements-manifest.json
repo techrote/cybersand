@@ -1,0 +1,248 @@
+{
+  "schema": "art-startup-original-measurements-v1",
+  "original_artifact": 14993266843,
+  "original_artifact_sha256": "c79ffd7960cb02c66d66e1e09d3c6fc167aa288d101b748771b5af2def7ffe1f",
+  "included": [
+    {
+      "path": "graphical-after-import/phases.json",
+      "bytes": 4409,
+      "sha256": "af98fbf108883191ec407de3433cf21426a62f9b23db4560040d9fe4a1b0d381"
+    },
+    {
+      "path": "graphical-after-import/inputs.json",
+      "bytes": 2933,
+      "sha256": "870eaa8c28ec66aa2bb519d42eda06306885934fd05002461a6e275d53037abf"
+    },
+    {
+      "path": "graphical-after-import/import.log",
+      "bytes": 46891,
+      "sha256": "b6bf6554a0aade9c1e50a23bed751789852a28cd11f9e1e954d1fbe1ca15c2ff"
+    },
+    {
+      "path": "graphical-after-import/process.log",
+      "bytes": 5900,
+      "sha256": "bb696001c8288d79831120fc3a503f318e9ff803e3ce52607e1d0ee1d68a17a9"
+    },
+    {
+      "path": "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 5754,
+      "sha256": "d55c96b235f08490f5a4b457758b765ee2a3b63482343c6067277d45f2592158"
+    },
+    {
+      "path": "graphical-after-import/profile/Godot/editor_settings-4.7.tres",
+      "bytes": 17792,
+      "sha256": "f209cf5378de52d623e19764e2bc10618b7c353df221ec1cd55ca1d52368a82d"
+    },
+    {
+      "path": "graphical-after-import/profile/Godot/keystores/debug.keystore",
+      "bytes": 2194,
+      "sha256": "a2b0e5dba9785b9d7372b34624c4634ce50fd8bd93e34034ec9ec637efa7be8f"
+    },
+    {
+      "path": "graphical-after-import/result.json",
+      "bytes": 16591,
+      "sha256": "1cab8196b92975e21e3679df567c7093db7b50d37cd06335983f131d77719f04"
+    },
+    {
+      "path": "graphical-after-import.wrapper.log",
+      "bytes": 663,
+      "sha256": "3bbb4d5240fda7996304f557cea1b9cd1a50e54a5d0e0c71b5d76fb375713782"
+    },
+    {
+      "path": "graphical-first/inputs.json",
+      "bytes": 2927,
+      "sha256": "96b0a42d260367f7e114f6c0f0d4f7f8e35f068fc1c324a959896805f9b86858"
+    },
+    {
+      "path": "graphical-first/phases.json",
+      "bytes": 4406,
+      "sha256": "b47ebff8987a26c73261469d022a02de441191600aec9fb902cb393c294756bc"
+    },
+    {
+      "path": "graphical-first/process.log",
+      "bytes": 5897,
+      "sha256": "1996895e8d8ce82272c86cf8dfe88c0ac2d3065555fcfaf2f6fc1dcd7eb7179f"
+    },
+    {
+      "path": "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 5751,
+      "sha256": "0864877cf7d3d3a8d24afbcf2ac3b0ce8ed222df88caede4ad1b7eb6c7227e9c"
+    },
+    {
+      "path": "graphical-first/result.json",
+      "bytes": 10373,
+      "sha256": "d67ca699d95e6856c1d138d6cf89970c652bca331e9aea672da940dadbbe063b"
+    },
+    {
+      "path": "graphical-first.wrapper.log",
+      "bytes": 656,
+      "sha256": "61525035af1c24835fb769bec3a4022757308d95d2d6523ba846bee4c5dc38d1"
+    },
+    {
+      "path": "graphical-repeat/inputs.json",
+      "bytes": 2928,
+      "sha256": "a38b8739abdf1727dd6337ebf4c1f277e03507011c3a05568997684053a5741b"
+    },
+    {
+      "path": "graphical-repeat/phases.json",
+      "bytes": 4407,
+      "sha256": "1e851ea9067f5d862796a6f6f73134e7f28b982d9baf2ded562618acfddc8b5e"
+    },
+    {
+      "path": "graphical-repeat/process.log",
+      "bytes": 5898,
+      "sha256": "cef04d13690130e721434cb2aed8d797a78b7e58e170dea944f2d80107d4ebf0"
+    },
+    {
+      "path": "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 5752,
+      "sha256": "4d5c5ff079163388647a4c3e6047a1b0d6d22a853a47c105755ba7ddcc03459b"
+    },
+    {
+      "path": "graphical-repeat/result.json",
+      "bytes": 10387,
+      "sha256": "65afc276aa0834113c578f6b1021907db80b12d8ad03f117d34e2912b3de3b04"
+    },
+    {
+      "path": "graphical-repeat.wrapper.log",
+      "bytes": 657,
+      "sha256": "6837fec95d20ad2f50dd0891b714204cdcbcfd2f5f26f4606bfcd0916ccd8636"
+    },
+    {
+      "path": "headless-after-graphical/inputs.json",
+      "bytes": 5811,
+      "sha256": "9b443aad9747513c46f2b240134144073b058da34c4ba07dd79ce6e0637b3fda"
+    },
+    {
+      "path": "headless-after-graphical/phases.json",
+      "bytes": 4231,
+      "sha256": "108df4a87ec4592235ea37e07dabb2fdab86b140256d8f7b0280c8087303607b"
+    },
+    {
+      "path": "headless-after-graphical/process.log",
+      "bytes": 5495,
+      "sha256": "88e552769a0db25d664d36d3baf34e626e7bc4839aa9af7d16ab310589ded467"
+    },
+    {
+      "path": "headless-after-graphical/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 5350,
+      "sha256": "436cf8a141d4f2b80c037c715cc9048e2eadfae80ec9fc65aac55229121b9d9d"
+    },
+    {
+      "path": "headless-after-graphical/result.json",
+      "bytes": 15917,
+      "sha256": "686748892dbe9de4303a228a431913992cc1dd60a999f4374ec5e060ad15e632"
+    },
+    {
+      "path": "headless-after-graphical.wrapper.log",
+      "bytes": 610,
+      "sha256": "e539fb3cf4895341a74c474b5393a31a9f887441f417796849023f87dd43be7b"
+    }
+  ],
+  "omitted": [
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/104b6b2525291e2d53908134c06b63b1ff731d31.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/981e273b7e9094f670bbf61ef628c92057e9d77a.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/7fc0f7e5f39495b3057991721a729796679c3b84.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/b7bf26eb787d221ffda92ad4ca9427812ee879e2.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CopyShaderGLES3/4fc88d68897a50a9605acc30479eff94f46250a44a55c8cc0df5a9854fcf0455/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/1R0mNmMTpC_pHlumlFaApF+5mr8=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/1z6eBJGw1w0koU1AhU41AhX3d3U=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/7n0NdjMApmAO34d5Y+cKU+NzV6I=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/8POlCCNihhOG0pwjpMCYhTjFGRw=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/9c5LmMURzNsNhL0E4mbg6MQcbJM=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/aNmrpbTuPF3F5qSapOpPbFti_k0=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/AV42Cz3Jv8pmrGkLKHBTEzq1oIE=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/Db7uIBwGDTjnswkle7esOpDKlTw=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/buqQ5O7H9iOawbE5dH8c+klXvkU=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/DjN+1Ql6of6eqrdfKFv1eq5laFE=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/E0KSKi78b5Lq4jTAM30tyC3v9nE=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/FIjN_V8jvYzipsNuan74x+vfrDc=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/hba7AO6A6C4hIjgru88INIHWSss=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/lFlBkVf_QpyRTxNLno_WJhB9Z+Q=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/MH3eSdY26FHj3u4LU2OJnIhT7Lc=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/MoAiqGJIb4D1lUIVFO5DlcuG1ic=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/t+gTItMgqjooVhk87t7IStaa6U0=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/t5YLeacnlqeywXGhIha7eOT9+3s=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/U0tW8ZPkTGFauMNexgIPR70NUhY=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/U3KEKDjjvjt6ETOKMx6qhlgJbQ4=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/uDZjmHY6+fJux3gv94RLMj1ysus=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/uKH3fe6N6dh4obNDBYCVq_ZPFH0=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/vSwwrZdiEYS3M0lb4kgqgSDtwB4=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/XMtc58mFGPwjBYjTZQacr3jUKF0=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/Yy1sTWPHZbzU6bvFLvbYgdwghgw=.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/FeedShaderGLES3/f321a92fe6ec82f8f68d477f1368525d75c46087ded233638400be69485ad209/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/PostShaderGLES3/4d94a75ab9f2c65a94e886b37bb4d80083b6e77174747cbec9e675287a8d138d/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-after-import/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/SceneShaderGLES3/5bdf157992731b4951a3584a99bba7eefedd313e8cebca30d4214abea4d961ae/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-after-import/profile/local/Godot/editor_doc_cache-4.7.res",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/104b6b2525291e2d53908134c06b63b1ff731d31.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/7fc0f7e5f39495b3057991721a729796679c3b84.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/981e273b7e9094f670bbf61ef628c92057e9d77a.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/b7bf26eb787d221ffda92ad4ca9427812ee879e2.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CopyShaderGLES3/4fc88d68897a50a9605acc30479eff94f46250a44a55c8cc0df5a9854fcf0455/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/1R0mNmMTpC_pHlumlFaApF+5mr8=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/1z6eBJGw1w0koU1AhU41AhX3d3U=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/7n0NdjMApmAO34d5Y+cKU+NzV6I=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/8POlCCNihhOG0pwjpMCYhTjFGRw=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/9c5LmMURzNsNhL0E4mbg6MQcbJM=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/aNmrpbTuPF3F5qSapOpPbFti_k0=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/AV42Cz3Jv8pmrGkLKHBTEzq1oIE=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/Db7uIBwGDTjnswkle7esOpDKlTw=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/DjN+1Ql6of6eqrdfKFv1eq5laFE=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/buqQ5O7H9iOawbE5dH8c+klXvkU=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/E0KSKi78b5Lq4jTAM30tyC3v9nE=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/FIjN_V8jvYzipsNuan74x+vfrDc=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/hba7AO6A6C4hIjgru88INIHWSss=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/lFlBkVf_QpyRTxNLno_WJhB9Z+Q=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/MH3eSdY26FHj3u4LU2OJnIhT7Lc=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/t+gTItMgqjooVhk87t7IStaa6U0=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/MoAiqGJIb4D1lUIVFO5DlcuG1ic=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/t5YLeacnlqeywXGhIha7eOT9+3s=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/U0tW8ZPkTGFauMNexgIPR70NUhY=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/uDZjmHY6+fJux3gv94RLMj1ysus=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/U3KEKDjjvjt6ETOKMx6qhlgJbQ4=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/uKH3fe6N6dh4obNDBYCVq_ZPFH0=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/vSwwrZdiEYS3M0lb4kgqgSDtwB4=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/XMtc58mFGPwjBYjTZQacr3jUKF0=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/Yy1sTWPHZbzU6bvFLvbYgdwghgw=.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/FeedShaderGLES3/f321a92fe6ec82f8f68d477f1368525d75c46087ded233638400be69485ad209/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/SceneShaderGLES3/5bdf157992731b4951a3584a99bba7eefedd313e8cebca30d4214abea4d961ae/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-first/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/PostShaderGLES3/4d94a75ab9f2c65a94e886b37bb4d80083b6e77174747cbec9e675287a8d138d/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/104b6b2525291e2d53908134c06b63b1ff731d31.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/7fc0f7e5f39495b3057991721a729796679c3b84.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/981e273b7e9094f670bbf61ef628c92057e9d77a.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/b7bf26eb787d221ffda92ad4ca9427812ee879e2.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CopyShaderGLES3/4fc88d68897a50a9605acc30479eff94f46250a44a55c8cc0df5a9854fcf0455/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/1z6eBJGw1w0koU1AhU41AhX3d3U=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/1R0mNmMTpC_pHlumlFaApF+5mr8=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/7n0NdjMApmAO34d5Y+cKU+NzV6I=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/8POlCCNihhOG0pwjpMCYhTjFGRw=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/9c5LmMURzNsNhL0E4mbg6MQcbJM=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/aNmrpbTuPF3F5qSapOpPbFti_k0=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/AV42Cz3Jv8pmrGkLKHBTEzq1oIE=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/buqQ5O7H9iOawbE5dH8c+klXvkU=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/DjN+1Ql6of6eqrdfKFv1eq5laFE=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/Db7uIBwGDTjnswkle7esOpDKlTw=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/E0KSKi78b5Lq4jTAM30tyC3v9nE=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/FIjN_V8jvYzipsNuan74x+vfrDc=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/hba7AO6A6C4hIjgru88INIHWSss=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/lFlBkVf_QpyRTxNLno_WJhB9Z+Q=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/MH3eSdY26FHj3u4LU2OJnIhT7Lc=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/MoAiqGJIb4D1lUIVFO5DlcuG1ic=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/t+gTItMgqjooVhk87t7IStaa6U0=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/t5YLeacnlqeywXGhIha7eOT9+3s=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/U0tW8ZPkTGFauMNexgIPR70NUhY=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/U3KEKDjjvjt6ETOKMx6qhlgJbQ4=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/uDZjmHY6+fJux3gv94RLMj1ysus=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/uKH3fe6N6dh4obNDBYCVq_ZPFH0=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/vSwwrZdiEYS3M0lb4kgqgSDtwB4=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/XMtc58mFGPwjBYjTZQacr3jUKF0=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/EGL/Yy1sTWPHZbzU6bvFLvbYgdwghgw=.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/FeedShaderGLES3/f321a92fe6ec82f8f68d477f1368525d75c46087ded233638400be69485ad209/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/PostShaderGLES3/4d94a75ab9f2c65a94e886b37bb4d80083b6e77174747cbec9e675287a8d138d/fa7b62523470356194bdf709eb2639ab149a07cc.cache",
+    "graphical-repeat/profile/Godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/SceneShaderGLES3/5bdf157992731b4951a3584a99bba7eefedd313e8cebca30d4214abea4d961ae/fa7b62523470356194bdf709eb2639ab149a07cc.cache"
+  ],
+  "omission_scope": "Only reproducible shader-cache binaries and the editor documentation cache. All original measurements, complete audits, logs and recorded cache hashes retained; full artifact remains separately identified."
+}

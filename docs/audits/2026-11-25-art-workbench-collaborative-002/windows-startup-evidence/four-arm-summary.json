@@ -1,0 +1,875 @@
+{
+  "schema": "art-windows-startup-four-arm-summary-v1",
+  "campaign": 45549435385,
+  "artifact": 14993266843,
+  "artifact_sha256": "c79ffd7960cb02c66d66e1e09d3c6fc167aa288d101b748771b5af2def7ffe1f",
+  "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "diagnostic_source": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+  "arms": [
+    {
+      "label": "graphical-first",
+      "fresh_profile": true,
+      "import_before": false,
+      "source": {
+        "apparatus_sha256": {
+          ".github/workflows/art-startup-phase-windows.yml": "e883098b9ed9d031b16734846359bb060d06ce9f4e6fff4e595b6339ce6a4011",
+          "docs/audits/2026-11-25-art-startup-phase-probe/windows-bcc.md": "c493afd294c852fe76a1546137029c3c0cd8f79b07c73b8979ff8097f7e6bc4e",
+          "tools/ci/run_art_startup_phase_probe.py": "437bbaa5aa56529efcda31c5063e84d48bfee9fff380f6679509c6f3b0b16c28",
+          "tools/fixtures/art_startup_phase_probe.gd": "f7e966513b045e7916707764cbd6f960a2074ae2fff62de22ea3a6403e89f22b"
+        },
+        "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "application_tree": "517164084860a19f18b36cb94f77597eb3220578",
+        "commit": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+        "runtime_sha256": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "tracked_source_clean": true,
+        "tree": "e7a3557e2983bb596fabe3f226e3939baf353a47"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1161433,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 83972,
+        "load_context_resource_usec": 24,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 223998,
+        "ordinary_art_open_usec": 115148,
+        "ready_to_first_completed_draw_usec": 37769,
+        "remaining_native_install_wait_usec": 39947715,
+        "resource_load_main_usec": 1489025,
+        "root_viewport_pixels": [
+          1028,
+          749
+        ],
+        "scene_instantiate_usec": 25970,
+        "workbench_ready_elapsed_usec": 42630759
+      },
+      "maximum_observed_frame_gap_usec": 39129875,
+      "frames": 41,
+      "elapsed_usec": 46760649,
+      "captures": [
+        {
+          "admission_to_callback_usec": 24994,
+          "admission_usec": 176,
+          "builds": [
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1717,
+              "wall_usec": 1728,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1504,
+              "wall_usec": 1546,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1490,
+              "wall_usec": 1530,
+              "wire_bytes": 7438
+            }
+          ],
+          "callback_to_observation_usec": 96996,
+          "cells": 4096,
+          "region": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 770689,
+          "admission_usec": 159,
+          "builds": [
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10650,
+              "wall_usec": 10663,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10865,
+              "wall_usec": 10943,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10896,
+              "wall_usec": 10953,
+              "wire_bytes": 8003
+            }
+          ],
+          "callback_to_observation_usec": 42852,
+          "cells": 65536,
+          "region": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 2493799,
+          "admission_usec": 165,
+          "builds": [
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40292,
+              "wall_usec": 40304,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40799,
+              "wall_usec": 40879,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40198,
+              "wall_usec": 40818,
+              "wire_bytes": 8528
+            }
+          ],
+          "callback_to_observation_usec": 238449,
+          "cells": 262144,
+          "region": [
+            0,
+            0,
+            512,
+            512
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        }
+      ],
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "AMD EPYC 9V74 80-Core Processor                ",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 13856668,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "video_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "display": "Windows",
+      "renderer_method": "gl_compatibility",
+      "original_result_sha256": "d67ca699d95e6856c1d138d6cf89970c652bca331e9aea672da940dadbbe063b",
+      "original_process_log_sha256": "1996895e8d8ce82272c86cf8dfe88c0ac2d3065555fcfaf2f6fc1dcd7eb7179f"
+    },
+    {
+      "label": "graphical-repeat",
+      "fresh_profile": true,
+      "import_before": false,
+      "source": {
+        "apparatus_sha256": {
+          ".github/workflows/art-startup-phase-windows.yml": "e883098b9ed9d031b16734846359bb060d06ce9f4e6fff4e595b6339ce6a4011",
+          "docs/audits/2026-11-25-art-startup-phase-probe/windows-bcc.md": "c493afd294c852fe76a1546137029c3c0cd8f79b07c73b8979ff8097f7e6bc4e",
+          "tools/ci/run_art_startup_phase_probe.py": "437bbaa5aa56529efcda31c5063e84d48bfee9fff380f6679509c6f3b0b16c28",
+          "tools/fixtures/art_startup_phase_probe.gd": "f7e966513b045e7916707764cbd6f960a2074ae2fff62de22ea3a6403e89f22b"
+        },
+        "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "application_tree": "517164084860a19f18b36cb94f77597eb3220578",
+        "commit": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+        "runtime_sha256": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "tracked_source_clean": true,
+        "tree": "e7a3557e2983bb596fabe3f226e3939baf353a47"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1137309,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 85882,
+        "load_context_resource_usec": 26,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 219721,
+        "ordinary_art_open_usec": 122329,
+        "ready_to_first_completed_draw_usec": 37099,
+        "remaining_native_install_wait_usec": 36314253,
+        "resource_load_main_usec": 1496998,
+        "root_viewport_pixels": [
+          1028,
+          749
+        ],
+        "scene_instantiate_usec": 24842,
+        "workbench_ready_elapsed_usec": 38979483
+      },
+      "maximum_observed_frame_gap_usec": 35501181,
+      "frames": 44,
+      "elapsed_usec": 43494631,
+      "captures": [
+        {
+          "admission_to_callback_usec": 44258,
+          "admission_usec": 289,
+          "builds": [
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 2129,
+              "wall_usec": 2139,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1579,
+              "wall_usec": 1621,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1489,
+              "wall_usec": 1531,
+              "wire_bytes": 7438
+            }
+          ],
+          "callback_to_observation_usec": 89889,
+          "cells": 4096,
+          "region": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 793292,
+          "admission_usec": 165,
+          "builds": [
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10695,
+              "wall_usec": 10706,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10860,
+              "wall_usec": 10933,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10763,
+              "wall_usec": 10826,
+              "wire_bytes": 8003
+            }
+          ],
+          "callback_to_observation_usec": 136085,
+          "cells": 65536,
+          "region": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 2759579,
+          "admission_usec": 169,
+          "builds": [
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40559,
+              "wall_usec": 40570,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40203,
+              "wall_usec": 40287,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 38286,
+              "wall_usec": 38472,
+              "wire_bytes": 8528
+            }
+          ],
+          "callback_to_observation_usec": 225691,
+          "cells": 262144,
+          "region": [
+            0,
+            0,
+            512,
+            512
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        }
+      ],
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "AMD EPYC 9V74 80-Core Processor                ",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 14098268,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "video_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "display": "Windows",
+      "renderer_method": "gl_compatibility",
+      "original_result_sha256": "65afc276aa0834113c578f6b1021907db80b12d8ad03f117d34e2912b3de3b04",
+      "original_process_log_sha256": "cef04d13690130e721434cb2aed8d797a78b7e58e170dea944f2d80107d4ebf0"
+    },
+    {
+      "label": "graphical-after-import",
+      "fresh_profile": true,
+      "import_before": true,
+      "source": {
+        "apparatus_sha256": {
+          ".github/workflows/art-startup-phase-windows.yml": "e883098b9ed9d031b16734846359bb060d06ce9f4e6fff4e595b6339ce6a4011",
+          "docs/audits/2026-11-25-art-startup-phase-probe/windows-bcc.md": "c493afd294c852fe76a1546137029c3c0cd8f79b07c73b8979ff8097f7e6bc4e",
+          "tools/ci/run_art_startup_phase_probe.py": "437bbaa5aa56529efcda31c5063e84d48bfee9fff380f6679509c6f3b0b16c28",
+          "tools/fixtures/art_startup_phase_probe.gd": "f7e966513b045e7916707764cbd6f960a2074ae2fff62de22ea3a6403e89f22b"
+        },
+        "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "application_tree": "517164084860a19f18b36cb94f77597eb3220578",
+        "commit": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+        "runtime_sha256": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "tracked_source_clean": true,
+        "tree": "e7a3557e2983bb596fabe3f226e3939baf353a47"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1136146,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 81916,
+        "load_context_resource_usec": 24,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 233938,
+        "ordinary_art_open_usec": 115013,
+        "ready_to_first_completed_draw_usec": 37091,
+        "remaining_native_install_wait_usec": 37485267,
+        "resource_load_main_usec": 1508994,
+        "root_viewport_pixels": [
+          1028,
+          749
+        ],
+        "scene_instantiate_usec": 24339,
+        "workbench_ready_elapsed_usec": 40161100
+      },
+      "maximum_observed_frame_gap_usec": 36696808,
+      "frames": 39,
+      "elapsed_usec": 44129009,
+      "captures": [
+        {
+          "admission_to_callback_usec": 122463,
+          "admission_usec": 158,
+          "builds": [
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1700,
+              "wall_usec": 1711,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1599,
+              "wall_usec": 1646,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1055,
+              "wall_usec": 1107,
+              "wire_bytes": 7438
+            }
+          ],
+          "callback_to_observation_usec": 116795,
+          "cells": 4096,
+          "region": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 572617,
+          "admission_usec": 118,
+          "builds": [
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10581,
+              "wall_usec": 10594,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10820,
+              "wall_usec": 10880,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 10852,
+              "wall_usec": 10910,
+              "wire_bytes": 8003
+            }
+          ],
+          "callback_to_observation_usec": 142798,
+          "cells": 65536,
+          "region": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 2323617,
+          "admission_usec": 165,
+          "builds": [
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40119,
+              "wall_usec": 40136,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 40327,
+              "wall_usec": 40407,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 35487,
+              "wall_usec": 35550,
+              "wire_bytes": 8528
+            }
+          ],
+          "callback_to_observation_usec": 220430,
+          "cells": 262144,
+          "region": [
+            0,
+            0,
+            512,
+            512
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        }
+      ],
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "AMD EPYC 9V74 80-Core Processor                ",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 14121324,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "video_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "display": "Windows",
+      "renderer_method": "gl_compatibility",
+      "original_result_sha256": "1cab8196b92975e21e3679df567c7093db7b50d37cd06335983f131d77719f04",
+      "original_process_log_sha256": "bb696001c8288d79831120fc3a503f318e9ff803e3ce52607e1d0ee1d68a17a9"
+    },
+    {
+      "label": "headless-after-graphical",
+      "fresh_profile": true,
+      "import_before": false,
+      "source": {
+        "apparatus_sha256": {
+          ".github/workflows/art-startup-phase-windows.yml": "e883098b9ed9d031b16734846359bb060d06ce9f4e6fff4e595b6339ce6a4011",
+          "docs/audits/2026-11-25-art-startup-phase-probe/windows-bcc.md": "c493afd294c852fe76a1546137029c3c0cd8f79b07c73b8979ff8097f7e6bc4e",
+          "tools/ci/run_art_startup_phase_probe.py": "437bbaa5aa56529efcda31c5063e84d48bfee9fff380f6679509c6f3b0b16c28",
+          "tools/fixtures/art_startup_phase_probe.gd": "f7e966513b045e7916707764cbd6f960a2074ae2fff62de22ea3a6403e89f22b"
+        },
+        "application_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+        "application_tree": "517164084860a19f18b36cb94f77597eb3220578",
+        "commit": "8ce9bbd780df7ac1a82caf1ae1598fed27371138",
+        "runtime_sha256": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "tracked_source_clean": true,
+        "tree": "e7a3557e2983bb596fabe3f226e3939baf353a47"
+      },
+      "phases": {
+        "add_child_and_synchronous_ready_usec": 1058974,
+        "configured_native_worker_threads": 0,
+        "engine_max_fps": 0,
+        "first_frame_after_art_open_usec": 4335,
+        "load_context_resource_usec": 9,
+        "native_world_extent": [
+          2048,
+          2048
+        ],
+        "orderly_teardown_usec": 68893,
+        "ordinary_art_open_usec": 69720,
+        "remaining_native_install_wait_usec": 929112,
+        "resource_load_main_usec": 1497606,
+        "root_viewport_pixels": [
+          64,
+          64
+        ],
+        "scene_instantiate_usec": 23962,
+        "workbench_ready_elapsed_usec": 3510985
+      },
+      "maximum_observed_frame_gap_usec": 2689900,
+      "frames": 323,
+      "elapsed_usec": 5122519,
+      "captures": [
+        {
+          "admission_to_callback_usec": 6925,
+          "admission_usec": 102,
+          "builds": [
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1065,
+              "wall_usec": 1073,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1045,
+              "wall_usec": 1081,
+              "wire_bytes": 7438
+            },
+            {
+              "context_sha256": "a114de509649fb321a4a1d16048b1686851e4d91f23942c11bb4777b73399fcc",
+              "internal_elapsed_usec": 1018,
+              "wall_usec": 1052,
+              "wire_bytes": 7438
+            }
+          ],
+          "callback_to_observation_usec": 11041,
+          "cells": 4096,
+          "region": [
+            0,
+            0,
+            64,
+            64
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 257943,
+          "admission_usec": 84,
+          "builds": [
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 7261,
+              "wall_usec": 7269,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 7400,
+              "wall_usec": 7442,
+              "wire_bytes": 8003
+            },
+            {
+              "context_sha256": "5c4d08a9c18d1bfe973f7e3b07b7ac03771b1d97d8533c30043884be64637cd9",
+              "internal_elapsed_usec": 7310,
+              "wall_usec": 7357,
+              "wire_bytes": 8003
+            }
+          ],
+          "callback_to_observation_usec": 30000,
+          "cells": 65536,
+          "region": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        },
+        {
+          "admission_to_callback_usec": 1070590,
+          "admission_usec": 103,
+          "builds": [
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 28085,
+              "wall_usec": 28095,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 27154,
+              "wall_usec": 27221,
+              "wire_bytes": 8528
+            },
+            {
+              "context_sha256": "6226119c3bc33e2429906931a19b93d620df3b570c82448b3d0d747f3e0b444a",
+              "internal_elapsed_usec": 27768,
+              "wall_usec": 27827,
+              "wire_bytes": 8528
+            }
+          ],
+          "callback_to_observation_usec": 91222,
+          "cells": 262144,
+          "region": [
+            0,
+            0,
+            512,
+            512
+          ],
+          "source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          },
+          "source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 2,
+            "tick": 0
+          }
+        }
+      ],
+      "host": {
+        "hardware": {
+          "cpu": [
+            {
+              "Name": "AMD EPYC 9V74 80-Core Processor                ",
+              "NumberOfCores": 2,
+              "NumberOfLogicalProcessors": 4
+            }
+          ],
+          "memory": [
+            {
+              "FreePhysicalMemory": 14120948,
+              "TotalVisibleMemorySize": 16771836
+            }
+          ],
+          "video": [
+            {
+              "AdapterRAM": null,
+              "DriverVersion": "10.0.20348.1",
+              "Name": "Microsoft Hyper-V Video"
+            }
+          ]
+        },
+        "logical_cpus": 4,
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor_identifier": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD",
+        "runner_image_os": "win22",
+        "runner_image_version": "20261116.370.1"
+      },
+      "video_adapter": "",
+      "display": "headless",
+      "renderer_method": "gl_compatibility",
+      "original_result_sha256": "686748892dbe9de4303a228a431913992cc1dd60a999f4374ec5e060ad15e632",
+      "original_process_log_sha256": "88e552769a0db25d664d36d3baf34e626e7bc4839aa9af7d16ab310589ded467"
+    }
+  ],
+  "interpretation_limits": [
+    "Fixed arm order and uncontrolled OS caches.",
+    "Each original graphical arm uses a fresh user profile; project-cache reuse does not warm the profile shader cache.",
+    "Remaining native installation wall time includes intervening main-loop and rendering work, not just native CPU time.",
+    "No production change, real model inference, package or physical hardware acceptance."
+  ]
+}
