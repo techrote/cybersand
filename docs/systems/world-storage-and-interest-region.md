@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -170,7 +170,9 @@ identifies new regressions, artifacts and remaining platform gaps separately.
 ## Finite Godot adapters
 
 [CyberNativeCellWorld::set_simulation_window](../../godot/native_extension/cyber_native_cell_world.cpp)
-clamps camera bounds/margins to the 1024² adapter and forwards the rectangle.
+retains camera bounds/margins and `refresh_simulation_region` clamps their
+result to the adapter's actual `extent_` before forwarding the rectangle.
+The legacy demo defaults to 1024²; an authored Workbench extent may differ.
 Disabling the window selects the entire finite area; it does not add streaming.
 
 Desktop [main.gd](../../godot/scripts/main.gd) selects view and per-side pixel
@@ -188,8 +190,10 @@ exclusive export ownership, state omissions, and body tolerance belong to the
 [level-save contract](../reference/level-saves-and-replay.md).
 
 **Planned:** sparse persistence, schema migration, general serialized
-configuration, replay capture and I/O backpressure. **Deferred implementation:**
-broad streamed loading/eviction until local material behavior is mature.
+configuration, replay capture and I/O backpressure. Accepted main has no general
+streamed loading/eviction manager. Later owner direction and the separately
+unmerged GEN-006 work are routed above; an older deferral does not cancel that
+owner intent or establish that a candidate has landed.
 
 ## Approved expansion and unresolved policy
 

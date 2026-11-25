@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -143,9 +143,11 @@ after failed rolls and sleep, but this is documented legacy rest; it does not
 inherit Water-CY's separately implemented retry obligation. Preserve current
 generic trajectories unless a versioned policy is separately approved.
 
-Phase A admits tests, tooling and documentation only. #354 remains open, and
-production deadline implementation and the #371 protected-source transition
-remain pending. Exact execution and platform claims belong to the audit/PR ledger.
+Phase A admits tests, tooling and documentation only. #354 remains open and its
+production deadline implementation remains pending. #371 is already merged;
+changing its protected source requires a newly qualified transition of the
+existing provenance guards. Exact execution and platform claims belong to the
+audit/PR ledger.
 
 ## Current material families
 
@@ -249,7 +251,10 @@ actual stored pairs for swaps and kernel-visible sources for contact attempts.
 Its immutable construction overrides leave the shared descriptor table and
 production defaults unchanged. A diagnostic target-wide exchange veto proves
 causality; issue #10 now implements the [versioned granular policy](granular-interaction-policy.md).
-Barrel bearing and feedback correction remain **Planned** for #11.
+Accepted REM-002 source now supplies bounded generic-rectangle bearing and
+feedback correction; the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md#what-does-rem-002-establish-on-current-source)
+states its actual envelope. Broad body/granular acceptance remains REM-004 / #83;
+the older #11 status is not the current implementation boundary.
 
 ## Sampled player support
 
