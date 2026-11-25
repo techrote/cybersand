@@ -89,15 +89,17 @@ func exercise() -> void:
 		"explicit ambient policy observes actual native materials")
 	check(Catalog.control_for(adapter.bench.actor(adapter.bench.applied, 2)) == human,
 		"ambient progression leaves the separate human actor's authored controller intact")
-	await action("pause")
 	var observation: Dictionary = session.workbench_policy_observation(1)
-	if not check(not observation.is_empty(), "ambient owner supplies a source-bound issued observation"): return
+	if not check(not observation.is_empty(), "running ambient owner supplies a source-bound issued observation"): return
 	var stale := Session.make_command(observation, int(observation.last_sequence) + 1,
 		{"move":Vector2.RIGHT, "effort":0.25}, 6)
+	await action("pause")
+	check(session.workbench_policy_observation(1).is_empty(),
+		"ordinary Pause does not issue a new policy authority")
 	await action("actor_pilot", {"actor_id":1})
 	check(ambient_control().source == "human" and ambient_control().ambient == expected_ambient.ambient,
 		"Goblin pilot changes producer while retaining the authored ambient profile")
-	check(not session.submit(stale, &"policy"), "pre-handoff ambient command cannot drive the human pilot")
+	check(not session.submit(stale, &"policy"), "command captured before pause and pilot handoff stays fenced")
 	check(not session._ambient_sensor_active and session._ambient_perception.diagnostics().cache_bytes == 0,
 		"last ambient producer's pilot handoff retires its native material cache")
 	await action("play", {"ticks":8})
