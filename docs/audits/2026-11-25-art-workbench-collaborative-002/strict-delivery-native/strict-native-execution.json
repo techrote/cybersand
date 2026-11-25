@@ -1,7 +1,7 @@
 {
   "schema": "art-strict-repeat-native-independent-execution-v1",
   "operator": "Specialist B direct executor",
-  "recorded_at_utc": "2026-11-25T06:16:01.779240+00:00",
+  "recorded_at_utc": "2026-11-25T06:33:08.603790+00:00",
   "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
   "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
   "campaign": 45556633896,
@@ -49,6 +49,48 @@
       "stdout_file": "final-d503-linux-comparison.json",
       "checks": 445,
       "failures": 0
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+        "/tmp/art-d503-windows-custody/extracted/art-collaborative-headless",
+        "--expected-source",
+        "d503d824aac4128968f7dfba5dccd540c3c07b59"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-d503-windows-headless-raw-review.json"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+        "/tmp/art-d503-windows-custody/extracted/art-collaborative-displayed",
+        "--expected-source",
+        "d503d824aac4128968f7dfba5dccd540c3c07b59"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-d503-windows-displayed-raw-review.json"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/reconcile_strict_repeat_native.py",
+        "--review-dir",
+        "/workspace/scratch/75c442a4089a/art-native-independent",
+        "--candidate-root",
+        "/tmp/art-d503-windows-custody",
+        "--baseline-extraction",
+        "/tmp/art-bcc-windows-custody/extracted",
+        "--source-repo",
+        "/tmp/art-c-delivery-doc",
+        "--platform",
+        "windows"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-d503-windows-comparison.json",
+      "checks": 445,
+      "failures": 0
     }
   ],
   "files": {
@@ -57,8 +99,8 @@
       "sha256": "35caf4d5b0988abac74ebdb73ca1c76ea8e4ec6035f47804d2df80e52ef19a19"
     },
     "repeat-artifact-metadata.json": {
-      "bytes": 1125,
-      "sha256": "773649cf89a0d6913159edbddf3a50426f7ff7995b2ef6aa9f0ba65b32480855"
+      "bytes": 1942,
+      "sha256": "7fb8f0c58675672d58844002f75c837f6b97a6db551f6c1b23d5114a22eab85a"
     },
     "final-d503-linux-headless-raw-review.json": {
       "bytes": 14586,
@@ -71,8 +113,36 @@
     "final-d503-linux-comparison.json": {
       "bytes": 20638,
       "sha256": "ca9ee466269d1270522772c8d829b4418c144dd3107c9a001b5a85d36a1393b6"
+    },
+    "final-d503-windows-headless-raw-review.json": {
+      "bytes": 14589,
+      "sha256": "36d2ba120643fcd9438a2ff8f4a4758ebbf2c014359cc630ae328e5401f28f9f"
+    },
+    "final-d503-windows-displayed-raw-review.json": {
+      "bytes": 16659,
+      "sha256": "ec326ea7d6ce12a5fbbe37c69e65bcddfc294af8ea19de73236e3d4e413ee158"
+    },
+    "final-d503-windows-comparison.json": {
+      "bytes": 20654,
+      "sha256": "367205e70e2b0ec28a930694acc409efef93809bf3ada200dfc2d16377da4c7a"
     }
   },
   "application_files_modified": false,
-  "windows_review": "pending"
+  "windows_review": "complete",
+  "linux_review": "complete",
+  "evidence_comparison_checks": 890,
+  "evidence_comparison_failures": 0,
+  "original_native_files_verified": 256,
+  "original_native_readback_rows_verified": 1508936,
+  "distinct_scenarios": 9,
+  "cohort_repetitions": 4,
+  "model_requests": 0,
+  "limits": [
+    "Original native application assertions and independent evidence checks are separately counted.",
+    "Nine distinct deterministic scenes are repeated across four modes/platforms; they are not 36 different creative briefs.",
+    "Each native source receipt chain is independently checked; scenario boundary dictionaries also match bcc, while intermediate chunk grouping can differ.",
+    "The earlier 3a Windows 2187 ms progress failure and unchanged less-than-2000 ms gate remain preserved.",
+    "No original archive, native cell array, screenshot, complete log or audit record is republished.",
+    "Recorded runtime equality is checked against source pointers and bcc; actual portable binary and pristine-launch review belongs to the separate A/C custody record."
+  ]
 }

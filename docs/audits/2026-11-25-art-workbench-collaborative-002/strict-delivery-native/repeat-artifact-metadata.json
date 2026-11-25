@@ -6,6 +6,22 @@
   "github_api": "https://api.github.com/repos/techrote/cybersand/actions/runs/45556633896/artifacts",
   "artifacts": [
     {
+      "id": 14997800871,
+      "name": "art-workbench-windows-evidence-d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "bytes": 12812235,
+      "sha256": "582fefeb91865e62b96420fedffc31b95bb1ddb7462213638f55447dada73009",
+      "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "actions_url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14997800871"
+    },
+    {
+      "id": 14997576786,
+      "name": "art-workbench-collaborative-002-windows-d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "bytes": 94411108,
+      "sha256": "a6b1a453e63f51721e7232277fe18facef14e05a26fc1b21f7af941f8fbad433",
+      "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "actions_url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14997576786"
+    },
+    {
       "id": 14996501724,
       "name": "art-workbench-linux-d503d824aac4128968f7dfba5dccd540c3c07b59",
       "bytes": 17155267,
