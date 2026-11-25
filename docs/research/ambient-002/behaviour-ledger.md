@@ -85,3 +85,27 @@ save/reopen, graphical and Windows extracted-package execution remain separate
 gates. The first source checkpoint is provided early so independent lanes can
 exercise the integrated implementation while this lane continues adversarial
 testing. No overall success or owner-hardware playfeel claim follows from import.
+
+## Executor-loss recovery checkpoint
+
+The later executor reset erased `/tmp`, including unpublished local commits
+`1736b299`, `8cb278d7` and the independent review `a8379a83`. GitHub lookup
+confirmed those objects were not published. The recoverable remote checkpoint
+was `35187eda20fcff25a87e1936f84934247ca617e2`. The original later local passes
+are historical work records; their source bytes and logs cannot qualify this
+reconstruction by association.
+
+This checkpoint reconstructs the reviewed runtime semantics against that actual
+remote source: transactional World admission before state reset; cached effective
+module configurations; selected-phase dwell accounting with finite interruption
+deadlines; bounded material identity/geometry admission; aligned obstruction
+evidence; expired historical-target/search release; and capability-appropriate
+navigation ray admission. Authored affinity selects preferred peers before
+neutral fallback, respects an explicit companion, and excludes avoided peers.
+Version-1 following keeps its predecessor selector. Crowd dispersion and peer
+avoidance retain their wider copied-neighbour scope.
+
+These are newly committed source bytes, not asserted byte-identical recovery of
+the lost commits. A new living-engine regression suite and actual execution are
+required before qualification. The lead will checkpoint this complete source
+unit remotely before further local testing to limit another executor loss.

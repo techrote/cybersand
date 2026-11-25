@@ -60,3 +60,109 @@ actual native/physical admission, editor and Save/Reopen tests need the lead's
 identity-preserving joins, and hosted Windows extraction needs the final frozen
 source. The successor package builder requires actual Windows qualification and
 binds original input hashes through extraction and launch.
+
+## Preserved hosted checkpoint
+
+[Hosted iteration 45530324844](https://github.com/techrote/cybersand/actions/runs/45530324844)
+qualified source `35187eda20fcff25a87e1936f84934247ca617e2`, tree
+`4fed7b1cb209e236cb894364d573a8d462398da2`. The lead's original receipts report
+238 living authoring, 69 mounted editor, 209 six-scene native and 5,091 physical
+smoke assertions with no failures. The complete iteration passed 9,549 checks
+across ten cases. Artifact `14985115658` has outer SHA-256
+`cc429610e9246cf4e66a7acd26dba6362e65525021d18bf046945c730483d449`.
+These remain earlier-source passes, before the refinements below.
+
+The previous hosted iteration failed all six explicit version-1 upgrade checks.
+The behaviour lane traced this to new Dictionary keys created as StringName
+values by dot assignment. Explicit String keys repaired the upgrade while
+retaining strict validation and the six unchanged original profiles. The failed
+campaign remains evidence; successful prior assertions did not make it pass.
+
+## Native scene refinement and negative findings
+
+The six scenes were refined with service buildings, tanks, pipes, suspended
+docks, native light details and cavern silhouettes. All detail remains ordinary
+editable native material, with shared ground promenades. Forty physical actor
+assignments and the authoritative eight-actor per-World limit remain unchanged.
+
+| Scene | Extent | Physical assignments | Native rectangle edits |
+| --- | --- | ---: | ---: |
+| Foundry Row | 1280 × 640 | 8 | 362 |
+| Pipe Orchard | 1280 × 640 | 6 | 373 |
+| Echo Galleries | 1280 × 768 | 6 | 201 |
+| Common Ground | 1024 × 640 | 8 | 266 |
+| Rain Exchange | 1280 × 640 | 6 | 268 |
+| Lantern Hangar | 1536 × 768 | 6 | 389 |
+
+The initial courtyard actors were farther apart than the copied peer scope.
+Two affinity groups now start sixty cells apart within each group, with homes
+moved consistently. This provides an observation opportunity; it is not evidence
+that a physical group will form.
+
+An authored rectangle replay caught six hard cells from a new truss inside
+flood-yard flyer 6's conservative catalogue bounds. Its spawn moved from
+`[900,360]` to `[900,310]`, and its home moved to `[820,285,160,60]`.
+The authoring fixture now checks all forty initial AABBs against ordered scene
+edits using actual native `hard_surface` definitions. Initial clearance does not
+establish traversal or contact stability.
+
+A later audit found the refinery's raised Oil pocket was about one hundred cells
+from the nearest ground spawn, beyond its sixty-four-cell material scope.
+The adverse target is now a sealed cabinet beside scavenger 5, with twelve-cell
+native glass walls and Oil inside actual sampling range. The spawn is
+`[935,526]`, the home moves consistently, and the nearby interest rectangle
+matches the cabinet. The native fixture now requires an actual copied Oil
+observation from inside it. This proves neither recovery nor interesting play;
+the matched scientific adverse-goal episodes remain separate.
+
+## Executor loss and evidence custody
+
+The executor restarted after the above work was committed locally but before
+every local commit was published. Its entire `/tmp` filesystem, including local
+Git objects, raw logs and the new authoring JSON checkpoint, was lost. The
+published `35187eda` source and hosted artifacts survived. The original local
+logs and hashes are **not recreated** or presented as retained evidence.
+
+The [recovery record](evidence/authoring-recovery-record.json) identifies the
+execution observations still present in the conversation's tool results and
+labels them as reported-only: Setup Save 282, fresh-process Reopen 289 and the
+43-test delivery custody suite had passed before loss. A later corrected-scene
+authoring run passed 278. These observations cannot qualify the reconstructed
+source. The earlier full-Workbench local attempt was killed with exit 137 under
+memory pressure; no owner pass is inferred from that failure.
+
+Actual Control-only layout probes had found a seven-pixel default-height
+overflow and a four-pixel minimum-width overflow. The repaired 150-pixel module
+list and shorter caption were already in the preserved hosted source. Those
+probes used a value-only host and never claimed native execution. The current
+mounted fixture checks all four tabs at 1020 × 760 and 740 × 480, including
+scrolling to Apply and the inspector.
+
+## Recovered implementation and pending gates
+
+Recovery starts from the actual published source. Retained exact patches restore
+live Apply/Revert tests, source hull checks, twenty-nine actual capture views,
+bounded draw-completion intervals and the complete owner guide. The retained
+scene construction script replays only against the original expected edit
+counts, then applies the separately recorded home, spacing, flyer and refinery
+repairs. Source recovery commits are published incrementally by the lead.
+
+The mounted editor test stages changes during Play, confirms they cannot affect
+admitted control, applies through the real owner, then requires fresh decisions
+and continued native/physical progression while both owner identities remain
+unchanged. Revert must discard only the draft. Recovered-source execution of
+these expanded checks remains pending.
+
+The graphical inventory requires authored and playing views of all eleven
+scenes, both overlay/editor pairs, and Personality, Places and peers, and Library
+and group views: twenty-nine unique framebuffer PNGs. Bounded wall intervals
+between actual `RenderingServer.frame_post_draw` callbacks report count, mean,
+extrema and percentiles alongside native/physical progression. This measures
+the hosted renderer, not monitor latency or physical NVIDIA acceptance.
+
+The package builder requires actual Windows headless and graphical qualification
+at one exact source identity; missing or Linux-only graphical evidence is
+refused. Both owner guides and canonical ambient contracts ship with it. The
+predecessor evaluator and qualification tools remain unchanged. Final source
+qualification, independent image review and extracted Windows execution remain
+required before delivery.

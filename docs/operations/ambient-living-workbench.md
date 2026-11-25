@@ -36,7 +36,7 @@ supplies a construction recipe; it does not run another simulation or script a s
 | Environment | Native extent | Inhabitants | What to watch or change |
 | --- | --- | --- | --- |
 | Foundry Row | 1280 × 640 | 8 | A service street, individual homes, common places and contrasting scavenger, patrol, social and territorial profiles. |
-| Pipe Orchard | 1280 × 640 | 6 | Real Oil/Water basins, low obstructions and an elevated sealed Oil pocket. Watch an unsuccessful approach give way to another interest. |
+| Pipe Orchard | 1280 × 640 | 6 | Real Oil/Water basins, low obstructions and a sealed Oil cabinet beside a scavenger. Inspect whether an unsuccessful approach gives way to another interest. |
 | Echo Galleries | 1280 × 768 | 6 | Rock chambers, dead ends and aerial alternatives. Ground and flying inhabitants face different physical routes. |
 | Common Ground | 1024 × 640 | 8 | Two affinity groups, personal homes and a common square. Compare congregation, personal space and withdrawal. |
 | Rain Exchange | 1280 × 640 | 6 | Real Water drains from an overhead tank and changes the yard. Paint or erase a gate and inspect changing observations. |
@@ -128,8 +128,9 @@ a different scene may require adjusting its coordinates.
 
 Tags describe affinities. Preferred and avoided tags filter actual copied peer
 observations. An optional peer ID focuses relevant modules on that observed
-inhabitant; it does not provide hidden access to absent actors. Missing peers can
-lead to a configured search, withdrawal or other fallback.
+inhabitant; it does not provide hidden access to absent actors. Peer-directed
+goals release when their target is no longer admitted; other modules resume.
+The material search module searches around a remembered material observation.
 
 ## Shared profiles and group assignment
 
@@ -165,12 +166,33 @@ continue moving through inertia, gait or contact, and neutral flight can activel
 hover. Repeated motion commands with little copied displacement may indicate
 obstruction. Compare position, intention, remembered failures and progression.
 
-The sixteen personalities are editable compositions. The originals are Oil Moth,
-Shy Crawler, Curious Surveyor, Idle Mechanic, Drifting Flyer and Social Roamer.
-Additions are Restless Explorer, Territorial Watcher, Social Drifter, Timid
-Follower, Persistent Scavenger, Routine Patrol, Independent Wanderer, Cautious
-Flyer, Boundary Grazer and Homebody Keeper. Their current module lists and
-descriptions explain what they are configured to try.
+## Personality catalogue
+
+These are ordinary editable compositions in the
+[shared profile catalogue](../../godot/data/ambient/profiles.json). The rows
+describe configured mechanisms. Compare their actual motion and decision history
+under matched placement, materials and seeds; contact and observation changes
+can interrupt any routine. The original six keep their version-1 behaviour until
+explicitly upgraded in a draft.
+
+| Personality | Configured tendency | Useful observation or edit |
+| --- | --- | --- |
+| **Oil Moth** · original | Ground wandering with attraction to observed Oil; Water and actual ledges can interrupt it. | Move an Oil patch inside and outside its fifty-cell scope. The name does not give the rig flight. |
+| **Shy Crawler** · original | Slow ground movement, early Water retreat and a latched ten-second ledge retreat. | Compare one committed retreat with an actor that rapidly changes direction. |
+| **Curious Surveyor** · original | More active wandering, Oil attraction, short timed rests and a home radius. | Use this preserved profile as a comparison for the new memory-based explorer. |
+| **Idle Mechanic** · original | Short activity bouts, longer timed rests, local return and modest peer spacing. | Separate intended rest from a blocked command and residual physical movement. |
+| **Drifting Flyer** · original | Two-axis seeded drift with home-relative altitude, boundary retreat and crowd spacing. | Compare it with Cautious Flyer in the same open bay. |
+| **Social Roamer** · original | Approaches compatible copied peers while keeping a gap; otherwise wanders locally. | Contrast its simple following with the newer regroup, observation and dispersal sequence. |
+| **Restless Explorer** | High curiosity selects unfamiliar local tiles and new Oil interests. Activity depletes its exploration drive and makes homeward periods relevant. | Turn memory off in a duplicate and compare revisits, stalled approaches and homeward intentions. |
+| **Territorial Watcher** | Strong home/region preference, finite peer observation and retreat from disliked tags. | Assign a home and a nearby interest region, then change the tags of an observed visitor. |
+| **Social Drifter** | High sociability supports peer observation, regrouping, alignment with copied movement and finite dispersal. | Start compatible peers within observation range and inspect when they attract, separate or lose sight of one another. |
+| **Timid Follower** | High caution, broad preferred spacing and low activity moderate following; Water and disliked peers encourage withdrawal. | Assign a visible peer ID, then remove that actor or move it outside the copied observation scope. |
+| **Persistent Scavenger** | Oil investigation, bounded remembered interests, delayed revisits and material search; higher failure tolerance permits longer attempts before withdrawal. | Inspect the sealed Oil cabinet in Pipe Orchard and compare a lower failure tolerance. |
+| **Routine Patrol** | Four editable home-relative waypoints, dwell periods and finite failed-leg timeouts create a repeatable route intention. | Move a waypoint behind a real wall and inspect whether the leg times out. The route is not a pathfinding guarantee. |
+| **Independent Wanderer** | Finite seeded exploration destinations with personal space and little social attraction; occasional drive-based homeward goals. | Compare its destination commitments with the original continuously wandering profiles. |
+| **Cautious Flyer** | Slow two-axis unfamiliar-space exploration, Oil investigation, sampled clearance, homeward cycles and eligible resource-based rest. | Inspect the eight-direction clearance fan near a dock; distinguish supported resource observations from absent ones. |
+| **Boundary Grazer** | Follows the tangent of an actually sampled Oil edge, remembers patches and sometimes selects a separate excursion. | Reshape or drain an Oil pocket and inspect whether boundary observations and remembered interests expire. |
+| **Homebody Keeper** | Low activity, short excursions and finite homeward intervals; editable region preferences can define a workplace. | Move the home and interest rectangles independently and compare where it tries to spend time. |
 
 ## Qualification and limits
 

@@ -275,9 +275,9 @@ static func personality_specs() -> Dictionary:
 		"persistence":_setting(0.5,0.0,1.0,"fraction","Extends finite goal commitments and approach deadlines, without renewing them every decision."),
 		"caution":_setting(0.5,0.0,1.0,"fraction","Increases material avoidance entry distance and obstacle clearance; never grants immunity or knowledge."),
 		"sociability":_setting(0.5,0.0,1.0,"fraction","Raises copied-peer observation, regrouping and alignment utility and the rate of accumulating social drive."),
-		"activity":_setting(0.5,0.0,1.0,"fraction","Scales desired pace from 0.6 to 1.4 of module pace; changes drive depletion and wander idle probability."),
+		"activity":_setting(0.5,0.0,1.0,"fraction","Scales ordinary/goal pace from 0.6 to 1.4 of module pace; urgent reflex pace stays authored. Also changes drive depletion and wander idle probability."),
 		"territoriality":_setting(0.5,0.0,1.0,"fraction","Raises preference for authored regions and starts drive-based homeward journeys sooner."),
-		"preferred_distance":_setting(24.0,4.0,64.0,"cells","Comfort distance used by peer observation, regrouping and personal-space modules."),
+		"preferred_distance":_setting(24.0,4.0,64.0,"cells","Comfort distance used by peer observation and regrouping; ordinary following/crowding retain their module-specific distances."),
 		"failure_tolerance":_setting(3,1,10,"attempts","Remembered failed approaches required before the repeated-obstruction withdrawal module commits to retreat.",true),
 	}
 

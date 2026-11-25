@@ -13,6 +13,7 @@ const INTENT_VERSION := "ambient-intent/v1"
 var _profile: Dictionary = {}
 var _context: Dictionary = {}
 var _states: Dictionary = {}
+var _effective_modules: Dictionary = {}
 var _specs: Dictionary = {}
 var _elapsed: float = 0.0
 var _last_tick: int = -1
@@ -78,6 +79,7 @@ func configure(profile: Dictionary, context: Dictionary) -> Dictionary:
 
 func reset(reason: String = "explicit_reset") -> void:
 	_states.clear()
+	_effective_modules.clear()
 	_identity.clear()
 	_elapsed = 0.0
 	_last_tick = -1
@@ -102,6 +104,7 @@ func reset(reason: String = "explicit_reset") -> void:
 	var actor_seed: int = 0 if bool(_profile.shared_seed) else int(_context.actor_id)
 	for module: Dictionary in _profile.modules:
 		_states[str(module.id)] = {"rng":_stable_seed(int(_profile.seed),actor_seed,str(module.id))}
+		_effective_modules[str(module.id)] = _effective_module(module)
 
 
 func _neutral(reason: String, available: bool = false) -> Dictionary:
@@ -109,10 +112,11 @@ func _neutral(reason: String, available: bool = false) -> Dictionary:
 		"pace":0.0,"effort":0.0,"primary":false,"reason":reason,"active_override":"",
 		"active_modules":[],"candidates":[],"elapsed_seconds":_elapsed,"remaining_seconds":0.0,
 		"decision":_decisions,"observed_tick":_last_tick,"selected_module":"","selected_goal":"",
-		"goal_phase":"","goal_target":Vector2.ZERO,"commitment_remaining_seconds":0.0}
+		"goal_phase":"","goal_key":"","goal_target":Vector2.ZERO,"phase_selected_seconds":0.0,
+		"commitment_remaining_seconds":0.0}
 
 
-func _observation_error(observation: Dictionary, delta: float) -> String:
+func _observation_error(observation: Dictionary, delta: float, world_changed: bool = false) -> String:
 	if _profile.is_empty(): return "ambient engine is unconfigured"
 	if str(observation.get("version","")) != OBSERVATION_VERSION: return "unsupported environment observation"
 	if not bool(observation.get("available",false)): return "environment observation unavailable"
@@ -123,7 +127,7 @@ func _observation_error(observation: Dictionary, delta: float) -> String:
 	if not position is Vector2 or not velocity is Vector2 or not position.is_finite() or not velocity.is_finite():
 		return "finite copied pose and velocity required"
 	if not _integer(observation.get("tick")) or int(observation.tick) < 0: return "invalid physical sampling tick"
-	if int(observation.tick) < _last_tick: return "physical sampling tick regressed; explicit reset required"
+	if not world_changed and int(observation.tick) < _last_tick: return "physical sampling tick regressed; explicit reset required"
 	if _integer(observation.get("world_generation")) and int(observation.world_generation) >= 0 \
 		and _world_generation >= 0 and int(observation.world_generation) < _world_generation:
 		return "World generation regressed; older observations cannot restore knowledge"
@@ -139,25 +143,19 @@ func _observation_error(observation: Dictionary, delta: float) -> String:
 		var value: Variant = observation.simulation_time_seconds
 		if not (value is int or value is float) or not is_finite(float(value)) or float(value) < 0.0:
 			return "invalid explicit simulation clock"
-		if _last_clock >= 0.0 and absf((float(value) - _last_clock) - delta) > 0.000001:
+		if not world_changed and _last_clock >= 0.0 and absf((float(value) - _last_clock) - delta) > 0.000001:
 			return "simulation clock and supplied progression disagree"
 	return ""
 
 
 func step(observation: Dictionary, delta_seconds: float) -> Dictionary:
-	# A newer copied World identity invalidates every ephemeral intention and
-	# memory record, even if the physical slot happens to be reused.
-	if not _identity.is_empty() and bool(observation.get("available",false)) \
-		and str(observation.get("version","")) == OBSERVATION_VERSION \
-		and observation.get("instance_id") == _context.get("actor_id") \
-		and observation.get("run_id") == _identity.get("run_id") \
-		and observation.get("epoch") == _identity.get("epoch") \
-		and observation.get("actor_id") == _identity.get("actor_id") \
-		and _integer(observation.get("world_generation")) and _world_generation >= 0 \
-		and int(observation.world_generation) > _world_generation:
-		reset("World generation changed")
-	var error: String = _observation_error(observation,delta_seconds)
+	# Validate every copied field before committing a World transition. A
+	# malformed newer-generation sample cannot erase valid state or clock fences.
+	var world_changed: bool = _integer(observation.get("world_generation")) \
+		and _world_generation >= 0 and int(observation.world_generation) > _world_generation
+	var error: String = _observation_error(observation,delta_seconds,world_changed)
 	if not error.is_empty(): return _neutral(error)
+	if world_changed: reset("World generation changed")
 	var observed_tick: int = int(observation.tick)
 	if observed_tick == _last_tick:
 		if delta_seconds > 0.0: return _neutral("duplicate sampling tick cannot advance gameplay time")
@@ -173,6 +171,10 @@ func step(observation: Dictionary, delta_seconds: float) -> Dictionary:
 	if observation.has("simulation_time_seconds"): _last_clock = float(observation.simulation_time_seconds)
 	_decisions += 1
 	var context: Dictionary = _context.duplicate(true)
+	context.profile_version = int(_profile.version)
+	context.last_selected_module = str(_last_intent.get("selected_module",""))
+	context.last_goal_phase = str(_last_intent.get("goal_phase",""))
+	context.last_goal_key = str(_last_intent.get("goal_key",""))
 	context.last_direction = _last_intent.get("direction",Vector2.RIGHT)
 	context.last_pace = float(_last_intent.get("pace",0.0))
 	# Missing decisions cannot prove continuous support/contact. Persistent
@@ -191,7 +193,7 @@ func step(observation: Dictionary, delta_seconds: float) -> Dictionary:
 		if not bool(module.enabled): candidate = {"active":false,"reason":"disabled"}
 		elif float(module.weight) <= 0.0: candidate = {"active":false,"reason":"zero module weight"}
 		else:
-			var effective: Dictionary = _effective_module(module)
+			var effective: Dictionary = _effective_modules[str(module.id)]
 			candidate = Modules.evaluate(effective,observation,_states[str(module.id)],_elapsed,delta_seconds,context)
 			if int(_profile.version) >= 2 and str(candidate.get("mode","steer")) != "override":
 				candidate.pace = clampf(float(candidate.get("pace",0.0)) * (0.6 + 0.8 * float(_personality.activity)),0.0,1.0)
@@ -243,6 +245,8 @@ func _arbitrate(candidates: Array) -> Dictionary:
 		result.selected_goal = str(selected_goal.id)
 		result.selected_module = str(selected_goal.id)
 		result.goal_phase = str(selected_goal.get("phase","approach"))
+		result.goal_key = str(selected_goal.get("goal_key",""))
+		result.phase_selected_seconds = float(selected_goal.get("phase_selected_seconds",0.0))
 		result.goal_target = selected_goal.get("target",Vector2.ZERO)
 		result.commitment_remaining_seconds = maxf(0.0,_goal_until - _elapsed)
 		result.remaining_seconds = float(selected_goal.get("remaining_seconds",0.0))

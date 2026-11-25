@@ -45,6 +45,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
           python tools/ci/test_ambient_living_delivery.py
           if ($LASTEXITCODE -ne 0) { throw 'Ambient completion and delivery custody tests failed' }
+          python tools/ambient/test_episode_tools.py
+          if ($LASTEXITCODE -ne 0) { throw 'Physical episode reduction and custody tests failed' }
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
           git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
@@ -182,13 +184,14 @@ jobs:
           git rev-parse HEAD > evidence/source-commit.txt
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/test_ambient_living_delivery.py
+          python3 tools/ambient/test_episode_tools.py
           git lfs install --local
           git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
       - name: Authenticate pinned official engine and graphical dependencies
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y xvfb xauth libgl1-mesa-dri libglx-mesa0
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri libglx-mesa0 python3-venv
           mkdir -p "$RUNNER_TEMP/ambient-002-engine"
           curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/ambient-002-engine/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
           python3 - "$RUNNER_TEMP/ambient-002-engine/godot.zip" <<'PYCODE'
@@ -208,10 +211,15 @@ jobs:
         run: |
           xvfb-run -a -s "-screen 0 1600x1000x24" python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --capture --output evidence/ambient-graphical
       - name: Execute full matched physical episode programme
-        env:
-          CYBERSAND_AMBIENT2_EPISODES_MODE: full
         run: |
-          python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --case living_episodes --output evidence/episodes-full
+          python3 tools/ambient/run_episodes.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --root "$GITHUB_WORKSPACE" --output evidence/episodes-full
+      - name: Reduce original physical traces and render scientific figures
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/ambient-002-analysis"
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" -m pip install --disable-pip-version-check 'matplotlib==3.10.8' > evidence/analysis-dependencies.log
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" -m pip freeze > evidence/analysis-environment.txt
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" tools/ambient/analyze_episodes.py --report evidence/episodes-full/episodes.json --output evidence/analysis --source-root "$GITHUB_WORKSPACE"
       - name: Retain original Linux source, runtime, graphical and scientific evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

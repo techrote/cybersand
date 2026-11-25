@@ -107,11 +107,20 @@ func _remember_interests(observation: Dictionary, now: float, delta: float) -> v
 		count += 1
 		var target: Variant = targets[id]
 		if not target is Dictionary or not bool(target.get("available",false)) or not bool(target.get("present",false)): continue
+		var material_id: int = -1
+		if id is String and (id as String).is_valid_int(): material_id = int(id)
+		elif _finite_number(id) and float(id) == floorf(float(id)): material_id = int(id)
+		if material_id < 1 or material_id > 131 or material_id == 10: continue
 		var point: Variant = target.get("nearest")
-		if not point is Vector2 or not point.is_finite(): continue
-		var key: String = str(id) + ":" + cell_key(point,float(_config.cell_size))
+		var distance: Variant = target.get("distance")
+		var radius: Variant = target.get("radius_cells")
+		if not point is Vector2 or not point.is_finite() or not _finite_number(distance) \
+			or not _finite_number(radius) or float(distance) < 0.0 or float(radius) <= 0.0 \
+			or float(radius) > 96.0 or float(distance) > float(radius): continue
+		if absf((observation.position as Vector2).distance_to(point) - float(distance)) > 0.01: continue
+		var key: String = str(material_id) + ":" + cell_key(point,float(_config.cell_size))
 		if not _interests.has(key):
-			_interests[key] = {"key":key,"material_id":int(id),"position":point,
+			_interests[key] = {"key":key,"material_id":material_id,"position":point,
 				"first_seen":now,"last_seen":now,"exposure_seconds":0.0,"visits":0,
 				"last_visit":-1000.0,"near":false,"revision":int(target.get("revision",-1))}
 		var entry: Dictionary = _interests[key]
@@ -140,7 +149,7 @@ static func _near_contact(observation: Dictionary, requested: Vector2) -> bool:
 				var maximum: Variant = ray.get("maximum_distance_cells")
 				if direction is Vector2 and direction.is_finite() and _finite_number(clearance) and _finite_number(maximum) \
 					and float(clearance) >= 0.0 and float(clearance) < float(maximum) \
-					and float(clearance) <= 10.0 and direction.normalized().dot(requested) > 0.7:
+					and float(clearance) <= 10.0 and direction.normalized().dot(requested) > 0.9:
 					return true
 	if absf(requested.x) < 0.5: return false
 	var obstacles: Dictionary = observation.get("obstacles",{})

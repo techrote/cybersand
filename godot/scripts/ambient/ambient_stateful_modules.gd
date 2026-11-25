@@ -1323,6 +1323,7 @@ static func _goal(direction: Vector2, p: Dictionary, s: Dictionary, reason: Stri
 	result.goal_key = str(s.get("serial",0))
 	result.commit_seconds = float(p.get("commit_seconds",3.0))
 	result.phase = str(s.get("phase","approach"))
+	result.phase_selected_seconds = float(s.get("phase_selected_seconds",0.0))
 	result.target = s.get("target",Vector2.ZERO)
 	result.hold = direction == Vector2.ZERO
 	result.remaining_seconds = maxf(0.0,float(s.get("until",0.0)) - float(s.get("now",0.0)))
@@ -1334,6 +1335,7 @@ static func _begin(state: Dictionary, target: Vector2, now: float, duration: flo
 	state.until = now + duration
 	state.now = now
 	state.phase = "approach"
+	state.phase_selected_seconds = 0.0
 	state.active = true
 	state.serial = int(state.get("serial",0)) + 1
 	state.erase("dwell_until")
@@ -1352,7 +1354,7 @@ static func _material(o: Dictionary, p: Dictionary) -> Dictionary:
 	var raw: Variant = targets.get(str(int(p.material_id)),{})
 	if not raw is Dictionary or not bool(raw.get("available",false)):
 		return {"available":false,"reason":"requested material observation unavailable"}
-	if not _number(raw.get("radius_cells")) or float(raw.radius_cells) < float(p.radius):
+	if not _number(raw.get("radius_cells")) or float(raw.radius_cells) < float(p.radius) or float(raw.radius_cells) > 96.0:
 		return {"available":false,"reason":"material observation radius is insufficient"}
 	if not bool(raw.get("present",false)): return {"available":true,"present":false}
 	var point: Variant = raw.get("nearest")
@@ -1428,12 +1430,13 @@ static func _region(c: Dictionary, id: String, kinds: Array) -> Dictionary:
 	return {}
 
 
-static func _peers(o: Dictionary, p: Dictionary, c: Dictionary, allow_negative: bool = false) -> Array:
+static func _peers(o: Dictionary, p: Dictionary, c: Dictionary, allow_negative: bool = false, prefer_positive: bool = true, respect_peer_id: bool = true) -> Array:
 	var group: Dictionary = o.get("neighbors",{})
 	if not bool(group.get("available",false)): return []
 	var actors: Variant = group.get("actors",[])
 	if not actors is Array: return []
 	var result: Array = []
+	var preferred: Array = []
 	var preferred_id: int = int(c.get("relations",{}).get("peer_id",-1))
 	for index: int in mini(MAX_PEERS,actors.size()):
 		var peer: Variant = actors[index]
@@ -1441,11 +1444,34 @@ static func _peers(o: Dictionary, p: Dictionary, c: Dictionary, allow_negative: 
 		var position: Variant = peer.get("position")
 		if not position is Vector2 or not position.is_finite() or int(peer.get("id",-1)) < 0 \
 			or int(peer.id) == int(o.instance_id): continue
-		if preferred_id >= 0 and int(peer.id) != preferred_id: continue
+		if respect_peer_id and preferred_id >= 0 and int(peer.id) != preferred_id: continue
 		if (o.position as Vector2).distance_to(position) > float(p.get("radius",96.0)): continue
-		var affinity: float = float(peer.get("affinity",0.0))
+		var raw_affinity: Variant = peer.get("affinity",0.0)
+		if not _number(raw_affinity) or float(raw_affinity) < -1.0 or float(raw_affinity) > 1.0: continue
+		var affinity: float = float(raw_affinity)
 		if not allow_negative and affinity < float(p.get("minimum_affinity",0.0)): continue
 		result.append(peer)
+		if affinity > 0.0: preferred.append(peer)
+	# Prefer positive observations when present; otherwise admit neutral peers.
+	# Explicit identity and admission are applied before that preference.
+	return preferred if prefer_positive and not preferred.is_empty() else result
+
+static func follow_peer(p: Dictionary, o: Dictionary, c: Dictionary) -> Dictionary:
+	# Version-1 retains its exact nearest-compatible selector in ambient_modules.
+	if not bool(o.get("neighbors",{}).get("available",false)):
+		return _inactive("copied neighboring actors unavailable")
+	var target: Dictionary = _nearest(_peers(o,p,c),o.position)
+	if target.is_empty(): return _inactive("no admitted preferred or neutral peer inside follow radius")
+	var distance: float = (o.position as Vector2).distance_to(target.position)
+	if absf(distance - float(p.separation)) <= float(p.hysteresis):
+		return _inactive("selected peer inside preferred separation band")
+	var delta: Vector2 = target.position - o.position
+	if distance < float(p.separation): delta = -delta
+	var direction: Vector2 = _direction(delta,c)
+	if direction == Vector2.ZERO: return _inactive("selected peer has no supported movement-axis direction")
+	var result: Dictionary = _intent(direction,p,"following the selected authored-affinity peer at comfortable separation")
+	result.target_actor = int(target.id)
+	result.distance = distance
 	return result
 
 
@@ -1463,6 +1489,12 @@ static func _nearest(peers: Array, position: Vector2) -> Dictionary:
 static func evaluate(module: Dictionary, observation: Dictionary, state: Dictionary, now: float, delta: float, context: Dictionary) -> Dictionary:
 	var p: Dictionary = module.params
 	state.now = now
+	# Only an admitted interval selected in this same phase contributes dwell.
+	# Eligible but suppressed proposals still keep their absolute deadlines.
+	if str(context.get("last_selected_module","")) == str(module.id) \
+		and str(context.get("last_goal_phase","")) == str(state.get("phase","")) \
+		and str(context.get("last_goal_key","")) == str(state.get("serial",0)):
+		state.phase_selected_seconds = float(state.get("phase_selected_seconds",0.0)) + float(context.get("continuity_delta",0.0))
 	match str(module.type):
 		"investigate_material": return _investigate(p,observation,state,now,context)
 		"explore_unfamiliar": return _explore(p,observation,state,now,context,true)
@@ -1503,13 +1535,13 @@ static func _investigate(p: Dictionary, o: Dictionary, s: Dictionary, now: float
 		return _inactive("finite investigation deadline reached")
 	if (s.target as Vector2).distance_to(material.position) <= 24.0: s.target = material.position
 	if str(s.phase) == "inspect":
-		if now >= float(s.dwell_until):
+		if float(s.get("phase_selected_seconds",0.0)) >= float(p.inspect_seconds):
 			_retire(s,now,float(p.cooldown_seconds))
-			return _inactive("inspection complete; finite interest released")
+			return _inactive("inspection complete; finite selected interest released")
 		return _goal(Vector2.ZERO,p,s,"inspecting a newly observed material patch",0.4 + _trait(c,"curiosity"))
 	if _distance(o.position,s.target,c) <= float(p.standoff):
 		s.phase = "inspect"
-		s.dwell_until = minf(float(s.until),now + float(p.inspect_seconds))
+		s.phase_selected_seconds = 0.0
 		return _goal(Vector2.ZERO,p,s,"arrived to inspect a material discovery",0.4 + _trait(c,"curiosity"))
 	var direction: Vector2 = _direction((s.target as Vector2) - o.position,c)
 	if direction == Vector2.ZERO: return _inactive("discovery has no supported approach axis")
@@ -1572,6 +1604,13 @@ static func _revisit(p: Dictionary, o: Dictionary, s: Dictionary, now: float, c:
 				score = current
 		if selected.is_empty(): return _inactive("no retained patch old enough to revisit")
 		_begin(s,selected.position,now,_duration(float(p.duration),c))
+		s.memory_key = str(selected.key)
+	var retained: bool = false
+	for entry: Dictionary in memory.get("interests",[]):
+		if str(entry.get("key","")) == str(s.get("memory_key","")): retained = true
+	if not retained:
+		_retire(s,now,float(p.cooldown_seconds))
+		return _inactive("historical interest expired or was evicted; revisit released")
 	if now >= float(s.until) or _distance(o.position,s.target,c) <= float(p.arrival_radius):
 		_retire(s,now,float(p.cooldown_seconds))
 		return _inactive("remembered destination reached or revisit deadline expired")
@@ -1583,6 +1622,7 @@ static func _next_patrol(s: Dictionary, count: int, loop: bool) -> void:
 	s.index = int(s.get("index",0)) + 1
 	s.active = false
 	s.erase("dwell_until")
+	s.phase_selected_seconds = 0.0
 	if int(s.index) >= count:
 		if loop: s.index = 0
 		else: s.finished = true
@@ -1602,17 +1642,20 @@ static func _patrol(p: Dictionary, o: Dictionary, s: Dictionary, now: float, c: 
 			return _inactive("patrol waypoint lies outside copied canvas; one leg skipped")
 		_begin(s,target,now,_duration(float(p.leg_seconds),c))
 	if str(s.phase) == "dwell":
-		if now >= float(s.dwell_until):
+		if float(s.get("phase_selected_seconds",0.0)) >= float(p.dwell_seconds):
 			_next_patrol(s,p.points.size(),bool(p.loop))
-			return _inactive("patrol waypoint dwell complete")
+			return _inactive("patrol waypoint selected dwell complete")
+		if now >= float(s.until):
+			_next_patrol(s,p.points.size(),bool(p.loop))
+			return _inactive("patrol dwell interruption deadline reached; waypoint skipped")
 		return _goal(Vector2.ZERO,p,s,"resting at an authored patrol waypoint",0.9)
 	if now >= float(s.until):
 		_next_patrol(s,p.points.size(),bool(p.loop))
 		return _inactive("patrol leg deadline reached; unreachable leg skipped")
 	if _distance(o.position,s.target,c) <= float(p.arrival_radius):
 		s.phase = "dwell"
-		s.dwell_until = now + float(p.dwell_seconds)
-		s.until = s.dwell_until
+		s.phase_selected_seconds = 0.0
+		s.until = now + maxf(1.0,float(p.dwell_seconds) * 4.0)
 		return _goal(Vector2.ZERO,p,s,"arrived at an authored patrol waypoint",0.9)
 	return _goal(_direction((s.target as Vector2) - o.position,c),p,s,"following the authored waypoint sequence",0.9)
 
@@ -1656,12 +1699,18 @@ static func _avoid_region(p: Dictionary, o: Dictionary, c: Dictionary) -> Dictio
 
 static func _search(p: Dictionary, o: Dictionary, s: Dictionary, now: float, c: Dictionary) -> Dictionary:
 	var material: Dictionary = _material(o,p)
-	if not bool(material.available): return _inactive("lost-target search waits for available material coverage")
-	if bool(material.present):
+	if bool(material.available) and bool(material.get("present",false)):
 		s.last_seen = material.position
+		s.last_seen_time = now
 		s.was_seen = true
 		s.active = false
 		return _inactive("target remains observed; local loss search is unnecessary")
+	var lifetime: float = float(c.get("memory",{}).get("lifetime_seconds",90.0))
+	if (bool(s.get("was_seen",false)) or bool(s.get("active",false))) and now - float(s.get("last_seen_time",now)) >= lifetime:
+		s.was_seen = false
+		_retire(s,now,float(p.cooldown_seconds))
+		return _inactive("last observed material location expired; search forgotten")
+	if not bool(material.available): return _inactive("lost-target search waits for available material coverage")
 	if now < float(s.get("cooldown_until",0.0)): return _inactive("lost-target search cooldown")
 	if not bool(s.get("active",false)):
 		if not bool(s.get("was_seen",false)): return _inactive("no last observed material point to search")
@@ -1745,17 +1794,20 @@ static func _drive_home(p: Dictionary, o: Dictionary, s: Dictionary, now: float,
 		if drive > trigger: return _inactive("exploration drive still favours activity")
 		_begin(s,home,now,_duration(float(p.duration),c))
 	if str(s.phase) == "home_rest":
-		if now >= float(s.dwell_until):
+		if float(s.get("phase_selected_seconds",0.0)) >= float(p.rest_seconds):
 			_retire(s,now,float(p.cooldown_seconds))
-			return _inactive("finite home interval complete; activity may resume")
+			return _inactive("finite selected home interval complete; activity may resume")
+		if now >= float(s.until):
+			_retire(s,now,float(p.cooldown_seconds))
+			return _inactive("home rest interruption deadline reached; intention released")
 		return _goal(Vector2.ZERO,p,s,"resting at home after an exploration cycle",1.1)
 	if now >= float(s.until):
 		_retire(s,now,float(p.cooldown_seconds))
 		return _inactive("finite homeward attempt expired")
 	if _distance(o.position,home,c) <= float(p.arrival_radius):
 		s.phase = "home_rest"
-		s.dwell_until = now + float(p.rest_seconds)
-		s.until = s.dwell_until
+		s.phase_selected_seconds = 0.0
+		s.until = now + maxf(1.0,float(p.rest_seconds) * 4.0)
 		return _goal(Vector2.ZERO,p,s,"arrived home after exploration",1.1)
 	return _goal(_direction(home - o.position,c),p,s,"returning home as exploration drive declines",
 		0.65 + (1.0 - drive) + _trait(c,"territoriality") * 0.3)
@@ -1783,14 +1835,15 @@ static func _observe_peer(p: Dictionary, o: Dictionary, s: Dictionary, now: floa
 	if absf(distance - preferred) <= float(p.tolerance):
 		if str(s.phase) != "watch":
 			s.phase = "watch"
-			s.dwell_until = minf(float(s.until),now + float(p.watch_seconds))
-		if now >= float(s.dwell_until):
+			s.phase_selected_seconds = 0.0
+		if float(s.get("phase_selected_seconds",0.0)) >= float(p.watch_seconds):
 			_retire(s,now,float(p.cooldown_seconds))
 			return _inactive("peer observation complete; attention released")
 		var watching: Dictionary = _goal(Vector2.ZERO,p,s,"watching a copied peer from a comfortable distance",0.25 + _trait(c,"sociability"))
 		watching.target_actor = int(target.id)
 		return watching
 	s.phase = "approach"
+	s.phase_selected_seconds = 0.0
 	var delta: Vector2 = target.position - o.position
 	if distance < preferred: delta = -delta
 	var result: Dictionary = _goal(_direction(delta,c),p,s,"approaching a copied peer for a temporary observation",
@@ -1839,7 +1892,7 @@ static func _disperse(p: Dictionary, o: Dictionary, s: Dictionary, now: float, c
 			_retire(s,now,float(p.cooldown_seconds))
 			return _inactive("finite congregation dispersion complete")
 		return _goal(s.direction,p,s,"dispersing after a temporary congregation",0.95)
-	var peers: Array = _peers(o,p,c)
+	var peers: Array = _peers(o,p,c,false,false,false)
 	if peers.size() < int(p.minimum_peers): return _inactive("local congregation below dispersion threshold")
 	var centre := Vector2.ZERO
 	for peer: Dictionary in peers: centre += peer.position
@@ -1897,6 +1950,8 @@ static func _steer_obstacles(p: Dictionary, o: Dictionary, s: Dictionary, now: f
 		var maximum: Variant = ray.get("maximum_distance_cells")
 		if not raw_direction is Vector2 or not raw_direction.is_finite() or not _number(distance) or not _number(maximum) \
 			or float(distance) < 0.0 or float(maximum) <= 0.0 or float(distance) > float(maximum): continue
+		# A diagonal free ray does not prove horizontal ground clearance.
+		if not bool(c.capabilities.get("vertical",false)) and absf(raw_direction.normalized().y) > 0.01: continue
 		var direction: Vector2 = _direction(raw_direction,c)
 		if direction == Vector2.ZERO: continue
 		var dot: float = direction.dot(requested)
@@ -1921,7 +1976,7 @@ static func _avoid_peer(p: Dictionary, o: Dictionary, s: Dictionary, c: Dictiona
 	if not bool(o.get("neighbors",{}).get("available",false)): return _inactive("copied peer observations unavailable")
 	var expanded: Dictionary = p.duplicate(true)
 	expanded.radius = float(p.release_distance)
-	var peers: Array = _peers(o,expanded,c,true)
+	var peers: Array = _peers(o,expanded,c,true,false,false)
 	var chosen: Dictionary = {}
 	for peer: Dictionary in peers:
 		if float(peer.get("affinity",0.0)) >= 0.0: continue

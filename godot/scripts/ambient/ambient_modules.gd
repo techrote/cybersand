@@ -164,7 +164,10 @@ static func evaluate(module: Dictionary, observation: Dictionary, state: Diction
 		"escape_obstruction": return _escape(parameters,observation,state,now,delta,context)
 		"return_home": return _home(parameters,observation,state,context)
 		"rest": return _rest(parameters,state,now)
-		"follow_actor": return _follow(parameters,observation,context)
+		"follow_actor":
+			if int(context.get("profile_version",1)) >= 2:
+				return Stateful.follow_peer(parameters,observation,context)
+			return _follow(parameters,observation,context)
 		"avoid_crowding": return _crowding(parameters,observation,context)
 		"maintain_altitude": return _altitude(parameters,observation,context)
 	return Stateful.evaluate(module,observation,state,now,delta,context)

@@ -1,6 +1,6 @@
 ---
 title: AMBIENT-002 embodied perception and physical experiment ledger
-status: Planned
+status: In progress
 document-kind: research
 scope: B lane implementation, bounded local observations, physical campaign registration and retained limits
 last-reviewed: 2026-11-25
@@ -118,10 +118,10 @@ or physics. V2 remains explicit opt-in; this is a material cost tradeoff, not a
 performance win or physical display acceptance. The all-actor physical campaign
 must measure progression separately.
 
-## Physical campaign registration and initial smoke
+## Initial physical campaign registration and smoke at 2e5f4676
 
 The new `test_ambient2_episodes.gd` runs the production physical session with a
-fresh native World and Rapier World2D per campaign. Its full registry contains
+fresh native World and Rapier World2D per campaign. Its initial registry contained
 95 campaigns and 137 actual actor episodes, with at most eight actors live:
 
 | Hypothesis family | Actual actor episodes | Controls and scope |
@@ -159,3 +159,101 @@ The trajectory records retain actual body path and drift during neutral commands
 The analyzer treats ground exploration as horizontal territory with dwell, so
 vertical gait movement alone cannot inflate explored area. Physical peer range
 loss is measured; a requested departing command is not proof the peer escaped.
+
+## Expanded frozen registration
+
+Independent review added a one-second held-random control, matched eight-actor
+legacy comparisons, and a descriptive subject from each of sixteen ordinary
+editable presets. The registry now has **122 fresh World campaigns and 194 actual
+actor episodes**: 178 subjects and sixteen explicitly auxiliary passive
+companions. At most eight actors are instantiated at once. Registered totals
+are 6,720 actor-simulation seconds and 4,560 World-simulation seconds; these
+remain planned horizons until execution completes.
+
+| Hypothesis family | Campaign clusters | Actor episodes |
+|---|---:|---:|
+| Eight main controls, three rigs, three seeds, 30 seconds | 72 | 72 |
+| Four-actor social controls, two seeds, 30 seconds | 8 | 32 |
+| Three adverse environments, two controls and two seeds | 12 | 12 |
+| Actual peer departure, two controls and two seeds | 4 | 8 |
+| Eight-actor legacy/stateful populations, two seeds | 4 | 32 |
+| Two-minute Runner/Trainer and five-minute Monowheel | 6 | 6 |
+| Sixteen catalogue subjects with actual passive companions | 16 | 32 |
+
+Both random controls renew legal commands every six physical ticks. random
+resamples at 10 Hz; random_hold retains each seeded heading for one second.
+The latter prevents gains from smoother steering being interpreted as general
+intelligence. Catalogue subjects share geometry, initial state and seed within
+locomotion. Their companions are embodied auxiliary observations, not additional
+treatment replicates. One descriptive sample per personality cannot establish
+robust superiority or entertainment value.
+
+## Executor reset and evidence loss
+
+The executor disconnected and its temporary filesystem was replaced before the
+expanded full campaign began. Work was recovered from durable remote checkpoint
+35187eda and retained code, first in 50c8bd1a (apparatus) and 3ed2467b (runner,
+reducer and synthetic tests). Reconstructed files have new identities. They are
+not asserted byte-identical to lost local c9d24c71. No missing raw evidence has
+been recreated. Root published the recovered implementation at
+6244b075ca16b3714fd8e1b971ed7624c1c83008.
+
+The following observations were reported before reset, but their local raw files
+are unavailable. They are **reported-only development observations**, excluded
+from final committed-source physical qualification:
+
+- Initial smoke reportedly passed 5,091 checks with local harness changes after
+  one parse failure. Its original console and JSON were lost.
+- A single-process full attempt reportedly exited 137 after three completed
+  30-second campaigns. Its partial report was lost. Memory pressure was plausible
+  but not established as the cause; no full pass was claimed.
+- An isolated stateful development shard reportedly passed 7,513 checks with local
+  changes. Its original report was lost.
+- A catalogue social attempt used a padded nonexistent SHA beginning 8572b67a.
+  It was identity-invalid before its loss and never qualified.
+- Held-random preflight at lost local c9d24c71 reportedly passed 7,812 checks,
+  1,800 native/Rapier ticks and 300 commands, with 30 correctly held windows and
+  matching raw/reduced horizontal stall counts of 29. Its report and plots were
+  lost; they do not substitute for a fresh source-bound run.
+
+Previously committed compact spatial receipts and hosted workflow evidence are
+distinct durable sources and remain available. No absent physical trajectory is
+inferred from them. Recovery freshly reran all ten synthetic reducer/custody
+tests successfully; those tests are explicitly not physical actor episodes.
+
+## Isolated execution and independent reduction
+
+tools/ambient/run_episodes.py obtains the source-generated registry and executes
+each World in a fresh pinned Godot process. It requires actual git HEAD, clean
+committed execution inputs, the existing evaluator's complete source and loaded
+project manifests, pinned official engine identity, and retained native/Rapier
+provenance. Complete custody is checked at start/end; observed source/runtime
+bytes are rechecked around every shard. There is no local-delta qualification mode.
+
+Original reports, consoles and execution receipts are retained per attempt.
+Resume requires their hashes, original aggregate receipt hashes, matching
+terminal fields, exact registered identity and completed native/Rapier horizons.
+Registry generation executes zero physical episodes. Complete remains false
+until every registered campaign has joined.
+
+tools/ambient/analyze_episodes.py validates source inventory, exact registration,
+actor rosters, native/physics ticks and command budgets before reducing actual
+traces. Ground stall and home distance use horizontal progress; flight uses two
+dimensions. Physical path retains gait and neutral-command drift. Occupied
+16-cell bins require 0.5 seconds cumulative dwell, include the starting bin and
+can be affected by small motion across a grid edge. Their nominal extent is not
+exact traversed area; x-range and displacement must accompany it.
+
+The production source builds the environment before timing the decision core
+and adapter. Sensor and decision costs are disjoint and both included within
+production advance; the independent outcome observer is evaluation overhead.
+Actual one/four/eight-actor workload costs retain their identities. Profiles and
+layouts differ between some cohorts, so mixed population medians are not
+controlled asymptotic scaling evidence.
+
+Outputs include source-bound JSON, actor and trajectory CSVs, full-canvas
+trajectory maps, intention timelines and sixteen catalogue subject maps.
+Forty-cell connected peer groups are descriptive spatial components, not a
+human sociability or believability score. Actual ordinary Workbench graphical
+inspection and physical Windows/NVIDIA owner acceptance remain separate.
+

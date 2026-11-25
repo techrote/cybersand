@@ -99,7 +99,11 @@ candidate remains visible in diagnostics, including reasons for inactivity.
 Candidate deadlines are simulation-time opportunities: eligibility is not proof
 that the actor executed that goal, reached a waypoint or remained physically
 still. Scientific intention occupancy counts the selected result, not all active
-candidates.
+candidates. Selected dwell advances only for the same previously selected module,
+goal key and phase with continuous admitted time. Interrupted inspection does
+not accumulate contact or patrol/rest dwell in the background. An absolute
+opportunity deadline still releases interrupted work, so low-priority candidates
+cannot wait indefinitely and stale interests cannot sustain a permanent hold.
 
 All time advances from admitted, completed physical progression. Repeated
 inspection or a duplicate sampling tick cannot draw randomness or consume time.
@@ -187,6 +191,11 @@ does not instantiate additional bodies or authorize a host-capacity change.
 Private peer goals, drives and memories are not shared.
 
 Avoid tags take precedence over preferred tags; untagged peers remain neutral.
+For version-2 follow, observe, regroup and alignment, positively affiliated peers
+are preferred whenever present; neutral peers remain a fallback. An explicit
+peer identifier narrows targeted social modules, while personal space, crowd
+dispersal and hostile-peer avoidance retain their local safety/crowd scope.
+Version-1 follow keeps its original nearest-compatible-peer semantics.
 Locomotion compatibility continues to separate flight from ground/wheel groups.
 Every peer observation must match the current run, epoch and physical tick.
 

@@ -167,3 +167,26 @@ also found that the Linux graphical workflow installed Xvfb without starting a
 display server; it now wraps actual capture in an owned `xvfb-run` invocation.
 This checkpoint is source recovery, not a new runtime pass. Full Linux, Windows,
 extracted-package, graphical and matched194-episode qualification remains pending.
+
+
+The first recovered source checkpoint is remote
+`9cbcac604281a5fe1ef6a3e0ba38ad4e0e4ccc7e`, tree
+`41f7427eef94a80f2707df624635ed6be8258aab` (local279dd49c).
+The second is remote `6244b075ca16b3714fd8e1b971ed7624c1c83008`, tree
+`1a5cb1834752cc849667e1268fa061ca15ac3f87` (local38186939).
+The latter durably restores six refined native scenes,29 graphical capture
+slots and the isolated physical apparatus. API publication checked every Git
+blob and the complete tree; these are recovery checkpoints, not test passes.
+
+The recovered final experiment registers194 actual actor episodes across122
+fresh World campaign clusters, comprising178 subjects and16 passive catalogue
+companions. It includes three locomotion families, three matched seeds, two
+legal random schedules, legacy/scripted baselines, stateful/memory/trait/sensing
+ablations, social and disappearing-peer arms, inaccessible/moved/blocked goals,
+matched eight-actor capacity arms, all16 editable personalities, and30/120/300
+simulation-second horizons. Registered totals are112 actor-minutes and76
+World-minutes; shared World actors are not independent experimental replicas.
+The runner isolates each campaign in a fresh process, binds complete source,
+runtime, registration, original console/report/receipt hashes, and refuses
+source aliases. Registration executes zero episodes. Figures and reductions
+will use only actually completed original traces; no result is implied here.
