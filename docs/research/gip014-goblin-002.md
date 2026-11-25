@@ -177,6 +177,69 @@ interval evidence. Arbitrary partial effects remain unresolved. The new native
 metamorphic gate must actually encounter this stop and recover through ordinary
 actor reset; inability to reach it is unqualified coverage, not a production bug.
 
+
+### Second hosted qualification and native regression evidence
+
+[Run 45536048675](https://github.com/techrote/cybersand/actions/runs/45536048675)
+tested clean source `89c91ba5342d485e787d39e64103fc6c91c5f92b`,
+tree `18facfba0ce5a93afd00200a7f6a971458f40aa8`. Both platforms passed
+63 Python/tooling controls, 333 original policy controls and 82 pure gameplay
+oracle controls. A new synthetic 1024-action tape omitted all per-row assertions,
+so the strict transcript validator correctly rejected it. The test fixture was
+repaired to use the existing independent assertion evaluator, and an explicit
+missing-assertion negative control was added. The validator was not weakened.
+The repaired pure contract gate passed 194 checks.
+
+Linux also passed discovery, original and expanded adapters, controller,
+laboratory, gameplay, metamorphic and ordinary Workbench baseline groups.
+The failed unit gate prevented graphical, comparative campaign and package
+qualification. Windows stopped at the unit gate.
+
+- [Linux artifact 14987252426](https://github.com/techrote/cybersand/actions/runs/45536048675/artifacts/14987252426):
+  25,666,356 bytes; SHA-256
+  `1b0a78406835332dc4a350273c5b2ad1543fc77a6404c6490422d0fb630a640f`.
+- [Windows artifact 14987073203](https://github.com/techrote/cybersand/actions/runs/45536048675/artifacts/14987073203):
+  6,049,477 bytes; SHA-256
+  `08fb0ddfe01fddb20cbb702b8756d7dc8f184de270839f2881a1ec453d442061`.
+
+The actual Linux laboratory passed 70 checks, including 29 separately labelled
+synthetic controls. Its cultivated prefix was Pause, Camera, material 58 selection
+and Rectangle (32,32)-(39,39). Both original cultivation and reuse completed the
+same four admitted inputs. Independent before/after material arrays and native
+receipts both show 64 changed cells. Memory import did not inherit completed
+coverage; the reused episode earned new observations.
+
+The laboratory also reduced four actual Pause operations to one, retaining six
+fresh-World probes with action counts 4, 4, 2, 2, 1, 1. Both baseline and every shorter
+accepted case were observed twice. This is legal semantic-outcome reduction,
+not a discovered bug or a full physical checkpoint. The retained native bundle
+was exported separately through the fixed Python tool; its occurrence-bound
+reader and constant unittest passed on the actual reduced tape. The Python
+export step did not run new gameplay.
+
+### Native finite-edge follow-up repair
+
+Independent source review identified a recovery gap after a legal finite-canvas
+actor stop. A new bounded native diagnostic reproduced it: ordinary Kestrel up
+input reached the edge; the next Brush was refused before gameplay admission,
+with unchanged healthy paused generation/revision/tick and the exact worker
+reason, but goblin classified it as `adapter_failure`. Ordinary Reset and
+Play recovered the game. This was a goblin classification defect.
+
+The narrowly scoped repair requires the exact current immutable-publication proof,
+a matching refused capture admission, unchanged healthy paused source and no
+successful native receipt or materials. Unrelated capture refusals remain
+unresolved. No production engine code changed. The same diagnostic failed one
+of 194 checks before the repair and passed 195 after it; both had 11 actual rows,
+four up pulses, ordinary recovery, bounded wall/RSS monitoring and no surviving
+owned process. The runs took 11.594 s and 10.658 s, with peak sampled tree RSS
+585,859,072 and 585,789,440 bytes. Their exact source overlays, raw observations and
+hashes are retained in the gameplay handover.
+
+The added hostile pure oracle controls passed 110/110. The next hosted candidate
+must requalify this repair, the transcript fixture correction, graphical controls,
+full comparative queue and extracted Windows package together.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing
@@ -190,6 +253,8 @@ The original six policy generators are retained. Ten additional personalities us
 shared finite weighted choices and construction/history/actor intentions. Random,
 stateful, novelty and coverage cohorts use matched fixture/seed/action budgets.
 Imported history can inform search only in a separately labelled reuse cohort.
+The original six personalities preserve their baseline behavior; the UI enables
+explicit prefix reuse only for successor personalities.
 
 The corpus holds at most 64 bounded records and 2 MiB. Reusable prefixes are limited
 to 128 actions from an exact matching authored fixture and source/runtime identity.
@@ -252,9 +317,10 @@ use the separately bounded Python reducer.
 
 ## Qualification and decision status
 
-**Pending:** actual comparative campaigns, long-horizon completion, expanded native
-operations, metamorphic relations, graphical laboratory, lifecycle and package
-qualification. No successor Windows evaluator is qualified at this initial checkpoint.
+**Pending for the next candidate:** comparative campaigns, long-horizon completion,
+graphical laboratory and extracted package qualification, plus fresh source-matched
+focused gates for the repairs above. Prior focused native passes remain attached
+to their exact published source. No successor Windows evaluator is yet qualified.
 The predecessor evaluator remains independently valid at its original source.
 
 Qualification will retain every process, exit code, watchdog/cancellation result,

@@ -295,6 +295,109 @@ retained tape. Exact qualifier hashes, raw transcript byte hashes, complete
 summaries and process bounds remain distinct from successor evidence. The
 recovery document is metadata, not a replacement for its original raw tapes.
 
+## Independent hosted Linux raw gameplay audit
+
+Specialist B read the complete retained expanded and metamorphic reports from
+run `45536048675`, Linux artifact `14987252426`, at clean source
+`89c91ba5342d485e787d39e64103fc6c91c5f92b`. This audit checked source identities,
+process completion, actual action dispositions, native capture operation/source
+identities and SHA256 recomputed from the raw little-endian int32 material arrays.
+All 107 independent review checks passed. The review record is immutable Git
+blob `0d2604fca7460fa426bbb8ce0640784a5483cc5e`; it is a read-only analysis of
+retained native evidence, not another gameplay execution.
+
+| Actual focused gate | Expanded ordinary actions | Metamorphic relationships |
+| --- | --- | --- |
+| Reported assertions | 1,028 passed | 464 passed |
+| Retained attempted actions | 54 | 35 |
+| Completed actions | 51 | 33 |
+| Other outcomes | RFT budget refusal, unsupported actuator refusal and already-active stream refusal | One deliberate invalid-action control and one actual finite-edge partial refusal |
+| Observed completed IDs | 38, including all 29 added IDs | 14 |
+| Process elapsed | 17.926 seconds | 13.423 seconds |
+| Raw report SHA256 | `74ac45b750c7f199e76077f0b7a34c88c2bcc3598387fd11592f75d7228b00a1` | `b1eac00b2febc45d7342db247a21ef408d706a937697ee118b7269a160e33ea4` |
+
+Both translated 24×24 readback regions began with 576 empty cells and ended with
+the same relative 60-cell outline. Undo independently restored the actual empty
+preimage; Redo restored all 60 painted cells. Authored Save/Reopen preserved the
+same 576-cell material plane at tick zero while adopting a new native generation.
+The isolated 48×48 conservation region retained exactly 64 Sand cells and 368
+hard-wall cells after 16 native ticks. Recomputed Sand vertical-position sums
+changed from 736 to 1,730, proving actual movement rather than an unchanged
+paused construction. All three stale generation/revision/tick diagnostic requests
+were refused, and the subsequent native material plane was unchanged. The
+ordinary finite-edge experiment preserved a current published refusal and
+recovered through Reset.
+
+These gates qualify supported operations and specific preconditioned
+relationships. They do not establish every parameter combination, asynchronous
+cross-platform trajectory equality, or a novel production gameplay defect. The
+whole hosted Linux qualification also retained an unrelated long synthetic-tape
+unit-fixture failure, subsequently repaired by Specialist C; these focused passes
+do not erase that failed group.
+
+## Confirmed post-edge capture harness defect and repair
+
+The Linux focused artifact from run `45536048675`, source
+`89c91ba5342d485e787d39e64103fc6c91c5f92b`, independently qualified the ordinary
+finite-edge setup: 464 metamorphic checks passed; four Kestrel up pulses reached
+the edge in 981 ms, followed by healthy paused state and ordinary Reset recovery.
+That gate reset immediately after the stop. Source review identified a separate
+follow-up transition that it had not exercised.
+
+The authoritative current contract is `simulation_worker.gd:paint_queue`
+(lines 2218–2232 at that source): a retained Workbench refusal also blocks readonly
+paint capture admission. The worker publishes the exact finite-edge reason at
+line 2707; this is a legal pause, not a failed native World. Goblin's old capture
+classifier recognized body-protection refusals but treated this prequeue refusal
+as `adapter_failure`. The controller terminates a campaign on that classification
+(`goblin_controller.gd`, line 352), preventing normal later recovery proposals.
+
+A newly authorized, fixed diagnostic used only ordinary placement at `(256,32)`,
+pilot selection, Play, four bounded 16-tick up inputs, one Brush at `(48,48)`,
+ordinary Reset, Play and Pause. Both runs used fresh marked profiles, the same
+diagnostic SHA256 `5cfa75af574c9ce3de7907d2fccc850fb048318ab7ae5b608d9feeeb9b191745`,
+an immutable source snapshot, a 90-second wall bound and a sampled 3072 MiB owned
+process-tree bound. The retained import resource cache was reused; neither run
+qualifies a fresh editor import. No owned process remained after either run.
+
+| Focused actual native result | Before | After narrow goblin fix |
+| --- | --- | --- |
+| Base source | `89c91ba5342d485e787d39e64103fc6c91c5f92b` plus diagnostic only | Same base plus four explicitly hashed goblin adapter/oracle/test files and the identical diagnostic |
+| Checks | 194; exactly one classification failure | 195; all passed, including new refusal-proof oracle |
+| Retained action records | 11 | 11 |
+| Elapsed process time | 11.594 seconds | 10.658 seconds |
+| Sampled peak process-tree RSS | 585,859,072 bytes | 585,789,440 bytes |
+| Post-edge Brush | Refused before admission, incorrectly `adapter_failure` | Refused before admission, correctly `not_applicable` / expected refusal |
+| Native source at Brush | Healthy and paused; generation 4, revision 4, tick 54, unchanged | Healthy and paused; generation 4, revision 4, tick 54, unchanged |
+| Ordinary Reset and resumed ticks | Passed | Passed |
+| Raw evidence ZIP Git blob | `fba08d82d24ad29913f269b9281b6a276d7b5249` | `1bd7617cc800be5076590c373df6ed739f07097e` |
+| Raw evidence ZIP SHA256 | `178db00c11568d781c98ca5c2abee5fd68062c8915901dea0d385503b603a6dc` | `c328fd7e7fb734a4ceb5882aa7de0da67bccc3fe0d35923c47f9e4de268a71c5` |
+
+The archives retain complete raw observations, original profile output, process
+logs/results, source and runtime manifests, and the exact diagnostic and bounded
+runner. Godot SHA256 is
+`f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`;
+native and Rapier bytes match the 105/4 recorded source inputs and the retained
+`a15fc422…` / `566e68ae…` library identities. The diagnostic and runner themselves
+are immutable blobs `3c070ebc707ff31325ba3db21a4365a7d67e89e6` and
+`6a39bc52aa42fa95107af36c3827ef7d747892bb`.
+
+The repair admits this classification only for an exact refused prequeue capture
+with no admitted edit or completed receipt, unchanged healthy paused native
+identity, the exact published finite-edge reason and a matching immutable current
+publication. Timeout, cancellation, native failure, stale publication, other
+body-sample refusals and other capture errors keep their prior classifications.
+An independent oracle binds the capture proof to the action's final native
+observation. The ordinary native metamorphic test now includes the follow-up
+Brush before Reset. Pure positive and hostile controls passed 110 checks in
+0.511 seconds; these synthetic controls establish validator behavior, not native
+coverage. Their log SHA256 is
+`280908b7bba8f523f44b5cb5a64197fefadd3146f6c636b23e21aa54f880b9bf`.
+
+This is a confirmed and repaired **goblin harness defect**. No production gameplay
+implementation changed, and no production gameplay defect is claimed. The new
+integrated source still requires its own hosted platform qualification.
+
 ## Ownership and next handoff
 
 The lead owns controller/UI/anomaly classification and final integration.

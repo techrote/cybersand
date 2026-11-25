@@ -197,6 +197,43 @@ func run() -> void:
 	bad_edge.actor_delivery = {"release_interval": row.interval.duplicate(true)}
 	check(Expanded.expected_boundary_refusal(bad_edge), "release interval can independently reach the finite edge")
 
+	var blocked_capture := {"region": [48, 48, 1, 1], "error": Expanded.FINITE_CANVAS_REFUSAL,
+		"admission": {"status": "refused", "reason": Expanded.FINITE_CANVAS_REFUSAL}, "native_receipt": {},
+		"source_before": edge_native.duplicate(true), "source_after": edge_native.duplicate(true),
+		"progress_refusal": proof.duplicate(true)}
+	check(Expanded.expected_boundary_capture_refusal(blocked_capture), "published finite-edge stop justifies prequeue capture refusal")
+	for change: Dictionary in [{"status": "queued"}, {"accepted": true},
+		{"reason": "The workbench body sample was refused. Rebuild or reset the selected setup."},
+		{"reason": "Wait for the current paint acknowledgement."}]:
+		var altered := blocked_capture.duplicate(true)
+		altered.admission.merge(change, true)
+		check(not Expanded.expected_boundary_capture_refusal(altered), "unrelated capture admission remains unresolved " + str(change))
+	for change: Dictionary in [{"generation": 2}, {"revision": 31}, {"tick": 13}, {"paused": false}, {"failed": true}]:
+		var altered := blocked_capture.duplicate(true)
+		altered.source_after.merge(change, true)
+		check(not Expanded.expected_boundary_capture_refusal(altered), "capture source transition cannot borrow boundary refusal " + str(change))
+	for change: Dictionary in [{"generation": 2}, {"tick": 11}, {"serial": 0}, {"reason": "invented"}, {"failed": true}]:
+		var altered := blocked_capture.duplicate(true)
+		altered.progress_refusal.publication.merge(change, true)
+		check(not Expanded.expected_boundary_capture_refusal(altered), "stale or invalid capture publication rejected " + str(change))
+	for change: Dictionary in [{"wait_failure_classification": "timeout"}, {"wait_failure_classification": "native_failure"},
+		{"native_receipt": {"status": "completed"}}, {"source_matches": true}, {"materials": [0]},
+		{"progress_refusal": {}}, {"source_before": null}, {"admission": []}, {"error": ""}]:
+		var altered := blocked_capture.duplicate(true)
+		altered.merge(change, true)
+		check(not Expanded.expected_boundary_capture_refusal(altered), "capture classification requires complete exact refusal evidence " + str(change))
+	row = record("brush", {"x": 48, "y": 48, "radius": 0})
+	row.status = "refused"
+	row.classification = "not_applicable"
+	row.admission = {}
+	row.before.native = edge_native.duplicate(true)
+	row.after.native = edge_native.duplicate(true)
+	row.after.progress_refusal = proof.duplicate(true)
+	row.capture_before = blocked_capture.duplicate(true)
+	outcome(Expanded.evaluate(row), "finite_edge_capture_source_capture_before", "pass", "unadmitted brush keeps exact paused edge proof")
+	row.after.native.generation = 2
+	outcome(Expanded.evaluate(row), "finite_edge_capture_source_capture_before", "fail", "later World cannot inherit a prior capture refusal proof")
+
 	print("GOBLIN_GAMEPLAY_CONTRACT_RESULT ", JSON.stringify({"checks": checks, "failures": failures,
 		"evidence_kind": "unit_fixture", "classification": "deliberately constructed oracle controls"}))
 	quit(1 if not failures.is_empty() else 0)

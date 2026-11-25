@@ -686,6 +686,10 @@ func capture(region: Rect2i, include_materials: bool = true) -> Dictionary:
 	if admission.get("status", "") != "queued":
 		result.source_after = _capture_source()
 		result.error = "native capture refused"
+		if admission.get("status") == "refused" and admission.get("reason") == GameplayOracles.FINITE_CANVAS_REFUSAL:
+			var proof := _observed_progress_refusal(result.source_after)
+			if not proof.is_empty(): result["progress_refusal"] = proof
+			if GameplayOracles.expected_boundary_capture_refusal(result): result.error = str(admission.reason)
 		return result
 	if not await _until(func() -> bool: return worker.paint_state().get("receipt_ready", false), "operation_seconds", true):
 		result.source_after = _capture_source()
@@ -747,7 +751,8 @@ static func _body_protected_capture(captured: Dictionary) -> bool:
 static func _capture_failure_classification(captured: Dictionary) -> String:
 	var wait_failure: String = str(captured.get("wait_failure_classification", ""))
 	if wait_failure in ["timeout", "cancelled", "native_failure"]: return wait_failure
-	return "not_applicable" if _body_protected_capture(captured) else "adapter_failure"
+	return "not_applicable" if _body_protected_capture(captured) \
+		or GameplayOracles.expected_boundary_capture_refusal(captured) else "adapter_failure"
 
 func _action_region(action: Dictionary) -> Rect2i:
 	var id: String = action.id

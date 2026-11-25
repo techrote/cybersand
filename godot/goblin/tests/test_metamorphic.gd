@@ -106,6 +106,18 @@ func finite_boundary_experiment() -> void:
 		check(int(stopped.native.generation) == int(initial.native.generation), "edge refusal preserves native World identity")
 		check(stopped.actors.size() == 1 and stopped.actors[0].position[1] < initial.actors[0].position[1],
 			"ordinary Kestrel input produced actual upward movement before the edge stop")
+		# A later ordinary paint proposal must retain the worker's legal edge
+		# refusal without ending the campaign as a broken capture adapter.
+		var blocked: Dictionary = await adapter.execute({"id": "brush", "args": {"x": 48, "y": 48, "radius": 0}})
+		blocked["assertions"] = oracle.evaluate(blocked)
+		records.append(blocked)
+		check(blocked.status == "refused" and blocked.classification == "not_applicable" and blocked.admission.is_empty(),
+			"ordinary brush after finite-edge stop is an expected unadmitted refusal")
+		check(GameplayOracles.expected_boundary_capture_refusal(blocked.capture_before),
+			"actual follow-up capture retains exact current publication and native source")
+		check(blocked.before.native == blocked.after.native, "refused follow-up brush leaves native state unchanged")
+		for assertion: Dictionary in blocked.assertions:
+			check(assertion.status != "fail", "boundary follow-up brush / " + str(assertion.id))
 	var recovery_ok := false
 	if not stopped.native.failed:
 		adapter.resume_actions()

@@ -339,13 +339,20 @@ func test_portable_identity_and_long_tape() -> void:
 	var long_tape: Dictionary = Transcript.create(header)
 	var row := record({"id":"pause", "args":{}})
 	row.interval = {"start_tick":0, "end_tick":0, "observed_frames":3}
+	# Synthetic observations still need explicit independent assertions.
+	var long_assertions: Array = Assertions.new().evaluate(row)
 	var all_appended := true
 	for index: int in range(1024):
-		all_appended = all_appended and Transcript.append(long_tape, row, []).ok
+		all_appended = all_appended and Transcript.append(long_tape, row, long_assertions).ok
 	check(all_appended and long_tape.steps.size() == 1024, "bounded 1024-action synthetic tape retains every action")
-	check(not Transcript.append(long_tape, row, []).ok, "1025th synthetic record is refused")
+	check(not Transcript.append(long_tape, row, long_assertions).ok, "1025th synthetic record is refused")
 	Transcript.finish(long_tape, "budget_complete")
 	check(Transcript.validate(long_tape).ok, "long tape independent complete byte bound validates")
+	var no_assertions: Dictionary = long_tape.duplicate(true)
+	no_assertions.steps[0].assertions = []
+	var absent_check: Dictionary = Transcript.validate(no_assertions)
+	check(not absent_check.ok and "Step 0 has no independent assertions or explicit applicability result." in absent_check.errors,
+		"long synthetic tape cannot omit independent assertions")
 	var replay: Dictionary = long_tape.duplicate(true)
 	replay.header.fixture_sha256 = "8".repeat(64)
 	check(not Transcript.compare(long_tape, replay).semantic_match, "semantic replay binds authored fixture digest")

@@ -94,6 +94,25 @@ static func expected_boundary_refusal(record: Dictionary) -> bool:
 		and record.get("before", {}).get("native", {}).get("generation") == observed.generation
 
 
+static func expected_boundary_capture_refusal(captured: Dictionary) -> bool:
+	# paint_queue refuses even readonly captures while the exact finite-edge
+	# stop is retained. This is a prequeue refusal, not a successful capture.
+	for key: String in ["admission", "native_receipt", "source_before", "source_after", "progress_refusal"]:
+		if not captured.get(key) is Dictionary: return false
+	if not captured.get("error") is String or captured.error.is_empty() \
+		or not str(captured.get("wait_failure_classification", "")).is_empty() \
+		or captured.get("source_matches", false) != false or captured.has("materials"): return false
+	var admission: Dictionary = captured.admission
+	if admission.get("status") != "refused" or admission.get("accepted", false) != false \
+		or admission.get("reason") != FINITE_CANVAS_REFUSAL or not captured.native_receipt.is_empty(): return false
+	var before: Dictionary = captured.source_before
+	var after: Dictionary = captured.source_after
+	var proof: Dictionary = captured.progress_refusal
+	if not _same(before, after) or not proof.get("publication") is Dictionary: return false
+	var observed := finite_canvas_refusal(after, proof.publication)
+	return not observed.is_empty() and _same(proof, observed)
+
+
 static func evaluate(record: Dictionary) -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
 	var action: Dictionary = record.get("action", {})
@@ -106,6 +125,15 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 	if record.has("expected_refusal"):
 		_check(rows, "finite_canvas_refusal_current_source", expected_boundary_refusal(record),
 			"source-matched published finite edge stop after partial progress", record.get("expected_refusal"), "evidence")
+	for capture_key: String in ["capture_before", "capture_after", "persistence_capture"]:
+		var captured: Variant = record.get(capture_key, {})
+		if captured is Dictionary and captured.has("progress_refusal"):
+			var proof: Variant = captured.get("progress_refusal")
+			var publication: Variant = proof.get("publication", {}) if proof is Dictionary else {}
+			var current: Dictionary = finite_canvas_refusal(last, publication) if publication is Dictionary else {}
+			_check(rows, "finite_edge_capture_source_" + capture_key, expected_boundary_capture_refusal(captured) \
+				and not current.is_empty() and _same(current, proof) and _same(after.get("progress_refusal"), current),
+				"exact prequeue edge refusal at the unchanged current paused owner", captured, "evidence")
 	if record.get("status") == "refused" and record.get("admission", {}).is_empty() \
 		and before.get("paused") == true and after.get("paused") == true and not first.is_empty() and not last.is_empty():
 		_check(rows, "unadmitted_paused_action_keeps_native", _same_native(first, last), first, last)

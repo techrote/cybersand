@@ -266,6 +266,67 @@ the final ZIP and repeats independent package verification. It performs no
 release publication. Final hosted evidence and package identity must be read
 from the resulting delivery receipt, not inferred from this source description.
 
+## Qualification2 observations and unit fixture repair
+
+Actions [45536048675](https://github.com/techrote/cybersand/actions/runs/45536048675)
+ran exact source `89c91ba5342d485e787d39e64103fc6c91c5f92b`, tree
+`18facfba0ce5a93afd00200a7f6a971458f40aa8`. Windows artifact14987073203
+retains the failed unit gate (archive SHA256
+`08fb0ddfe01fddb20cbb702b8756d7dc8f184de270839f2881a1ec453d442061`).
+The Python63-control gate passed on Windows, and the policy and gameplay-contract
+GDScript tests passed. The tape-contract test failed exactly one check: its new
+1,024-row synthetic fixture had omitted every row's independent assertions.
+The strict production validator correctly rejected those rows.
+
+An exact Godot4.7 local pure reproduction retained the same193-check result and
+a diagnostic listing1,024 missing-assertion errors. The repair changes only the
+synthetic tape test to retain `Assertions.evaluate(row)` on every append, and
+adds a control proving missing assertions are still rejected. The production
+validator is unchanged. All three isolated pure unit scripts then passed:
+333 policy checks,194 tape-contract checks and82 gameplay-oracle controls.
+Their elapsed times were9.454,6.436 and0.303 seconds; highest observed
+process-tree RSS was284,528,640 bytes under a3,072-MiB/60-second per-process
+bound. No editor import or native World was run. This is a confirmed harness
+test-fixture defect, not a discovered production gameplay defect.
+
+Before/diagnostic/after raw logs, process outcomes and source manifests are
+durable in Git blob
+`5f3decdb90b36d9c2e1595faec4fcb54a5e48f80`, a data-only gzip/base64 envelope
+with per-file raw hashes and sizes. The repair report SHA256 is
+`1dd67cda142f575708a3158cd99b4306361392adf59ba9567eebcf9eb61eb84d`;
+the repaired unit script blob is
+`58fa38ad53bc6eb4d154e93a952feca0df1eecd8`.
+
+Linux artifact14987252426 preserves the same source's source groups. Discovery,
+adapter, expanded gameplay, controller, laboratory, gameplay, metamorphic and
+baseline groups all passed; discovery remains a pure control group. Unit
+qualification failed only at the same long-tape fixture. Graphical,
+comparative campaigns and final packaging were therefore still unqualified
+for this run; no pass is inferred from the source-group results.
+
+The actual native laboratory report contains70 checks with no failures and
+29 separately labeled synthetic controls. Its cultivated construction prefix
+and imported reuse each admit four exact ordinary actions; both rectangle
+readbacks show64 changed native cells. Its legal four-Pause reproduction was
+confirmed and reduced4 to1 through six fresh-World probes of lengths
+4,4,2,2,1,1 in14.953 seconds. These observations establish actual prefix reuse
+and bounded semantic reduction, not a novel defect.
+
+A subsequent **data-only export** used this retained native reproduction bundle
+without rerunning or relabeling its gameplay. The fixed
+`qualify_reproduction.py` exported the original/reduced tapes and authored
+fixture, copied the actual one-action observed tape, passed the reproduction
+checker and ran the constant ordinary unittest successfully. The exported
+qualification report explicitly records `legal_unusual_gameplay` and
+`gameplay_defect_confirmed: false`, source89c91ba5, original4/reduced1.
+Its raw bundle SHA256 is
+`145e5696c4c8d30a09b0b2fc001a35b8d763ab1eb3776fbbb9268867f2232957`;
+export qualification SHA256 is
+`ab54fd88152ce7630b0bbc9949eaea52421c1111615c4ff7183d1047bd5a7a78`.
+The generated unittest process exited0 in0.208 seconds with no owned survivors.
+Final extracted Windows delivery still requires a passing later exact-source
+qualification.
+
 ## Remaining decision authority
 
 The lead owns final source freeze, independent review disposition, hosted run
