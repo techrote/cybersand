@@ -1,0 +1,30 @@
+{
+  "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+  "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "files": 697,
+  "bytes": 170042123,
+  "unique_blobs": 615,
+  "unique_blob_bytes": 132220277,
+  "per_blob_zlib_bytes": 35892302,
+  "classes": {
+    "image": {
+      "files": 4,
+      "bytes": 1390331
+    },
+    "other": {
+      "files": 413,
+      "bytes": 27898236
+    },
+    "raw-context": {
+      "files": 93,
+      "bytes": 66839678
+    },
+    "retrieval-json": {
+      "files": 187,
+      "bytes": 73913878
+    }
+  },
+  "incremental_reachable_pack_exit": 0,
+  "incremental_reachable_pack_bytes": 12928232,
+  "pack_scope": "all objects reachable from #774 excluding objects reachable from accepted main; not a server storage bill or full clone size"
+}
