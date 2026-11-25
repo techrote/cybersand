@@ -1,0 +1,146 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "recorded_at": "2026-11-24T20:10:32.827880+00:00",
+  "method": "Full document reading plus bounded direct source checks of decision applicability, current APIs/defaults/owners and explicit gates. This is not mathematical, numerical, performance or platform requalification.",
+  "runtime_execution": false,
+  "reviews": [
+    {
+      "document": "docs/decisions/ADR-001-native-simulation-core.md",
+      "document_sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "disposition": "source-reviewed-preserved",
+      "claim_id": null,
+      "baseline_bytes_equal": true,
+      "scope": [
+        "Full document read. Native World remains cellular authority; simulation_worker._create_world selects native when present and script fallback otherwise. Web controller instantiates native classes and sequences owner calls; no synchronized native/script truth claimed.",
+        "Module extraction remains incomplete; exact replay beyond declared native coverage is not inferred. No consequential current-source contradiction found."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+        "godot/scripts/web_demo_controller.gd": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb"
+      }
+    },
+    {
+      "document": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "document_sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "disposition": "source-reviewed-preserved",
+      "claim_id": null,
+      "baseline_bytes_equal": true,
+      "scope": [
+        "Full document read. WorldConfig defaults PhasedInPlace; SchedulerGeometry has four parity phases; tick_phased uses persistent worker dispatch and deterministic post-phase reductions. tick Buffered branch throws explicitly.",
+        "Inspected bounded domain declarations and serial/interest distinctions. Historical measurements and future Buffered comparison remain source-qualified; no runtime parity proof rerun."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+      }
+    },
+    {
+      "document": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "document_sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "disposition": "source-reviewed-preserved",
+      "claim_id": null,
+      "baseline_bytes_equal": true,
+      "scope": [
+        "Full document read. WorldConfig/C ABI expose construction limits/reservation. reserve_region requires healthy World; set_simulation_region latches requests independently of failed state; clear/replacement is still required for recovery.",
+        "Approved percentage-margin ambiguity and general live pause/drain/resize transition remain unresolved design, not silently implemented policy. Existing native checkpoint subset does not implement that general transition."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+      }
+    },
+    {
+      "document": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "document_sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2",
+      "disposition": "source-reviewed-corrected",
+      "claim_id": "A-43",
+      "baseline_bytes_equal": false,
+      "scope": [
+        "Full document read. Corrected September Planned #11 language locally as historical and routed accepted REM-002 ordinary-body granular behavior to canonical current coupling contract.",
+        "Direct source shows native bounded bearing and central cellular response, separate main-thread Rapier step and already implemented actuator torque/joints; generalized cellular torque is still separate. Approved material/body ownership and old measured findings retained."
+      ],
+      "source_sha256": {
+        "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+        "godot/scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+        "godot/scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6"
+      }
+    },
+    {
+      "document": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "document_sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223",
+      "disposition": "source-reviewed-corrected",
+      "claim_id": "A-44",
+      "baseline_bytes_equal": false,
+      "scope": [
+        "Full document read. Fixed phase-staggered chemistry/lifecycle/thermal lanes, sleeping and region filtering are implemented; no universal live strict switch or adaptive overload controller inferred. Web simulation_tick remains called synchronously from controller physics process.",
+        "Added current Wave/profile admission qualification to the retained transport section. Approved fidelity choice and original #13 settings/results retained unchanged."
+      ],
+      "source_sha256": {
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+        "godot/scripts/web_demo_controller.gd": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb",
+        "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+      }
+    },
+    {
+      "document": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "document_sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "disposition": "source-reviewed-preserved",
+      "claim_id": null,
+      "baseline_bytes_equal": true,
+      "scope": [
+        "Full document read. project.godot selects Rapier2D; exact Godot4.7 official ID and Rapier0.35.2 with Windows/Linux x86_64 scoped BVH overrides match locks. Other architecture/Web original artifacts remain distinguished by lock.",
+        "Direct bridge source owns manual space_step, active transforms and query flush. Web ordering is synchronous at host boundary; physical replay is not implied. Historical 600-run/backport receipts were not rerun or broadly reattested. Generalized cellular shapes/torque and export acceptance remain separate."
+      ],
+      "source_sha256": {
+        "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+        "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+        "godot/third_party/rapier2d.lock.json": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "godot/scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+        "godot/scripts/web_demo_controller.gd": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb"
+      }
+    },
+    {
+      "document": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "document_sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26",
+      "disposition": "source-reviewed-corrected",
+      "claim_id": "A-45",
+      "baseline_bytes_equal": false,
+      "scope": [
+        "Full document read; InteractionPolicy remains v1 with downward8/9, side9/9 and Mercury30 ticks. Existing detailed granular source review independently checked the broader current contract.",
+        "Added current Wave transport refusal and exact prepared-Baseline normalization; original versioned decision, historical values and wider owner acceptance boundaries preserved."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+        "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351"
+      }
+    },
+    {
+      "document": "docs/systems/settled-region-discovery.md",
+      "document_sha256": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b",
+      "disposition": "source-reviewed-corrected",
+      "claim_id": "A-42",
+      "baseline_bytes_equal": false,
+      "scope": [
+        "Full document read. Checked default-disabled World discovery/connectivity, current coordinator capacity scaling, exact fields/capacity accessors, reconstruction ticket/staged-child/private preparation and batch commit visibility, explicit waits and budget service/reclamation.",
+        "Corrected stale future #65 scheduler/current next-review direction and incomplete member-pool accounting. Retained original Stage-3A costs, synthetic protocol, ownership/no-acceleration boundaries and content_hash Empty-state limitation (still true in source).",
+        "Read actual #12 October owner routing in saved live intake; scoped Stage-4 gate to Track B and linked root current programme for separately authorized Track A. Native tests contain a split batch-atomic unit-budget control; source inspected only, not executed."
+      ],
+      "source_sha256": {
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+        "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+        "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+        "native/tests/test_settled_regions.cpp": "611a4286c73133fed6df98849f51cc06e46d4fc2fdb70a44a5a7e1d39de06ddb"
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewer": "Technical lead / root (independent of Specialist C)",
+  "reviewed_utc": "2026-11-24T19:28:40.002903+00:00",
+  "method": "Read actual documentation diff and owning native/Godot/Atlas implementation. Verify retained offline receipts against original bytes and seal implementation. No model dispatch, new runtime qualification or account billing claim.",
+  "claims": [
+    {
+      "claim_id": "C-18",
+      "priority": "P1",
+      "document": "docs/operations/profiling-observability-and-performance.md",
+      "verdict": "supported",
+      "basis": [
+        "World::resident_cell_bytes sums cell, optional temperature and activity capacity only; solver storage is separate.",
+        "Main creates world_extent * render_channels image and finish_texture_upload ping-pongs textures then ImageTexture.update(image);2,097,152 bytes is only1024-squareRG8.",
+        "TickStats reports observed worker participants, not utilization or all allocation categories.",
+        "Direct source benchmark entry exists; no benchmark executed in this independent review."
+      ],
+      "document_sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391"
+    },
+    {
+      "claim_id": "C-19",
+      "priority": "P0",
+      "document": "docs/operations/atlas-agent-runner.md",
+      "verdict": "supported",
+      "basis": [
+        "Runner gates only live mode and uses DryRunBackend for explicit dry-run.",
+        "credit-check forces live gate and may perform network discovery/Costs calls; attestation does not configure account billing.",
+        "Local schema allows120iterations/200calls/600tools/14400seconds/50Minputtokens; hosted input validates1..30iterations and job30minutes.",
+        "Publication uses separate create-only remote lease and never merges; model equality accepts requested name or requested-name/version prefix.",
+        "Offline stdout and original/copied receipt inspected: simulated=true, model_calls_simulated=true, visual_cycle.claimed=false; copy byte-identical."
+      ],
+      "document_sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887"
+    }
+  ],
+  "findings": [
+    {
+      "id": "C-19-REVIEW-01",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "source_clean table omits explicit task.allow_dirty_source exception present in gate; qualify default and diagnostic override.",
+      "resolution_owner": "Specialist C",
+      "resolution": "Independently reread repaired source_clean default/allow_dirty_source qualification and atlas-offline-check.json separate file-byte SHA256 versus canonical body seal; original receipt unchanged."
+    },
+    {
+      "id": "C-19-REVIEW-02",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "Evidence should distinguish receipt file-byte SHA256 from canonical body seal; both inspected values are valid.",
+      "resolution_owner": "Specialist C",
+      "resolution": "Independently reread repaired source_clean default/allow_dirty_source qualification and atlas-offline-check.json separate file-byte SHA256 versus canonical body seal; original receipt unchanged."
+    }
+  ],
+  "limitations": [
+    "Source/document review qualifies wording, not live provider pricing/billing or artistic outcomes.",
+    "Recorded fixture execution is Specialist C evidence, independently inspected without redundant rerun."
+  ],
+  "source_sha256": {
+    "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+    "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+    "godot/scripts/main.gd": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+    "tools/atlas_agent/runner.py": "3efaa269ae3d418bc945239f9090040f78a7fb18309fd2b1faa7ea8ad7e853d7",
+    "tools/atlas_agent/credit_gate.py": "64e2384dd9d3592e41ce1332cc878781d3cc5b3262e002bdcd217a5248c60244",
+    "tools/atlas_agent/cli.py": "dc551214dc91ea9f48239a0314f41f865378c48434e7a641766bf3a9647019a6",
+    "tools/atlas_agent/gitops.py": "434545a068f6360118e925567a507e7545fbc33dfae50f400c39fe1a31ee31f5",
+    "tools/atlas_agent/workflow_run.py": "8c60331c9a9ad550eb3dec256c80d1e283f035b3add5c536e9460578012714c4",
+    "tools/atlas_agent/schemas/config.schema.json": "3b0a2ce63861cfca7c1dd5a2fa79270e059facf917044598299bf6cebf625104",
+    ".github/workflows/atlas-agent-runner.yml": "96ac520136e87971f0edf80e58043736b0de905283e794b057f4c3a0ac19f35f",
+    "tools/atlas_agent/receipt.py": "a37270958647b97c45c721331fd4e95c7d068e258b74765e8c286d937f358560"
+  }
+}

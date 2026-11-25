@@ -1,0 +1,37 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewer": "/root (lead, independent of Specialist C)",
+  "reviewed_utc": "2026-11-24T19:47:49.666049+00:00",
+  "method": "Exact documentation diff, current owning source and saved check-only execution receipts; no campaign rerun.",
+  "claims": [
+    {
+      "claim_id": "C-21",
+      "priority": "P1",
+      "document": "docs/operations/play-desktop-manual-qualification.md",
+      "verdict": "supported",
+      "basis": "Read committed execution watchdog JSON and packet_text dynamic reads:600main_ack,1200graphical/import,300operation,3600complex defaultscale. Old limits now dated; actual ceilings remain distinct from responsiveness.",
+      "document_sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274"
+    },
+    {
+      "claim_id": "C-22",
+      "priority": "P0",
+      "document": "docs/operations/microscenarios.md",
+      "verdict": "supported",
+      "basis": "Read MicroScenario.validate/_records actual Workbench special id, schema2 extent256\u20132048/64alignment,32768rectangles versus4096fills and ordinary1024frame; material catalogue0\u2013131 except10. Accepted ballistic Water does not alter the original host-extraction scope.",
+      "document_sha256": "cb16396e805d9224d47b11eb4010eb273e68343b822f2e1998dd0f59606245e6"
+    },
+    {
+      "claim_id": "C-23",
+      "priority": "P1",
+      "document": "docs/operations/lcb-scenario-catalogue.md",
+      "verdict": "supported",
+      "basis": "Read comparison panel constants and scenario runner output/source-sha handling; frozen registry is not consumed by full UI picker. Actual World version selectors, current family source and check-only receipts support qualifiers. Original campaign measurements/arms remain scoped.",
+      "document_sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59"
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "No native, Godot, packet generation or physical execution by this review."
+  ]
+}

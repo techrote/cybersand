@@ -1,0 +1,15 @@
+{
+  "documents": 151,
+  "chunks": 1784,
+  "questions": 6,
+  "canonical_hit_at_1": 1,
+  "canonical_hit_at_k": 4,
+  "mrr_at_k": 0.3389,
+  "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+}
+OI01 rank=None operations/architectural-generator-playtest.md :: Architectural Generator walkthrough > Install, paint, save and reopen
+OI02 rank=5 reference/product-intent-and-priorities.md :: Product intent and priorities > Save, Flatten and compatibility
+OI03 rank=2 reference/product-intent-and-priorities.md :: Product intent and priorities > Convincing physical behavior and prepared destruction
+OI04 rank=None reference/product-intent-and-priorities.md :: Product intent and priorities > Convincing physical behavior and prepared destruction
+OI05 rank=3 systems/world-storage-and-interest-region.md :: World storage and interest region > Approved area intent and accepted behavior
+OI06 rank=1 decisions/2026-11-14-owner-authoring-intent.md :: Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation

@@ -1,0 +1,860 @@
+{
+  "retrieval_policy": "historical-isolation-v3",
+  "authority": "historical-non-authoritative",
+  "historical_opt_in": true,
+  "link_expansion": false,
+  "cache_policy": "No persistent cache is read; external caches require rebuild with this policy and per-chunk authority.",
+  "created_utc": "2026-11-24T23:54:27.190124+00:00",
+  "corpus_root": "/tmp/docs-closure-candidate-5_o5c8hp/source",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit isolated historical manifest required; every chunk is historical non-authoritative"
+  },
+  "fixture_sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+  "evaluator_sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+  "corpus_manifest_sha256": "cc5d22a677d0f6e5c072965e276ae9143919b8b55dd79940eb10f069c62f13fa",
+  "corpus_manifest": "docs/history/engineering/retrieval-corpus.json",
+  "authority_policy_sha256": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+  "corpus": [
+    {
+      "path": "docs/history/engineering/README.md",
+      "sha256": "19ffc2b3f2a4fa07bf1eb9da97fcb13856c28bb741e3e50afd5dd1e8c6df3616",
+      "bytes": 4537
+    },
+    {
+      "path": "docs/history/engineering/REPORT.md",
+      "sha256": "b17fee8fb34f3e46cc8afe78e538f66e54cbc7f58fd70e99d8be788ad55a4ad3",
+      "bytes": 24825
+    },
+    {
+      "path": "docs/history/engineering/SCHEMA.md",
+      "sha256": "b732e94e686fb3aeae5f30cd4de07a8ea2e4d1516d1e17b19fc3a68d7b7fdc84",
+      "bytes": 6373
+    },
+    {
+      "path": "docs/history/engineering/families/governance.md",
+      "sha256": "d137bfe1ce515bb7ed86c039f585452b253929b625ce30684048cce5973b2d76",
+      "bytes": 17795
+    },
+    {
+      "path": "docs/history/engineering/families/runtime.md",
+      "sha256": "c957c6560d59703fe93d21c46c8655e28d9fdf68aae250d8ce892dbb0fba3633",
+      "bytes": 67273
+    },
+    {
+      "path": "docs/history/engineering/families/simulation.md",
+      "sha256": "2ec8f6ebab93ae6aa8b931a807b45785d677835434821280c70ca36030995e23",
+      "bytes": 63606
+    },
+    {
+      "path": "docs/history/engineering/families/state.md",
+      "sha256": "52f097a3ae300b3191ed0350d73ffe413a73295c17d69fd9d60c26c39ebfd84c",
+      "bytes": 50962
+    },
+    {
+      "path": "docs/history/engineering/qa/review.md",
+      "sha256": "9fbf67b1d0e8a255c8af89b1085d006b9a6f3daff0666b4f460e70e53ef00761",
+      "bytes": 4204
+    },
+    {
+      "path": "docs/history/engineering/sources/m0-report.md",
+      "sha256": "9cbf0027513ce141b558b636474de5a9886e215f0195f8a834029cdb8f60f1ef",
+      "bytes": 100047
+    },
+    {
+      "path": "docs/history/engineering/views/coverage.md",
+      "sha256": "ab8a427550f96a0616694ccca4da6c422d01530e2b59c05e02a6df617f45cb43",
+      "bytes": 149600
+    },
+    {
+      "path": "docs/history/engineering/views/doctrine.md",
+      "sha256": "d9422e5ef73ad02ecfa32b554c4305fb3d95f029995b1a70314559f8636710f7",
+      "bytes": 32373
+    },
+    {
+      "path": "docs/history/engineering/views/opportunities.md",
+      "sha256": "73a255adcc8a01b082842050144863d1abfcb4adbf6396e7d3e376292a170689",
+      "bytes": 12942
+    },
+    {
+      "path": "docs/history/engineering/views/salvage.md",
+      "sha256": "f8d365d3f770984b40aabc1b1c19508ce291089a524cca0e3e5190d59c926fa1",
+      "bytes": 101965
+    }
+  ],
+  "document_count": 13,
+  "chunk_count": 331,
+  "summary": {
+    "questions": 10,
+    "canonical_hit_at_1": 7,
+    "canonical_hit_at_k": 10,
+    "mrr_at_k": 0.8033,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "H01",
+      "query": "What did original MAT-003 S2A packed carrier evidence actually show, and does it permanently require four-byte cells?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/state.md"
+      ],
+      "facts": [
+        "Eight-byte accepted carrier differs from old four-byte baseline.",
+        "S2A-only new readback; safe representation and access-method result are separate."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/state.md"
+      ],
+      "canonical_rank": 3,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.127392,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > state-carrier",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > state-carrier\n| Item | Depth / protection | Assessment and ticket disposition | |---|---|---| | [#14](https://github.com/techrote/cybersand/issues/14) — Architecture decision: reconcile Cell, liquid and sparse-motion experiment evidence | D3-body+decision-chronology+current-source | Decision umbrella records staged controls and explicitly leaves G-final open; repeated four-byte baseline wording predates the accepted eight-byte PrecisionStorage implementation. **Ticket:** Preserve dated decisions; later consolidate historical gate obligations after knowledge transfer. | | [#18](https://github.com/techrote/cybersand/issues/18) — Architecture experiment: compare compact liquid flow memory inline and in sidecars | D3-substantive-source+tests | Compact motion/history programme compared inline and sidecar placement under controlled semantics; its full-vx/vy exclusion was local experimental scope, not a universal prohibition. Later pressure/coherence work changes the original behavioural deficit. **Ticket:** Consolidate with liquid-motion synthesis when later authorised, retaining unresolved semantic questions. | | [#20](https://github.com/techrote/cybersand/issues/20) — Architecture experiment: gate and test bounded sparse ballistic material transfer | D3-substantive-source+tests | Bounded sparse ballistic transfer was a gated alternative to dense continuous velocity, not evidence that all momentum must forever live outside cells; current main already exposes ballistic support. **Ticket:** Historical gate text can later be consolidated with actual ballistic successors; do not mark wholly satisfied from API presence. | | [#204](https://github.com/techrote/cybersand/issues/204) — MAT-003PREPASS: material-state contracts, epoch widening and 64/72/80-bit cell-carrier experiments | D3-body+pilot-source+decision-chronology | Owner prepass asks +8/+16 bits, physical alternatives and wider epochs without changing material semantics; C64 is eight bytes with material16/state_a16/state_b8/epoch8, and enum remains uint8. **Ticket:** Preserve as programme provenance; later replace accumulated experimental checklist with thematic decisions. | | [#208](https://github.com/techrote/cybersand/pull/208) — MAT-003PREPASS: isolated carrier and native World correctness | D3-substantive-source+tests; PROTECTED | Foundation supplies explicit Word/Padded/Packed/Aligned/Split carrier apparatus and correctness controls; unmerged stack is not production storage. **Ticket:** Preserve unmerged stack root; later salvage apparatus instead of assuming bottom-up merge is obligatory. | | [#211](https://github.com/techrote/cybersand/pull/211) — MAT-003PREPASS S2: qualify S2F/twins and admit paired S2A timing | D4-original-artifact-readback+source; PROTECTED | S2 feasibility and S2A paired timing are real frozen-World experiments. M1 independently verified original S2A ZIP seals and recomputed 224 raw process records/112 pairs, not new executions. **Ticket:** Preserve stack/evidence; later consolidate experiment ticket independently of candidate adoption. | | [#218](https://github.com/techrote/cybersand/issues/218) — MAT-003PREPASS S2P: diagnose packed-layout overhead and qualify compact prototypes | D3-issue+linked-source+qualified-review | S2P issue progresses from proposed apparatus to accepted original 56-process/28-pair campaign; safe-memcpy P2 compact carriers are not equivalent to earlier byte-loop P1. **Ticket:** Retain completed experimental result; future retirement should not reject compact storage idea. | | [#219](https://github.com/techrote/cybersand/issues/219) — MAT-003PREPASS WCLEAR-001: qualify real wide-epoch clear events and prepare separate admission | D3-chronology+linked-source | Issue body stops at untimed WCLEAR apparatus/proposal, but #221/#231 later document completed real-World"
+        },
+        {
+          "rank": 2,
+          "score": 18.330181,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > state-carrier",
+          "part": 2,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > state-carrier\nprepared-clear campaign; body alone would miss the result. **Ticket:** Record completed downstream campaign before proposing historical retirement. | | [#220](https://github.com/techrote/cybersand/issues/220) — MAT-003PREPASS C128-001: native u128 and dual64 untimed World feasibility | D3-issue+linked-source+qualified-review | C128 issue progressed to70 processes/35 pairs. Native U128 quiet E8 clear-frame result is slower than aligned control; Dual64 is a distinct implementation. **Ticket:** Preserve bounded negative/alternative result, not an unfulfilled generic128-bit obligation. | | [#221](https://github.com/techrote/cybersand/pull/221) — MAT-003 continuation: packed diagnosis, WCLEAR apparatus and C128 feasibility | D3-substantive-source+tests; PROTECTED | Continuation stack combines S2P, WCLEAR and C128 plus Windows correctness work. Safe memcpy P2 and actual prepared World ticks are substantive donors. **Ticket:** Keep source-qualified stack intact; later extract thematic findings without merging all inherited changes. | | [#230](https://github.com/techrote/cybersand/pull/230) — MAT-003PREPASS D: GEN-006 semantic state, lifecycle and persistence contracts | D3-substantive-source+tests; PROTECTED | Semantic persistence contract separates carrier layout from durable fields, but independent review found missing atomic checkpoint cut, event authority, recent-write semantics and runtime-qualified CAS. **Ticket:** Preserve design/review; do not freeze it as current implementation contract. | | [#231](https://github.com/techrote/cybersand/pull/231) — MAT-003PREPASS C: independent carrier evidence audit and conditional synthesis | D3-substantive-source+tests; PROTECTED | Independent review re-reduced four original Linux archives:1,022 process records/511 pair units,89,600 timed ticks+inputs plus672 WCLEAR observations; limited scientific acceptance, no production choice. **Ticket:** Preserve synthesis and explicit qualifiers; later archive as a historical evidence hub. | | [#235](https://github.com/techrote/cybersand/pull/235) — MAT-003: repair Windows correctness readback verifier | D3-substantive-source+tests; PROTECTED | Repaired sleep witness permits legitimate inactive blocks with quiet0 or threshold while requiring aged/sleep/reentry evidence; original verifier overconstrained valid state. **Ticket:** Preserve repair protocol and negative original; do not relabel original campaign refusal as a physics failure. | | [#238](https://github.com/techrote/cybersand/pull/238) — MAT-003: archived readback, neutral tails and capture-state evidence | D3-substantive-source+tests; PROTECTED | 152-case/96-comparison v4 author readback plus optional-tail/capture/Wasm specimens and source reconciliation exist; independent corrected Windows semantic acceptance still separate. **Ticket:** Preserve complete stack/timing authority history; later consolidate after mapping each subcampaign. |"
+        },
+        {
+          "rank": 3,
+          "score": 15.551743,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 5. Evidence recovery and remaining loss",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 5. Evidence recovery and remaining loss\nThree original hosted archives were reacquired before expiry and checked as bytes. [The custody manifest](evidence/manifest.json) records exact hashes, IDs, sizes, recovery references and limitations; it also describes the portable source-response bundle. Investigators did not merely copy an old claim that someone else had verified a hash. | Original | M1 verification | What it does not establish | |---|---|---| | **MAT-003 S2A**, run 39876455400, artifact 12468697797; 517,177 bytes; expires 22 November | ZIP integrity; 448 stdout/stderr seals; 224 process records, 112 pairs, 16 contrasts; 57,344 tick and equally many input samples; representative pair-ratio arithmetic reproduced | Not a new candidate run; not the broader historical four-campaign 1,022-process review; not Windows requalification | | **#533 actual Workbench stress**, run 42387965594, artifact 13579714630; 29,101 bytes | Four raw log hashes, matching observation records, process CPU and paired gains re-reduced | Headless, pre-#522 baseline; no graphical target-GPU claim; raw per-timing arrays were not retained; native parity failure independently recorded, not rerun here | | **#187 retrieval evidence**, run 39472204492, artifact 12288075182; 790,623 bytes; expires 19 November | Original ZIP/hash/CRC; frozen/challenge results and retrieved contexts preserved | No fresh historical evaluator execution or answer-quality reattestation | Important remaining gaps are explicit: #366's 49.6 MB local-only bundle and #463's 971 MiB local-only raw capture were not recovered. Earlier #358 raw material and private #151 analysis originals are not presumed available merely because later dossiers cite hashes. The #154/#305 records mention a previously retained slop evidence ZIP; it was not reacquired in this M1 session. #580's published Stage B artifact has a recovery route, but its full original model results were not independently reduced here. The archive therefore provides **verified record transfer and selected original-evidence custody**, not an assertion that every historical byte has been rescued. A later retirement batch must check whether any unrecovered original could change the intended successor or disposition. Where the loss is acceptable, record that judgement explicitly rather than inventing recovery."
+        },
+        {
+          "rank": 4,
+          "score": 13.779362,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Carrier and motion doctrine: current facts changed; architecture remains a choice",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Carrier and motion doctrine: current facts changed; architecture remains a choice\nAccepted [PrecisionStorage](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/include/cybersand/precision_storage.hpp) is **eight bytes with eight-byte alignment**, including a 16-bit material field; the [Material enum](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/include/cybersand/material.hpp) remains eight-bit. Several active documents still call a four-byte Cell “Current.” The original staged decision deferred G-final. Neither the old four-byte control nor the current eight-byte implementation settles the ideal long-term carrier. The packed-carrier performance penalty belongs to its access method/workload, not a universal compact-storage prohibition. See STATE-001–004. Likewise, a blanket “IN cannot have upward/negative vertical velocity” restriction is obsolete. Accepted [#406](https://github.com/techrote/cybersand/pull/406) adds an identified signed IN-B1 option, and current Workbench exposes it. Unsigned-v1 behavior remains valid in its own scope; the optional law does not magically satisfy every liquid or submerged-volume requirement. State #20 and SIM-F18 are explicitly cross-linked. Current implementation establishes availability, not permanent policy."
+        },
+        {
+          "rank": 5,
+          "score": 13.746064,
+          "path": "history/engineering/qa/review.md",
+          "title": "M1 independent challenge record",
+          "heading": "Independent challenge and correction record > Lead review and verification limits",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 independent challenge record\nPath: history/engineering/qa/review.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Independent challenge and correction record > Lead review and verification limits\nThe lead independently read governance source/discussions, selected implementation paths and original #533 performance records, reconciled the owner clarification, assembled exact individual scope and checked active-state deltas. The state investigator independently reduced the newly captured original MAT-003 S2A archive. The #187 original ZIP was captured and verified as bytes, without reattesting old answers. Exact receipts are in [evidence](../evidence/manifest.json). Structural validation checks unique coverage, referenced findings, required four fates, source links, doctrine tags, transfer destinations, authority envelopes and generated views. Retrieval tests challenge concrete boundary failures. Recorded command outcomes are in [validation.json](validation.json). None of these means all 274 records received an independent second full excavation, all original artifacts are available or old execution has been repeated. No sample was discarded merely to manufacture a no-further-value closure."
+        }
+      ]
+    },
+    {
+      "id": "H02",
+      "query": "Why was gas-cache #533 rejected despite a passing larger replay, and was its performance tested against current main?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "facts": [
+        "Small churn counterexample failed physical parity.",
+        "Original headless timing baseline predates #522; no demonstrated current-main incremental gain."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 29.621542,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Gas-cache #533: preserve the rejection and its counterexample",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Gas-cache #533: preserve the rejection and its counterexample\nThe [latest independent review](https://github.com/techrote/cybersand/pull/533#pullrequestreview-5814148617) at **`fa1b2e398acb1986158cb1652b49c935227416ca`** records **REJECT/PARK**. A small two-room alternating-ceiling-edit test fails exact physical parity in normal, ASan/UBSan and TSan runs. A larger scripted replay passing does not negate that counterexample. M1 inspected the candidate/test source and recorded review, but did not rerun the native tests or freshly retrieve their entire logs. The original actual-Workbench performance ZIP was separately recovered and reduced. It used headless Godot and native World/Rapier, with baseline **`81bbd5ff5cf366159e2b8a630609359c13560080`**, which predates #522. The two paired tick-p50 gains are approximately **+2.707% and −2.233%**, yielding a median **+0.237%**; process CPU is approximately **0.394% worse**. This demonstrates neither a repeatable useful improvement in that campaign nor an incremental benefit against current main. The useful transfer is the failing churn case, cache assumptions, paired negative performance evidence and review method. It is not a candidate revival. See SIM-F24 and the [readback receipt](evidence/pf533_original_readback.json)."
+        },
+        {
+          "rank": 2,
+          "score": 23.067709,
+          "path": "history/engineering/views/salvage.md",
+          "title": "Technical salvage and negative knowledge",
+          "heading": "Technical salvage and negative knowledge > SIM-F24 — negative",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Technical salvage and negative knowledge\nPath: history/engineering/views/salvage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Technical salvage and negative knowledge > SIM-F24 — negative\nLatest #533 is REJECT/PARK with native churn parity failure and no demonstrated incremental benefit against current main. **Rationale:** fa1b2e39 removes global fixed-point prerequisite and adds cost heuristics; its two-room exact-hash test fails in three build modes per source-locked review. Root independently verified original headless Godot performance artifact: +0.237267859% paired p50 and -0.394096542% process CPU, against pre-#522 baseline. **Scope / validity:** Performance is D4 original-log readback, not new execution; native failure is reviewed recorded execution plus D3 source inspection, not fresh log audit/reproduction. — latest_head_rejected; original_performance_independently_reduced **Transfer:** [families/simulation.md](../families/simulation.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/pull/533) · [source 2](https://github.com/techrote/cybersand/pull/522) · [source 3](https://github.com/techrote/cybersand/blob/fa1b2e398acb1986158cb1652b49c935227416ca/native/tests/test_pressure_gas_cache.inc) · [source 4](https://github.com/techrote/cybersand/blob/fa1b2e398acb1986158cb1652b49c935227416ca/native/src/world_pressure_gas_cache.inc) · [source 5](https://github.com/techrote/cybersand/pull/533#pullrequestreview-5814148617) · [source 6](https://github.com/techrote/cybersand/actions/runs/42387965590) · [source 7](https://github.com/techrote/cybersand/actions/runs/42387965594/artifacts/13579714630)"
+        },
+        {
+          "rank": 3,
+          "score": 22.441912,
+          "path": "history/engineering/families/simulation.md",
+          "title": "M1 simulation family evidence",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > SIM-11 — Pressure preparation, capacity and gas optimization",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 simulation family evidence\nPath: history/engineering/families/simulation.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: M1 capture lane: simulation, liquids and material authoring > SIM-11 — Pressure preparation, capacity and gas optimization\n**Members:** [#472](https://github.com/techrote/cybersand/pull/472), [#475](https://github.com/techrote/cybersand/pull/475), [#476](https://github.com/techrote/cybersand/pull/476), [#488](https://github.com/techrote/cybersand/pull/488), [#493](https://github.com/techrote/cybersand/pull/493), [#505](https://github.com/techrote/cybersand/pull/505), [#515](https://github.com/techrote/cybersand/pull/515), [#520](https://github.com/techrote/cybersand/pull/520), [#521](https://github.com/techrote/cybersand/pull/521), [#532](https://github.com/techrote/cybersand/pull/532), [#533](https://github.com/techrote/cybersand/pull/533). Important accepted links: [#491](https://github.com/techrote/cybersand/pull/491), [#522](https://github.com/techrote/cybersand/pull/522). Three separate lines should not be compressed into “PF optimization.” **Incremental head preparation:** #472's dirty-Y scheme regressed all 30 proxy comparisons; #476 reduced writes from about527k to134k but increased head cost2.502→3.798ms, with1.648ms preflight and no whole-tick gain. Their three-arm reference/candidate/forced-fallback comparators and exact versus normalized oracle distinction are valuable. Repeated dependency discovery can dominate saved writes. Neither rejected candidate becomes desirable simply because the counters are smaller. **Gas capacity:** #475 discovered undercounted compartments and compared capacity/memory/codec behavior. Owner-selected [#491](https://github.com/techrote/cybersand/pull/491) adopted C2048 without merging the research branch wholesale. Current [pressure_flow.hpp](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/include/cybersand/pressure_flow.hpp) retains **default C1024** and **explicit opt-in C2048**. C4096, atmosphere threshold and gas-region capacity are separate concepts. This is a successful evidence→clean-successor transfer. **Gas operator/cache work:** #493's1,080-trial finite-switch Windows matrix found PF gas a large cost in its half-size reacting scene. #505 source-matched real headless Godot did not reproduce #504's native-only gain: reduced-Windows tick −2.71% speedup; instrumented gas wall4.52% slower and process CPU within the gas window6.81% higher, with zero cache reuse. #515/#521's full2048×1024 eight-barrel Linux scenes instead found small positive gains. These results coexist; platform, workload, input and measurement differ. #522 subsequently integrated a bounded fast path after exact replay/source qualification, at merge `761dac3b657ca8970e817d18c2005fda9c416948`. **New M1 correction to the earlier M0 read:** [#533's latest full review](https://github.com/techrote/cybersand/pull/533#pullrequestreview-5814148617) covers head **`fa1b2e398acb1986158cb1652b49c935227416ca`**, not only the older zero-reuse source. The candidate removes a global-fixed-point prerequisite for component certificates and adds amortization/resident-size heuristics. Its [new two-room test](https://github.com/techrote/cybersand/blob/fa1b2e398acb1986158cb1652b49c935227416ca/native/tests/test_pressure_gas_cache.inc) alternates a ceiling edit, compares reference/cached/dormant physical hashes each tick under1/4 workers, and later invalidates a previously certified room. The review records **that physical-parity assertion failing in native-normal, ASan/UBSan and TSan** at [run42387965590](https://github.com/techrote/cybersand/actions/runs/42387965590). The separate large identical-input replay passes. That broader passing population does not excuse the smaller failing counterexample; this lane did not newly download the native job logs or reproduce the failure. Root independently reacquired original performance [artifact13579714630](https://github.com/techrote/cybersand/actions/runs/42387965594/artifacts/13579714630),29,101bytes, SHA256`c1626a070e6bebd79d56cd2004adb788d6010d2f9eb9cd0470dea7054d339174`, and checked four original logs/records against the reduction. Paired native p50 is **+0.237267859%**, with contradictory individual pairs; whole-process CPU is **−0.394096542%** (slower). Logs give66.04/65.04/65.76/64.28CPU seconds. Commands explicitly use `--headless`: this is real headless Godot Workbench evidence, not graphical performance. The baseline is pre-#522, so no post-#522 incremental benefit is demonstrated. **REJECT/PARK** is the correct recorded disposition, with exact failing test retained. #532 separately reduced relabel work48.57% but retained `HOLD_NEGATIVE_FULLSIZE`; green workflow status is no positive verdict. | #571 dimension | Assessment | |---|---| | Applicability | Pressure cost and capacity matter for large authored canvases; some capacity/fast-path goals already have accepted"
+        },
+        {
+          "rank": 4,
+          "score": 20.131474,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > SIM-11",
+          "part": 2,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > SIM-11\n+2.1686% paired native p50 for #504, with no full replay/state proof. It complements rather than erases reduced Windows regressions. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#520](https://github.com/techrote/cybersand/pull/520) — [EXPERIMENT] PF504 gas-stage process CPU attribution on real workbench stress-canvas | D2 | Process CPU windows distinguished concurrent total CPU from wall and owner-thread time; the original four runs succeeded while the first readback failed, then a readback-only run authenticated original logs. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#521](https://github.com/techrote/cybersand/pull/521) — [EXPERIMENT] PF504 final real 2048×1024 gas CPU, worker and physics qualification | D2 | Full-size source-matched result found +3.09% tick, +10.72% gas wall and +13.66% gas-window CPU gains, with quantity checkpoints and four workers, but async input hashes were not replay locked. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#532](https://github.com/techrote/cybersand/pull/532) — perf(pf): sparsify authoritative gas relabel work in active gameplay | D3; PROTECTED | Reducing gas relabel work by 48.57% did not yield a qualified full-size performance benefit; workflow success coexists with HOLD_NEGATIVE_FULLSIZE. Normal/sanitizer replay parity is a separate success. **Ticket:** Retain as dated negative/held experiment record; candidate for eventual archival closure after evidence transfer, not renewed implementation obligation. | | [#533](https://github.com/techrote/cybersand/pull/533) — perf(pf): certify stable gas compartments during global topology churn (#201) | D4-performance-only; D3-test-source; recorded-native-failure; PROTECTED | Latest fa1b2e39 review is REJECT/PARK: compiled normal/ASan/TSan two-room churn parity fails, despite separate large replay pass; +0.2373% median p50 has contradictory pairs and process CPU is slower against pre-#522 baseline. **Ticket:** Retain as dated negative/held experiment record; candidate for eventual archival closure after evidence transfer, not renewed implementation obligation. |"
+        },
+        {
+          "rank": 5,
+          "score": 18.419794,
+          "path": "history/engineering/qa/review.md",
+          "title": "M1 independent challenge record",
+          "heading": "Independent challenge and correction record > Simulation challenge — runtime investigator",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 independent challenge record\nPath: history/engineering/qa/review.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Independent challenge and correction record > Simulation challenge — runtime investigator\nSampled four-fate records: #11, #95, #376, #352, #519 and #533. Current source was checked for signed IN, generated hard/granular queries, external Lab Worlds and REM-002 tests. The #533 latest-head rejection, failing small counterexample versus passing large replay, pre-#522 baseline and D4 performance-only scope held. Explicit #519 defer remained intact. Corrections applied: #95/#214 describes accepted evidence/decision synthesis and narrowed experiment admission, not an adopted solver architecture; SIM-F24 describes no demonstrated incremental benefit against current main, without implying current-main measurement; new #571 conversation-transcription provenance was added to findings/rows using current owner intent. No additional material adoption or retirement error was found within the sampled scope."
+        }
+      ]
+    },
+    {
+      "id": "H03",
+      "query": "Was upward signed IN liquid motion forbidden permanently, or did IN-B1 change that?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "facts": [
+        "Signed IN-B1 is an accepted opt-in policy; unsigned v1 limits remain scoped."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 18.743277,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Carrier and motion doctrine: current facts changed; architecture remains a choice",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Carrier and motion doctrine: current facts changed; architecture remains a choice\nAccepted [PrecisionStorage](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/include/cybersand/precision_storage.hpp) is **eight bytes with eight-byte alignment**, including a 16-bit material field; the [Material enum](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/include/cybersand/material.hpp) remains eight-bit. Several active documents still call a four-byte Cell “Current.” The original staged decision deferred G-final. Neither the old four-byte control nor the current eight-byte implementation settles the ideal long-term carrier. The packed-carrier performance penalty belongs to its access method/workload, not a universal compact-storage prohibition. See STATE-001–004. Likewise, a blanket “IN cannot have upward/negative vertical velocity” restriction is obsolete. Accepted [#406](https://github.com/techrote/cybersand/pull/406) adds an identified signed IN-B1 option, and current Workbench exposes it. Unsigned-v1 behavior remains valid in its own scope; the optional law does not magically satisfy every liquid or submerged-volume requirement. State #20 and SIM-F18 are explicitly cross-linked. Current implementation establishes availability, not permanent policy."
+        },
+        {
+          "rank": 2,
+          "score": 12.812867,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > SIM-09",
+          "part": 2,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > SIM-09\naction authorized. | | [#260](https://github.com/techrote/cybersand/pull/260) — LCB-003: retain single actors during native-default solver changes | D3 | Single retained actor host reconciles family changes with borrower retirement and hard terrain; this is bounded default-actor integration, not NPC/multi-owner coverage. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#261](https://github.com/techrote/cybersand/pull/261) — docs: preserve controlled LCB session handover and desktop testing guide | D2 | Dated handover freezes the then-current liquid architecture and unexecuted gates. It is an authority snapshot, not current operating instructions. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#359](https://github.com/techrote/cybersand/issues/359) — LCB-REASSESS: Audit landed liquid solvers, application paths and comparison evidence | D2 | Source audit found native families and some observer work already accepted, avoiding duplicate implementation; old observations lack later IN-B1/gas updates. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#360](https://github.com/techrote/cybersand/issues/360) — LCB-FEEL: Playable four-family liquid comparison with actual multithreaded profiling | D2 | Four-family matched feel comparison has real controls and owner-review access, but 96 rows cover six scenarios, not the reserved body scenario. Human feel sheet remained untested in that evidence. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#362](https://github.com/techrote/cybersand/issues/362) — WATER-CONTACT: Compare Rapier-driven splashes and investigate real ballistic spray | D3 | Original WATER-CONTACT restricted to diagnosis of relocated Water and submerged overlap. Later #406 adds ballistic parcels and signed IN, invalidating blanket no-ballistics/no-upward claims. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#363](https://github.com/techrote/cybersand/issues/363) — LCB-DECIDE: Evidence-based solver gameplay profiles, retention and promotion gates | D2 | Decision matrix differentiates material roles and solver behaviors without automatically choosing a default; owner feel evidence was an intended input. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#370](https://github.com/techrote/cybersand/pull/370) — LCB-FEEL #360: four-family liquid comparison — admission preflight and playable route | D3 | Four-family apparatus and observation required revision when #358 introduced IDs132–137; its 132-slot census could alias new material to Empty. Synthetic observer repair is not combined live Binder qualification. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#376](https://github.com/techrote/cybersand/pull/376) — WATER-CONTACT #362 Phase A: four-family Rapier impact discrimination (evidence only) | D3 | Corrected review distinguishes collision relocation from solver"
+        },
+        {
+          "rank": 3,
+          "score": 12.21884,
+          "path": "history/engineering/families/simulation.md",
+          "title": "M1 simulation family evidence",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > SIM-09 — Liquid families, host consumers and changed doctrine",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 simulation family evidence\nPath: history/engineering/families/simulation.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: M1 capture lane: simulation, liquids and material authoring > SIM-09 — Liquid families, host consumers and changed doctrine\n**Members:** [#200](https://github.com/techrote/cybersand/issues/200), [#201](https://github.com/techrote/cybersand/issues/201), [#202](https://github.com/techrote/cybersand/issues/202), [#203](https://github.com/techrote/cybersand/issues/203), [#212](https://github.com/techrote/cybersand/issues/212), [#258](https://github.com/techrote/cybersand/pull/258), [#259](https://github.com/techrote/cybersand/pull/259), [#260](https://github.com/techrote/cybersand/pull/260), [#261](https://github.com/techrote/cybersand/pull/261), [#359](https://github.com/techrote/cybersand/issues/359), [#360](https://github.com/techrote/cybersand/issues/360), [#362](https://github.com/techrote/cybersand/issues/362), [#363](https://github.com/techrote/cybersand/issues/363), [#370](https://github.com/techrote/cybersand/pull/370), [#376](https://github.com/techrote/cybersand/pull/376). Native FreeMass/CellularYield/PressureFlow/Inertial families and several cache/host repairs are accepted. #359 explicitly prevented duplication of already-landed native/observer work. This does not make every host, science or owner-feel promise complete. #259's three-fixture 30-tick actor-free runner and #260's retained single-actor borrower are bounded slices. The inspected borrower owns no body/session/collider and retires only its copied state on close; that separation is reusable even though its old wrapper is absent from main. **A decisive obsolete prohibition:** #376 accurately characterized its earlier source as refusing `vy < 0`, with no ballistic Water. Accepted [#406](https://github.com/techrote/cybersand/pull/406) adds bounded ballistic parcels and opt-in signed IN-B1. Main [world_inertial.inc](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/src/world_inertial.inc) conditions negative-vertical refusal on the unsigned policy. [The Workbench panel](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/godot/scripts/workbench_water_spray_panel.gd) exposes **IN signed**, requiring Inertial Water and a rebuild; [native ballistic tests](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/tests/test_ballistic_water.cpp) cover identity separation, upward arc, ceiling, parity and CYPS continuation. The unsigned v1 restriction remains valid **for that policy**. Blanket “Water cannot fly” or “IN cannot have negative vy” is superseded. This does not erase #376's [submerged study](https://github.com/techrote/cybersand/pull/376#issuecomment-6631522898): 62–128 masked Water cells remained, lateral normals pointed into Water, and chains up to four moves covered at most1.6% of residual samples. Ballistic spray and displaced liquid volume are different problems. Nor should #370's narrow 132-slot observer be combined blindly with #358's IDs132–137. Synthetic observer correction is not live combined-material qualification. **Cross-lane link:** STATE-001 records the carrier and sidecar-doctrine history, including #20; SIM-F18 and accepted [#406](https://github.com/techrote/cybersand/pull/406) supply the concrete ballistic and signed-IN adoption lineage. These records should be linked in the combined capture rather than leaving the state packet's adoption question unresolved. | #571 dimension | Assessment | |---|---| | Applicability | Native family choice is real; current-scene usability, some observability and displaced volume remain partial. | | Recoverable value | Construction receipts, borrowed-owner lifecycle, strict prepared snapshots, matched scenes, submerged classifier and precision controls. | | Staleness | No-ballistic/no-negative-vy blanket claims, old native-pending status, old host mode ladder and fixed catalogue observer scope. | | Philosophy / architecture | Selectable authored behavior matches current intent; scientific fixtures are diagnostic/correctness tools rather than sole feel authority. | | Implementation salvageability | Accepted families and Workbench should receive missing affordances. Don't reintroduce a second obsolete owner or duplicate worker telemetry. | | Empirical evidence / performance | Limited 30-tick and six-scenario qualification stays limited; current native tests are source evidence, not newly rerun. | | Functional completeness / UX | Side-by-side/native options exist; historical human feel sheets and submerged volume were not fully satisfied. | |"
+        },
+        {
+          "rank": 4,
+          "score": 11.985451,
+          "path": "history/engineering/views/doctrine.md",
+          "title": "Historical doctrine and constraints",
+          "heading": "Historical doctrine and constraints > SIM-F18 — doctrine",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Historical doctrine and constraints\nPath: history/engineering/views/doctrine.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Historical doctrine and constraints > SIM-F18 — doctrine\nBlanket no-ballistic-Water/no-negative-IN-vy claims are superseded by accepted opt-in BW-001/IN-B1. **Rationale:** Main allows signed vertical motion under a separate policy identity and Workbench exposes IN signed on rebuild. Unsigned v1 still refuses negative vy; the restriction is policy-specific. **Scope / validity:** Accepted #406/current ac0d source; architecture prose still calling it branch-only is stale documentation for later reconciliation. — superseded **Validity qualification:** superseded_as_blanket_doctrine; still_valid_for_unsigned_v1 **Transfer:** [families/simulation.md](../families/simulation.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/issues/20) · [source 2](https://github.com/techrote/cybersand/issues/362) · [source 3](https://github.com/techrote/cybersand/pull/376) · [source 4](https://github.com/techrote/cybersand/pull/406) · [source 5](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/src/world_inertial.inc) · [source 6](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/tests/test_ballistic_water.cpp) · [source 7](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/godot/scripts/workbench_water_spray_panel.gd) · [source 8](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/docs/architecture/ballistic-water-v1.md)"
+        },
+        {
+          "rank": 5,
+          "score": 8.151129,
+          "path": "history/engineering/families/simulation.md",
+          "title": "M1 simulation family evidence",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > Evidence and coverage",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 simulation family evidence\nPath: history/engineering/families/simulation.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: M1 capture lane: simulation, liquids and material authoring > Evidence and coverage\nThe individual ledger, [coverage.json](../coverage.json), contains every assigned item exactly once. Each has separate **ticket, idea, code and evidence fates**, related records, source URLs, findings, confidence and limitations. The family map is a navigation aid; a family verdict does not silently classify every member. Full bodies for all 582 baseline records and open-PR metadata were available in the root snapshot. This lane collected the assigned records' **235 comments**, **13 PR reviews**, and all pages of **6,808 changed-file entries across 76 PRs**. The largest diffs are evidence-heavy cumulative stacks, not 6,808 independent engineering changes. Bodies, discussion corrections, review conclusions and path inventories were examined, with source/test inspection for consequential adoption, salvage and negative-result claims. The M0 Soliding, Water and Materials pilots were reused with their limitations. Accepted source was read directly from the root-owned clone; historical patches and selected complete files were read through the repository connector. Representative new source inspections include the contact solver, `authored_entry_normal`, signed inertial motion, Workbench liquid equipment, metered-drain/retained-actor ownership, phase accounting, material effect validation, MoltenGlass scheduling, #455's composed guards and #533's failing test/candidate algorithm. **Depth is intentionally uneven.** D2 means substantive body/discussion/review/evidence and dependency analysis without complete implementation-path audit. D3 adds selected code/test/current-source or an explicit retained M0 pilot trace. Neither means fresh execution. The root additionally reacquired and independently reduced #533's original performance artifact; that supplies D4 for **that performance result only**, not a newly executed physics test. No benchmarks, builds, test campaigns, CI dispatches, gameplay sessions or changes to accepted source were performed in this lane. Recorded test results are attributed to their original source. A green workflow is not a positive physical/performance verdict. A cross-build is not platform execution; real headless Godot is not graphical performance. Missing local raw archives remain missing, even when a dossier has a hash. We have not established why every abandoned effort stopped. Only explicit holds, recorded technical outcomes and dated owner decisions support such conclusions."
+        }
+      ]
+    },
+    {
+      "id": "H04",
+      "query": "What historical reset and respawn assumptions changed in Flatten #548 and active #572?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/state.md"
+      ],
+      "facts": [
+        "Revised scope preserves live World and material occupancy baseline.",
+        "Current ordinary Save/Undo intent is separate and outside the historical corpus."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/state.md"
+      ],
+      "canonical_rank": 2,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.547331,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > state-flatten",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > state-flatten\n| Item | Depth / protection | Assessment and ticket disposition | |---|---|---| | [#548](https://github.com/techrote/cybersand/issues/548) — GEN-008-FLAT-001: Flatten current materials into a 2-byte/cell authored baseline | D3-body+supersession+current-source; PROTECTED | 11Nov explicit owner correction replaces World-reset/actor-respawn scope with same-live-World current material occupancy baseline,2B/cell,discard history and separate Save. Older comment6725828937 is superseded. **Ticket:** Protect approved feature and572 integration; preserve withdrawn scope as historical doctrine, not another open requirement. | | [#572](https://github.com/techrote/cybersand/pull/572) — GEN-008-FLAT-001: native Flatten / Bake History and standalone authored baselines | D3-substantive-source+tests; PROTECTED | Active native Flatten implementation at8055a4 uses detachedLE16 capture and authoring-only adoption; new container and atomic replacement,old readers preserved. Snapshot body still references qualification0b026 while tip includes runtime publication files. **Ticket:** Protect active implementation; capture precise source/evidence delta, no technical GO/merge inferred. |"
+        },
+        {
+          "rank": 2,
+          "score": 24.02248,
+          "path": "history/engineering/families/state.md",
+          "title": "M1 state family evidence",
+          "heading": "Milestone 1 state, persistence and generation research packet > 7. Save and Flatten",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 state family evidence\nPath: history/engineering/families/state.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 state, persistence and generation research packet > 7. Save and Flatten\n**Members:** #548, #572, related current owner clarification. Findings STATE-005, 020. [#548's dated 11 November correction](https://github.com/techrote/cybersand/issues/548) explicitly withdraws earlier World replacement, actor respawn, tick-zero reset, full physical continuation and complex rollback requirements. Its older [contract comment](https://github.com/techrote/cybersand/issues/548#issuecomment-6725828937) still names those behaviours; it is superseded evidence. The current owner wants the actual material layout after settling, erosion or reactions—not replayed original airborne oil/acid/water brushes. Explicit Flatten creates a **two-byte-per-cell** material baseline, retires old construction/history requirements and keeps the same live World. No general cell-carrier widening follows from LE16 storage. The active [#572](https://github.com/techrote/cybersand/pull/572) source at snapshot **`8055a4a46f58b7afcd245ee344db2beb34ffb69c`** implements [bounded native bulk copy](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/native/include/cybersand/material_baseline.hpp) from `World::stored_material` into detached LE16 bytes under the existing exclusive owner. Its checks are not a lock; the caller must already own the World. The [authoring adoption](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/godot/scripts/shared_workbench.gd) changes the baseline, recipe/history references and related pending author responses without reconstructing physical World state. [The versioned container](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/godot/scripts/workbench_material_baseline.gd) stores bounded metadata plus the exact plane. [Native replacement](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/godot/native_extension/material_baseline_file.cpp) uses same-directory POSIX rename / Windows replace, with no predelete or copy/delete fallback; it explicitly does not promise general power-loss durability. This work is protected active integration. The refreshed issue body describes source qualification at `0b026f6b…`, while snapshot tip is `8055a4…` and runtime/provenance paths are in the diff. Do not infer final-tip technical GO from older body counts or pending package language; the root performs final delta refresh. Preserve genuine earlier prepared-host baseline omission and failed-owner recovery errors, plus harness negatives: an ineffective Windows source-lock probe and console-launcher RSS measurements. Correcting a fixture or measuring the real engine is not evidence that an original product failure never happened. Latest conversational owner intent also says ordinary Save should preserve the desired layout without unexpectedly destroying in-session Undo, maps need not always flatten, and no sweeping backward-compatibility guarantee is desired. Record that separately from historical evidence and the explicit active Flatten contract. This packet neither silently rewrites #572 nor turns it into a broad new save framework. Numeric ID reuse/remapping and actors/multiple layers are limits beyond a two-byte material plane; they are technical scope to resolve when that capability is implemented, not reasons to re-open settled intent. | Dimension | Assessment | |---|---| | Applicability | Concrete current authoring/history pain; active implementation addresses the explicit revised Flatten operation. | | Recoverable value | Owner clarification, LE16 copy/validation, authoring-only adoption, old-reader compatibility, atomic saved-start replacement and fault tests. | | Staleness | Old 8-bit estimates, reset/respawn/rollback contract, earlier source qualification status and invalid launcher memory observations. | | Philosophy / architecture | Practical material layout preservation; running physical state remains untouched,"
+        },
+        {
+          "rank": 3,
+          "score": 23.450997,
+          "path": "history/engineering/sources/m0-report.md",
+          "title": "Frozen Milestone 0 report — 14 November 2026",
+          "heading": "CyberSand — Engineering Archaeology > 3. Nine representative excavations > Pilot I — Generated maps, PAINT, saves and the revised Flatten contract",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Frozen Milestone 0 report — 14 November 2026\nPath: history/engineering/sources/m0-report.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: CyberSand — Engineering Archaeology > 3. Nine representative excavations > Pilot I — Generated maps, PAINT, saves and the revised Flatten contract\n**Members.** [#541](https://github.com/techrote/cybersand/issues/541)/#542, [#543](https://github.com/techrote/cybersand/issues/543)/#544, #564/#565, [#548](https://github.com/techrote/cybersand/issues/548) and protected [#572](https://github.com/techrote/cybersand/pull/572). Generated maps are now playable in the ordinary host. #541's [later checkpoint](https://github.com/techrote/cybersand/issues/541#issuecomment-6752669975) records accepted main qualification and remaining convergence; its earlier draft prose is not a reliable present implementation description. PAINT provides brush/fill/copy/cancel and shared Undo through accepted successors. The [executor](https://github.com/techrote/cybersand/blob/@MAIN@/godot/scripts/workbench_paint_editor_executor.gd#L131-L234) uses epoch, generation, tick/revision and settings/pause fences, actual native readback and explicit partial/complete outcomes. Current limits remain real: 262,144 cells per operation and bounded history; setup uses 32,768 run/stamp limits with a 1 MiB file budget. Do not replace the obsolete small-rectangle cap with a new claim of unlimited authoring. The [combined integration test](https://github.com/techrote/cybersand/blob/@MAIN@/godot/tests/test_workbench_combined_authoring.gd#L181-L203) exercises a 147,456-cell Fill with actual stored material IDs; later sections cover fresh-process generator/edits/actors/policy/copy/Undo/reopen. Tests were inspected, not rerun. Generator-discovery history also records a packaging failure where the installed dropdown was empty; recovery testing matters beyond a working source checkout. Flatten remains unmerged. The revised 11 November #548 specification requires **the same live World**, a **material-only uint16 little-endian baseline**, discarded old authoring history and a new baseline for subsequent edits. It does not reset actors/ticks or autosave. A later fresh load performs ordinary initialization; it is not a physical continuation snapshot. Yet main's [shared authoring document](https://github.com/techrote/cybersand/blob/@MAIN@/docs/architecture/shared-workbench-authoring-data.md#L72-L109) still labels the earlier design Approved and describes prepared-World replacement, actor respawn and reset/rollback behaviour. This is a direct authority conflict with a traceable withdrawal, not an abstract stylistic inconsistency. #572 already owns the revised implementation/document correction; archaeology should flag and protect it. The two-byte material baseline means **0.5 MiB at 512², 2 MiB at 1024² and 8 MiB at 2048²**, before container overhead. Those arithmetic sizes follow the specified encoding; they do not follow the current enum width or eight-byte runtime carrier. Nor does material-only Flatten satisfy GEN-006 dynamic persistence. **Separate fates.** Transfer accepted generator/PAINT coverage before considering old-ticket retirement. Preserve authoring intent, transactional application, shared-history tests and packaging failures. Retire the withdrawn reset/replacement requirement as authority, while retaining it historically. Keep Flatten active and unmerged until its own qualification and acceptance. | #571 dimension | Pilot assessment | |---|---| | Applicability | Generated play and broad PAINT are adopted; remaining convergence and Flatten are not complete by implication. | | Recoverable value | Native-readback authoring controls, combined history tests, fresh-process round trips and installation-discovery regressions. | | Staleness | Draft status prose, old 4096-cell rectangle assumptions and the withdrawn World-reset contract. | | Philosophy / architecture | Authored initial state, native physical continuation and full host resume are different products and formats. | | Implementation salvageability | Accepted paths"
+        },
+        {
+          "rank": 4,
+          "score": 21.381995,
+          "path": "history/engineering/sources/m0-report.md",
+          "title": "Frozen Milestone 0 report — 14 November 2026",
+          "heading": "CyberSand — Engineering Archaeology > 3. Nine representative excavations > Pilot I — Generated maps, PAINT, saves and the revised Flatten contract",
+          "part": 2,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Frozen Milestone 0 report — 14 November 2026\nPath: history/engineering/sources/m0-report.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: CyberSand — Engineering Archaeology > 3. Nine representative excavations > Pilot I — Generated maps, PAINT, saves and the revised Flatten contract\nstay; old cap fixes/tests can transfer; active #572 owns the revised Flatten path. | | Empirical evidence / performance | Large-fill and fresh-process tests establish scoped qualification; no fresh M0 runtime or unrestricted-size claim. | | Functional completeness / UX | Installed generator discovery and cancellation/history behaviour matter beyond file presence. | | Correctness / risk | Partial edits, native truth, epoch fences, shared Undo, baseline reset, persistence and package discovery. | | Dependencies / overlaps | #542/#544/#564/#565 adoption, #548/#572 active work, generation, material identifiers and GEN-006 semantics. | | Intent / decision provenance | Revised #548 explicitly withdraws the earlier live-World replacement/reset design. | | Future potential | Coherent authoring/save experience remains valuable; streaming or physical resume needs separate scope. | | Cost / priority | High test/documentation value; low archival cost; avoid parallel changes on active Flatten. | **Confidence:** high for accepted source and the specification conflict; no claim that Draft #572 is accepted or fully qualified. <a id=\"s4\"></a>"
+        },
+        {
+          "rank": 5,
+          "score": 20.443991,
+          "path": "history/engineering/views/doctrine.md",
+          "title": "Historical doctrine and constraints",
+          "heading": "Historical doctrine and constraints > STATE-020 — doctrine",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Historical doctrine and constraints\nPath: history/engineering/views/doctrine.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Historical doctrine and constraints > STATE-020 — doctrine\nRevised #548 captures material occupancy into a two-byte baseline while preserving the live World; old reset/respawn/rollback requirements are withdrawn. **Rationale:** #572 performs stored-ID capture and authoring-only adoption with separate Save. Latest owner clarification preserves ordinary in-session Undo and does not require every map to flatten. **Scope / validity:** Finite material-only start; layers, actors, temperature and velocity are beyond the two-byte plane, and ID remapping is a separate compatibility limit. — superseded **Validity qualification:** superseded for old reset doctrine; activeimplementationprotected **Transfer:** [families/state.md](../families/state.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/issues/548) · [source 2](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/docs/architecture/shared-workbench-authoring-data.md) · [source 3](https://github.com/techrote/cybersand/issues/548#issuecomment-6725828937) · [source 4](https://github.com/techrote/cybersand/pull/572) · [source 5](https://github.com/techrote/cybersand/commit/8055a4a46f58b7afcd245ee344db2beb34ffb69c) · [source 6](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/native/include/cybersand/material_baseline.hpp) · [source 7](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/godot/scripts/workbench_material_baseline.gd) · [source 8](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/godot/scripts/shared_workbench.gd) · [source 9](https://github.com/techrote/cybersand/blob/8055a4a46f58b7afcd245ee344db2beb34ffb69c/godot/native_extension/material_baseline_file.cpp) · [source 10](https://github.com/techrote/cybersand/issues/571#issuecomment-6871615830)"
+        }
+      ]
+    },
+    {
+      "id": "H05",
+      "query": "Which abandoned actor playground, actor catalogue and per-flyer preferences are useful Workbench donors?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/runtime.md"
+      ],
+      "facts": [
+        "#262 maps, #409 actor/usables, #402 preferences have selective donor value.",
+        "Current flyer/barrel support is only partial satisfaction."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/runtime.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 19.838234,
+          "path": "history/engineering/views/salvage.md",
+          "title": "Technical salvage and negative knowledge",
+          "heading": "Technical salvage and negative knowledge > RT-F10 — salvage",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Technical salvage and negative knowledge\nPath: history/engineering/views/salvage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Technical salvage and negative knowledge > RT-F10 — salvage\n#402 per-flyer preferences and #409 full actor/usable composition remain recoverable unmerged product value. **Rationale:** Main lacks their preference/catalogue modules; source includes atomic rename/cache-on-success, capability routing and native field conservation tests. **Scope / validity:** Adapt to accepted Workbench/history/setup, do not merge stale host — Evidence-backed interpretation; not an implementation or closure authorization. **Transfer:** [families/runtime.md](../families/runtime.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/pull/402) · [source 2](https://github.com/techrote/cybersand/pull/409) · [source 3](https://github.com/techrote/cybersand/blob/80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff/godot/scripts/flyer_preferences.gd) · [source 4](https://github.com/techrote/cybersand/blob/6bdab8ef59e1d7b9771718ebe07dd799c1e06ed3/godot/scripts/workbench_actor_catalog.gd) · [source 5](https://github.com/techrote/cybersand/issues/571#issuecomment-6871615830)"
+        },
+        {
+          "rank": 2,
+          "score": 19.155773,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Adoption must be semantic and granular",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Adoption must be semantic and granular\nThe earlier #11 repair was **never integrated**, rather than integrated and later regressed. [#128](https://github.com/techrote/cybersand/pull/128) adapted the useful semantics later. Correcting that history changes the appropriate future investigation. [#387](https://github.com/techrote/cybersand/pull/387)'s previous-entry-face contact algorithm is present in accepted Workbench coupling, so a successor should not propose implementing it again. In contrast, [#455](https://github.com/techrote/cybersand/pull/455)'s whole copied-input preflight composition is absent from current contact response. Its guards and counterexamples are potential donors; synthetic malformed input does not prove a reachable production exploit. [#95/#214](https://github.com/techrote/cybersand/pull/214) accepted an evidence synthesis and narrowed pressure-experiment admission proposal. That documentation merge selected no solver implementation and did not turn LCB-000 into a pass. This distinction was corrected during independent review of the M1 draft. Runtime examples are equally mixed: selected #385 flyer-authoring files exactly match accepted source, while most of [#262](https://github.com/techrote/cybersand/pull/262)'s map playground and [#409](https://github.com/techrote/cybersand/pull/409)'s broader actor/usable catalogue remain absent. Current flyer/barrel support does not satisfy all of that original composition intent."
+        },
+        {
+          "rank": 3,
+          "score": 18.262752,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > RT-FLYER",
+          "part": 2,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > RT-FLYER\nPer-flyer action remapping, tuning and cosmetic/source preferences are real unmerged code absent from main. The preference writer flushes a temporary file, renames it, and updates cached profiles only after success; prepared-owner acknowledgement remains distinct from disk save. **Ticket:** Candidate for later thematic consolidation and traceable retirement only after the stated value and evidence have transferred; no action in M1. | | [#409](https://github.com/techrote/cybersand/pull/409) — Workbench: compose player rigs, native fields and physical usables | D3: substantive selective source inspection; discussion-and-selective-source | Real unmerged catalogue composes eight flyers, barrel, five mechanical players and two native material fields (16 logical entries), with 32 capability-gated usables, bounded instances/bodies and seed-once field material. Main lacks workbench_actor_catalog and this complete composition. **Ticket:** Candidate for later thematic consolidation and traceable retirement only after the stated value and evidence have transferred; no action in M1. |"
+        },
+        {
+          "rank": 4,
+          "score": 17.591948,
+          "path": "history/engineering/families/runtime.md",
+          "title": "M1 runtime family evidence",
+          "heading": "Milestone 1 — Runtime, presentation and creative composition lane > 2. Family assessments > RT-FLYER — Authored flight, Scooper and richer Workbench actors",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 runtime family evidence\nPath: history/engineering/families/runtime.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Runtime, presentation and creative composition lane > 2. Family assessments > RT-FLYER — Authored flight, Scooper and richer Workbench actors\n**Primary items:** #380, #381, #385, #389, #392, #402, #409. Findings RT-F07, RT-F09–F10. The earlier control and geometry chain partly survives in main. Exact blob comparison found `gcr_flyer_authoring.gd` and the reviewed fleet-controller donor in accepted source; #392's initial Workbench reached later adoption through #394. #402's preferences and #409's full actor/usable composition remain absent. #402's actual writer flushes then atomically renames before updating cached preferences. #409's catalog discriminates flyer/barrel/mechanical/native-field kinds and refuses fabricated rigid-body mass for fields. [#402 source](https://github.com/techrote/cybersand/blob/80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff/godot/scripts/flyer_preferences.gd), [#409](https://github.com/techrote/cybersand/pull/409), [#394](https://github.com/techrote/cybersand/pull/394). The scientific and product judgments must coexist. #389 records owner acceptance of the reviewed Scooper handling, including drips, while fast-strafe/diagonal retention remains 0/16. #385's historical capture campaign had custody limitations after test-census changes, even where copied physical inputs remained stable. “Final payload present” is not continuous carry. [#385](https://github.com/techrote/cybersand/pull/385), [#389](https://github.com/techrote/cybersand/pull/389). | #571 dimension | Assessment | |---|---| | Applicability | Very high: authored flyers, mechanical players, field actors and usables directly support dynamic creative canvases. | | Recoverable value | Fleet data/geometry, per-flyer dials, input remapping, atomic preferences, capability catalog and conservation tests. | | Staleness | Ancestor host/setup schemas, outdated “Scooper pending” prose and inherited test failures must be reconciled. | | Philosophy / architecture | Authored convincing behavior is compatible with accurate native ownership and honest negative measurements. | | Implementation salvageability | Existing fleet baseline is adopted; #402/#409 are selective donor sets with significant host/history integration work. | | Empirical / performance evidence | Owner feel and registered carry success are different. Preserve original source/capture and mask-rounding results. | | Functional completeness / UX | Workbench has flyers; it does not thereby contain every older preference or 16-actor/32-usable feature. | | Correctness / risk | Prepared adoption ACK, save atomicity, equipment state, source replenishment, bounded body counts and input focus. | | Dependencies / overlaps | Current Workbench setup/history, #262 authored scenes, actor/NPC controllers and #566 input mapping. | | Intent provenance | #389 owner acceptance is scoped; it does not approve #402 or every descendant. Current owner wants actors revisited soon. | | Future potential | Strong coherent opportunity: populate and control interesting dynamic authored canvases. No scoring/combat goal is implied. | | Cost / priority | High product fit; start with separable catalog/data/preferences and a representative scene, not wholesale stale host merge. | **Separate fates:** ancestor delivery tickets can retire after adoption mapping; useful unmerged features survive; accepted fleet code remains; negative carry/custody findings remain historical evidence."
+        },
+        {
+          "rank": 5,
+          "score": 17.367493,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 4. Salvage and thematic opportunities",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 4. Salvage and thematic opportunities\nThe typed register separates individual assets from product opportunities. These are **inputs to M2 discussion**, not new issues or implementation briefs. Existing active work must be reconciled before any successor is proposed. | Coherent opportunity | Valuable surviving material | Present boundary | |---|---|---| | **Workbench authoring continuity** | Evolved occupancy versus construction replay; explicit Flatten; ordinary Save/Undo distinction; live agent/transport receipts and cancellation failures | #572 is active. Do not duplicate it or silently change its contract. | | **Actors and authored experiences** | #262 maps and moving-prop mask tests; #409 actor/usable catalogue; #402 atomic per-flyer preferences; #148 contour traversal; #224 bounded joint-target/session protocol | Selective donors need current host/controller integration. No scoring/combat programme is implied. | | **Live material audition** | Accepted catalogue/Lab, source-derived capability queries, phase/quantity experiments, cooling/liveness failures, owner need for Workbench tweaks | Separate external comparison Worlds do not provide all desired live-scene authoring. Material application semantics remain a design question. | | **Layered Workbench presentation** | Strata's editable play/scripted/effects/background layers and independent clocks | Owner wants this available. Independent layer Worlds do not automatically violate native ownership; composition/interaction requires design. | | **Prepared destructible structures** | Detachment/publication/ACK invariants, ownership-bijection tests, shape/contact experience and intentionally lossy debris alternatives | The SOL integration stack is paused. Author-declared chunks/break rules are exploratory; no full structural solver prerequisite. | | **Large authored canvases and persistent areas** | Checkpoint decoding, durable edits, transaction/refusal tests, static residency, cross-OS chronology and state-domain distinctions | Fixed broad canvases and areas are desired; general dynamic-area lifecycle and approximate catch-up are not implemented by this capture. | | **Agent and painter composition** | Accepted permissive Art path, native authority boundaries, useful failed tests and real producer evidence across four current lanes | Protect active training/integration. Genuine generated output is not demonstrated control over requested topology, layout or style. | | **Selective robustness and performance work** | Copied-input guards, cache counterexamples, quantized-clock warnings, carrier benchmark apparatus, partial-texture negative cases | Choose a measured current need before reviving a campaign. No automatic rerun or blanket old gate. | More than one historical ticket can feed one opportunity, and one donor can support several without being copied into multiple records. No “replacement ticket for every old ticket” transformation has been performed. Some assets merit archival preservation alone until a concrete use appears."
+        }
+      ]
+    },
+    {
+      "id": "H06",
+      "query": "What does the final OFF-CPU DOMINATED finding in #456 fail to prove?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/runtime.md"
+      ],
+      "facts": [
+        "Quantized CPU occupancy without interval propagation limits the causal claim.",
+        "Historical result is not universal Rapier causality."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/runtime.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.273511,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Negative results and superseding corrections survive together",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Negative results and superseding corrections survive together\nBlocked-cell contact-event suppression helped one burial symptom but lost genuine grain-loading behavior in other cases. Keep both observations. Owner preference for Y1/load-aware feel is separately evidenced; it does not erase failed registered technical envelopes. Source-bound counterexamples remain useful under the current “convincing>consistent” product direction. [#456](https://github.com/techrote/cybersand/pull/456)'s final “OFF-CPU DOMINATED” classification followed an earlier inconclusive clock-resolution result. Its final reducer still uses raw quantized thread-CPU occupancy without interval propagation. Preserve the result as recorded and require a resolution-aware reduction before a stronger causal claim; it does not prove that Rapier is universally off-CPU dominated. Capture tooling alternatives #478 and #479 have **different** claim-ownership repair findings. Later #487/#506 reused adapters/rendering with fresh output directories, suggesting a smaller donor route than adoption of the entire recovery protocol. Recording tools #419/#424/#432 likewise contain valuable work and independent REPAIR findings. A real Windows writer using synthetic snapshots and zero reported drops does not establish complete transient-event observation. Finally, several earlier status statements are overtaken by later evidence: #459 has later Linux↔Windows interchange and malformed-decoder controls; #580's Stage B workflow and release completed despite pending prose. Those later observations improve the historical record without establishing general persistence completeness or useful model output. See the family reports for exact dates, SHAs and limits."
+        },
+        {
+          "rank": 2,
+          "score": 15.406143,
+          "path": "history/engineering/views/salvage.md",
+          "title": "Technical salvage and negative knowledge",
+          "heading": "Technical salvage and negative knowledge > RT-F18 — negative",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Technical salvage and negative knowledge\nPath: history/engineering/views/salvage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Technical salvage and negative knowledge > RT-F18 — negative\nFinal #456 off-CPU classifier records clock quantization but classifies raw occupancy without propagating interval uncertainty. **Rationale:** Inspected workflow source; earlier cohort explicitly inconclusive, later stress did not reproduce >40ms events. This is a caveat, not a new measured verdict. **Scope / validity:** Actual GetThreadTimes apparatus/cohorts — Source-verified methodological limitation; raw final data require independent interval-aware reduction before stronger conclusion. **Transfer:** [families/runtime.md](../families/runtime.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/pull/456) · [source 2](https://github.com/techrote/cybersand/blob/df3985e389e0a5f6ea18b1eefea231aefae21689/.github/workflows/inv154-space-step-threadtime-windows.yml) · [source 3](https://github.com/techrote/cybersand/pull/456#issuecomment-6699744124)"
+        },
+        {
+          "rank": 3,
+          "score": 11.20773,
+          "path": "history/engineering/families/runtime.md",
+          "title": "M1 runtime family evidence",
+          "heading": "Milestone 1 — Runtime, presentation and creative composition lane > 2. Family assessments > RT-DIAGNOSTICS — Actual workload, clock uncertainty and representative play",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 runtime family evidence\nPath: history/engineering/families/runtime.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Runtime, presentation and creative composition lane > 2. Family assessments > RT-DIAGNOSTICS — Actual workload, clock uncertainty and representative play\n**Primary items:** #417, #449, #456, #484, #540. Findings RT-F17–F19. #417's synthetic high observation count did not characterize the later actual Workbench path; its in-place mutation counterexample defeats an unconditional cache. #449 localizes elapsed time to nested bridge calls, not necessarily CPU work. Most significantly, the final #456 workflow records GetThreadTimes resolution but uses raw `cpu_usec/bridge_usec <= 0.40` to classify without propagating uncertainty. An earlier cohort explicitly retained an inconclusive resolution interval. This is a source-verified methodological caveat, not a fresh determination that every final event was misclassified. Later representative stress did not reproduce >40ms space-step events. [#417](https://github.com/techrote/cybersand/pull/417), [#449](https://github.com/techrote/cybersand/pull/449), [#456 source](https://github.com/techrote/cybersand/pull/456/files), [later stress](https://github.com/techrote/cybersand/pull/456#issuecomment-6699744124). Fresh read-only Actions metadata confirms [#484's source refresh](https://github.com/techrote/cybersand/actions/runs/42408597752) and [#540's same-host ABBA](https://github.com/techrote/cybersand/actions/runs/42419092615) completed successfully. The ledger records this rather than repeating their last pending comments. M1 has not re-reduced those raw timing artifacts. | #571 dimension | Assessment | |---|---| | Applicability | Representative play/correctness probes useful; synthetic legacy hot spots may be irrelevant to present Workbench. | | Recoverable value | Mutation falsifier, stage instrumentation, actual claimant count, same-host comparisons and Water/actor receipts. | | Staleness | Stale pending workflow prose and diagnosis from earlier light scenes must be reconciled with subsequent evidence. | | Philosophy / architecture | Measurements answer bounded engineering questions; they do not replace owner feel or mandate a physics rewrite. | | Implementation salvageability | Test/diagnostic donors only; no production behavior improvement inherent in these PRs. | | Empirical / performance evidence | Quantized thread CPU, actual engine PID, equal-wall versus equal-work, software renderer and cohort identity. | | Functional completeness / UX | Automated conserved Water/actors can pass while physical target-PC responsiveness remains unknown. | | Correctness / risk | False cache hits, wrong PID, censored/quantized samples and conflation of configured workers with real task claimants. | | Dependencies / overlaps | Current workload/coupling/publication, owner-authored scenarios, protected performance research. | | Intent provenance | No performance default change is authorized by test-only qualification; owner prefers scene-led tuning. | | Future potential | Keep a small set of representative diagnostics available for concrete future questions. | | Cost / priority | Preserve existing raw evidence; re-reduce only to resolve a relevant remaining hypothesis, not to refill old dashboards. | **Separate fates:** historical diagnostic tickets may retire after preservation; useful instrumentation/falsifiers survive; completed workflows are current metadata facts; their unexamined numerical results are not new M1 conclusions."
+        },
+        {
+          "rank": 4,
+          "score": 8.970643,
+          "path": "history/engineering/views/coverage.md",
+          "title": "Individual coverage and four-asset dispositions",
+          "heading": "Individual coverage and four-asset dispositions > SIM-11",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Individual coverage and four-asset dispositions\nPath: history/engineering/views/coverage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Individual coverage and four-asset dispositions > SIM-11\n| Item | Depth / protection | Assessment and ticket disposition | |---|---|---| | [#472](https://github.com/techrote/cybersand/pull/472) — [EXPERIMENTAL] PF cached run-head repair with bounded dirty-Y preflight | D3 | Dirty-Y preparation reduced some work counters but all 30 native proxy comparisons regressed, active cases about 2.31–2.47x. Later gap-termination source was not covered by earlier test evidence. **Ticket:** Retain as dated negative/held experiment record; candidate for eventual archival closure after evidence transfer, not renewed implementation obligation. | | [#475](https://github.com/techrote/cybersand/pull/475) — [Draft research] PressureFlow C1024/C2048/C4096 native gas-capacity qualification | D3 | Gas capacity research found the first census underestimated required compartments and compared C1024/2048/4096. Owner-selected #491 later adopted C2048 as opt-in, keeping default C1024 and refusing high-capacity old decoders. **Ticket:** Likely superseded or substantially transferred historical obligation, subject to transfer verification and later approved retirement; residual scope remains explicit. | | [#476](https://github.com/techrote/cybersand/pull/476) — [Draft / NO-GO] Bounded per-run PressureFlow head repair and differential qualification | D3 | Per-run head preparation cuts base writes roughly 527k to 134k, yet stress head cost rises 2.502 to 3.798 ms and whole tick 20.338 to 20.502 ms; complete repeated-traversal work bound remains unresolved. **Ticket:** Retain as dated negative/held experiment record; candidate for eventual archival closure after evidence transfer, not renewed implementation obligation. | | [#488](https://github.com/techrote/cybersand/pull/488) — test(perf): representative stress-canvas PF/ballistic/splash Windows qualification | D2 | Matched real Windows stress cases isolate PF gas cost and fail one spray-off case when a body leaves the finite canvas. The old 50–60 ms Rapier tail did not reproduce; that does not prove it never occurs. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#493](https://github.com/techrote/cybersand/pull/493) — test(perf): exhaustive matched 360-configuration Water stress factorial, three repeats | D2 | The finite-switch factorial executed 1,080 fresh trials; PF gas had +61.37% median native tick cost in 108 matched strata, while jet and other interactions were scene-dependent. Exhaustive means selected switches, not all parameters/hardware. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#505](https://github.com/techrote/cybersand/pull/505) — test(perf): source-matched PF gas acceptance screen on complete factorial foundation | D2 | Source-matched reduced Windows real-Godot tests contradicted native-only +14.1% claims: -2.71% tick speedup and later gas stage +4.52% wall/+6.81% CPU-window cost. No cache reuse occurred in those reacting scenes. **Ticket:** Historical obligation candidate for M2 thematic synthesis; no retirement eligibility established and no GitHub action authorized. | | [#515](https://github.com/techrote/cybersand/pull/515) — [EXPERIMENT] PF504 real 2048×1024 workbench stress-canvas source-matched B-C-C-B | D2 | Actual 2048x1024 eight-barrel B–C–C–B gave"
+        },
+        {
+          "rank": 5,
+          "score": 8.536663,
+          "path": "history/engineering/sources/m0-report.md",
+          "title": "Frozen Milestone 0 report — 14 November 2026",
+          "heading": "CyberSand — Engineering Archaeology > 7. Subsequent multi-pass programme > Depth and quality controls",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Frozen Milestone 0 report — 14 November 2026\nPath: history/engineering/sources/m0-report.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: CyberSand — Engineering Archaeology > 7. Subsequent multi-pass programme > Depth and quality controls\n- Every open item gets a ledger entry, discussion-level examination and a justified assessment depth. Implementations, subtle “already satisfied” claims and valuable experiments require relevant code/test/evidence tracing. - Closed records receive metadata coverage; deep review follows engineering relevance. “Indexed only” remains an honest status and is not called investigated. - A “satisfied” claim needs a requirement-to-successor comparison. Ancestry or filename presence is insufficient. - A “no useful value” disposition needs a reason and is sampled for independent review. This is where valuable quiet failures are easiest to lose. - High-risk doctrine changes, destructive-state implications and implementation salvage get an independent reviewer. Reproduction is targeted at disputed conclusions, not an automatic rerun of every historical benchmark. - Preserve negative findings with their mechanism exposure, threshold, source and limitations. Successful execution and engineering success are separate. - Record artifact capture and integrity, missing data, unavailable links and reproduction entry points. Do not demand huge binary evidence inside the code repository. - Use lightweight automated checks for uniqueness, broken internal refs, missing source identities, unsupported authority promotion and retirement without transfer. Avoid elaborate dashboards unless the simple records fail. Effort is dominated by threaded stacks and empirical evidence, not the number of titles. The pilot found material work in nine families but cannot justify a precise repository-wide hour estimate. After the first full M1 wave, use measured family throughput and evidence-access cost to forecast the remaining work. Do not impose a closure quota or uniform per-ticket paperwork."
+        }
+      ]
+    },
+    {
+      "id": "H07",
+      "query": "Why do source ledgers distinguish implemented, integrated, verified and owner-accepted?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/governance.md"
+      ],
+      "facts": [
+        "Never-integrated repair differs from regression.",
+        "Bounded test success does not mean programme or owner acceptance."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/governance.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 11.259556,
+          "path": "history/engineering/views/doctrine.md",
+          "title": "Historical doctrine and constraints",
+          "heading": "Historical doctrine and constraints > GOV-01 — doctrine",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Historical doctrine and constraints\nPath: history/engineering/views/doctrine.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Historical doctrine and constraints > GOV-01 — doctrine\nImplemented, integrated, verified and owner-accepted are distinct; partial remediation is not whole-programme certification. **Rationale:** Original missing #11 integration and bounded #49 repairs motivated separate evidence states. Later source repairs do not supply every parent/human criterion. **Scope / validity:** Claims and closure semantics — partially valid **Validity qualification:** partially-valid **Transfer:** [families/governance.md](../families/governance.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/issues/79#issuecomment-5822401729) · [source 2](https://github.com/techrote/cybersand/issues/79#issuecomment-5752726072) · [source 3](https://github.com/techrote/cybersand/issues/86#issuecomment-5779838449) · [source 4](https://github.com/techrote/cybersand/issues/86#issuecomment-5816839544) · [source 5](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/.github/pull_request_template.md) · [source 6](https://github.com/techrote/cybersand/issues/87) · [source 7](https://github.com/techrote/cybersand/issues/87#issuecomment-5752726679)"
+        },
+        {
+          "rank": 2,
+          "score": 10.890397,
+          "path": "history/engineering/families/governance.md",
+          "title": "M1 governance family evidence",
+          "heading": "Governance, prior investigation and authority reconciliation > GOV-REM — claims remediation (#79, #85, #86, #87)",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 governance family evidence\nPath: history/engineering/families/governance.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Governance, prior investigation and authority reconciliation > GOV-REM — claims remediation (#79, #85, #86, #87)\nThe programme arose because implemented, integrated, verified and owner-accepted were repeatedly conflated. Its motivating #11 repair was **never integrated originally**, then adapted through #128; this is different from a regression that removed an accepted implementation. #49 corrected the Water apparatus, but neither child closure completed broad Water behaviour nor certified the whole parent. The dated F01–F19 inventory remains a useful fault taxonomy, not an obligation to finish every September ceremony before pursuing current product work. There are still concrete defects in current claims: the source ledger and retrieval index describe a four-byte current cell while `PrecisionStorage` is eight bytes. Main's adapter getters return fixed zero for dormant/deferred/frozen/sparse-flight counters and fixed one for adaptive stride. Those values cannot acquire the meaning of independently measured work merely by appearing in a HUD. The current PR template asks for evidence and qualifications, but is not the complete per-capability closure/ownership schema requested by #86. #388 proposes some safeguards on an unmerged branch. | #571 dimension | Assessment | |---|---| | Applicability | Claim hygiene remains relevant. Individual historical repairs landed; the broad independent #87 certification is not demonstrated by those merges. | | Recoverable value | F01–F19 taxonomy; separate delivery/acceptance states; negative-premise tests; supported/unavailable counter distinction. | | Staleness | September source, child sequencing, Stage-3B prerequisites and parent status are dated. The four-byte claim is contradicted by later storage, not an architecture option selected here. | | Philosophy / architecture | Truthful evidence supports the clean break. Old programme completion rituals must not become a blanket freeze or universal physics policy. | | Implementation salvageability | Reuse small validation/receipt concepts and counter semantics; do not import an entire old process engine as a prerequisite. | | Empirical / performance | Cross-build, actual execution, software rendering and target-device performance remain separate. Fixed counters are source facts; no fresh runtime measurements occurred. | | Functional / UX | Formal certification does not establish owner enjoyment. Owner evaluation of representative scenes remains distinct. | | Correctness / risk | False completion, loaded-runtime mismatch, missing gate premises and unowned residual work are the main risks. | | Dependencies / overlaps | #80/#88, #81/#128 and #49/#104 are relevant accepted predecessors; #85 overlaps later separate docs reconciliation; #86 overlaps #388 and this capture's limited ledger design. | | Intent provenance | Original child authority and later completion comments are preserved. The owner's present archaeology approval replaces neither physical acceptance nor the reserved retirement gate. | | Future potential | A compact evidence/acceptance convention and targeted telemetry clarity could survive as"
+        },
+        {
+          "rank": 3,
+          "score": 9.604189,
+          "path": "history/engineering/views/salvage.md",
+          "title": "Technical salvage and negative knowledge",
+          "heading": "Technical salvage and negative knowledge > SIM-F29 — salvage",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Technical salvage and negative knowledge\nPath: history/engineering/views/salvage.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Technical salvage and negative knowledge > SIM-F29 — salvage\nAqueous phase quantity and cumulative quenching are not implemented merely because current quantity ledgers are exact. **Rationale:** #162 carries phase quantity in state_b and uses bounded coolant progress. Current tests still explicitly record full Steam source and same-Water reset source; accurate source/sink accounting differs from conservation. **Scope / validity:** Bounded gameplay approximation, not thermal/species conservation mandate; later IN/PF/Water sidecars need reconciliation. — current_semantic_difference_verified; candidate_needs_revalidation **Transfer:** [families/simulation.md](../families/simulation.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/issues/160) · [source 2](https://github.com/techrote/cybersand/pull/162) · [source 3](https://github.com/techrote/cybersand/issues/355) · [source 4](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/tests/test_quantity_ledger.cpp) · [source 5](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/src/world.cpp) · [source 6](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/tools/material_catalogue/reaction_effects.py)"
+        },
+        {
+          "rank": 4,
+          "score": 8.867276,
+          "path": "history/engineering/sources/m0-report.md",
+          "title": "Frozen Milestone 0 report — 14 November 2026",
+          "heading": "CyberSand — Engineering Archaeology > 4. Promising technical salvage",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Frozen Milestone 0 report — 14 November 2026\nPath: history/engineering/sources/m0-report.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: CyberSand — Engineering Archaeology > 4. Promising technical salvage\nThe unit of salvage should be the smallest independently understandable asset: a helper plus invariants, a test fixture plus oracle, an experiment plus its threshold, or a decision plus its rationale. Branch resurrection is usually a much larger and less justified operation. | Asset to preserve | Why it matters | Preferred treatment / limitation | |---|---|---| | MAT-003 raw campaigns, reducers and oracle corrections | Distinguish genuinely changed packed implementations and natural/prepared epoch cost | First capture priority because of 22 Nov expiry; retain original bytes and integrity result, not just a URL | | Conservative vacancy displacement and adversarial fixtures | Reusable preflight/fence reasoning for representation changes | Extract only after checking excluded pressure/inertial domains; retain physical NO-GO separately | | Soliding topology/contact corpus | Avoid repeating “increase radius” work when the route does not exist | Preserve search budget, masks, strict-route definition and negative threshold | | Water/PF three-arm comparators and cost ledgers | Separate semantic equivalence, fallback behaviour and expensive maintenance | Requalify against then-current solver/policy; keep #532 negative verdict attached | | GEN-006 ACK/incarnation/ABA and crash controls | Durable identity and late-result mistakes recur across architectures | Separate synthetic Store witnesses from real-native tests; preserve exact refusal scenarios | | GEN-006 journal and static residency prototypes | Demonstrate useful subproblems without pretending to solve dynamic streaming | Record bytes, allocation domain, executed worker exposure and unsupported state | | Rendering byte-equivalence/endpoints and E exposure tests | Distinguish correct extraction from bounded publication and consumer work | Preserve failed exposures and Windows admission failures, not only favourable pairs | | PLAY ownership, input-edge, recovery and shutdown tests | Accepted composition still needs these invariants during later refactors | Map which tests are already adopted; retain optional failure evidence without reinstating its gate | | Lab compiler/query harness and H1 snapshot | Support actual-native material experiments and a real compatibility witness | Keep isolated candidate authority separate from production install permission | | Shared PAINT/art receipts, partial Stop and Undo tests | Valuable product-facing correctness, already accepted in part | Verify semantic successor coverage instead of copying old files | | Old provider/alias/pricing and generator packaging failures | Explain why apparently “safer” product rituals or checkout-only testing failed | Preserve concise causal accounts and regression targets, not the old UX mandates |"
+        },
+        {
+          "rank": 5,
+          "score": 8.084847,
+          "path": "history/engineering/families/runtime.md",
+          "title": "M1 runtime family evidence",
+          "heading": "Milestone 1 — Runtime, presentation and creative composition lane > Contents",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 runtime family evidence\nPath: history/engineering/families/runtime.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Runtime, presentation and creative composition lane > Contents\n1. **Findings and scope** — distinguish implemented value, unmerged donors, corrected doctrine and protected current work. 2. **Family assessments** — apply all twelve #571 dimensions to fifteen substantive lineages. 3. **Technical salvage and negative evidence** — prioritize concrete content, code, algorithms and falsifiers. 4. **Doctrine and authority hazards** — record reversals and prevent old obligations becoming current instructions. 5. **Transfer and remaining work** — specify preservation needs, confidence limits and bounded follow-up questions. 6. **Evidence accounting** — item-level ledger, exact sources, active protections and inspection method."
+        }
+      ]
+    },
+    {
+      "id": "H08",
+      "query": "Which capture ownership experiments had separate repair findings and what smaller fresh-directory donors survived?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/state.md"
+      ],
+      "facts": [
+        "#478 and #479 have different ownership gaps; #487/#506 reuse bounded adapters."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/state.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 19.655459,
+          "path": "history/engineering/families/state.md",
+          "title": "M1 state family evidence",
+          "heading": "Milestone 1 state, persistence and generation research packet > 5. Capture and ownership experiments",
+          "part": 2,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 state family evidence\nPath: history/engineering/families/state.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 state, persistence and generation research packet > 5. Capture and ownership experiments\noutput replacement. | Dimension | Assessment | |---|---| | Applicability | Reliable actual-pixel review remains important; complicated shared-directory takeover may be unnecessary for fresh-output capture. | | Recoverable value | RG8 oracle, source-bound renderer, tiled halo export, malformed input/budget controls, real OS adversaries and readable viewer. | | Staleness | Initial “not run” bodies, old repair completeness claims, moving art hashes and obsolete liveness assumptions. | | Philosophy / architecture | Preserve useful output while reducing mechanisms to the actual user workflow; no requirement to finish every historical repair stack. | | Implementation salvageability | Adapter/render rig/checks are high-value donors; unsafe shared-claim code needs redesign if reused. | | Empirical evidence / performance | Authentic graphical campaigns and original failures exist; model/source arguments are labelled separately; no global GPU parity. | | Functional completeness / UX | #487/#506 provide practical viewing/capture; #478/#479 remain independently REPAIR; artistic/native acceptance is separate. | | Correctness / risk | Input/output aliasing, stale manifests, interrupted publication, live-owner takeover, process visibility and no-token handoff gap. | | Dependencies / overlaps | Art #454 remains independent; frozen pack source differs from moving art; #478/#479 are alternatives, #487 a simpler descendant by donation. | | Intent / decision provenance | Repeated owner requests for independent review do not authorize merge; safer alternative does not erase prior negative findings. | | Future potential | Workbench-facing compare/capture tools, readable immutable exports and targeted independent fault tests. | | Cost / priority | High salvage value, modest renderer integration, potentially disproportionate shared-output recovery burden. Prefer scope-led selection later. | **Four fates:** historical correction tickets need not remain obligations; their safety ideas and negative evidence survive; working renderer pieces are reusable; whole unsafe protocols are not promoted. No new OS process or graphical campaign ran in M1."
+        },
+        {
+          "rank": 2,
+          "score": 14.382984,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Negative results and superseding corrections survive together",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Negative results and superseding corrections survive together\nBlocked-cell contact-event suppression helped one burial symptom but lost genuine grain-loading behavior in other cases. Keep both observations. Owner preference for Y1/load-aware feel is separately evidenced; it does not erase failed registered technical envelopes. Source-bound counterexamples remain useful under the current “convincing>consistent” product direction. [#456](https://github.com/techrote/cybersand/pull/456)'s final “OFF-CPU DOMINATED” classification followed an earlier inconclusive clock-resolution result. Its final reducer still uses raw quantized thread-CPU occupancy without interval propagation. Preserve the result as recorded and require a resolution-aware reduction before a stronger causal claim; it does not prove that Rapier is universally off-CPU dominated. Capture tooling alternatives #478 and #479 have **different** claim-ownership repair findings. Later #487/#506 reused adapters/rendering with fresh output directories, suggesting a smaller donor route than adoption of the entire recovery protocol. Recording tools #419/#424/#432 likewise contain valuable work and independent REPAIR findings. A real Windows writer using synthetic snapshots and zero reported drops does not establish complete transient-event observation. Finally, several earlier status statements are overtaken by later evidence: #459 has later Linux↔Windows interchange and malformed-decoder controls; #580's Stage B workflow and release completed despite pending prose. Those later observations improve the historical record without establishing general persistence completeness or useful model output. See the family reports for exact dates, SHAs and limits."
+        },
+        {
+          "rank": 3,
+          "score": 10.994822,
+          "path": "history/engineering/sources/m0-report.md",
+          "title": "Frozen Milestone 0 report — 14 November 2026",
+          "heading": "CyberSand — Engineering Archaeology > 7. Subsequent multi-pass programme > Approval gates are separate actions",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Frozen Milestone 0 report — 14 November 2026\nPath: history/engineering/sources/m0-report.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: CyberSand — Engineering Archaeology > 7. Subsequent multi-pass programme > Approval gates are separate actions\nM0 authorises none of these later writes. Approval to capture history, approval of architectural intent, approval to create a canonical issue, approval to retire a batch and approval to implement an issue must remain separate records. | Stage / work package | Work and ordering | Reviewable exit product | Gate / limits | |---|---|---|---| | **M1-A: freeze and preserve** | Freeze the 271-open baseline; metadata-account for the 308 closed references; define deltas and protection; capture expiring artifacts first | Coverage skeleton, actual recoverability manifest, protected set, effective initial archive isolation | Owner approves capture locations, writes, evidence policy and research scope; no issues/closures/implementation | | **M1-B: full family archaeology** | Investigate all in-scope historical open records; follow closed predecessors/successors as needed; use pilot findings as starting evidence | Reviewed family notes, scoped findings, four fates and unresolved questions | Research assignments confer no policy or code ownership; new experiments need explicit scope if required | | **M1-C: cross-family reconciliation** | Compare authority, state, persistence, performance and product claims across queues | Contradiction map, deduplicated salvage, evidence gaps and contextual owner batches | Independent review of high-risk doctrine/extraction; preserve unresolved claims | | **M2-A: owner decisions** | Resolve product/architecture questions with evidence and consequences | Confirmed decision records, or explicit defer/uncertainty | Owner alone approves material intent; technical uncertainty can remain open | | **M2-B: canonical synthesis** | Draft a small number of coherent present opportunities with alternatives and validation needs | Concrete proposed issue texts and transfer mappings | Separate approval before GitHub creation; creation is not execution approval | | **M3: transfer verification and retirement** | Verify every significant claim/asset destination; refresh active protection and exact heads; present a closure batch | Item-level transfer receipts, exceptions and reviewable closure text | Owner approves the concrete batch; no automatic branch deletion or merging | | **M4: fresh issue refinement** | Revisit each issue against then-current main, active work and intent | Refined scope, alternatives, acceptance and execution plan | Individual implementation approval; fresh work, not silent revival of old tickets | | **Later Markdown/RAG programme** | Reconcile documents using captured history and decisions; audit actual retrieval routes and caches | Proposed corrections and authority/retrieval validation | Separate programme and write authority; does not delay initial archive containment |"
+        },
+        {
+          "rank": 4,
+          "score": 9.879599,
+          "path": "history/engineering/families/simulation.md",
+          "title": "M1 simulation family evidence",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > Contents",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 simulation family evidence\nPath: history/engineering/families/simulation.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: M1 capture lane: simulation, liquids and material authoring > Contents\n- **Evidence and coverage** — what was read, what was rechecked in source, and what was not executed. - **SIM-01: Granular origins** — the never-integrated first repair and the difference between bounded checks and owner feel acceptance. - **SIM-02: Discovery and reversible ownership** — reusable primitives without restoring the old Stage-3B prerequisite ladder. - **SIM-03: Native detachment** — physical NO-GO, numerical repair, facade safety and blocked restoration are separate outcomes. - **SIM-04: Ejection and contact** — topology, entry speed, Y1 and load-aware response contain complementary positives and negatives. - **SIM-05: Events and authored contact** — blocked attempts, real moving grains, previous-entry witnesses and observation costs. - **SIM-06: Allocation and safety** — alternative contact laws, stronger copied-input guards, and why lower energy does not prove better contact. - **SIM-07: Workbench cutting** — useful backend fixes and lossy prototypes remain protected by an explicit owner pause. - **SIM-08: Water experiments** — correct the apparatus without erasing the finite negative results or reinstating obsolete workflow doctrine. - **SIM-09: Liquid families** — native implementation, application access, signed IN and submerged displacement have different completion states. - **SIM-10: Equipment** — current Workbench tools are clean successors; a specialist metered contract remains distinct. - **SIM-11: Pressure and gas performance** — fewer operations can be slower; source, workload, replay and application evidence decide scope. - **SIM-12: Materials** — accepted Lab/capability work, absent phase/liveness changes and valuable finite-curing experiments. - **Synthesis and owner agenda** — coherent opportunities, tightly grouped decisions, evidence risks and transfer conditions."
+        },
+        {
+          "rank": 5,
+          "score": 9.671333,
+          "path": "history/engineering/README.md",
+          "title": "Engineering archaeology historical index",
+          "heading": "Engineering archaeology historical index > Retrieval boundary",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Engineering archaeology historical index\nPath: history/engineering/README.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Engineering archaeology historical index > Retrieval boundary\nDefault repository retrieval excludes `docs/history/` and `docs/audits/`, including aliases and tagged historical copies. It does not expand document links. Explicit historical search uses its own [manifest](retrieval-corpus.json), and every resulting chunk carries `historical-non-authoritative`, `explicit-history-only` and a warning that it is not a current instruction. Imported old status labels cannot override that envelope. For deliberate research from the repository root: ```bash python3 tools/docs/retrieval_eval.py --historical --queries docs/history/engineering/retrieval-questions.json --output /tmp/cybersand-history-retrieval.json ``` This command reads evidence; it does not implement findings or grant later-phase permission. External importers must preserve the authority envelope and rebuild older caches. A directory name and prose warning cannot control arbitrary third-party crawlers. Current documentation still contains known stale claims; their full reconciliation is a separate authorised programme."
+        }
+      ]
+    },
+    {
+      "id": "H09",
+      "query": "Is the SOL cutter stack #519 active again because prepared declared destruction sounds promising?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "facts": [
+        "Explicit pause remains; current owner exploration is no restart permission."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md",
+        "history/engineering/families/simulation.md"
+      ],
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 25.651271,
+          "path": "history/engineering/families/simulation.md",
+          "title": "M1 simulation family evidence",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > SIM-07 — Backend readiness and protected Workbench cutting",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 simulation family evidence\nPath: history/engineering/families/simulation.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: M1 capture lane: simulation, liquids and material authoring > SIM-07 — Backend readiness and protected Workbench cutting\n**Members:** [#460](https://github.com/techrote/cybersand/pull/460), [#461](https://github.com/techrote/cybersand/pull/461), [#463](https://github.com/techrote/cybersand/pull/463), [#466](https://github.com/techrote/cybersand/pull/466), [#510](https://github.com/techrote/cybersand/pull/510), [#519](https://github.com/techrote/cybersand/pull/519). This extends the paused #347→#393 lineage. #460's [session at `61924a9788f507620706dfa19d28dc12d819156b`](https://github.com/techrote/cybersand/blob/61924a9788f507620706dfa19d28dc12d819156b/godot/scripts/solid_detachment_session.gd) explicitly sets AUTO COM before mass/inertia, preserving pending backend recomputation for the first genuine impulse, and packs point velocities around actual backend COM. That is a meaningful backend repair distinct from later contact failures. #461's post-gravity order produced stronger impulses but worse burial. #463's registered diagnostic is **INCONCLUSIVE**, not a proved correction-gate cause; its later discussion retracts the overstrong explanation. The 971 MiB original raw capture was local-only and remains a custody gap here. #466 reached real normal-Workbench native→compound cutting within fixed member/span/body/proxy limits. #510 made tiny cuts intentionally Sand/Rust and improved carried appearance and changed-chunk terrain work. #519's provisional largest interior rectangle plus Sand fringe is substantially **lossy**: tree520 becomes208 rigid/312 Sand; building356 becomes152/204. The three-arm comparison used fresh authored post-cut starts, not an all-Sand native live-cut implementation or exact auxiliary-state replay. Discarding fringe removes material and work; its lower cost cannot be read as a physics optimization. The governing disposition is [the explicit owner pause at `6d768ce3169bc708c816f5c193957b44571adb1d`](https://github.com/techrote/cybersand/blob/6d768ce3169bc708c816f5c193957b44571adb1d/docs/reference/product-intent-and-priorities.md): defer SOL until the majority of major physics integrations reconcile with main. Current prepared/declared destruction interest supplies design direction, **not a silent unpause** or an invented quantitative definition of “majority.” | #571 dimension | Assessment | |---|---| | Applicability | Cutting/toppling is a strong desired affordance; exact old stack remains paused and not on main. | | Recoverable value | First-impulse readiness, actual COM, sample chronology, scalar/facade repairs, finite cutter, texture/terrain scheduling and latency data. | | Staleness | Contact ordering proposals and immediate continuation plans are superseded by negative/inconclusive results and owner pause. | | Philosophy / architecture | Prepared chunks and authored debris fit current intent, but source shape/material loss must be explicit and selectable if desired. | | Implementation salvageability | Small backend/render/terrain portions may be extracted; full cutter and ownership pause require new design/composition. | | Empirical evidence / performance | Distinguish live-cut handoff latency from fresh-start arm comparison and two-second tails from settled acceptance. | | Functional completeness / UX | Prototype cuts work within bounds; arbitrary buildings, mixed material cohesion, re-cut/reanchor/restore remain absent. | | Correctness / risk | Prepared native fences, collision acknowledgment, partial-failure quarantine, material identity, one owner and stale application. | | Dependencies / overlaps | Current integrated Workbench, actors/Rapier, native/source transitions and owner destruction design. | | Intent / decision provenance | Explicit owner pause controls the stack; no inferred cause of abandonment beyond documented choices. | | Future potential | Prepared authored chunks,"
+        },
+        {
+          "rank": 2,
+          "score": 21.153625,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 2. Repository state and protected work",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 2. Repository state and protected work\nThe M0 freeze at **00:29:51 UTC** contained 92 open issues and 179 open PRs, or 271 items. The M1 intake at **04:19:41 UTC** contained **93 open issues and 181 open PRs**, or 274 items. Of those PRs, **162 were Draft and 19 were non-Draft**. The closed reference universe comprises 77 closed issues, 178 merged PRs and 53 closed unmerged PRs. Accepted main was unchanged at intake. These are dated counts, not a promise that development stopped during investigation. The three intake additions are protected: [#580](https://github.com/techrote/cybersand/pull/580), the DRIV3R Stage A/B continuation; [#581](https://github.com/techrote/cybersand/issues/581), stochastic detailing painter design; and [#582](https://github.com/techrote/cybersand/pull/582), the architectural generator. Six existing heads moved between M0 and intake: #566 and #572–#576. Exact old/new SHAs are retained in [deltas.json](deltas.json), with a final live-state refresh before publication. Claims about earlier qualified heads remain pinned; they do not migrate automatically to a new head. At the 04:56:47 UTC refresh, totals and main were unchanged, #573–#576 had moved again, and #566 had independently changed from Draft to non-Draft (161 Draft / 20 non-Draft). This capture did not make those changes. The capture highlights **74 records for active or paused custody**. Protection includes the current integration, material authoring, Flatten, agent and painter work, plus explicit deferred stacks. All pre-existing branches and historical tickets are untouched whether or not the flag is set. In particular: - **#519 and its SOL lineage** remain explicitly owner-paused. New interest in prepared/declared destruction does not restart #347 → #393 → #460 → #461 → #466 → #510 → #519. - **#512/#523** retain the later paused streaming custody. An already-produced 3→2→3 residency result is evidence, not authorisation to proceed. - **#572 and #573–#576** are moving active sources. Earlier body summaries are not sufficient final-head qualification. - **#568–#570 and #577/#578/#580/#581** retain current painter coordination and source-specific results. Successful publication or CI is not useful model behavior. - **#517/#534** remain unmerged proposals. Broad owner agreement with #534 is now documented, but no line-by-line adoption or merge was implied. The [coverage view](views/coverage.md) groups all 274 assessed items into 38 lineages. Stacked-on relationships are recorded separately from semantic adoption, and cumulative diffs are not counted as independent implementations. The frozen M0 report remains intact with an additive M1 correction path."
+        },
+        {
+          "rank": 3,
+          "score": 17.449721,
+          "path": "history/engineering/views/doctrine.md",
+          "title": "Historical doctrine and constraints",
+          "heading": "Historical doctrine and constraints > SIM-F15 — doctrine",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Historical doctrine and constraints\nPath: history/engineering/views/doctrine.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Generated historical engineering view; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Historical doctrine and constraints > SIM-F15 — doctrine\nThe cutter stack remains explicitly paused; provisional rectangle/debris comparisons are not accepted destruction policy. **Rationale:** Owner #519 pause supersedes immediate continuation plans. Core+Sand loses shape/material/rigid mass; all-Sand/discarded-fringe arms were fresh authored starts, not new live-cut modes or exact-state replay. **Scope / validity:** #347→#393→#460/#461→#466→#510→#519 and related held work; no unpause from current conceptual clarification. — still valid **Validity qualification:** explicit_owner_pause_still_controlling **Transfer:** [families/simulation.md](../families/simulation.md); Source-linked claim and scope retained in this register and family narrative; cross-family challenge and original-artifact checks are itemised in qa/review.md.. **Sources:** [source 1](https://github.com/techrote/cybersand/pull/519) · [source 2](https://github.com/techrote/cybersand/pull/466) · [source 3](https://github.com/techrote/cybersand/pull/510) · [source 4](https://github.com/techrote/cybersand/pull/461) · [source 5](https://github.com/techrote/cybersand/pull/463) · [source 6](https://github.com/techrote/cybersand/blob/6d768ce3169bc708c816f5c193957b44571adb1d/docs/reference/product-intent-and-priorities.md) · [source 7](https://github.com/techrote/cybersand/blob/6d768ce3169bc708c816f5c193957b44571adb1d/docs/audits/2026-11-07-cut-outcomes-and-triage.md)"
+        },
+        {
+          "rank": 4,
+          "score": 16.389573,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 7. Owner agenda and remaining engineering work",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 7. Owner agenda and remaining engineering work\nYour clarifications already resolve the product-level questions that blocked clean reconciliation: Workbench as the central workshop; convincing results and selectable behavior; owner-led representative play; Save/Flatten separation; live materials; Strata; broad canvases/areas; game-time catch-up, occasional short transitions and optional simulate-ahead. They are recorded together. You do not need to answer those questions again to review this capture. M2 should bring a small number of concrete, contextual choices, grouped as follows: **Authoring, materials and composition.** Choose a representative first authored experience and the useful controls it needs, using the actor/map/Strata donors above. For a live material editor, the practical choice is whether a change applies to existing cells in the running scene, only newly painted material, or an audition copy with explicit application. That choice affects identity/version handling, Undo and reproduction. It is a product interaction decision to settle with a small concrete proposal; the internal API belongs to engineering. **World continuity and state fidelity.** Broad fixed canvases and persistent areas are agreed. A later area brief should state whether adjacent areas need physical cross-boundary exchange or behave as authored room transitions, and which evolving effects must remain convincing on return. Game time and a few seconds of catch-up are already chosen. Timestamp accounting, approximation tiers, directional active margins and storage representation should be evaluated technically; no owner algorithm questionnaire is needed now. **Destruction and feel.** Use an authored blast/cut/rolling-piece scene to compare a prepared-declaration approach with useful surviving SOL mechanics. Ask about visible controllability and desired results. Keep source/ownership safety and actual integration cost as engineering evidence. The current paused stack remains paused until a concrete brief is authorised; no obligation to restore old automatic-discovery prerequisites or whole-building analysis should leak in. Technical work, rather than owner preference, should resolve copied-input reachability, current cache correctness, dynamic-state persistence, cancellation/receipt ordering, quantized-clock inference and whether particular donor tests still bind to current semantics. Their existence is not a reason to start those tasks during M1."
+        },
+        {
+          "rank": 5,
+          "score": 14.711194,
+          "path": "history/engineering/families/simulation.md",
+          "title": "M1 simulation family evidence",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > SIM-02 — Discovery and reversible ownership primitives",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 simulation family evidence\nPath: history/engineering/families/simulation.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: M1 capture lane: simulation, liquids and material authoring > SIM-02 — Discovery and reversible ownership primitives\n**Members:** [#12](https://github.com/techrote/cybersand/issues/12), [#23](https://github.com/techrote/cybersand/pull/23), [#66](https://github.com/techrote/cybersand/issues/66), [#67](https://github.com/techrote/cybersand/issues/67), [#68](https://github.com/techrote/cybersand/issues/68), [#70](https://github.com/techrote/cybersand/issues/70), [#282](https://github.com/techrote/cybersand/pull/282). This family contains two purposes: avoiding unnecessary cellular work in settled regions, and making structures physically detachable/reversible. #23's authored near-rest rectangles and exact quarter-turn tuple restoration establish a narrow ownership experiment, with reported 32 Windows/Web cycles and about 85% p95 observer overhead in a small fixture. They do not establish automatic cohesion, arbitrary-angle restoration, energetic fracture or persistence. The discovery proposals have separable value: #66's local port-equivalence with exact fallback; #67's incremental ordered publication; #68's distinction between local closure, external unknown and globally closed evidence. Their careful distinction between **observation and transfer authority** survives even if automatic whole-world discovery is no longer the preferred product approach. [The later #12 clarification](https://github.com/techrote/cybersand/issues/12#issuecomment-5737519787) and #282 already reject making Stage 3B a universal prerequisite. The owner now explicitly favors exploring prepared/declared chunks and break rules. Accepted [soliding_lifecycle.hpp](https://github.com/techrote/cybersand/blob/ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742/native/include/cybersand/soliding_lifecycle.hpp) remains a model, not a complete World/Rapier integration. Current discovery defaults off. ADR-007's rationale concerns false Empty during unsafe repeated erase/simulate/restore; it does not logically prohibit a separately proven one-time atomic ownership bijection. | #571 dimension | Assessment | |---|---| | Applicability | Reversible structures are not fully delivered; automatic discovery is optional research, not a prerequisite for chunks. | | Recoverable value | Exact fallback, closure-evidence types, payload transfer/rollback, ordered reduction and model tests. | | Staleness | Old stage ladder, narrow shape limits and campaign counts are historical scope, not perpetual requirements. | | Philosophy / architecture | Prepared/declared destruction fits current intent; unsafe transient emptiness remains a real ownership concern. | | Implementation salvageability | Transfer/preflight tests can be reused independently; old demo/host and full automatic lifecycle need new integration design. | | Empirical evidence / performance | #23's overhead limits its optimization claim; proposed #66–70 mechanisms are not executed production improvements. | | Functional completeness / UX | Tests and lifecycle types do not supply a user-accessible destruction system. | | Correctness / risk | Exact residency, collision barriers, rotation admissibility, saved ownership and cancellation. | | Dependencies / overlaps | SIM-03 native detach, SIM-07 Workbench cutter, streaming scope and current actor owner. | | Intent / decision provenance | Explicit two-track historical clarification plus current owner prepared-chunk direction; no automatic restart approval. | | Future potential | Quiet-region acceleration can later stand alone; authored destructive structures have direct play value. | | Cost / priority | Preserve algorithms now; prioritize capability design over resurrecting a large discovery campaign. |"
+        }
+      ]
+    },
+    {
+      "id": "H10",
+      "query": "What is missing from recovered original evidence in this archaeology capture?",
+      "canonical": [
+        "history/engineering/REPORT.md",
+        "history/engineering/views/salvage.md",
+        "history/engineering/views/doctrine.md"
+      ],
+      "facts": [
+        "Missing local bundles stay missing; recovered bytes, historical assertions and current qualification differ."
+      ],
+      "sources": [
+        "history/engineering/REPORT.md"
+      ],
+      "canonical_rank": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 9.997786,
+          "path": "history/engineering/SCHEMA.md",
+          "title": "Engineering archaeology record schema",
+          "heading": "Record schema and maintenance > Individual coverage records",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Engineering archaeology record schema\nPath: history/engineering/SCHEMA.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Record schema and maintenance > Individual coverage records\nEach item is keyed by its GitHub number and includes source URL/type, intake state, body SHA-256, timestamps, PR head/base identities where available, primary family, related items, findings, depth, confidence, limitations and explicit protection. The source index and portable evidence bundle retain the full intake response. `base-branch-at-intake` means a source branch relationship; it is never automatically translated into semantic adoption or a mandatory dependency. Four separate text fields record proposed fates: - `ticket_fate`: whether the historical obligation may later be consolidated, retained, superseded or retired. - `idea_fate`: current relevance and potential, independent of the ticket. - `code_fate`: adopted successor, selective donor, partial/unqualified implementation, rebuild candidate or no code. - `evidence_fate`: preserved positive/negative observations, tests, methods and missing originals. All records have `retirement_state: not-authorised`. The `protected` flag highlights active or paused integration/custody. A false flag grants no permission to touch a record or branch. The M1 authorisation permits only the capture branch and Draft/HOLD PR. `assessment_state` describes the investigation, not GitHub state. `transfer.state: captured-for-review` means that findings and dispositions have reached inspectable records. It is **not** a certification that every original artifact was recovered, every line was independently checked or retirement is safe. Original custody is separately itemised. Closed records use `indexed-only`; selected cited claims can be studied without falsely promoting the whole item to a completed assessment."
+        },
+        {
+          "rank": 2,
+          "score": 7.955036,
+          "path": "history/engineering/SCHEMA.md",
+          "title": "Engineering archaeology record schema",
+          "heading": "Record schema and maintenance > Depth and evidence limits",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Engineering archaeology record schema\nPath: history/engineering/SCHEMA.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Record schema and maintenance > Depth and evidence limits\n| Depth | Meaning in this capture | |---|---| | D1 | Source metadata/body indexed; no individual whole-item assessment claimed. Used for the closed-reference universe. | | D2 | Substantive body, discussion/review, dependencies, corrected chronology and bounded diff/lineage assessment. No exhaustive implementation-path audit. | | D3 | D2 plus selective actual source/test/current-successor inspection or retained explicit M0 pilot trace sufficient for the stated claim. Not a security audit, full diff certification or execution. | | D4 | Original recorded observations independently re-read and reduced. Only #221 S2A and #533 performance have this new original-data readback; neither is fresh candidate execution. | Descriptive suffixes retain the precise work performed. Historical test results are attributed to the original producer/reviewer and exact source/workload/platform where known. Source existence, reported execution, qualification, integration and owner acceptance are different states. Missing original evidence stays missing. A workflow conclusion is not an experimental verdict."
+        },
+        {
+          "rank": 3,
+          "score": 7.682997,
+          "path": "history/engineering/README.md",
+          "title": "Engineering archaeology historical index",
+          "heading": "Engineering archaeology historical index > What was captured",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Engineering archaeology historical index\nPath: history/engineering/README.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Engineering archaeology historical index > What was captured\nAt **2026-11-14 04:19:41 UTC**, accepted main was `ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742`. The full individual assessment scope is **274 open records**: 271 frozen M0 items plus #580–#582. Another **308 closed or merged records** are indexed as a reference universe; they have not all been individually excavated. Important closed bridges are followed in the family analyses. See [deltas.json](deltas.json) for later source movement; this is a time-qualified capture. | Record | Purpose | |---|---| | [Report](REPORT.md) | Findings, corrections, limitations, opportunities and readiness | | [Individual coverage view](views/coverage.md) / [coverage.json](coverage.json) | Every item, justified depth, separate ticket/idea/code/evidence fates, transfer and protection | | [Salvage and negative knowledge](views/salvage.md) | Reusable algorithms, tests, methods, original results and failed approaches | | [Historical doctrine](views/doctrine.md) | Scope, rationale, changes and five explicit validity classes | | [Opportunity inputs](views/opportunities.md) | Thematic synthesis candidates; no successor issues created | | [findings.json](findings.json) | Maintained typed finding store; views above are generated | | [Schema and maintenance](SCHEMA.md) | Depth, provenance, transfer semantics and generation commands | | [Evidence custody](evidence/manifest.json) | Originals actually recovered, hashes, recovery locations and explicit gaps | | [Independent challenge](qa/review.md) / [validation receipt](qa/validation.json) | Checks performed, defects corrected and practical limits | | [Frozen M0 report](sources/m0-report.md) / [inventory](sources/m0-inventory.json) | Earlier evidence baseline, preserved with additive M1 corrections |"
+        },
+        {
+          "rank": 4,
+          "score": 6.534496,
+          "path": "history/engineering/families/runtime.md",
+          "title": "M1 runtime family evidence",
+          "heading": "Milestone 1 — Runtime, presentation and creative composition lane > 6. Evidence accounting",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: M1 runtime family evidence\nPath: history/engineering/families/runtime.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated engineering evidence; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Runtime, presentation and creative composition lane > 6. Evidence accounting\nDepth labels are item-specific: **D2** means body/discussion and bounded diff/lineage review; **D3** means actual selective source inspection. No item claims D4 original-byte/runtime reproduction. Protected items may remain D2 because protecting current ownership/status does not require redoing the owning programme’s qualification. The local private investigation cache contains full primary-item bodies from the refreshed 582-item repository snapshot, available comment pages for these items, all open-PR file patches and reviews, and overflow file pages for #531/#567. It additionally records fresh completed job metadata for runs42408597752,42419092615 and43546244572 and current release metadata. The cache is an investigation aid, not assumed durable delivery; the substantive findings, exact links, source identities and limits are in the three delivered lane records. Source inspection included current main call paths and PR patches/tests for traversal, joint targets, authored map geometry/native masks, flyer preferences/catalogues, accepted native copy, actual thread-time classifier, remote Stop locking, native effect admission, current Art/PAINT and separate depth scenes. A static tree/blob comparison was used as evidence of exact adoption or missing paths, then interpreted with successor history. **Path absence alone is not treated as proof that a conceptual feature is absent.** The protected head inventory is captured per item in JSON. Particularly material current heads are: | Work | Exact head at investigation | Protection | |---|---|---| | #566 camera | `214de85adef2aaabc8e26de8612a3bf27cc1a081` | Current integration/evaluation; performance/owner HOLD | | #578 upload | `3eccbdf11ecf054389e246db99eeefa332a506e7` | Research-only, no production promotion | | #567 frozen donor | `bac120981fdd9aecaab0dc8368c421fa390cc269` | Immutable historical bootstrap donor | | #569 shared painter | `2a565df45efc568eb96a2166e0b77f299e289625` | Common source ownership | | #573 SMOL | `88b422c89a201cc0f7e2efb9613299d879043caa` | Active independent lane | | #574 VOID | `4156afcc10f65c9ba6a797ca76432599b773ac91` | Active lane; latest reviewer caveat retained | | #575 LFM | `710a59479b9c26b764132af1a6b4b30e04890b56` | Active independent lane | | #576 Sprocket | `f77a49b62d911d19be69207ede33d0127f52983e` | Active independent lane | | #580 d1 | `2ea0f09c8fbbead7386f47232b0a61cff59bdfdc` | Stage B completed workflow, usefulness separately qualified | | #581 detailing | Issue only | Owner-review planning HOLD; no implementation permission | No source conclusions depend on the private cache surviving. Where raw artifacts were not recovered or a protected programme was reviewed only for boundaries/current status, that limitation is explicit in the corresponding item. Numerical historical assertions are not presented as M1 reruns. The capture remains an opt-in historical research source and must not enter ordinary coding-agent/RAG context as current instructions."
+        },
+        {
+          "rank": 5,
+          "score": 6.499091,
+          "path": "history/engineering/REPORT.md",
+          "title": "Milestone 1 investigation and knowledge capture report",
+          "heading": "Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Gas-cache #533: preserve the rejection and its counterexample",
+          "part": 1,
+          "authority": "historical-non-authoritative",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Milestone 1 investigation and knowledge capture report\nPath: history/engineering/REPORT.md\nauthority: historical-non-authoritative\nretrieval-mode: explicit-history-only\nstatus: Historical evidence; NOT current instructions or implementation approval\nsource-status: Historical (historical source label only)\nscope: Dated M1 capture; no current instructions or execution permission\nlast-reviewed: 2026-11-14\nSection: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Gas-cache #533: preserve the rejection and its counterexample\nThe [latest independent review](https://github.com/techrote/cybersand/pull/533#pullrequestreview-5814148617) at **`fa1b2e398acb1986158cb1652b49c935227416ca`** records **REJECT/PARK**. A small two-room alternating-ceiling-edit test fails exact physical parity in normal, ASan/UBSan and TSan runs. A larger scripted replay passing does not negate that counterexample. M1 inspected the candidate/test source and recorded review, but did not rerun the native tests or freshly retrieve their entire logs. The original actual-Workbench performance ZIP was separately recovered and reduced. It used headless Godot and native World/Rapier, with baseline **`81bbd5ff5cf366159e2b8a630609359c13560080`**, which predates #522. The two paired tick-p50 gains are approximately **+2.707% and −2.233%**, yielding a median **+0.237%**; process CPU is approximately **0.394% worse**. This demonstrates neither a repeatable useful improvement in that campaign nor an incremental benefit against current main. The useful transfer is the failing churn case, cache assumptions, paired negative performance evidence and review method. It is not a candidate revival. See SIM-F24 and the [readback receipt](evidence/pf533_original_readback.json)."
+        }
+      ]
+    }
+  ]
+}

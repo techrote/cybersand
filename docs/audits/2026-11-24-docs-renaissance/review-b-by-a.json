@@ -1,0 +1,933 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "reviewed_lane": "B",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "All29 B claim-ledger entries independently source reviewed. README and six new practical guides read end to end; consequential current sections of reconciled guides/contracts inspected. Late B23 evaluator and B24-B29 host/UI/showcase/generation claims reviewed against exact current bytes; no runtime campaign rerun.",
+  "claim_count": 43,
+  "runtime_execution_by_reviewer": "NOT RUN: this is independent source and retained-artifact review; no native rebuild or paid provider call",
+  "findings": [
+    {
+      "id": "A-B-01",
+      "priority": "P1",
+      "status": "resolved",
+      "finding": "Art practical guide omitted the separate existing-material overwrite restriction. Target palette could be mistaken for permission to overwrite any source material.",
+      "resolution": "B added explicit Empty0/HardWall58-only source behavior with body/protection and human-editor distinctions. A verified updated prose and _consume_art."
+    },
+    {
+      "id": "A-B-02",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "B-04 and B-19 evidence locators named absent source symbols/files.",
+      "resolution": "B corrected the ledger to _live_brush_input and material_lab_panel.gd::_candidate_response_error plus material_lab_service.gd. A verified those source locators and current ledger."
+    },
+    {
+      "id": "A-B-03",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "Xvfb log alone does not identify EPERM; it reports no listening sockets.",
+      "resolution": "B retained a separate AF_UNIX socket-construction probe: PermissionError, errno 1, Operation not permitted. A inspected socket-probe.json and Xvfb log; graphical capture remains BLOCKED, with no GUI PASS."
+    },
+    {
+      "id": "A-B-04",
+      "priority": "P2",
+      "status": "resolved",
+      "finding": "B26 initially cited granular fallback interaction_policy.gd as the INT-000 infrastructure owner.",
+      "resolution": "B replaced that locator with native interaction_rules.hpp, tools/interactions/batch.py and MicroScenario host identity/capture; A independently inspected those sources. Prose was already correct."
+    },
+    {
+      "id": "A-B-05",
+      "severity": "P2",
+      "status": "resolved",
+      "finding": "Player playground attributed built-in file precedence to workbench_setup.gd; the actual authority is shared_workbench.gd::load_setup.",
+      "resolution": "B linked the load_setup owner separately from Setup recipes/serialization limits; final exact text reread."
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "B-01",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Independently counted 93 builtin presets,86 native module names and91 registered module/version entries; MAX_STYLES=5. These are different counts.",
+      "source_locators": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets/MAX_STYLES",
+        "native/src/world_generation.cpp::ModuleRegistry::builtins/Generator::builtin_modules",
+        "godot/native_extension/cyber_world_generator.cpp::get_catalogue"
+      ],
+      "reviewed_document_sha256": {
+        "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+        "docs/operations/architectural-generator-playtest.md": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+        "docs/operations/gentek80-evaluation.md": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.116395+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-02",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Launcher accepts -Godot/-PrintIdentityOnly, enforces exact runtime pin and materialized DLL/provenance hash. It reports checkout identity and does not rebuild or establish all source-input qualification by itself.",
+      "source_locators": [
+        "tools/launch_desktop.ps1",
+        "launch-desktop.cmd",
+        "third_party/godot-runtime.lock.json"
+      ],
+      "reviewed_document_sha256": {
+        "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+        "docs/operations/getting-started.md": "058e577a398309e70c32dd9e26b4a97527d1105e1b8cf3cd89f172a3824936b6",
+        "docs/operations/explore001-desktop-playtest.md": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.116837+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-03",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Launcher explicitly warns session closes; Menu invokes scene replacement without automatic authored Save.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready",
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/main.gd input routing"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/getting-started.md": "058e577a398309e70c32dd9e26b4a97527d1105e1b8cf3cd89f172a3824936b6",
+        "docs/operations/workbench-first-session.md": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.118330+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      },
+      "final_first_session_delta": "Reread final Step 2: keep a fresh scene paused; only toggle Play / Pause [P] if already running. This corrects a possible double-toggle instruction without changing controls or save semantics."
+    },
+    {
+      "claim_id": "B-04",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-after-locator-fix",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Paused key_input maps R to Rectangle and B/E/L/O/S/G/V as stated; running _live_brush_input permits Brush/Eraser/right erase. Original claim locator _live_world_input does not exist.",
+      "source_locators": [
+        "godot/scripts/workbench_paint_editor_controller.gd::key_input/_live_brush_input"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-painting-and-history.md": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.120655+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-05",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Human picker reads simulation_worker.paint_materials. Art picker uses ArtPlan.Setup.MATERIALS and selected material plus Erase; target admission and existing-cell overwrite permission are distinct.",
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::setup",
+        "godot/scripts/art_batch_panel.gd::_ready",
+        "godot/scripts/simulation_worker.gd::_consume_art"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-painting-and-history.md": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.121079+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-06",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "MAX_CELLS262144,MAX_HISTORY32,HISTORY_CELLS1048576; history_available compares complete source fence including tick and refuses busy/active Art states. Native history stores materials, not all evolved physical state.",
+      "source_locators": [
+        "godot/scripts/workbench_paint_editor_controller.gd constants/history_available/_trim_history",
+        "godot/scripts/workbench_paint_editor_history.gd::prepare",
+        "godot/scripts/workbench_paint_editor_executor.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-painting-and-history.md": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+        "docs/systems/paint-editor-bounded-shapes.md": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.124022+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-07",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Worker queue reports admission. Executors consume confirmed native stored-material rows; cancellation can retain an applied prefix, and recovery/save fences remain explicit.",
+      "source_locators": [
+        "godot/scripts/simulation_worker.gd::art_queue/_consume_art/paint_queue",
+        "godot/scripts/art_batch_executor.gd::poll",
+        "godot/scripts/workbench_paint_editor_executor.gd",
+        "godot/scripts/workbench_paint_editor_controller.gd partial-receipt adoption"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+        "docs/operations/workbench-painting-and-history.md": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+        "docs/systems/workbench-direct-art-batches.md": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+        "docs/operations/wb-art-paint-integrated-candidate.md": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.128007+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-08",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "save_setup selects authored baseline/generated/Setup writer and performs no live physical capture. Runtime quantities,temperature,tick and Rapier continuation are not ordinary Save.",
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::save_setup",
+        "godot/scripts/workbench_setup.gd::write_named",
+        "godot/scripts/workbench_generated_map.gd::write_named"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-saving.md": "cb276e7738e40e17911da5946ae3665b8250357776b421f02dc8f1f2a0e7b0db",
+        "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+        "docs/operations/explore001-desktop-playtest.md": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+        "docs/operations/wb-art-paint-integrated-candidate.md": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.130410+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-09",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "request_flatten captures native stored IDs; _poll_flatten changes authoring references and history only, with no prepared World/actor/pause call; explicit Save remains separate. Plant energy is not reset live or serialized by material-only capture.",
+      "source_locators": [
+        "native/include/cybersand/material_baseline.hpp",
+        "godot/scripts/shared_workbench.gd::request_flatten/_poll_flatten",
+        "godot/scripts/workbench_material_baseline.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-saving.md": "cb276e7738e40e17911da5946ae3665b8250357776b421f02dc8f1f2a0e7b0db",
+        "docs/operations/gen008-flatten-qualification.md": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+        "docs/operations/wb-art-paint-integrated-candidate.md": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.130911+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-10",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "DIRECTORY=user://workbench,MAX_RUNS/MAX_STAMPS32768,BYTE_LIMIT1048576; material baseline plane and JSON limits are distinct. Same Godot application profile can expose old starts across evaluator extractions.",
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd constants",
+        "godot/scripts/workbench_material_baseline.gd::write_named",
+        "godot/project.godot"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-saving.md": "cb276e7738e40e17911da5946ae3665b8250357776b421f02dc8f1f2a0e7b0db"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.130959+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-11",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Generator confirmation calls _install only after proposal validation. Architectural form Save/Load persists controls; Workbench Save start persists installed authored state. B corrected current visible form labels during review.",
+      "source_locators": [
+        "godot/scripts/workbench_generator_dialog.gd::_ready/_install",
+        "godot/scripts/architectural_generator_dialog.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/architectural-generator-playtest.md": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+        "docs/operations/workbench-first-session.md": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+        "docs/operations/explore001-desktop-playtest.md": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+        "docs/operations/wb-art-paint-integrated-candidate.md": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131070+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      },
+      "final_first_session_delta": "Reread final Step 2: keep a fresh scene paused; only toggle Play / Pause [P] if already running. This corrects a possible double-toggle instruction without changing controls or save semantics."
+    },
+    {
+      "claim_id": "B-12",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Ordinary generator menu offers512/1024/2048, but Architectural form and start_architectural explicitly admit only512/1024. Blank Setup.fresh defaults2048square.",
+      "source_locators": [
+        "godot/scripts/workbench_generator_dialog.gd::start_architectural",
+        "godot/scripts/architectural_generator_dialog.gd::set_project",
+        "godot/scripts/workbench_setup.gd::fresh"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/architectural-generator-playtest.md": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131100+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-13",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "_ensure_history_loaded is no-op true; preferences delete old traffic_path; no construction-time resume attaches earlier traffic. New provider lazily opens one root log while in-memory history stays session-local.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded/mount_provider_controls/save_profile",
+        "godot/scripts/art_provider.gd::new_log_path/log_event"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+        "docs/systems/workbench-art-providers.md": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+        "docs/operations/wb-art-paint-integrated-candidate.md": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+        "docs/operations/gentek80-evaluation.md": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131713+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-14",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "close_requested connects hide. stop_all cancels provider,export/resume,capture/scheduled turns and executor; a current native slice can already have applied changes.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_ready/stop_all",
+        "godot/scripts/art_batch_executor.gd::stop/poll"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+        "docs/systems/workbench-art-providers.md": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131780+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-15",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "load_profile exactly contains stated LM Studio/OpenAI/NVIDIA endpoint and model defaults; editable fields do not prove remote availability. No provider request executed by this review.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::load_profile"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+        "docs/systems/workbench-art-providers.md": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131837+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-16",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "keys dictionary stays process-local and save_profile serializes no keys. Configured credential and bearer-pattern redaction is limited; request.max_redirects=0. Prompts/images/native receipts remain private traffic.",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::save_profile/_register_provider_keys_for_redaction",
+        "godot/scripts/art_provider.gd::redact/request setup"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+        "docs/systems/workbench-art-providers.md": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131893+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-17",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-after-guide-fix",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "_consume_art excludes existing stored IDs other than0/58, body-covered cells and region guards. Target palette choice cannot broaden this source policy. Art guide now states it explicitly.",
+      "source_locators": [
+        "godot/scripts/simulation_worker.gd::_consume_art",
+        "godot/scripts/workbench_paint_editor_executor.gd source_allowed/protection guards",
+        "docs/operations/workbench-art.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/workbench-direct-art-batches.md": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+        "docs/operations/workbench-art.md": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+        "docs/operations/wb-art-paint-integrated-candidate.md": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.131980+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-18",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Water Lab TAB metadata names five tabs. New Workbench merges native gameplay_water_options; explicit overrides/recovery retain separate behavior. Wave is FreeMass-carried execution, not fifth enum family.",
+      "source_locators": [
+        "godot/scripts/workbench_water_lab.gd",
+        "godot/scripts/main.gd::_ready",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water/gameplay_water_options"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-water-lab.md": "d68e5979fc3627d591a068eaecbcf6e8148b978664612678c5a51955c93ea9fa",
+        "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.139634+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-19",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-after-locator-fix",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Candidate panel/service demand runtime_active=false and describe isolated compiled Worlds; no current scene activation. Original claim path materials_lab.gd is absent; correct owner files are material_lab_panel.gd/material_lab_service.gd. Pending#768 status independently supplied by lead live intake.",
+      "source_locators": [
+        "godot/scripts/material_lab_panel.gd::_candidate_response_error",
+        "godot/scripts/material_lab_service.gd",
+        "godot/scripts/material_lab_world_panel.gd",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ],
+      "reviewed_document_sha256": {
+        "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+        "docs/operations/materials-lab-authoring.md": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.140104+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-20",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Current actor catalogue and prepared session expose independent producer and pilot handoff. takeover cancels authority but retains live actor/Rapier/equipment state; authored/equipment Apply may restart it. Later#762 still unmerged in live intake.",
+      "source_locators": [
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/physical_actor_session.gd::set_workbench_control/takeover",
+        "godot/scripts/shared_workbench.gd actor-control paths",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-actor-composition.md": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.140429+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-21",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Showcase move_tile launches a fresh scenario; frame_view only changes camera. Deepworks owns independent four-plane runtime and free-camera controls. Launcher has standalone depth_lab route; pending Workbench integration is not inferred.",
+      "source_locators": [
+        "godot/scripts/showcase_presentation.gd::launch/move_tile/frame_view",
+        "godot/scripts/exhibition/deepworks.gd",
+        "godot/scripts/feature_launcher.gd",
+        "docs/systems/depth-layers-and-parallax.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/showcase-guide.md": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+        "README.md": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800"
+      },
+      "final_caption_review": "Read final caption: three individually loaded district tiles below Neon. This matches replacement semantics; old connected-destinations ambiguity removed.",
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.140771+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-22",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified-retained-artifacts",
+      "method": "Independent accepted-source inspection; capture artifacts inspected for B-22, not rerun",
+      "observations": "Inspected native-render.json/log and capture script: three native material images from the ordinary compiler/native generator, using palette RGBA and headless display. Xvfb log records failed listening sockets; a separate retained socket(AF_UNIX, SOCK_STREAM) construction probe records PermissionError errno 1. No GUI or physical acceptance asserted and reviewer did not rerun capture. Final assets manifest reread: Neon now cites the original implementation commit14c9f3e and its baseline/source/runtime record; Blacksite explicitly retains unavailable full revision plus script-set/runtime hashes. Independently checked all12asset SHA256/byte identities against files; details in review-assets-by-a.json. This does not establish a new graphical capture.",
+      "source_locators": [
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.json",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/render_native.gd.txt",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log",
+        "docs/audits/2026-11-24-docs-renaissance/capture-b/socket-probe.json",
+        "docs/audits/2026-10-18-neon-reliquary-evidence.json::checkpoint.implementation_commit",
+        "docs/images/blacksite-nine/capture.json::identity",
+        "docs/audits/2026-11-24-docs-renaissance/review-assets-by-a.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/audits/2026-11-24-docs-renaissance/assets-b.json": "123f1a5aa7254adc75cb4b110e91ba96f544c08109ed12bb11c1d1d49b47f5ca"
+      },
+      "final_text_reread": {
+        "recorded_at": "2026-11-24T19:50:48.141841+00:00",
+        "scope": "Reread current relevant claim sections in every listed document against the previously independently inspected accepted-source contracts. Full new practical guides/README and rewritten PAINT/Art contracts read; retained historical qualification appendices and old scientific measurements are not reattested. Exact hashes cover the full files whose relevant sections were reviewed.",
+        "result": "No new semantic defect found; source-bound/current/history distinctions retained."
+      }
+    },
+    {
+      "claim_id": "B-23",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "source-verified",
+      "document": "docs/operations/gentek80-evaluation.md",
+      "document_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "method": "Independent source and saved live GitHub intake inspection; no new evaluator execution",
+      "observations": "#684/#691 accepted catalogue and 93 presets remain separate from open, unmerged #758 (draft=false despite its title). _ensure_history_loaded returns true without replay after #727. The rewritten guide retains the 80-row defaults table and historical source/package identity without claiming a new Windows pass.",
+      "source_locators": [
+        "godot/scripts/architectural_generator_project.gd::builtin_presets",
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/gentek80-evaluation.md": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db"
+      }
+    },
+    {
+      "claim_id": "B-24",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Counted130 literal PAINTABLE_MATERIAL_IDS entries independently; Web extends main.gd. Launcher exposes sandbox, Shared Workbench and separate Materials Lab routes. Catalogue size and host scope match the rewritten guide; source availability is distinct from graphical qualification.",
+      "source_locators": [
+        "godot/scripts/main.gd::PAINTABLE_MATERIAL_IDS",
+        "godot/scripts/web_demo_controller.gd",
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/material_lab_panel.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/MATERIAL_LAB.md": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073"
+      }
+    },
+    {
+      "claim_id": "B-25",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Main returns early through Shared Workbench handling. Ordinary F3 expands while Shift+F3 changes visibility; Web F3 changes visibility directly. J/minus/equal/comma/period/O brush handlers match. Constants are32chunks/750us ordinary and128chunks/4000us Workbench, with checks between chunks rather than total-frame guarantees.",
+      "source_locators": [
+        "godot/scripts/main.gd::_unhandled_key_input/HARD_SURFACE_CHUNKS_PER_FRAME/WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME",
+        "godot/scripts/web_demo_controller.gd::_unhandled_key_input",
+        "godot/scripts/feature_navigation.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/MATERIAL_LAB.md": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073"
+      }
+    },
+    {
+      "claim_id": "B-26",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "MicroScenario host/reference pack implement the Materials/Flood/Stress paths. Native interaction_rules.hpp names the current INT-000 schema/profile, and tools/interactions/batch.py drives schema-2 fixtures without reimplementing semantics. The old dependency graph is historical readiness, not missing infrastructure or broad physics acceptance.",
+      "source_locators": [
+        "godot/scripts/microscenario_host.gd::install/capture",
+        "godot/scripts/microscenario_reference_pack.gd",
+        "native/include/cybersand/interaction_rules.hpp",
+        "tools/interactions/batch.py",
+        "docs/operations/microscenarios-programme.md#live-infrastructure-checkpoint--2026-09-20"
+      ],
+      "reviewed_document_sha256": {
+        "docs/MATERIAL_LAB.md": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073"
+      }
+    },
+    {
+      "claim_id": "B-27",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Launcher labels/destinations and Main F11/Shift+F11 dispatch match. Workbench returns before those bindings. FeatureNavigation F2 replaces the desktop scene and clears selected metadata; no authored Workbench Save/history is supplied by standalone showcase routes. Retained screenshots remain original-scope evidence.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/blacksite_nine_presentation.gd",
+        "godot/scripts/showcase_presentation.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/blacksite-nine-demo.md": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+        "docs/operations/neon-reliquary-demo.md": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39"
+      }
+    },
+    {
+      "claim_id": "B-28",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Profile dialog labels match source. load_profile reads bounded text into the editor only; apply_json validates/accepts. save_profile serializes active_recipe, while undo_authoring/redo_authoring keep session Arrays. GEN007 qualification loader reads examples/worldgen/gen007-deepworks.json; it does not launch the independent exhibition. F2 closes the scene.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/scripts/worldgen_workbench.gd::_build_profile_dialog/load_profile/save_profile/_undo/_redo",
+        "godot/scripts/worldgen_workbench_tools.gd::load_qualification",
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/workbench_generator_dialog.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/generation-workbench-2.md": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606"
+      }
+    },
+    {
+      "claim_id": "B-29",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "reviewed-preserved",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Deepworks is a separate Control/scene with free-camera input, no Main F5 actor path. reset_exhibition rebuilds the four isolated native Worlds and configures30/20/15/0Hz, pauses and preserves camera selection. DepthLayerRuntime owns separate Worlds/copy publication; no cross-plane material transfers are introduced. Guide bytes equal accepted baseline.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/feature_navigation.gd",
+        "godot/scripts/exhibition/deepworks.gd::reset_exhibition/_unhandled_key_input",
+        "godot/scripts/exhibition/deepworks_map.gd",
+        "godot/scripts/exhibition/deepworks_runtime.gd",
+        "godot/scripts/depth/depth_layer_runtime.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/deepworks-exhibition.md": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562"
+      }
+    },
+    {
+      "claim_id": "B-30",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "FeatureLauncher::launch keeps Player playground in player_playground.tscn while Play session and Development workbench use their distinct Main feature routes. PlayerCourse declares seven standalone presets and five mechanical presets; Main::apply_playable_session checks the mechanical list. _build_ui literal Reset  \u00b7  R and _input key R match the guide. Dated PLAY acceptance remains scoped, not freshly certified.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/player_playground.gd::_build_ui/_input",
+        "godot/scripts/player_playground_course.gd::PRESETS/MECHANICAL_PRESETS",
+        "godot/scripts/main.gd::apply_playable_session"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/player-control-playground.md": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce"
+      }
+    },
+    {
+      "claim_id": "B-31",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Inspected current Setup8actor/32768stamps/32768runs/1MiB values, ActorCatalog8parts and64body/proxy capacity, prepared Save fences, separate material baseline, and load_setup file-over-builtin precedence. Workbench source emits its nine powders with4\u00d724 burst/4\u00d71 stream bounded600ticks. Host input/toolbar routes PAINT, actor inspection/pilot, Water Lab and save correctly. Small source-owner attribution finding resolved by linking load_setup separately from Setup recipes.",
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd::fresh/native_rectangle_budget/water_evaluation/engine_benchmark/stress_canvas",
+        "godot/scripts/workbench_actor_catalog.gd::capacity_error",
+        "godot/scripts/rigid_body_coupling.gd::MAX_BODIES",
+        "godot/scripts/shared_workbench.gd::save_setup/load_setup",
+        "godot/scripts/workbench_powder_source.gd::BURST_SIZE/STREAM_SIZE/MAX_STREAM_TICKS",
+        "godot/scripts/main.gd::_unhandled_key_input"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/player-control-playground.md": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce"
+      }
+    },
+    {
+      "claim_id": "B-32",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Exact launcher sandbox route resolves to Main; Main _unhandled_key_input returns through the Workbench branch before legacy F9. Tower panel literals match floor/tube, Open plug/Open neighbours, sequence30/90, pause/step, observation and Fresh tower. tower_floor_select/tower_focus_tube pause; tower_command copies to exclusive worker queue and does not prove applied completion. Retained Water Feel route is distinct from current Workbench Water Lab.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/scripts/main.gd::_unhandled_key_input/tower_reset/tower_floor_select/tower_focus_tube/tower_command",
+        "godot/scripts/tower_panel.gd::setup",
+        "godot/scripts/simulation_worker.gd::queue_lab",
+        "godot/scripts/web_demo_controller.gd::tower_command"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/experiment-tower.md": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168"
+      }
+    },
+    {
+      "claim_id": "B-33",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and current exact text inspection; no new GUI or runtime execution",
+      "observations": "Read issue13.py: fixed sibling .local llvm-mingw clang++.exe, build/transport_sampling.exe, rebuild unless --skip-build, original one/four-worker1800tick controls and old portable-path caveat. Reviewed retained MS000 host/setup/capture and Tower FOCUS_NONE source; extraction is implemented while old evidence gates remain distinct. B records parser --help only; A did not execute it or any transport campaign.",
+      "source_locators": [
+        "tools/physics/issue13.py::main",
+        "godot/scripts/tower_panel.gd::button/setup",
+        "godot/scripts/microscenario_host.gd",
+        "godot/scripts/main.gd::_apply_microscenario_definition/_microscenario_installed",
+        "docs/audits/2026-09-19-issue-27-microscenarios.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/experiment-tower.md": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168"
+      }
+    },
+    {
+      "claim_id": "B-34",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and exact current claim-text inspection; no new runtime/capture/scientific campaign",
+      "observations": "Verified FeatureLauncher named/depth_lab/direct argument routes; Main Workbench branch returns before F4; depth_lab Escape changes to main.tscn whereas global feature_navigation F2 closes/returns to launcher. Runtime owns four independent material planes; no shared Workbench Save, Flatten or history UI is added. Existing Strata is kept distinct from candidate integration.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/depth/depth_lab.gd::_unhandled_key_input/reset_lab",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/depth/depth_layer_runtime.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/depth-layers-and-parallax.md": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d"
+      }
+    },
+    {
+      "claim_id": "B-35",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "reviewed-preserved",
+      "method": "Independent accepted-source and exact current claim-text inspection; no new runtime/capture/scientific campaign",
+      "observations": "Reviewed preserved guide and source-specific host/control/capture scope: example load/reset stages candidate owners and starts paused; scene routes Space/P,N,R,O,Tab,E,V,1\u20134,Escape; camera/plane display do not mutate native policy. Both recipes declare30/20/15/0rates, one play-only skimmer declaration expanded over the four canonical regions. Runtime uses ActorPrototypeSession and validates play actor identity. Capture script requires22actualPNGs and2records, with240native ticks; retained capture manifest has exactly22images. No new campaign or whole scientific requalification.",
+      "source_locators": [
+        "godot/scripts/depth/semantic_depth_demo.gd::load_example/reset_example/_unhandled_key_input",
+        "godot/scripts/depth/semantic_plane_runtime.gd::_prepare_candidate_owners/_validate_actors",
+        "examples/worldgen/semantic-refinery.json::semantic_planes",
+        "examples/worldgen/semantic-flooded-cavern.json::semantic_planes",
+        "godot/tools/capture_semantic_depth.gd",
+        "docs/images/semantic-depth/capture-manifest.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/semantic-depth-authoring.md": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6"
+      },
+      "baseline_bytes_equal": true
+    },
+    {
+      "claim_id": "B-36",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and exact current claim-text inspection; no new runtime/capture/scientific campaign",
+      "observations": "Verified four stable Flight.IDS and literal candidate_4ly002 calibration field; four selection routes remain accepted source with Workbench separate from ordinary F5 and standalone Flight Lab. Workbench Family label is4LY assisted flight. Capture fixture exists, checks actual native/Rapier frame output and is documented as procedure rather than fresh successful result. Existing dated calibration and owner/learning limits preserved.",
+      "source_locators": [
+        "godot/scripts/physical_flight_profile.gd::IDS/entry",
+        "godot/scripts/workbench_actor_catalog.gd::ids/FAMILY_NAMES",
+        "godot/scripts/workbench_actor_panel.gd::mount",
+        "godot/scripts/actor_prototype_panel.gd",
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/tests/test_physical_flight_gameplay_render.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/physical-free-flight.md": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe"
+      }
+    },
+    {
+      "claim_id": "B-37",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and exact current claim-text inspection; no new runtime/capture/scientific campaign",
+      "observations": "Verified launcher separates sampled arena, physical arena and physical usable course. Physical scene loops Catalog.RIG_IDS(46), despite retained literal41header; course labels are Manoeuvre lab/Usable integration course and controls Feed processor/Jam output/Clear output. Source primary combines M or pointer-left, alternate pointer-right, N/Urelease/attach; Workbench remains separate. Existing sampled combat/oracle and physicalv2contracts are not conflated.",
+      "source_locators": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/examples/thunderbowl/physical_thunderbowl_scene.gd::_build_ui/_physics_process",
+        "godot/examples/thunderbowl/thunderbowl_scene.gd",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/scripts/physical_actor_arena.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/thunderbowl-control-reference.md": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836"
+      }
+    },
+    {
+      "claim_id": "B-38",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and exact current consequential-section inspection; no runtime or scientific campaign",
+      "observations": "Independently read current picker and main input paths. _select_set explicitly chooses rapier/<first rig>; _populate_models separately emits Sampled \u2014 Runner/Skimmer/Crawler and baseline labels. Shared Workbench returns before ordinary F5. The launcher\u2019s actors route opens the ordinary selector; sampled owner/session controls retain copied admission, epoch/sequence/observed-tick lease checks. No physical motor equivalence or new runtime qualification is inferred.",
+      "source_locators": [
+        "godot/scripts/actor_prototype_panel.gd::_select_set/_populate_models",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/actor_prototype_session.gd::configure/submit_action/submit_rig_action",
+        "godot/scripts/simulation_worker.gd::queue_actor_prototype_reset"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/actor-control-prototypes.md": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8"
+      }
+    },
+    {
+      "claim_id": "B-39",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent accepted-source and exact current consequential-section inspection; no runtime or scientific campaign",
+      "observations": "Inspected literal sampled catalogue: six sets, 29 IDs; physical catalogue: 29 counterparts + 12 SetX + 5 SetP = 46. main.actor_prototype_definitions adds only the remaining sampled rigs in the selected set (largest set seven total); actor session MAX_ACTORS is eight, default lease twelve ticks and hard lease eighteen. Explicit Sampled selection and separate Workbench path are source-correct. Review scope is host selection, counts and owner/command boundaries, not a new proof of every retained motor law.",
+      "source_locators": [
+        "godot/scripts/actor_rig_catalog.gd::SET_IDS/RIG_IDS",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/scripts/actor_prototype_panel.gd::_select_set/_populate_models",
+        "godot/scripts/main.gd::actor_prototype_definitions/_unhandled_key_input",
+        "godot/scripts/actor_prototype_session.gd::MAX_ACTORS/MAX_LEASE_TICKS/DEFAULT_LEASE_TICKS/submit_rig_action"
+      ],
+      "reviewed_document_sha256": {
+        "docs/systems/actor-rigs.md": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375"
+      }
+    },
+    {
+      "claim_id": "B-40",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent full current guide and exact diff read; bounded accepted-source, ancestry and saved receipt inspection. No new graphical, package, provider or physical execution.",
+      "observations": "Independently read the full contract and baseline diff. Both integration merge commits are ancestors of accepted source (git merge-base --is-ancestor exit0); counted15 pack.json files and120 feature entries. Adapter limits16384/16777216 and ordinary50M/explicit100M-streamed65536-axis limits match source. Retained original qualification is locally historical; no native gameplay admission or physical pass follows from merge.",
+      "source_locators": [
+        "git:d5b0371501eb7ccd32c261f738b4a2612218fbc1",
+        "git:8d07e04459a2705a6f96c908c0b565a483cc5beb",
+        "docs/audits/2026-11-24-docs-renaissance/github-final-programmes.json",
+        "docs/world-design/*/pack.json::features",
+        "godot/tools/world_design_pack_adapter.gd::MAX_SIDE/MAX_CELLS",
+        "godot/tools/world_art_full_export.gd::MAX_PIXELS/MAX_STREAM_PIXELS/MAX_STREAM_SIDE",
+        "tools/world_art_capture_support.py::classify_art_dimensions"
+      ],
+      "reviewed_document_sha256": {
+        "docs/tools/art-pipeline-unification.md": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74"
+      }
+    },
+    {
+      "claim_id": "B-41",
+      "priority": "P0",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent full current guide and exact diff read; bounded accepted-source, ancestry and saved receipt inspection. No new graphical, package, provider or physical execution.",
+      "observations": "Independently read the full guide and source launcher FILES/PROJECT/make_project/main. Standalone project copies only viewer/adapter/shader/test files, no native/plugin payload, and resolves the provided engine without downloading. Exact pin agrees with package VERSION. Read actual key handler, source-preserving reload and framebuffer pin/export code: pins are session-local; visible Before exports use pinned provenance; full/feature render current source. Accepted-main checkout replaces obsolete integration branch, with no claim that every4.7 executable is enforced by the launcher.",
+      "source_locators": [
+        "tools/world_art_preview_launcher.py::FILES/PROJECT/make_project/main",
+        "tools/world_art_evaluation_package.py::VERSION",
+        "godot/tools/world_art_preview.gd::_unhandled_key_input/reload_pack/pin_current/export_art",
+        "godot/tools/world_art_full_export.gd",
+        "git:d5b0371501eb7ccd32c261f738b4a2612218fbc1"
+      ],
+      "reviewed_document_sha256": {
+        "docs/tools/world-art-preview.md": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b"
+      }
+    },
+    {
+      "claim_id": "B-42",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "verified",
+      "method": "Independent full current guide and exact diff read; bounded accepted-source, ancestry and saved receipt inspection. No new graphical, package, provider or physical execution.",
+      "observations": "Independently read the full capture guide, actual run_capture and publication helper. Real Godot display is required; headless capture returns7, temporary headless import is distinct. Exclusive claim is acquired before writes, delayed completed publishers are refused, sealed final manifest is exclusively created/flushed before releasing reservation, and verification rejects unsafe paths/incomplete evidence. Native-playability field is explicitly unqualified. Read actual32-test Python-only receipt and3CLI-help successes; these are B-executed receipts, not a fresh A run or graphical result.",
+      "source_locators": [
+        "tools/world_art_preview_launcher.py::build_parser/run_capture/main",
+        "tools/world_art_capture_support.py::claim_output_directory/verify_bundle/classify_art_dimensions",
+        "tools/world_art_stream_png.py",
+        "godot/tools/world_art_capture.gd",
+        "godot/tools/world_art_full_export.gd",
+        "tools/test_world_art_capture.py::UnitTests",
+        "tools/test_world_art_evidence.py::EvidenceTests",
+        ".github/workflows/world-art-capture.yml"
+      ],
+      "reviewed_document_sha256": {
+        "docs/tools/world-art-capture.md": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f"
+      }
+    },
+    {
+      "claim_id": "B-43",
+      "priority": "P1",
+      "reviewer": "Specialist A / technical_reference",
+      "result": "reviewed-preserved",
+      "method": "Independent full current guide and exact diff read; bounded accepted-source, ancestry and saved receipt inspection. No new graphical, package, provider or physical execution.",
+      "observations": "Verified this full guide remains byte-identical to accepted baseline. Read builder source_identity/viewer_matches/copy_evidence/build/verify/smoke/write_launchers and physical acceptance script: source and engine hashes are pinned, Windows graphical evidence and Windows-only build/smoke are required, outputs are fresh, ledger excludes native plugins, and package smoke records physical_gpu_acceptance=false. Actual renderer must identify NVIDIA and manual checks must PASS; skips become PARTIAL_OR_MANUAL_PENDING. Frozen package source386a7902 remains separate from main and merge. Artifact availability/expiry was not newly contacted or downloaded; no package/physical execution is asserted.",
+      "source_locators": [
+        "tools/world_art_evaluation_package.py::VERSION/ENGINES/build/verify/smoke/write_launchers",
+        "tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1::SourceCommit/Assert-NvidiaRenderer/Report",
+        "examples/world-art-capture/build_gallery.py",
+        ".github/workflows/world-art-capture.yml",
+        ".github/workflows/world-art-physical-nvidia-acceptance.yml",
+        "godot/tools/world_art_preview.gd"
+      ],
+      "reviewed_document_sha256": {
+        "docs/tools/world-art-evaluation.md": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f"
+      },
+      "baseline_bytes_equal": true
+    }
+  ],
+  "final_relevant_text_reread_at": "2026-11-24T19:50:48.208226+00:00",
+  "final_sampled_controls_reread_at": "2026-11-24T19:58:07.155790+00:00",
+  "final_world_art_reread_at": "2026-11-24T20:32:10.941452+00:00"
+}

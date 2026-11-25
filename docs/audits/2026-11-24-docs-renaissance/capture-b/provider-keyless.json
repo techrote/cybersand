@@ -1,0 +1,16 @@
+{
+  "exit_code": 0,
+  "seconds": 0.745,
+  "command": [
+    "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/855d9af51e68/b-capture/source/godot",
+    "--script",
+    "res://tests/test_art_provider.gd"
+  ],
+  "profile": "/workspace/scratch/855d9af51e68/b-capture/provider-profile",
+  "source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "Existing keyless provider payload/parser/redaction/logging fixtures only; no provider dispatch or GUI/native rendering qualification.",
+  "output_sha256": "a94c05d761d2f8a2eea617ddc591c0dd86331254fdebece261d5c0ca633436a5"
+}

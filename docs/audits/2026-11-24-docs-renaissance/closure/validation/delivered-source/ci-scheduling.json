@@ -1,0 +1,12 @@
+{
+  "classification": "fresh-final-source-validation",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "command": [
+    "python",
+    "tools/ci/test_ci_scheduling_policy.py"
+  ],
+  "exit_code": 0,
+  "output": "..........\n----------------------------------------------------------------------\nRan 10 tests in 1.918s\n\nOK\n",
+  "recorded_at": "2026-11-25T00:20:19.051683+00:00"
+}

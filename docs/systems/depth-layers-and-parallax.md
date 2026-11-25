@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership
 canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-11-24
 related-documents: [material-appearance-and-rendering.md, ../operations/deepworks-exhibition.md, ../reference/configuration-reference.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, ../audits/2026-10-18-depth-parallax-prototypes.md]
 ---
 
@@ -16,8 +16,13 @@ res://depth_lab.tscn is an opt-in comparison host for visual and figurative
 depth in CyberSand. It deliberately keeps several ideas visible side by side
 instead of making one of them production authority.
 
-The lab is called **Strata Theatre**. It can be opened directly, with
---depth-lab, or from the ordinary desktop sandbox with **F4**.
+The lab is called **Strata Theatre**. Choose **Strata Theatre — layering and
+parallax depth lab** in the feature launcher, open `res://depth_lab.tscn`
+directly, or pass `-- --depth-lab` to the pinned Godot launch. The ordinary
+desktop sandbox also opens it with **F4**; Shared Workbench returns before that
+shortcut handler. This page describes the existing standalone four-layer host.
+The separate Workbench integration candidate is not an accepted capability of
+this host; its status belongs in the [current-state register](../reference/status-and-roadmap.md).
 
 [Deepworks](../operations/deepworks-exhibition.md) reuses these four material
 planes in a separate 1024 × 1024 exhibition host, opened with `--deepworks` or
@@ -204,6 +209,14 @@ optimizations.
 - **Middle mouse** — toggle automatic camera motion.
 - **Tab** — hide/show controls.
 - **Esc** — return to a fresh ordinary sandbox.
+- **F2** — close the theatre and return to the feature launcher.
+
+These routes and inputs are defined by the
+[theatre scene](../../godot/scripts/depth/depth_lab.gd),
+[launcher](../../godot/scripts/feature_launcher.gd) and
+[global F2 navigation](../../godot/scripts/feature_navigation.gd). Paint and
+events here belong to this standalone runtime; this host does not expose
+Shared Workbench's Save start, Flatten or shared Undo history.
 
 Background remains immutable even if selected as a paint target, making the
 failure visible rather than hiding it in UI policy.

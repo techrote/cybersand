@@ -1,0 +1,13 @@
+{
+  "classification": "fresh-final-source-validation",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "command": [
+    "python",
+    "tools/docs/engineering_history.py",
+    "check"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"scope_items\": 274,\n  \"ledger_items\": 582,\n  \"closed_reference_items\": 308,\n  \"findings\": 98,\n  \"protected_scope_items\": 74,\n  \"errors\": [],\n  \"limits\": [\n    \"Structural/source-link checks do not prove semantic correctness or owner acceptance\",\n    \"Historical closure and merge remain separately unauthorised\"\n  ]\n}\n",
+  "recorded_at": "2026-11-25T00:20:17.328532+00:00"
+}

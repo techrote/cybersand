@@ -1,0 +1,172 @@
+[
+  {
+    "stage": "baseline",
+    "suite": "frozen",
+    "reconstruction": "closure/retrieval/baseline/frozen.json",
+    "recovered_original": "retrieval/frozen-baseline.json",
+    "reconstruction_sha256": "f33fe2bd1802ec54ed229e1570716cd3fe320b06bb265ca45b0653a0f5d49543",
+    "recovered_original_sha256": "1b665ce76a0c4136a41b6251a9b1e7dc2a24c3219d9356371669662c0838b1e3",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "baseline",
+    "suite": "challenges",
+    "reconstruction": "closure/retrieval/baseline/challenges.json",
+    "recovered_original": "retrieval/challenges-baseline.json",
+    "reconstruction_sha256": "ebf1c205f64d33f9a1c2a98ca19380eecd9191b1b67d819b6441972734eac42f",
+    "recovered_original_sha256": "2ff76443acb26c9dc1cd49dc21ae1da321c13c35ea7c9226548587afce4fd754",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "baseline",
+    "suite": "renaissance",
+    "reconstruction": "closure/retrieval/baseline/renaissance.json",
+    "recovered_original": "retrieval/renaissance-baseline.json",
+    "reconstruction_sha256": "62d2883abe9a05553542209c990afd9db1079d9ba48d6a183fb7b8960fd9cc3e",
+    "recovered_original_sha256": "4c0f7e6360f16f64e0a7751559c6c504085c5a29a47e447da1a96a01fffaab4e",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "baseline",
+    "suite": "owner-intent",
+    "reconstruction": "closure/retrieval/baseline/owner-intent.json",
+    "recovered_original": "retrieval/owner-intent-baseline.json",
+    "reconstruction_sha256": "233c8b1370f9f3155db3f13099d885f74b5fbb6ecbbf9b3be8f7c8e3c75d1255",
+    "recovered_original_sha256": "708cce814cba1ac1f7e823a17cdf44674136ecbef193976d968f87ccd4fb69dc",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "baseline",
+    "suite": "historical",
+    "reconstruction": "closure/retrieval/baseline/historical.json",
+    "recovered_original": "retrieval/historical-baseline.json",
+    "reconstruction_sha256": "f891387e2c86d3b543d23f442d552ead3f82a20ceb1514d84ad2d7fbd1d291ed",
+    "recovered_original_sha256": "4e5ea7f43f6ac3937467e9c64bec87bfaa96cda0d06f21f87be77212eb242598",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "recovery",
+    "suite": "frozen",
+    "reconstruction": "closure/retrieval/recovery/frozen.json",
+    "recovered_original": "retrieval/final-freeze/frozen-post.json",
+    "reconstruction_sha256": "48280d54f251f40ac742b3745716da185044bbea8c272851de31525f71575925",
+    "recovered_original_sha256": "88e0cd11c6cedc76dd0b67936cef87af0008e687eea732a8ad2d61848079eedc",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "recovery",
+    "suite": "challenges",
+    "reconstruction": "closure/retrieval/recovery/challenges.json",
+    "recovered_original": "retrieval/final-freeze/challenges-post.json",
+    "reconstruction_sha256": "63458775f4ca63ff4bc6416c95f208fdb9b90e90301a533b670b2aca21a8365d",
+    "recovered_original_sha256": "3a83bfdd94dd5735f92481d4dd368c904c3301d218b30b5dd87e33865c488236",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "recovery",
+    "suite": "renaissance",
+    "reconstruction": "closure/retrieval/recovery/renaissance.json",
+    "recovered_original": "retrieval/final-freeze/renaissance-post.json",
+    "reconstruction_sha256": "797a34595974153a915ed72819e2874348828293089b37ff1b4846905e8f1daa",
+    "recovered_original_sha256": "e7dd18c6605a80d79d2634609d2515b7642c614786c008f0edad7e4e064e1dd9",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "recovery",
+    "suite": "owner-intent",
+    "reconstruction": "closure/retrieval/recovery/owner-intent.json",
+    "recovered_original": "retrieval/final-freeze/owner-intent-post.json",
+    "reconstruction_sha256": "e85de53a1b03661f48fcdd2f1502369296160a3b5faf467190ba0eb5b5ab7b82",
+    "recovered_original_sha256": "db3b2be6b3973debc20b509baf0e6e0cef55ac45af710a6c91cd26034a947904",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  },
+  {
+    "stage": "recovery",
+    "suite": "historical",
+    "reconstruction": "closure/retrieval/recovery/historical.json",
+    "recovered_original": "retrieval/final-freeze/historical-post.json",
+    "reconstruction_sha256": "d3a16e9b214a703ca313dcdb09e22d20997dbc18d30ed76d212a82db9cf80c81",
+    "recovered_original_sha256": "34365b18dea42cc1c7429531acc59e3f9098acdf605e806d91ff3cd151769763",
+    "identical_fields": {
+      "summary": true,
+      "corpus": true,
+      "results": true,
+      "fixture_sha256": true,
+      "evaluator_sha256": true,
+      "authority_policy_sha256": true
+    },
+    "explanation": "Run timestamps and temporary corpus roots differ; exact corpus bytes, fixture/evaluator/policy identities, rankings, scores and saved contexts are compared."
+  }
+]

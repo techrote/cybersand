@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B / product_showcase",
+  "reviewed_at": "2026-11-24T19:20:26.114803+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Independent accepted-source inspection and focused diff against baseline; accepted merge status checked in saved GitHub intake. Local ancestry probe was blocked by an unavailable commit object. No runtime or graphical campaign rerun.",
+  "claims": [
+    {
+      "claim_id": "L-40",
+      "priority": "P1",
+      "document": "docs/architecture/wave-flow-v1.md",
+      "result": "source-verified",
+      "observations": "Saved GitHub intake records#672 and#676 merged. Current source exposes spill enabled, sheet rate, coyote ticks and full-face controls. Former Draft/HOLD is scoped to the historical implementation branch. No new acceptance action is implied. Local Git ancestry was not established because the#676 merge object is unavailable in this clone.",
+      "source_locators": [
+        "native/include/cybersand/wave_flow.hpp::WaveSpillConfig",
+        "native/src/world_wave.inc",
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json",
+        "docs/audits/2026-11-24-docs-renaissance/github-late-water-intake.json"
+      ],
+      "document_sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16"
+    },
+    {
+      "claim_id": "L-41",
+      "priority": "P1",
+      "document": "docs/architecture/wave-flow-v1.md",
+      "result": "source-verified",
+      "observations": "WaveFlowConfig starts disabled with one substep and spill disabled. select_gameplay_water enables Wave, two substeps, spill/full-face and ballistic release. The standalone evaluator SpinBox starts atthree. WaveChunk owns int32 flux+weight and uint8 meta (nine bytes/cell); prior_flux is int32 and constructed at cell count only when smoothing is nonzero, addingfour bytes/cell before overhead. Old v2 parameter examples remain explicitly scoped.",
+      "source_locators": [
+        "native/include/cybersand/wave_flow.hpp::WaveFlowConfig",
+        "native/src/world_wave.inc::WaveChunk/wave_column_task",
+        "native/src/world.cpp::ensure_chunk",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+        "godot/scripts/main.gd::_ready",
+        "godot/scripts/wave_flow_evaluation.gd::_ready"
+      ],
+      "document_sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16"
+    },
+    {
+      "claim_id": "L-45",
+      "priority": "P1",
+      "document": "docs/reference/material-effects-register.md",
+      "result": "source-verified",
+      "observations": "The palette shader reads copied material/condition textures, LUTs, neighbour samples and presentation time; its declared uniforms contain no general velocity field. project_visual_state selects one material-specific byte, not full Cell state. The shader helper comment velocity*time refers to decorative caller coordinates, not native velocity input. Native ballistic snapshot/parcels are separately implemented. Retained October GPU measurement is now explicitly historical; no new graphics or physical pass is claimed.",
+      "source_locators": [
+        "godot/shaders/material_palette.gdshader::uniform declarations/lattice_particle",
+        "native/include/cybersand/material_appearance.hpp::project_visual_state",
+        "godot/native_extension/cyber_native_cell_world.cpp::get_water_spray",
+        "native/src/world_wave.inc",
+        "docs/audits/2026-10-18-material-fidelity-pass-2.md"
+      ],
+      "document_sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae"
+    }
+  ],
+  "ancestry": {
+    "commit": "501c0f0b040dd01dcead9d9b1b10a09f11803585",
+    "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "is_ancestor_exit_code": 128,
+    "result": "BLOCKED: merge object unavailable in local clone",
+    "stderr": "fatal: Not a valid commit name 501c0f0b040dd01dcead9d9b1b10a09f11803585"
+  },
+  "findings": [],
+  "limitations": [
+    "Numerical/scientific laws and old measurement tables were preserved; this review checks the new acceptance/default/storage/presentation-scope claims, not a fresh proof of every old law or performance result.",
+    "No physical owner acceptance, Windows/NVIDIA pass or merge authorization.",
+    "Merge status is supported by the saved live GitHub intake; local merge-base exited128 because the merge object is unavailable. No local ancestry PASS is claimed."
+  ]
+}

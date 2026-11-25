@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: IN-TOOLS gameplay command admission — current-main successor
 status: Planned
 scope: Issue 361 current-main admission for opt-in inertial liquid leaks, drains, nozzles and gameplay usables; design and qualification authority only, not gameplay implementation

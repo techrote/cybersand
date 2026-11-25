@@ -1,0 +1,22 @@
+2026-11-24T20:37:28.7992540Z curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 \
+2026-11-24T20:37:28.7993085Z   -o "$RUNNER_TEMP/godot.zip" \
+2026-11-24T20:37:28.7993711Z   'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+2026-11-24T20:37:28.7994407Z echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+2026-11-24T20:37:28.7994867Z mkdir -p "$RUNNER_TEMP/engine"
+2026-11-24T20:37:28.7995264Z unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/engine"
+2026-11-24T20:37:28.7995741Z chmod +x "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
+2026-11-24T20:37:28.7996269Z "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" --headless --version
+2026-11-24T20:37:28.8021592Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-24T20:37:28.8022014Z env:
+2026-11-24T20:37:28.8022313Z   ART_REVISION: ddd7c88fd97d8b85056dd7910896ec3a897ecb87
+2026-11-24T20:37:28.8022686Z   GODOT_SILENCE_ROOT_WARNING: 1
+2026-11-24T20:37:28.8104756Z   LIBGL_ALWAYS_SOFTWARE: 1
+2026-11-24T20:37:28.8105402Z   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+2026-11-24T20:37:28.8105957Z ##[endgroup]
+2026-11-24T20:37:28.8250362Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-24T20:37:28.8251289Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-24T20:37:28.8251762Z 
+2026-11-24T20:37:29.1882111Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-24T20:37:29.1883011Z   0  5599    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-24T20:37:29.1883848Z curl: (22) The requested URL returned error: 403
+2026-11-24T20:37:29.1922040Z ##[error]Process completed with exit code 22.

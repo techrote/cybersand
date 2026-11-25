@@ -4,15 +4,19 @@ status: Current
 document-kind: contract
 scope: Standalone World Art renderer ownership, art capacity, source provenance and native compatibility boundaries
 canonical-for: [world-art-pipeline, world-art-capacity-and-compatibility]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [world-art-preview.md, world-art-capture.md, world-art-evaluation.md]
 ---
 
 # ART-PIPELINE-UNIFICATION-001 — integrated World Art Preview and unattended capture
 
-**Status: Draft / HOLD. Not native gameplay, not an importer, not Ready to merge.**
+**Current implementation:** [PR #685](https://github.com/techrote/cybersand/pull/685)
+merged the standalone World Art pipeline. It is presentation tooling, with no
+native gameplay or import admission. The separate physical Windows/NVIDIA
+acceptance harness from [#694](https://github.com/techrote/cybersand/pull/694)
+collects owner hardware evidence; merging either tool is not a physical pass.
 
-This branch contains the same **15 original world-design collections** (120 reusable
+The accepted repository contains the same **15 original world-design collections** (120 reusable
 authored features) as the source atlas, plus one production-shader-backed
 **Godot 4.7 RG8 presentation renderer** consumed by the interactive viewer,
 the tiled full-composition exporter, and the unattended PNG/manifest runner.
@@ -27,12 +31,12 @@ this integrated repository. It is never rewritten by the renderer.
 | [#457](https://github.com/techrote/cybersand/pull/457) | Read-only world-design-to-RG8 capture adapter | The shared adapter in #487/#506 is the authoritative maintained successor; do not introduce a second pack parser. |
 | [#478](https://github.com/techrote/cybersand/pull/478), [#479](https://github.com/techrote/cybersand/pull/479) | Historical publication/recovery, PID-namespace and no-clobber adversaries | Security requirements examined; this integrated unattended path uses an exclusive no-clobber claim and refuses to steal or overwrite retained jobs. **Not a claim of byte-for-byte import or equivalent recovery implementation.** |
 | [#487](https://github.com/techrote/cybersand/pull/487) | Interactive scene, original RG8 shader rig, camera, pin/compare | Shared renderer retained. |
-| [#506](https://github.com/techrote/cybersand/pull/506) | Unattended real-Godot PNG/manifest runner and common tiled renderer | Source imported from `7b960b5eac5b7a4ed159ade97b1093a1b623ac19`, extended in this PR. |
+| [#506](https://github.com/techrote/cybersand/pull/506) | Unattended real-Godot PNG/manifest runner and common tiled renderer | Source imported from `7b960b5eac5b7a4ed159ade97b1093a1b623ac19`, extended in the accepted #685 integration. |
 | [#536](https://github.com/techrote/cybersand/pull/536) | Research automation and agent runner | Read-only coordination; no worker API, workstream, or production agent replaced. |
 
-No production shader, native material ID, `World` storage, Rapier system or
-Shared Workbench gameplay path is modified by this integration. It does not
-implicitly promote any donor Draft PR or its experimental feature.
+The #685 integration did not change production shader, native material ID,
+`World` storage, Rapier or Shared Workbench gameplay semantics. Its adoption does
+not promote other donor experiments or enlarge playable World limits.
 
 ## Single entry point
 
@@ -41,8 +45,11 @@ Godot, Python, all fifteen scenes, 120 features and the verified offline gallery
 are bundled. The source-checkout commands below remain available.
 
 
-Prerequisites: Python 3.10+, an installed **Godot 4.7 desktop** executable,
-and a graphical desktop or X11/Xvfb software GL renderer. No native extension,
+Prerequisites: Python 3.10+, the pinned **Godot
+`4.7.stable.official.5b4e0cb0f` desktop** executable, and a graphical desktop or
+X11/Xvfb software GL renderer. In the commands below, `godot` means that verified
+executable; use its absolute path if PATH resolves another version. See the
+[current build guide](../operations/local-build-and-validation.md) for the pin. No native extension,
 CUDA, LFS download or second CyberSand checkout is required.
 
 From the integrated repository root:
@@ -161,6 +168,11 @@ The JSON evidence states `previewable`, `full_exportable`,
 
 ## Qualification required before promotion
 
+The following are the original #685 qualification requirements and the relevant
+checks for a future change to this pipeline. #685 is already merged. Its dated
+results do not establish that every check ran at a later source or on the owner's
+physical GPU; retain source, runtime, renderer and package identities separately.
+
 1. Run unit and contract tests via `python -m unittest tools.test_world_art_capture.UnitTests -v`.
 2. Run real Godot 4.7 GUI compile/import and the interactive 15-collection /
    120-feature pin/compare/shader/source-reload smoke.
@@ -174,12 +186,12 @@ The JSON evidence states `previewable`, `full_exportable`,
 5. Require clean exact-HEAD CI results and an independent review; document
    failures, unresolved constraints and any owner Windows observation.
 
-**Do not merge / mark Ready / enable auto-merge before owner approval.**
+**A new candidate still requires owner approval before Ready, merge or auto-merge.**
 
 
 ## Finisher repairs and evidence ownership
 
-The final finisher repairs luminous-edge emission outside authored bounds,
+The accepted #685 finisher repaired luminous-edge emission outside authored bounds,
 interactive source-path aliases, complete pinned/export provenance, crop integer
 overflow, delayed output claim races, invalid PNG structures and disagreement
 between a gallery's batch summary and its verified child manifests. Production
@@ -198,6 +210,8 @@ Godot capture bundles. The original scene/feature gallery is regenerated by
 and the large/framing/compare evidence. The package smoke executes the shipped
 launchers with a restricted PATH and verifies a fresh capture before publication.
 
-Final technical qualification and an independent reviewer verdict are required
-before owner acceptance. Physical Windows/NVIDIA visual acceptance remains an
-owner observation, separate from software-rendered Linux/Windows CI.
+A later repair or rebuilt evaluator needs its own source-matched technical
+qualification and independent review. The original package remains tied to its
+recorded source. Physical Windows/NVIDIA visual acceptance is an owner
+observation, separate from software-rendered Linux/Windows CI and the fact that
+the tools have merged. See the [evaluation guide](world-art-evaluation.md#physical-windowsnvidia-acceptance-owner-hardware).

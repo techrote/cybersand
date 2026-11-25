@@ -1,0 +1,174 @@
+---
+title: Profiling, observability, and performance
+document-kind: runbook
+canonical-for: [performance-measurement, metric-interpretation]
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+last-reviewed: 2026-10-31
+related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
+---
+
+# Profiling, observability, and performance
+
+**Current:** native/Godot counters and isolated worker benchmarks exist.
+Their numbers must be attributed to the actual fixture, revision/artifact,
+platform, profile, and measurement boundary. No universal 60 FPS, production
+worker optimum, representative GPU timing, or complete per-stage profiler is
+established.
+
+This is the measurement/interpretation procedure. Current evidence belongs to
+the [validation ledger](../reference/validation-evidence.md). Original hosted
+2026-08-27/28 and local 2026-09-08 timing tables are preserved verbatim in the
+[historical performance archive](../audits/2026-09-08-performance-history.md),
+excluded from ordinary Current-behavior retrieval.
+
+## Persistent hosted execution history
+
+The [CI execution and performance contract](ci-execution-and-performance.md)
+owns shared generous watchdogs and `execution-performance-v1` records. Current
+fixture/process observations, original failed rows and comparable default-branch
+history are retained for 90 days. Median-ratio warnings at 1.5/2 times and
+cumulative drift advice never change correctness verdicts. Missing compiler,
+cache or hardware provenance prevents comparison; Avrea and GitHub-hosted
+measurements remain separate cohorts. Existing phase markers are measured
+where available, without claiming complete production profiling or GPU timing.
+
+## Current observations and their limits
+
+| Observation/source | What it measures | What it does not establish |
+|---|---|---|
+| [World::TickStats](../../native/include/cybersand/world.hpp) | Visited/moved cells, activity, scheduled cores, per-phase jobs, deferred events, owned chunk/temperature allocation counts | Per-worker utilization, barrier time, all process allocations |
+| [World::resident_cell_bytes](../../native/src/world.cpp) | Cell, optional-temperature, and activity capacity bytes | Hash-map/node overhead, all scheduler/snapshot buffers, total RSS |
+| [RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp) | Required/capacity/high-water patch and byte counts; pressure/failure counts | GPU upload bytes or renderer memory |
+| [Desktop worker](../../godot/scripts/simulation_worker.gd) | Worker/cellular/snapshot-copy timing, snapshot age, overruns | Synchronous Web timing semantics |
+| [Desktop controller](../../godot/scripts/main.gd) | FPS, texture update, dirty patch count/KiB, collider timing, body observations, Rapier step/flush | Stable telemetry schema, isolated GPU frame time |
+| [Web controller](../../godot/scripts/web_demo_controller.gd) | Native tick/upload and profile observations | Independent asynchronous simulation/render owner |
+
+“Moved cells” counts successful updates and can include reactions/state changes;
+it is not a conserved quantity or physical mass. Native facade counters with
+fallback-like names are not automatically equivalent to fallback activity
+metrics.
+
+The 2026-10-25 [worker activity repair](../audits/2026-10-25-water-inertial-native.md#worker-activity-publication-repair--2026-10-25)
+adds geometry-bounded per-job signal grids, flag clearing and serial reduction.
+Its [capacity accounting](../reference/configuration-reference.md) includes real
+setup storage and work even for jobs that emit no activity signal. Earlier
+pressure/cache/dormancy timings retain their original source and do not qualify
+this scheduler's total cost. The follow-up contiguous layout preserves the same
+payload and clear/reduction work while reducing grid ownership to two buffers
+per World; its constructor-allocation counts and failure-sweep timings are
+source-bound correctness evidence, not controlled speedup ratios. The earlier
+unpacked pressure campaign keeps its own source. The
+[fresh packed-source repeat](../audits/2026-10-25-water-inertial-native.md#fresh-packed-source-total-cost-repeat)
+has its own prospective registration, complete total-cost accounting and
+independent reduction; it retains faster awake warm medians and slower disturbed
+churn/forced-head intervals, rather than implying a universal improvement.
+`TickStats` chunk/temperature allocation counters
+also do not count all ordinary heap allocations; explicit probes and source
+inspection have their own recorded boundary.
+
+## Current benchmark entry points
+
+`make build/render_copy_benchmark` builds the isolated RG8 copy comparison.
+`build/render_copy_benchmark 41 --implementation R` retains paired literal
+oracle and production samples, p50/p95/p99/max, and explicitly source-derived
+address/lookup/run counts. A separately compiled frozen-main Control measures
+the original production loop; an external oracle's call overhead must not be
+reported as the production speedup. The
+[R qualification record](../audits/2026-11-01-render-copy-production-reconciliation.md)
+binds both builds and the separate real-Main N/W graphical campaign. Texture
+submission timings cover CPU API calls, not GPU completion or human feel.
+
+[native/bench/benchmark.cpp](../../native/bench/benchmark.cpp) accepts dimensions,
+ticks, chunk size, dense/sparse scenario, backend, worker count and preallocated/
+lazy mode. It reports aggregate means/work/memory and state/content hashes.
+Serial and phased backends can differ in traversal and interest semantics;
+compare behavior deliberately rather than requiring accidental cross-backend
+byte equality.
+
+[CyberWorkerBenchmark](../../godot/scripts/worker_benchmark.gd) powers the Web
+Performance menu and local `dev.cmd benchmark` / `stress-test`. The
+[Web runbook](web-threading.md#reference-benchmark-and-parity-checks) owns exact
+fixture sizes, counts, warmup, cancellation, and report paths.
+
+These temporary Sand/Water worlds measure native tick work. Test frame
+intervals include menu/scheduling overhead and are not gameplay FPS. Their
+exported-level hashes do not cover complete scheduler or Rapier replay.
+
+## Run a useful comparison
+
+1. Record [source/artifact identity](source-checkpoint-and-recovery.md), platform,
+   tool versions, profile, logical-thread report, actual worker count, and whether
+   the tested binary was rebuilt.
+2. Freeze the geometry, material/input sequence, tick count, warmup, cadence,
+   view/margins, preallocation and presentation options. Define exactly what
+   current and 2× fixtures mean.
+3. Establish correctness first: the relevant hash at matching ticks, exact
+   conserved quantities, and required collision/lifetime checks.
+4. Repeat comparable runs, preferably interleaved with the known baseline.
+   Keep mean, p95, maximum, work counts, memory/pressure, and environment caveats.
+5. Profile simulation, bridge copies, collider extraction/processing, texture
+   update, and shader/glow cost separately. Set acceptance thresholds from
+   representative hardware and preserve raw failures/outliers.
+
+Timings are observations, not hidden authoritative inputs. Auto is a fixed
+policy; benchmark results do not retune it. No selectable strict runtime
+fidelity mode exists.
+
+## Avoid common misreadings
+
+| Pattern | Next investigation |
+|---|---|
+| One core busy, others idle | Phase job count versus dispatch threshold; a persistent pool can intentionally run sparse phases serially |
+| Small dirty patch KiB but low FPS | Full GPU texture update, synchronization, palette/glow, or unrelated presentation work |
+| Large collider peak, small Rapier step | Separate geometry extraction, packet copy/validation, and indivisible collider rebuild |
+| High snapshot pressure/age | Consumer lag and retained dirty payload |
+| Material appears still after camera return | Check failure status and selected cores against the [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry); retained offscreen activity is not selected work |
+| Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work |
+| Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings |
+| Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation |
+
+The collider consumer's 32-chunk/750 µs limits are checked between chunks and
+exclude extraction/packet handling; one chunk may exceed the time budget. Only
+rebuilt chunks count against the chunk limit. The workbench lock-step publishes
+every hard-surface revision and installs it with a 128-chunk/4 ms budget. The
+2026-11-06 [whole-engine benchmark](../audits/2026-11-06-whole-engine-bench.md)
+shows why: with reacting terrain the 250 ms packet throttle capped a session at
+about 4 ticks/s.
+`ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a
+changed native publication. Dirty bridge bytes cannot substitute for that cost.
+
+## Planned observability and acceptance
+
+**Planned:** planning/preparation/execution/barrier/merge/publication stage time,
+per-worker utilization, comprehensive allocator profiling, process memory
+breakdown, actual GPU upload bytes and shader/glow GPU time, stable aggregation
+and reset/export APIs.
+
+**Approved:** pair each high-water mark with capacity, units, interval, and
+fixture identity. Preserve exact fixture/conservation/collision comparisons
+under any bounded gameplay approximation. A full mixed-material rendering/
+coupling load and target-hardware GPU inspection remain distinct from the
+isolated worker reference test.
+
+## Where are interaction-specific measurements?
+
+Use the opt-in [physics measurement runbook](physics-characterisation.md) and
+[dated baseline](../audits/2026-09-09-physics-characterisation.md) for bounded
+ordered material counters, Water mass, body impulses, sample ages and depth plots.
+Tick and pre-tick coupling p50/p95/max have explicitly different scopes; snapshots
+and result application are outside the latter interval. Concurrent development
+workload and instrumented timings are not production frame-time acceptance.
+
+## MS-001 apparatus cost boundaries
+
+The [reference pack](microscenario-reference-pack.md) retains native tick timing
+separately from before/after-host observation timing and CLI advance-loop wall time.
+Actual native work/capacity counters are copied after successful completed ticks;
+quarantined partial-tick results are not exported as successful measurements.
+Queue occupancy/high-water, all heap allocations, per-worker utilization and
+per-cell sleeping state remain unavailable. Phase-job counts are not utilization.
+None of these measurements substitutes for renderer, Rapier or whole-frame timing,
+or certifies a contended hosted runner as the user's target PC. The MS-001 Stress
+profiles use these counters only as comparable bounded workload telemetry: observer-off
+runs omit optional work/timing records and must retain identical authoritative outcomes.

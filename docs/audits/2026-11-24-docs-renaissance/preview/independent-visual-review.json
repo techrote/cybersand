@@ -1,0 +1,29 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewed_utc": "2026-11-24T19:45:47.510690+00:00",
+  "reviewer": "/root (independent of Specialist B renderer)",
+  "readme_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+  "method": "Actual view_image inspection of four generated static preview PNGs, desktop960 and narrow390. Pandoc/PyMuPDF approximation; no actual GitHub/browser layout or application GUI claim.",
+  "images": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop-top.png",
+      "sha256": "daa917888185eda89aea8a1120cc2de94651ad2ebe956ac63eac8aa2bede4dd5"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop-gallery.png",
+      "sha256": "1ddf14f295c1d3272c8c828440a36fafa8896c05c8b5fa3b2a5c3010868c9b7e"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow-top.png",
+      "sha256": "30b2039cc9e76a8d3167ea8edf7a84221a20897b394d9ba56d6684287cc309ac"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow-gallery.png",
+      "sha256": "72a0933323578a664985eee740cbde0d221bd1381d6bf9ce6b5e1e26d3de030b"
+    }
+  ],
+  "result": "Readable title/positioning, hero, product table, showcase images and corrected Neon scope at both widths; no visible clipping in reviewed crops.",
+  "limitations": [
+    "The four crops do not inspect every pixel in the complete PDFs. Earlier lead preview review included developer/quick-start sections; actual browser unavailable separately recorded."
+  ]
+}

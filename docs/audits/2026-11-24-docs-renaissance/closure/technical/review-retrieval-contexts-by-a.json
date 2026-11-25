@@ -1,0 +1,374 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_truth",
+  "author_reviewed": "Specialist C / retrieval_evidence",
+  "reviewed_utc": "2026-11-25T00:19:37.120508+00:00",
+  "source_checkpoint": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "reviewed_record": {
+    "path": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/regression-context-review-c.json",
+    "sha256": "8a6c7f6d879e0b966301eec7a980379d0254fe6fba38e1396420e48db31f095e"
+  },
+  "method": "Independently read all40 actual top-five passages for the eight focused questions and all bounded answers/missing-fact findings. Then read the changed generated-desktop step7 passage and verified the final qualified-v2 passage/report hashes. This is an independent applicability review of C evidence, not re-execution of historical scientific campaigns or a runtime test.",
+  "summary": {
+    "questions": 8,
+    "passages": 40,
+    "sufficient": 6,
+    "partial": 2,
+    "wrong_context": 0,
+    "source_or_context_identity_errors": 0,
+    "open_consequential_review_findings": 0
+  },
+  "review_findings": [
+    {
+      "id": "A-XC-01",
+      "priority": "P2",
+      "finding": "OI04 support originally included generated-map limits at rank4, which do not support owner destruction intent.",
+      "resolution": "C removed rank4; rank1 owner-confirmed-intent contains both expected facts and the unresolved design boundary.",
+      "status": "closed"
+    },
+    {
+      "id": "A-XC-02",
+      "priority": "P2",
+      "finding": "H01 answer was too vague about what new historical readback established.",
+      "resolution": "C names224 original process records,112pairs and16contrasts and explicitly describes re-reduction of original bytes rather than new execution.",
+      "status": "closed"
+    },
+    {
+      "id": "B-CLOSE-01",
+      "priority": "P1",
+      "finding": "The layout-query rank3 practical guide omitted explicit verified-preview installation on generated reopen.",
+      "resolution": "B corrected desktop step7, A independently verified the actual load/preview/confirmed/install source, final qualified-v2 context includes correction.",
+      "status": "closed; canonical shared finding, not a new count"
+    }
+  ],
+  "technical_assessment": {
+    "C06": "Partial is appropriate: bounded barrel/soliding experiment text cannot establish owner-final half-depth acceptance or full issue12/WEX substrate relationship. Historical thresholds are not current assignment.",
+    "USABLE02": "Sufficient despite canonical ranking miss: actual copied request identity, eight-global/one-actor admission, mutex cancellation and retained committed-effect lifecycle are present in context.",
+    "LCB01": "Partial is appropriate: gate and bounded later authorization are present, exact landed chain and narrow native codec freeze are missing; no invented SHA or blanket source freeze.",
+    "EXPLORE-001-LAYOUT": "Sufficient at canonical rank2: viewport/native usable bounds, scrolling content, fixed action buttons and graphical-versus-human acceptance distinction all present. Final step7 correction reviewed.",
+    "OI01": "Sufficient bounded intent summary via owner-confirmed synthesis at rank4; primary owner-record miss is honestly retained and should be consulted for new revision-sensitive scope.",
+    "OI04": "Sufficient via owner-confirmed rank1; prepared declaration is exploratory, fracture pieces need not equal storage chunks, no algorithm/new authority inferred.",
+    "H01": "Sufficient for fixture facts: correct original-byte readback scope and accepted8-byte versus old4-byte controls; no new production storage choice.",
+    "H09": "Sufficient for archive question: every passage has explicit historical envelope; archived pause does not establish present live branch state or restart authority."
+  },
+  "checks": [
+    {
+      "id": "C06",
+      "verdict_agreement": "partial",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "text_sha256": "afc2d8f38dcec83ab132afee9f21708357191c651404406627af6bb019d242cf",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 2,
+          "path": "operations/physics-characterisation-plan.md",
+          "text_sha256": "61a03bf6a5afcb833aca415f1c1416bd041a060af99b5474bf60eb398c1b6d87",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 3,
+          "path": "operations/physics-characterisation-plan.md",
+          "text_sha256": "0926923e6b4f6264521b39b6c575b8d04446136818bdf63a096a392043a496f7",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 4,
+          "path": "operations/physics-characterisation-plan.md",
+          "text_sha256": "53cedf0650e9c2f787b5e1954a082d368a6a6e1e28f90c8d662b9246dacc813c",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 5,
+          "path": "operations/physics-characterisation-plan.md",
+          "text_sha256": "f66ffcd696feb54f40551530e23e3f7475a2a4bf0a4064a6095f71d7ee4c1d38",
+          "authority": "current-documentation"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "USABLE02",
+      "verdict_agreement": "sufficient",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "systems/actor-usables.md",
+          "text_sha256": "b079d236174a539c709b6f586a23001c04cd9c112368a084d59517b9694d97f5",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 2,
+          "path": "systems/actor-usables.md",
+          "text_sha256": "6ae2d7a1dc1cea2a87cc7f416b00f374fd6f9023dab4632ff0341f18e87b3f1b",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-actor-composition.md",
+          "text_sha256": "e7038b304d3970ca9d911b05cc2f9851ed1825a50ebfec64a22473d6b3b63816",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 4,
+          "path": "reference/configuration-reference.md",
+          "text_sha256": "6e48ac86ade2bab0edcbff8542bbe1be9e187b5317757e02f561934659db0588",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 5,
+          "path": "systems/player-control-playground.md",
+          "text_sha256": "ab8a511988b8dc59e265c87165997c56ae8a65405ae2f04f4fd257ae5e444900",
+          "authority": "current-documentation"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "LCB01",
+      "verdict_agreement": "partial",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/lcb-scenario-catalogue.md",
+          "text_sha256": "acc037cb5ed4f8ac1f0c172745a1abaf297dfab6c499a123ed5f7da343f0c527",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 2,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "text_sha256": "76b89b1a460f31870eeb2739f63ec52e39b5fe21cc0ed2281e06c0c6a0309a1e",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 3,
+          "path": "operations/lcb-water-comparison-and-fixtures.md",
+          "text_sha256": "1f94adb628e75d7fdeda693431d920f62f0858ce6aff4f21ea4436419c506843",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 4,
+          "path": "operations/architecture-programme.md",
+          "text_sha256": "d20d3999a947759f1f25dfad2363103f11b82637544b76c3bb09b54378668e7b",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 5,
+          "path": "operations/lcb-water-comparison-and-fixtures.md",
+          "text_sha256": "6eb5191287f69f71b69d6ee8d70cd1db0e2e37e97b1d89d881723e9030f6aa3e",
+          "authority": "current-documentation"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "EXPLORE-001-LAYOUT",
+      "verdict_agreement": "sufficient",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/architectural-generator-playtest.md",
+          "text_sha256": "0b162174f42a0138fc52b9f963e27d2a9d033f7637b206afd10c72e59446cb42",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 2,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "text_sha256": "94c8c5ba880c84df4224ca781954241df43fd7f545b02090973b87d97aff7f59",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 3,
+          "path": "operations/explore001-desktop-playtest.md",
+          "text_sha256": "2da94340dc15adf1d3d162ad63bb0a339369eeb7f010155d06718f556e8ea097",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 4,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "text_sha256": "603ebb2f36337d1d931f50bb8fb652b8d07297d729015f4b292a2bc8833e0e48",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-saving.md",
+          "text_sha256": "45cde8a6c4a020369639d45f870f85ec62cc10088532a8024aa87c55bc717146",
+          "authority": "current-documentation"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "OI01",
+      "verdict_agreement": "sufficient",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/owner-intent.json",
+      "report_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-first-session.md",
+          "text_sha256": "b382a45e17162a3961826410e2b04c99cb13112200aed8cb1d35b338c1420fdc",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 2,
+          "path": "operations/architectural-generator-playtest.md",
+          "text_sha256": "0b162174f42a0138fc52b9f963e27d2a9d033f7637b206afd10c72e59446cb42",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/overview.md",
+          "text_sha256": "426df7d9775bf329673b848002820961dd130b5ecc76071d5ea9114d6fbdd913",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 4,
+          "path": "reference/product-intent-and-priorities.md",
+          "text_sha256": "efd8a0b12aa2dc84dba320194a3517e386c08971eb0598cfa4fb16418d5a5228",
+          "authority": "owner-confirmed-intent"
+        },
+        {
+          "rank": 5,
+          "path": "operations/materials-lab-authoring.md",
+          "text_sha256": "4f28aca8ba7fa6f8163b89272f69595394ada693cd29a03c247bbf85d44afd16",
+          "authority": "current-documentation"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "OI04",
+      "verdict_agreement": "sufficient",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/owner-intent.json",
+      "report_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "reference/product-intent-and-priorities.md",
+          "text_sha256": "c4ac1324c639c0de17786046d72e3817c25262d9cb4c82ce464fd462643014dd",
+          "authority": "owner-confirmed-intent"
+        },
+        {
+          "rank": 2,
+          "path": "reference/invariants.md",
+          "text_sha256": "7c1f8c3552484a3478f4719eaef7ae2082281ef26e98a04cf9eed88d84494dae",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/inertial-cellular-v1.md",
+          "text_sha256": "f408fe7beba98cf1b8c3e04ce324f3dfc65e6ed5ae5b8570837e238c5bce63da",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 4,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "text_sha256": "dc92477dbeb0a38170407832d353e6ef4421fe6c35f6de95e8ab839716e3e280",
+          "authority": "current-documentation"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "text_sha256": "9560d57b1db6dbab0c09d2218bfaebf6e09f9cc2c945896c0dbdf3edcb2f33eb",
+          "authority": "current-documentation"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "H01",
+      "verdict_agreement": "sufficient",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/historical.json",
+      "report_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "history/engineering/views/coverage.md",
+          "text_sha256": "284d0093e3ddb1dac2b9cb49681d1ebce5217736e0d24461cb0a16646c7f9ce7",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 2,
+          "path": "history/engineering/views/coverage.md",
+          "text_sha256": "fc3cb3dc644e9479fb714366cc261929d29dd91b5286ecfab704336a24517ae2",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 3,
+          "path": "history/engineering/REPORT.md",
+          "text_sha256": "6244a9dec3e91bf979206503d4d913bcc7587436f48394b917f3ae594dfe6f54",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 4,
+          "path": "history/engineering/REPORT.md",
+          "text_sha256": "3c41fd2f060a9f9b54d84dbdf2e227e59852ad680f95b99378f0db99199790a6",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 5,
+          "path": "history/engineering/qa/review.md",
+          "text_sha256": "76064e882e47ad392d8b6f2099c0a541864034a40fa3bdeacec0bb6c9e043017",
+          "authority": "historical-non-authoritative"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    },
+    {
+      "id": "H09",
+      "verdict_agreement": "sufficient",
+      "report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified-v2/candidate/historical.json",
+      "report_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "history/engineering/families/simulation.md",
+          "text_sha256": "89bc1e73042265d9d684b7ef510c89f3e9f38633f95018b3ce8b402297df69d2",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 2,
+          "path": "history/engineering/REPORT.md",
+          "text_sha256": "7260fe51827b9451ac6c2fbe0b01c4cdae2eef7d3a64a4b2854709ea1fca3506",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 3,
+          "path": "history/engineering/views/doctrine.md",
+          "text_sha256": "aab140b13170fe8da92a156d4a6618808cecd54160f7a8de5f50f77601a1bea7",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 4,
+          "path": "history/engineering/REPORT.md",
+          "text_sha256": "8a03ba23afd81b966d9d6a30e40f56889fa991508f883dc6c0545af1541a4b26",
+          "authority": "historical-non-authoritative"
+        },
+        {
+          "rank": 5,
+          "path": "history/engineering/families/simulation.md",
+          "text_sha256": "3076a2d6c89fee8fca8842123c5b4947a6814735a8c621471ab2b946f0993cdc",
+          "authority": "historical-non-authoritative"
+        }
+      ],
+      "disposition": "supported-with-stated-context-and-authority-limits"
+    }
+  ],
+  "limits": [
+    "Do not sum focused8 and additive36 into a single independent benchmark; fixtures and review scopes differ.",
+    "Historical source-status is not current implementation authority; no new acceptance or task permission follows from archived directives.",
+    "No external retrieval/embedding or physical-runtime system is qualified by this review."
+  ]
+}

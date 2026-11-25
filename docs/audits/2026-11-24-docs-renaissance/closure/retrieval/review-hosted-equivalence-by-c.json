@@ -1,0 +1,61 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C /root/retrieval_evidence",
+  "recorded_utc": "2026-11-25T00:30:32.160072+00:00",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "hosted_run": 45516959615,
+  "artifact_id": 14978346740,
+  "result": "PASS",
+  "method": "Independently compare all five saved raw hosted JSON reports to qualified-v2 after excluding only time/root; compare all five raw context files byte-for-byte and all10 extraction hashes to the recovered artifact receipt. Inspect saved authenticated job/step metadata and exact command lines. No second API fetch or fresh runtime run is implied.",
+  "hosted_job_readback_sha256": "7e08c73b532612a5d3888053d01f5a5753f7258aa76f13dfe5ae45e26f5419b9",
+  "artifact_custody_sha256": "fb9545cb9e216e2f9100799b8d88b5e0fc5e7e2bec652263a6f7e270c3d0fb04",
+  "reports": [
+    {
+      "suite": "frozen",
+      "json_equal_except_created_utc_and_corpus_root": true,
+      "raw_context_markdown_byte_identical": true,
+      "hosted_json_sha256": "778c800ec725f4a8e51557e3a294d6a9f4b319d1577023806246c692d3bc09e3",
+      "local_json_sha256": "147d1979c8d626acde5230fd5e984425e118ae13b136aef71356169586fbd344",
+      "context_markdown_sha256": "fe45fd316327f6c78f7463d3d85406c27140afae5ea718d7f0be25943e0150c8"
+    },
+    {
+      "suite": "challenges",
+      "json_equal_except_created_utc_and_corpus_root": true,
+      "raw_context_markdown_byte_identical": true,
+      "hosted_json_sha256": "8f03cf6f6b93945110d76ea071222004a58093f61d9b71502dda199c1838608f",
+      "local_json_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "context_markdown_sha256": "6e755c8a293447d16c06b6b874ea5ddb43adf852c073eb054dca31e7246f45ca"
+    },
+    {
+      "suite": "renaissance",
+      "json_equal_except_created_utc_and_corpus_root": true,
+      "raw_context_markdown_byte_identical": true,
+      "hosted_json_sha256": "bb6f58a7c16b33f2e00df9619cb557f7b76660dd764ba3982c862597b630f804",
+      "local_json_sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+      "context_markdown_sha256": "c4375778e4867d5b2d5be51a0d993c2d17185f1f21059feb4a38076d5a7066e3"
+    },
+    {
+      "suite": "owner-intent",
+      "json_equal_except_created_utc_and_corpus_root": true,
+      "raw_context_markdown_byte_identical": true,
+      "hosted_json_sha256": "a72224faee9f60f1e100be97ca1d8c20ca18767931b413bfcc867acfada9947d",
+      "local_json_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "context_markdown_sha256": "07a15851148049b34dc4c856df0857fd7651ad921c11f546cd086dd434e6ae95"
+    },
+    {
+      "suite": "historical",
+      "json_equal_except_created_utc_and_corpus_root": true,
+      "raw_context_markdown_byte_identical": true,
+      "hosted_json_sha256": "ff217f6ffd5669a7fa7c9bcce29ea3061089e5979492530b5712e55183668ec7",
+      "local_json_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "context_markdown_sha256": "3e50cab78bfb432546382eb4bf15455a9002c54c01751cb881cd9a0644efd93e"
+    }
+  ],
+  "focused_selection_step": "success",
+  "all_five_retrieval_evaluations": "success; raw outputs independently identical",
+  "published_runtime_provenance_step": "skipped; not passed",
+  "limits": [
+    "Actions uses the PR merge ref for source700 onto accepted baseline; raw evaluator/policy/fixture/corpus identities match the local final projection.",
+    "Hosted documentation qualification does not override separately recorded ancillary failures or physical Windows/NVIDIA limits."
+  ]
+}

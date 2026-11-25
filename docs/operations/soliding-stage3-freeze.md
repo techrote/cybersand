@@ -4,13 +4,21 @@ status: Approved design
 document-kind: runbook
 scope: Frozen execution contract for completing scalable settled-region discovery after PR #43; read-only discovery only, no acceleration or material ownership transfer
 canonical-for: [soliding-stage3-execution-freeze]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-11-24
 related-documents: [soliding-programme.md, soliding-measurement.md, ../systems/settled-region-discovery.md, ../architecture/soliding-lifecycle.md, ../audits/issue-12-2026-09-19/producer-hook-review.md]
 ---
 
 # Issue 12 Stage 3 execution freeze
 
 ## Authority, checkpoint and purpose
+
+**Scope qualification, 2026-11-24:** this is the frozen September 19 execution
+contract, retained for its stage boundaries and evidence requirements. Its PR #43
+foundation gaps and named task assignments describe that source checkpoint. They
+are not active branch instructions or an inventory of current missing features.
+Consult the [current discovery contract](../systems/settled-region-discovery.md),
+[Soliding programme](soliding-programme.md) and
+[current handover](cybersand-codex-development-handover.md) before new work.
 
 This page freezes the dependency-ready implementation contract for issue #12 Stage 3
 after PR #43 head `90903355f5880e8f141ee6caea34840ad8b4990c`.
@@ -503,24 +511,14 @@ A Spark worker stops its package and reports rather than improvising if it needs
 
 ## Compact overnight parent handoff
 
-Use this block verbatim if useful:
+**Historical task handoff, not an active instruction.** The September 19 text
+assigned named model workers, worktrees and a particular Stage-3 sequence after
+PR #43. Those assignments are preserved in the
+[source-pinned original](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/soliding-stage3-freeze.md#compact-overnight-parent-handoff)
+and the [byte-preserved snapshot](../audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt).
+They do not grant current work, branch, model-dispatch or Stage-4 authority.
 
-> Continue issue #12 from PR #43 and the canonical Stage-3 freeze in
-> `docs/operations/soliding-stage3-freeze.md`. You are the supervising
-> architect/integrator. Do not repeat PR #43 foundation work.
->
-> Delegate dependency-ready implementation to the named GPT-5.3-Codex-Spark
-> packets for producer integration and cross-tile connectivity, using separate
-> worktrees/branches. Retain all parent-only architecture and stage-gate decisions.
-> Review actual diffs before integration.
->
-> Finish Stage 3 only against its frozen exit checklist: complete World witnesses,
-> bounded cross-tile face connectivity, immediate stale-region invalidation,
-> deterministic capacity/refusal, no partial publication, workers1/4 parity and
-> whole-system cost evidence versus ordinary sleep. Cells remain the sole material
-> owner; no Stage-4 acceleration or Rapier admission is implied.
->
-> After A+B integration, commission the independent verification packet, repair
-> confirmed defects, then execute the measurement packet on the Ryzen 2600X where
-> useful. Retain negative/ambiguous evidence. Enter Stage 4 only after an explicit
-> parent review says every Stage-3 gate is satisfied.
+For a new assignment, use the [current development handover](cybersand-codex-development-handover.md),
+verify the accepted source and active ownership, and retain the frozen stage
+boundaries above. Stage-3 evidence does not itself authorize acceleration,
+Rapier material ownership or Stage-4 integration.

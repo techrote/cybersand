@@ -1,0 +1,14 @@
+{
+  "as_of": "2026-11-24",
+  "scope": "Original MS-001/INT-000 acceptance provenance; no new implementation permission",
+  "pull_requests": [
+    {
+      "number": 55,
+      "title": "INT-000: establish versioned intermaterial interaction substrate",
+      "merged": true,
+      "merge_commit_sha": "910717aac101363ec2b1b89e4041a22bc9a97b97",
+      "merged_at": "2026-09-19T19:00:39Z",
+      "head_sha": "360be6152c9a9afda3a5eb15da1d66cd82b974d1"
+    }
+  ]
+}

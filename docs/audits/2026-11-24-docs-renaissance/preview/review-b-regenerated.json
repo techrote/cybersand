@@ -1,0 +1,49 @@
+{
+  "reviewer": "Specialist B (/root/product_showcase)",
+  "recorded_at": "2026-11-24T19:36:44.082756+00:00",
+  "source_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+  "method": "Viewed regenerated desktop/narrow top and gallery PNGs independently with image viewer; verified every manifest PDF/PNG hash. Static Pandoc/PyMuPDF approximation, not GitHub browser layout or app capture.",
+  "result": "PASS within static approximation scope",
+  "observations": [
+    "Desktop title, hero, table and captions fit without clipping or overlap.",
+    "Narrow title, hero, navigation and feature table wrap within margins.",
+    "Desktop and narrow galleries retain readable captions, including individually loaded district tiles. Detailed screenshot text at narrow width requires opening the asset or linked guide; no screenshot replaces written steps."
+  ],
+  "limits": [
+    "Only top and gallery crops were visually inspected in this regeneration; parent previously inspected full original static flow, and can inspect complete regenerated PDFs.",
+    "Browser render unavailable; no actual GitHub desktop/mobile acceptance."
+  ],
+  "artifacts": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop.pdf",
+      "sha256": "57c93b1dc9bdc610ff75d4a6c9fdd484362182872b6548f2a7e6675764098b1d",
+      "manifest_matches": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop-top.png",
+      "sha256": "daa917888185eda89aea8a1120cc2de94651ad2ebe956ac63eac8aa2bede4dd5",
+      "manifest_matches": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop-gallery.png",
+      "sha256": "1ddf14f295c1d3272c8c828440a36fafa8896c05c8b5fa3b2a5c3010868c9b7e",
+      "manifest_matches": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow.pdf",
+      "sha256": "66542cbe388f3c3e3cd9e72e7bf6481b9656cdb99f890a947be19408b8c5782c",
+      "manifest_matches": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow-top.png",
+      "sha256": "30b2039cc9e76a8d3167ea8edf7a84221a20897b394d9ba56d6684287cc309ac",
+      "manifest_matches": true
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow-gallery.png",
+      "sha256": "72a0933323578a664985eee740cbde0d221bd1381d6bf9ce6b5e1e26d3de030b",
+      "manifest_matches": true
+    }
+  ],
+  "renderer_sha256": "e605459dc76e67298ea00ccbb06ae2d76dc67e237007ab1ba26080b4856c034f"
+}

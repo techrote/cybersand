@@ -3,12 +3,37 @@ title: Canonical material catalogue and interaction authoring — adopted Planne
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
-last-reviewed: 2026-11-11
+scope: Wider Planned material-authoring migration with a current accepted-slice map; numbered sections preserve dated design/admission checkpoints, not current execution permissions
+last-reviewed: 2026-11-24
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — adopted Planned baseline
+
+## Current implementation and remaining design
+
+**Accepted source `00cdb02f`, checked 24 November 2026.** The broad migration
+remains **Planned**, but “shadow tooling only”, “Lab A only” and “native consumer
+unstarted” are no longer complete descriptions of the repository.
+
+| Slice | Current disposition | Canonical implementation route |
+|---|---|---|
+| Validated catalogue/compiler and guarded shadow outputs | Present | [`compiler.py`](../../tools/material_catalogue/compiler.py) |
+| Generated native hard-surface/granular-support consumer | Accepted through #563; only these two predicates migrate | [`material_rules.cpp`](../../native/src/material_rules.cpp) and [`material_capabilities.hpp`](../../native/include/cybersand/material_capabilities.hpp) |
+| Materials Lab v1 inspector, supported preset authoring and isolated native comparisons | Accepted through #562 and Workbench integration #565 | [Lab guide](../operations/materials-lab-authoring.md), [`lab.py`](../../tools/material_catalogue/lab.py) |
+| Installing an arbitrary Lab candidate into the ordinary running scene | Not delivered by accepted Lab v1; active audition work is separate | [Roadmap](../reference/status-and-roadmap.md) |
+| Broader descriptor/appearance migration, new production IDs and arbitrary runtime packs | Not implied by either accepted slice | [Current material contract](../systems/materials-and-rule-kernels.md) |
+| MoltenGlass H1 continuation | Owner excluded it from the Lab continuation; existing negative evidence remains | Section15 and the original liveness record |
+
+The numbered sections below deliberately retain earlier source counts, proposals,
+constraints and admission history. Their dated “Current”, “unmerged” or “do not
+start” wording applies to the identified checkpoint. Use this current map and
+the canonical runtime/user contracts for present behavior; old execution prompts
+do not reopen, block or authorize a current task. This reconciliation changes
+no protected material source, compatibility lock or product decision.
+
+## Historical programme and admission context
+
 
 **11 November update:** [section 15](#15-materials-lab-v1-implementation-boundary--2026-11-11)
 records new owner authorization and the implemented Materials Lab review
@@ -71,6 +96,11 @@ gameplay acceptance follows from matching metadata.
 
 ## 1. Authority and preserved substrate
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 The existing native model is useful and should be retained: immutable `kMaterialDefinitions`, bounded `RuleKernel` execution, no material-owned threads or per-cell objects, byte-sized material identity, stored `state_a/state_b` and epoch, deterministic contact and movement, sparse explicit reaction tables, per-World liquid family policies, versioned source identity, and the Materials Laboratory/MicroScenario corpus.
 
 | Source-derived property | Value at intake | Authority |
@@ -98,6 +128,11 @@ These are **compiled source claims**, not freshly executed physical or graphical
 
 ## 2. Source findings and fault hypotheses
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 | Finding | Classification | Source/effect | Required action |
 |---|---|---|---|
 | Hard-terrain classification uses IDs `38..kLastMaterial` | **Current source risk** | [`MaterialRules::is_hard_surface`](../../native/src/material_rules.cpp) would classify a future appended non-hard ID as hard if `kLastMaterial` advances | Generate an explicit capability map; freeze identical outcomes for current 101 hard members |
@@ -114,6 +149,11 @@ These are **compiled source claims**, not freshly executed physical or graphical
 A source-review finding is not a runtime pass. In particular, the proposed cooling and stochastic-retry reproducers are **not** evidence that changing those laws will improve game feel, performance or scheduler correctness on the actual native host.
 
 ## 3. Orthogonal material classification
+
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
 
 **Decision proposed:** no single inheritance hierarchy should control all simulation fields. Use six independent dimensions.
 
@@ -133,6 +173,11 @@ Browsing taxonomy is deliberately **not** mechanical inheritance. Wrought Iron a
 Overlapping semantic families are allowed. If a future authored family sets an effective parameter that overlaps another, compilation must require a unique explicit override or fail with the conflicting source locations—not rely on array insertion order.
 
 ## 4. Canonical source model and compiler
+
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
 
 **Proposed authoring tree** (final names/schema require #352 review):
 
@@ -180,6 +225,11 @@ Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because th
 
 ## 5. Interaction effects and effective parameters
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 ### Endpoint effect language
 
 Today, a selected pair writes both products using their new material's initial state. This includes same-identity outputs; it is not implicit preservation. The proposed authoring effect model must therefore distinguish:
@@ -209,6 +259,11 @@ In v1, **do not** present Lava/Acid/Oil descriptor viscosity as an effective fre
 
 ## 6. Scheduling and liveness qualification
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 The existing World kernel has one authoritative tick/owner and spatially staggered deterministic lanes. The desired extension is an explicit result such as:
 
 ```text
@@ -234,6 +289,11 @@ A fix to category (1) should not silently implement new rules for (2) or (3). An
 
 ## 7. Identity, compatibility and resource budgets
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 **Hard invariants:** existing byte IDs, reserved 10, material products, default C64/E8 Cell/storage contract, `state_a/state_b` meaning, full-physical state hash/version, current save/level formats, generic World ownership, native/Godot worker separation, source-matched runtime publication, LCB policy compatibility and non-kinetic interaction ownership.
 
 Avoid conflating four independent identities:
@@ -251,6 +311,11 @@ No unmeasured compile-time or runtime performance claims. Benchmark generated lo
 
 ## 8. Materials Lab authoring workflow
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 The initial browser/inspector belongs in the current Materials Laboratory and coordinates with the existing TEST-UX owner, not a new gameplay host or general editor framework.
 
 | User action | Required v1 experience |
@@ -267,6 +332,11 @@ The initial browser/inspector belongs in the current Materials Laboratory and co
 No dynamic runtime material creation is implied: v1 can add source-level materials using generated tables. A safe editor can later be an authoring front end for those manifests; broad runtime GUID registries and hot reload remain **Deferred**.
 
 ## 9. Issue dependency and acceptance plan
+
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
 
 ```text
 #352 MAT-AUTH-000  architecture, frozen baseline and owner dispositions
@@ -305,6 +375,11 @@ No dynamic runtime material creation is implied: v1 can add source-level materia
 
 ## 10. Decisions held for explicit disposition
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 - Is the registered `hot-source` family deliberately narrower than `is_hot` with respect to Spark, or a documentation/membership bug? Confirm use cases before changing semantics.
 - Should MoltenGlass neighbours count as perpetually hot? If not, register a specific cooling model, explicit target and before/after fixture with no claim of global heat conservation.
 - Should the existing quiet-dependent whole-cell viscous-liquid rest remain a desired gameplay yield approximation? Distinguish stochastic retry scheduling from an intentionally bounded rest/yield law.
@@ -316,6 +391,11 @@ No dynamic runtime material creation is implied: v1 can add source-level materia
 **This page is the planning contract, not the Current runtime catalogue.** Exact ongoing material numbers and behaviour remain owned by [materials-and-rule-kernels](../systems/materials-and-rule-kernels.md), [intermaterial-interactions](../systems/intermaterial-interactions.md), and their source files. Do not add a second competing Current source of truth.
 
 ## 11. Current-main review and implementation admission — 2026-11-03
+
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
 
 **Historical review and adoption-only update.** The assignment holds below
 belong to those dated decisions. [Section 13](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
@@ -556,6 +636,11 @@ those semantic changes and does not merge #357.
 
 ## 12. Owner adoption and shadow-compiler handover — 2026-11-04
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 **Historical documentation-adoption decision, preserved.** #357 subsequently
 merged with its [final and post-merge checks](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556).
 The implementation-assignment statements below describe that documentation task;
@@ -607,6 +692,11 @@ or automatic inheritance.
 
 ## 13. Bounded compatibility tooling and adopted-main reconciliation — 2026-11-04
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 **Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
 The following qualification and unstarted-successor statements retain their
 original scope; section 14 records the later #354 investigation admission.
@@ -655,6 +745,11 @@ law, production ID, runtime pack, hot reload or later implementation stage.
 
 ## 14. Material liveness Phase A and production admission — 2026-11-04
 
+**Historical checkpoint.** This section preserves its dated design/source and
+authorization scope. Present implementation is mapped in
+[Current implementation and remaining design](#current-implementation-and-remaining-design);
+quoted status or task instructions here are not a new execution gate.
+
 **Current foundation; bounded investigation only.** Accepted main
 `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` includes merged #371. The shadow
 compiler remains unconsumed by production; legacy native/fallback definitions
@@ -685,7 +780,7 @@ retain separate ownership; serialize any later shared production writes.
 
 ## 15. Materials Lab v1 implementation boundary — 2026-11-11
 
-**New owner authorization; implemented review candidate.** The owner requested
+**Historical authorization and implementation checkpoint; accepted later through #562/#565.** The owner requested
 desktop material inspection, validated source authoring, reusable presets,
 explicit supported reactions and native tests from current accepted main.
 Baseline was `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`; isolated branch
@@ -740,14 +835,14 @@ and source-core windows are observed; sleeping, deadlines and actual dispatch
 remain unknown. Its Windows process owner and branch-scoped runtime/package
 publisher close executable delivery work without changing the Draft acceptance
 policy. The [completion audit](../audits/2026-11-11-materials-lab-completion.md)
-records actual execution. The separately stacked [Draft #563](https://github.com/techrote/cybersand/pull/563)
+records actual execution. The separately scoped, now accepted [#563](https://github.com/techrote/cybersand/pull/563)
 owns only the generated native hard/granular predicates and independently
 qualified compatibility transition; #384 retains display-name ownership.
 
 ## 16. Native capability consumer candidate — 2026-11-11
 
 After the owner asked to complete the remaining work without waiting for hands-on
-acceptance, [Draft #563](https://github.com/techrote/cybersand/pull/563) isolates
+acceptance, [#563](https://github.com/techrote/cybersand/pull/563) isolates
 one #353-B consumer from the Lab: `MaterialRules::is_hard_surface` and
 `supports_granular_load` consume two generated four-word maps. The source is the
 existing strictly validated canonical catalogue. All 256 query results remain
@@ -763,4 +858,5 @@ cover the four Water families and one/four workers. This admits neither altered
 capabilities nor arbitrary runtime installation. Wider descriptor/appearance
 migration, #384 display names, source-matched runtime publication and platform
 acceptance retain their own scopes. No World scheduling/effects or H1 work is
-included, and the Draft is not Ready or merged.
+included. That original Draft status is historical: #563 subsequently merged,
+while broader migration and current-scene audition retain separate scopes.

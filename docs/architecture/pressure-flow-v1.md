@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Current-main opt-in Water pressure family — admission, state, gas topology, heads, kernel laws, lifecycle, physical identity and persistence; merged cached/dormant mechanisms and comparison hosts have separate canonical owners and source-bound acceptance
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-24
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, pressure-optimization.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-ma
 
 ## Implementation status and admission
 
-**Current-main checkpoint — 2026-11-03.** Inspected main
+**Accepted pressure contract; original 3 November checkpoint.** Inspected main
 `89020b9eb6d540383a5bb64b58dcd29a87592c32` admits Water with `reference`, `cached`
 and `cached_dormant`; #253 merged the latter two after #245/#246. All three are
 implementation variants of one pressure law and are exposed by the normal
@@ -20,12 +20,18 @@ eight-preset liquid panel. Other materials cannot select PF. The
 [optimization contract](pressure-optimization.md) owns cache/dormancy semantics;
 the [#359 reassessment](../audits/2026-11-03-lcb-reassessment.md) preserves actual
 performance evidence and distinguishes normal application execution from fair
-four-family comparison and full-host acceptance. Default Water remains FreeMass.
+four-family comparison and full-host acceptance. Native policy defaults remain
+FreeMass, while new player sessions separately enable the Wave gameplay profile.
+The [family policy](liquid-solver-family-policy.md#status) distinguishes those
+configuration layers; PF is available but is not the current new-player default.
 
 PF Water carries visible quantity plus hidden overfill and signed horizontal
 flow; optional gas compartments label Empty regions. This is distinct from IN's
 retained velocity, which has no gas-pressure operator. A PF-only/non-IN World
-uses hash2/CYPS2; assigning Brine IN in the same World selects hash3/CYPS3.
+uses hash2/CYPS2 in the original extension set; assigning Brine IN selects3.
+Ballistic/signed-IN and larger gas-capacity extensions can select4 or5.
+Use the [actual-instance version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions),
+not PF selection alone, to determine persistence support.
 Pressure caching/dormancy must be measured against pressure reference, including
 complete native tick preparation and fallback cost. Their measured ratios are
 source/workload specific, not an additional solver-family ranking.
@@ -37,7 +43,7 @@ merged at `03785c3`, with the shared native successor accepted through
 [PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md) at
 `ec58d919` on 2026-10-25. It is **opt-in**: only
 a World whose applied liquid policy assigns Water to `pressure_flow_v1/reference`
-runs it. The production default stays `freemass_v1` and every Current golden is
+runs it. At that historical admission, the production default stayed `freemass_v1` and every Current golden was
 unchanged. The owner lifted the hold on the pressure reference and the inertial
 family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
@@ -52,7 +58,7 @@ cost admission. Source-matched Windows/Linux scoped publication passed at
 ([publication evidence](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)).
 These variants are implementations of one family, not new physics.
 All retain the optional overfill/flow/gas sidecar and World compartment table.
-Other materials keep their kernels and default Water remains FreeMass.
+At that checkpoint other materials kept their kernels and default Water remained FreeMass.
 
 Accepted main also supplies W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
@@ -160,7 +166,7 @@ resolves deterministically (components by smallest root, regions by lowest
 
 | Component | Result |
 |---|---|
-| no old compartment, region holds atmosphere cells (it was open to the air) | **create**: new id, generation 0, amount = volume: atmospheric gas in the whole sealed volume, including kernel-vacated cells (#406 branch, owner approved 2026-11-06) |
+| no old compartment, region holds atmosphere cells (it was open to the air) | **create**: new id, generation 0, amount = volume: atmospheric gas in the whole sealed volume, including kernel-vacated cells (accepted source; original #406 owner approval 2026-11-06) |
 | no old compartment, unresolved cells but no atmosphere cells | **create**: new id, generation 0, amount = unresolved cells (atmospheric for its free volume) |
 | no old compartment, vacuum cells only | stays `kVacuumLabel`; no compartment |
 | one old → one region | **continue**: same id/generation; volume recomputed; amount += atmosphere cells absorbed |

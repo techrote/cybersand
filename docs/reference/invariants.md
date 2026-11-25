@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 ---
 
 # Architectural and simulation invariants
@@ -297,10 +297,10 @@ Fixtures: [native](../../native/tests/test_world.cpp),
 
 | ID | Status and requirement |
 |---|---|
-| WATER-001 | Current default pure closed fixtures conserve exact 8-bit mass. Residual native #200 additionally closes world-wide visible+PF-overfill Water against explicit setup/edit/generation/event/reaction/kernel source-sink aggregates; this preserves #160 chemistry rather than asserting reaction conservation |
-| WATER-002 | Current default FreeMass: visible mass lives in the common material grid; opt-in PF overfill remains native solver-owned cell state, without a second World authority |
+| WATER-001 | Current original FreeMass pure closed fixtures conserve exact8-bit mass; this fixture claim is not the Wave player profile. Residual native #200 additionally closes world-wide visible+PF-overfill Water against explicit setup/edit/generation/event/reaction/kernel source-sink aggregates; this preserves #160 chemistry rather than asserting reaction conservation |
+| WATER-002 | Current native FreeMass baseline: visible mass lives in the common material grid; opt-in PF overfill remains native solver-owned cell state, without a second World authority |
 | WATER-003 | Current default mass8 FreeMass transfer cannot exceed source mass or destination 255 capacity; selected-precision and PF visible/overfill bounds follow their family contracts |
-| WATER-004 | Current default FreeMass fixture: adjacent difference ≤1 rests; settled content hash is time-independent, while complete physical hash includes clock and policy |
+| WATER-004 | Current native FreeMass baseline fixture: adjacent difference ≤1 rests; settled content hash is time-independent, while complete physical hash includes clock and policy |
 | WATER-005 | Current leveling-fixture scope: free Water has no exhausted-history equilibrium rule |
 | WATER-006 | Current: mass-based display dither does not mutate mass/activity |
 | WATER-007 | Current fallback only: coherent emission preserves its supported-flow restrictions; native uses a distinct 12-tick delay |
@@ -317,12 +317,12 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-011 | Current main native: fixed job aggregates merge serially; checked external/generated overflow refuses before authority changes, while tick overflow quarantines partial progress |
 | WATER-012 | Current main native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
 | WATER-013 | Current main native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
-| WATER-014 | Current #201 branch source, pending acceptance: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
+| WATER-014 | Current accepted #201-derived source: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
 | WATER-015 | Current #201 source: incomplete derived heads/index/member proofs select complete admitted reference evaluation; no stale/partial summary is consumed as a valid cached head |
 | WATER-016 | Current #201 source: gas fixed point includes final labels and zero discovery allocation; component reuse retains global seed order, identity/history and relabelling, including paused contributors |
 | WATER-017 | Current #201 execution3 certificate law, retained unchanged by execution4: cold/invalidated inputs take ordinary warmup; failed proof defers eight eligible visits; only the exact valid tag skips motion. Usable heads/prior Water work admit bounded8-tick cost trials; deficit/uncertainty suspends32 eligible-head ticks. Off/cold invalidation never scans certificates; reactivation resets them before reading. Derived state is cold on restore and execution identity is separate from physical authority |
 | WATER-018 | Current #201 diagnostic interface: copied prepared heads may be stale after transport/edits; complete roster coverage and exact numerical errors do not grant freshness or rest authority. Net ROI Water balance is not gross face flux |
-| WATER-020 | Current repair branch, pending acceptance: final gas relabel changes unvisited labels absent from the new live table to vacuum, retains still-live masked identity, preserves already-reduced amounts/history, and treats sanitation as a non-fixed-point label change; CYPS still refuses dangling gas labels ([contract](../architecture/pressure-flow-v1.md#gas-compartments)) |
+| WATER-020 | Current accepted source: final gas relabel changes unvisited labels absent from the new live table to vacuum, retains still-live masked identity, preserves already-reduced amounts/history, and treats sanitation as a non-fixed-point label change; CYPS still refuses dangling gas labels ([contract](../architecture/pressure-flow-v1.md#gas-compartments)) |
 | WATER-021 | #201 execution4 (PR #382): a cached/dormant wake-summary bit is set only by a complete negative state-only scan and is cleared by every wake-input path (±2 producer/host/mask rectangles across seams, changed final heads, every gas pass, rebuild/cold/restore, active blocks); elision needs `sleep_after_quiet_ticks >= 2`; wake decisions equal reference |
 | WATER-019 | Current #201 adapter source: copied unsigned budget/capacity/counter values use decimal strings without signed-u64 truncation; all adapter observations remain exclusive-owner calls, not worker-owned Godot APIs |
 
@@ -352,18 +352,21 @@ The [standalone IN contract](../architecture/inertial-cellular-v1.md#standalone-
 owns the exact interfaces. Local Windows execution does not qualify the full
 application, actual browsers or released runtimes.
 
-The bounded unmerged #202 [articulated host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
-additionally owns these application preparation invariants:
+The accepted bounded [articulated host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+additionally owns these application preparation invariants. The #256/#257
+constructor slices are present in the inspected accepted source. Qualification
+limitations in these rows retain the scope of their linked original checkpoints;
+they do not reinstate an old unmerged-branch requirement or certify a new runtime.
 
 | ID | Status and requirement |
 |---|---|
-| LCBH-001 | Current on branch: actual main-thread body poses stay frozen in their permanent private physics space until complete terrain readiness and native/worker commit; accepted adoption performs no rebind |
-| LCBH-002 | Current on branch: strict copied initial body input produces native masks before receipt capture; canonical physical hash binds those masks, while body digest/count remain qualified host metadata |
-| LCBH-003 | Current on branch: exact continuation binding and final request/settings/reset/stop fences preserve the retained World/owners/receipt on refusal; already-admitted work keeps its explicit mailbox disposition |
+| LCBH-001 | Current accepted source: actual main-thread body poses stay frozen in their permanent private physics space until complete terrain readiness and native/worker commit; accepted adoption performs no rebind |
+| LCBH-002 | Current accepted source: strict copied initial body input produces native masks before receipt capture; canonical physical hash binds those masks, while body digest/count remain qualified host metadata |
+| LCBH-003 | Current accepted source: exact continuation binding and final request/settings/reset/stop fences preserve the retained World/owners/receipt on refusal; already-admitted work keeps its explicit mailbox disposition |
 | LCBH-004 | Planned full host evidence remains separate: frozen native-v1 qualifications and false full-match eligibility cannot be relabeled by a panel, caller claim or unverified host envelope |
-| LCBH-005 | Current on integrated branch: IN instance versions, effective parameter identity and actual damping come from native World readback; geometry3 is explicit for candidate and comparator, while Original Current restores protected2 |
-| LCBH-006 | Current on branch: ordinary Tower prepares final floor/player/camera/profile before capture, retains ordinary control routing and accepted reset/profile selection, and treats a committed observer failure as an installed fault; refusal retains old owner/World/receipt/UI |
-| LCBH-007 | Current qualified foundation on branch: API-reported library path/current file hash, manifest/current script files and caller claims keep their distinct observation scopes; editor shadow paths require explicit qualification. Immutable host observation values preserve native-v1 qualifications15 and false native/host full-match eligibility; complete executed host verification and matching publication remain open |
+| LCBH-005 | Current accepted integration: IN instance versions, effective parameter identity and actual damping come from native World readback; geometry3 is explicit for candidate and comparator, while Original Current restores protected2 |
+| LCBH-006 | Current accepted source: ordinary Tower prepares final floor/player/camera/profile before capture, retains ordinary control routing and accepted reset/profile selection, and treats a committed observer failure as an installed fault; refusal retains old owner/World/receipt/UI |
+| LCBH-007 | Current bounded identity foundation: API-reported library path/current file hash, manifest/current script files and caller claims keep their distinct observation scopes; editor shadow paths require explicit qualification. Immutable host observation values preserve native-v1 qualifications15 and false native/host full-match eligibility; complete executed host verification and matching publication remain open |
 | LCBH-008 | Current subsequent owner slice: token-bound copied run encoding stays explicitly prepared; immutable observation collection precedes final guard and only successful commit adopts it. Refusal/defer retains old World/owner/graph/record; restart records actual new generation, accepted defaults retire identity, and only explicit capture copies full record. Complete verified host/publication eligibility remains open |
 | LCBH-009 | Current bounded Water Feel route: explicit unblinded sampled Exploratory rebuild retains original policy/recipe/player/actions/ledger, with exact serial/applied/definition success acknowledgement. The later desktop reference-body stage follows LCBH-012. Initial normalization never rewrites future sources; CY Water fractional scheduled sources, blind and unsupported body routes refuse before mutation. Original Current/blind defaults remain separate |
 | LCBH-010 | Current apparatus/export boundary: an exporter identifies an unqualified build; explicit Web terminal JSON, successful POST, earliest console/network and ordinary visual execution are separately evidenced. Native headless Web-scene passes never become actual Wasm/browser acceptance |
@@ -374,9 +377,9 @@ additionally owns these application preparation invariants:
 | LCBH-014 | Current bounded synchronous ordinary-demo route: only four authored body-free recipes gain Exploratory rebuilding, with exact ordered tuples, privately staged sampled player and actual final quality/view/cadence before serial/native commit. Authored identity binds source ID and native generation, never an imported save label. Refusal retains World/owners/receipt/record; healthy Restart reconstructs accepted recipe/policy/geometry. Quarantined prepared Restart refuses, with truthful explicit Current/unarmed-import recovery; no implicit fallback or full-host/browser/rest-contact qualification follows |
 | LCBH-017 | Current bounded synchronous Physics Pit route: exact authored recipe and original three poses stage in one permanent frozen space with copied same-request/token ownership and final execution before capture. At least two actual physics frames and bounded terrain readiness precede final serial/source/generation/settings/lifetime plus native commit fences. Refusal/cancel retains old World/player/graph/receipt/record and copies actual native attempt only; success adopts the same graph and Restart retains accepted recipe/selection. Imported same-label bodies gain no authored identity; runtime Web ownership and final platform/full-host gaps stay unchanged |
 | LCBH-018 | Current bounded synchronous Water Feel body route: checked original recipe/actions/player and original y90 poses stage in the existing frozen permanent graph with final fixed Water view and retained quality/cadence. Actual native source generation/semantic identity, configured Baseline component/applied-receipt binding, copied settings/mode/profile, serial/lifetime/readiness and native retained-state fences precede commit. Refusal preserves old World/graph/receipt/record/cursors, including accepted old-world edits; success adopts without rebind. Restart and body-free change retain explicit family/normalization, and same-label generic imports gain no constructor identity. Actual native family/variant readback is required for multi-arm evidence; final Web/publication/full-host/Water-IN gaps remain separate |
-| LCBH-019 | Current unmerged desktop native-default owner: copied native origin selects the shared recipe; actual sampled inputs, initial masks and frozen permanent bodies precede final request/settings/native/token guards and observation capture. Only success adopts owners, F7/PENV preferences and copied identity; R retains selection. Initial PF gas-capacity excess returns typed native refusal before swap, retaining the healthy World/graph/receipt/record. Future dynamic exhaustion quarantines. Local Windows proof and explicit Controlled/actor refusals do not establish final union/platform/full-host acceptance |
-| LCBH-020 | Current unmerged union: Water CY and Water IN both trigger fractional future-source refusal before preparation; setup-only normalization never rewrites those actions. Actual desktop and synchronous refusal retains World/owner/body graph/native receipt/host record/reset input. Exact legacy default vectors remain immutable; capability-changed default physical hashes require the separately frozen policy/capability/hash-version namespace and unknown identities refuse |
-| LCBH-021 | Current isolated unmerged desktop trial owner: one actual barrel8×14 or Ripper18×8 retains exact copied non-serial pose/geometry/mass/motion in an automatically inactive permanent private space. At least two actual physics frames, terrain readiness and final token/request/settings/native/body-digest fences precede same-graph adoption. Apply retains actual motion/input; Restart/F5 stage authored fresh state and candidate-only preferences. Refusal retains old World/graph/receipt/record/motion. Native-default PF capacity refusal remains explicit; local Windows FM/CY/PF proof does not establish IN trial play, remaining constructors, full-host or final platform/scientific acceptance |
+| LCBH-019 | Current accepted desktop native-default owner: copied native origin selects the shared recipe; actual sampled inputs, initial masks and frozen permanent bodies precede final request/settings/native/token guards and observation capture. Only success adopts owners, F7/PENV preferences and copied identity; R retains selection. Initial PF gas-capacity excess returns typed native refusal before swap, retaining the healthy World/graph/receipt/record. Future dynamic exhaustion quarantines. Local Windows proof and explicit Controlled/actor refusals do not establish final union/platform/full-host acceptance |
+| LCBH-020 | Current accepted application union: Water CY and Water IN both trigger fractional future-source refusal before preparation; setup-only normalization never rewrites those actions. Actual desktop and synchronous refusal retains World/owner/body graph/native receipt/host record/reset input. Exact legacy default vectors remain immutable; capability-changed default physical hashes require the separately frozen policy/capability/hash-version namespace and unknown identities refuse |
+| LCBH-021 | Current accepted bounded desktop trial owner: one actual barrel8×14 or Ripper18×8 retains exact copied non-serial pose/geometry/mass/motion in an automatically inactive permanent private space. At least two actual physics frames, terrain readiness and final token/request/settings/native/body-digest fences precede same-graph adoption. Apply retains actual motion/input; Restart/F5 stage authored fresh state and candidate-only preferences. Refusal retains old World/graph/receipt/record/motion. Native-default PF capacity refusal remains explicit; local Windows FM/CY/PF proof does not establish IN trial play, remaining constructors, full-host or final platform/scientific acceptance |
 
 ## GPU and rejected-approach invariants
 
@@ -449,3 +452,23 @@ materials after overrides. Native fixture feeds never paint their expected
 reaction products; every required helper must complete and no-op/aborted cases
 must fail. Counts, logical work, local timing, actual rendered pixels and visual
 quality judgments remain separately labelled evidence.
+
+
+## Accepted Workbench and persistence boundaries
+
+Source inspection at `00cdb02f` adds these stable review statements without
+promoting candidate features or historical runtime evidence.
+
+| ID | Status and narrow claim | Authoritative contract |
+|---|---|---|
+| AUTHORED-001 | Current: native queue admission, operation completion, authored recording and rendered publication are distinct; stale identities cannot grant another World's edit authority | [Interfaces](interfaces-and-message-contracts.md#which-acknowledgement-should-a-caller-wait-for) |
+| AUTHORED-002 | Current: material-only Flatten captures stored uint16 material IDs and replaces authoring baseline/history while leaving the installed World/Rapier state unchanged; Save is explicit | [Shared authoring](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility) |
+| AUTHORED-003 | Current: ordinary authored Save stores reconstructible starts and supported edits/options; it does not promise evolved physics, live leases, momentum or session Undo persistence | [Persistence](level-saves-and-replay.md#choose-the-right-persistence-contract) |
+| WATER-022 | Current: the plain native constructor leaves Wave/ballistic disabled; the fresh native sandbox/Workbench gameplay profile explicitly enables Wave, spill and ballistic release | [Configuration](configuration-reference.md#water-constructor-defaults-and-player-profile) |
+| WATER-023 | Current: Wave uses physical hash6 but physical save format0; save/restore refuses rather than omitting authoritative face-flux state | [Physical versions](level-saves-and-replay.md#current-native-physical-state-versions) |
+| MAT-AUTH-001 | Current: generated native hard/granular masks are consumed; arbitrary Lab candidates remain isolated and report runtime_active=false | [Material consumers](../systems/materials-and-rule-kernels.md#what-the-material-catalogue-and-materials-lab-currently-control) |
+| ACTOR-WB-001 | Current: inspection is distinct from human piloting; per-actor controls submit bounded leased values to the existing main-thread physical owner | [Actor composition](../systems/workbench-actor-composition.md#ownership-and-lifecycle) |
+
+The prior Water and host invariants retain their named family/source scope.
+Old branch-scoped execution descriptions do not certify later runtime artifacts.
+The [validation ledger](validation-evidence.md) continues to own executed results.

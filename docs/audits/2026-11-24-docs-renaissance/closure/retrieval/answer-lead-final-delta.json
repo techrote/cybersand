@@ -1,0 +1,39 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewer": "lead",
+  "old_input": "answer-lead-input.json",
+  "old_input_sha256": "cb128e47a6b7c32c89e3be3160c18e13fbed24286e0a3278cd57acf676aab31d",
+  "final_input": "answer-lead-final-input.json",
+  "final_input_sha256": "55a2a070dcd59a56799d103bbe6cdaffb287cfd54951fe7a6d5d29c76c192193",
+  "meaning": "Only passage text/order/metadata equality permits transferring an earlier answer review. Scores are recalculated and not used to infer answer quality. Changed contexts need fresh review.",
+  "delta": [
+    {
+      "id": "DR31",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR32",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR33",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR34",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 4,
+      "final_canonical_rank": 4
+    }
+  ]
+}

@@ -1,0 +1,2168 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "method": "Specialist A manually assigned proposition-level authority components for each recovered composite claim; this classifies scope rather than granting new source, task, runtime or owner authority. The176 recovered rows remain composite and are not recounted as atomic claims.",
+  "classes": [
+    "current-accepted-implementation",
+    "current-process-or-validation-contract",
+    "historical-evidence",
+    "approved-owner-intent",
+    "planned-unresolved-or-unmerged",
+    "unmerged-documentation-retrieval-candidate",
+    "dated-github-lifecycle-snapshot"
+  ],
+  "claims": {
+    "A-01": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native/host/Rapier ownership, authoring entry, native and player defaults, current renderer"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Pending programmes remain outside accepted capability"
+        }
+      ]
+    },
+    "A-02": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Workbench integrations, native receipts, host claim projection and material-only Flatten"
+        }
+      ]
+    },
+    "A-03": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted ballistic Water and distinct native/player defaults"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old no-upward and persistence restrictions retain their dated scope"
+        }
+      ]
+    },
+    "A-04": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Authoring/native/physics/publication ownership, actor composition and containment"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original qualification evidence remains source-bound"
+        }
+      ]
+    },
+    "A-05": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Two-level desktop scheduling, distinct progress stages and failed-World quarantine"
+        }
+      ]
+    },
+    "A-06": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Full-image upload at installed extent and distinct native/history/render acknowledgements"
+        }
+      ]
+    },
+    "A-07": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Eight-byte Cell ABI, logical fields, Wave state and finite host versus sparse native bounds"
+        }
+      ]
+    },
+    "A-08": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Actor coupling and explicit body/proxy capacity"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "ObjectShard delivery is not established"
+        }
+      ]
+    },
+    "A-09": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Authored Save, Flatten, CYSD/CYPS versions and unsupported Wave physical continuation"
+        }
+      ]
+    },
+    "A-10": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Reentry, family-specific quantities, authored persistence and evidence terminology"
+        }
+      ]
+    },
+    "A-11": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Four solver enums, Wave overlay, ballistic ownership and player presets"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Per-material Wave authoring remains planned"
+        }
+      ]
+    },
+    "A-12": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted Water families and player Wave defaults"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old FreeMass-only negative controls are dated experiments"
+        }
+      ]
+    },
+    "A-13": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Generated capability consumer, isolated Lab, effective-property restrictions and native defaults"
+        }
+      ]
+    },
+    "A-14": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Bounded accepted Lab and generated native consumer"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original material-authoring design and permissions"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Broader authoring direction is not fully implemented"
+        }
+      ]
+    },
+    "A-15": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted59-entry composition, provider boundaries and authored/live handoff"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Actor finisher remains separate"
+        }
+      ]
+    },
+    "A-16": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native/player Water defaults and distinct constructor, schema and runtime capacities"
+        }
+      ]
+    },
+    "A-17": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted Wave and failure interfaces; queue/native/history/display/provider stages"
+        }
+      ]
+    },
+    "A-18": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Receipts, Flatten, save boundaries, Wave defaults/refusal and material-consumer limits"
+        }
+      ]
+    },
+    "A-19": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Host dimensions and finite generated-map adoption"
+        },
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Area and game-time catch-up intent"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Persistence manager remains unmerged"
+        }
+      ]
+    },
+    "A-20": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted catalogue and Gentek vocabulary"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original integration qualification"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Later evaluator candidate remains separate"
+        }
+      ]
+    },
+    "A-21": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Default nonnegative IN versus opt-in signed IN and current persistence precedence"
+        }
+      ]
+    },
+    "A-22": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native PF/defaults, separate player Wave profile and actual-instance physical identities"
+        }
+      ]
+    },
+    "A-23": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Opt-in PF cache semantics and accepted moving-mask correction"
+        }
+      ]
+    },
+    "A-24": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Eight-byte PrecisionStorage and law-specific Water quantity"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Four-byte Sandspiel/experiment measurements"
+        }
+      ]
+    },
+    "A-25": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "RG8 full backing-image submission at installed extent"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Byte counts do not establish transfer timings"
+        }
+      ]
+    },
+    "A-26": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted PF and Water/Brine IN"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "October API/model requirements and then-pending hash/host boundaries"
+        }
+      ]
+    },
+    "A-27": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted IN/PF variants"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original LCB admission"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Scientific campaigns and future gates remain separate"
+        }
+      ]
+    },
+    "A-28": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Available Water-IN and native FreeMass versus player Wave defaults"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Frozen October campaign/arm evidence"
+        }
+      ]
+    },
+    "A-29": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Generated hard/granular consumer, isolated Lab, native descriptor/rule ownership and source guards"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original shadow directory is not a newly active consumer"
+        }
+      ]
+    },
+    "A-30": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Current IN bounds, signed option and version precedence"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Proposed reference-model rows, old bounds and hash2 examples"
+        }
+      ]
+    },
+    "A-31": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Per-World liquid policy, prepared receipts, bounded checkpoints and hard/granular consumers"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "General commands, full replay, streaming and extraction remain planned"
+        }
+      ]
+    },
+    "A-32": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Eight-command/4096-cell brush admission and bounded accepted tooling"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "General runtime compiler, replay and queue framework not established"
+        }
+      ]
+    },
+    "A-33": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Widened state-hash fields, Wave state, content-hash exclusions and native physical identity"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Full host replay absent"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "No new cross-platform or scientific equivalence claimed"
+        }
+      ]
+    },
+    "A-34": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted prepared paths and observation projection; token/adoption and version distinctions"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old Ready/unmerged instructions and checkpoint limits"
+        }
+      ]
+    },
+    "A-35": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Water Lab equipment route, authored apparatus and save boundaries"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Equipment recovery successor remains separate"
+        }
+      ]
+    },
+    "A-36": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Workbench and F5 equipment controls, resource restart, actor request bounds and authored-save limits"
+        }
+      ]
+    },
+    "A-37": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Distinct46-rig/59-entry catalogues, capabilities,8/8/64 admission and Workbench controls"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Finisher and broad feel acceptance remain separate"
+        }
+      ]
+    },
+    "A-38": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native and adapter generation budgets, schema4 extension, receipt types and preview/adoption distinction"
+        }
+      ]
+    },
+    "A-39": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Derived native rule lookup and sparse semantic rule authority"
+        }
+      ]
+    },
+    "A-40": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Generation diagnostic channels, logical charges and schema4 global geometry restrictions"
+        }
+      ]
+    },
+    "A-41": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Typed spatial schemas, exported-geometry ordering and standalone editor controls"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Persistent streaming remains separate"
+        }
+      ]
+    },
+    "A-42": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Read-only reconstruction tickets, staged children, publication pools and bounded failures"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original Stage3A next-review instruction"
+        },
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Later TrackA authority is distinct from TrackB gates"
+        }
+      ]
+    },
+    "A-43": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Bounded ordinary-body granular response and existing actor joints/torque"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "September Planned label"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Generalized shape feedback remains separate"
+        },
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Separate material/body ownership retained"
+        }
+      ]
+    },
+    "A-44": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Wave custom-transport refusal and prepared Baseline normalization"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Retained transport settings"
+        },
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Bounded-fidelity direction retained"
+        }
+      ]
+    },
+    "A-45": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Granular defaults, transport owner policy and Wave applicability restrictions"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original transport scientific result is unchanged"
+        }
+      ]
+    },
+    "B-01": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "80 Genteks,13 earlier presets and five style slots"
+        }
+      ]
+    },
+    "B-02": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Repository launch wrapper and exact Godot pin"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Companion dev.cmd belongs to a separate workspace"
+        }
+      ]
+    },
+    "B-03": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "F2/menu session close and explicit authored Save before leaving"
+        }
+      ]
+    },
+    "B-04": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Live brush/eraser versus paused shapes, selection, fill and Undo controls"
+        }
+      ]
+    },
+    "B-05": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native human paint catalogue and narrower Art policy"
+        }
+      ]
+    },
+    "B-06": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Edit/history capacity and tick-invalidated construction history"
+        }
+      ]
+    },
+    "B-07": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Queued admission versus native application and acknowledged cancellation prefix"
+        }
+      ]
+    },
+    "B-08": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Authored save content and exclusions of evolved physical state"
+        }
+      ]
+    },
+    "B-09": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Flatten captures uint16 IDs, retires history, preserves live World and does not save"
+        }
+      ]
+    },
+    "B-10": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Named-start directory and format-specific stamp/JSON budgets"
+        }
+      ]
+    },
+    "B-11": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Generator preview, explicit World installation and separate project Save"
+        }
+      ]
+    },
+    "B-12": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "512/1024 architectural preview versus2048 blank Workbench"
+        }
+      ]
+    },
+    "B-13": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Session-local Art conversation and retained preferences/log lifetime"
+        }
+      ]
+    },
+    "B-14": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Hide versus Stop semantics across provider/native stages"
+        }
+      ]
+    },
+    "B-15": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Configured NVIDIA initial model and editable endpoint/model"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Preset does not certify service availability"
+        }
+      ]
+    },
+    "B-16": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "In-memory keys, redaction limits and disabled redirects"
+        }
+      ]
+    },
+    "B-17": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Art source material, work-area/body protection and separate trusted Undo contract"
+        }
+      ]
+    },
+    "B-18": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Five Water Lab tabs, staged native readback and Wave gameplay default"
+        }
+      ]
+    },
+    "B-19": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Isolated Materials Lab inspect/edit/compare"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Current-scene activation unmerged"
+        }
+      ]
+    },
+    "B-20": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted independent actor composition and pilot handoff"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Later finisher unavailable"
+        }
+      ]
+    },
+    "B-21": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Standalone Neon/Deepworks routes and layer behavior"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Workbench Strata integration unavailable"
+        }
+      ]
+    },
+    "B-22": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "Original socket-blocked graphical attempt and native material images"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Neither image production nor static preview proves graphical/physical acceptance"
+        }
+      ]
+    },
+    "B-23": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted Gentek80 integration and session-local Art"
+        },
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Dated unmerged evaluator status"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original integration archive/qualification"
+        }
+      ]
+    },
+    "B-24": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Ordinary Main/Web material runbook,130 paintables and distinct Lab/Workbench routes"
+        }
+      ]
+    },
+    "B-25": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Host-specific F3 shortcuts, brush keys and admission budgets"
+        }
+      ]
+    },
+    "B-26": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "MicroScenario host, reference pack and INT-000 infrastructure"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Older Materials Laboratory readiness graph"
+        }
+      ]
+    },
+    "B-27": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Named standalone launch routes, Main-only shortcuts and session/reopen behavior"
+        }
+      ]
+    },
+    "B-28": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Standalone recipe-preview save/load, local history and distinct generation/exhibition/Workbench routes"
+        }
+      ]
+    },
+    "B-29": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Deepworks launcher, free camera, four-World reset, clocks and no cross-plane transfer"
+        }
+      ]
+    },
+    "B-30": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Distinct launcher routes and seven-preset Reset control"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original PLAY qualification and issue lists"
+        }
+      ]
+    },
+    "B-31": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Modern Workbench controls, actor limits and authored-save contracts"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Named original fixtures and qualification"
+        }
+      ]
+    },
+    "B-32": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Ordinary Main Tower controls and distinct Workbench Water Lab"
+        }
+      ]
+    },
+    "B-33": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Windows-only issue13 apparatus, existing extraction and Tower controls"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old machine output path and frozen scientific comparisons"
+        }
+      ]
+    },
+    "B-34": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Standalone Strata entry/input/session contracts"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Integrated Workbench Strata absent"
+        }
+      ]
+    },
+    "B-35": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Standalone semantic-depth controls, clocks and sampled actors"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Retained capture procedure/evidence; no new campaign"
+        }
+      ]
+    },
+    "B-36": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Three4LY entry routes"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Frozen calibration name and measured-source evidence"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Learned-policy/owner-feel boundaries remain open"
+        }
+      ]
+    },
+    "B-37": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Separate Thunderbowl hosts,46-rig picker, catalogue and equipment controls"
+        }
+      ]
+    },
+    "B-38": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Explicit sampled motor selection, default articulated counterpart and copied owner protocol"
+        }
+      ]
+    },
+    "B-39": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Six sampled sets/29 rigs, comparison/session capacities and owner restrictions"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "No new runtime qualification added"
+        }
+      ]
+    },
+    "B-40": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted World Art/harness,120 features and presentation-only capacities"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original donor/qualification evidence"
+        }
+      ]
+    },
+    "B-41": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Current World Art launcher, pinned executable, temporary project and viewer/export behavior"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Fresh source checkout uses accepted source rather than stale candidate direction"
+        }
+      ]
+    },
+    "B-42": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Display-backed capture implementation, exclusive outputs, sealed manifests and return codes"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original graphical qualification"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Capture proof is separate from physical playability"
+        }
+      ]
+    },
+    "B-43": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Frozen Windows evaluator procedures, package verification and explicit partial/manual outcomes"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Frozen source/package identities do not certify current main or owner acceptance"
+        }
+      ]
+    },
+    "C-01": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Feature-launcher entry and wrapper behavior"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Companion workspace optional"
+        }
+      ]
+    },
+    "C-02": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Exact dependency pins and runtime verification paths"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Pointer, materialized-byte and runnable qualification are separate"
+        }
+      ]
+    },
+    "C-03": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Discovered shard inventory/budgets and Windows native-candidate workflow"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Fixed four-shard descriptions"
+        }
+      ]
+    },
+    "C-04": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Bounded target/syntax validation and current source budgets"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old full-suite counts/time limits"
+        }
+      ]
+    },
+    "C-05": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Source/branch/input/lease-scoped runtime publication and Draft owner gate"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old restoration/branch instructions are not authorization"
+        }
+      ]
+    },
+    "C-06": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Repository Web build path and source-visible export gaps"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old companion transcript does not establish current external state"
+        }
+      ]
+    },
+    "C-07": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "unmerged-documentation-retrieval-candidate",
+          "scope": "Candidate selection repair across manifest/fallback/direct ingestion"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Recovered27-packet/four-navigation/five-answer discovery defect baseline"
+        }
+      ]
+    },
+    "C-08": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "unmerged-documentation-retrieval-candidate",
+          "scope": "Candidate explicit-only and navigation selection enforcement"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Authority validation and historical envelope meanings remain distinct"
+        }
+      ]
+    },
+    "C-09": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "unmerged-documentation-retrieval-candidate",
+          "scope": "Additive36-question fixture and candidate evaluation"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Ranking, containment and answer correctness are separate; frozen sets unchanged"
+        }
+      ]
+    },
+    "C-10": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted eight-byte storage"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "September four-byte/no-migration experimental controls"
+        }
+      ]
+    },
+    "C-11": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted Cell alias"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "L2/L4 synthetic carriers and old workspace assignments"
+        }
+      ]
+    },
+    "C-12": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "Original overnight model/branch assignment"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Current source/handover routing preserves staged authority limits"
+        }
+      ]
+    },
+    "C-13": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "M11 frozen28-source qualification"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Working-tree comparison separate; no reattestation"
+        }
+      ]
+    },
+    "C-14": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "unmerged-documentation-retrieval-candidate",
+          "scope": "Candidate audience portal/current routing"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original chronological content and anchors preserved"
+        }
+      ]
+    },
+    "C-15": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "unmerged-documentation-retrieval-candidate",
+          "scope": "Candidate developer entry"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Source-only checkout, bounded validation and Draft/merge/license limits"
+        }
+      ]
+    },
+    "C-16": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Web source scripts, known export gaps and explicit benchmark behavior"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Companion commands not a current prerequisite"
+        }
+      ]
+    },
+    "C-17": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "unmerged-documentation-retrieval-candidate",
+          "scope": "Candidate troubleshooting routes"
+        },
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Actual launcher, receipts, save recovery, provider/session and package boundaries"
+        }
+      ]
+    },
+    "C-18": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Extent-scaled RG8 submission and benchmark entry"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Worker participation and memory accounting limits prevent overclaim"
+        }
+      ]
+    },
+    "C-19": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Atlas tooling and dry-run/network distinctions"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Billing/attestation, limits and separately authorized publication"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Dated artistic/paid qualification"
+        }
+      ]
+    },
+    "C-20": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Source-matched physics reproduction and artifact/CLI distinctions"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Legacy watchdogs and provisional half-depth screens"
+        }
+      ]
+    },
+    "C-21": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Source watchdog values"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Packet/device qualification and first-failure handling"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Older time limits and failures"
+        }
+      ]
+    },
+    "C-22": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Material ID and host/scenario budgets; accepted ballistic Water"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "September non-admission"
+        }
+      ]
+    },
+    "C-23": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted families, eight-preset/two-setup UI and selected physical formats"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Full27-scenario UI unimplemented"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original campaign and old hash claims"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Caller source labels not proof"
+        }
+      ]
+    },
+    "C-24": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Flight controller digest, defaults and separate admission checks"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Teacher score evidence"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Custody and learned-policy admission unresolved"
+        }
+      ]
+    },
+    "C-25": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "PENV scope/refusals, prepared replacement and recorder profile/receipt distinctions"
+        }
+      ]
+    },
+    "C-26": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted eight-byte carrier and current Water behavior"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old Water H/compact-history sequence"
+        },
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Issue closure separate from perceptual acceptance"
+        }
+      ]
+    },
+    "C-27": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "REM original RAG/branch/issue instructions"
+        },
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Closed-child versus retained-parent and open-item status"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Historical gates do not grant current work authority"
+        }
+      ]
+    },
+    "L-01": {
+      "classification": "dated-github-lifecycle-snapshot",
+      "components": [
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Accepted main/merged foundations versus open candidate status"
+        }
+      ]
+    },
+    "L-02": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted capability map and bounded product scope"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Completed RPG and successor features not established"
+        }
+      ]
+    },
+    "L-03": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Active successor lifecycle snapshot"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Each candidate remains separately gated"
+        }
+      ]
+    },
+    "L-04": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Implementation, source/runtime qualification and owner acceptance distinctions"
+        },
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Approved direction alone is not delivery"
+        }
+      ]
+    },
+    "L-05": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Current checkout/source intake and retained publication gates"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Obsolete branch-continuation instructions"
+        }
+      ]
+    },
+    "L-06": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native/worker/Rapier/publication/failure/replacement ownership"
+        }
+      ]
+    },
+    "L-07": {
+      "classification": "current-process-or-validation-contract",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Exact-source Draft handoff and owner authorization boundaries"
+        }
+      ]
+    },
+    "L-08": {
+      "classification": "approved-owner-intent",
+      "components": [
+        {
+          "classification": "approved-owner-intent",
+          "scope": "November14 Workbench convergence, authoring and game-feel priorities"
+        }
+      ]
+    },
+    "L-09": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Desired evolved-layout saving"
+        },
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted authored Save versus live-preserving material Flatten"
+        }
+      ]
+    },
+    "L-10": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Prepared destruction, live audition, Strata and persistent-area direction"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Implementation choices remain unresolved"
+        }
+      ]
+    },
+    "L-11": {
+      "classification": "approved-owner-intent",
+      "components": [
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Game-time catch-up and bounded approximation without compulsory seamless streaming"
+        }
+      ]
+    },
+    "L-12": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "approved-owner-intent",
+          "scope": "Material/actor preferences and approximation safeguards"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Prior bounded PLAY/LCB decisions retain their original scope"
+        }
+      ]
+    },
+    "L-13": {
+      "classification": "current-process-or-validation-contract",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Distinct Git/runtime/source-input/dependency/evaluator identities and guarded older runtime provenance"
+        }
+      ]
+    },
+    "L-14": {
+      "classification": "current-process-or-validation-contract",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Git-bundle limitations and non-overwriting recovery custody"
+        }
+      ]
+    },
+    "L-15": {
+      "classification": "current-process-or-validation-contract",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Compilation, pointer, headless, graphical, package and physical acceptance evidence boundaries"
+        }
+      ]
+    },
+    "L-16": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "M11 frozen-source evidence"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Optional working-tree comparison and prohibition on reattestation"
+        }
+      ]
+    },
+    "L-17": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Frozen retrieval external-source resolution at CI-pinned companion identity"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original tests retain authority"
+        }
+      ]
+    },
+    "L-18": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Recorder sampling and format/solver boundaries"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Partial sampling/counters do not certify application replay"
+        }
+      ]
+    },
+    "L-19": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "Old cross-build, renderer and negative evidence"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "No inference of fresh GPU/platform acceptance"
+        }
+      ]
+    },
+    "L-20": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted Wave foundation"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Manifest-bound old Windows packages"
+        }
+      ]
+    },
+    "L-21": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Current Water Lab and Workbench controls; distinct v2 tuning/defaults"
+        }
+      ]
+    },
+    "L-22": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Source-root pinned diagnostic procedure, profile and bounded fixture"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old companion/180-second commands not current requirements"
+        }
+      ]
+    },
+    "L-23": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Merged evidence-only PhaseA"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Then-given Ready/merge permission not current authorization"
+        }
+      ]
+    },
+    "L-24": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Existing MoltenGlass law and no cooling-continuation repair"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "H1 campaign not rerun"
+        }
+      ]
+    },
+    "L-25": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted CY/PF/IN and player Wave"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original FreeMass decision and fluid deferral"
+        }
+      ]
+    },
+    "L-26": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Failed-tick quarantine, native non-Wave formats and authored recovery"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Failed-owner exact continuation and full application replay absent"
+        }
+      ]
+    },
+    "L-27": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Main F10 recorder versus Workbench bypass"
+        }
+      ]
+    },
+    "L-28": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Legacy recorder ROI and uint8 material format; separate Cell/Flatten/replay semantics"
+        }
+      ]
+    },
+    "L-29": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "46-rig plus4LY F5 catalogue versus59-entry Workbench composition"
+        }
+      ]
+    },
+    "L-30": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Distinct ordinary Workbench and standalone generation entries with accepted material installation"
+        }
+      ]
+    },
+    "L-31": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Accepted EXPLORE001 integration"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old Draft/Ready language is not current permission"
+        }
+      ]
+    },
+    "L-32": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Generated save UI, stamp/JSON/native replay budgets and explicit Flatten"
+        }
+      ]
+    },
+    "L-33": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Source-matched runtime and isolated reopen qualification"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old branch and overlap lists"
+        }
+      ]
+    },
+    "L-34": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Wave custom-transport refusal and schema/player profile distinction"
+        }
+      ]
+    },
+    "L-35": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Precision-normalized carrying, preserved state and caller footprints"
+        }
+      ]
+    },
+    "L-36": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Bounded PF gas and Wave pressure"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "General heat/gas-mixture fields unimplemented"
+        }
+      ]
+    },
+    "L-37": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Current waking and RenderSnapshotExchange implementation location"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original proposed bad-link correction rejected during review"
+        }
+      ]
+    },
+    "L-38": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted read-only discovery"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "September thresholds/baseline/qualification"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Production soliding not admitted"
+        }
+      ]
+    },
+    "L-39": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Selected-source physics qualification and proportionate rebuild procedure"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Old companion commands not universal"
+        }
+      ]
+    },
+    "L-40": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted Waterwall spill and crest controls"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Former candidate HOLD labels"
+        }
+      ]
+    },
+    "L-41": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Native versus player Wave defaults and resident smoothing bytes"
+        }
+      ]
+    },
+    "L-42": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted later Water/storage/ballistic capabilities"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "September research non-admissions and measurements"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "G-final authority retained without new result"
+        }
+      ]
+    },
+    "L-43": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Eight-preset/two-setup staged comparison UI and separate integrated Lab"
+        }
+      ]
+    },
+    "L-44": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted App/Trial constructor slices"
+        },
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Parent programme issue closure remains separate"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original coverage gaps and release instructions"
+        }
+      ]
+    },
+    "L-45": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "No general shader velocity input; native motion and shader spray differ"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "October GPU timings"
+        }
+      ]
+    },
+    "L-46": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted MS001/INT000 infrastructure"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original branch and admission instructions"
+        }
+      ]
+    },
+    "L-47": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "Original Flood/Stress/worker/cross-build measurements"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Preserved objectives do not imply fresh runtime qualification"
+        }
+      ]
+    },
+    "L-48": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Bounded Lab/compiler, material catalogue and IN footprints"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "General item-program IR remains planned"
+        }
+      ]
+    },
+    "L-49": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Implemented quarantine and528-entry diagnostic face/material array"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "RAMCACHE policy/candidate design not selected here"
+        }
+      ]
+    },
+    "L-50": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Opt-in read-only tile/connectivity discovery"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Ownership transfer and acceleration tiers unavailable"
+        }
+      ]
+    },
+    "L-51": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Authored/native persistence, CYPS host exclusions and Wave refusal"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Aggregate lifecycle persistence not implemented"
+        }
+      ]
+    },
+    "L-52": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "September checkpoint and earlier blocker"
+        },
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Current open-item intake"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Dependency readiness not branch/campaign/merge authority"
+        }
+      ]
+    },
+    "L-53": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "Discovery-off control, old Windows commands and timings"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Current source-root work need not adopt old machine paths"
+        }
+      ]
+    },
+    "L-54": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "historical-evidence",
+          "scope": "Issue17 completion permission and current4 experiment name"
+        },
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Eight-byte cells and selected runtime Water policy"
+        }
+      ]
+    },
+    "L-55": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted prepared paths and distinct ordinary Water Lab"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original H-ready experiment, assignments and old candidate qualifier"
+        }
+      ]
+    },
+    "L-56": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Preregistered coherent-body fracture fixtures and future ownership prerequisites"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Model/Rapier/identity/accounting distinctions; unchanged reviewed proposal"
+        }
+      ]
+    },
+    "L-57": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Brine condition-byte projection"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "81-row inventory,50-material plate and scale example"
+        }
+      ]
+    },
+    "L-58": {
+      "classification": "current-accepted-implementation",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Context-specific G shortcut for Main glow, Workbench Fill and equipment Drain"
+        }
+      ]
+    },
+    "L-59": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Dated open successor intake and unchanged accepted main"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Successor bodies do not establish product or physical acceptance"
+        }
+      ]
+    },
+    "L-60": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "approved-owner-intent",
+          "scope": "October27 TrackA detachment versus TrackB scaling routing"
+        },
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted read-only discovery"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "September branch/order instructions"
+        },
+        {
+          "classification": "planned-unresolved-or-unmerged",
+          "scope": "Arbitrary terrain handoff not accepted"
+        }
+      ]
+    },
+    "L-61": {
+      "classification": "mixed",
+      "components": [
+        {
+          "classification": "current-accepted-implementation",
+          "scope": "Accepted scenario infrastructure and distinct modern Lab"
+        },
+        {
+          "classification": "dated-github-lifecycle-snapshot",
+          "scope": "Closed scientific issues versus open45"
+        },
+        {
+          "classification": "historical-evidence",
+          "scope": "Original graph/admission"
+        },
+        {
+          "classification": "current-process-or-validation-contract",
+          "scope": "Old sequence does not restart branches or prohibit later accepted features"
+        }
+      ]
+    }
+  }
+}

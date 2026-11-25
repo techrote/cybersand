@@ -1,0 +1,121 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewer": "b",
+  "old_input": "answer-b-final-input.json",
+  "old_input_sha256": "16daabe519ebebf6510c2e6d4c38b19ae0f8e18366e19a842b3c34beaf8a724e",
+  "final_input": "answer-b-qualified-input.json",
+  "final_input_sha256": "bbb51639c411adb4da8b0c3164278911c575421a7efc288bd5b2a82edb599874",
+  "meaning": "Passage text/order/metadata equality permits transfer of earlier actual-reading review; no answer-quality inference from scores. Changed contexts require independent reading.",
+  "delta": [
+    {
+      "id": "DR01",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR02",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR03",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 2,
+      "final_canonical_rank": 2
+    },
+    {
+      "id": "DR04",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 2,
+      "final_canonical_rank": 2
+    },
+    {
+      "id": "DR05",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR21",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR22",
+      "passage_text_order_and_metadata_identical": false,
+      "changed_ranks": [
+        3,
+        4
+      ],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR23",
+      "passage_text_order_and_metadata_identical": false,
+      "changed_ranks": [
+        3
+      ],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR24",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 2,
+      "final_canonical_rank": 2
+    },
+    {
+      "id": "DR25",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR26",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR27",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR28",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 4,
+      "final_canonical_rank": 4
+    },
+    {
+      "id": "DR29",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    },
+    {
+      "id": "DR30",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "final_canonical_rank": 1
+    }
+  ]
+}

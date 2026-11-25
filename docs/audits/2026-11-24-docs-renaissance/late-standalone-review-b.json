@@ -1,0 +1,68 @@
+{
+  "reviewer": "Specialist B",
+  "recorded_at": "2026-11-24T19:46:45.998364+00:00",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Direct source and current-doc review of described host/control boundaries; original laws, performance results and research citations not requalified; no application or graphical rerun.",
+  "documents": [
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "disposition": "corrected",
+      "reviewed_scope": "Standalone Strata Theatre has its named launcher/direct/depth-lab entry, ordinary Main-only F4, original Escape-to-Main and global F2-to-launcher; its four-World paint/events do not expose ordinary Workbench Save/Flatten/history or unmerged integrated Strata.",
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/feature_navigation.gd::return_to_launcher",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/depth/depth_lab.gd::_unhandled_key_input/_input/reset_lab",
+        "godot/scripts/depth/depth_layer_runtime.gd::reset/DEFAULT_RATES/configure_rates"
+      ],
+      "sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "baseline_byte_equal": false
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "disposition": "reviewed-preserved",
+      "reviewed_scope": "Semantic-depth-authoring is preserved after checking standalone launcher/example selection, source control table, paused candidate adoption/reset, independent30/20/15/0 clocks, sampled play-only actors and the22-image capture procedure; retained evidence stays dated and no capture campaign rerun is claimed.",
+      "evidence": [
+        "godot/scripts/depth/semantic_depth_demo.gd::load_example/_unhandled_key_input/reset_example",
+        "godot/scripts/depth/semantic_plane_runtime.gd::_prepare_candidate_owners/_validate_actors",
+        "examples/worldgen/semantic-refinery.json::semantic_planes.policies/actors",
+        "examples/worldgen/semantic-flooded-cavern.json::semantic_planes.policies/actors",
+        "godot/tests/test_semantic_depth_render.gd",
+        "godot/tools/capture_semantic_depth.gd",
+        "docs/images/semantic-depth/capture-manifest.json"
+      ],
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "baseline_byte_equal": true
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "disposition": "corrected",
+      "reviewed_scope": "4LY currently has separate Workbench Actor Composition, ordinary F5 set4LY and standalone Flight Lab routes. candidate_4ly002 remains the frozen calibration label, not an unmerged feature status; old measured-source and learned-policy/owner-feel boundaries remain unchanged.",
+      "evidence": [
+        "godot/scripts/workbench_actor_catalog.gd::ids/FAMILY_NAMES",
+        "godot/scripts/workbench_actor_panel.gd::mount",
+        "godot/scripts/actor_prototype_panel.gd::_refresh_description",
+        "godot/scripts/physical_flight_profile.gd::entry",
+        "godot/scripts/feature_launcher.gd::launch",
+        "godot/tests/test_physical_flight_gameplay_render.gd"
+      ],
+      "sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "baseline_byte_equal": false
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "disposition": "corrected",
+      "reviewed_scope": "Thunderbowl sampledv1, physicalv2 and usable-course hosts remain separate from ordinary Workbench. Physical picker consumes46RIG_IDS despite old41header, distinct from F5four4LY and Workbench59; exact course/processor labels and keyboard/pointer equipment controls are source-qualified.",
+      "evidence": [
+        "godot/scripts/feature_launcher.gd::_ready/launch",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/examples/thunderbowl/physical_thunderbowl_scene.gd::_build_ui/_physics_process",
+        "godot/examples/thunderbowl/thunderbowl_scene.gd",
+        "godot/scripts/physical_actor_arena.gd::VERSION/default_config"
+      ],
+      "sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "baseline_byte_equal": false
+    }
+  ],
+  "remaining_scope": "Full experimental numeric/API requalification and physical/device acceptance belong to their programme owners."
+}

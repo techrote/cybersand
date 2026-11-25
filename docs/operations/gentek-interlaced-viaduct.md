@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Interlaced Viaduct showcase qualification
 status: Current
 document-kind: guide

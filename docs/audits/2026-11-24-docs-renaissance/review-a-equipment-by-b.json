@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B (/root/product_showcase)",
+  "recorded_at": "2026-11-24T19:48:44.468903+00:00",
+  "source_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Independent comparison of baseline-relative A documentation diff with actual accepted source functions and literal catalogue inventories; static source identity comparison.",
+  "documents": [
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26"
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5"
+    }
+  ],
+  "claims": [
+    {
+      "claim": "A-36",
+      "result": "source-verified",
+      "observations": [
+        "Mounted equipment / Apply equipment / restart labels match workbench_actor_panel.mount. apply_actor_equipment calls apply with preserve=true and apply_staged_water=false; apply rebuilds physical definitions from authored setup and copies retained body poses/motion, while equipment/controller resources are freshly initialized. The source status explicitly describes that restart.",
+        "main._publish_workbench_keyboard maps M/Alt/N/U, excludes pointer buttons from equipment activation and preserves PAINT input. Equipment mount admission rejects unsupported definitions.",
+        "PhysicalUsables.MAX_ACTORS/MAX_REQUESTS are8; request admission retains one inflight entry per actor, including extracted packets. request_error fences exact run/epoch/generation/equipment/lease and cancellation status.",
+        "cancel_physical_usable_requests and _consume_physical_usables share the mutex. Consumption rechecks inflight identity and current frame before bounded cell effects; cancellation cannot undo already committed projectile/device state.",
+        "Ordinary physical can_select permits held/none states only; authored setup serializes starting control/loadout, not live charge/projectiles or released-body continuation."
+      ]
+    },
+    {
+      "claim": "A-37",
+      "result": "source-verified",
+      "observations": [
+        "Counted46 literal RIG_IDS; default flyer manifest has8files, passivebarrel adds1, Flight.IDS adds4, matching59 Workbench catalogue entries.",
+        "capacity_error distinguishes8logicalactors,8preparedpartsperactor and64parts/proxies admission; released equipment retains capacity.",
+        "ActorComposition/Pilot inspected separate from ordinary F5 route, and source input leaves paint pointer available.",
+        "Saved midpoint GitHub evidence has #724 and #762 open/draft/unmerged; #683 is merged in initialintake. This is dated intake, not an independent live GitHub refresh."
+      ]
+    }
+  ],
+  "sources": [
+    "godot/scripts/workbench_actor_panel.gd",
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/main.gd",
+    "godot/scripts/workbench_actor_catalog.gd",
+    "godot/scripts/simulation_worker.gd",
+    "godot/scripts/physical_usable_runtime.gd",
+    "godot/scripts/physical_usable_equipment.gd",
+    "godot/scripts/physical_actor_session.gd",
+    "godot/scripts/workbench_setup.gd",
+    "godot/scripts/physical_actor_catalog.gd",
+    "godot/scripts/rigid_body_coupling.gd",
+    "godot/scripts/physical_flight_profile.gd",
+    "godot/scripts/gcr_review_fleet.gd",
+    "godot/authoring/flyers/manifest.json"
+  ],
+  "source_files_match_accepted_baseline": true,
+  "findings": [],
+  "limits": [
+    "No graphical use, equipment/physics regression or paid external dispatch executed in this review.",
+    "Existing32-item behavior tables and old runtime/physical evidence retained; this review certifies the changed P0/P1 claims, not a new full apparatus qualification.",
+    "Live candidate acceptance remains owned by final lead GitHub refresh."
+  ]
+}

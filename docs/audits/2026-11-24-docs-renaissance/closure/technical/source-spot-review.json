@@ -1,0 +1,621 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A /root/technical_truth (closure mission; independent of original authors and current Specialist B)",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "recorded_utc": "2026-11-24T23:51:34.647489+00:00",
+  "method": "Fresh direct source inspection of these bounded high-consequence themes, plus changed-document review; this is not represented as a second independent semantic review of every original176 composite claim. Original independent reviews remain separately recovered evidence.",
+  "themes": [
+    {
+      "id": "CA-T-01",
+      "original_claim_ids": [
+        "A-07",
+        "A-24",
+        "L-54"
+      ],
+      "observations": "Verified the accepted cell alias and 8-byte/8-alignment assertion; 16-bit material/state_a and 8-bit state_b/epoch fields, with optional temperature array. The stale four-byte source comment is not the actual type or a production prohibition.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/architecture/chunk-tile-and-buffer-model.md": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6"
+      },
+      "source_identities": [
+        {
+          "path": "native/include/cybersand/precision_storage.hpp",
+          "symbol_or_locator": "PrecisionStorage masks and size/alignment static_assert",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "current_bytes_match_source": true,
+          "working_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "working_lf_normalized_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/src/world.cpp",
+          "symbol_or_locator": "World::Chunk Cell alias and optional temperatures",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "b31fe9b37c72603662c04333ff05f50bf030a050",
+          "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "current_bytes_match_source": true,
+          "working_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "working_lf_normalized_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-02",
+      "original_claim_ids": [
+        "A-03",
+        "A-11",
+        "A-12",
+        "A-16",
+        "A-21",
+        "A-22",
+        "L-25",
+        "L-41"
+      ],
+      "observations": "The policy enum has four applied families plus request-only MaterialDefault. Wave is a Water FreeMass-carrier overlay and ballistic Water has its own config. Bare native defaults differ from the explicit gameplay profile: inspected two rounds, spill, ballistic, deep/floor gain, smoothing and amount-based body push. No arbitrary-material Wave authoring is inferred.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/architecture/liquid-solver-family-policy.md": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+        "docs/reference/configuration-reference.md": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03"
+      },
+      "source_identities": [
+        {
+          "path": "native/include/cybersand/liquid_solver_policy.hpp",
+          "symbol_or_locator": "LiquidSolverFamily/LiquidPolicyBuild::running",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "current_bytes_match_source": true,
+          "working_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "working_lf_normalized_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/native_extension/cyber_native_cell_world.cpp",
+          "symbol_or_locator": "select_gameplay_water/gameplay_water_options",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "current_bytes_match_source": true,
+          "working_sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "working_lf_normalized_sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/include/cybersand/world.hpp",
+          "symbol_or_locator": "WorldConfig",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a",
+          "sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "current_bytes_match_source": true,
+          "working_sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "working_lf_normalized_sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-03",
+      "original_claim_ids": [
+        "A-09",
+        "A-18",
+        "A-30",
+        "L-26",
+        "L-51"
+      ],
+      "observations": "Version precedence is Wave hash6/format0; admitted gas capacity hash/format5; ballistic or signed IN4; IN3; base2. Wave save/restore refuses. Native continuation omits host-owned masks/Rapier and is not a full application checkpoint.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/reference/level-saves-and-replay.md": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5"
+      },
+      "source_identities": [
+        {
+          "path": "native/include/cybersand/world.hpp",
+          "symbol_or_locator": "physical_state_hash_version/physical_state_format_version",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a",
+          "sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "current_bytes_match_source": true,
+          "working_sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "working_lf_normalized_sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/src/world_pressure.inc",
+          "symbol_or_locator": "save_physical_state/restore_physical_state",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "ec0999f966f1567dc7f5b64c4fdeb26a2286142b",
+          "sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "current_bytes_match_source": true,
+          "working_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "working_lf_normalized_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-04",
+      "original_claim_ids": [
+        "A-02",
+        "A-09",
+        "A-18",
+        "B-08",
+        "B-09",
+        "B-10",
+        "L-09",
+        "L-32"
+      ],
+      "observations": "Flatten requests complete stored uint16 material capture and only adopts authored references/history after validation; it does not replace the live World or write a save. Save waits for acknowledged authoring and writes one authored representation. Actor configuration is persisted; queues, solver history, live momentum, Undo and Art conversation are not. The settled-authoring failed-owner recovery remains separate from failed native continuation.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/reference/level-saves-and-replay.md": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+        "docs/operations/workbench-saving.md": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "symbol_or_locator": "request_flatten/_poll_flatten/_save_block_reason/save_setup/load_setup",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "2c24ed7bac47203e7a53cefe07632336da03d71b",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "current_bytes_match_source": true,
+          "working_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "working_lf_normalized_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_material_baseline.gd",
+          "symbol_or_locator": "stage/write_named",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "603301c53b26e90efaea6e00f438153c7e88fa03",
+          "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+          "current_bytes_match_source": true,
+          "working_sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+          "working_lf_normalized_sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "symbol_or_locator": "MAX_RUNS/MAX_STAMPS/BYTE_LIMIT/canonical_actor_numbers",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+          "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "current_bytes_match_source": true,
+          "working_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "working_lf_normalized_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-05",
+      "original_claim_ids": [
+        "B-06",
+        "B-07",
+        "B-17",
+        "A-17"
+      ],
+      "observations": "Art admission records queued only. Exclusive-owner consumption checks epoch/generation/settings, body mask and source material Empty0/HardWall58, records actual readback and may report partial. Precise editing 262144 cells and history32/1048576 limits are independent. Cancellation is a bounded stop, not implicit rollback.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-painting-and-history.md": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+        "docs/operations/workbench-art.md": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+        "docs/systems/workbench-art-providers.md": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "symbol_or_locator": "art_queue/_consume_art",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "current_bytes_match_source": true,
+          "working_sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "working_lf_normalized_sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_controller.gd",
+          "symbol_or_locator": "MAX_CELLS/MAX_HISTORY/HISTORY_CELLS/cancel",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "60cc392094be4f86f95b5db49d3da1a6e0e38793",
+          "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+          "current_bytes_match_source": true,
+          "working_sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+          "working_lf_normalized_sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_executor.gd",
+          "symbol_or_locator": "cancel and terminal partial outcome",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "3870d54ee758b958d114166774a35341df639224",
+          "sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+          "current_bytes_match_source": true,
+          "working_sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+          "working_lf_normalized_sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-06",
+      "original_claim_ids": [
+        "A-13",
+        "A-14",
+        "A-29",
+        "A-39"
+      ],
+      "observations": "Accepted native hard/granular capability consumers are real; broader descriptors and specialized kernels keep distinct owners. The Lab is an isolated candidate tooling consumer. Pair interactions derive their participant/partner/first-match tables from InteractionRules with preserved rule ordering; the 65536-entry lookup is not a new material law.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/systems/materials-and-rule-kernels.md": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2",
+        "docs/systems/intermaterial-interactions.md": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6"
+      },
+      "source_identities": [
+        {
+          "path": "native/src/material_rules.cpp",
+          "symbol_or_locator": "is_hard_surface/supports_granular_load/FirstMatchTable",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "42971c901cc8d7bdedf184cb5a5e9e982a089a21",
+          "sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "current_bytes_match_source": true,
+          "working_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "working_lf_normalized_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/include/cybersand/material_capabilities.hpp",
+          "symbol_or_locator": "generated capability maps",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "2a2b111d46139122556b67a1e130994f5c8df873",
+          "sha256": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "current_bytes_match_source": true,
+          "working_sha256": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "working_lf_normalized_sha256": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "tools/material_catalogue/lab.py",
+          "symbol_or_locator": "supported_fields and source roles",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "d24aabd3d9d90e8b655f752044a7f3641dd8ee04",
+          "sha256": "730710e02f4c7a2fc65e43bb98b6f5c138d843d2f1ca05b91992cf9c094cd1c9",
+          "current_bytes_match_source": true,
+          "working_sha256": "730710e02f4c7a2fc65e43bb98b6f5c138d843d2f1ca05b91992cf9c094cd1c9",
+          "working_lf_normalized_sha256": "730710e02f4c7a2fc65e43bb98b6f5c138d843d2f1ca05b91992cf9c094cd1c9",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-07",
+      "original_claim_ids": [
+        "A-08",
+        "A-15",
+        "A-35",
+        "A-36",
+        "A-37",
+        "B-20",
+        "B-31",
+        "L-29"
+      ],
+      "observations": "Eight actor/eight part limits and separate body/proxy totals64 are enforced. Workbench identity catalogue combines distinct legacy/fleet/rig/4LY entries; it is not identical to the physical rig list. Equipment apply preserves the live scene while using the accepted reconfiguration path; it does not supply live state replay or the unmerged actor finisher.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/systems/workbench-actor-composition.md": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+        "docs/systems/physical-actor-rigs.md": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+        "docs/systems/actor-usables.md": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/workbench_actor_catalog.gd",
+          "symbol_or_locator": "ids/MAX_ACTORS/MAX_PARTS/capacity_error",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "78e146cf8f9e724d5587bd10db85abb460f3b0fd",
+          "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+          "current_bytes_match_source": true,
+          "working_sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+          "working_lf_normalized_sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/rigid_body_coupling.gd",
+          "symbol_or_locator": "MAX_BODIES",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "e930cfb982d208e3a5563794923d86226266538c",
+          "sha256": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724",
+          "current_bytes_match_source": true,
+          "working_sha256": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724",
+          "working_lf_normalized_sha256": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/physical_actor_catalog.gd",
+          "symbol_or_locator": "RIG_IDS",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "04f503001f1da5343136ba06c2c6e29c0abf6578",
+          "sha256": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+          "current_bytes_match_source": true,
+          "working_sha256": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+          "working_lf_normalized_sha256": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/physical_flight_profile.gd",
+          "symbol_or_locator": "IDS",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "e41835eeef657bee0e1d67c59e9c8a741e216ff9",
+          "sha256": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+          "current_bytes_match_source": true,
+          "working_sha256": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+          "working_lf_normalized_sha256": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "symbol_or_locator": "apply_actor_equipment",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "2c24ed7bac47203e7a53cefe07632336da03d71b",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "current_bytes_match_source": true,
+          "working_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "working_lf_normalized_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-08",
+      "original_claim_ids": [
+        "A-38",
+        "A-40",
+        "A-41"
+      ],
+      "observations": "Native default64M and maximum1B charged operations are distinct from Godot parser caps: schemas1\u20133 retain64M and explicit schema4 may request160M. Native compile rejects per-cell variation of global schema4 room_size/wall_thickness. Preview and native World adoption remain separate operations.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/systems/procedural-world-generation.md": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+        "docs/systems/procedural-generation-fields-and-modifiers.md": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe"
+      },
+      "source_identities": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "symbol_or_locator": "Limits::max_operations_per_chunk",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "825b1a64c9986521e54a208b558341b5a904711c",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "current_bytes_match_source": true,
+          "working_sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "working_lf_normalized_sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/src/world_generation.cpp",
+          "symbol_or_locator": "Generator::compile schema4 validation and limit check",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "988151f280508c22747fafa5855cefe8137ecdbb",
+          "sha256": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "current_bytes_match_source": true,
+          "working_sha256": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "working_lf_normalized_sha256": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/native_extension/cyber_world_generator.cpp",
+          "symbol_or_locator": "parse_recipe limits",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "da3124a53feec1ec804dac30a30fe9e42389be9b",
+          "sha256": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "current_bytes_match_source": true,
+          "working_sha256": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "working_lf_normalized_sha256": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-09",
+      "original_claim_ids": [
+        "A-19",
+        "A-10"
+      ],
+      "observations": "Sparse signed native coordinates and explicit capacity are separate from finite host canvas/camera. Phased interest selects cores and wakes newly re-entered resident activity; serial stepping retains its own behavior. The new heading does not add streaming/catch-up or reinterpret twice-camera workload as a world limit.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/systems/world-storage-and-interest-region.md": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a"
+      },
+      "source_identities": [
+        {
+          "path": "native/src/world.cpp",
+          "symbol_or_locator": "set_simulation_region/begin_tick/gather_active_cores/tick_serial",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "b31fe9b37c72603662c04333ff05f50bf030a050",
+          "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "current_bytes_match_source": true,
+          "working_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "working_lf_normalized_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "symbol_or_locator": "fresh/validate",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+          "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "current_bytes_match_source": true,
+          "working_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "working_lf_normalized_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-10",
+      "original_claim_ids": [
+        "A-04",
+        "A-09",
+        "A-16",
+        "A-17",
+        "A-18",
+        "C-01",
+        "L-44"
+      ],
+      "observations": "Accepted source contains and invokes the native-default and imported-level constructors. Git ancestry confirms #256/#257 merges are ancestors of accepted00cdb02. Replacing residual unmerged labels fixes lifecycle scope; original qualification records, partial/full-host limits and owner gates remain retained. The original L-44 .cpp locator is invalid; implementation lives in the cited headers.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/architecture/data-ownership-and-lifetimes.md": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+        "docs/reference/level-saves-and-replay.md": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+        "docs/reference/configuration-reference.md": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+        "docs/reference/interfaces-and-message-contracts.md": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+        "docs/reference/invariants.md": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+        "docs/operations/local-build-and-validation.md": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7"
+      },
+      "source_identities": [
+        {
+          "path": "godot/native_extension/cyber_prepared_liquid_world.hpp",
+          "symbol_or_locator": "prepare_liquid_level/prepare_liquid_default_demo/prepare_liquid_candidate",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "b493fb47a1a7faa5d8422d401df55be6766cbeb9",
+          "sha256": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "current_bytes_match_source": true,
+          "working_sha256": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "working_lf_normalized_sha256": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/native_extension/cyber_demo_bridge.hpp",
+          "symbol_or_locator": "declarations and bindings",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "6c977578dd76d2ee5e9ef730a8b215f2c7757e8a",
+          "sha256": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "current_bytes_match_source": true,
+          "working_sha256": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "working_lf_normalized_sha256": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "symbol_or_locator": "_apply_prepared_default_liquid",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "current_bytes_match_source": true,
+          "working_sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "working_lf_normalized_sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-11",
+      "original_claim_ids": [
+        "A-11",
+        "A-12",
+        "L-25"
+      ],
+      "observations": "New family-quantity explanation follows actual motion dispatch and separate accounting. Fractional FreeMass Water amount differs from whole-cell CY motion. Water CY/IN saturation/admission and Wave/PF extra state are explicit; no universal 255-unit cap is imposed on those extensions.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/architecture/liquid-solver-family-policy.md": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d"
+      },
+      "source_identities": [
+        {
+          "path": "native/src/world.cpp",
+          "symbol_or_locator": "flow_as_yielding_liquid and Water motion dispatch",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "b31fe9b37c72603662c04333ff05f50bf030a050",
+          "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "current_bytes_match_source": true,
+          "working_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "working_lf_normalized_sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/include/cybersand/water_experiment_policy.hpp",
+          "symbol_or_locator": "maximum/default mass_bits",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "current_bytes_match_source": true,
+          "working_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "working_lf_normalized_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "native/src/world_quantity.inc",
+          "symbol_or_locator": "Water quantity/material cell accounting",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "60125b4b2f987755dd1e81bade2c66761a700c84",
+          "sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "current_bytes_match_source": true,
+          "working_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "working_lf_normalized_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    },
+    {
+      "id": "CA-T-12",
+      "original_claim_ids": [
+        "B-13",
+        "B-14",
+        "B-16"
+      ],
+      "observations": "Compacted and Custom slice the final12 conversation entries and add latest-result context only when older entries are omitted. Counterpart technical table now matches the practical guide.",
+      "result": "supported-with-stated-scope",
+      "reviewed_document_sha256": {
+        "docs/systems/workbench-art-providers.md": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol_or_locator": "model_context/model_feedback",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "c3ab6ea1c68b4565ca1792dde990a2e34cc4e751",
+          "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+          "current_bytes_match_source": true,
+          "working_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+          "working_lf_normalized_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+          "lf_normalized_bytes_match_source": true
+        }
+      ]
+    }
+  ],
+  "ancestry": [
+    {
+      "pr": 256,
+      "merge_commit": "56422c050bd5ed2ceb5f816b1269748764e2dcb7",
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "56422c050bd5ed2ceb5f816b1269748764e2dcb7",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+      ],
+      "exit_code": 0
+    },
+    {
+      "pr": 257,
+      "merge_commit": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "limits": [
+    "No new native rebuild, Godot execution, browser capture, provider request or physical Windows/NVIDIA acceptance.",
+    "Merged source presence does not establish full programme acceptance or every platform qualification.",
+    "Residual defects found by closure supersede the overbroad reading that original zero-review-gaps meant zero semantic defects."
+  ]
+}

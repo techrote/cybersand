@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh independent delta source and usability review",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "reviewer": "Specialist B /root/product_docs",
+  "author_reviewed": "Specialist A /root/technical_truth",
+  "recorded_at": "2026-11-25T00:01:00.879141+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "documents": [
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "bytes": 10765
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861",
+      "bytes": 56825
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "bytes": 15021
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "bytes": 26474
+    }
+  ],
+  "related_current_policy": [
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "bytes": 12936
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "bytes": 80950,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "2c24ed7bac47203e7a53cefe07632336da03d71b",
+      "matches_accepted_source": true,
+      "symbol": "save_setup; load_setup"
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+      "bytes": 38816,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+      "matches_accepted_source": true,
+      "symbol": "write_named"
+    },
+    {
+      "path": "godot/scripts/workbench_generated_map.gd",
+      "sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+      "bytes": 9545,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "5522ece7af755a40766804deed7fd9f817159322",
+      "matches_accepted_source": true,
+      "symbol": "write_named"
+    },
+    {
+      "path": "godot/scripts/workbench_material_baseline.gd",
+      "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+      "bytes": 12031,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "603301c53b26e90efaea6e00f438153c7e88fa03",
+      "matches_accepted_source": true,
+      "symbol": "write_named"
+    },
+    {
+      "path": "godot/native_extension/material_baseline_file.cpp",
+      "sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "bytes": 8044,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "23740d55e151aca1fbcf71bb840465458521f330",
+      "matches_accepted_source": true,
+      "symbol": "material_baseline_file::replace"
+    },
+    {
+      "path": "godot/scripts/workbench_generator_dialog.gd",
+      "sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+      "bytes": 32358,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "48e3ea0900c7d051f6de3796da384746205aa88e",
+      "matches_accepted_source": true,
+      "symbol": "open_saved; _complete; _install"
+    },
+    {
+      "path": "godot/scripts/architectural_generator_dialog.gd",
+      "sha256": "c1af8e309a6d8dea460dd7d9ee7a12703a3ec503acb202c245313d6950a1ccf4",
+      "bytes": 18884,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "dfec2ec9dc2e5c432fa5742c515222517d3b0ef9",
+      "matches_accepted_source": true,
+      "symbol": "save_project; load_project; set_project"
+    }
+  ],
+  "checks": [
+    {
+      "id": "B-XA-06",
+      "priority": "P1",
+      "finding_id": "B-CLOSE-01",
+      "document": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "section": "A small end-to-end authoring exercise",
+      "finding": "The generated-start variant now requires source-verified preview followed by Install into workbench after Load start. The reader can complete the proposed exercise without treating a dialog as an installed World.",
+      "method": "Read final step 6 and actual SharedWorkbench.load_setup and generator dialog open_saved/_complete/_install.",
+      "disposition": "PASS"
+    },
+    {
+      "id": "B-XA-07",
+      "priority": "P1",
+      "finding_id": "B-CLOSE-05",
+      "document": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "section": "Preserved interfaces and persistence",
+      "original_claim": "A failed save preserves the existing named file",
+      "finding": "The old universal I/O-failure preservation claim was not supported by all three writers. The correction limits the pre-write guarantee to admission refusal, distinguishes material-baseline native same-directory atomic replacement from ordinary/generated Godot rename, and recommends a new name for a retained earlier start.",
+      "method": "Compared SharedWorkbench admission fences and all three write_named implementations; independently read the native replacement primitive, including Windows MoveFileExW and POSIX rename. No failure injection was run in this closure.",
+      "disposition": "CORRECTED_AND_INDEPENDENTLY_VERIFIED"
+    },
+    {
+      "id": "B-XA-08",
+      "priority": "P1",
+      "document": "docs/operations/architecture-programme.md",
+      "section": "G. Measurement protocol; K. Baseline, rollback and comparison strategy",
+      "finding": "Historical September evidence directories and intentional dirty-DLL custody are now explicitly dated machine facts. New campaigns retain source/runtime custody and declare their own directories through current release policy. The edit neither deletes historical facts nor authorizes a mismatched runtime.",
+      "method": "Read actual diff and surrounding planned-programme/current-implementation scope; compared Current checkout and repository policy plus Source-matched runtime publication in the release procedure.",
+      "disposition": "PASS"
+    },
+    {
+      "id": "B-XA-09",
+      "priority": "P1",
+      "finding_id": "B-CLOSE-05",
+      "related_finding": "B-CLOSE-01",
+      "document": "docs/systems/explore001-generated-playable-maps.md",
+      "section": "Authoring and reopen, steps 6\u20137",
+      "finding": "Generated-start Save now describes validated staging plus Godot rename and recommends a unique name, without borrowing the material-baseline replacement guarantee. Reopening now explicitly requires Install into workbench after verified preview.",
+      "method": "Read actual changed steps plus generator/load source already identified in this receipt.",
+      "disposition": "CORRECTED_AND_INDEPENDENTLY_VERIFIED"
+    },
+    {
+      "id": "B-XA-10",
+      "priority": "P1",
+      "finding_id": "B-CLOSE-05",
+      "document": "docs/systems/architectural-generator.md",
+      "section": "Import style JSON / Save / Load paragraph",
+      "finding": "Project saving now describes compile/size validation, temporary file and Godot rename. It explicitly qualifies the current UI error string that overstates preservation after every failure, while keeping configuration Load and generated-map recipe reconstruction separate.",
+      "method": "Read architectural_generator_dialog.save_project, load_project and project validation path; no file-system failure execution inferred.",
+      "disposition": "CORRECTED_AND_INDEPENDENTLY_VERIFIED"
+    }
+  ],
+  "open_p0": 0,
+  "open_p1": 0,
+  "result": "PASS_WITH_RECORDED_RUNTIME_LIMITS",
+  "limitations": [
+    "This review qualifies changed documentation against accepted source; it does not claim fresh file-failure tests or graphical execution.",
+    "Atomic replacement is not a general power-loss durability guarantee; the native source explicitly preserves that limit.",
+    "Source and document hashes bind this working-tree readback. The lead owns final delivered-head equality and acceptance boundaries."
+  ]
+}

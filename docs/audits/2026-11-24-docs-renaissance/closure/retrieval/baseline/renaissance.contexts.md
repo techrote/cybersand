@@ -1,0 +1,2811 @@
+# Retrieval contexts for independent answer review
+
+Source-backed expected facts and the complete top-five contexts follow. A canonical route hit alone is not an answer pass.
+
+## DR01: I cloned CyberSand on Windows. Must I have C:/kybersand and dev.cmd before I can open the Workbench?
+
+Canonical rank: 1
+
+Expected facts:
+
+- A source-only checkout has launch-desktop.cmd; dev.cmd belongs to the separate companion workspace.
+- Verify materialized runtime inputs and the exact Godot pin; the configured main scene is the Feature Launcher.
+
+### Rank 1: operations/local-build-and-validation.md — Local build and validation > Windows development commands
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Windows development commands
+From `C:/kybersand`, the companion workspace provides `dev.cmd` / `tools/dev.py`. Host paths, installation and environment overrides belong to `C:/kybersand/docs/LOCAL_DEVELOPMENT.md`. Source-only clones do not contain these wrappers; the repository-native scripts are listed below. ```powershell .\dev.cmd doctor .\dev.cmd native-bindings .\dev.cmd native-build .\dev.cmd native-test .\dev.cmd godot-test .\dev.cmd web # Optional internally parallel Web profile: .\dev.cmd web --profile threaded ``` The repository also contains `launch-desktop.cmd` / `tools/launch_desktop.ps1` for source-only Windows checkouts. It validates the pinned Godot/runtime inputs, prints checkout/runtime identity, exports the exact checkout SHA to the child Godot process as `CYBERSAND_SOURCE_REVISION` for recording provenance, and does **not** rebuild or replace retained runtimes. `native-bindings` builds pinned Windows godot-cpp; `native-build` builds the GDExtension. `native-test` compiles/runs the C header check and native tests; `godot-test` imports the project then runs all `test_*.gd` runners. Godot tests load the installed DLL: running them alone does **not** rebuild that DLL. Record its hash and source identity with the result. The wrapper allows 240 s for import, 180 s per Godot runner, and rejects Godot error output even with exit 0.
+
+
+### Rank 2: operations/web-threading.md — Web worker profiles and reference tests > Build and preview
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Build and preview
+From `C:/kybersand`: ```powershell .\dev.cmd web --profile threaded .local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open ``` While the preview server is running: ```powershell .\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/ ``` `dev.cmd web` builds compatibility. Use export-only only with a matching fresh side module; successful packaging does not prove source-to-binary freshness. The [build guide](github-development-and-release.md) owns exact dependency pins and unresolved CI/toolchain drift. Native/Web generated bindings stay separate. The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate WASM MIME and no-cache behavior. Threaded hosting needs a secure context (HTTPS or localhost) and cross-origin isolation. Serve the complete export, including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum success is structural evidence; open the actual browser for execution. Local delivery is a separate explicit workflow after acceptance: `Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`; compatibility uses `C:/cybersand/web`. Documenting this command does not execute delivery or remote publication.
+
+
+### Rank 3: operations/physics-characterisation.md — Reproducible physics characterisation > How do I reproduce a run?
+
+Document: Reproducible physics characterisation
+Path: operations/physics-characterisation.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
+canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
+last-reviewed: 2026-10-19
+Section: Reproducible physics characterisation > How do I reproduce a run?
+Work in `C:/kybersand/source`; keep raw files under `C:/kybersand/validation/local/<date>-physics/`. Build the adapter with `C:/kybersand/dev.cmd native-build` before Godot measurements. The Python runner builds its own native CLI by default; `--skip-build` requires an identified, source-matched executable. The installed Godot DLL is not rebuilt by `godot-test`. ```text C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py native --group expanded --output C:/kybersand/validation/local/2026-09-09-physics/native-expanded C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py native --group controls --output C:/kybersand/validation/local/2026-09-09-physics/native-controls C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group controls --output C:/kybersand/validation/local/2026-09-09-physics/godot-controls-final C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group expanded --output C:/kybersand/validation/local/2026-09-09-physics/godot-expanded C:/kybersand/.local/python/Scripts/python.exe tools/physics/run.py godot --group finalists --seeds 20 --ticks 7200 --output C:/kybersand/validation/local/2026-09-09-physics/godot-creep ``` [run.py](../../tools/physics/run.py) records commands, fixture JSON, actual HEAD, dirty status, source-file hashes, executable hashes and platform in each result directory. New Godot batches also capture their own manifest. A seed is a coordinate translation, **not a new engine random stream**. The checked-in generator plus explicit configuration is the replay input; CYSD1 is not used. All runs start with newly constructed authority. Do not edit sources between batches; preserve each tested source snapshot if iterating. Defaults are five seeds `0..4`, 1,800 completed ticks, `dt = 1/60 s`. Finalists use seeds `0..19` and 7,200 ticks. The separate interpreted fallback defaults to one seed/180 ticks, overridable with `--fallback-ticks`; it is a semantic reference with no native Water-mass or rule-event parity claim. Timeouts are 180 seconds per native CLI run, 300 for its build, and 3,600 per Godot batch. A failed run retains its output; it must not be counted as completed evidence.
+
+
+### Rank 4: operations/local-build-and-validation.md — Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+**Current:** a source checkout can launch the retained desktop test project without the companion-workspace `dev.cmd`: ```powershell .\launch-desktop.cmd .\launch-desktop.cmd -Godot C:\path\to\Godot_v4.7-stable_win64.exe .\launch-desktop.cmd -PrintIdentityOnly .\launch-desktop.cmd -Editor ``` The wrapper invokes [`tools/launch_desktop.ps1`](../../tools/launch_desktop.ps1). It accepts an explicit `-Godot` path or `CYBERSAND_GODOT`; otherwise it searches the established `C:\Godot47` location. It requires exactly `4.7.stable.official.5b4e0cb0f`, verifies that the project, retained CyberSand Windows DLL/provenance file and Rapier Windows DLL are present, verifies the CyberSand DLL SHA-256 against `runtime-provenance.json`, and prints checkout, Godot and runtime identities before launch. The default action runs `godot/project.godot` through its configured `main.tscn`; `-Editor` opens the same project in the editor. The launcher deliberately contains **no build step**. A missing, hash-mismatched or wrong-version runtime is an explicit failure; it never rebuilds, replaces or silently refreshes the retained DLL. M11 output byte equality now requires `CYBERSAND_VERIFY_M11_OUTPUT=1`; current builds keep compiler/source pin checks and identify their own tested outputs. See [validation policies](current-and-historical-validation.md). The existing local `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` override bypasses some compiler/dirty-source checks. It still requires the exact godot-cpp revision. Inspect that checkout explicitly; a local validation build with this override is not bit-identical M11 reproduction.
+
+
+### Rank 5: operations/physics-characterisation.md — Reproducible physics characterisation > How are platforms, timing and visual evidence separated?
+
+Document: Reproducible physics characterisation
+Path: operations/physics-characterisation.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
+canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
+last-reviewed: 2026-10-19
+Section: Reproducible physics characterisation > How are platforms, timing and visual evidence separated?
+Native CLI serial/phased runs, Godot native manual stepping, interpreted fallback, desktop asynchronous ownership and real Web compat/threaded are separate series. The test-only [async owner subclass](../../godot/tests/physics_async_worker.gd) uses the production worker loop and stores at most `(ticks+1)*12` scalar values. Only its owner reads native observations; the main thread reads the retained trace after join. Rapier stays main-thread owned. Actual completed cellular and Rapier ticks/sample ages are reported independently. ```text Godot_v4.7-stable_win64_console.exe --headless --path C:/kybersand/source/godot --script res://tests/test_physics_async.gd -- C:/kybersand/validation/local/2026-09-09-physics/desktop-async-final 1800 5 ``` Rebuild Web modules with `dev.cmd web` and `dev.cmd web --profile threaded`. After script-only changes, re-export those identified modules. Serve each export with [serve.py](../../tools/physics/serve.py), which binds loopback, supplies isolation headers and accepts one result of at most 8 MiB into the named output directory. Open `?test=1&physics=1` in an actual browser: five seeds each of P1, P2, player/Dust, barrel/Sand and hard-floor control. The DOM exposes completion; the optional local collector preserves full results and browser identity. `ok` means execution/construction/control checks completed, not that sinking meets the future gameplay envelope. The probe leaves the menu visible and does not constitute gameplay visual acceptance. Tick times include the native adapter call. Coupling timings cover pre-tick Rapier step, sample packing and overlap/pressure preparation (player stepping in P3); result application and snapshot analysis are outside this timing interval. Report p50/p95/max with that scope. These development runs can overlap other test processes; their timings are observations, not a production frame-time budget. No new torque, substep or persistent barrel bearing model is implemented. Current permeability and player settings belong to the versioned granular policy. [analyse.py](../../tools/physics/analyse.py) produces per-run CSVs and standard Matplotlib PNGs from raw data. Overlays show stored cells, the projected rectangle, overlap pixels and world-axis inward face-normal directions. Arrows indicate geometry, not reconstructed force magnitude or live contact positions. They are rendered evidence from recorded simulation states, distinct from a gameplay screenshot or video acceptance pass.
+
+## DR02: Can I use any Godot 4 build, and which godot-cpp version matches the native library?
+
+Canonical rank: None
+
+Expected facts:
+
+- The runtime pin is exactly 4.7.stable.official.5b4e0cb0f.
+- godot-cpp is pinned to 101ae38034304346a46ea9ea84ae156d3e860496 and API 4.7; version similarity alone is insufficient.
+
+### Rank 1: operations/materials-lab-authoring.md — Materials Lab v1 > Launch and prerequisites
+
+Document: Materials Lab v1 inspection, candidate authoring and native tests
+Path: operations/materials-lab-authoring.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
+last-reviewed: 2026-11-12
+Section: Materials Lab v1 > Launch and prerequisites
+Use a complete checkout of the implementation branch and its history. Git LFS and the ordinary [desktop dependencies](local-build-and-validation.md) remain required. Godot is pinned to **4.7.stable.official.5b4e0cb0f** and godot-cpp to `101ae38034304346a46ea9ea84ae156d3e860496`. Rebuild the matching GDExtension: an older retained production binary predates the new read-only inspector methods. An older library causes an explicit rebuild message, not a metadata fallback. Use a freshly qualified branch runtime only when its provenance matches the checkout's native inputs; the completion publisher provides that explicit path. ```sh # Use the existing pinned build environment; see the local-build guide for setup. tools/build_pinned_godot_cpp.sh linux tools/build_native_extension.sh godot --path godot -- --materials-lab ``` Read-only inspection and native experiments require the matching engine library. Candidate authoring additionally requires Python 3, Git history and a C++20 compiler for **Build + check definition**. The Edit copy tab accepts Python and compiler executable paths without shell arguments. A compiler override is also available through `CYBERSAND_LAB_CXX`. Source tools must remain next to the Godot project; this is a desktop source workflow, not an exported/Web authoring service. No install operation writes production sources. The standalone Lab uses window pixels for readable controls instead of shrinking the game's 1920×1080 canvas. Tabs scroll when their contents exceed the available space, including the 1000×650 Workbench window minimum. Inspection columns keep their useful widths and can scroll horizontally. Closing the standalone Lab restores the launcher's original scaling. These presentation changes do not alter the simulation viewport or the shared Workbench's controls.
+
+
+### Rank 2: operations/material-catalogue-shadow.md — Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication
+
+Document: Material catalogue shadow compiler and compatibility guards
+Path: operations/material-catalogue-shadow.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated
+canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
+last-reviewed: 2026-11-11
+Section: Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication
+The compiler rejects unknown fields, duplicate JSON keys, unsupported versions, non-finite values, booleans in integer fields, out-of-range values, invalid references, alias/key conflicts, duplicate legacy slots and ambiguous pair ownership. Errors include the source file and JSON pointer; conflicts identify both origins, and JSON syntax errors also report line/column. Unsupported defaults, state contracts or active interaction layers are rejected instead of interpreted through implicit precedence. Valid inert `RuleKernel::None` targets remain admissible: a reaction participant need not own the tick that initiates its reaction. The compiler does not change wake state, endpoint effects, solver selection or parameter consumption. Output is UTF-8 with LF and a final newline, deterministic escaping and stable ordering. No timestamp, local absolute path or directory order enters generated content. `--check` is nonwriting; missing or stale output fails with a named artifact. Validation completes before publication, and unchanged files retain their bytes and modification times. Negative tests require failure to preserve the previously accepted output set. Run from a complete source checkout: ```text python3 tools/material_catalogue/compatibility.py --check python3 tools/material_catalogue/compiler.py --check python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' python3 tools/material_catalogue/check_native_parity.py ``` The native query check and the focused generated-C++ regression require a C++20 compiler; JSON generation and strict validation use Python's standard library. CI reuses the existing hosted Documentation workflow and execution watchdog. These focused commands do not run World scenarios or require a Godot download; expensive draft lanes stay suppressed. Under the existing ready-state path classifiers, this tools/data implementation also triggers the full Native and Windows/Linux GDExtension/Godot gates when #371 becomes ready. Those configured integration checks remain required; a draft skip or metadata readback is not a substitute. Freeze and independently review the candidate before that transition to avoid redundant matrices. Record actual jobs and any skips in the PR ledger. For optional actual Godot metadata readback, use a complete editor archive and executable matching `third_party/godot-runtime.lock.json`. Produce a native snapshot and receipt from the same source, then invoke the checker: ```text mkdir -p build/material-catalogue c++ -std=c++20 -O2 -I native/include tools/material_catalogue/native_oracle.cpp native/src/material_rules.cpp -o build/material-catalogue/oracle build/material-catalogue/oracle --snapshot > build/material-catalogue/native-snapshot.json python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json python3 tools/material_catalogue/check_gdscript_shadow.py --godot /path/to/pinned-editor --archive /path/to/pinned-editor.zip --native-snapshot build/material-catalogue/native-snapshot.json --native-report build/material-catalogue/native-parity.json --output build/material-catalogue/gdscript-parity.json ``` The helper does not download or modify the editor. Its temporary project loads only the generated metadata. The native receipt's snapshot hash must match, and its complete source/mirror inventory must still be current. This optional engine parser proof is separate from the default documentation CI gate.
+
+
+### Rank 3: operations/wb-art-paint-integrated-candidate.md — Integrated PAINT and agent Shared Workbench > Qualification and reproducibility
+
+Document: Integrated PAINT and agent Shared Workbench candidate
+Path: operations/wb-art-paint-integrated-candidate.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
+canonical-for: [integrated-paint-agent-workbench]
+last-reviewed: 2026-11-12
+Section: Integrated PAINT and agent Shared Workbench > Qualification and reproducibility
+The branch workflow `wb-art-paint-qualification.yml` builds the exact selected source on hosted Ubuntu 24.04, builds Windows through pinned LLVM-MinGW, and runs the resulting Windows package graphically on Windows 2022. Both use official Godot 4.7 and pinned godot-cpp/Rapier. The package manifest binds the source commit, tree, native inputs, DLL hash and recipe inventory. Retained provenance describing an older committed library is not presented as the rebuilt library's identity. The generator-only repair checkpoint passed [hosted run 43115786475](https://github.com/techrote/cybersand/actions/runs/43115786475) on both Linux X11 and Windows ANGLE. Its installed graphical author/reopen runs completed 20/21 checks, alongside actual-profile, resource-only and missing-layout checks. These results qualify that repair checkpoint, not the later combined tree. Local combined focused tests use official Godot `4.7.stable.official.5b4e0cb0f` and a new library containing all 87 recorded native input hashes, including PAINT capacity and stored readback. Its Linux SHA-256 is `16ffc0ce8190c2e8ca2e31fc59f10c55148adc6e7f16727dc96c094d8a96696a`. This local development build uses GCC 14.2/binutils 2.44 with the explicit toolchain-drift switch; it is separate from hosted pinned-release qualification. Before the subsequent accepted-main equipment merge, focused results were: shared ordering 86/0, stored-material/body-mask 88/0, direct PAINT executor 21/0, mounted PAINT native 109/0 at each of one and four workers. The remaining 15 original affected native/application runs completed 4,653 checks with zero failures. Combined author/reopen completed 122/32 checks at each worker count, discovering 16 real profiles and reproducing the same saved stored-material digest in each fresh process. The six-path deferred-human completion test completed 37 checks with zero failures. These are local Linux headless results; graphical execution is recorded separately by the workflow. The [local qualification record](../audits/wb-art-paint-2026-11-11/qualification.json) binds the original logs, source-input manifest, final results and retained fixture failures by SHA-256. It contains no model credentials or genuine inference claim. The combined workflow also runs both accepted regression families and `test_workbench_combined_authoring.gd` in installed and checkout layouts. Each one/four-worker author run is followed by a new-process reopen. The test covers native generation, multiple materials, every core PAINT tool, reciprocal queue leases, agent restrictions/readback, a second deterministic provider turn, late response fencing, Stop prefix, deferred human erase, actors/settings, a complete saved material digest and continued authoring. Graphical runs require real framebuffer PNGs and reject a headless display. Original failing logs are retained. Loopback provider fixtures test HTTP wire formats, errors, timeout, Stop and image payloads without paid calls. The retained `run_art_final_graphical.gd` also drives the actual Send/Stop controls, checks incrementally rendered native results, protection, retained conversations, local/world coordinate follow-ups and a rejected stale-area response. It runs graphically on both target operating systems with a deterministic loopback provider and an isolated settings folder. A deterministic provider fixture proves control and
+
+
+### Rank 4: operations/materials-lab-authoring.md — Materials Lab v1 > Launch and prerequisites > Windows launch
+
+Document: Materials Lab v1 inspection, candidate authoring and native tests
+Path: operations/materials-lab-authoring.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
+last-reviewed: 2026-11-12
+Section: Materials Lab v1 > Launch and prerequisites > Windows launch
+The branch-scoped **Materials Lab source-matched native runtime publication** workflow builds a Windows evaluation ZIP after actual Windows execution. Its **Open-Materials-Lab.cmd** launcher uses the included Godot, Python, Git history and C++ compiler. Extract the entire ZIP to a writable directory and keep its `source` and `dependencies` directories together. First launch imports the project, then opens the Lab with the qualified ANGLE renderer. It does not need a separately configured compiler environment. The bundle's manifest binds all files and the native DLL; `qualification` retains the original automated receipts and graphical captures. A package is delivered only after its copied environment also executes the native authoring tests. See the completion record for the actual run/artifact identity; workflow presence alone is not a passed run. For an ordinary source checkout instead of the evaluation package: Use the existing **GDExtension build and current Godot regression** workflow's source-built Windows candidate for the exact branch commit, or the pinned cross-build paths `tools/build_pinned_godot_cpp.sh windows` and `tools/build_native_extension_windows.sh`. Its downloaded candidate manifest must identify the same native input files as the checkout. Do not relabel the retained production DLL as a new candidate. The standalone `build_windows_msvc.bat` does not build this Godot extension. For source candidate compilation, start Godot from a configured x64 C++20 compiler environment; for MSVC use an **x64 Native Tools Command Prompt** with Python available. Select `cl` or its full executable path in the Edit copy tab. An executable path alone cannot supply MSVC's missing SDK include/library environment. The Python default on Windows is `python`. From **PowerShell inside the cloned repository**, resolve the checkout before launching. PowerShell requires `&` before a quoted executable path: ```powershell $labCheckout = git rev-parse --show-toplevel & "C:\Tools\Godot\Godot_v4.7-stable_win64.exe" --path "$labCheckout\godot" -- --materials-lab ``` The exact Windows execution status belongs to the dated qualification record. Linux screenshots and a successful cross-build are not Windows graphical or human acceptance.
+
+
+### Rank 5: systems/thunderbowl-control-reference.md — Thunderbowl actor arena and control reference > Which examples and controls can be run?
+
+Document: Thunderbowl actor arena and control reference
+Path: systems/thunderbowl-control-reference.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Thunderbowl actuation, decision and perception distinctions; prototype control schemas and bounded battle/training experiments, with explicit limits on neural, swarm and model-link claims
+canonical-for: [thunderbowl-control-reference, thunderbowl-control-topologies, thunderbowl-training-design]
+last-reviewed: 2026-10-20
+Section: Thunderbowl actor arena and control reference > Which examples and controls can be run?
+The [match presets](../../godot/examples/thunderbowl/matches) use the same [`driver`](../../godot/examples/thunderbowl/thunderbowl_driver.gd): | Preset filename stem | Demonstration | |---|---| | `human_wire`, `human_metal` | Human input through the selected lane | | `wire_duel`, `metal_lab` | Reactive intent pursuit; direct actuator pulses | | `oracle` | Central greedy assignment with privileged actor state | | `lemmings` | Independent, self-only turning and blind periodic tag attempts | | `emergent_1`, `_2`, `_4`, `_8` | Digger population examples without peer sensing/messages | | `local_swarm` | Nearby teammate spacing and typed target hints | | `nca` | Untrained recurrent actor-graph candidate | | `smart_link` | Local reflex plus optional external intention file | | `mixed` | Eight-actor asymmetric demonstration | From the repository root, replace `<godot>` with the pinned executable from the [build guide](../operations/local-build-and-validation.md): ```sh <godot> --headless --path godot --script res://examples/thunderbowl/run_thunderbowl.gd -- --match=res://examples/thunderbowl/matches/wire_duel.json --ticks=600 --output=/tmp/thunderbowl.json <godot> --path godot res://examples/thunderbowl/thunderbowl.tscn -- --match=res://examples/thunderbowl/matches/human_metal.json ``` The headless runner also accepts `--seed=INT`. Its JSON result contains final evaluator state, configuration, timing scope and adapter statistics; it is not a complete serialized replay. The output parent directory must exist. Keyboard input uses WASD, mouse aim/left-click tag, Space/Shift/C actions, Q/E trim and Z/X reel. The scene has a power slider and requires release/rearm after focus or device changes. Metal Ripper uses A/D drive and Q/E torque; Copter uses W collective, A/D cyclic and Q/E torque; Gemini uses Space/Shift for independent engines. Direct gamepad input supports independent analog Gemini triggers. Touch JSON demonstrates the normalized boundary; no touch UI or physical-device acceptance is implied. To exercise the **mock** smart-link client, start the arena with the following arguments, then run the Python client in a second terminal: ```sh mkdir -p /tmp/thunderbowl-link <godot> --headless --path godot --script res://examples/thunderbowl/run_thunderbowl.gd -- --match=res://examples/thunderbowl/matches/smart_link.json --smart-dir=/tmp/thunderbowl-link --realtime --output=/tmp/thunderbowl-smart.json ``` ```sh python3 tools/thunderbowl/mock_smart_link.py --request /tmp/thunderbowl-link/actor-0-request.json --response /tmp/thunderbowl-link/actor-0-response.json --watch --seconds 60 python3 tools/thunderbowl/validate_examples.py ``` The schema validator requires development-only `jsonschema`; the application does not. Fast headless stepping and `--realtime` wall-clock pacing are distinct experiment settings, especially for an external client.
+
+## DR03: The native DLL is tiny text beginning version https://git-lfs.github.com/spec/v1. Is this a usable evaluator?
+
+Canonical rank: None
+
+Expected facts:
+
+- It is an unresolved Git LFS pointer, not executable bytes.
+- Materialize the intended committed object and verify its SHA/size/source provenance; a pointer identity check alone does not qualify a launch.
+
+### Rank 1: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Which version is the working source?
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Which version is the working source?
+**Current:** the active source is a real Git checkout. On 2026-09-08, upstream `web-demo-m11` was read and its history recovered from `https://github.com/techrote/cybersand.git`. Its tip matched the acquired base `e2892c54d4bd91aac60971e81c748bd49fbe2adb`. Git metadata was attached without checking files out over the working source. All existing local source changes and the first documentation audit were then committed as **`126175cfc4dd1fb8659212f62b9b517bac54d8c2`**, the pre-rewrite checkpoint on `codex/rag-docs-foundation`. This commit descends from the original upstream history. Later documentation commits are identified by the checkout's current HEAD. This checkpoint secures Git history and locally materialized LFS runtime bytes; ignored tools and generated builds need separate recovery inputs. The owner confirmed a USB backup, which was not inspected. A separate local capture was restore/hash-tested for 740 files; neither that capture nor a Git commit establishes all-platform recovery while required LFS payloads remain unresolved. | Location | Version-control scope | |---|---| | `C:/kybersand/source` | Upstream-derived code, assets, runtime-library LFS pointers, tests, RAG documentation and source tooling | | `C:/kybersand` | Separate local workspace repository for top-level guides and development wrappers; ignores `source/` and `.local/`; initial commit `b179dbb361681c3575b07b9d6b1769cc168747b1` | | `C:/kybersand/SOURCE-CHECKPOINT.json` | Connects the workspace wrapper record to the source checkpoint | | `C:/cybersand` | Functional deliverables; not the development repository | | `C:/Godot47` | Local Godot 4.7 installation; outside both repositories | Use `git -C source ...` from the workspace when you mean source history. Both repositories now use the private `techrote/cybersand` GitHub repository: source history is integrated into `main` (the original documentation branch was merged through PR #5), and the independent workspace history on `codex/workspace-docs`. The original rewrite made no remote changes; the owner subsequently authorized this publication. The [GitHub milestone record](../audits/2026-09-08-github-milestone.md) defines the paired checkpoint tags, reconstruction procedure and remaining correctness issues.
+
+
+### Rank 2: operations/local-build-and-validation.md — Local build and validation > Actor control prototype checks > Shared Play session and owner qualification
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Actor control prototype checks > Shared Play session and owner qualification
+The [executable manual packet](play-desktop-manual-qualification.md) prepares a source/runtime-pinned checklist and initially untested result sheet. Its generator performs no engine or physical execution and cannot grant acceptance. Use the exact candidate checkout named by its PR, Godot `4.7.stable.official.5b4e0cb0f` and the repository-pinned native/Rapier LFS bytes. Record `git rev-parse HEAD`, `git rev-parse HEAD^{tree}`, `git status --short`, Godot version, OS/GPU/CPU and physical controller model/mapping. Materialize LFS and run the current provenance gate before interpreting gameplay evidence: ```text git lfs pull git lfs fsck python3 tools/ci/check_repository.py --require-materialized godot --headless --path godot --editor --quit godot --path godot ``` Select **Play session** at the launcher. Choose the Player Playground map, one of the five mechanical rigs, controls, lap/free-play, solver policy and starting camera. Click **Build selected session**, wait for the actual applied actor/policy, release movement controls and click **Play / resume**. P pauses, R restarts the applied session, F changes camera and F2 returns to the launcher. The in-host **Play session** button reopens selection. Build changes configuration; Restart ignores unsubmitted choices and retains the accepted configuration. Execute the existing [concrete #270 checklist](https://github.com/techrote/cybersand/issues/270#issuecomment-6485284121) on the physical target machine: each rig's natural movement/camera/lap, pause and focus loss/regain, held-control neutral rearm, supported policy rebuild/refusal, physical stick/A/B/X/shoulder behavior, keyboard/controller handover, selected controller unplug/replug, repeated reset/exit and actual responsiveness/feel. Also try keyboard-only and free-play selections and record requested/applied receipts. Record each item as pass, fail or not tested with exact source/runtime identity and representative tick/frame/snapshot/wait measurements. A successful headless run or software-rendered layout inspection does not execute this gate. The focused automated command is: ```text godot --headless --path godot --script res://tests/test_play_ui005_session_selection.gd ``` This test runs actual Main/native worker/Rapier reconstruction for all five rigs, with synthetic OS focus and connected-device enumeration. It is automatically discovered by ordinary Windows/Linux Godot CI; no dedicated workflow is needed. Its [audit](../audits/2026-10-30-play-ui005-integrated-session.md) keeps local, hosted, rendered-layout and unexecuted physical/human evidence separate. On restricted Linux environments, set writable XDG config/data/cache directories before importing or running; preserve any earlier failed invocation.
+
+
+### Rank 3: architecture/liquid-solver-family-policy.md — Liquid solver family policy and API specification > Cross-issue acceptance mapping
+
+Document: Liquid solver family policy and API specification
+Path: architecture/liquid-solver-family-policy.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped
+canonical-for: [liquid-solver-family-policy]
+last-reviewed: 2026-11-03
+Section: Liquid solver family policy and API specification > Cross-issue acceptance mapping
+| Owner | Takes from this spec | Must not claim | |---|---|---| | LCB-001 [#200](https://github.com/techrote/cybersand/issues/200) | `LiquidSolverPolicy` type, packing, validation/refusal codes, readback on every constructor, transaction, default-equals-Current proof, `pressure_flow_v1` state and boundary rule, versioned physical-state hash | inertial support; 72/80-bit carrier | | LCB-002 [#201](https://github.com/techrote/cybersand/issues/201) | `cached`/`cached_dormant` variant equivalence; cross-family invalidation and wake | that variants are families | | LCB-003 [#202](https://github.com/techrote/cybersand/issues/202) | per-material picker driven by the matrix, receipts in UI, reconstruct-to-apply ([UX flow](../operations/lcb-manual-comparison-ux.md)) | support the receipt does not report | | LCB-005 [#212](https://github.com/techrote/cybersand/issues/212) | `inertial_cellular_v1` state, Brine (or Toxic Sludge) qualification, inertial boundary rules | Oil/kernel-specialized inertial support | | LCB-004 [#203](https://github.com/techrote/cybersand/issues/203) | the matrix as coverage oracle; receipts in packaged builds | default changes | | MAT-003PREPASS [#204](https://github.com/techrote/cybersand/issues/204) (Gate B) | the per-family field list above | n/a — owns width/sidecar/save |
+
+
+### Rank 4: tools/world-art-preview.md — World Art interactive viewer > Launch one integrated checkout
+
+Document: World Art interactive viewer
+Path: tools/world-art-preview.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Standalone Godot World Art inspection, navigation, comparison and export controls
+canonical-for: [world-art-interactive-viewer]
+last-reviewed: 2026-11-20
+Section: World Art interactive viewer > Launch one integrated checkout
+From this repository root, with Python 3.10+ and a real Godot 4.7 desktop executable installed: ```powershell python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle ``` On Linux: ```bash python3 tools/world_art_preview_launcher.py --godot=godot --rendering-driver=opengl3 ``` Use your actual installed Godot path. The owner-confirmed Windows example above is not automatically installed by the source launcher. To locate Godot on PATH, run `Get-Command godot, godot4 -ErrorAction SilentlyContinue` in PowerShell. The launcher reports a missing executable before opening the viewer. A fresh source checkout can omit all unrelated Git LFS runtimes: ```powershell $env:GIT_LFS_SKIP_SMUDGE = "1" git clone --depth 1 --single-branch --branch tools/art-pipeline-unification-001-20261120 https://github.com/techrote/cybersand.git cybersand-art Remove-Item Env:\GIT_LFS_SKIP_SMUDGE cd cybersand-art python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle ``` The included `docs/world-design` loads automatically. No historical donor checkout or separate atlas branch is needed. Override it with `--art-root=/absolute/collections` or `--pack=/absolute/working-copy/pack.json`. The **World-design root** field and **Choose directory** select another collection directory, which contains `<collection>/pack.json` subdirectories. The launcher creates a temporary standalone project from the exact checked-out viewer, adapter, shader and LUT bytes, imports its script classes and opens the real Godot window. It deletes only that temporary project on exit. Source art and requested captures remain outside the project. The displayed pack SHA-256 identifies the same byte snapshot that was parsed; externally supplied revision text remains an attribution label rather than proof of a Git revision.
+
+
+### Rank 5: operations/source-checkpoint-and-recovery.md — Source checkpoint and recovery > Local issues #1/#2 implementation branch
+
+Document: Source checkpoint and recovery
+Path: operations/source-checkpoint-and-recovery.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
+canonical-for: [source-identity, local-checkpoints, recovery-coverage]
+last-reviewed: 2026-10-25
+Section: Source checkpoint and recovery > Local issues #1/#2 implementation branch
+The coordinated investigation started from clean source `bfac0bc` and workspace `6a58311` on 2026-09-08, then created source branch `codex/issues-1-2`. [Issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md) identifies source deltas, commands and rebuilt artifacts. At that implementation checkpoint there was no push authorization. The owner subsequently authorized finalisation: [PR #6](https://github.com/techrote/cybersand/pull/6) publishes these commits and the validated Windows LFS runtime with source-input provenance. See the [publication reconciliation](../audits/2026-09-08-validation-reconciliation.md) for later validation and the companion workspace checkpoint record for final tags. Local issue #1 commit `0778845` plus browser fixture correction `061ad23` precede the issue #2 implementation. Its [combined evidence](../audits/2026-09-08-issue-2-interest-regions.md) records fingerprints and final acceptance. Read actual HEAD/status rather than assuming this dated text is the latest branch state.
+
+## DR04: What is a small source-checkout validation before I launch expensive native and Godot matrices?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Use structural documentation/repository checks and relevant focused tests; the C header syntax check is a bounded native interface probe.
+- Passing cheap checks does not establish native runtime or physical acceptance; do not claim an unexecuted full matrix.
+
+### Rank 1: operations/local-build-and-validation.md — Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+**Current:** a source checkout can launch the retained desktop test project without the companion-workspace `dev.cmd`: ```powershell .\launch-desktop.cmd .\launch-desktop.cmd -Godot C:\path\to\Godot_v4.7-stable_win64.exe .\launch-desktop.cmd -PrintIdentityOnly .\launch-desktop.cmd -Editor ``` The wrapper invokes [`tools/launch_desktop.ps1`](../../tools/launch_desktop.ps1). It accepts an explicit `-Godot` path or `CYBERSAND_GODOT`; otherwise it searches the established `C:\Godot47` location. It requires exactly `4.7.stable.official.5b4e0cb0f`, verifies that the project, retained CyberSand Windows DLL/provenance file and Rapier Windows DLL are present, verifies the CyberSand DLL SHA-256 against `runtime-provenance.json`, and prints checkout, Godot and runtime identities before launch. The default action runs `godot/project.godot` through its configured `main.tscn`; `-Editor` opens the same project in the editor. The launcher deliberately contains **no build step**. A missing, hash-mismatched or wrong-version runtime is an explicit failure; it never rebuilds, replaces or silently refreshes the retained DLL. M11 output byte equality now requires `CYBERSAND_VERIFY_M11_OUTPUT=1`; current builds keep compiler/source pin checks and identify their own tested outputs. See [validation policies](current-and-historical-validation.md). The existing local `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` override bypasses some compiler/dirty-source checks. It still requires the exact godot-cpp revision. Inspect that checkout explicitly; a local validation build with this override is not bit-identical M11 reproduction.
+
+
+### Rank 2: operations/material-catalogue-shadow.md — Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication
+
+Document: Material catalogue shadow compiler and compatibility guards
+Path: operations/material-catalogue-shadow.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated
+canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
+last-reviewed: 2026-11-11
+Section: Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication
+The compiler rejects unknown fields, duplicate JSON keys, unsupported versions, non-finite values, booleans in integer fields, out-of-range values, invalid references, alias/key conflicts, duplicate legacy slots and ambiguous pair ownership. Errors include the source file and JSON pointer; conflicts identify both origins, and JSON syntax errors also report line/column. Unsupported defaults, state contracts or active interaction layers are rejected instead of interpreted through implicit precedence. Valid inert `RuleKernel::None` targets remain admissible: a reaction participant need not own the tick that initiates its reaction. The compiler does not change wake state, endpoint effects, solver selection or parameter consumption. Output is UTF-8 with LF and a final newline, deterministic escaping and stable ordering. No timestamp, local absolute path or directory order enters generated content. `--check` is nonwriting; missing or stale output fails with a named artifact. Validation completes before publication, and unchanged files retain their bytes and modification times. Negative tests require failure to preserve the previously accepted output set. Run from a complete source checkout: ```text python3 tools/material_catalogue/compatibility.py --check python3 tools/material_catalogue/compiler.py --check python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' python3 tools/material_catalogue/check_native_parity.py ``` The native query check and the focused generated-C++ regression require a C++20 compiler; JSON generation and strict validation use Python's standard library. CI reuses the existing hosted Documentation workflow and execution watchdog. These focused commands do not run World scenarios or require a Godot download; expensive draft lanes stay suppressed. Under the existing ready-state path classifiers, this tools/data implementation also triggers the full Native and Windows/Linux GDExtension/Godot gates when #371 becomes ready. Those configured integration checks remain required; a draft skip or metadata readback is not a substitute. Freeze and independently review the candidate before that transition to avoid redundant matrices. Record actual jobs and any skips in the PR ledger. For optional actual Godot metadata readback, use a complete editor archive and executable matching `third_party/godot-runtime.lock.json`. Produce a native snapshot and receipt from the same source, then invoke the checker: ```text mkdir -p build/material-catalogue c++ -std=c++20 -O2 -I native/include tools/material_catalogue/native_oracle.cpp native/src/material_rules.cpp -o build/material-catalogue/oracle build/material-catalogue/oracle --snapshot > build/material-catalogue/native-snapshot.json python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json python3 tools/material_catalogue/check_gdscript_shadow.py --godot /path/to/pinned-editor --archive /path/to/pinned-editor.zip --native-snapshot build/material-catalogue/native-snapshot.json --native-report build/material-catalogue/native-parity.json --output build/material-catalogue/gdscript-parity.json ``` The helper does not download or modify the editor. Its temporary project loads only the generated metadata. The native receipt's snapshot hash must match, and its complete source/mirror inventory must still be current. This optional engine parser proof is separate from the default documentation CI gate.
+
+
+### Rank 3: reference/validation-evidence.md — Validation evidence ledger > Recovery and Stage-3B #65 evidence — 2026-09-22
+
+Document: Validation evidence ledger
+Path: reference/validation-evidence.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
+canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
+last-reviewed: 2026-11-04
+Section: Validation evidence ledger > Recovery and Stage-3B #65 evidence — 2026-09-22
+The recovery programme separated implementation, integration and validation rather than accepting a merge alone. The ABA/reclamation fixture exposed a scheduler liveness defect: an ordinary Seeking build could exhaust search, reset to Idle and return zero from `service_active_build_one()`; `advance()` had already taken the active-build branch and could therefore return zero without servicing actionable cleanup. The final bounded cleanup fallback corrected that lifecycle invariant. Focused GitHub-hosted `make soliding-test` run `35654164638` passed on frozen native/test source `8dfa779a561374a5693556f50def3e9666783a98`. The subsequent sanitizer failure in run `35654798534` was compile-time, not a sanitizer finding. REC-002 measured the sanitized settled-regions compile at about 10m29.63s and ~7.65 GiB peak RSS, then separated the expensive bounded build from the unchanged complete sanitizer execution. Native run `35726233890` passed all eight dedicated soliding ASan+UBSan executables, TSan (62 tests), shared-library build and benchmark. REC-004 then published one source-matched Linux/Windows retained runtime set. Final exact-head and landed-main matrices are E-REC-65 above. #65 was closed at merge before the landed-main matrix had finished; that chronology is preserved, and the missing landed verification subsequently passed. The evidence therefore supports #65's current completed state without rewriting the premature closure ordering.
+
+
+### Rank 4: operations/local-build-and-validation.md — Local build and validation > Windows development commands
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Windows development commands
+From `C:/kybersand`, the companion workspace provides `dev.cmd` / `tools/dev.py`. Host paths, installation and environment overrides belong to `C:/kybersand/docs/LOCAL_DEVELOPMENT.md`. Source-only clones do not contain these wrappers; the repository-native scripts are listed below. ```powershell .\dev.cmd doctor .\dev.cmd native-bindings .\dev.cmd native-build .\dev.cmd native-test .\dev.cmd godot-test .\dev.cmd web # Optional internally parallel Web profile: .\dev.cmd web --profile threaded ``` The repository also contains `launch-desktop.cmd` / `tools/launch_desktop.ps1` for source-only Windows checkouts. It validates the pinned Godot/runtime inputs, prints checkout/runtime identity, exports the exact checkout SHA to the child Godot process as `CYBERSAND_SOURCE_REVISION` for recording provenance, and does **not** rebuild or replace retained runtimes. `native-bindings` builds pinned Windows godot-cpp; `native-build` builds the GDExtension. `native-test` compiles/runs the C header check and native tests; `godot-test` imports the project then runs all `test_*.gd` runners. Godot tests load the installed DLL: running them alone does **not** rebuild that DLL. Record its hash and source identity with the result. The wrapper allows 240 s for import, 180 s per Godot runner, and rejects Godot error output even with exit 0.
+
+
+### Rank 5: operations/github-development-and-release.md — Repository development and release > Current CI provider and draft gating
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-11-06
+Section: Repository development and release > Current CI provider and draft gating
+**Current configuration, 2026-09-22:** routine active workflows use literal GitHub-hosted runner labels. The previous external-provider routing experiment is historical evidence only; it is not current policy. The retained [weekend runner benchmark](../audits/2026-09-19-runner-routing-weekend-benchmark.md) must not be read as authorization to restore its provider configuration. [check_ci_provider_policy.py](../../tools/ci/check_ci_provider_policy.py) enforces the active configuration boundary. It rejects: - `.circleci/config.yml`; - Avrea, Sengi or CircleCI routing tokens in active GitHub workflows; - `*_RUNNER` variable indirection; - any `runs-on` value that is not a literal GitHub-hosted `ubuntu-*`, `windows-*` or `macos-*` label. The Documentation/provenance workflow runs this cheap check and its focused unit tests even while a PR is draft. Historical documents are deliberately outside the checker's scan scope. Draft PRs suppress the expensive Native, GDExtension/Godot and scoped Water jobs. Moving a PR to ready-for-review is the final-validation transition. Native and GDExtension each run a small `ready validation scope` job on that transition: policy/docs-only changes stop there, while implementation/source changes continue into the existing expensive matrix. This explicit scope gate is required because GitHub may create `ready_for_review` workflow runs even when all changed files match `paths-ignore`. For behavior or runtime changes, record the exact-head Documentation/provenance result and every applicable Native, GDExtension/Godot and scoped apparatus result before merge. Do not use a skipped draft or policy-only scope result as behavior evidence. Source-sensitive runtime provenance remains a hard gate: a changed runtime input requires a source-matched rebuild and provenance update rather than a hand-edited hash.
+
+## DR05: Can native pool workers touch scene-tree objects and Rapier bodies?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Native C++ owns authoritative cellular state and internal pool workers call no Godot APIs.
+- The exclusive desktop simulation owner may use its adapter/value APIs; live scene tree and Rapier ownership remain on the allowed main thread.
+
+### Rank 1: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Who may mutate each resource?
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-11-20
+Section: Data ownership and lifetimes > Who may mutate each resource?
+**Current:** each selected cellular world has one external owner. In the ordinary desktop sandbox that is `CyberSimulationWorker`; on Web it is the main-thread controller. Native World coordinates its internal jobs. Queries, export, publication and mutation require serialization by that owner; calling a method through GDExtension does not make World generally thread-safe. Native pool workers call no Godot APIs. The desktop Godot owner may call exclusive adapter/value APIs, but must not touch live scene-tree or Rapier objects. | Resource | Owner and permitted mutation | Lifetime and pressure | |---|---|---| | `World::chunks_` and chunk cell arrays | World coordinator creates/reserves chunks; serial work or phase-exclusive jobs mutate cells | Until World/chunk destruction; construction capacity bounds growth | | Optional temperatures | Chunk owns optional SoA; owner prepares it, permitted rules/movement use it | Allocated on demand or reservation; counted tick allocations | | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication | | Delayed pair deadline | Workers report through fixed disjoint job spans into two preallocated `ParallelState` flag/deadline buffers; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; buffers outlive job spans and pool, excluded blocks retain deadlines, clear/replacement discards them | | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state | | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs | | Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Other constructors and full evidence stay open | | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers | | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound
+
+
+### Rank 2: architecture/overview.md — Architecture overview > Who owns each kind of truth?
+
+Document: Architecture overview
+Path: architecture/overview.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Current execution paths and authority map; routes to the contracts that govern changes
+canonical-for: [architecture-entry-point]
+last-reviewed: 2026-10-20
+Section: Architecture overview > Who owns each kind of truth?
+| State | Current authority | Boundary | |---|---|---| | Materials, compact state, optional temperature, activity | Native World, or the selected desktop fallback | Godot receives copies and bulk query results | | External rigid-body transforms and velocity | Rapier2D through Godot PhysicsServer2D | Packed samples become a separate cellular obstacle mask | | Sampled character | Desktop pacing owner; Web main-thread controller | Reads cellular occupancy; it is not a Rapier body | | Articulated player presets | Main-thread physical session and Rapier | Leased actions request bounded forces and joint targets | | Sand/Water player field | Dedicated serialized playground owner invoking native World | Native cells remain authoritative; copied receipts describe local relocation | | Images, textures, UI, input, shaders | Godot main thread | Presentation never mutates cellular storage | Rapier is the sole current rigid-body backend, behind `CyberRapierPhysicsBridge`. Native cellular workers never call Godot or Rapier. The Godot pacing owner may call its exclusively owned adapter/value APIs; it does not own live scene-tree objects. Exact resource lifetimes belong in [data ownership](data-ownership-and-lifetimes.md).
+
+
+### Rank 3: architecture/principles-and-non-goals.md — Architectural principles and non-goals > Which constraints govern foundational work?
+
+Document: Architectural principles and non-goals
+Path: architecture/principles-and-non-goals.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Accepted architectural constraints, explicit current exceptions, deferred scope and rejected approaches
+canonical-for: [architectural-constraints-and-rejected-shortcuts]
+last-reviewed: 2026-09-08
+Section: Architectural principles and non-goals > Which constraints govern foundational work?
+**Approved:** native C++ remains production cellular authority; Godot owns presentation, input and adapters; the rigid-body backend remains replaceable. The core must run without Godot. Fixed simulation quanta, explicit owners, bounded work/capacity and traceable evidence take priority over incidental prototype structure. [ADR-001](../decisions/ADR-001-native-simulation-core.md) and [module boundaries](module-boundaries.md) explain the authority decision. No native pool worker may call Godot APIs. The desktop Godot pacing Thread may call its exclusively owned adapter/value methods, but may not access live scene-tree/Rapier objects. Rendering consumes immutable snapshots and never locks or borrows mutable cellular state. Resource enforcement belongs in [ownership](data-ownership-and-lifetimes.md), not an assumed universal thread-safety property of GDExtension. Worker timing must not decide mutation ownership or conflict order. Exact native fixture comparison is **Current** for declared inputs; complete replay and a selectable strict runtime policy remain **Planned**. A passing cellular hash does not establish Rapier trajectory equivalence or save continuation. See [hash coverage](determinism-and-boundary-transfers.md) and [level saves](../reference/level-saves-and-replay.md).
+
+
+### Rank 4: architecture/wave-flow-v1.md — Wave flow Water solver (experimental) > Controls
+
+Document: Wave flow Water solver (experimental)
+Path: architecture/wave-flow-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
+canonical-for: [wave-flow-v1]
+last-reviewed: 2026-11-20
+Section: Wave flow Water solver (experimental) > Controls
+| Setting | Default | Meaning | |---|---|---| | `WorldConfig::wave_flow.enabled` | `false` | Opt in at construction | | `WorldConfig::wave_flow.substeps` | `1` | Rounds per tick, 1–8 | The ordinary feature launcher has **Wave Flow**. The equivalent direct route is `-- --wave-flow` or `res://wave_flow_evaluation.tscn`; the Windows evaluation ZIP provides `Test It.cmd`. The [evaluation guide](../operations/wave-flow-evaluation.md) owns the launch and scene walkthrough. The evaluator constructs a fresh native World when **Reset scene** applies Wave/FreeMass/Inertial/PressureFlow selection, workers, substeps and world size. It exposes ten scenes, 256/512/1024/2048 sizes, 1–32 workers, 1–8 Wave substeps, native pacing 1–120 Hz and Rapier pacing 30–120 Hz. **Run/Pause**, **Single tick** and **Disturb pool** control the scenario. Native tick timing is reported separately from presentation rate. `get_wave_flow_status` returns copied selection, actual participants, timing, tasks, solved chunks, allocated storage and quantity; `inspect_wave_flow_cell` copies stored/visible uint16 mass and retained face flux. A replacement creates the Water law selected by its destination session. Moving-body and Needle scenes own actual Rapier objects on Godot's main thread; only their bounded transient masks/contact values cross into native simulation. Needle retains its existing authored weight and thrust; **W/A/D/S** provide thrust/turn/reverse. The evaluator uses native material publication, with no cosmetic animation standing in for the solver. Source: [`wave_flow.hpp`](../../native/include/cybersand/wave_flow.hpp), [`world_wave.inc`](../../native/src/world_wave.inc); hooks in [`world.cpp`](../../native/src/world.cpp) (`begin_tick`, `ensure_chunk`, `rule_is_active`, `mark_cell_dirty`, `merge_job_effects`, body-mask edits). Regressions: [`test_wave_flow.cpp`](../../native/tests/test_wave_flow.cpp) (`make wave-flow-test`, `wave-flow-sanitize`, `wave-flow-thread-sanitize`).
+
+
+### Rank 5: architecture/data-ownership-and-lifetimes.md — Data ownership and lifetimes > Optional actor prototype ownership
+
+Document: Data ownership and lifetimes
+Path: architecture/data-ownership-and-lifetimes.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
+canonical-for: [resource-ownership-and-lifetimes]
+last-reviewed: 2026-11-20
+Section: Data ownership and lifetimes > Optional actor prototype ownership
+**Current, experimental:** the [actor session](../systems/actor-rigs.md) owns a bounded set of sampled motors under `CyberSimulationWorker`. Human or policy producers submit scalar/value commands through its mutex-protected mailbox. Only the serialized simulation owner configures, advances or observes the motors and calls World collision/ray queries or bounded local tool writes. SetA retains its original motor; additional rig geometry, attachment, angular state, charge and effect scratch storage belong to the same owner. Input producers cannot provide callback code or arbitrary native writes. The public worker forwarding methods do not grant producers a live actor, World or Rapier reference. Publications copy state/capability values. A current actor observation and a material render generation have distinct ticks; retaining one does not authorize relabeling the other. Session pause/reset/clear boundaries invalidate prior command epochs, and failed-world publication retains the previous successful display contract. The actor-specific action/lease protocol does not bound the separate general emission queues described above. Cancellation clears armed charge, attachments and pending effects before neutral input advances; a Pouncer release action must not fire because its lease expired. Consumed action/sequence/edge fields and latest admitted sequences are distinct copied values. Catalog dictionaries are deep-copied at configuration/publication boundaries rather than used as mutable shared actor state. Sampled rig bodies and drawn extremities are not scene-tree physics objects or new native job owners.
+
+## DR06: The old rule says every Cell is four bytes and all richer material state must be a sidecar. Is that current doctrine?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Distinguish the historical compact cell experiment from accepted eight-byte PrecisionStorage.
+- Current source and approved intent do not imply a permanent four-byte or sidecar-only prohibition.
+
+### Rank 1: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Save, Flatten and compatibility
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Save, Flatten and compatibility
+**Confirmed:** saving should preserve the desired evolved material layout without unexpectedly destroying the session's Undo history. Oil painted in mid-air and allowed to settle should restart in its saved location. Acid used to damage a wall, followed by water and fire cleanup, should not reappear merely because the original construction strokes were replayed. **Confirmed:** explicit Flatten is a material-occupancy snapshot using two bytes per cell, allowing burdensome or blocking construction history to be discarded. It is not a full physical checkpoint. Normal map saves need not always flatten; richer authoring data can remain useful. Neither this clarification nor the word “save” requires persisting the entire session's Undo stack. **Confirmed:** do not promise advanced cross-version compatibility of all old maps. Flatten may provide a fallback that recovers useful material layout in newer versions. Material identity mapping and container/version handling remain engineering details. This is not a guarantee that every old simulation state or every future material ID remains interpretable. Flatten is also distinct from merging the visual/semantic layers of Strata.
+
+
+### Rank 2: operations/cell-layout-experiment.md — Cell layout experiment > L4 concrete preregistration, September11
+
+Document: Cell layout experiment registration and execution
+Path: operations/cell-layout-experiment.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Issue 16 staged native representation research, preregistered before candidate code; no production migration
+canonical-for: [cell-layout-experiment]
+last-reviewed: 2026-09-11
+Section: Cell layout experiment > L4 concrete preregistration, September11
+New standalone modules `native/bench/cell_sidecar.cpp` and `tools/experiments/cell_sidecar.py` will compare a neutral uint32 tag, zero absent, with all32 nonzero bits preserved. This is a synthetic transaction carrier, not World physics or a solver-speed prediction. Existing World correctness evidence is retained, not relabelled as a fresh L4 run. No adapter/render change is admitted. Sixteen128-square chunks hold262144 legacy slots on a512-square grid. Legacy material/state_a/state_b/epoch remain byte4 with alignment4 and epoch0, plus a separate i16 temperature array. Inline control adds tag32 (stride8, alignment4). SoA uses optional u32[16384]. Sparse uses optional u16[16384] indices (65535 absent) and bounded8-byte slots containing value32/owner16/next-free16. Slot handles never escape their owner. Include descriptor/vector/free-head bytes and actual capacities, process working/private/peak memory and measurement buffers; allocator/PMC gaps remain explicit. All carriers enforce the same per-chunk logical capacity: min(16384,initial present+64), or0 for unprepared chunks. No measured growth. Density0/1/5/15/50/100% means floor(262144*density/100) tags. Clustered uses the first slots in chunk-major order; dispersed uses the bijection (rank*65537+131*seed) mod262144. Report per-chunk occupancy and allocated chunk count. Absent mode uses density0/unprepared arrays. Allocated-unread scans only legacy bytes; density0 in this mode deliberately prepares every chunk with cap64. Accessed mode performs transactions and reads absence at density0. Initial legacy states cycle current Water mass1..255/delay0..12, Sand17/23 and Fire48/0; temperature200..216. These are state carriers; synthetic reaction sources/sinks are not chemistry predictions. Eight pairs of horizontally adjacent chunks are exclusive worker domains. Each accessed batch attempts64 operations per pair, cycling move/swap/Water split/ Water merge/reaction clear/reaction create/reclaim/read. Deterministic adjacent endpoints include chunk seams; writes stay distance1 within their pair. Moves and swaps transfer legacy, temperature and tag; split explicitly clones a tag, merge prefers the destination tag and accounts drops. Reactions/reclaim have explicit Water and tag source/sink ledgers. Creation tags follow the initial density mask. Preflight post-operation counts before mutation, erase both endpoints then assign replacements. Unprepared/full destination refusal preserves both records. No global free list, worker allocation, per-cell lock, external mutable view or rollback claim. Unread/absent batches perform8192 legacy reads over a cycling resident cursor; payload validation occurs after timing. Accessed batches attempt512 transactions. One/four workers execute identical pair streams, with three persistent child threads plus the caller and two barriers per batch. Report dispatch overhead rather than tuning batch size. All buffers are prepared first, followed by100 empty pool barrier cycles. Benchmark-only C++ new counters screen allocations during batches; this does not observe arbitrary malloc/OS allocations. Exceptions must join safely. Correctness:1800 batches, five existing seeds/translations,1/4 workers,two repeats, all12 accessed density/pattern cases and three carriers:720 processes. A flat reference is independently initialized from declared inputs, compares outcomes and touched endpoints every operation, and
+
+
+### Rank 3: operations/architecture-programme.md — CyberSand architecture experimental programme > D. Candidate matrix and controlled variables
+
+Document: CyberSand architecture synthesis and experimental programme
+Path: operations/architecture-programme.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+canonical-for: [architecture-experimental-programme]
+last-reviewed: 2026-10-24
+Section: CyberSand architecture experimental programme > D. Candidate matrix and controlled variables
+| Question | Baseline / candidates | Change versus fixed controls | Required measurement | |---|---|---|---| | Raw Cell width | Current 4 B; 8 B with four original bytes and four unused bytes | Change stride only. Same semantics, epoch width, geometry, traversal, input, descriptors and compact snapshots. Verify compiler actually emits an 8-byte stride. | Equal content/events/work; tick distribution, ns/visited cell, memory/traffic, worker scaling. | | Packed access | Packed 8/16/8 control; 16/40/8 with only legacy state used; padded 8 B control | Access arrangement/ID extraction; fixed semantic values, epoch and unused capacity. | Masks/read-modify-write cost, size/alignment, no truncation, generated access path, normalized semantic equality. | | Short epoch | Packed 8/16/8 versus 8/18/6, extra two state bits unused | Epoch width/clear period only after access cost is known. | Per-clear duration and exact ticks, p99/max, double-update prevention over wraps/sleep/re-entry. | | Optional state allocation | 4 B plus chunk/block SoA or bounded sparse indexed sidecar versus 8 B inline | First legacy-equivalent storage/access; later identical M semantics and state precision. Same populated positions, lifetimes and work policy. | Zero/1/5/15/50/100% use, clustered versus dispersed use, lookup/move/reclaim cost, total bytes incl metadata and saturated capacity. | | Material ID headroom | Current 8-bit IDs; 10-bit 10/14/8 alternative; 16-bit candidate | Access cost separated from catalogue expansion. 10/14/8 cannot be a full legacy control unless every material's state is losslessly representable. | Actual catalogue/ID needs and adapter/render/profile/save migration surface. No new material pack loader. | | Water mass | 8-bit reference; 4/6/10; 3/12 optional only to locate an observed failure boundary | Fixed tested layout, three-quarter local solver, mass-normalized thresholds, no history. Auxiliary delay remains 12 ticks. | Initial quantization ledger, exact integer mass per precision, normalized levelness/front/rest/film, work and timing. | | Auxiliary precision | Original 8-bit Water delay versus 4-bit representation | Only packing; same 0..12 countdown, max-on-merge, pre-decrement suppression. Other materials retain their own full state range. | Exact behavioral equality and bit access cost. Combined budgets only after isolated results. | | Yield versus sleeping | Actual Water and representative yield liquids; default quiet threshold 3 versus threshold exceeding fixture horizon | Change sleep diagnostic only; same liquid, viscosity, scene and input. Zero is invalid, not a sleep-disable option. | Late mobility failures, eligible attempts, active-block time, residual slope and wake response. | | Flow memory | No history versus small direction/strength/age; inline versus sidecar | First fixed mass precision, solver and layout; next same memory semantics across storage. No new pressure/velocity solver. | Jet COM/range/asymmetry,
+
+
+### Rank 4: operations/procedural-qualification.md — Procedural Deepworks qualification and visual review > How is deliberate composition kept procedural?
+
+Document: Procedural Deepworks qualification and visual review
+Path: operations/procedural-qualification.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: GEN-007 compact 1024-square recipe, reusable architecture, final-material routes, native exhibit mechanisms and actual rendered qualification
+canonical-for: [procedural-qualification-scene, procedural-quality-evidence]
+last-reviewed: 2026-10-21
+Section: Procedural Deepworks qualification and visual review > How is deliberate composition kept procedural?
+Author the major district silhouettes and routes first, then reuse gallery, cabinet and apparatus rules inside those places. Named features and stable IDs make the composition inspectable. Candidate layouts and seeded details supply variation while structural material roles and passage clearance remain explicit. Keep the reference seed and all variant seeds declared in the fixture. Material choices follow the [MAT-002 catalogue](../systems/building-material-catalogue.md): stable structural walls and containment, local metal/glass/service accents, bounded reactive contents and thematic background treatment. A random palette swap does not establish coherent regional identity. Empty air, sightlines and rear windows are intentional composition choices; four-plane treatment does not mean every cell must be nonempty. The recipe report must retain its UTF-8 byte size, reusable rule/template counts, expanded feature counts and manually fixed placements. Authored region bounds, routes and shared apparatus proportions are legitimate declarative design; listing every output material cell is not. Inspect the hierarchy/plane rules in the workbench to determine which choices are fixed and which depend on seed. The current recipe is **61,845 UTF-8 bytes**, with 26 grammar rules and 124 plane templates: 111 projection, eight finite-feed and five link templates. Native expansion produces 161 semantic features and 336 projections. Its [builder](../../tools/worldgen/build_gen007_recipe.py) writes only declarative JSON; the native generator performs feature expansion, seeded candidate selection, route construction and final material rasterization. The [qualification manifest](../../examples/worldgen/gen007-qualification.json) retains the counts and authoring ledger. The manually fixed design consists of four district anchors, two shared gallery definitions, one reused optional-loop definition and four exhibit definitions. The source contains 43 candidate boxes, 83 relative projection rectangles and eight relative fixture rectangles. Native expansion reuses this feature geometry. The baseline has no final hard material overrides. The native route-distance preference selects two of four candidate cabinet sites in each gallery; all four declared seeds produce different actual cabinet layouts and different play/rear material hashes. The far apparatus and sparse effects treatment deliberately retain identical material hashes across these seeds. Reusable definitions include upper/lower galleries, both cabinet arrangements, cabinet windows, gauges, shelves, signals, service rails and optional-loop courts. Optical cores reuse apertures and four braces; vaults reuse locks; every native vessel reuses pilot strips, base feet and inlet posts. The eight galleries each have nonempty treatment and intentional empty cells on all four planes. The structural receipts retain those per-gallery counts for every declared seed.
+
+
+### Rank 5: architecture/material-authoring-catalogue-plan.md — Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts
+
+Document: Canonical material catalogue and interaction authoring — adopted Planned baseline
+Path: architecture/material-authoring-catalogue-plan.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
+canonical-for: [material-authoring-v1-programme-proposal]
+last-reviewed: 2026-11-11
+Section: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts
+For #355, section 5's `replace_with_defaults` is only shorthand for the actual legacy World path, **not** a generic reset of every field. Freeze: - Four-tick contact cadence, neighbour/random-stream order, one shared roll, `roll <= threshold` and target-then-source writes; threshold0 means 1/256, while a disabled rule is a distinct future declaration. - Water product quantity from the active World policy maximum, other products' descriptor-initialized state and the existing pressure/IN state retirement. Same-ID products do not automatically preserve quantity or solver state. - Existing optional temperature retention, body-mask/refusal behavior, no-op epoch/dirty semantics and gross produced/consumed plus pair-event accounting. A selected event can be recorded even when the write returns unchanged. - Existing specialized thermal, Acid, ignition, electrical and lifecycle paths remain hand-coded; their catalogue records describe them without replacing execution. #160/#162 retain ownership of their unmerged quantity correction. New `keep_existing`, `set_state` or quantity-aware effects require explicit field, sidecar, temperature, event, mutation and quantity-ledger contracts plus separate owner admission before use in production. Their design or synthetic tests do not authorize applying them to legacy same-material products. For #354, static metadata describes a kernel's obligations, not whether a cell is due, masked, active or waiting now. Preserve inert `RuleKernel::None` reaction targets: 26 of the 41 pair participants use that kernel and can be acted on by an active partner. A compiler must not reject or activate them merely for being inert. Reproduce MoltenGlass quiet-block cooling and yielding-liquid failed-roll retry hypotheses against fixed source before proposing any scheduler repair. Mutual MoltenGlass heating and desired viscous rest are separate gameplay-law decisions. Section 6's `KernelOutcome` is illustrative; first prefer the smallest repair using existing coalesced activity wakes. No blanket always-awake policy.
+
+## DR07: Does a new player session still default to PressureFlow, or does it use Wave Flow Water?
+
+Canonical rank: None
+
+Expected facts:
+
+- Accepted gameplay source selects Wave Flow with its gameplay spill/ballistic profile for new sessions.
+- Pressure, Wave, inertial and FreeMass remain distinct families; a default is not a claim that all families share semantics.
+
+### Rank 1: operations/wave-flow-evaluation.md — Wave Flow evaluation > Water Lab (consolidated Workbench UI)
+
+Document: Wave Flow evaluation
+Path: operations/wave-flow-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Experimental PR 631 Wave Flow desktop controls inherited from PR 618, comparative fixtures, actual native diagnostics and explicit unsupported physical persistence and material behavior
+canonical-for: [wave-flow-evaluation]
+last-reviewed: 2026-11-16
+Section: Wave Flow evaluation > Water Lab (consolidated Workbench UI)
+Open **Water Lab…** from the main Workbench toolbar. All Water-specific settings share one non-modal window. **Solvers & scenes** selects Wave/FreeMass/PressureFlow/Inertial, comparison canvases and workers; **Wave tuning** exposes the Wave fields and presets; **Transport & spray** contains ballistic, signed inertia, face release, PressureFlow gas, fine cores, impact spray and jets; **Equipment** contains valves, drains, pumps and nozzles; **Advanced policy** retains the full per-material liquid picker and normalization. **Applied native** readback and **Apply solver / tuning** are always visible beneath the tabs. The old separate Wave/spray popups and permanent Water toolbar rows are not created. This is a UI composition change, not a solver/policy modification; staged and refused requests still use the existing native receipts.
+
+
+### Rank 2: architecture/wave-flow-v1.md — Wave flow Water solver (experimental) > Controls
+
+Document: Wave flow Water solver (experimental)
+Path: architecture/wave-flow-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
+canonical-for: [wave-flow-v1]
+last-reviewed: 2026-11-20
+Section: Wave flow Water solver (experimental) > Controls
+| Setting | Default | Meaning | |---|---|---| | `WorldConfig::wave_flow.enabled` | `false` | Opt in at construction | | `WorldConfig::wave_flow.substeps` | `1` | Rounds per tick, 1–8 | The ordinary feature launcher has **Wave Flow**. The equivalent direct route is `-- --wave-flow` or `res://wave_flow_evaluation.tscn`; the Windows evaluation ZIP provides `Test It.cmd`. The [evaluation guide](../operations/wave-flow-evaluation.md) owns the launch and scene walkthrough. The evaluator constructs a fresh native World when **Reset scene** applies Wave/FreeMass/Inertial/PressureFlow selection, workers, substeps and world size. It exposes ten scenes, 256/512/1024/2048 sizes, 1–32 workers, 1–8 Wave substeps, native pacing 1–120 Hz and Rapier pacing 30–120 Hz. **Run/Pause**, **Single tick** and **Disturb pool** control the scenario. Native tick timing is reported separately from presentation rate. `get_wave_flow_status` returns copied selection, actual participants, timing, tasks, solved chunks, allocated storage and quantity; `inspect_wave_flow_cell` copies stored/visible uint16 mass and retained face flux. A replacement creates the Water law selected by its destination session. Moving-body and Needle scenes own actual Rapier objects on Godot's main thread; only their bounded transient masks/contact values cross into native simulation. Needle retains its existing authored weight and thrust; **W/A/D/S** provide thrust/turn/reverse. The evaluator uses native material publication, with no cosmetic animation standing in for the solver. Source: [`wave_flow.hpp`](../../native/include/cybersand/wave_flow.hpp), [`world_wave.inc`](../../native/src/world_wave.inc); hooks in [`world.cpp`](../../native/src/world.cpp) (`begin_tick`, `ensure_chunk`, `rule_is_active`, `mark_cell_dirty`, `merge_job_effects`, body-mask edits). Regressions: [`test_wave_flow.cpp`](../../native/tests/test_wave_flow.cpp) (`make wave-flow-test`, `wave-flow-sanitize`, `wave-flow-thread-sanitize`).
+
+
+### Rank 3: architecture/wave-flow-v1.md — Wave flow Water solver (experimental) > Shallow Water on level ground
+
+Document: Wave flow Water solver (experimental)
+Path: architecture/wave-flow-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
+canonical-for: [wave-flow-v1]
+last-reviewed: 2026-11-20
+Section: Wave flow Water solver (experimental) > Shallow Water on level ground
+The shipping player profile sets `floor_gain` to 1024. In `World::wave_flux_task`, the extra restoring force acts only at a normal, shallow advancing face above a continuous level solid floor. The lower of the two heads must be less than one full cell. Each side must reach real solid material at the same depth within three rows. Every intervening cell must be full Water and included in the solved region. This allows the bottom of a breaking wave to spread as a low sheet. A floor step, an unsupported receiver or a solver boundary uses the ordinary flux law. The adjusted head contribution is limited to one cell of Water. Retained flux, the two-face donor bound, uint16 receiver room and the existing apply pass still account for every moved unit. The solver reads existing settled metadata and allocates no new state. Zero disables this law and omits it from both state hashes. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) compares a single active floor row, three active rows and raising gain throughout the pool. Normal desktop sandbox, new Shared Workbench and ordinary curated Web demo constructors request the gameplay Water bundle. The Play Session course and authored policy comparisons use their explicit experiment constructors. Plain native construction retains the historical baseline law. V2 Workbench starts save material assignments and the authored canvas. The Web CYSD1 format supports FreeMass new demos and legacy slots. Full physical persistence for a running Wave World remains unavailable.
+
+
+### Rank 4: operations/wave-flow-evaluation.md — Wave Flow evaluation > Select, apply and verify Wave
+
+Document: Wave Flow evaluation
+Path: operations/wave-flow-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Experimental PR 631 Wave Flow desktop controls inherited from PR 618, comparative fixtures, actual native diagnostics and explicit unsupported physical persistence and material behavior
+canonical-for: [wave-flow-evaluation]
+last-reviewed: 2026-11-16
+Section: Wave Flow evaluation > Select, apply and verify Wave
+1. In **Water solver**, select **Wave Flow** if another law is active. This stages the required FreeMass carrier and the Wave profile. A staged selection has not yet changed native. 2. Choose **Two crests ·512²** in **Water comparison**, then press **Load / reset scene**. This installs an editable authored scene using the requested solver. It replaces the current scene, so retain any wanted work first. 3. Read **Active native** and the native column in **Wave tuning…**. Wave must report enabled, with the requested rounds, worker capacity and parameter values. 4. Use Workbench **Run/Pause** and **Single tick**. Native **ticks** and **rounds** must advance. At two rounds, each completed native tick contributes two Wave rounds. The visible simulation is native Water, not an animated overlay. 5. Change one or two controls, then press **Apply solver / tuning**. A successful replacement acknowledges the new native configuration; refused settings show the reason and preserve the old World. Tuning itself is staged until Apply. **APPLIED · active settings match** compares the active solver, Wave values, workers and relevant construction controls with authoritative native readback. Ballistic Water, IN signed, Face release, Fine cores, active face tuning, PressureFlow capacity and effective rule-radius changes remain **STAGED** until they actually match the new World. The radius tooltip shows the picker request, the effective value after the solver's minimum, and the native value. **Round Water on this Apply only** stays staged until its native construction receipt is acknowledged and the one-shot checkbox clears. Hover the status for the named differences and requested/native values. Dormant settings remain preferences for their own law; they do not configure the currently selected alternative. Apply preserves the live stored cellular inventory and actors when the requested law can represent them. Rebuilding a Wave World resets its retained face flux, sleep state and tick counters; this is a new law state, not exact physical continuation. Pause/resume preserves the current law state. A normal restart uses accepted construction settings, not invalid or unsubmitted tuning edits. **Reset Wave defaults** stages the original version-2 values; press Apply to use them. **Revert to native** discards staged tuning and copies the active native values back into the controls. **v2 defaults**, **Lively**, **Strong response** and **Heavy** are starting points. Non-default presets are exploratory, not recommendations or evidence that Wave is superior.
+
+
+### Rank 5: architecture/wave-flow-v1.md — Wave flow Water solver (experimental)
+
+Document: Wave flow Water solver (experimental)
+Path: architecture/wave-flow-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
+canonical-for: [wave-flow-v1]
+last-reviewed: 2026-11-20
+Section: Wave flow Water solver (experimental)
+Wave Flow entered the shared Workbench through PR #631. New sandbox and Workbench sessions use the owner-approved gameplay profile with waterfall spill and ballistic release. Native callers opt in through `WorldConfig::wave_flow`; disabled Worlds keep their original kernels, physical hashes, save formats and memory use. Wave runs on the FreeMass carrier. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) records the default transition and the [Oil tank](../audits/2026-11-20-wave-oil-impinge.md) records the final playtest. The additive C API and Godot evaluator expose the experimental law, worker and substep selection, representative scenarios and copied native diagnostics. Exact physical save/restore remains explicitly unsupported; authored scenarios can be reconstructed, but this is not continuation of a running Wave World. The [completion evidence](../audits/2026-11-15-wave-mt-001-completion.md) owns historical implementation evidence; the [Astra takeover record](../audits/2026-11-15-wave-mt-001-astra-takeover.md) and PR #631 ledger own resulting-source qualification. The [original evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md) is historical: its timings and platform results do not qualify a later #618 candidate.
+
+## DR08: Water must never move upward ballistically, correct?
+
+Canonical rank: 1
+
+Expected facts:
+
+- The blanket prohibition is stale: accepted optional Water ballistic and Wave release paths exist.
+- State the admitted family and bounds; this does not establish every generic solid/equipment successor as accepted.
+
+### Rank 1: architecture/ballistic-water-v1.md — Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law
+
+Document: Ballistic Water and hybrid spray (experimental)
+Path: architecture/ballistic-water-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Experimental-branch BW-001 ballistic_water_v1 parcel owner, IN-B1 signed-vertical inertial law and the WCX workbench impact-spray/jet adapter law; ownership, transfer lifecycle, conservation and momentum accounting, persistence/identity versions, capacity, cost and controls; not on main, no default changed
+canonical-for: [ballistic-water-v1, inertial-b1-signed-vertical, water-impact-spray]
+last-reviewed: 2026-11-18
+Section: Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law
+Opt-in `WorldConfig::inertial_signed_vertical` (requires an applied IN assignment). It has its own extension identity domain and CYPS4 bit; v1 Worlds are unchanged and still refuse `vy < 0` everywhere. - U1/U3: support applies only to a cell that is not rising (`carried >= 0`), so an obstacle beneath never destroys upward motion; gravity alone turns it. - U2: flight gravity is half of v1 (`kSignedGravity = 2` q16/tick²), so the radius-bounded 2-cell/tick launch reaches a visible ≈16-row apex before damping. - U6: an upward-blocked move (ceiling or overhead body) reverses a quarter of the rise; a body overhead receives an upward contact. - Ledger: `gravity_speed` books gravity's exact signed L1 effect, separate from dissipative `loss` (`Σ|v| = gravity_speed - loss + external - retired`); in v1 it equals `gravity_y`. `impart_inertial_velocity` adds a bounded external impulse.
+
+
+### Rank 2: systems/granular-interaction-policy.md — Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response
+
+Document: Granular interaction and sampled player policy
+Path: systems/granular-interaction-policy.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes
+canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
+last-reviewed: 2026-09-25
+Section: Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response
+**Current candidate C1:** the version-1 8/9 downward and 9/9 side/upward support classification is unchanged. REM-003 source-matched characterization found that packed standing, flat traversal, representative powders and excavation release worked within their registered cases, while materially different Sand landing speeds resolved to nearly the same rigid support height with no granular response. C1 therefore changes the sampled-character response rather than retuning the shared support predicate used by REM-002 generic body bearing. On a downward sampled-player collision, impact speed below 24 cells/second causes no disturbance. From 24 through less than 72, at most one supported foot-edge grain may move; at 72 or above, at most two may move. Only the left/right contact edge is considered. A candidate grain must be a stored support-capable granular material that currently satisfies the existing packing/stability predicate. It may move exactly one cell diagonally outward/up only through the existing whole-cell conservative relocation path into real Empty storage not occupied by another transient body. Material state and temperature move with the cell and the normal wake/dirty machinery runs. Hard terrain anywhere in the sampled collision volume fails this disturbance path closed; liquids, loose/unsupported grains and ordinary resting contact likewise do not trigger it. The player still stops on the accepted support surface; C1 does not introduce character-owned material, a granular Rapier collider, a pressure/velocity field, per-cell character physics or a second body-bearing solver. The native adapter and fallback mirror the bounded operation under their existing serialized owners. The resulting grain may subsequently move under ordinary cellular rules, so the disturbance count is not a promise of permanent crater geometry. Broad generic body↔granular acceptance remains REM-004 / #83. Owner gameplay acceptance of C1 is a separate REM-003 gate and is not implied by automated tests.
+
+
+### Rank 3: architecture/ballistic-water-v1.md — Ballistic Water and hybrid spray (experimental) > Why a separate owner
+
+Document: Ballistic Water and hybrid spray (experimental)
+Path: architecture/ballistic-water-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Experimental-branch BW-001 ballistic_water_v1 parcel owner, IN-B1 signed-vertical inertial law and the WCX workbench impact-spray/jet adapter law; ownership, transfer lifecycle, conservation and momentum accounting, persistence/identity versions, capacity, cost and controls; not on main, no default changed
+canonical-for: [ballistic-water-v1, inertial-b1-signed-vertical, water-impact-spray]
+last-reviewed: 2026-11-18
+Section: Ballistic Water and hybrid spray (experimental) > Why a separate owner
+[#362 Phase A (draft PR #376)](https://github.com/techrote/cybersand/pull/376) showed that Current splash is collision-driven relocation only, never upward momentum, and that a submerged body leaves its overlap Water masked under it. Re-working every bulk kernel to carry upward momentum (architecture A) would touch four families and their scheduling. A bounded native parcel owner (architecture B) gives every family ballistic Water at the cost of one serial pass, and a cellular signed-vertical law (IN-B1) covers the IN family's own representation.
+
+
+### Rank 4: architecture/liquid-state-transition-matrix.md — Liquid material and solver state-transition matrix > 5. Velocity and momentum (IN; PF flow)
+
+Document: Liquid material and solver state-transition matrix
+Path: architecture/liquid-state-transition-matrix.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Operation-by-operation rules for default liquids, accepted native W-CY/pressure variants/Brine IN and isolated published Water IN; historical Proposed requirements retain their source qualification — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
+canonical-for: [liquid-state-transition-matrix]
+last-reviewed: 2026-10-25
+Section: Liquid material and solver state-transition matrix > 5. Velocity and momentum (IN; PF flow)
+**Inertial update `inertial-update-v1` (Proposed, #212; correction 2026-10-23).** The earlier rows were inconsistent ([re-review finding 2](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493)): - a per-component ledger with only non-negative losses could not represent a deflection that creates `vx > 0`, nor damping of a negative `vx`; - gravity before deflection could push a supported cell at rest sideways; - "blocked travel zeroes velocity" contradicted "same-family blocking preserves velocity". They are replaced by one ordered update per inertial cell per tick. The executable specification is the standalone oracle [`inertial_contract.py`](../../tools/lcb/inertial_contract.py), with its [tests](../../tools/lcb/test_inertial_contract.py). Its worked examples are embedded in the [contract registry](../../godot/tests/fixtures/lcb/lcb-physics-contracts.json) (contract `inertial-update`). It is a contract model on static neighbourhoods: **the contract model itself executes no World, scheduler or inertial family.** Units: velocity and accumulators are signed integers in `q` units per cell. The illustrative values are `q = 16`, `g = 4` and `vmax = 64`. Fractions are `turn 1/8`, `deflect 3/4`, `damping 1/16` and `drag 1/4`; the rest threshold is `1`. These values are recorded in the receipt and are **not frozen**. `vy ≥ 0` always, because v1 has no upward impulse source. | Step | Rule | |---|---| | Eligibility (N1 correction) | One **directional** rule `eligible(dx, dy)` serves support, re-aim, side selection and every travel move. Empty: any move. A lighter foreign material admitted by Current density/exchange controls: **only a move with `dy = +1`**, straight or diagonal down. This is the vertical density exchange Current `can_density_exchange` admits (vertical delta ≠ 0). A horizontal move (`dy = 0`) never swaps; a lighter neighbour beside the cell is a horizontal contact. Wall, solid, transient body mask and an occupied same-material cell are never eligible and share one contact rule. Selecting IN for both materials does not remove a permitted foreign-material density exchange. No new foreign-liquid boundary law is introduced. | | U1 support | `supported` := `not eligible(0, +1)`, evaluated before any velocity change. A lighter liquid below is therefore not support. | | U2 gravity | `vy += g`, **exactly once per tick**, booked as the only speed-adding entry. | | U3a diagonal re-aim (lateral source A) | If supported and `eligible(±1, +1)`: the `sign(vx)` side first, else `deterministic_direction` order. Then `S = |vx| + vy` (including this tick's `g`), `turn = trunc(S·1/8)`, `S' = S − turn`, `|vx| = S' // 2` toward the diagonal, `vy = S' − |vx|`. A cell at rest gains only `g` along the diagonal. | | U3b support and deflection (lateral source B) | If supported and both diagonals are blocked, a **support** impulse `−g` first
+
+
+### Rank 5: systems/granular-interaction-policy.md — Granular interaction and sampled player policy > How does the sampled character move and recover?
+
+Document: Granular interaction and sampled player policy
+Path: systems/granular-interaction-policy.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes
+canonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]
+last-reviewed: 2026-09-25
+Section: Granular interaction and sampled player policy > How does the sampled character move and recover?
+`character_box_collides(origin, size, mode)` accepts finite positive boxes up to 32 by 32 physical cells (up to 33 by 33 raster cells at fractional origins). Mode 0 checks full-volume enclosure, 1 samples powder at feet, 2 at sides, and 3 at the head; every mode checks hard occupancy throughout the volume. Malformed/out-of-world boxes fail closed. `box_collides` is mode 0. The old material-only fallback helper now identifies hard surfaces only. `CyberSampledCharacter` uses at most one-cell movement increments, a one-cell grounded step-up, and clamps each simulation delta to 0..0.1 seconds. PCHAR-001 now distinguishes two uses of the former enclosure search. **Invalid-spawn/reset repair** remains an explicit bounded search of at most 128 axis candidates within 32 cells, nearest first and upward/left/right/down at equal distance. The historical **sampled-baseline runtime** retains the same search before movement, but records attempts, successes, last offset and cumulative upward relocation. This instrumentation makes the previously implicit rapid upward-surfacing mechanism directly observable. The PCHAR **sampled-burial-safe** experiment disables that runtime search while retaining explicit invalid-spawn repair. If material occupies the sampled actor at runtime, velocity is zero, the actor remains in place with `runtime_enclosed/recovery_blocked` set, and no material is erased or displaced. This is an experimental disposition, not a new production player selection. Diagonal escape, crush damage, barrel pushing and carrying remain unimplemented. Native queries run only under the serialized World owner, outside kernels; the read neighbourhood does not enlarge native job write domains. Desktop and Web retain their different character/cell order. Fallback uses the same query geometry and material capability, but its narrower cellular rules remain a separate semantic reference, not native Water/reaction parity.
+
+## DR09: Can I treat FreeMass Water and other-liquid CellularYield amounts as identical quantity rules?
+
+Canonical rank: 2
+
+Expected facts:
+
+- Water FreeMass and other-liquid CellularYield have different quantity semantics.
+- Use the selected family policy and explicit normalization/receipt contract; do not silently unify amounts or conservation claims.
+
+### Rank 1: operations/water-hybrid-pressure-extension-programme.md — Water hybrid, saturated-head and compartment-pressure extension programme > Owner clarifications recorded 2026-09-20 > Water and other native liquids still use distinct motion/quantity paths
+
+Document: Water hybrid, saturated-head and compartment-pressure extension programme
+Path: operations/water-hybrid-pressure-extension-programme.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
+canonical-for: [water-hybrid-pressure-extension-programme]
+last-reviewed: 2026-10-24
+Section: Water hybrid, saturated-head and compartment-pressure extension programme > Owner clarifications recorded 2026-09-20 > Water and other native liquids still use distinct motion/quantity paths
+Completed #15 characterization remains the relevant scoped evidence: - native Water uses the fractional conserved **FreeMass** path; - most other native liquids use whole-cell **CellularYield**-style motion; - Oil retains additional specialization; - no universal FreeMass conversion, liquid unification or new generalized yield solver was selected. A new explicit hydrostatic/depth-pressure transport mechanism would therefore add another liquid-specific bulk-motion authority. This is one reason to measure what generic soliding/hybrid coupling can already provide before adding a new Water solver layer.
+
+
+### Rank 2: architecture/liquid-state-transition-matrix.md — Liquid material and solver state-transition matrix > Status and inputs
+
+Document: Liquid material and solver state-transition matrix
+Path: architecture/liquid-state-transition-matrix.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Operation-by-operation rules for default liquids, accepted native W-CY/pressure variants/Brine IN and isolated published Water IN; historical Proposed requirements retain their source qualification — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
+canonical-for: [liquid-state-transition-matrix]
+last-reviewed: 2026-10-25
+Section: Liquid material and solver state-transition matrix > Status and inputs
+- **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and W-CY refinements are identified separately below. - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`, whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and test. - **PF rows are implemented (2026-10-24)** by the opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current on main since #245 merged at `03785c3`. Its [lifecycle table](pressure-flow-v1.md#lifecycle-per-mutation-path) owns the Current per-path result. Refinements of the Proposed PF text: the overfill bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not amount); `transfer_water` throws in a pressure World; vented and collapsed gas amounts are booked in `GasLedger`. Accepted [PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md) advances main to exact hash/persistence version **2** with the shared quantity ledger and construction bindings. Main explicitly refuses historical CYPS1; its #245 evidence is retained. CYSD1 stays a default-family reconstruction. - **W-CY rows are Current on main through #246** at merge `ec58d919`: whole-cell Water law version 1 and optional viscosity material block v2, with retained cadence/stochastic liveness. [Native prepared setup and receipts](liquid-prepared-setup-and-receipts.md) owns normalization, native-issued outcomes, typed receipt and accounting codecs. This owner-requested narrow native freeze is not a production Cell or global ABI freeze. Brine IN/reference and #201 caches/dormancy are Current in the combined #212 source, with [IN](inertial-cellular-v1.md) and [pressure](pressure-optimization.md) qualifications separately retained; fresh combined-source qualification remains required. - **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)): - the C64-E8 Cell is unchanged; - family state lives in **optional, versioned, solver-owned storage**, plus a **World-owned gas-compartment table**; - no spare-bit allocation; - numeric widths are frozen by #200/#212 before code. - **Not a schema or layout decision.** **Family columns:** | Column | Meaning | |---|---| | FM | `freemass_v1` (Current Water) | | CY | `cellular_yield_v1` (Current other liquids; experimental whole-cell Water in W-CY) | | PF | `pressure_flow_v1` (Water only, v1) | | IN | `inertial_cellular_v1` (Water whole-cell v1; Brine) | **Common state tuple** (Current, moves as one unit): material, `state_a`, `state_b`, and optional chunk temperature. Optional family state is: | Family | Optional state | |---|---| | PF | overfill quantity, signed flow/velocity, optional wake/history | | IN | signed vx/vy (or momentum), subcell accumulators | | World gas table | per compartment: id, generation, ancestry, amount, free volume, vent/seal state, topology revision | **Cross-cutting rules** applying to every row: - **R1** Optional family state belongs to exactly one cell. It moves with that cell and is **retired** (never left behind or duplicated) when the cell becomes Empty or another material. - **R2** A product or newly painted cell starts at its own
+
+
+### Rank 3: systems/water-design.md — Water design > WEX-005 disposition and the opt-in LCB lane (2026-10-23)
+
+Document: Water design
+Path: systems/water-design.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
+canonical-for: [native-water-semantics, native-fallback-water-differences]
+last-reviewed: 2026-10-24
+Section: Water design > WEX-005 disposition and the opt-in LCB lane (2026-10-23)
+**Current Water semantics are unchanged.** The [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md) records #95's answers: - **Deep release:** the slow-slope deficit is real and unresolved. On current `main` (#49 v2 rerun 39739371203), deep and medium outlets deliver byte-identical discharge, so depth above saturated outlet cells adds no drive. Water sheets (#92) were never tested. No surge fixture is registered yet. - **#45: NARROW.** Bounded head-transmission research continues to its admission/design phase only, under a shared/vented atmosphere, with a separately registered surge fixture family. No mechanism is selected. - **Boundary assumption:** Current Water has no gas state; `Empty` acts as one shared atmosphere. Equal levels are a valid target only for vented/shared headspaces. Sealed headspaces settle at `Δh = (p_A − p_B)/(ρ·g)`, and vacuum/low-pressure boundaries have no Current target. - #93 is research only, #94 is narrow-use, #18 stays held, and FreeMass and CellularYield stay separate. The owner-approved **Liquid Comparison Build** (#200, gated by #213) adds an opt-in, version-identified `pressure_flow_v1` family and later other experimental families with Water as a common test material. The [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md) bounds that lane: unchanged defaults, no hidden fallback, no production #45 selection, no new pressure-to-Rapier forces, and the Current fixtures and #49 v2 controls held fixed. The [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) kernel is **Current on branch `claude/lcb001-pressure-reference` (unmerged)**: it runs only in a World whose applied policy assigns it, adds overfill, signed flow and World-owned gas compartments, and leaves every semantic on this page unchanged for the default `freemass_v1` World. In a pressure World, `water_integer` counts visible plus overfill quantity and FreeMass `transfer_water` throws instead of running as a silent fallback. Its characterization does not select or tune #45. Other candidate kernels remain **Planned**. **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+
+
+### Rank 4: architecture/liquid-solver-family-policy.md — Liquid solver family policy and API specification > What exists today (Current)
+
+Document: Liquid solver family policy and API specification
+Path: architecture/liquid-solver-family-policy.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped
+canonical-for: [liquid-solver-family-policy]
+last-reviewed: 2026-11-03
+Section: Liquid solver family policy and API specification > What exists today (Current)
+- **Two default lateral-flow modes, one per descriptor.** These descriptor defaults do not enumerate the four policy-selected solver families. `LateralFlowMode` in [material.hpp](../../native/include/cybersand/material.hpp) has `None`, `FreeMass` and `CellularYield`. Each `MaterialDefinition.lateral_flow` is fixed at compile time. - Water (ID 3) is the only `FreeMass` material, run by `World::update_water`. - Ten liquids are `CellularYield`: Lava 8, Acid 12, Oil 16, Paste 20, Slush 21, Brine 24, Cement 30, Toxic Sludge 32, Mercury 33, Molten Glass 36. - Their kernels add specializations ([world.cpp](../../native/src/world.cpp) `World::update_cell` → `RuleKernel` switch): Oil burn/extinguish, Lava, Acid, Cement cure and Molten Glass cooling. Paste, Slush, Brine, Toxic Sludge and Mercury use the generic `flow_as_yielding_liquid`; Mercury also has a diagnostic viscosity override. - **Construction-time policies follow one pattern.** `WorldConfig` in [world.hpp](../../native/include/cybersand/world.hpp) carries `WaterExperimentPolicy` (versioned, validated, immutable; 3–8 mass bits, 0–12 coherence) and `TransportPolicy` (packed, construction-only). Both reach Godot through `CyberDemoBridge::build_water_feel_world` ([cyber_demo_bridge.hpp](../../godot/native_extension/cyber_demo_bridge.hpp)). Invalid values throw before `install`, so the previous World survives. - **Effective readback exists for Water and, since the 2026-10-24 foundation, for the liquid policy.** `CyberNativeCellWorld::get_water_experiment_policy` returns the applied Water policy; `get_liquid_solver_policy` returns the applied per-material family receipt described below. Under the default policy every liquid executes its current default kernel; a World whose policy assigns Water to `pressure_flow_v1/reference` runs the [pressure reference](pressure-flow-v1.md) for Water instead (Current on main). - **Liquids already meet in one World.** Density exchange (`DensityMotion`, `accepts_density_exchange`) and pair rules ([interaction_rules.hpp](../../native/include/cybersand/interaction_rules.hpp)) act between liquids today. Examples: `int.pair.water-salt.dissolve.v1`, and Oil extinguished by Water inside the Oil kernel.
+
+
+### Rank 5: architecture/material-authoring-catalogue-plan.md — Canonical material catalogue and interaction authoring — adopted Planned baseline > 1. Authority and preserved substrate
+
+Document: Canonical material catalogue and interaction authoring — adopted Planned baseline
+Path: architecture/material-authoring-catalogue-plan.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
+canonical-for: [material-authoring-v1-programme-proposal]
+last-reviewed: 2026-11-11
+Section: Canonical material catalogue and interaction authoring — adopted Planned baseline > 1. Authority and preserved substrate
+The existing native model is useful and should be retained: immutable `kMaterialDefinitions`, bounded `RuleKernel` execution, no material-owned threads or per-cell objects, byte-sized material identity, stored `state_a/state_b` and epoch, deterministic contact and movement, sparse explicit reaction tables, per-World liquid family policies, versioned source identity, and the Materials Laboratory/MicroScenario corpus. | Source-derived property | Value at intake | Authority | |---|---:|---| | Material slots | 132, indices 0–131 | [`material.hpp`](../../native/include/cybersand/material.hpp) | | Valid entries / non-empty paintable entries | 131 / 130 | Same; ID 10 reserved invalid, ID 0 Empty | | Broad phase states | Empty 1, Solid 104 (including invalid 10), Powder 9, Liquid 11, Gas 4, Agent 3 | Same | | FreeMass / CellularYield liquid descriptors | 1 / 10 | Same (selected opt-in family may differ from default) | | Current authored compact pair rules | 56 = 14 oracle + 42 building | [`interaction_rules.hpp`](../../native/include/cybersand/interaction_rules.hpp) | | Specialised interaction metadata entries | 19 | Same | | Explicit semantic families / membership records | 7 / 33 | Same | | Authored default/adjustment/context layers actually active | 0 | Same | | Hard surfaces in current `is_hard_surface` | 101 | [`material_rules.cpp`](../../native/src/material_rules.cpp) | | Native `state_a` storage accessor | 16 bits; descriptor initial value is `uint8` | [`precision_storage.hpp`](../../native/include/cybersand/precision_storage.hpp) and `material.hpp` | These are **compiled source claims**, not freshly executed physical or graphical acceptance claims. `RuleKernel::None` is a valid deliberately inert behaviour, not a missing implementation. `MaterialState` describes broad phase; it does **not** by itself define hard collision, powder support, liquid solver applicability, electrical conduction or reaction inheritance. **Existing ownership that remains in force:** - [INT-000 #29](https://github.com/techrote/cybersand/issues/29) has landed the sparse interaction/provenance substrate. [#30](https://github.com/techrote/cybersand/issues/30) is its open MicroScenarios programme tracker. This proposal is an authoring/consistency follow-on, not an INT-000 reimplementation. - [MAT-001 #158](https://github.com/techrote/cybersand/issues/158) owns the accepted persistent compact-pair/Ice wake repair. Do not replace its semantics or treat historical contacts as fresh defects. - [#160](https://github.com/techrote/cybersand/issues/160) / [PR #162](https://github.com/techrote/cybersand/pull/162) own the candidate Water/Steam/Ice partial-quantity and hot-material cumulative-quench correction. Their **current merge status and source** must be checked at every affected step. - [#200](https://github.com/techrote/cybersand/issues/200), [#202](https://github.com/techrote/cybersand/issues/202), [#203](https://github.com/techrote/cybersand/issues/203) and [#212](https://github.com/techrote/cybersand/issues/212) own liquid-family, variant, application and publication requirements. [#204](https://github.com/techrote/cybersand/issues/204) owns Cell-carrier experiments; [#12](https://github.com/techrote/cybersand/issues/12) owns soliding/Rapier transitions. - [#131](https://github.com/techrote/cybersand/issues/131) owns general testbench ergonomics. This programme owns **material-specific inspection and authoring**, while consuming its UI conventions.
+
+## DR10: If I edit viscosity in Materials Lab, does every specialized material kernel use the new value?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Declared and effective properties are distinct; specialized kernels can ignore or refuse candidate properties.
+- A compiled candidate is not proof that all production consumers use it; inspect admitted backend and native comparison result.
+
+### Rank 1: operations/materials-lab-authoring.md — Materials Lab v1 > Browse and inspect actual behaviour
+
+Document: Materials Lab v1 inspection, candidate authoring and native tests
+Path: operations/materials-lab-authoring.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
+last-reviewed: 2026-11-12
+Section: Materials Lab v1 > Browse and inspect actual behaviour
+Search by exact stable ID, name, physical state, kernel, semantic family or reaction partner. Filters include physical states and explicit hard/granular capabilities. These categories organize the browser; neither appearance labels nor semantic family membership confer inherited physics. Every important property row separates **declared value → effective value → actual consumer → applicability → editability**. The native cold-path bridge reads original descriptor values, capability predicates, density-exchange eligibility, visual-state projection and compiled solver defaults. The model also consumes the existing native interaction profile. Missing native support fails explicitly. It never substitutes shadow catalogue values for native facts. Examples to check: - **Water:** the specialised Water family determines motion. Descriptor viscosity is not a Lab edit. CellularYield Water's versioned policy viscosity is a separate consumer; it is not the descriptor viscosity byte. - **Sand:** powder movement, density and explicit hard/granular capabilities are separate facts. A powder name never implies hard terrain. - **Slush:** native density is 1080; the separately identified GDScript fallback has density 1100. Neither value is silently substituted for the other. - **MoltenGlass:** yielding movement and specialised thermal behaviour are shown separately, including the actual consumers and the admitted descriptor fields. - **Lava, Acid and Oil:** an ignored descriptor viscosity is labelled ineffective for the specialised kernel, and the candidate control is disabled. When opened from Shared Workbench, the inspector receives a **copied applied policy receipt at opening**. Reopen to refresh it. A standalone Lab labels compiled defaults as unobserved by a live World. **Show applied Water settings** switches the inspector to the isolated experiment's acknowledged native policy. The UI never reads a simulation-worker-owned World from the main thread. Sources: [native inspection](../../godot/native_extension/material_lab_inspection.inc), [catalogue model](../../godot/scripts/material_lab_catalogue.gd), [panel](../../godot/scripts/material_lab_panel.gd) and the minimal [Workbench mount](../../godot/scripts/shared_workbench.gd).
+
+
+### Rank 2: architecture/material-authoring-catalogue-plan.md — Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Materials Lab effective inspection and editing
+
+Document: Canonical material catalogue and interaction authoring — adopted Planned baseline
+Path: architecture/material-authoring-catalogue-plan.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
+canonical-for: [material-authoring-v1-programme-proposal]
+last-reviewed: 2026-11-11
+Section: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Materials Lab effective inspection and editing
+**Planned #356:** catalogue descriptors alone cannot supply effective viscosity controls or runtime reaction status. Reuse the material-info v1–v4 native C API, the native bridge's interaction catalogue/inspection, and the applied liquid policy readback. Report the selected backend and solver beside each value. Lava, Acid and Oil bypass descriptor viscosity in specialized movement, so that declared field is read-only or explicitly unused there. Water-CY consumes its versioned material-block viscosity; generic yielding liquids use descriptor viscosity except for Mercury's diagnostic override. A descriptor-only radius display must also distinguish IN's applied radius-3 geometry. An interaction resolver sees matches and rolls, not the live World's sleep, mask or due-opportunity state. Existing specialized inspection explicitly marks records `evaluated=false`. Show unsupported/unobserved status rather than inventing reasons. A future World observation must be produced by its real owner and preserve the bounded copied-observation contract. Source-edit-required fields can be exported as validated authoring changes for rebuild; existing construction-policy fields can be edited only through their actual validated restart/preparation API. A slider is enabled only when a consumer, owner and applied readback exist. Failed validation or reconstruction preserves the old source/profile/World, and a successful preview does not claim that a production policy was changed. Read-only inspection can precede new reaction semantics; editing cannot bypass #355 or relevant #354 dispositions.
+
+
+### Rank 3: architecture/material-authoring-catalogue-plan.md — Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Effective parameter contract
+
+Document: Canonical material catalogue and interaction authoring — adopted Planned baseline
+Path: architecture/material-authoring-catalogue-plan.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Owner-adopted Planned production baseline; section 15 records bounded Materials Lab v1 implementation authorization and review candidate, section 14 records liveness investigation, and sections 1–13 preserve historical boundaries
+canonical-for: [material-authoring-v1-programme-proposal]
+last-reviewed: 2026-11-11
+Section: Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Effective parameter contract
+`MaterialDefinition.viscosity_index` is a **declared** value; effective motion depends on kernel and any allowed construction-time profiles. Every proposed editable parameter needs: - stable key; declared and effective values; units and validated limits; - owning source/preset/override and identity/version of the applied policy; - **actual consuming kernel/helper** and supported platform/solver; - status `effective`, `unused_by_selected_kernel`, `unsupported`, `planned` or `source_edit_required`; - change class: appearance preview, compile/rebuild, or validated restart-time policy; - revalidation tags, state/quantity impact and save/physical-hash implications. In v1, **do not** present Lava/Acid/Oil descriptor viscosity as an effective freely editable native slider while their specialised paths bypass that value. An inspector can truthfully display the descriptor and an applicability warning. Similarly, do not infer real-world density units from `density`: it is a gameplay comparison value.
+
+
+### Rank 4: operations/materials-lab-authoring.md — Materials Lab v1 > Supported candidate edits and state transitions
+
+Document: Materials Lab v1 inspection, candidate authoring and native tests
+Path: operations/materials-lab-authoring.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
+last-reviewed: 2026-11-12
+Section: Materials Lab v1 > Supported candidate edits and state transitions
+Select a valid, nonempty material and **Duplicate selected**, or choose **New powder 132**. The original template selects the existing kernel and state contract. The candidate label is not a production rename. Existing IDs, enum encodings and rule slots remain fixed. | Property | Lab v1 boundary | |---|---| | Density; base RGBA | Editable candidate fields; consumed by the descriptor probe and isolated compiled World | | Explicit hard/granular capability; visual-state projection | Editable and exercised by the descriptor probe; edits are rejected by the World backend because it retains the native capability/projection consumers | | Descriptor viscosity | Editable only for generic YieldingLiquid, Cement and MoltenGlass templates; ineffective specialised-kernel edits are rejected | | Physical state, kernel, movement flags, density-motion mode, exchange permission, lateral-flow descriptor, initial state bytes and write radius | Held to the selected template; choose another template for a different admitted mechanism | | Existing sparse reaction slots owned by the template | Structured partners, products, match mode and inclusive probability threshold are editable; identity, slot and supported endpoint-effect semantics stay fixed | | Explicit endpoint effects v2 | Non-Water `keep_existing`, or declared Metal/Combustible `state_b` updates, execute only in isolated compiled Worlds; see the reaction contract below | | New arbitrary production IDs, new kernels, unknown fields, Water retention/quantity effects, arbitrary state writes, new pair-rule slots | Unsupported and rejected with a field path and explanation | | Water movement model in **Try originals** | Built-in default, FreeMass, CellularYield and PressureFlow use the existing native admission and readback in the isolated test World | | Empty 0 and reserved invalid 10 | Inspectable, not candidate templates | **Draft** means editable, unqualified data. **Validated candidate** means the strict schema and immutable compatibility check passed. **Compiled/tested** means that exact candidate compiled and ran in the stated native probe. **Runtime-active** requires an authoritative production installation and engine acknowledgement; Lab v1 never assigns this state to a candidate. An edit revokes previous validation. A background response for an older revision cannot qualify newer edits. Candidate World results also bind the exact test recipe; changing seed, placement, partner, tick count or workers retires the displayed comparison. Actions commit pending numeric text before capturing a request, so typing a value and immediately pressing Validate, Compile or Save uses the visible edit. Validation refuses invalid IDs/types, duplicate JSON keys, duplicate slots, unknown or conflicting definitions, invalid/inactive reaction sources, malformed presets, unsupported state/effects and source drift. It uses the frozen compatibility lock without refreshing it. No failure publishes a partial bundle.
+
+
+### Rank 5: systems/materials-and-rule-kernels.md — Materials and rule kernels > Kernel execution and cadence
+
+Document: Materials and rule kernels
+Path: systems/materials-and-rule-kernels.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
+canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
+last-reviewed: 2026-11-04
+Section: Materials and rule kernels > Kernel execution and cadence
+[World::update_cell, update_rule_kernel, and rule_is_active](../../native/src/world.cpp) dispatch compact families. Private methods still couple storage access, traversal, movement, and wake/dirty handling; a public bounded `RuleContext` does not yet enforce that separation by type. Active descriptors declare at most radius two; inert descriptors declare zero. Phased jobs must remain within exclusive write domains and use deterministic coordinate/tick/rule streams. A material may not select behavior from worker identity or completion timing. | Work lane | Current period | Scope | |---|---:|---| | Eligible transport/density motion | Each selected tick, except Mercury/powder permeability | Empty movement and native Water transfer remain full rate; [granular policy](granular-interaction-policy.md) owns pair exclusions and deadlines | | Selected burn/charge/lifecycle work | 2 ticks | Kernel-specific, not every lifetime; Fire/Foam have full-rate portions | | Pair chemistry, thermal/growth/capture checks | 4 ticks | Persistent contacts can react; brief contacts can be missed | | Smoke lifetime/crowding | 8 ticks | Coordinate-staggered decay | | Ice freezing sample | 16 ticks | Specialized sub-lane after the four-tick thermal gate | | Ambient Fire ignition sample | 120 ticks | One sampled neighbor on the due lane | Some waiting rules keep blocks active without a false render write. Persistent compact-pair and Ice contacts use a scheduled block wake instead; other specialized kernels retain their existing waiting behavior. Activity and contact persistence therefore still matter outside that repaired scope. This deterministic cadence is Current approximate runtime behavior; it is not a selectable strict-every-contact mode or full replay capture.
+
+## DR11: Can Materials Lab already audition an edited material in my ordinary live Workbench World?
+
+Canonical rank: 3
+
+Expected facts:
+
+- Accepted Materials Lab supports its documented inspection and isolated candidate experiments.
+- The current-scene audition successor is unmerged at the recorded source; do not present candidate behavior as shipped.
+
+### Rank 1: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation
+**Confirmed:** Materials Lab should support easy material modification and audition, including changing values in a Workbench window for dynamic/custom trials. The existing comparison tabs are appreciated; isolated comparisons alone do not fulfil the desired current-scene interaction. Which properties can apply safely at runtime remains an engineering question. **Confirmed:** the four-layer Strata Theatre presentation should be an available Workbench option. Its visual impact is important. Historical integration exclusions are not a permanent rejection; the prototype's exact clocks and cross-layer event rules are not automatically the eventual product contract.
+
+
+### Rank 2: operations/microscenario-reference-pack.md — MS-001 reference MicroScenario pack > Inspection, control and fresh-reset A/B > Apparatus A/B and authored material tests
+
+Document: MS-001 reference MicroScenario pack
+Path: operations/microscenario-reference-pack.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry
+canonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]
+last-reviewed: 2026-11-11
+Section: MS-001 reference MicroScenario pack > Inspection, control and fresh-reset A/B > Apparatus A/B and authored material tests
+Generated apparatus definitions belong to the fresh-reset A/B workflow above: store both complete validated definitions, compare at the same completed tick, and load each through the acknowledged owner reset. The live worker's material physics is unchanged. Inspect temperature through existing stored-cell probes; masked temperature and per-cell sleeping state are not invented. Scheduler work, native tick time, host observation time and whole-frame cost retain their separate telemetry meanings below. For changes to material density or reaction products themselves, the separate [Materials Lab candidate test](materials-lab-authoring.md#compare-an-edited-candidate-in-a-real-native-world) compiles generated material definitions into an external native World and compares them with untouched source. Its finite bay reuses this pack's geometry, with its own explicitly recorded configuration. It does not mutate the live worker, replace the shared host, or establish hash parity with an apparatus A/B capture. Choose the corresponding workflow and retain its source/definition/worker receipt.
+
+
+### Rank 3: operations/materials-lab-authoring.md — Materials Lab v1 > Compare an edited candidate in a real native World
+
+Document: Materials Lab v1 inspection, candidate authoring and native tests
+Path: operations/materials-lab-authoring.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
+last-reviewed: 2026-11-12
+Section: Materials Lab v1 > Compare an edited candidate in a real native World
+fixture only; they do not establish cross-build saved-world compatibility or production activation. **Save World recipe…** stores the candidate, placement/partner, seed, ticks, workers and executable-source hashes in a versioned, digested JSON case. **Import World recipe…** restores the candidate and all visible controls together. Import validates the case but never restores a previous successful test claim: press **Build + run comparison** for a fresh result. Changed inputs, invalid IDs, malformed/duplicate fields and digest mismatches are refused. A documentation-only Git commit does not invalidate a recipe when all captured executable inputs are unchanged. A source mismatch requires explicit candidate reconciliation; it is not silently treated as the same experiment. Sources: [World compiler backend](../../tools/material_catalogue/world_candidate.py), [native probe](../../tools/material_catalogue/lab_world_probe.cpp), [comparison view](../../godot/scripts/material_lab_world_panel.gd).
+
+
+### Rank 4: systems/procedural-world-generation.md — Procedural world generation candidates > How does generated content enter the native simulation?
+
+Document: Procedural world generation candidates
+Path: systems/procedural-world-generation.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: GEN-001/GEN-002 native procedural proposals, theme and field guidance, trusted feature modules, bounded jobs, fresh chunk admission and isolated Godot preview
+canonical-for: [procedural-chunk-generation, generation-theme-authoring, generation-module-contract]
+last-reviewed: 2026-10-21
+Section: Procedural world generation candidates > How does generated content enter the native simulation?
+`World::install_generated_chunk(chunk, row_major_materials)` is an additive native C++ owner operation. It requires exactly the World's configured chunk area, checks all materials and coordinate arithmetic, refuses failed/in-progress Worlds, checks transient occupancy and capacity, and rejects **any already resident chunk**, including pre-reserved empty storage or cells edited and then erased. Thus generation cannot mistake an excavated resident area for never-generated terrain. Even an all-Empty payload establishes residence. After admission, ordinary `World::set` initialization supplies material-local state, configured full Water mass, epochs, dirty/wake/hard-surface metadata and discovery observations. No generated temperature/state bytes, Rapier bodies or new material semantics are invented. The owner may then simulate the chunk using the existing native rules. Invalid input/capacity/occupancy refusals produce no partial material installation. Initial allocation may throw before installation. The raw installer takes materials, not a generator/session receipt. Its caller must first check `Generator::accepts`, match chunk size, and own the World/reset lifetime. `World::clear` permits new chunks again; an old result from a previous World session must be discarded by the coordinator even if the recipe is unchanged. No automatic world-session receipt protocol or live Godot simulation attachment is claimed by this primitive. It must never run concurrently with World ticks, queries or rendering publication.
+
+
+### Rank 5: operations/materials-lab-authoring.md — Materials Lab v1 > Manual evaluation checklist
+
+Document: Materials Lab v1 inspection, candidate authoring and native tests
+Path: operations/materials-lab-authoring.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Implemented desktop review candidate; native inspection, source candidates, isolated compiled World comparisons and existing-material MicroScenarios; no production material migration or runtime candidate activation
+canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
+last-reviewed: 2026-11-12
+Section: Materials Lab v1 > Manual evaluation checklist
+- Open from the launcher and Shared Workbench; inspect Water, Sand, Slush, MoltenGlass and reserved 10. Confirm native/fallback/shadow distinctions and the origin of the copied solver policy. - Search for `23`, `powder`, `MoltenGlass` and a reaction partner; check physical and capability filters without implying semantic inheritance. - Create powder 132, change density/colour, validate and compile. Confirm no Runtime-active label and no production 132 in the browser. - Export/reimport the preset, then export a compiled bundle and import its `preset.json`. Tamper with a field/digest; require an actionable refusal and preservation of the current candidate. - Duplicate Salt, set threshold 0 and compare rolls 0/1 in the candidate and production resolver. Confirm explicit product-default effects. - Run Salt/Water for 120 ticks, read stored material/state, compare a clean reference, save/reopen the test and check one/four-worker agreement. - In **Try originals**, prepare a Water experiment with CellularYield and then PressureFlow. Inspect the applied settings, step the PressureFlow World, save it and reopen it to verify the selected model and native policy hash. - Duplicate Sand, set density500, compare both native Worlds against Water, inspect initial/final cells and export/reopen the World bundle. Edit settings while a compile runs and verify its older result cannot qualify the new recipe. - Cancel a compile and a reference replay; confirm the Lab stays usable and reports cancellation without a successful receipt. - Save/import a World recipe after changing placement, seed and workers; require exact restored controls, a validated state and a fresh compile before qualification. - Exercise Salt retention and a Metal state-B edit through **Run edited reaction**; check native registers/temperature and quantity evidence, not only the preview. - Select neighbouring native preview cells with left/right clicks, inspect a supplied roll, swap source/target and advance one step; the old contact report must retire and unobserved scheduling facts must remain labelled.
+
+## DR12: How do I paint, erase, fill and undo in a first Workbench session?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Use the actual toolbar/tool controls and their bounded operation outcomes.
+- Explain history boundaries, partial completion and refusal; never invent shortcuts or unlimited fills.
+
+### Rank 1: systems/paint-editor-bounded-shapes.md — PAINT-001 — bounded painting editor > Using the editor
+
+Document: PAINT-001 native-backed Workbench painting editor
+Path: systems/paint-editor-bounded-shapes.md
+authority: current-documentation
+document-kind: design
+status: Current
+scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
+canonical-for: []
+last-reviewed: 2026-11-12
+Section: PAINT-001 — bounded painting editor > Using the editor
+Open the ordinary Workbench and pause. Its existing material picker now contains the loaded native runtime's supported materials. The additional compact tool row provides Brush, Eraser, Line, Rectangle, Outline, Select, Fill and Paste, with Copy, Undo, Redo, Cancel, named Save start and Load start beside it. A gesture queues and completes one operation; the status distinguishes planning, queued, native execution, completion, refusal and partial completion. | Action | Control | | --- | --- | | Freehand / erase | B / E; right-drag also erases | | Straight line / filled rectangle / outline | L / R / O, then drag | | Select a rectangle | S, then drag | | Capture exact selected native materials | Ctrl+C | | Paste the captured stamp | Ctrl+V or V, position preview, click or drag and release | | Four-connected fill | G, then click; a containing selection defines the capture bounds | | Brush radius 0–24 | Existing radius field; `[` / `]` | | Undo / redo | Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z | | Save named authored start | Ctrl+S or Save start | | Cancel preview / stop native operation | Escape or Cancel | Undo/Redo follows the latest edit in the shared manual/agent timeline. The **Art batches** panel exposes the same Undo and Redo actions. Stop an active agent run and wait for its native result, deferred human strokes and provider activity to settle before using either panel's history controls or shortcuts. Tool keys apply to paused painting and respect focused text fields. Existing playing/actor controls retain their input paths. Pan and zoom use the existing host mapping: aspect-fit local coordinates plus the floored camera origin. A camera-button press cancels an unfinished gesture. Leaving the canvas or Escape cancels without committing. There is no second viewport or simulation controller. The overlay shows selection, canonical brush/line/rectangle footprints and multi-material paste, including Empty. Up to 16,384 preview cells/spans are shown exactly; larger previews explicitly show bounds. A copied selection can be pasted repeatedly during the session. There is no disk-backed stamp library yet.
+
+
+### Rank 2: operations/gen008-flatten-qualification.md — Flatten / Bake History evaluation > Windows owner acceptance
+
+Document: Flatten and Bake History qualification and owner evaluation
+Path: operations/gen008-flatten-qualification.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
+canonical-for: [flatten-baseline-qualification]
+last-reviewed: 2026-11-13
+Section: Flatten / Bake History evaluation > Windows owner acceptance
+Download the source-matched evaluation ZIP identified in the dated record or PR. Verify its SHA-256, extract the complete archive into a new writable folder with a short path, and run **Open Workbench.cmd**. Keep the included source, dependencies and qualification records together. The full package also includes the accepted Materials Lab authoring tools; its separate launcher remains available. 1. Open **New from generator…**, select a real profile and install a map. Paint several materials, erase some cells, and alternate a few manual and agent edits. 2. Run simulation long enough to move or transform material. Move an actor or let it fall, then click **Flatten / Bake History…** and confirm. Observe that the live simulation continues, actors retain their motion and no tick-zero restart occurs. The previous Undo history should now be empty. 3. Pause. Paint a distinctive new mark and erase part of the flattened map. Add a small agent mark. Undo and Redo the subsequent operations in chronological order. 4. Explicitly **Save named start** under a new name. Completely exit Godot. 5. Launch again and Load that name. The flattened material layout and subsequent acknowledged edits should return without regenerating the former profile. Actor spawns/settings reconstruct normally; transient physics from the earlier process is not expected to resume. 6. Continue painting and agent authoring, Undo/Redo those new edits, and try Restore start. Confirm ordinary input, Fill, Copy/Paste, generator preview and Materials Lab remain usable. 7. Start a longer drawing operation, attempt Flatten while it is pending, then Stop/wait for acknowledgement and retry. The refusal must explain why; no old history or existing save may disappear during a refused/cancelled preparation. Report the evaluation source SHA, ZIP SHA-256, saved name and exact steps for any failure. Automated graphical frames do not substitute for this owner interaction.
+
+
+### Rank 3: operations/wb-art-paint-integrated-candidate.md — Integrated PAINT and agent Shared Workbench > Final hardening and evaluation — 2026-11-12 > Evaluate the delivered package
+
+Document: Integrated PAINT and agent Shared Workbench candidate
+Path: operations/wb-art-paint-integrated-candidate.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
+canonical-for: [integrated-paint-agent-workbench]
+last-reviewed: 2026-11-12
+Section: Integrated PAINT and agent Shared Workbench > Final hardening and evaluation — 2026-11-12 > Evaluate the delivered package
+Extract the complete standalone Windows archive into a fresh folder, then double-click **Open Workbench.cmd**. No Git checkout or development-machine paths are required. The first launch imports the packaged project. Its `candidate-manifest.json` identifies the exact application commit/tree and payload hashes; the delivered native DLL has its own candidate provenance. This runbook is included as `READ-ME.md`. - Open **New from generator…**, choose a populated profile and install a map. - Pause; use Brush/Eraser, Line, Rectangle/Outline and several native materials. - Fill a closed pocket; Select, Copy/Paste, then Undo/Redo. - Open **Art batches**, draw inside a bounded area, alternate with human edits, and Stop a longer operation. Confirm that further editing still works. - Run and pause simulation; interact with the existing physical equipment. - Save a named start, exit Godot completely, launch again and Load that name. Check both editors' authored materials, actor/equipment configuration and settings, then continue editing. Expect the authored start, not a physics checkpoint of the evolved world. The retained repository runtimes still have four native-source mismatches per platform: `cyber_demo_bridge.hpp`, `cyber_native_cell_world.cpp/.hpp` and `cyber_prepared_liquid_world.hpp`. The separate source-built evaluation package does not promote those tracked binaries or rewrite their historical manifests. Tracked-runtime publication and the full materialized-provenance gate remain explicit merge requirements, alongside owner desktop acceptance. Keep Draft.
+
+
+### Rank 4: systems/paint-editor-bounded-shapes.md — PAINT-001 — bounded painting editor > Undo and authored-start persistence
+
+Document: PAINT-001 native-backed Workbench painting editor
+Path: systems/paint-editor-bounded-shapes.md
+authority: current-documentation
+document-kind: design
+status: Current
+scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
+canonical-for: []
+last-reviewed: 2026-11-12
+Section: PAINT-001 — bounded painting editor > Undo and authored-start persistence
+Only native-confirmed edits enter the shared chronological history. A manual gesture remains one record, including its native chunks. Agent receipts retain the first stored material before a cell changes and its latest stored material afterward. A direct batch or one model drawing submission can span bounded history parts of at most 262,144 cells; one Undo or Redo traverses adjacent retained parts of that submission in order. A human edit between agent chunks closes the preceding agent group and remains a separate history entry. Undo therefore reaches the most recent edit first and cannot skip later human work to reverse an earlier agent drawing. Up to 32 parts and 1,048,576 retained edit cells are kept. If those limits evict an older part of an agent drawing, the surviving entry is labelled **Agent drawing (retained tail)** and the UI reports that the older part is no longer undoable. A no-change agent receipt preserves existing Undo and Redo. A captured part that returns every cell to its original material contributes no history record and removes its redundant authored stamps. Undo/Redo preflights expected stored source IDs and uses PAINT's existing native mutation and acknowledgement path. Both interfaces share the generation, revision and tick fence. Confirmed agent edits recorded through this seam advance the fence instead of invalidating manual history. An outside edit not recorded in this timeline, a simulation tick or World replacement still invalidates unsafe history. Undo is paused construction editing; it does not restore temperature, velocity or evolved physics state. Its trusted human inverse does not expand the agent's ordinary material, source or scope policy. History completion appends a new human canvas result to the agent conversation and a durable `history_result` traffic event. It preserves historical model receipts and does not automatically issue another model request. The existing context-mode rules still govern later requests. Undo/Redo stacks remain session-local; saving persists the resulting authored start, not those stacks. Before native writes, `workbench_paint_editor_history.gd` checks that the complete operation can be reconstructed through existing Setup-v2 or GEN-007 start formats. It coalesces exact material row runs into boxes, preserving Empty. The Workbench-only constructor now admits **32,768** authored rectangles/ stamps (previously 4,096), subject to the unchanged **1 MiB** save envelope and native construction-area checks. Generated-map replay also has a conservative maximum of 64 world areas, capped at 32 million touched cells, validated before save and in the native prepared constructor. Other MicroScenario recipes retain their 4,096-record limit. This source change requires a rebuilt GDExtension before Windows qualification. The editor queries a native capability handshake and retains the
+
+
+### Rank 5: operations/wb-art-paint-integrated-candidate.md — Integrated PAINT and agent Shared Workbench > Owner acceptance
+
+Document: Integrated PAINT and agent Shared Workbench candidate
+Path: operations/wb-art-paint-integrated-candidate.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
+canonical-for: [integrated-paint-agent-workbench]
+last-reviewed: 2026-11-12
+Section: Integrated PAINT and agent Shared Workbench > Owner acceptance
+1. Extract the complete standalone package into a new folder and run its launcher. 2. Open Shared Workbench and **New from generator…**; confirm actual recipes, select Deepworks, generate a native preview and install it. 3. Pause and use several materials, Brush, Eraser, Line, both Rectangle modes, Select/Copy/Paste, Fill and Undo/Redo. 4. Open Art batches, choose a small work area and protections, submit direct JSON or your configured model, then issue a further instruction. Check native counts and try Stop during a longer batch. Wait for retirement, then Undo/Redo its confirmed prefix. Alternate agent and manual edits and verify chronological history from both panels; continue with manual edits. Use a newly qualified package containing this history implementation for these Undo checks. 5. Run and pause simulation, interact with the supported physical actors and existing liquid equipment, then continue authoring while paused. 6. Save a named start, close Godot completely and relaunch. Load the name and confirm terrain, both interfaces' edits, actor spawns, equipment configuration and settings; continue drawing. The saved object is the authored start. Report the candidate commit and package manifest with any failure. Keep the candidate Draft until the owner independently accepts this combined application.
+
+## DR13: An Art batch returned queued=true. May I say the cells have been applied and displayed?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Queue acceptance is not native application or visible publication.
+- Follow native acknowledgements and applicable session/generation/sequence identity before claiming applied state.
+
+### Rank 1: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Ownership, capacities and completion
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Ownership, capacities and completion
+`art_batch_plan.gd` validates geometry and lazily emits points. Rectangle/disc raster buffers do not grow with the entire drawing. `art_batch_executor.gd` streams one outstanding chunk to the existing `simulation_worker.gd` owner. The existing `MAX_BRUSH_FOOTPRINT_CELLS` (4096) is an internal chunk size, **not** a batch or lifetime edit ceiling. Explicit pixels are not limited to 32. Input/recipe storage still consumes ordinary process memory; this is not a claim of unbounded capacity. No new native storage, native locks or physics is added. The worker applies points with the ordinary native `emit_disc(..., radius=0)` primitive, alongside ordinary brush execution. On the exclusive World thread it checks installed canvas, selected area, protected rectangles and source material: only existing Empty/Hard Wall cells can be overwritten. It reads native material before and after each eligible point and reports actual checked/changed/excluded counts plus per-point readback, World generation and tick. Enabled materials are also checked at queue admission. No main-thread direct World access is added. Queue acceptance is `queued`, never applied. `executing` means the worker has claimed a chunk. Completion follows actual receipts for every chunk; failures or Stop preserve/report a partial prefix. Unchanged points count as checked, not changed. Excluded cells are distinct from failed writes. Readback is bounded to one chunk and consumed, not accumulated as an exhaustible receipt store.
+
+
+### Rank 2: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+Model prompt and Scanline keep a conversation for the mounted workbench. Turns limits requests per Send, including refusals and rate retries. Zero continues until Stop, completion or another limit. Run s adds an optional elapsed-time ceiling. After native completion, the next request can use the actual changed count and world epoch. An empty array ends the run. Stop cancels pending inference, pacing and queued native work. Clear starts a new conversation while the durable traffic retains earlier events. Full includes all text turns and saved images when Image is enabled. Compacted includes the latest twelve entries and discloses omissions. It omits reasoning prefixes from model context while retaining the original replies in traffic. Custom initially uses the same window. None sends no earlier turns. Historical image bytes remain in durable traffic. Image sends the visible intersection of the work area, or the whole visible canvas with Full view. The request includes pixel dimensions and the world rectangle. Identical captures are skipped within a run. Native chunk receipts remain in local traffic. Guidance opens the editable instructions for the selected mode. Scanline takes rows with local y, optional repeat and scale, and spans in [x,length,material] order or named objects with those fields. Omitted spans preserve cells. An explicit zero material erases. The normal executor applies the resulting ordered rectangles. Consecutive shapes of the same material share native chunks up to the existing cell limit. Material changes preserve the original draw and erase order. Gap s sets an optional request interval. HTTP 429 with numeric Retry-After paces subsequent requests to that endpoint. OpenAI request, token and project token reset durations also pace requests when their bucket reports exhaustion. Known billing and spending quota failures require user action. Traffic supports visible filtering and full disk export. Unknown cost remains unknown. On 2026-11-10 the Windows preview passed 113 native checks and 43 checks with LM Studio LFM2.5 1.2B, including a human follow-up and Stop during pacing. The Linux graphical transport fixtures passed for all three providers. The graphical run_art_scanline_vision.gd probe used the loaded LM Studio LFM3 Omni model through a loopback relay. It applied a four-cell wall, then erased its first cell after a second rendered observation. The earlier LFM2.5 text scanline trial returned malformed JSON. The vision test is a constrained placement test. In a separate graphical 64×128 statue trial, wb-art-local sent three requests over 50.5 seconds. The first two changed 226 and 132 native cells. The last returned an empty array. Reported input and output totals were 11,900 and 6,707 tokens. This
+
+
+### Rank 3: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Offset-area repair > 2026-11-11 scanline qualification
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Offset-area repair > 2026-11-11 scanline qualification
+RTX local tests at source `e5bf2916` ran the mech-statue prompt twice per installed model on fresh 64×128 native canvases. LFM3 1.7B exhausted 8192 output tokens on reasoning twice; LFM2.5 1.2B returned unusable geometry twice. The installed LFM2.5 8B-A1B variant applied 2344 and 1727 Hard Wall cells in 11.7 and 23.6 seconds, respectively, but rendered inspection did not establish the requested subject. A test-only reasoning-disabled LFM3 request on 256×512 applied 26741 cells in 3.8 seconds, but also failed visual subject assessment. These establish connection and native application outcomes, not artistic acceptance. No production provider settings were changed. The graphical benchmark accepts `WB_ART_BENCH_WIDTH` and `WB_ART_BENCH_HEIGHT`; defaults remain 64×128. Local original replies, native readback images, rendered PNGs and hashes are retained under `build/local-models-20261111/` (not committed).
+
+
+### Rank 4: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+The Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on one chronological history. Only confirmed stored-material changes enter it. Adjacent bounded parts of one direct batch or model drawing submission share an action: one Undo reverses the retained parts, and Redo reapplies them in order. A human edit between chunks closes that group and has its own entry. Undo never jumps over later manual work to target an earlier agent action. Use Stop and wait for batch execution, native receipts, deferred human edits, image capture, provider activity and any scheduled follow-up turn to settle. An idle native chunk boundary alone does not enable Undo. After retirement, Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled or unacknowledged suffixes never enter history. The operation uses PAINT's bounded native preflight and receipt path. Its trusted human inverse can restore the recorded materials without granting ordinary agent submissions broader material, source, protected-region or work-area permissions. History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144 cells per part. The UI labels a partially retained group **Agent drawing (retained tail)** and explains when its older part is no longer undoable. No-change agent receipts preserve the existing Redo branch. Simulation, World replacement or another mutation outside the recorded timeline still invalidate history through its generation/revision/tick fence. History is session-local. Confirmed history results append a human canvas-result turn and durable `history_result` event, with applied counts and continuation/refusal status. They do not rewrite earlier model receipts or automatically request another model turn. The chosen conversation/context mode still governs future requests. The existing persistence limits also apply to history replay. Agent streaming does not preflight the entire authored recipe, so a highly fragmented result can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and Undo/Redo can also refuse a target part before writing if its intermediate authored recipe exceeds those limits, even when the eventual group baseline would be compact. The UI reports the actual confirmed progress and refusal; there is no promise of unbounded or atomic rollback for arbitrary agent output.
+
+
+### Rank 5: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Save semantics and existing format boundary
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Save semantics and existing format boundary
+The final integrated candidate fences Save on the common native mutation slot, including ordinary brush queues and unconsumed receipts. It refuses without altering an existing named file or consuming an unowned agent result. A requested replacement stops old work but keeps its authored recording reference until the new World is actually installed; rejected native preparation must preserve the old confirmed prefix in both the live World and its saved start. The [integrated runbook](../operations/wb-art-paint-integrated-candidate.md#final-hardening-and-evaluation--2026-11-12) records the demonstrated failure and resulting-source qualification. Only native-confirmed changed cells enter `Setup.edits`, coalesced into ordered horizontal/vertical rectangles. Save while art remains queued/executing asks the user to Stop or wait; it cannot serialize unseen pending work as applied. After Stop, Save/reopen includes the confirmed prefix and excludes the cancelled tail. The shared Setup-v2/generated-start format and byte limit remain unchanged. The integrated candidate retains PAINT's current `MAX_STAMPS`/`MAX_RUNS` capacity corrections. An excessively fragmented authored start can therefore draw successfully but fail Save with the existing explicit format error. No silent truncation, second save schema or material Flatten is introduced; #548 separately owns that successor. Save reconstructs authored start, not evolved physics state. The integrated manual editor uses PAINT's native-confirmed recording and recovery rules.
+
+## DR14: If I press Stop during a long paint or Art operation, does that roll back everything already applied?
+
+Canonical rank: 4
+
+Expected facts:
+
+- Stop cancels pending work according to the contract; already applied work can remain.
+- Report partial native receipts/history outcomes and use supported Undo where applicable; do not promise rollback.
+
+### Rank 1: systems/player-control-playground.md — Player control playground > Acrobat movement chains and cancels
+
+Document: Player control playground
+Path: systems/player-control-playground.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
+canonical-for: [player-control-playground, player-movement-presets, player-material-field]
+last-reviewed: 2026-11-05
+Section: Player control playground > Acrobat movement chains and cancels
+Afterimage preserves momentum through a low-drag slide and uses actual folding hip/ankle joints for its tucked posture. Steering during slides and rolls is weaker than running; reversing input changes momentum gradually. A held crouch can keep the tuck during a brief loss of support. The controller does not teleport the body or replace its velocity with a character trajectory. - **Run → slide → bullet jump:** gain speed with A/D, hold Shift or S to tuck, aim with the mouse, then press Space. Grounded bullet jumps include an upward component; faster velocity already aligned with the launch is retained. - **Jump → double jump → roll → glide:** Space gives the ground jump and one airborne jump. Press Shift in air for the separate air roll. Hold C near the apex or while falling to reduce descent while steering with A/D. - **Roll → jump cancel:** press Space during a roll to leave it using an available jump. If Shift/S remains held, the same press requests a bullet jump first while that separate launch is available. Release crouch for an ordinary jump cancel. - **Slide/roll → brake cancel:** press C to end the slide or roll. On support, C brakes; slide stays suppressed until crouch is released. Releasing Space early shortens an ordinary jump. Q/E adds airborne attitude trim. The controller supplies a short coyote window and input buffer. One airborne jump, one bullet jump, one air roll and a finite glide reserve recharge after confirmed support, not after focus changes or cancellation. Glide retains positive gravity and has a finite duration; it is not hover. Exact timing and actuation limits belong to the [configuration reference](../reference/configuration-reference.md#player-playground-values). Sources: [acrobat controller](../../godot/scripts/player_acrobat_controller.gd) and [physical rig actuator](../../godot/scripts/physical_actor_rig.gd).
+
+
+### Rank 2: systems/paint-editor-bounded-shapes.md — PAINT-001 — bounded painting editor > Using the editor
+
+Document: PAINT-001 native-backed Workbench painting editor
+Path: systems/paint-editor-bounded-shapes.md
+authority: current-documentation
+document-kind: design
+status: Current
+scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
+canonical-for: []
+last-reviewed: 2026-11-12
+Section: PAINT-001 — bounded painting editor > Using the editor
+Open the ordinary Workbench and pause. Its existing material picker now contains the loaded native runtime's supported materials. The additional compact tool row provides Brush, Eraser, Line, Rectangle, Outline, Select, Fill and Paste, with Copy, Undo, Redo, Cancel, named Save start and Load start beside it. A gesture queues and completes one operation; the status distinguishes planning, queued, native execution, completion, refusal and partial completion. | Action | Control | | --- | --- | | Freehand / erase | B / E; right-drag also erases | | Straight line / filled rectangle / outline | L / R / O, then drag | | Select a rectangle | S, then drag | | Capture exact selected native materials | Ctrl+C | | Paste the captured stamp | Ctrl+V or V, position preview, click or drag and release | | Four-connected fill | G, then click; a containing selection defines the capture bounds | | Brush radius 0–24 | Existing radius field; `[` / `]` | | Undo / redo | Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z | | Save named authored start | Ctrl+S or Save start | | Cancel preview / stop native operation | Escape or Cancel | Undo/Redo follows the latest edit in the shared manual/agent timeline. The **Art batches** panel exposes the same Undo and Redo actions. Stop an active agent run and wait for its native result, deferred human strokes and provider activity to settle before using either panel's history controls or shortcuts. Tool keys apply to paused painting and respect focused text fields. Existing playing/actor controls retain their input paths. Pan and zoom use the existing host mapping: aspect-fit local coordinates plus the floored camera origin. A camera-button press cancels an unfinished gesture. Leaving the canvas or Escape cancels without committing. There is no second viewport or simulation controller. The overlay shows selection, canonical brush/line/rectangle footprints and multi-material paste, including Empty. Up to 16,384 preview cells/spans are shown exactly; larger previews explicitly show bounds. A copied selection can be pasted repeatedly during the session. There is no disk-backed stamp library yet.
+
+
+### Rank 3: systems/paint-editor-bounded-shapes.md — PAINT-001 — bounded painting editor > Ownership and native execution
+
+Document: PAINT-001 native-backed Workbench painting editor
+Path: systems/paint-editor-bounded-shapes.md
+authority: current-documentation
+document-kind: design
+status: Current
+scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
+canonical-for: []
+last-reviewed: 2026-11-12
+Section: PAINT-001 — bounded painting editor > Ownership and native execution
+PAINT owns `workbench_paint_editor_{shapes,controller,overlay,executor,history}.gd` and its tests. The coordinated shared integration adds a small mount/input seam to `shared_workbench.gd` and a bounded operation seam to `simulation_worker.gd`. The existing worker remains the only live native World owner. Planning uses a separate value-only GDScript thread; that thread never accesses the World. The lifecycle and consumed-receipt pattern were reviewed against agent-art #560 at `293dde66efbf5451dacb117080713cca2ac97449`. No provider/controller architecture, agent branch or agent-only Empty/Hard Wall policy is imported. Human material admission comes from the loaded native bridge's `inspect_interaction` authority. At this source identity it admits 131 IDs: 0–131 excluding reserved slot 10. MAT-AUTH definitions, material IDs, native physics and Rapier behaviour are unchanged. The later #560 head `36d7686dff5beef35e04d009677665618f6ef920` was also inspected; its worker seam is unchanged from that reviewed source. `paint_queue` accepts one bounded edit or capture. Admission reports `queued`, not success. An edit contains unique row-major integer x/y/material triples; a capture contains a bounded rectangle. There is one pending operation and one unconsumed result slot, not an unbounded chain of old brush commands. The legacy `queue_emit_cells` 4,096-cell/eight-command limit remains intact. Every request carries generation, revision and tick. The worker rechecks those identities, pause, settings, current scenario tool permission, native bounds, material authority, protected source rectangles and optional caller source-ID policy. It preflights the entire operation before writing. Applying and capture advance in slices of at most 4,096 cells, with a 262,144-cell operation limit. Existing brush queue admission cannot interleave with these operations. Native `stored_material_at` supplies stored material identity in the integrated candidate. Every covered rigid-body cell is still explicitly refused before capture or editing; stored Empty beneath a body grants no editing permission. The source-matched API is required before any write. This also works beyond the diagnostic bridge's 1,024-coordinate limit. RG8 colour, Water dithering and ballistic overlays are never interpreted as stored IDs. Each written cell is read back. The immutable result reports operation ID, requested/applied counts, actual applied prefix, prior and resulting material IDs, source identity and recovery possibility. Stop, source replacement, revision change or a native mismatch cannot become a false completed acknowledgement. A cancelled operation with writes reports `partial`; it is not an atomic rollback. The UI records a representable acknowledged prefix and offers Undo when its source is still valid. If that prefix exceeds persistence limits, Save and new authoring remain held until recovery or Restore start. A retained-World actor/settings change cannot clear that hold. Stopping recovery also keeps Save blocked.
+
+
+### Rank 4: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+The Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on one chronological history. Only confirmed stored-material changes enter it. Adjacent bounded parts of one direct batch or model drawing submission share an action: one Undo reverses the retained parts, and Redo reapplies them in order. A human edit between chunks closes that group and has its own entry. Undo never jumps over later manual work to target an earlier agent action. Use Stop and wait for batch execution, native receipts, deferred human edits, image capture, provider activity and any scheduled follow-up turn to settle. An idle native chunk boundary alone does not enable Undo. After retirement, Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled or unacknowledged suffixes never enter history. The operation uses PAINT's bounded native preflight and receipt path. Its trusted human inverse can restore the recorded materials without granting ordinary agent submissions broader material, source, protected-region or work-area permissions. History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144 cells per part. The UI labels a partially retained group **Agent drawing (retained tail)** and explains when its older part is no longer undoable. No-change agent receipts preserve the existing Redo branch. Simulation, World replacement or another mutation outside the recorded timeline still invalidate history through its generation/revision/tick fence. History is session-local. Confirmed history results append a human canvas-result turn and durable `history_result` event, with applied counts and continuation/refusal status. They do not rewrite earlier model receipts or automatically request another model turn. The chosen conversation/context mode still governs future requests. The existing persistence limits also apply to history replay. Agent streaming does not preflight the entire authored recipe, so a highly fragmented result can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and Undo/Redo can also refuse a target part before writing if its intermediate authored recipe exceeds those limits, even when the eventual group baseline would be compact. The UI reports the actual confirmed progress and refusal; there is no promise of unbounded or atomic rollback for arbitrary agent output.
+
+
+### Rank 5: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Stop, replacement and ordinary painting
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Stop, replacement and ordinary painting
+Stop increments the worker epoch and cancels a not-started chunk. An executing chunk can finish; the executor consumes its receipt and reports its actual prefix before becoming inactive. Old-epoch submissions are refused. No uncertain replay or rollback is attempted. A new batch is accepted only after retirement. New/Load/Restore discard stale callbacks from the old authored recipe and use the existing native replacement transaction. A retained settings/actor transition while drawing requests Stop and asks for retry after the current acknowledgment; this prevents transferring live cells without their recorded authored prefix. Geometry/settings rejection before replacement admission does not interrupt a batch. A later native-preparation rejection retains the old World and its confirmed authored prefix after the request-time Stop. Human strokes during a chunk are delivered before the next chunk and recorded in that same order with their original brush radius. Their pending queue reuses the existing worker command capacity; a full queue explicitly refuses further strokes until the chunk finishes. Ordinary camera/zoom, physics and paint controls remain owned by the existing workbench.
+
+## DR15: Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?
+
+Canonical rank: None
+
+Expected facts:
+
+- Authored setup/layout persistence differs from exact evolved physical continuation.
+- Do not promise all live actors, queues or provider/conversation state; consult explicit format and separate checkpoint contracts.
+
+### Rank 1: reference/status-and-roadmap.md — Status and foundational roadmap > WB-ART-002 direct drawing — 2026-11-10
+
+Document: Status and foundational roadmap
+Path: reference/status-and-roadmap.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
+canonical-for: [implementation-status, foundational-priorities, open-decisions]
+last-reviewed: 2026-11-21
+Section: Status and foundational roadmap > WB-ART-002 direct drawing — 2026-11-10
+**2026-11-20 conversation lifetime candidate:** PR #681 retains Draft/HOLD while finishing [lazy restore and immutable linked traffic](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage). Idle Workbench startup must perform no archive I/O. Explicit Art opening restores incrementally; native atomic publication protects session checkpoints and full audit exports. Missing or inconsistent histories preserve their saved pointer. Source-matched runtime evidence and owner Windows acceptance are separate from implementation; the PR ledger records their exact tested identities. **Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only. **2026-11-12 hardening:** the same candidate closes queued-Save, late Fill-Cancel, adaptive large-Fill capture, failed-replacement receipt-retirement and overwritten native installation acknowledgement defects. Installed qualification now exercises 1024² maps and same-session equipment, simulation and fresh-process authored-start reconstruction. The runbook and #564 distinguish actual resulting-source results from the earlier package; retained-runtime publication and owner acceptance remain separate merge gates.
+
+
+### Rank 2: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+Each **new Workbench game session begins with an empty in-memory Art conversation**. The Send, Conversation and direct drawing controls never reopen, link, scan or copy traffic from a previous process or Workbench scene. The user can maintain multi-turn context *within the current session*; closing the session discards the in-memory conversation. Model/provider/endpoint/control preferences may still persist in `user://art-provider.cfg`, but no `traffic_path` is read or published. The obsolete profile pointer is removed on the next successful preferences save. On the first Art log event, the existing bounded writer creates **one new root JSONL** under `user://art-traffic/`. All following requests, provider responses, native results and in-session conversation changes append to that same file until the Workbench session ends. Hiding and reopening the Art window within the same Workbench does not create a second log. There is no automatic replay, linked predecessor, history-resume gate or full-history duplication. An unavailable, corrupt or deleted older log cannot prevent Send. Each model request writes a redacted `request_parameters` event containing the provider/model/endpoint, prompt, guidance, requested work rectangle, allowed materials, protected areas, enabled tools, token/time/turn limits and relevant image/context settings. The normal request/response/native receipt events follow. Direct JSON painting records `manual_program`, `manual_admission` and terminal `manual_result`. This provides the values needed for manual re-entry later; it does **not** promise to reproduce an evolving World from prompts alone or retain exact unlogged source World state. `Traffic…` displays the current session file path and can explicitly export it. Existing legacy and linked archives remain **unchanged** on disk, but are never attached to a new game session. The legacy archive parser remains available for standalone read-only diagnostics and old evidence tests; it is not part of the normal UI lifecycle. No automatic migration, deletion or cleanup is performed. PAINT's native authoritative Undo/Redo is independent of Art. When an Art window exists, confirmed Undo/Redo events may be appended to its current session log. Without an Art session, native editing does not force the Art panel or create a cross-session receipt journal. Old `user://art-pending-history` records are preserved as historical data and never injected into a new session. Disk logging failures remain visible, but must not retroactively repeat a native edit. **Scope boundary:** This is session-local authoring history, not a durable conversation database. Save/Open for the authored World and PAINT's own material history retain their existing independent contracts. New model requests must never trust a stale previous-session continuation pointer.
+
+
+### Rank 3: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+The Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on one chronological history. Only confirmed stored-material changes enter it. Adjacent bounded parts of one direct batch or model drawing submission share an action: one Undo reverses the retained parts, and Redo reapplies them in order. A human edit between chunks closes that group and has its own entry. Undo never jumps over later manual work to target an earlier agent action. Use Stop and wait for batch execution, native receipts, deferred human edits, image capture, provider activity and any scheduled follow-up turn to settle. An idle native chunk boundary alone does not enable Undo. After retirement, Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled or unacknowledged suffixes never enter history. The operation uses PAINT's bounded native preflight and receipt path. Its trusted human inverse can restore the recorded materials without granting ordinary agent submissions broader material, source, protected-region or work-area permissions. History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144 cells per part. The UI labels a partially retained group **Agent drawing (retained tail)** and explains when its older part is no longer undoable. No-change agent receipts preserve the existing Redo branch. Simulation, World replacement or another mutation outside the recorded timeline still invalidate history through its generation/revision/tick fence. History is session-local. Confirmed history results append a human canvas-result turn and durable `history_result` event, with applied counts and continuation/refusal status. They do not rewrite earlier model receipts or automatically request another model turn. The chosen conversation/context mode still governs future requests. The existing persistence limits also apply to history replay. Agent streaming does not preflight the entire authored recipe, so a highly fragmented result can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and Undo/Redo can also refuse a target part before writing if its intermediate authored recipe exceeds those limits, even when the eventual group baseline would be compact. The UI reports the actual confirmed progress and refusal; there is no promise of unbounded or atomic rollback for arbitrary agent output.
+
+
+### Rank 4: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Save semantics and existing format boundary
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Save semantics and existing format boundary
+The final integrated candidate fences Save on the common native mutation slot, including ordinary brush queues and unconsumed receipts. It refuses without altering an existing named file or consuming an unowned agent result. A requested replacement stops old work but keeps its authored recording reference until the new World is actually installed; rejected native preparation must preserve the old confirmed prefix in both the live World and its saved start. The [integrated runbook](../operations/wb-art-paint-integrated-candidate.md#final-hardening-and-evaluation--2026-11-12) records the demonstrated failure and resulting-source qualification. Only native-confirmed changed cells enter `Setup.edits`, coalesced into ordered horizontal/vertical rectangles. Save while art remains queued/executing asks the user to Stop or wait; it cannot serialize unseen pending work as applied. After Stop, Save/reopen includes the confirmed prefix and excludes the cancelled tail. The shared Setup-v2/generated-start format and byte limit remain unchanged. The integrated candidate retains PAINT's current `MAX_STAMPS`/`MAX_RUNS` capacity corrections. An excessively fragmented authored start can therefore draw successfully but fail Save with the existing explicit format error. No silent truncation, second save schema or material Flatten is introduced; #548 separately owns that successor. Save reconstructs authored start, not evolved physics state. The integrated manual editor uses PAINT's native-confirmed recording and recovery rules.
+
+
+### Rank 5: architecture/wave-flow-v1.md — Wave flow Water solver (experimental) > State, memory and identity
+
+Document: Wave flow Water solver (experimental)
+Path: architecture/wave-flow-v1.md
+authority: current-documentation
+document-kind: reference
+status: Current
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
+canonical-for: [wave-flow-v1]
+last-reviewed: 2026-11-20
+Section: Wave flow Water solver (experimental) > State, memory and identity
+| Storage | Per cell | Kind | |---|---|---| | Water mass | existing `state_a` | Authoritative; unchanged carrier. May briefly exceed 255 as overfill | | Retained flux | `int32` | Authoritative, solver-owned | | Head | `int32` | Derived, rebuilt every round | | Meta (gain, full, solid, wet, depth class) | `uint8` | Derived, with previous-full support retained into the next column pass | The dense side arrays add nine bytes per resident cell on the existing eight-byte cell. Per-column dryness flags, chunk metadata, task/roster capacity and reusable column scratch are additional; `storage_bytes` includes their allocated capacities. Nothing is allocated for this law when disabled. **Complete identity:** Wave Worlds report physical hash version **6**. The hash includes solver version, substeps, round/dither phase, flux, previous support and weight metadata, quiet/wake eligibility and the sparse skip state, in addition to the ordinary cells, masks, regions, policies and quantity ledger. Diagnostic timing, participant counts and allocation capacities are excluded. This Wave identity deliberately binds resident solver chunks; legacy complete hashes keep their existing empty-resident equivalence and byte stream. `state_hash` of a Wave World binds the same solver state (version, substeps, round, flux, weight and support metadata, sleep and skip state), so two Worlds with equal cells and different retained momentum never share it; for every other World it keeps its historical definition and value. `content_hash` remains the documented cells-and-temperature projection and is not a continuation identity. **Not persisted:** physical format version **0** means unsupported. `save_physical_state` throws for a Wave World, and `restore_physical_state` rejects Wave-enabled execution even if handed a valid legacy CYPS save. This prevents both silently dropped flux and silently changing the selected law. CYSD1 demo level copying/export and reconstruction are also explicitly refused for Wave: that format has an 8-bit Water payload and cannot represent retained flux. Copying refuses before clearing a transient mask or changing any native state. Legacy save/restore semantics remain unchanged. **Mass access:** `World::liquid_mass` and the additive `cybersand_world_liquid_mass_v2` return uint16 without truncation. The existing uint8 C accessor keeps its ABI and saturates at 255. Exact quantities use the wide accessor or native quantity ledger. Wave-only `set_cell_state` accepts the full uint16 mass carrier, which permits exact overfilled-cell edits and drains; ordinary FreeMass setters keep their prior bounds.
+
+## DR16: What does Flatten Bake History store, and should plants stop growing automatically afterwards?
+
+Canonical rank: 1
+
+Expected facts:
+
+- The material baseline stores uint16 material identities, two bytes per cell, without preserving full live simulation metadata.
+- Flatten history and authored Save are distinct; do not promise plant energy reset or exact physical continuation unless source implements it.
+
+### Rank 1: operations/gen008-flatten-qualification.md — Flatten / Bake History evaluation > Windows owner acceptance
+
+Document: Flatten and Bake History qualification and owner evaluation
+Path: operations/gen008-flatten-qualification.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
+canonical-for: [flatten-baseline-qualification]
+last-reviewed: 2026-11-13
+Section: Flatten / Bake History evaluation > Windows owner acceptance
+Download the source-matched evaluation ZIP identified in the dated record or PR. Verify its SHA-256, extract the complete archive into a new writable folder with a short path, and run **Open Workbench.cmd**. Keep the included source, dependencies and qualification records together. The full package also includes the accepted Materials Lab authoring tools; its separate launcher remains available. 1. Open **New from generator…**, select a real profile and install a map. Paint several materials, erase some cells, and alternate a few manual and agent edits. 2. Run simulation long enough to move or transform material. Move an actor or let it fall, then click **Flatten / Bake History…** and confirm. Observe that the live simulation continues, actors retain their motion and no tick-zero restart occurs. The previous Undo history should now be empty. 3. Pause. Paint a distinctive new mark and erase part of the flattened map. Add a small agent mark. Undo and Redo the subsequent operations in chronological order. 4. Explicitly **Save named start** under a new name. Completely exit Godot. 5. Launch again and Load that name. The flattened material layout and subsequent acknowledged edits should return without regenerating the former profile. Actor spawns/settings reconstruct normally; transient physics from the earlier process is not expected to resume. 6. Continue painting and agent authoring, Undo/Redo those new edits, and try Restore start. Confirm ordinary input, Fill, Copy/Paste, generator preview and Materials Lab remain usable. 7. Start a longer drawing operation, attempt Flatten while it is pending, then Stop/wait for acknowledgement and retry. The refusal must explain why; no old history or existing save may disappear during a refused/cancelled preparation. Report the evaluation source SHA, ZIP SHA-256, saved name and exact steps for any failure. Automated graphical frames do not substitute for this owner interaction.
+
+
+### Rank 2: operations/gen008-flatten-qualification.md — Flatten / Bake History evaluation > What Flatten does
+
+Document: Flatten and Bake History qualification and owner evaluation
+Path: operations/gen008-flatten-qualification.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
+canonical-for: [flatten-baseline-qualification]
+last-reviewed: 2026-11-13
+Section: Flatten / Bake History evaluation > What Flatten does
+**Flatten / Bake History…** makes the current native stored material layout the new authored baseline and retires earlier construction instructions and Undo/Redo history. The same live native World, tick, fluid quantities, temperatures, velocities and physical actors continue unchanged. Empty and every currently supported material ID use a complete row-major unsigned 16-bit little-endian plane. Flatten does not Save. New acknowledged paint and agent edits are recorded relative to that baseline. **Save named start** later saves the material baseline and those edits. Simulation after Flatten is excluded unless another explicit Flatten captures it. Reopening constructs ordinary initial material and actor state; the file is not a simulation checkpoint. Existing Setup-v2 and generated-start-v1 files retain their original readers and meanings. The confirmation identifies the discarded history. While capture is pending, the same compact control offers **Cancel Flatten**. Pending human or agent work must finish or be stopped and acknowledged before Flatten. Refusal/cancellation leaves the prior authored start and existing saves intact. Retry after the reported owner operation settles; an incomplete capture never becomes the new baseline.
+
+
+### Rank 3: operations/gen008-flatten-qualification.md — Flatten / Bake History evaluation
+
+Document: Flatten and Bake History qualification and owner evaluation
+Path: operations/gen008-flatten-qualification.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
+canonical-for: [flatten-baseline-qualification]
+last-reviewed: 2026-11-13
+Section: Flatten / Bake History evaluation
+This candidate implements issue [#548](https://github.com/techrote/cybersand/issues/548)'s 11 November 2026 contract. **Keep the PR Draft / HOLD.** Automated qualification, owner graphical acceptance and permission to merge are separate decisions. The [dated evidence](../audits/2026-11-13-gen008-flatten-qualification.md) records actual source identities, successful and failed runs, performance and remaining gates. Do not treat this runbook's commands or coverage as evidence they already passed.
+
+
+### Rank 4: operations/gen008-flatten-qualification.md — Flatten / Bake History evaluation > Reproduce focused tests
+
+Document: Flatten and Bake History qualification and owner evaluation
+Path: operations/gen008-flatten-qualification.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
+canonical-for: [flatten-baseline-qualification]
+last-reviewed: 2026-11-13
+Section: Flatten / Bake History evaluation > Reproduce focused tests
+Build the source-matched native extension first using the repository's pinned build scripts. A retained runtime built before the new bulk APIs is insufficient. The source-based native targets are: ```bash make material-baseline-test make material-baseline-sanitize ``` For a local Linux diagnostic (use the actual Godot 4.7 executable): ```bash python3 tools/ci/run_flatten_qualification.py \ --godot /absolute/path/Godot_v4.7-stable_linux.x86_64 \ --project godot --evidence /absolute/path/flatten-local --headless ``` For a source-built Windows checkout in PowerShell: ```powershell python tools/ci/run_flatten_qualification.py --godot C:/Godot_v4.7-stable_win64_console.exe --project godot --evidence C:/CyberSand-Flatten-Evidence ``` A focused iteration may use `--cases 512x1`. The final workflow retains the complete case matrix and accepted regression families. Headless/local diagnostic results must be labelled separately from pinned hosted Windows/Linux graphical execution. When given the Windows console launcher path, the measured Flatten runner invokes its sibling engine executable from the same pinned archive directly. The original requested path, actual engine path/SHA-256 and measured PID remain in the result.
+
+
+### Rank 5: operations/gen008-flatten-qualification.md — Flatten / Bake History evaluation > Recovering after a native owner fault
+
+Document: Flatten and Bake History qualification and owner evaluation
+Path: operations/gen008-flatten-qualification.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
+canonical-for: [flatten-baseline-qualification]
+last-reviewed: 2026-11-13
+Section: Flatten / Bake History evaluation > Recovering after a native owner fault
+If the native simulation reports a fault, keep the application open and explicitly **Save named start**. A settled authored document can be saved even when its flattened baseline has not previously been written to disk. The saved content is the retained baseline, acknowledged edits and supported actor/configuration data. Save does not capture the failed World or include simulation changes since Flatten. The success message confirms that the native owner remains failed. Pending edits, unconsumed completion receipts, partial edits, prepared replacements and pending Flatten still block Save. Follow the stated refusal; the recovery path does not bypass those guards. A failed Save preserves the prior valid named file. Save also refuses after owner failure if the document contains any four-field legacy disc instruction: its native execution has no individual acknowledgement. The refusal retains all authored data. A flattened baseline with acknowledged PAINT/Art edits can use the recovery route when the remaining guards are settled. Healthy Save and the existing legacy readers retain their original behavior. After Save succeeds, completely exit, restart and Load the saved name. The new process reconstructs an ordinary authored start with normal initial physics. Flatten and editing remain unavailable on the failed owner. Reset / R and Restore start also refuse their unsafe recipe-only recovery path for generated or flattened starts, with guidance to Save, restart and Load.
+
+## DR17: Are eighty Genteks current, and what are Gentek, Variant, Preset and Composition?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Accepted catalogue and controls are source-backed and separate from unmerged SWARM negotiation.
+- Use the owner terminology without implying live Workbench Gentek rule authoring or every future Composition capability.
+
+### Rank 1: systems/architectural-generator.md — Architectural Generator — Phase A and bounded Phase B > 80-Gentek integration candidate — 20 November 2026
+
+Document: Architectural Generator Phase A and B
+Path: systems/architectural-generator.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Opt-in schema-4 architectural controls, versioned native geometry and bounded one-to-five-style project compilation
+canonical-for: [architectural-generator-controls, architectural-style-projects, architectural-zone-coverage]
+last-reviewed: 2026-11-20
+Section: Architectural Generator — Phase A and bounded Phase B > 80-Gentek integration candidate — 20 November 2026
+The `integration/gentek-80-001` candidate starts from accepted main `de109d01` and reconciles repaired CLASSIC `e27ff757` with the eight-showcase aggregation `eb786d97`. It adds **80 Genteks (72 CLASSIC and eight advanced showcases)** without removing the thirteen accepted presets: the ordinary form has **93 selectable presets**, while native metadata has **91 module/version entries**. All additions use the existing schema-4 native project path and single World. The [evaluation guide](../operations/gentek80-evaluation.md) describes selection, controls, source-bound packaging and the manual Test It procedure. Each of the five style cards has a **Find style** filter matching name, family and theme. Filtering keeps the current selection available, changes no project parameters, and uses stable catalogue identities when a filtered item is chosen. Clearing it restores the full list. The existing geometry, global apertures, material-role imports, preview/Stop, explicit install and authored-start saving retain their ordinary ownership. Suspended Deck carrier contacts and steep Rib Vault cardinal continuity use the repaired CLASSIC definitions. Showcase imports cannot replace these with older equivalents. Catalogue/schema contracts enumerate the expected identities independently; repaired-parent material oracles are measured from isolated `e27ff757` source. Arched Viaduct v1/v2 and the other accepted geometry versions remain unchanged. Generator inputs use the accepted material catalogue. The integration's visual review additionally found four inherited support defects. Ring Pier now joins its open diamond to both decks; Tripod Frame has continuous transfer support between tiers; Cascade Terrace has a rear core behind its staggered platforms; Scalloped Vault uses a local slope-aware stroke to keep thin quadratic ribs connected. Suspended Deck and Buttress Wall keep their complete existing glass panes and add frames connected to their structure. These six deliberate refinements have explicit before/after references; the remaining 66 CLASSIC definitions retain their authoritative material output. None of these checks asserts engineering load capacity. Gallery exporters compile every translation unit afresh in private directories keyed by source and compiler identity. `--no-build` validates driver, frontend, assembler/linker, version, target, environment, source/flags and executable hash. A compiler switch or missing/mismatched record is refused rather than relabelled. The separate compiler-switch regression uses real GCC 13 and GCC 14. This enforcement covers the gallery exporters and qualification runners; it does not change the repository's general Make cache behavior. The candidate's dedicated qualification runs native and sanitized suites, 520 native-material captures, eighty independent process replays and 240 invalid input cases. Real Workbench author/reopen exercises each of the eighty styles, normal paint/erase, a native simulation tick and saved-start reconstruction. Windows also repeats the Workbench campaign from an independently extracted self-contained package. Exact execution outcomes, timings, source identities and remaining failures belong to the [integration record](../research/gentek-80-integration-001.md)
+
+
+### Rank 2: operations/gentek80-evaluation.md — GENTEK 80 — Windows evaluation
+
+Document: GENTEK 80 Windows evaluation
+Path: operations/gentek80-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Selection and Test It procedure for the source-qualified Draft/HOLD 80-Gentek integration candidate
+canonical-for: [gentek80-selection-and-evaluation]
+last-reviewed: 2026-11-21
+Section: GENTEK 80 — Windows evaluation
+This candidate provides **72 compact CLASSIC Genteks and eight advanced showcases** through the ordinary Architectural Generator. The thirteen accepted presets remain available, giving 93 choices. It remains Draft/HOLD until the owner accepts the delivered package. The source/runtime manifest and dated qualification receipts identify what was actually built and executed.
+
+
+### Rank 3: operations/gentek80-evaluation.md — GENTEK 80 — Windows evaluation > Geometry, materials and composition
+
+Document: GENTEK 80 Windows evaluation
+Path: operations/gentek80-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Selection and Test It procedure for the source-qualified Draft/HOLD 80-Gentek integration candidate
+canonical-for: [gentek80-selection-and-evaluation]
+last-reviewed: 2026-11-21
+Section: GENTEK 80 — Windows evaluation > Geometry, materials and composition
+**Room / bay**, **Floor** and **Wall** alter spacing, vertical rhythm and member thickness. Admitted combinations differ between styles: a large frame needs enough room for its members, windows and openings. Invalid combinations produce a refusal before replacing the World. Return to valid values or restore the previous preview. The global **Doors**, **Windows** and **Tunnels** switches are independent. A style's explicit imported aperture override takes precedence over its global switch. Automatic tunnels are later shared cuts and can remove supporting members; keep them off when judging unmodified construction. Windows should occupy intended openings and leave structural pillars intact. The existing Cellular Hive follows its hexagonal web, while Arched Viaduct retains its accepted structural detailing. Each style has native wall, floor/accent and window material roles. Current preset choices are visible on hover. To change materials, use **Import style** with one of the bundled `examples/worldgen/architectural/*.style.json` files, retaining its format/version and selecting valid static material IDs. Import embeds the complete style; saved projects and generated starts do not depend on that external file remaining on disk. The catalogue below lists the shipped materials and geometry. Numerical IDs and definitions remain owned by the accepted native material catalogue; no new simulation law is introduced here. For a composition, enable up to five cards and choose **Equal shares** or enter shares totalling 100%. Zones are connected planning regions, including empty space. Zone boundaries, map edges, explicit cuts and deterioration can clip structures. They do not promise a globally connected walking route or physical structural stability. Use the ordinary paint tools to finish joins and traversal spaces.
+
+
+### Rank 4: operations/gentek80-evaluation.md — GENTEK 80 — Windows evaluation > Complete catalogue and defaults
+
+Document: GENTEK 80 Windows evaluation
+Path: operations/gentek80-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Selection and Test It procedure for the source-qualified Draft/HOLD 80-Gentek integration candidate
+canonical-for: [gentek80-selection-and-evaluation]
+last-reviewed: 2026-11-21
+Section: GENTEK 80 — Windows evaluation > Complete catalogue and defaults
+All eighty entries below use module version 1 and recipe schema 4. Bay/floor/wall are cell dimensions; the material columns show wall, floor/accent and window roles. The thirteen earlier presets are retained separately and are not counted here. | Gentek | Family | Bay / floor / wall | Wall · floor/accent · window | | --- | --- | --- | --- | | A-Frame Hall | CLASSIC | 96 / 96 / 3 | Reinforced Concrete (58) · Aluminium Panel (114) · Frosted Glass (121) | | Barrel Arcade | CLASSIC | 96 / 88 / 3 | Marble (98) · Terrazzo (111) · Glass Block (120) | | Basilica | CLASSIC | 112 / 96 / 3 | Marble (98) · Terrazzo (111) · Frosted Glass (121) | | Bowstring Truss | CLASSIC | 96 / 72 / 3 | Steel Plate (62) · Aluminium Panel (114) · Frosted Glass (121) | | Bridgehouse | CLASSIC | 96 / 80 / 3 | Marble (98) · Brass Panel (119) · Frosted Glass (121) | | Butterfly Hall | CLASSIC | 96 / 88 / 3 | Zinc Sheet (113) · Aluminium Panel (114) · Frosted Glass (121) | | Buttress Crown | CLASSIC | 96 / 96 / 4 | Firebrick (104) · Marble (98) · Glass Block (120) | | Buttress Wall | CLASSIC | 96 / 80 / 4 | Firebrick (104) · Marble (98) · Glass Block (120) | | Cable Gallery | CLASSIC | 112 / 72 / 2 | Carbon Fibre (130) · Aluminium Panel (114) · Frosted Glass (121) | | Cantilever Spine | CLASSIC | 96 / 72 / 3 | Carbon Fibre (130) · Aluminium Panel (114) · Frosted Glass (121) | | Cascade Terrace | CLASSIC | 96 / 96 / 3 | Firebrick (104) · Terrazzo (111) · Glass Block (120) | | Chain Vault | CLASSIC | 96 / 88 / 3 | Basalt Columns (100) · Obsidian (101) · Uranium Glass (123) | | Chevron Hall | CLASSIC | 96 / 80 / 3 | Reinforced Concrete (58) · Aluminium Panel (114) · Frosted Glass (121) | | Clerestory Hall | CLASSIC | 96 / 80 / 3 | Reinforced Concrete (58) · Terrazzo (111) · Frosted Glass (121) | | Colonnade | CLASSIC | 96 / 80 / 3 | Marble (98) · Terrazzo (111) · Glass Block (120) | | Corbel Arcade | CLASSIC | 96 / 88 / 4 | Marble (98) ·
+
+
+### Rank 5: operations/gentek80-evaluation.md — GENTEK 80 — Windows evaluation > Integration with accepted Workbench main
+
+Document: GENTEK 80 Windows evaluation
+Path: operations/gentek80-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Selection and Test It procedure for the source-qualified Draft/HOLD 80-Gentek integration candidate
+canonical-for: [gentek80-selection-and-evaluation]
+last-reviewed: 2026-11-21
+Section: GENTEK 80 — Windows evaluation > Integration with accepted Workbench main
+PR #691 reconciles accepted main `69209acaffb34ebe18c45e19290b5976b7fb2c82`, including accepted Water, actor composition, SCRIPT-HOTPATH, lazy Art traffic restoration and large-landscape host-claim admission. Its Art durability repair preserves confirmed native Undo/Redo receipts through profile and archive failures. That repair changes no Gentek geometry, Water behavior, actor composition or production defaults. The complete public gallery retains its original source identity. Use the delivered `candidate-manifest.json` and the current [PR qualification handoff](https://github.com/techrote/cybersand/pull/691) for the actual application source, native library identity, qualification runs and ZIP hash; historical runtime identities are not the delivered package's authority. The bounded supplemental runner is `python tools/architecture/gentek80_main_integration.py --godot <pinned-Godot-4.7> --output <new-evidence-directory> --fixture-dir <pinned-landscape-fixtures> --graphical`. It exercises the six repaired CLASSIC styles and Cathedral Megaframe through the ordinary form, generated-start installation and independent-process reopening. The same Workbench admits the original 2048 × 1024 Graftloom landscape with 13,839 construction rectangles before and after generator use. Keyboard-controlled Midge flight, native material motion, authored painting, lazy unopened Art and an unchanged synthetic traffic archive are separate assertions. It uses the existing host-claim manifest and refuses changed fixture, source or runtime identities. This focused integration run supplements the existing native/project/UI, installed-preview, paint, Art lifetime and host-admission suites. It does not replace the full 80-style gallery, ordinary Workbench or extracted Windows package gates required for the repaired PR #691 publication. Prior results keep their original source identities. Actual platform results and the exact combined application SHA belong to the dated PR qualification handoff; package and native manifests record their respective application and build identities.
+
+## DR18: Can I use reciprocal SWARM-004/005/006 negotiation in accepted main because a candidate has passing tests?
+
+Canonical rank: None
+
+Expected facts:
+
+- The consolidated SWARM candidate remains unmerged at the recorded source.
+- Passing candidate tests and an evaluator do not imply accepted-main availability or physical owner acceptance.
+
+### Rank 1: operations/physical-actor-programme.md — Physical actors and combined feature trials > Shared free-flight training family
+
+Document: Physical actors and combined feature trials
+Path: operations/physical-actor-programme.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
+canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
+last-reviewed: 2026-10-22
+Section: Physical actors and combined feature trials > Shared free-flight training family
+The [4LY contract and dependency chain](../systems/physical-free-flight.md) owns the single-chassis Trainer/Hauler/Drifter/Dart lane under long-lived parent #132. 4LY-001 reuses the physical session and native coupling, with strict two-output desired-velocity input and bounded goal-blind assistance. **4LY-002 candidate source** supplies four distinct physical parameter sets and the additive F5 `set4LY` family. The 46 pre-existing actor IDs and SetP indices remain unchanged. The [measured 4LY-002 audit](../audits/2026-10-23-4ly002-measured-handling-qualification.md) records a real-Rapier pass of prospective motion/distinguishability thresholds on Linux and Windows plus exact-source native and documentation gates. The source calibration marker stays `candidate_4ly002` because its exact bytes participate in the passing profile hashes. Owner handling/visual review, final-head validation and the #207 host/teacher gate remain separate; a selectable name or passing manoeuvre metric is not an accepted learning plant. 4LY-003 (#207) now has the [playable Flight Lab and physical episode owner](../systems/physical-flight-lab.md). Its [frozen-teacher final-score audit](../audits/2026-10-24-4ly003-final-qualification.md) records a passing per-profile/per-family physical score, three retained Hauler obstacle failures, exact tested hashes and Linux runtime readback. External holdout custody and human review are not attested by that CI score alone. Trainer learning and subsequent family learning remain controlled by the companion repository's separate 4LY-004/005 gates. None of these stages closes #132, generic granular/soliding acceptance or the separate Jolt/morphology programme by implication.
+
+
+### Rank 2: reference/invariants.md — Architectural and simulation invariants > Bridge invariants
+
+Document: Architectural and simulation invariants
+Path: reference/invariants.md
+authority: current-documentation
+document-kind: contract
+status: Approved design
+scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
+canonical-for: [invariant-register]
+last-reviewed: 2026-11-20
+Section: Architectural and simulation invariants > Bridge invariants
+Contracts: [bridge behavior](../architecture/rendering-and-gameplay-bridges.md), [lifetimes](../architecture/data-ownership-and-lifetimes.md). Fixtures: [native bridge](../../godot/tests/test_native_render_bridge_regression.gd), [handoff](../../godot/tests/test_render_patch_handoff_regression.gd). | ID | Status and requirement | |---|---| | BRIDGE-001 | Current native publication; Approved general boundary: Godot gets no mutable World storage | | BRIDGE-002 | Current: leases/copies describe serialized post-mutation state and survive consumer delay | | BRIDGE-003 | Approved generalized queue: identified command boundaries and immutable results; production schemas/pressure are Planned | | BRIDGE-004 | Approved; Current presentation path: render-only state must not affect authoritative hashes/wake | | BRIDGE-005 | Current: live body Nodes/RIDs remain on main-thread adapter; workers receive complete value samples | | BRIDGE-006 | Current: LUT variation, temporal blending and glow do not write derived colour/frame noise into cells |
+
+
+### Rank 3: decisions/ADR-006-gpu-compute-deferral.md — ADR-006: GPU compute deferral > What would justify a new decision?
+
+Document: ADR-006 — GPU compute deferral
+Path: decisions/ADR-006-gpu-compute-deferral.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Accepted CPU authority, deferred GPU field experiments and conditions for reconsideration
+canonical-for: [decision-gpu-compute-deferral]
+last-reviewed: 2026-09-08
+Section: ADR-006: GPU compute deferral > What would justify a new decision?
+Name the field and authority level; define CPU/GPU ownership, synchronization, collision/query latency, save/replay behavior, device loss and fallback. Compare representative current/larger fixtures including compute, transfer, synchronization, readback and memory. A non-authoritative experiment must leave native fixture state unchanged; an authoritative field requires a new explicit ADR. No future experiment is considered validated merely because shaders compile or a headless scene runs. Use [validation evidence](../reference/validation-evidence.md) and [profiling guidance](../operations/profiling-observability-and-performance.md) to distinguish actual device measurements from source inspection.
+
+
+### Rank 4: decisions/ADR-014-semantic-plane-admission.md — ADR-014 Single semantic place and atomic four-plane admission > Alternatives and consequences
+
+Document: ADR-014 Single semantic place and atomic four-plane admission
+Path: decisions/ADR-014-semantic-plane-admission.md
+authority: current-documentation
+document-kind: decision
+status: Current
+scope: GEN-005 semantic projection ownership, immutable runtime commands and complete preview replacement
+canonical-for: [semantic-plane-admission-decision]
+last-reviewed: 2026-10-21
+Section: ADR-014 Single semantic place and atomic four-plane admission > Alternatives and consequences
+Four independent layout generators are rejected because a shared presentation label cannot prove geometric correspondence. Pixel-overlap event forwarding is rejected because it bypasses explicit lifecycle and owner admission. Incremental live installation of related plane tiles is deferred to GEN-006's residency and reconciliation contracts; GEN-005 commits bounded complete configurations. The complete proposal plus old/new owner staging has an explicit memory cost. Configured publication and host caps bound it. Retrying identical configuration is idempotent; intentional reset creates a new generation. Browser qualification and production asynchronous integration remain separate from this opt-in host.
+
+
+### Rank 5: operations/cybersand-codex-development-handover.md — Development handover > Typed spatial generation checkpoint — 2026-10-20
+
+Document: Development handover
+Path: operations/cybersand-codex-development-handover.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
+canonical-for: [development-onboarding]
+last-reviewed: 2026-11-20
+Section: Development handover > Typed spatial generation checkpoint — 2026-10-20
+GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190) adds opt-in schema-2 [typed spatial graphs](../systems/procedural-typed-spatial-fields.md). Read that contract and the [operator inventory](../reference/procedural-spatial-operators.md) before changing numeric domains, transform/derivative sampling, category IDs, subgraph expansion, prepared geometry/assignments or cache identity. Schema-1 GEN-001/002 recipes retain their scalar context and material contracts. Typed spatial functions never resample that per-cell context or resident World data. `make worldgen-test` includes independent analytical typed tests and bounded structured-mapping/solver tests; its sanitizer target covers the same native scope. The Workbench's Typed spatial graphs page and five `typed-*.json` profiles exercise authoring and copied typed diagnostics. Source-matched runtimes and hosted exact-head gates remain separate from local source tests. Do not infer merge/platform acceptance from this implementation description. Programme order is GEN-003 → GEN-004 hierarchical grammar → GEN-005 semantic depth → GEN-007 authoring/quality tools → GEN-006 streaming/reconciliation. GEN-004 consumes the immutable geometry and finite assignment interfaces; it should not introduce a duplicate solver or reverse field-to-grammar dependency.
+
+## DR19: Does Shared Workbench support independent actors now, and is the later Actor Compose finisher already accepted?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Accepted actor composition exposes the existing model catalogue and per-instance control within its bounded contract.
+- Separate merged #683 from unmerged final/repair successors such as #762; do not infer availability from title.
+
+### Rank 1: systems/workbench-actor-composition.md — Shared Workbench actor composition > Implementation and scope
+
+Document: Shared Workbench actor composition
+Path: systems/workbench-actor-composition.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
+canonical-for: [workbench-actor-composition, workbench-actor-control]
+last-reviewed: 2026-11-20
+Section: Shared Workbench actor composition > Implementation and scope
+**Draft/HOLD implementation candidate for [#589](https://github.com/techrote/cybersand/issues/589).** The owner authorized implementation through WB-ACTOR-COMPOSE-001. Ordinary Shared Workbench now admits independently controlled physical actors through its existing prepared session, native worker and Rapier bridge. This contract describes the candidate source; it does not promote the PR, certify every experimental rig's playfeel, or replace the retained scientific apparatus. The [owner procedure](../operations/workbench-actor-composition.md) explains the Actor Composition panel and Mixed Actor Workshop. Source ownership is divided as follows: | Source | Responsibility | |---|---| | [`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd) | Copied capability and prepared-topology catalogue; model, controller, equipment and aggregate-capacity admission | | [`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd) | Authored model identity, spawn, options, optional control extension and named example | | [`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd), [`workbench_actor_panel.gd`](../../godot/scripts/workbench_actor_panel.gd) | Separate inspected actor and human pilot, explicit handoff, lazy panel, authoring transactions and policy UI | | [`physical_actor_session.gd`](../../godot/scripts/physical_actor_session.gd) | Existing actor ownership, per-actor sequence/generation, issued observations, leases, takeover and bounded scheduling | | [`workbench_actor_control.gd`](../../godot/scripts/workbench_actor_control.gd) | Value-only deterministic decision adapter; no World, node, RID, paint pointer or physics ownership | | [`workbench_reactive_policy.gd`](../../godot/scripts/workbench_reactive_policy.gd) | Narrow reuse of Thunderbowl's pure local steering helper for compatible physical policy-fixture actors | | [`workbench_physics_bridge.gd`](../../godot/scripts/workbench_physics_bridge.gd) | Actor-to-part-to-native-mask mapping and copied coupling samples in the existing Rapier space | | [`main.gd`](../../godot/scripts/main.gd), [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) | Existing main-thread physics/native-worker boundary, atomic body/equipment samples, prepared adoption and lifecycle | The catalogue has 59 model identities: eight existing authored flyers, the passive barrel, 46 physical catalogue models including five SetP player rigs, and four 4LY assisted-flight profiles. Definitions are returned as new copied values. Equipment preparation occurs once; its permanent chassis participates in bounds and capacity checks even when the starting item is None.
+
+
+### Rank 2: systems/workbench-actor-composition.md — Shared Workbench actor composition > Reuse and research boundaries
+
+Document: Shared Workbench actor composition
+Path: systems/workbench-actor-composition.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
+canonical-for: [workbench-actor-composition, workbench-actor-control]
+last-reviewed: 2026-11-20
+Section: Shared Workbench actor composition > Reuse and research boundaries
+Ordinary physical scripts reuse `physical_actor_script.gd`, including its local contact/support, direction changes, stall recovery, resource, grip, rope and player feedback. That script uses `physical_usable_script.gd` for suitable equipment. The small Workbench adapter supplies copied observations and actions; the existing rig/controller still applies every motor force. 4LY reuses `physical_flight_teacher.gd` for a goal-relative patrol between bounded authored endpoints and `physical_flight_controller.gd` for the existing plant. It reports local obstacle sensing as unavailable rather than importing Flight Lab's evaluator or privileged arena queries. Existing Workbench flyers use a small local pose/velocity feedback adapter that submits existing fleet action values; their established fleet controller continues to own actuation. ACT-001/002 sampled actors remain owned by `actor_prototype_session.gd` in the native-worker scheduling lane. They are **not an alternative representation inside this composition release**. A physical observation is never presented as a sampled v1/v2 array. A caller wanting a learned policy should consume the physical observation contract and return its supported bounded action values. Thunderbowl's full controller contracts include sampled self-state layouts, team/neighbor visibility, virtual tag readiness, messages and arena lifetime. Physical Workbench has no implicit authority for those fields. `workbench_reactive_policy.gd` reuses the actual `examples/thunderbowl/controller_base.gd::_wire_toward` helper for policy-fixture actors whose physical profile has ground/walk movement and an ordinary primary jump. It excludes player-controller rigs, charged jumps and flight. The current compatible models are Runner, Crawler, Scout and Rocker, selected by capabilities rather than a model-name dispatch table. The adapter projects only copied self motion/support and a bounded patrol goal into the pure helper, uses local wall/stall feedback to change direction, then returns physical move/aim/effort/jump values. Its diagnostics identify `thunderbowl-wire-to-physical/v1`; it does not claim to run a sampled actor. The Mixed Workshop's player Buggy continues to use its existing physical player feedback through the same policy envelope. Direct sampled metal actuation, oracle targets, virtual tag combat, NCA weights and smart-link requests are not Workbench motor commands. The steering reuse imports no arena, combat or messaging owner. Coordination and a slow model-intention adapter require explicit future schemas and budgets. An untrained NCA is not a trained NPC, and the smart-link contract is not an operational model service.
+
+
+### Rank 3: architecture/shared-workbench-authoring-data.md — Shared workbench authoring data and convergence > Common authored document semantics
+
+Document: Shared workbench authoring data and convergence
+Path: architecture/shared-workbench-authoring-data.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation
+canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
+last-reviewed: 2026-11-20
+Section: Shared workbench authoring data and convergence > Common authored document semantics
+The [WB-ACTOR-COMPOSE-001 candidate](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility) adds an optional versioned actor-control extension within existing Setup-v2, generated-start and material-baseline containers. Source, bounded cadence, starting equipment and compatible tuning are authored values. Live policy memory, leases, issued observations, resource consumption, momentum and evolved cells are not serialized by ordinary Save. Invalid definitions or controls refuse the complete preparation while retaining the previous applied map and session. **Approved requirements for convergence:** | Part | Meaning | |---|---| | Baseline | Starting terrain supplied by existing ordinary setup, verified procedural reconstruction, or a versioned standalone material baseline | | Authored changes | Ordered accepted edits after the baseline, including erase/replacement semantics; both human and agent changes must survive Save/reopen | | Actors and configuration | Supported authored spawns, selection and applicable response/liquid/material policy; view metadata is separate from material content | | Live session | Evolving native cells, tick, motion, active tasks and transient physics; not implicitly serialized by a starting-map Save | | Provenance | Reconstruction-critical identity where required; descriptive origin/history must be distinguishable from required inputs | These are semantic components, not mandated JSON keys or an unbounded operation journal. Existing bounds remain enforced. Exhaustion must be explicit and must not silently omit an accepted edit from the saved start. Ordinary Save persists the authored start; Restore reconstructs it. Neither implicitly captures evolved materials or promises deterministic coupled simulation replay. **Approved:** use shared reconstruction/validation, native preparation/adoption and authored-state recording services rather than interface-specific copies. Native C++ remains authoritative; the existing worker owns installed cells. Godot owns UI/input and main-thread scene/Rapier objects. Immutable copied snapshots retain their existing lifetime. Remote adapters do not simulate cells. An accepted queue entry is not proof of native application or durable recording; future exact-cell authoring seams need acknowledged application and a defined capacity/failure outcome for the authored record. This requirement is not a claim that today's ordinary brush already has the agent bridge's durable receipts.
+
+
+### Rank 4: systems/workbench-actor-composition.md — Shared Workbench actor composition > Producer and policy interface
+
+Document: Shared Workbench actor composition
+Path: systems/workbench-actor-composition.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
+canonical-for: [workbench-actor-composition, workbench-actor-control]
+last-reviewed: 2026-11-20
+Section: Shared Workbench actor composition > Producer and policy interface
+as fresh.
+
+
+### Rank 5: systems/workbench-actor-composition.md — Shared Workbench actor composition > Authored data, options and compatibility
+
+Document: Shared Workbench actor composition
+Path: systems/workbench-actor-composition.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
+canonical-for: [workbench-actor-composition, workbench-actor-control]
+last-reviewed: 2026-11-20
+Section: Shared Workbench actor composition > Authored data, options and compatibility
+The root remains **Setup-v2**. An actor retains `id`, `model`, `hash`, `spawn` and `options`, and may add this strictly validated extension: ```json "control": { "version": 1, "source": "scripted", "enabled": true, "decision_ticks": 6, "policy": "fixture", "usable_index": 3 } ``` All six keys are required when the optional block is present; unknown keys, versions, sources, adapters, nonintegral numeric fields, incompatible items and out-of-range cadence refuse. `usable_index: -1` means no starting usable. Absent control on valid legacy flyers/barrel uses the established human/passive defaults, without adding fields during read. Existing fleet and barrel definition hashes are retained. Added physical hashes are versioned hashes of the full prepared catalogue definition, including the equipment topology. Existing per-instance options retain their original numeric bounds: response budget 5–80; mass/inertia multipliers 0.01–64; flyer thrust/torque 0–64; flyer boost 1–8. RFT requires budget 20. Non-flyer models reject the flyer-only thrust/torque/boost knobs unless they retain neutral values 1/1/2. 4LY's frozen plant also requires mass/inertia 1/1. The UI disables irrelevant controls. Device and key preferences are not part of the actor's authored control block. Reusable model defaults are the existing catalogue/profile definitions and the registry's copied `default_control(model)` values; independent placement starts from those values, and **Defaults** restores the established neutral option multipliers. Per-instance edits are saved with that actor. This release does not add a separate owner-authored reusable preset library. Setup, generated-start and material-baseline readers all canonicalize validated actor/control integer fields after JSON decoding. The extension does not change generated terrain fingerprints, material payloads, ordered PAINT history or Flatten's material-only semantics. Older binaries can refuse a new extension; they must not silently drop it. Invalid data never causes a partial save rewrite. Save stores the authored composition and accepted environment edits. Load/Restore reconstructs actors at authored spawns with their configured producers/equipment. It does not restore momentum, joint state, evolved cells, controller memory, outstanding leases or policy observations. Flatten remains the explicit material baseline operation; it does not turn the save into a live-physics checkpoint.
+
+## DR20: Do all physical rigs accept every liquid or ballistic equipment tool?
+
+Canonical rank: 2
+
+Expected facts:
+
+- Equipment has explicit actor/model/control and capacity admission; not every rig/tool combination is supported.
+- Distinguish accepted equipment paths from pending recovery work.
+
+### Rank 1: systems/physical-actor-rigs.md — Articulated Rapier actors and shared physical control > How do I select and control them?
+
+Document: Articulated Rapier actors and shared physical control
+Path: systems/physical-actor-rigs.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
+canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
+last-reviewed: 2026-10-22
+Section: Articulated Rapier actors and shared physical control > How do I select and control them?
+F5 in the ordinary sandbox, Blacksite Nine and the four showcase districts selects a representation, set, actor and keyboard, scripted-demo or external policy producer. Physical Rapier choices are the default actor route. Applying rebuilds the selected map at its initial spawn and starts paused. R retains the selection; changing district uses that district's spawn. Registered scientific fixtures and Benchmark mode retain their own actors. The new assembly remains suspended until its matching native reset and initial hard-terrain colliders are installed, including when Play is requested early. Physical wire controls are WASD movement, mouse aim, brackets for effort, Q/E trim, Z/X reel, Space primary, Shift secondary and C auxiliary. M uses the tool, N releases a held item and U requests nearby pickup. Left/right pointer buttons use equipment primary/alternate; its aim and power are independent of locomotion. F5 equipment selection changes a held chassis through the same admitted action. Exact ability meaning is displayed from the selected profile. These map to `tool`, `release_usable` and `attach_usable` in the shared API. These are bounded gameplay requests; no command writes a transform or assigns velocity as locomotion. Focus loss, pause, replacement and input cancellation revoke pending actions. SetP supplies five distinct human movement controllers through the same action path. Its buggy/bike use vertical movement for throttle and horizontal movement for lean; the acrobat supplies slides, rolls, bullet/double jumps, cancels and glide. Full controls and the separate seven-preset keyboard/gamepad course are in the [player control playground](player-control-playground.md). Its dry/liquid presets are native material fields and are not members of the Rapier roster. The retained single-body barrel/Ripper comparison is described separately in the [physical programme](../operations/physical-actor-programme.md). The current articulated Ripper is the five-part sprung crawler, not that historical hull arm. Desktop integration does not migrate the synchronous Web control owner.
+
+
+### Rank 2: systems/workbench-liquid-equipment.md — Workbench liquid equipment — valves, drain, nozzle and pump > Status and boundary
+
+Document: Workbench liquid equipment — valves, drain, nozzle and pump
+Path: systems/workbench-liquid-equipment.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: IN-TOOLS #361 shared-workbench liquid equipment (accepted through #553); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
+canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
+last-reviewed: 2026-11-12
+Section: Workbench liquid equipment — valves, drain, nozzle and pump > Status and boundary
+**Accepted through #553 at `d8588716` and preserved in the integrated PAINT and agent candidate.** The equipment is opt-in: a starting setup without an `equipment` block, every Current default, the U10 `liquid_drain` usable, the Water family selection and all native laws are unchanged. No native C++ or GDExtension source changed for #553 itself. The separate [integrated candidate](../operations/wb-art-paint-integrated-candidate.md) adds stored-material readback and retains PAINT capacity changes, so it requires its new source-built runtime; the old committed libraries do not qualify that integrated source. Dated equipment evidence lives in the [2026-11-09 audit](../audits/2026-11-09-in-tools-361-workbench-equipment.md). The equipment adds **no solver, law, velocity edit or second equipment framework**. Every change to the World goes through the native World's ordinary booked external-edit path (`emit_disc`) or the existing #406 ballistic owner (`inject_water_parcel`), so the native quantity ledger remains the authority and closes by itself.
+
+
+### Rank 3: systems/workbench-actor-composition.md — Shared Workbench actor composition > Physical equipment and material authority
+
+Document: Shared Workbench actor composition
+Path: systems/workbench-actor-composition.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
+canonical-for: [workbench-actor-composition, workbench-actor-control]
+last-reviewed: 2026-11-20
+Section: Shared Workbench actor composition > Physical equipment and material authority
+Compatible physical rigs retain the existing ACT-005 32-item catalogue, mount, hit/mask validation, cooldown, charge, release/attach and native material accounting. The Workbench bridge maps each equipment part to its actual native proxy ID, including offsets after a compound flyer. Main publishes the copied body sample and equipment frame together through the existing worker boundary; native receipts return to the matching session. Physical ACT-004 effects and the ACT-005 engine receive the committed Workbench canvas extent, so valid tools on a 2048 × 1024 landscape are not clipped to a historical 1024-cell laboratory width. Coordinates outside the committed extent still refuse. Sampled actor/usable contracts keep their own bounds. The worker uses the existing cancellation mutex across the bounded physical effect apply, so cancellation cannot overtake validation and leave a late material write. The example gives Runner a Brick Stamper, Crawler a Powder Vacuum and Skimmer a Water Lance. These demonstrate deposition, excavation and liquid emission with native `physical_usables` receipts and `changed_cells`; they do not acquire human paint permissions. Model/tool behavior remains local and resource-bounded. Crawler starts at `(300, 350)` on the solid approach to the granular patch. These ground mechanisms obtain traction from real Rapier hard-terrain or body support. Native granular support alone does not become a grounded contact: placing a rig on a thick loose-powder bed can strand it until legitimate equipment clears enough material. The example preserves that boundary instead of granting a controller artificial traction or material-edit privileges. Autonomous tools never use or capture the human PAINT pointer. Human tools use explicit tool keys/gamepad controls and the observed equipment identity. Workbench also disables the legacy slot-zero mouse equipment adapter: an equipped scripted actor in the first physical slot cannot consume pointer input or have its generation cancelled by the old single-player path. Live source switching preserves the current item. **Apply equipment / restart** is a separate authored prepare operation that changes the starting loadout, retains live material cells/body poses where supported, and explicitly restarts controller/resource state. No item is silently attached to a model without a mount. Native refusal retains the old applied arrangement.
+
+
+### Rank 4: systems/actor-rigs.md — Provisional actor rigs and shared control interface > Which actor rigs are available?
+
+Document: Provisional actor rigs and shared control interface
+Path: systems/actor-rigs.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Six sets of 29 optional desktop sampled actor rigs, their shared player/policy actions, observations and bounded gameplay mechanics; excludes learned inference and generalized rigid-body or pressure physics
+canonical-for: [actor-rig-sets, actor-policy-input, actor-rig-observations-v2]
+last-reviewed: 2026-10-19
+Section: Provisional actor rigs and shared control interface > Which actor rigs are available?
+**Current, experimental (ACT-002 / #168):** the desktop sandbox and exploratory showcase maps have six sets containing 29 movement rigs. Every rig can be assigned to keyboard input, an external policy producer or the built-in scripted demonstration. Producer identity changes who may submit an action; it does not grant different movement, collision or tool authority. SetA preserves the original Runner, Skimmer and Crawler motors. Its [version-1 contract](actor-control-prototypes.md) remains the compatibility route. The additional sets share a sampled motor with authored rotation, surface attachment, ropes, resource limits and selected local tools. These are provisional gameplay rules for comparison, not a selection of the final player representation. | Set ID | Theme | Stable rig IDs, in catalog order | |---|---|---| | `setA` | Reference controls | `runner`, `skimmer`, `crawler` | | `setB` | Ground and near-ground machines | `scout`, `scrabbler`, `ripper`, `groundeffect`, `digger` | | `setF` | Unusual flight and descent | `copter`, `pouncer`, `dropbot`, `lineshank` | | `setY` | Contact, rope and impulse traversal | `walljumper`, `clamberer`, `swinger`, `rocketjumper` | | `setU` | Self-propelled salvage tools | `springjack`, `gyrocrate`, `bellows`, `winchbug`, `magpie`, `skatesail` | | `setV` | Speculative interface personas | `astra`, `claude`, `luna`, `qwen`, `bonsai`, `jev`, `gemini` | `groundeffect` has no underscore; its display name is **GroundEffect**. The first three global rig indices remain 0 Runner, 1 Skimmer and 2 Crawler. A catalog entry is copied metadata, not a live controller. Its `parameters` extension dictionary is currently empty; movement tuning belongs to the motor, while effort is an input action rather than a replacement PENV profile. Source: [`actor_rig_catalog.gd`](../../godot/scripts/actor_rig_catalog.gd) (`RIG_IDS`, `entry`, `controls_text`), [`actor_rig_motor.gd`](../../godot/scripts/actor_rig_motor.gd) (`simulate_rig_action`, `_advance_rig`) and [`actor_prototype_session.gd`](../../godot/scripts/actor_prototype_session.gd). USABLE-001 adds an independent [actor equipment layer](actor-usables.md) for the sampled rig session. Equipment has its own epoch/sequence/lease stream and does not reuse movement buttons or grant policies direct World-edit authority. The [physical ACT-005 equipment](physical-actor-rigs.md#which-usable-examples-exist) uses articulated body/mount authority and the physical issued-observation envelope.
+
+
+### Rank 5: systems/workbench-liquid-equipment.md — Workbench liquid equipment — valves, drain, nozzle and pump > Desktop controls
+
+Document: Workbench liquid equipment — valves, drain, nozzle and pump
+Path: systems/workbench-liquid-equipment.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: IN-TOOLS #361 shared-workbench liquid equipment (accepted through #553); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
+canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
+last-reviewed: 2026-11-12
+Section: Workbench liquid equipment — valves, drain, nozzle and pump > Desktop controls
+Shared workbench, **Liquid equipment** rows: **Valve n/N [V]** toggles the selected valve, **◀ [** / **▶ ]** choose the valve, **All valves**, **Drain [G]**, **Nozzle [H]**, **Aim − [J]** / **Aim + [K]** (10° steps), **Speed**, **Rate**, **Stop all**, **Load liquid-lab**, **Load reservoir-lab**, **Valve/Drain/Nozzle at X/Y** (a valve is added, up to eight; drain and nozzle are replaced), **Supply cells**, **Pump drain → nozzle**, **Apply supply/pump** and **Remove equipment**. The status line shows every valve (`O` open, `·` shut, `o`/`c` changing, the selected one bracketed), drained/injected cells, underwater injections, pipe stock/capacity and the native Water total with its ledger state; with the pump on it also shows the loop total. Overlay markers: valves orange (shut) / green (open), the selected valve thicker, drain blue, nozzle point and aim line. Typing `liquid-lab` or `reservoir-lab` in the setup name and **Load start** also opens the built-in start while no user file of that name exists. In the integrated PAINT/agent candidate, paused **Paint** mode keeps PAINT's existing shortcut priority: **G** selects Fill, **V** selects Paste, and **[** / **]** change brush radius. Select the main **Select body** tool to use the equipment shortcuts. The equipment buttons remain available in Paint mode.
+
+## DR21: How do I configure a local LM Studio endpoint and custom model without sending a paid cloud request?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Provider selection, endpoint and model are explicit settings; use the documented local provider path.
+- A documentation walkthrough must not dispatch paid inference or expose credentials; model availability/errors are separate from geometry application.
+
+### Rank 1: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Reproducible qualification and local setup
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Reproducible qualification and local setup
+The original Stage-2 checkpoint used unchanged main native libraries. The integrated repair requires its newly built source-matched GDExtension. Real-native and cloud-adapter fixture tests are separate from genuine inference. ```powershell lms server start --port 1234 lms load liquid/lfm2.5-1.2b --gpu max --context-length 16384 --identifier wb-art-instruct --ttl 7200 -y # Optional already-installed vision model used in this qualification: lms load lfm3-omni-2b --gpu max --context-length 16384 --identifier wb-art-vision --ttl 7200 -y C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script res://tests/test_art_provider.gd python tools/test_art_provider_transport.py --godot C:/Godot47/Godot_v4.7-stable_win64_console.exe --output build/art-provider-http ``` `run_art_provider_local.gd` is an explicit genuine-local UI/native test, not an automatically discovered CI test. Set `WB_ART_TEST_ENDPOINT`, `WB_ART_TEST_MODEL` and `WB_ART_EVIDENCE_DIR` as needed. The transport tool supplies synthetic HTTP responses and separately runs real native drawing; it tests OpenAI/NVIDIA/local wire shapes, aliases, errors, timeout, Stop and replacement. Its `--graphical` option exercises actual UI image capture and retains PNGs on Linux X11 and Windows ANGLE. Only `test_art_provider.gd` is a normal keyless auto-discovered provider test. Genuine text qualification used LM Studio 0.4.26+4, selected llama.cpp NVIDIA CUDA runtime 2.73.0 and TITAN RTX (24576 MiB). `liquid/lfm2.5-1.2b` Q4_K_M with 16384 context and `--gpu max` passed drawing at all three output allowances. GPU process and VRAM evidence are retained. An installed experimental 8B IQ4_XS model emitted reasoning/prose and an unsupported shape on one trial; it is not labelled a perfect structured-command model. No model download was needed. Genuine LFM3-Omni-2B Q4_K_M image inference through the new adapter described an original native-workbench post-draw PNG. Its vision projector reported unsupported CUDA flash-attention operators and CPU fallback: this is **mixed GPU/CPU vision**, not proof of an entirely GPU-resident visual path or a visual revision loop. Model art quality and Stage-3 persistent visual iteration remain separate. The owner-requested benchmark uses the exact prompt `draw a detailed gundam mech style cyberpunk statue`, three fresh 64x128 attempts per installed model, 8192 output allowance. `tools/bench_art_provider.py` retains original rendered canvas/workbench PNGs, raw traffic and measured native results. Its optional WSL-to-Windows loopback relay is test-only, not a product dependency. No external port exposure or MCP is introduced. Cloud request shaping is keylessly qualified; genuine OpenAI/NVIDIA calls require owner key entry and remain separately reported. The first nine statue trials copied literal numeric examples or used near-miss field names, and applied zero cells. Their failures are retained. The generic instructions were clarified to describe parameter fields without numeric drawing examples; equivalent spellings were normalized and the comparison repeated. No paid calls or merge/Ready promotion are implied by this implementation.
+
+
+### Rank 2: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Current candidate and controls
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Current candidate and controls
+**Unmerged candidate:** #559 Stage 2 extends `codex/agent-art-workbench-v2` and Draft PR #560. The [Stage-1 contract](workbench-direct-art-batches.md) owns direct geometry, execution-time protection, native completion and authored-start Save. No #531 controller, native defaults, prices, catalogs, credit gates or MCP are imported. Model prompt and Scanline send the current task, selected conversation context, drawing instructions, work area and optional canvas observation. Stored traffic remains separate from model context. The [integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md) preserves this complete interface and adds PAINT alongside it. Native authoring uses the repaired stored-material API and shared ordering; the provider protocol, model choices, conversation, diagnostics and image-observation controls remain owned here. The integrated workflow uses deterministic HTTP/provider fixtures; earlier genuine inference evidence below belongs to its original checkpoint. Open **Art batches**, choose **Model prompt**, provider, editable model ID and base URL. Endpoint/model, output allowance and timeout occupy two shared rows. Enter a prompt in the main text area and click Send; Stop remains beside Send. Direct JSON remains selectable independently. Model history is convenience, not admission. Controls affect the next request; an in-flight request keeps its captured work area/material/protection selections. Idle/completed, waiting for model, capture, native queued/executing/partial and errors are visibly distinct. | Preset | Protocol | Default base URL | Model field | |---|---|---|---| | OpenAI | Responses | `https://api.openai.com/v1` | `gpt-5.6-luna`, editable | | NVIDIA | Chat Completions | `https://integrate.api.nvidia.com/v1` | `nvidia/nemotron-3.5-super-vl-120b-a12b`, editable | | LM Studio | Chat Completions | `http://127.0.0.1:1234/v1` | `wb-art-instruct`, local tested alias, editable | Use **Key…** for each cloud provider. Keys stay in process memory, separately per provider; reopening Key always permits replacement. The button indicates a key is present. Profiles/history persist in `user://art-provider.cfg` without keys. LM Studio sends no fabricated key; a configured local server token is accepted through the same Key control. Local/LAN/manual endpoints are allowed. The numeric loopback default avoids the long `localhost` connection delays observed on this Windows installation; `localhost` remains usable as an editable endpoint. Output allowance defaults to 8192; Toks and Secs control the actual request cap and HTTP timeout. Tests exercise 4096/8192/16384 separately. Responses uses `max_output_tokens` (including reasoning where applicable); Chat Completions uses `max_tokens`. Truncated/incomplete responses report the reason and draw nothing; there is no automatic expensive retry or hidden context truncation. Returned model/deployment names are informational. Reported input/output usage is shown; missing usage/cost remains `?`. Provider rate headers and errors are in Traffic; Stage-5 automatic pacing/advanced budgets are not claimed here.
+
+
+### Rank 3: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+Model prompt and Scanline keep a conversation for the mounted workbench. Turns limits requests per Send, including refusals and rate retries. Zero continues until Stop, completion or another limit. Run s adds an optional elapsed-time ceiling. After native completion, the next request can use the actual changed count and world epoch. An empty array ends the run. Stop cancels pending inference, pacing and queued native work. Clear starts a new conversation while the durable traffic retains earlier events. Full includes all text turns and saved images when Image is enabled. Compacted includes the latest twelve entries and discloses omissions. It omits reasoning prefixes from model context while retaining the original replies in traffic. Custom initially uses the same window. None sends no earlier turns. Historical image bytes remain in durable traffic. Image sends the visible intersection of the work area, or the whole visible canvas with Full view. The request includes pixel dimensions and the world rectangle. Identical captures are skipped within a run. Native chunk receipts remain in local traffic. Guidance opens the editable instructions for the selected mode. Scanline takes rows with local y, optional repeat and scale, and spans in [x,length,material] order or named objects with those fields. Omitted spans preserve cells. An explicit zero material erases. The normal executor applies the resulting ordered rectangles. Consecutive shapes of the same material share native chunks up to the existing cell limit. Material changes preserve the original draw and erase order. Gap s sets an optional request interval. HTTP 429 with numeric Retry-After paces subsequent requests to that endpoint. OpenAI request, token and project token reset durations also pace requests when their bucket reports exhaustion. Known billing and spending quota failures require user action. Traffic supports visible filtering and full disk export. Unknown cost remains unknown. On 2026-11-10 the Windows preview passed 113 native checks and 43 checks with LM Studio LFM2.5 1.2B, including a human follow-up and Stop during pacing. The Linux graphical transport fixtures passed for all three providers. The graphical run_art_scanline_vision.gd probe used the loaded LM Studio LFM3 Omni model through a loopback relay. It applied a four-cell wall, then erased its first cell after a second rendered observation. The earlier LFM2.5 text scanline trial returned malformed JSON. The vision test is a constrained placement test. In a separate graphical 64×128 statue trial, wb-art-local sent three requests over 50.5 seconds. The first two changed 226 and 132 native cells. The last returned an empty array. Reported input and output totals were 11,900 and 6,707 tokens. This
+
+
+### Rank 4: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Provider/native boundary and Stop
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Provider/native boundary and Stop
+`art_provider.gd` owns one threaded Godot HTTPRequest and static payload/response adapters. `art_batch_panel.gd` supplies compact controls and dispatches parsed operations to the existing Stage-1 executor. No second simulation or controller is introduced. Plain JSON arrays, an operations envelope, a single shape, JSON fences and a recognized final packet after `</think>` are accepted. `type`/`operation` alias `shape`; draw_ prefixes and pixel/circle/rect spellings normalize to the same primitives. Omitted material defaults to the selected paint material. Hard Wall is the initial selection. A complete JSON array followed by a stray closing wrapper is accepted; a truncated array is not. Native geometry/material validation still applies. Arbitrary prose is not executed. Refused/malformed packets leave Send available for correction and retain the complete provider response. This is structured-text drawing, not a claim that every local model supports native tool calling. Stop cancels capture/HTTP, invalidates the request generation and stops native queued work. Native worker epoch is captured before inference; Reset/Load/Restore invalidate old model results. An executing native chunk may finish at its normal boundary. No uncertain mutation is replayed. Network failure, HTTP 429, bad model output and logger failure leave the UI available. No credential/catalog preflight is used beyond requiring a cloud key/model field for a cloud request. Optional **Image** sends a PNG crop from the actual post-draw canvas view, resized to at most 768 pixels on its longest axis. Floating art/traffic windows are hidden for the capture frame and restored; their contents do not cover the canvas image. Camera/view remain unchanged. Image capture requires a graphical runtime; text inference works headlessly. Image bytes remain inspectable in raw traffic. HTTP response body capacity is 16 MiB to bound response allocation; timeout is visible/configurable. Automatic HTTP redirects are disabled so a configured base URL is the actual credential destination; HTTP redirect/error details remain inspectable. These are transport mechanics, not source/pricing authorization.
+
+
+### Rank 5: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+Each **new Workbench game session begins with an empty in-memory Art conversation**. The Send, Conversation and direct drawing controls never reopen, link, scan or copy traffic from a previous process or Workbench scene. The user can maintain multi-turn context *within the current session*; closing the session discards the in-memory conversation. Model/provider/endpoint/control preferences may still persist in `user://art-provider.cfg`, but no `traffic_path` is read or published. The obsolete profile pointer is removed on the next successful preferences save. On the first Art log event, the existing bounded writer creates **one new root JSONL** under `user://art-traffic/`. All following requests, provider responses, native results and in-session conversation changes append to that same file until the Workbench session ends. Hiding and reopening the Art window within the same Workbench does not create a second log. There is no automatic replay, linked predecessor, history-resume gate or full-history duplication. An unavailable, corrupt or deleted older log cannot prevent Send. Each model request writes a redacted `request_parameters` event containing the provider/model/endpoint, prompt, guidance, requested work rectangle, allowed materials, protected areas, enabled tools, token/time/turn limits and relevant image/context settings. The normal request/response/native receipt events follow. Direct JSON painting records `manual_program`, `manual_admission` and terminal `manual_result`. This provides the values needed for manual re-entry later; it does **not** promise to reproduce an evolving World from prompts alone or retain exact unlogged source World state. `Traffic…` displays the current session file path and can explicitly export it. Existing legacy and linked archives remain **unchanged** on disk, but are never attached to a new game session. The legacy archive parser remains available for standalone read-only diagnostics and old evidence tests; it is not part of the normal UI lifecycle. No automatic migration, deletion or cleanup is performed. PAINT's native authoritative Undo/Redo is independent of Art. When an Art window exists, confirmed Undo/Redo events may be appended to its current session log. Without an Art session, native editing does not force the Art panel or create a cross-session receipt journal. Old `user://art-pending-history` records are preserved as historical data and never injected into a new session. Disk logging failures remain visible, but must not retroactively repeat a native edit. **Scope boundary:** This is session-local authoring history, not a durable conversation database. Save/Open for the authored World and PAINT's own material history retain their existing independent contracts. New model requests must never trust a stale previous-session continuation pointer.
+
+## DR22: Does hiding the Art window mean its request was stopped?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Hide and Stop have different semantics; do not describe window visibility as cancellation.
+- Use the documented Stop/request state and native receipts to determine remaining work.
+
+### Rank 1: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+Each **new Workbench game session begins with an empty in-memory Art conversation**. The Send, Conversation and direct drawing controls never reopen, link, scan or copy traffic from a previous process or Workbench scene. The user can maintain multi-turn context *within the current session*; closing the session discards the in-memory conversation. Model/provider/endpoint/control preferences may still persist in `user://art-provider.cfg`, but no `traffic_path` is read or published. The obsolete profile pointer is removed on the next successful preferences save. On the first Art log event, the existing bounded writer creates **one new root JSONL** under `user://art-traffic/`. All following requests, provider responses, native results and in-session conversation changes append to that same file until the Workbench session ends. Hiding and reopening the Art window within the same Workbench does not create a second log. There is no automatic replay, linked predecessor, history-resume gate or full-history duplication. An unavailable, corrupt or deleted older log cannot prevent Send. Each model request writes a redacted `request_parameters` event containing the provider/model/endpoint, prompt, guidance, requested work rectangle, allowed materials, protected areas, enabled tools, token/time/turn limits and relevant image/context settings. The normal request/response/native receipt events follow. Direct JSON painting records `manual_program`, `manual_admission` and terminal `manual_result`. This provides the values needed for manual re-entry later; it does **not** promise to reproduce an evolving World from prompts alone or retain exact unlogged source World state. `Traffic…` displays the current session file path and can explicitly export it. Existing legacy and linked archives remain **unchanged** on disk, but are never attached to a new game session. The legacy archive parser remains available for standalone read-only diagnostics and old evidence tests; it is not part of the normal UI lifecycle. No automatic migration, deletion or cleanup is performed. PAINT's native authoritative Undo/Redo is independent of Art. When an Art window exists, confirmed Undo/Redo events may be appended to its current session log. Without an Art session, native editing does not force the Art panel or create a cross-session receipt journal. Old `user://art-pending-history` records are preserved as historical data and never injected into a new session. Disk logging failures remain visible, but must not retroactively repeat a native edit. **Scope boundary:** This is session-local authoring history, not a durable conversation database. Save/Open for the authored World and PAINT's own material history retain their existing independent contracts. New model requests must never trust a stale previous-session continuation pointer.
+
+
+### Rank 2: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention
+**Traffic…** is a separate hideable window with readable messages/instructions, a Raw JSONL switch, copy and full-session export. Both formats show actual content; raw contains request bodies, response bodies/headers, usage, native admission and completion, cancellation, wall-clock timestamps and monotonic times. Requested and returned model names are recorded without comparing them as a gate. Full redacted JSONL appends under `user://art-traffic/`; its absolute path is shown in Traffic. On this Windows installation that normally resolves below `%APPDATA%/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/`. The live text buffer is bounded separately (about 2 million characters), with an explicit earlier-on-disk marker. Full export streams the linked disk segments, not the live tail; there is no 256-event export ceiling. Disk failure is surfaced without stopping inference/drawing. When disk logging fails, missing historical content is not magically recoverable from the bounded viewer. Entered keys, bearer strings, common key formats, credential URL parameters and URL userinfo are redacted before display/disk/export. Authorization request headers are never added to the logged request object. No log can identify every arbitrary secret the user invents; do not put unrelated credentials in prompts.
+
+
+### Rank 3: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Offset-area repair > 2026-11-11 scanline qualification
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Offset-area repair > 2026-11-11 scanline qualification
+The Windows native session probe, run with the local wb-art-vision model, completed twelve 480-cell scanline turns on one canvas in 58.4 seconds. Native readback confirmed 5,760 changed cells across twelve chunks. The export kept all twelve native receipts and the initial inference cancellation. The first attempt exposed a model reply using named span fields, now supported alongside the array form. A separate inference continued through injected log I/O failure. The same probe stopped an admitted large stencil after the first 4,096-cell receipt and confirmed that the next row was untouched. It also stopped during inference and a pacing wait. The graphical Linux probe stopped during canvas capture before dispatch, then drew and revised a stencil with the live local vision model. The OpenAI HTTP fixture verified a successful response with zero remaining requests and a 62.5-second reset, and verified that a billing quota error does not retry. These provider header cases use keyless fixtures. The art material picker offers every non-empty material from the ordinary Workbench paint palette. Erase remains a separate toggle. The selected ID applies to Direct JSON, Model prompt and Scanline. Existing non-Empty, non-Hard-Wall cells remain protected from art writes, including erase. Tools controls which shapes Direct JSON and Model prompt may submit. A nonzero Pixels per operation setting limits the length of each point list. Zero adds no point limit. The worker still streams large operations in native chunks. Lines accept an optional integer width in cells. Width one preserves the original raster. Wider strokes use rounded ends and clip to canvas bounds before the worker applies the selected area and protection checks. Scanline keeps its own span format. The Tools picker also enables rounded polylines (ordered `points` and optional `width` in cells), filled polygons (three or more `points`, closed automatically), and airbrush stamps (`x`, `y`, `radius`, optional `density` and `hardness` from 0 to 1, and an integer `seed`). Airbrushes stipple real material cells; hardness controls edge falloff, and repeating a seed repeats the pattern relative to the stamp center. All three use the same native edit batching and protection as the existing shapes. Desktop rasterization yields between frames even when a sparse shape produces no native chunk yet. Partial chunks are submitted periodically so sparse shapes can appear before rasterization finishes. Stop discards buffered cells that have not been submitted to the native owner. Traffic stays on disk while hidden. The open inspector refreshes at most twice per second during drawing and shows a bounded tail; Save JSONL exports the full session. On 2026-11-11, Windows/TITAN
+
+
+### Rank 4: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+Model prompt and Scanline keep a conversation for the mounted workbench. Turns limits requests per Send, including refusals and rate retries. Zero continues until Stop, completion or another limit. Run s adds an optional elapsed-time ceiling. After native completion, the next request can use the actual changed count and world epoch. An empty array ends the run. Stop cancels pending inference, pacing and queued native work. Clear starts a new conversation while the durable traffic retains earlier events. Full includes all text turns and saved images when Image is enabled. Compacted includes the latest twelve entries and discloses omissions. It omits reasoning prefixes from model context while retaining the original replies in traffic. Custom initially uses the same window. None sends no earlier turns. Historical image bytes remain in durable traffic. Image sends the visible intersection of the work area, or the whole visible canvas with Full view. The request includes pixel dimensions and the world rectangle. Identical captures are skipped within a run. Native chunk receipts remain in local traffic. Guidance opens the editable instructions for the selected mode. Scanline takes rows with local y, optional repeat and scale, and spans in [x,length,material] order or named objects with those fields. Omitted spans preserve cells. An explicit zero material erases. The normal executor applies the resulting ordered rectangles. Consecutive shapes of the same material share native chunks up to the existing cell limit. Material changes preserve the original draw and erase order. Gap s sets an optional request interval. HTTP 429 with numeric Retry-After paces subsequent requests to that endpoint. OpenAI request, token and project token reset durations also pace requests when their bucket reports exhaustion. Known billing and spending quota failures require user action. Traffic supports visible filtering and full disk export. Unknown cost remains unknown. On 2026-11-10 the Windows preview passed 113 native checks and 43 checks with LM Studio LFM2.5 1.2B, including a human follow-up and Stop during pacing. The Linux graphical transport fixtures passed for all three providers. The graphical run_art_scanline_vision.gd probe used the loaded LM Studio LFM3 Omni model through a loopback relay. It applied a four-cell wall, then erased its first cell after a second rendered observation. The earlier LFM2.5 text scanline trial returned malformed JSON. The vision test is a constrained placement test. In a separate graphical 64×128 statue trial, wb-art-local sent three requests over 50.5 seconds. The first two changed 226 and 132 native cells. The last returned an empty array. Reported input and output totals were 11,900 and 6,707 tokens. This
+
+
+### Rank 5: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+The Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on one chronological history. Only confirmed stored-material changes enter it. Adjacent bounded parts of one direct batch or model drawing submission share an action: one Undo reverses the retained parts, and Redo reapplies them in order. A human edit between chunks closes that group and has its own entry. Undo never jumps over later manual work to target an earlier agent action. Use Stop and wait for batch execution, native receipts, deferred human edits, image capture, provider activity and any scheduled follow-up turn to settle. An idle native chunk boundary alone does not enable Undo. After retirement, Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled or unacknowledged suffixes never enter history. The operation uses PAINT's bounded native preflight and receipt path. Its trusted human inverse can restore the recorded materials without granting ordinary agent submissions broader material, source, protected-region or work-area permissions. History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144 cells per part. The UI labels a partially retained group **Agent drawing (retained tail)** and explains when its older part is no longer undoable. No-change agent receipts preserve the existing Redo branch. Simulation, World replacement or another mutation outside the recorded timeline still invalidate history through its generation/revision/tick fence. History is session-local. Confirmed history results append a human canvas-result turn and durable `history_result` event, with applied counts and continuation/refusal status. They do not rewrite earlier model receipts or automatically request another model turn. The chosen conversation/context mode still governs future requests. The existing persistence limits also apply to history replay. Agent streaming does not preflight the entire authored recipe, so a highly fragmented result can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and Undo/Redo can also refuse a target part before writing if its intermediate authored recipe exceeds those limits, even when the eventual group baseline would be compact. The UI reports the actual confirmed progress and refusal; there is no promise of unbounded or atomic rollback for arbitrary agent output.
+
+## DR23: After accepted ART-SESSION-LOG-001, are yesterday’s Art conversation messages automatically restored on the next game launch?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Accepted #727 uses session-only conversation lifetime and one JSONL audit per game session.
+- Old lazy conversation restore instructions from #681 are superseded for the current accepted path; old audit files are not an implicit chat restore.
+
+### Rank 1: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+Each **new Workbench game session begins with an empty in-memory Art conversation**. The Send, Conversation and direct drawing controls never reopen, link, scan or copy traffic from a previous process or Workbench scene. The user can maintain multi-turn context *within the current session*; closing the session discards the in-memory conversation. Model/provider/endpoint/control preferences may still persist in `user://art-provider.cfg`, but no `traffic_path` is read or published. The obsolete profile pointer is removed on the next successful preferences save. On the first Art log event, the existing bounded writer creates **one new root JSONL** under `user://art-traffic/`. All following requests, provider responses, native results and in-session conversation changes append to that same file until the Workbench session ends. Hiding and reopening the Art window within the same Workbench does not create a second log. There is no automatic replay, linked predecessor, history-resume gate or full-history duplication. An unavailable, corrupt or deleted older log cannot prevent Send. Each model request writes a redacted `request_parameters` event containing the provider/model/endpoint, prompt, guidance, requested work rectangle, allowed materials, protected areas, enabled tools, token/time/turn limits and relevant image/context settings. The normal request/response/native receipt events follow. Direct JSON painting records `manual_program`, `manual_admission` and terminal `manual_result`. This provides the values needed for manual re-entry later; it does **not** promise to reproduce an evolving World from prompts alone or retain exact unlogged source World state. `Traffic…` displays the current session file path and can explicitly export it. Existing legacy and linked archives remain **unchanged** on disk, but are never attached to a new game session. The legacy archive parser remains available for standalone read-only diagnostics and old evidence tests; it is not part of the normal UI lifecycle. No automatic migration, deletion or cleanup is performed. PAINT's native authoritative Undo/Redo is independent of Art. When an Art window exists, confirmed Undo/Redo events may be appended to its current session log. Without an Art session, native editing does not force the Art panel or create a cross-session receipt journal. Old `user://art-pending-history` records are preserved as historical data and never injected into a new session. Disk logging failures remain visible, but must not retroactively repeat a native edit. **Scope boundary:** This is session-local authoring history, not a durable conversation database. Save/Open for the authored World and PAINT's own material history retain their existing independent contracts. New model requests must never trust a stale previous-session continuation pointer.
+
+
+### Rank 2: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Collaboration, scanline and pacing preview
+was text-only and predates the compacted reasoning-prefix omission. The rendered PNG and traffic retain the result for owner review. The workbench restores the last conversation from saved traffic into a separate log file on reopen. Full resends historical image bytes when Image is enabled and identifies omitted images otherwise. Spend optionally stops subsequent requests at a user-priced estimate from reported tokens. One response can exceed the ceiling. Rate waits use reported provider timing.
+
+
+### Rank 3: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention
+**Traffic…** is a separate hideable window with readable messages/instructions, a Raw JSONL switch, copy and full-session export. Both formats show actual content; raw contains request bodies, response bodies/headers, usage, native admission and completion, cancellation, wall-clock timestamps and monotonic times. Requested and returned model names are recorded without comparing them as a gate. Full redacted JSONL appends under `user://art-traffic/`; its absolute path is shown in Traffic. On this Windows installation that normally resolves below `%APPDATA%/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/`. The live text buffer is bounded separately (about 2 million characters), with an explicit earlier-on-disk marker. Full export streams the linked disk segments, not the live tail; there is no 256-event export ceiling. Disk failure is surfaced without stopping inference/drawing. When disk logging fails, missing historical content is not magically recoverable from the bounded viewer. Entered keys, bearer strings, common key formats, credential URL parameters and URL userinfo are redacted before display/disk/export. Authorization request headers are never added to the logged request object. No log can identify every arbitrary secret the user invents; do not put unrelated credentials in prompts.
+
+
+### Rank 4: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Offset-area repair > 2026-11-11 scanline qualification
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Offset-area repair > 2026-11-11 scanline qualification
+The Windows native session probe, run with the local wb-art-vision model, completed twelve 480-cell scanline turns on one canvas in 58.4 seconds. Native readback confirmed 5,760 changed cells across twelve chunks. The export kept all twelve native receipts and the initial inference cancellation. The first attempt exposed a model reply using named span fields, now supported alongside the array form. A separate inference continued through injected log I/O failure. The same probe stopped an admitted large stencil after the first 4,096-cell receipt and confirmed that the next row was untouched. It also stopped during inference and a pacing wait. The graphical Linux probe stopped during canvas capture before dispatch, then drew and revised a stencil with the live local vision model. The OpenAI HTTP fixture verified a successful response with zero remaining requests and a 62.5-second reset, and verified that a billing quota error does not retry. These provider header cases use keyless fixtures. The art material picker offers every non-empty material from the ordinary Workbench paint palette. Erase remains a separate toggle. The selected ID applies to Direct JSON, Model prompt and Scanline. Existing non-Empty, non-Hard-Wall cells remain protected from art writes, including erase. Tools controls which shapes Direct JSON and Model prompt may submit. A nonzero Pixels per operation setting limits the length of each point list. Zero adds no point limit. The worker still streams large operations in native chunks. Lines accept an optional integer width in cells. Width one preserves the original raster. Wider strokes use rounded ends and clip to canvas bounds before the worker applies the selected area and protection checks. Scanline keeps its own span format. The Tools picker also enables rounded polylines (ordered `points` and optional `width` in cells), filled polygons (three or more `points`, closed automatically), and airbrush stamps (`x`, `y`, `radius`, optional `density` and `hardness` from 0 to 1, and an integer `seed`). Airbrushes stipple real material cells; hardness controls edge falloff, and repeating a seed repeats the pattern relative to the stamp center. All three use the same native edit batching and protection as the existing shapes. Desktop rasterization yields between frames even when a sparse shape produces no native chunk yet. Partial chunks are submitted periodically so sparse shapes can appear before rasterization finishes. Stop discards buffered cells that have not been submitted to the native owner. Traffic stays on disk while hidden. The open inspector refreshes at most twice per second during drawing and shows a bounded tail; Save JSONL exports the full session. On 2026-11-11, Windows/TITAN
+
+
+### Rank 5: systems/workbench-direct-art-batches.md — Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+
+Document: Direct art batches, WB-ART-002 Stage 1
+Path: systems/workbench-direct-art-batches.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+canonical-for: [workbench-direct-art-batches]
+last-reviewed: 2026-11-12
+Section: Direct art batches — WB-ART-002 Stage 1 > Shared Undo and Redo
+The Art batches Undo/Redo buttons and PAINT's buttons and shortcuts operate on one chronological history. Only confirmed stored-material changes enter it. Adjacent bounded parts of one direct batch or model drawing submission share an action: one Undo reverses the retained parts, and Redo reapplies them in order. A human edit between chunks closes that group and has its own entry. Undo never jumps over later manual work to target an earlier agent action. Use Stop and wait for batch execution, native receipts, deferred human edits, image capture, provider activity and any scheduled follow-up turn to settle. An idle native chunk boundary alone does not enable Undo. After retirement, Undo can reverse the confirmed applied prefix of a stopped drawing; cancelled or unacknowledged suffixes never enter history. The operation uses PAINT's bounded native preflight and receipt path. Its trusted human inverse can restore the recorded materials without granting ordinary agent submissions broader material, source, protected-region or work-area permissions. History retains at most 32 parts and 1,048,576 edit cells, with at most 262,144 cells per part. The UI labels a partially retained group **Agent drawing (retained tail)** and explains when its older part is no longer undoable. No-change agent receipts preserve the existing Redo branch. Simulation, World replacement or another mutation outside the recorded timeline still invalidate history through its generation/revision/tick fence. History is session-local. Confirmed history results append a human canvas-result turn and durable `history_result` event, with applied counts and continuation/refusal status. They do not rewrite earlier model receipts or automatically request another model turn. The chosen conversation/context mode still governs future requests. The existing persistence limits also apply to history replay. Agent streaming does not preflight the entire authored recipe, so a highly fragmented result can exceed 32,768 stamps or the 1 MiB save envelope. Save then refuses, and Undo/Redo can also refuse a target part before writing if its intermediate authored recipe exceeds those limits, even when the eventual group baseline would be compact. The UI reports the actual confirmed progress and refusal; there is no promise of unbounded or atomic rollback for arbitrary agent output.
+
+## DR24: Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Traffic and prompts can be private; inspect and redact exported logs instead of treating all diagnostics as safe.
+- Share minimal source/runtime/error evidence and synthetic reproduction data; never include credentials.
+
+### Rank 1: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention
+**Traffic…** is a separate hideable window with readable messages/instructions, a Raw JSONL switch, copy and full-session export. Both formats show actual content; raw contains request bodies, response bodies/headers, usage, native admission and completion, cancellation, wall-clock timestamps and monotonic times. Requested and returned model names are recorded without comparing them as a gate. Full redacted JSONL appends under `user://art-traffic/`; its absolute path is shown in Traffic. On this Windows installation that normally resolves below `%APPDATA%/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/`. The live text buffer is bounded separately (about 2 million characters), with an explicit earlier-on-disk marker. Full export streams the linked disk segments, not the live tail; there is no 256-event export ceiling. Disk failure is surfaced without stopping inference/drawing. When disk logging fails, missing historical content is not magically recoverable from the bounded viewer. Entered keys, bearer strings, common key formats, credential URL parameters and URL userinfo are redacted before display/disk/export. Authorization request headers are never added to the logged request object. No log can identify every arbitrary secret the user invents; do not put unrelated credentials in prompts.
+
+
+### Rank 2: systems/workbench-art-providers.md — Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+
+Document: Art workbench provider connection, WB-ART-002 Stage 2
+Path: systems/workbench-art-providers.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+canonical-for: [workbench-art-providers]
+last-reviewed: 2026-11-22
+Section: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+Each **new Workbench game session begins with an empty in-memory Art conversation**. The Send, Conversation and direct drawing controls never reopen, link, scan or copy traffic from a previous process or Workbench scene. The user can maintain multi-turn context *within the current session*; closing the session discards the in-memory conversation. Model/provider/endpoint/control preferences may still persist in `user://art-provider.cfg`, but no `traffic_path` is read or published. The obsolete profile pointer is removed on the next successful preferences save. On the first Art log event, the existing bounded writer creates **one new root JSONL** under `user://art-traffic/`. All following requests, provider responses, native results and in-session conversation changes append to that same file until the Workbench session ends. Hiding and reopening the Art window within the same Workbench does not create a second log. There is no automatic replay, linked predecessor, history-resume gate or full-history duplication. An unavailable, corrupt or deleted older log cannot prevent Send. Each model request writes a redacted `request_parameters` event containing the provider/model/endpoint, prompt, guidance, requested work rectangle, allowed materials, protected areas, enabled tools, token/time/turn limits and relevant image/context settings. The normal request/response/native receipt events follow. Direct JSON painting records `manual_program`, `manual_admission` and terminal `manual_result`. This provides the values needed for manual re-entry later; it does **not** promise to reproduce an evolving World from prompts alone or retain exact unlogged source World state. `Traffic…` displays the current session file path and can explicitly export it. Existing legacy and linked archives remain **unchanged** on disk, but are never attached to a new game session. The legacy archive parser remains available for standalone read-only diagnostics and old evidence tests; it is not part of the normal UI lifecycle. No automatic migration, deletion or cleanup is performed. PAINT's native authoritative Undo/Redo is independent of Art. When an Art window exists, confirmed Undo/Redo events may be appended to its current session log. Without an Art session, native editing does not force the Art panel or create a cross-session receipt journal. Old `user://art-pending-history` records are preserved as historical data and never injected into a new session. Disk logging failures remain visible, but must not retroactively repeat a native edit. **Scope boundary:** This is session-local authoring history, not a durable conversation database. Save/Open for the authored World and PAINT's own material history retain their existing independent contracts. New model requests must never trust a stale previous-session continuation pointer.
+
+
+### Rank 3: operations/cybersand-codex-development-handover.md — Development handover > WB-ART-002 Stage 1 — 2026-11-10
+
+Document: Development handover
+Path: operations/cybersand-codex-development-handover.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
+canonical-for: [development-onboarding]
+last-reviewed: 2026-11-20
+Section: Development handover > WB-ART-002 Stage 1 — 2026-11-10
+**2026-11-11 integrated Draft successor:** read the [PAINT + agent candidate runbook](wb-art-paint-integrated-candidate.md) before continuing either editor. It records the exact preserved #544/#560 heads, generator-first repair checkpoints, native stored-material correction, shared edit ordering and source-built qualification. The owner authorized integration but explicitly requires Draft; do not mark Ready, merge or auto-merge. Original PRs remain available. Earlier Stage-1 ownership below is historical context. Owner-authorized fresh branch `codex/agent-art-workbench-v2` starts from main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`. Read the [direct art batch contract](../systems/workbench-direct-art-batches.md). This lane owns the new art modules/tests and narrow shared-workbench/worker completion seams; #531 is reference only. Preserve #543 ordinary-editor and #548 Flatten ownership. Stage 2 now adds the [provider connection candidate](../systems/workbench-art-providers.md), genuine local tests and traffic inspection. No cloud inference without owner credentials; no merge or Ready promotion.
+
+
+### Rank 4: operations/atlas-agent-runner.md — Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499)) > Quick start > Live execution security boundary (2026-11-07 qualification)
+
+Document: Atlas agent runner (credit-aware Responses API workflow, MAP-AUTO-02)
+Path: operations/atlas-agent-runner.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: How to run, budget, secure and audit the bounded OpenAI Responses API agent that critiques and edits one Atlas collection; what is verified offline and what is not yet verified against the live API
+canonical-for: [atlas-agent-runner]
+last-reviewed: 2026-11-07
+Section: Atlas agent runner (MAP-AUTO-02, [#499](https://github.com/techrote/cybersand/issues/499)) > Quick start > Live execution security boundary (2026-11-07 qualification)
+The hosted `workflow_dispatch` path permits **manual live runs against the synthetic fixture only**, with the existing explicit spending authorisation/credit-attestation gates. A live GitHub Actions run with `source=atlas-ref` fails input validation **before any API credentials are read or chargeable calls are made**: source-supplied Python/Node scripts are pinned by Git blob SHA to reviewed Atlas executables, but a sanitized subprocess environment and script pinning are not an operating-system sandbox. Running these validators under a secret-bearing hosted live process is deliberately withheld until #500 provides separately isolated, no-credentials validation with tested filesystem/network restrictions. The earlier local owner-controlled real-art Responses API smoke remains recorded evidence; no hosted or automatic art-source paid execution is authorised by this document.
+
+
+### Rank 5: operations/architecture-programme.md — CyberSand architecture experimental programme > Final quality and documentation gate
+
+Document: CyberSand architecture synthesis and experimental programme
+Path: operations/architecture-programme.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+canonical-for: [architecture-experimental-programme]
+last-reviewed: 2026-10-24
+Section: CyberSand architecture experimental programme > Final quality and documentation gate
+Review the [ledger](architecture-programme-source-ledger.md) and every prompt for the user's 30 requirements: full four-source trajectory; Current/proposal and ADR/issue-local distinctions; occupancy/material separation; no external-source reanalysis or mandatory ladder; independent width/packing/epoch/precision/solver; independent geometry; characterizing both liquids; conservation and retained physics policy; cross-dependencies, negative/ambiguous/no-go outcomes; master before issues and overlap check; self-contained prompts; conditional downstream work; bounded ownership/determinism; no production edits. Documentation synchronization: programme owns only future research, with ledger and prompts excluded from ordinary Current answers. Navigation, roadmap and retrieval manifest route to it. Existing subsystem/ADR/runtime/evidence claims are unchanged. Run documentation, historical M11, repository, frozen retrieval, supplementary programme questions and diff checks; report inherited provenance failures separately. No physics/runtime campaign is needed for this planning-only change. Final issue readback, link/section/dependency checks and source-scope inspection complete this task. The [planning execution report](../audits/2026-09-10-architecture-programme.md) records created issues, exact remote/dependency readback, manual quality review and separate documentation/retrieval versus inherited publication-check outcomes.
+
+## DR25: Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Standalone four-plane presentation/authoring exists within its own documented ownership.
+- Ordinary Shared Workbench integration remains a separately unmerged candidate at the recorded source; do not conflate it with standalone availability.
+
+### Rank 1: systems/depth-layers-and-parallax.md — Depth layers and parallax prototypes > Strata Theatre controls
+
+Document: Depth layers and parallax prototypes
+Path: systems/depth-layers-and-parallax.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership
+canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
+last-reviewed: 2026-10-20
+Section: Depth layers and parallax prototypes > Strata Theatre controls
+- **1-5** — Flat / Relief / Four layers / Hybrid / Diorama. - **WASD / arrows** — camera pan. - **Space** — pause dynamic planes; **Step** advances admitted dynamic planes once. - **E** — rear reactor sequence. - **R** — reset all four worlds. - **Left mouse** — paint selected layer/material. - **Right mouse** — erase selected layer. - **Middle mouse** — toggle automatic camera motion. - **Tab** — hide/show controls. - **Esc** — return to a fresh ordinary sandbox. Background remains immutable even if selected as a paint target, making the failure visible rather than hiding it in UI policy.
+
+
+### Rank 2: systems/depth-layers-and-parallax.md — Depth layers and parallax prototypes > Purpose
+
+Document: Depth layers and parallax prototypes
+Path: systems/depth-layers-and-parallax.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership
+canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
+last-reviewed: 2026-10-20
+Section: Depth layers and parallax prototypes > Purpose
+res://depth_lab.tscn is an opt-in comparison host for visual and figurative depth in CyberSand. It deliberately keeps several ideas visible side by side instead of making one of them production authority. The lab is called **Strata Theatre**. It can be opened directly, with --depth-lab, or from the ordinary desktop sandbox with **F4**. [Deepworks](../operations/deepworks-exhibition.md) reuses these four material planes in a separate 1024 × 1024 exhibition host, opened with `--deepworks` or `res://deepworks.tscn`. Its sixteen districts, source programme, independent clocks and camera/painting controls belong to that guide. Strata Theatre retains its original default dimensions and controls. | View | Meaning | |---|---| | Flat | Foreground-only control. | | Quantized relief | Bounded quantized samples of the foreground material image are offset/scaled behind the source silhouette to imply thickness. | | Four layers | Four independently authored material worlds are rendered together with different scale/parallax factors. | | Hybrid | Four layers plus foreground relief, distance haze and rear-scene reflection masked by foreground liquid IDs. | | Diorama | Hybrid plus a faster near-camera foreground-derived frame and pointer-centred cutaway. | None of the presentation-only modes creates authoritative Z coordinates, colliders, hidden material mass or a second owner of the play world.
+
+
+### Rank 3: systems/depth-layers-and-parallax.md — Depth layers and parallax prototypes > Generated semantic-depth host
+
+Document: Depth layers and parallax prototypes
+Path: systems/depth-layers-and-parallax.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership
+canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
+last-reviewed: 2026-10-20
+Section: Depth layers and parallax prototypes > Generated semantic-depth host
+[GEN-005](procedural-semantic-planes.md) adds a separate opt-in semantic depth scene using the same four-World and compositor owners. One native hierarchy produces all four proposals, typed links, finite fixtures and play-only actor placements. Its subclass validates complete copied bundles and owner-issued runtime observations; the original Strata/Deepworks commands retain their existing scopes. The base reset has a candidate-owner preparation hook before its commit, allowing the existing actor session to stage against candidate play without exposing a partly replaced World set. See [ADR-014](../decisions/ADR-014-semantic-plane-admission.md).
+
+
+### Rank 4: systems/depth-layers-and-parallax.md — Depth layers and parallax prototypes > Four material planes
+
+Document: Depth layers and parallax prototypes
+Path: systems/depth-layers-and-parallax.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Opt-in Strata Theatre and Deepworks material-world layering, authored dimensions, foreground-derived relief and explicit interlayer events; separate from production world ownership
+canonical-for: [depth-layer-prototype, parallax-prototype, quantized-relief, interlayer-events]
+last-reviewed: 2026-10-20
+Section: Depth layers and parallax prototypes > Four material planes
+The prototype owns four separate CyberNativeCellWorld objects through CyberDepthLayerRuntime. Each world uses the existing native material IDs, rules and RG8 RenderBridge projection. Godot owns only authoring, presentation and explicit lab commands. | Plane | Strata default rate | Intended use | |---|---:|---| | play | 60 Hz | Active foreground/play material. | | scripted | 20 Hz | Rear set, destructible scenery and set-piece sequences that should not perturb foreground material. | | effects | 30 Hz | Rain, snow-like Dust, Steam fog, Spark energy and other environmental material effects. | | background | 0 Hz | Authored distant city. It is never ticked and its first copied RG8 publication is cached. | The rates are independent. Dynamic planes may be reduced or paused without changing the others. The background rejects non-zero rates. Deepworks selects 30/20/15/0 Hz for play/scripted/effects/background. Every Deepworks plane spans the full 1024 × 1024 authored map; the rear `scripted` world runs native reactions while the true `background` world remains frozen. Each plane has its own render canvas and a material surface covering the accepted authored ROI, defaulting to 640 × 360 in Strata Theatre. Frozen surfaces request a one-shot bake when a copied publication arrives or updates are paused, so pausing before the first draw still renders the admitted state. See [`CyberDepthLayerSurface.apply_packet()` and `set_render_enabled()`](../../godot/scripts/depth/depth_layer_surface.gd). The current host uses one native adapter owner and serializes calls into its four worlds. Production adoption should integrate the play plane with the existing asynchronous owner rather than introduce another mutable owner.
+
+
+### Rank 5: operations/deepworks-exhibition.md — Deepworks — the exhibition below > What is the map?
+
+Document: Deepworks exhibition
+Path: operations/deepworks-exhibition.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: The 1024 by 1024 Deepworks map, sixteen districts, native foreground and rear exhibits, four-plane coverage, controls and authored source programme
+canonical-for: [deepworks-exhibition, deepworks-map-controls, deepworks-exhibition-programme]
+last-reviewed: 2026-11-16
+Section: Deepworks — the exhibition below > What is the map?
+**Current source:** Deepworks is one **1024 × 1024 total map**, divided into a 4 × 4 grid of sixteen 256 × 256 districts. Every district has foreground architecture, an independent rear apparatus and service layer, local atmosphere, and a distant architectural scene. Its **32 exhibits** pair one foreground setup with one rear setup per district. The composition uses all **51 MAT-002 building materials, IDs 81–131**, including architectural specimens and material swatches; the [building catalogue](../systems/building-material-catalogue.md) owns their actual native rules and material identities. The map extends the layered presentation of [Strata Theatre](../systems/depth-layers-and-parallax.md), with the connected industrial composition and small architectural details of the earlier showcase maps. Numbered bays, valves, pipe clamps, specimen shelves, signal lamps, cargo, stained windows, domestic niches and distant machinery give each district a distinct setting. Foreground apertures deliberately expose the rear apparatus. Full coverage means all four planes are authored across all sixteen districts; open space remains part of the composition. Source: [`CyberDeepworksMap.build()`](../../godot/scripts/exhibition/deepworks_map.gd), [`CyberDeepworksArchitecture`](../../godot/scripts/exhibition/deepworks_architecture.gd) and [`CyberDeepworksExhibits.build()`](../../godot/scripts/exhibition/deepworks_exhibits.gd). ![Deepworks atlas rendered from the four material planes](../images/deepworks/deepworks-atlas.png) The atlas is a 2048 × 2048 presentation capture of the 1024 × 1024 map. Image resolution does not enlarge the simulation. The sixteen retained 512 × 512 tile images are exact crops of this atlas.
+
+## DR26: The render FPS is high and texture uploads are fast. Does that prove physical simulation and actor movement are playable?
+
+Canonical rank: 2
+
+Expected facts:
+
+- Rendering and upload timing do not alone establish physical progression, input responsiveness or owner playfeel.
+- Use source-matched progression evidence and distinguish hosted/software rendering from physical GPU acceptance.
+
+### Rank 1: operations/physical-actor-programme.md — Physical actors and combined feature trials > What did the owner observe and authorize on 2026-10-18?
+
+Document: Physical actors and combined feature trials
+Path: operations/physical-actor-programme.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
+canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
+last-reviewed: 2026-10-22
+Section: Physical actors and combined feature trials > What did the owner observe and authorize on 2026-10-18?
+**Owner observations, not independently established physics facts:** the horizontal-impulse barrel felt physical and kinetic; its Water/barrel interaction was particularly convincing, but some Sand interactions tunnel too freely. Burial-safe sampled actors could become pinned by very small Sand/body overlaps. The sampled baseline in the material-effects build avoided that sticking but appeared more jittery. A matched policy/render comparison is required: PR #164 changes presentation, not movement semantics. Preserve these reports as separate observations rather than claiming the shaders fixed collision. The owner approved landing the existing presentation, generation and scene features, a combined launcher, and starting the physical barrel/Ripper trial. The following preferences were **Approved direction / Planned follow-up at intake**. They remain the owner-intent record; current implementation and its qualification are separately described above and in the physical actor contract: - Prefer experimental impulse/torque-driven Rapier machines; keep sampled reference arms for comparison. Add short high-power vertical pulses and torque to the physical player. Investigate granular interaction without inventing an actor-local displacement solver or duplicating #83 ownership. - Some actors must consist of several hinged physical bodies. Internal motors torque parts against each other; grounded propulsion must arise from contact. Reaction wheels/gyros justify bounded attitude authority; do not turn internal joint torque into unexplained free-flight propulsion. - Scrabbler: a Leaper-like articulated machine, using the supplied image as a stance/motion reference. Ripper: a fast low RC drift crawler; the written file also cites a Warframe Bursa. The short video emphasizes speed, slip and strong changes of direction. Pouncer: a cybernetic headcrab/flying or gliding squirrel. Digger: a rocket-powered mole that can screw into a burrow and travel along it horizontally or vertically, with explicit bounded excavation authority. - Copter should remain demanding and unstable but recoverable. Trial multirotors with different shape, speed, centre of mass, inertia, stability and thrust tradeoffs. Lineshank should be katana-slim with its centre of mass near the grip; trial rocket propulsion alongside the retained bungee version. - Rocketjumper should trial a Fire blob surrounded by a Gunpowder ring at the explosion, with bounded cell placement and explicit propulsion accounting. - Preserve Gyrocrate's lively feel and Bellows' character (the owner's image is an underappreciated food-delivery bot). Vector and Jolt are the preferred scripted-bot energy references; give other scripts more purposeful vigour through the same action authority available to human control. - Render actors using filled colour/texture polygons that exactly represent their actual collider parts, with optional outlines. Use the physical part definition and published transform as the shared source, including rotation. - Test in constrained Blacksite/Neon spaces as well as reduced
+
+
+### Rank 2: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Avoid common misreadings
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Avoid common misreadings
+| Pattern | Next investigation | |---|---| | One core busy, others idle | Phase job count versus dispatch threshold; a persistent pool can intentionally run sparse phases serially | | Small dirty patch KiB but low FPS | Full GPU texture update, synchronization, palette/glow, or unrelated presentation work | | Large collider peak, small Rapier step | Separate geometry extraction, packet copy/validation, and indivisible collider rebuild | | High snapshot pressure/age | Consumer lag and retained dirty payload | | Material appears still after camera return | Check failure status and selected cores against the [pause/re-entry contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry); retained offscreen activity is not selected work | | Active work never settles | Equivalent state changes, wake feedback, or genuine lifecycle work | | Persistent unresolved body pixels | Bounded ejection exhausted, stale samples, or dense surroundings | | Visually moving surface with stable content | Presentation-time shader motion; inspect authority before changing simulation | The collider consumer's 32-chunk/750 µs limits are checked between chunks and exclude extraction/packet handling; one chunk may exceed the time budget. Only rebuilt chunks count against the chunk limit. The workbench lock-step publishes every hard-surface revision and installs it with a 128-chunk/4 ms budget. The 2026-11-06 [whole-engine benchmark](../audits/2026-11-06-whole-engine-bench.md) shows why: with reacting terrain the 250 ms packet throttle capped a session at about 4 ticks/s. `ImageTexture.update` still uploads the full 2,097,152-byte RG8 image for a changed native publication. Dirty bridge bytes cannot substitute for that cost.
+
+
+### Rank 3: architecture/principles-and-non-goals.md — Architectural principles and non-goals > Which Current exceptions must remain visible?
+
+Document: Architectural principles and non-goals
+Path: architecture/principles-and-non-goals.md
+authority: current-documentation
+document-kind: design
+status: Approved design
+scope: Accepted architectural constraints, explicit current exceptions, deferred scope and rejected approaches
+canonical-for: [architectural-constraints-and-rejected-shortcuts]
+last-reviewed: 2026-09-08
+Section: Architectural principles and non-goals > Which Current exceptions must remain visible?
+World still combines several production responsibilities. Lazy coordinator preparation may allocate chunks/temperature during a tick; preallocation covers those measured allocation classes. The desktop emission queue and Godot render accumulation are dynamic arrays, not general bounded native queues. Godot still uploads the full RG8 texture after dirty CPU patching. The GDScript solver remains a desktop fallback with different semantics. Sources: [World](../../native/src/world.cpp), [worker](../../godot/scripts/simulation_worker.gd), [renderer](../../godot/scripts/main.gd), [fallback](../../godot/scripts/cell_world.gd). These exceptions require honest scope; they are not permission to extend them into new hidden ownership or allocation paths.
+
+
+### Rank 4: operations/profiling-observability-and-performance.md — Profiling, observability, and performance > Current observations and their limits
+
+Document: Profiling, observability, and performance
+Path: operations/profiling-observability-and-performance.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
+canonical-for: [performance-measurement, metric-interpretation]
+last-reviewed: 2026-10-31
+Section: Profiling, observability, and performance > Current observations and their limits
+| Observation/source | What it measures | What it does not establish | |---|---|---| | [World::TickStats](../../native/include/cybersand/world.hpp) | Visited/moved cells, activity, scheduled cores, per-phase jobs, deferred events, owned chunk/temperature allocation counts | Per-worker utilization, barrier time, all process allocations | | [World::resident_cell_bytes](../../native/src/world.cpp) | Cell, optional-temperature, and activity capacity bytes | Hash-map/node overhead, all scheduler/snapshot buffers, total RSS | | [RenderSnapshotExchange](../../native/include/cybersand/render_snapshot.hpp) | Required/capacity/high-water patch and byte counts; pressure/failure counts | GPU upload bytes or renderer memory | | [Desktop worker](../../godot/scripts/simulation_worker.gd) | Worker/cellular/snapshot-copy timing, snapshot age, overruns | Synchronous Web timing semantics | | [Desktop controller](../../godot/scripts/main.gd) | FPS, texture update, dirty patch count/KiB, collider timing, body observations, Rapier step/flush | Stable telemetry schema, isolated GPU frame time | | [Web controller](../../godot/scripts/web_demo_controller.gd) | Native tick/upload and profile observations | Independent asynchronous simulation/render owner | “Moved cells” counts successful updates and can include reactions/state changes; it is not a conserved quantity or physical mass. Native facade counters with fallback-like names are not automatically equivalent to fallback activity metrics. The 2026-10-25 [worker activity repair](../audits/2026-10-25-water-inertial-native.md#worker-activity-publication-repair--2026-10-25) adds geometry-bounded per-job signal grids, flag clearing and serial reduction. Its [capacity accounting](../reference/configuration-reference.md) includes real setup storage and work even for jobs that emit no activity signal. Earlier pressure/cache/dormancy timings retain their original source and do not qualify this scheduler's total cost. The follow-up contiguous layout preserves the same payload and clear/reduction work while reducing grid ownership to two buffers per World; its constructor-allocation counts and failure-sweep timings are source-bound correctness evidence, not controlled speedup ratios. The earlier unpacked pressure campaign keeps its own source. The [fresh packed-source repeat](../audits/2026-10-25-water-inertial-native.md#fresh-packed-source-total-cost-repeat) has its own prospective registration, complete total-cost accounting and independent reduction; it retains faster awake warm medians and slower disturbed churn/forced-head intervals, rather than implying a universal improvement. `TickStats` chunk/temperature allocation counters also do not count all ordinary heap allocations; explicit probes and source inspection have their own recorded boundary.
+
+
+### Rank 5: systems/material-appearance-and-rendering.md — Material appearance and rendering
+
+Document: Material appearance and rendering
+Path: systems/material-appearance-and-rendering.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
+canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
+last-reviewed: 2026-10-19
+Section: Material appearance and rendering
+**Current:** native material identity and one derived condition byte form an immutable RG8 presentation stream. GPU shaders create variation, animation, relief, and emission without changing physics. CPU patch copies are dirty-region proportional, but each changed GPU texture update still uploads the full 1024² RG8 image. True GPU subregion writes are **Planned**. This page owns appearance and cost semantics at the [secured checkpoint](../operations/source-checkpoint-and-recovery.md). The [render bridge](../architecture/rendering-and-gameplay-bridges.md) owns payload lifetimes; the [evidence ledger](../reference/validation-evidence.md) distinguishes headless checks, browser observations, and absent representative GPU profiling.
+
+## DR27: Does enabling Web pthreads make the browser keep presenting while a native tick is running?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Web native tick ownership remains synchronous; internal pthreads do not establish asynchronous presentation.
+- Desktop has separate simulation-owner scheduling; do not promise backend parity.
+
+### Rank 1: operations/web-threading.md — Web worker profiles and reference tests
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests
+**Current:** compatibility Web uses one native cellular worker; optional threaded Web uses the existing phased pool. Both synchronously finish a cellular tick in Godot's `_physics_process`; Rapier stays on Godot main. Pthreads do not create desktop-style asynchronous simulation/render ownership. That extension is **Deferred**. Source identity is in the [checkpoint](source-checkpoint-and-recovery.md), dated native/browser evidence in the [validation ledger](../reference/validation-evidence.md), and historical timing/failure records in the [performance archive](../audits/2026-09-08-performance-history.md).
+
+
+### Rank 2: operations/web-threading.md — Web worker profiles and reference tests > Acceptance and unresolved limits
+
+Document: Web worker profiles and reference tests
+Path: operations/web-threading.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
+canonical-for: [web-worker-profiles, worker-reference-benchmark]
+last-reviewed: 2026-09-08
+Section: Web worker profiles and reference tests > Acceptance and unresolved limits
+Use the [local validation procedure](local-build-and-validation.md) and the host guide at `C:/kybersand/docs/BROWSER_VALIDATION.md`, then verify both profiles: actual worker count, native exception rejection, render patches, input/menu/pause/reset, level import and replacement-world lifecycle. Physics Pit has separate [Rapier acceptance](rapier-2d-migration-runbook.md). Historical tests exposed a stall with 12 prewarmed pthreads; a later four-worker export used 24, and current Auto exports use 32. The preserved record does not establish the minimum safe pool or robustness on every low-core device. Retest replacement, import, benchmark cancellation, and pool release whenever sizing changes. Browser/device coverage, complete replay, and production frame-time thresholds remain incomplete.
+
+
+### Rank 3: operations/local-build-and-validation.md — Local build and validation > How is the physics baseline rebuilt?
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > How is the physics baseline rebuilt?
+Follow [physics characterization](physics-characterisation.md): rebuild the native CLI and adapter before running the deterministic P1–P4 matrices, then build/export both Web profiles and execute them in a real browser. Capture actual HEAD/local file hashes separately from legacy export acquisition labels. The [2026-09-09 report](../audits/2026-09-09-physics-characterisation.md) records Windows/Web results and the unavailable Linux execution environment. Local rebuilt artifacts are measured inputs, not automatically updated published LFS runtime manifests; the current release gate remains separate from M11 integrity. For the standalone CLI's current material-admission and sampled-accounting gate: ```sh timeout 300 make physics-characterisation-test ASAN_OPTIONS=detect_leaks=1:strict_string_checks=1 \ UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \ timeout 300 make physics-characterisation-sanitize ``` The sanitized command includes leak detection when the execution environment supports process inspection. Native CI uses its explicitly recorded ASan/UBSan scope. Both targets compile the actual CLI and retain per-invocation JSON/stdout, stderr and the executable hash under `build/physics-cli-validation/`. The [measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path) defines the 132-entry output and independent accounting oracle. Issue #10 uses the [current acceptance commands](physics-characterisation.md#how-do-i-reproduce-issue-10-acceptance) and [its own artifact audit](../audits/2026-09-09-issue-10-granular-policy.md). Both native Web modules were rebuilt before final script exports. The shared threaded probe must yield before replacing a newly constructed default world, after replacement and after teardown so browser pthread startup/recycling can finish before synchronous native joins. This fixture lifecycle requirement does not change production native ownership or introduce asynchronous Web simulation.
+
+
+### Rank 4: operations/local-build-and-validation.md — Local build and validation > Web compile, export and execution are different checks
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Web compile, export and execution are different checks
+From source, with the SDK active and paths adapted to the host: ```text python tools/build_web.py --cpp <web-godot-cpp> --compile-only python tools/build_web.py --cpp <web-godot-cpp> --godot <godot> --templates <templates> ``` The default profile is compatibility. Add `--profile threaded` for pthreads. Both normal profiles package Rapier; `--cellular-only` is a diagnostic option. `--native-tests` requires a separate `--native-cpp` directory. `--compile-only` returns before runtime tests/export even if `--native-tests` is present. `--export-only` checks existing WASM structure, not freshness against source. The workspace wrapper still supplies the acquisition base as `--source-commit`; that export field is not current HEAD. Capture current source and artifact hashes separately until the producer is repaired in an implementation checkpoint. See [source identity](source-checkpoint-and-recovery.md). Preview generated output through HTTP with WASM MIME and profile headers, then run the actual browser fixture. Checksums/HTTP checks prove packaging; native headless Godot proves native execution; only browser execution tests Web behavior. The [Web guide](web-threading.md) owns hosting requirements, and the [validation ledger](../reference/validation-evidence.md) owns dated outcomes.
+
+
+### Rank 5: decisions/ADR-010-failed-tick-quarantine.md — ADR-010: Quarantine failed ticks until reset or replacement > Alternatives and scope
+
+Document: ADR-010 — Quarantine failed ticks until reset or replacement
+Path: decisions/ADR-010-failed-tick-quarantine.md
+authority: current-documentation
+document-kind: decision
+status: Current
+scope: Issue 1 failure/recovery choice for the in-place native solver and its desktop/Web owners
+canonical-for: [decision-failed-tick-recovery]
+last-reviewed: 2026-09-08
+Section: ADR-010: Quarantine failed ticks until reset or replacement > Alternatives and scope
+**Rejected for this fix:** retrying the same world after changing capacity/region, silently replaying an accepted explosion, presenting partial output as a completed tick, or claiming rollback of preceding character/Rapier work. Complete rollback would require a separately specified journal/transaction covering cells, epochs, activity, events, allocation, coupling and publication, with memory/work budgets. **Planned separately:** preserving committed state through live capacity growth, durable replay/checkpoint capture, and broader allocation/error typing. These are not implemented by level restoration. Region requests during failure may be retained, but only reset/replacement makes fresh activity eligible again.
+
+## DR28: Can I publish a rebuilt native DLL by editing its hash in the provenance JSON?
+
+Canonical rank: 2
+
+Expected facts:
+
+- No: publication requires source-matched build and execution evidence, artifact identity and guarded branch/source custody.
+- A hand-edited hash or stale predecessor pass is not qualification; preserve exact LFS object and source inputs.
+
+### Rank 1: operations/wb-art-paint-integrated-candidate.md — Integrated PAINT and agent Shared Workbench > Final hardening and evaluation — 2026-11-12 > Evaluate the delivered package
+
+Document: Integrated PAINT and agent Shared Workbench candidate
+Path: operations/wb-art-paint-integrated-candidate.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
+canonical-for: [integrated-paint-agent-workbench]
+last-reviewed: 2026-11-12
+Section: Integrated PAINT and agent Shared Workbench > Final hardening and evaluation — 2026-11-12 > Evaluate the delivered package
+Extract the complete standalone Windows archive into a fresh folder, then double-click **Open Workbench.cmd**. No Git checkout or development-machine paths are required. The first launch imports the packaged project. Its `candidate-manifest.json` identifies the exact application commit/tree and payload hashes; the delivered native DLL has its own candidate provenance. This runbook is included as `READ-ME.md`. - Open **New from generator…**, choose a populated profile and install a map. - Pause; use Brush/Eraser, Line, Rectangle/Outline and several native materials. - Fill a closed pocket; Select, Copy/Paste, then Undo/Redo. - Open **Art batches**, draw inside a bounded area, alternate with human edits, and Stop a longer operation. Confirm that further editing still works. - Run and pause simulation; interact with the existing physical equipment. - Save a named start, exit Godot completely, launch again and Load that name. Check both editors' authored materials, actor/equipment configuration and settings, then continue editing. Expect the authored start, not a physics checkpoint of the evolved world. The retained repository runtimes still have four native-source mismatches per platform: `cyber_demo_bridge.hpp`, `cyber_native_cell_world.cpp/.hpp` and `cyber_prepared_liquid_world.hpp`. The separate source-built evaluation package does not promote those tracked binaries or rewrite their historical manifests. Tracked-runtime publication and the full materialized-provenance gate remain explicit merge requirements, alongside owner desktop acceptance. Keep Draft.
+
+
+### Rank 2: operations/current-and-historical-validation.md — Current validation and retained M11 integrity > What validates current source and runtime identity?
+
+Document: Current validation and retained M11 integrity
+Path: operations/current-and-historical-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Separate current source and runtime acceptance from immutable historical M11 evidence
+canonical-for: [current-validation-gates, m11-retention-policy]
+last-reviewed: 2026-10-20
+Section: Current validation and retained M11 integrity > What validates current source and runtime identity?
+**Current:** [check_repository.py](../../tools/ci/check_repository.py) validates canonical documentation, approved dependency versions, required notices/bootstrap files, committed LFS identities and the published Windows/Linux runtime source inputs. [runtime-provenance.json](../../godot/addons/cybersand_native/runtime-provenance.json) and [Linux provenance](../../godot/addons/cybersand_native/runtime-provenance.linux.json) bind each library's SHA-256/size to canonical source input hashes and dated execution evidence. Changing an input requires a rebuilt, tested and explicitly recorded artifact. Identity alone never substitutes for execution. A local source checkout may validate LFS pointer identity while reporting missing payloads. CI and release hashing require `--require-materialized`; every required runtime object must match its committed SHA-256 and size. Vendor runtime libraries retain their dependency provenance. Other platforms are not certified by the Windows/Linux manifests or a successful LFS check. The [player playground checkpoint](../audits/2026-10-20-player-control-playground.md) changes native World and the adapter, so its material modes require a rebuilt matching extension. Source presence, a successful Windows cross-build and an executed Linux fixture are three distinct claims. The [player checks](local-build-and-validation.md#player-playground-checks) and dated audit record the actual scope; retained M11 records are unaffected and must not be updated to describe these new controls.
+
+
+### Rank 3: operations/local-build-and-validation.md — Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+**Current:** a source checkout can launch the retained desktop test project without the companion-workspace `dev.cmd`: ```powershell .\launch-desktop.cmd .\launch-desktop.cmd -Godot C:\path\to\Godot_v4.7-stable_win64.exe .\launch-desktop.cmd -PrintIdentityOnly .\launch-desktop.cmd -Editor ``` The wrapper invokes [`tools/launch_desktop.ps1`](../../tools/launch_desktop.ps1). It accepts an explicit `-Godot` path or `CYBERSAND_GODOT`; otherwise it searches the established `C:\Godot47` location. It requires exactly `4.7.stable.official.5b4e0cb0f`, verifies that the project, retained CyberSand Windows DLL/provenance file and Rapier Windows DLL are present, verifies the CyberSand DLL SHA-256 against `runtime-provenance.json`, and prints checkout, Godot and runtime identities before launch. The default action runs `godot/project.godot` through its configured `main.tscn`; `-Editor` opens the same project in the editor. The launcher deliberately contains **no build step**. A missing, hash-mismatched or wrong-version runtime is an explicit failure; it never rebuilds, replaces or silently refreshes the retained DLL. M11 output byte equality now requires `CYBERSAND_VERIFY_M11_OUTPUT=1`; current builds keep compiler/source pin checks and identify their own tested outputs. See [validation policies](current-and-historical-validation.md). The existing local `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1` override bypasses some compiler/dirty-source checks. It still requires the exact godot-cpp revision. Inspect that checkout explicitly; a local validation build with this override is not bit-identical M11 reproduction.
+
+
+### Rank 4: operations/wb-art-paint-integrated-candidate.md — Integrated PAINT and agent Shared Workbench > Earlier application checkpoint and standalone packaging defect — 0025bd94
+
+Document: Integrated PAINT and agent Shared Workbench candidate
+Path: operations/wb-art-paint-integrated-candidate.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
+canonical-for: [integrated-paint-agent-workbench]
+last-reviewed: 2026-11-12
+Section: Integrated PAINT and agent Shared Workbench > Earlier application checkpoint and standalone packaging defect — 0025bd94
+The earlier qualified application checkpoint is `0025bd942850e6e75e77d4beb9c4885d7dc1b2f4`, tree `6fff8a8c833eb65f4297d6fd07ef9f5edf336c0d`. A subsequent packaging repair preserves the application implementation. The complete #544 and #560 heads and accepted main `d8588716becb0dc42019faf23f721378d8adc84a` remain ancestors. Neither original PR has been closed, and no Ready, auto-merge or merge action has been taken. **Historical package HOLD, resolved by the d33c10e4 replacement above.** Independent inspection of the 0025bd94 Windows archive found that Rapier imports `VCRUNTIME140.dll`, but the archive omitted it; the hosted machine supplied it. The referenced Rapier build lock and cooperative-BVH patch were also omitted. Artifact 13984970914 is retained as failure evidence and must not be treated as the final standalone candidate. Its ZIP SHA-256 is `87503652ced5b83aa106b7377f13e0b4130b776dc7d960d9612601223eca3ffe`. The targeted repair stages the unmodified, signed x64 Visual Studio 2022 release redistributable beside Godot, with Microsoft runtime and redistribution licences, file version/hash, signer and build-host provenance. Both referenced Rapier files are included. The installed suite runs the executable in each copied installation; a separate Windows process-module check requires the actual Godot process to load the bundled runtime, native extension and Rapier from that copied installation. Publication is gated on those checks and the complete dedicated campaign. They passed for the d33c10e4 package above. Consult [PR #564](https://github.com/techrote/cybersand/pull/564) for the current source and the separate qualification of subsequent history changes. The package's `candidate-manifest.json` and `source-built-candidate-provenance.json` identify its exact source and native inputs; `vc-runtime-provenance.json` identifies the Microsoft bytes and licences. To reproduce a recorded package, retain that runtime stage (the three named payload files plus its provenance) and pass it as `--vc-runtime` to the packager, alongside the pinned Godot and source-built native inputs. Staging from a newer hosted VS image may deliberately select a newer signed release runtime and produces a different recorded runtime hash. The [0025bd94 dedicated campaign](https://github.com/techrote/cybersand/actions/runs/43301146659) passed all three jobs: pinned Windows build, actual Linux X11 execution and actual Windows ANGLE execution in fresh standalone layouts. **Each platform passed 7,358 directly counted assertions:** 521 installed, 6,729 regression and 108 provider HTTP assertions. Imports, duplicate completion markers and the HTTP wrapper do not inflate that total. HTTP error/cancel/timeout controls also passed but expose no numeric assertion count and are not added to it. | Combined workflow, on each platform | Native workers | Author / fresh-reopen checks | | --- | --- | --- | | Installed 1024² map, including a 147,456-cell Fill | 1 and 4 | 170 / 41 at each setting | | Source-layout 512² map | 1 and 4 | 151 / 38 at each setting | All eight author/reopen pairs across both platforms reproduced the complete
+
+
+### Rank 5: systems/generation-workbench-2.md — Generation Workbench 2 inspection and transactional authoring > How do visual authoring and JSON roundtrip?
+
+Document: Generation Workbench 2 inspection and transactional authoring
+Path: systems/generation-workbench-2.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: GEN-007 native provenance replay, genuine intermediate stages, visual authoring, bounded previews and revision-safe history
+canonical-for: [generation-workbench-inspection, generation-workbench-transactions, generation-workbench-visual-tools]
+last-reviewed: 2026-10-21
+Section: Generation Workbench 2 inspection and transactional authoring > How do visual authoring and JSON roundtrip?
+The graph canvas displays typed spatial nodes and retained scalar fields with ports, native types/units and declared sampling work. Named subgraphs have their own selectable namespace. Node parameters and connections are submitted through the same candidate transaction as other edits; invalid types, dependencies, cycles or capacity fail native validation. Advanced instance bindings and outputs remain in the full Spatial JSON editor. Form edits preserve other supported fields that the selected form does not expose. The hierarchy tree presents accepted native feature IDs and parent relationships. Selecting a feature frames its bounds and replays its provenance. Rule editing changes declarative grammar; plane editing changes policies, projection templates, fixture schedules and links together. The existing brushes compile gestures into bounded strokes, exclusions, paths, modifiers, modules or hard material rectangles. They never paint cached output directly. The diagnostic selector solos scalar masks and typed fields. False colours are presentation of returned values, not an alternative source of field values. Vector arrows and bounded streamlines sample the copied diagnostic grid; missing samples terminate a line. Feature bounds, socket directions and route overlays consume the accepted semantic plan. Route colours qualify the native base generator report; the qualification scene separately checks its final projected play plane. Neither graph clearance nor a green line proves a particular actor's gravity/controller traversal. Feature histograms and density views count actual semantic records. Cost views separate conservative charged work from measured local chunk generation time. Inspection `logical_cost` is the normal generation per-cell bound; it excludes constructing and copying the explanation. Stage `projection_checks` counts examined spatial-index entries, while prepared `spatial_index` counts describe the actual bins and candidates. None is a measured replay CPU duration. The generation-only plane composite combines real plane materials at the same absolute coordinates. The scene's rendered material compositor owns parallax, lighting and actual four-plane graphical qualification.
+
+## DR29: A documentation or implementation Draft has skipped expensive jobs. Can I mark it Ready or merge it automatically?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Draft skips are not behavior passes and Ready/merge remain explicitly owner-controlled under this mission.
+- Implementation acceptance needs all applicable exact-head gates; documentation qualification does not prove runtime or physical acceptance.
+
+### Rank 1: operations/github-development-and-release.md — Repository development and release > Current CI provider and draft gating
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-11-06
+Section: Repository development and release > Current CI provider and draft gating
+**Current configuration, 2026-09-22:** routine active workflows use literal GitHub-hosted runner labels. The previous external-provider routing experiment is historical evidence only; it is not current policy. The retained [weekend runner benchmark](../audits/2026-09-19-runner-routing-weekend-benchmark.md) must not be read as authorization to restore its provider configuration. [check_ci_provider_policy.py](../../tools/ci/check_ci_provider_policy.py) enforces the active configuration boundary. It rejects: - `.circleci/config.yml`; - Avrea, Sengi or CircleCI routing tokens in active GitHub workflows; - `*_RUNNER` variable indirection; - any `runs-on` value that is not a literal GitHub-hosted `ubuntu-*`, `windows-*` or `macos-*` label. The Documentation/provenance workflow runs this cheap check and its focused unit tests even while a PR is draft. Historical documents are deliberately outside the checker's scan scope. Draft PRs suppress the expensive Native, GDExtension/Godot and scoped Water jobs. Moving a PR to ready-for-review is the final-validation transition. Native and GDExtension each run a small `ready validation scope` job on that transition: policy/docs-only changes stop there, while implementation/source changes continue into the existing expensive matrix. This explicit scope gate is required because GitHub may create `ready_for_review` workflow runs even when all changed files match `paths-ignore`. For behavior or runtime changes, record the exact-head Documentation/provenance result and every applicable Native, GDExtension/Godot and scoped apparatus result before merge. Do not use a skipped draft or policy-only scope result as behavior evidence. Source-sensitive runtime provenance remains a hard gate: a changed runtime input requires a source-matched rebuild and provenance update rather than a hand-edited hash.
+
+
+### Rank 2: operations/wb-art-paint-integrated-candidate.md — Integrated PAINT and agent Shared Workbench > Qualified agent Undo/Redo candidate — 86d704a2
+
+Document: Integrated PAINT and agent Shared Workbench candidate
+Path: operations/wb-art-paint-integrated-candidate.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Unmerged Draft candidate, generator packaging repair, native stored-material receipts, ordered human and agent authoring with shared Undo/Redo, reproducible qualification and owner acceptance
+canonical-for: [integrated-paint-agent-workbench]
+last-reviewed: 2026-11-12
+Section: Integrated PAINT and agent Shared Workbench > Qualified agent Undo/Redo candidate — 86d704a2
+ASan configuration disables leak detection. The [Native/documentation audit](../audits/wb-art-paint-2026-11-12/agent-undo-hosted-native.json) preserves the original command, source and output hashes. The [complete Godot campaign](https://github.com/techrote/cybersand/actions/runs/43323028725) passed all 50 executing jobs: **299 Linux cases and 278 applicable Windows headless cases**, with 43 import preflights counted separately. All 21 rendered cases excluded from that Windows headless matrix passed on Linux; the dedicated Windows graphical campaign above is separate. The new native Undo test passed 260 checks on each platform with all 40 material-capture witnesses identical. See the [Godot audit](../audits/wb-art-paint-2026-11-12/agent-undo-hosted-godot.json). **GO for owner evaluation; HOLD for merge.** Retained repository runtime publication/materialized provenance, the separate Palette backend gate and owner desktop acceptance remain outstanding. Administrative Ready checks, optional physical-actor stress and the Draft-skipped published-runtime provenance step are not passes. This work does not authorize Ready or merge.
+
+
+### Rank 3: operations/cybersand-codex-development-handover.md — Development handover > WB-ART-002 Stage 1 — 2026-11-10
+
+Document: Development handover
+Path: operations/cybersand-codex-development-handover.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
+canonical-for: [development-onboarding]
+last-reviewed: 2026-11-20
+Section: Development handover > WB-ART-002 Stage 1 — 2026-11-10
+**2026-11-11 integrated Draft successor:** read the [PAINT + agent candidate runbook](wb-art-paint-integrated-candidate.md) before continuing either editor. It records the exact preserved #544/#560 heads, generator-first repair checkpoints, native stored-material correction, shared edit ordering and source-built qualification. The owner authorized integration but explicitly requires Draft; do not mark Ready, merge or auto-merge. Original PRs remain available. Earlier Stage-1 ownership below is historical context. Owner-authorized fresh branch `codex/agent-art-workbench-v2` starts from main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`. Read the [direct art batch contract](../systems/workbench-direct-art-batches.md). This lane owns the new art modules/tests and narrow shared-workbench/worker completion seams; #531 is reference only. Preserve #543 ordinary-editor and #548 Flatten ownership. Stage 2 now adds the [provider connection candidate](../systems/workbench-art-providers.md), genuine local tests and traffic inspection. No cloud inference without owner credentials; no merge or Ready promotion.
+
+
+### Rank 4: operations/cybersand-codex-development-handover.md — Development handover > Workbench Art traffic lifetime — 2026-11-20
+
+Document: Development handover
+Path: operations/cybersand-codex-development-handover.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
+canonical-for: [development-onboarding]
+last-reviewed: 2026-11-20
+Section: Development handover > Workbench Art traffic lifetime — 2026-11-20
+[Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the lazy conversation and immutable segment repair. Read the [provider contract](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage) for current lifetime, validation, Stop/export and capacity behavior; the [dated finisher record](../audits/2026-11-20-wb-art-traffic-lifetime.md) separates engineering measurements from exact-source final qualification in the PR ledger. All destructive and multi-gigabyte tests use isolated synthetic user data. Existing archives remain immutable, and missing history must retain its saved pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready, merge or enable auto-merge. Hosted Windows evidence does not establish acceptance on the owner's physical Windows installation.
+
+
+### Rank 5: operations/local-build-and-validation.md — Local build and validation > Actor control prototype checks > Physical free-flight checks
+
+Document: Local build and validation
+Path: operations/local-build-and-validation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
+canonical-for: [build-entry-points, dependency-pins, build-freshness]
+last-reviewed: 2026-10-31
+Section: Local build and validation > Actor control prototype checks > Physical free-flight checks
+The internal [4LY family](../systems/physical-free-flight.md) uses the same pinned Godot 4.7, Rapier 0.35.2 and source-matched native runtime. Import the project first, then run these automatically discovered fixtures from the source root: ```text godot --headless --path godot --script res://tests/test_physical_flight_profile.gd godot --headless --path godot --script res://tests/test_physical_flight_session.gd godot --headless --path godot --script res://tests/test_physical_flight_physics.gd godot --headless --path godot --script res://tests/test_physical_flight_handling.gd godot --headless --path godot --script res://tests/test_physical_flight_selection.gd # The following actual-framebuffer case must run with a real display: godot --path godot --script res://tests/test_physical_flight_gameplay_render.gd ``` The profile fixture checks the closed schema, numerical limits, canonical profile/controller hashes, force/torque response and goal-blind pure controller. The session fixture checks the one-body/no-equipment topology for all four IDs, strict two-output input, copied observations, producer parity and lifecycle fences, including actual-step receipt attribution and rejection of incorrect host step ordering. The original physical fixture requires real Rapier and native World: unsupported Trainer hover, ascent/descent, neutral braking, attitude recovery, explicit power-off fall, underpowered gravity saturation, high-momentum bounded actuation and native hard-contact integration. **4LY-002 adds two headless cases and one graphical capture case:** `test_physical_flight_handling.gd` uses the same four real Rapier physics fixtures and normalized commands for every profile, and separately compares braking under an identical +20 cell/s physical impulse. It also measures unsupported neutral hover, response onset, 60/120-step velocities, reversal, up/down motion, angular recovery, the bounded force/torque receipt, passive power-off coast and the actual static wall. The fixture parses the [prospectively registered numeric gate](../../godot/tests/fixtures/4ly002_handling_thresholds.json) and prints a `4LY_002_HANDLING_METRICS` JSON line with the profile hashes and actual measurements. `test_physical_flight_selection.gd` exercises real main scene F5 selector entries, no-equipment enforcement, same-source ownership, fresh reset fences, scripted/policy choices, multi-drone demo, exploratory map retention and return to sampled gameplay. `test_physical_flight_gameplay_render.gd` (Linux `*_render` display shard) opens the **actual ordinary main sandbox**, selects all four drones in turn, submits observation-fenced policy velocity requests through the normal host, and retains full GL viewport PNGs plus controller/profile and physical motion metadata under `CYBERSAND_PRESENTATION_EVIDENCE`. It is **descriptive gameplay evidence**, not a subjective handling preference or an alternative motion implementation. The case does not run on headless Windows. These fixtures must execute against actual backend/runtime/source identities; a skipped display/backend, script error or pending check is **not** acceptance. Run the existing physical catalogue/session/rig/equipment, sampled reference and protected scientific-fixture regressions when changing shared owners. The five original flight cases join the existing Linux and Windows Godot discovery; the new `*_render` capture joins **only the Linux display suite**; no separate provider or external runner is required. Draft-skipped expensive checks do not qualify the implementation. Before merge, follow the [exact-head release gates](github-development-and-release.md) and record source, runtime, commands, outcomes and
+
+## DR30: May I use the native-scope advisory to skip required jobs or copy an unmerged higher-fanout CI experiment into production policy?
+
+Canonical rank: 1
+
+Expected facts:
+
+- The source-scope advisory does not authorize native skipping.
+- Use accepted workflow policy; separate ongoing optimization experiments and preserve mandatory case coverage.
+
+### Rank 1: operations/github-development-and-release.md — Repository development and release > Parallel validation and source-scope advice — 2026-10-31
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-11-06
+Section: Repository development and release > Parallel validation and source-scope advice — 2026-10-31
+The [shared execution policy](ci-execution-and-performance.md) now supersedes historical short command limits. Six Native families preserve every original command and scientific input, with complete derived parent budgets. Godot uses source-derived Linux/Windows matrices balanced by expected execution cost, full-watchdog admission within a hosted safety boundary, and independent exact-coverage readers. Historical elapsed-time weights and rolling performance warnings are advisory; assertions, crashes, incomplete readbacks and cleanup failures remain failures. Independent matrices continue after failures, and superseded automatic PR runs are cancelled. Main and explicit manual runs have unique concurrency groups to preserve qualification evidence without same-reference blocking. See the [scheduling audit](../audits/2026-11-01-ci-scheduling-qualification.md) for the measured baseline and the [complete workflow audit](../audits/2026-11-01-ci-workflow-audit.md) for matrix caps, remaining limitations and reproduction commands. The stable `native`, `linux x86_64`, Windows cross-build and complete Windows execution/coverage gates remain required. A failed ready-scope classifier cannot make an admitted required aggregate pass by skipping it. The old optional four-shard serial-migration check is replaced by mandatory original-log, source/runtime and unique-case Linux coverage. Full resulting-source execution and independent review remain necessary; predecessor results are not successor qualification. The [Native source-scope advisory](../../.github/workflows/native-scope-advisory.yml) is informational. Its classifier authenticates immutable base/executed-head commits, trees, clean checkout and committed classifier bytes, and examines both sides of renames using Git `--no-renames`. Raw unsafe paths, unknown inputs and empty/duplicate inventories cannot recommend an exemption. The advice always sets `native_skip_authorized=false`; no required job consumes a candidate exemption. Actual dependency-aware skipping would require a separate owner policy decision and audit. The [production integration audit](../audits/2026-10-31-ci-parallel-production-integration.md) separates predecessor trials from exact resulting-head qualification and the [guarded integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140). The owner requested promotion on2026-10-31. The original branch-only drafts, original failed trials and historical Native timeout remain retained. Provider, scientific/training and source/runtime policies are unchanged. There is no Scheduswarm restart, new external provider or relaxation of PLAY graphical gates.
+
+
+### Rank 2: operations/ci-execution-and-performance.md — CI execution watchdogs and advisory performance > Shared capacity and concurrency
+
+Document: CI execution watchdogs and advisory performance
+Path: operations/ci-execution-and-performance.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
+canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
+last-reviewed: 2026-11-21
+Section: CI execution watchdogs and advisory performance > Shared capacity and concurrency
+The GDExtension matrices each use `max-parallel: 8`. Together with Native's six families, the routine regression phase can use 22 slots before small auxiliary jobs. This leaves capacity within the owner's stated 40 standard hosted slots, but is not an account-wide cap: multiple PRs and other repositories add demand. Physical stress has its own smaller matrix budgets. Launch exceptional campaigns deliberately and use the [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) and machine inventory when changing independent fan-out. Automatic GDExtension, Native and Documentation PR runs group by PR identity and cancel superseded checks. Main pushes and manual qualification use run identity, so a same-ref experiment cannot block or cancel a newer explicit qualification. No broad repository lock is introduced. Cancelled checks are not successful qualification, and original completed or failed artifacts retain their status. GitHub's default concurrency queue replaces an older pending member even when `cancel-in-progress` is false; run-unique manual groups avoid that hidden loss. See [GitHub concurrency semantics](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
+
+
+### Rank 3: operations/ci-execution-and-performance.md — CI execution watchdogs and advisory performance > Scheduling estimates and hosted safety boundaries
+
+Document: CI execution watchdogs and advisory performance
+Path: operations/ci-execution-and-performance.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
+canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
+last-reviewed: 2026-11-21
+Section: CI execution watchdogs and advisory performance > Scheduling estimates and hosted safety boundaries
+[The Godot planner](../../tools/ci/godot_job_plan.py) discovers every current fixture and derives a deterministic complete matrix from expected execution cost. The 2026-11-01 scheduling change separates that estimate from each case's unchanged generous watchdog and from the six-hour hosted-job safety boundary. The previous sum-of-watchdogs partition multiplied short hosted jobs; its historical arithmetic remains in the 2026-10-31 audit. **Current:** every admitted case retains its full process allowance, 300 seconds for independent readback and 240 seconds for sequential diagnostics/cleanup. The shared `godot_process_cleanup_seconds()` includes up to three legacy snapshots, capture-owner retirement and engine-tree retirement. Import retains its own full allowance. Three metadata operations, 70 minutes for setup/artifact steps and 10 minutes of headroom remain reserved. A shard admits its next case only when that case's full allowance fits the remaining execution boundary. Unstarted cases are explicitly incomplete and fail coverage; an underestimate never shortens a running case's watchdog or silently counts missing work. The source inventory at intake is 246 Linux cases, including 13 rendered cases, and 233 applicable Windows cases. Machine discovery remains authoritative as the game expands. The dated [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) records estimator inputs, selected counts, original results and limitations. The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains six hours; an individual case that cannot fit or an oversized matrix is rejected. The six Native families retain the same 20 command obligations and scientific inputs; the two worldgen commands add output grouping as described below. [Their planner](../../tools/ci/native_execution_policy.py) derives 180/350/180/333/284/223-minute parents for TSan, normal, ASan, worldgen, soliding-normal and soliding-ASan respectively. The physics CLI inventory still contains all 154 original invocations, each with a 300-second operation budget; a bounded eight-process dispatch preserves arguments and output identity while all assertions run in their original order on the main test thread. The source inventory and family receipts remain required by the stable `native` gate. All independent matrices use `fail-fast: false`. New PR commits cancel superseded automatic checks for that PR; manual qualification and main push runs have unique run groups and retain their original attempts. Required aggregate jobs run after an admitted matrix or scope classifier failure. A skipped job is not accepted as a successful behavioral gate. The retired optional four-shard serial-migration job is replaced by mandatory [Linux coverage verification](../../tools/ci/verify_linux_godot_shards.py) on every admitted run. It checks the complete original inventory, source/tree, runtime, policy, run/attempt, real rendered commands, natural completion, unchanged raw logs and required independent PLAY readbacks. The existing Windows coverage reader derives its complete plan from the same source.
+
+
+### Rank 4: operations/ci-execution-and-performance.md — CI execution watchdogs and advisory performance > Reproducing the apparatus checks
+
+Document: CI execution watchdogs and advisory performance
+Path: operations/ci-execution-and-performance.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
+canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
+last-reviewed: 2026-11-21
+Section: CI execution watchdogs and advisory performance > Reproducing the apparatus checks
+```sh python3 tools/ci/test_execution_policy.py python3 tools/ci/test_execution_telemetry.py python3 tools/ci/test_godot_job_plan.py python3 tools/ci/test_verify_linux_godot_shards.py python3 tools/ci/test_performance_history.py python3 tools/ci/test_native_watchdogs.py python3 tools/ci/test_native_shards.py python3 tools/ci/godot_job_plan.py --output build/execution-plan.json python3 tools/ci/performance_history.py --current build --output build/performance-summary --no-history ``` Process-ownership controls require a consistent Linux PID namespace. The shared sandbox's host `/proc` may not match its visible PIDs; that environment is an explicit unsupported ownership observation, not permission to weaken cleanup. Full original Native and Windows/Linux Godot CI, source-matched independent review, guarded merge and post-merge evidence remain required for acceptance.
+
+
+### Rank 5: operations/ci-execution-and-performance.md — CI execution watchdogs and advisory performance > Timing records and comparable history
+
+Document: CI execution watchdogs and advisory performance
+Path: operations/ci-execution-and-performance.md
+authority: current-documentation
+document-kind: runbook
+status: Current
+scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
+canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
+last-reviewed: 2026-11-21
+Section: CI execution watchdogs and advisory performance > Timing records and comparable history
+[Execution telemetry](../../tools/ci/execution_telemetry.py) writes `execution-performance-v1` JSONL alongside original evidence. Records identify commit/tree, tracked delta, fixture and source definition, policy, runner and CPU characteristics, OS, material inventory, solver/world definition and result. Existing structured Godot/native markers retain construction, stepping, worker, Rapier, input, snapshot, pause/reset/recovery and shutdown metrics where those fixtures expose them. Whole-process elapsed time is distinct from nested phase fields. Completed hosted-job wall times come from GitHub job timestamps and are bound to original observations by a hashed runner identity. Queue delay is excluded; unfinished collector jobs have no invented final duration. CPU seconds and peak RSS are explicitly direct-process observations; unavailable process counters remain unavailable. No direct GPU or physical presentation timing is inferred from elapsed time. Renderer, driver, selected shader and cache state are retained when actually reported. Missing compiler/cache details remain `unknown`; headless/native work uses explicit `not-applicable` renderer fields. Shader-specific cold/warm runs must supply their actual provenance before any comparable shader baseline exists. Raw logs remain the complete record, including information a compact reduction does not expose. [The history collector](../../tools/ci/performance_history.py) reads current JSONL and up to ten eligible completed default-branch artifact bundles. Each workflow publishes one consolidated `execution-performance-*` artifact for 90 days and a compact Actions summary. Authenticated run/source/attempt custody, bounded archive reads and safe signed redirects protect history attribution. Unavailable or expired history is recorded, not replaced with invented values. A baseline requires at least three distinct comparable successful runs. Failed, watchdog and incomplete rows remain in the retained current dataset but are not successful baseline samples. Like-for-like cohorts include platform, hosted runner/CPU, fixture/configuration, renderer/compiler and cache state. Historical Avrea measurements remain a separate hardware cohort. Missing required identity makes a row incomparable. The rolling median produces advisory warnings at 1.5 times baseline, prominent warnings at 2 times, and cumulative-drift advice after five successive increases reaching 1.2 times the starting value. These ratios never fail correctness. Source, fixture and shader changes are reported separately; a possible introducing commit is named only when direct-parent evidence supports that inference. A small artifact window may contain fewer than three distinct runs, so the first qualified runs intentionally report insufficient history.
+
+## DR31: A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?
+
+Canonical rank: None
+
+Expected facts:
+
+- Historical records retain their original scope and confer no present implementation authority.
+- Ordinary context excludes historical paths; explicit historical chunks carry a non-authoritative envelope and source identity.
+
+### Rank 1: decisions/ADR-004-interest-region-and-reconfiguration.md — ADR-004: Interest region and safe reconfiguration > Which margin policy is actually approved?
+
+Document: ADR-004 — Interest region and safe reconfiguration
+Path: decisions/ADR-004-interest-region-and-reconfiguration.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Accepted scalable interest/capacity direction, current construction limits and unresolved margin/reconfiguration semantics
+canonical-for: [decision-interest-capacity-reconfiguration]
+last-reviewed: 2026-09-08
+Section: ADR-004: Interest region and safe reconfiguration > Which margin policy is actually approved?
+The retained direction says 10% horizontal and 20% vertical margins, but does not resolve whether those mean each side or total expansion, which dimensions are the base, or how rounding applies. **Ambiguous:** that percentage policy requires clarification before implementation. **Current:** desktop presets and Web quality profiles use explicit per-side pixel pairs, not one universal percentage formula. Their values and actual region behavior belong in the [interest contract](../systems/world-storage-and-interest-region.md) and [configuration reference](../reference/configuration-reference.md). Do not silently select an interpretation to make documentation agree.
+
+
+### Rank 2: architecture/soliding-lifecycle.md — Scalable soliding representation lifecycle > Which representation owns the material?
+
+Document: Scalable soliding representation lifecycle
+Path: architecture/soliding-lifecycle.md
+authority: current-documentation
+document-kind: contract
+status: Approved design
+scope: Issue12 successor state machine, eligibility boundaries and bounded identity/ownership invariants; executable model is separate from production runtime
+canonical-for: [soliding-representation-lifecycle, soliding-eligibility-tiers]
+last-reviewed: 2026-09-19
+Section: Scalable soliding representation lifecycle > Which representation owns the material?
+**Approved production contract, exercised by the standalone model:** a region has one representation and one sole material owner. A summary, collision shape, occupancy mask or render snapshot never owns material. The representative payload contains membership, material ID, admitted material-specific state and temperature; no generic velocity is added to cells. Epochs/activity metadata are reconstructed under their own scheduler contract and are not preserved as fictitious replay state. | Stable representation | Sole material owner | Boundary and contact meaning | Runtime status | |---|---|---|---| | Active cells | Native cells | Current cellular neighborhood and derived terrain/contact | Current | | Ordinary sleeping cells | Native cells | Current wake rules; sleep alone proves no soliding eligibility | Current | | Tracked settled summary | Native cells | Derived stability/connectivity observations; ordinary boundaries remain authoritative | Planned, model only | | Stationary cells with skip/proxy metadata | Native cells | Must preserve active neighboring rules and one hard-contact owner | Planned alternative, model only | | Stationary compact payload | Native region store | Exact reversible payload and admitted boundary interface; cannot silently read Empty interior as terrain truth | Planned alternative, model only | | Dynamic coherent aggregate | Native aggregate store | Rapier alone owns transform/contact/motion; cellular mask is descriptive occupancy | Planned, model only | The two stationary alternatives are candidates for a later measured bake-off, not a selection of both for production. Model transitions between them test owner accounting without asserting either reduces work. No per-tick erase/rasterize/ restore scheme is admitted for moving bodies. Coherent aggregate material remains in native storage while Rapier moves it continuously. | Transition phase | Material owner | Step/publication policy | |---|---|---| | Stable | Owner in the representation table | Normal behavior only after the tier's real admission | | Prepared | Old owner | Both affected solvers fenced; disabled replacement owns nothing | | Acknowledged | Old owner | Same fence, exact proposal/resources acknowledged | | Committed, topology pending | Target owner | One logical transfer under exclusive ownership; no steps or ordinary publication | | Finalized | Target owner | Resume only after complete topology/occupancy and publication verification | | Quarantine | Last committed owner, or old owner if no commit occurred | Fence retained, diagnostic census only; no inferred rollback or retry | The fence applies to the affected native work and relevant Rapier space/bodies. Its production desktop rendezvous is Planned; stopping a local model call does not stop an asynchronous World or a live physics server.
+
+
+### Rank 3: operations/rapier-2d-migration-runbook.md — Rapier2D dependency and validation runbook > Evidence and acceptance limits
+
+Document: Rapier2D dependency and validation runbook
+Path: operations/rapier-2d-migration-runbook.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Current pinned backend verification and change procedure; migration history and coupling semantics are linked separately
+canonical-for: [rapier-dependency-validation, rapier-packaging]
+last-reviewed: 2026-10-24
+Section: Rapier2D dependency and validation runbook > Evidence and acceptance limits
+[Validation evidence](../reference/validation-evidence.md) records historical Linux M11, September Windows and retained Chromium results separately. The three-rectangle fixture allows two pixels of transient floor penetration and `1e-5` error for restored body values. It is not zero-penetration proof, generalized shape/high-count acceptance or exact Rapier replay. [CYSD1](../reference/level-saves-and-replay.md) omits Rapier caches and native continuation state. Linux runtime pointers must be materialized and hash-verified before execution; all 18 required runtime payloads were materialized at the 2026-10-24 local selection checkpoint.
+
+
+### Rank 4: operations/soliding-stage3-freeze.md — Issue 12 Stage 3 execution freeze > Compact overnight parent handoff
+
+Document: Issue 12 Stage 3 execution freeze
+Path: operations/soliding-stage3-freeze.md
+authority: current-documentation
+document-kind: runbook
+status: Approved design
+scope: Frozen execution contract for completing scalable settled-region discovery after PR #43; read-only discovery only, no acceleration or material ownership transfer
+canonical-for: [soliding-stage3-execution-freeze]
+last-reviewed: 2026-09-19
+Section: Issue 12 Stage 3 execution freeze > Compact overnight parent handoff
+Use this block verbatim if useful: > Continue issue #12 from PR #43 and the canonical Stage-3 freeze in > `docs/operations/soliding-stage3-freeze.md`. You are the supervising > architect/integrator. Do not repeat PR #43 foundation work. > > Delegate dependency-ready implementation to the named GPT-5.3-Codex-Spark > packets for producer integration and cross-tile connectivity, using separate > worktrees/branches. Retain all parent-only architecture and stage-gate decisions. > Review actual diffs before integration. > > Finish Stage 3 only against its frozen exit checklist: complete World witnesses, > bounded cross-tile face connectivity, immediate stale-region invalidation, > deterministic capacity/refusal, no partial publication, workers1/4 parity and > whole-system cost evidence versus ordinary sleep. Cells remain the sole material > owner; no Stage-4 acceleration or Rapier admission is implied. > > After A+B integration, commission the independent verification packet, repair > confirmed defects, then execute the measurement packet on the Ryzen 2600X where > useful. Retain negative/ambiguous evidence. Enter Stage 4 only after an explicit > parent review says every Stage-3 gate is satisfied.
+
+
+### Rank 5: reference/interfaces-and-message-contracts.md — Interfaces and message contracts > Physical actor control and effects > Physical equipment actions and results
+
+Document: Interfaces and message contracts
+Path: reference/interfaces-and-message-contracts.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
+canonical-for: [public-and-adapter-interface-layouts]
+last-reviewed: 2026-11-20
+Section: Interfaces and message contracts > Physical actor control and effects > Physical equipment actions and results
+`reason`, `changed_cells`, worker tick, charge and cooldown. `accept_equipment_feedback` admits only matching current identity and new readback; a matching pending token is consumed before applying recoil. Refused use cannot apply recoil or silently change item ownership. `observation.equipment` exposes the physical grip/body pose, current and requested aim, limits, clearance, release/reattach readiness, selected usable, cooldown, charge, pending token, last result/receipt, accepted/refused counts and recoil. Owned projectiles, processor status and a bounded local material patch support feedback controllers. Values are copied; mutating an old observation cannot replenish charge, alter cooldown, move a body or restore retired equipment. Cancellation retires pending requests and invalidates control generation; the worker rechecks extracted work against its current admission state before committing. Once cancellation returns, that pending work cannot later edit cells. Committed projectiles and admitted deployed processors retain their autonomous lifecycle, while reset/close clears the old run. Pausing freezes simulation time. A released body retains its physical velocity, and collision grace continues to age when physical stepping resumes. Exact catalogue effects and processor semantics remain with [actor usables](../systems/actor-usables.md); execution and merge acceptance remain with the [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md).
+
+## DR32: If the retrieval manifest is missing, may fallback load old execution prompts and omit the current World Art guides?
+
+Canonical rank: 1
+
+Expected facts:
+
+- Fallback must preserve current selection and authority boundaries, including explicit-only document routing and navigation exclusion.
+- Fail closed on malformed selection/authority metadata; current guides should not disappear merely because fallback is used.
+
+### Rank 1: operations/documentation-maintenance.md — Documentation maintenance and retrieval contract > What makes a page independently retrievable?
+
+Document: Documentation maintenance and retrieval contract
+Path: operations/documentation-maintenance.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
+canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
+last-reviewed: 2026-09-18
+Section: Documentation maintenance and retrieval contract > What makes a page independently retrievable?
+Every focused page has one clear purpose and frontmatter with `title`, `status`, `document-kind`, `scope`, `canonical-for`, `last-reviewed`, and `related-documents`. Use ISO dates and inline lists. `canonical-for` contains unique topic identifiers; another page may summarize and link that topic but must not become a second owner. Use informative headings, short source-backed paragraphs and explicit platform names. Keep constants at their canonical configuration/API home. The default corpus is the explicit [retrieval manifest](../reference/retrieval-corpus.json). It selects contracts, design decisions, guides and references. Navigation pages route readers; historical records require an explicit historical question and are excluded from default answers. When chunking, attach title, scope, status, date, canonical topics and heading path to **every** chunk. A whole-page status alone does not make a mixed Current/Planned subsection safe to retrieve. | Claim label | Meaning | |---|---| | **Current** | Inspected executable source/configuration; runtime outcomes additionally require dated artifact/platform evidence | | **Approved** | Accepted requirement or direction; implementation may be partial | | **Planned** | Intended future work, not implemented or validated merely by being listed | | **Deferred** | Deliberately postponed with the applicable scope stated | | **Rejected** | Considered and intentionally declined; not silently reopened | Frontmatter `Approved design` is the existing checker-compatible alias for Approved. `Ambiguous` marks unresolved evidence or intent, not approval. A page's status describes its purpose; label conflicting or future claims individually. Source establishes present behavior; ADRs establish accepted direction. If they disagree, record both and the missing decision before changing implementation.
+
+
+### Rank 2: operations/architecture-programme.md — CyberSand architecture experimental programme > Final quality and documentation gate
+
+Document: CyberSand architecture synthesis and experimental programme
+Path: operations/architecture-programme.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+canonical-for: [architecture-experimental-programme]
+last-reviewed: 2026-10-24
+Section: CyberSand architecture experimental programme > Final quality and documentation gate
+Review the [ledger](architecture-programme-source-ledger.md) and every prompt for the user's 30 requirements: full four-source trajectory; Current/proposal and ADR/issue-local distinctions; occupancy/material separation; no external-source reanalysis or mandatory ladder; independent width/packing/epoch/precision/solver; independent geometry; characterizing both liquids; conservation and retained physics policy; cross-dependencies, negative/ambiguous/no-go outcomes; master before issues and overlap check; self-contained prompts; conditional downstream work; bounded ownership/determinism; no production edits. Documentation synchronization: programme owns only future research, with ledger and prompts excluded from ordinary Current answers. Navigation, roadmap and retrieval manifest route to it. Existing subsystem/ADR/runtime/evidence claims are unchanged. Run documentation, historical M11, repository, frozen retrieval, supplementary programme questions and diff checks; report inherited provenance failures separately. No physics/runtime campaign is needed for this planning-only change. Final issue readback, link/section/dependency checks and source-scope inspection complete this task. The [planning execution report](../audits/2026-09-10-architecture-programme.md) records created issues, exact remote/dependency readback, manual quality review and separate documentation/retrieval versus inherited publication-check outcomes.
+
+
+### Rank 3: operations/documentation-maintenance.md — Documentation maintenance and retrieval contract > Documentation-update checklist
+
+Document: Documentation maintenance and retrieval contract
+Path: operations/documentation-maintenance.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
+canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
+last-reviewed: 2026-09-18
+Section: Documentation maintenance and retrieval contract > Documentation-update checklist
+Apply this at every implementation checkpoint, including tuning-only changes. 1. **Identify the actual inputs.** Record source Git root/HEAD/branch/status, relevant LFS objects and dirty paths; name a recoverable checkpoint. Preserve user work. Use [source checkpoint guidance](source-checkpoint-and-recovery.md). 2. **Map changed claims.** Search symbols, old values, aliases and reverse links. Review the affected subsystem, ownership/lifetime, interface layout, invariants, configuration/capacity, ADR, roadmap, build/test guide and user controls. A change matrix should name each affected page or explain why it is unaffected. 3. **Edit canonical homes first.** Attach source path plus symbol to important Current claims; use stable named sections for cross-links. Explain native, desktop, Web and fallback differences wherever they change the answer. 4. **Reconcile statuses and uncertainty.** Distinguish code from Approved intent. Record partial enforcement, failures, missing tests and decisions precisely. An observed defect must not become a promised invariant by omission. 5. **Synchronize routes and execution order.** Update the manifest, retrieval question destinations, documentation/retrieval indexes and roadmap. Update the handover for operational changes and owner-intent reference for new preferences. When a dependency/order/scope decision changes, update its canonical programme graph and all affected GitHub issue mirrors/comments in the same checkpoint; issue numbers and creation dates are never an ordering authority. Preserve old anchors that still have useful incoming links or update every caller. 6. **Record evidence separately.** Include date, command, timeout, OS/architecture, tool/dependency versions, fixture/configuration/profile/worker count, source revision plus dirty-file identity, artifact hashes and actual outcome. Identify whether evidence is inspection, compile, checksum, HTTP, native runtime, browser runtime or visual acceptance. Name exactly what was compared: level bytes, content/state hash, conservation, body tolerance or full replay. 7. **Preserve history.** Keep past results, failures, inconclusive runs and release hashes intact. Add a new evidence record and scope/link the old one. Never update historical hashes to make a new revision look validated. 8. **Check structure and retrieval.** Run the commands below. Inspect answers to affected natural questions for factual completeness and wrong-status/platform substitution, not only keyword hits. Add questions for newly discovered gaps; report them separately from a previously frozen evaluation set. 9. **Review the final diff and checkpoint.** Verify implementation scope, generated files and history preservation. Commit the authorized change locally with its validation report. State unresolved contradictions and readiness limits.
+
+
+### Rank 4: tools/world-art-capture.md — World Art unattended capture — real Godot PNGs and manifests > Exit codes and failures
+
+Document: World Art unattended capture
+Path: tools/world-art-capture.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Production Godot framebuffer capture, streamed PNG transport, provenance and publication safety
+canonical-for: [world-art-unattended-capture]
+last-reviewed: 2026-11-20
+Section: World Art unattended capture — real Godot PNGs and manifests > Exit codes and failures
+| Code | Meaning | | --- | --- | | 0 | Completed: images + manifest written and verified | | 2 | Invalid arguments, missing/empty pack, unsafe output location | | 3 | Godot executable missing, unusable or not 4.7 | | 4 | Render failed: Godot error/timeout, invalid pack, unknown feature/variant, crop outside the map, blank framebuffer (override with `--allow-blank`), shader/script error in the log | | 5 | Evidence invalid: PNG/manifest missing or inconsistent, renderer differs from the request | | 6 | The read-only art source changed during capture | | 7 | No graphical display (headless display server; run under X11/Xvfb or a desktop session) | Failures print `WORLD_ART_ERROR <actionable message>` on stderr. When the output directory was created, `batch-manifest.json` is still written with `status: "failed"` and the failure list so nothing looks complete by accident.
+
+
+### Rank 5: tools/world-art-preview.md — World Art interactive viewer > Launch one integrated checkout
+
+Document: World Art interactive viewer
+Path: tools/world-art-preview.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Standalone Godot World Art inspection, navigation, comparison and export controls
+canonical-for: [world-art-interactive-viewer]
+last-reviewed: 2026-11-20
+Section: World Art interactive viewer > Launch one integrated checkout
+From this repository root, with Python 3.10+ and a real Godot 4.7 desktop executable installed: ```powershell python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle ``` On Linux: ```bash python3 tools/world_art_preview_launcher.py --godot=godot --rendering-driver=opengl3 ``` Use your actual installed Godot path. The owner-confirmed Windows example above is not automatically installed by the source launcher. To locate Godot on PATH, run `Get-Command godot, godot4 -ErrorAction SilentlyContinue` in PowerShell. The launcher reports a missing executable before opening the viewer. A fresh source checkout can omit all unrelated Git LFS runtimes: ```powershell $env:GIT_LFS_SKIP_SMUDGE = "1" git clone --depth 1 --single-branch --branch tools/art-pipeline-unification-001-20261120 https://github.com/techrote/cybersand.git cybersand-art Remove-Item Env:\GIT_LFS_SKIP_SMUDGE cd cybersand-art python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle ``` The included `docs/world-design` loads automatically. No historical donor checkout or separate atlas branch is needed. Override it with `--art-root=/absolute/collections` or `--pack=/absolute/working-copy/pack.json`. The **World-design root** field and **Choose directory** select another collection directory, which contains `<collection>/pack.json` subdirectories. The launcher creates a temporary standalone project from the exact checked-out viewer, adapter, shader and LUT bytes, imports its script classes and opens the real Godot window. It deletes only that temporary project on exit. Source art and requested captures remain outside the project. The displayed pack SHA-256 identifies the same byte snapshot that was parsed; externally supplied revision text remains an attribution label rather than proof of a Git revision.
+
+## DR33: Does the 14 November owner authoring-intent decision itself authorize engine implementation or historical ticket retirement?
+
+Canonical rank: 1
+
+Expected facts:
+
+- The record captures approved intent and limits, not automatic implementation or historical-retirement permission.
+- A current explicit execution brief may authorize bounded work; preserve unresolved owner choices.
+
+### Rank 1: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific
+The owner authorised Milestone 1 investigation and capture on one isolated branch and one Draft/HOLD PR. Merge, canonical successor issue creation, historical retirement, broad Markdown/RAG rewriting and implementation remain separate gates. Current active work and historical custody holds are protected. Product intent does not automatically resume a held branch or grant execution permission.
+
+
+### Rank 2: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Paint, play and the Workbench
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Paint, play and the Workbench
+**Confirmed:** CyberSand is a paint-and-play engine as an authoring system. Workbench is the creative workshop, control centre and monitoring outpost, with creative-mode and development/cheat-level control in an ergonomic interface. Make valuable capabilities compatible with and accessible through Workbench. Provide easy-to-learn, multiple levels of access to dials, modifiers and controls, while allowing deeper manipulation. Painting should develop toward the range between classic MSPaint and GIMP/Krita. The engine should remain flexible across a passive plasma chamber, a forest drone game, a digging game and other experiments. The owner wants continued integration, testing, tuning and incremental improvements while personally evaluating authored scenes. **Game-facing scoring and consequential player/actor combat damage wait until the arrangements, materials and actors feel fun.** This is not a prohibition on internal diagnostic or training metrics. **Confirmed near-term interest:** revisit NPC controllers, Rapier actors and drone training. Envisaged authoring roles include conversational autofill, automated feature/flavour/item generation, and tiny/local models for detailing, texture and randomisation. Model roles may evolve; these are not permanent capability claims about any model or instructions to start training.
+
+
+### Rank 3: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Provenance and scope
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Provenance and scope
+The owner supplied these clarifications directly in the engineering archaeology conversation and then explicitly authorised their capture under Milestone 1. The authorised assistant transferred that conversation into the [programme plan record](https://github.com/techrote/cybersand/issues/571#issuecomment-6871615830). That GitHub comment is a transcription by the assistant, not an independently owner-authored GitHub approval. This record preserves the stated intent and marks interpretations and unresolved engineering details separately. The owner said [#534](https://github.com/techrote/cybersand/pull/534) **broadly** matches their intent. This does not adopt every sentence, milestone quota or acceptance condition in that PR, and does not authorise its merge. The current record governs these clarified product questions; historical implementation failures and source-qualified results remain evidence with their original limits.
+
+
+### Rank 4: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation
+**Confirmed:** Materials Lab should support easy material modification and audition, including changing values in a Workbench window for dynamic/custom trials. The existing comparison tabs are appreciated; isolated comparisons alone do not fulfil the desired current-scene interaction. Which properties can apply safely at runtime remains an engineering question. **Confirmed:** the four-layer Strata Theatre presentation should be an available Workbench option. Its visual impact is important. Historical integration exclusions are not a permanent rejection; the prototype's exact clocks and cross-layer event rules are not automatically the eventual product contract.
+
+
+### Rank 5: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > Interpreting abandoned attempts
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > Interpreting abandoned attempts
+**Confirmed history:** implementations were sometimes set aside because results disappointed, a concurrent approach looked more promising, supporting systems landed elsewhere, or the branch became stale relative to short-term goals. A second implementation could begin minutes after the first exploratory one. Missing debriefs therefore do not establish rejection of the idea. Preserve the purpose, result, stopping reason when evidenced, surviving value and successor separately. An unknown stopping reason remains unknown. Substantial past effort also does not establish present merit.
+
+## DR34: Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?
+
+Canonical rank: None
+
+Expected facts:
+
+- Persistent-area and RAMCACHE successors remain unmerged at the recorded source.
+- Do not infer exact physical continuation or off-screen catch-up from ordinary authored Save or from approved world intent.
+
+### Rank 1: decisions/2026-11-14-owner-authoring-intent.md — Owner authoring and world intent — 14 November 2026 > World extent, persistence and time
+
+Document: Owner authoring and world intent — 14 November 2026
+Path: decisions/2026-11-14-owner-authoring-intent.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate
+canonical-for: [owner-clarifications-2026-11-14]
+last-reviewed: 2026-11-14
+Section: Owner authoring and world intent — 14 November 2026 > World extent, persistence and time
+**Confirmed:** one fixed canvas plus persistent areas loaded while travelling should cover most intended uses. Broad continuous canvases should accommodate biomes or small towns; later presentation can disguise boundaries. The prepared brief interprets moving beyond “1:1 canvases” as allowing non-square/broad maps, not changing display-pixel scale. Concrete dimensions await practical work. **Confirmed:** a useful simulated border around the viewport/activity, potentially extended in the travel direction, is desirable. On returning to an area, approximate headless catch-up is preferable to a conspicuously frozen room. Use **game time**, not real-world offline time. Occasional transitions lasting a few seconds are acceptable. An optional deliberate **simulate ahead** control is desired. Approximation and quantisation can be acceptable. **Engineering questions:** retained state, bounded catch-up algorithms, activity margins, cross-area exchanges and material-policy evolution remain unresolved. Track the last simulated/accounted-for time rather than merely last visit if an area can keep simulating in a border. Headless execution still consumes compute. These observations do not authorise implementation or a large benchmark campaign.
+
+
+### Rank 2: operations/physics-characterisation-plan.md — Physics characterisation and soliding plan > Phase 3: parameter experiments, then model changes
+
+Document: Physics characterisation and soliding plan
+Path: operations/physics-characterisation-plan.md
+authority: current-documentation
+document-kind: runbook
+status: Planned
+scope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance
+canonical-for: [physics-characterisation-plan, soliding-investigation]
+last-reviewed: 2026-09-09
+Section: Physics characterisation and soliding plan > Phase 3: parameter experiments, then model changes
+opportunity so alternate movement attempts do not multiply the configured rate. Pending slow interactions need scheduled wake/progress; region exclusion must not accumulate surprise catch-up. A probability gate alone cannot express support, packing or pressure, so evaluate those separately. - **Granular support:** introduce a material support policy and a bounded local packing/support measure. Screen support occupancy 0.65/0.8/0.95 in a fixed neighbourhood; measure angle-of-repose and collapse regressions. Keep support state separate from density and from the hard-surface list. - **Barrel bearing response:** prototype depth/compaction-dependent yield and velocity-dependent penetration resistance, plus persistent static support. Calibrate the supported-load envelope so ordinary impacts stop before half depth. Screen embed target fractions 0.25/0.4/0.5 and yield load scales 0.5×/1×/2× baseline barrel weight. Later add contact-point torque and friction. Avoid double-solving the same support through cellular impulses and Rapier colliders; designate one solver per contact mode.
+
+
+### Rank 3: systems/paint-editor-bounded-shapes.md — PAINT-001 — bounded painting editor > Undo and authored-start persistence
+
+Document: PAINT-001 native-backed Workbench painting editor
+Path: systems/paint-editor-bounded-shapes.md
+authority: current-documentation
+document-kind: design
+status: Current
+scope: Mounted Draft PAINT-001 candidate on the shared Workbench; bounded native painting and reconstructible authored starts, not evolved simulation checkpoints
+canonical-for: []
+last-reviewed: 2026-11-12
+Section: PAINT-001 — bounded painting editor > Undo and authored-start persistence
+Only native-confirmed edits enter the shared chronological history. A manual gesture remains one record, including its native chunks. Agent receipts retain the first stored material before a cell changes and its latest stored material afterward. A direct batch or one model drawing submission can span bounded history parts of at most 262,144 cells; one Undo or Redo traverses adjacent retained parts of that submission in order. A human edit between agent chunks closes the preceding agent group and remains a separate history entry. Undo therefore reaches the most recent edit first and cannot skip later human work to reverse an earlier agent drawing. Up to 32 parts and 1,048,576 retained edit cells are kept. If those limits evict an older part of an agent drawing, the surviving entry is labelled **Agent drawing (retained tail)** and the UI reports that the older part is no longer undoable. A no-change agent receipt preserves existing Undo and Redo. A captured part that returns every cell to its original material contributes no history record and removes its redundant authored stamps. Undo/Redo preflights expected stored source IDs and uses PAINT's existing native mutation and acknowledgement path. Both interfaces share the generation, revision and tick fence. Confirmed agent edits recorded through this seam advance the fence instead of invalidating manual history. An outside edit not recorded in this timeline, a simulation tick or World replacement still invalidates unsafe history. Undo is paused construction editing; it does not restore temperature, velocity or evolved physics state. Its trusted human inverse does not expand the agent's ordinary material, source or scope policy. History completion appends a new human canvas result to the agent conversation and a durable `history_result` traffic event. It preserves historical model receipts and does not automatically issue another model request. The existing context-mode rules still govern later requests. Undo/Redo stacks remain session-local; saving persists the resulting authored start, not those stacks. Before native writes, `workbench_paint_editor_history.gd` checks that the complete operation can be reconstructed through existing Setup-v2 or GEN-007 start formats. It coalesces exact material row runs into boxes, preserving Empty. The Workbench-only constructor now admits **32,768** authored rectangles/ stamps (previously 4,096), subject to the unchanged **1 MiB** save envelope and native construction-area checks. Generated-map replay also has a conservative maximum of 64 world areas, capped at 32 million touched cells, validated before save and in the native prepared constructor. Other MicroScenario recipes retain their 4,096-record limit. This source change requires a rebuilt GDExtension before Windows qualification. The editor queries a native capability handshake and retains the
+
+
+### Rank 4: operations/architecture-programme.md — CyberSand architecture experimental programme > A. Current relevant architecture and accepted decisions
+
+Document: CyberSand architecture synthesis and experimental programme
+Path: operations/architecture-programme.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+canonical-for: [architecture-experimental-programme]
+last-reviewed: 2026-10-24
+Section: CyberSand architecture experimental programme > A. Current relevant architecture and accepted decisions
+Intake is local `8f4ffb96e03dc50cb43ab9c84de17ccb44c03774` in `C:/kybersand/source`. The existing rebuilt Windows DLL is deliberately dirty; its identity is in the ledger. Remote main is older. Source changes and runtime evidence from #9/#10/#13 plus September 10 Water work are local baseline inputs, not silently certified by GitHub issue closure or a profile hash. **ACT-004 capacity qualification, 2026-10-18:** the retained intake table below describes its original 16-body coupling limit. Current source now admits 64 rectangular part identities for the articulated roster; see the [physical actor contract](../systems/physical-actor-rigs.md). This capacity change does not select generalized shapes or revise this programme's scientific gates. | Authority | Relevant baseline | |---|---| | CURRENT / VALIDATED within dated fixtures | Native `World::Chunk::Cell` is 4 bytes: 8-bit material, state_a, state_b, updated_epoch. Material state is typed by each material's behavior; temperature is optional persistent chunk SoA state. | | ACCEPTED / ADR-001/003/007/009 | Native owns material; Rapier owns independent bodies on the main thread. Packed values cross owner boundaries. Separate transient body-ID occupancy is stable during cellular work. Retained immutable render payloads never expose mutable cells. | | CURRENT with known limitations | Rectangle coupling accepts at most 16 bodies, bounded sweep/ejection, capped central impulses and stale-sample handling. Failed ejection retains material and reports overlap. #9 documents masked-source feedback and barrier-crossing ejection; this programme does not assume #11 fixed them. | | ACCEPTED / ADR-002/004/010 | Phased in-place four-phase worker execution; excluded regions pause without catch-up. A failed World is quarantined until reset/replacement; no global transaction/automatic retry. Buffered is not executable rollback. | | ACCEPTED / ADR-005; CURRENT POLICY | FreeMass Water has exact closed-operation integer conservation and stable equilibrium. Current lateral request is floor(3*imbalance/4), with one-unit tolerance, gravity first, 12-tick coherent delay and supported film at mass <=48/255. | | CURRENT | Water alone has fractional quantity. Other liquids use whole-cell paths, generally CellularYield; Oil has specialized movement. A mobility roll and scheduler sleep are not an explicit stress/yield model. No generic persistent cellular vx/vy exists. | | CURRENT POLICY / ADR-011 and #13 | Powder density sorting is excluded, player packing/support is separate, Mercury permeability defaults to period 30. Motion-driven mixing/carrying is opt-in; gameplay Baseline remains disabled. Horizontal candidates 2 and cadence 1 are protected defaults. | | ACCEPTED / ADR-008 | Explicit bounded approximation does not waive occupancy, ownership, capacity or current conservation contracts. New approximation needs its own measured policy. | Storage chunk 128², activity block 32², scheduling core 64², and radius-two expanded write domain 68² are independent units. At 4/8 bytes their cell-only payloads are
+
+
+### Rank 5: architecture/shared-workbench-authoring-data.md — Shared workbench authoring data and convergence > Common authored document semantics
+
+Document: Shared workbench authoring data and convergence
+Path: architecture/shared-workbench-authoring-data.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation
+canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
+last-reviewed: 2026-11-20
+Section: Shared workbench authoring data and convergence > Common authored document semantics
+The [WB-ACTOR-COMPOSE-001 candidate](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility) adds an optional versioned actor-control extension within existing Setup-v2, generated-start and material-baseline containers. Source, bounded cadence, starting equipment and compatible tuning are authored values. Live policy memory, leases, issued observations, resource consumption, momentum and evolved cells are not serialized by ordinary Save. Invalid definitions or controls refuse the complete preparation while retaining the previous applied map and session. **Approved requirements for convergence:** | Part | Meaning | |---|---| | Baseline | Starting terrain supplied by existing ordinary setup, verified procedural reconstruction, or a versioned standalone material baseline | | Authored changes | Ordered accepted edits after the baseline, including erase/replacement semantics; both human and agent changes must survive Save/reopen | | Actors and configuration | Supported authored spawns, selection and applicable response/liquid/material policy; view metadata is separate from material content | | Live session | Evolving native cells, tick, motion, active tasks and transient physics; not implicitly serialized by a starting-map Save | | Provenance | Reconstruction-critical identity where required; descriptive origin/history must be distinguishable from required inputs | These are semantic components, not mandated JSON keys or an unbounded operation journal. Existing bounds remain enforced. Exhaustion must be explicit and must not silently omit an accepted edit from the saved start. Ordinary Save persists the authored start; Restore reconstructs it. Neither implicitly captures evolved materials or promises deterministic coupled simulation replay. **Approved:** use shared reconstruction/validation, native preparation/adoption and authored-state recording services rather than interface-specific copies. Native C++ remains authoritative; the existing worker owns installed cells. Godot owns UI/input and main-thread scene/Rapier objects. Immutable copied snapshots retain their existing lifetime. Remote adapters do not simulate cells. An accepted queue entry is not proof of native application or durable recording; future exact-cell authoring seams need acknowledged application and a defined capacity/failure outcome for the authored record. This requirement is not a claim that today's ordinary brush already has the agent bridge's durable receipts.
+
+## DR35: Can I use the World Art viewer and large PNG captures without treating its dimensions as native playable World capacity?
+
+Canonical rank: 1
+
+Expected facts:
+
+- World Art viewer/capture is a separate art workflow with its own dimensions and bounds.
+- Art-only output dimensions do not enlarge native simulation capacity or establish physical GPU acceptance.
+
+### Rank 1: tools/world-art-capture.md — World Art unattended capture — real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels
+
+Document: World Art unattended capture
+Path: tools/world-art-capture.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Production Godot framebuffer capture, streamed PNG transport, provenance and publication safety
+canonical-for: [world-art-unattended-capture]
+last-reviewed: 2026-11-20
+Section: World Art unattended capture — real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels
+The standard Godot `Image` full export is limited to 50,000,000 output pixels. **Explicitly** add `--stream-large` to `--capture` to allow an authored composition to export at up to **100,000,000 output pixels and 65,536 pixels per output axis** without allocating a world-sized output `Image`. The source art adapter still requires at most 16,777,216 native material cells and 16,384 cells per input side. For example, an authored 1024×4096 map at 4× requests a real 4096×16384 (67,108,864-pixel) PNG: ~~~bash python3 tools/world_art_preview_launcher.py --capture --godot=godot \ --pack=/absolute/your/pack.json --shots=full --scale=4 --stream-large \ --output-dir=/absolute/captures/streamed-001 ~~~ Godot renders the original RG8 production shaders into 512-native-cell tiles with a 32-cell halo, writes each exact cropped RGB8 framebuffer tile with SHA-256, then the trusted Python transport verifies and assembles those pixels by scanline with `zlib` into a final RGB PNG. The manifest is marked complete **only after** tile coverage, byte counts and SHA-256, PNG CRC/deflate, pixel length, output dimensions, source identity and source-immutability checks pass. Intermediate RGB files are deleted on success; failed evidence is retained with a failure status. This is streamed PNG *transport*, not a second material renderer. The CLI `--verify-bundle` also validates PNGs in bounded memory. Ordinary capture, viewer screenshots and all `--shots=viewport,detail` remain unchanged. The interactive **Save full** button retains its stricter 50M bound; use this CLI when a truly larger whole-map PNG is required. **No native playable World size, physics or save/load compatibility is inferred from art preview dimensions.**
+
+
+### Rank 2: tools/world-art-preview.md — World Art interactive viewer > Output and limits
+
+Document: World Art interactive viewer
+Path: tools/world-art-preview.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Standalone Godot World Art inspection, navigation, comparison and export controls
+canonical-for: [world-art-interactive-viewer]
+last-reviewed: 2026-11-20
+Section: World Art interactive viewer > Output and limits
+Each export creates a unique directory under `user://world-art-preview/captures/` containing its PNG, `metadata.json` and `status.json`. Use `--export-root=/absolute/output` to choose a destination. The isolated project is named **CyberSand World Art Preview**; on Windows its default data directory is below `%APPDATA%\Godot\app_userdata\CyberSand World Art Preview\`. Existing images are never overwritten. Source directories and uncertain symlink/junction aliases are refused as output locations. Partial output remains incomplete on failure. Metadata records the actual source, dimensions, camera, settings, source RG8 hash, renderer identity and PNG hash. Art sources support up to **16,384 cells per axis / 16,777,216 cells total**. Interactive full-image exports stop at **50,000,000 output pixels**. The pixel cost is shown before export. For larger exports, use the same renderer through [unattended capture with `--stream-large`](world-art-capture.md#optional-bounded-streamed-full-png-above-50-million-pixels), with a **100,000,000-pixel / 65,536-per-output-axis** limit. There is no automatic crop, distortion or source resizing to evade these limits. The art adapter's dimensions do not change native World, gameplay, production import or saved-world limits. Transparent/empty material cells reveal the presentation background; PNG exports are the composited opaque framebuffer, not an RGBA cutout of a native world.
+
+
+### Rank 3: tools/art-pipeline-unification.md — ART-PIPELINE-UNIFICATION-001 — integrated World Art Preview and unattended capture > Compatibility contract (independent limits)
+
+Document: Unified World Art pipeline
+Path: tools/art-pipeline-unification.md
+authority: current-documentation
+document-kind: contract
+status: Current
+scope: Standalone World Art renderer ownership, art capacity, source provenance and native compatibility boundaries
+canonical-for: [world-art-pipeline, world-art-capacity-and-compatibility]
+last-reviewed: 2026-11-20
+Section: ART-PIPELINE-UNIFICATION-001 — integrated World Art Preview and unattended capture > Compatibility contract (independent limits)
+This tooling accepts any **positive, non-square or non-power-of-two** pack size provided `width <= 16384`, `height <= 16384` and `width × height <= 16,777,216`. That is the read-only **art adapter** contract, **not** a change in playable native World size. There is no native simulation allocation, native save-file compatibility claim, water/pressure solver, entity simulation or collision correctness claim. The normal full PNG path uses a bounded Godot output image with **at most 50,000,000 output pixels**, from a source image of at most 16,777,216 native cells. At a larger output scale, `--capture --stream-large` explicitly enables a second **bounded 100,000,000-output-pixel, 65,536-pixel-per-axis** path. Godot draws the **same RG8 production material shaders** in halo-overdrawn tiles and writes source-hashed RGB8 framebuffer bytes. Python only assembles those exact bytes into a standards-compliant RGB PNG using scanline compression; it does not recolour, rasterise or alter geometry. The final PNG is revalidated before any manifest is marked complete. Export scale is explicit. Exports above the selected budget **fail** with a diagnostic, retaining incomplete evidence but never a false completed capture. There is no silent clipping, source downsampling or unbounded full-image allocation. The interactive viewer retains its 50M `Save full` image bound and displays the pixel cost; to produce an over-50M whole-map PNG use the unattended CLI with `--stream-large`. Viewport/detail captures work independently of the full-image budget. | Native input | Native cells | Full 1× | Full 2× ordinary | Full 2× `--stream-large` | | --- | ---: | --- | --- | --- | | 512×512 | 262,144 | Yes | Yes | Yes | | 1024×1024 | 1,048,576 | Yes | Yes | Yes | | 2048×1024 | 2,097,152 | Yes | Yes | Yes | | 1024×2048 | 2,097,152 | Yes | Yes | Yes | | 4096×1024 | 4,194,304 | Yes | Yes | Yes | | 1024×4096 | 4,194,304 | Yes | Yes | Yes | | 512×8192 | 4,194,304 | Yes | Yes | Yes | | 8192×512 | 4,194,304 | Yes | Yes | Yes | | 2048×8192 | 16,777,216 | Yes | **Refused: 67,108,864 pixels** | **Yes: streamed** | | 16384×1024 | 16,777,216 | Yes | **Refused: 67,108,864 pixels** | **Yes: streamed** | The JSON evidence states `previewable`, `full_exportable`, `full_export_mode: framebuffer|streamed|refused`, `requested_output_pixels`, reason when rejected, and `native_playable: "not-qualified-by-art-pipeline"`. Requests above 100M output pixels or 65,536 pixels per streamed axis remain refused. **Art preview support does not grant native gameplay admission**.
+
+
+### Rank 4: tools/world-art-evaluation.md — World Art Windows evaluation > Capacity and compatibility
+
+Document: World Art Windows evaluation
+Path: tools/world-art-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Portable owner evaluation of the standalone World Art viewer, capture tools and verified gallery
+canonical-for: [world-art-windows-evaluation]
+last-reviewed: 2026-11-21
+Section: World Art Windows evaluation > Capacity and compatibility
+The read-only art adapter accepts positive dimensions up to **16,384 cells per axis** and **16,777,216 cells total**, including 1024×4096, 512×8192, 8192×512, 2048×8192 and 16384×1024. Ordinary full PNG export is bounded to **50,000,000 output pixels**. The interactive viewer uses that ordinary bound. For a larger whole-map image, explicitly select the same renderer's streamed capture path. The limit is **100,000,000 output pixels**, at most **65,536 per output axis**. Godot renders original shader pixels in tiles; Python streams those exact RGB bytes into PNG scanlines. There is no silent resizing or crop. ```powershell .\dependencies\python\python.exe -B .\tools\world_art_preview_launcher.py ` --godot .\Godot_v4.7-stable_win64_console.exe --rendering-driver opengl3_angle ` --capture --pack 'C:\MyArt\1024x4096\pack.json' --shots full ` --scale 4 --stream-large --output-dir 'C:\ArtCaptures\tall-4x' ``` This produces 4096×16384 pixels when the source pack is 1024×4096. Over-budget requests fail with an explanation. Preview limits do not increase native World simulation or save/import limits, and static images do not qualify physics, Rapier, traversal, Water behaviour or gameplay performance. Material conditions are explicit synthetic creation-state fixtures.
+
+
+### Rank 5: tools/world-art-evaluation.md — World Art Windows evaluation > Gallery and evidence
+
+Document: World Art Windows evaluation
+Path: tools/world-art-evaluation.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Portable owner evaluation of the standalone World Art viewer, capture tools and verified gallery
+canonical-for: [world-art-windows-evaluation]
+last-reviewed: 2026-11-21
+Section: World Art Windows evaluation > Gallery and evidence
+**Gallery.html** links the 45 scene images (full, viewport and detail for each of fifteen collections), all 120 reusable feature images, extremely tall and wide examples, the 67,108,864-pixel streamed capture, ten input dimensions and before/after framing examples. All PNG pixels come from the real Godot RG8 production material shaders. The gallery builder only indexes verified images. The extreme-size images are deliberately simple qualification fixtures that make missing edges, incorrect framing and material-coordinate defects visible. The fifteen original collections provide the artistic acceptance samples. Open a PNG at its original resolution when inspecting boundaries or far edges. `world-art-evaluation.json` records the exact source commit, every included file's SHA-256, engine pins, bundled Python identity and capture-manifest identities. `evidence/` retains each original sealed capture manifest, PNG and Windows test report. Their original source paths describe the machine where capture occurred; copied artwork is mapped by collection and its unchanged pack SHA-256. Paths need not exist on the evaluation computer. The exact JSON source for temporary large-canvas, framing and comparison fixtures is retained under `evidence/source-inputs/`. Its manifest binds each copied pack to the corresponding capture's input SHA-256. The gallery links these packs so they can be opened in the viewer with the single-pack command. The package contains only positive, independently validated capture bundles. Failed-case diagnostics remain in the full Actions qualification artifact. The Windows package smoke receipt is a separate Actions artifact: it records executing the packaged viewer launcher and bundled Python capture with a restricted PATH, including a verified fresh Godot framebuffer capture.
+
+## DR36: Which unresolved future destructible-architecture design should I implement next purely from current documentation?
+
+Canonical rank: None
+
+Expected facts:
+
+- Abstain from inventing an owner decision or implementation authorization.
+- Identify the current approved-intent and active programme records, report unresolved boundaries, and work only within the explicit task.
+
+### Rank 1: operations/github-development-and-release.md — Repository development and release > Reconciliation and design choices
+
+Document: Repository development and release
+Path: operations/github-development-and-release.md
+authority: current-documentation
+document-kind: guide
+status: Current
+scope: Local repository policy and unresolved remote CI and release prerequisites
+canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
+last-reviewed: 2026-11-06
+Section: Repository development and release > Reconciliation and design choices
+**Current owner policy (2026-11-06):** agents reconcile long-running or stacked branches with main as needed, without stopping for owner approval. Integration must not silently decide a design question, though. When a conflict or merge has to choose between competing systems, laws or designs, or changes default behavior or feel, the agent: - chooses the best-supported option and continues; - records it under **Design choices** in the PR: what was chosen, the alternative, why, and what reversing it would take, written in plain language for a non-programmer owner; - keeps the evidence and qualification needed for that choice. Protected-source transitions, provider policy and release gates still apply. Purely mechanical conflicts (text, docs, routing) need no entry. The owner reviews these notes asynchronously and may redirect later. This adds no gate: merging to main, Ready, deleting finished work and default promotion remain owner actions as before. To limit drift, prefer refreshing long-running branches from main after significant main merges, and land a base before stacking more than one dependent layer on it.
+
+
+### Rank 2: systems/smoke-heat-pressure-roadmap.md — Smoke, heat, and pressure roadmap > Planned field work > WEX-003 compartment-pressure research
+
+Document: Smoke, heat, and pressure roadmap
+Path: systems/smoke-heat-pressure-roadmap.md
+authority: current-documentation
+document-kind: design
+status: Current
+scope: Implemented native and fallback Smoke, limited temperature use, and unimplemented heat/pressure/composition fields
+canonical-for: [smoke-behavior, optional-heat-pressure-fields]
+last-reviewed: 2026-09-08
+Section: Smoke, heat, and pressure roadmap > Planned field work > WEX-003 compartment-pressure research
+The [WEX-003 feasibility result](../research/lumped-gas-region-pressure-bookkeeping.md) does **not** implement the general Pressure row above. It identifies a narrower optional architecture: resolved connected gas regions own amount/free-volume bookkeeping and derive a compartment boundary pressure, while closures use affected-component reconstruction and unresolved topology returns no authoritative pressure. The result admits only the bounded #94 decompression research proof. Per-cell gas pressure/velocity, composition, heat coupling and production field integration remain unimplemented. **Deferred:** GPU-resident derived fields may be benchmarked after their authority and synchronization are explicit. **Rejected for the current architecture:** GPU-only terrain/collision authority, unsynchronized gameplay reads, and routine GPU readback as a prerequisite for authoritative ticks. These dispositions are owned by [ADR-006](../decisions/ADR-006-gpu-compute-deferral.md), not a permanent ban on every GPU experiment.
+
+
+### Rank 3: decisions/ADR-004-interest-region-and-reconfiguration.md — ADR-004: Interest region and safe reconfiguration > Failed-world boundary
+
+Document: ADR-004 — Interest region and safe reconfiguration
+Path: decisions/ADR-004-interest-region-and-reconfiguration.md
+authority: current-documentation
+document-kind: decision
+status: Approved design
+scope: Accepted scalable interest/capacity direction, current construction limits and unresolved margin/reconfiguration semantics
+canonical-for: [decision-interest-capacity-reconfiguration]
+last-reviewed: 2026-09-08
+Section: ADR-004: Interest region and safe reconfiguration > Failed-world boundary
+**Current:** a region request can be retained while a World is failed but does not recover it. Explicit clear/reset or validated replacement is required; the latest region then applies to freshly established activity. This issue #1 recovery policy ([ADR-010](ADR-010-failed-tick-quarantine.md)) does not implement the Planned state-preserving live resize protocol.
+
+
+### Rank 4: architecture/item-authored-material-programs.md — Item-authored material programs > Which decisions and evidence are needed before implementation?
+
+Document: Item-authored material programs
+Path: architecture/item-authored-material-programs.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Proposed bounded material authoring and item recipes; current compiled substrate is identified separately
+canonical-for: [item-authored-material-program-proposal]
+last-reviewed: 2026-09-08
+Section: Item-authored material programs > Which decisions and evidence are needed before implementation?
+Freeze the minimum vocabulary and budget model, select a versioned recipe and identity schema, then implement descriptor/pair authoring and native validation. Only add an interpreter after measuring representative rules against compiled kernels. A preview/editor needs useful bound/cost diagnostics; hot reload needs an explicit drained transition and state migration. Acceptance must include radius and instruction rejection, deterministic one/multiworker execution, conservation where applicable, bounded event pressure and safe failure of invalid programs. No authoring-specific acceptance run exists. The [roadmap](../reference/status-and-roadmap.md) tracks priority; [ownership](data-ownership-and-lifetimes.md) and [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) constrain any future runtime policy.
+
+
+### Rank 5: operations/architecture-programme.md — CyberSand architecture experimental programme > C. Questions and bounded outcomes
+
+Document: CyberSand architecture synthesis and experimental programme
+Path: operations/architecture-programme.md
+authority: current-documentation
+document-kind: design
+status: Planned
+scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+canonical-for: [architecture-experimental-programme]
+last-reviewed: 2026-10-24
+Section: CyberSand architecture experimental programme > C. Questions and bounded outcomes
+| Key | One meaningful outcome | Live question / why it exists | |---|---|---| | C — Liquid characterization | Evidence map and minimum missing measurements for present FreeMass/CellularYield | Which observed behavior belongs to quantity, transport, mobility, special rules or sleep, and which merits changing? | | L — Layout and epoch cost | Controlled cost/compatibility comparison of current, padded, packed and sidecar layouts | What does raw width cost; what do masks/accessors and epoch frequency add; what state/ID capacity is actually justified? | | P — State precision | Quantity/auxiliary precision response curves at fixed layout and algorithm | What do 4/6/8/10-bit mass and separately packed delay buy or lose, including active lifetime and films? | | M — Compact motion | Controlled no-history versus local flow-memory comparison, inline versus sidecar | Can a small decaying direction/strength field improve a named jet/spray deficit with bounded local writes, and at what cost? | | V — Fractional presentation | Oriented fractional-interface visual/cost comparison on frozen authoritative states | Can existing mass information improve surfaces, underfaces, edges and droplets without new simulation state? | | B — Conditional sparse motion | Small bounded ballistic promotion/demotion feasibility result, or documented no-go | Is high-speed/event motion still worth a distinct representation after compact-history evidence and transfer design? | | G — Decision record | Cross-workstream evidence review, retained-baseline or selected next increment | Which measured combination warrants a scoped follow-up and what must remain open? This does not itself implement migration. | Existing **#12** remains the coherent-body/soliding research owner. This programme provides a self-contained execution supplement, not a duplicate aggregate issue. Its diagnostics/design can proceed from existing #9 evidence. Support integration still requires verified support evidence, including resolution of the closed-#11 conflict. Dynamic membership requires an explicit reviewed ownership ADR first. A near-rest restricted prototype does not need B if it can state its momentum limits honestly; energetic reversal must wait for a selected motion representation.

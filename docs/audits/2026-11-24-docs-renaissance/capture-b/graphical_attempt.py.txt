@@ -1,0 +1,31 @@
+from pathlib import Path
+import os, subprocess, time, json, hashlib
+
+root=Path('/workspace/scratch/855d9af51e68/b-capture')
+godot='/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64'
+xvfb='/workspace/scratch/0b2a9bdf7883/toolchain/xserver/root/usr/bin/Xvfb'
+env=os.environ.copy()
+env.update({'DISPLAY':':198','XDG_DATA_HOME':str(root/'profile/data'),'XDG_CONFIG_HOME':str(root/'profile/config'),'XDG_CACHE_HOME':str(root/'profile/cache'),'LIBGL_ALWAYS_SOFTWARE':'1'})
+for key in ['XDG_DATA_HOME','XDG_CONFIG_HOME','XDG_CACHE_HOME']: Path(env[key]).mkdir(parents=True,exist_ok=True)
+commands=[]
+with (root/'output/xvfb.log').open('w') as output:
+    display=subprocess.Popen([xvfb,':198','-screen','0','1920x1080x24','-nolisten','tcp'],stdout=output,stderr=subprocess.STDOUT,env=env)
+    try:
+        for _ in range(50):
+            if Path('/tmp/.X11-unix/X198').exists(): break
+            if display.poll() is not None: raise RuntimeError('Xvfb exited')
+            time.sleep(.1)
+        for name,args in [('import',[godot,'--headless','--path',str(root/'source/godot'),'--editor','--import','--quit']),('capture',[godot,'--path',str(root/'source/godot'),'--rendering-method','gl_compatibility','--rendering-driver','opengl3','--script',str(root/'capture.gd')])]:
+            with (root/f'output/{name}.log').open('w') as log:
+                t=time.monotonic()
+                result=subprocess.run(args,stdout=log,stderr=subprocess.STDOUT,env=env,timeout=240)
+                commands.append({'stage':name,'argv':args,'exit':result.returncode,'seconds':time.monotonic()-t})
+                print(json.dumps(commands[-1]),flush=True)
+                if result.returncode: break
+    finally:
+        display.terminate()
+        try: display.wait(timeout=5)
+        except subprocess.TimeoutExpired: display.kill()
+        (root/'output/commands.json').write_text(json.dumps(commands,indent=2)+'\n')
+        assets={p.name:{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size} for p in (root/'output').glob('*.png')}
+        (root/'output/assets.json').write_text(json.dumps(assets,indent=2)+'\n')

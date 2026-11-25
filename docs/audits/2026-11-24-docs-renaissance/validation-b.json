@@ -1,0 +1,327 @@
+{
+  "schema": 1,
+  "lane": "B",
+  "recorded_utc": "2026-11-24T18:18:52.962945+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "Documentation, source walkthrough and bounded native/material/provider evidence; no engine change or physical qualification",
+  "records": [
+    {
+      "id": "B-V01",
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/855d9af51e68/b-capture/source/godot",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "capture-b/import-headless.log",
+      "criterion": "Isolated project import completed without recorded script/import errors. This is not graphical or gameplay qualification."
+    },
+    {
+      "id": "B-V02",
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/855d9af51e68/b-capture/source/godot",
+        "--script",
+        "/workspace/scratch/855d9af51e68/b-capture/render_native.gd"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "cases": 3,
+      "evidence": [
+        "capture-b/native-render.json",
+        "capture-b/native-render.log",
+        "capture-b/render_native.gd.txt"
+      ],
+      "criterion": "Ordinary ArchitecturalProject compiler and native CyberWorldGenerator yielded three bounded native material images. Output hashes, project/recipe/material identities and per-chunk receipts retained."
+    },
+    {
+      "id": "B-V03",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/xserver/root/usr/bin/Xvfb",
+        ":198",
+        "-screen",
+        "0",
+        "1920x1080x24",
+        "-nolisten",
+        "tcp"
+      ],
+      "result": "BLOCKED",
+      "evidence": [
+        "capture-b/xvfb.log",
+        "capture-b/socket-probe.json",
+        "capture-b/graphical_attempt.py.txt"
+      ],
+      "criterion": "Xvfb exited before graphical Godot launch because it could not establish listeners; separate AF_UNIX creation probe reports errno1. No escalation or bypass attempted."
+    },
+    {
+      "id": "B-V04",
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/855d9af51e68/b-capture/source/godot",
+        "--script",
+        "res://tests/test_art_provider.gd"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "checks": 54,
+      "failures": 0,
+      "seconds": 0.745,
+      "evidence": [
+        "capture-b/provider-keyless.json",
+        "capture-b/provider-keyless.log"
+      ],
+      "criterion": "Existing keyless provider payload/parser/redaction/logging fixtures only. No HTTP/model dispatch, no GUI or new native implementation qualification."
+    },
+    {
+      "id": "B-V05",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "capture-b/check-docs-b.json",
+      "criterion": "151 documents,8 navigation documents,280 canonical claims,3239 local links,468 anchors,32 frozen questions;0 errors/warnings at this documentation checkpoint."
+    },
+    {
+      "id": "B-V06",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "criterion": "No whitespace errors in the shared working diff at the same B checkpoint; lead performs final frozen-head verification."
+    },
+    {
+      "id": "B-V07",
+      "method": "SHA-256, byte-size and PNG dimension verification using preservation-b.json/assets-b.json",
+      "result": "PASS",
+      "preserved_originals": 11,
+      "image_references": 12,
+      "new_native_images": 3,
+      "criterion": "All11 preserved originals match their recorded bytes; all12 image objects match SHA-256/bytes/dimensions. Original files were not altered."
+    },
+    {
+      "id": "B-V08",
+      "method": "Source walkthrough of first-session steps; independent source review by Specialist A",
+      "result": "NOT RUN",
+      "runtime_execution": "No fresh interactive first-user walkthrough",
+      "source_inspection": "Controls, native receipts, Save/Flatten/load and exit paths verified; see reader-walkthrough-b.md and review-b-by-a.json",
+      "reason": "Graphical display unavailable; source inspection is separately reported."
+    },
+    {
+      "id": "B-V09",
+      "method": "Independent developer documentation walkthrough of C and lead entry pages by Specialist B",
+      "result": "NOT RUN",
+      "runtime_execution": "No fresh Windows clone/build or full Linux native matrix",
+      "source_inspection": "Portal/CONTRIBUTING to build/identity/focused tests/release path reviewed against scripts and locks. Pinned import and keyless script execution are the separate bounded cases above.",
+      "reason": "Documentation task; broad build matrix is unnecessary and Windows execution unavailable."
+    },
+    {
+      "id": "B-V10",
+      "method": "Actual saved retrieval-context applicability audit",
+      "result": "PASS",
+      "criterion": "Audit completed, not universal answer accuracy. Final sample10 sufficient/1partial; missing exact godot-cpp pin requires abstention.",
+      "evidence": [
+        "retrieval/answer-b-final-input.json",
+        "retrieval/answer-b-final-review.json",
+        "retrieval/answer-b-final-review.md"
+      ]
+    },
+    {
+      "id": "B-V11",
+      "method": "Compare every B preserved byte-exact original with git show baseline:path and recorded SHA256/size; compare each asset SHA256/size/PNG dimensions. Original imagery was not edited.",
+      "result": "PASS",
+      "preserved_originals": 16,
+      "image_references": 12,
+      "evidence": "preservation-assets-b-refresh.json",
+      "criterion": "All16 B originals are byte-identical to accepted baseline; all12 images retain manifest bytes/dimensions after late guide reconciliation."
+    },
+    {
+      "id": "B-V12",
+      "method": "Supported browser skill plus permitted cloud fallback for actual GitHub README render inspection",
+      "result": "BLOCKED",
+      "evidence": "browser-render-b.json",
+      "reason": "No originating extension browser context; cloud Browser runtime unavailable. No page/tab loaded; no screenshot or GitHub render pass."
+    },
+    {
+      "id": "B-V13",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "capture-b/check-docs-b-late.json",
+      "criterion": "Late working-tree checkpoint151 docs,280canonical,3384local links,477anchors,32frozenquestions,0errors/warnings. An earlier in-flight broken link in another lane was reported and corrected; this is not a frozen final-head gate."
+    },
+    {
+      "id": "B-V14",
+      "result": "PASS",
+      "evidence": "preservation-assets-b-final.json",
+      "criterion": "All23 B originals match accepted-source bytes and12 asset identities/dimensions match;9 reused assets byte-identical to baseline.",
+      "recorded_at": "2026-11-24T20:02:17.277686+00:00"
+    },
+    {
+      "id": "B-V15",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "capture-b/check-docs-b-final.json",
+      "criterion": "Working tree20:00 UTC:151docs,280canonical,3476links,485anchors,0errors/warnings; no source/runtime semantics inferred.",
+      "recorded_at": "2026-11-24T20:02:17.277686+00:00"
+    },
+    {
+      "id": "B-V16",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+      ],
+      "result": "FAIL",
+      "exit_code": 2,
+      "evidence": "capture-b/diff-check-b-final.json",
+      "criterion": "Only two new blank-line-at-EOF findings in byte-exact preserved MATERIAL_LAB and wave-flow-evaluation originals. Retained as original evidence; no trimming.",
+      "recorded_at": "2026-11-24T20:02:17.277686+00:00"
+    },
+    {
+      "id": "B-V17",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "--",
+        ".",
+        ":(exclude)docs/audits/2026-11-24-docs-renaissance/preserved/**"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "capture-b/diff-check-b-current-scopes.json",
+      "criterion": "All non-preservation tracked scopes clean. Full baseline-relative check remains exit2 and is separately recorded.",
+      "recorded_at": "2026-11-24T20:02:17.277686+00:00"
+    },
+    {
+      "id": "B-V18",
+      "command": [
+        "python3",
+        "tools/physics/issue13.py",
+        "--help"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "late-play-tower-review-b.json",
+      "criterion": "Argument parser only; no simulation/build campaign.",
+      "recorded_at": "2026-11-24T20:02:17.277686+00:00"
+    },
+    {
+      "id": "B-V19",
+      "result": "PASS",
+      "evidence": [
+        "preview/manifest.json",
+        "preview/review-b-regenerated.json"
+      ],
+      "criterion": "Final README static preview regenerated; B and root each viewed four desktop/narrow top/gallery PNGs. Static approximation only; actual browser BLOCKED.",
+      "recorded_at": "2026-11-24T20:02:17.277686+00:00"
+    },
+    {
+      "id": "B-V20",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tools.test_world_art_capture.UnitTests",
+        "tools.test_world_art_evidence",
+        "-v"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "tests": 32,
+      "evidence": "capture-b/world-art-unit-evidence.json",
+      "criterion": "Existing Python-only capture, PNG/manifest/publication and owned-process integrity tests. Graphical class not selected; no Godot render, package or provider request.",
+      "recorded_at": "2026-11-24T20:30:35.204632+00:00"
+    },
+    {
+      "id": "B-V21",
+      "result": "PASS",
+      "exit_code": 0,
+      "commands": 3,
+      "evidence": "capture-b/world-art-cli-help.json",
+      "criterion": "Launcher, package-build and gallery CLI help/argument parser only. No source checkout, package construction, engine invocation or capture executed.",
+      "recorded_at": "2026-11-24T20:30:35.204632+00:00"
+    },
+    {
+      "id": "B-V22",
+      "result": "PASS",
+      "evidence": "preservation-assets-b-freeze.json",
+      "criterion": "All26 B originals and12 asset references verified after final Art-tool edits.9 reused image payloads equal baseline.",
+      "recorded_at": "2026-11-24T20:33:57.687411+00:00"
+    },
+    {
+      "id": "B-V23",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "capture-b/check-docs-b-freeze.json",
+      "criterion": "20:32 UTC current bytes:151docs,280canonical,3513links,489anchors,0errors/warnings.",
+      "recorded_at": "2026-11-24T20:33:57.687411+00:00"
+    },
+    {
+      "id": "B-V24",
+      "result": "QUALIFIED",
+      "evidence": "capture-b/diff-check-b-freeze.json",
+      "criterion": "Full baseline diff-check exit2 for exactly2 byte-exact preserved-original EOF blank lines; non-preservation scopes exit0. No historical bytes trimmed.",
+      "recorded_at": "2026-11-24T20:33:57.687411+00:00"
+    },
+    {
+      "id": "B-V25",
+      "result": "QUALIFIED",
+      "evidence": "capture-b/diff-check-b-final-staged.json",
+      "criterion": "Final staged baseline diff-check exit2:2 raw Xvfb trailing-space lines+3 exact-original EOF blank lines. Authored scope excluding only preserved/** and exact capture-b/xvfb.log exits0; no evidence trimmed.",
+      "recorded_at": "2026-11-24T20:40:43.002678+00:00"
+    },
+    {
+      "id": "B-V26",
+      "result": "PASS",
+      "evidence": [
+        "retrieval/final-freeze/answer-b-input.json",
+        "retrieval/final-freeze/answer-b-review.json"
+      ],
+      "criterion": "Final11 actual-context applicability review:10sufficient/1partial.30changed passages freshly read;25 unchanged passages exact-text/order compared. DR02 pin abstention andDR15canonical miss retained. No downstream model execution claim.",
+      "recorded_at": "2026-11-24T20:40:43.002678+00:00"
+    }
+  ],
+  "environment": {
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "profile": "B isolated XDG data/config/cache; provider test had a separate B profile",
+    "cleanup": "Completed B isolated staging source and regenerable Godot cache removed after ENOSPC. Outputs, receipts, scripts, project fixtures and profile evidence remain. Shared source/runtime bytes were not modified."
+  },
+  "limitations": [
+    "No fresh graphical screenshot or interactive UI execution",
+    "No physical Windows/NVIDIA or performance acceptance",
+    "No remote model/provider request",
+    "Retained historical screenshots keep their original source/runtime scope; Blacksite original capture lacks a full checkout revision, with script/runtime hashes retained",
+    "README static render review is owned and separately recorded by the lead; it is a layout approximation, not GitHub/browser execution"
+  ],
+  "last_updated_utc": "2026-11-24T20:40:43.002678+00:00"
+}

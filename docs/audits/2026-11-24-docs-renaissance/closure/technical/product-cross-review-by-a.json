@@ -1,0 +1,199 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A /root/technical_truth (closure mission; independent of original authors and current Specialist B)",
+  "recorded_utc": "2026-11-24T23:51:34.647489+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Independent full changed-text and surrounding-guide reading, direct implementation inspection and actual Git ancestry checks. Hashes identify the reviewed content; they do not substitute for semantic review. No application, provider, graphical or physical execution was performed.",
+  "findings": [
+    {
+      "id": "CA-B-01",
+      "priority": "P1",
+      "status": "resolved-in-reviewed-text",
+      "finding": "Source distinguishes the launcher checks from repository source-input provenance. The wrapper compares exact Godot and native DLL hash and reports checkout/runtime identity; it does not iterate the provenance source_inputs. The separate checker does. Corrected procedure names that separate check without claiming a new launch."
+    },
+    {
+      "id": "CA-B-02",
+      "priority": "P1",
+      "status": "resolved-in-reviewed-text",
+      "finding": "Generated Load opens source verification and starts a preview. _complete checks every saved provenance key, reaches ready, and enables the confirmation button; only confirmed->_install calls install_generated_start. The added Install into workbench step repairs a real incomplete reopening instruction. Source mismatch refuses before installation and cancellation retains the installed map."
+    },
+    {
+      "id": "CA-B-03",
+      "priority": "P1",
+      "status": "resolved-in-reviewed-text",
+      "finding": "Setup name grammar is exactly 1\u201348 characters from ASCII a-z/A-Z/0-9/-/_. Named saves replace their destination; source has no separate overwrite-confirmation UI. The new-name recommendation prevents accidental replacement without claiming a versioned save system."
+    },
+    {
+      "id": "CA-B-04",
+      "priority": "P2",
+      "status": "resolved-in-reviewed-text",
+      "finding": "model_context uses conversation.size()-12 for Compacted and Custom, so the count is messages, including user native-feedback entries, not request-response cycles. The extra latest-result message is appended only when first>0. Corrected prose captures both conditions."
+    }
+  ],
+  "claims": [
+    {
+      "id": "CA-B-01",
+      "priority": "P1",
+      "original_claim_ids": [
+        "B-02",
+        "C-01",
+        "C-02"
+      ],
+      "result": "source-verified correction",
+      "reviewed_document_sha256": {
+        "docs/operations/getting-started.md": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e"
+      },
+      "source_identities": [
+        {
+          "path": "tools/launch_desktop.ps1",
+          "symbol_or_locator": "Assert-MaterializedRuntime, native hash/version checks, identity reporting",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "64f22deedefe1bf648cc2832990efe04ff3cfe2c",
+          "sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+          "current_bytes_match_source": false,
+          "working_sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+          "working_lf_normalized_sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "tools/ci/check_repository.py",
+          "symbol_or_locator": "verify_runtime/check",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "5e86aab672b71d6c33ba6a67f6f58cf44057962f",
+          "sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+          "current_bytes_match_source": true,
+          "working_sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+          "working_lf_normalized_sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "third_party/godot-runtime.lock.json",
+          "symbol_or_locator": "godot pin",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "747bd7c9cc213ec4b3f22006ed40e8909e0bce8f",
+          "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+          "current_bytes_match_source": true,
+          "working_sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+          "working_lf_normalized_sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+          "lf_normalized_bytes_match_source": true
+        }
+      ],
+      "observations": "Source distinguishes the launcher checks from repository source-input provenance. The wrapper compares exact Godot and native DLL hash and reports checkout/runtime identity; it does not iterate the provenance source_inputs. The separate checker does. Corrected procedure names that separate check without claiming a new launch."
+    },
+    {
+      "id": "CA-B-02",
+      "priority": "P1",
+      "original_claim_ids": [
+        "B-08",
+        "B-11",
+        "L-32"
+      ],
+      "result": "source-verified correction",
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-saving.md": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+        "docs/operations/architectural-generator-playtest.md": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "symbol_or_locator": "load_setup",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "2c24ed7bac47203e7a53cefe07632336da03d71b",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "current_bytes_match_source": true,
+          "working_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "working_lf_normalized_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "symbol_or_locator": "open_saved, _complete, confirmed signal, _install",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "48e3ea0900c7d051f6de3796da384746205aa88e",
+          "sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+          "current_bytes_match_source": true,
+          "working_sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+          "working_lf_normalized_sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+          "lf_normalized_bytes_match_source": true
+        }
+      ],
+      "observations": "Generated Load opens source verification and starts a preview. _complete checks every saved provenance key, reaches ready, and enables the confirmation button; only confirmed->_install calls install_generated_start. The added Install into workbench step repairs a real incomplete reopening instruction. Source mismatch refuses before installation and cancellation retains the installed map."
+    },
+    {
+      "id": "CA-B-03",
+      "priority": "P1",
+      "original_claim_ids": [
+        "B-08",
+        "B-10"
+      ],
+      "result": "source-verified correction",
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-saving.md": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "symbol_or_locator": "_path/write_named",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+          "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "current_bytes_match_source": true,
+          "working_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "working_lf_normalized_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "symbol_or_locator": "write_named",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "5522ece7af755a40766804deed7fd9f817159322",
+          "sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+          "current_bytes_match_source": true,
+          "working_sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+          "working_lf_normalized_sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+          "lf_normalized_bytes_match_source": true
+        },
+        {
+          "path": "godot/scripts/workbench_material_baseline.gd",
+          "symbol_or_locator": "write_named",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "603301c53b26e90efaea6e00f438153c7e88fa03",
+          "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+          "current_bytes_match_source": true,
+          "working_sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+          "working_lf_normalized_sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+          "lf_normalized_bytes_match_source": true
+        }
+      ],
+      "observations": "Setup name grammar is exactly 1\u201348 characters from ASCII a-z/A-Z/0-9/-/_. Named saves replace their destination; source has no separate overwrite-confirmation UI. The new-name recommendation prevents accidental replacement without claiming a versioned save system."
+    },
+    {
+      "id": "CA-B-04",
+      "priority": "P2",
+      "original_claim_ids": [
+        "B-13",
+        "B-14",
+        "B-16"
+      ],
+      "result": "source-verified correction",
+      "reviewed_document_sha256": {
+        "docs/operations/workbench-art.md": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f"
+      },
+      "source_identities": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol_or_locator": "model_context/remember_turn/model_feedback",
+          "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "git_blob": "c3ab6ea1c68b4565ca1792dde990a2e34cc4e751",
+          "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+          "current_bytes_match_source": true,
+          "working_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+          "working_lf_normalized_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+          "lf_normalized_bytes_match_source": true
+        }
+      ],
+      "observations": "model_context uses conversation.size()-12 for Compacted and Custom, so the count is messages, including user native-feedback entries, not request-response cycles. The extra latest-result message is appended only when first>0. Corrected prose captures both conditions."
+    }
+  ]
+}

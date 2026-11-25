@@ -1,0 +1,545 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B /root/product_showcase",
+  "reviewed": "2026-11-24",
+  "input_file": "answer-b-input.json",
+  "input_sha256": "1b5554d22500011192cb895da0e2f3fdb12e10bd4565a11d0247c11e6cbc50b3",
+  "method": "Agent/editor applicability audit of all actual saved top-five contexts. Bounded answers drafted from those contexts, then compared with accepted source. No model dispatch, substituted hits or ranking-equals-correctness assumption. B authored some guides but did not implement retriever; Specialist A independently reviews B source claims.",
+  "scope": "post-pass1 snapshot, before final B provider/PAINT/current-command reconciliation. Later file fixes do not retroactively change these results.",
+  "summary": {
+    "partial": 2,
+    "sufficient": 9
+  },
+  "results": [
+    {
+      "id": "DR01",
+      "query": "I cloned CyberSand on Windows. Must I have C:/kybersand and dev.cmd before I can open the Workbench?",
+      "applicability": "partial",
+      "bounded_context_answer": "No. A source-only checkout supplies launch-desktop.cmd; dev.cmd and C:/kybersand belong to the separate companion workspace. Materialize the runtime and use the exact pinned Godot. Launch the project through its checked wrapper and choose the Workbench.",
+      "supporting_hit_ranks": [
+        1,
+        5
+      ],
+      "context_notes": [
+        "Correct answer at ranks1/5, but rank4 captured an interim invalid extra-argument example for launch-desktop.cmd. The PowerShell wrapper accepts only Godot, Editor and PrintIdentityOnly, so do not copy that command. Source page corrected after this snapshot.",
+        "Web/physics companion instructions in ranks2/3 are out of scope for first desktop launch."
+      ],
+      "source_checks": [
+        "tools/launch_desktop.ps1::param",
+        "godot/project.godot"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "operations/local-build-and-validation.md",
+          "sha256": "b65141639580cba25c0795fe3b8d1426306ccf09d333642bb8d044fbb5f1396b"
+        },
+        {
+          "rank": 2,
+          "path": "operations/web-threading.md",
+          "sha256": "a8646bb8c17633367e310c4e74da5211fa9ddc05ca224633cfd6ebba90ee3ca1"
+        },
+        {
+          "rank": 3,
+          "path": "operations/physics-characterisation.md",
+          "sha256": "2e358e4ba61e1886ac9c1994ed5b9607a98618bab6402384376543833225a66f"
+        },
+        {
+          "rank": 4,
+          "path": "operations/materials-lab-authoring.md",
+          "sha256": "fc6692503f641919d5dee3478fca583946acb7a78aef2aadc0c5469d216e1946"
+        },
+        {
+          "rank": 5,
+          "path": "operations/local-build-and-validation.md",
+          "sha256": "590faa16904293399178f7f09288df195181d3668c0b735353a8af6c039bd080"
+        }
+      ]
+    },
+    {
+      "id": "DR02",
+      "query": "Can I use any Godot 4 build, and which godot-cpp version matches the native library?",
+      "applicability": "partial",
+      "bounded_context_answer": "Use the exact Godot 4.7.stable.official.5b4e0cb0f target, not an arbitrary Godot4 build. These retrieved excerpts do not state the exact godot-cpp commit; read the native dependency lock or canonical dependency table before answering that part.",
+      "supporting_hit_ranks": [
+        3,
+        4,
+        1
+      ],
+      "context_notes": [
+        "No retrieved top-five context states the bindings commit. Rank1 discusses build scripts without its required exact revision. Do not fill the missing value from model memory.",
+        "Independent source review finds godot-cpp101ae38034304346a46ea9ea84ae156d3e860496, but this value was unavailable to the bounded context-only answer."
+      ],
+      "source_checks": [
+        "third_party/godot-runtime.lock.json",
+        "third_party/native-toolchain.lock.json"
+      ],
+      "missing_subclaim_requires_abstention": true,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "operations/local-build-and-validation.md",
+          "sha256": "34854ccb4fe8f8d905fcd7c19a368c6e30feb2823dbe334fa743917efb1ca83d"
+        },
+        {
+          "rank": 2,
+          "path": "operations/getting-started.md",
+          "sha256": "3fa75ebc554c868f17505d16a35a954aa1441329401cb2e9111630d13d08c84f"
+        },
+        {
+          "rank": 3,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "sha256": "e8019a399174b883090e1fa45c06b056b16c75d52d3505065bd85958617eb168"
+        },
+        {
+          "rank": 4,
+          "path": "operations/local-build-and-validation.md",
+          "sha256": "590faa16904293399178f7f09288df195181d3668c0b735353a8af6c039bd080"
+        },
+        {
+          "rank": 5,
+          "path": "operations/github-development-and-release.md",
+          "sha256": "1a043e1bea7b34e4a0ec18851c6a536e4989a907c8f9efd4997845004359732b"
+        }
+      ]
+    },
+    {
+      "id": "DR12",
+      "query": "How do I paint, erase, fill and undo in a first Workbench session?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "Open the Workbench, pause, choose Paint and use Brush(B), Eraser(E/right-drag), Fill(G) and Ctrl+Z Undo. Precise shapes, Fill and history need paused state; focused text fields retain keys. Wait for native completion and stop/settle active Art before shared Undo. Simulation invalidates unsafe construction history.",
+      "supporting_hit_ranks": [
+        1,
+        2,
+        4
+      ],
+      "context_notes": [
+        "Rank2 carries old Draft/candidate metadata although the tool/control text is accepted current behavior. This metadata was corrected after the saved snapshot."
+      ],
+      "source_checks": [
+        "godot/scripts/workbench_paint_editor_controller.gd::key_input",
+        "godot/scripts/workbench_paint_editor_controller.gd::_live_brush_input"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-first-session.md",
+          "sha256": "870f2a2fa9ab107941860f3779a8acd122e055ebb69b49dc0606145904e6402a"
+        },
+        {
+          "rank": 2,
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "sha256": "3d55b8962f5144fdf231f5279bc09554b3d1791556d0049d36b767e5f7301fc7"
+        },
+        {
+          "rank": 3,
+          "path": "operations/workbench-painting-and-history.md",
+          "sha256": "88a9cf40d4ffcbd64217e289fd5c95f93b8dea1431e77ade86b556e5e3211d85"
+        },
+        {
+          "rank": 4,
+          "path": "operations/workbench-first-session.md",
+          "sha256": "4cd5a1b0ec3a665d1a151db72566a7405824e419ab56110fa25c50accf39615c"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-first-session.md",
+          "sha256": "1363fc0c5c9683d38ff0c70e2a6df9d92488273cf9e30321f7fc5b49934a452e"
+        }
+      ]
+    },
+    {
+      "id": "DR13",
+      "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "No. queued is admission; executing means a worker has claimed a chunk. Wait for actual native receipts to report changed/unchanged/excluded/refused cells and any partial prefix. Neither queued nor a native applied count alone proves that a presented frame displayed the result.",
+      "supporting_hit_ranks": [
+        1,
+        3,
+        5
+      ],
+      "context_notes": [
+        "Current question answered directly at rank1. Ranks2/4 contain unrelated dated inference material and stale unmerged metadata. Rank5 names obsolete history_result rather than current native_history_action; corrected contract removes this contamination."
+      ],
+      "source_checks": [
+        "godot/scripts/simulation_worker.gd::_consume_art",
+        "godot/scripts/art_batch_executor.gd",
+        "godot/scripts/art_batch_panel.gd::history_edited"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "systems/workbench-direct-art-batches.md",
+          "sha256": "51758df29c75499283387ba0e8db88037a6e67492810bf9fc4d96e12370a13d6"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "422603258cd372c314173c36407dba21e135b90182b76670d1cd7cfe19b34565"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "sha256": "d17a78947f48f194bce961b54b0401cda8ab5baee2367b48f7063ec817fee0bf"
+        },
+        {
+          "rank": 4,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "426839dc6c499614aad91d50943f57656d219630bd72ac21f4678f469bded50c"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-direct-art-batches.md",
+          "sha256": "38df7dc94931f05b47da8860d9ace00e5b63ee48ecfe8cead10650e81dc85d9a"
+        }
+      ]
+    },
+    {
+      "id": "DR15",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "No. Ordinary Save is an authored-start reconstruction, not a complete evolved physical checkpoint. The provided contexts explicitly exclude last-tick continuation and restored Undo/Art session history; Art begins empty in a new game session. They do not give the full serialized-field inventory, so exact queue/actor-state details should be checked in the save contract.",
+      "supporting_hit_ranks": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "context_notes": [
+        "Canonical save page is absent, but the central negative answer and session boundary are supported. Do not turn the high-level denial into a claim about every native checkpoint format.",
+        "Provider rank3 scope still says unmerged in this snapshot, while its session-only body is correct; corrected later."
+      ],
+      "source_checks": [
+        "godot/scripts/shared_workbench.gd::save_setup",
+        "godot/scripts/workbench_setup.gd",
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": null,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "reference/status-and-roadmap.md",
+          "sha256": "e6adb917935d4775d15dfee1f85402dfb6944069f99e8bdaf862d882782379b2"
+        },
+        {
+          "rank": 2,
+          "path": "operations/workbench-art.md",
+          "sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "b7315495b5ddcd91ad19dae3aa7e1080cabc8b3bc0eae3d6887bfd39ad286ebe"
+        },
+        {
+          "rank": 4,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "sha256": "6b9a6f6ac3880cfcbd5b7c2bf328e6d03b3db45ba40df0f015f1563854a8e5ab"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-first-session.md",
+          "sha256": "1363fc0c5c9683d38ff0c70e2a6df9d92488273cf9e30321f7fc5b49934a452e"
+        }
+      ]
+    },
+    {
+      "id": "DR22",
+      "query": "Does hiding the Art window mean its request was stopped?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "No. Closing the Art window hides it and keeps the Workbench session. Use Stop to cancel HTTP/capture and future turns and request native retirement; an executing slice may finish and report partial changed cells. Wait for receipts and other authoring work to settle before history actions.",
+      "supporting_hit_ranks": [
+        2,
+        1
+      ],
+      "context_notes": [
+        "Rank2 directly answers. Historical scanline results and linked-segment export wording in lower-ranked provider excerpts are unrelated/obsolete and must not be generalized. They are reconciled in the current file."
+      ],
+      "source_checks": [
+        "godot/scripts/art_batch_panel.gd::_ready",
+        "godot/scripts/art_batch_panel.gd::stop_all"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "b7315495b5ddcd91ad19dae3aa7e1080cabc8b3bc0eae3d6887bfd39ad286ebe"
+        },
+        {
+          "rank": 2,
+          "path": "operations/workbench-art.md",
+          "sha256": "f4901e1c35938edefd80812fff39532e9fc1c71716ce9d2f8a6a22352ebd0aa9"
+        },
+        {
+          "rank": 3,
+          "path": "operations/workbench-art.md",
+          "sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 4,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "b3157850d56376a894689db0040692e6d636a965ccabee2b83e13e28874157c3"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "2451e6aeca10a49313956540c9fe65c5c8580e99b1c75801f0814b5b362f4eae"
+        }
+      ]
+    },
+    {
+      "id": "DR23",
+      "query": "After accepted ART-SESSION-LOG-001, are yesterday\u2019s Art conversation messages automatically restored on the next game launch?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "No. Every new Workbench session starts with an empty Art conversation. Hiding/reopening within the same session keeps it, but new Send does not attach old archives. Nonsecret preferences may persist; older logs remain on disk for deliberate diagnosis.",
+      "supporting_hit_ranks": [
+        1,
+        2,
+        4
+      ],
+      "context_notes": [
+        "Rank1 stale unmerged scope conflicts with acceptance wording, but current session-only behavior is explicit and corroborated by ranks2/4. Metadata now corrected."
+      ],
+      "source_checks": [
+        "godot/scripts/art_batch_panel.gd::_ensure_history_loaded",
+        "godot/scripts/art_batch_panel.gd::save_profile",
+        "godot/tests/test_art_session_log.gd"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "b7315495b5ddcd91ad19dae3aa7e1080cabc8b3bc0eae3d6887bfd39ad286ebe"
+        },
+        {
+          "rank": 2,
+          "path": "operations/workbench-art.md",
+          "sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 3,
+          "path": "operations/workbench-art.md",
+          "sha256": "7edf99f4d034ad920e668cebd7dde458a18c43a86ebb2b265880764f15131183"
+        },
+        {
+          "rank": 4,
+          "path": "operations/workbench-first-session.md",
+          "sha256": "1363fc0c5c9683d38ff0c70e2a6df9d92488273cf9e30321f7fc5b49934a452e"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-art.md",
+          "sha256": "20f6f5456a600b43f74a858079056bb30f7380167cf639353ee1d3b5381e6ab0"
+        }
+      ]
+    },
+    {
+      "id": "DR24",
+      "query": "Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "Attach a minimal synthetic reproduction with source/runtime identity, platform, steps, expected/actual result and a manually inspected/redacted error or receipt extract. Do not attach entire Art archives by default. Automatic credential redaction does not make prompts, model replies, images or arbitrary private text safe to publish.",
+      "supporting_hit_ranks": [
+        1,
+        3,
+        4
+      ],
+      "context_notes": [
+        "No retrieved source grants blanket safety to raw/exported JSONL. Rank2 linked-segment details are stale but do not change the privacy warning."
+      ],
+      "source_checks": [
+        "godot/scripts/art_provider.gd",
+        "godot/scripts/art_batch_panel.gd"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "operations/local-build-and-validation.md",
+          "sha256": "d17a78947f48f194bce961b54b0401cda8ab5baee2367b48f7063ec817fee0bf"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "b3157850d56376a894689db0040692e6d636a965ccabee2b83e13e28874157c3"
+        },
+        {
+          "rank": 3,
+          "path": "operations/workbench-art.md",
+          "sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 4,
+          "path": "reference/validation-evidence.md",
+          "sha256": "af40dbeba5742c047d9f37ebb04546fb4db0bd41804f6291a0d8602cb70521cc"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-art-providers.md",
+          "sha256": "b7315495b5ddcd91ad19dae3aa7e1080cabc8b3bc0eae3d6887bfd39ad286ebe"
+        }
+      ]
+    },
+    {
+      "id": "DR25",
+      "query": "Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "No. Accepted Strata Theatre is a separate opt-in layered host; ordinary Workbench integration is a candidate. In the standalone host, the background remains immutable even if selected as a paint target. Its controls and layered presentation do not grant four-plane Workbench authoring.",
+      "supporting_hit_ranks": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "context_notes": [
+        "Top result is standalone controls, but its scope plus rank4 explicitly preserve the ordinary-Workbench boundary."
+      ],
+      "source_checks": [
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/depth/depth_layer_runtime.gd",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "systems/depth-layers-and-parallax.md",
+          "sha256": "5f71f91d79fe2d079719912b113547e3a488a11081b84464cab30af6be57d427"
+        },
+        {
+          "rank": 2,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "sha256": "6b9a6f6ac3880cfcbd5b7c2bf328e6d03b3db45ba40df0f015f1563854a8e5ab"
+        },
+        {
+          "rank": 3,
+          "path": "systems/depth-layers-and-parallax.md",
+          "sha256": "50c1196e86e2011ef2a4bfb02220034bb8fc1c3eb3eb0354bb7426b7e67fc881"
+        },
+        {
+          "rank": 4,
+          "path": "operations/showcase-guide.md",
+          "sha256": "e23b1e8f0bdf792db43e6aba36e3e858c560cfd74a7892546a68e02280dec46e"
+        },
+        {
+          "rank": 5,
+          "path": "systems/depth-layers-and-parallax.md",
+          "sha256": "27304397a37e30811c5b486cae302c1a299dde3de5bd92ab19fbf3154800147f"
+        }
+      ]
+    },
+    {
+      "id": "DR34",
+      "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "No. Persistent areas and bounded game-time catch-up are approved direction and separately scoped unmerged work. Current interest-region re-entry restores eligibility rather than elapsed-time catch-up; ordinary authored saves do not include a residency/cache manager or exact off-screen continuation.",
+      "supporting_hit_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "context_notes": [
+        "The answer preserves approved intent instead of treating current absence as permanent rejection. Do not substitute real-world offline elapsed time for game time."
+      ],
+      "source_checks": [
+        "docs/decisions/2026-11-14-owner-authoring-intent.md",
+        "godot/scripts/workbench_setup.gd",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 4,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "systems/world-storage-and-interest-region.md",
+          "sha256": "7b7bee744bfa62ee6ea80c6fbe450ad43f79280dcb615928f1544e0c7f7641bd"
+        },
+        {
+          "rank": 2,
+          "path": "reference/product-intent-and-priorities.md",
+          "sha256": "d83c04d413a065cc8e4e2cbfc37a6056e2db88beaa6cf459863981cc73ddc784"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/overview.md",
+          "sha256": "30b40ed1266d5a605106fa69b4f337eb796d181b3124f2a3cec4dc6883e58a1a"
+        },
+        {
+          "rank": 4,
+          "path": "reference/status-and-roadmap.md",
+          "sha256": "b1264ef7474efa0bf52dfd816a20ed9d66d668807d626addce2dace032fc6168"
+        },
+        {
+          "rank": 5,
+          "path": "systems/world-storage-and-interest-region.md",
+          "sha256": "b0d841a6a8ff4d78416e4cee05a5603f60b27b92b409f36d35f7b47f504eab2f"
+        }
+      ]
+    },
+    {
+      "id": "DR35",
+      "query": "Can I use the World Art viewer and large PNG captures without treating its dimensions as native playable World capacity?",
+      "applicability": "sufficient",
+      "bounded_context_answer": "Yes, within the standalone art adapter/export limits. Art input supports up to16384cells per side and16777216cells total; interactive full PNG uses50million output pixels, while explicit streamed capture allows100million and65536per output axis. These rendering limits do not qualify playable World size, physics, traversal or save/import compatibility.",
+      "supporting_hit_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "context_notes": [
+        "Do not infer a physical NVIDIA acceptance result from a script or retained package. Lower-rank owner procedure is an instruction to perform evaluation, not a result."
+      ],
+      "source_checks": [
+        "godot/tools/world_art_grid.gd",
+        "godot/tools/world_art_full_export.gd",
+        "tools/world_art_capture_support.py",
+        "tools/world_art_stream_png.py"
+      ],
+      "missing_subclaim_requires_abstention": false,
+      "canonical_rank": 1,
+      "context_hashes": [
+        {
+          "rank": 1,
+          "path": "tools/world-art-capture.md",
+          "sha256": "44e58d109a5fff47abf3d8e9789a2e0d5b7b8d5e6a43e96fa178b3060e34113e"
+        },
+        {
+          "rank": 2,
+          "path": "tools/world-art-preview.md",
+          "sha256": "9535629b517c84e61a7de55c3f63d2d6fe8d64b958ad8e918ec92826a6fad553"
+        },
+        {
+          "rank": 3,
+          "path": "tools/art-pipeline-unification.md",
+          "sha256": "eb910a4c10bb90c1a11e61e3483deb2fa943b9a78bfa9845c0cf5972253e7d79"
+        },
+        {
+          "rank": 4,
+          "path": "tools/world-art-evaluation.md",
+          "sha256": "1b5ced452fbaba8d92d6339ba1192bad31cfdd5505b04ac8c8ac90e833ef1195"
+        },
+        {
+          "rank": 5,
+          "path": "tools/world-art-evaluation.md",
+          "sha256": "9369a3cb9a3c80ea0d3765525d87e7e68d899b934b269ac4e57e3fee02def2a5"
+        }
+      ]
+    }
+  ]
+}

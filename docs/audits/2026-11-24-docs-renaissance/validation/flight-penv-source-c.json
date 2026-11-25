@@ -1,0 +1,23 @@
+{
+  "authority": "historical-non-authoritative",
+  "recorded_utc": "2026-11-24T19:53:22.602182+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Python SHA-256 of raw bytes and exact normalized-source substitution specified by controller and source conformance test; source inspection of final loader and qualification runner. No engine execution.",
+  "controller_file_sha256": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+  "controller_normalized_sha256": "fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae",
+  "source_sha256": {
+    "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+    "godot/scripts/physical_flight_sealed_suite.gd": "2270b7b9a54a8380d0db9437fa33ffe1331bf5a92070f640db933e46965781f8",
+    "godot/qualification/4ly003_teacher_qualification.gd": "479fed79a799ca6d3cb7f3b287f911e442010be55cab0a4c21f1c94af27058b3",
+    "godot/scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+    "godot/tests/test_gameplay_recorder.gd": "2495836fe39aa42e99cd215d5fa642add0bbe237b981fb6c6bf93a3708474bba"
+  },
+  "documents": {
+    "docs/systems/physical-flight-lab.md": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+    "docs/systems/player-environment-profiles-and-traversal.md": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10"
+  },
+  "claims": [
+    "C-24",
+    "C-25"
+  ]
+}

@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Suspended Arcology classic Gentek showcase
 status: Current
 document-kind: research

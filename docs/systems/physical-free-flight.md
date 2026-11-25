@@ -4,11 +4,24 @@ status: Current
 document-kind: contract
 scope: Shared single-chassis flight plant, strict two-output control, four 4LY-002 handling candidates and ordinary-game selection; measured calibration and downstream flight lab/policy qualification are separate
 canonical-for: [physical-free-flight, 4ly-programme, 4ly-assisted-velocity-control]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-11-24
 related-documents: [physical-actor-rigs.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # 4LY physical free-flight and assisted velocity control
+
+The four profiles are present in accepted source through these distinct routes:
+
+| Host | Current entry and scope |
+|---|---|
+| Shared Workbench | **Development workbench → Actor Composition… → Family: 4LY assisted flight**. Place or pilot a drone alongside the admitted cast; use the [actor guide](../operations/workbench-actor-composition.md) for placement, inspection and handoff. |
+| Ordinary sandbox / supported exploratory host | **F5 → set4LY**, then choose Trainer, Hauler, Drifter or Dart. Applying this F5 selection rebuilds the authored map and actor. |
+| Standalone flight lab | **4LY Flight Lab** in the feature launcher, or `-- --flight-lab`; its [episode and teacher contract](physical-flight-lab.md) is separate. |
+
+The literal `candidate_4ly002` is a retained calibration identity in the current
+profile data, not a claim that these selectable source features are unmerged.
+The dated source-bound handling measurements below do not grant new physical
+owner acceptance, learned-policy admission or a current-platform rerun.
 
 The separately owned [4LY-003 flight lab and episode contract](physical-flight-lab.md)
 extends this unchanged physical plant with an in-game native/Rapier lab,
@@ -26,9 +39,10 @@ one shared physical plant and bounded velocity controller for the stable IDs
 distinct numerical profiles, each using exactly the same controller and
 single rectangular body. F5 has a separately named **set4LY** appended after
 the established eight sets. The original 46 entries in `RIG_IDS` and the
-original SetP indices are unchanged. Available hosts are the ordinary sandbox
-and the existing Play/exploratory maps with a physical F5 actor selector;
+original SetP indices are unchanged. The F5 route is available in the ordinary sandbox
+and the existing Play/exploratory maps with a physical actor selector;
 protected Benchmark/scientific fixtures still refuse actor replacement.
+Shared Workbench uses its separate Actor Composition controls instead of F5.
 The physical Skimmer already supplies articulated twin-pod vector flight;
 4LY adds a simpler training topology through the same physical owner.
 
@@ -114,9 +128,12 @@ measured source/physics identity documented in the
 [4LY-002 qualification audit](../audits/2026-10-23-4ly002-measured-handling-qualification.md).
 The first Windows attempt's unrelated timeout is retained separately
 from the successful rerun. Any future profile/physics edit changes source
-identity and requires new qualification. A new hosted graphical
-gameplay-capture fixture is being validated for descriptive screenshots;
-target-PC owner feel, Web and multi-agent learning remain unmeasured.
+identity and requires new qualification. The current
+[`test_physical_flight_gameplay_render.gd`](../../godot/tests/test_physical_flight_gameplay_render.gd)
+provides the descriptive graphical capture procedure; use the build guide for
+its source/runtime and graphical prerequisites. Fixture presence does not
+establish a new successful execution, target-PC owner feel, Web or multi-agent
+learning qualification.
 
 ## Who owns the chassis, contacts and equipment?
 

@@ -1,0 +1,59 @@
+extends SceneTree
+
+const Project = preload("res://scripts/architectural_generator_project.gd")
+const Store = preload("res://scripts/workbench_generated_map.gd")
+const Palette = preload("res://scripts/material_appearance_lut.gd")
+var out := "/workspace/scratch/855d9af51e68/b-capture/output"
+
+func _initialize() -> void:
+	run.call_deferred()
+
+func run() -> void:
+	var report := {"schema":1,"source":"00cdb02f103265b6dc5224c68283e9a0c8cb449f","godot":Engine.get_version_info().string,"display":DisplayServer.get_name(),"scope":"Headless native material visualization; ordinary ArchitecturalProject compiler and CyberWorldGenerator, palette RGBA, no graphical UI or physical qualification","cases":[]}
+	for wanted: String in ["interlaced-viaduct","cathedral-megaframe","megatruss-station"]:
+		var project: Dictionary = Project.default_project()
+		project.seed = 271828
+		project.extent = [1024,1024]
+		project.automatic_tunnels = false
+		project.automatic_windows = true
+		project.automatic_doors = true
+		project.styles = []
+		for preset: Dictionary in Project.builtin_presets():
+			if preset.id == wanted:
+				project.styles.append({"enabled":true,"share":100.0,"preset":preset.duplicate(true)})
+		var compiled: Dictionary = Project.compile(project)
+		if not compiled.get("ok",false):
+			push_error(JSON.stringify(compiled)); quit(1); return
+		var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+		var accepted: Dictionary = generator.configure(compiled.recipe)
+		if not accepted.get("ok",false): push_error(JSON.stringify(accepted)); quit(1); return
+		var cells := PackedByteArray()
+		cells.resize(1024*512)
+		var side: int = int(compiled.recipe.get("chunk_size",64))
+		var receipts := {}
+		for cy: int in range(512/side):
+			for cx: int in range(1024/side):
+				var packet: Dictionary = generator.generate_chunk(Vector2i(cx,cy))
+				if not packet.get("ok",false) or packet.get("state","") != "ready": push_error(JSON.stringify(packet)); quit(1); return
+				receipts[str(Vector2i(cx,cy))] = packet.receipt_hash
+				for y: int in side:
+					for x: int in side:
+						cells[(cy*side+y)*1024+cx*side+x] = packet.cells[y*side+x]
+		var pixels := PackedByteArray()
+		pixels.resize(cells.size()*4)
+		for i: int in cells.size():
+			var rgba: int = int(Palette.BASE_RGBA8[int(cells[i])])
+			pixels[i*4] = (rgba >> 24)&255
+			pixels[i*4+1] = (rgba >> 16)&255
+			pixels[i*4+2] = (rgba >> 8)&255
+			pixels[i*4+3] = 255
+		var filename := "gentek-"+wanted+"-native.png"
+		var frame := Image.create_from_data(1024,512,false,Image.FORMAT_RGBA8,pixels)
+		if frame.save_png(out.path_join(filename)) != OK: quit(1); return
+		var f := FileAccess.open(out.path_join(wanted+"-project.json"),FileAccess.WRITE)
+		f.store_string(JSON.stringify(project,"\t")+"\n"); f.close()
+		report.cases.append({"preset":wanted,"file":filename,"project_extent":[1024,1024],"render_crop":[0,0,1024,512],"seed":271828,"project_sha256":compiled.project_hash,"recipe_sha256":Store.recipe_hash(compiled.recipe),"material_sha256":Store.digest(cells),"native_receipts":receipts,"png_sha256":FileAccess.get_sha256(out.path_join(filename))})
+	var f := FileAccess.open(out.path_join("native-render.json"),FileAccess.WRITE)
+	f.store_string(JSON.stringify(report,"\t")+"\n"); f.close()
+	print("DOCS_NATIVE_RENDER cases=",report.cases.size()," source=",report.source)
+	quit(0)

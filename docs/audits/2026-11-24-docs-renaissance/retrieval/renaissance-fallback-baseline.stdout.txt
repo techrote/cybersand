@@ -1,0 +1,45 @@
+{
+  "documents": 171,
+  "chunks": 2284,
+  "questions": 36,
+  "canonical_hit_at_1": 19,
+  "canonical_hit_at_k": 26,
+  "mrr_at_k": 0.6111,
+  "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+}
+DR01 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands
+DR02 rank=None operations/materials-lab-authoring.md :: Materials Lab v1 > Launch and prerequisites
+DR03 rank=None operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Which version is the working source?
+DR04 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands > Repository-contained Windows desktop launcher
+DR05 rank=2 ../AGENTS.md :: CyberSand repository guide for coding agents > Architectural constraints
+DR06 rank=2 operations/architecture-programme-source-ledger.md :: Source synthesis and epistemic ledger > Ledger
+DR07 rank=None operations/wave-flow-evaluation.md :: Wave Flow evaluation > Water Lab (consolidated Workbench UI)
+DR08 rank=1 architecture/ballistic-water-v1.md :: Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law
+DR09 rank=4 operations/water-hybrid-pressure-extension-programme.md :: Water hybrid, saturated-head and compartment-pressure extension programme > Owner clarifications recorded 2026-09-20 > Water and other native liquids still use distinct motion/quantity paths
+DR10 rank=1 operations/materials-lab-authoring.md :: Materials Lab v1 > Browse and inspect actual behaviour
+DR11 rank=None decisions/2026-11-14-owner-authoring-intent.md :: Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation
+DR12 rank=1 systems/paint-editor-bounded-shapes.md :: PAINT-001 — bounded painting editor > Using the editor
+DR13 rank=1 systems/workbench-direct-art-batches.md :: Direct art batches — WB-ART-002 Stage 1 > Ownership, capacities and completion
+DR14 rank=4 systems/player-control-playground.md :: Player control playground > Acrobat movement chains and cancels
+DR15 rank=None reference/status-and-roadmap.md :: Status and foundational roadmap > WB-ART-002 direct drawing — 2026-11-10
+DR16 rank=1 operations/gen008-flatten-qualification.md :: Flatten / Bake History evaluation > Windows owner acceptance
+DR17 rank=1 systems/architectural-generator.md :: Architectural Generator — Phase A and bounded Phase B > 80-Gentek integration candidate — 20 November 2026
+DR18 rank=None research/gentek-80-integration-001.md :: GENTEK-80-INTEGRATION-001 > Materials, runtime inputs and concurrency boundary
+DR19 rank=1 systems/workbench-actor-composition.md :: Shared Workbench actor composition > Implementation and scope
+DR20 rank=2 systems/physical-actor-rigs.md :: Articulated Rapier actors and shared physical control > How do I select and control them?
+DR21 rank=1 systems/workbench-art-providers.md :: Art workbench provider connection — Stage 2 > Current candidate and controls
+DR22 rank=1 systems/workbench-art-providers.md :: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+DR23 rank=1 systems/workbench-art-providers.md :: Art workbench provider connection — Stage 2 > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026
+DR24 rank=1 systems/workbench-art-providers.md :: Art workbench provider connection — Stage 2 > Diagnostics and retention
+DR25 rank=1 systems/depth-layers-and-parallax.md :: Depth layers and parallax prototypes > Strata Theatre controls
+DR26 rank=2 operations/physical-actor-programme.md :: Physical actors and combined feature trials > What did the owner observe and authorize on 2026-10-18?
+DR27 rank=1 operations/web-threading.md :: Web worker profiles and reference tests
+DR28 rank=2 operations/wb-art-paint-integrated-candidate.md :: Integrated PAINT and agent Shared Workbench > Final hardening and evaluation — 2026-11-12 > Evaluate the delivered package
+DR29 rank=1 operations/github-development-and-release.md :: Repository development and release > Current CI provider and draft gating
+DR30 rank=1 operations/github-development-and-release.md :: Repository development and release > Parallel validation and source-scope advice — 2026-10-31
+DR31 rank=None reference/retrieval-index.md :: Retrieval question index > Retrieve historical results explicitly
+DR32 rank=1 operations/documentation-maintenance.md :: Documentation maintenance and retrieval contract > What makes a page independently retrievable?
+DR33 rank=1 decisions/2026-11-14-owner-authoring-intent.md :: Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific
+DR34 rank=None decisions/2026-11-14-owner-authoring-intent.md :: Owner authoring and world intent — 14 November 2026 > World extent, persistence and time
+DR35 rank=None ../README.md :: CyberSand > World Art viewer and capture
+DR36 rank=None operations/github-development-and-release.md :: Repository development and release > Reconciliation and design choices

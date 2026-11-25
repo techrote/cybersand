@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-24
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
@@ -31,7 +31,9 @@ and `cached_dormant` (2), with the same physical parameters, material stages,
 gas identity and Water quantity law. Other material/family compatibility remains
 source-derived; unsupported requests refuse before session replacement.
 
-The production Water default remains `freemass_v1`. A cache miss or incomplete
+The native policy Water default remains `freemass_v1`; new player sessions
+separately enable the [Wave gameplay profile](wave-flow-v1.md). This pressure
+implementation runs only when PF is selected. A cache miss or incomplete
 derived result executes the complete admitted pressure reference operator.
 Reference capacity failure retains the failed-World quarantine contract. These
 variants never substitute FreeMass, a default material kernel or GDScript.
@@ -84,7 +86,8 @@ to be unchanged, with no discovery allocations. This includes final sanitation
 of unvisited labels whose compartment retired beneath a body mask; reference,
 cached and dormant variants share that authority repair. Still-live masked
 labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
-retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
+retains the six-arm failing control and then-pending acceptance; the correction
+was subsequently included in accepted #253. Equal compartment amounts alone
 do not establish that fixed point. Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
 

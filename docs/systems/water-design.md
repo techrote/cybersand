@@ -3,24 +3,44 @@ title: Water design
 document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
-scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-10-24
+scope: Current Water-family routing and player defaults; scoped FreeMass mechanics, quantity accounting, historical negative controls and fallback differences
+last-reviewed: 2026-11-24
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../operations/water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md]
 ---
 
 # Water design
 
-**Current:** native Water uses bounded pairwise transfers of 8-bit conserved
-mass. Native desktop and both Web profiles use this model. The desktop GDScript
-fallback uses a different discrete flow model. Closed pure-Water fixtures
-demonstrate conservation and stable rest; they do not prove conserved mass for
-every material reaction or exact save/replay continuation.
+**Current accepted source `00cdb02f`, checked 24 November 2026:** Water has
+several admitted native laws. Fresh native sandbox and Shared Workbench sessions
+use **Wave Flow with waterfall spill and ballistic release**. Plain C++
+`WorldConfig` still selects the original FreeMass carrier with those overlays
+disabled. Native Web, desktop comparison hosts and explicit saved setups must be
+identified by their actual applied constructor/receipt; there is no universal
+all-platform player preset implied by the word “Water”.
 
-Source identity is in the [checkpoint](../operations/source-checkpoint-and-recovery.md);
-dated fixture executions are in the [evidence ledger](../reference/validation-evidence.md).
-[ADR-005](../decisions/ADR-005-water-model.md) owns the solver decision and rejected alternatives.
+| Path | Material motion and state | Canonical contract |
+|---|---|---|
+| Original FreeMass | Pairwise fractional transfer; 255 units per full cell, coherence and film adhesion | The FreeMass sections below |
+| CellularYield Water | Whole-cell movement with explicit fractional-input admission/normalization | [Family policy](../architecture/liquid-solver-family-policy.md) |
+| PressureFlow | Pressure/head, visible quantity plus overfill, gas compartments; reference/cached/cached_dormant variants | [PressureFlow](../architecture/pressure-flow-v1.md) |
+| InertialCellular | Whole-cell carriers with retained integer motion; optional signed-vertical extension is separate | [Inertial](../architecture/inertial-cellular-v1.md) |
+| Wave Flow | Bulk strip passes, uint16 stored mass and retained face flux; no PressureFlow gas model | [Wave Flow](../architecture/wave-flow-v1.md) |
+| Ballistic Water | Bounded native parcels that launch, fly and deposit exact Water quantity | [Ballistic Water](../architecture/ballistic-water-v1.md) |
+| Desktop GDScript fallback | Discrete cell flow with different rules and limits | [Fallback section](#desktop-fallback-difference-and-historical-fixture) |
+
+Source: [`WorldConfig`](../../native/include/cybersand/world.hpp),
+[`select_gameplay_water`](../../godot/native_extension/cyber_native_cell_world.cpp),
+[`LiquidSolverPolicy`](../../native/include/cybersand/liquid_solver_policy.hpp).
+This page owns routing and the original FreeMass semantics. It does not collapse
+all families into one material law or turn an old FreeMass failure into a current
+Wave result. Runtime and physical acceptance remain source/platform-specific in
+the [validation ledger](../reference/validation-evidence.md).
 
 ## Current native representation and flow
+
+**Scope: original `freemass_v1`, without Wave.** The following 255-unit capacity,
+local transfer and no-direction rules describe that path only. Wave can retain
+overfill and face flux; IN and ballistic parcels carry their own motion.
 
 [World::update_water and transfer_water](../../native/src/world.cpp) own the rules;
 [MaterialRules](../../native/include/cybersand/material.hpp) supplies immutable
@@ -61,10 +81,10 @@ remain exact. General gameplay still has optional mixing/carrying disabled.
 
 ## Deep-head limitation after issue #26
 
-**Current Water semantics are unchanged by #26.** The
+**Historical FreeMass comparator:** #26 did not change its original law. The
 [2026-09-19 characterization](../audits/2026-09-19-issue-26-water-leveling.md)
 adds true communicating-head controls and demonstrates a limitation that the older
-flat-basin speed check did not exercise. With the Current solver, medium and deep
+flat-basin speed check did not exercise. With that exact FreeMass comparator, medium and deep
 identical outlets have the same early discharge once their local outlet cells are
 full; communicating pools can sleep with about a 16-cell level difference, and a
 true unequal-head U-tube can sleep with about a 24-cell difference.
@@ -85,7 +105,7 @@ resolved.
 
 ## Post-#26 apparatus qualification
 
-**Current Water semantics remain unchanged.** The #26 negative result is valid for
+**Historical FreeMass comparator:** the referenced apparatus retained its law. The #26 negative result is valid for
 the two exact radius-2 candidates tested, but the retained v1 experiment apparatus
 has post-merge review limitations documented in
 [the #26 review](../audits/2026-09-19-issue-26-post-merge-review.md).
@@ -102,15 +122,16 @@ evidence, phase-separated timing and failure-retaining campaign accounting. See
 the [frozen v2 registration](../audits/2026-09-20-issue-49-water-apparatus-v2-registration.md)
 and [source-matched Current-Water baseline](../audits/2026-09-20-issue-49-water-apparatus-v2-baseline.md).
 
-Current Water remains unchanged. In the clean two-limb control it does not reach
+That source-matched FreeMass control does not reach
 the preregistered half-life or <=1-cell target by tick 4800. Preserve all original
 #26 artifacts as historical evidence; this corrected negative control does not
-select a successor mechanism. #95 must synthesize it with WEX evidence before #45
-may proceed, narrow, recharter, defer or no-go.
+select a successor mechanism. The later [WEX-005 disposition](#wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23)
+records #95's NARROW decision for #45; the old waiting instruction is not a new
+requirement to repeat that decision.
 
 ## Hybrid / pressure extension after the 2026-09-20 owner clarification
 
-**Current Water semantics are unchanged.** The
+**Historical FreeMass checkpoint:** the following result predates the later admitted families and Wave player profile. The
 [Water hybrid/pressure extension programme](../operations/water-hybrid-pressure-extension-programme.md)
 records a parallel investigation before a new head/pressure mechanism is selected.
 
@@ -145,7 +166,7 @@ or change Current Water semantics.
 
 ## WEX-005 disposition and the opt-in LCB lane (2026-10-23)
 
-**Current Water semantics are unchanged.** The
+**Historical FreeMass checkpoint:** the following result predates the later admitted families and Wave player profile. The
 [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
 records #95's answers:
 
@@ -156,7 +177,7 @@ records #95's answers:
 - **#45: NARROW.** Bounded head-transmission research continues to its
   admission/design phase only, under a shared/vented atmosphere, with a separately
   registered surge fixture family. No mechanism is selected.
-- **Boundary assumption:** Current Water has no gas state; `Empty` acts as one
+- **Boundary assumption of that FreeMass comparator:** it has no gas state; `Empty` acts as one
   shared atmosphere. Equal levels are a valid target only for vented/shared
   headspaces. Sealed headspaces settle at `Δh = (p_A − p_B)/(ρ·g)`, and
   vacuum/low-pressure boundaries have no Current target.
@@ -169,17 +190,30 @@ families with Water as a common test material. The
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
 bounds that lane: unchanged defaults, no hidden fallback, no production #45
 selection, no new pressure-to-Rapier forces, and the Current fixtures and #49 v2
-controls held fixed. The [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
-kernel is **Current on branch `claude/lcb001-pressure-reference` (unmerged)**: it
-runs only in a World whose applied policy assigns it, adds overfill, signed flow and
-World-owned gas compartments, and leaves every semantic on this page unchanged for
-the default `freemass_v1` World. In a pressure World, `water_integer` counts visible
-plus overfill quantity and FreeMass `transfer_water` throws instead of
-running as a silent fallback. Its
-characterization does not select or tune #45. Other candidate kernels remain
-**Planned**. **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+controls held fixed. The later native implementations are accepted: PressureFlow and its variants,
+Water/Brine InertialCellular, and their ordinary prepared application paths are
+mapped in the [family policy](../architecture/liquid-solver-family-policy.md).
+Pressure Worlds add overfill, signed flow and World-owned gas compartments;
+FreeMass `transfer_water` refuses there rather than silently acting as a fallback.
+The native quantity ledger distinguishes visible, overfill and in-flight Water.
+These additions do not select a generic #45 mechanism or accept every historical
+#12 hybrid objective.
+
+**Historical admission evidence:** LCB-000 Gates A–E passed and #213 closed on
+24 October 2026. The [design checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
+[policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+and [bounded implementation decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
+preserve the original permissions. Their “unmerged pressure branch” and
+“inertial not implemented” descriptions were later superseded by accepted
+source; they do not describe availability at `00cdb02f`. The initial admission
+itself made no production-default, carrier, full-replay or general streaming
+change. The later Wave gameplay profile is a separately identified transition.
 
 ## Coherent emission and surface adhesion
+
+**Scope: the original FreeMass kernel.** Other families own their corresponding
+coherence, saturation and film rules; the Wave guide documents its derived film
+adhesion and spill behavior.
 
 Coherent/calm emission is a command flag on Water, not a second material ID.
 [CyberNativeCellWorld::emit_disc](../../godot/native_extension/cyber_native_cell_world.cpp)
@@ -212,10 +246,12 @@ mutate authoritative cells or wake the simulation.
 
 `transfer_water` conserves exact integer mass for each Water pair. A closed
 pure-Water fixture must preserve the exact total every tick, including sleep,
-wake, and boundary crossings. Consuming/producing reactions are a separate
-accounting problem; no general conserved reaction-mass model is implemented.
+wake, and boundary crossings. Current native quantity ledgers additionally book explicit Water sources/sinks
+from edits, generation, events, kernels and registered reactions, with overfill
+and in-flight terms where enabled. That bookkeeping does not claim universal
+physical mass conservation across all species or change legacy chemistry.
 
-Use `World::content_hash()` to observe rest: it includes material/state/
+For the original FreeMass fixture, use `World::content_hash()` to observe rest: it includes material/state/
 temperature at meaningful coordinates and excludes tick/epoch/activity.
 `state_hash()` includes advancing tick and update epoch plus additional
 scheduler state, so it is expected to change during otherwise resting ticks.
@@ -235,6 +271,11 @@ These are fixture bounds, not universal settling-time guarantees. Additional
 mirrored, shifted, mixed-material, and every-direction edge cases remain needed.
 
 ## Rendering and saves
+
+Wave exact physical save/restore is refused. A Workbench authored Save or
+material-only Flatten reconstructs a starting layout, not Wave flux, in-flight
+parcels, temperature or complete physical state. The [save contract](../reference/level-saves-and-replay.md)
+separates these formats and current CYPS versions.
 
 `World::copy_rgba` derives stable coverage from world coordinates and mass.
 The Godot native path instead publishes RG8 material/condition bytes and derives
@@ -265,11 +306,12 @@ difference at most two after 360 ticks; later dated executions are in the ledger
 
 ## Planned and deferred changes
 
-**Planned:** explicit source/sink reaction accounting, mass-return commands,
-general replay capture, and complete mirrored/edge acceptance. **Deferred:**
-a general fluid solver. Active-only buffered flux is a retained **Planned**
-candidate only if measured bias or a future field justifies it; no buffered
-solver is selectable today. **Rejected:** a competing liquid world, equivalent
+**Current:** bounded native Water source/sink accounting exists. **Planned:**
+general application replay capture, broader source/mass-return interfaces, and
+complete cross-family mirrored/edge acceptance. **Deferred:**
+a general-purpose continuum fluid solver. `SimulationBackend::Buffered` is not
+implemented; Wave's dedicated face-flux passes do not make that generic backend
+available. Historical active-only buffered-flux proposals retain their own scope. **Rejected:** a competing liquid world, equivalent
 swaps to animate rest, or finite travel history as free Water equilibrium.
 
 

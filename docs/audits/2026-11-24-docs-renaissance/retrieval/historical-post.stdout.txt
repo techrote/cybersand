@@ -1,0 +1,19 @@
+{
+  "documents": 13,
+  "chunks": 331,
+  "questions": 10,
+  "canonical_hit_at_1": 7,
+  "canonical_hit_at_k": 10,
+  "mrr_at_k": 0.8033,
+  "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+}
+H01 rank=3 history/engineering/views/coverage.md :: Individual coverage and four-asset dispositions > state-carrier
+H02 rank=1 history/engineering/REPORT.md :: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Gas-cache #533: preserve the rejection and its counterexample
+H03 rank=1 history/engineering/REPORT.md :: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Carrier and motion doctrine: current facts changed; architecture remains a choice
+H04 rank=2 history/engineering/views/coverage.md :: Individual coverage and four-asset dispositions > state-flatten
+H05 rank=1 history/engineering/views/salvage.md :: Technical salvage and negative knowledge > RT-F10 — salvage
+H06 rank=1 history/engineering/REPORT.md :: Milestone 1 — Investigation and knowledge capture > 3. Material findings and M0 corrections > Negative results and superseding corrections survive together
+H07 rank=1 history/engineering/views/doctrine.md :: Historical doctrine and constraints > GOV-01 — doctrine
+H08 rank=1 history/engineering/families/state.md :: Milestone 1 state, persistence and generation research packet > 5. Capture and ownership experiments
+H09 rank=1 history/engineering/families/simulation.md :: M1 capture lane: simulation, liquids and material authoring > SIM-07 — Backend readiness and protected Workbench cutting
+H10 rank=5 history/engineering/SCHEMA.md :: Record schema and maintenance > Individual coverage records

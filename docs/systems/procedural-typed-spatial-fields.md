@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-003 schema-2 immutable typed spatial computation, explicit mask conversion, bounded resampling, structured seeds and finite region assignment; platform acceptance remains separately evidenced
 canonical-for: [generation-typed-values, generation-spatial-transforms, generation-derived-geometry, generation-reusable-subgraphs, generation-structured-mappings, generation-multiresolution-cache]
 keywords: [GEN-003, typed fields, signed distance, vector, category, transform, gradient, curvature, Peano, Voronoi, Delaunay, Poisson, subgraph, multiresolution, cache]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-11-24
 related-documents: [procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, ../reference/procedural-spatial-operators.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/local-build-and-validation.md]
 ---
 
@@ -14,9 +14,11 @@ related-documents: [procedural-world-generation.md, procedural-generation-fields
 ## How does GEN-003 preserve existing scalar recipes?
 
 **Current source, GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190):**
-schema-2 recipes add a separate `spatial` graph of immutable world-coordinate
-functions. The retained schema-1 `fields` graph still implements its original
-normalized scalar operators, initial proposal context, masks and sidechains.
+Schema 2 introduced a separate `spatial` graph of immutable world-coordinate
+functions; the accepted compiler also admits it in hierarchical schema 3 and
+architectural schema 4. The schema/algorithm map is in the
+[generation contract](procedural-world-generation.md). The retained schema-1
+`fields` graph still implements its original normalized scalar operators, initial proposal context, masks and sidechains.
 `SpatialGraph` cannot read that per-cell context, a live World, resident neighbors,
 Godot objects or a callback. Consequently a derivative or transformed sample
 always samples the same declared mathematical function at its new coordinate.
@@ -227,9 +229,10 @@ to its point, open polyline segments or closed boundary. Closed geometry measure
 the boundary; it does not silently become an inside/outside classifier. A
 single point and repeated points have bounded explicit segment handling.
 Geometry is copied/prepared before publication, and its actual coordinates
-enter the consuming node's identity. GEN-004 can supply routes and feature
-boundaries through this value interface without a dependency from fields into
-the future grammar implementation.
+enter the consuming node's identity. The accepted GEN-004 planner supplies routes
+and feature boundaries through this value interface: `Generator::compile` prepares exported geometry before
+compiling the spatial graph. The field implementation retains no dependency on
+grammar types or live World state.
 
 An assignment input declares a finite tile of at most 16×16 cells, up to 16
 exact categories, four directional adjacency masks and optional per-cell domain
@@ -325,8 +328,9 @@ permission to expose a partially generated map.
 
 ## How are typed authoring controls and diagnostics used?
 
-The Workbench's **Typed spatial graphs** page edits the `spatial` JSON section,
-inserts operator drafts from the native catalogue and selects complete executable
+The standalone **World generation workbench — terrain authoring preview**
+launcher entry opens the generation editor. Its **Typed spatial graphs** page
+edits the `spatial` JSON section, inserts operator drafts from the native catalogue and selects complete executable
 examples. It shows accepted output type, units, scale, bounds, distance
 qualification, identity and work. `spatial:<expanded.id>` selects a copied typed
 diagnostic. The display may map a signed scalar or category to colour, while the
@@ -359,6 +363,10 @@ owned by the retained [field/modifier contract](procedural-generation-fields-and
 Executable profiles under [`examples/worldgen`](../../examples/worldgen) cover
 transformed industrial structure, vector-guided utilities, exact categorical
 districts, reusable decay masks and multiscale feature seeds. This is minimal
-authoring/inspection support for the native implementation; GEN-007 owns the
-full visual editor and content-quality tools. GEN-004 owns hierarchical places,
-GEN-005 semantic depth and GEN-006 persistent runtime streaming/reconciliation.
+authoring/inspection support for the native implementation. The accepted
+[GEN-007 editor and qualification workflow](../operations/procedural-qualification.md)
+adds graph-canvas, hierarchy, plane, provenance and comparison tools. These
+standalone generation controls remain separate from the Shared Workbench’s
+[Architectural Generator](architectural-generator.md). GEN-004 owns hierarchical
+places and GEN-005 finite semantic depth; persistent runtime streaming and edit
+reconciliation remain outside these contracts.

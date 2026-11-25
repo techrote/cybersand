@@ -1,0 +1,31 @@
+{
+  "authority": "historical-non-authoritative",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "tools/ci/godot_job_plan.py",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/validation/godot-plan.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.547,
+      "scope": "Plan derivation only; no native/Godot test/build run",
+      "output_sha256": "5f817603fceb520ae4abfebc6081b78e4c9d94b9f8689548fd0a1d4404800731"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/native_execution_policy.py",
+        "matrix",
+        "--output",
+        "/workspace/scratch/855d9af51e68/cybersand-docs/docs/audits/2026-11-24-docs-renaissance/validation/native-plan.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.091,
+      "scope": "Plan derivation only; no native/Godot test/build run",
+      "output_sha256": "8dd96c779ac7f9565eb511fed7fd65e545fa1a19ccdf2d92617bb46e54d3bf97"
+    }
+  ]
+}

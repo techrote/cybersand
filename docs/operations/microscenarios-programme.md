@@ -4,11 +4,35 @@ status: Planned
 document-kind: design
 scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
 canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-11-24
 related-documents: [experiment-tower.md, architecture-programme.md, ../reference/status-and-roadmap.md, ../reference/product-intent-and-priorities.md, ../MATERIAL_LAB.md, ../systems/flow-transport-and-profiles.md]
 ---
 
 # CyberSand MicroScenarios and intermaterial-interactions programme
+
+## Current implementation and retained programme scope
+
+**Accepted source `00cdb02f`, checked 24 November 2026:** MS-000, MS-001 and
+INT-000 are implemented foundations. Use the [current scenario contract](microscenarios.md),
+[reference-pack controls](microscenario-reference-pack.md) and
+[interaction substrate](../systems/intermaterial-interactions.md) for available
+APIs and behavior. The original **Materials Laboratory** scenario is distinct
+from the later [Workbench Materials Lab](materials-lab-authoring.md); its
+readiness gate does not describe the current Lab's entire product scope.
+
+Live GitHub shows #24, #27, #28, #29 and **#30 closed**. #30 was a programme
+tracker, never an executable prerequisite; its closure does not mean every
+showcase concept below has shipped. #14, #18, #20 and #49 are also closed,
+while #45 remains open. Closed issue state is not evidence that every old
+scientific gate passed. Preserve the original outcomes and source-qualified
+limitations separately from later accepted [Water families](../architecture/liquid-solver-family-policy.md),
+Wave and ballistic implementations.
+
+The September dependency graph below retains the original independent-lane
+design. Completed prerequisites are not new work orders, and old experiment
+admission does not prohibit later separately accepted features. Refresh live
+programme records and the [current-state register](../reference/status-and-roadmap.md)
+before selecting new work.
 
 > **Execution-order safety:** GitHub issue numbers are identifiers, **not a serial
 > development path**. Do not choose work because its number is lower/higher or
@@ -35,8 +59,9 @@ that must itself be "executed" before those work items.
 #27/MS-000, #28/MS-001 and #29/INT-000 infrastructure are landed. PR #55 merged
 as `910717aac101363ec2b1b89e4041a22bc9a97b97`, so references below to PR #55
 as an active candidate are retained 2026-09-19 checkpoint context rather than live
-implementation ownership. #30 remains an open programme tracker and is never an
-execution gate. Later interaction tuning is bounded/versioned follow-on work.
+implementation ownership. #30 was then an open programme tracker and is never an
+execution gate; its current closed state is recorded above. Later interaction
+tuning is bounded/versioned follow-on work.
 
 This does not waive #18/#20/#14 scientific gates or #49/#45 Water ordering, and
 it does not imply broad player/body granular acceptance; that claim state is
@@ -51,17 +76,19 @@ roadmap and issue bodies so an autonomous agent cannot safely infer another orde
   explicit dependencies.
 - **Source/ADRs remain runtime authority.** This page controls programme
   orchestration, not physics semantics.
-- **#18 remains independent architecture research.** MicroScenarios must not
+- **The original #18 experiment is independent architecture research.** MicroScenarios must not
   retroactively change its registered controls, admission or acceptance.
-- **#20 remains gated by #18/G-M and its own G-B admission.** A reusable scenario
-  harness is apparatus, not evidence that sparse ballistic transfer is needed.
+- **The original #20 experiment retained #18/G-M and its own G-B admission.**
+  Those historical controls remain scoped to that experiment; they do not make
+  accepted Workbench ballistic capabilities unimplemented. A reusable scenario
+  harness is apparatus, not evidence that a new transfer mechanism is needed.
 - **#26 completed independently by experimental Outcome B on 2026-09-19.** Its
   reusable Water fixtures remain valid apparatus. #45 now owns the bounded
   saturated-head successor and likewise does not wait for MicroScenarios; affected
   provisional Water scenarios are revalidated only after a later accepted change.
-- **#14/G-final remains the architecture decision gate defined by the architecture
-  programme.** MicroScenarios and INT-000 are not new G-final completion
-  dependencies.
+- **#14/G-final is the original architecture decision record.** Its live issue
+  is closed; the architecture programme preserves its evidence and unresolved
+  distinctions. MicroScenarios and INT-000 are not retroactive completion dependencies.
 - **G-final is not a blanket prerequisite for exploratory MicroScenarios.**
   Provisional scenarios can run against the current named baseline and be
   revalidated after relevant architecture changes.
@@ -74,7 +101,8 @@ roadmap and issue bodies so an autonomous agent cannot safely infer another orde
 #26 remains complete as a valid negative experiment for its exact candidates, but
 post-merge review found that its retained Water harness cannot be used unchanged
 as a successor acceptance oracle. [#49](https://github.com/techrote/cybersand/issues/49)
-is the bounded corrective prerequisite for #45 implementation/acceptance.
+was the bounded corrective prerequisite for #45 implementation/acceptance and
+is now closed. Its frozen repairs and limitations remain part of that evidence.
 
 This does not block exploratory #28/#29 work. It only prevents Water-dependent
 architecture evidence from treating apparatus-v1 metrics/fixture labels as final
@@ -83,7 +111,9 @@ provisional scenarios/interactions.
 
 ## Current dependency graph
 
-The intended graph is:
+The retained September planning graph is below. It records original dependency
+relationships, not today's issue-state queue; read the current implementation
+section before interpreting an arrow as an unsatisfied prerequisite.
 
 ```text
 #24 Tower/launcher hygiene
@@ -122,7 +152,10 @@ waited to exist.
 
 ### Work-start table
 
-| Work | May start when | Does **not** wait for | Hard boundary |
+These are the original work-start conditions. Completed issues are not reopened
+by this table; current candidate admission belongs to its own live record.
+
+| Work | Original entry condition | Does **not** wait for | Original hard boundary |
 |---|---|---|---|
 | #24 | Now / its own issue | #18, #27 | Keep it a focused input/launcher fix |
 | #27 MS-000 | Once the working base contains the #24 fix, or the fix is taken as an isolated prerequisite in the same branch | #18 completion, #14/G-final | Apparatus only; no new physics semantics |
@@ -207,7 +240,7 @@ Every retained observation/fixture should identify at least:
 - source revision and tested runtime artifact/platform;
 - material catalogue/version identity;
 - kinetic/transport profile and relevant Water/material policy;
-- intermaterial-interaction profile/version/hash once INT-000 exists;
+- intermaterial-interaction profile/version/hash;
 - scheduled inputs and relevant user actions;
 - expected/observed outcome and whether it is exploratory, accepted, limited or
   awaiting revalidation.
@@ -246,10 +279,11 @@ and mark objective/failure state. Do not add an unrestricted arbitrary-cell
 per-tick scripting escape hatch. Scenario logic must request normal engine
 operations rather than replace material kernels.
 
-Initial proving consumers remain the #13 Experiment Tower, #19 Water Feel Lab,
-a #26-style Water behavior fixture and, when #20 is independently admitted, a
-#20-style bounded event fixture. Migrating/re-expressing a fixture must not
-rewrite old source-matched evidence.
+The original MS-000 proving consumers were the #13 Experiment Tower, #19 Water
+Feel Lab, a #26-style Water behavior fixture and a proposed #20-style bounded
+event fixture subject to that experiment's independent admission. This historical
+fixture plan is not a restriction on later accepted ballistic Water. Migrating
+or re-expressing a fixture must not rewrite old source-matched evidence.
 
 ## MS-001: exploratory/reference scenario pack
 
@@ -540,8 +574,9 @@ Do not infer any of those decisions from reusable apparatus or issue numbers.
 
 ## INT-000 implementation checkpoint, 2026-09-19
 
-PR #55 / `codex/issue-29-int000` is the single implementation lane. It begins
-from current main rather than the historical PR #42 branch and has completed the
+**Historical pre-merge checkpoint:** PR #55 / `codex/issue-29-int000` was the
+single implementation lane. It began from its then-current main rather than the
+historical PR #42 branch and completed the
 bounded semantic migration required for the infrastructure checkpoint:
 
 - sparse schema/profile/pass identities and seven independent channels;
@@ -562,7 +597,7 @@ bounded semantic migration required for the infrastructure checkpoint:
 
 The implementation deliberately does not retune materials or absorb kinetic,
 Water, granular, soliding, collision/ballistic or Rapier ownership. Final #29
-acceptance is still gated on source-matched runtime publication, exact-head
+acceptance at that checkpoint was still gated on source-matched runtime publication, exact-head
 repository/native/Godot/retrieval validation and the final PR diff review.
 
 ## MS-001 merged checkpoint, 2026-09-19
@@ -595,5 +630,6 @@ performance remain explicitly unavailable unless separately recorded.
 The 2026-09-19 "implementation checkpoint" above is retained as its pre-merge
 record. PR #55 later passed its source-matched publication and exact-head gates
 and merged as `910717aac101363ec2b1b89e4041a22bc9a97b97`; #29 is closed.
-No broad interaction retune was part of that merge. #30 remains the tracker for
-programme-level follow-on routing.
+No broad interaction retune was part of that merge. #30 remains the historical
+tracker for programme-level follow-on routing; its live issue is now closed.
+Future scope follows current records and explicit authorization, not the old tracker state.

@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Metabolist Spine classic Gentek showcase
 status: Current
 document-kind: research

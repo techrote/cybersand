@@ -1,0 +1,186 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_truth",
+  "reviewed_utc": "2026-11-25T00:28:59.654624+00:00",
+  "source_checkpoint": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "run_id": 45516959615,
+  "artifact_id": 14978346740,
+  "method": "Independent JSON read/compare of all five extracted hosted reports against final qualified-v2 local reports, dropping only execution time and temporary corpus root. Verify all ten extracted file bytes against saved artifact custody. This review uses the lead-recovered archive; it is not a second GitHub ZIP download or blind scientific/answer audit.",
+  "custody_record_sha256": "fb9545cb9e216e2f9100799b8d88b5e0fc5e7e2bec652263a6f7e270c3d0fb04",
+  "report_checks": [
+    {
+      "suite": "frozen",
+      "hosted_sha256": "778c800ec725f4a8e51557e3a294d6a9f4b319d1577023806246c692d3bc09e3",
+      "local_sha256": "147d1979c8d626acde5230fd5e984425e118ae13b136aef71356169586fbd344",
+      "complete_json_equal_except_created_utc_and_corpus_root": true,
+      "removed_nonsemantic_fields": {
+        "created_utc": {
+          "hosted": "2026-11-25T00:25:01.096385+00:00",
+          "local": "2026-11-25T00:13:59.540851+00:00"
+        },
+        "corpus_root": {
+          "hosted": "/home/runner/work/cybersand/cybersand/workspace/source",
+          "local": "/tmp/docs-closure-candidate-kxxu82y3/source"
+        }
+      },
+      "questions": 32,
+      "context_passages": 160,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 18,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7302,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "challenges",
+      "hosted_sha256": "8f03cf6f6b93945110d76ea071222004a58093f61d9b71502dda199c1838608f",
+      "local_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "complete_json_equal_except_created_utc_and_corpus_root": true,
+      "removed_nonsemantic_fields": {
+        "created_utc": {
+          "hosted": "2026-11-25T00:25:02.115000+00:00",
+          "local": "2026-11-25T00:14:01.043779+00:00"
+        },
+        "corpus_root": {
+          "hosted": "/home/runner/work/cybersand/cybersand/workspace/source",
+          "local": "/tmp/docs-closure-candidate-kxxu82y3/source"
+        }
+      },
+      "questions": 164,
+      "context_passages": 820,
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 126,
+        "canonical_hit_at_k": 161,
+        "mrr_at_k": 0.8575,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "renaissance",
+      "hosted_sha256": "bb6f58a7c16b33f2e00df9619cb557f7b76660dd764ba3982c862597b630f804",
+      "local_sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+      "complete_json_equal_except_created_utc_and_corpus_root": true,
+      "removed_nonsemantic_fields": {
+        "created_utc": {
+          "hosted": "2026-11-25T00:25:02.639198+00:00",
+          "local": "2026-11-25T00:14:01.832166+00:00"
+        },
+        "corpus_root": {
+          "hosted": "/home/runner/work/cybersand/cybersand/workspace/source",
+          "local": "/tmp/docs-closure-candidate-kxxu82y3/source"
+        }
+      },
+      "questions": 36,
+      "context_passages": 180,
+      "summary": {
+        "questions": 36,
+        "canonical_hit_at_1": 27,
+        "canonical_hit_at_k": 35,
+        "mrr_at_k": 0.8426,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "owner-intent",
+      "hosted_sha256": "a72224faee9f60f1e100be97ca1d8c20ca18767931b413bfcc867acfada9947d",
+      "local_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "complete_json_equal_except_created_utc_and_corpus_root": true,
+      "removed_nonsemantic_fields": {
+        "created_utc": {
+          "hosted": "2026-11-25T00:25:03.020405+00:00",
+          "local": "2026-11-25T00:14:02.335582+00:00"
+        },
+        "corpus_root": {
+          "hosted": "/home/runner/work/cybersand/cybersand/workspace/source",
+          "local": "/tmp/docs-closure-candidate-kxxu82y3/source"
+        }
+      },
+      "questions": 6,
+      "context_passages": 30,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.3389,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "historical",
+      "hosted_sha256": "ff217f6ffd5669a7fa7c9bcce29ea3061089e5979492530b5712e55183668ec7",
+      "local_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "complete_json_equal_except_created_utc_and_corpus_root": true,
+      "removed_nonsemantic_fields": {
+        "created_utc": {
+          "hosted": "2026-11-25T00:25:03.144656+00:00",
+          "local": "2026-11-25T00:14:02.473295+00:00"
+        },
+        "corpus_root": {
+          "hosted": "/home/runner/work/cybersand/cybersand/workspace/source",
+          "local": "/tmp/docs-closure-candidate-kxxu82y3/source"
+        }
+      },
+      "questions": 10,
+      "context_passages": 50,
+      "summary": {
+        "questions": 10,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.8033,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  ],
+  "artifact_file_checks": [
+    {
+      "path": "challenges.json",
+      "matches_custody": true
+    },
+    {
+      "path": "frozen.contexts.md",
+      "matches_custody": true
+    },
+    {
+      "path": "frozen.json",
+      "matches_custody": true
+    },
+    {
+      "path": "challenges.contexts.md",
+      "matches_custody": true
+    },
+    {
+      "path": "historical.contexts.md",
+      "matches_custody": true
+    },
+    {
+      "path": "historical.json",
+      "matches_custody": true
+    },
+    {
+      "path": "owner-intent.contexts.md",
+      "matches_custody": true
+    },
+    {
+      "path": "owner-intent.json",
+      "matches_custody": true
+    },
+    {
+      "path": "renaissance.contexts.md",
+      "matches_custody": true
+    },
+    {
+      "path": "renaissance.json",
+      "matches_custody": true
+    }
+  ],
+  "result": "PASS",
+  "limits": [
+    "Ranking equality does not upgrade partial answer sufficiency or owner acceptance.",
+    "Draft runtime provenance remains skipped; this does not validate a new native runtime.",
+    "Job status and ZIP digest were independently retained by lead; A directly fetched ancillary failure logs separately."
+  ]
+}

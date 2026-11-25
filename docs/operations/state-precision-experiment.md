@@ -2,13 +2,30 @@
 title: Water state precision experiment registration
 status: Current
 document-kind: runbook
-scope: Preregistered Issue 17 P1 mass, P2 threshold and P3 delay experiments on one fixed experimental carrier
+scope: Retained Issue 17 preregistration and source-bound interpretation; current storage and later Water behavior are separately identified, with no renewed execution or issue-write permission
 canonical-for: [state-precision-experiment]
-last-reviewed: 2026-09-11
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, architecture-programme-prompts/state-precision.md, ../systems/water-design.md]
 ---
 
 # Water state precision experiment
+
+## Current applicability of the registration
+
+This page preserves the September experiment's fixed inputs, mathematics and
+comparison rules. Issue [#17](https://github.com/techrote/cybersand/issues/17) is
+closed; its old worktree, completion instructions and authorization belonged
+to that task. They do not authorize a new campaign or issue edit.
+
+At accepted source `00cdb02f`, native cells use eight-byte
+[`PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp).
+The historical name `current4` below identifies an experimental control, not
+today's cell size. The later runtime
+[`WaterExperimentPolicy`](../../native/include/cybersand/water_experiment_policy.hpp)
+admits mass precision 3–8 and coherence 0–12; its policy is distinct from the
+compile-time arms frozen here. The [current Water contract](../systems/water-design.md)
+also covers later families, Wave and ballistics. This registration supplies no
+new performance result, storage migration permission or universal Water law.
 
 ## Registration before candidate code
 
@@ -22,9 +39,9 @@ match completed C cdb4c2a and L 4726f8d. Baseline DLL SHA-256 is
 fc6cb4ee1096219f581bace3df04ee8138e996aaf4c1436f5b2c071ea62dd496; it stays untouched.
 Both prior experiment worktrees are clean. Workspace has untracked worktrees/.
 
-G-C found identical Water quiet3/4096 trajectories in its horizon: sleep does not
+At the original checkpoint, G-C found identical Water quiet3/4096 trajectories in its horizon: sleep did not
 explain those residuals. No sleep campaign is repeated. G-L validates carriers,
-not production width: current4 remains baseline pending G-final, widening costs
+not production width: `current4` remained that campaign's baseline pending G-final, widening costs
 memory, packing has no universal winner, short epoch is not selected, optional
 storage is density dependent, wider IDs deferred, generic10/14/8 not equivalent,
 and L6 geometry not admitted. None is reopened here.
@@ -136,11 +153,17 @@ Unaccounted integer loss/creation, nondeterminism, illegal state truncation or
 worker divergence is a correctness failure, never a precision tradeoff. Film loss,
 stalling, worse fronts, residuals or persistent work are retained negative results.
 Mass8 remains reference unless lower precision preserves important behaviors;
-extra precision must demonstrate useful benefit. No production migration or #18
-implementation. #18 still needs a measured motion target; #19 independent,
-#20 blocked, G-final open.
+extra precision must demonstrate useful benefit. The original exit boundary
+admitted no production migration or #18 implementation; it recorded #18 as
+needing a motion target, #19 as independent, #20 as blocked and G-final as open.
+These are historical programme dispositions, not a denial of later accepted
+Water implementations or a current issue-status list.
 
 ## Evidence, recovery and completion
+
+**Historical task procedure.** The following evidence rules preserve how the
+original experiment was conducted. New work needs its own source, task scope
+and applicable current [validation procedure](local-build-and-validation.md).
 
 Generated data/builds: worktree validation/local/issue-17/ and build/issue-17/.
 Commit registration, harness, curated summaries/audit and documentation checkpoints;
@@ -152,6 +175,7 @@ Do not alter candidate semantics/measurement rules after timing begins.
 
 Complete native focused/full reference tests, experiment Python tests, deterministic
 repeat/worker/delay checks, docs/M11/repository/retrieval checks and diff check.
-Keep inherited provenance failures separate. After all P1/P2/P3 results are reduced,
-record G-P in #14 and synchronized canonical docs, then close #17 as completed.
-The user explicitly authorized those issue writes in this execution request.
+Keep inherited provenance failures separate. The original completion instruction
+was to record G-P in #14 and synchronized canonical docs after reducing P1/P2/P3,
+then close #17. Its issue-write authorization applied to that completed execution
+request; this retained page grants no present issue-write authority.

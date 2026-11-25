@@ -4,7 +4,7 @@ status: Current
 document-kind: decision
 scope: Issue 1 failure/recovery choice for the in-place native solver and its desktop/Web owners
 canonical-for: [decision-failed-tick-recovery]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-24
 related-documents: [../architecture/simulation-tick-and-threading.md, ../reference/interfaces-and-message-contracts.md, ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -38,10 +38,21 @@ tick, or claiming rollback of preceding character/Rapier work. Complete rollback
 would require a separately specified journal/transaction covering cells, epochs,
 activity, events, allocation, coupling and publication, with memory/work budgets.
 
-**Planned separately:** preserving committed state through live capacity growth,
-durable replay/checkpoint capture, and broader allocation/error typing. These are
-not implemented by level restoration. Region requests during failure may be
-retained, but only reset/replacement makes fresh activity eligible again.
+**Separate from this quarantine decision:** live capacity growth, complete
+application replay and broader allocation/error typing need their own accepted
+contracts. Current native `save_physical_state`/`restore_physical_state` supports
+selected non-Wave tick-boundary configurations (CYPS2–5); Wave reports physical
+save format 0 and refuses exact continuation. Those capabilities do not make a
+failed World resumable or restore host/Rapier state. The
+[save coverage table](../reference/level-saves-and-replay.md#current-native-physical-state-versions)
+owns the exact boundary.
+
+A settled flattened Workbench document can follow its separately implemented
+[authored-data recovery route](../operations/gen008-flatten-qualification.md#recovering-after-a-native-owner-fault):
+Save the acknowledged baseline/edits, close the process and Load a fresh owner.
+It does not read or repair the failed physical state. Pending or unacknowledged
+work can refuse. Region requests during failure may be retained, but only
+reset/replacement makes fresh activity eligible again.
 
 ## Acceptance boundary
 

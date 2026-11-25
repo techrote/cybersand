@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh independent editorial/evidence-scope cross-review",
+  "reviewer": "Specialist B /root/product_docs",
+  "author_reviewed": "Specialist A /root/technical_truth",
+  "recorded_at": "2026-11-25T00:19:35.319786+00:00",
+  "reviewed_artifacts": [
+    {
+      "path": "../technical/technical-handover.md",
+      "sha256": "12c1a0f500a4788d81290fc65a4da0e74a73e61b50160c21d6632a3e9d0a0e1c"
+    },
+    {
+      "path": "../technical/closure-amendments.json",
+      "sha256": "8cda19c5c7adb445371f35ceff26cb0d8bd0e64f6b4216a1eed981b5e6972577"
+    },
+    {
+      "path": "../technical/save-and-reopen-family-sweep.json",
+      "sha256": "42bd520d9f44a743c6ddb812f38485c3aea7fa06ab9e39ec47a2d2d6125a7f0c"
+    }
+  ],
+  "related_source_reviews": [
+    "review-technical-by-b.json",
+    "review-technical-delta-by-b.json",
+    "../technical/review-product-final-delta-by-a.json"
+  ],
+  "checks": [
+    {
+      "topic": "Recovered versus fresh claim scope",
+      "finding": "Handover calls 176 composite claim groups, preserves their 45/43/27/61 authorship and consequence-not-open-priority distinction, and says fresh 12-theme/source-delta qualification does not repeat all original semantic reviews.",
+      "result": "PASS; custody verification itself remains in A/C records, not newly repeated by this editorial review."
+    },
+    {
+      "topic": "Independent technical changes",
+      "finding": "All 13 A document hashes in the amendment register match the 9+4 B reviewed documents. Their runtime/experimental boundaries remain explicit.",
+      "result": "PASS"
+    },
+    {
+      "topic": "Save/reopen family scope",
+      "finding": "The recorded scan covers 151 selected document identities and lists 25 reopening matches in 13 pages plus 11 atomicity matches in 8 pages. Actual corrections are five generated-specific routes and one generic Water comparison; blank, flattened, named-fixture and overview routes are scoped separately. This matches B source and reader review.",
+      "result": "PASS; bounded mechanical family sweep, not full 151-page semantic requalification."
+    },
+    {
+      "topic": "Inherited runtime limit",
+      "finding": "Ordinary/generated/project rename and broader generated/project error strings are disclosed as inherited implementation limits. Docs now distinguish the material-baseline primitive; no new I/O execution or runtime change is claimed.",
+      "result": "PASS"
+    },
+    {
+      "topic": "Retrieval and validation limits",
+      "finding": "17 questions / 85 passages, 14 sufficient / 3 partial and explicit DR36 abstention remain separate from ranking. Documentation checks are labelled structural and source checkpoint identity is separate from later evidence-only commits.",
+      "result": "PASS"
+    }
+  ],
+  "known_discrepancies": [],
+  "open_p0": 0,
+  "open_p1": 0,
+  "result": "PASS_FOR_DECLARED_EDITORIAL_AND_SOURCE_REVIEW_SCOPE",
+  "limitations": [
+    "This supplements the existing independent 13-document source reviews; it does not constitute another full176-claim audit or native/graphical runtime qualification.",
+    "The final owner-facing integration report and exact-head matrix are separately reviewed by the lead."
+  ],
+  "technical_document_hashes_match": true
+}

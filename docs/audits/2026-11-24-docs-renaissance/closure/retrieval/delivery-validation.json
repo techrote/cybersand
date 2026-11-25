@@ -1,0 +1,20 @@
+{
+  "authority": "historical-non-authoritative",
+  "scope": "Fresh C handover/index navigation and final receipt identities; no runtime execution implied",
+  "authored_prose_files": [
+    "README.md",
+    "specialist-c-handover.md"
+  ],
+  "local_links_checked": 49,
+  "errors": [],
+  "artifact_sha256": {
+    "README.md": "bcb19561009747a7b724aae109ef675bcbdfd70119c322a0597e9acfebd8fe7b",
+    "specialist-c-handover.md": "7731c3e1c7bce13caa85f27fbe649de1a49a5dbe223a2aa338011b670b6eeec6",
+    "answer-applicability-summary.json": "20d97f7dfcb3158b78d374d76144d32b81dafe952e3c5e5c7e30921e4d1b9732",
+    "review-evidence-methodology.json": "3bf7534af3255de6b35d930bbb9428fba7d4f57bf7aaf62505df286fee55fd66",
+    "review-source-custody-by-c.json": "d3862ef81ace1a844f07b920dd116aa5788f231ea58a77a7053b1216bebe8278",
+    "regression-context-review-c.json": "8a6c7f6d879e0b966301eec7a980379d0254fe6fba38e1396420e48db31f095e",
+    "rank-comparison.json": "6359a2a8371d7e3ee7456b3b90c528299f375ea9f86e99b4713772b0679e5069",
+    "review-hosted-equivalence-by-c.json": "90787444df3c12d6895651b071462fa45e90d5e974aa4b9dd25d36cf684018a7"
+  }
+}

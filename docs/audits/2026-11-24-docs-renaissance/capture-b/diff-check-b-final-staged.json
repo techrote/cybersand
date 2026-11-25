@@ -1,0 +1,32 @@
+{
+  "recorded_at": "2026-11-24T20:35:37.410074+00:00",
+  "scope": "Final staged/committed bytes after checkpoint6. Full baseline-relative check retains raw-copy warnings; only preserved originals and exact raw xvfb.log are separated for authored-scope check. No evidence bytes changed.",
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+      ],
+      "exit_code": 2,
+      "stdout": "docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log:7: trailing whitespace.\n+(EE) \ndocs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log:9: trailing whitespace.\n+(EE) Cannot establish any listening sockets - Make sure an X server isn't already running(EE) \ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt:214: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3b-production-plan.md.txt:393: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt:271: new blank line at EOF.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "--",
+        ".",
+        ":(exclude)docs/audits/2026-11-24-docs-renaissance/preserved/**",
+        ":(exclude)docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

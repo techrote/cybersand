@@ -1,0 +1,200 @@
+"""Specialist C's independent custody/ledger identity verification.
+
+Run from the repository root. This reads the lead/A evidence and actual bytes;
+it does not run their generators or call identity checks semantic re-review.
+"""
+import collections
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path.cwd()
+AUDIT = ROOT / "docs/audits/2026-11-24-docs-renaissance"
+OUT = AUDIT / "closure"
+BASE = "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+RECOVERED = "ddd7c88fd97d8b85056dd7910896ec3a897ecb87"
+sys.path.insert(0, str(ROOT / "tools/ci"))
+import check_docs
+
+
+def sha(b):
+    return hashlib.sha256(b).hexdigest()
+
+
+def git(*args):
+    return subprocess.check_output(["git", *args], cwd=ROOT)
+
+
+inputs = {}
+errors = []
+counts = {}
+
+
+def read(path):
+    data = (ROOT / path).read_bytes()
+    inputs[path] = sha(data)
+    return json.loads(data)
+
+
+def require(value, label):
+    if not value:
+        errors.append(label)
+
+
+prefix = "docs/audits/2026-11-24-docs-renaissance/"
+for script in ["closure/verify-preservation-and-links.py.txt", "closure/technical/build-claim-ledger.py.txt"]:
+    inputs[prefix + script] = sha((AUDIT / script).read_bytes())
+recovery = read(prefix + "closure/recovery/original-recovery-manifest.json")
+original = Path(recovery["original_workspace"])
+for r in recovery["files"]:
+    b = (ROOT / r["path"]).read_bytes()
+    require(b == (original / r["path"]).read_bytes(), "recovered-original-bytes:" + r["path"])
+    require(sha(b) == r["sha256"] and len(b) == r["bytes"], "recovered-manifest:" + r["path"])
+require(git("rev-parse", RECOVERED + "^{tree}") == git("rev-parse", recovery["original_local_head"] + "^{tree}"), "original-local-remote-tree")
+counts["recovery"] = dict(collections.Counter(r["recovery_disposition"] for r in recovery["files"]))
+counts["recovered_artifacts"] = len(recovery["files"])
+
+preservation = read(prefix + "closure/preservation-manifest.json")
+listed = {r["preserved_destination"] for r in preservation["records"]}
+actual = {str(p.relative_to(ROOT)) for p in (AUDIT / "preserved").glob("*.md.txt")}
+require(listed == actual and len(listed) == len(preservation["records"]) == 82, "preservation-complete-set")
+for r in preservation["records"]:
+    source = git("show", BASE + ":" + r["original_path"])
+    copy = (ROOT / r["preserved_destination"]).read_bytes()
+    require(source == copy, "preserved-bytes:" + r["original_path"])
+    require(sha(source) == r["original_content_sha256"] == r["preserved_content_sha256"], "preserved-sha:" + r["original_path"])
+    require(git("rev-parse", BASE + ":" + r["original_path"]).decode().strip() == r["original_git_blob"], "preserved-blob:" + r["original_path"])
+    require(len(copy) == r["preserved_bytes"], "preserved-length:" + r["original_path"])
+    require(sha((ROOT / r["current_replacement_destination"]).read_bytes()) == r["current_replacement_sha256"], "replacement-current-sha:" + r["original_path"])
+counts["preserved_originals_independently_compared_in_full"] = len(listed)
+
+inventory = read(prefix + "closure/document-inventory.json")
+original_inventory = read(prefix + "inventory.json")
+old = {r["path"]: r for r in original_inventory["documents"]}
+new = {r["path"]: r for r in inventory["documents"]}
+require(old.keys() == new.keys() and len(old) == len(new) == len(inventory["documents"]) == 547, "inventory-complete-no-duplicates")
+for p, r in new.items():
+    s = old[p]
+    for a, b in [("original_reviewed_sha256", "current_sha256"), ("original_review_level", "review_level"), ("original_review_state", "review_state"), ("original_disposition", "disposition"), ("original_review_records", "source_review_records"), ("corpus_role", "corpus_role_after")]:
+        require(r[a] == s[b], "inventory-recovery-field:" + p + ":" + a)
+    require(sha((ROOT / p).read_bytes()) == r["delivered_sha256"], "inventory-current-sha:" + p)
+    require(r["changed_since_recovered_review"] == (r["original_reviewed_sha256"] != r["delivered_sha256"]), "inventory-disposition:" + p)
+counts["inventory_items_reconciled"] = len(new)
+counts["original_review_levels_preserved"] = dict(collections.Counter(r["original_review_level"] for r in new.values()))
+narrow_path = prefix + "closure/lead/review-remaining-default-pages.json"
+if (ROOT / narrow_path).exists():
+    narrow = read(narrow_path)
+    for r in narrow["documents"]:
+        require(sha((ROOT / r["path"]).read_bytes()) == r["sha256"], "narrow-source-review-current-document:" + r["path"])
+        require(new[r["path"]]["additional_closure_review"]["sha256"] == inputs[narrow_path], "inventory-narrow-review-identity:" + r["path"])
+        require(bool(r["limits"]), "narrow-review-scope-limit:" + r["path"])
+    counts["additional_narrow_page_reviews_explicitly_scoped"] = len(narrow["documents"])
+
+links = read(prefix + "closure/inbound-link-reconciliation.json")
+for p, digest in links["input_document_sha256"].items():
+    require(sha((ROOT / p).read_bytes()) == digest, "inbound-current-input:" + p)
+anchor_cache = {}
+for r in links["current_inbound_links"]:
+    p = r["target"]
+    require((ROOT / p).is_file(), "inbound-destination:" + p)
+    if r["anchor"]:
+        if p not in anchor_cache:
+            anchor_cache[p] = check_docs.anchors((ROOT / p).read_text(encoding="utf-8-sig"))
+        require(r["anchor"] in anchor_cache[p], "inbound-anchor:" + p + "#" + r["anchor"])
+for r in links["superseded_baseline_references"]:
+    old_caller = git("show", BASE + ":" + r["from"]).decode("utf-8-sig")
+    old_target = git("show", BASE + ":" + r["target"]).decode("utf-8-sig")
+    require("#" + r["anchor"] in old_caller, "superseded-original-caller:" + r["anchor"])
+    require(r["anchor"] in check_docs.anchors(old_target), "superseded-original-target:" + r["anchor"])
+    require(r["immutable_target"] == "https://github.com/techrote/cybersand/blob/" + BASE + "/" + r["target"] + "#" + r["anchor"], "superseded-immutable-link:" + r["anchor"])
+require(not links["newly_unresolved"] and not links["current_unresolved"], "inbound-open-findings")
+counts["current_inbound_routes_independently_rechecked"] = len(links["current_inbound_links"])
+counts["superseded_baseline_reference_occurrences_verified"] = len(links["superseded_baseline_references"])
+
+ledger = read(prefix + "closure/technical/consequential-claims.json")
+matrix = read(prefix + "claim-matrix.json")
+original_claims = {c["id"]: c for c in matrix["claims"]}
+claims = {c["claim_id"]: c for c in ledger["claims"]}
+require(original_claims.keys() == claims.keys() and len(claims) == len(ledger["claims"]) == 176, "claim-set-no-inflation")
+for name, r in ledger["original_review_artifacts"].items():
+    b = (AUDIT / name).read_bytes()
+    require(sha(b) == r["sha256"] and len(b) == r["bytes"], "original-review-identity:" + name)
+review_pairs = 0
+current_docs = set()
+for cid, c in claims.items():
+    orig = original_claims[cid]
+    require(c["claim_text"] == orig["claim"] and c["consequence_priority"] == orig["priority"], "claim-text-priority:" + cid)
+    require(c["documentation_locations"] == orig["documents"], "claim-document-set:" + cid)
+    require(bool(c["current_authority_classification"]["components"]), "claim-authority-components:" + cid)
+    require(bool(c["independent_original_reviews"]), "claim-original-independent-review:" + cid)
+    for r in c["independent_original_reviews"]:
+        b = (ROOT / r["record"]).read_bytes()
+        require(sha(b) == r["record_sha256"], "claim-review-file-sha:" + cid)
+        require(r["reviewer"] in json.dumps(json.loads(b)) or r["reviewer"] in json.dumps(orig), "claim-reviewer-traceability:" + cid)
+    for d in c["final_document_identities"]:
+        current_docs.add(d["path"])
+        b = (ROOT / d["path"]).read_bytes()
+        require(sha(b) == d["sha256"], "claim-current-document:" + cid + ":" + d["path"])
+        require(git("hash-object", "--no-filters", str(ROOT / d["path"])).decode().strip() == d["git_blob"], "claim-current-blob:" + cid)
+        prior = subprocess.run(["git", "show", RECOVERED + ":" + d["path"]], capture_output=True, cwd=ROOT)
+        if prior.returncode == 0 and sha(prior.stdout) == d["original_reviewed_sha256"]:
+            pass
+        else:
+            require(d["path"].startswith("docs/audits/") and sha((original / d["path"]).read_bytes()) == d["original_reviewed_sha256"], "claim-original-reviewed-document:" + cid)
+        if not d["content_unchanged_from_original_review"]:
+            require(bool(d["closure_independent_reviews"]), "claim-closure-review-missing:" + cid)
+            for r in d["closure_independent_reviews"]:
+                require(sha((ROOT / r["record"]).read_bytes()) == r["record_sha256"], "claim-closure-review-sha:" + cid)
+                require(r["reviewed_document_sha256"] == d["sha256"], "claim-closure-review-document:" + cid)
+                review_pairs += 1
+source_files = set()
+for name, r in ledger["source_registry"].items():
+    if r["kind"] == "repository-source":
+        for f in r["files"]:
+            source_files.add(f["path"])
+            b = git("show", f["source_identity"] + ":" + f["path"]) if f["scope"] == "explicit source revision" else (ROOT / f["path"]).read_bytes()
+            require(sha(b) == f["sha256"], "source-registry-bytes:" + name)
+            if f["scope"] == "accepted-source":
+                accepted = git("show", BASE + ":" + f["path"])
+                require(accepted.replace(b"\r\n", b"\n") == b.replace(b"\r\n", b"\n"), "source-accepted-identity:" + name)
+    elif r["kind"] == "git-commit":
+        require(git("rev-parse", r["commit"] + "^{commit}").decode().strip() == r["commit"], "source-git-commit:" + name)
+    else:
+        require(r["kind"] == "external-evidence-locator" and "not a content hash" in r["identity_scope"], "external-identity-overclaim:" + name)
+require(not ledger["errors"] and not ledger["pending_final_reviews"], "ledger-open-identity-gaps")
+counts.update(composite_claims_reconciled=len(claims), original_independent_review_artifacts=len(ledger["original_review_artifacts"]), unique_claim_document_paths=len(current_docs), closure_review_document_bindings_checked=review_pairs, unique_source_paths_identity_checked=len(source_files), source_locator_entries=len(ledger["source_registry"]))
+
+report = {
+    "schema": 1,
+    "authority": "historical-non-authoritative",
+    "classification": "fresh-independent-closure-methodology-and-identity-review",
+    "reviewer": "Specialist C /root/retrieval_evidence; independent of lead custody and A ledger authors",
+    "recorded_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "source_head_at_review": git("rev-parse", "HEAD").decode().strip(),
+    "accepted_source": BASE,
+    "result": "PASS" if not errors else "REQUIRES_REFRESH_OR_CORRECTION",
+    "method": "Read both generator implementations, actual manifests, original claim matrix/reviews and current/retained file bytes. Independently compare every preserved original, all recovered artifacts, all inventory paths/dispositions, every declared inbound route and all normalized source/document/review identities. This does not convert identity automation into a new semantic re-review of176 composites.",
+    "reviewed_evidence_sha256": inputs,
+    "counts": counts,
+    "errors": errors,
+    "methodology_findings": [
+        "All176 identifiers and composite claim texts are recovered original rows; no invented rows inflate the historical count. Actual manual per-claim authority components distinguish implementation, intent, historical scope, candidate work and process contracts.",
+        "The original20 independent review artifacts have actual claim-specific observations. Their original reviewer and document identities remain separate from fresh closure diff reviews; consequence priorities are not unresolved findings.",
+        "L-44's nonexistent bridge.cpp locator is retained as original input and explicitly normalized to the owning header; original evidence bytes are untouched.",
+        "The547-item inventory retains lower review levels and deferred semantic dispositions. Metadata/structural coverage is not mislabeled a full semantic review.",
+        "Inbound reconciliation is scoped to inline links into changed documents within the original508/514 Markdown universe. All8 superseded occurrences have original baseline caller/target evidence; preserved .md.txt bytes are not claimed to be live relative navigation.",
+        "Historical evidence remains outside the ordinary retrieval corpus; preservation and original workspace recovery do not authorize old commands or runtime restoration."
+    ],
+    "limitations": [
+        "Semantic source review is targeted in the specialist receipts and recovered claim-level reviews. This independent verification does not claim a second full semantic audit of176 composites.",
+        "Anchor verification uses repository check_docs slug semantics, not an independent browser rendering implementation; reference-style/HTML or external pinned-source links outside the declared scan are not freshly fetched here.",
+        "External evidence URLs in the source registry are locators. The separate authenticated GitHub intake and hosted-artifact custody establish their applicable lifecycle/provenance scope.",
+        "Exact-byte source checks and documented runtime receipts do not establish fresh graphical, physical Windows/NVIDIA or external retrieval integration acceptance."
+    ]
+}
+(OUT / "retrieval/review-evidence-methodology.json").write_text(json.dumps(report, indent=2) + "\n")
+print(json.dumps({"result": report["result"], "counts": counts, "errors": errors}, indent=2))
+raise SystemExit(bool(errors))

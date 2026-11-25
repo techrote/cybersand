@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_truth",
+  "author_reviewed": "Specialist B / product_docs",
+  "recorded_utc": "2026-11-25T00:12:56.011003+00:00",
+  "scope": "Fresh independent final delta review of B-CLOSE-01 in generated-map desktop guide and generic Water Lab comparison route. Earlier product-cross-review-by-a.json remains unchanged.",
+  "reviewed_document_sha256": {
+    "docs/operations/explore001-desktop-playtest.md": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+    "docs/operations/workbench-water-lab.md": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0"
+  },
+  "findings": [
+    {
+      "id": "B-CLOSE-01",
+      "disposition": "corrected-source-verified",
+      "observation": "Step7 now requires native regeneration and source verification followed by explicit Install into workbench before asserting reconstructed authored geometry/spawns. This matches open_saved -> _start -> _complete ready; only confirmed invokes _install. Water Lab comparison step4 now requires that same confirmation when its saved start is generated, before changing tuning or claiming a repeated trial."
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "symbol_or_locator": "load_setup",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/workbench_generator_dialog.gd",
+      "sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "symbol_or_locator": "open_saved, _complete, confirmed.connect(_install), _install",
+      "matches_accepted_source": true
+    }
+  ],
+  "open_p0": 0,
+  "open_p1": 0,
+  "result": "PASS for this bounded correction; no fresh graphical execution claim"
+}

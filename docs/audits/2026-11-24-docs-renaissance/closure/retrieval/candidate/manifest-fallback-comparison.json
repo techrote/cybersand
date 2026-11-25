@@ -1,0 +1,86 @@
+[
+  {
+    "suite": "frozen",
+    "corpus_equal": true,
+    "ranked_contexts_equal": true,
+    "manifest_summary": {
+      "questions": 32,
+      "canonical_hit_at_1": 18,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7302,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "fallback_summary": {
+      "questions": 32,
+      "canonical_hit_at_1": 18,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7302,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "extra_paths": [],
+    "missing_paths": []
+  },
+  {
+    "suite": "challenges",
+    "corpus_equal": true,
+    "ranked_contexts_equal": true,
+    "manifest_summary": {
+      "questions": 164,
+      "canonical_hit_at_1": 126,
+      "canonical_hit_at_k": 161,
+      "mrr_at_k": 0.8565,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "fallback_summary": {
+      "questions": 164,
+      "canonical_hit_at_1": 126,
+      "canonical_hit_at_k": 161,
+      "mrr_at_k": 0.8565,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "extra_paths": [],
+    "missing_paths": []
+  },
+  {
+    "suite": "renaissance",
+    "corpus_equal": true,
+    "ranked_contexts_equal": true,
+    "manifest_summary": {
+      "questions": 36,
+      "canonical_hit_at_1": 27,
+      "canonical_hit_at_k": 35,
+      "mrr_at_k": 0.8426,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "fallback_summary": {
+      "questions": 36,
+      "canonical_hit_at_1": 27,
+      "canonical_hit_at_k": 35,
+      "mrr_at_k": 0.8426,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "extra_paths": [],
+    "missing_paths": []
+  },
+  {
+    "suite": "owner-intent",
+    "corpus_equal": true,
+    "ranked_contexts_equal": true,
+    "manifest_summary": {
+      "questions": 6,
+      "canonical_hit_at_1": 1,
+      "canonical_hit_at_k": 4,
+      "mrr_at_k": 0.3389,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "fallback_summary": {
+      "questions": 6,
+      "canonical_hit_at_1": 1,
+      "canonical_hit_at_k": 4,
+      "mrr_at_k": 0.3389,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "extra_paths": [],
+    "missing_paths": []
+  }
+]

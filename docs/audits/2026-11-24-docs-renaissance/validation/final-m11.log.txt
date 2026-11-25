@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "scope": "historical M11 integrity; no current runtime acceptance",
+  "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+  "records_checked": 18,
+  "source_hashes_checked": 28,
+  "compare_working_tree": false,
+  "working_tree_differences": [],
+  "errors": []
+}

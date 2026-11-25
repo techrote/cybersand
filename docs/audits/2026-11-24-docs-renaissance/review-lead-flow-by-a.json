@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Independent source and exact edited text review; no engine, GPU or scientific campaign execution.",
+  "claims": [
+    {
+      "claim_id": "L-34",
+      "priority": "P1",
+      "document": "docs/systems/flow-transport-and-profiles.md",
+      "document_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "result": "source-verified",
+      "observations": "World::validate_wave_flow_config throws when transport_policy.configured. The Wave/spill/ballistic compatibility checks are separate; no custom profile is silently applied to Wave.",
+      "source_locators": [
+        "native/src/world_wave.inc::World::validate_wave_flow_config",
+        "native/include/cybersand/transport_policy.hpp"
+      ]
+    },
+    {
+      "claim_id": "L-35",
+      "priority": "P1",
+      "document": "docs/systems/flow-transport-and-profiles.md",
+      "document_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "result": "source-verified",
+      "observations": "mix_after_motion normalizes Water mass through WaterExperimentPolicy before the 64 threshold and carrying arithmetic. move_cell preserves the current state fields. MotionFootprint bounds translated IN reads to 3 and writes to 2; the helper local radius2 alone is not the complete IN footprint.",
+      "source_locators": [
+        "native/src/world.cpp::World::mix_after_motion/World::MotionFootprint",
+        "native/src/world_inertial.inc",
+        "native/include/cybersand/precision_storage.hpp"
+      ]
+    },
+    {
+      "claim_id": "L-36",
+      "priority": "P1",
+      "document": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "document_sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "result": "source-verified",
+      "observations": "PressureCellState and bounded GasCompartmentSnapshot are implemented Water-family state; Wave keeps derived head and retained flux. The Gas kernel decays/moves discrete Smoke and Rocket reads a temperature threshold. These paths do not supply a general gas-mixture or heat-conduction field.",
+      "source_locators": [
+        "native/include/cybersand/pressure_flow.hpp",
+        "native/src/world_pressure.inc",
+        "native/src/world_wave.inc",
+        "native/src/world.cpp::RuleKernel::Gas/RuleKernel::Rocket"
+      ]
+    },
+    {
+      "claim_id": "L-37",
+      "priority": "P2",
+      "document": "docs/systems/activity-dirty-regions-and-waking.md",
+      "document_sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "result": "reviewed-preserved",
+      "observations": "The proposed replacement link was incorrect: publish(World&) is defined in world.cpp, while render_snapshot.cpp owns leases/acquire/counters. Lead restored the entire guide byte-identically to the accepted baseline after A reported it.",
+      "source_locators": [
+        "native/src/world.cpp::RenderSnapshotExchange::publish",
+        "native/src/render_snapshot.cpp"
+      ]
+    },
+    {
+      "claim_id": "L-43",
+      "priority": "P1",
+      "document": "docs/operations/lcb-manual-comparison-ux.md",
+      "document_sha256": "d87170c9401ea36b52ca67aef27fc782c386bc674a4bd36d8e85c59c3c50fc40",
+      "result": "source-verified",
+      "observations": "Independently counted eight PRESETS and two setup picker entries. select_preset changes requested_policy and dirty state; apply_active/load_selected reach _request and the host prepared-owner routes. Launcher label and Workbench separation match source. Issue-state statements use retained lead live intake; no scientific/host campaign rerun.",
+      "source_locators": [
+        "godot/scripts/liquid_comparison_panel.gd::PRESETS/setup/select_preset/_request",
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/main.gd",
+        "docs/audits/2026-11-24-docs-renaissance/github-late-water-intake.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/lcb-manual-comparison-ux.md": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c"
+      },
+      "final_text_reread": "Reread current reader route and later historical constructor/default paragraphs. Eight presets/two protected setups, staged selection versus explicit Load/Apply and native receipt boundaries unchanged. The newly local October/3November scope avoids interpreting its old Current policy or unmerged source66bf30f8 as today's gameplay default; no UI or scientific claim added."
+    },
+    {
+      "claim_id": "L-45",
+      "priority": "P1",
+      "document": "docs/reference/material-effects-register.md",
+      "document_sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae",
+      "result": "source-verified",
+      "observations": "Shader uniforms contain material/condition textures, LUTs, time and presentation parameters but no general native velocity field. Material condition projection selects a derived channel, not full Cell state. The roughly6x/p95 1.926ms observation belongs to the October TITAN RTX effect scene; no fresh GPU qualification inferred.",
+      "source_locators": [
+        "godot/shaders/material_palette.gdshader",
+        "native/include/cybersand/material_appearance.hpp",
+        "docs/audits/2026-10-18-material-readability-pass.md"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "A-L-02",
+      "priority": "P2",
+      "status": "resolved",
+      "document": "docs/systems/activity-dirty-regions-and-waking.md",
+      "finding": "New publish source link pointed at a file without that method.",
+      "resolution": "Lead restored original world.cpp link and entire document bytes.",
+      "baseline_bytes_equal": true
+    }
+  ]
+}

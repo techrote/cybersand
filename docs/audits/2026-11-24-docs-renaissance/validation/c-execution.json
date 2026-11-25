@@ -1,0 +1,80 @@
+{
+  "authority": "historical-non-authoritative",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviewer": "Specialist C",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.935,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/docs.log.txt",
+      "output_sha256": "b35bd64c8d32c6c76d166b2d7307817e09e32a161cb1acf5d99dbfb1415f189f",
+      "scope": "Structural/authority documentation check"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_historical_retrieval.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.116,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/historical-retrieval-tests.log.txt",
+      "output_sha256": "96a785a02c5a40c662497b4005d9db3666ab278db6b0817c83c2fb42a8fa26bd",
+      "scope": "Focused offline retrieval regression tests"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_current_retrieval_selection.py"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.301,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/selection-regression-tests.log.txt",
+      "output_sha256": "857bf3c861b0fae951037139d51408a6a7daeb45bd6d33f5e7a47f6eedf8e84b",
+      "scope": "Focused offline retrieval regression tests"
+    },
+    {
+      "command": [
+        "make",
+        "c-header-check"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.036,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/c-header.log.txt",
+      "output_sha256": "c6321bf0221f964befbdae8814780c35af0cb9c7d103f0af8cce470cfc632d5a",
+      "scope": "C11 header syntax only, not native/Godot runtime"
+    },
+    {
+      "command": [
+        "make",
+        "-n",
+        "test"
+      ],
+      "result": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.019,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/test-dry-run.log.txt",
+      "output_sha256": "04699da933b24b7f8506e97d03f8e785da732e97d9d955a453ea7c7c5a5ce4d0",
+      "scope": "Command planning only; no tests compiled or executed"
+    }
+  ],
+  "not_run": [
+    {
+      "command": "full native/GDExtension/sanitizer/Windows/Web matrix",
+      "result": "NOT RUN",
+      "reason": "Documentation scope; focused source/checks do not justify expensive engine campaign."
+    },
+    {
+      "command": "paid provider/model dispatch",
+      "result": "NOT RUN",
+      "reason": "Not authorized or required."
+    }
+  ]
+}

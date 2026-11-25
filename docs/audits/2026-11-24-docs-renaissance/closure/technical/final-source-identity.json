@@ -1,0 +1,1463 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_truth",
+  "recorded_utc": "2026-11-25T00:18:26.978721+00:00",
+  "source_checkpoint": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "ledger_sha256": "755af8a3c2f5f9a55ba414204e2eb7bb41a335a2a9909c857610899be2686539",
+  "claim_count": 176,
+  "pending_final_review_identity_pairs": 0,
+  "document_identity_checks": [
+    {
+      "claim_id": "A-01",
+      "path": "docs/architecture/overview.md",
+      "sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-02",
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "b6ad1a6e57f91e4e97ed2be3ab690fac85bdc875a964e73f0a4c51a618696810",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-03",
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-04",
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-05",
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-06",
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-07",
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-08",
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-09",
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-10",
+      "path": "docs/reference/glossary.md",
+      "sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-11",
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-12",
+      "path": "docs/systems/water-design.md",
+      "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-13",
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-14",
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-15",
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-16",
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-17",
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-18",
+      "path": "docs/reference/invariants.md",
+      "sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-19",
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-20",
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-21",
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "3f33223ef0e88e20b22f0775cd731145ac9f946c8f396747d09f69735a7aa022",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-22",
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "57e42584e1320481b46f2f0a62894047b08a7b935197d8edcded228997d1fc9c",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-23",
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "1df19ea0874396cd77e2b39ca84b47ecb7f616b68f0ff6cabcfaaa8b05264698",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-24",
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "700bfea745a7a9d3d35da618ddf4b730f1718bad85bcf5ca45b7c85a92d0eee4",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-25",
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-26",
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "1f8bae20d9fe8fe39f340430fd1a5216d6c429dfd46e13921ee380349973b802",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-27",
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "3995a836ec1c0b5599ac7d2b7a7f8da2e4ee2f750f9866113358e5613081ac01",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-28",
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "28a761724505a50abf26e118be38ab0c777f05b3bea0f8686da1b306fcacd14e",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-29",
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "7c0cec2e6da081eb47e8cfab73917c4d40c79a6d1370b38881eabd9b2337b16b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-30",
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "8ee8ef37d787b35c7c0cfd6b74278eb9dd135d7f664e99ad860e06db252ea580",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-31",
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "f6a112f5017fa0c0d964d912c0e39451a04d46340a6515fe250dbce808ab177f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-32",
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-33",
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-34",
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "e2ca5966ecf90b0e4d40b013646ac4f3bb34c0c5ae3d9efe7ab641c6c9a96dae",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-35",
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "0ab911b1e8b30a3ca83fa525ca927c59e12635412a1cdbf1cf4e3847806aaab8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-36",
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-37",
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-38",
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-39",
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-40",
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-41",
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-42",
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-43",
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-44",
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "A-45",
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-01",
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-01",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-01",
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-02",
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-02",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-02",
+      "path": "docs/operations/getting-started.md",
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-03",
+      "path": "docs/operations/getting-started.md",
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-03",
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-04",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-05",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-05",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-06",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-06",
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-07",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-07",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-07",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-07",
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-08",
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-08",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-08",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-08",
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-09",
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-09",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-09",
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-10",
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-11",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-11",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-11",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-11",
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-12",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-13",
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-13",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-13",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-13",
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-14",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-14",
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-15",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-15",
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-16",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-16",
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-17",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-17",
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-17",
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-18",
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-18",
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-19",
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-19",
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-20",
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-21",
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-21",
+      "path": "docs/operations/showcase-guide.md",
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-22",
+      "path": "docs/audits/2026-11-24-docs-renaissance/assets-b.json",
+      "sha256": "123f1a5aa7254adc75cb4b110e91ba96f544c08109ed12bb11c1d1d49b47f5ca",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-23",
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-24",
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-25",
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-26",
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-27",
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-27",
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-28",
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-29",
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-30",
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-31",
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-32",
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-33",
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-34",
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-35",
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-36",
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-37",
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-38",
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-39",
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-40",
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-41",
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-42",
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "B-43",
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-01",
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-02",
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-03",
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-04",
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-05",
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-06",
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-07",
+      "path": "tools/docs/retrieval_eval.py",
+      "sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-08",
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "d1f928da8a0b60abc88e427c2901f79a4b409155cc787b3925727e97ade1c3f8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-09",
+      "path": "docs/reference/retrieval-questions-docs-renaissance-v1.json",
+      "sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-10",
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-11",
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-12",
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-13",
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-14",
+      "path": "docs/README.md",
+      "sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-14",
+      "path": "docs/reference/retrieval-index.md",
+      "sha256": "37aa6cc9c04af60c8fa7a3b89c2fbc732e63db560434abe612de9fa5f04f51b6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-15",
+      "path": "CONTRIBUTING.md",
+      "sha256": "bc291623ae12a4923d4b52329d5a8858fdc9316241bb7a0b97d71f8c9effc1af",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-16",
+      "path": "docs/operations/web-threading.md",
+      "sha256": "44e06717dcc4b44ab11704c5aa04742e4cdf41ec3f73e548bc8f38f9af08c0f0",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-17",
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-18",
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-19",
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-20",
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "819fa3cae011b127aaad1d9d053caf2cf6519f4af5f9d5347995a8818ef2b33f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-21",
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-22",
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "cb16396e805d9224d47b11eb4010eb273e68343b822f2e1998dd0f59606245e6",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-23",
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-24",
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-25",
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-26",
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "C-27",
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-01",
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-02",
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-03",
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-04",
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-05",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-06",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-07",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-08",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-09",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-10",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-11",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-12",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-13",
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-14",
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-15",
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-16",
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-17",
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-18",
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-19",
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-20",
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-21",
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-22",
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "081fa7d9831c8af6606ddb9023a25e47383383d1a37e2b0b04c76aa9bb1eeeff",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-23",
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-24",
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-25",
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-26",
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-27",
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-28",
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-29",
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-30",
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-31",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-32",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-33",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-34",
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-35",
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-36",
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-37",
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-38",
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-39",
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-40",
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-41",
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-42",
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-43",
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-44",
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-45",
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-46",
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-47",
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-48",
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-49",
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-50",
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-51",
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-52",
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-53",
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "a6d26cad646ce6ab4055885d70a463b600999d6e00fc47ae243187c52c1a7e23",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-54",
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-55",
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "49c2564896cc7eeacc4bbbc83e1bbf74ddccefb47fadb07b84025cbe30724e1f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-56",
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-57",
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-58",
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-59",
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-60",
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    },
+    {
+      "claim_id": "L-61",
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "2d041aa1cf9ed44cf16c94daa427fde5dac7873f2f51377195d745cffbcec83c",
+      "matches_ledger": true,
+      "matches_source_checkpoint": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,41 @@
+{
+  "baseline_markdown_count": 508,
+  "baseline_entry_count": 539,
+  "inventory_entry_count": 547,
+  "current_markdown_count": 514,
+  "default_documents_before": 145,
+  "default_documents_after": 151,
+  "navigation_documents": 8,
+  "new_current_guides": 6,
+  "source_reconciled_current_markdown": 131,
+  "source_reviewed_preserved_current_markdown": 21,
+  "source_reviewed_current_markdown_total": 152,
+  "metadata_only_routing_changes": 27,
+  "changed_markdown_excluding_routing": 131,
+  "unreviewed_default_semantics": 3,
+  "unreviewed_default_p1": 0,
+  "source_inspected_narrow_current_markdown": 0,
+  "review_levels": {
+    "metadata-and-structural": 6,
+    "instruction-read": 1,
+    "source-reconciled": 133,
+    "inventory-only": 71,
+    "metadata-only": 284,
+    "metadata-and-selection-only": 27,
+    "source-reviewed-preserved": 21,
+    "implementation-and-regression-reviewed": 4
+  },
+  "priorities": {
+    "P2": 13,
+    "P0": 57,
+    "P1": 128,
+    "P3": 349
+  },
+  "corpus_roles": {
+    "navigation": 8,
+    "outside-default": 77,
+    "explicit-excluded": 33,
+    "default": 151,
+    "historical-only": 278
+  }
+}

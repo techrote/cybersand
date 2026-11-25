@@ -1,0 +1,358 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "/root closure lead; independent of retrieval author",
+  "recorded_at": "2026-11-25T00:19:04.823478+00:00",
+  "method": "Read all20 actual retrieved passages for DR31\u201334 and construct bounded answers from those contexts; separately compare to owning policy/source decision. This is an authored applicability audit, not an external LLM generation benchmark.",
+  "source_packet": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/answer-lead-delivered-input.json",
+  "source_packet_sha256": "d6c8849119a7b371aefc5b2cd9e978804aae6d87b29205a934075d11d97ec981",
+  "source_report": "qualified-v2/candidate/renaissance.json",
+  "source_report_sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+  "evaluator_sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+  "policy_sha256": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+  "summary": {
+    "questions": 4,
+    "sufficient": 4,
+    "partial": 0,
+    "wrong_context": 0
+  },
+  "reviews": [
+    {
+      "id": "DR31",
+      "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+      "canonical_rank": 1,
+      "answer_from_context_only": "No. A September audit retains its own source, date and scope; its Approved label and old restore instruction do not authorize a current runtime change. Preserve that receipt and verify the present checkout, current task and source-matched publication procedure. Default retrieval excludes historical files. Deliberate historical retrieval must retain a non-authoritative envelope; current pages that quote history must identify its dated applicability locally.",
+      "context_applicability": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        4
+      ],
+      "facts_covered": [
+        "Historical records retain their original scope and confer no present implementation authority.",
+        "Ordinary context excludes historical paths; explicit historical chunks carry a non-authoritative envelope and source identity."
+      ],
+      "missing_essential_qualifications": [],
+      "revision_sensitivity_respected": true,
+      "conflicting_context": false,
+      "required_abstention": "No unsupported runtime permission or external-system qualification inferred.",
+      "review_rationale": "The first-ranked canonical passage is complete. Lower-ranked historical checkpoint prose explicitly disclaims current routing; it does not conflict with the answer. The packet/corpus hashes provide immutable identity beyond the source path/date shown in each excerpt.",
+      "hit_context_sha256": [
+        {
+          "rank": 1,
+          "path": "operations/documentation-maintenance.md",
+          "sha256": "7b099c2ff60bb46db7aed5e1d278c03ade6d3fcc0a9f86cd0912e3c22b833124"
+        },
+        {
+          "rank": 2,
+          "path": "operations/soliding-stage3b-production-plan.md",
+          "sha256": "ed02b755e75ebbbaa6d253284745b0f305284b7fa8343d6311267ec47251b788"
+        },
+        {
+          "rank": 3,
+          "path": "operations/troubleshooting.md",
+          "sha256": "72b159eae59b7965d0a918a3fff0ea3d60e4356e00ac080ab6fbc29e590f22e3"
+        },
+        {
+          "rank": 4,
+          "path": "operations/soliding-programme.md",
+          "sha256": "7d863456f8be016cbe76ca6574f64d40349db8af06e2f4786133f6895f198dd7"
+        },
+        {
+          "rank": 5,
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "sha256": "de0ba8cbb58722f7bfe47bd86dac53ed0a834f815bf53fbfa2cb165f625b9df5"
+        }
+      ]
+    },
+    {
+      "id": "DR32",
+      "query": "If the retrieval manifest is missing, may fallback load old execution prompts and omit the current World Art guides?",
+      "canonical_rank": 1,
+      "answer_from_context_only": "No. Missing-manifest fallback must keep the same current-selection and authority boundaries. It discovers focused current directories including tools and MATERIAL_LAB, then excludes navigation and explicit-only packets. Authority is validated before exclusion; malformed or duplicated authority, selection or document-kind metadata must fail closed. Direct default ingestion follows the same exclusions. This is evidence about the repository lexical retriever; external cached indexes need rebuilding and their own qualification.",
+      "context_applicability": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        5
+      ],
+      "facts_covered": [
+        "Fallback must preserve current selection and authority boundaries, including explicit-only document routing and navigation exclusion.",
+        "Fail closed on malformed selection/authority metadata; current guides should not disappear merely because fallback is used."
+      ],
+      "missing_essential_qualifications": [],
+      "revision_sensitivity_respected": true,
+      "conflicting_context": false,
+      "required_abstention": "No unsupported runtime permission or external-system qualification inferred.",
+      "review_rationale": "Rank1 states the selector contract, malformed-metadata behavior, direct-ingestion boundary and external-cache limitation. Rank5 is a current World Art capture guide, confirming relevant tools content is available in these actual contexts.",
+      "hit_context_sha256": [
+        {
+          "rank": 1,
+          "path": "operations/documentation-maintenance.md",
+          "sha256": "5f5dfe00529d59093598c624ea8b4c74df9eb966d6d14a8344bc1597845122a6"
+        },
+        {
+          "rank": 2,
+          "path": "operations/documentation-maintenance.md",
+          "sha256": "b8f6936efcc12e865f681e72fb9dcb1a3a635f16dc969a0d9d62b8c31d0eb108"
+        },
+        {
+          "rank": 3,
+          "path": "operations/architecture-programme.md",
+          "sha256": "02cdf5e8121a7ad67db901c9a5e77f53e364d35d95abf44ca29bd4fc802157f2"
+        },
+        {
+          "rank": 4,
+          "path": "operations/documentation-maintenance.md",
+          "sha256": "d5221f1d15e37fbb023bf6a270426b6b4539706d05d7f0d18851323b060f6ca1"
+        },
+        {
+          "rank": 5,
+          "path": "tools/world-art-capture.md",
+          "sha256": "390db783925c7b49f056f679cfabf326518c27722b5fa7f193a16384af5d9a09"
+        }
+      ]
+    },
+    {
+      "id": "DR33",
+      "query": "Does the 14 November owner authoring-intent decision itself authorize engine implementation or historical ticket retirement?",
+      "canonical_rank": 1,
+      "answer_from_context_only": "No. The 14 November record establishes owner intent and its phase-specific limits. It does not by itself authorize engine implementation, merging, historical retirement, a held branch restart or every condition in an older proposal. Inspect the current explicit task authorization before undertaking bounded work, and retain unresolved choices. These excerpts cannot establish whether a later authorization has been given.",
+      "context_applicability": "sufficient",
+      "supporting_ranks": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "facts_covered": [
+        "The record captures approved intent and limits, not automatic implementation or historical-retirement permission.",
+        "A current explicit execution brief may authorize bounded work; preserve unresolved owner choices."
+      ],
+      "missing_essential_qualifications": [],
+      "revision_sensitivity_respected": true,
+      "conflicting_context": false,
+      "required_abstention": "No new owner decision or newer acceptance inferred; current-task verification retained.",
+      "review_rationale": "All five chunks retain owner-confirmed-intent rather than an implementation label. Rank1 supplies the phase-specific boundary; rank3 distinguishes the assistant transcription from independent owner-authored GitHub approval. A newer task may supply authorization, but none is inferred from these excerpts.",
+      "hit_context_sha256": [
+        {
+          "rank": 1,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "5ce400e2a22d5bbab8cb336e68fcd5079d479ac2319145d15a6180666ad9984a"
+        },
+        {
+          "rank": 2,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "ef7ae38de0e51d7144ef023dfd4f8ad589cc701f247136a9401005ae89d3eb17"
+        },
+        {
+          "rank": 3,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "3bf7af1e66fe412aeb3fdad3c5f43f1d1b6e1ca54a8bc2dbf7fa78151b05ba5e"
+        },
+        {
+          "rank": 4,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "8fefa4786c0361110a852368edc196dfa4378133f815f1b6967e37f0741f0fb1"
+        },
+        {
+          "rank": 5,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "88ec76ce9ed9604c0bff529c1ad66ffb65de709d0dd7a546ab7060d4b7651d4a"
+        }
+      ]
+    },
+    {
+      "id": "DR34",
+      "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+      "canonical_rank": 4,
+      "answer_from_context_only": "No, at the recorded accepted-source snapshot. Persistent areas and RAMCACHE remain candidate or planned work; ordinary authored saves do not establish exact physical continuation or off-screen catch-up. Current interest-region re-entry restores eligibility, which is different from catch-up. Approved intent is bounded approximate catch-up measured in game time, not elapsed offline wall time. Refresh main and the owning programme before claiming any later acceptance.",
+      "context_applicability": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "facts_covered": [
+        "Persistent-area and RAMCACHE successors remain unmerged at the recorded source.",
+        "Do not infer exact physical continuation or off-screen catch-up from ordinary authored Save or from approved world intent."
+      ],
+      "missing_essential_qualifications": [],
+      "revision_sensitivity_respected": true,
+      "conflicting_context": false,
+      "required_abstention": "No new owner decision or newer acceptance inferred; current-task verification retained.",
+      "review_rationale": "Ranks1 and3 explicitly distinguish accepted behavior from candidate areas; rank4 is the expected canonical register and supplies the save/continuation limitation. Rank2 is correctly enveloped as owner intent, not delivered functionality.",
+      "hit_context_sha256": [
+        {
+          "rank": 1,
+          "path": "systems/world-storage-and-interest-region.md",
+          "sha256": "7b7bee744bfa62ee6ea80c6fbe450ad43f79280dcb615928f1544e0c7f7641bd"
+        },
+        {
+          "rank": 2,
+          "path": "reference/product-intent-and-priorities.md",
+          "sha256": "4d06e83a564bd57e2846aa906d811738221d509e76c9a0db8f3b8677771f4754"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/overview.md",
+          "sha256": "30b40ed1266d5a605106fa69b4f337eb796d181b3124f2a3cec4dc6883e58a1a"
+        },
+        {
+          "rank": 4,
+          "path": "reference/status-and-roadmap.md",
+          "sha256": "b1264ef7474efa0bf52dfd816a20ed9d66d668807d626addce2dace032fc6168"
+        },
+        {
+          "rank": 5,
+          "path": "operations/documentation-maintenance.md",
+          "sha256": "fb07dbd24bc09b81fe0c7b8e9f99dbb45e77fe54b958c3a7873c6e8567bd1e7f"
+        }
+      ]
+    }
+  ],
+  "transfer_to_qualified": {
+    "method": "Independent exact comparison of all20 passage texts, ranks, source paths, headings, parts, authority and policy envelopes. Scores can change with corpus length without changing answer evidence.",
+    "identical_queries": [
+      "DR31",
+      "DR32",
+      "DR33",
+      "DR34"
+    ],
+    "prior_packet_sha256": "55a2a070dcd59a56799d103bbe6cdaffb287cfd54951fe7a6d5d29c76c192193",
+    "transferred_at": "2026-11-25T00:06:23.825548+00:00"
+  },
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "final_transfer": {
+    "method": "Lead independently parsed both packets and compared complete rows except numerical lexical scores. All20 actual passage texts, order, paths and authority metadata match exactly. Minor corpus-length score changes are retained below; canonical ranks and judgments unchanged. No repeated semantic review represented.",
+    "from_review_sha256": "a204f9f90a4704550296d5c5ece638abc21f687ff2b3ceb81a63029c26c3ff09",
+    "prior_review": "answer-lead-review-before-final-reopen.json",
+    "rows": 4,
+    "passages": 20,
+    "passage_metadata_equal": true,
+    "lexical_score_changes": [
+      {
+        "question": "DR31",
+        "rank": 1,
+        "old_score": 25.778247,
+        "new_score": 25.77851
+      },
+      {
+        "question": "DR31",
+        "rank": 2,
+        "old_score": 12.326998,
+        "new_score": 12.32711
+      },
+      {
+        "question": "DR31",
+        "rank": 3,
+        "old_score": 11.538477,
+        "new_score": 11.538707
+      },
+      {
+        "question": "DR31",
+        "rank": 4,
+        "old_score": 10.02453,
+        "new_score": 10.024722
+      },
+      {
+        "question": "DR31",
+        "rank": 5,
+        "old_score": 9.991566,
+        "new_score": 9.991666
+      },
+      {
+        "question": "DR32",
+        "rank": 1,
+        "old_score": 19.255128,
+        "new_score": 19.255292
+      },
+      {
+        "question": "DR32",
+        "rank": 2,
+        "old_score": 18.026099,
+        "new_score": 18.02632
+      },
+      {
+        "question": "DR32",
+        "rank": 3,
+        "old_score": 17.315997,
+        "new_score": 17.316189
+      },
+      {
+        "question": "DR32",
+        "rank": 4,
+        "old_score": 16.910997,
+        "new_score": 16.911235
+      },
+      {
+        "question": "DR32",
+        "rank": 5,
+        "old_score": 15.793595,
+        "new_score": 15.793676
+      },
+      {
+        "question": "DR33",
+        "rank": 1,
+        "old_score": 33.933143,
+        "new_score": 33.933325
+      },
+      {
+        "question": "DR33",
+        "rank": 2,
+        "old_score": 29.000528,
+        "new_score": 29.000764
+      },
+      {
+        "question": "DR33",
+        "rank": 3,
+        "old_score": 28.104229,
+        "new_score": 28.104406
+      },
+      {
+        "question": "DR33",
+        "rank": 4,
+        "old_score": 27.898261,
+        "new_score": 27.898431
+      },
+      {
+        "question": "DR33",
+        "rank": 5,
+        "old_score": 26.719549,
+        "new_score": 26.719693
+      },
+      {
+        "question": "DR34",
+        "rank": 1,
+        "old_score": 27.463258,
+        "new_score": 27.463527
+      },
+      {
+        "question": "DR34",
+        "rank": 2,
+        "old_score": 26.278708,
+        "new_score": 26.27901
+      },
+      {
+        "question": "DR34",
+        "rank": 3,
+        "old_score": 23.035852,
+        "new_score": 23.036183
+      },
+      {
+        "question": "DR34",
+        "rank": 4,
+        "old_score": 22.018791,
+        "new_score": 22.019141
+      },
+      {
+        "question": "DR34",
+        "rank": 5,
+        "old_score": 21.068472,
+        "new_score": 21.06887
+      }
+    ]
+  }
+}

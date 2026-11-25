@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "lane": "A / technical_reference",
+  "recorded_at": "2026-11-24T20:01:38.641928+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "Documentation-only working-tree qualification at the end of A’s source reconciliation. Source/runtimes were not changed and runtime/physical acceptance is not established.",
+  "checks": [
+    {
+      "command": "python tools/ci/check_docs.py --json /workspace/scratch/855d9af51e68/mission/technical-check-docs-final.json",
+      "result": "PASS",
+      "evidence": "validation/a-doc-check.json",
+      "evidence_sha256": "bb68d82cedfcde709224e1764b7434eb70df34f4ce4253c9adb65ee4fb77bb6a",
+      "observed": {
+        "status": "passed",
+        "documents": 151,
+        "navigation_link_documents": 8,
+        "canonical_claims": 280,
+        "local_links": 3476,
+        "heading_anchors": 485,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "observed": "Exit 0; empty output for the shared working tree at this checkpoint."
+    },
+    {
+      "command": "Python JSON parse, SHA-256 recomputation and per-path source-locator existence check",
+      "result": "PASS",
+      "observed": "All 41 A preservation records match their current document bytes; all A claim source file prefixes resolve. Claims/review/preservation JSON parsed successfully."
+    },
+    {
+      "command": "Independent B claim document coverage and final-text SHA-256 comparison",
+      "result": "PASS",
+      "observed": "39 independently reviewed claims; all listed claim documents have exact reviewed hashes. B23 existing matching single-document hash also exposed as a uniform map."
+    },
+    {
+      "command": "Native simulation, renderer, Godot or physical execution",
+      "result": "NOT RUN",
+      "reason": "A source reconciliation and independent review did not require new runtime matrices; B’s actual bounded capture evidence is separately recorded."
+    }
+  ],
+  "limits": [
+    "check_docs does not verify source semantics or external URLs.",
+    "Source-level independent reviews are recorded separately and do not imply historical scientific results were rerun.",
+    "This checkpoint precedes the final integrated retrieval freeze; the lead owns final repository qualification."
+  ]
+}

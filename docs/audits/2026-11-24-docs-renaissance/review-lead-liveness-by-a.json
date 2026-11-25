@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "Lead L23/L24 liveness, L25/L26 ADR applicability and L31/L32/L33 generated-map contract. Actual source inspected; old campaigns not re-executed.",
+  "claims": [
+    {
+      "claim_id": "L-23",
+      "priority": "P0",
+      "document": "docs/operations/material-liveness-investigation.md",
+      "document_sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "result": "source-verified",
+      "observations": "Git object0103de80 is MergePR377 PhaseA evidence and an ancestor of accepted baseline; current prose scopes Ready/merge authorization to that completed task. No new task authority inferred.",
+      "source_locators": [
+        "AGENTS.md",
+        "git:0103de80d11304388868f89f7b26c672ad6100ad"
+      ]
+    },
+    {
+      "claim_id": "L-24",
+      "priority": "P1",
+      "document": "docs/operations/material-liveness-investigation.md",
+      "document_sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "result": "source-verified",
+      "observations": "thermal_change_due uses temporal_lane_due(4,192); MoltenGlass resets cooling to180 beside Fire/Lava/MoltenGlass or decrements then converts. schedule_pending_reaction_wake handles pair reactions and Ice, with no proposed MoltenGlass cooling-continuation branch. No campaign rerun claimed; issue state comes from lead intake.",
+      "source_locators": [
+        "native/src/world.cpp::update_rule_kernel/schedule_pending_reaction_wake",
+        "tools/material_liveness/run.py"
+      ]
+    },
+    {
+      "claim_id": "L-25",
+      "priority": "P1",
+      "document": "docs/decisions/ADR-005-water-model.md",
+      "document_sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "result": "source-verified",
+      "observations": "Original FreeMass pairwise/precision decision is kept; LiquidPolicyBuild::running admits CY/PF/IN and select_gameplay_water enables Wave for the player path. Original free-water deferral is no universal veto.",
+      "source_locators": [
+        "native/include/cybersand/liquid_solver_policy.hpp::LiquidPolicyBuild::running",
+        "godot/native_extension/cyber_native_cell_world.cpp::select_gameplay_water",
+        "native/src/world.cpp::update_water"
+      ]
+    },
+    {
+      "claim_id": "L-26",
+      "priority": "P0",
+      "document": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "document_sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "result": "source-verified",
+      "observations": "save_physical_state refuses Wave, unhealthy World, an in-progress tick and settled discovery. Restore decodes versions2\u20135 and rejects Wave. Authored flattened save/restart/load consumes acknowledged authoring state, not failed physical continuation.",
+      "source_locators": [
+        "native/src/world_pressure.inc::save_physical_state/restore_physical_state",
+        "native/include/cybersand/world.hpp::physical_state_format_version",
+        "godot/scripts/shared_workbench.gd::save_setup"
+      ]
+    },
+    {
+      "claim_id": "L-31",
+      "priority": "P0",
+      "document": "docs/systems/explore001-generated-playable-maps.md",
+      "document_sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "result": "source-verified",
+      "observations": "Live intake reports#542 merged atd4b18e7f and Git confirms accepted ancestry. Generator preview/install and generated-map reconstruction exist; old Draft/Ready task instructions remain linked historical evidence.",
+      "source_locators": [
+        "docs/audits/2026-11-24-docs-renaissance/github-intake.json",
+        "godot/scripts/workbench_generator_dialog.gd",
+        "godot/scripts/workbench_generated_map.gd"
+      ]
+    },
+    {
+      "claim_id": "L-32",
+      "priority": "P1",
+      "document": "docs/systems/explore001-generated-playable-maps.md",
+      "document_sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "result": "source-verified",
+      "observations": "Shared Workbench button is Save start[Ctrl+S]; SetupMAX_STAMPS/MAX_RUNS32768, envelope1MiB. edit_work_error uses min(64*width*height,32000000). Generated immutable source plus ordered edits is distinct from live evolved state; explicit Flatten exists.",
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::setup/save_setup/request_flatten",
+        "godot/scripts/workbench_setup.gd::MAX_STAMPS/MAX_RUNS",
+        "godot/scripts/workbench_generated_map.gd::edit_work_error/write_named"
+      ]
+    },
+    {
+      "claim_id": "L-33",
+      "priority": "P0",
+      "document": "docs/systems/explore001-generated-playable-maps.md",
+      "document_sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "result": "source-verified",
+      "observations": "Current procedure uses source-matched materialized or rebuilt native library and same disposable profile for two-process reopen. Test reads CYBERSAND_EXPLORE_REOPEN, while older branch and overlap instructions are scoped to original qualification. The final heading now says source-matched native runtime and retains the old anchor.",
+      "source_locators": [
+        "godot/tests/test_explore001_generated_workbench.gd",
+        "docs/operations/local-build-and-validation.md",
+        "godot/scripts/workbench_generator_dialog.gd"
+      ]
+    }
+  ],
+  "ancestry_checks": [
+    {
+      "commit": "0103de80d11304388868f89f7b26c672ad6100ad",
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "is_ancestor_exit_code": 0
+    },
+    {
+      "commit": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+      "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "is_ancestor_exit_code": 0
+    }
+  ],
+  "findings": [
+    {
+      "id": "A-L-01",
+      "priority": "P2",
+      "status": "resolved",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "finding": "Qualification heading says rebuilt although source-matched retained materialized runtime is permitted by the actual body.",
+      "recommendation": "Drop rebuilt from the heading; preserve runtime/source identity requirements.",
+      "resolution": "Lead changed the heading to source-matched native runtime and retained the previous explicit anchor; A read the final text."
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A / technical_reference",
+  "reviewed_lane": "C",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Independent source inspection of current onboarding, validation/publication and three context-contamination repairs. No new native compilation, browser run, publication or owner acceptance. Retrieval helper implementation review belongs to lead.",
+  "claims": [
+    {
+      "claim_id": "C-01",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "Configured entry is feature_launcher.tscn. Source checkout launch-desktop.cmd invokes launch_desktop.ps1 with an exact Godot check and no rebuild; companion dev.cmd is optional and separate.",
+      "source_locators": [
+        "godot/project.godot",
+        "launch-desktop.cmd",
+        "tools/launch_desktop.ps1"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/local-build-and-validation.md": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    },
+    {
+      "claim_id": "C-02",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "Godot exact version, godot-cpp revision, build toolchain and library input/hash identity are distinct checks. check_repository permits valid LFS pointers only without require-materialized; identity is not runtime execution.",
+      "source_locators": [
+        "third_party/godot-runtime.lock.json",
+        "third_party/native-toolchain.lock.json",
+        "tools/ci/check_repository.py",
+        "tools/launch_desktop.ps1",
+        "tools/build_native_extension.sh",
+        "tools/build_pinned_godot_cpp.sh"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/local-build-and-validation.md": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    },
+    {
+      "claim_id": "C-03",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": "Accepted execution-plan derives shard matrices from case inventory and allowance. Windows workflow passes --native-candidate. The retained-runtime alternate still exists but is not the ordinary accepted workflow. ACT004 residual fixed-four wording was corrected.",
+      "source_locators": [
+        ".github/workflows/gdextension.yml",
+        "tools/ci/godot_job_plan.py::plan",
+        "tools/ci/run_godot_regressions.py",
+        "tools/ci/run_windows_godot_regressions.py::verify_retained_runtime/plan_cases"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/testing-validation-and-replay.md": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    },
+    {
+      "claim_id": "C-04",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": "Makefile c-header-check is a bounded header check. test includes native, Soliding, worldgen and material baseline; sanitizer targets have their own scope. No source evidence supports blanket 120/300-second full-suite success budgets or immutable current test counts. Later watchdog paragraph now locally labels the45/180-second cohort historical; current policy is300 capture/3600 idle/3940 complex process before optional scaling.",
+      "source_locators": [
+        "Makefile::test/c-header-check/sanitize/thread-sanitize",
+        "tools/ci/run_godot_regressions.py",
+        "godot/tests/support/ci_execution_policy.json",
+        "tools/ci/execution_policy.py::complex_process_seconds",
+        "tools/ci/physical_progress_watchdog.py"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/local-build-and-validation.md": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa",
+        "docs/operations/testing-validation-and-replay.md": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    },
+    {
+      "claim_id": "C-05",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "Publication helper binds authorized branch/request/schema/source inputs, runtime paths and expected head. An old publisher or lease is not new authorization. Current guide retains Draft/owner merge authority and separates release/physical acceptance.",
+      "source_locators": [
+        "AGENTS.md",
+        "tools/ci/gen007_architectural_runtime_publication.py",
+        "tools/ci/lcb001_shared_contract_runtime_publication.py",
+        "tools/ci/check_repository.py"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/github-development-and-release.md": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    },
+    {
+      "claim_id": "C-06",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": "Web workflow selects Emscripten4.0.11 and invokes --compile-only --native-tests without --native-cpp; builder checks4.0.20 and requires isolated native bindings. compile-only exits before runtime/export. Runtime lock says export templates absent-and-unpinned. These source gaps do not prove every historical artifact failed.",
+      "source_locators": [
+        ".github/workflows/web-demo.yml",
+        ".github/workflows/web-toolchain.yml",
+        "tools/build_web.py",
+        "godot/export_presets.cfg",
+        "third_party/godot-runtime.lock.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/github-development-and-release.md": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    },
+    {
+      "claim_id": "C-10",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "Architecture programme now locally labels dated four-byte baseline/table/matrix/G-L decisions and points to current eight-byte PrecisionStorage. Original no-migration controls remain experiment-scoped, not permanent vetoes.",
+      "source_locators": [
+        "native/include/cybersand/precision_storage.hpp",
+        "native/src/world.cpp",
+        "docs/operations/architecture-programme.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/architecture-programme.md": "2058a267c012000c43c4d08b2dfb6fcba3eb40889571f46d737becbbd0efc619"
+      }
+    },
+    {
+      "claim_id": "C-11",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "L2/L4 locally distinguish synthetic byte4 and sidecar controls from eight-byte aligned production storage. Original workspace becomes a reproduction identity, not an active branch assignment.",
+      "source_locators": [
+        "native/include/cybersand/precision_storage.hpp",
+        "native/src/world.cpp",
+        "docs/operations/cell-layout-experiment.md"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/cell-layout-experiment.md": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118"
+      }
+    },
+    {
+      "claim_id": "C-12",
+      "priority": "P0",
+      "result": "source-verified",
+      "observations": "Old overnight model/branch/task imperative is replaced by explicit historical scope and original-source/snapshot links. Frozen Stage3 boundaries persist; current handover routing grants no Stage4 or material-ownership change.",
+      "source_locators": [
+        "docs/operations/soliding-stage3-freeze.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/systems/settled-region-discovery.md",
+        "docs/audits/2026-11-24-docs-renaissance/preservation-c.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/soliding-stage3-freeze.md": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+        "docs/operations/cybersand-codex-development-handover.md": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+        "docs/systems/settled-region-discovery.md": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b",
+        "docs/audits/2026-11-24-docs-renaissance/preservation-c.json": "33301a089c2528e5267caac83793209d840c86762d1497d6b31dbaf40d5703d8"
+      },
+      "final_preservation_delta": "Verified all23preserved originals byte-for-byte against accepted-baseline git objects, lengths and declared hashes; receipt review-preservation-c-by-a.json. Reread the current Stage3 historical envelope and the current discovery ownership/reconstruction introduction. Discovery changed under A-42, separately independently reviewed by lead; current handover and Stage3 guide hashes remain unchanged. This refresh does not semantically certify unrelated later C edits.",
+      "final_preservation_reviewed_at": "2026-11-24T20:33:50.124080+00:00"
+    },
+    {
+      "claim_id": "C-13",
+      "priority": "P1",
+      "result": "source-verified",
+      "observations": "M11 checker expects28 historical BUILD_ID rows and compares audited Git blobs plus immutable records. Working-tree comparison is explicit diagnostic scope, not a reason to rewrite historical hashes or reuse old runtime qualification.",
+      "source_locators": [
+        "tools/ci/check_m11_consistency.py::check",
+        "docs/operations/current-and-historical-validation.md",
+        "docs/audits/m11-retention.json"
+      ],
+      "reviewed_document_sha256": {
+        "docs/operations/current-and-historical-validation.md": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+        "docs/audits/m11-retention.json": "5abc59845446e024559959e7545716f50ffa0fa6685a1c7175fe6f9dad6366b8"
+      },
+      "final_text_reread": "Current relevant claim-bearing sections reread after later navigation edits; full long historical appendix not re-certified."
+    }
+  ],
+  "findings": [
+    {
+      "id": "A-C-01",
+      "priority": "P1",
+      "status": "resolved",
+      "finding": "ACT004 local-build section still called the current suite four hosted shards despite source-derived planning.",
+      "resolution": "C replaced with source-derived inventory/budget planning; A verified updated paragraph and workflow/planner."
+    },
+    {
+      "id": "A-C-02",
+      "priority": "P1",
+      "status": "resolved",
+      "finding": "Two October25 sampled/physical paragraphs carried pre-final#246 repeat/integration demands as current outstanding gates.",
+      "resolution": "C locally marked the old source requirement as historical and preserved focused test commands/current source-match requirements; A inspected both."
+    },
+    {
+      "id": "A-C-03",
+      "priority": "P0",
+      "status": "resolved",
+      "finding": "Actual DR06 contexts could answer old four-byte/sidecar controls as current; actual DR31 included an imperative overnight model/task handoff.",
+      "resolution": "Local historical qualification and preserved-original routing repaired the demonstrated text defects. Post-repair answer contexts are audited separately; this source review alone does not claim ranking or end-to-end answer success."
+    },
+    {
+      "id": "A-C-04",
+      "priority": "P1",
+      "status": "resolved",
+      "finding": "A later testing-guide paragraph presented original45-second idle and180-second full-deadline observations without local historical scope, conflicting with current300/3600/3940 policy.",
+      "resolution": "C added explicit historical cohort scope and current policy distinction; A reread it and independently inspected committed policy plus complex_process_seconds arithmetic."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""Bind tracked qualification inputs; mission evidence is excluded to avoid self-reference."""
+import datetime
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[4]
+OUT = ROOT / 'docs/audits/2026-11-24-docs-renaissance/closure/source-custody.json'
+EVIDENCE = 'docs/audits/2026-11-24-docs-renaissance/'
+BASE = '00cdb02f103265b6dc5224c68283e9a0c8cb449f'
+ALLOWED = ['.github/workflows/documentation.yml', 'tools/ci/check_docs.py',
+           'tools/ci/test_current_retrieval_selection.py', 'tools/docs/retrieval_eval.py',
+           'tools/docs/retrieval_policy.py']
+
+def git(*args):
+    return subprocess.check_output(['git', *args], cwd=ROOT)
+
+head = git('rev-parse', 'HEAD').decode().strip()
+tree = git('rev-parse', 'HEAD^{tree}').decode().strip()
+entries = {}
+for row in git('ls-tree', '-r', '-z', head).split(b'\0'):
+    if not row:
+        continue
+    meta, path = row.split(b'\t', 1)
+    mode, typ, sha = meta.decode().split()
+    path = path.decode()
+    if path.startswith(EVIDENCE):
+        continue
+    data = git('cat-file', 'blob', sha) if typ == 'blob' else b''
+    entries[path] = {'mode': mode, 'type': typ, 'git_object': sha,
+                     'sha256': hashlib.sha256(data).hexdigest() if typ == 'blob' else None}
+changed = git('diff', '--name-only', BASE, head).decode().splitlines()
+non_docs = [p for p in changed if not p.startswith('docs/') and p not in ('README.md', 'CONTRIBUTING.md')]
+protected = [p for p in entries if p.startswith(('native/', 'godot/', 'third_party/'))
+             or p in ('AGENTS.md', 'Makefile', 'launch-desktop.cmd', '.gitattributes')]
+dirty = git('diff', '--name-only', head).decode().splitlines()
+out = {
+    'schema': 2, 'authority': 'historical-non-authoritative',
+    'classification': 'fresh-closure-source-custody', 'source_head': head, 'source_tree': tree,
+    'accepted_main': BASE, 'accepted_tree': git('rev-parse', BASE + '^{tree}').decode().strip(),
+    'checked_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'changed_paths': changed, 'non_documentation_path_changes': non_docs,
+    'allowed_bounded_tooling_changes': ALLOWED,
+    'unexpected_changes': [p for p in non_docs if p not in ALLOWED],
+    'protected_runtime_dependency_policy_files': len(protected),
+    'protected_path_rule': 'native/, godot/, third_party/, AGENTS.md, Makefile, launch-desktop.cmd, .gitattributes',
+    'protected_drift': [p for p in changed if p in protected],
+    'historical_archive_changes': [p for p in changed if p.startswith('docs/history/')],
+    'dirty_qualification_input_paths': [p for p in dirty if not p.startswith(EVIDENCE)],
+    'qualification_inputs_excluding_mission_evidence': entries,
+    'qualification_input_digest_sha256': hashlib.sha256(json.dumps(entries, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
+    'digest_encoding': 'UTF-8 JSON of qualification_inputs_excluding_mission_evidence with sort_keys=True and separators=(comma,colon)',
+    'local_lfs_state': git('lfs', 'ls-files').decode(),
+    'limits': ['Tracked LFS pointer identity is not materialized runtime verification.',
+               'Mission evidence is excluded from the execution-input digest to avoid self-reference. Later evidence-only commits must match the entire input map.',
+               'Current GitHub main/PR status is retained separately; this script compares the declared accepted baseline.']}
+OUT.write_text(json.dumps(out, indent=2) + '\n')
+assert not out['unexpected_changes'] and not out['protected_drift'] and not out['historical_archive_changes'] and not out['dirty_qualification_input_paths'], out
+print(json.dumps({'source_head': head, 'inputs': len(entries), 'protected_files': len(protected), 'digest': out['qualification_input_digest_sha256'], 'status': 'PASS'}, indent=2))

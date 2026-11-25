@@ -1,0 +1,20 @@
+{
+  "authority": "historical-non-authoritative",
+  "method": "Full rendered top-five text/order comparison; score-only changes are separately retained but do not modify text applicability",
+  "previous_input": "retrieval/answer-a-frozen-input.json",
+  "previous_input_sha256": "3e836adba3478a6de22476cad5786d233caa305e1ab544b77ca7b009ded7fa78",
+  "new_input": "retrieval/final-freeze/answer-a-input.json",
+  "new_input_sha256": "750d4a83ffb51e3519ac6edcca61aa7f1c3182fd730bd2580ac80e6011b6f6c4",
+  "changed_top5_text_or_order": [
+    "DR07",
+    "DR08",
+    "DR09",
+    "DR17",
+    "DR19",
+    "DR31"
+  ],
+  "unchanged_question_ids": [
+    "DR06",
+    "DR16"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "classification": "fresh-read-only-source-admission-reproduction",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "command": [
+    "python",
+    "tools/lcb/in_tools_current_main_admission.py"
+  ],
+  "exit_code": 1,
+  "output": "Traceback (most recent call last):\n  File \"/tmp/cybersand-docs-closure/tools/lcb/in_tools_current_main_admission.py\", line 225, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/tmp/cybersand-docs-closure/tools/lcb/in_tools_current_main_admission.py\", line 219, in main\n    result = check()\n             ^^^^^^^\n  File \"/tmp/cybersand-docs-closure/tools/lcb/in_tools_current_main_admission.py\", line 194, in check\n    raise AdmissionError(\nAdmissionError: working source changed for godot/scripts/physical_actor_session.gd: 56df9dde65f3d2a8650bc7575e886fe19a24380e != bde4503df99d7e317cfb0987004d525f72177316\n",
+  "path": "godot/scripts/physical_actor_session.gd",
+  "baseline_and_current_bytes_equal": true,
+  "baseline_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+  "current_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+  "sha256": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+  "interpretation": "Expected inherited campaign-authority refusal before causal execution; not a fresh Windows runtime pass, not repaired, no authority relaxation."
+}

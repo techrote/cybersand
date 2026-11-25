@@ -4,11 +4,18 @@ status: Approved design
 document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-24
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
 # Physical actors and combined feature trials
+
+For the current ordinary authoring route, start with the
+[Workbench actor guide](workbench-actor-composition.md). Accepted #683 adds a
+59-identity composition catalogue with independent supported producers; that is
+a different selector from the legacy F5 family picker described here. The
+[current register](../reference/status-and-roadmap.md) separates accepted Actor
+Compose from the unmerged actor finisher and equipment recovery candidates.
 
 ## Shared free-flight training family
 
@@ -16,14 +23,15 @@ The [4LY contract and dependency chain](../systems/physical-free-flight.md)
 owns the single-chassis Trainer/Hauler/Drifter/Dart lane under long-lived parent
 #132. 4LY-001 reuses the physical session and native coupling, with strict
 two-output desired-velocity input and bounded goal-blind assistance.
-**4LY-002 candidate source** supplies four distinct physical parameter sets
+**Accepted source retains the 4LY-002 candidate calibration:** four distinct physical parameter sets
 and the additive F5 `set4LY` family. The 46 pre-existing actor IDs and SetP
 indices remain unchanged. The [measured 4LY-002 audit](../audits/2026-10-23-4ly002-measured-handling-qualification.md)
 records a real-Rapier pass of prospective motion/distinguishability thresholds
 on Linux and Windows plus exact-source native and documentation gates. The
 source calibration marker stays `candidate_4ly002` because its exact bytes
 participate in the passing profile hashes. Owner handling/visual review,
-final-head validation and the #207 host/teacher gate remain separate; a
+the original final-head validation and later #207 host/teacher evidence remain
+separate claims; a
 selectable name or passing manoeuvre metric is not an accepted learning plant.
 
 4LY-003 (#207) now has the [playable Flight Lab and physical episode owner](../systems/physical-flight-lab.md).
@@ -55,7 +63,9 @@ contact, and joints, thrust, grip and recoil have explicit runtime authority.
 The reusable main-thread body/joint/session substrate, command leases, mounted
 tools and separate physical Thunderbowl v2 are now implemented. Current bounds
 are eight actors, eight parts per actor including held objects, and 64 coupled
-bodies; the supplied rigs use two through seven parts. Further feel and
+bodies. The original ACT-004 articulated roster used two through seven parts;
+later single-chassis 4LY choices and the passive Workbench barrel have separate
+topologies. Further feel and
 constrained-map trials remain useful, especially Sand contact and difficult
 recovery. Neither this conversion nor a headless fixture pass closes generic
 granular #83, soliding #12 or the Water successor gates. Dated execution and
@@ -65,8 +75,11 @@ remaining limits are in the [ACT-004 record](../audits/2026-10-18-act004-articul
 
 **Current desktop implementation:** F5 is available in the ordinary sandbox,
 Blacksite Nine and all four showcase districts (Neon Reliquary, Middle Cyberberbia,
-Sewertech Alley and Industrial Underswamp). F5 lists all 46 **Rapier** rigs, plus
-the **Sampled** baseline/rig references and original barrel/Ripper hull trials.
+Sewertech Alley and Industrial Underswamp). Its family picker exposes the 46
+original **Rapier** rigs plus the four `set4LY` drones, alongside **Sampled**
+baseline/rig references and original barrel/Ripper hull trials. The launcher
+caption still says “46”; the additive source catalogue is the authority for
+the available families. Shared Workbench instead uses its own actor panel.
 Keyboard, scripted-demo and external-policy producers use the same physical
 session and action vocabulary. Applying restores the
 selected map's starting layout and spawn, starts paused, and keeps the selected
@@ -101,14 +114,20 @@ scenario-install handling and `actor_prototype_panel.gd` physics labels.
 ## How do I try the integrated features?
 
 **Current implementation:** the desktop project's default scene is
-[`feature_launcher.tscn`](../../godot/feature_launcher.tscn). It opens Blacksite
+[`feature_launcher.tscn`](../../godot/feature_launcher.tscn). Its current first
+entry is **Development workbench**; **Materials Lab**, **Play session**,
+**Liquid comparison**, **Wave Flow**, **4LY Flight Lab** and **Semantic depth**
+also have explicit routes. It opens Blacksite
 Nine, the four showcase districts, the ordinary actor/material sandbox,
 sampled or physical Thunderbowl, the separate generation workbench, Strata
 Theatre or the [Deepworks exhibition](deepworks-exhibition.md). F2 closes the current session
 and returns to the launcher; unsaved edits are discarded. Explicit `main.tscn`,
 `-- --blacksite-nine` and `-- --showcase` entry points remain available.
-The native generation workbench remains an isolated authoring preview, without
-live material simulation or attachment to the sandbox's World.
+The separate **World generation workbench** remains an isolated authoring
+preview. The ordinary **Development workbench** has its own accepted
+**New from generator…** path, which installs native final-play materials into
+the live shared owner after explicit preparation. These are distinct workflows;
+use the [generated-map contract](../systems/explore001-generated-playable-maps.md).
 Deepworks uses its own four-world native material owner and camera/painting
 controls; it has no ordinary physical actor session or F5 picker.
 

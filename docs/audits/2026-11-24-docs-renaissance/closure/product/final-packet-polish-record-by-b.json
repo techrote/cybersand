@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "intermediate presentation and qualified-scope correction record; final readback follows",
+  "reviewer": "Specialist B /root/product_docs",
+  "recorded_at": "2026-11-25T00:30:14.818526+00:00",
+  "draft_sha256_before": {
+    "FINAL-REPORT.md": "6e75ad159d60e5fe565049ae61bc56a9a21dd322a54771768580d2787732c3ee",
+    "README.md": "3388d09fd7340e286ec061a93b348affcc3bb99c56468462f3de643f90dd5019"
+  },
+  "changes": [
+    "Corrected the nonexistent showcases-and-authoring-modes link to canonical showcase-guide.md.",
+    "Added missing spaces around numeric counts and table cells; preserved all numeric results and source identities.",
+    "Qualified unchanged source as engine/simulation source, and malformed-metadata refusal as authority/selection metadata.",
+    "Distinguished bounded mechanical 151-document family search from complete semantic review.",
+    "Precisely identified generated/project failure-message overstatement, keeping all ordinary/generated/project rename paths in the implementation limit.",
+    "Added final-source hosted PASS, exact synthetic-merge tree equivalence, skipped runtime provenance, artifact custody digest and full-report equivalence from actual readbacks."
+  ],
+  "not_a_final_identity_receipt": true
+}

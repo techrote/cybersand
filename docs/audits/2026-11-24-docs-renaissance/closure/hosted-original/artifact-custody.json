@@ -1,0 +1,30 @@
+{
+  "classification": "downloaded-original-hosted-artifact",
+  "run_id": 45482710814,
+  "artifact_id": 14962681475,
+  "head_sha": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "archive_sha256": "5c25edbc668060ffa56c1afc3e8e35d343c27e92e5ab524104a7ef9b06fe8463",
+  "matches_github_digest": true,
+  "files": [
+    {
+      "name": "frozen.contexts.md",
+      "bytes": 374106,
+      "sha256": "ac0d6a84f84631ec82553179c7cc46543cb2f35a0d43cac81bbd47ab94e5bd2b"
+    },
+    {
+      "name": "challenges.json",
+      "bytes": 2856242,
+      "sha256": "cee08abf48bc56cf3f369e231077777e92a2e3991e34f3534ad4da99291ca733"
+    },
+    {
+      "name": "frozen.json",
+      "bytes": 465491,
+      "sha256": "179bec6c18b02968bfb2dca121f8d788ac4883c65a86a0fb9288b5cd9e200ea0"
+    },
+    {
+      "name": "challenges.contexts.md",
+      "bytes": 2493250,
+      "sha256": "a58fa384125a4a82864fcde2f88e2a1de0c7be16ac02fe0b44ce3914f184df11"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Interlock Brutalism classic Gentek showcase
 status: Current
 document-kind: research

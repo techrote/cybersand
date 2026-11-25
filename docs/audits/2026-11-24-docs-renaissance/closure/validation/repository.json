@@ -1,0 +1,35 @@
+{
+  "command": [
+    "python",
+    "tools/ci/check_repository.py"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"current source/documentation and artifact identity\",\n  \"documentation\": {\n    \"status\": \"passed\",\n    \"documents\": 151,\n    \"navigation_link_documents\": 8,\n    \"canonical_claims\": 280,\n    \"local_links\": 3521,\n    \"heading_anchors\": 491,\n    \"questions\": 32,\n    \"errors\": [],\n    \"warnings\": [],\n    \"limitations\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [],\n  \"unmaterialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n",
+  "started_at": "2026-11-24T23:56:28.070026+00:00",
+  "classification": "fresh-closure-execution",
+  "scope": "Source/documentation validation; no platform-runtime or owner acceptance claim",
+  "source_commit": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+  "dirty_paths": [
+    ".github/workflows/documentation.yml",
+    "docs/architecture/data-ownership-and-lifetimes.md",
+    "docs/architecture/liquid-solver-family-policy.md",
+    "docs/operations/architectural-generator-playtest.md",
+    "docs/operations/documentation-maintenance.md",
+    "docs/operations/getting-started.md",
+    "docs/operations/local-build-and-validation.md",
+    "docs/operations/wb-art-paint-integrated-candidate.md",
+    "docs/operations/workbench-art.md",
+    "docs/operations/workbench-saving.md",
+    "docs/reference/configuration-reference.md",
+    "docs/reference/interfaces-and-message-contracts.md",
+    "docs/reference/invariants.md",
+    "docs/reference/level-saves-and-replay.md",
+    "docs/reference/status-and-roadmap.md",
+    "docs/systems/workbench-art-providers.md",
+    "docs/systems/world-storage-and-interest-region.md",
+    "tools/ci/check_docs.py",
+    "tools/ci/test_current_retrieval_selection.py",
+    "tools/docs/retrieval_eval.py",
+    "tools/docs/retrieval_policy.py"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "classification": "fresh-final-source-validation",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "command": [
+    "python",
+    "tools/ci/check_m11_consistency.py"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n",
+  "recorded_at": "2026-11-25T00:20:17.431093+00:00"
+}

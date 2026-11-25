@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C /root/retrieval_evidence; independent of lead packet author",
+  "recorded_utc": "2026-11-25T00:43:31.908001+00:00",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "result": "PASS",
+  "recommendation": "OWNER-READY WITH EXPLICIT LIMITATIONS; retain Draft/HOLD",
+  "method": "Read all six actual final packet files and complete prepared PR description. Compare claims with raw/recovered evidence and final specialist records; independently check every matrix receipt hash, every declared packet link, original counts and final query metrics. Independently fetch hosted Git merge commit via GitHub after the object was absent locally, then compare its tree and parents with exact source700. This is packet/evidence review, not new runtime execution.",
+  "reviewed_document_sha256": {
+    "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md": "2a37e16f0a20187621b20bf74a6b01680c3175dee6f9a95832207532b4f3be0f",
+    "docs/audits/2026-11-24-docs-renaissance/closure/README.md": "42f9c2d89c45a5249b03646c5f12133e622afff50ec61d73fd8e94ffedacb730",
+    "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md": "6e2fb4d8fbb0ba372c5c9a0b882909fbdfad6e8502b5b5dd1bad21431c5be33c",
+    "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.json": "5e616cbe06e0fc72475ed8a8d7d3775f5ff3b1f7d56dd9025521639a2cac0f8b",
+    "docs/audits/2026-11-24-docs-renaissance/closure/remaining-findings.json": "71c7dbd64536c9f05c44b55b7db4663088ef626274439e9cd00d571dc11ff9bf",
+    "docs/audits/2026-11-24-docs-renaissance/closure/recovery-ledger.json": "b5128f4e5aa7a216943a92284f22f5a2a7d2adc73cde198ecdce5af555a10e92"
+  },
+  "pr_description_review": {
+    "path": "/tmp/cybersand-docs-closure-pr-body.md",
+    "sha256": "54fce3d61b34d2d67747ce6a81e265a796f86ddbfd2cd12d6968bab0d28bfe80",
+    "permitted_postreview_substitutions": [
+      "__DELIVERY_SHA__ -> actual published evidence commit full SHA",
+      "__DELIVERY_TREE__ -> actual containing delivery tree full SHA"
+    ],
+    "condition": "All other prose remains identical; source input map equality and actual remote ref/Draft readback must be recorded by publication owner."
+  },
+  "verified_data": {
+    "matrix_rows": 29,
+    "matrix_receipt_hashes": 26,
+    "local_packet_links": 122,
+    "qualification_inputs": 4090,
+    "input_map_digest": "a7323f8d3cf700ed6f65f4d0dc21bb531b5bfd05dcd58ba246baa1f46d980286",
+    "original_artifacts": 389,
+    "original_bytes": 55803045,
+    "preserved_originals": 82,
+    "inventory_items": 547,
+    "inbound_routes": 2003,
+    "superseded_occurrences": 8,
+    "composite_claims": 176,
+    "claim_document_pairs": 207,
+    "unique_claim_document_paths": 139,
+    "original_independent_review_artifacts": 20,
+    "additive_questions": 36,
+    "actual_passages": 180,
+    "sufficient_answers": 31,
+    "partial_answers": 5,
+    "wrong_context_answers": 0
+  },
+  "source_and_hosted_basis": {
+    "independent_git_merge_readback": {
+      "path": "retrieval/hosted-merge-readback-by-c.json",
+      "sha256": "79f1caf14fec422245f1480aca9d78eb06c51c98acf93af27d9d8451b3e91dfe",
+      "api_url": "https://api.github.com/repos/techrote/cybersand/git/commits/0250f99ee814debb2c03ceddbb5489c00d3fba47",
+      "hosted_checkout": "0250f99ee814debb2c03ceddbb5489c00d3fba47",
+      "tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+      "parents": [
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "700c89c451903fac07188196a2f94b5c8997cb53"
+      ]
+    },
+    "source_custody_review": "retrieval/review-source-custody-by-c.json",
+    "hosted_raw_equivalence_review": "retrieval/review-hosted-equivalence-by-c.json",
+    "evidence_methodology_review": "retrieval/review-evidence-methodology.json"
+  },
+  "substantive_observations": [
+    "Recovery classes distinguish93 already-published identical,285 unpublished and11 later-original artifacts from new closure evidence; missing conversation/final packet are not fabricated.",
+    "The176 count is explicitly composite; 20 original reviews and207 final identity pairs are not presented as176 fresh semantic/runtime proofs. Metadata-only and narrow page scopes remain visible.",
+    "All five score tables match final raw reports. Challenge162\u2192161, MRR.8606\u2192.8575, owner primary misses and layout1\u21922 are disclosed; 35canonical hits are not mislabelled35 sufficient answers.",
+    "Actual hosted focused-selection and all five evaluations passed. Independent merge API tree equals source700; raw results and contexts match local. Published-runtime provenance remains skipped, not passed.",
+    "Windows source guard failure and Linux403 failures remain distinct; blocked browser/Godot/physical acceptance and unmaterialized LFS objects are not converted to PASS.",
+    "Source behavior remains baseline-qualified; generated-save/project message overclaims are an explicitly retained runtime limitation with corrected practical guidance.",
+    "The owner has useful README/portal/manual/current-state/developer/report/gallery/evidence routes. Final disposition consistently retains Draft/HOLD and grants no Ready, merge, release or issue-closure authority."
+  ],
+  "open_p0": [],
+  "open_p1": [],
+  "limitations": [
+    "This is a review of the final packet and evidence; it does not create new graphical, runtime, external-index or physical acceptance.",
+    "Publication itself is performed by the lead after this review. The final containing commit must preserve all4090 qualification inputs and be read back from GitHub."
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "authority": "historical-non-authoritative",
+  "classification": "fresh-final-source-hosted-artifact-readback",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "run_id": 45516959615,
+  "job_id": 138878756562,
+  "artifact_id": 14978346740,
+  "zip_sha256": "b08428067292f800c48d951ee755d3a42e5b0ea0ad0317477e9fa41be3b6f519",
+  "github_digest_matches": true,
+  "retrieved_at": "2026-11-25T00:27:36.603106+00:00",
+  "files": [
+    {
+      "path": "challenges.json",
+      "bytes": 2857745,
+      "sha256": "8f03cf6f6b93945110d76ea071222004a58093f61d9b71502dda199c1838608f"
+    },
+    {
+      "path": "frozen.contexts.md",
+      "bytes": 371583,
+      "sha256": "fe45fd316327f6c78f7463d3d85406c27140afae5ea718d7f0be25943e0150c8"
+    },
+    {
+      "path": "frozen.json",
+      "bytes": 462961,
+      "sha256": "778c800ec725f4a8e51557e3a294d6a9f4b319d1577023806246c692d3bc09e3"
+    },
+    {
+      "path": "challenges.contexts.md",
+      "bytes": 2494738,
+      "sha256": "6e755c8a293447d16c06b6b874ea5ddb43adf852c073eb054dca31e7246f45ca"
+    },
+    {
+      "path": "historical.contexts.md",
+      "bytes": 146569,
+      "sha256": "3e50cab78bfb432546382eb4bf15455a9002c54c01751cb881cd9a0644efd93e"
+    },
+    {
+      "path": "historical.json",
+      "bytes": 170782,
+      "sha256": "ff217f6ffd5669a7fa7c9bcce29ea3061089e5979492530b5712e55183668ec7"
+    },
+    {
+      "path": "owner-intent.contexts.md",
+      "bytes": 65989,
+      "sha256": "07a15851148049b34dc4c856df0857fd7651ad921c11f546cd086dd434e6ae95"
+    },
+    {
+      "path": "owner-intent.json",
+      "bytes": 105801,
+      "sha256": "a72224faee9f60f1e100be97ca1d8c20ca18767931b413bfcc867acfada9947d"
+    },
+    {
+      "path": "renaissance.contexts.md",
+      "bytes": 421960,
+      "sha256": "c4375778e4867d5b2d5be51a0d993c2d17185f1f21059feb4a38076d5a7066e3"
+    },
+    {
+      "path": "renaissance.json",
+      "bytes": 524378,
+      "sha256": "bb6f58a7c16b33f2e00df9619cb557f7b76660dd764ba3982c862597b630f804"
+    }
+  ]
+}

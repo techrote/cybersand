@@ -4,15 +4,16 @@ status: Current
 document-kind: guide
 scope: WB-ACTOR-COMPOSE-001 ordinary Workbench controls, authored example and source-matched qualification procedure
 canonical-for: [workbench-actor-composition-owner-procedure]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [../systems/workbench-actor-composition.md, local-build-and-validation.md, source-checkpoint-and-recovery.md, github-development-and-release.md]
 ---
 
 # Mixed Actor Workshop owner procedure
 
-This is the owner workflow for the Draft/HOLD actor-composition candidate linked
-to [#589](https://github.com/techrote/cybersand/issues/589). It opens the ordinary
-Shared Workbench. F5, Thunderbowl and Flight Lab are not required. The
+This is the ordinary Workbench workflow accepted in
+[PR #683](https://github.com/techrote/cybersand/pull/683), from
+[#589](https://github.com/techrote/cybersand/issues/589). The later actor-finisher
+candidate does not supply additional accepted behavior here. F5, Thunderbowl and Flight Lab are not required. The
 [system contract](../systems/workbench-actor-composition.md) owns the precise
 capability, producer, persistence and capacity boundaries.
 
@@ -26,7 +27,7 @@ no separate development checkout is required. Retain
 `source-built-candidate-provenance.json` and `candidate-manifest.json` with the
 package when reporting its source/runtime identity.
 
-In a normal development launch, choose **Shared Workbench**. Open **Actor Composition…** from
+In a normal development launch, choose **Development workbench**. Open **Actor Composition…** from
 the top toolbar, then press **Mixed Actor Workshop**. The example prepares a
 1024 × 512 material-cell scene and starts paused. Wait for the preparation status
 to finish, close the panel if desired, and press **Play / Pause [P]**.
@@ -177,9 +178,9 @@ silently translated into physical abilities.
 
 ## Automated qualification apparatus
 
-Use the repository-pinned Godot/Rapier and matching native extension. The new
-multi-part response-owner capacity requires rebuilt matching Windows and Linux
-runtimes; a baseline DLL/SO must not be relabeled as this candidate. Follow
+Use the repository-pinned Godot/Rapier and matching native extension. The
+accepted runtime includes the multi-part response-owner capacity. Rebuild when
+its source inputs differ; never relabel an older DLL/SO as a matching runtime. Follow
 [local build and validation](local-build-and-validation.md) and retain source,
 runtime hashes, exact commands, logs and the platform alongside results.
 
@@ -211,9 +212,11 @@ scripted, policy and passive roles, phase and tick. A software-rendered Linux
 capture proves the displayed application state, not Windows playfeel or hardware
 frame pacing.
 
-Run the relevant existing Workbench input, canvas, combined-authoring,
-generated-start, material-baseline, Flatten, PAINT and physical actor/equipment
-regressions too. The dedicated qualification runner records their outcomes.
+Select further Workbench input, combined-authoring, generated-start, Flatten
+and equipment regressions according to the changed behavior and the dedicated
+qualification runner. Documentation-only edits do not require an expensive full
+runtime matrix. The commands above are reproduction procedures, not a claim
+that this documentation mission reran them.
 Catalogue, controller and gameplay results are separate from performance: compare
 no NPC, one script, heterogeneous scripts, mixed producers and equipment on both
 small and 2048 × 1024 canvases, retaining actual tick progression, decision cost,

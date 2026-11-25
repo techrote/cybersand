@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Stage 3 read-only World producer, journal and bounded connectivity foundations; acceleration remains separate
 canonical-for: [settled-region-discovery]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-11-24
 related-documents: [../architecture/soliding-lifecycle.md, ../operations/soliding-programme.md, activity-dirty-regions-and-waking.md, ../operations/soliding-measurement.md]
 ---
 
@@ -39,11 +39,16 @@ The Stage 2 lifecycle received an independent review and focused transition test
 before this substrate was written. **Current:** #59 sizes journal and connectivity
 backing from the effective runtime tile capacity rather than the compiled maximum:
 journal/owner/key storage are `T`, region edge storage is `64T`, and
-frontier/seen/member storage is `32T`; `C=1024`, `K=32`, `B=128` and
+frontier/seen/build-member scratch is `32T`; `C=1024`, `K=32`, `B=128` and
 publication `P=4096` remain frozen. #64 adds runtime-sized typed dependency
 storage `D=max(16T, frontier_capacity)` (therefore `32T` in the integrated
 configuration), plus `2P+2` bounded generation-bearing subscriber headers.
-These are observer resources only: saturation refuses connectivity publication
+The accepted #65 reconstruction path additionally reserves publication-member
+storage at twice frontier capacity (`64T`), reconstruction seeds and staged
+members at frontier capacity (`32T` each), and bounded ticket/child slots at `P`.
+These pools are explicit in `SettledRegions::storage_bytes()` and its capacity
+accessors; the older `32T` build scratch is not the complete publication memory
+budget. These are observer resources only: saturation refuses connectivity publication
 without changing authoritative World state. #60 adds construction-time bounded ordered
 key/spatial indexes without hot resizing or per-operation allocation. Registration
 rejects zero/oversized/overflowing bounds, duplicate/overlapping geometry where
@@ -191,9 +196,14 @@ capacity. Public generation retirement is immediate. Reverse-list reclamation is
 registered separately and performed incrementally with generation checks so a
 reused publication, subscriber, dependency or edge slot cannot be reached through
 a stale ABA reference. #62 separately removes ordinary observer activity/deadline
-resident polling through bounded indexed producer state; #63 still owns the remaining
-mask/event/inclusion/coverage producer sparsification. The final
-split/reconstruction/fair-reclamation scheduler remains #65. The earlier ~67.7 MB
+resident polling through bounded indexed producer state; #63 supplies the
+mask/event/inclusion/coverage producer sparsification. Accepted #65 code now
+contains the bounded split/reconstruction/reclamation scheduler: generation-bound
+tickets retain reconstruction obligations, staged children remain private until
+batch commit, and `advance(budget)` accounts for traversal, dependencies,
+publication preparation and reclamation. Resource exhaustion retains explicit
+wait/refusal outcomes. This is current read-only observer machinery, not a
+Stage-3B cost acceptance or a Stage-4 representation handoff. The earlier ~67.7 MB
 compile-max measurement is retained only as historical Stage-3A negative scaling
 evidence, not as a description of the current implementation.
 
@@ -214,10 +224,17 @@ admission claim.
 
 The parent-owned [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md)
 maps every frozen checklist item to the integrated source, focused regressions and
-capacity/refusal behavior. It classifies the reference as the passed Stage-3A bounded
-checkpoint and keeps Stage 3B open. The next bounded step is the read-only
-[Stage-3B Astra architecture review](../operations/soliding-stage3b-astra-review.md),
-not a locality implementation or Stage-4 bake-off. Stage 4 is not admitted.
+capacity/refusal behavior. It classifies that source as the passed Stage-3A bounded checkpoint and keeps
+Stage 3B open. At that September checkpoint, the next step was the read-only
+[Stage-3B Astra architecture review](../operations/soliding-stage3b-astra-review.md).
+Subsequent accepted producer, incidence and reconstruction work is recorded in
+the [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md);
+that current entry point owns remaining work and its source-bound gates. The
+old read-only review is not a current prohibition on already accepted #59–#65
+implementation. Track B stationary acceleration still needs its separate Stage-4
+admission. The [current two-track programme](../operations/soliding-programme.md#current-applicability-and-the-two-tracks)
+records the later owner routing for bounded local structural detachment; this
+discovery gate is not its universal prerequisite.
 
 ## Bounded work, fairness and metrics
 
@@ -245,6 +262,10 @@ Connectivity separately records extraction, components, boundary comparisons,
 adjacency, incident-edge visits/retirement, typed dependency allocation/high-water/
 refusal, subscriber invalidation/reuse, absence subscriptions, deferred cleanup,
 seed probes, traversal/validation/publication work, region area/count and latency.
+The accepted reconstruction metrics additionally expose tickets, restarts, waits,
+staged children, committed batches, preparation/admission/dependency/traversal
+service units, member-pool refusal and reclamation. These describe completed
+work and bounded capacity, not an inferred acceleration benefit.
 `settled_region_storage_bytes()` reports bounded structural connectivity storage
 for the configured runtime capacities; it is not a resident-set measurement.
 No large-world distribution or real-hook CPU cost is inferred from these counters;

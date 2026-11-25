@@ -15,12 +15,11 @@ from pathlib import Path
 import re
 
 try:
-    from .retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field
+    from .retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field, FOCUSED, default_selection_allowed, retrieval_selection
 except ImportError:  # direct CLI execution
-    from retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field
+    from retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, require_authority, frontmatter_field, FOCUSED, default_selection_allowed, retrieval_selection
 
 STOP = set("a an and are as at be been but by can do does for from had has have how i if in into is it its may me my no not of on or our should so that the their them there these they this those to too was we were what when where which who why will with would you your".split())
-FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research"}
 
 def tokens(value: str) -> list[str]:
     return [t for t in re.findall(r"[a-z0-9]+", value.lower()) if t not in STOP]
@@ -33,8 +32,8 @@ def metadata_and_body(text: str) -> tuple[dict, str]:
             field = frontmatter_field(line)
             if field is not None:
                 key, value = field
-                if key == "authority" and key in metadata:
-                    raise ValueError("Duplicate frontmatter authority")
+                if key in {"authority", "retrieval", "document-kind"} and key in metadata:
+                    raise ValueError("Duplicate frontmatter " + key)
                 metadata[key] = value
         return metadata, body.strip()
     return metadata, text
@@ -56,17 +55,22 @@ def selected_paths(root: Path, historical: bool = False) -> list[Path]:
         for path in paths:
             meta, _ = metadata_and_body(path.read_text(encoding="utf-8-sig"))
             require_authority(path, root, historical=historical, metadata=meta)
+            if not historical and not default_selection_allowed(path, root, meta):
+                raise ValueError(f"Default retrieval excludes explicit-only or navigation document: {path.relative_to(root)}")
         return sorted(paths, key=lambda p: p.relative_to(root).as_posix())
     if historical:
         raise ValueError("Explicit historical corpus manifest is required")
     paths = [p for p in docs.rglob("*.md")
              if p.relative_to(docs).parts[0] in FOCUSED
-             or p.relative_to(docs).as_posix() == "README.md"]
+             or p.relative_to(docs).as_posix() in {"README.md", "MATERIAL_LAB.md"}]
     paths.extend(p for p in (root / "README.md", root / "AGENTS.md") if p.exists())
+    selected = []
     for path in paths:
         meta, _ = metadata_and_body(path.read_text(encoding="utf-8-sig"))
         require_authority(path, root, historical=False, metadata=meta)
-    return sorted(paths, key=lambda p: p.relative_to(root).as_posix())
+        if default_selection_allowed(path, root, meta):
+            selected.append(path)
+    return sorted(selected, key=lambda p: p.relative_to(root).as_posix())
 
 def split_section(text: str, max_words: int) -> list[str]:
     # A hard cap also handles long lists/tables; no dependence on model tokens.
@@ -78,6 +82,8 @@ def chunk_document(path: Path, root: Path, max_words: int, historical: bool = Fa
     text = path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
     meta, body = metadata_and_body(text)
     authority = require_authority(path, root, historical=historical, metadata=meta)
+    if not historical and not default_selection_allowed(path, root, meta):
+        raise ValueError(f"Default retrieval excludes explicit-only or navigation document: {path.relative_to(root)}")
     title = meta.get("title", next((line[2:] for line in body.splitlines() if line.startswith("# ")), path.stem))
     envelope = "\n".join(f"{key}: {meta[key]}" for key in ("document-kind", "status", "scope", "canonical-for", "last-reviewed") if key in meta)
     if historical:
@@ -159,7 +165,7 @@ def evaluate(root: Path, queries: Path, output: Path, k: int, max_words: int, hi
         "link_expansion": False,
         "cache_policy": "No persistent cache is read; external caches require rebuild with this policy and per-chunk authority.",
         "created_utc": datetime.now(timezone.utc).isoformat(), "corpus_root": str(root),
-        "method": {"name":"heading-chunk BM25 lexical development baseline", "k":k,"maximum_body_words":max_words,"overlap_words":0,"k1":1.2,"b":0.75,"metadata":"title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present","query_expansion":False,"stemming":False,"reranker":False,"embeddings":False,"corpus_policy":("explicit isolated historical manifest required; every chunk is historical non-authoritative" if historical else "explicit current manifest if present; otherwise focused directories plus navigation README/AGENTS; historical paths and tagged copies rejected")},
+        "method": {"name":"heading-chunk BM25 lexical development baseline", "k":k,"maximum_body_words":max_words,"overlap_words":0,"k1":1.2,"b":0.75,"metadata":"title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present","query_expansion":False,"stemming":False,"reranker":False,"embeddings":False,"corpus_policy":("explicit isolated historical manifest required; every chunk is historical non-authoritative" if historical else "explicit current manifest if present; otherwise focused directories and MATERIAL_LAB; explicit-only and navigation documents excluded; historical paths and tagged copies rejected")},
         "fixture_sha256": hashlib.sha256(queries.read_bytes()).hexdigest(),
         "evaluator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "corpus_manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest() if manifest_path.is_file() else None,

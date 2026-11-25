@@ -1,0 +1,5 @@
+{
+  "receipt": "/workspace/scratch/855d9af51e68/c-lane/atlas-offline-check/receipt.json",
+  "valid": true,
+  "problems": []
+}

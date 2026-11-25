@@ -4,19 +4,27 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-24
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
 # World storage and interest region
 
+## World size, capacity and camera interest
+
 **Current:** native World supports sparse signed-coordinate storage and explicit
-capacity limits. Desktop and Web use finite 1024×1024 adapters. Camera-interest
+capacity limits. Ordinary demo/Web level exchange uses a1024×1024 backing;
+Shared Workbench has its own finite512–2048-per-axis authoring schema and fresh
+2048×2048 setup. These host bounds do not limit native signed sparse coordinates.
+See [`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd). Camera-interest
 filtering in the phased backend pauses excluded work and wakes newly included
 resident activity blocks once at tick entry, without elapsed-time catch-up. Safe live capacity expansion is
-**Planned**; broad world streaming is **Deferred** until the local foundation is mature.
-General sparse-world persistence is also **Planned**; the existing CYSD1 format
-reconstructs only a finite demo level.
+**Planned**. Persistent areas with bounded game-time catch-up are approved owner
+direction and have separate unmerged GEN-006 candidates; this accepted baseline
+does not include their residency/cache manager. General sparse-world persistence
+and continuous streaming remain separate. CYSD1 reconstructs a finite demo level;
+Workbench authored starts and native CYPS have their own narrower contracts in
+[save and replay](../reference/level-saves-and-replay.md).
 
 **Current GEN-001/GEN-002 source:** opt-in native procedural generators can prepare
 complete deterministic chunks on demand, and `World::install_generated_chunk`
@@ -30,12 +38,25 @@ for the extension, and the dated
 [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md)/[GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md)
 evidence for validation limits.
 
-A “2×” workload is a validation target whose dimensions must be stated; it is
-not a maximum world size or proof that storage streaming exists. Current finite
-demo dimensions and reserved capacities do not define the future stored-world limit.
+A world-size target described as “twice the camera” or “2×” is a validation
+workload whose dimensions must be stated. It does not impose a native World
+limit. Camera view, selected simulation interest, resident storage capacity and
+the host's finite canvas are separately owned bounds. Current finite demo
+dimensions and reserved capacities do not define the future stored-world limit
+or prove that storage streaming exists.
 
 Source identity is recorded in the [checkpoint](../operations/source-checkpoint-and-recovery.md);
 dated execution and artifact limits are in the [evidence ledger](../reference/validation-evidence.md).
+
+## Approved area intent and accepted behavior
+
+The [14 November owner record](../decisions/2026-11-14-owner-authoring-intent.md#world-extent-persistence-and-time)
+asks for one fixed canvas plus persistent areas, with useful approximation and
+bounded catch-up measured in **game time**, not real offline wall time. Existing
+interest-region re-entry only restores current eligibility; it does not implement
+that catch-up. Do not turn a source limitation into a permanent rejection of the
+owner's desired feature, or describe an unmerged RAMCACHE evaluator as accepted.
+The [roadmap](../reference/status-and-roadmap.md) is the current programme route.
 
 ## Storage and region vocabulary
 
@@ -75,7 +96,9 @@ check. The material-only admission method is not proof that a stale job still
 belongs to a newly reset World. Use the
 [ownership contract](../architecture/data-ownership-and-lifetimes.md) before
 connecting it to a future streaming controller. The current generation workbench
-has no live sandbox installer and its preview cache evicts only copied previews.
+preview cache evicts only copied previews. Ordinary Shared Workbench can adopt a
+complete generated start through its prepared native/physical transaction; that
+finite replacement is not streaming admission/eviction of a continuing World.
 Context-aware sculpting reads immutable initial generator context; aggregate
 recipes produce existing material IDs. Neither observes resident player changes,
 changes the installer guard nor adds optional simulation field storage.

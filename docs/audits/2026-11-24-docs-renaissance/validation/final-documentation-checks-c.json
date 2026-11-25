@@ -1,0 +1,42 @@
+{
+  "authority": "historical-non-authoritative",
+  "recorded_utc": "2026-11-24T20:37:46.811596+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "checkout_head": "ff66f4b385fcddf4544c2e8769eb2dd72b15398a",
+  "source_scope": "Final frozen current-document bytes; no runtime/physical qualification",
+  "commands": [
+    {
+      "name": "docs-final-c",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.991,
+      "log": "validation/docs-final-c.log",
+      "log_sha256": "8a9940dcdcb7e5b3435b1bfd297ec4ee52cf46a803b400714bf12e3f7f29fec5"
+    },
+    {
+      "name": "current-selection-final-c",
+      "command": [
+        "python3",
+        "tools/ci/test_current_retrieval_selection.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.377,
+      "log": "validation/current-selection-final-c.log",
+      "log_sha256": "d5baecdc24b0c41c622765aa6e2022a843b4e7415355b515ebac68abfc76a5a9"
+    },
+    {
+      "name": "historical-selection-final-c",
+      "command": [
+        "python3",
+        "tools/ci/test_historical_retrieval.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.191,
+      "log": "validation/historical-selection-final-c.log",
+      "log_sha256": "b0e340eb06d83e4d5d2133b14948f77d655d6fdcb199127f1d9e2537410d9a06"
+    }
+  ]
+}

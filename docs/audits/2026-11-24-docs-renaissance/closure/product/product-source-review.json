@@ -1,0 +1,497 @@
+{
+  "schema": 1,
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "record_kind": "new independent closure review; not an original recovered report",
+  "reviewer": "Specialist B /root/product_docs",
+  "recorded_at": "2026-11-25T00:13:22.649118+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "candidate_anchor": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "review_scope": "Full end-to-end reading of README, portal and all six new practical guides; source spot checks at consequential controls/transitions; targeted architectural reopening walkthrough. No executed graphical user journey.",
+  "documents": [
+    {
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "bytes": 8056,
+      "git_blob": "b1c9efe1d3586caa070c58372ec90c8e6a4fec56"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "bytes": 11916,
+      "git_blob": "70129448218f1ed0b9e76dbd7fb97a8d802971de"
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "bytes": 6351,
+      "git_blob": "bfd99cdc7782e347ead2b83c68d4c6db34771cef"
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "bytes": 5045,
+      "git_blob": "d8c8d6b7163d34395c6aab7c8ada024983724ab7"
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "bytes": 5546,
+      "git_blob": "2337ec8354d22042f402ad7d2dd423921de6c529"
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "bytes": 6611,
+      "git_blob": "0f4891491fd44d84997cdf9ab2de68172115e9a6"
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "bytes": 8429,
+      "git_blob": "739a5a64213a70cf2d760d6f3ca303b7fe57f320"
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "bytes": 6545,
+      "git_blob": "bfa8261df26185ae3c54b1285c8cf84f0b01a14e"
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "bytes": 9102,
+      "git_blob": "d6cb06bb741b40961932b9f7782fd3368c09b61e"
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "bytes": 10765,
+      "git_blob": "12b5fd9a9301b84b60f16e46ef1207461a495bba",
+      "review_scope": "Fresh final correction delta and relevant source, not complete unchanged-page review"
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "bytes": 15021,
+      "git_blob": "d0b0a5417fdd0061263d57714a49848972e5a538",
+      "review_scope": "Fresh final correction delta and relevant source, not complete unchanged-page review"
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "bytes": 26474,
+      "git_blob": "68789f16b6dd17c2cb94a1de1dfc8b5e3af1cac9",
+      "review_scope": "Fresh final correction delta and relevant source, not complete unchanged-page review"
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "bytes": 4664,
+      "git_blob": "ccac69e75a4a470a676715b49624e22deb3d3b4f",
+      "review_scope": "Read full generated-map desktop guide, corrected step 7; source confirmation reuses the same accepted load/dialog paths."
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "bytes": 19029,
+      "git_blob": "b7cfaed235971bcf38434be2fad1b5b5b8447377",
+      "review_scope": "Fresh review of Compare two settings from the same start; generated-start reconstruction qualifier, not a new full-page Water-law audit."
+    }
+  ],
+  "sources": [
+    {
+      "path": "tools/launch_desktop.ps1",
+      "sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+      "bytes": 6999,
+      "git_blob": "64f22deedefe1bf648cc2832990efe04ff3cfe2c",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+      "matches_accepted_source_bytes": false,
+      "working_lf_normalized_sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+      "matches_accepted_source_lf_normalized": true,
+      "line_ending_note": "Checkout CRLF differs from the Git blob; LF-normalized content matches accepted source. No semantic source edit."
+    },
+    {
+      "path": "tools/ci/check_repository.py",
+      "sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "bytes": 8763,
+      "git_blob": "5e86aab672b71d6c33ba6a67f6f58cf44057962f",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/project.godot",
+      "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "bytes": 905,
+      "git_blob": "3055b7976da5d9378d226805492554b75717a1a1",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/feature_launcher.gd",
+      "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+      "bytes": 6188,
+      "git_blob": "d2bc2811f5b2437ed6eb25939d39b4d1793a74d3",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/feature_navigation.gd",
+      "sha256": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+      "bytes": 1294,
+      "git_blob": "63629f7e3f3b0b061b9480d310967be9b60d9582",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "bytes": 243726,
+      "git_blob": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "bytes": 80950,
+      "git_blob": "2c24ed7bac47203e7a53cefe07632336da03d71b",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+      "bytes": 38816,
+      "git_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_generator_dialog.gd",
+      "sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+      "bytes": 32358,
+      "git_blob": "48e3ea0900c7d051f6de3796da384746205aa88e",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_generated_map.gd",
+      "sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+      "bytes": 9545,
+      "git_blob": "5522ece7af755a40766804deed7fd9f817159322",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_material_baseline.gd",
+      "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+      "bytes": 12031,
+      "git_blob": "603301c53b26e90efaea6e00f438153c7e88fa03",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_controller.gd",
+      "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+      "bytes": 41531,
+      "git_blob": "60cc392094be4f86f95b5db49d3da1a6e0e38793",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_executor.gd",
+      "sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+      "bytes": 12347,
+      "git_blob": "3870d54ee758b958d114166774a35341df639224",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_history.gd",
+      "sha256": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a",
+      "bytes": 6779,
+      "git_blob": "d143c6a6c86075a154440b49254f8145e2dd7b73",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/workbench_water_lab.gd",
+      "sha256": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d",
+      "bytes": 5449,
+      "git_blob": "ef704699cf5dd749bff70038ec116d9c3c26772d",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/art_batch_panel.gd",
+      "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "bytes": 79677,
+      "git_blob": "c3ab6ea1c68b4565ca1792dde990a2e34cc4e751",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/scripts/art_provider.gd",
+      "sha256": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+      "bytes": 55160,
+      "git_blob": "1c7d283737f19e3ea0628beccd4c9d84695b8fed",
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "accepted_source_sha256": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+      "matches_accepted_source_bytes": true,
+      "working_lf_normalized_sha256": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+      "matches_accepted_source_lf_normalized": true
+    },
+    {
+      "path": "godot/native_extension/material_baseline_file.cpp",
+      "sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "bytes": 8044,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "23740d55e151aca1fbcf71bb840465458521f330",
+      "accepted_source_sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "matches_accepted_source_bytes": true
+    },
+    {
+      "path": "godot/scripts/architectural_generator_dialog.gd",
+      "sha256": "c1af8e309a6d8dea460dd7d9ee7a12703a3ec503acb202c245313d6950a1ccf4",
+      "bytes": 18884,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "dfec2ec9dc2e5c432fa5742c515222517d3b0ef9",
+      "accepted_source_sha256": "c1af8e309a6d8dea460dd7d9ee7a12703a3ec503acb202c245313d6950a1ccf4",
+      "matches_accepted_source_bytes": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "B-CLOSE-01",
+      "priority": "P1",
+      "finding": "Generated-start reopening instructions ended at Load start although accepted source requires verified preview confirmation.",
+      "source": [
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "symbol": "load_setup"
+        },
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "symbol": "open_saved, _complete, _install"
+        }
+      ],
+      "correction": "Document automatic source verification followed by explicit Install into workbench; preserve current map on cancellation or identity mismatch.",
+      "documents": [
+        "docs/operations/workbench-saving.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/explore001-desktop-playtest.md",
+        "docs/operations/workbench-water-lab.md"
+      ],
+      "status": "CORRECTED_AND_INDEPENDENTLY_SOURCE_VERIFIED",
+      "independent_reviewer": "Specialist A /root/technical_truth",
+      "independent_review_record": "../technical/product-cross-review-by-a.json",
+      "counterpart_corrections": [
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/systems/explore001-generated-playable-maps.md"
+      ],
+      "late_counterpart_note": "A independently found the desktop reopening omission after the first source freeze. The bounded family sweep also identified Water Lab comparisons that may begin from a generated start. B corrected both; A reviews them in a separate preserved amendment. These remain B-CLOSE-01, not additional invented claims.",
+      "late_counterpart_independent_review_record": "../technical/review-product-final-delta-by-a.json"
+    },
+    {
+      "id": "B-CLOSE-02",
+      "priority": "P1",
+      "finding": "A user could infer the Windows launcher itself verifies checkout source-input equivalence; it verifies the native DLL hash and pinned Godot, while check_repository performs source-input comparisons.",
+      "source": [
+        {
+          "path": "tools/launch_desktop.ps1",
+          "symbol": "Assert-MaterializedRuntime; native DLL hash comparison; PrintIdentityOnly"
+        },
+        {
+          "path": "tools/ci/check_repository.py",
+          "symbol": "verify_runtime; check"
+        }
+      ],
+      "correction": "Specify wrapper checks and point explicitly to python tools/ci/check_repository.py --require-materialized for separate source/runtime provenance.",
+      "documents": [
+        "docs/operations/getting-started.md"
+      ],
+      "status": "CORRECTED_AND_INDEPENDENTLY_SOURCE_VERIFIED",
+      "independent_reviewer": "Specialist A /root/technical_truth",
+      "independent_review_record": "../technical/product-cross-review-by-a.json",
+      "priority_note": "Raised from B initial P2 to A independent P1 assessment for source/provenance and named-save data-loss consequences."
+    },
+    {
+      "id": "B-CLOSE-03",
+      "priority": "P1",
+      "finding": "Named Save replacement and name grammar were not explicit in the practical Save guide.",
+      "source": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "symbol": "_path, write_named"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "symbol": "write_named"
+        },
+        {
+          "path": "godot/scripts/workbench_material_baseline.gd",
+          "symbol": "write_named"
+        }
+      ],
+      "correction": "Explain 1\u201348 ASCII letters/digits/underscore/hyphen, same-name replacement and no separate overwrite confirmation.",
+      "documents": [
+        "docs/operations/workbench-saving.md"
+      ],
+      "status": "CORRECTED_AND_INDEPENDENTLY_SOURCE_VERIFIED",
+      "independent_reviewer": "Specialist A /root/technical_truth",
+      "independent_review_record": "../technical/product-cross-review-by-a.json",
+      "priority_note": "Raised from B initial P2 to A independent P1 assessment for source/provenance and named-save data-loss consequences."
+    },
+    {
+      "id": "B-CLOSE-04",
+      "priority": "P2",
+      "finding": "Compacted documentation said 12 turns, while source slices 12 individual conversation entries, including native feedback.",
+      "source": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol": "model_context, remember_turn, model_feedback"
+        }
+      ],
+      "correction": "Use 12 conversation messages, distinguish complete request/response cycles and state when latest-result summary is added. Technical-provider counterpart delegated to A.",
+      "documents": [
+        "docs/operations/workbench-art.md",
+        "docs/systems/workbench-art-providers.md"
+      ],
+      "status": "CORRECTED_AND_INDEPENDENTLY_SOURCE_VERIFIED",
+      "independent_reviewer": "Specialist A /root/technical_truth",
+      "independent_review_record": "../technical/product-cross-review-by-a.json"
+    },
+    {
+      "id": "B-CLOSE-05",
+      "priority": "P1",
+      "finding": "Universal atomic-save and prior-file preservation claims were not supported by ordinary setup, generated-start or architectural-project Godot rename writers. Only the material-baseline writer has the distinct native atomic-replacement primitive.",
+      "source": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "symbol": "write_named"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "symbol": "write_named"
+        },
+        {
+          "path": "godot/scripts/workbench_material_baseline.gd",
+          "symbol": "write_named"
+        },
+        {
+          "path": "godot/native_extension/material_baseline_file.cpp",
+          "symbol": "material_baseline_file::replace"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "symbol": "save_project"
+        }
+      ],
+      "correction": "Limit no-write preservation to admission refusals, describe format-specific rename versus native replacement, recommend a new filename when retaining a prior start/project and record the existing overbroad UI error string without changing source.",
+      "documents": [
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/systems/explore001-generated-playable-maps.md",
+        "docs/systems/architectural-generator.md"
+      ],
+      "status": "CORRECTED_AND_INDEPENDENTLY_SOURCE_VERIFIED",
+      "correction_author": "Specialist A /root/technical_truth",
+      "independent_reviewer": "Specialist B /root/product_docs",
+      "independent_review_record": "review-technical-delta-by-b.json",
+      "residual_limitation": "Architectural project source UI still says previous file preserved on rename failure; documentation now qualifies this implementation message. No fresh failure injection was executed."
+    }
+  ],
+  "preserved_original_review": {
+    "path": "docs/audits/2026-11-24-docs-renaissance/reader-walkthrough-b.md",
+    "sha256": "5028727b1bebf90a526a1538fb56bcad5b8448998f5825d5b5e3da8217d1b532",
+    "claims_b_count": 43,
+    "original_review_scope": "Original 43-claim B ledger and original A cross-review recovered unchanged; original evidence is not silently relabelled as this fresh review."
+  },
+  "reader_journey": [
+    "README/portal \u2192 Getting started \u2192 exact Godot/LFS/runtime identity \u2192 Development workbench",
+    "Fresh paused scene \u2192 Observer \u2192 Paint \u2192 native completion \u2192 Undo/Redo \u2192 authored Save",
+    "Play/pause \u2192 Water readback \u2192 ordinary Save versus explicit Flatten then Save \u2192 F2 and fresh Load",
+    "New generator proposal \u2192 explicit install \u2192 authored edits \u2192 Save \u2192 verified generated preview \u2192 explicit reinstall",
+    "Art Direct JSON \u2192 source-material/protection boundary \u2192 native completed/partial receipt \u2192 Stop versus Hide \u2192 session/traffic privacy",
+    "Showcases \u2192 standalone scene controls \u2192 source-identified historical gallery; no assumption of integrated Workbench Strata"
+  ],
+  "remaining_limitations": [
+    "Source reading establishes documented controls and reconstruction paths; the small GUI journey was not run.",
+    "No current physical Windows/NVIDIA acceptance claim.",
+    "Provider presets are checked against accepted source, not present service/model availability."
+  ],
+  "independent_review": {
+    "record": "../technical/product-cross-review-by-a.json",
+    "sha256": "55f7d575c63db20df59dd01fbe7d31a65c11cb766b06ecfa5a0ff032284a2935",
+    "result": "all4 corrections source-verified; no open P0/P1 in B changed scope"
+  },
+  "final_delta_review": {
+    "path": "review-technical-delta-by-b.json",
+    "sha256": "1beb8db09d7bb1113bbb639bfa73e1a85df5bd3952f299021db08348ffdc3de6"
+  },
+  "generated_reopen_route_sweep": {
+    "scope": "Current operations, systems, reference and architecture documents matching Load start, generated reopening or native regeneration; no historical evidence edited.",
+    "generated_specific_procedures": [
+      "docs/operations/workbench-saving.md",
+      "docs/operations/architectural-generator-playtest.md",
+      "docs/operations/explore001-desktop-playtest.md",
+      "docs/operations/wb-art-paint-integrated-candidate.md",
+      "docs/systems/explore001-generated-playable-maps.md"
+    ],
+    "finding": "All five generated-specific practical procedures now include explicit verified-preview Install into workbench. The Water Lab comparison also includes that step if its authored start is generated. Generic controls inventories, blank/flattened first-session steps and built-in liquid starts are separately scoped. The general player overview links canonical saving guidance.",
+    "generic_comparison_qualifier": "docs/operations/workbench-water-lab.md"
+  },
+  "independent_review_amendment": {
+    "path": "../technical/review-product-final-delta-by-a.json",
+    "sha256": "71a5d78f8cb4792a4bbafc1b31ed26ba65daa9f398dec2b81bab61432d06f4b7",
+    "reviewer": "Specialist A /root/technical_truth",
+    "scope": "Final generated desktop and generic Water Lab reopening corrections; prior four-theme review remains unchanged."
+  },
+  "final_reviewed_source_commit": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "final_identity_record": "final-document-identity-by-b.json"
+}

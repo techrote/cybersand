@@ -1,0 +1,1451 @@
+{
+  "authority": "historical-non-authoritative",
+  "kind": "exact Git blob projection",
+  "source_revision": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "checkout_head": "47f3603eb48fe0a7ba7707c697872a00f1695d2a",
+  "source_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "projection_scope": "Markdown outside audits, selected question fixtures and evaluator/policy helpers; no runtime or image reconstruction",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "git_blob": "5325fb6750575409d17476380ee66b3e429c5c0e",
+      "sha256": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+      "bytes": 10289
+    },
+    {
+      "path": "README.md",
+      "git_blob": "3de60482900957bee558364a1d4ddd5bf20dfad6",
+      "sha256": "8f9e4ae34375a970fe2473e1fb1bb27af308a688f1e7e1f70dd3d5de1453f971",
+      "bytes": 14465
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "git_blob": "4248663a81b1eb0da98831ecd7b01e51e74c53ff",
+      "sha256": "0a969455d61b0ab30f5feff59cf59ac8337c358cc3cd4b6e0b779bc5033b86f0",
+      "bytes": 8963
+    },
+    {
+      "path": "docs/BUILD_ID.md",
+      "git_blob": "9f700de61eafa97ae4ca6edd735c7b8a699f5c37",
+      "sha256": "7a89c254ade720d22b7daef5a23869221ed98e1fb2191dad3daa784ff16a3dad",
+      "bytes": 13506
+    },
+    {
+      "path": "docs/LARGE_WORLD_PROOF.md",
+      "git_blob": "4ba9219be5fc8d572f5c659b429b1e4cc3b8ede1",
+      "sha256": "e4fd47d3c06f8f20ba1236bc247a53c3e072d9fc0264bbb04493508786c1fdf9",
+      "bytes": 11428
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "git_blob": "e30abc8cc2e7eb40138448ecfd6456a7c09f58c2",
+      "sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "bytes": 13377
+    },
+    {
+      "path": "docs/NEXT_MILESTONE.md",
+      "git_blob": "43eac720808c5b117973830cc58bc5ebb7cb537a",
+      "sha256": "071c2be740e061cba13c2d9b6eff7c1fc047d2fc6dbb4f47f63d7fbd2f50b47f",
+      "bytes": 4740
+    },
+    {
+      "path": "docs/PERFORMANCE.md",
+      "git_blob": "5d399e47b40a2345f81cbd4cec6253d227e7b097",
+      "sha256": "ade546c75863ca8a4cb8125993e98fb9316738a161ddc86a0204d64d4c19cc6b",
+      "bytes": 14940
+    },
+    {
+      "path": "docs/README.md",
+      "git_blob": "127aeaff4089b60dcaba0ebbb00b661dc411fa57",
+      "sha256": "69a1ce59b0fa7405ba73e7e2ec8591756b7b8b34f222d1a52b5481e9e39f8ab3",
+      "bytes": 60508
+    },
+    {
+      "path": "docs/STATUS.md",
+      "git_blob": "bf92afb786428f483c5cd13c069a06c98edf2be8",
+      "sha256": "020bd134e2615c6561cbb443de2b002011e40dd45121e8ae8599ce6b08022ac9",
+      "bytes": 7570
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "git_blob": "d57a00887a2a2e9285a35f30cdc87b85bb30c793",
+      "sha256": "246f130a0fa07d4ae5f8330e8e3929ad588d793f323900e90a9a6e557d9082f7",
+      "bytes": 16079
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "git_blob": "cf32c838a26d5009805c587f852e1294530a35db",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "git_blob": "2e021fc7e7e554968aadc6fc193d8a90122dc37a",
+      "sha256": "112060dc5d88ffc99b56f04c5667597f9e73ca1adb1b9353bc5d078f79763c40",
+      "bytes": 39570
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "git_blob": "5d538ca5b8c29a69293f24dfeeaa5887f8755584",
+      "sha256": "4a85c1007a438d86f52d7b51a6c59b5aee0c85d6e900857e14fdfb07ec65aea8",
+      "bytes": 11309
+    },
+    {
+      "path": "docs/architecture/in-tools-gameplay-admission.md",
+      "git_blob": "e89c25bac0558b397f60a4978f4569a9101f66e3",
+      "sha256": "5a2b5e0882b991a72c3549d99eb6d35ecfa1e17d37be17c9af9cb5ec6f910d51",
+      "bytes": 7409
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "git_blob": "7807522b92695cd414802c8482c81eabe7031e27",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "git_blob": "6a375cf4c71135677967087d08e425edc1a5e90e",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "git_blob": "7c86bfc66053e871d9bd8b0c441078fcebab46e9",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "git_blob": "40aec3074f8477c613c070f032715b83e4fe588a",
+      "sha256": "bdacfa2db93d74044d212940ea375d08404e1c376a96cde250443f19690607a2",
+      "bytes": 84579
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "git_blob": "dd9661d3cc2c1acaafd4b1a951d09ea888ce9b58",
+      "sha256": "826b8454abdb75620120736c005a65a5b993c742846e0fe7985edf2c08f3005d",
+      "bytes": 66230
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "git_blob": "24a58e9a0c87e3fc8bff538fb864244e072693f1",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "git_blob": "988316eb8e024e580b200c15866cfe39f1ff76eb",
+      "sha256": "752a352b88ec125b1e8c3d319eeb35f0c8529eff3ecfda9969a4389ac4bd2977",
+      "bytes": 63265
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "git_blob": "832f931184fa66f79313e0b66edb104c22d86b6c",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "git_blob": "a738255de5a1bed45c160fb9459fcca8d44944ee",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "git_blob": "224ba67be3ce1863a14b90edd7909d02b9578c2f",
+      "sha256": "cf0046c5ccce66ee0c1f0cc150f1a873d9a03ef50016770f28f5700f89476b57",
+      "bytes": 32330
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "git_blob": "3596bc52f27883d80abc73d01da8b2c071135e64",
+      "sha256": "ad0b728477160ba8b52737ca6204d55d36be70dfe04e9380bcd93f7b1a56adfc",
+      "bytes": 20378
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "git_blob": "769048c13db0ecfa0a42a1c765fd8d0d85dda231",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "git_blob": "10f67413137a1be917aa5a9a014014cf8da88ae2",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "git_blob": "c3ab86069adde0aa92fd9d19ad624849a2c1f6f7",
+      "sha256": "eeb3bdee911991e0529f9f9b10f6d444a6e0a3f906680f8643a70e96e5a075a0",
+      "bytes": 15352
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "git_blob": "ad64bab6c9448b261ac382798524b2afff70994b",
+      "sha256": "eb25808450399ed44f230e037928c3541dc70d667014171b1ba0b7dd213c6c11",
+      "bytes": 24788
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "git_blob": "545db8b6044e7d0d75c8608eea7245f9f683a25f",
+      "sha256": "94fdd3d39211766309798ce7e16f3dea8821f486c5055cdd2f621d2752322a73",
+      "bytes": 25476
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "git_blob": "2efaa708025a34564b61c99a4bd77ddae84f44f5",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "git_blob": "0153f2ea188a245c529df40b5c96dbed3cc69984",
+      "sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "bytes": 47213
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "git_blob": "2ed2cc624b584c97be879bacb13d3a1695765a1c",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "git_blob": "9063551963995ee2847518969407c1e110dc9d49",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "git_blob": "6cbf2fba25e28e84fe8e1041308cb0ea9241330e",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "git_blob": "34992e685022725e2cd9f7054a147f41019af373",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "git_blob": "81b874df3e8ca7af371c08e4af75a1789642973d",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "git_blob": "d503e67360185edcd8b923864b50365826d43a1a",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "git_blob": "1c77188af32ec508c7da9a0596ca1f48c9809b3e",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "git_blob": "49c3077bf84026e8b43afdf2536e44c4f61cd7b5",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "git_blob": "12ab3816d6b06e37470ba33cb97a2890c29b68e0",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "git_blob": "d1272e8ff36a37db682936d0fb78e244f0185321",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "git_blob": "51f870d9905cb3094e82bb0ec929ddc49663f360",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "git_blob": "ba86b81b62b00327c51be84d725c513519156408",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "git_blob": "d7d9d1fdebca4f241780c237f68472e37779ff17",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "git_blob": "0a1a552a3fb615e013a19f3df72ff1704427438e",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/experiments/script-hotpath-001-native-fill.md",
+      "git_blob": "82f116a30a177108a4a1ad9f0c4e51cbdc2f14f9",
+      "sha256": "6b4710423e32a8e4b4277bd26101fc44b631f7612f3f4934681177aa0a6aeaf3",
+      "bytes": 6807
+    },
+    {
+      "path": "docs/history/engineering/README.md",
+      "git_blob": "54ee6be4b655e0df3d5775bf3a013dfddc85a4dc",
+      "sha256": "19ffc2b3f2a4fa07bf1eb9da97fcb13856c28bb741e3e50afd5dd1e8c6df3616",
+      "bytes": 4537
+    },
+    {
+      "path": "docs/history/engineering/REPORT.md",
+      "git_blob": "8ab5cd7f78a676a7905f29699aa8183ddbe2e10a",
+      "sha256": "b17fee8fb34f3e46cc8afe78e538f66e54cbc7f58fd70e99d8be788ad55a4ad3",
+      "bytes": 24825
+    },
+    {
+      "path": "docs/history/engineering/SCHEMA.md",
+      "git_blob": "7ddb9920f5bdb10fb0c926192a5a9a5a70c295d6",
+      "sha256": "b732e94e686fb3aeae5f30cd4de07a8ea2e4d1516d1e17b19fc3a68d7b7fdc84",
+      "bytes": 6373
+    },
+    {
+      "path": "docs/history/engineering/families/governance.md",
+      "git_blob": "10adce230209ec42d0f75557a977e866d9bae2be",
+      "sha256": "d137bfe1ce515bb7ed86c039f585452b253929b625ce30684048cce5973b2d76",
+      "bytes": 17795
+    },
+    {
+      "path": "docs/history/engineering/families/runtime.md",
+      "git_blob": "0c2067a320556b7d59f7ded03d9909aeb3739304",
+      "sha256": "c957c6560d59703fe93d21c46c8655e28d9fdf68aae250d8ce892dbb0fba3633",
+      "bytes": 67273
+    },
+    {
+      "path": "docs/history/engineering/families/simulation.md",
+      "git_blob": "ce91f28a5f22d8e5d5bd7e02d6f40bb5b4752d4c",
+      "sha256": "2ec8f6ebab93ae6aa8b931a807b45785d677835434821280c70ca36030995e23",
+      "bytes": 63606
+    },
+    {
+      "path": "docs/history/engineering/families/state.md",
+      "git_blob": "7569f1de357f6641ea7e8fc6e3c35571488a5cb1",
+      "sha256": "52f097a3ae300b3191ed0350d73ffe413a73295c17d69fd9d60c26c39ebfd84c",
+      "bytes": 50962
+    },
+    {
+      "path": "docs/history/engineering/qa/review.md",
+      "git_blob": "6bd6a824d4eae2d9a625951c33ea427ff23b7575",
+      "sha256": "9fbf67b1d0e8a255c8af89b1085d006b9a6f3daff0666b4f460e70e53ef00761",
+      "bytes": 4204
+    },
+    {
+      "path": "docs/history/engineering/retrieval-corpus.json",
+      "git_blob": "26e687733f549bf8bba2bc6d39f8863cea1a4fce",
+      "sha256": "cc5d22a677d0f6e5c072965e276ae9143919b8b55dd79940eb10f069c62f13fa",
+      "bytes": 951
+    },
+    {
+      "path": "docs/history/engineering/retrieval-questions.json",
+      "git_blob": "5a7e76536da6ff026bafb20cb3e0499169018efb",
+      "sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "bytes": 6584
+    },
+    {
+      "path": "docs/history/engineering/sources/m0-report.md",
+      "git_blob": "aaac438f6105ffe22586cd468ff4b2280ec5fc7c",
+      "sha256": "9cbf0027513ce141b558b636474de5a9886e215f0195f8a834029cdb8f60f1ef",
+      "bytes": 100047
+    },
+    {
+      "path": "docs/history/engineering/views/coverage.md",
+      "git_blob": "941355f0aeaf9b21a5dcca0c458d0cf355c3f8cd",
+      "sha256": "ab8a427550f96a0616694ccca4da6c422d01530e2b59c05e02a6df617f45cb43",
+      "bytes": 149600
+    },
+    {
+      "path": "docs/history/engineering/views/doctrine.md",
+      "git_blob": "f2a34d87f3cada66a605dbbbd78cdd9fd98100ce",
+      "sha256": "d9422e5ef73ad02ecfa32b554c4305fb3d95f029995b1a70314559f8636710f7",
+      "bytes": 32373
+    },
+    {
+      "path": "docs/history/engineering/views/opportunities.md",
+      "git_blob": "c18a0414b6b4fe953f4afead1c9ee946a97604c0",
+      "sha256": "73a255adcc8a01b082842050144863d1abfcb4adbf6396e7d3e376292a170689",
+      "bytes": 12942
+    },
+    {
+      "path": "docs/history/engineering/views/salvage.md",
+      "git_blob": "29285d91d171d23d5d24c2df7e28a50ab8cd1a9a",
+      "sha256": "f8d365d3f770984b40aabc1b1c19508ce291089a524cca0e3e5190d59c926fa1",
+      "bytes": 101965
+    },
+    {
+      "path": "docs/images/gentek-interlaced/README.md",
+      "git_blob": "93fc44c62e30aee934f7e145bf6d2f2a9ede71ba",
+      "sha256": "734357003a89013d1f38ccf9fe7004d9bd8221e66a7e77ee725882b4618607fa",
+      "bytes": 6604
+    },
+    {
+      "path": "docs/images/gentek-interlaced/independent-review.md",
+      "git_blob": "c1f0e627c8f110b8b0bd300aeb13a9510a6ab726",
+      "sha256": "c5e778b38f7e6f65dee9faf79239e85500d5afc3a242bed0fff5a458af555104",
+      "bytes": 7350
+    },
+    {
+      "path": "docs/images/gentek-interlock/README.md",
+      "git_blob": "79b4b2f5832952a4826ef18eb4b5daa1c9c61742",
+      "sha256": "35a927eec3797ec62836b963a37f7de392f2dac07d2ae210b114acb485681030",
+      "bytes": 15555
+    },
+    {
+      "path": "docs/images/gentek-interlock/independent-review.md",
+      "git_blob": "0e1ed2c460f2f5bb0f4cdb19905b226e4fb79e2a",
+      "sha256": "7b39a60b17780d6f1c7859563aea99a8dbe3366c5d9af9332fc434f818db17f4",
+      "bytes": 7418
+    },
+    {
+      "path": "docs/images/gentek-megablock/README.md",
+      "git_blob": "da6201f484bc208d6fc0e63e5cf82eaabb9ba74e",
+      "sha256": "ee4fde7ea943951440997d2a84eb40228d45d387ae69f6f251f753ec308dd968",
+      "bytes": 7228
+    },
+    {
+      "path": "docs/images/gentek-megablock/independent-review.md",
+      "git_blob": "b54494e115c070e933a8cc278b30dc6052a80834",
+      "sha256": "fad225c594f274a177cf4f0eb3569d5e433f675d00175f99b857d06b672eb00a",
+      "bytes": 28293
+    },
+    {
+      "path": "docs/images/gentek-megablock/native-validation.md",
+      "git_blob": "3f8ac0ca55436aa700964de8ae93e2170c40a5bf",
+      "sha256": "1c8e3af9a5e5f8e594ed152b9b67b9a7e8e309cc24b17b1774beec04b3fff700",
+      "bytes": 8629
+    },
+    {
+      "path": "docs/images/gentek-megablock/performance.md",
+      "git_blob": "8bd7e33e7f8a11448f22f17cfdea6452dddeca78",
+      "sha256": "924c2efd3c4c0cc30d913659d9879fbdeddbf07946e22ff5525de55fc04ce6f6",
+      "bytes": 720
+    },
+    {
+      "path": "docs/images/gentek-megablock/qualification.md",
+      "git_blob": "afe77a2f79283469f3f255bf521f7cdbc0333ebf",
+      "sha256": "01cfd32493d23f2debe30d8a9882e246acf32a9ad63d138c14149ebaf0e0dd7b",
+      "bytes": 16795
+    },
+    {
+      "path": "docs/images/gentek-megablock/seed-survey.md",
+      "git_blob": "1729f189b56cd0e29efc03d8ac81f5912ef4cea4",
+      "sha256": "39418a89b8df37bf5f3165202183eab94c62d5cc1a9d488fa3614270d71c1079",
+      "bytes": 4467
+    },
+    {
+      "path": "docs/images/gentek-megablock/showcase-programmes.md",
+      "git_blob": "630c0f1a8ee24a1f01277ddc7e62308eabaa4cfb",
+      "sha256": "6a15cecb3123a5879cfa134c93a3fb59e950be82254cf4354ffbfe6af5c74d60",
+      "bytes": 3044
+    },
+    {
+      "path": "docs/images/gentek-megatruss/GALLERY.md",
+      "git_blob": "3a54938b207073c1b5642ad92f6f50e6ed48b0a4",
+      "sha256": "2ff69ddc72be9842d6a19e1f327e3e36c7a47d2450309c2529da90aa8d660984",
+      "bytes": 4756
+    },
+    {
+      "path": "docs/images/gentek-metabolist/README.md",
+      "git_blob": "5bbac91b328995be98a3a80fb49119b3134b3f37",
+      "sha256": "4d6db6798ef71f6ad1def0d6dd0f9d309d3e73c8249d5d0a7061cf79d46a788e",
+      "bytes": 12531
+    },
+    {
+      "path": "docs/images/gentek-metabolist/independent-review.md",
+      "git_blob": "11149311623a25c0f9644e76a054cf21a941edb8",
+      "sha256": "5293534bef2013cdc9ae4de2bcdb49e2bebfd8e5c5959131c4ee7d7757866dcb",
+      "bytes": 7485
+    },
+    {
+      "path": "docs/images/gentek-rosework/README.md",
+      "git_blob": "a52327d5de0faea8fd1f0cc57df66bfc8cb40522",
+      "sha256": "a581275c2f0ddc3dd405130eddf297de033d809fd2a956d29b3d0cd1b69d93b7",
+      "bytes": 5636
+    },
+    {
+      "path": "docs/images/gentek-rosework/independent-review.md",
+      "git_blob": "47ff70327088d1df89fad286e849ea62b05dd0fe",
+      "sha256": "ff7d765fbb0a253e7f971a49191e1481e51b7618ef4d169dd193b1c97599748d",
+      "bytes": 7591
+    },
+    {
+      "path": "docs/images/gentek-suspended/README.md",
+      "git_blob": "abc15db98afad06453a615ffa230b452d2e05c6a",
+      "sha256": "b9225a0dba9220ca3d3745dd186fb41ada48abfddc7f78c8a6ae14b3f1db09c2",
+      "bytes": 15284
+    },
+    {
+      "path": "docs/images/gentek-suspended/independent-review.md",
+      "git_blob": "ae3963992ec40e6f45494700711b8ae16769f61e",
+      "sha256": "dd15c94865299bc426a3b70701807ac6217a3431e900ccab66b53774cadc1453",
+      "bytes": 7496
+    },
+    {
+      "path": "docs/images/gentek80-integration/README.md",
+      "git_blob": "7dd5f05c83048324f495a973fcd9d56e2c0a62fc",
+      "sha256": "49f8997c912ea3ad2b8f357ac701728c49ad0bba17f89a72eae59a25feca089e",
+      "bytes": 17720
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "git_blob": "651d5987c437f3e1eeb484ac4bb26e226a90e916",
+      "sha256": "22c82ce2edb6e615cf097a45d6a36b505cd7a057d782439c7949db0b1a0b3e41",
+      "bytes": 7714
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/cell-layout.md",
+      "git_blob": "8ba0787d88ec7d2f203fc8c895c09f2d3cf05f12",
+      "sha256": "4cba39319acfc325a5d0889f21d298af5e7422bd02e36f3de22b427167f2ec25",
+      "bytes": 13535
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/compact-motion.md",
+      "git_blob": "d885858c615fbcc139cacf1b670b3e261515b1e0",
+      "sha256": "9c95cb5149d16ec2605995dad1b87ead01540526c713787fcebf149297b773a0",
+      "bytes": 12920
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/decision-review.md",
+      "git_blob": "9a23ed4a71b01cf4772dec517532e4fda1b53aa3",
+      "sha256": "1ffb2596de1513430850644c6363a9a2b0781af13ec51d1addf9c6bf8bf36038",
+      "bytes": 11684
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/fractional-presentation.md",
+      "git_blob": "6bbdd5e7b2c61ac7319b394a39c78d999a285fc7",
+      "sha256": "bf4a7b4f65dcc8c8dd28c3d0f7cc9a352b774ba94bceb0db558b71451ee051e1",
+      "bytes": 22611
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/liquid-characterization.md",
+      "git_blob": "b991e6821eef2548f440d2c7df93c4affa8f4b47",
+      "sha256": "1bdcbf48ffc557f967a939758bf0a158cf7100f49474a2dc1238ad49d01a1275",
+      "bytes": 12698
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/soliding-supplement.md",
+      "git_blob": "75a4b65a3eb105f6edabbda1f850b0474227bb86",
+      "sha256": "d321bc0ab3a13d57da3dc79fccc2cc4f281c3d7748d4de812fc789b95686eac5",
+      "bytes": 14623
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/sparse-motion.md",
+      "git_blob": "58ec6bb2ffa51685a393324f8e62d6bcb0d9415a",
+      "sha256": "27f11a3696c1df951fef964634e5cef553291c6b1893cb15c068c9cccebc3e60",
+      "bytes": 13665
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/state-precision.md",
+      "git_blob": "35de883bcea21b3f09ff186b15c32ab7fa7f3198",
+      "sha256": "66e01e2202422866a4145511cd707dbc3dc73beeb159b93d173c077c09a09c50",
+      "bytes": 13192
+    },
+    {
+      "path": "docs/operations/architecture-programme-source-ledger.md",
+      "git_blob": "e7368d72ce4062fa14dc22338957821dda9e88cb",
+      "sha256": "605886fbd2aa3c7ed90cdb309ecb638e3d40d6f17711a721cd9f72993151d999",
+      "bytes": 19414
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "git_blob": "15dd4f15b057b2bd78165ce8cbb5e64ddb0279a4",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "git_blob": "1dd3d6c09fae1e53dbfe72dff48347fcd257dc2d",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "git_blob": "49031450fa2a1028e683e44c9eaca97e37c21054",
+      "sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "bytes": 19010
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "git_blob": "bf9ff4e165a56bd46d8b2350631de5512c0541dc",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "git_blob": "30c8e8462865d950a8348c7c96d160779b2c60a5",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "git_blob": "f47de1891820b8cc1eb02fd7b0b51c055ff5bfed",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "git_blob": "9ddb9b0a6f3e9eca581fada4e940e06a1081236b",
+      "sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "bytes": 12906
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "git_blob": "3d88a925b3c5b7ac0562611b28d55911bea51ccb",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "git_blob": "7053b77baf4e706c00a60c7305f88d2c2589bf91",
+      "sha256": "6419dd47e240b6d16023cacf50215952996ab7a08b9213cb188ef6ecf4efb870",
+      "bytes": 128043
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "git_blob": "9fa6798fd9648ad37281e98b2774d560ba37b3d1",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "git_blob": "cdfcd47987a05b346ddd27e1a73aaf822e19bad6",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "git_blob": "236888a9512c35e9b63ce305978a4217ec9d7eca",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "git_blob": "ccda8444b88fe19decd19338dba468c8b5ec1244",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "git_blob": "122f2fa1e268a5bda777d9c0b181a9237dfef0b0",
+      "sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "bytes": 3762
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "git_blob": "19d941e3680bc1e91fe2e2233697d748ede6d99f",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "git_blob": "66c2638f45c69ab2ffb11a136290c4982be0a001",
+      "sha256": "f3083780031d5512435c07d4d454ef8f5bdb029ac33f2e1d7181e0b52fa1c862",
+      "bytes": 14140
+    },
+    {
+      "path": "docs/operations/gentek-interlaced-viaduct.md",
+      "git_blob": "8c6f02ac233f3bbf11c615e85fe2be3aa4a1c55c",
+      "sha256": "99fb6fc8386c5fc681116f82ac56c4fcdbacd7a715a5abe3ac28e68546401c0a",
+      "bytes": 7167
+    },
+    {
+      "path": "docs/operations/gentek-rosework-showcase.md",
+      "git_blob": "57318bd1c56a4ba213cecdea554a92fed17a1d60",
+      "sha256": "9a69080e953d9443ed8d28a871c71f08eccfe04789c3c0653d9d97f08c893ff5",
+      "bytes": 7461
+    },
+    {
+      "path": "docs/operations/gentek-showcase-integration-001.md",
+      "git_blob": "cc3e8f804f6609e36c639e26bae740addb9a9d1c",
+      "sha256": "49a4c97f8df0bef8cc46709f143f9013e505fb988cf60c8d1e1abfb4f3725217",
+      "bytes": 5733
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "git_blob": "e26f5763cce0c928609c87bed4b6f01f113603dc",
+      "sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "bytes": 18806
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "git_blob": "07f3d6bbb6d41b8d5f3ad00c219bf11ad54871f1",
+      "sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "bytes": 18051
+    },
+    {
+      "path": "docs/operations/in-tools-fixtures-and-playtest.md",
+      "git_blob": "d0b52616b9b61aa5ac50c94b39028319cff51460",
+      "sha256": "f5db7cc0b91bf316cdb4addc7f9807f3faa99881046712f65c29bc932498286b",
+      "bytes": 3406
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "git_blob": "a48c764c068383d26c6bfa6a62428bc9a8d3260a",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "git_blob": "e01538e01181decc49febf42296a6aa3bf1befc7",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "git_blob": "4b94489f16ee38431227c41d9709703954f0b3f8",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "git_blob": "45d0ed1f31eede410bc1a6188632e66ffd77390f",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "git_blob": "cf7ba0c191bcb7516716bcf449565e5b21ffdada",
+      "sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "bytes": 117202
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "git_blob": "ed1539b3ab2a2653e9917ab4608d7286911d416d",
+      "sha256": "0f8ed826d60d97f0d863556422559e720f6ac92f38157701b8015d43ea177a66",
+      "bytes": 19717
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "git_blob": "1fcfcde17f92cb8c03a8a688f8b377cd4a799a0c",
+      "sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "bytes": 13039
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "git_blob": "4b12411b88f985d7f37059038f3c6abbe9fc1280",
+      "sha256": "ae468a2213585d4be04d8e9b333f5d432981c6e1da37b764b52696708a4e9267",
+      "bytes": 32150
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "git_blob": "a59212d1cc38c278f49cbe2c95dd576c7ad3ada5",
+      "sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "bytes": 17952
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "git_blob": "ec564c81bf8176b06cb43a043d67e4c2c0de31c6",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "git_blob": "cde4892bce4e4845c0c2868dada757213be8bbe2",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "git_blob": "594aae69561d10d0013791c7cb8afe150c2013e4",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "git_blob": "54cbd5f92020ebfaf5c3cc2374eff2c1199dedac",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "git_blob": "3069018a7536d2770b1e63007ca39179a8189014",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "git_blob": "648bae4c145e7591d7d2ecdf6ec939eb5dec068f",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "git_blob": "c3b70a7ad362719ec99238fca9c815aa83248f92",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "git_blob": "fb6cb94e6c604abd5154d351765baecd5957633d",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "git_blob": "6ec90727c68682cbd6c3249c480214c935743b6c",
+      "sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "bytes": 11287
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "git_blob": "4b9c7649e8ab4c24d552aba5f825e54fb9e77b27",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "git_blob": "20a1ccfb6a2c1bc68c999c90ceb4f299f49d773d",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "git_blob": "79f82f06341baf990fb142e4cfa29b3fb35446a1",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "git_blob": "4b9ee5e29212534b68227adeaf4863c73be745b9",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "git_blob": "23477f6e9b8c23656b710c4e5a37d80847f9f78d",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "git_blob": "f6d0394fe0eba6bd0fef1303cfbbfbbc0bed3600",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-connectivity.md",
+      "git_blob": "faf4946291ea575a7963bfb839771445459dac33",
+      "sha256": "2c2735201f880243c279db0c00f51ec944029148008f3252b3c544f1a1064a8d",
+      "bytes": 6159
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-measurement.md",
+      "git_blob": "aa64c7e8cf08912464b837aecc2bd550cd1b5a4d",
+      "sha256": "b26e01bdfbc4a4a9096cfe94473d8245b81d5382a1712ec03b2e3e8c72798d28",
+      "bytes": 4209
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-producer.md",
+      "git_blob": "2f815415a27a33bdaae5d6672df28f72a2881ede",
+      "sha256": "54634fcb38f9111544de170030ee33517bacb742a540eb5ddaa848317b8c2332",
+      "bytes": 6365
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-verification.md",
+      "git_blob": "78c066dc3456cc2e27a50cbcc606a36fe65aa794",
+      "sha256": "6e7d37aa0ead70dabac3a2e661475a813696e1a3ed7d3e3004401c431b645e1e",
+      "bytes": 3772
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-astra-review.md",
+      "git_blob": "6a27109f29c44f0737985953a3db329c15313308",
+      "sha256": "4b0c8d0167c8274d5da0878489723d7f26b2fa82f66c6d76ee37f3f62cacc2b8",
+      "bytes": 14763
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "git_blob": "fc63ccbe57ff2ac4022da9dcf7f451ba66ca5bd6",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "git_blob": "53b34dfa759d4b4e056b9f5dc92d5e4e29f1ab6d",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "git_blob": "b779561504d126835e7c6cf12ceb1b1a43ff9b62",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "git_blob": "895bcaf13e97b3f5985a4c72890979bb48837188",
+      "sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "bytes": 32428
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "git_blob": "44f2a7b8cc7aae4df0dc272d5d5039d7d0a3b827",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "git_blob": "5e9f632f127dc117666b576b9ca838c6de7b36cb",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "git_blob": "db102aad42a56a719da60653e185005aabdf8f56",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "git_blob": "41fed45115ed309e597b198f02333217d309ad8e",
+      "sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "bytes": 17230
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "git_blob": "05510d3d4e816a2ecfb83cc95059f8d450e2e680",
+      "sha256": "de75e024d6b86b5a40cd7a0d148ea86295acc3dfd91565a3f917f16a13e37db8",
+      "bytes": 40397
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "git_blob": "bb75fe6b7787cf57475ddbeda4388322ca83e20f",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "git_blob": "3b3b253730e7fee3abf9d55b500574cdf261d83a",
+      "sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f",
+      "bytes": 13944
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "git_blob": "f5b3daff023519bf1e76402e282c61bfc7020a2f",
+      "sha256": "726497a27ac4745af06a4941cf4b658983a2833e0aa9c0eef3aed4c28342b35b",
+      "bytes": 15344
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "git_blob": "af2a42e0bff67e906c339c0c2ce3eb7a88638c4e",
+      "sha256": "bee8124fee89b2cb426da2ff01e491cbe883ca2bd84aee4c16d7ce95b26fff5b",
+      "bytes": 90310
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "git_blob": "3f3fa88d37393534bece2a2bfe9020b79bc47265",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "git_blob": "c3fe50c5df2e89ab4fc99563930135b4d97feb28",
+      "sha256": "0edd84df08e0e653fc73f4c47d7e2931749e725951c3c836bc3f2340e6f4d396",
+      "bytes": 99376
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "git_blob": "ef89090f726f58ba2da12059fef8e5184a06bd62",
+      "sha256": "02ad3d26a1193669dc0d582a46c4254da016b25f1281ff69ea9ba4afe61d6a6e",
+      "bytes": 47306
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "git_blob": "20275cd4e0a84717520063f9123a95eefff4477b",
+      "sha256": "2ea330678ce74d6206213b39213aa5783374b61bda2efa0a48a575d2f76af552",
+      "bytes": 15430
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "git_blob": "58c96bf0a30e84d0c87d150a902bacd85d571979",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/owner-intent-retrieval-questions.json",
+      "git_blob": "edfb2f004abe8d35c537245a25a01d766bf1d9d3",
+      "sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "bytes": 3012
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "git_blob": "a7cc63ffd8abc690eb78f86c6644b177a99e48b8",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "git_blob": "b28fdb88434db9d30028839f3cdda9512f1d0858",
+      "sha256": "fc8f06018d923481d37c766acea8113130d7739b99c84871ce3ad89e760b573b",
+      "bytes": 20969
+    },
+    {
+      "path": "docs/reference/retrieval-challenges.json",
+      "git_blob": "88dead538c8017a474bd1bd0f5ee56829b73b959",
+      "sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "bytes": 222689
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "git_blob": "98ef62690b118f6826f01d4bf8fec57ae487aab3",
+      "sha256": "80c8e1226fcf91bad856583f7896c0f37b54a0a282353e3893f2157a95662194",
+      "bytes": 50374
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "git_blob": "62977d632e48b875b41183685397b3ec6f719515",
+      "sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+      "bytes": 73249
+    },
+    {
+      "path": "docs/reference/retrieval-questions.json",
+      "git_blob": "b6d04705a34fb5a4b0a4dcbdd87448f650375100",
+      "sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "bytes": 27099
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "git_blob": "285050f30b33fc6e048019711085eaee2ef3dfc0",
+      "sha256": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33",
+      "bytes": 161415
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "git_blob": "a1bb549448286da963b811008a714a823183f88c",
+      "sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "bytes": 77127
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "git_blob": "ba45a22320b715d912fc922045acb5b6f50ac74a",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/gentek-80-integration-001.md",
+      "git_blob": "93c19d450c2a2a09f4680502511469de2d16e785",
+      "sha256": "b88833bd3a8a2d0f83eae9546cf0f2de3287bd412797fe571ff824e8c13f0668",
+      "bytes": 27575
+    },
+    {
+      "path": "docs/research/gentek-classic-001.md",
+      "git_blob": "f51a806f125e94678075997a0b58f59e666ee0e8",
+      "sha256": "cd3e5084d006295487f89d62ef7942527354d05105c14aeeab38ce1deca17a97",
+      "bytes": 10686
+    },
+    {
+      "path": "docs/research/gentek-interlock-001.md",
+      "git_blob": "f070b66ffcf01c440c75af93022491aaebb1090f",
+      "sha256": "1d08ce0ad02099fec38059c89f78f4a76fd17e8aa91a9f3f20d42e7a60942ee7",
+      "bytes": 6805
+    },
+    {
+      "path": "docs/research/gentek-metabolist-001.md",
+      "git_blob": "f4eb3a945706f90743a9e39765ada5809b50c244",
+      "sha256": "965fe83637d28623c28b48a59b01cf79bfd32ebe60f245855d7fd240fb3a85f1",
+      "bytes": 7691
+    },
+    {
+      "path": "docs/research/gentek-showcase-cathedral-001.md",
+      "git_blob": "679b56eeb21fdbc66bba08ffec396a3dd5f9580a",
+      "sha256": "fb2fa9b04071193d5c8803cf37e109bdc5f70fc21966d339763a0c286a37cd60",
+      "bytes": 17810
+    },
+    {
+      "path": "docs/research/gentek-showcase-megablock-001.md",
+      "git_blob": "38674026369cf87d90ac7f541d1f7bdd620d9797",
+      "sha256": "691cfb58914cdaa26530dd09218a8a27bd1cb6ab2f77bd56866640022f3421e7",
+      "bytes": 12535
+    },
+    {
+      "path": "docs/research/gentek-showcase-megatruss-001.md",
+      "git_blob": "38fbd416df6db1a47d6ba5ff7e34d1bb59865a63",
+      "sha256": "71298ce6750e92fdbb8c6247ca350908bcebbc6b1d5a9f72e110da6b258d66d5",
+      "bytes": 17197
+    },
+    {
+      "path": "docs/research/gentek-suspended-001.md",
+      "git_blob": "e00f9e0f85058835f34da14908ef24905baa3939",
+      "sha256": "523df79d74e7da2b8eb566664f6563746ed2880fda6f33828b0e3d5c64b7b410",
+      "bytes": 6647
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "git_blob": "8fdd9fc6cbd481d39c90c0ab8761bfcd601b7ad7",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "git_blob": "c8e51736da9dae01fb8a52b7ddd811b116234303",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "git_blob": "1ea988d85a6ab22f601e94724b9aa53a96c4686f",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "git_blob": "8bcbb6d0cdbbfb9bb4c64b13cafb9216a5c03aeb",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "git_blob": "7bd01631079e215fd73a590369270dbb474a24e7",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "git_blob": "0ed782dd781846837986324a8b08366b02fa2f14",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "git_blob": "376c62f138175a52c8de39ad5e1f3c61de05be87",
+      "sha256": "b9a500aa2ad7545b53ce03fe40f12b9a09cfc7c7d16661a541dd82fcfa485072",
+      "bytes": 24845
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "git_blob": "c8c9fca174de6ed828906855e9470604bb41b3a1",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "git_blob": "ca6c85a09bc3bd73a1708a25f6bf17d6f14bde9b",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "git_blob": "660c093596db34c2eeaa58a4c939625f0f5e9ea5",
+      "sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "bytes": 13442
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "git_blob": "18a4abd0ab96b58a1bd29af622b6f8f8c3334abe",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "git_blob": "b139846c7eaeeaa7f69b5aa628c71d822eccae4d",
+      "sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "bytes": 21861
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "git_blob": "41070bf04b6d9a96db5f75fb4462f748fae1c610",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "git_blob": "0444d5c23c892147d870a9a939e3d40e29176459",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "git_blob": "531879ebdbb1636a73e8739ac1c7f5e9da775190",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "git_blob": "228dc7597065fc5b69599ea232b10b491603d0bd",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "git_blob": "d987c39cc16d4e51c183131d7d62811fbdebcdce",
+      "sha256": "2140d649728829bf1b5163eb0686ab8eadd6493be7512ad5e25e21359a5c2e24",
+      "bytes": 14476
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "git_blob": "c4fd23c442bd7b7efeb2976ed226b985144db936",
+      "sha256": "cb0ad9d255d648064362b2c13dfa9e5c76eae388705d52ed47988024a5fe714c",
+      "bytes": 23872
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "git_blob": "81b5db097038a8ae78dcc1429865be18ee3b2db3",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "git_blob": "9a1a98d6d5a70a698d88514d6f12572ef63b8064",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "git_blob": "ff4e64a8e90e88e14df6a809128437722b6b5456",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "git_blob": "b7657de852063a77d7b90f2e21f55da69176c836",
+      "sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "bytes": 62162
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "git_blob": "481ca98b2b0f17b1d877d17fa84b29cf5f3b8db5",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "git_blob": "23d4b0949034e7797c902d4841a177cb5cbb1d5b",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "git_blob": "02be2352b72f89cca720c66585331410822ea2de",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "git_blob": "df527c5dec54c75f28b972632a1936c2e79836bc",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "git_blob": "9ba5e44ffe4b79def226adbc9072e5db443683a7",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "git_blob": "4fc7a1527a8909e3f3183b07dfe7e6f9fbf60ca5",
+      "sha256": "0edcd936c2a82cc7e0e8c0e5b586a84fa9841e87bb7b5edd74c60c96dd82afc3",
+      "bytes": 28537
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "git_blob": "d6ce1738873f854ff6fba771854a7d609506c90d",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "git_blob": "6db65b04c7bcfb007d5b37f81915c3843c8d8c24",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "git_blob": "740fe476b9e276bb65ba244144cb409d2d5e5845",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "git_blob": "b4b18a057c523931b903aa544151acee03560c62",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "git_blob": "1b7e3f6b60f7ed5e979df1bc0ec2cf8d3cf057d2",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "git_blob": "0e395629771baa07a7c5d373fb7e8409b949967b",
+      "sha256": "b6c24131a38f2ede5a2b6426db193c1976ea5ce770a0b96195079279b75b5428",
+      "bytes": 23536
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "git_blob": "fa7a4d9e9dcc9ce0a18bff82ab17fb07f4a53c2e",
+      "sha256": "e3d659856dff8529cf5b85237c4b1aae3db31f6e11c975eab561a38501560ee0",
+      "bytes": 26400
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "git_blob": "20be5cc7bb437448cf368ac37b975d76441e65cb",
+      "sha256": "0608fbdc4ed4a4b38cd3ce47422bbbaeee07ce1c0a080b555f820d377692538d",
+      "bytes": 13532
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "git_blob": "ba04141726888940505f95254e321b103d6483ec",
+      "sha256": "21d0d16074f0d1e3203addc8c5707bcaa70d85b6d7f0eec6e3ca12e3db96890c",
+      "bytes": 11007
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "git_blob": "e262eb5f5a01371cff9edaf6b055efddd57fdc0b",
+      "sha256": "de44534954f0d38639f220cab5a56135fec0a0589777be21460543400885953b",
+      "bytes": 12516
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "git_blob": "a89a990f59b693225efc9649198bccb020d5df5f",
+      "sha256": "d24aa9fe1631a5506044ace6653cc035e2f469d0add9bc5f037943b6c483f281",
+      "bytes": 11786
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "git_blob": "dd6f9ffe3dfd4bce1a6dbebfcf53a78abeb06029",
+      "sha256": "4aa4f20c295f3dd92fc4854d4c02e5571c3acb49a3cf90c1e0538909ceaae72a",
+      "bytes": 16243
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "git_blob": "8a347c30e3d4e630cd6e8485190785ab46b976e1",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "bytes": 12488
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "git_blob": "dfd61c03e9a2a56b27aee859e5657faa1af08828",
+      "sha256": "99ce3e3d637d456d18d93fbf1e22f1fcf713df1753a24dd2928b4702bce34b44",
+      "bytes": 8616
+    },
+    {
+      "path": "docs/world-design/QUALITY_BAR.md",
+      "git_blob": "a2bb5798074680c707b947a63a73673b8b867de4",
+      "sha256": "92bb4c2a608a3b9af91aa050f85a7933380e965fd5a4bf434ea767590ee783f4",
+      "bytes": 9065
+    },
+    {
+      "path": "docs/world-design/README.md",
+      "git_blob": "217e0210138876c1f880e7056244eadc416076ac",
+      "sha256": "9c82b5e2fe95244507507b45bb3b06f69628c6ecbc113144a5a2caf31919127b",
+      "bytes": 5151
+    },
+    {
+      "path": "docs/world-design/ashroot-nursery/README.md",
+      "git_blob": "91c543f332ed4e0eba03057f554ea27bf0a690b4",
+      "sha256": "a994c6eac86ae616ce18e9bd763a27c42bc6327c60d5df86c86c3ae956ddb167",
+      "bytes": 19899
+    },
+    {
+      "path": "docs/world-design/carved-ice-choir/README.md",
+      "git_blob": "27a5385112d8c6cf87b2e03320284f19c6db97ba",
+      "sha256": "72b699e885b1b66b20e1bba429b6df7571ddce900dd012f9b53084808d64884b",
+      "bytes": 23200
+    },
+    {
+      "path": "docs/world-design/cathedral-of-capacitors/README.md",
+      "git_blob": "a5a94fb771a4af640924e1ac41618b59e8b0c373",
+      "sha256": "8aa9446475efd298c451b5b8b8ca8b0910f613551e5c1d42c7c3fb764852218c",
+      "bytes": 20111
+    },
+    {
+      "path": "docs/world-design/chalkbone-coast/README.md",
+      "git_blob": "734a82e469d0d717e8b119f9d299b2f870143d6c",
+      "sha256": "567939517e4ac4b2e4e26e270542c5d55ad2126adafa3ad8a4185904459e89e7",
+      "bytes": 21293
+    },
+    {
+      "path": "docs/world-design/coral-telegraph/README.md",
+      "git_blob": "63f7f9a7a98a8ff1a38e2400bc2a1db85355727c",
+      "sha256": "cc92026425a5b13c2aee4e5bda90827ff5531baa810639187223b700ccecc61c",
+      "bytes": 17028
+    },
+    {
+      "path": "docs/world-design/drowned-observatory/README.md",
+      "git_blob": "3be96c4a7587af0fe40e30e92764c069466eb9aa",
+      "sha256": "f8f2d81cc52015fc2dc93c21d1834df7d3afb21dd4d2943d7ee4a9df8796797f",
+      "bytes": 21284
+    },
+    {
+      "path": "docs/world-design/dust-meridian/README.md",
+      "git_blob": "9a3019d6986f349847b9b7d08faec7f503566ecd",
+      "sha256": "079a344116a41ea9f3983f78f2d22e0f53efc2c2e79cbd55a74a6ff2178ed67e",
+      "bytes": 18418
+    },
+    {
+      "path": "docs/world-design/emberglass-fumaroles/README.md",
+      "git_blob": "c3817ee8f76f137fbac75de1429e59564209e0cb",
+      "sha256": "7affb44febfba9e5dffa9c780598f13ee1138853929d228ff72908003b5fc679",
+      "bytes": 24680
+    },
+    {
+      "path": "docs/world-design/fallow-carnival/README.md",
+      "git_blob": "6a70d3505336cf7062f1fa66016543532102249b",
+      "sha256": "9e3212bda50434699a2f1b94ddafc8660f4109db2ae0d0d14a691064d2fde896",
+      "bytes": 20264
+    },
+    {
+      "path": "docs/world-design/ironroot-necropolis/README.md",
+      "git_blob": "108777160193814f541867db07400446f666b984",
+      "sha256": "fc0d6a87a703ec093a55646fd61fcf22c29b9a068636e861a435a6286697bacd",
+      "bytes": 20078
+    },
+    {
+      "path": "docs/world-design/lumen-fault/README.md",
+      "git_blob": "5dd0b080600b311082f8117e5bf9690226329ca8",
+      "sha256": "5a9732c92f8d456c7a370e1b349d4f0267db3829d6d5ef2582a9ac9cd6887b5e",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/world-design/mirror-marsh/README.md",
+      "git_blob": "637789e7e2d2b563d88169e0aaaf86fa8b48af05",
+      "sha256": "5f08d9fa5a094dc2e1548bed6824a1c935990bebcd73539c4b62630ae3a4b3b2",
+      "bytes": 23766
+    },
+    {
+      "path": "docs/world-design/signal-orchard/README.md",
+      "git_blob": "8fda4d81707c8aea4ba766558dc6f7ad3b47cfc8",
+      "sha256": "4b7386872cb13366a5091ce02ee175275e0fbee96005bda98cf8a1be9b742c59",
+      "bytes": 15011
+    },
+    {
+      "path": "docs/world-design/silt-clockworks/README.md",
+      "git_blob": "2366135ef033ddc78f12d288410b33409ed4f1a3",
+      "sha256": "350f1879cd444c706de0c7522b2445908ec4dc2d949ee1f569b87f12e8c43bd1",
+      "bytes": 23206
+    },
+    {
+      "path": "docs/world-design/tectonic-archive/README.md",
+      "git_blob": "60ac9eb07e146aa41eee1f10de27393fa61b87a3",
+      "sha256": "055a3454feb268617317166c8df1462436536ac4a413fb87495c7be425ea7bd4",
+      "bytes": 22723
+    },
+    {
+      "path": "tools/docs/retrieval_eval.py",
+      "git_blob": "22c80abd1e5fda6d23f27409271c4320d38a9a3c",
+      "sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "bytes": 11875
+    },
+    {
+      "path": "tools/docs/retrieval_policy.py",
+      "git_blob": "3b6ff9d79c50a67778d68e7482e6a3d011a96d68",
+      "sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+      "bytes": 3603
+    }
+  ],
+  "runner_sha256": "48d46aa16df57d1412bac8f5ac0907bbaa781a8edbde86aff65d52c398424a19"
+}

@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -13,8 +13,10 @@ related-documents: [material-visual-pattern-library.md, ../reference/material-ef
 **Current:** native material identity and one derived condition byte form an
 immutable RG8 presentation stream. GPU shaders create variation, animation,
 relief, and emission without changing physics. CPU patch copies are dirty-region
-proportional, but each changed GPU texture update still uploads the full 1024²
-RG8 image. True GPU subregion writes are **Planned**.
+proportional, but each changed GPU texture update still submits the full backing
+RG8 image at the installed canvas extent. A 1024² image is 2,097,152 bytes; a
+2048² Workbench image is 8,388,608 bytes. These are image payload sizes, not
+measured transfer timings. True GPU subregion writes are **Planned**.
 
 This page owns appearance and cost semantics at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md).
@@ -48,7 +50,10 @@ checks from unmeasured hardware performance.
 
 [project_visual_state](../../native/include/cybersand/material_appearance.hpp)
 selects zero, `state_a`, or `state_b` for each material. No visual seed or RGB
-field enlarges the four-byte authoritative Cell.
+field is added to the authoritative Cell for this projection. Current Cell storage
+is the eight-byte `PrecisionStorage` described by the
+[storage contract](../architecture/chunk-tile-and-buffer-model.md); RG8 is a copied
+presentation format, not its in-memory layout.
 
 | Input | Meaning | Examples |
 |---|---|---|

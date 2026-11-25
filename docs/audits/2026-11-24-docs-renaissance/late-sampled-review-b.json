@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B /root/product_showcase",
+  "recorded_at": "2026-11-24T19:55:54.862394+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Read current host, picker, sampled catalogue and owner/action source; compare narrowly corrected documents with accepted source. Preserve original mechanics, numeric laws and dated evidence. No runtime or physical acceptance rerun.",
+  "documents": [
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "disposition": "corrected",
+      "reviewed_scope": "The retained SetA sampled motors require an explicit Sampled — Runner, Skimmer or Crawler selection in ordinary F5 / Actor sandbox. Selecting a set initially chooses its articulated Rapier counterpart; ordinary Workbench uses separate Actor Composition. Sampled state and collision remain simulation-owner controlled through bounded copied actions and observations.",
+      "evidence": [
+        "godot/scripts/actor_prototype_panel.gd::_select_set/_populate_models",
+        "godot/scripts/main.gd::_unhandled_key_input",
+        "godot/scripts/actor_prototype_session.gd::configure/submit_action/submit_rig_action",
+        "godot/scripts/simulation_worker.gd::queue_actor_prototype_reset"
+      ],
+      "sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "baseline_byte_equal": false,
+      "all_baseline_headings_retained": true
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "disposition": "corrected",
+      "reviewed_scope": "The retained sampled contract has six sets / 29 rigs, distinct from the 46 physical rigs and broader Workbench chooser. Sampled F5 comparisons use their selected set (at most seven actors), while the session has eight slots; existing copied action/observation, lease and owner restrictions are retained without new runtime qualification.",
+      "evidence": [
+        "godot/scripts/actor_rig_catalog.gd::SET_IDS/RIG_IDS",
+        "godot/scripts/physical_actor_catalog.gd::RIG_IDS",
+        "godot/scripts/actor_prototype_panel.gd::_select_set/_populate_models",
+        "godot/scripts/main.gd::actor_prototype_definitions/_unhandled_key_input",
+        "godot/scripts/actor_prototype_session.gd::MAX_ACTORS/MAX_LEASE_TICKS/DEFAULT_LEASE_TICKS/submit_rig_action"
+      ],
+      "sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "baseline_byte_equal": false,
+      "all_baseline_headings_retained": true
+    }
+  ],
+  "claim_ids": [
+    "B-38",
+    "B-39"
+  ],
+  "source_diff_from_baseline": [],
+  "limits": [
+    "Full historical sampled motor and physics campaigns were not re-executed.",
+    "Independent technical review of these two corrections is requested separately."
+  ]
+}

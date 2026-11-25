@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Design and algorithm reference for presentation-only material patterns — primitives, pipeline stages, recipes, per-material specifications, authoring and procedural-development workflow, and lessons learned
 canonical-for: [material-visual-patterns, procedural-material-algorithms, material-pattern-authoring-workflow]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-24
 related-documents: [material-appearance-and-rendering.md, themed-construction-materials.md, ../reference/material-effects-register.md, ../reference/product-intent-and-priorities.md, ../audits/2026-10-18-material-readability-pass.md]
 ---
 
@@ -28,12 +28,12 @@ retained under
 
 | Plate | What it shows |
 |---|---|
-| [All static materials, labelled](../audits/material-readability-2026-10-18/detail/statics_pass_annotated_t1.37_glow.png) | Every static material as a block, a 3-wide bar and a 3-tall strip |
+| [October static-material plate, labelled](../audits/material-readability-2026-10-18/detail/statics_pass_annotated_t1.37_glow.png) | The original 50-material set (IDs 1, 5, 7, 9, 28, 31, 35 and 38–80), as blocks and thin bars; later building materials are outside this plate |
 | [Shape plate](../audits/material-readability-2026-10-18/detail/shapes_structured_pass_t1.37_glow.png) | Pipes, hazard, cables, planks, corrugation, neon and stained glass in several run shapes |
 | [Contact plate](../audits/material-readability-2026-10-18/detail/reactions_volume_pass_t1.37_glow.png) | Depth shading, lava/water, acid on solids, burning timber, rim light, soft gas edges |
 | [Emission/atmosphere plate](../audits/material-readability-2026-10-18/detail/emission_still_cam0-0_t1.37_glow_b1.00.png) | Fire, lava, spark, charge, neon, LED, smoke, steam, foam at several condition values |
 | [Liquid trays](../audits/material-readability-2026-10-18/detail/liquids_still_cam0-0_t1.37_glow_b1.00.png) | Water, Oil, Paste, Slush, Brine, Cement, Mercury, Acid, Sludge, Lava |
-| [Full inventory](../audits/material-readability-2026-10-18/detail/inventory_still_cam0-0_t1.37_glow_b1.00.png) | All 81 rows (labels: [labelled sheet](../audits/material-readability-2026-10-18/candidate/inventory_labelled.png), earlier pass) |
+| [Full inventory](../audits/material-readability-2026-10-18/detail/inventory_still_cam0-0_t1.37_glow_b1.00.png) | The earlier 81-row plate, before the building extension (labels: [labelled sheet](../audits/material-readability-2026-10-18/candidate/inventory_labelled.png)); the current [catalogue](building-material-catalogue.md) extends through ID 131 |
 
 ## Which inputs may a pattern use?
 
@@ -46,9 +46,11 @@ retained under
 | Run extent | Same-material run length in each direction, probed at 1, 2, 3, 5 and 8 cells | Only materials in `uses_structured_fill`; capped at 8 |
 | `presentation_time()` | Engine `TIME` or the fixture override | Decorative phase only, never presented as physical flow or velocity |
 
-Rendering is per output pixel. At the default 320×180 logical view in a
-1920×1080 window, each cell is evaluated 36 times, so every texture read and hash
-is multiplied accordingly. Budget reads before arithmetic.
+Rendering is per output pixel. For example, if a 320×180 logical view fills a
+1920×1080 surface, sixfold scaling yields 36 output pixels per cell. This is
+arithmetic for that view, not a measurement or a universal Workbench layout:
+actual canvas, camera zoom and UI space change the coverage. Budget repeated
+texture reads before arithmetic, including any second snapshot evaluation.
 
 ## Pipeline stages
 
@@ -81,7 +83,11 @@ is multiplied accordingly. Budget reads before arithmetic.
    - steam leaking from pipe runs.
 8. **Glow.** A separate half-resolution
    [emission pass](../../godot/shaders/material_emission.gdshader) plus the
-   additive [composite](../../godot/shaders/glow_composite.gdshader), toggled by `G`.
+   additive [composite](../../godot/shaders/glow_composite.gdshader). Ordinary
+   non-Workbench Main binds `G` to glow. In Shared Workbench, paused PAINT uses
+   `G` for Fill and the equipment path uses it for Drain; it is not a universal
+   glow shortcut. See the [painting controls](../operations/workbench-painting-and-history.md)
+   and [`main.gd::_unhandled_key_input`](../../godot/scripts/main.gd).
 
 ## Primitive toolkit
 
@@ -176,7 +182,8 @@ animation. Static materials are time-independent and asserted by
 
 | IDs | Material | Recipe | Inputs | Motion |
 |---|---|---|---|---|
-| 3, 24 | Water, Brine | Ripple, glints, caustic net, micro-bubbles, depth, froth; Brine adds fixed salt motes; boils beside heat | condition = mass (coverage), neighbours, depth | yes |
+| 3 | Water | Ripple, glints, caustic net, micro-bubbles, depth, froth; boils beside heat | condition = projected Water mass (coverage), neighbours, depth | yes |
+| 24 | Brine | Shared liquid finish with fixed salt motes, depth and contact effects | condition projects to zero; neighbours and depth, not a Brine mass channel | yes |
 | 16 | Oil | Smooth slick, `swirl_field` eddies phased by `OIL_WAVE_RATE`, contour-line iridescence, flames when burning | condition = burn | yes |
 | 20, 30 | Paste, wet Cement | Heavy matte clumps, slow swell; Cement aggregate, swell ∝ cure remaining | Cement condition = cure remaining | slow |
 | 21 | Slush | Icy granules, twinkling crystals, meltwater shimmer | — | slow |

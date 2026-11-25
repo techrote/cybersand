@@ -1,0 +1,1334 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "new independent retrieval-context applicability review; reconstructed qualification, not recovered original",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "reviewer": "Specialist A / technical_truth",
+  "reviewed_utc": "2026-11-25T00:08:53.545243+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "input": {
+    "path": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/answer-a-qualified-input.json",
+    "sha256": "9cbc3bd2496f713bf718eba59cf813422b46381848f490370bf415c2fd32408b",
+    "source_report": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/qualified/candidate/renaissance.json",
+    "source_report_sha256": "6fcee5a718718a5ad4871fe432542ce4c5656b21ea064912349c470940acebfa",
+    "evaluator_sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+    "policy_sha256": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68"
+  },
+  "method": "Read all85 top-five passages for17 assigned additive questions; answer only from actual retrieved text, then independently compare the bounded answer and missing qualifications with accepted source/current lifecycle evidence. Prior final inputs were retained; the qualified delta changed only DR15/DR16 rank4 and was reread. Reviewer participated in technical documentation clarification and is independent of C retrieval implementation/evaluation; this is not a blind external-model experiment.",
+  "summary": {
+    "questions": 17,
+    "context_passages": 85,
+    "verdict_counts": {
+      "sufficient": 14,
+      "partial": 3
+    },
+    "wrong_context_answers": 0,
+    "unsafe_or_invented_owner_decisions": 0,
+    "required_abstentions_performed": [
+      "DR36"
+    ],
+    "partial_questions": [
+      "DR08",
+      "DR20",
+      "DR36"
+    ],
+    "source_corpus_identity_errors": [],
+    "missing_source_paths": []
+  },
+  "important_limits": [
+    "Canonical top-five ranking is not a sufficient-answer score. DR08 is a canonical hit but its selected section lacks the actual ballistic/Wave parcel path.",
+    "DR20 answers the universal-equipment question safely but does not retrieve pending recovery status.",
+    "DR36 misses the canonical owner-intent source yet supports correct abstention; detailed design selection remains unsupported.",
+    "No external embedding service, cached index, agent integration, runtime launch, physical GPU result or generative-model benchmark is qualified.",
+    "Source checks use accepted code at00cdb02 and content-addressed candidate docs/intake; source inspection is not execution evidence."
+  ],
+  "source_checks": {
+    "native/include/cybersand/precision_storage.hpp": {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "native/src/world.cpp": {
+      "path": "native/src/world.cpp",
+      "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/architecture/chunk-tile-and-buffer-model.md": {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "godot/scripts/main.gd": {
+      "path": "godot/scripts/main.gd",
+      "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/native_extension/cyber_native_cell_world.cpp": {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "native/include/cybersand/world.hpp": {
+      "path": "native/include/cybersand/world.hpp",
+      "sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/architecture/ballistic-water-v1.md": {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/architecture/wave-flow-v1.md": {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/architecture/liquid-solver-family-policy.md": {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "tools/material_catalogue/native_capabilities.py": {
+      "path": "tools/material_catalogue/native_capabilities.py",
+      "sha256": "a72f20047ac1619d0149ee3da29e97477c53815f79d79f6b2981542c8ae7e2d5",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "tools/material_catalogue/lab.py": {
+      "path": "tools/material_catalogue/lab.py",
+      "sha256": "730710e02f4c7a2fc65e43bb98b6f5c138d843d2f1ca05b91992cf9c094cd1c9",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "native/include/cybersand/material_rules.hpp": {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/operations/materials-lab-authoring.md": {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/reference/status-and-roadmap.md": {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/decisions/2026-11-14-owner-authoring-intent.md": {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/shared_workbench.gd": {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/workbench_paint_editor_controller.gd": {
+      "path": "godot/scripts/workbench_paint_editor_controller.gd",
+      "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/systems/paint-editor-bounded-shapes.md": {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "godot/scripts/simulation_worker.gd": {
+      "path": "godot/scripts/simulation_worker.gd",
+      "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/art_batch_executor.gd": {
+      "path": "godot/scripts/art_batch_executor.gd",
+      "sha256": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/systems/workbench-direct-art-batches.md": {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "godot/scripts/workbench_setup.gd": {
+      "path": "godot/scripts/workbench_setup.gd",
+      "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/workbench_generated_map.gd": {
+      "path": "godot/scripts/workbench_generated_map.gd",
+      "sha256": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/workbench_material_baseline.gd": {
+      "path": "godot/scripts/workbench_material_baseline.gd",
+      "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "native/src/world_pressure.inc": {
+      "path": "native/src/world_pressure.inc",
+      "sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/native_extension/cyber_demo_bridge.hpp": {
+      "path": "godot/native_extension/cyber_demo_bridge.hpp",
+      "sha256": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/native_extension/material_baseline_file.cpp": {
+      "path": "godot/native_extension/material_baseline_file.cpp",
+      "sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/native_extension/cyber_world_generator.cpp": {
+      "path": "godot/native_extension/cyber_world_generator.cpp",
+      "sha256": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/architectural_generator_dialog.gd": {
+      "path": "godot/scripts/architectural_generator_dialog.gd",
+      "sha256": "c1af8e309a6d8dea460dd7d9ee7a12703a3ec503acb202c245313d6950a1ccf4",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/systems/architectural-generator.md": {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/reference/glossary.md": {
+      "path": "docs/reference/glossary.md",
+      "sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/audits/2026-11-24-docs-renaissance/closure/active-candidates.json": {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/active-candidates.json",
+      "sha256": "794bdf80901b3204a4de86183612ec5b3dcfa1e5e04d0e4707470035c7a8ccc0",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "godot/scripts/workbench_actor_catalog.gd": {
+      "path": "godot/scripts/workbench_actor_catalog.gd",
+      "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/workbench_physics_bridge.gd": {
+      "path": "godot/scripts/workbench_physics_bridge.gd",
+      "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "godot/scripts/physical_actor_session.gd": {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "sha256": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/systems/actor-usables.md": {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/systems/workbench-liquid-equipment.md": {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "0ab911b1e8b30a3ca83fa525ca927c59e12635412a1cdbf1cf4e3847806aaab8",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/tools/art-pipeline-unification.md": {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/tools/world-art-capture.md": {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "tools/world_art_capture_support.py": {
+      "path": "tools/world_art_capture_support.py",
+      "sha256": "4f8f1c1fec4fd11626c5b5ab758b177204fe72451a19b699fbd9ce69d7d4af20",
+      "matches_accepted_source_lf_normalized": true,
+      "source_identity": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "docs/architecture/rigid-body-and-cellular-coupling.md": {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    },
+    "docs/reference/product-intent-and-priorities.md": {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "matches_accepted_source_lf_normalized": false,
+      "source_identity": "candidate documentation/evidence content hash"
+    }
+  },
+  "rows": [
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. Accepted source uses an eight-byte, eight-byte-aligned PrecisionStorage cell. The four-byte Cell and sidecar carriers in the older experiments are historical controls; they do not impose a permanent four-byte or sidecar-only rule on current implementation or future owner decisions. Use the accepted storage contract and the explicitly scoped owner record rather than promoting an old experimental constraint into doctrine.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Rank1 is current storage guidance. Ranks3/5 explicitly label L4/L2 synthetic carriers as historical; rank2 retains owner-confirmed-intent authority and concerns a different decision.",
+      "conflict_review": "Apparent4-byte/8-byte difference is resolved by the local historical qualifiers. No current contradiction observed.",
+      "source_check_paths": [
+        "native/include/cybersand/precision_storage.hpp",
+        "native/src/world.cpp",
+        "docs/architecture/chunk-tile-and-buffer-model.md"
+      ],
+      "independent_source_check": "PrecisionStorage size/alignment and World::Chunk::Cell alias match current eight-byte description; sidecar-only inference is unsupported.",
+      "abstention": "not-required",
+      "id": "DR06",
+      "query": "The old rule says every Cell is four bytes and all richer material state must be a sidecar. Is that current doctrine?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Distinguish the historical compact cell experiment from accepted eight-byte PrecisionStorage.",
+        "Current source and approved intent do not imply a permanent four-byte or sidecar-only prohibition."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "architecture/chunk-tile-and-buffer-model.md",
+          "heading": "Chunk, tile, and buffer model > What is stored per cell and per chunk? > Is the old four-byte, sidecar-only rule current?",
+          "authority": "current-documentation",
+          "text_sha256": "c71fcd1f0eed966448a7a4b3b7449deb5ef99f0a442ce6ab364b5d57b8d6e37f"
+        },
+        {
+          "rank": 2,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Save, Flatten and compatibility",
+          "authority": "owner-confirmed-intent",
+          "text_sha256": "9d726ceb544f9ca02a3205fee2ad8ce831ad7572a2b9725692a6553f3c4a0329"
+        },
+        {
+          "rank": 3,
+          "path": "operations/cell-layout-experiment.md",
+          "heading": "Cell layout experiment > L4 concrete preregistration, September11",
+          "authority": "current-documentation",
+          "text_sha256": "e49ed899c89c5c145f8dd3a8efec2dad3c11e1ffd88d5b858f0676db80e08858"
+        },
+        {
+          "rank": 4,
+          "path": "operations/procedural-qualification.md",
+          "heading": "Procedural Deepworks qualification and visual review > How is deliberate composition kept procedural?",
+          "authority": "current-documentation",
+          "text_sha256": "fdd384a320018e6cbd77451d33785da88c3eb6fb84c347c5684fdfef1e12c0d6"
+        },
+        {
+          "rank": 5,
+          "path": "operations/cell-layout-experiment.md",
+          "heading": "Cell layout experiment > L2 implementation registration, September11",
+          "authority": "current-documentation",
+          "text_sha256": "47a9d078909c7daa60a5551b6a355c61c50c088470f57495d1cdba6359e410b3"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "A new ordinary native sandbox or Shared Workbench session uses the Wave Flow gameplay profile, including its selected spill/ballistic behavior. This is a host default, not the bare native WorldConfig default: native Wave starts disabled, while the gameplay profile enables it with its own settings. PressureFlow, inertial, CellularYield and FreeMass remain distinct policy families; Wave is an additional FreeMass path rather than a synonym for PressureFlow. Other hosts must be checked against their actual profile and readback.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Top contexts distinguish accepted source00cdb02, native defaults, ordinary player defaults and separate experimental/evaluator tuning.",
+      "conflict_review": "Different substep/default values belong to named native, gameplay or evaluator scopes, not conflicting defaults.",
+      "source_check_paths": [
+        "godot/scripts/main.gd",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "native/include/cybersand/world.hpp"
+      ],
+      "independent_source_check": "Native configuration and host Wave profile support the distinction; no platform-wide default or new runtime playability claim is made.",
+      "abstention": "not-required",
+      "id": "DR07",
+      "query": "Does a new player session still default to PressureFlow, or does it use Wave Flow Water?",
+      "canonical_rank": 2,
+      "expected_fact_scope": [
+        "Accepted gameplay source selects Wave Flow with its gameplay spill/ballistic profile for new sessions.",
+        "Pressure, Wave, inertial and FreeMass remain distinct families; a default is not a claim that all families share semantics."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "systems/water-design.md",
+          "heading": "Water design",
+          "authority": "current-documentation",
+          "text_sha256": "f7431a200ccc8a123ef207d926f1e5e10b26cfb116e67bb21a50234c924757a3"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Status",
+          "authority": "current-documentation",
+          "text_sha256": "71a2831eb31df25c62ac0bc0b458a77551f50790ee3b76941314eb2b03fc7d80"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/wave-flow-v1.md",
+          "heading": "Wave flow Water solver (experimental) > Controls",
+          "authority": "current-documentation",
+          "text_sha256": "25bc2367aeb54eb0b29bf72d44a2912f73ae4914cac335fc2a1ca14b06d8f4bf"
+        },
+        {
+          "rank": 4,
+          "path": "operations/wave-flow-evaluation.md",
+          "heading": "Wave Flow evaluation > Water Lab (consolidated Workbench UI)",
+          "authority": "current-documentation",
+          "text_sha256": "6d25d210744d61d4f7e8e16fca9d1511c877f06e6a9c3ec1201b01b8e8409f0c"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/wave-flow-v1.md",
+          "heading": "Wave flow Water solver (experimental) > Shallow Water on level ground",
+          "authority": "current-documentation",
+          "text_sha256": "b926ac65152bcbdac196c2a73e6dab511877816583384837beb49fbb853b49a4"
+        }
+      ]
+    },
+    {
+      "verdict": "partial",
+      "bounded_answer_from_retrieved_context_only": "The blanket prohibition is too broad. These contexts specifically establish that accepted opt-in signed Inertial Cellular Water can carry upward motion, while its original v1 nonnegative-vertical law does not. The signed law has explicit family/configuration and checkpoint bounds. However, the retrieved excerpt from the ballistic document is its signed-IN section; it does not provide the separate ballistic parcel or Wave release contract needed to explain upward ballistic Water precisely. Follow that contract before treating IN velocity and ballistic parcels as interchangeable.",
+      "missing_essential_qualifications": [
+        "Top-five text does not expose the accepted optional ballistic-parcel/Wave-release path and its own bounds, although the canonical ballistic document is ranked first."
+      ],
+      "authority_and_scope_review": "Rank1 is current signed-IN configuration; rank2 locally dates the old nonnegative/vmax64 reference model. Three later passages are not relevant to ballistic Water.",
+      "conflict_review": "The historical nonnegative model and current signed variant are compatible when their scope is retained. A reader could nevertheless conflate IN motion with ballistic parcel ownership if relying only on this hit.",
+      "source_check_paths": [
+        "native/include/cybersand/world.hpp",
+        "docs/architecture/ballistic-water-v1.md",
+        "docs/architecture/wave-flow-v1.md"
+      ],
+      "independent_source_check": "Source has distinct signed-IN and optional ballistic/Wave-release controls. The bounded answer is accurate but does not satisfy the complete expected ballistic explanation. A top-five canonical hit is therefore not full answer sufficiency.",
+      "abstention": "partial-abstention: decline to invent missing parcel/release details",
+      "id": "DR08",
+      "query": "Water must never move upward ballistically, correct?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "The blanket prohibition is stale: accepted optional Water ballistic and Wave release paths exist.",
+        "State the admitted family and bounds; this does not establish every generic solid/equipment successor as accepted."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "architecture/ballistic-water-v1.md",
+          "heading": "Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law",
+          "authority": "current-documentation",
+          "text_sha256": "75d323f3dbea44b06760e082e10fe76e6a452cba04686ecf118ec4f0eb9daffd"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/liquid-state-transition-matrix.md",
+          "heading": "Liquid material and solver state-transition matrix > 5. Velocity and momentum (IN; PF flow)",
+          "authority": "current-documentation",
+          "text_sha256": "aed295b1fc5b3b96829b8b0e17447d60db0a9e0648f59e0bf8df00ebcbf997f8"
+        },
+        {
+          "rank": 3,
+          "path": "systems/granular-interaction-policy.md",
+          "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response",
+          "authority": "current-documentation",
+          "text_sha256": "a2909281b2801d172fbaa2e29cd1e3837e5a0c975e6ca8f884b869157ea5dff2"
+        },
+        {
+          "rank": 4,
+          "path": "systems/granular-interaction-policy.md",
+          "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover?",
+          "authority": "current-documentation",
+          "text_sha256": "e32b0c9c1985871d9916b3267d6b3600b8ee61cf638281f062901ec040d19c00"
+        },
+        {
+          "rank": 5,
+          "path": "systems/player-environment-profiles-and-traversal.md",
+          "heading": "Player/environment tuning profiles and sampled traversal > Step, knee and clamber bands",
+          "authority": "current-documentation",
+          "text_sha256": "22681252f297ba32d534be17289038160f80039f442588c14035de3acee1240b"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. FreeMass Water represents fractional conserved quantity at the selected precision; its ordinary8-bit example uses a maximum of255. Other-liquid CellularYield uses whole occupied cells rather than treating that byte as the same fractional quantity. Saturation and family conversion need the selected explicit normalization and receipt contract. Material cell count and liquid quantity are different measures, and Wave/PF can add state that prevents treating255 as a universal per-cell quantity cap.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Rank1 is the current family-specific quantity section. Supporting native/material references agree; the original FreeMass ADR remains scoped to that law.",
+      "conflict_review": "Historical whole-cell and fractional descriptions are compatible after selecting the family. No silent normalization is required or authorized.",
+      "source_check_paths": [
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "docs/architecture/liquid-solver-family-policy.md"
+      ],
+      "independent_source_check": "Current family selection, quantity accounting and normalization interfaces support the answer; no new conservation equivalence is claimed.",
+      "abstention": "not-required",
+      "id": "DR09",
+      "query": "Can I treat FreeMass Water and other-liquid CellularYield amounts as identical quantity rules?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Water FreeMass and other-liquid CellularYield have different quantity semantics.",
+        "Use the selected family policy and explicit normalization/receipt contract; do not silently unify amounts or conservation claims."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > FreeMass and CellularYield quantity semantics",
+          "authority": "current-documentation",
+          "text_sha256": "2448718e5c5c649721072699e124c049adc643c43592d91f0a9d7979afc986fd"
+        },
+        {
+          "rank": 2,
+          "path": "systems/materials-and-rule-kernels.md",
+          "heading": "Materials and rule kernels > Current material families",
+          "authority": "current-documentation",
+          "text_sha256": "0f9218a3a8e81f9861d6ae3f5692a1615873bb16dfe1d7ede004fb23ae7bcfca"
+        },
+        {
+          "rank": 3,
+          "path": "decisions/ADR-005-water-model.md",
+          "heading": "ADR-005: Conserved fixed-point water semantics > Decision and implementation status",
+          "authority": "current-documentation",
+          "text_sha256": "def4bb56cb31509e39a4c7d14a7ca8f23edca7d9ec40b76253303893794a6409"
+        },
+        {
+          "rank": 4,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Owner clarifications recorded 2026-09-20 > Water and other native liquids still use distinct motion/quantity paths",
+          "authority": "current-documentation",
+          "text_sha256": "1e68072e7163c4be816e711fd94528eb9536bfd67333680ae4836f56c4c940ac"
+        },
+        {
+          "rank": 5,
+          "path": "systems/water-design.md",
+          "heading": "Water design > WEX-005 disposition and the opt-in LCB lane (2026-10-23)",
+          "authority": "current-documentation",
+          "text_sha256": "90efda59605eee3cc535c2d1ee4c8a1d1a22fa3a9f3422ed02e58df345b38111"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. Inspect the declared property, effective value, native consumer and editability for the particular material. Specialized kernels may ignore a descriptor value or refuse the candidate property; a compiled Lab candidate is not proof that every production kernel consumes it. The retrieved examples distinguish Water and specialized Lava/Acid/Oil behavior from the admitted generic-yielding/Cement/MoltenGlass candidate controls. Use the admitted backend and native comparison receipt to establish effective behavior.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Current Lab usage and native-consumer sections are primary. A retrieved broader material-authoring design passage remains Planned rather than proving production activation.",
+      "conflict_review": "The Planned design and current isolated Lab answer different scopes; neither licenses universal viscosity consumption.",
+      "source_check_paths": [
+        "tools/material_catalogue/native_capabilities.py",
+        "tools/material_catalogue/lab.py",
+        "native/include/cybersand/material_rules.hpp"
+      ],
+      "independent_source_check": "Capability consumers and Lab candidate guards confirm declared/effective separation; rule-level property existence alone is insufficient.",
+      "abstention": "not-required",
+      "id": "DR10",
+      "query": "If I edit viscosity in Materials Lab, does every specialized material kernel use the new value?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Declared and effective properties are distinct; specialized kernels can ignore or refuse candidate properties.",
+        "A compiled candidate is not proof that all production consumers use it; inspect admitted backend and native comparison result."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > Browse and inspect actual behaviour",
+          "authority": "current-documentation",
+          "text_sha256": "20ee7337ba2546fece82b0fb09673ca31a5c0493d9d500c03f9bbfe8491b0a03"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "heading": "Canonical material catalogue and interaction authoring \u2014 adopted Planned baseline > 11. Current-main review and implementation admission \u2014 2026-11-03 > Materials Lab effective inspection and editing",
+          "authority": "current-documentation",
+          "text_sha256": "5937e6f12e80d22c129a4f1496d8d086209cc31124818f54f0b3e6f51131172b"
+        },
+        {
+          "rank": 3,
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > Supported candidate edits and state transitions",
+          "authority": "current-documentation",
+          "text_sha256": "8f70e1e8572273bb3f7cb5f1c7c087e0969fbe877f53c237d7bc2dabb0b783f1"
+        },
+        {
+          "rank": 4,
+          "path": "systems/materials-and-rule-kernels.md",
+          "heading": "Materials and rule kernels > What the material catalogue and Materials Lab currently control",
+          "authority": "current-documentation",
+          "text_sha256": "bc8450b7cbe96095c3275bc172e46c3207cd4fc2a8b24177ebbb417fb1079df5"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "heading": "Canonical material catalogue and interaction authoring \u2014 adopted Planned baseline > 5. Interaction effects and effective parameters > Effective parameter contract",
+          "authority": "current-documentation",
+          "text_sha256": "c0a292487025d3032fb56ee9cd23b94200f93f92bc0ac2275f6155823d4b560f"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "Accepted Materials Lab supports inspection, bounded editing and isolated native candidate comparison. It does not already audition arbitrary edits inside the ordinary live Workbench World. Live current-scene audition is explicit owner intent with a separate unmerged successor; that intent does not make the feature accepted. Inspect current candidate status before working on that successor.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Current isolated-Lab guidance is distinct from owner-confirmed-intent chunks and the lifecycle snapshot. The owner record keeps its authority label in the actual context.",
+      "conflict_review": "Desired live audition and current isolated behavior are complementary, not conflicting implementation claims.",
+      "source_check_paths": [
+        "tools/material_catalogue/lab.py",
+        "docs/operations/materials-lab-authoring.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "independent_source_check": "Accepted Lab source supports isolated candidate work; source/status record does not establish accepted live audition.",
+      "abstention": "not-required",
+      "id": "DR11",
+      "query": "Can Materials Lab already audition an edited material in my ordinary live Workbench World?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Accepted Materials Lab supports its documented inspection and isolated candidate experiments.",
+        "The current-scene audition successor is unmerged at the recorded source; do not present candidate behavior as shipped."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > First inspection and safe experiment",
+          "authority": "current-documentation",
+          "text_sha256": "4f28aca8ba7fa6f8163b89272f69595394ada693cd29a03c247bbf85d44afd16"
+        },
+        {
+          "rank": 2,
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Live materials and layered presentation",
+          "authority": "owner-confirmed-intent",
+          "text_sha256": "527fcbb5c12bd5a50f68bfc2351a87b56ec560b80efd8abaf50b57d388f7c254"
+        },
+        {
+          "rank": 3,
+          "path": "MATERIAL_LAB.md",
+          "heading": "1024\u00b2 material lab",
+          "authority": "current-documentation",
+          "text_sha256": "38196a4a9efacee84a55f5d4feac7a7f242bb317bfe0c8fd3766efe15f361a89"
+        },
+        {
+          "rank": 4,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Live materials and layered presentation",
+          "authority": "owner-confirmed-intent",
+          "text_sha256": "8fefa4786c0361110a852368edc196dfa4378133f815f1b6967e37f0741f0fb1"
+        },
+        {
+          "rank": 5,
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Current implementation map",
+          "authority": "current-documentation",
+          "text_sha256": "e6adb917935d4775d15dfee1f85402dfb6944069f99e8bdaf862d882782379b2"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "Open Development workbench, pause, and choose the Paint controls. Use Brush or Eraser for direct marks; the editor also supports filled rectangle, line and outline shapes and a bounded selection Fill. In the documented editor context B/E choose Brush/Eraser, G fills the selection, and Ctrl+Z/Ctrl+Y or Ctrl+Shift+Z traverse supported history. Read the operation status: queued, refused, cancelled and partial completion are different outcomes. Shapes, selection, Fill and Undo require paused editing; simulation ticks can invalidate unsafe construction history. A reopened authored start does not restore the old in-memory Undo stack.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "The first-session and editor contexts provide actual controls and scope; application focus and pause state matter.",
+      "conflict_review": "The Main application's unrelated G/other shortcuts are not present as competing Workbench instructions. Retrieved limits are qualitative here; answer does not invent an unlimited fill or a missing numeric cap.",
+      "source_check_paths": [
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/workbench_paint_editor_controller.gd",
+        "docs/systems/paint-editor-bounded-shapes.md"
+      ],
+      "independent_source_check": "Toolbar/input handling, pause checks and native edit history support these steps. Numerical262144/32-part limits are source-known but deliberately not added to a context-only answer that did not retrieve them.",
+      "abstention": "not-required",
+      "id": "DR12",
+      "query": "How do I paint, erase, fill and undo in a first Workbench session?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Use the actual toolbar/tool controls and their bounded operation outcomes.",
+        "Explain history boundaries, partial completion and refusal; never invent shortcuts or unlimited fills."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Make room to work",
+          "authority": "current-documentation",
+          "text_sha256": "8a64e2abd1b1e765b428c6d57b4598c30fc293c927321d98f238a9a7d2e8ff26"
+        },
+        {
+          "rank": 2,
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "heading": "PAINT-001 \u2014 bounded painting editor > Using the editor",
+          "authority": "current-documentation",
+          "text_sha256": "93fd0cb53106ab186734eb3410e9c634252a346fafa702f4b3cddb4bc70094c2"
+        },
+        {
+          "rank": 3,
+          "path": "operations/workbench-painting-and-history.md",
+          "heading": "Painting and history > A reusable multi-material stamp",
+          "authority": "current-documentation",
+          "text_sha256": "88a9cf40d4ffcbd64217e289fd5c95f93b8dea1431e77ade86b556e5e3211d85"
+        },
+        {
+          "rank": 4,
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Set the materials in motion",
+          "authority": "current-documentation",
+          "text_sha256": "4cd5a1b0ec3a665d1a151db72566a7405824e419ab56110fa25c50accf39615c"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Close and reopen",
+          "authority": "current-documentation",
+          "text_sha256": "1363fc0c5c9683d38ff0c70e2a6df9d92488273cf9e30321f7fc5b49934a452e"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. queued=true acknowledges admission only. Wait for the terminal native result and inspect actual changed, excluded, refused and partial counts under the applicable session/generation/sequence identity. Provider/network success and history recording are additional stages; neither proves native mutation or visible publication. Claim display only from the applicable publication/observation evidence, not from a queued response. Source replacement can invalidate an otherwise completed provider reply.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "The direct-Art, provider and reporting contexts explicitly separate provider, queue, native, history and display stages.",
+      "conflict_review": "No conflicting success definition observed. A queued request must not be promoted to an applied or displayed claim.",
+      "source_check_paths": [
+        "godot/scripts/simulation_worker.gd",
+        "godot/scripts/art_batch_executor.gd",
+        "docs/systems/workbench-direct-art-batches.md"
+      ],
+      "independent_source_check": "Worker receipt ownership and executor fencing support the stage distinction; no new framebuffer observation is inferred.",
+      "abstention": "not-required",
+      "id": "DR13",
+      "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Queue acceptance is not native application or visible publication.",
+        "Follow native acknowledgements and applicable session/generation/sequence identity before claiming applied state."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "systems/workbench-direct-art-batches.md",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Ownership, capacities and completion",
+          "authority": "current-documentation",
+          "text_sha256": "45a637211b2c9ab6493081962b87b2e46ffed527eca30ff59b19b02a144fe3c4"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Provider/native boundary and Stop",
+          "authority": "current-documentation",
+          "text_sha256": "6ba0852c9aaf22f437b029e8e6191a4a1dbaf000631ad2f81c166ab3ca2d8a4a"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "authority": "current-documentation",
+          "text_sha256": "d17a78947f48f194bce961b54b0401cda8ab5baee2367b48f7063ec817fee0bf"
+        },
+        {
+          "rank": 4,
+          "path": "systems/workbench-direct-art-batches.md",
+          "heading": "Direct art batches \u2014 WB-ART-002 Stage 1 > Shared Undo and Redo",
+          "authority": "current-documentation",
+          "text_sha256": "5f8815c32f8c811ec56e1863bcbcf9b8f17a550f045661d4ab1da9c2afa36aeb"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Collaboration, scanline and pacing preview",
+          "authority": "current-documentation",
+          "text_sha256": "63ceebca3388a90a0ebdc2e5856435f88a09b18cf4d91039eaaf13985e1b4abf"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. Stop cancels future work under the operation's contract, but an executing slice may finish and leave an acknowledged partial prefix. Hiding the Art window is not Stop. Wait for native execution, deferred human edits, result recording, capture and provider activity to settle, then read the actual terminal receipt. Supported Undo can reverse the retained confirmed construction prefix when its fences still permit it; Stop is not automatic rollback and Undo is not a physical-simulation rewind.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Current Art and shared-history contexts describe admitted partial completion and bounded history. An unrelated actor-cancellation passage is not used.",
+      "conflict_review": "No contradiction between cancellation and confirmed-prefix history; they describe different portions of the same operation.",
+      "source_check_paths": [
+        "godot/scripts/art_batch_executor.gd",
+        "godot/scripts/shared_workbench.gd",
+        "docs/systems/paint-editor-bounded-shapes.md"
+      ],
+      "independent_source_check": "Executor cancellation, partial receipts and history constraints support the answer.",
+      "abstention": "not-required",
+      "id": "DR14",
+      "query": "If I press Stop during a long paint or Art operation, does that roll back everything already applied?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Stop cancels pending work according to the contract; already applied work can remain.",
+        "Report partial native receipts/history outcomes and use supported Undo where applicable; do not promise rollback."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Stop, Hide and native results",
+          "authority": "current-documentation",
+          "text_sha256": "f4901e1c35938edefd80812fff39532e9fc1c71716ce9d2f8a6a22352ebd0aa9"
+        },
+        {
+          "rank": 2,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Shared agent and manual Undo/Redo \u2014 current implementation",
+          "authority": "current-documentation",
+          "text_sha256": "0eac4b4967d285e7334012714e3269000f538107dc097020675871dfa0db5888"
+        },
+        {
+          "rank": 3,
+          "path": "systems/player-control-playground.md",
+          "heading": "Player control playground > Acrobat movement chains and cancels",
+          "authority": "current-documentation",
+          "text_sha256": "8d5ac39988f57937873595695e452bcd1e02fbda9c23d6d9711a512808b2efa5"
+        },
+        {
+          "rank": 4,
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "heading": "PAINT-001 \u2014 bounded painting editor > Ownership and native execution",
+          "authority": "current-documentation",
+          "text_sha256": "1a5b34197b9c52ddfd378b5f02c133f929d72de1b3a83e48217fde451239ebaf"
+        },
+        {
+          "rank": 5,
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "heading": "PAINT-001 \u2014 bounded painting editor > Using the editor",
+          "authority": "current-documentation",
+          "text_sha256": "93fd0cb53106ab186734eb3410e9c634252a346fafa702f4b3cddb4bc70094c2"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. Ordinary Save start preserves an authored recipe or material baseline, acknowledged edits and supported actor configuration. It does not promise the exact next tick, moving-body poses/momentum, solver queues, pending input, prior Undo or private Art conversation. Flatten is a separate live-preserving material-only operation, and native physical checkpoints have separate host/Rapier exclusions; Wave physical continuation is refused. Save must wait for unresolved mutation/receipt work. The contexts also distinguish pre-write admission refusal from format-specific disk replacement: native material-baseline replacement has a stronger guarantee than ordinary/generated Godot rename.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "The new current save-contract passage is primary; the retired conversation-restore section is explicitly historical. Final rank4 now qualifies the discovered overbroad failed-save guarantee.",
+      "conflict_review": "Earlier final-input rank4 claimed all failed saves preserve prior files; closure corrected that P1. Qualified rank4 is consistent with current format-specific source.",
+      "source_check_paths": [
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/workbench_setup.gd",
+        "godot/scripts/workbench_generated_map.gd",
+        "godot/scripts/workbench_material_baseline.gd",
+        "native/src/world_pressure.inc"
+      ],
+      "independent_source_check": "Authoring writers and native physical-save selection confirm exclusions and failure boundary. This review is source qualification, not a new I/O fault campaign.",
+      "abstention": "not-required",
+      "id": "DR15",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Authored setup/layout persistence differs from exact evolved physical continuation.",
+        "Do not promise all live actors, queues or provider/conversation state; consult explicit format and separate checkpoint contracts."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "reference/level-saves-and-replay.md",
+          "heading": "Level saves and exact replay > Authored Save and physical continuation",
+          "authority": "current-documentation",
+          "text_sha256": "001087789171334759366ad3b96102f66886985573bc9a1b4a14bd7ec8453ac5"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Lazy reopening and traffic storage",
+          "authority": "current-documentation",
+          "text_sha256": "cf9995e8de0f126656e2ed99df20c359b81e0b087bec9c53af954d7ef532b0e3"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic \u2014 22 November 2026",
+          "authority": "current-documentation",
+          "text_sha256": "11d0dcefe5a2173235e264a18a1ce1e254ce3d95c0a38a9d40b4be9cfba297e1"
+        },
+        {
+          "rank": 4,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "authority": "current-documentation",
+          "text_sha256": "4f5f79cde538c260d5e752e6b0d403c5efb878dec043bfede0e18b02d722fd19"
+        },
+        {
+          "rank": 5,
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Current implementation map",
+          "authority": "current-documentation",
+          "text_sha256": "e6adb917935d4775d15dfee1f85402dfb6944069f99e8bdaf862d882782379b2"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "Flatten/Bake History captures a material baseline of uint16 stored material identities, two bytes per cell. It retires prior construction/Undo history while leaving the current live World and its ongoing simulation state in place; it does not save automatically. Plants therefore should not stop growing merely because Flatten ran. Saving and later reopening the material baseline reconstructs materials under initialization rules rather than resuming plant energy, motion or an exact physical tick. Treat the baseline, live World and disk Save as separate states.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "The source contract and qualification procedure distinguish required behavior from previously measured evidence. No fresh interactive or physical acceptance is inferred.",
+      "conflict_review": "Final rank4's corrected disk failure boundary agrees with the material-only baseline description; historical qualification remains dated.",
+      "source_check_paths": [
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/workbench_material_baseline.gd",
+        "godot/native_extension/cyber_demo_bridge.hpp",
+        "godot/native_extension/material_baseline_file.cpp"
+      ],
+      "independent_source_check": "Bulk stored-ID capture and authoring adoption do not reset the native World; writer stores material plane plus authored metadata, not all simulation state.",
+      "abstention": "not-required",
+      "id": "DR16",
+      "query": "What does Flatten Bake History store, and should plants stop growing automatically afterwards?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "The material baseline stores uint16 material identities, two bytes per cell, without preserving full live simulation metadata.",
+        "Flatten history and authored Save are distinct; do not promise plant energy reset or exact physical continuation unless source implements it."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > Windows owner acceptance",
+          "authority": "current-documentation",
+          "text_sha256": "3c4f441ebdf17048427d57cd8fe645ff5f53d1456dc4ce462d4dab4dd8af54be"
+        },
+        {
+          "rank": 2,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > What Flatten does",
+          "authority": "current-documentation",
+          "text_sha256": "bc941538d07ff9ee9741a7f1b3fb020e110a3570dd584bb614db0efa6e298de2"
+        },
+        {
+          "rank": 3,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation",
+          "authority": "current-documentation",
+          "text_sha256": "ced8e093c54ae50a1fadb1a994c87f51716fcf68f6ef6909b90a6adb92598125"
+        },
+        {
+          "rank": 4,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "authority": "current-documentation",
+          "text_sha256": "4f5f79cde538c260d5e752e6b0d403c5efb878dec043bfede0e18b02d722fd19"
+        },
+        {
+          "rank": 5,
+          "path": "operations/gen008-flatten-qualification.md",
+          "heading": "Flatten / Bake History evaluation > Reproduce focused tests",
+          "authority": "current-documentation",
+          "text_sha256": "be3d1d5abd67e26cd9598550e8b77f84b45d6c0fa9f013ea4a713bcdde30a9f4"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "Yes. The accepted architectural catalogue includes80 Genteks alongside13 earlier presets, with up to five style slots. Gentek names the generation family, Variant a variation of it, Preset a ready configuration of geometry/materials/modifiers, and Composition a combination under its documented owner. These terms do not imply accepted reciprocal SWARM negotiation or general live Workbench Gentek-rule authoring. Native preview and explicit installation are also separate steps; an evaluator or dated package does not expand current implementation.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Current catalogue/glossary/system contexts establish terms and acceptance. Original integration measurements and later evaluator status remain source-bound.",
+      "conflict_review": "The80-Gentek count and13 older presets count different catalogue groupings. No conflict observed.",
+      "source_check_paths": [
+        "godot/native_extension/cyber_world_generator.cpp",
+        "godot/scripts/architectural_generator_dialog.gd",
+        "docs/systems/architectural-generator.md",
+        "docs/reference/glossary.md"
+      ],
+      "independent_source_check": "Accepted generation catalogue and dialog terminology support the bounded definitions and80-count without importing SWARM candidates.",
+      "abstention": "not-required",
+      "id": "DR17",
+      "query": "Are eighty Genteks current, and what are Gentek, Variant, Preset and Composition?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "Accepted catalogue and controls are source-backed and separate from unmerged SWARM negotiation.",
+        "Use the owner terminology without implying live Workbench Gentek rule authoring or every future Composition capability."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Choose a Gentek and its parameters",
+          "authority": "current-documentation",
+          "text_sha256": "1ade76483de36e4f836ccab8715bdc376ec7bdca7419c5003b509ff97ecc4223"
+        },
+        {
+          "rank": 2,
+          "path": "reference/glossary.md",
+          "heading": "Glossary > Authoring and acceptance",
+          "authority": "current-documentation",
+          "text_sha256": "11d96620d13e2512d6db2f110a925188beed0c1ed3e08ab978876ca296751ee3"
+        },
+        {
+          "rank": 3,
+          "path": "systems/architectural-generator.md",
+          "heading": "Architectural Generator \u2014 Phase A and bounded Phase B",
+          "authority": "current-documentation",
+          "text_sha256": "5e9a45ff1895e91540867112b9e205e232876db0f4aa9519f337ea8e8cb7a6ce"
+        },
+        {
+          "rank": 4,
+          "path": "operations/gentek80-evaluation.md",
+          "heading": "GENTEK 80 \u2014 Windows evaluation",
+          "authority": "current-documentation",
+          "text_sha256": "4ad9b5e2fad2ce2c80ed62cce6e5fe5618cfe720f1ec2d56cbca9137607c42b3"
+        },
+        {
+          "rank": 5,
+          "path": "systems/architectural-generator.md",
+          "heading": "Architectural Generator \u2014 Phase A and bounded Phase B > 80-Gentek integration candidate \u2014 20 November 2026",
+          "authority": "current-documentation",
+          "text_sha256": "e5a7636fe34081dcabb2d938223622513a7045a03bc9b0de8207386e9a1826dd"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "No. The current-state snapshot identifies the consolidated SWARM candidate as unmerged. Passing candidate tests or producing an evaluator does not put reciprocal SWARM004/005/006 negotiation into accepted main, and it does not establish physical owner acceptance. Work from the declared accepted source and the separately gated candidate record; recheck lifecycle if that source or status changes.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "The final current-state passage is a dated GitHub lifecycle snapshot, not timeless implementation proof. Other retrieved actor/plane material is not evidence of SWARM acceptance.",
+      "conflict_review": "Candidate test success and unmerged status do not conflict; they are different authorities.",
+      "source_check_paths": [
+        "docs/reference/status-and-roadmap.md",
+        "docs/audits/2026-11-24-docs-renaissance/closure/active-candidates.json"
+      ],
+      "independent_source_check": "Lead's refreshed intake and C independent status review bind the snapshot; no merged SWARM claim found.",
+      "abstention": "not-required",
+      "id": "DR18",
+      "query": "Can I use reciprocal SWARM-004/005/006 negotiation in accepted main because a candidate has passing tests?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "The consolidated SWARM candidate remains unmerged at the recorded source.",
+        "Passing candidate tests and an evaluator do not imply accepted-main availability or physical owner acceptance."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Active candidates and integration boundaries",
+          "authority": "current-documentation",
+          "text_sha256": "0ab0eb827a71626f8860d1143abca4162bad9ce58de4476a587db7f2904e8e37"
+        },
+        {
+          "rank": 2,
+          "path": "operations/physical-actor-programme.md",
+          "heading": "Physical actors and combined feature trials > Shared free-flight training family",
+          "authority": "current-documentation",
+          "text_sha256": "e3fbbb8e2d70217f467dce50dda202170b393e4fb0656bf9fa3db2bdddecf965"
+        },
+        {
+          "rank": 3,
+          "path": "reference/invariants.md",
+          "heading": "Architectural and simulation invariants > Bridge invariants",
+          "authority": "current-documentation",
+          "text_sha256": "862bf067dab6eb12d8879c44e8532a41bf5cc18991b3a29d0391d612697c7872"
+        },
+        {
+          "rank": 4,
+          "path": "decisions/ADR-014-semantic-plane-admission.md",
+          "heading": "ADR-014 Single semantic place and atomic four-plane admission > Alternatives and consequences",
+          "authority": "current-documentation",
+          "text_sha256": "943440d6ff19bba7f13b072030ee2ed74ce005e901bbe4a3beb4c7d80554d0a7"
+        },
+        {
+          "rank": 5,
+          "path": "reference/invariants.md",
+          "heading": "Architectural and simulation invariants > Typed procedural generation invariants",
+          "authority": "current-documentation",
+          "text_sha256": "427e79b4208255b1434f1b971a310caa5cae38104b0448b6e349ad0c6c32d78e"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "Yes, accepted Workbench actor composition supports independent instances and inspected/pilot handoff within its bounded source contract. The chooser covers59 entries across46 articulated rigs, Fleet, the passive barrel and four4LY models with per-entry capabilities; composition separately checks eight actors, eight prepared parts per actor and64 body/proxy budgets. The later actor-finisher successor remains unmerged. Do not turn accepted composition into a claim that every model has every capability or that all physical feel issues are accepted.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Current accepted composition and model catalogue contexts explicitly separate the later finisher and physical acceptance.",
+      "conflict_review": "The46-rig catalogue is a subset of the59-entry chooser; no count contradiction.",
+      "source_check_paths": [
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/workbench_physics_bridge.gd",
+        "godot/scripts/physical_actor_session.gd",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "independent_source_check": "Catalogue, prepared-instance and proxy admission match the answer; later successor lifecycle is separately documented.",
+      "abstention": "not-required",
+      "id": "DR19",
+      "query": "Does Shared Workbench support independent actors now, and is the later Actor Compose finisher already accepted?",
+      "canonical_rank": 3,
+      "expected_fact_scope": [
+        "Accepted actor composition exposes the existing model catalogue and per-instance control within its bounded contract.",
+        "Separate merged #683 from unmerged final/repair successors such as #762; do not infer availability from title."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "systems/physical-actor-rigs.md",
+          "heading": "Articulated Rapier actors and shared physical control > Which actors are physical?",
+          "authority": "current-documentation",
+          "text_sha256": "1ae2ce3e2dc7de6a9c0a4424d29e78250dc6b2f31d60b3032d1d55eae4f2dfe4"
+        },
+        {
+          "rank": 2,
+          "path": "operations/physical-actor-programme.md",
+          "heading": "Physical actors and combined feature trials",
+          "authority": "current-documentation",
+          "text_sha256": "8e3d83be607482c463f21d573a131e93caa2aa70b5b7c7b406ae2dc2cdca590c"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Implementation and scope",
+          "authority": "current-documentation",
+          "text_sha256": "d57922388eb62ebcb73ea726f83dbbf504d03ff30f8405abb8a9e34b9d81cc26"
+        },
+        {
+          "rank": 4,
+          "path": "operations/workbench-actor-composition.md",
+          "heading": "Mixed Actor Workshop owner procedure",
+          "authority": "current-documentation",
+          "text_sha256": "1c8bb539c5fdfdeb7e3b22a349913fb0c971e52d521504d5d872b5368c088f1a"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Reuse and research boundaries",
+          "authority": "current-documentation",
+          "text_sha256": "5e966da8f67483c407892e1279d14c5412d68f8848e90d41f2e1e2bd441e5cb8"
+        }
+      ]
+    },
+    {
+      "verdict": "partial",
+      "bounded_answer_from_retrieved_context_only": "No. Equipment admission is model-, mount-, control- and capacity-specific. The contexts distinguish accepted Workbench actor equipment, ordinary F5 equipment and static Water Lab apparatus; they do not make every rig/tool pairing legal. Some models are move-only or have no compatible mount, and an unsupported arrangement is refused rather than silently assigned. Respect the documented actor/proxy/item bounds and use the accepted control route. The retrieved set does not identify the pending equipment-recovery programme's exact status, so it cannot justify saying that recovery work is finished.",
+      "missing_essential_qualifications": [
+        "No top-five passage directly identifies the pending equipment-recovery successor or its unresolved integration state."
+      ],
+      "authority_and_scope_review": "Accepted model/control/capacity descriptions are current. A future or pending recovery capability cannot be inferred from those paths.",
+      "conflict_review": "Separate static apparatus, actor equipment and F5 controls are not interchangeable. No direct contradiction observed.",
+      "source_check_paths": [
+        "godot/scripts/physical_actor_session.gd",
+        "godot/scripts/workbench_actor_catalog.gd",
+        "docs/systems/actor-usables.md",
+        "docs/systems/workbench-liquid-equipment.md",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "independent_source_check": "Source verifies capability/mount admission. The missing recovery status is available through the canonical status route but not in the exercised top-five context; answer correctly declines to infer completion.",
+      "abstention": "partial-abstention: recovery completion not established",
+      "id": "DR20",
+      "query": "Do all physical rigs accept every liquid or ballistic equipment tool?",
+      "canonical_rank": 2,
+      "expected_fact_scope": [
+        "Equipment has explicit actor/model/control and capacity admission; not every rig/tool combination is supported.",
+        "Distinguish accepted equipment paths from pending recovery work."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "systems/physical-actor-rigs.md",
+          "heading": "Articulated Rapier actors and shared physical control > How do I select and control them?",
+          "authority": "current-documentation",
+          "text_sha256": "f4d01642eaeb01e02b4bee3f799fa437f543d6b36366ba67887e104eadafca57"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Physical equipment and material authority",
+          "authority": "current-documentation",
+          "text_sha256": "e7038b304d3970ca9d911b05cc2f9851ed1825a50ebfec64a22473d6b3b63816"
+        },
+        {
+          "rank": 3,
+          "path": "systems/actor-rigs.md",
+          "heading": "Provisional actor rigs and shared control interface > Which actor rigs are available?",
+          "authority": "current-documentation",
+          "text_sha256": "69f3ba4ca5dee6ab5b711cd1f596c67307e1608ecb79d862bc41885375953d8f"
+        },
+        {
+          "rank": 4,
+          "path": "systems/workbench-liquid-equipment.md",
+          "heading": "Workbench liquid equipment \u2014 valves, drain, nozzle and pump > Desktop controls",
+          "authority": "current-documentation",
+          "text_sha256": "019743712c62645d041b568e5d1f9a1873a5f0938af9e0b34ba5a47b70462f66"
+        },
+        {
+          "rank": 5,
+          "path": "reference/interfaces-and-message-contracts.md",
+          "heading": "Interfaces and message contracts > Physical actor control and effects",
+          "authority": "current-documentation",
+          "text_sha256": "b39a94b81db35ed14d42083a31e9a1a4015363917dc96bd45316720b4571104c"
+        }
+      ]
+    },
+    {
+      "verdict": "sufficient",
+      "bounded_answer_from_retrieved_context_only": "Yes. The standalone World Art viewer and capture pipeline are an art workflow with its own source and output bounds. Retrieved limits distinguish source dimensions up to16384 and16777216 source cells from ordinary50-million-pixel output and explicit streamed output up to100 million pixels with its own side bound. These are presentation/transport capacities, not playable native World allocation, physics, save or GPU acceptance limits. A native-capacity or physical-GPU claim needs its separate source-qualified evidence.",
+      "missing_essential_qualifications": [],
+      "authority_and_scope_review": "Current art implementation contracts and dated gallery evidence are clearly separated; a capture or native material render is not automatically a physical acceptance result.",
+      "conflict_review": "Different source/output limits describe different stages and do not conflict or enlarge native simulation capacity.",
+      "source_check_paths": [
+        "docs/tools/art-pipeline-unification.md",
+        "docs/tools/world-art-capture.md",
+        "tools/world_art_capture_support.py"
+      ],
+      "independent_source_check": "Current art source/output gates support the separate budgets. No fresh graphical or physical test is claimed.",
+      "abstention": "not-required",
+      "id": "DR35",
+      "query": "Can I use the World Art viewer and large PNG captures without treating its dimensions as native playable World capacity?",
+      "canonical_rank": 1,
+      "expected_fact_scope": [
+        "World Art viewer/capture is a separate art workflow with its own dimensions and bounds.",
+        "Art-only output dimensions do not enlarge native simulation capacity or establish physical GPU acceptance."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "tools/world-art-capture.md",
+          "heading": "World Art unattended capture \u2014 real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels",
+          "authority": "current-documentation",
+          "text_sha256": "3b668661f6f424436b40d72eeb8fc5e18861d164ac0905f287e9e114b7701627"
+        },
+        {
+          "rank": 2,
+          "path": "tools/world-art-preview.md",
+          "heading": "World Art interactive viewer > Output and limits",
+          "authority": "current-documentation",
+          "text_sha256": "de3979ec1a8f475a3b844833a7a09ed7538f68edcf5a06720c08fccb12130d77"
+        },
+        {
+          "rank": 3,
+          "path": "tools/art-pipeline-unification.md",
+          "heading": "ART-PIPELINE-UNIFICATION-001 \u2014 integrated World Art Preview and unattended capture > Compatibility contract (independent limits)",
+          "authority": "current-documentation",
+          "text_sha256": "3479211686b2e9431b1247688f131dbce9761f48639d4fa3ae58d6c4985d70e0"
+        },
+        {
+          "rank": 4,
+          "path": "tools/world-art-evaluation.md",
+          "heading": "World Art Windows evaluation > Capacity and compatibility",
+          "authority": "current-documentation",
+          "text_sha256": "1b5ced452fbaba8d92d6339ba1192bad31cfdd5505b04ac8c8ac90e833ef1195"
+        },
+        {
+          "rank": 5,
+          "path": "tools/world-art-evaluation.md",
+          "heading": "World Art Windows evaluation > Gallery and evidence",
+          "authority": "current-documentation",
+          "text_sha256": "93d73e9a50ec442410f498bfbed43a7339187a5e25c31edb7d2ae6230bd51ad6"
+        }
+      ]
+    },
+    {
+      "verdict": "partial",
+      "bounded_answer_from_retrieved_context_only": "Current documentation alone does not select an unresolved destructible-architecture design for implementation. The retrieved coupling contract describes accepted bounded actor/body behavior and explicitly does not establish ordinary ObjectShard detachment, moving-body material chemistry or arbitrary fracture. It routes to the current roadmap and owner destructible-structure intent. Follow those records and the explicit task; the general policy-reconciliation passage permits decisions within an authorized assignment, not a new feature charter. I cannot choose a next design or invent owner authorization from these contexts.",
+      "missing_essential_qualifications": [
+        "The primary owner-intent and active-programme passages are linked but not themselves retrieved; detailed unresolved design selection cannot be reconstructed from the top-five text."
+      ],
+      "authority_and_scope_review": "Current coupling boundaries support abstention. Research/architecture excerpts are locally scoped and do not grant execution authority; a linked owner-intent record is not inspected context.",
+      "conflict_review": "The general reconciliation policy and explicit unresolved-boundary passage are compatible when assignment scope is retained. Missing canonical owner-intent hit remains a ranking failure.",
+      "source_check_paths": [
+        "docs/architecture/rigid-body-and-cellular-coupling.md",
+        "docs/reference/product-intent-and-priorities.md",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "independent_source_check": "Accepted-source boundaries support the abstention; additional canonical records are needed to assess a specific new assignment. No owner decision is invented.",
+      "abstention": "required-and-performed",
+      "id": "DR36",
+      "query": "Which unresolved future destructible-architecture design should I implement next purely from current documentation?",
+      "canonical_rank": null,
+      "expected_fact_scope": [
+        "Abstain from inventing an owner decision or implementation authorization.",
+        "Identify the current approved-intent and active programme records, report unresolved boundaries, and work only within the explicit task."
+      ],
+      "revision_sensitive": true,
+      "abstention_required": true,
+      "reviewed_contexts": [
+        {
+          "rank": 1,
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "heading": "ADR-004: Interest region and safe reconfiguration > Failed-world boundary",
+          "authority": "current-documentation",
+          "text_sha256": "980ffbd49a5fb1fa7c9adfbbc355071c6ab0deb1b33868961093901b548d336d"
+        },
+        {
+          "rank": 2,
+          "path": "systems/smoke-heat-pressure-roadmap.md",
+          "heading": "Smoke, heat, and pressure roadmap > Planned field work > WEX-003 compartment-pressure research",
+          "authority": "current-documentation",
+          "text_sha256": "8d81d66c0e4c06d4d5d160165e301540a35a5871122cd5c580ab1a5b31717a2c"
+        },
+        {
+          "rank": 3,
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Reconciliation and design choices",
+          "authority": "current-documentation",
+          "text_sha256": "1ac85e23a235b4b6aaa38f6cc9a3ec4c165cf5d891777970a928affc6e90d0bd"
+        },
+        {
+          "rank": 4,
+          "path": "architecture/pressure-flow-v1.md",
+          "heading": "pressure_flow_v1 reference \u2014 corrected Water pressure family > Storage (Gate B handoff kept)",
+          "authority": "current-documentation",
+          "text_sha256": "5cfaf5de1e47a9d40acbec7389cd5c5e41e9fc961c95e75d53e6a422b9dcd370"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "heading": "Rigid-body and cellular coupling > Current actor and destructible-structure boundary",
+          "authority": "current-documentation",
+          "text_sha256": "fc1d3d7316dbc1d319d3fbece987e0489a73c70846218afbeda96ebd612158f9"
+        }
+      ]
+    }
+  ]
+}

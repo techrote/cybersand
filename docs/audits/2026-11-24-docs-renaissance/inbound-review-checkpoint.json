@@ -1,0 +1,2520 @@
+{
+  "authority": "historical-non-authoritative",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "Every tracked Markdown file; relative links and GitHub blob/main links into edited Markdown headings. Original invalid anchors are distinguished. New audit artifacts excluded from this inbound baseline scan.",
+  "inbound_links": [
+    {
+      "from": ".github/pull_request_template.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "reconciliation-and-design-choices",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "reconciliation-and-design-choices",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "documentation-update-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "CONTRIBUTING.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "documentation-update-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "CONTRIBUTING.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "checks-and-evaluation-interpretation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "CONTRIBUTING.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "release-gates",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/MATERIAL_LAB.md",
+      "target": "docs/systems/materials-and-rule-kernels.md",
+      "anchor": "kernel-execution-and-cadence",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/MATERIAL_LAB.md",
+      "target": "docs/systems/world-storage-and-interest-region.md",
+      "anchor": "interest-filtering-and-re-entry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/ballistic-water-v1.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "water-constructor-defaults-and-player-profile",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/ballistic-water-v1.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "current-native-physical-state-versions",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/data-ownership-and-lifetimes.md",
+      "target": "docs/systems/workbench-actor-composition.md",
+      "anchor": "ownership-and-lifecycle",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/data-ownership-and-lifetimes.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/data-ownership-and-lifetimes.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "gas-compartments",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/data-ownership-and-lifetimes.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "semantic-plane-proposals-and-owner-admission",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/data-ownership-and-lifetimes.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "what-happens-when-a-tick-fails-or-overloads",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/data-ownership-and-lifetimes.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "desktop-water-exit-receipts",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/inertial-cellular-v1.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "current-native-physical-state-versions",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/inertial-cellular-v1.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "isolated-water-inertial-runtime-publication",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/inertial-cellular-v1.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "current-native-physical-state-versions",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "native-policy-object-proposed",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "native-policy-foundation-current-2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "material-hooks-versus-motion-gate-c-correction-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "physical-state-hash-v2",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "liquid-comparison-projections",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "whole-cell-water-law-current-main",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "large-workbench-starts-and-host-claim-projection",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "persistence-cyps-v2",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "water-constructor-defaults-and-player-profile",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "current-native-physical-state-versions",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "native-policy-foundation-current-2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "standalone-godot-readback-and-explicit-geometry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "declared-parameters-v1",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "kernel-update_water_pressure",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "standalone-godot-readback-and-explicit-geometry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "request-envelope-and-canonical-hash-gate-c-correction-2-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "request-envelope-and-canonical-hash-gate-c-correction-2-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "material-hooks-versus-motion-gate-c-correction-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "state-and-quantity-boundaries-gate-c-correction-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "effective-readback-proposed",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-solver-family-policy.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "storage-gate-b-handoff-kept",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-state-transition-matrix.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-state-transition-matrix.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "lifecycle-per-mutation-path",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/liquid-state-transition-matrix.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "gas-compartments",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "15-materials-lab-v1-implementation-boundary--2026-11-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "16-native-capability-consumer-candidate--2026-11-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "12-owner-adoption-and-shadow-compiler-handover--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "14-material-liveness-phase-a-and-production-admission--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "11-current-main-review-and-implementation-admission--2026-11-03",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "1-authority-and-preserved-substrate",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "2-source-findings-and-fault-hypotheses",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "3-orthogonal-material-classification",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "4-canonical-source-model-and-compiler",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "5-interaction-effects-and-effective-parameters",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "6-scheduling-and-liveness-qualification",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "7-identity-compatibility-and-resource-budgets",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "8-materials-lab-authoring-workflow",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "9-issue-dependency-and-acceptance-plan",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "10-decisions-held-for-explicit-disposition",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "11-current-main-review-and-implementation-admission--2026-11-03",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "12-owner-adoption-and-shadow-compiler-handover--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "14-material-liveness-phase-a-and-production-admission--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "15-materials-lab-v1-implementation-boundary--2026-11-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "16-native-capability-consumer-candidate--2026-11-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "12-owner-adoption-and-shadow-compiler-handover--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "regenerating-identity-after-a-material-or-rule-edit",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "12-owner-adoption-and-shadow-compiler-handover--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/material-authoring-catalogue-plan.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/overview.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "water-constructor-defaults-and-player-profile",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/overview.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "workbench-starting-constructions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/overview.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "flatten-and-storage-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/pressure-flow-v1.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "status",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/pressure-flow-v1.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "current-native-physical-state-versions",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/pressure-flow-v1.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "material-hooks-versus-motion-gate-c-correction-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/pressure-flow-v1.md",
+      "target": "docs/architecture/pressure-optimization.md",
+      "anchor": "motion-certificates-preserve-ordinary-obligations",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/shared-workbench-authoring-data.md",
+      "target": "docs/systems/workbench-actor-composition.md",
+      "anchor": "authored-data-options-and-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/simulation-tick-and-threading.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "workbench-pressure-column-scratch",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/architecture/wave-flow-v1.md",
+      "target": "docs/operations/workbench-water-lab.md",
+      "anchor": "try-full-face-release-at-fall-speed-3",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/audits/2026-09-08-foundation-diagnostics.md",
+      "target": "docs/systems/world-storage-and-interest-region.md",
+      "anchor": "interest-filtering-and-re-entry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-09-08-foundation-diagnostics.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "what-happens-when-a-tick-fails-or-overloads",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-09-10-issue-16-cell-layout.md",
+      "target": "docs/operations/cell-layout-experiment.md",
+      "anchor": "l2-implementation-registration-september11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-09-11-issue-15-coverage.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-c-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-09-11-programme-gate-reconciliation.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-l-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-09-24-cybersand-recovery-audit.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "main-branch-protection-exact-owner-action",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act001-actor-control-prototypes.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-control-prototype-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act001-actor-control-prototypes.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "actor-control-prototype-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act002-actor-rigs.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-rig-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act002-actor-rigs.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "actor-rig-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act003-thunderbowl-control-lab.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "thunderbowl-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act003-thunderbowl-control-lab.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "thunderbowl-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act003-thunderbowl-control-lab.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "thunderbowl-controls-and-native-arena",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-act004-articulated-actors.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-actor-control-and-effects",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-18-blacksite-nine.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "documentation-update-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-19-mat002-review-and-validation.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "windows-retained-runtime-execution",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-22-water-exit-acknowledgement.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "desktop-water-exit-receipts",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-4ly002-handling-candidate-admission.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-free-flight-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-4ly002-handling-candidate-admission.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-free-flight-actions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-4ly002-measured-handling-qualification.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-free-flight-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md",
+      "target": "docs/systems/water-design.md",
+      "anchor": "wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md",
+      "target": "docs/systems/water-design.md",
+      "anchor": "how-should-i-diagnose-a-shimmering-pool",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-lcb000-gates-cde-design-evidence.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "request-envelope-and-canonical-hash-gate-c-correction-2-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-23-physical-actor-timeout-handover.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-actor-timeout-investigation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-24-issue-200-policy-foundation.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "regenerating-identity-after-a-material-or-rule-edit",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-24-lcb000-landed-status-reconciliation.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-24-lcb005-native-brine-checkpoint.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "native-brine-in-checkpoint",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-25-lcb003-runtime-publication.md",
+      "target": "docs/architecture/pressure-optimization.md",
+      "anchor": "motion-certificates-preserve-ordinary-obligations",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-25-lcb003-trial-body-constructors.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-usable-validation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-25-lcb005-standalone-adapter.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "standalone-godot-readback-and-explicit-geometry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-25-water-inertial-native.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-25-water-inertial-publication.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-usable-validation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-10-27-play-auto002-worker-matrix-candidate.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "branch-scoped-runtime-publishers",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-11-03-mat-auth-000-architecture-review.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "11-current-main-review-and-implementation-admission--2026-11-03",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-11-13-gen008-flatten-qualification.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "flatten-and-storage-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-11-19-wave-oil-buoyancy.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "status",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/2026-11-20-wb-art-traffic-lifetime.md",
+      "target": "docs/systems/workbench-art-providers.md",
+      "anchor": "lazy-reopening-and-traffic-storage",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/audits/issue-12-2026-09-19/stage3-exit-review.md",
+      "target": "docs/operations/soliding-stage3-freeze.md",
+      "anchor": "stage-3-exit-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "historical"
+    },
+    {
+      "from": "docs/operations/architecture-programme-prompts/cell-layout.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-l-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme-prompts/liquid-characterization.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-c-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme-prompts/state-precision.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-p-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme-source-ledger.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-l-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme-source-ledger.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-c-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme-source-ledger.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-p-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme.md",
+      "target": "docs/operations/architecture-programme-source-ledger.md",
+      "anchor": "repository-intake-and-evidence-reuse",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/architecture-programme.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-p-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/configuration-and-capacity-budgets.md",
+      "target": "docs/systems/world-storage-and-interest-region.md",
+      "anchor": "interest-filtering-and-re-entry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/current-and-historical-validation.md",
+      "target": "docs/operations/testing-validation-and-replay.md",
+      "anchor": "ci-execution-sharding",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/cybersand-codex-development-handover.md",
+      "target": "docs/reference/product-intent-and-priorities.md",
+      "anchor": "save-flatten-and-compatibility",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/cybersand-codex-development-handover.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "active-candidates-and-integration-boundaries",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/cybersand-codex-development-handover.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "reconciliation-and-design-choices",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/cybersand-codex-development-handover.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "documentation-update-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/deepworks-exhibition.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "depth-host-and-deepworks-configuration",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/deepworks-exhibition.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "deepworks-and-depth-dimensions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/experiment-tower.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "desktop-water-exit-receipts",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/github-development-and-release.md",
+      "target": "docs/systems/architectural-generator.md",
+      "anchor": "retained-runtime-publication",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/github-development-and-release.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "which-build-inputs-are-required",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/github-development-and-release.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "documentation-update-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/github-development-and-release.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "source-matched-runtime-publication",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-scenario-catalogue.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-scenario-catalogue.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-scenario-catalogue.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "material-hooks-versus-motion-gate-c-correction-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/liquid-characterization.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-c-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/liquid-characterization.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-p-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "which-build-inputs-are-required",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "checks-and-evaluation-interpretation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "repository-native-build-and-test-commands",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "unresolved-ci-contradictions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "source-matched-runtime-publication",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/testing-validation-and-replay.md",
+      "anchor": "ci-execution-sharding",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/testing-validation-and-replay.md",
+      "anchor": "physical-regression-timeout-diagnostics",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/testing-validation-and-replay.md",
+      "anchor": "physical-regression-timeout-diagnostics",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "source-matched-runtime-publication",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/local-build-and-validation.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "branch-scoped-runtime-publishers",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/material-catalogue-shadow.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "15-materials-lab-v1-implementation-boundary--2026-11-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/material-catalogue-shadow.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "11-current-main-review-and-implementation-admission--2026-11-03",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/material-catalogue-shadow.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/materials-lab-authoring.md",
+      "target": "docs/operations/materials-lab-authoring.md",
+      "anchor": "compare-an-edited-candidate-in-a-real-native-world",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/microscenario-reference-pack.md",
+      "target": "docs/operations/materials-lab-authoring.md",
+      "anchor": "compare-an-edited-candidate-in-a-real-native-world",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/microscenarios.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "read-only-native-microscenario-inspection",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/play-desktop-manual-qualification.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "shared-play-session-and-owner-qualification",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/procedural-qualification.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "current-ci-provider-and-draft-gating",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/profiling-observability-and-performance.md",
+      "target": "docs/systems/world-storage-and-interest-region.md",
+      "anchor": "interest-filtering-and-re-entry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/semantic-depth-authoring.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "semantic-plane-generation-and-native-fixtures",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/soliding-programme.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "known-limits",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/testing-validation-and-replay.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "player-playground-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/testing-validation-and-replay.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "windows-retained-runtime-execution",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/testing-validation-and-replay.md",
+      "target": "docs/operations/documentation-maintenance.md",
+      "anchor": "documentation-update-checklist",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/wave-flow-evaluation.md",
+      "target": "docs/operations/workbench-water-lab.md",
+      "anchor": "try-full-face-release-at-fall-speed-3",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "target": "docs/systems/paint-editor-bounded-shapes.md",
+      "anchor": "undo-and-authored-start-persistence",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/web-threading.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "adapter-worker-policy",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/workbench-actor-composition.md",
+      "target": "docs/systems/workbench-actor-composition.md",
+      "anchor": "producer-and-policy-interface",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/operations/workbench-water-lab.md",
+      "target": "docs/operations/gen008-flatten-qualification.md",
+      "anchor": "recovering-after-a-native-owner-fault",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "large-workbench-starts-and-host-claim-projection",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "native-semantic-plans-and-copied-hierarchy-inspection",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "semantic-plane-proposals-and-owner-admission",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "native-policy-foundation-current-2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "declared-parameters-v1",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/systems/world-storage-and-interest-region.md",
+      "anchor": "interest-filtering-and-re-entry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "standalone-godot-readback-and-explicit-geometry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/systems/materials-and-rule-kernels.md",
+      "anchor": "kernel-execution-and-cadence",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-actor-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "player-material-field-control",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/configuration-reference.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "desktop-development-workbench-on-394",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "what-happens-when-a-tick-fails-or-overloads",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "semantic-plane-generation-limits",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-equipment-actions-and-results",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-usable-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "native-policy-foundation-current-2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "native-policy-foundation-current-2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "persistence-cyps-v2",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "standalone-godot-readback-and-explicit-geometry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "player-playground-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/systems/workbench-actor-composition.md",
+      "anchor": "producer-and-policy-interface",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-actor-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-free-flight-actions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-free-flight-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/interfaces-and-message-contracts.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "physical-actor-scheduling",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-actor-control-and-effects",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "player-material-field-control",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "gas-compartments",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "water-in-native-successor--2026-10-25",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/architecture/inertial-cellular-v1.md",
+      "anchor": "standalone-godot-readback-and-explicit-geometry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "which-acknowledgement-should-a-caller-wait-for",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "flatten-and-storage-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "choose-the-right-persistence-contract",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "water-constructor-defaults-and-player-profile",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/reference/level-saves-and-replay.md",
+      "anchor": "current-native-physical-state-versions",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/systems/materials-and-rule-kernels.md",
+      "anchor": "what-the-material-catalogue-and-materials-lab-currently-control",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/invariants.md",
+      "target": "docs/systems/workbench-actor-composition.md",
+      "anchor": "ownership-and-lifecycle",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/level-saves-and-replay.md",
+      "target": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "anchor": "what-is-stored-per-cell-and-per-chunk",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/level-saves-and-replay.md",
+      "target": "docs/architecture/pressure-flow-v1.md",
+      "anchor": "persistence-cyps-v2",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/level-saves-and-replay.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "flatten-and-storage-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/product-intent-and-priorities.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "active-candidates-and-integration-boundaries",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/product-intent-and-priorities.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "active-candidates-and-integration-boundaries",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "first-launch-from-a-source-checkout",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "which-build-inputs-are-required",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/current-and-historical-validation.md",
+      "anchor": "what-validates-current-source-and-runtime-identity",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "isolated-test-data-and-diagnostics",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/testing-validation-and-replay.md",
+      "anchor": "ci-execution-sharding",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "current-ci-provider-and-draft-gating",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "source-matched-runtime-publication",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/github-development-and-release.md",
+      "anchor": "unresolved-ci-contradictions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "flatten-and-storage-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/materials-lab-authoring.md",
+      "anchor": "supported-candidate-edits-and-state-transitions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/retrieval-index.md",
+      "target": "docs/operations/testing-validation-and-replay.md",
+      "anchor": "what-does-equality-establish",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/reference/status-and-roadmap.md",
+      "target": "docs/reference/product-intent-and-priorities.md",
+      "anchor": "save-flatten-and-compatibility",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/activity-dirty-regions-and-waking.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "native-worldconfig-defaults",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/activity-dirty-regions-and-waking.md",
+      "target": "docs/systems/world-storage-and-interest-region.md",
+      "anchor": "interest-filtering-and-re-entry",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-control-prototypes.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-control-prototype-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-control-prototypes.md",
+      "target": "docs/architecture/data-ownership-and-lifetimes.md",
+      "anchor": "desktop-gameplay-recording-ownership",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-control-prototypes.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-control-prototype-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-control-prototypes.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "actor-control-prototype-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-rigs.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-rig-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-rigs.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "actor-rig-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-rigs.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "actor-rig-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-usables.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-equipment-actions-and-results",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/actor-usables.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-usable-validation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/building-material-catalogue.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "regenerating-identity-after-a-material-or-rule-edit",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/building-material-catalogue.md",
+      "target": "docs/systems/materials-and-rule-kernels.md",
+      "anchor": "how-do-persistent-reactions-survive-sleep",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/depth-layers-and-parallax.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "depth-host-and-deepworks-configuration",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/depth-layers-and-parallax.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "deepworks-and-depth-dimensions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/generation-workbench-2.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "generation-workbench-2-limits",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/intermaterial-interactions.md",
+      "target": "docs/systems/materials-and-rule-kernels.md",
+      "anchor": "how-do-persistent-reactions-survive-sleep",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/material-visual-pattern-library.md",
+      "target": "docs/reference/product-intent-and-priorities.md",
+      "anchor": "which-material-behavior-should-changes-preserve",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/materials-and-rule-kernels.md",
+      "target": "docs/architecture/liquid-solver-family-policy.md",
+      "anchor": "regenerating-identity-after-a-material-or-rule-edit",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/materials-and-rule-kernels.md",
+      "target": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "anchor": "what-is-stored-per-cell-and-per-chunk",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/materials-and-rule-kernels.md",
+      "target": "docs/architecture/material-authoring-catalogue-plan.md",
+      "anchor": "current-implementation-and-remaining-design",
+      "old_valid": false,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/paint-editor-bounded-shapes.md",
+      "target": "docs/architecture/shared-workbench-authoring-data.md",
+      "anchor": "flatten-and-storage-compatibility",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-actor-rigs.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-actor-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-actor-rigs.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-actor-control-and-effects",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-free-flight.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-free-flight-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-free-flight.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-free-flight-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-free-flight.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-free-flight-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-free-flight.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-free-flight-actions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-free-flight.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "physical-free-flight-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/physical-free-flight.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-free-flight-actions",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/player-control-playground.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "play-native-worker-observation-and-reference-measurements",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/player-control-playground.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "player-playground-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/player-control-playground.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "player-material-field-control",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/player-control-playground.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "player-playground-values",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/player-control-playground.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "player-playground-checks",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/procedural-hierarchical-generation.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "hierarchical-generation-limits",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/procedural-hierarchical-generation.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "hierarchical-generation-example-and-acceptance",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/procedural-semantic-planes.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "semantic-plane-generation-limits",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/procedural-typed-spatial-fields.md",
+      "target": "docs/reference/configuration-reference.md",
+      "anchor": "opt-in-procedural-generation-configuration",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/thunderbowl-control-reference.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-actor-control-and-effects",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/thunderbowl-control-reference.md",
+      "target": "docs/architecture/simulation-tick-and-threading.md",
+      "anchor": "physical-actor-scheduling",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/thunderbowl-control-reference.md",
+      "target": "docs/reference/interfaces-and-message-contracts.md",
+      "anchor": "physical-equipment-actions-and-results",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/thunderbowl-control-reference.md",
+      "target": "docs/operations/local-build-and-validation.md",
+      "anchor": "physical-usable-validation",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/systems/water-design.md",
+      "anchor": "desktop-fallback-difference-and-historical-fixture",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/systems/water-design.md",
+      "anchor": "wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "liquid-comparison-build-design-checkpoint--2026-10-23",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-policy-foundation--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/reference/status-and-roadmap.md",
+      "anchor": "lcb-001-pressure-reference--2026-10-24",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-c-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/water-design.md",
+      "target": "docs/operations/architecture-programme.md",
+      "anchor": "g-p-staged-decision-2026-09-11",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/workbench-direct-art-batches.md",
+      "target": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "anchor": "final-hardening-and-evaluation--2026-11-12",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    },
+    {
+      "from": "docs/systems/world-storage-and-interest-region.md",
+      "target": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "anchor": "what-is-stored-per-cell-and-per-chunk",
+      "old_valid": true,
+      "current_valid": true,
+      "source_scope": "current-or-focused"
+    }
+  ],
+  "newly_unresolved": []
+}

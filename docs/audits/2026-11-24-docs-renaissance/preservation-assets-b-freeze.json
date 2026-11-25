@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-24T20:31:45.357687+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Full final B custody and asset identity refresh after four Art-tool reviews; direct git-show baseline bytes and current manifest hashes/sizes/PNG dimensions.",
+  "preserved_originals": 26,
+  "image_references": 12,
+  "preservation_checks": [
+    {
+      "path": "README.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "checks": {
+        "baseline_hash_and_size": true,
+        "copy_equal": true,
+        "recorded_current_hash": true,
+        "recorded_current_size": true
+      }
+    }
+  ],
+  "asset_checks": [
+    {
+      "path": "docs/images/gentek80-integration/eight-showcases.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/neon-reliquary/overview.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/materials-lab-v1/01-inspector-water.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/materials-lab-v1/02-inspector-slush.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/deepworks/deepworks-atlas.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/blacksite-nine/blacksite-nine.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/semantic-depth/refinery-guide.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/wcx-ballistic-water/drop-spray-t114.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/in-tools-361/liquid-lab-leak.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true,
+        "original_pixels_byte_equal": true
+      }
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-interlaced-viaduct-native.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true
+      }
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-cathedral-megaframe-native.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true
+      }
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-megatruss-station-native.png",
+      "checks": {
+        "hash": true,
+        "size": true,
+        "dimensions": true
+      }
+    }
+  ],
+  "result": "PASS",
+  "failures": []
+}

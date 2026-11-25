@@ -1,0 +1,13 @@
+{
+  "classification": "fresh-frozen-source-validation",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "source_tree": "216d41d5a04174a4c330c9224e7f5fa7e23c8c91",
+  "dirty_tracked_paths": [],
+  "command": [
+    "python",
+    "tools/ci/check_ci_provider_policy.py"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"active CI provider and runner routing\",\n  \"errors\": [],\n  \"policy\": {\n    \"routine_provider\": \"GitHub-hosted Actions\",\n    \"external_provider_config\": \"forbidden unless policy is explicitly changed\",\n    \"runner_indirection\": \"forbidden\"\n  }\n}\n",
+  "recorded_at": "2026-11-25T00:08:42.994666+00:00"
+}

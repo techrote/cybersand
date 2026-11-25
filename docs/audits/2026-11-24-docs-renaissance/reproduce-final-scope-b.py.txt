@@ -1,0 +1,110 @@
+from pathlib import Path
+import datetime, hashlib, json, re, struct, subprocess, sys
+
+ROOT = Path('/workspace/scratch/855d9af51e68/cybersand-docs')
+AUDIT = ROOT / 'docs/audits/2026-11-24-docs-renaissance'
+BASE = '00cdb02f103265b6dc5224c68283e9a0c8cb449f'
+
+def git(*args):
+    return subprocess.check_output(['git', *args], cwd=ROOT)
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+def lines(*args):
+    return git(*args).decode().splitlines()
+
+changed = lines('diff', '--name-only', BASE)
+untracked = lines('ls-files', '--others', '--exclude-standard')
+all_paths = sorted(set(changed + untracked))
+allowed_tools = {
+    'tools/ci/check_docs.py', 'tools/ci/test_current_retrieval_selection.py',
+    'tools/docs/retrieval_eval.py', 'tools/docs/retrieval_policy.py',
+}
+outside = [p for p in all_paths if not (p.startswith('docs/') or p in {'README.md', 'CONTRIBUTING.md'} or p in allowed_tools)]
+old_evidence = [p for p in changed if p.startswith(('docs/history/', 'docs/audits/')) and not p.startswith('docs/audits/2026-11-24-docs-renaissance/')]
+frozen_paths = [p for p in lines('ls-tree', '-r', '--name-only', BASE, '--', 'docs/reference', 'tools/ci/test_historical_retrieval.py') if ('retrieval-questions' in p or p.endswith('/test_historical_retrieval.py'))]
+frozen = [{'path':p, 'unchanged': (ROOT/p).read_bytes() == git('show', BASE+':'+p)} for p in frozen_paths]
+
+preserved = []
+for name in ['preservation-a.json', 'preservation-b.json', 'preservation-c.json', 'preservation-lead.json']:
+    record = json.loads((AUDIT/name).read_text())
+    for row in record.get('files', record.get('preserved', record.get('records', []))):
+        path = row.get('path', row.get('source'))
+        original = git('show', BASE+':'+path)
+        expected_hash = row.get('original_sha256', row.get('sha256'))
+        expected_size = row.get('original_bytes', row.get('bytes'))
+        copy = row.get('preserved_path', row.get('preserved'))
+        current = row.get('current_destination', path)
+        result = {
+            'ledger':name, 'path':path,
+            'baseline_hash_bytes_match': sha(original) == expected_hash and len(original) == expected_size,
+            'local_copy':copy,
+            'local_copy_matches': (ROOT/copy).read_bytes() == original if copy else None,
+            'immutable_git_preservation': copy is None,
+            'current_sha256':sha((ROOT/current).read_bytes()),
+            'recorded_current_hash_matches': sha((ROOT/current).read_bytes()) == row['current_sha256'] if row.get('current_sha256') else None,
+        }
+        preserved.append(result)
+preservation_failures = [r for r in preserved if not r['baseline_hash_bytes_match'] or r['local_copy_matches'] is False or r['recorded_current_hash_matches'] is False]
+
+assets = []
+for row in json.loads((AUDIT/'assets-b.json').read_text())['assets']:
+    data = (ROOT/row['path']).read_bytes()
+    dimensions = list(struct.unpack('>II', data[16:24]))
+    assets.append({'path':row['path'], 'sha256_matches':sha(data)==row['sha256'],
+                   'bytes_match':len(data)==row['bytes'], 'dimensions_match':dimensions==[row['width'],row['height']],
+                   'baseline_equal':data==git('show',BASE+':'+row['path']) if not row['new_file'] else None})
+
+pm = json.loads((AUDIT/'preview/manifest.json').read_text())
+preview = {'readme_source_hash_matches':sha((ROOT/'README.md').read_bytes())==pm['source_sha256'],
+           'scope':pm['scope'], 'independent_visual_review':pm.get('independent_visual_review'), 'artifacts':[]}
+for row in pm['previews']:
+    for key in ['pdf','top_png','gallery_png']:
+        data=(AUDIT/'preview'/row[key]).read_bytes()
+        preview['artifacts'].append({'path':'preview/'+row[key], 'sha256_matches':sha(data)==row[key+'_sha256'],
+                                     'bytes':len(data), 'bytes_match':len(data)==row['bytes'] if key=='pdf' else None})
+
+b_review = json.loads((AUDIT/'review-b-by-a.json').read_text())
+b_review_checks=[]
+for row in b_review['claims']:
+    for path, expected in row.get('reviewed_document_sha256',{}).items():
+        b_review_checks.append({'claim':row['claim_id'], 'path':path, 'current_hash_matches_review':sha((ROOT/path).read_bytes())==expected})
+
+sys.path.insert(0,str(ROOT/'tools/docs'))
+from retrieval_eval import selected_paths
+current=selected_paths(ROOT)
+history=selected_paths(ROOT,historical=True)
+containment={'method':'Actual selected_paths(root) and selected_paths(root,historical=True); authority parser reads metadata. Full final ranking/answers belong to C retrieval evidence.',
+             'default_documents':len(current), 'historical_documents':len(history),
+             'audits_or_history_in_default':[p.relative_to(ROOT).as_posix() for p in current if p.relative_to(ROOT).parts[:2] in [('docs','audits'),('docs','history')]],
+             'current_historical_overlap':sorted(p.relative_to(ROOT).as_posix() for p in set(current)&set(history))}
+
+logs=[]
+private_markers=re.compile(r'(?i)(authorization\s*:\s*bearer\s+\S+|sk-[A-Za-z0-9_-]{16,}|-----BEGIN (?:RSA |OPENSSH )?PRIVATE KEY-----|(?:api[_-]?key|access[_-]?token)\s*[=:]\s*["\']?[^\s"\']{12,})')
+for name in ['native-render.log','xvfb.log','import-headless.log','provider-keyless.log']:
+    path='docs/audits/2026-11-24-docs-renaissance/capture-b/'+name
+    data=(ROOT/path).read_bytes()
+    logs.append({'path':path,'sha256':sha(data),'bytes':len(data),
+                 'tracked':bool(lines('ls-files','--',path)),
+                 'private_marker_count':len(private_markers.findall(data.decode(errors='replace'))),
+                 'content_scope':'Retained synthetic native/import/Xvfb/keyless fixture output; no provider request; manually inspected in B capture/packaging review.'})
+
+findings=[]
+if any(not row['tracked'] for row in logs):
+    findings.append({'id':'B-FINAL-01','priority':'P1','status':'awaiting-lead-explicit-stage','finding':'Four exact referenced safe capture logs remain ignored/untracked; lead authorized explicit force-add without ignore-rule changes.','paths':[r['path'] for r in logs if not r['tracked']]})
+findings.append({'id':'B-FINAL-02','priority':'P2','status':'preserved-original-whitespace-qualified','finding':'Full baseline-relative git diff --check exits2 on five retained-copy diagnostics: two raw Xvfb log trailing spaces and three byte-exact original EOF blank lines. Authored scopes pass after excluding only preserved originals and that exact raw log; no evidence bytes trimmed.','evidence':['capture-b/diff-check-b-final-staged.json']})
+
+report={'schema':1,'authority':'historical-non-authoritative','reviewer':'Specialist B /root/product_showcase',
+        'reviewed_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'baseline':BASE,'head_at_review':git('rev-parse','HEAD').decode().strip(),
+        'method':'Complete baseline-relative tracked diff plus untracked path inventory; guards for source/CI/dependencies/history/frozen tests; all-lane preserved original verification; current B review hashes; image and preview identities; actual corpus selection. This is a working-tree snapshot, not a later commit qualification.',
+        'changed_tracked_paths':len(changed),'untracked_paths':len(untracked),'changed_paths':changed,'untracked_path_list':untracked,
+        'narrow_retrieval_tool_paths':[p for p in all_paths if p in allowed_tools],'out_of_scope_paths':outside,'prior_historical_evidence_changes':old_evidence,'frozen_fixture_checks':frozen,
+        'preservation_records':len(preserved),'unique_original_documents':len(set(r['path'] for r in preserved)),'local_byte_exact_copies':sum(r['local_copy'] is not None for r in preserved),'preservation_checks':preserved,'preservation_failures':preservation_failures,
+        'assets':assets,'preview':preview,'b_independent_review_claims':b_review['claim_count'],'b_review_hash_checks':b_review_checks,'containment':containment,'approved_capture_logs':logs,'findings':findings,
+        'review_limits':['Lead owns final publication, accepted-main refresh and exact final commit/tree.','No fresh graphical/browser/GPU acceptance; previews remain static and fresh native images remain headless material visualizations.','No full native/GDExtension matrix, paid provider dispatch or frozen package download was run in this review.','A preservation hash proves original custody, not correctness of every condensed sentence; independent lane reviews cover corrected consequential claims.']}
+out=AUDIT/'review-final-scope-by-b-freeze.json'
+out.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')
+summary={k:report[k] for k in ['reviewed_utc','changed_tracked_paths','untracked_paths','out_of_scope_paths','prior_historical_evidence_changes','preservation_records','unique_original_documents','local_byte_exact_copies','preservation_failures','b_independent_review_claims','containment']}
+summary.update(frozen_failures=[x['path'] for x in frozen if not x['unchanged']],asset_failures=[x['path'] for x in assets if any(v is False for k,v in x.items() if k!='path')],preview_failures=[x['path'] for x in preview['artifacts'] if x['sha256_matches'] is False or x['bytes_match'] is False],review_hash_failures=[x for x in b_review_checks if not x['current_hash_matches_review']],findings=findings)
+print(json.dumps(summary,indent=2))

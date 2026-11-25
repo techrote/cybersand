@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "lane": "A",
+  "recorded_at": "2026-11-24T20:43:57.103013+00:00",
+  "accepted_application_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "scope": "Current-document freeze:45Atechnical corrections with independent source review;43Bclaims and10Cclaims plus17leadclaims reviewed by A. Evidence-only closeout, no current corpus edits.",
+  "checks": [
+    {
+      "command": "python tools/ci/check_docs.py --json /workspace/scratch/855d9af51e68/mission/technical-check-docs-frozen.json",
+      "result": "PASS",
+      "exit_code": 0,
+      "evidence": "validation/a-doc-check-frozen.json",
+      "evidence_sha256": "8a9940dcdcb7e5b3435b1bfd297ec4ee52cf46a803b400714bf12e3f7f29fec5",
+      "observed": {
+        "status": "passed",
+        "documents": 151,
+        "navigation_link_documents": 8,
+        "canonical_claims": 280,
+        "local_links": 3513,
+        "heading_anchors": 489,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    {
+      "command": "git diff --check 00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "result": "FINDINGS_RAW_EVIDENCE_ONLY",
+      "exit_code": 2,
+      "findings": [
+        "capture-b/xvfb.log lines7/9 retain original trailing spaces",
+        "preserved/docs__MATERIAL_LAB.md.txt line214 retains original blank line at EOF",
+        "preserved/docs__operations__soliding-stage3b-production-plan.md.txt line393 retains original blank line at EOF",
+        "preserved/docs__operations__wave-flow-evaluation.md.txt line271 retains original blank line at EOF"
+      ],
+      "disposition": "Retained original evidence bytes intentionally; no trimming, no check disabled."
+    },
+    {
+      "command": "git diff --check 00cdb02f103265b6dc5224c68283e9a0c8cb449f -- . ':(exclude)docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log' ':(exclude)docs/audits/2026-11-24-docs-renaissance/preserved/*.txt'",
+      "result": "PASS",
+      "exit_code": 0,
+      "scope": "Candidate content outside immutable raw log and original text snapshots; full check findings separately retained above."
+    },
+    {
+      "method": "Compare all45Aoriginal/current file hashes with preservation-a and verify all original Markdown heading texts remain",
+      "result": "PASS",
+      "records": 45,
+      "issues": []
+    },
+    {
+      "method": "Compare current bytes with exact reviewed document SHA256 maps in the five A-authored cross-review reports",
+      "result": "PASS",
+      "reviewed_claim_counts": {
+        "review-b-by-a.json": 43,
+        "review-c-onboarding-by-a.json": 10,
+        "review-lead-liveness-by-a.json": 7,
+        "review-lead-flow-by-a.json": 6,
+        "review-lead-soliding-by-a.json": 4
+      },
+      "issues": []
+    },
+    {
+      "method": "Byte-compare all23Cpreserved originals against accepted-baseline Git objects, lengths and SHA256",
+      "result": "PASS",
+      "evidence": "review-preservation-c-by-a.json"
+    },
+    {
+      "method": "Read all75top-five retrieved passages; compare bounded context answers with source/owner evidence; verify151corpusfilehashes",
+      "result": "COMPLETE_WITH_PARTIAL_CONTEXTS",
+      "evidence": "retrieval/final-freeze/answer-a-review.json",
+      "main_sample": {
+        "sufficient": 6,
+        "partial": 2
+      },
+      "regression_sample": {
+        "sufficient": 3,
+        "partial": 4
+      }
+    }
+  ],
+  "limitations": [
+    "Documentation qualification is not new runtime, package, graphical or physical owner acceptance.",
+    "The checker does not verify external links or source semantics; source and cross-review records cover stated bounded claims.",
+    "Earlier validation-a.json remains a41claim checkpoint and was not overwritten or relabelled.",
+    "Retained partial retrieval applicability and primary-record ranking misses remain unresolved; no fixture tuning."
+  ]
+}

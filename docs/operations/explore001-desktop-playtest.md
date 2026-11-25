@@ -1,23 +1,27 @@
 ---
-title: EXPLORE-001 Windows desktop candidate playtest
-status: Planned
+title: Generated-map desktop playtest
+status: Current
 document-kind: guide
-scope: Owner acceptance of the source-built generated-map desktop candidate, separate from hosted automation
+scope: Accepted generated-map Workbench workflow and manual desktop validation, separate from hosted automation
 canonical-for: [explore001-desktop-playtest]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-24
 related-documents: [../systems/explore001-generated-playable-maps.md, ../audits/2026-11-08-explore001-integration-qa.md]
 ---
 
-# Windows candidate launch and acceptance
+# Generated-map desktop playtest
 
-This is an owner playtest candidate, not a production release. Extract the
-complete Actions artifact to a writable directory, then double-click
-**Open Workbench.cmd**. Keep the project, executable and addons together. The
-launcher imports the project and opens the existing Shared Workbench. No Godot,
-Git, Python or separate native installation is needed on the playtest machine.
-First import can take a while. The bundled source-built candidate manifest and
-`candidate-manifest.json` identify the source tree and SHA-256 of every delivered
-payload; the retained-runtime reference describes different historical bytes.
+Generated maps can be installed, edited and played in the ordinary accepted
+Workbench. Use [first launch](getting-started.md) to open **Development workbench**
+from a source checkout or a complete evaluator. The
+[Architectural Generator walkthrough](architectural-generator-playtest.md)
+introduces the richer 80-Gentek chooser; this page exercises the existing native
+recipe profile workflow and its save/reopen boundary.
+
+A portable evaluator may provide **Open Workbench.cmd**. Keep its project,
+executable, addons, native libraries and source manifest together. Its original
+source-built candidate manifest identifies that package; it does not attest a
+different checkout or later binary. A current source checkout is not required
+to find an old Actions artifact before using the accepted feature.
 
 Use a unique named start. Godot stores starts in its ordinary application user
 directory, outside the extracted candidate, so they survive closing the process.
@@ -45,11 +49,12 @@ actor spawns; it does not resume the evolved simulation at the exit tick.
 5. Preview another ordinary chunk profile twice, change size, and cancel a
    partial preview. Check that complete previews contain consistent terrain and
    cancellation keeps the installed map. Install a completed preview if desired.
-6. In **Details**, enter a unique name and click **Save named start**. Record
+6. In the painting row, enter a unique name and click **Save start [Ctrl+S]**. Record
    source/seed/region, spawn, selected flyer, paint marks and erased opening.
-   Close Godot completely and relaunch **Open Workbench.cmd**.
-7. Enter the same name and **Load start**. Let native regeneration finish;
-   confirm authored terrain, ordered edits, actor spawn and selection, then
+   Close Godot completely and relaunch through the same checked launcher.
+7. Enter the same name and **Load start**. Let native regeneration and source
+   verification finish, then click **Install into workbench** on the verified
+   preview. Confirm authored terrain, ordered edits, actor spawn and selection, then
    continue painting and save again. Close/reopen once more if reporting a bug.
 8. Repeat a bounded 512 test and, if resources permit, a 2048 test. Large
    preparation temporarily retains old and candidate Worlds plus copied grids;
@@ -57,4 +62,14 @@ actor spawns; it does not resume the evolved simulation at the exit tick.
 
 Report candidate source commit, Windows/GPU, size/profile/seed/origin, exact steps,
 expected/observed behavior, saved start and original screenshot/log where useful.
-The owner verdict remains pending until a person performs this procedure.
+Report whether the steps were performed by a person, automation or source
+inspection. Accepted implementation and package qualification do not assert
+that a particular owner has performed this physical playtest. Original
+[8 November candidate evidence](../audits/2026-11-08-explore001-integration-qa.md)
+retains its dated source/runtime scope.
+
+<a id="windows-candidate-launch-and-acceptance"></a>
+
+The original launch heading remains a compatibility destination. Use the current
+procedure above; [baseline candidate text](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/explore001-desktop-playtest.md)
+preserves the earlier package-specific instructions.

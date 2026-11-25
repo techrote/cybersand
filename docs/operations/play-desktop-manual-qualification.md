@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Source-pinned preparation and manual recording for the shared desktop host; preparation is not physical, graphical or human acceptance
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-24
 related-documents: [local-build-and-validation.md, github-development-and-release.md, ../systems/player-control-playground.md]
 ---
 
@@ -129,19 +129,26 @@ do not inject an unsupported request. Actual native transactional refusal is
 separately exercised by UI005/LIFE002 automation. Do not manufacture faults
 or use pose/input injection to complete this manual checklist.
 
-Keep the **30s Main acknowledgement, 180s graphical case, 240s import and
-applicable 15s operation/150s fixture limits**. Record the first late/failed
-startup as failed, including on the owner-deferred Windows shader path.
+Use the committed [execution watchdog policy](ci-execution-and-performance.md),
+which the packet generator reads directly. At this source and default scale,
+Main acknowledgement allows **600 seconds**, a graphical case and import each
+**1,200 seconds**, an operation **300 seconds**, and a complex fixture
+**3,600 seconds**. These are execution ceilings, not acceptable latency targets.
+The earlier 30/180/240/15/150-second cohort belongs to its original evidence;
+it does not override current policy or invalidate a newer run merely for
+exceeding an old ceiling. A real timeout, assertion, incomplete startup or
+missing source-bound evidence remains a failure.
+
 Record launch-to-launcher and launcher-to-Main visibility separately. Time
 **Build selected session** to visible applied actor/terrain readiness separately
 as a manual display observation. The automated construction acknowledgement
 starts at Build and ends at the first completed production Main callback with
-the selected actor/native identity, body and terrain ready; its30s bound is not
-launcher reading time or a delayed coroutine poll. Manual display timing does
-not replace that source-bound callback receipt.
-Later interaction is a separately labelled observation; it does not erase
-that failure or justify a relaxed deadline. This packet launches no import,
-warmup, shader investigation or automatic retry.
+the selected actor/native identity, body and terrain ready; launcher reading
+time and a delayed coroutine poll are not that interval. Manual display timing
+does not replace the source-bound callback receipt. Preserve original failures;
+later interaction or a retry cannot relabel them. This packet launches no
+import, warmup, shader investigation or automatic retry. Source:
+[`create_manual_packet.py::packet_text`](../../tools/play/create_manual_packet.py).
 
 ## Record and report
 

@@ -1,0 +1,72 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "method": "Compare complete JSON objects after omitting only created_utc and corpus_root; includes full corpus identities, rankings, scores and contexts.",
+  "reports": [
+    {
+      "suite": "renaissance",
+      "hosted_sha256": "bb6f58a7c16b33f2e00df9619cb557f7b76660dd764ba3982c862597b630f804",
+      "local_sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+      "full_report_equal_except_time_and_temporary_root": true,
+      "summary": {
+        "questions": 36,
+        "canonical_hit_at_1": 27,
+        "canonical_hit_at_k": 35,
+        "mrr_at_k": 0.8426,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "owner-intent",
+      "hosted_sha256": "a72224faee9f60f1e100be97ca1d8c20ca18767931b413bfcc867acfada9947d",
+      "local_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "full_report_equal_except_time_and_temporary_root": true,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.3389,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "historical",
+      "hosted_sha256": "ff217f6ffd5669a7fa7c9bcce29ea3061089e5979492530b5712e55183668ec7",
+      "local_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "full_report_equal_except_time_and_temporary_root": true,
+      "summary": {
+        "questions": 10,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.8033,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "frozen",
+      "hosted_sha256": "778c800ec725f4a8e51557e3a294d6a9f4b319d1577023806246c692d3bc09e3",
+      "local_sha256": "147d1979c8d626acde5230fd5e984425e118ae13b136aef71356169586fbd344",
+      "full_report_equal_except_time_and_temporary_root": true,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 18,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7302,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    {
+      "suite": "challenges",
+      "hosted_sha256": "8f03cf6f6b93945110d76ea071222004a58093f61d9b71502dda199c1838608f",
+      "local_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "full_report_equal_except_time_and_temporary_root": true,
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 126,
+        "canonical_hit_at_k": 161,
+        "mrr_at_k": 0.8575,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  ]
+}

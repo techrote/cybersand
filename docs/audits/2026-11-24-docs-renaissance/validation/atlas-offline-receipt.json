@@ -1,0 +1,538 @@
+{
+  "artifacts": {
+    "partial_patch": null,
+    "patch": {
+      "files": [
+        "docs/world-design/mini-vault/pack.json",
+        "docs/world-design/mini-vault/preview.svg"
+      ],
+      "path": "patch.diff",
+      "sha256": "6d8f1d65670058e76c583b5e6d5ae3b93d9e503210bb605e22ed729b7ce5a277"
+    },
+    "tool_log": {
+      "entries": 7,
+      "path": "tool-log.jsonl",
+      "sha256": "89e8c6d08001d494a58f7000e549dc7c970e30df8c4d4889217bcb04da41d6db"
+    },
+    "transcript": {
+      "entries": 4,
+      "path": "transcript.jsonl",
+      "sha256": "d326beeae40a9cae69ae7f5b74b04b45309943acd7997d67f0f287c87b07a478"
+    }
+  },
+  "calls": [
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.0018975,
+      "duration_ms": 0,
+      "images_in_request": 0,
+      "input_tokens": 1630,
+      "input_tokens_estimated_upper": 4891,
+      "kind": "simulated",
+      "model": "dry-run-scripted-planner",
+      "n": 1,
+      "output_tokens": 150,
+      "reasoning_tokens": 0,
+      "request_id": null,
+      "reserved_worst_case_usd": 0.02166825,
+      "response_id": "dryrun_1",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.002184,
+      "duration_ms": 0,
+      "images_in_request": 0,
+      "input_tokens": 2012,
+      "input_tokens_estimated_upper": 6036,
+      "kind": "simulated",
+      "model": "dry-run-scripted-planner",
+      "n": 2,
+      "output_tokens": 150,
+      "reasoning_tokens": 0,
+      "request_id": null,
+      "reserved_worst_case_usd": 0.022527,
+      "response_id": "dryrun_2",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.00225375,
+      "duration_ms": 0,
+      "images_in_request": 0,
+      "input_tokens": 2105,
+      "input_tokens_estimated_upper": 6317,
+      "kind": "simulated",
+      "model": "dry-run-scripted-planner",
+      "n": 3,
+      "output_tokens": 150,
+      "reasoning_tokens": 0,
+      "request_id": null,
+      "reserved_worst_case_usd": 0.02273775,
+      "response_id": "dryrun_3",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    },
+    {
+      "cached_input_tokens": 0,
+      "computed_from_reported_usage_usd": 0.002439,
+      "duration_ms": 0,
+      "images_in_request": 0,
+      "input_tokens": 2352,
+      "input_tokens_estimated_upper": 7056,
+      "kind": "simulated",
+      "model": "dry-run-scripted-planner",
+      "n": 4,
+      "output_tokens": 150,
+      "reasoning_tokens": 0,
+      "request_id": null,
+      "reserved_worst_case_usd": 0.023292,
+      "response_id": "dryrun_4",
+      "retries": 0,
+      "retry_events": [],
+      "status": "completed"
+    }
+  ],
+  "captures": {
+    "comparison": null,
+    "input_bundle": null,
+    "reference_bundle": null,
+    "render_attempts": [],
+    "rendered_bundle": null
+  },
+  "cost": {
+    "ambiguous_charge_assumed_usd": 0.0,
+    "authorised_ceiling_usd": 0.0,
+    "basis": "token counts x published rates; the API reports tokens, not dollars",
+    "billing_reconciliation": "not-performed",
+    "committed_usd": 0.00877425,
+    "computed_from_reported_usage_usd": 0.00877425,
+    "currency": "USD",
+    "peak_reservation_usd": 0.023292,
+    "per_call_ceiling_usd": 0.05,
+    "per_run_ceiling_usd": 0.25,
+    "rates": {
+      "cached_input_usd_per_1m": 0.075,
+      "input_usd_per_1m": 0.75,
+      "model": "gpt-5.4-mini",
+      "output_usd_per_1m": 4.5,
+      "retrieved_utc": "2026-11-07",
+      "source_url": "https://developers.openai.com/api/docs/pricing"
+    },
+    "remaining_allowance_usd": 0.24122575,
+    "reservation_overruns": 0,
+    "reserved_worst_case_total_usd": 0.090225,
+    "simulated": true
+  },
+  "credit_gate": {
+    "checks": [],
+    "facts": {},
+    "headroom_basis": null,
+    "passed": null,
+    "performed": false
+  },
+  "edits": [
+    {
+      "after_sha256": "933acbf7fa4a3d0d7b478f9af357153b7d60a67320a171e333326a80ffefdf8c",
+      "before_sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94",
+      "bytes_added": 57,
+      "bytes_removed": 19,
+      "n": 1,
+      "path": "docs/world-design/mini-vault/pack.json"
+    }
+  ],
+  "final_report": {
+    "critique": [
+      {
+        "dimension": "silhouette_scale_hierarchy",
+        "evidence": "dry-run placeholder: no model critique was produced",
+        "score_0_to_5": 0
+      }
+    ],
+    "edits_applied": [
+      "add two verdigris seam accents under the arch keystone"
+    ],
+    "outcome": "improved",
+    "revision_proposals": [],
+    "summary": "Dry-run scripted planner executed the orchestration contract; no model was consulted. A planned bounded edit was applied and re-validated.",
+    "validation_notes": "collection mini-vault: see receipt validation entries",
+    "visual_evidence_used": false
+  },
+  "images": [],
+  "limits": {
+    "limits": {
+      "backoff_base_seconds": 1.0,
+      "backoff_max_seconds": 30.0,
+      "image_resend_calls": 2,
+      "max_api_calls": 10,
+      "max_edit_bytes": 20000,
+      "max_files_edited": 3,
+      "max_image_bytes": 3000000,
+      "max_image_edge_pixels": 2048,
+      "max_images": 4,
+      "max_input_tokens_per_call": 60000,
+      "max_iterations": 8,
+      "max_malformed_tool_calls": 3,
+      "max_output_tokens_per_call": 4000,
+      "max_read_bytes": 65536,
+      "max_retries": 3,
+      "max_run_seconds": 900,
+      "max_sandbox_violations": 2,
+      "max_tool_calls": 40,
+      "max_tool_calls_per_response": 4,
+      "max_tool_output_bytes": 20000,
+      "max_tool_seconds": 120,
+      "max_total_image_bytes": 8000000,
+      "max_total_input_tokens": 200000,
+      "max_total_output_tokens": 20000,
+      "max_total_retries": 30,
+      "max_total_tool_seconds": 600,
+      "token_estimate_bytes_per_token": 2.0
+    },
+    "spend": {
+      "attestation_max_age_hours": 72,
+      "authorisation_ref": "",
+      "authorised_ceiling_usd": 0.0,
+      "costs_key_env": "OPENAI_ADMIN_KEY",
+      "credit_expiry_margin_hours": 24,
+      "expected_project": null,
+      "max_usd_per_call": 0.05,
+      "max_usd_per_run": 0.25,
+      "require_costs_crosscheck": false
+    }
+  },
+  "model": {
+    "api_endpoint": "none",
+    "image_detail": "high",
+    "max_output_tokens_per_call": 4000,
+    "observed": [
+      "dry-run-scripted-planner"
+    ],
+    "reasoning_effort": "low",
+    "requested": "gpt-5.4-mini",
+    "store": false,
+    "truncation": "disabled"
+  },
+  "policy": {
+    "generated_globs": [
+      "docs/world-design/mini-vault/preview.svg"
+    ],
+    "instructions_sha256": "828f8ac3fc21e168040eeb66262733acb1f0529f4c7a9ef11439818f4ef709e4",
+    "instructions_version": "atlas-agent-instructions/3",
+    "pricing_sha256": "811ef7eb398c806aa6de51c12b13f45bf6b4c6b195093e0ca416ba12c8c3544c",
+    "read_globs": [
+      "docs/world-design/mini-vault/**",
+      "docs/world-design/QUALITY_BAR.md",
+      "docs/world-design/README.md",
+      "native/include/cybersand/material.hpp",
+      "materials/catalogue/catalogue.json"
+    ],
+    "task_directive": null,
+    "tool_schema_sha256": "91486f2ab4076f1aebac50feb00eac565c69dd718dd28b30e1efc22852ea9eea",
+    "tools_advertised": [
+      "list_files",
+      "read_file",
+      "inspect_pack",
+      "list_rectangles",
+      "run_validator",
+      "replace_text",
+      "pack_add_rectangles",
+      "pack_remove_rectangles",
+      "submit_report"
+    ],
+    "write_globs": [
+      "docs/world-design/mini-vault/pack.json",
+      "docs/world-design/mini-vault/README.md"
+    ]
+  },
+  "publication": {
+    "mode": "none",
+    "performed": false
+  },
+  "receipt_sha256": "585611fa245fbda83ca4b4606e451cb2652d94499686f9796d8f8cb30b9c9045",
+  "run": {
+    "ci": false,
+    "duration_seconds": 0.393,
+    "finished_utc": "2026-11-24T19:10:26Z",
+    "id": "20261124T191026Z-d9ab42c3",
+    "mode": "dry-run",
+    "model_calls_simulated": true,
+    "openai_sdk": null,
+    "python": "3.12.14",
+    "runner_git_head": "a2b14595fcdde182f746e4e556decabc9e3c37c7",
+    "runner_tree_dirty": false,
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-24T19:10:26Z"
+  },
+  "schema": "cybersand.atlas-agent.receipt/1",
+  "source": {
+    "collection": "mini-vault",
+    "expected_source_sha": null,
+    "files": {
+      "docs/world-design/QUALITY_BAR.md": {
+        "bytes": 304,
+        "sha256": "47944388c52497f9e407a21d65cf2394c6d027f5c9f80eeb571000cab6a778de"
+      },
+      "docs/world-design/README.md": {
+        "bytes": 194,
+        "sha256": "e2fa86a3aaac73a567043b1c64cc3d8904150b6e7eb26c229667db66cc4c962d"
+      },
+      "docs/world-design/mini-vault/README.md": {
+        "bytes": 240,
+        "sha256": "e647d7baf4ec0aa87ea783a04ad902db0bfb808eb4dac95e7554a44d50a7b647"
+      },
+      "docs/world-design/mini-vault/pack.json": {
+        "bytes": 1611,
+        "sha256": "5c7a0ed36357d9aad2af66e75f3e47e6412506d0816963709f25cad052c77a94"
+      },
+      "docs/world-design/mini-vault/preview.svg": {
+        "bytes": 658,
+        "sha256": "744631c7d9a7f1d9eabd7bfe4b404497a667b15cbab6e527dae0c4968f9a6671"
+      },
+      "docs/world-design/mini-vault/render_pack.py": {
+        "bytes": 1359,
+        "sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6"
+      },
+      "docs/world-design/mini-vault/validate_pack.py": {
+        "bytes": 2329,
+        "sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193"
+      },
+      "materials/catalogue/catalogue.json": {
+        "bytes": 556,
+        "sha256": "58d7755a22223fba24f60db4fadc4d556d9a52853ad0f37b608f09e6a4214b6e"
+      },
+      "native/include/cybersand/material.hpp": {
+        "bytes": 276,
+        "sha256": "50abf351508dfcc8abbfb93e8be794faa75e4ee04c450ea7dbb3b1b7736c0d89"
+      }
+    },
+    "fixture": true,
+    "head_after_run": "a2b14595fcdde182f746e4e556decabc9e3c37c7",
+    "lane": "terrain-art",
+    "lane_writable": true,
+    "repository_head": "a2b14595fcdde182f746e4e556decabc9e3c37c7",
+    "source_dirty": false,
+    "source_manifest_sha256": "7db75ddc36801dd3e6efa0b3b8657055e5d2a1c7a467474ffe10b884b7f25647",
+    "source_unchanged_after_run": true
+  },
+  "status": {
+    "exit_code": 0,
+    "final": "success",
+    "phase": "done",
+    "reason": "report submitted, validations passed, limits respected",
+    "reason_code": "completed"
+  },
+  "tools": [
+    {
+      "args_sha256": "d48dded5a5b8ddf446f008c01ff89dc994bbecd8c3a0fa00214451fee2f942f4",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 1,
+      "name": "inspect_pack",
+      "ok": true,
+      "output_bytes": 1411,
+      "output_sha256": "25008de158552c5a313def13a66b227de7ca4779ae62c04a9b2aba56bed7b90c"
+    },
+    {
+      "args_sha256": "721748106cd6ece65c6c028f0a956ed992c08f8175f383ca3f99290dc8bbd27b",
+      "duration_ms": 66,
+      "error_code": null,
+      "n": 2,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 234,
+      "output_sha256": "b951f9623ea5d46199a8043722de4307368cc8f33415f9ceef6be3da65d18b9d"
+    },
+    {
+      "args_sha256": "52d42be461db5a2e521347aa658e5883d0ad03e4e0107e5df4d6e6a3441ea6e1",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 3,
+      "name": "replace_text",
+      "ok": true,
+      "output_bytes": 196,
+      "output_sha256": "05d0658400370a23c22dba5e5ecff55b366864fc9e7f2cd99a4c8d7fe9dd79d6"
+    },
+    {
+      "args_sha256": "721748106cd6ece65c6c028f0a956ed992c08f8175f383ca3f99290dc8bbd27b",
+      "duration_ms": 66,
+      "error_code": null,
+      "n": 4,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 235,
+      "output_sha256": "c551d83bba4982f9da79218499e8ca25d45833e6dc3efbf79feab8afed066ee7"
+    },
+    {
+      "args_sha256": "16ad8ddf7755beb84eef44cd52e729b56054b1af5df2428556effa5fef8b6249",
+      "duration_ms": 33,
+      "error_code": null,
+      "n": 5,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 207,
+      "output_sha256": "44b1bffa39255074b590539c0f29a3c6df17bdf1dea4ebef3099fb63915bd4bf"
+    },
+    {
+      "args_sha256": "6ac061f860389e6436509af6257e3c21b8f9e42a04db87a3b62b837d6a4043de",
+      "duration_ms": 36,
+      "error_code": null,
+      "n": 6,
+      "name": "run_validator",
+      "ok": true,
+      "output_bytes": 234,
+      "output_sha256": "a6d986497e923e7a2919a20639a1632adc16a52ee1fada9a35ad8fca2209819b"
+    },
+    {
+      "args_sha256": "967e285ca13192fa56831ebc5a3874778c831184abe39c93122f084f7c9391aa",
+      "duration_ms": 0,
+      "error_code": null,
+      "n": 7,
+      "name": "submit_report",
+      "ok": true,
+      "output_bytes": 18,
+      "output_sha256": "46248d8383d58e9e01b587db1fbff8bd2c36b9fabaa984aaea5b50d03bcc6ca7"
+    }
+  ],
+  "usage": {
+    "api_attempts": 4,
+    "api_responses": 4,
+    "cached_input_tokens": 0,
+    "image_bytes": 0,
+    "image_sends": 0,
+    "images_loaded": 0,
+    "input_tokens": 8099,
+    "iterations": 4,
+    "malformed_tool_calls": 0,
+    "output_tokens": 600,
+    "rate_limited_attempts": 0,
+    "reasoning_tokens": 0,
+    "retries": 0,
+    "sandbox_violations": 0,
+    "tool_calls": 7,
+    "tool_seconds": 0.204
+  },
+  "validation": [
+    {
+      "argv": [
+        "python3",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.064,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 1,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 8 rectangles / 2 placements\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python3",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.064,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 2,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 10 rectangles / 2 placements\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python3",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.032,
+      "exit_code": 0,
+      "kind": "render_write",
+      "n": 3,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "WROTE preview.svg\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python3",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py",
+        "--check"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.032,
+      "exit_code": 0,
+      "kind": "render_check",
+      "n": 4,
+      "passed": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: preview matches deterministic renderer\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python3",
+        "-I",
+        "docs/world-design/mini-vault/validate_pack.py"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.064,
+      "exit_code": 0,
+      "kind": "validate",
+      "n": 5,
+      "passed": true,
+      "runner_final_check": true,
+      "script": "docs/world-design/mini-vault/validate_pack.py",
+      "script_sha256": "efc065ba4b72c3842673626744cd02a2335b692891f4eeccd0d03b4c48754193",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: 2 features / 10 rectangles / 2 placements\n",
+      "timed_out": false
+    },
+    {
+      "argv": [
+        "python3",
+        "-I",
+        "docs/world-design/mini-vault/render_pack.py",
+        "--check"
+      ],
+      "collection": "mini-vault",
+      "duration_seconds": 0.064,
+      "exit_code": 0,
+      "kind": "render_check",
+      "n": 6,
+      "passed": true,
+      "runner_final_check": true,
+      "script": "docs/world-design/mini-vault/render_pack.py",
+      "script_sha256": "02a79f79f0ca5b07327ec8a432e6cdb45c11a71ab6e1e297fb6d2077ce24b5f6",
+      "stderr_tail": "",
+      "stdout_tail": "PASS: preview matches deterministic renderer\n",
+      "timed_out": false
+    }
+  ],
+  "visual_cycle": {
+    "claimed": false,
+    "reason": "dry-run: no model critiqued the images, so no improvement cycle is claimed"
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B /root/product_docs",
+  "author_reviewed": "Specialist A /root/technical_truth",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "recorded_at": "2026-11-24T23:51:34.421711+00:00",
+  "kind": "fresh independent semantic/usability cross-review of changed technical documentation",
+  "scope": "All9 changed technical docs examined as actual diff plus relevant surrounding current/historical context. Source checks are targeted to consequential changed claims, not a new complete line-by-line audit of every old paragraph.",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "documents": [
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+      "bytes": 19574
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+      "bytes": 93736
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+      "bytes": 50072
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+      "bytes": 101025
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+      "bytes": 41215
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "bytes": 70018
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a",
+      "bytes": 14053
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "bytes": 11341
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "bytes": 91797
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "godot/scripts/main.gd",
+      "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "bytes": 243726,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+      "bytes": 159560,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "bytes": 80950,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+      "bytes": 38816,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/workbench_material_baseline.gd",
+      "sha256": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+      "bytes": 12031,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "godot/scripts/art_batch_panel.gd",
+      "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "bytes": 79677,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+      "bytes": 288728,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+      "bytes": 172899,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+      "bytes": 26220,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "bytes": 3527,
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "matches_accepted_source": true
+    }
+  ],
+  "merge_ancestry": [
+    {
+      "pr": 256,
+      "merge_commit": "56422c050bd5ed2ceb5f816b1269748764e2dcb7",
+      "accepted_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "ancestor_check_exit": 0
+    },
+    {
+      "pr": 257,
+      "merge_commit": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "accepted_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "ancestor_check_exit": 0
+    }
+  ],
+  "checks": [
+    {
+      "id": "B-XA-01",
+      "documents": [
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/invariants.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/operations/local-build-and-validation.md"
+      ],
+      "question": "Do the accepted LCB constructor labels preserve source availability separately from old qualification?",
+      "method": "Read actual changed text and nearby original qualification; independently confirmed #256/#257 merge commits are ancestors of accepted main; inspected Main._apply_prepared_liquid_default and SimulationWorker._apply_prepared_default_liquid and immutable host observation slot.",
+      "finding": "Accepted availability is correct. Bounded constructors, same-graph adoption, refusal preservation, false full-host eligibility and historical runtime gaps remain explicit. This does not qualify a new runtime.",
+      "disposition": "PASS"
+    },
+    {
+      "id": "B-XA-02",
+      "documents": [
+        "docs/reference/level-saves-and-replay.md"
+      ],
+      "question": "Can a reader distinguish authored Save/Flatten from physical continuation?",
+      "method": "Read new authored continuation section against SharedWorkbench.save_setup/load_setup, material-baseline writer and native World physical serialization Wave refusal.",
+      "finding": "Clear ordinary authored-state limits, explicit Flatten then Save, pending-work boundary and native versus Rapier/host distinction. Practical generated-reopen confirmation is linked from the save guide.",
+      "disposition": "PASS"
+    },
+    {
+      "id": "B-XA-03",
+      "documents": [
+        "docs/architecture/liquid-solver-family-policy.md"
+      ],
+      "question": "Are FreeMass/CY/Wave/Pressure quantity distinctions understandable and source-backed?",
+      "method": "Read new quantity section against WaterExperimentPolicy default255, World.update_water_cellular_yield whole tuples, World.set_cell_state refusal and quantity ledger distinct visible/overfill/material-cell fields.",
+      "finding": "Fractional Water versus whole-cell motion, selected precision, normalization boundary and family-specific Wave/pressure exceptions are stated together. No blanket 255 ceiling or all-liquids unification is introduced.",
+      "disposition": "PASS"
+    },
+    {
+      "id": "B-XA-04",
+      "documents": [
+        "docs/systems/world-storage-and-interest-region.md"
+      ],
+      "question": "Does camera-relative language imply a native storage/world-size restriction?",
+      "method": "Read full opening and owner-intent section of World storage; compared finite Workbench setup controls and source sparse capacity behavior.",
+      "finding": "New heading and explanation distinguish view, interest, residency capacity and finite canvas. Approved persistent areas remain separate from current pause/wake behavior and speculative streaming.",
+      "disposition": "PASS"
+    },
+    {
+      "id": "B-XA-05",
+      "documents": [
+        "docs/systems/workbench-art-providers.md"
+      ],
+      "question": "Does Compacted accurately describe its context window?",
+      "method": "Read technical table and model_context/remember_turn/model_feedback source; compared B practical wording.",
+      "finding": "Both pages now say12 individual messages, including native feedback; summary is conditional on older messages being omitted. No complete12-cycle guarantee.",
+      "disposition": "PASS"
+    }
+  ],
+  "open_p0": 0,
+  "open_p1": 0,
+  "result": "PASS_WITH_RECORDED_RUNTIME_LIMITS",
+  "limitations": [
+    "No compilation, physical Windows/NVIDIA acceptance or full-host runtime qualification was inferred from source reading.",
+    "Historical embedded checkpoint limitations remain historical; this review does not rerun those experiments.",
+    "Hashes identify the reviewed working-tree bytes; the lead owns final delivered-head/source-write-set verification."
+  ]
+}

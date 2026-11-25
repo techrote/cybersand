@@ -1,0 +1,48 @@
+{
+	"automatic_doors": true,
+	"automatic_tunnels": false,
+	"automatic_windows": true,
+	"corridor_width": 12,
+	"extent": [
+		1024,
+		1024
+	],
+	"format": "cybersand.architectural-project",
+	"origin": [
+		0,
+		0
+	],
+	"planner": "connected-hilbert-v1",
+	"seed": 271828,
+	"styles": [
+		{
+			"enabled": true,
+			"preset": {
+				"apertures": {},
+				"deterioration": 0.0,
+				"format": "cybersand.architectural-style",
+				"geometry": {
+					"door_width": 10,
+					"floor_height": 96,
+					"room_size": 64,
+					"shaft_width": 0,
+					"wall_thickness": 3
+				},
+				"id": "megatruss-station",
+				"materials": {
+					"floor": 65,
+					"wall": 58,
+					"window": 121
+				},
+				"module": "megatruss_station",
+				"module_version": 1,
+				"name": "Megatruss Station",
+				"theme": "industrial",
+				"version": 1
+			},
+			"share": 100.0
+		}
+	],
+	"version": 1,
+	"zone_scale": 64
+}

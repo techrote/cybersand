@@ -1,0 +1,595 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "stage": "final-frozen-corpus-2026-11-24",
+  "created_utc": "2026-11-24T20:43:21.284956+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "baseline_procedure": "Original immutable git-archive baseline and original evaluator; raw source/helper/code hashes preserved in baseline-source-receipt.json. Baseline archive later removed only for disk pressure. Exact companion context pinned independently.",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit current manifest if present; otherwise focused directories and MATERIAL_LAB; explicit-only and navigation documents excluded; historical paths and tagged copies rejected"
+  },
+  "policy_before": "historical-isolation-v1",
+  "policy_after": "historical-isolation-v2",
+  "source_identity": {
+    "evaluator_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+    "authority_policy_sha256": "7a3c02b2b0ef1160696089091d0494ed1ba6c00b6c2bcefa229ef5b0a961db51",
+    "manifest_file_sha256": "d58641656500401b5815d9b64767dedd3142e67ada6dc572f1b7b226ea677c1a",
+    "corpus_identity_sha256": "c816333cfb3c892b4c492225b6aca11913062fce4f6b8ba45452fc203f4f1f95",
+    "corpus_identity_hash_method": "SHA256 of UTF-8 compact JSON corpus array with sorted object keys; array order retained"
+  },
+  "containment": {
+    "before_default_documents": 145,
+    "before_default_chunks": 1941,
+    "before_fallback_documents": 171,
+    "before_fallback_chunks": 2284,
+    "before_fallback_extra": [
+      "AGENTS.md",
+      "README.md",
+      "docs/README.md",
+      "docs/architecture/in-tools-gameplay-admission.md",
+      "docs/operations/architecture-programme-prompts/cell-layout.md",
+      "docs/operations/architecture-programme-prompts/compact-motion.md",
+      "docs/operations/architecture-programme-prompts/decision-review.md",
+      "docs/operations/architecture-programme-prompts/fractional-presentation.md",
+      "docs/operations/architecture-programme-prompts/liquid-characterization.md",
+      "docs/operations/architecture-programme-prompts/soliding-supplement.md",
+      "docs/operations/architecture-programme-prompts/sparse-motion.md",
+      "docs/operations/architecture-programme-prompts/state-precision.md",
+      "docs/operations/architecture-programme-source-ledger.md",
+      "docs/operations/gentek-interlaced-viaduct.md",
+      "docs/operations/gentek-rosework-showcase.md",
+      "docs/operations/gentek-showcase-integration-001.md",
+      "docs/operations/in-tools-fixtures-and-playtest.md",
+      "docs/operations/soliding-stage3-spark-connectivity.md",
+      "docs/operations/soliding-stage3-spark-measurement.md",
+      "docs/operations/soliding-stage3-spark-producer.md",
+      "docs/operations/soliding-stage3-spark-verification.md",
+      "docs/operations/soliding-stage3b-astra-review.md",
+      "docs/reference/retrieval-index.md",
+      "docs/research/gentek-80-integration-001.md",
+      "docs/research/gentek-classic-001.md",
+      "docs/research/gentek-interlock-001.md",
+      "docs/research/gentek-metabolist-001.md",
+      "docs/research/gentek-showcase-cathedral-001.md",
+      "docs/research/gentek-showcase-megablock-001.md",
+      "docs/research/gentek-showcase-megatruss-001.md",
+      "docs/research/gentek-suspended-001.md"
+    ],
+    "before_fallback_omitted": [
+      "docs/MATERIAL_LAB.md",
+      "docs/tools/art-pipeline-unification.md",
+      "docs/tools/world-art-capture.md",
+      "docs/tools/world-art-evaluation.md",
+      "docs/tools/world-art-preview.md"
+    ],
+    "after_default_documents": 151,
+    "after_default_chunks": 1784,
+    "after_fallback_documents": 151,
+    "after_fallback_chunks": 1784,
+    "after_manifest_fallback_corpus_equal": true,
+    "after_manifest_fallback_ranked_results_equal": true,
+    "after_no_historical_default_paths": true,
+    "historical_documents": 13,
+    "historical_chunks": 331,
+    "historical_corpus_bytes_unchanged": true,
+    "historical_top_contexts_all_labelled": true
+  },
+  "ranking": [
+    {
+      "suite": "frozen",
+      "label": "Frozen current questions",
+      "question_count": 32,
+      "fixture_sha256_before": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "fixture_sha256_after": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.7292,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 32,
+        "canonical_hit_at_1": 18,
+        "canonical_hit_at_k": 31,
+        "mrr_at_k": 0.7146,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/frozen-baseline.json",
+      "after_evidence": "retrieval/final-freeze/frozen-post.json",
+      "before_result_sha256": "1b665ce76a0c4136a41b6251a9b1e7dc2a24c3219d9356371669662c0838b1e3",
+      "after_result_sha256": "88e0cd11c6cedc76dd0b67936cef87af0008e687eea732a8ad2d61848079eedc"
+    },
+    {
+      "suite": "owner-intent",
+      "label": "Owner-intent questions",
+      "question_count": 6,
+      "fixture_sha256_before": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "fixture_sha256_after": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 6,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.6667,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 6,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.3389,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/owner-intent-baseline.json",
+      "after_evidence": "retrieval/final-freeze/owner-intent-post.json",
+      "before_result_sha256": "708cce814cba1ac1f7e823a17cdf44674136ecbef193976d968f87ccd4fb69dc",
+      "after_result_sha256": "db3b2be6b3973debc20b509baf0e6e0cef55ac45af710a6c91cd26034a947904"
+    },
+    {
+      "suite": "challenges",
+      "label": "Frozen challenge questions",
+      "question_count": 164,
+      "fixture_sha256_before": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "fixture_sha256_after": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 164,
+        "canonical_hit_at_1": 127,
+        "canonical_hit_at_k": 162,
+        "mrr_at_k": 0.8655,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 164,
+        "canonical_hit_at_1": 127,
+        "canonical_hit_at_k": 161,
+        "mrr_at_k": 0.8606,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/challenges-baseline.json",
+      "after_evidence": "retrieval/final-freeze/challenges-post.json",
+      "before_result_sha256": "2ff76443acb26c9dc1cd49dc21ae1da321c13c35ea7c9226548587afce4fd754",
+      "after_result_sha256": "3a83bfdd94dd5735f92481d4dd368c904c3301d218b30b5dd87e33865c488236"
+    },
+    {
+      "suite": "renaissance",
+      "label": "New renaissance v1 questions",
+      "question_count": 36,
+      "fixture_sha256_before": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "fixture_sha256_after": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 36,
+        "canonical_hit_at_1": 22,
+        "canonical_hit_at_k": 28,
+        "mrr_at_k": 0.6829,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 36,
+        "canonical_hit_at_1": 24,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7593,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/renaissance-baseline.json",
+      "after_evidence": "retrieval/final-freeze/renaissance-post.json",
+      "before_result_sha256": "4c0f7e6360f16f64e0a7751559c6c504085c5a29a47e447da1a96a01fffaab4e",
+      "after_result_sha256": "e7dd18c6605a80d79d2634609d2515b7642c614786c008f0edad7e4e064e1dd9"
+    },
+    {
+      "suite": "renaissance-fallback",
+      "label": "New v1, missing-manifest fallback",
+      "question_count": 36,
+      "fixture_sha256_before": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "fixture_sha256_after": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 36,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 26,
+        "mrr_at_k": 0.6111,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 36,
+        "canonical_hit_at_1": 24,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7593,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/renaissance-fallback-baseline.json",
+      "after_evidence": "retrieval/final-freeze/renaissance-fallback-post.json",
+      "before_result_sha256": "5e22fb9859fe691e9cea9fc884947aae0e3fe8558623dc9fe43b6ab23bbeb400",
+      "after_result_sha256": "ff8159417e95a19d4fa6dd96b14fc06a29f63fdab5068d4aa7628697cc723b5f"
+    },
+    {
+      "suite": "owner-intent-fallback",
+      "label": "Owner intent, missing-manifest fallback",
+      "question_count": 6,
+      "fixture_sha256_before": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "fixture_sha256_after": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 6,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.6667,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 6,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.3389,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/owner-intent-fallback-baseline.json",
+      "after_evidence": "retrieval/final-freeze/owner-intent-fallback-post.json",
+      "before_result_sha256": "e8349aecce4d5a838e1bdbe89bb754802671cf5bf9083f01841565b427f81ae7",
+      "after_result_sha256": "6897075576e3d9e48bcc4c8ffe144bd52807f3a0103615bd91a5014c57c47d9f"
+    },
+    {
+      "suite": "historical",
+      "label": "Explicit historical questions",
+      "question_count": 10,
+      "fixture_sha256_before": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "fixture_sha256_after": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "fixture_unchanged": true,
+      "before": {
+        "questions": 10,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.8033,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "after": {
+        "questions": 10,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.8033,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "before_evidence": "retrieval/historical-baseline.json",
+      "after_evidence": "retrieval/final-freeze/historical-post.json",
+      "before_result_sha256": "4e5ea7f43f6ac3937467e9c64bec87bfaa96cda0d06f21f87be77212eb242598",
+      "after_result_sha256": "34365b18dea42cc1c7429531acc59e3f9098acdf605e806d91ff3cd151769763"
+    }
+  ],
+  "independent_answer_reviews": [
+    {
+      "file": "retrieval/answer-a-review.json",
+      "sha256": "1149c20de1a0f705e6be76fbf652f237f18181bc038ab1946464ad8fc7a3dce6",
+      "counts": {
+        "sufficient": 5,
+        "partial": 2,
+        "wrong-context": 1,
+        "abstention": 0
+      },
+      "scope": "post-pass1 saved-context independent audit",
+      "rating_applies_to_saved_context_only": true
+    },
+    {
+      "file": "retrieval/answer-b-review.json",
+      "sha256": "99e44127de5baf7fe7bbe2c503347fbfe74976a75d3a7562c0dfd0be52fe22a8",
+      "counts": {
+        "partial": 2,
+        "sufficient": 9
+      },
+      "scope": "post-pass1 snapshot, before final B provider/PAINT/current-command reconciliation. Later file fixes do not retroactively change these results.",
+      "rating_applies_to_saved_context_only": true
+    },
+    {
+      "file": "retrieval/answer-a-frozen-review.json",
+      "sha256": "ce9622fe3449c9794a2a7f7113ae07a9d65baf74a16d256d1f30dd2c7f092f3d",
+      "counts": {
+        "sufficient": 6,
+        "partial": 2,
+        "wrong-context": 0,
+        "abstention": 0
+      },
+      "scope": "final frozen corpus actual-context audit",
+      "rating_applies_to_saved_context_only": true
+    },
+    {
+      "file": "retrieval/answer-b-final-review.json",
+      "sha256": "2827ec237665f1cd661b4d1cc30367828dec6d0cd7b218bf7fed9001f3f96767",
+      "counts": {
+        "sufficient": 10,
+        "partial": 1
+      },
+      "scope": "Final after-repair saved context snapshot created 2026-11-24T18:08:46.230742+00:00; all 55 chunks for 11 questions read. Two later UI-label edits do not retroactively alter this snapshot. No model/provider dispatch.",
+      "rating_applies_to_saved_context_only": true
+    },
+    {
+      "file": "retrieval/answer-a-regression-review-v1.json",
+      "sha256": "a51f432a089423f8b1fff49fe9a176ff35f2baf99aab3dc7e56750dd614a1f2e",
+      "counts": {
+        "sufficient": 2,
+        "partial": 5,
+        "wrong-context": 0,
+        "abstention": 0
+      },
+      "scope": "Read immutable saved top-five context,derive bounded answer,compare accepted source/owner record. Deterministic ranking and independent answer applicability reported separately; no external model dispatch.",
+      "rating_applies_to_saved_context_only": true
+    },
+    {
+      "file": "retrieval/final-freeze/answer-a-review.json",
+      "sha256": "6d0a4908f7aeb7ee8d6fc112ba9a96de79d2468d350af11dccc79cf6e8ba6d09",
+      "counts": {
+        "sufficient": 6,
+        "partial": 2,
+        "wrong-context": 0,
+        "abstention": 0
+      },
+      "scope": "final current-corpus freeze actual-context applicability audit",
+      "rating_applies_to_saved_context_only": true
+    },
+    {
+      "file": "retrieval/final-freeze/answer-b-review.json",
+      "sha256": "6cd6bca2cbccc2031bc55d95abee3c2c56fa2987d4a2ed0d74a2dca0775799e7",
+      "counts": {
+        "partial": 1,
+        "sufficient": 10
+      },
+      "scope": "Source-grounded agent/editor review, not an external model dispatch; B authored some retrieved guides, independently source-reviewed by A. This is distinct from the fresh blind context-only reviewer.",
+      "rating_applies_to_saved_context_only": true
+    }
+  ],
+  "final_context_answer_summary": {
+    "sufficient": 16,
+    "partial": 3,
+    "wrong-context": 0,
+    "abstention": 0
+  },
+  "final_core_reviews": [
+    {
+      "file": "retrieval/final-freeze/answer-a-review.json",
+      "sha256": "6d0a4908f7aeb7ee8d6fc112ba9a96de79d2468d350af11dccc79cf6e8ba6d09",
+      "method": "final current-corpus freeze actual-context applicability audit",
+      "counts": {
+        "sufficient": 6,
+        "partial": 2,
+        "wrong-context": 0,
+        "abstention": 0
+      },
+      "input_sha256": "750d4a83ffb51e3519ac6edcca61aa7f1c3182fd730bd2580ac80e6011b6f6c4"
+    },
+    {
+      "file": "retrieval/final-freeze/answer-b-review.json",
+      "sha256": "6cd6bca2cbccc2031bc55d95abee3c2c56fa2987d4a2ed0d74a2dca0775799e7",
+      "method": "Actual final top5 applicability review; all30 passages for6 changed questions freshly read. Five unchanged question answers transferred only after an independent exact text/path/order comparison with previously manually reviewed frozen inputs. No ideal-guide substitution or expected-fact tuning.",
+      "counts": {
+        "partial": 1,
+        "sufficient": 10
+      },
+      "input_sha256": "1e8c2a9ec7c60a919a03e2e03c20a81e8abbfc1c33b9466737911862693f0989"
+    }
+  ],
+  "final_regression_context_summary": {
+    "sufficient": 3,
+    "partial": 4,
+    "wrong-context": 0,
+    "abstention": 0
+  },
+  "separate_context_only_exercise": {
+    "input_file": "retrieval/final-freeze/blind-context-only-input-v1.json",
+    "input_sha256": "817ed848ca5fca46d04ecde90ed2d91085fa2f11001e1b704962a7ae0b0fbd14",
+    "questions": 10,
+    "contexts": 50,
+    "method": "Separate context-only exercise; no expected destinations/facts or prior reviewer answers supplied. Lead independently grades source applicability.",
+    "answer_or_review_files": []
+  },
+  "new_suite_canonical_misses": [
+    {
+      "id": "DR09",
+      "query": "Can I treat FreeMass Water and other-liquid CellularYield amounts as identical quantity rules?",
+      "expected_paths": [
+        "architecture/liquid-state-transition-matrix.md",
+        "architecture/liquid-solver-family-policy.md",
+        "systems/intermaterial-interactions.md"
+      ],
+      "top_paths": [
+        "systems/materials-and-rule-kernels.md",
+        "decisions/ADR-005-water-model.md",
+        "operations/water-hybrid-pressure-extension-programme.md",
+        "systems/water-design.md",
+        "systems/water-design.md"
+      ]
+    },
+    {
+      "id": "DR15",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "expected_paths": [
+        "reference/level-saves-and-replay.md",
+        "operations/workbench-saving.md"
+      ],
+      "top_paths": [
+        "systems/workbench-art-providers.md",
+        "systems/workbench-art-providers.md",
+        "operations/wb-art-paint-integrated-candidate.md",
+        "reference/status-and-roadmap.md",
+        "systems/workbench-art-providers.md"
+      ]
+    },
+    {
+      "id": "DR31",
+      "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+      "expected_paths": [
+        "operations/documentation-maintenance.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "top_paths": [
+        "operations/soliding-stage3b-production-plan.md",
+        "operations/troubleshooting.md",
+        "decisions/ADR-004-interest-region-and-reconfiguration.md",
+        "operations/soliding-programme.md",
+        "operations/soliding-stage3b-production-plan.md"
+      ]
+    },
+    {
+      "id": "DR36",
+      "query": "Which unresolved future destructible-architecture design should I implement next purely from current documentation?",
+      "expected_paths": [
+        "reference/status-and-roadmap.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "top_paths": [
+        "decisions/ADR-004-interest-region-and-reconfiguration.md",
+        "systems/smoke-heat-pressure-roadmap.md",
+        "operations/github-development-and-release.md",
+        "architecture/pressure-flow-v1.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "id": "DR03",
+      "query": "The native DLL is tiny text beginning version https://git-lfs.github.com/spec/v1. Is this a usable evaluator?",
+      "canonical_rank": 2,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR06",
+      "query": "The old rule says every Cell is four bytes and all richer material state must be a sidecar. Is that current doctrine?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR08",
+      "query": "Water must never move upward ballistically, correct?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR11",
+      "query": "Can Materials Lab already audition an edited material in my ordinary live Workbench World?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR13",
+      "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR14",
+      "query": "If I press Stop during a long paint or Art operation, does that roll back everything already applied?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR15",
+      "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+      "canonical_rank": null,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR18",
+      "query": "Can I use reciprocal SWARM-004/005/006 negotiation in accepted main because a candidate has passing tests?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR23",
+      "query": "After accepted ART-SESSION-LOG-001, are yesterday\u2019s Art conversation messages automatically restored on the next game launch?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR25",
+      "query": "Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR28",
+      "query": "Can I publish a rebuilt native DLL by editing its hash in the provenance JSON?",
+      "canonical_rank": 4,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR29",
+      "query": "A documentation or implementation Draft has skipped expensive jobs. Can I mark it Ready or merge it automatically?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR30",
+      "query": "May I use the native-scope advisory to skip required jobs or copy an unmerged higher-fanout CI experiment into production policy?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR31",
+      "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+      "canonical_rank": null,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR32",
+      "query": "If the retrieval manifest is missing, may fallback load old execution prompts and omit the current World Art guides?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR33",
+      "query": "Does the 14 November owner authoring-intent decision itself authorize engine implementation or historical ticket retirement?",
+      "canonical_rank": 1,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR34",
+      "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+      "canonical_rank": 4,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    },
+    {
+      "id": "DR36",
+      "query": "Which unresolved future destructible-architecture design should I implement next purely from current documentation?",
+      "canonical_rank": null,
+      "context_file": "retrieval/final-freeze/renaissance-post.json",
+      "answer_judgment": "Consult separately scoped independent saved-context audit; rank is not correctness"
+    }
+  ],
+  "limits": [
+    "No embedding/reranker/production answer-model evaluation or external paid dispatch. This repository apparatus is deterministic lexical retrieval.",
+    "Ranking success is document destination selection, not answer truth, runtime correctness or physical acceptance.",
+    "Old answer audits qualify only their hashed saved inputs. Any changed final text/order requires explicit delta or fresh review.",
+    "Frozen historical and older-source question facts are retained; they can be source-bounded expectations instead of current implementation assertions.",
+    "External caches/importers are not controlled here. Rebuild and preserve per-chunk authority and selection boundaries."
+  ],
+  "recommendation": "Keep Draft/HOLD; documentation and retrieval qualification do not grant owner merge, runtime publication, CI-policy change or physical acceptance."
+}

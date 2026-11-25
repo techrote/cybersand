@@ -1,0 +1,296 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh independent editorial/scope and source-custody review",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "reviewer": "Specialist B /root/product_docs",
+  "author_reviewed": "/root closure lead",
+  "recorded_at": "2026-11-25T00:10:02.980255+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "frozen_source": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "reviewed_lead_report": {
+    "path": "docs/audits/2026-11-24-docs-renaissance/closure/lead/review-remaining-default-pages.json",
+    "sha256": "e0b81bf55725c281a3df1187b2a8cb0cf2b105341070280dbbbe1f388cda6840",
+    "bytes": 4945
+  },
+  "actual_document_reads": [
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "scope": "Complete operator inventory; exact name coverage and derivative logical work spot-check."
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "scope": "Frontmatter/status/source, Arm B and payload-preserving amendments, required scenario/horizon and success/no-go sections; selected diagnostic constants."
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "scope": "Frontmatter/disposition/source, proposed accounting, unresolved/refusal and Water boundary, production-proof and limitations sections."
+    }
+  ],
+  "documents": [
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    }
+  ],
+  "source_spot_checks": [
+    {
+      "path": "native/src/generation_typed_fields.cpp",
+      "sha256": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+      "bytes": 72601
+    },
+    {
+      "path": "godot/scripts/decompression_diagnostic.gd",
+      "sha256": "fda5d64f917ddb4b65fd811784ce693177f1f1c76830ea55efe7c0a710c77ee9",
+      "bytes": 23562
+    }
+  ],
+  "operator_name_check": {
+    "native_count": 53,
+    "covered": 53,
+    "missing": []
+  },
+  "scope_findings": [
+    "The lead report explicitly says narrow source/scope inspection; it does not convert three metadata-only dispositions into a complete scientific/runtime claim audit.",
+    "The procedural inventory distinguishes logical admission units and conservative memory from processor instructions, timings and measured heap residency. Checked derivative costs match 4/5/9 input multipliers.",
+    "WEX-004 remains a frozen non-production proof; Arm B supersession and relocation correction are visible before retained older ownership language. Checked event/move/lifetime/horizon/threshold constants match 4/32/12/10/250.",
+    "Gas-region bookkeeping explicitly retains no executable topology/timing proof, unselected capacities and no production adoption. Historical #94 admission does not itself authorize a present implementation."
+  ],
+  "recommended_coverage_wording": "151 current corpus documents have structural/selection coverage and explicit dispositions. Consequential semantic/source reviews are separately enumerated; three formerly metadata-only pages received bounded scope/source inspection, not full numeric or scientific requalification.",
+  "write_set": {
+    "compared": [
+      "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37"
+    ],
+    "changed_paths_at_frozen_commit": 559,
+    "non_document_paths": [
+      ".github/workflows/documentation.yml",
+      "tools/ci/check_docs.py",
+      "tools/ci/test_current_retrieval_selection.py",
+      "tools/docs/retrieval_eval.py",
+      "tools/docs/retrieval_policy.py"
+    ],
+    "protected_paths": [
+      "native",
+      "godot",
+      "third_party",
+      "Makefile",
+      "tools/launch_desktop.ps1",
+      ".gitattributes"
+    ],
+    "protected_deltas": [],
+    "result": "PASS; no native/runtime/dependency or unrelated product-source changes"
+  },
+  "intermediate_validation_review": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation/documentation.json",
+      "sha256": "3c3b45af05da5c53cd9db0d204a23871a9b84e1e2d69929cbb23d47d3cd1794d",
+      "bytes": 1895,
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "declared_source": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+      "declared_dirty_paths": [
+        ".github/workflows/documentation.yml",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/documentation-maintenance.md",
+        "docs/operations/getting-started.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/operations/workbench-art.md",
+        "docs/operations/workbench-saving.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/systems/workbench-art-providers.md",
+        "docs/systems/world-storage-and-interest-region.md",
+        "tools/ci/check_docs.py",
+        "tools/ci/test_current_retrieval_selection.py",
+        "tools/docs/retrieval_eval.py",
+        "tools/docs/retrieval_policy.py"
+      ],
+      "interpretation": "Intermediate closure checkpoint. This is not automatically an exact-head 36653e85 execution receipt."
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation/repository.json",
+      "sha256": "0c7e4e25fcaea50167e8fc5ace36334df3594dcb8cc6a6a95096d84b0984ac8f",
+      "bytes": 4066,
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit_code": 0,
+      "declared_source": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+      "declared_dirty_paths": [
+        ".github/workflows/documentation.yml",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/documentation-maintenance.md",
+        "docs/operations/getting-started.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/operations/workbench-art.md",
+        "docs/operations/workbench-saving.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/systems/workbench-art-providers.md",
+        "docs/systems/world-storage-and-interest-region.md",
+        "tools/ci/check_docs.py",
+        "tools/ci/test_current_retrieval_selection.py",
+        "tools/docs/retrieval_eval.py",
+        "tools/docs/retrieval_policy.py"
+      ],
+      "materialized_runtime_count": 0,
+      "unmaterialized_runtime_count": 18,
+      "interpretation": "PASS for pointer/source/dependency identity scope only; no materialized runtime or launch qualification."
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation/m11.json",
+      "sha256": "7b4d7b9ac6115263a11a9e86e149cb530827fdfc7c11e7aeb1a05489348ba271",
+      "bytes": 1729,
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit_code": 0,
+      "declared_source": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+      "declared_dirty_paths": [
+        ".github/workflows/documentation.yml",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/documentation-maintenance.md",
+        "docs/operations/getting-started.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/operations/workbench-art.md",
+        "docs/operations/workbench-saving.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/systems/workbench-art-providers.md",
+        "docs/systems/world-storage-and-interest-region.md",
+        "tools/ci/check_docs.py",
+        "tools/ci/test_current_retrieval_selection.py",
+        "tools/docs/retrieval_eval.py",
+        "tools/docs/retrieval_policy.py"
+      ],
+      "interpretation": "Retained historical M11 integrity only, not current runtime acceptance."
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation/diff.json",
+      "sha256": "2e8edf2044f5534f6a26c8e4e31147a197ae7c2225a64ccca49003f50d3ad899",
+      "bytes": 1372,
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "declared_source": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+      "declared_dirty_paths": [
+        ".github/workflows/documentation.yml",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/documentation-maintenance.md",
+        "docs/operations/getting-started.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/operations/workbench-art.md",
+        "docs/operations/workbench-saving.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/systems/workbench-art-providers.md",
+        "docs/systems/world-storage-and-interest-region.md",
+        "tools/ci/check_docs.py",
+        "tools/ci/test_current_retrieval_selection.py",
+        "tools/docs/retrieval_eval.py",
+        "tools/docs/retrieval_policy.py"
+      ],
+      "interpretation": "Intermediate closure checkpoint. This is not automatically an exact-head 36653e85 execution receipt."
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation/engineering-history.json",
+      "sha256": "aea1e4e3ec80127ed08aede87e3fb548624fb8bb9c998e3e6226ed3e19520494",
+      "bytes": 1781,
+      "command": [
+        "python",
+        "tools/docs/engineering_history.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "declared_source": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+      "declared_dirty_paths": [
+        ".github/workflows/documentation.yml",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/documentation-maintenance.md",
+        "docs/operations/getting-started.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/operations/workbench-art.md",
+        "docs/operations/workbench-saving.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/status-and-roadmap.md",
+        "docs/systems/workbench-art-providers.md",
+        "docs/systems/world-storage-and-interest-region.md",
+        "tools/ci/check_docs.py",
+        "tools/ci/test_current_retrieval_selection.py",
+        "tools/docs/retrieval_eval.py",
+        "tools/docs/retrieval_policy.py"
+      ],
+      "interpretation": "Intermediate closure checkpoint. This is not automatically an exact-head 36653e85 execution receipt."
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation/inherited-source-admission.json",
+      "sha256": "85ea9ac75da9b86ab140c4be76eac0628c387ed33fe212c1e1998cb07876bd2b",
+      "bytes": 1374,
+      "command": [
+        "python",
+        "tools/lcb/in_tools_current_main_admission.py"
+      ],
+      "exit_code": 1,
+      "declared_source": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+      "declared_dirty_paths": [],
+      "interpretation": "Expected inherited authority refusal before causal execution; source bytes equal accepted main. Not a Windows execution rerun or pass."
+    }
+  ],
+  "overall_result": "PASS_WITH_EXACT_HEAD_MATRIX_PENDING",
+  "open_scope_defects": [],
+  "limitations": [
+    "This receipt independently checks the stated scope and targeted source examples; it does not duplicate the lead full-page read or every numeric/scientific claim.",
+    "The existing local validation receipts are accurately intermediate and must not be relabelled as final-head runs. The lead is preparing a final exact-source matrix.",
+    "No external scientific-reference refresh, native rebuild, graphical execution or physical owner test was performed here."
+  ]
+}

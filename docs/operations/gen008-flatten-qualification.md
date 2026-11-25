@@ -4,18 +4,24 @@ status: Current
 document-kind: runbook
 scope: GEN-008-FLAT-001 native material-baseline qualification, source-bound Windows evaluation and separate owner graphical acceptance
 canonical-for: [flatten-baseline-qualification]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-24
 related-documents: [../architecture/shared-workbench-authoring-data.md, wb-art-paint-integrated-candidate.md, ../audits/2026-11-13-gen008-flatten-qualification.md]
 ---
 
 # Flatten / Bake History evaluation
 
-This candidate implements issue [#548](https://github.com/techrote/cybersand/issues/548)'s
-11 November 2026 contract. **Keep the PR Draft / HOLD.** Automated qualification,
-owner graphical acceptance and permission to merge are separate decisions. The
-[dated evidence](../audits/2026-11-13-gen008-flatten-qualification.md) records actual
-source identities, successful and failed runs, performance and remaining gates.
-Do not treat this runbook's commands or coverage as evidence they already passed.
+Flatten is accepted implementation from [PR #572](https://github.com/techrote/cybersand/pull/572),
+implementing issue [#548](https://github.com/techrote/cybersand/issues/548)'s
+11 November contract. Start with the practical [saving guide](workbench-saving.md)
+for ordinary use. This page retains qualification/recovery procedures and links
+to the original source-bound evidence; it does not place accepted implementation
+under the original candidate merge hold.
+
+The [dated evidence](../audits/2026-11-13-gen008-flatten-qualification.md) records
+actual source identities, successful and failed runs, performance and remaining
+physical-evaluation limits. Commands and listed coverage do not assert a new
+passing run. Automated qualification, owner graphical acceptance and permission
+to merge a successor remain separate decisions.
 
 ## What Flatten does
 
@@ -26,10 +32,12 @@ and physical actors continue unchanged. Empty and every currently supported
 material ID use a complete row-major unsigned 16-bit little-endian plane.
 
 Flatten does not Save. New acknowledged paint and agent edits are recorded relative
-to that baseline. **Save named start** later saves the material baseline and those
+to that baseline. **Save start [Ctrl+S]** later saves the material baseline and those
 edits. Simulation after Flatten is excluded unless another explicit Flatten captures
 it. Reopening constructs ordinary initial material and actor state; the file is not
-a simulation checkpoint. Existing Setup-v2 and generated-start-v1 files retain their
+a simulation checkpoint. For example, Plant reloads with ordinary initialized
+state; a captured Plant material ID does not preserve its previous energy or
+growth state. Existing Setup-v2 and generated-start-v1 files retain their
 original readers and meanings.
 
 The confirmation identifies the discarded history. While capture is pending, the
@@ -54,7 +62,7 @@ Materials Lab authoring tools; its separate launcher remains available.
    occurs. The previous Undo history should now be empty.
 3. Pause. Paint a distinctive new mark and erase part of the flattened map. Add a
    small agent mark. Undo and Redo the subsequent operations in chronological order.
-4. Explicitly **Save named start** under a new name. Completely exit Godot.
+4. Explicitly **Save start [Ctrl+S]** under a new name. Completely exit Godot.
 5. Launch again and Load that name. The flattened material layout and subsequent
    acknowledged edits should return without regenerating the former profile. Actor
    spawns/settings reconstruct normally; transient physics from the earlier process
@@ -72,7 +80,7 @@ failure. Automated graphical frames do not substitute for this owner interaction
 ## Recovering after a native owner fault
 
 If the native simulation reports a fault, keep the application open and explicitly
-**Save named start**. A settled authored document can be saved even when its
+**Save start [Ctrl+S]**. A settled authored document can be saved even when its
 flattened baseline has not previously been written to disk. The saved content is
 the retained baseline, acknowledged edits and supported actor/configuration data.
 Save does not capture the failed World or include simulation changes since Flatten.
@@ -96,8 +104,9 @@ starts, with guidance to Save, restart and Load.
 
 ## Source-backed qualification
 
-The dedicated `gen008-flatten-qualification.yml` workflow is limited to the feature
-branch and an explicit source-bound request. It reuses the accepted MAT-AUTH and
+The original `gen008-flatten-qualification.yml` campaign used the feature
+branch and an explicit source-bound request. Its results below are historical
+qualification, not a current branch launch direction. It reuses the accepted MAT-AUTH and
 integrated Workbench publisher, pinned Godot 4.7, godot-cpp, Linux compiler,
 LLVM-MinGW Windows cross-build and Rapier. Original catalogue, Lab, integrated
 Workbench, graphical and offline-package gates remain in place.

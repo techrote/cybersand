@@ -1,0 +1,73 @@
+{
+  "authority": "historical-non-authoritative",
+  "method": "Explicit dry-run mode and bundled synthetic fixture; API/admin environment values removed without printing. No paid model, network gate, capture or publication requested.",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "tools/atlas_agent_runner.py",
+        "run",
+        "--mode",
+        "dry-run",
+        "--fixture",
+        "--collection",
+        "mini-vault",
+        "--dry-run-plan",
+        "tools/atlas_agent/fixtures/mini-vault-plan.json",
+        "--output-dir",
+        "/workspace/scratch/855d9af51e68/c-lane/atlas-offline-check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.559,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/atlas-offline-0.log.txt",
+      "output_sha256": "8b8d0d5fbf86f37c5273d347b57e21c561e1b86a71d66f45301aeab1e43f578f"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/atlas_agent_runner.py",
+        "verify-receipt",
+        "/workspace/scratch/855d9af51e68/c-lane/atlas-offline-check/receipt.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.118,
+      "evidence": "docs/audits/2026-11-24-docs-renaissance/validation/atlas-offline-1.log.txt",
+      "output_sha256": "73c05c6d3d268ed36f6b60ecd005a9a9c34554cba9b779e84921c3ccbf9e60dd"
+    }
+  ],
+  "run": {
+    "ci": false,
+    "duration_seconds": 0.393,
+    "finished_utc": "2026-11-24T19:10:26Z",
+    "id": "20261124T191026Z-d9ab42c3",
+    "mode": "dry-run",
+    "model_calls_simulated": true,
+    "openai_sdk": null,
+    "python": "3.12.14",
+    "runner_git_head": "a2b14595fcdde182f746e4e556decabc9e3c37c7",
+    "runner_tree_dirty": false,
+    "runner_version": "1.0.0",
+    "started_utc": "2026-11-24T19:10:26Z"
+  },
+  "status": {
+    "exit_code": 0,
+    "final": "success",
+    "phase": "done",
+    "reason": "report submitted, validations passed, limits respected",
+    "reason_code": "completed"
+  },
+  "visual_cycle": {
+    "claimed": false,
+    "reason": "dry-run: no model critiqued the images, so no improvement cycle is claimed"
+  },
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "accounting_note": "The receipt and stdout contain simulated reservations/costs. They are not external charges or a bill.",
+  "source_files": {
+    "tools/atlas_agent_runner.py": "8b25399a6271e4e85b11f94eef8e37f9d27784749193d401f701a67b0ee4f422",
+    "tools/atlas_agent/runner.py": "3efaa269ae3d418bc945239f9090040f78a7fb18309fd2b1faa7ea8ad7e853d7",
+    "tools/atlas_agent/fixtures/mini-vault-plan.json": "8069c605342ca7e470c787c8f210e828053c3d81c41c5fdc3e35169816e0cc7a"
+  },
+  "receipt_file_sha256": "6db7557a54d9f4fc31ff15c2c0fb1e10c02137a9c2747e141c7cb6fa725ccab1",
+  "receipt_seal_sha256": "585611fa245fbda83ca4b4606e451cb2652d94499686f9796d8f8cb30b9c9045",
+  "checkout_head_read_after_execution": "a2b14595fcdde182f746e4e556decabc9e3c37c7"
+}

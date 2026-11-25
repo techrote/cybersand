@@ -1,0 +1,12 @@
+{
+  "classification": "fresh-final-source-validation",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "command": [
+    "python",
+    "tools/ci/check_ci_provider_policy.py"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"active CI provider and runner routing\",\n  \"errors\": [],\n  \"policy\": {\n    \"routine_provider\": \"GitHub-hosted Actions\",\n    \"external_provider_config\": \"forbidden unless policy is explicitly changed\",\n    \"runner_indirection\": \"forbidden\"\n  }\n}\n",
+  "recorded_at": "2026-11-25T00:20:17.197415+00:00"
+}

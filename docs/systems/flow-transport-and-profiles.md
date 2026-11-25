@@ -4,11 +4,20 @@ status: Current
 document-kind: contract
 scope: Versioned profile resolution, compact native tables and opt-in flow experiments
 canonical-for: [transport-tuning-profiles, motion-driven-grain-transport]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-11-24
 related-documents: [granular-interaction-policy.md, water-design.md, ../operations/experiment-tower.md]
 ---
 
 # Transport profiles
+
+These construction-time cellular transport controls are separate from the
+ordinary player Wave tuning profile. Current Wave construction explicitly
+**refuses a configured custom transport policy**; it does not silently consume
+or ignore these fields. FreeMass, PF and IN callers have their own admitted
+operator and geometry contracts. See [Water Lab](../operations/workbench-water-lab.md)
+and the [family policy](../architecture/liquid-solver-family-policy.md) before
+combining settings. The refusal is in
+[`World::validate_wave_flow_config`](../../native/src/world_wave.inc).
 
 ## How are profiles resolved and applied?
 
@@ -80,8 +89,9 @@ have been written this tick. Density eligibility remains a separate path and
 still excludes every powder/powder pair. Identical powder grains are not shuffled.
 
 Lateral Water movement/transfer may pick up the grain below its source. At least
-64 successfully transported mass units are required, and effective disturbance
-is `mass * carrying / 255`. It must reach both 64 and `pickup + occupied * packing`.
+64 successfully transported normalized mass units are required. Water mass is
+first normalized through its applied precision policy to the schema's 0–255
+scale; effective disturbance is `normalized_mass * carrying / 255`. It must reach both 64 and `pickup + occupied * packing`.
 The eight-neighbour occupancy counts hard surfaces and support-capable grains.
 Gentle rejects occupancy at least four; erosion permits it above threshold. A
 coordinate-stable four-tick lane bounds pickup to at most one per source on that
@@ -89,11 +99,16 @@ lane. There is no stored disturbance, delayed transport debt or probability that
 can gradually eat a resting bed. Once flow stops, pickup stops immediately.
 
 Both paths use the existing whole-cell conservative swap, preserving material,
-both state bytes and temperature, including Water fill. Each touched coordinate
-is within radius two of the original update; writes remain within radius one.
+the two material-state fields and temperature, including Water fill. Current
+Cell storage has a 16-bit state-A field; “two state fields” is not a four-byte
+Cell-layout prescription. The local helper checks reads within two cells of its
+source; each caller must account for the complete motion/transport footprint.
 The diagonal path includes the vacated/intermediate source, checks occupancy
 and body masks, and cannot bypass a wall by checking only its destination.
-Braced Stone remains excluded. The shared radius and job ownership are unchanged.
+Braced Stone remains excluded. PF and IN call the same helper at their own
+motion boundaries; IN tracks the translated footprint and requires read3/write2
+geometry. These profile values do not grant a larger domain or bypass that
+[operator contract](../architecture/inertial-cellular-v1.md).
 
 Telemetry kinds 8 and 9 count powder mixing and grain transport separately from
 Empty movement, density swaps and conversions. Kind 11 counts new neighbour
@@ -126,4 +141,5 @@ discarding a fresh full-world image.
 Sources: [resolver](../../godot/scripts/transport_profiles.gd),
 [editor](../../godot/scripts/transport_profile_panel.gd),
 [table](../../native/include/cybersand/transport_policy.hpp),
+[`World::mix_after_motion`](../../native/src/world.cpp),
 [installation](../../godot/native_extension/cyber_demo_bridge.hpp).
