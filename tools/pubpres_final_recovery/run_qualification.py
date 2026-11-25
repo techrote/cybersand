@@ -76,9 +76,16 @@ def supplemental_result(test, text, folder, source, project):
                  "Journal-only pre-draw refusal cannot reject already-flushed candidate pixels")
             refusals = data.get("refusal_framebuffers", [])
             need(isinstance(refusals, list) and refusals
+                 and {row.get("case") for row in refusals} == {
+                     "owner", "material", "policy", "camera", "lifecycle", "physical_completion", "manual_before_flush"}
                  and all(row.get("before_sha256") == row.get("after_sha256")
                          and isinstance(row.get("before_sha256"), str) and len(row["before_sha256"]) == 64
+                         and row.get("mapping_unchanged") is True
+                         and row.get("pre_draw_delta") == row.get("post_draw_delta") == row.get("submission_delta") == 0
                          for row in refusals), "Stale candidate refusal lacks actual unchanged framebuffer evidence")
+            completed = next(row for row in refusals if row["case"] == "physical_completion")
+            need(completed.get("real_step_delta") == completed.get("real_manual_step_delta") == 1,
+                 "Physical-completion refusal did not execute one real normal physical step")
         need(data.get("display") not in (None, "", "headless"), "Supplemental graphical gate did not execute graphically")
         for name, sha in data.get("input_hashes", {}).items():
             need(name.startswith("res://") and digest(project / name.removeprefix("res://")) == sha,

@@ -12,14 +12,14 @@ def load_bounded_payload():
     # Both historical engine packages deliberately retain their old module
     # names. Bind this new reader to its own contract without replacing the
     # original font reader's globals or allowing import-order substitution.
-    folder = ROOT / "tools/pubpres_final_frame_budget"
+    folder = ROOT / "tools/pubpres_recovery_engine"
     prior = sys.modules.get("engine_contract")
     try:
         spec = importlib.util.spec_from_file_location("engine_contract", folder / "engine_contract.py")
         contract = importlib.util.module_from_spec(spec)
         sys.modules["engine_contract"] = contract
         spec.loader.exec_module(contract)
-        spec = importlib.util.spec_from_file_location("recovery_bounded_payload", folder / "payload.py")
+        spec = importlib.util.spec_from_file_location("recovery_atomic_payload", folder / "payload.py")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
@@ -42,7 +42,7 @@ def admit(args):
     payload = load_bounded_payload()
     identity = payload.identity_arguments(args)
     payload.need(args.engine_payload is not None and all(value is not None for value in identity.values()),
-                 "Supply all independently pinned bounded engine identities")
+                 "Supply all independently pinned atomic engine identities")
     root = args.engine_payload.resolve()
     build = payload.verify_payload(root, **identity)
     return root / build["gui_executable"], {"admission": identity, "build": build,

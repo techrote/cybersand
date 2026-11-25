@@ -29,7 +29,7 @@
     "presentation_observer":"explicit same value in every arm, separately calibrated off/on/on/off"
   },
   "prerequisites": [
-    "Exact original bounded engine payload source/run/provenance and unchanged full engine input closure",
+    "Exact separately built four-patch atomic engine payload source/run/provenance and unchanged full engine input closure; original f408 three-patch component remains retained and unselected",
     "Exact resulting application plus independently built or explicitly input-equivalent original native runtime",
     "All frozen native/physical/material/actor/count/ACK correctness and original-size GPU-history gates",
     "Actual resulting-source transaction graphical admission, refusal, lifecycle and first-read framebuffer tests",

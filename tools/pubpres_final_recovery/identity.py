@@ -19,7 +19,7 @@ def digest(path):
 
 def driver_identity():
     result = original_driver_identity()
-    scopes = ("tools/pubpres_final_recovery", "tools/pubpres_final_frame_budget")
+    scopes = ("tools/pubpres_final_recovery", "tools/pubpres_recovery_engine", "tools/pubpres_final_frame_budget")
     names = subprocess.check_output(["git", "-C", str(ROOT), "ls-tree", "-r", "--name-only",
                                      "HEAD", "--", *scopes], text=True).splitlines()
     observed = {path.relative_to(ROOT).as_posix() for scope in scopes for path in (ROOT / scope).rglob("*")
