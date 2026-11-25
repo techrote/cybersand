@@ -790,3 +790,58 @@ with no Ready/merge transition, default activation, model calls, training,
 physics change or capacity import. The owner receives a usable evaluator with
 explicit limits on long-horizon navigation, repeated attention, social
 interpretation, dense overlays, hosted performance and eight-actor capacity.
+
+
+## Closing evidence checkout correction
+
+The final handoff review tightened one qualification sentence: original and
+extracted project execution passed, and the ordinary `Open Workbench.cmd`
+launcher receipt belongs specifically to the freshly extracted package.
+Documentation commit `62a05adf12dfddb744a1e043c2bb4581c7b334e7` records that
+wording correction. It changes no application or payload byte.
+
+The report-only native scope
+[run 45559264505](https://github.com/techrote/cybersand/actions/runs/45559264505),
+job 139018742701, then correctly refused to produce advice from a checkout it
+considered changed or untracked. All seventeen classifier/source-failure tests
+passed in both ordinary and optimized execution before that refusal. This is a
+failed advisory invocation, not a native execution failure or a successful scope
+decision. Its exact original
+[artifact 14996259597](https://github.com/techrote/cybersand/actions/runs/45559264505/artifacts/14996259597)
+is 9,053 bytes, SHA256
+`7176f0785e2bc4abbd58629677444d179b10b112f96664e98798a813dccf02ff`.
+Its five members retain the authenticated apparatus and an empty console; no
+candidate-advisory JSON was produced.
+
+The exact published originals include five Windows JSON records with CRLF line
+endings: the evaluation manifest and the four original/extracted project and
+graphical qualification reports. Their original target-host bytes are required
+by the custody chain. The inherited general `*.json text eol=lf` rule can instead
+normalize those working copies when Git refreshes the index. [B's independent diagnosis](evidence/closing-scope-62a05/diagnosis.json)
+verifies the actual published raw blob identities and the failed invocation's
+source/tree identity. A independently reproduced the five-path difference in isolated Git
+checkouts with `core.autocrlf=false` and `true`, including forced index refresh.
+The hosted failure log itself does not list the dirty paths; the precise path
+inventory comes from this separately identified reproduction, not a recovered
+hosted status listing.
+
+The correction is five exact relative-path `-text whitespace=cr-at-eol`
+exceptions in `evidence/windows-50c6-complete/.gitattributes`. The nested file is
+493 bytes, SHA256
+`c917a3b073599024392b1ad76883a48671b64225c46e8ecdd0248a1a280dcc53`,
+Git blob `ee9e91a8210e72d58495a81e5bba2c84adc09b5e`. The parent attribute and
+ignore policies, all five original evidence blobs, application, native runtime,
+portable ZIP and clean-checkout guard remain unchanged. The mixed-ending log
+already remains clean under `text=auto` and receives no exception.
+
+The failed original, independent diagnosis and reproduction commands/readers are
+retained with this correction. Intermediate reader mistakes are retained as
+reader failures, not runtime failures or passing experiments. [A's exact nested-candidate reproduction](evidence/closing-scope-62a05-independent/reproduction.json)
+passes in both checkout configurations, with unchanged original evidence bytes
+and parent rule identities. Its 26-member diagnostic archive preserves both
+unsuccessful reader assertions as well as the corrected command records. The ordinary new-head advisory and documentation workflows must
+then pass in their own recorded executions; a corrected result does not relabel
+the original refusal. No additional physical episodes or performance results
+are credited for this evidence-handling work. The reviewed decision packet
+remains unchanged at SHA256
+`1e6478c683912f2429465a1dbe626269b0ada6257f2692d3fdb483da1996b153`.
