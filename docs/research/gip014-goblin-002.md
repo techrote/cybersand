@@ -1045,3 +1045,21 @@ this checkpoint. It adds no gameplay execution, changes no acceptance rule and
 will retain failed/incomplete observations. Creating the final downloadable
 evidence archive through the file service still requires a supported executor;
 private upload credentials will not be transferred to a hosted workflow.
+
+## Passive hosted evidence recovery after local executor loss
+
+The local executor became unavailable while the bounded predecessor download was in progress. Its completion and surviving-owned-process outcome remain unknown; no host recovery or global process audit is claimed. The qualified Windows download was already sealed, verified and delivered, and the separately hosted Linux campaign continued independently.
+
+A separate passive workflow restores exact frozen independent readers and downloads a closed catalogue of thirteen original GitHub artifacts, totaling 661,216,192 compressed bytes. It binds artifact, workflow, source, size and SHA-256 identities, preserves original failed outcomes, uses no native/editor/game process, and keeps its driver checkout separate from the qualified game source 6f359ce2b24291ee219810773c641d53802fd31d / tree a4f389cd3cc1a21dfe3d5566703eb946b66734ed. The historical reducer's workflow driver702 and executed game sourced849 remain distinct.
+
+The lead, A and B reviewed the driver before activation. The review corrected lexical parent traversal, file/directory alias handling, report overwrite checks, live resource-scan rename races, bytecode contamination of the clean source checkout, and dict/null handling in the bounded summary projection. Authenticated GitHub metadata requests cannot redirect; artifact storage requests are fresh unauthenticated requests to the constrained official storage host. Reader subprocesses receive a small environment without Actions or upload credentials. Complete outputs and failures are retained separately from the bounded log projections. These are passive recovery-tool corrections, not production gameplay findings.
+
+The workflow has fixed Python commands, per-reader memory/log/wall bounds, a 1,800-second monitored worker bound, an outer alarm, a sampled four-GiB output bound and a two-GiB free-space reserve. It uploads only explicit disposable evidence/review/supervision roots. A passing reader validates retained evidence; it cannot change an original incomplete campaign into a completed one. The new driver does not rerun gameplay or modify the frozen expected-result readers.
+
+Sealing is deliberately separate from analysis: after actual outputs are adjudicated and the RESULTS documentation commit is published, a second passive phase will restore the exact staging artifact, snapshot those exact documents and use the unchanged reviewed archive builder. The final archive hash will be recorded by a later delivery commit to avoid a circular hash dependency.
+
+The six predecessor Linux raw tape bodies previously read from the workspace are not present in any durably recovered archive currently available to this execution. Their exact recorded hashes and recovery summaries survive. The passive catalogue preserves the actual predecessor Windows artifacts; it does not manufacture Linux tape bodies or substitute Windows evidence for them. The interrupted predecessor transfer remains an infrastructure observation with unknown process outcome.
+
+Frozen driver blob: `6b9c3e327437f5426776da78abef02ef62636212`. A's source review is `539e9328a5fac3fb3b3b5085d4c1f75d5b7f89e5`; B independently cleared the same final files and the root's activation, run-isolated concurrency and historical-source metadata edits. This commit registers the passive attempt; it contains no successful-execution claim. The last repository refresh found main `00cdb02f103265b6dc5224c68283e9a0c8cb449f` unchanged and PR #781 still open/Draft.
+
+B's durable source review is `6037bc1c388b56f6430d1bd4e7ac2c00080d1733` (seventeen explicit checks). Both independent source-review records are committed under `tools/gip014/evidence/passive/`. These are reviews of the recovery source and closed inputs, not raw campaign adjudications.

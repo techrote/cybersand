@@ -12,7 +12,7 @@
     "record_blob": "79c047f717a6760912ae056c898c6e9239488037",
     "qualified_windows_download_affected": false,
     "hosted_linux_run_affected": false,
-    "passive_hosted_analysis_fallback": "preparing; not launched"
+    "passive_hosted_analysis_fallback": "source-reviewed bounded workflow registered; actual passive execution and current Linux adjudication pending"
   },
   "decision": "draft_hold",
   "pr": "https://github.com/techrote/cybersand/pull/781",
@@ -748,5 +748,37 @@
     "decision_sha256": "74d7d9fbbf2b1d1cde53cb93ffac7a2d61a754915b3c54268cf1df98a56e35c9",
     "index_sha256": "b26b3defedc1bcd4a49426b4abbc1ba8f1257246cf5ef4936431c9f89b2b8bf9",
     "scope": "Exact pre-reference-addendum snapshots; all5ee tables, matched contrasts, memory, timing and separate6fWindows qualification; Linux11 still pending at this checkpoint"
+  },
+  "passive_evidence_recovery": {
+    "status": "registered_not_yet_executed",
+    "qualified_game_source": {
+      "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+      "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+    },
+    "original_artifact_count": 13,
+    "original_compressed_bytes": 661216192,
+    "frozen_driver_blob": "6b9c3e327437f5426776da78abef02ef62636212",
+    "frozen_A_contract_blob": "d7b2165b8921fe58cf4a7df4d55156bb4986338e",
+    "frozen_B_contract_blob": "6f47f3de8b8ee57b1e665fa17eb515fa77282e46",
+    "A_source_review_blob": "539e9328a5fac3fb3b3b5085d4c1f75d5b7f89e5",
+    "root_review": {
+      "B_restored_member_identities_checked": 85,
+      "A_and_B_contract_bytes_unchanged": true,
+      "private_or_signed_patterns_in_fixed_data": false
+    },
+    "native_or_editor_processes_authorized": 0,
+    "stage_policy": "Retain complete evidence and failed process outcomes; phase2 seal only after actual adjudication and exact RESULTS commit.",
+    "missing_historical_bytes": {
+      "predecessor_six_retained_linux_tape_bodies": "Unavailable after localhost outage. The six bodies were not included in a durable blob; exact metadata/digests survive, but no reconstruction or equivalent Windows substitution is claimed.",
+      "unavailable_passive_zip_bytes": 1343584,
+      "unavailable_passive_zip_sha256": "75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc",
+      "local_predecessor_download_attempt": "Transport lost after dispatch. Completion and survivors are unknown. The separately retained interruption record remains unchanged; this hosted attempt has its own receipts."
+    },
+    "root_publication_edits": [
+      "activation_enabled false to true",
+      "run-isolated non-cancelling concurrency",
+      "historical reducer actual source d849 and driver702 explicitly distinct"
+    ],
+    "B_source_review_blob": "6037bc1c388b56f6430d1bd4e7ac2c00080d1733"
   }
 }
