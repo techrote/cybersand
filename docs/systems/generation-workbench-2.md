@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-007 native provenance replay, genuine intermediate stages, visual authoring, bounded previews and revision-safe history
 canonical-for: [generation-workbench-inspection, generation-workbench-transactions, generation-workbench-visual-tools]
 keywords: [GEN-007, why is this here, workbench, graph, undo, redo, provenance, stages, seeds, comparison]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [procedural-world-generation.md, procedural-generation-fields-and-modifiers.md, procedural-typed-spatial-fields.md, procedural-hierarchical-generation.md, procedural-semantic-planes.md, ../operations/procedural-qualification.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../audits/2026-10-21-gen007-workbench-qualification.md]
 ---
 
@@ -46,6 +46,13 @@ recipe, not a running World's material or physical state. **Load JSON…** reads
 a file into the editor; select **Apply JSON** to validate and accept it. Save the
 accepted recipe before
 **F2** closes this editor; its Undo/Redo history is session-local.
+
+**ULTIMA candidate:** desktop **Save accepted…** checks the complete staged JSON
+before replacing the selected file. A refusal appears in the profile dialog and
+main status; this save retains the previous file and accepted preview. Correct
+the reported path/storage problem and retry, waiting for **Saved accepted
+revision**. The [shared replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+requires a matching native runtime and does not promise power-loss durability.
 
 The separate [procedural qualification scene](../operations/procedural-qualification.md)
 exercises a complete 1024 × 1024 four-plane place. The workbench itself uses a

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Versioned profile resolution, compact native tables and opt-in flow experiments
 canonical-for: [transport-tuning-profiles, motion-driven-grain-transport]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [granular-interaction-policy.md, water-design.md, ../operations/experiment-tower.md]
 ---
 
@@ -28,6 +28,15 @@ and unsupported versions are rejected. Baseline, Gentle transport and Threshold
 erosion are protected constructors returning fresh copies; editing or saving
 creates a user copy. Saved JSON uses `user://transport-profile.json`; the panel
 also accepts pasted JSON and offers copy/export.
+
+**Save user copy** validates and saves the editor contents; it does not apply
+them to the running World. **Apply and restart experiment** is the separate
+installation action. In the **ULTIMA candidate**, desktop saving uses the
+[shared verified file replacement](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling).
+A refusal retains the previous file, editor and running profile. Correct the
+reported path/storage problem and retry; **User copy saved** acknowledges the
+complete replacement. This native-runtime correction does not establish browser
+filesystem durability.
 
 Resolution is schema defaults, family defaults, material adjustments, then sparse
 pair overrides. Resistance belongs to the target grain; permeability belongs to

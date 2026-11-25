@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, microscenarios-programme.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -40,6 +40,15 @@ campaigns or qualify a new Water default. Current controls are defined by the
 [Tower panel](../../godot/scripts/tower_panel.gd),
 [desktop host](../../godot/scripts/main.gd) and
 [Web host](../../godot/scripts/web_demo_controller.gd).
+
+**Save Water policy** writes the validated, unblinded policy to
+`user://water-experiment-policy.json`; it does not save the running scene or an
+observation. The button is disabled during a blind run. In the **ULTIMA
+candidate**, the desktop control shows its result beneath the Tower controls
+and uses the [shared verified file replacement](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling).
+A refusal retains the previous policy file; correct the reported problem and
+retry. This policy-save correction does not change **Export observation** or
+establish formal blind-study capture readiness.
 
 Floors contain flowing powders; Water/Sand slopes and settling; eleven liquids;
 packed, poured and excavated Mercury references; and separated chemistry.

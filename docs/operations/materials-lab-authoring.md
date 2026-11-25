@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Accepted desktop native inspection, candidate authoring, isolated World comparisons and existing-material MicroScenarios; no runtime candidate activation
 canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscenario-reference-pack.md, ../architecture/material-authoring-catalogue-plan.md, ../systems/intermaterial-interactions.md, ../audits/2026-11-11-materials-lab-v1.md]
 ---
 
@@ -452,6 +452,13 @@ transactionally. Prepared-run identity is shown separately from controls for a
 new pair. Native source or digest mismatches
 are refused. This is reproducible fixture reconstruction, not arbitrary World
 continuation or a save-format migration.
+
+**ULTIMA candidate:** desktop **Save experiment…** uses the
+[shared verified file replacement](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling).
+A failed write shows a **Test case save** refusal and retains the previous
+experiment file; correct the reported storage/path problem and retry. This
+correction covers the reproducible experiment envelope. Candidate preset and
+compiled-bundle exports retain their separate backend and validation paths.
 
 Source: [experiment helper](../../godot/scripts/material_lab_experiment.gd).
 The previous [1024² manual laboratory](../MATERIAL_LAB.md) and the existing
