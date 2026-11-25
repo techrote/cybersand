@@ -1,0 +1,52 @@
+{
+  "schema": "ambient2-original-artifact-byte-parts/v1",
+  "original_filename": "ambient-002-linux-a725.zip",
+  "original_bytes": 42774281,
+  "original_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "source_tree": "a038e6df65d58529f4c496c01f26c65975654fa6",
+  "workflow_run": 45540569052,
+  "artifact_id": 14990266435,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45540569052/artifacts/14990266435",
+  "part_order": "Concatenate raw bytes in the listed order; these are not separate ZIP archives. No original ZIP members were decoded/re-encoded.",
+  "parts": [
+    {
+      "path": "ambient-002-linux-a725.zip.part-01",
+      "offset": 0,
+      "bytes": 10420224,
+      "sha256": "fb5974dc6e9f85ff638c8993994f735393dfbcbfa204f0200debbb3f2626435e",
+      "git_blob": "fd9eec1defe8ea99d32374c80d7ffce43b8df845"
+    },
+    {
+      "path": "ambient-002-linux-a725.zip.part-02",
+      "offset": 10420224,
+      "bytes": 10420224,
+      "sha256": "c3bf9965e49c77ebaa9e41d81a02d46ebbb909f62f9669bc24d451887c58d182",
+      "git_blob": "fb816b3e9e222c146bcab188faaa4b4ba58dfb52"
+    },
+    {
+      "path": "ambient-002-linux-a725.zip.part-03",
+      "offset": 20840448,
+      "bytes": 10420224,
+      "sha256": "cdcc463d1f9ab0df6934368499a0c4fb4ecb3de3e1bfaf58ab106f2a4e33359e",
+      "git_blob": "64a9e1caf75ff6e64993785220ef082372208c75"
+    },
+    {
+      "path": "ambient-002-linux-a725.zip.part-04",
+      "offset": 31260672,
+      "bytes": 10420224,
+      "sha256": "15739262d7055538780a687b1712abd1edc3f8d768041e30bd43b8ebbb2dad1e",
+      "git_blob": "17a9a087acca5a466f176ee72bcf53cfb78de413"
+    },
+    {
+      "path": "ambient-002-linux-a725.zip.part-05",
+      "offset": 41680896,
+      "bytes": 1093385,
+      "sha256": "e670782aeaa3a26d795635cff11643ecfeb1d1a9879258f7e8aad6d8f2e1dfda",
+      "git_blob": "82b3c5ea0f22ecc836c5c1fba20c3b1132bdea8c"
+    }
+  ],
+  "full_raw_report_sha256": "090394a0a0f7e7a876481c935fcd2245691bf38a30f24f3c602dd5cd92c5b894",
+  "scope": "Complete original 719-entry final Linux artifact, including 194 actual actors in 122 fresh Worlds, all original shard reports/consoles/execution receipts, source/runtime custody, full qualification, 29 graphical captures, scientific figures/reduction and independent readback.",
+  "recovery": "The first local copy and verified parts were lost in an executor reset before their upload/commit. This second retrieval matches the same original artifact outer SHA-256 and all five previously retained Git blob identities. No original runtime evidence was regenerated or relabelled."
+}

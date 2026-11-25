@@ -502,3 +502,56 @@ using observer2eea and frozen applicationa725. Its running state is not a pass.
 All later evidence work preserves the application's `godot/` subtree
 `ed1a6935b1b3663e4157e6168c2bae7c8291a706`. The successor stays Draft/HOLD;
 #762 remains unaccepted and the predecessor evaluator is untouched.
+
+## Complete raw evidence and independent closing review
+
+The exact final Linux artifact is now additionally retained as five verified
+raw byte parts under [hosted-a725-complete](evidence/hosted-a725-complete/README.md).
+Reconstruction yields the original 42,774,281-byte ZIP, SHA256
+`eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30`,
+with all 719 original entries unchanged. The archive was recovered after the
+temporary-filesystem loss from its authenticated Actions source; it was not
+rebuilt from extracted results, and no simulation was rerun. Part hashes and
+reconstruction verification preserve the exact raw 194-episode record beyond
+Actions artifact retention.
+
+An additional independent reader checked the actual-native thin-patch proof
+without running Godot. All 37 checks passed: the original publication contains
+the stated two material cells, the whole Oil cell is 2.521293640137 cells clear
+of the copied hull, and independently enumerated sample sets reproduce 489
+coarse reads, 194 exact near-field reads, 677 adaptive unique reads and four
+new refinement reads. The distant Water remains unobserved in incomplete
+coverage. [Original readback](evidence/native-thin-independent/independent-readback.json).
+
+A separate 23-check readback of both final blocked-route shards confirms that
+all five recorded failures occurred by 12.6 seconds, before the new wall at
+15 seconds. Later withdrawal reuses that earlier memory. The nine-second
+withdrawal result is useful physical behavior but cannot be called learning
+that newly introduced wall.
+[Original readback](evidence/blocked-route-timing/independent-readback.json).
+
+Specialist B independently reviewed the packet's final primary counts,
+paired-ablation values, social counterexamples, cost scopes, catalogue
+descriptions and measured host variability.
+[The scoped receipt](evidence/b-final-packet-review.json) binds the exact reviewed
+pre-graphics packet SHA256
+`8b5d0187db6d0ee6903384a60cc5e271cc22618f7ce1814c423ab8ba5e4dbac2`.
+Its quantitative scope excludes the then-pending sustained graphical section
+and later wording. A and C also reviewed mechanism/observation-scope and
+authoring/Windows claims; corrections distinguish a shared outcome observer
+from profile-specific policy requests, qualifying initial-bin occupancy and
+recovery displacement without assuming direction away from a wall.
+
+The corrected full documentation consistency
+[run45546559519](https://github.com/techrote/cybersand/actions/runs/45546559519)
+passed at `a26cb9ca0521198c8ed1bb4c374be7523c021ce5`.
+Documentation, current retrieval routes, material/LCB source contracts and
+LFS/whitespace gates passed. The dependency/runtime-provenance step remained
+conditionally skipped under the workflow policy, superseding the earlier plan
+to rerun every such step. It is not represented as a fresh runtime receipt;
+actual native/runtime provenance is bound by the explicit a725 qualification.
+
+The separate sustained observation run45544614719 completed successfully.
+Original frame/decision custody and qualitative independent review are still
+being assembled at this checkpoint. The frozen application and shipped ZIP
+remain unchanged. The successor continues Draft/HOLD at eight logical actors.

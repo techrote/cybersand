@@ -1,0 +1,15 @@
+{
+  "verified_utc": "2026-11-25T04:22:33Z",
+  "artifact_id": 14990266435,
+  "original_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "original_bytes": 42774281,
+  "parts_match_pre_reset_git_blobs": true,
+  "part_git_blobs": [
+    "fd9eec1defe8ea99d32374c80d7ffce43b8df845",
+    "fb816b3e9e222c146bcab188faaa4b4ba58dfb52",
+    "64a9e1caf75ff6e64993785220ef082372208c75",
+    "17a9a087acca5a466f176ee72bcf53cfb78de413",
+    "82b3c5ea0f22ecc836c5c1fba20c3b1132bdea8c"
+  ],
+  "no_runtime_reexecution": true
+}
