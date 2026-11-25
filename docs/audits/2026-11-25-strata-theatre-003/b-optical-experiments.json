@@ -1,0 +1,394 @@
+{
+  "schema": "strata3-specialist-art-experiments-v1",
+  "author": "SpecialistB",
+  "date": "2026-11-25",
+  "baseline_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "baseline_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "checkpoint_source": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+  "experiments": [
+    {
+      "id": "B-TONAL-ARCHITECTURE",
+      "hypothesis": "Moderate value compression and detail hierarchy can preserve intricate native rear architecture while separating it from physical Play without blur.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "3a1bcc09ed7bdb5310f3893ed6ed1ec9980efa7f7ee1047ec96ef2299167786b"
+        }
+      ],
+      "parameters": {
+        "profiles": [
+          "architectural",
+          "gameplay_clarity",
+          "cinematic_deep_focus"
+        ],
+        "defocus_disabled": true
+      },
+      "applicable_scenes": [
+        "orbital-terminal",
+        "industrial-underworks",
+        "vertical-transfer-spine"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "Profile strict-schema/native-Play-protection/value-copy suite97 checks passed at pinned official Godot4.7; no live rendered conclusion."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-LENS-DISTINCTION",
+      "hypothesis": "A small pixel aperture and highlight diffusion provide meaningfully different artistic tradeoffs.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "3a1bcc09ed7bdb5310f3893ed6ed1ec9980efa7f7ee1047ec96ef2299167786b"
+        }
+      ],
+      "parameters": {
+        "profiles": [
+          "optical_lens",
+          "diorama",
+          "atmospheric_industrial"
+        ],
+        "techniques": [
+          "pixel",
+          "diffusion"
+        ]
+      },
+      "applicable_scenes": [
+        "neon-rain-arcology",
+        "industrial-underworks"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "Catalogue contains distinct full parameter configurations; shader correctness is SpecialistA scope."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-ENVIRONMENT-COLOUR",
+      "hypothesis": "Depth need not be universally blue: warm industrial, violet organic and cool orbital scattering should suit distinct environments.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "3a1bcc09ed7bdb5310f3893ed6ed1ec9980efa7f7ee1047ec96ef2299167786b"
+        }
+      ],
+      "parameters": {
+        "profiles": [
+          "atmospheric_industrial",
+          "alien_bioluminescence",
+          "cold_orbital",
+          "sunlit_megastructure"
+        ]
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "Complete profiles preserve unprocessed Play and canonical JSON precision; actual appearance pending."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-LIGHT-SHAFTS",
+      "hypothesis": "A few local stepped light bands can connect architectural planes without a fullscreen volumetric pass.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere.gd",
+          "sha256": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere_profiles.gd",
+          "sha256": "78c391fbe9c1c0d47767949a631c978fceeecae254601cfe6d8f95ec41f19aa1"
+        }
+      ],
+      "parameters": {
+        "kind": "light_shaft",
+        "bands_per_source": 8,
+        "default_speed": 0.0,
+        "default_count": 3,
+        "shared_region_limit": 12,
+        "shared_motif_limit": 384
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "72 atmosphere schema/lifecycle checks passed at pinned Godot4.7. Static defaults perform no recurring callback; hidden optional breathing stops.",
+        "No native World/capture/publication/material APIs added. Rendered blockiness at strong/extreme settings remains an explicit risk."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-LIGHT-POOLS",
+      "hypothesis": "Localized restrained rectangular diffusion can suggest luminous machinery or organisms without uncontrolled bloom.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere.gd",
+          "sha256": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere_profiles.gd",
+          "sha256": "78c391fbe9c1c0d47767949a631c978fceeecae254601cfe6d8f95ec41f19aa1"
+        }
+      ],
+      "parameters": {
+        "kind": "light_pool",
+        "bands_per_source": 4,
+        "default_speed": 0.0,
+        "default_count": 3,
+        "breathing_amplitude": 0.1
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "72 atmosphere schema/lifecycle checks passed; source position fixed, optional presentation clock only.",
+        "Overlapping dense tiny regions may appear as tinted panels; no visual acceptance claimed."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-SHOWCASE-SUNWARD",
+      "hypothesis": "Large negative space with warm light shafts, physical terraces and rear crane cages provides a useful industrial depth comparison.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/data/strata3/sunward-freight-megastructure.json",
+          "sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5"
+        }
+      ],
+      "parameters": {
+        "extent": [
+          1536,
+          1024
+        ],
+        "native_rectangles": [
+          260,
+          1957,
+          28,
+          459
+        ],
+        "motifs": 55
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "Generator exact-byte reproduction passed; actual radius34 geometric route envelopes clear.",
+        "41 new showcase source/candidate checks and71 retained source/candidate checks passed; no full actor traversal claim."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-SHOWCASE-XENO",
+      "hypothesis": "Organic rear mineral ribs and luminous growth can preserve readable horizontal physical shelves around a clear void.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/data/strata3/xeno-resonance-grotto.json",
+          "sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b"
+        }
+      ],
+      "parameters": {
+        "extent": [
+          1024,
+          1024
+        ],
+        "native_rectangles": [
+          300,
+          5177,
+          608,
+          1412
+        ],
+        "motifs": 72
+      },
+      "applicable_scenes": [
+        "xeno-resonance-grotto"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "Generator exact-byte reproduction and radius34 geometric clearance passed; same strict candidate checks as other new scenes.",
+        "More than5000 rear rectangles remain inside existing32768 per-plane cap; startup cost must be measured."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-SHOWCASE-LUNAR",
+      "hypothesis": "Sparse physical decks and large quiet sky should make distant instrument frames and planetary context spatially legible with little haze.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/data/strata3/lunar-terminator-observatory.json",
+          "sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24"
+        }
+      ],
+      "parameters": {
+        "extent": [
+          1536,
+          768
+        ],
+        "native_rectangles": [
+          122,
+          720,
+          18,
+          1083
+        ],
+        "motifs": 8
+      },
+      "applicable_scenes": [
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "Generator exact-byte reproduction and radius34 geometric clearance passed; same strict candidate checks as other new scenes."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    },
+    {
+      "id": "B-GALLERY-CUSTODY",
+      "hypothesis": "Source-bound matched captures and explicit supplemental scopes make optical comparisons inspectable without replacing real application evidence.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/build_strata3_gallery.py",
+          "sha256": "924bda064cbe6f425d41309e532f35d4e922f91780369ce6a375708ad1f77dad"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/ci/test_strata3_gallery.py",
+          "sha256": "1675c13ad42aff9b0d5fae893e7f91a07d86d844bafd27c5b2ddd1374db24837"
+        }
+      ],
+      "parameters": {
+        "matched_profiles_per_scene": 11,
+        "required_supplemental_views_per_scene": 8,
+        "profiles": [
+          "classic",
+          "architectural",
+          "gameplay_clarity",
+          "cinematic_deep_focus",
+          "optical_lens",
+          "diorama",
+          "atmospheric_industrial",
+          "noir",
+          "cold_orbital",
+          "alien_bioluminescence",
+          "sunlit_megastructure"
+        ]
+      },
+      "applicable_scenes": [
+        "all9"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "26 synthetic document-builder tests passed. They are not graphical or native execution.",
+        "Rejects changed evidence/source/configuration, unmatched camera/actor/geometry, missing fresh-process/supplementals, path/link/PNG/HTML failures."
+      ],
+      "artistic_assessment": {
+        "status": "pending-actual-capture-review",
+        "human_acceptance": false
+      },
+      "disposition": "implemented-pending-integrated-graphical-review"
+    }
+  ],
+  "retained_corrections": [
+    {
+      "id": "B-TONAL-DARKENING-CLAIM",
+      "observation": "Contrast compression about0.5 may brighten dark pixels despite brightness below1.",
+      "action": "Profile wording changed from categorical darkening to reduced decorative emphasis; graphical selection deferred.",
+      "kind": "source-derived artistic qualification"
+    },
+    {
+      "id": "B-SHADOW-MATERIAL-FAMILY",
+      "observation": "First shader subset omitted basalt100/obsidian101/aluminium114/brass119 used by actual scenes.",
+      "action": "Reported toA; A traced authoritative nativeSolid family and added complete mask/negative controls.",
+      "kind": "independent source review; integrated code and rendered tests owned byA"
+    },
+    {
+      "id": "B-LOCAL-DISPLAY-LIMIT",
+      "observation": "Root reported local graphical display creation denied by environment sockets.",
+      "action": "No bypass attempted. Await hosted source-pinned actual graphical captures.",
+      "kind": "environment qualification limitation"
+    }
+  ],
+  "limitations": [
+    "No new optical aesthetic result is marked PASS before actual source-bound captures are reviewed.",
+    "No human perceptual or physical Windows/NVIDIA acceptance.",
+    "Original five Strata002 admission misses retain unchanged45-second target.",
+    "All three new scene route probes are authoring geometry checks, not actual physical traversal."
+  ]
+}

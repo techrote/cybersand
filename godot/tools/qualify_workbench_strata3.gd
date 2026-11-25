@@ -267,6 +267,44 @@ func _fixture_native_probes() -> void:
 	record.readability_native_probes = probes
 
 
+func _native_edit_witness() -> void:
+	if scene_id != "optics-readability-challenge": return
+	check(strata.select_optics_profile("architectural"),"native editing with optical renderer active")
+	var identity := play_identity()
+	var point := Vector2i(120,100)
+	var extent: Vector2i = Setup.extent_of(wb.applied)
+	var witnesses: Array = []
+	for id: String in ["background","play"]:
+		var before_cells := await play_bytes() if id == "play" else PackedByteArray()
+		var original := int(before_cells.decode_u16((point.y*extent.x+point.x)*2)) if id == "play" else int(strata.layer_owner.material_at(id,point))
+		var marker := 131 if original != 131 else 58
+		await gesture(id,"Brush",point,point,marker,0)
+		var marked_cells := await play_bytes() if id == "play" else PackedByteArray()
+		var marked := int(marked_cells.decode_u16((point.y*extent.x+point.x)*2)) if id == "play" else int(strata.layer_owner.material_at(id,point))
+		check(marked == marker,"ordinary optical-view brush changes actual native "+id)
+		await _extra_capture("native-edit-"+id,"Actual ordinary brush/native readback with optical presentation enabled; temporary edit later undone.")
+		await gesture(id,"Eraser",point,point,0,0)
+		var erased_cells := await play_bytes() if id == "play" else PackedByteArray()
+		var erased := int(erased_cells.decode_u16((point.y*extent.x+point.x)*2)) if id == "play" else int(strata.layer_owner.material_at(id,point))
+		check(erased == 0,"ordinary optical-view erase changes actual native "+id)
+		check(strata.undo_layer(),"Undo optical-view erase "+id)
+		await until(idle,"native erase Undo settles")
+		check(strata.undo_layer(),"Undo optical-view brush "+id)
+		await until(idle,"native brush Undo settles")
+		check(strata.redo_layer(),"Redo optical-view brush "+id)
+		await until(idle,"native brush Redo settles")
+		check(strata.undo_layer(),"restore original geometry after optical-view history "+id)
+		await until(idle,"native history restoration settles")
+		var restored_cells := await play_bytes() if id == "play" else PackedByteArray()
+		var restored := int(restored_cells.decode_u16((point.y*extent.x+point.x)*2)) if id == "play" else int(strata.layer_owner.material_at(id,point))
+		check(restored == original,"native optical-view history restores original material "+id)
+		if id == "play": check(restored_cells == before_cells,"complete Play bytes restored after optical-view paint/erase/history")
+		witnesses.append({"plane":id,"point":[point.x,point.y],"native_before":original,"native_brush":marked,"native_erase":erased,"native_restored":restored})
+	stable_identity(identity,play_identity(),"native painting with optical renderer active")
+	check(strata.select_layer("play"),"restore Play edit authority after native optical exercise")
+	record.native_edit_witnesses = witnesses
+
+
 func _save_optics() -> void:
 	check(strata.select_optics_profile("architectural"),"save deliberate balanced authored treatment")
 	check(strata.set_optics({"focus_mode":"manual","focus_distance":0.27,"dof_width":0.62,"tonal":0.63}),"save nondefault editable lens settings")
@@ -335,10 +373,11 @@ func _progression_sample(id: String, repeat_index: int) -> Dictionary:
 	var capture_count: int = strata.layer_owner.stats().native_snapshot_calls
 	var upload_count: int = strata.presenter.diagnostics().full_rg8_uploads
 	host.qualification_action = _route_action(actor,Vector2.RIGHT if repeat_index%2 == 0 else Vector2.LEFT,start_position)
-	check(wb.toggle_pause(),"start real physical progression sample")
+	# Warm the optical presentation while physics is paused so every timed
+	# sample begins from the identical authored physical state.
 	for _index: int in 6: await process_frame
-	host.optics_completed = []
-	host.optics_publications = []
+	host.optics_completed.clear()
+	host.optics_publications.clear()
 	host.optics_last_native_tick = -1
 	host.optics_observer_overflow = false
 	var start_usec := Time.get_ticks_usec()
@@ -347,6 +386,7 @@ func _progression_sample(id: String, repeat_index: int) -> Dictionary:
 	var process_ms: Array[float] = []
 	var previous := start_usec
 	host.optics_observe = true
+	check(wb.toggle_pause(),"start real physical progression sample")
 	for _index: int in PROGRESSION_CALLBACKS:
 		await process_frame
 		var now := Time.get_ticks_usec()
@@ -365,6 +405,8 @@ func _progression_sample(id: String, repeat_index: int) -> Dictionary:
 	host.qualification_action = {}
 	check(wb.toggle_pause(),"pause real physical progression sample")
 	await until(idle,"physical pause completes after comparative sample")
+	check(completed.size() == int(after.rapier_tick)-int(before.rapier_tick),"completed-step observer covers every actual Rapier tick")
+	for index: int in completed.size(): check(int(completed[index].rapier_tick) == int(before.rapier_tick)+index+1,"physical completion sequence has no gaps")
 	var intervals: Array[int] = []
 	for index: int in range(1,completed.size()): intervals.append(int(completed[index].completed_usec)-int(completed[index-1].completed_usec))
 	var publication_intervals: Array[int] = []
@@ -400,10 +442,15 @@ func _progression() -> void:
 		if repeat_index%2 == 1: order.reverse()
 		for id: String in order:
 			print("STRATA3_PROGRESS timed sample ",id," ",repeat_index)
-			record.progression_samples.append(await _progression_sample(id,repeat_index))
+			var sample: Variant = await _progression_sample(id,repeat_index)
+			var valid: bool = sample is Dictionary and sample.has_all(["completed_physical_steps","physical_intervals_usec","native_publications","callbacks","elapsed_usec"])
+			if check(valid,"complete physical observation record "+id+" "+str(repeat_index)):
+				check(sample.callbacks == PROGRESSION_CALLBACKS and sample.completed_physical_steps.size() >= 2 and not sample.native_publications.is_empty(),"complete bounded live observation population "+id+" "+str(repeat_index))
+				record.progression_samples.append(sample)
+	check(record.progression_samples.size() == PROGRESSION_REPEATS*COMPARATIVE_PROFILES.size(),"all registered comparative physical samples retained")
 	record.progression_registration = {"repeats":PROGRESSION_REPEATS,"callbacks_per_sample":PROGRESSION_CALLBACKS,
 		"per_sample_watchdog_usec":PROGRESSION_WATCHDOG_USEC,"order":"forward/reverse/forward",
-		"geometry_reset_between_samples":true,
+		"geometry_reset_between_samples":true,"warmup":"six display callbacks while physically paused; no native evolution before timed window",
 		"confound":"Fresh authored scene and native Play hash per sample; same input control observer and callback budget. Wall-clock phase and shared hosted CPU load can vary, so repeat spread and software-renderer limitations remain material.",
 		"physical_scope":"Hosted renderer; physical owner acceptance remains open."}
 
@@ -476,6 +523,7 @@ func run() -> void:
 			await mode_identity()
 			await transform_matrix()
 			await _lab_witness()
+			await _native_edit_witness()
 			await _save_optics()
 		else:
 			await _reopen_witness()
