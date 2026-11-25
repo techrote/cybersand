@@ -1,0 +1,10 @@
+{
+  "schema": "pubpres-recovery-owner-selection-v1",
+  "architecture": "stock_safe",
+  "water_composition": 0,
+  "actual_submission": 0,
+  "render_lookahead": 0,
+  "engineering_disposition": "EXPERIMENTAL / HOLD",
+  "physical_acceptance": "HOLD",
+  "rationale": "Recovery packaging foundation. Stock Safe, Full two-slot publication, continuation and Water composition disabled. Selection remains explicit and reversible until resulting-source qualification and comparative progression evidence support a change."
+}

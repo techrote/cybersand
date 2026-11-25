@@ -1,0 +1,85 @@
+{
+  "files": {
+    "Xorg-output.txt": {
+      "bytes": 2260,
+      "sha256": "2d4b6230ebc14781bb1a25bec74d56858233a130c3ce1a020620217035313f06"
+    },
+    "Xorg.log": {
+      "bytes": 43038,
+      "sha256": "688cdfeb1c494f6df25bb2c64a7508474543e4e4d14b2451d345da846884a962"
+    },
+    "godot.log": {
+      "bytes": 923,
+      "sha256": "80585f183db83497b3b79f6c08aad83bf7757f40cd8437d629b4553f6644df93"
+    },
+    "initial_authoring_framebuffer-hidden-control.png": {
+      "bytes": 87396,
+      "sha256": "53d8dd92870c1fa25a4b824a7d76450fccea1668f25315b8ed0873cd68210ea1"
+    },
+    "initial_authoring_framebuffer-restored.png": {
+      "bytes": 89646,
+      "sha256": "b05a68fab37a50d5ebf2be9e10466b107d0c03135734ab856d980c0d783b591b"
+    },
+    "initial_authoring_framebuffer-shown.png": {
+      "bytes": 89891,
+      "sha256": "3741b248c7c1a37402eedbcdd331944b5164313de383253c7b64f18f8ba4fa3a"
+    },
+    "launch.json": {
+      "bytes": 1465,
+      "sha256": "fe4d6229ceabd5f5d0aa898e4820c899b94aca75e71eee74cce4d2d8ab761c67"
+    },
+    "process-cpu.json": {
+      "bytes": 298530,
+      "sha256": "2eb7a9256f277b51b39db7b4e2277834c02134ada9cec69670f43b849b1fed99"
+    },
+    "process-memory.json": {
+      "bytes": 116913,
+      "sha256": "46a3a6e452384f852117b44c0d34444d81b1fde5eacc5997e8c5d9fff9765c48"
+    },
+    "process.json": {
+      "bytes": 2680,
+      "sha256": "15a38cf0d46ebb5429eeeef11ba1e8275c8eb74825bc9391343b1461f82421c6"
+    },
+    "result.json": {
+      "bytes": 1234173,
+      "sha256": "9e79534c8f9ff564fc30d0def6cff87bb8dfd73bc0f45a73c1f3797fcc9a2726"
+    },
+    "runtime-binding.json": {
+      "bytes": 14495,
+      "sha256": "75cf3203436083b557c64a9929c1c0fe399cbe381874ad9fa7eaab70a2812ee5"
+    },
+    "stderr.log": {
+      "bytes": 553,
+      "sha256": "aa61f39b7a6fcdd96b4a834604e299a885169128fd50af08364b17905062d157"
+    },
+    "stdout.log": {
+      "bytes": 486,
+      "sha256": "fd5428c5de5e26d470c2edae380745571f373d6ca8b9e00ae00df32a45b94977"
+    },
+    "submerged_framebuffer-hidden-control.png": {
+      "bytes": 88839,
+      "sha256": "dd0352258746998773648f329e0458f00857384d75ea53972f7761a4f4165cd9"
+    },
+    "submerged_framebuffer-restored.png": {
+      "bytes": 90425,
+      "sha256": "d22f80f8e55fd6d0bc2110bebc3975f8eae7868d9ceb743c375cfb6df234322c"
+    },
+    "submerged_framebuffer-shown.png": {
+      "bytes": 90664,
+      "sha256": "e503724a50324e40c603f4720472ac97b47c7e9f5390d3f78550d5b76cc0b57d"
+    },
+    "water_refill_framebuffer-hidden-control.png": {
+      "bytes": 89373,
+      "sha256": "041c0ac32f07313f72164a17e1165aa69d5ab453dba32c158eaada1bc2d3a551"
+    },
+    "water_refill_framebuffer-restored.png": {
+      "bytes": 91516,
+      "sha256": "1e274e8dc33bed5a2fb6b61ec143186b404fb83af9b35c0e14fdb7f4d0ae1409"
+    },
+    "water_refill_framebuffer-shown.png": {
+      "bytes": 91007,
+      "sha256": "c0cfb9aeeee9c9d3b6349f5815a526167e1e55ea5db7c461bfb0372e3d88c87d"
+    }
+  },
+  "preserved_scope": "All original graphical/process/runtime evidence except reconstructible imported profile caches"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "pubpres-recovery-exact-source-bundle-v1",
+  "created_utc": "2026-11-25T23:32:46.139675+00:00",
+  "bundle": "source-checkpoint-02.bundle",
+  "bundle_sha256": "f8ad16d56a681617d99ae907409ccc8109541298df053fa1e68ff6412649639f",
+  "bundle_bytes": 2382046,
+  "sources": [
+    {
+      "source": "b6d70861e67d9d1295daeff8d3d7dc59e7ed28b7",
+      "tree": "ea654cf25aa3b7483ed2759cd25adf17a75449aa",
+      "ref": "refs/mission/pubpres-recovery/archive02/b6d70861e67d"
+    },
+    {
+      "source": "3a685655650299e47647c7ddf8be0bfe769fcf74",
+      "tree": "c752eadf3fd808121f51a9f7c436c5732e5d22c3",
+      "ref": "refs/mission/pubpres-recovery/archive02/3a6856556502"
+    },
+    {
+      "source": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+      "tree": "d2e28f7ab3db5106a7f1ea173a802e3628fa6705",
+      "ref": "refs/mission/pubpres-recovery/archive02/864cf7dcbb4e"
+    },
+    {
+      "source": "7491b1699f3db44d059692e77cef8ca4b9307bf1",
+      "tree": "ef22c084772db60723e282ab1d3e3f4c9060a23f",
+      "ref": "refs/mission/pubpres-recovery/archive02/7491b1699f3d"
+    }
+  ],
+  "excluded_already_remote_or_checkpoint01": [
+    "1290c31dc262cdc6d31e9d53bde80fe3527585d7",
+    "5954b3916510a2fb836196ff8a39ba51431a37c9",
+    "0bd275a36669a18217f7861372bbf54a837af750",
+    "675aeb64e11d236089ef212fdc44f7f8fb537b86",
+    "ce2bfb1fa0a9ccd945ed5fc6e89b05e8f4d05e0a",
+    "aa2b8fadd2638d7d5487ac1a0fd19f3bf3ee078d",
+    "df480e6d29118e0512303e26f10efc2249d02370",
+    "e43c1a157e36c39af5033db461dd0de6b5a0d64d",
+    "ba52babd3acf425b46ff3c9bdae960d8b2870055",
+    "a94e706e85f48ce0b78b8d7738fb9f791a065368",
+    "f79d929c04aa93ec295ac4dfc9bbdc6865236937",
+    "11870788cc0a3bf23cf57f0e6546e35da4a434c7"
+  ],
+  "verification": "The bundle contains these 4 refs:\nb6d70861e67d9d1295daeff8d3d7dc59e7ed28b7 refs/mission/pubpres-recovery/archive02/b6d70861e67d\n3a685655650299e47647c7ddf8be0bfe769fcf74 refs/mission/pubpres-recovery/archive02/3a6856556502\n864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14 refs/mission/pubpres-recovery/archive02/864cf7dcbb4e\n7491b1699f3db44d059692e77cef8ca4b9307bf1 refs/mission/pubpres-recovery/archive02/7491b1699f3d\nThe bundle requires these 3 refs:\nce2bfb1fa0a9ccd945ed5fc6e89b05e8f4d05e0a \nf79d929c04aa93ec295ac4dfc9bbdc6865236937 \n1290c31dc262cdc6d31e9d53bde80fe3527585d7 \nThe bundle uses this hash algorithm: sha1\n/workspace/scratch/8a0b6cd48416/cybersand/docs/audits/2026-11-25-pubpres-recovery/source-custody/source-checkpoint-02.bundle is okay\n",
+  "scope": "Exact local source history for all new root Water/multipart/coverage executions and fixture-only original failures, frozen f197 renderer cohort, independent evaluator source review, and explicitly UNQUALIFIED native candidate864cf. Restore checkpoint01 and principal1290 prerequisites first. No evidence relabeling or history rewrite."
+}

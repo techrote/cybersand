@@ -1537,11 +1537,16 @@ func _pick(pos: Vector2i) -> void:
 			# Hit-test the submitted actor, including its actual generation fence;
 			# withheld actors have no clickable visual footprint.
 			if not host._valid_workbench_mask_frame(presentation.get("mask_frame",{})): continue
-			var slot: int = host.physical_actor_session.slot_for_instance(int(a.id))
-			if not presentation.get("poses",{}).has(slot): continue
-			var member: Dictionary = host.physical_actor_session.bridge._members[slot]
-			if presentation.mask_frame.instances.get(int(a.id),{}).get("generation",-1) != member.generation: continue
-			pose = presentation.poses[slot]
+			var actor_slot: int = host.physical_actor_session.slot_for_instance(int(a.id))
+			var bridge: Variant = host.physical_actor_session.bridge
+			var body_slot: int = bridge.actor_body_index(actor_slot)
+			if body_slot < 0 or body_slot >= bridge._members.size() \
+					or not presentation.get("poses",{}).has(body_slot): continue
+			var member: Dictionary = bridge._members[body_slot]
+			# Authored actor ids and slots are not the private physical member
+			# identities used by mask receipts or selected multipart poses.
+			if presentation.mask_frame.instances.get(int(member.instance_id),{}).get("generation",-1) != member.generation: continue
+			pose = presentation.poses[body_slot]
 		else:
 			var state := body_state(int(a.id))
 			if state.is_empty(): continue

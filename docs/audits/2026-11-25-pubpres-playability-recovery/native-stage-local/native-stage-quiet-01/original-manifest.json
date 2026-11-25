@@ -1,0 +1,81 @@
+{
+  "files": {
+    "Xorg-output.txt": {
+      "bytes": 2263,
+      "sha256": "7f31c0d28c3de99df36adda3f5d205341b02290da3b310a9623ef7034cc347bc"
+    },
+    "Xorg.log": {
+      "bytes": 41391,
+      "sha256": "1613bf8cf2c7afdee2144a3f324f158c84a6f0dbfc0dd6b81e79fa2e8c6cbb4c"
+    },
+    "driver-output.txt": {
+      "bytes": 127,
+      "sha256": "5ab9cb1688ff05a4036863d5307d7c112eda79f16ecf979e149f62a82064e35a"
+    },
+    "launch.json": {
+      "bytes": 1072,
+      "sha256": "d5c4d0cd36edb71bd3001570300273e5564d9029d41f53ec9029c5885c074bd2"
+    },
+    "probe/RESULT.json": {
+      "bytes": 334687,
+      "sha256": "6edf71adf7c55f46c0cc65be6d929de7aac5960899fc4da84901537104834296"
+    },
+    "probe/campaign.json": {
+      "bytes": 13579,
+      "sha256": "9cc4261c1b2439d712a0104ed91549f4cb67e007e994384d240e8ad6b8762ddc"
+    },
+    "probe/capture/godot.log": {
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae"
+    },
+    "probe/capture/process-cpu.json": {
+      "bytes": 110662,
+      "sha256": "b9aec5f1e68f856ceed83ec4a69689d6f4c4492771114d13a2c3be8eb7116fdb"
+    },
+    "probe/capture/process-memory.json": {
+      "bytes": 43073,
+      "sha256": "08954be3da0c7b453bc3a1edffa05ca089f3df34130dade50833d84cd31e99c9"
+    },
+    "probe/capture/process.json": {
+      "bytes": 3111,
+      "sha256": "0a4931da65027774a8cf21642e0ba0777359e327894e901471f3278a4b92e610"
+    },
+    "probe/capture/receipt-after.png": {
+      "bytes": 450988,
+      "sha256": "a0e24afa004657b9f3b81738efb187aea10e6997357d04ebaf1a6acf1ae1e069"
+    },
+    "probe/capture/receipt-before.png": {
+      "bytes": 343251,
+      "sha256": "d726edf889b06ca13c81a10fe122fd48a0e30311359c4419180f1dba069052fd"
+    },
+    "probe/capture/receipt-causal-events.jsonl": {
+      "bytes": 4553,
+      "sha256": "a750369c5a47778404d8883c6f0e6ef5a90033bc4b0cdc3d02e6ac485b7a7a93"
+    },
+    "probe/capture/receipt-events.jsonl": {
+      "bytes": 1797208,
+      "sha256": "3094094f53e7cf71fabc4dee29e4ee098cd5d5ef7b91d503ffd49484b3eada9d"
+    },
+    "probe/capture/receipt-presentation.json": {
+      "bytes": 622928,
+      "sha256": "36ff72b9b78c34f108a714d2eac6d30bbcd95725836b0bee85a233f281f38a6b"
+    },
+    "probe/capture/receipt.json": {
+      "bytes": 105867,
+      "sha256": "d6a85a03c7c183973bd773107b8842fff97d5578bc0fe68b9c34d1912aa5cea9"
+    },
+    "probe/capture/stderr.log": {
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7"
+    },
+    "probe/capture/stdout.log": {
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43"
+    },
+    "probe/registration.json": {
+      "bytes": 20699,
+      "sha256": "26cfe7e3040692ff20be2aab559f8d9f1042996a39dbc3424f9fb0ce1f267ed4"
+    }
+  },
+  "scope": "Original evidence excluding reconstructible imported project and profile caches"
+}

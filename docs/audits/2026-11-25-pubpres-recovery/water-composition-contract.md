@@ -123,3 +123,41 @@ adoption retires the ring. It records only presentation provenance, without a ne
 native publication, waiting target, body mutation or physical completion. The
 initial closure still independently requires step zero, clock zero and identical
 actual initialized pose. This seam must execute in the native graphical fixture.
+
+## Prospective exact immutable coverage reuse
+
+The source-bound native graphical v2-03 test demonstrated repeated budget
+omissions for stationary submerged actors: the initial paused Needle had 54
+omissions across 562 observed frames, including 38 shared-budget refusals; the
+completed paused Needle had 73 omissions, including 55 shared-budget refusals.
+The rewet framebuffer failure was an actual refused draw with 886 scanned cells
+and 10 budget vetoes. These original results remain failed. They do not justify
+increasing the scan deadline or accepting unproved coverage.
+
+This amendment replaces the earlier blanket prohibition on coverage caching
+with one narrowly specified immutable memo. Register it before executing the
+new implementation: retain at most one **fully safe, completed** Water/Empty
+sweep result per actual physical member. Its exact key includes owner/bridge,
+session/epoch, member/generation/RID, World, actual uploaded revision and serial,
+current and relevant previous immutable content identities/shapes/texture RIDs,
+unknown-history state, both sweep endpoints and every rectangle. An inactive
+previous image is excluded explicitly; activating it requires a matching new
+proof. Unknown required image history cannot match a memo.
+
+Reuse may avoid a repeated scan after this frame's shared deadline, because the
+exact immutable geometry question has already been completely answered. It may
+not create a new native dependency, pose, completion, actual submission or scan
+count. The current physical authority is checked independently on every use.
+Refused/partial scans never seed a memo. Any changed input requires a genuine
+new scan with all original budgets. The pixel shader continues to clip other
+materials from both actual uploaded histories. Memo entries are cleared at
+owner retirement and remain bounded by admitted members; discarded candidates
+may retain only this pure computation result, never visible-history credit.
+
+Required adversaries cover changed current/previous content and activation,
+unknown history, World/revision/upload, owner/member/shape, start/end pose,
+Sand under either visible history, rejected scans, actual material mutations,
+paused/camera stability after initial full proof, and zero fabricated physical
+or submitted-history credit. Actual native framebuffer tests must demonstrate
+that budget-driven repeated stationary omissions are removed. No performance
+or final playability acceptance follows from the memo's unit tests alone.

@@ -45,3 +45,5 @@ godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lf
 
 # PUBPRES final measurement-driver closure compares these new script bytes exactly.
 tools/pubpres_final/*.ps1 text eol=lf
+# The recovery driver includes its shipped PowerShell bytes in source custody.
+tools/pubpres_recovery_windows/*.ps1 text eol=lf

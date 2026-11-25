@@ -3,8 +3,12 @@ extends SceneTree
 const Coherence = preload("res://scripts/workbench_presentation_coherence.gd")
 const Composition = preload("res://scripts/workbench_water_composition.gd")
 const Overlay = preload("res://scripts/physical_actor_overlay.gd")
+const Main = preload("res://scripts/main.gd")
+const Session = preload("res://scripts/physical_actor_session.gd")
+const Bridge = preload("res://scripts/workbench_physics_bridge.gd")
 var checks: int = 0
 var failures: Array[String] = []
+var coverage_checks_completed: bool = false
 
 func check(value: bool, message: String) -> void:
 	checks += 1
@@ -127,6 +131,100 @@ func independent_authority_checks() -> void:
 func color_error(a: Color, b: Color) -> float:
 	return maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 
+
+func coverage_cache_checks() -> void:
+	# Exercise the production scan/cache seam without claiming an initialized
+	# native owner. Real authority, lifecycle and framebuffer tests are separate.
+	var app = Main.new()
+	var session = Session.new()
+	var bridge = Bridge.new()
+	var body: RID = PhysicsServer2D.body_create()
+	bridge._session = 5
+	bridge._epoch = 7
+	bridge._members.append({"instance_id":11,"generation":7})
+	bridge._body_rids.append(body)
+	session.bridge = bridge
+	app.physical_actor_session = session
+	app.image = picture(3)
+	app._presentation_previous_image = picture(3)
+	app._presentation_current_bytes = app.image.get_data()
+	app._presentation_previous_bytes = app._presentation_previous_image.get_data()
+	app._presentation_previous_unknown = false
+	app._presentation_current_content_id = 21
+	app._presentation_previous_content_id = 20
+	app._presentation_current_content_shape = Vector3i(8,8,Image.FORMAT_RG8)
+	app._presentation_previous_content_shape = Vector3i(8,8,Image.FORMAT_RG8)
+	app.last_uploaded_world_generation = 4
+	app.last_uploaded_revision = 9
+	app.last_uploaded_render_snapshot_serial = 30
+	app.texture = ImageTexture.create_from_image(app.image)
+	app.previous_texture = ImageTexture.create_from_image(app._presentation_previous_image)
+	var pose := Transform2D(0,Vector2(3.5,3))
+	var rectangles := [{"center":Vector2.ZERO,"size":Vector2(3,2.5)}]
+	var context := {"previous_blend_active":true,"deadline_usec":Time.get_ticks_usec()+100000}
+	var summary := {"cells_examined":0,"budget_vetoes":0}
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),
+		"unscanned coverage never appears from the reuse path")
+	var scanned: Dictionary = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary)
+	check(scanned.safe and scanned.scanned > 0 and app._workbench_water_coverage_cache.size()==1,
+		"a complete genuine coverage scan seeds one bounded member record")
+	context.deadline_usec = 1
+	var spent: int = int(summary.cells_examined)
+	var reused: Dictionary = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true)
+	check(reused.safe and reused.scanned==0 and reused.original_scanned==scanned.scanned \
+		and reused.coverage_reused and summary.cells_examined==spent,
+		"exact immutable coverage reuses its result without inventing new scan work")
+	for property: String in ["last_uploaded_world_generation","last_uploaded_revision",
+		"last_uploaded_render_snapshot_serial","_presentation_current_content_id","_presentation_previous_content_id"]:
+		var original: int = app.get(property)
+		app.set(property,original+1)
+		check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),
+			"coverage refuses changed uploaded identity "+property)
+		app.set(property,original)
+	bridge._epoch += 1
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),"new owner epoch cannot inherit coverage")
+	bridge._epoch -= 1
+	bridge._members[0].generation += 1
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),"new member generation cannot inherit coverage")
+	bridge._members[0].generation -= 1
+	var moved := Transform2D(0,Vector2(3.6,3))
+	check(app._assess_workbench_water_sweep(0,moved,pose,rectangles,context,summary,true).is_empty(),"changed sweep anchor requires a real scan")
+	check(app._assess_workbench_water_sweep(0,pose,moved,rectangles,context,summary,true).is_empty(),"changed actual endpoint requires a real scan")
+	var changed: Array = rectangles.duplicate(true)
+	changed[0].size.x += 1
+	check(app._assess_workbench_water_sweep(0,pose,pose,changed,context,summary,true).is_empty(),"changed shape cannot reuse coverage")
+	app._presentation_previous_unknown = true
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),"unknown active image history refuses reuse")
+	app._presentation_previous_unknown = false
+	app._presentation_current_content_id += 1
+	context.deadline_usec = Time.get_ticks_usec()+100000
+	app.image = picture(2)
+	app._presentation_current_bytes = app.image.get_data()
+	var refused: Dictionary = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary)
+	check(not refused.safe,"new Sand content requires and fails the genuine full scan")
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),"a refused new-content scan never becomes cached authority")
+	app.image = picture(3)
+	app._presentation_current_bytes = app.image.get_data()
+	app._presentation_current_content_id += 1
+	app._presentation_previous_content_id += 1
+	app._presentation_previous_image = picture(2)
+	app._presentation_previous_bytes = app._presentation_previous_image.get_data()
+	refused = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary)
+	check(not refused.safe,"new active previous Sand image independently refuses coverage")
+	context.previous_blend_active = false
+	scanned = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary)
+	check(scanned.safe,"inactive previous history contributes no pixels and is excluded explicitly")
+	context.previous_blend_active = true
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),"reactivated old image cannot borrow current-only coverage")
+	check(app.workbench_presentation_frame.is_empty() and app._workbench_presentation_history.retained_observations()==0 \
+		and bridge.manual_step_count()==0,"coverage work creates no visible history or physical credit")
+	bridge._body_rids.clear()
+	PhysicsServer2D.free_rid(body)
+	app.physical_actor_session = null
+	session.free()
+	app.free()
+	coverage_checks_completed = true
+
 func graphical_checks() -> void:
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(128,128)
@@ -208,6 +306,8 @@ func graphical_checks() -> void:
 func _run() -> void:
 	identity_checks()
 	independent_authority_checks()
+	coverage_cache_checks()
+	check(coverage_checks_completed,"the complete production coverage fixture actually executed")
 	var water: Image = picture(3)
 	var empty: Image = picture(0)
 	check(not proof(water,water,false).safe,"ordinary empty-footprint guard still refuses retained Water")

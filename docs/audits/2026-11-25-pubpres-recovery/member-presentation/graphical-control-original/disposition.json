@@ -1,0 +1,10 @@
+{
+  "source": "9a47c7ca92096a0b8d5504cc3c95cf9707495b5e",
+  "result": "FAIL_ORACLE_CONTROL_NOT_EXERCISED",
+  "checks": 179,
+  "failures": [
+    "actual body beyond slot eight appears, disappears and returns in the same framebuffer pixel"
+  ],
+  "reason": "Production Overlay.present reasserts visible=true every prepared draw; one-off hide() did not persist through the tested next draw. Actual179checks retains1failedpixelcontrol, no framebuffer pass claimed. Use persistent explicit alpha control and assert its actual state during readback.",
+  "raw_sha256": "93c38b823cca7e0759f53029a388db1216d72898c7bfd5da52744e61fe0a0a14"
+}

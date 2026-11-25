@@ -1,0 +1,89 @@
+{
+  "proof": {
+    "schema": "pubpres-recovery-local-engine-v1",
+    "build_exit_code": 0,
+    "source_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "binary": "/workspace/scratch/8a0b6cd48416/engine-source/bin/godot.linuxbsd.template_debug.x86_64",
+    "binary_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+    "version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+    "patch_sha256": "f17555f97681bb1c843ade738c738405789f21aa4a487c70a0c778bf83cfb085",
+    "combined_patch_sha256": "0f4491e7211f58e2b39d7a37878148e8bc0d94451f356c51796e26c15eda0571",
+    "patched_source_files_sha256": {
+      "drivers/egl/egl_manager.cpp": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e",
+      "modules/text_server_adv/text_server_adv.cpp": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b",
+      "modules/text_server_fb/text_server_fb.cpp": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1",
+      "main/main.cpp": "3bacaf979be7ff2b69c0bc0b0414d8b45ea6646f8f938332b1c30e0ce0eb45b7",
+      "servers/rendering/rendering_server_default.cpp": "38df3aeed8b72db4251c948734daf39976f04da8d16dd98682bafabef04fa89c",
+      "servers/rendering/rendering_server_default.h": "0b9c4f7d12c284b7b743ae1161f1c8c67483ea0ee1afabb444d73d397afa671d"
+    },
+    "build_log": "/workspace/scratch/8a0b6cd48416/cybersand/docs/audits/2026-11-25-pubpres-recovery/atomic-linux-development-02/engine-build-atomic-linux-02-explicit-pass.log",
+    "build_log_sha256": "6bbcc9f4e757556be4d6c07814d7d4208a851702197ca49a318abb3a00de6af7",
+    "retained_build_logs_sha256": {
+      "engine-build-atomic-linux-02.log": "23127401ec2216a1f4db9962f1ac180a4166566ed38090aa5400f2a43b039b20",
+      "engine-build-atomic-linux-02-final-pass.log": "b7c09863ac303eab2dc329484af85839587dd9cce6e7a2655fedce8ecb594376",
+      "engine-build-atomic-linux-02-explicit-pass.log": "6bbcc9f4e757556be4d6c07814d7d4208a851702197ca49a318abb3a00de6af7"
+    },
+    "scons_command": [
+      "/workspace/scratch/b5ff5c354306/toolchain/scons/bin/python",
+      "-m",
+      "SCons",
+      "-j4",
+      "platform=linuxbsd",
+      "arch=x86_64",
+      "threads=yes",
+      "target=template_debug",
+      "disable_path_overrides=no",
+      "production=yes",
+      "optimize=speed",
+      "lto=none",
+      "debug_symbols=no",
+      "dev_build=no",
+      "precision=single",
+      "opengl3=yes",
+      "vulkan=no",
+      "x11=yes",
+      "wayland=no",
+      "alsa=no",
+      "pulseaudio=no",
+      "dbus=no",
+      "speechd=no",
+      "udev=no",
+      "fontconfig=no",
+      "tests=no",
+      "scu_build=yes",
+      "scu_limit=8"
+    ],
+    "build_environment": {
+      "BUILD_NAME": "cybersand_egl_font_atomic"
+    },
+    "engine_qualified": false,
+    "scope": "Local Linux GCC14.2 template_debug, actual script dispatch enabled. Final exact input pass up-to-date. Functional llvmpipe development evidence; not Windows locked compiler/API/PE qualification, GPU completion, physical display or owner hardware acceptance.",
+    "original_invalid_template_build": "../atomic-linux-development-build.json",
+    "application_transaction_results": "../presentation-development/atomic02"
+  },
+  "proof_sha256": "4571f96293c1af7c9c5e962b298ebfb86bfd6dd510d01c88730df06dc2328571",
+  "gates_sha256": "6adc9fc01fdbadb44afc75cc0bcc38282b141fc6bd34fb0820d9a78cf53d0766",
+  "verified": [
+    {
+      "thread": "safe",
+      "lookahead": 0,
+      "receipt_sha256": "b9b8185cb288a91ca1cbb937c27790ad0e9c3836396b2b1257973512b335befa",
+      "stdout_sha256": "af0db6a41c35792fc21322250b4ac1953bea016dd4aa25b3a7f1c84e1d1f7842"
+    },
+    {
+      "thread": "separate",
+      "lookahead": 0,
+      "receipt_sha256": "d6c1945fca3ab58ffffa11b479d7baaeabcef26676c00590c066925cadea4c36",
+      "stdout_sha256": "279b7043fa6ad493e1f5e00ac0c67a9bb9c26500bab702f3050fd8ec6d375eda"
+    },
+    {
+      "thread": "separate",
+      "lookahead": 4,
+      "receipt_sha256": "53be085e1203cf628aee3e825fb58f7780a19bb09f903d4226f1ed0a100dc290",
+      "stdout_sha256": "ca4da6788a51ed582a1e1e689a485111a76fd573e4f343e40b059892860bb92c"
+    }
+  ],
+  "engine_qualified": false,
+  "disposition": "DEVELOPMENT_ONLY / HOLD",
+  "scope": "Local Linux development build with real source-bound graphical transaction gates and original physical capture oracle; not the Windows compiler/API/PE qualification, not hosted or physical-device acceptance."
+}

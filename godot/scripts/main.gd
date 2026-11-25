@@ -117,6 +117,8 @@ var _workbench_water_dependencies: Dictionary = {}
 var _workbench_water_completion_context: Dictionary = {}
 var _workbench_water_closure_cache: Dictionary = {}
 var _workbench_water_closure_cache_hits: int = 0
+var _workbench_water_coverage_cache: Dictionary = {}
+var _workbench_water_coverage_cache_hits: int = 0
 var engine_lab_wait_native_sample: bool = true
 var engine_lab_ack_delay_frames: int = 0
 var _engine_lab_pending_ack_serial: int = 0
@@ -3787,6 +3789,10 @@ func _workbench_bound_step(entry: Dictionary) -> int:
 func _observe_workbench_presentation(slot: int, sample_serial: int = -1) -> Dictionary:
 	var bridge: Variant = physical_actor_session.bridge
 	var member: Dictionary = bridge._members[slot]
+	var owner: Array = [bridge.get_instance_id(),bridge._session,bridge._epoch]
+	if not _workbench_presentation_history.bound_to(owner) \
+			or not _workbench_presentation_history.member_matches(slot,int(member.instance_id),int(member.generation)):
+		if not _workbench_presentation_history.bind_members(owner,bridge._members): return {}
 	var step: int = physical_actor_session.tick
 	# The bridge copies these values after every completed Rapier step. Drawing
 	# must never query PhysicsServer or turn an old completion into a new one.
@@ -3832,7 +3838,8 @@ func _workbench_water_composition_enabled() -> bool:
 
 func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) -> void:
 	_workbench_water_dependencies.clear()
-	_workbench_water_completion_context.clear()
+	# Existing readers retain the immutable capsule; retire our reference.
+	_workbench_water_completion_context = {}
 	_workbench_water_closure_cache.clear()
 	if not _workbench_water_composition_enabled() or physical_actor_session == null or snapshot == null:
 		return
@@ -3956,8 +3963,38 @@ func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary
 	return result
 
 
-func _assess_workbench_water_sweep(start: Transform2D, target: Transform2D,
-		rectangles: Array, context: Dictionary, summary: Dictionary) -> Dictionary:
+func _workbench_water_coverage_identity(slot: int, start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary) -> Dictionary:
+	if physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or _workbench_visible_material_contents(bool(context.previous_blend_active)).is_empty(): return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if slot < 0 or slot >= bridge._members.size(): return {}
+	var member: Dictionary = bridge._members[slot]
+	return {"owner":[bridge.get_instance_id(),bridge._session,bridge._epoch,
+		member.instance_id,member.generation,bridge._body_rids[slot].get_id()],
+		"material":[last_uploaded_world_generation,last_uploaded_revision,last_uploaded_render_snapshot_serial,
+			_presentation_current_content_id,_presentation_current_content_shape,
+			_material_publication_rid(texture).get_id()],
+		"previous":[_presentation_previous_content_id,_presentation_previous_content_shape,
+			_material_publication_rid(previous_texture).get_id(),_presentation_previous_unknown]
+			if bool(context.previous_blend_active) else [],
+		"sweep":[start,target,rectangles]}
+
+
+func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary, summary: Dictionary, cached_only: bool = false) -> Dictionary:
+	var identity: Dictionary = _workbench_water_coverage_identity(slot,start,target,rectangles,context)
+	var cached: Dictionary = _workbench_water_coverage_cache.get(slot,{})
+	if not identity.is_empty() and cached.get("identity") == identity:
+		# This is an exact immutable image/geometry result, not physical or
+		# visible-history authority. The caller must separately prove the current
+		# actual owner/pose. No scan cells or elapsed time are invented on reuse.
+		var retained: Dictionary = cached.result.duplicate(true)
+		retained["original_scanned"] = retained.scanned
+		retained["scanned"] = 0
+		retained["coverage_reused"] = true
+		return retained
+	if cached_only: return {}
 	var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
 	if remaining <= 0 or Time.get_ticks_usec() >= int(context.deadline_usec):
 		summary.budget_vetoes += 1
@@ -3969,6 +4006,13 @@ func _assess_workbench_water_sweep(start: Transform2D, target: Transform2D,
 		_presentation_current_bytes,_presentation_previous_bytes,remaining,true,true)
 	summary.cells_examined += int(result.scanned)
 	if str(result.reason) in ["scan_budget","time_budget","shared_budget"]: summary.budget_vetoes += 1
+	# Refusals, partial scans and unknown history never seed this bounded cache.
+	# A single exact last result per real member is sufficient for stationary
+	# actors across repeated draws; any changed image/geometry must scan again.
+	if bool(result.safe) and not identity.is_empty():
+		var value: Dictionary = {"identity":identity.duplicate(true),"result":result.duplicate(true)}
+		WorkbenchWaterComposition.freeze(value)
+		_workbench_water_coverage_cache[slot] = value
 	return result
 
 
@@ -4024,7 +4068,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec}
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
 		"blocked_other":0,"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0,
-		"intentional_holds":0,"withheld":0,"refined_queries":0,"refined_clear":0}
+		"intentional_holds":0,"withheld":0,"refined_queries":0,"refined_clear":0,
+		"water_coverage_reuses":0}
 	var bridge: Variant = physical_actor_session.bridge if physical_actor_session != null else null
 	var identity: Array = [bridge._session,bridge._epoch,last_uploaded_world_generation] \
 		if bridge is WorkbenchBridge else []
@@ -4126,10 +4171,30 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			elif certificate_valid and anchor == target:
 				decision = {"safe":true,"reason":"same_presented_pose"}
 			else:
+				# A previously COMPLETE scan of the exact same immutable images and
+				# sweep may be reused before the shared scan deadline. This prevents
+				# repeated static submerged actors losing visibility solely because
+				# earlier peers spent this frame's budget. Native authority is fresh.
+				if _workbench_water_composition_enabled() and target_step == physical_actor_session.tick \
+						and target == desired:
+					var retained_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
+					var retained_start: Transform2D = desired if initial or retained_reentry else anchor
+					var retained_check: Dictionary = _assess_workbench_water_sweep(slot,retained_start,
+						desired,bridge._rects[slot],resolved,summary,true)
+					if not retained_check.is_empty():
+						var retained_proof: Dictionary = _workbench_water_dependency(slot,frame,entry,desired_observation)
+						if not retained_proof.is_empty():
+							retained_proof["coverage"] = retained_check
+							resolved.water_proofs[slot] = retained_proof
+							resolved.explicit_reentries[slot] = retained_reentry
+							_workbench_water_coverage_cache_hits += 1
+							summary.water_coverage_reuses += 1
+							decision = {"safe":true,"reason":"water_composed:"+str(retained_proof.kind)}
 				# Certify only the motion since the last presented state. Old
 				# material behind that state cannot invalidate elapsed motion.
-				if recovering: resolved.recovery_attempts[slot] += 1
-				decision = _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
+				if decision.is_empty():
+					if recovering: resolved.recovery_attempts[slot] += 1
+					decision = _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
 			if not bool(decision.safe) and _workbench_water_composition_enabled() \
 					and target_step == physical_actor_session.tick and target == desired \
 					and str(decision.reason) in ["material_in_swept_mask","bounded_pose_delta"]:
@@ -4139,8 +4204,11 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					# consecutive visible poses still require the full continuous sweep.
 					var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
 					var water_start: Transform2D = desired if initial or water_reentry else anchor
-					var water_check: Dictionary = _assess_workbench_water_sweep(water_start,desired,bridge._rects[slot],resolved,summary)
+					var water_check: Dictionary = _assess_workbench_water_sweep(slot,water_start,desired,bridge._rects[slot],resolved,summary)
 					if bool(water_check.safe):
+						if water_check.get("coverage_reused",false):
+							_workbench_water_coverage_cache_hits += 1
+							summary.water_coverage_reuses += 1
 						water_proof["coverage"] = water_check.duplicate()
 						resolved.water_proofs[slot] = water_proof
 						resolved.explicit_reentries[slot] = water_reentry
@@ -4289,11 +4357,13 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 				"previous_texture":previous_texture,"world_size":image.get_size(),
 				"previous_active":resolved.previous_blend_active,"snapshot_blend":resolved.snapshot_blend}
 			for part: Dictionary in resolved.parts:
-				part["water_composed"] = resolved.water_proofs.has(int(part.get("physical_body_index",-1)))
+				part["water_composed"] = resolved.water_proofs.has(int(part.get("physical_body_index",
+					part.get("water_body_index",-1))))
 		var pilot_slot: int = physical_actor_session.slot_for_instance(int(resolved.follow_instance_id))
-		if resolved.poses.has(pilot_slot):
-			resolved.follow_target = resolved.poses[pilot_slot].origin
-			resolved.follow_source_step = resolved.selected_steps.get(pilot_slot,-1)
+		var pilot_body: int = bridge.actor_body_index(pilot_slot)
+		if resolved.poses.has(pilot_body):
+			resolved.follow_target = resolved.poses[pilot_body].origin
+			resolved.follow_source_step = resolved.selected_steps.get(pilot_body,-1)
 			_workbench_follow_state = {"instance_id":resolved.follow_instance_id,
 				"position":resolved.follow_target,"step":resolved.follow_source_step}
 	if mode == "coherent":
@@ -5657,8 +5727,9 @@ func _close_physical_actors() -> void:
 	_workbench_completed_step = -1
 	_workbench_completed_step_usec = 0
 	_workbench_water_dependencies.clear()
-	_workbench_water_completion_context.clear()
+	_workbench_water_completion_context = {}
 	_workbench_water_closure_cache.clear()
+	_workbench_water_coverage_cache.clear()
 	_workbench_follow_state.clear()
 	workbench_presentation_frame = {}
 	_workbench_mapping_locked = false

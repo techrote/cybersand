@@ -1,0 +1,36 @@
+{
+  "schema": "pubpres-deferred-producer-attribution-registration-v1",
+  "status": "PROSPECTIVE / supplementary causal analysis, no acceptance relaxation",
+  "registered_utc": "2026-11-25T23:10:15.131093+00:00",
+  "application_source": "f197d0010699682ab7a7ed4e593a718857c9ed47",
+  "before_results": "No successful bounded timing arm exists at registration; prior1290 stock observer calibration failed direct geometry metadata contract.",
+  "analysis_script_sha256": "0e3d760aa294cff8fa9b358d22a79377e6fb06bb15de9589f17b06cef5dc4fed",
+  "inputs": [
+    "Unchanged admitted physical receipt and original receipt-events.jsonl",
+    "Actual complete engine-draws.json + terminal byte digest",
+    "Source-matched independent engine_trace.py including actual submission/probe joins"
+  ],
+  "exact_batch_conditions": [
+    "Two consecutive actual draw serials wholly inside capture, same positive owner",
+    "Next process frame minus prior process frame minus one equals recorded previous_batch_deferred_turns",
+    "Exactly one original Main callback for every intervening process frame",
+    "Every counted Main/physics/step clock lies inside its paired actual admissions",
+    "Each counted completed step has matching process frame, physics frame, origin callback/start and lies inside that actual callback completion; duplicate callback/step identities are unclassified"
+  ],
+  "quantities": [
+    "Actual physics_callback event count on exact intervening frames",
+    "Actual rapier_step event count and step IDs on exact intervening frames",
+    "Those callbacks/steps completing before prior render CPU return timestamp",
+    "Partial intervening Main callback observation span",
+    "Full actual draw admission interval",
+    "Separate scaled render-time carry"
+  ],
+  "limitations": [
+    "Individual defer calls and future physics deadlines are not directly timestamped",
+    "Main callback span excludes late candidate preparation and message flush",
+    "Scaled render time is not wall-clock interval",
+    "Unclassifiable and capture-boundary batches are not silently treated as zero",
+    "No changed scheduling, elapsed time, simulation work, acceptance threshold or physical/GPU/display credit",
+    "Original full physical analysis is hash-joined, not independently re-reduced by this supplementary helper; original engine/application/probe joins are replayed"
+  ]
+}

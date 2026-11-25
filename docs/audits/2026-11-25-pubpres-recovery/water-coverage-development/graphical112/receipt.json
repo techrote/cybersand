@@ -1,0 +1,26 @@
+{
+  "source_revision": "1fe1e7d9d9a9f2bc36faa84b71660bd7a5992045",
+  "scope": "functional production coverage, shader, native/image authority and resource checks only; no performance claim",
+  "command": [
+    "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/8a0b6cd48416/cybersand/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--audio-driver",
+    "Dummy",
+    "--script",
+    "res://tests/test_workbench_water_composition.gd"
+  ],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "input_hashes": {
+    "scripts/main.gd": "f9c911cf24e3acbd4754c4286f32a58d692492a33d849c157d475b1ecc46ded7",
+    "scripts/physical_actor_session.gd": "ac711b05343caf53ed649ad03cab2fa9dbede9f59838be6b525a06e68a701d46",
+    "scripts/physical_actor_overlay.gd": "4cb588f0c29cede6a22e7f84cebc7afc7b07a7fdd3f39755bf99cc9b3e42cb9a",
+    "scripts/workbench_water_composition.gd": "f50cb53285e7317e6a182609c66f042683b3b79f87cd0b333513255a85e1abbd",
+    "scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+    "shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+    "tests/test_workbench_water_composition.gd": "6586c9cf52be25299b6d987ceda759e327a90dfdca5a53856d01c6d9f0b43151"
+  },
+  "returncode": 0
+}

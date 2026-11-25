@@ -1,0 +1,175 @@
+#!/usr/bin/env python3
+"""Adversarial manifest tests. Synthetic PE bytes never qualify a runtime."""
+from __future__ import annotations
+
+import copy
+import ast
+import importlib.util
+import json
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+from unittest import mock
+
+import package_windows as package
+
+spec = importlib.util.spec_from_file_location("frozen_package_tests", package.ROOT / package.LEGACY / "test_package_windows.py")
+fixtures = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(fixtures)
+
+
+class FinalPackageTests(unittest.TestCase):
+    def test_complete_native_dependency_verifier_is_frozen(self):
+        def function(path,name):
+            return next(node for node in ast.parse(path.read_text()).body if isinstance(node,ast.FunctionDef) and node.name==name)
+        old=package.ROOT/'tools/pubpres_final_windows/package_windows.py'
+        new=package.ROOT/package.TOOLS/'package_windows.py'
+        self.assertEqual(ast.dump(function(old,'verify_sources')),ast.dump(function(new,'verify_sources')))
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp.name)
+        self.record = fixtures.fixture(self.root)
+        self.candidate = self.record["candidate_commit"]
+        self.record["sources"] = {"C": self.record["sources"]["C"]}
+        for key in ("M", "I"):
+            shutil.rmtree(self.root / "sources" / key)
+        self.record.update(schema=package.SCHEMA, mission=package.MISSION, defaults=copy.deepcopy(package.DEFAULTS),
+                           package_filename=f"CyberSand-{package.MISSION}-{self.candidate[:12]}-Windows.zip",
+                           patched_engine=None, owner_launcher=package.TOOLS + "/Start-PUBPRES-Final.ps1",
+                           owner_observer=package.TOOLS + "/owner_start.gd",
+                           owner_results_collector=package.TOOLS + "/Collect-Results.ps1",
+                           owner_commands={"Open Workbench.cmd": "ordinary", "Open Wave 512.cmd": "wave512",
+                                           "Open Wave 1024.cmd": "wave1024", "Open Wave 2048.cmd": "wave2048",
+                                           "Open Mixed 2048.cmd": "mixed2048"})
+        for name, scene in self.record["owner_commands"].items():
+            fixtures.put(self.root, name, package.command(self.candidate, scene))
+        fixtures.put(self.root, "Collect Results.cmd", package.command(self.candidate, collector=True))
+        fixtures.put(self.root,package.recovery_policy.FALLBACK_COMMAND,package.command(self.candidate,mode='Fallback'))
+        configured=package.recovery_policy.selection()
+        fixtures.put(self.root,package.TOOLS+'/selection.json',json.dumps(configured))
+        self.record.update(recovery_selection=configured,recovery_selection_sha256=package.digest(self.root/package.TOOLS/'selection.json'))
+        fixtures.put(self.root,'qualification/recovery-correctness.json',json.dumps({
+            'schema':'pubpres-recovery-owner-correctness-v1','source_commit':self.candidate,
+            'source_tree':self.record['sources']['C']['source_tree'],'selection':configured,
+            'engine_sha256':self.record['engine']['gui']['sha256'],
+            'native_sha256':self.record['sources']['C']['native']['sha256'],'physical_acceptance':'HOLD',
+            'stock':{'outcomes':19,'raw_inputs_and_supplemental_replayed':True},'water':None}))
+        for name in ("Start-PUBPRES-Final.ps1", "owner_start.gd", "Collect-Results.ps1", "ACCEPTANCE.md"):
+            fixtures.put(self.root, package.TOOLS + "/" + name, "synthetic source-only " + name + "\n")
+        fixtures.put(self.root, "ACCEPTANCE.md", (self.root / package.TOOLS / "ACCEPTANCE.md").read_bytes())
+        fixtures.put(self.root, "tools/pubpres_final/registration.json", json.dumps({
+            "schema": "pubpres-playability-final-registration-v1", "predecessor": {"source": package.DONOR}}))
+        self.pins = mock.patch.dict(package.base.GODOT_EXECUTABLE_SHA256,
+            {entry["path"]: entry["sha256"] for entry in (self.record["engine"]["gui"], self.record["engine"]["console"])}, clear=True)
+        self.pins.start()
+        self.save()
+
+    def tearDown(self):
+        self.pins.stop()
+        self.temp.cleanup()
+
+    def save(self):
+        fixtures.save(self.root, self.record)
+
+    def verify(self):
+        return package.verify(self.root, self.candidate)
+
+    def test_source_and_dependency_closure_admitted_with_test_only_pins(self):
+        self.assertEqual(set(self.verify()["sources"]), {"C"})
+
+    def test_rehashed_unselected_water_and_fallback_substitution_refused(self):
+        changed=copy.deepcopy(self.record['recovery_selection']);changed['water_composition']=1-changed['water_composition']
+        fixtures.put(self.root,package.TOOLS+'/selection.json',json.dumps(changed))
+        self.record.update(recovery_selection=changed,recovery_selection_sha256=package.digest(self.root/package.TOOLS/'selection.json'))
+        self.save()
+        with self.assertRaisesRegex(ValueError,'Source-pinned recovery'):self.verify()
+
+    def test_missing_graphical_gate_cannot_be_rehashed_into_qualification(self):
+        path=self.root/'qualification/recovery-correctness.json';value=json.loads(path.read_bytes())
+        value['stock']['outcomes']=18;fixtures.put(self.root,'qualification/recovery-correctness.json',json.dumps(value));self.save()
+        with self.assertRaisesRegex(ValueError,'graphical correctness'):self.verify()
+
+    def test_fallback_is_explicit_and_cannot_enable_a_treatment(self):
+        path=self.root/package.recovery_policy.FALLBACK_COMMAND
+        path.write_bytes(path.read_bytes().replace(b'-RecoveryMode Fallback',b'-RecoveryMode Selected'))
+        self.save()
+        with self.assertRaisesRegex(ValueError,'fallback command'):self.verify()
+
+    def test_self_consistent_changed_defaults_remain_refused(self):
+        for key, value in (("engine", "egl"), ("render_thread", "separate"), ("full_image_slots", 3),
+                           ("material", "blit"), ("same_frame_continuation", "on")):
+            with self.subTest(key=key):
+                original = self.record["defaults"][key]
+                self.record["defaults"][key] = value
+                self.save()
+                with self.assertRaisesRegex(ValueError, "identity/default/HOLD"):
+                    self.verify()
+                self.record["defaults"][key] = original
+
+    def test_source_substitution_fails_even_after_inventory_rehash(self):
+        source = self.record["sources"]["C"]
+        receipt = self.root / source["native"]["receipt"]
+        native = json.loads(receipt.read_text())
+        native["source_commit"] = "f" * 40
+        package.write_json(receipt, native)
+        source["native"]["receipt_sha256"] = package.digest(receipt)
+        self.save()
+        with self.assertRaisesRegex(ValueError, "native receipt substitution"):
+            self.verify()
+
+    def test_extra_compiled_input_not_in_native_closure_is_rejected(self):
+        fixtures.put(self.root, "sources/C/native/src/undeclared.cpp", "unregistered native input\n")
+        self.save()
+        with self.assertRaisesRegex(ValueError, "closure set"):
+            self.verify()
+
+    def test_source_binary_and_command_corruption_are_rejected(self):
+        for relative in (self.record["sources"]["C"]["native"]["path"], "Open Workbench.cmd"):
+            with self.subTest(path=relative):
+                path = self.root / relative
+                original = path.read_bytes()
+                path.write_bytes(original + b"changed")
+                with self.assertRaisesRegex(ValueError, "missing, changed or unexpected"):
+                    self.verify()
+                path.write_bytes(original)
+
+    def test_rehashed_default_launcher_cannot_select_experiment(self):
+        path = self.root / "Open Workbench.cmd"
+        path.write_bytes(path.read_bytes().replace(b" -Action Open", b" -FullImageSlots 3 -Action Open"))
+        self.save()
+        with self.assertRaisesRegex(ValueError, "Owner command differs"):
+            self.verify()
+
+    def test_new_candidate_cannot_masquerade_as_frozen_donor(self):
+        self.record["sources"]["D"] = copy.deepcopy(self.record["sources"]["C"])
+        self.save()
+        with self.assertRaisesRegex(ValueError, "Frozen donor"):
+            self.verify()
+
+    def test_patched_engine_requires_exact_original_artifact(self):
+        self.record["patched_engine"] = {"root": "engines/egl", "gui": {"path": package.PATCHED_GUI, "sha256": "0" * 64}, "default": False}
+        self.save()
+        with self.assertRaisesRegex(ValueError, "unqualified optional engine"):
+            self.verify()
+
+    def test_held_artifact_cannot_claim_acceptance(self):
+        self.record["physical_acceptance"] = "PASS"
+        self.save()
+        with self.assertRaisesRegex(ValueError, "HOLD"):
+            self.verify()
+
+    def test_default_commands_are_explicit_source_and_never_experimental(self):
+        for scene in package.SCENES:
+            text = package.command(self.candidate, scene).decode("ascii")
+            self.assertIn("-ExpectedCandidate " + self.candidate, text)
+            self.assertIn("-Scene " + scene, text)
+            self.assertNotIn("-FullImageSlots 3", text)
+            self.assertNotIn("-Engine Egl", text)
+        with self.assertRaises(ValueError):
+            package.command(self.candidate, "unknown")
+
+
+if __name__ == "__main__":
+    unittest.main()

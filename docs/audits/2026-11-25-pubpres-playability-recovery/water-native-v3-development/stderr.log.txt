@@ -1,0 +1,7 @@
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+ERROR: WATER_COMPOSITION_NATIVE: submerged_framebuffer restored same-state draw reproduces those pixels
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_water_composition_native.gd:67)
+       [1] framebuffer_visibility (res://tests/test_workbench_water_composition_native.gd:420)

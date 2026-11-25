@@ -1,0 +1,33 @@
+{
+  "command": [
+    "python",
+    "/workspace/scratch/8a0b6cd48416/pubpres-native/tools/pubpres_recovery/run_native_stage_probe.py",
+    "--reference-directory",
+    "/workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-comparison-03/campaign",
+    "--driver-source",
+    "/workspace/scratch/8a0b6cd48416/sample-idle-source",
+    "--engine",
+    "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+    "--output",
+    "/workspace/scratch/8a0b6cd48416/native-runtime-dev/native-stage-quiet-01/probe",
+    "--host-state",
+    "quiet"
+  ],
+  "xorg": [
+    "Xorg",
+    ":109",
+    "-config",
+    "/workspace/scratch/8a0b6cd48416/local-graphics/xorg.conf",
+    "-logfile",
+    "/workspace/scratch/8a0b6cd48416/native-runtime-dev/native-stage-quiet-01/Xorg.log",
+    "-noreset",
+    "-nolisten",
+    "unix",
+    "-listen",
+    "tcp",
+    "-ac"
+  ],
+  "started_unix_ns": 1795646697940437979,
+  "host_state": "quiet",
+  "scope": "One diagnostic native attribution run; parent and specialists confirm no concurrent build/native/Godot work"
+}

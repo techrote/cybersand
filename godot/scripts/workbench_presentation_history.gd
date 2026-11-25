@@ -5,21 +5,64 @@ extends RefCounted
 # Completed physical steps, not native ticks or render callbacks, index it.
 const CAPACITY: int = 128
 const MAX_ACTORS: int = 8 # PhysicalActorSession admission limit; do not grow on invalid slots.
+const MAX_MEMBERS: int = preload("res://scripts/rigid_body_coupling.gd").MAX_BODIES
 const RECOVERY_ATTEMPTS: int = 3
 const MAX_HOLD_USEC: int = 100000
 var _actors: Dictionary = {}
+var _bound_owner: Array = []
+var _bound_members: Array = []
+var _member_limit: int = MAX_ACTORS
 
 
 func clear() -> void:
 	_actors.clear()
+	_bound_owner = []
+	_bound_members = []
+	_member_limit = MAX_ACTORS
+
+
+# Actual Workbench observations index physical members, not authored actors.
+# Keep the old unbound eight-slot API and require an explicit real-owner/member
+# closure before accepting a multipart index. This never expands native admission.
+func bind_members(owner: Array, members: Array) -> bool:
+	if owner.size()!=3 or not owner[0] is int or int(owner[0])==0 \
+			or not owner[1] is int or int(owner[1])<=0 or not owner[2] is int or int(owner[2])<=0 \
+			or members.is_empty() or members.size()>MAX_MEMBERS: return false
+	var identities: Array = []
+	var seen: Dictionary = {}
+	for member: Variant in members:
+		if not member is Dictionary or not member.get("instance_id") is int \
+				or int(member.instance_id)<=0 or not member.get("generation") is int \
+				or int(member.generation)<=0 or seen.has(member.instance_id): return false
+		seen[member.instance_id] = true
+		var identity: Array = [member.instance_id,member.generation]
+		identity.make_read_only()
+		identities.append(identity)
+	if _bound_owner==owner and _bound_members==identities: return true
+	_actors.clear()
+	_bound_owner = owner.duplicate()
+	_bound_owner.make_read_only()
+	_bound_members = identities
+	_bound_members.make_read_only()
+	_member_limit = members.size()
+	return true
+
+
+func bound_to(owner: Array) -> bool:
+	return not _bound_owner.is_empty() and _bound_owner==owner
+
+
+func member_matches(slot: int, instance_id: int, generation: int) -> bool:
+	return slot>=0 and slot<_bound_members.size() and _bound_members[slot]==[instance_id,generation]
 
 
 func observe(slot: int, instance_id: int, generation: int, step: int,
 		pose: Transform2D, velocity: Vector2, angular_velocity: float,
 		completed_usec: int, sample_serial: int = -1, sampled_usec: int = 0) -> Dictionary:
-	if slot < 0 or slot >= MAX_ACTORS or step < 0 or not pose.is_finite() or not velocity.is_finite() \
+	if slot < 0 or slot >= _member_limit or step < 0 or not pose.is_finite() or not velocity.is_finite() \
 			or not is_finite(angular_velocity) or completed_usec < 0:
 		return {}
+	if not _bound_members.is_empty() and not member_matches(slot,instance_id,generation): return {}
 	var actor: Dictionary = _actors.get(slot,{})
 	if actor.get("instance_id",-1) != instance_id or actor.get("generation",-1) != generation:
 		var rows: Array[Dictionary] = []

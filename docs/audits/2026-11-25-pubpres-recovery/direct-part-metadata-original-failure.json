@@ -1,0 +1,42 @@
+{
+  "schema": "pubpres-recovery-direct-metadata-failure-v1",
+  "application_source": "1290c31dc262cdc6d31e9d53bde80fe3527585d7",
+  "original_disposition": "FAIL / NO_PERFORMANCE_QUALIFICATION",
+  "repair_decision": "Preserve original direct-part physical_body_index absence. New Water uses a distinct water_body_index key; original compound physical_body_index contract and all frozen geometry oracle predicates remain unchanged.",
+  "outcomes": [
+    {
+      "arm": 1,
+      "original_receipt_sha256": "ec0139365bb2af195397638693cef30f45321eeb45c5595964291ebeb4a51b25",
+      "original_presentation_sha256": "425d7711194303991b69d07fe68caca3ed40eb95153aa926677c269b3439b8f3",
+      "original_geometry_refusals": 221,
+      "failure_reasons": [
+        "Direct submitted geometry differs from its source branch"
+      ],
+      "observed_body_and_overlay_slots": [
+        [
+          0,
+          0
+        ]
+      ],
+      "counterfactual_geometry_passes": 221,
+      "counterfactual_scope": "In-memory diagnostic changed only the unexpected metadata slot to the original absent-field sentinel. All real node/RID/shape/dimension/selected-overlay transform predicates then passed. No original file was changed and this counterfactual is not admitted comparison evidence."
+    },
+    {
+      "arm": 2,
+      "original_receipt_sha256": "c95e19902a0914f53d63387ada411a73508c2b9bd79c9cbb246ee4a64bab90d3",
+      "original_presentation_sha256": "8e7b6ad3ea584e230be49433d8b1c1f52e8bcadfee8f7d93ac53104e04470df4",
+      "original_geometry_refusals": 209,
+      "failure_reasons": [
+        "Direct submitted geometry differs from its source branch"
+      ],
+      "observed_body_and_overlay_slots": [
+        [
+          0,
+          0
+        ]
+      ],
+      "counterfactual_geometry_passes": 209,
+      "counterfactual_scope": "In-memory diagnostic changed only the unexpected metadata slot to the original absent-field sentinel. All real node/RID/shape/dimension/selected-overlay transform predicates then passed. No original file was changed and this counterfactual is not admitted comparison evidence."
+    }
+  ]
+}

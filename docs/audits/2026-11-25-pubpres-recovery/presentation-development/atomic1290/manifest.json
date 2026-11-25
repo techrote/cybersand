@@ -1,0 +1,497 @@
+{
+  "schema": "pubpres-presentation-original-evidence-archive-v1",
+  "application_source": "1290c31dc262cdc6d31e9d53bde80fe3527585d7",
+  "source_tree": "7ef7e76c8d6fdf59dabd4669da5ca2688b2cfe37",
+  "engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+  "native_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "scope": "Original exact resulting-source actual98x3 transaction checks and failed original stock observer calibration. Full raw receipt/events/resource/probe/terminal bytes retained. Generated imported project copies and user cache directories excluded, source custody and import logs retained. No complete timing qualification.",
+  "files": {
+    "bounded1290-observer-stock-02/STOP": {
+      "sha256": "4ddedf451d16f971f6fcb7ef49c37052cef9372c27662955aa681e5e74190393",
+      "size": 123,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/STOP"
+    },
+    "bounded1290-observer-stock-02/campaign/SUMMARY.json": {
+      "sha256": "b215e9798f822a32cc2a62a8e8d5f42bc574f0bf0344333cf6f0a26714f798d0",
+      "size": 596534,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/SUMMARY.json"
+    },
+    "bounded1290-observer-stock-02/campaign/campaign.json": {
+      "sha256": "583fee55b20c00c2b65db02d9855e160989a3237aa794aafcf6bdf907b23ce89",
+      "size": 13693,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/campaign.json"
+    },
+    "bounded1290-observer-stock-02/campaign/template/import/process-memory.json": {
+      "sha256": "8e826eebb8f5276655b80b42c2862da54d4195e95fb91178fd3053c151c18eb2",
+      "size": 5271,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/template/import/process-memory.json"
+    },
+    "bounded1290-observer-stock-02/campaign/template/import/process.json": {
+      "sha256": "f120c3b33d2a19acd4e2770879ab01ef6182a01219d4876afb20015e9cce9720",
+      "size": 823,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/template/import/process.json"
+    },
+    "bounded1290-observer-stock-02/campaign/template/import/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/template/import/stderr.log"
+    },
+    "bounded1290-observer-stock-02/campaign/template/import/stdout.log": {
+      "sha256": "fa825d9915a912062c5c2e88153f1d6355ce8a902a9b0ef1d022cc1c0824c19a",
+      "size": 49387,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/template/import/stdout.log"
+    },
+    "bounded1290-observer-stock-02/campaign/template/source-custody.json": {
+      "sha256": "c967bc6dfc1c753393beb0d0d7c229c9fd4615f0dca28452683aadc799ed9714",
+      "size": 351143,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/template/source-custody.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/analysis.json": {
+      "sha256": "17bd667e2f315eff6b4b3e2629acd81b2c4e1fb416901cb142391ac46a589922",
+      "size": 225967,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/analysis.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/arm.json": {
+      "sha256": "542b943dd0eaf08e4e5bece7096853b34cc819e5f788c94fdf9d5a979e04f6a4",
+      "size": 20538,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/arm.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/godot.log": {
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "size": 463,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/godot.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/process-cpu.json": {
+      "sha256": "5e8ef9fba5aba157f97880f12015b52ee058c31a90b9674ddd794ba505dd0b5a",
+      "size": 45315,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/process-cpu.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/process-memory.json": {
+      "sha256": "54d8dddfacb057189a125b4a3670439c50c8113656836988240814cc287ef6ca",
+      "size": 17371,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/process-memory.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/process.json": {
+      "sha256": "f6993602cb2bcd6ec7bb441f45b3ead3ad97dedc0262c83daab6f338bea58a2c",
+      "size": 3290,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/process.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-after.png": {
+      "sha256": "3d3efb1f0386c296767d856361ea28a3fef29394efcf992d1c8e342238a044e1",
+      "size": 109659,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-after.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-before.png": {
+      "sha256": "564a410ebfaf979d73e274bf170cfa113396e085f37c51d5beb1080743ea7e34",
+      "size": 90676,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-before.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-causal-events.jsonl": {
+      "sha256": "06ccebae1bb82fc2d7df003890cd6d183aa09915524b4b441770a14279ffb5c1",
+      "size": 4758,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-causal-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-events.jsonl": {
+      "sha256": "2b3c2191232093770f1b6483f8a1edec8b9ea03da3b2515858fb16d084aa4ab4",
+      "size": 1765106,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt.json": {
+      "sha256": "4436829d45e491f96d96c4487e94503f65df05e28e8c70e9682d4bdd9a7ff1ab",
+      "size": 89007,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/receipt.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/stderr.log": {
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "size": 171,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/stderr.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/0/stdout.log": {
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "size": 408,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/0/stdout.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/arm.json": {
+      "sha256": "1567c9578be8680898a32c99af121506c1f93bbf7ef118463eddaf8cc6969f6f",
+      "size": 20537,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/arm.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/godot.log": {
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "size": 463,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/godot.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/process-cpu.json": {
+      "sha256": "d71477bc0b3741ed517624b2048c108e35d84a62b2835079d928e8ff2f42ef02",
+      "size": 46914,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/process-cpu.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/process-memory.json": {
+      "sha256": "373381c1668db67536ed5f29c533dae812befb6312eb7e5083d892031ae22813",
+      "size": 18012,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/process-memory.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/process.json": {
+      "sha256": "c9a06d3fb9d90d417f3c2084a8338b1ba7182530eb6270d72ba47bad1d1dc151",
+      "size": 3256,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/process.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-after.png": {
+      "sha256": "5905e514183dda0e32fd8038b094b6c7e44d6cd8c8c8e6194e1632f04d342333",
+      "size": 110153,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-after.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-before.png": {
+      "sha256": "b5fdfbd34ca868315486d9d2f3f574971bc4383e8869d7da78b0e8d662907e2b",
+      "size": 90714,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-before.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-causal-events.jsonl": {
+      "sha256": "81c9cc15ee6ec9eea4ac4c1e5d249c10419a2f7e7e589e5010bef4e05fe689b0",
+      "size": 4758,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-causal-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-events.jsonl": {
+      "sha256": "ff4661b8685c611ab4f0d1f6d15a8a65ea06b1740bed360cb5ad71b5b7f0b6b0",
+      "size": 1759939,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-presentation.json": {
+      "sha256": "425d7711194303991b69d07fe68caca3ed40eb95153aa926677c269b3439b8f3",
+      "size": 584406,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt-presentation.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt.json": {
+      "sha256": "ec0139365bb2af195397638693cef30f45321eeb45c5595964291ebeb4a51b25",
+      "size": 89008,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/receipt.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/stderr.log": {
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "size": 171,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/stderr.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/1/stdout.log": {
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "size": 408,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/1/stdout.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/arm.json": {
+      "sha256": "57bd07c3907c24ae2d1475c3484127dfaf23ba954bc88da43ebce98ae521b20d",
+      "size": 20537,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/arm.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/godot.log": {
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "size": 463,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/godot.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/process-cpu.json": {
+      "sha256": "49b750011ffa3408e7744a8f3062d4f55d39d57fe6c0cf34247210743513dba1",
+      "size": 47700,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/process-cpu.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/process-memory.json": {
+      "sha256": "8a5c091fac30ae553bb351818a3267826b2f8d13eea361b6d90d9ea105398cb1",
+      "size": 18329,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/process-memory.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/process.json": {
+      "sha256": "a56b160f2a8941edd4dc9ca701fc6b4d5281819cc3a8580a44452e938bd8e75b",
+      "size": 3253,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/process.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-after.png": {
+      "sha256": "4bc4640b093baa1364323e7efdd420662b754f4dfe7dbebce45470fecbc2c041",
+      "size": 110438,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-after.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-before.png": {
+      "sha256": "081d5e36d7bc34ec182b59dba0dc5aa34b2957ca90904b73d545b61a76146c56",
+      "size": 90638,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-before.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-causal-events.jsonl": {
+      "sha256": "67d2fc5aec39ff9ac7828e291d4f781fc4d86ad656b814888b2a41492fe2bd1a",
+      "size": 4758,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-causal-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-events.jsonl": {
+      "sha256": "5f08524ac3e09fc8529b9af7a72e4d385f72833283f2ec0366e7015133e4a782",
+      "size": 1698091,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-presentation.json": {
+      "sha256": "8e7b6ad3ea584e230be49433d8b1c1f52e8bcadfee8f7d93ac53104e04470df4",
+      "size": 554332,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt-presentation.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt.json": {
+      "sha256": "c95e19902a0914f53d63387ada411a73508c2b9bd79c9cbb246ee4a64bab90d3",
+      "size": 89007,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/receipt.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/stderr.log": {
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "size": 171,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/stderr.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/2/stdout.log": {
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "size": 408,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/2/stdout.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/analysis.json": {
+      "sha256": "afe5a0507219c906852fb17f20d4c24e83897e4b12472c05b844c01457bfff4f",
+      "size": 221298,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/analysis.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/arm.json": {
+      "sha256": "801b3d035014a3d9d1149facd2627dbf370c8045520c75b8b441a374905f0080",
+      "size": 20538,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/arm.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/godot.log": {
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "size": 463,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/godot.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/process-cpu.json": {
+      "sha256": "994bdd7ff1ccde22a82505ca751a4963eb4713373a93cd0a0cf83a3d5899da6a",
+      "size": 50093,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/process-cpu.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/process-memory.json": {
+      "sha256": "c10175e49156ede95e524259f2afb532e9f2bbcb8967b01c43bb048e451b3401",
+      "size": 19278,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/process-memory.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/process.json": {
+      "sha256": "f538ff45412c58b549d2e181db041caa2d6d04201fa940374950826592494264",
+      "size": 3288,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/process.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-after.png": {
+      "sha256": "d260987ed91c27951d92ead3e127d4932679602720cf21ad2ffb3d60d2689242",
+      "size": 109969,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-after.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-before.png": {
+      "sha256": "bc5950045afde79d155e40fa9b69b15e3d0509b504150a1c7d08cf9ac31926df",
+      "size": 90643,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-before.png"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-causal-events.jsonl": {
+      "sha256": "b173660daa071d3be270b372a78d27ec71167f76be808b81fd1a4fea2016fce3",
+      "size": 4758,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-causal-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-events.jsonl": {
+      "sha256": "22ee744b63ca190435d51b477d57b95bd6f4352fe4aa34bebcc0506ff2e7b12c",
+      "size": 1666837,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt-events.jsonl"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt.json": {
+      "sha256": "8597f583602776682c3b4fae3853eb1fdc87295c1908155a6fd19ab556f2239c",
+      "size": 89008,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/receipt.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/stderr.log": {
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "size": 171,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/stderr.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_512_follow/3/stdout.log": {
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "size": 408,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_512_follow/3/stdout.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/arm.json": {
+      "sha256": "7a23cee7841667bcac07a6efdfac859fc5a08e8f7ab1fed0b4ef2a672f894cc5",
+      "size": 21341,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/arm.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/godot.log": {
+      "sha256": "72a886a660726356a8493877dd78c97e4acff6b5c8af286f8e1bf97df27701e7",
+      "size": 400,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/godot.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/process-cpu.json": {
+      "sha256": "e06f02d97660ea5b4d4a1238fcd41c0874d884312cc09abaa5fb32fb41e17efd",
+      "size": 8399,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/process-cpu.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/process-memory.json": {
+      "sha256": "7fd5319a1c6522674a38395f756f50d18bf07bae8886ab229c470929eb8cf2ca",
+      "size": 2654,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/process-memory.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/process.json": {
+      "sha256": "c9a5a2da1c1ff294ab0dbc402881714f039574c164284065ec623fe15fd01940",
+      "size": 3317,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/process.json"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/stderr.log": {
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "size": 171,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/stderr.log"
+    },
+    "bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/stdout.log": {
+      "sha256": "d82899ca6de460aa0ae602088ee47874ace6a2706d2bf707e3918d6d4177b902",
+      "size": 345,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/campaign/wave_gameplay_2048_follow/0/stdout.log"
+    },
+    "bounded1290-observer-stock-02/display.json": {
+      "sha256": "652da0cf1f37d490dd608d847b2e16d8ad6823bafef7396dc8d78e2515acdc28",
+      "size": 439,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/display.json"
+    },
+    "bounded1290-observer-stock-02/launch.json": {
+      "sha256": "c46558f1dc2fae2f2df103de9e234c44da91a37011dc02439c34b529a0367284",
+      "size": 1748,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/launch.json"
+    },
+    "bounded1290-observer-stock-02/runner.log": {
+      "sha256": "d97e4cee43939a957e81e15314bbcea6cb482eb6cd3678f9c4603034f6339679",
+      "size": 2159,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/runner.log"
+    },
+    "bounded1290-observer-stock-02/xorg-console.log": {
+      "sha256": "6a53b9c601a1ac2f01e018a13205a4cda0f1d543578e7776ca8f7ca8d2fe7cb9",
+      "size": 2273,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/xorg-console.log"
+    },
+    "bounded1290-observer-stock-02/xorg.log": {
+      "sha256": "be095ecbf935acea706ba6b2c783c0655fd5a34117ee7e332450101a83bea71a",
+      "size": 42301,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock-02/xorg.log"
+    },
+    "bounded1290-observer-stock/display.json": {
+      "sha256": "3af958317f1b5fe1b0c2fa55c3fce0d456fcbec69fbff89279352fb8303d8bea",
+      "size": 439,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock/display.json"
+    },
+    "bounded1290-observer-stock/launch.json": {
+      "sha256": "d5818fc9793d90b28cf89c3c5a97702d64adfb9e0b33ba7994f156360cc9601f",
+      "size": 1693,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/bounded1290-observer-stock/launch.json"
+    },
+    "enclosures/atomic1290-campaign-preparation.json": {
+      "sha256": "fd33f30bb49aa5cf4a727423f7ac3ca4a6ec9c31b5c7a233ff5bfe9f84a61f5a",
+      "size": 757,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-campaign-preparation.json"
+    },
+    "enclosures/atomic1290-integration-gates.json": {
+      "sha256": "6adc9fc01fdbadb44afc75cc0bcc38282b141fc6bd34fb0820d9a78cf53d0766",
+      "size": 1052,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-integration-gates.json"
+    },
+    "enclosures/run_atomic_fixture.py": {
+      "sha256": "6e4790acbe701c0338595ae63496851501e730ce62f23a106fd49383950a42d7",
+      "size": 4557,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/run_atomic_fixture.py"
+    },
+    "enclosures/run_bounded_local.py": {
+      "sha256": "955bb60cbcf667ea2ad1bf13131fbe5218682c303b97443dd29d1a15424114ce",
+      "size": 4728,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/run_bounded_local.py"
+    },
+    "runtime/PUBPRES-NATIVE-INPUT-REUSE.json": {
+      "sha256": "3d32b07cf21e79599427027d2bac1017f914251377d17fc370fe2db0ac22a2e1",
+      "size": 14495,
+      "original_path": "/workspace/scratch/8a0b6cd48416/recovery-evidence/runtime-linux-1290/PUBPRES-NATIVE-INPUT-REUSE.json"
+    },
+    "transaction-safe0/engine.json": {
+      "sha256": "74641cc6c5b1a2d36a7d48e80ad2e28457ad5d9a4f8565c7512a6fef35f6d285",
+      "size": 60937,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-safe0/engine.json"
+    },
+    "transaction-safe0/launch.json": {
+      "sha256": "5314d68420ab3ccd408ced8c04ea945845c2f6e10c06657e895eae9e243be88d",
+      "size": 2813,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-safe0/launch.json"
+    },
+    "transaction-safe0/process.log": {
+      "sha256": "af0db6a41c35792fc21322250b4ac1953bea016dd4aa25b3a7f1c84e1d1f7842",
+      "size": 2527,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-safe0/process.log"
+    },
+    "transaction-safe0/receipt.json": {
+      "sha256": "b9b8185cb288a91ca1cbb937c27790ad0e9c3836396b2b1257973512b335befa",
+      "size": 25207,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-safe0/receipt.json"
+    },
+    "transaction-safe0/submission-first-read.png": {
+      "sha256": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+      "size": 43526,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-safe0/submission-first-read.png"
+    },
+    "transaction-safe0/xorg.log": {
+      "sha256": "c68bb46e3571553d2809c0e7c0b6b39c9fe3a5057ee291704c135ef3d88683c9",
+      "size": 40488,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-safe0/xorg.log"
+    },
+    "transaction-separate0/engine.json": {
+      "sha256": "261b9fb8310ecb558a065874f9d6fddf440bf99d06a942e327f54a51ef4ef0a0",
+      "size": 92849,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate0/engine.json"
+    },
+    "transaction-separate0/launch.json": {
+      "sha256": "6699824ddce05d586cdbbddd2ddb66f15857638186857d33d4dfaa55129c370a",
+      "size": 2837,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate0/launch.json"
+    },
+    "transaction-separate0/process.log": {
+      "sha256": "279b7043fa6ad493e1f5e00ac0c67a9bb9c26500bab702f3050fd8ec6d375eda",
+      "size": 2896,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate0/process.log"
+    },
+    "transaction-separate0/receipt.json": {
+      "sha256": "d6c1945fca3ab58ffffa11b479d7baaeabcef26676c00590c066925cadea4c36",
+      "size": 25272,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate0/receipt.json"
+    },
+    "transaction-separate0/submission-first-read.png": {
+      "sha256": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+      "size": 43526,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate0/submission-first-read.png"
+    },
+    "transaction-separate0/xorg.log": {
+      "sha256": "496cbb14d48822229c922dc60a67818a9aa4139e84dac412414906f094a78314",
+      "size": 40492,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate0/xorg.log"
+    },
+    "transaction-separate4/engine.json": {
+      "sha256": "5172ff020150c9c592a96be102957f9b7668b81b1ab561529c7938e2193eb224",
+      "size": 90010,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate4/engine.json"
+    },
+    "transaction-separate4/launch.json": {
+      "sha256": "96e6b2157b247b68a437d3d8f3af4287e6b5e6f0045be6c9119fc221b0f2415d",
+      "size": 2837,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate4/launch.json"
+    },
+    "transaction-separate4/process.log": {
+      "sha256": "ca4da6788a51ed582a1e1e689a485111a76fd573e4f343e40b059892860bb92c",
+      "size": 2938,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate4/process.log"
+    },
+    "transaction-separate4/receipt.json": {
+      "sha256": "53be085e1203cf628aee3e825fb58f7780a19bb09f903d4226f1ed0a100dc290",
+      "size": 25376,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate4/receipt.json"
+    },
+    "transaction-separate4/submission-first-read.png": {
+      "sha256": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+      "size": 43526,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate4/submission-first-read.png"
+    },
+    "transaction-separate4/xorg.log": {
+      "sha256": "dfb4060856c9adf783c2c8a9c908f2496dcdfb50d07794486ae94c8396da2fca",
+      "size": 40492,
+      "original_path": "/workspace/scratch/8a0b6cd48416/presentation-evidence/atomic1290-separate4/xorg.log"
+    }
+  },
+  "archive_sha256": "c1cfc4f6117aad2724c1a96020ba3298bd3253b9aa9343e31cac7aa56b03f494",
+  "archive_size": 1918550
+}

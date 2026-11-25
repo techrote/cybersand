@@ -1,5 +1,74 @@
 # Actual presentation submission recovery
 
+## Resulting-source 1290 checkpoint — graphical PASS, comparison HOLD
+
+The principal PR published application and driver
+`1290c31dc262cdc6d31e9d53bde80fe3527585d7`, tree
+`7ef7e76c8d6fdf59dabd4669da5ca2688b2cfe37`. All three resulting-source
+graphical transaction configurations passed the unchanged **98 checks**:
+
+| Configuration | Actual CPU draw submissions/completions | Deferred opportunities | Admission faults |
+| --- | ---: | ---: | ---: |
+| Safe0 | 125 / 125 | 0 | 0 |
+| Separate0 | 192 / 192 | 0 | 0 |
+| Separate4 | 180 / 180 | 535, at most four per draw | 0 |
+
+The engine is the separately recorded Linux development build
+`674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745`.
+The original retained C native binary remains
+`e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74`.
+The additive input-equivalence binder checked all **113 native/build inputs**
+against original build source `4bde032f27e90e6e974b3ddc123264afa8fa5012`;
+this is unchanged runtime reuse, not a new native build at 1290.
+
+All eight stale/manual-draw framebuffer refusals and four UI fallback/lifecycle
+rows passed. Each renderer performed the independently checked first actual
+framebuffer read. Deferred and rejected render time was conserved, and every
+admitted CPU draw completed. This establishes the scoped local transaction
+foundation; it does not establish GPU completion, physical scanout, Windows
+qualification, Water composition correctness or a physical-progression benefit.
+
+The [original archive](presentation-development/atomic1290/originals.tar.gz)
+and [byte manifest](presentation-development/atomic1290/manifest.json) retain
+all three direct receipts, engine traces, launch records, first-read PNGs and
+stdout. The archive also preserves the subsequent failed stock observer
+calibration, including raw physical events, actual presentation observations,
+CPU/memory records, import/source custody and its untouched failed summary.
+Every archived file was read back and checked against its original SHA-256.
+
+### Original comparison failure: direct-part metadata contract
+
+The prospective Water-off stock observer off/on/on/off calibration started
+under an exclusive local CPU/graphics window. The first local enclosure exited
+before application execution because Xorg display96 had an existing lock. The
+lock was left untouched; a fresh enclosure used display95. This infrastructure
+refusal has no application or performance result.
+
+The second enclosure executed all four Wave512 arms. Both observer-on arms
+were correctly refused by the unchanged frozen geometry reader with:
+`Direct submitted geometry differs from its source branch`.
+The new Water integration had added `physical_body_index` to direct simple
+parts. The frozen direct-part contract deliberately expects that field to be
+absent, represented by observer value `overlay_body_slot == -1`; the original
+receipts instead contain the actual body slot `0`. Their selected/submitted
+matrices, collider dimensions, actor identity and real body RID agree, but that
+does not turn the failed original contract into a pass.
+
+The lead selected a narrow application repair: retain the original direct-part
+metadata contract and use a separate `water_body_index` only for Water
+composition association. Compound parts retain their existing
+`physical_body_index` meaning. The frozen geometry oracle remains unchanged.
+This repair is subsequent source and is **not qualified by the 1290 receipts**.
+
+The campaign was stopped once the repeated mismatch was established. Its first
+large-world arm was canceled through the existing owned-process cleanup and
+has no complete capture. The original four-arm calibration is incomplete for
+qualification because the two observer-on arms were refused. No bounded
+comparison was started, no observer overhead was accepted, and no architecture
+selection or performance improvement is claimed. Corrected resulting source
+must repeat the graphical gates and complete both observer controls before the
+registered six-arm experiment.
+
 ## Development checkpoint — HOLD
 
 This continues #767 at `f4089809c7294336db26cf576b0ac3c57fc54775`.
