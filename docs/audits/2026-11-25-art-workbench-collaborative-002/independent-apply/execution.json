@@ -1,0 +1,32 @@
+{
+  "method": "Independently authored verifier scripts executed unchanged by the lead; read-only original-byte and audit replay, no new native or model run.",
+  "original_evidence_commits": [
+    "807250dc0a1fbcfb5a6ee85747b523aa5a46ffca",
+    "956b0abcac1649344d11164cda7951daed042887"
+  ],
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "schema": "art-independent-apply-review-execution-v1",
+  "script_sources": {
+    "verify_pair.py": {
+      "commit": "06a3ab765255c72d80e8e0866beae1ba725f9880",
+      "sha256": "41aa996532d1287cf4f7ca85894b7692fc51cdf96338ccb4b6d6549a0578a472"
+    },
+    "verify_preparation.py": {
+      "commit": "216f919d1f3d2ca7af90fa3d1467a6a15bebfd10",
+      "sha256": "89d8499d2e5406370825c176140c1acca560488647e94b5bbe946d82f941c33b"
+    }
+  },
+  "stdout": {
+    "pair-review.json": {
+      "bytes": 6702,
+      "result": "passed",
+      "sha256": "ca367e4a9bc2a70578121b86a0b5053bde67d881b9dfa0d234e31128ef812f61"
+    },
+    "preparation-review.json": {
+      "bytes": 2363,
+      "result": "passed",
+      "sha256": "21e285170159b6e26ba542a6388d4f93aeb0750d5d3e2e194ddd3b63db340888"
+    }
+  }
+}

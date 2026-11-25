@@ -1,0 +1,63 @@
+{
+  "archive_sha256": "047252caaabaeec69f7344053a56a92b097aac87ece9032ff65f37d281b7185f",
+  "audit_bytes": 13641575,
+  "audit_events": 28,
+  "audit_kinds": {
+    "collaboration_preview": 1,
+    "collaboration_proposal": 1,
+    "conversation": 14,
+    "conversation_edited": 12
+  },
+  "audit_sha256": "54ba85bee5ae30e844132a2ae93857e90d1ebf096d80582adcb65dcaa9689798",
+  "checks": 295,
+  "complete_redacted_snapshot_characters": 1048599,
+  "complete_redacted_snapshot_sha256": "326174c77f57722f97786401a4ee5356c7fd261aeb8c4d176d52b41010e3cff4",
+  "display": "headless",
+  "final_replayed_turns": 1,
+  "lifecycle_checks": 154,
+  "limits": [
+    "Independent read-only byte/record replay, not another native execution.",
+    "Actual headless lifecycle and one-megabyte snapshot; no graphical or Windows acceptance.",
+    "The two near-cap baselines are incomplete; no completed paired near-cap speedup is claimed.",
+    "No genuine-model or actor-traversal experiment."
+  ],
+  "manifest_sha256": "6f93ee286b606b7fe66111a69c20e038ee481fc8f78f618eba39a71ea4d9605c",
+  "model_calls": 0,
+  "native_draw_batches_from_test": 0,
+  "original_payload_bytes": 31575371,
+  "passing_process_log_sha256": "79efe35050fe215372ceadcf9c319705a8ce2e0c4d1e94a103a3d57e649c34ec",
+  "provider_mechanism_checks": 66,
+  "retained_failures": {
+    "fixture_failed_checks": 11,
+    "fixture_source": "f6054aaf",
+    "near_cap_incomplete": [
+      {
+        "execution": {
+          "completed_unix_seconds": 1795578947.1718972,
+          "elapsed_seconds": 13.124713686003815,
+          "exit_code": -9,
+          "timed_out": false,
+          "watchdog_seconds": 180
+        },
+        "path": "baseline-e536-first-incomplete/execution.json"
+      },
+      {
+        "execution": {
+          "completed_unix_seconds": 1795579993.5811648,
+          "elapsed_seconds": 8.391802344005555,
+          "exit_code": -9,
+          "timed_out": false,
+          "watchdog_seconds": 180
+        },
+        "path": "pair-second-incomplete/baseline-e536/execution.json"
+      }
+    ],
+    "parse_source": "f9099628"
+  },
+  "schema": "art-conversation-preparation-raw-review-v1",
+  "source": "8a015efbeb7926a3c835303d3b163c01d353aca3",
+  "status": "passed",
+  "tree": "ad991f1fe8e2c8945120526377d85392d0a3212a",
+  "verified_original_payload_files": 64,
+  "verified_zip_members_including_manifest": 65
+}

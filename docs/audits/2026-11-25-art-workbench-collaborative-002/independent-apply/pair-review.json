@@ -1,0 +1,155 @@
+{
+  "archive_sha256": "461b2b4135e2592ac8fcd230281118398c1376afb6a9617100cd1eaf9f007b79",
+  "checks": 161,
+  "comparison_sha256": "88e0bc8e7180e7ba7c4c21b91ff4501cb9465032d2bf5b059d04a46ed68dd7f1",
+  "completion_difference_usec": 24543,
+  "limits": [
+    "Independent byte/record replay, not another application run.",
+    "One sequential baseline-first pair; no statistical generalization.",
+    "Headless native Workbench; no Windows or physical/graphical acceptance.",
+    "Action/frame blocking improved in this pair; complete latency is slower.",
+    "Earlier incomplete low-memory attempts remain separate retained outcomes."
+  ],
+  "manifest_sha256": "b2012bed57c43ffcecf305412218a579403810ffe804d506e2f84a78ea641ada",
+  "matched_complete_value_bytes": 16769024,
+  "matched_complete_value_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+  "original_payload_bytes": 67120420,
+  "results": [
+    {
+      "arm": "baseline-e536",
+      "audit": {
+        "audit_bytes": 33538622,
+        "audit_sha256": "4a1f0155da2597663c73804657f788915af31470a287e4b575b239abf4bf42f8",
+        "complete_value_bytes": 16769024,
+        "complete_value_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "event_kinds": {
+          "conversation": 1,
+          "conversation_edited": 1
+        },
+        "events": 2
+      },
+      "case": {
+        "actual_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "apply_usec": 620436,
+        "case": "loaded-near-cap-edited-apply",
+        "context_bytes": 16769024,
+        "expected_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "fixture_admission_usec": 1128323,
+        "frames": {
+          "frames": 12,
+          "max_usec": 639012,
+          "p95_usec": 639012
+        },
+        "last_audit": {
+          "format_usec": 152611,
+          "kind": "conversation_edited",
+          "sanitize_usec": 2429,
+          "schema": 1,
+          "sequence": 2,
+          "signal_usec": 18,
+          "stored": true,
+          "total_usec": 259717,
+          "write_usec": 54013
+        },
+        "open_frames": {
+          "frames": 12,
+          "max_usec": 75832,
+          "p95_usec": 75832
+        },
+        "open_usec": 15768,
+        "visible_characters": 4096
+      },
+      "checks": 22,
+      "runtime_hash_record": {
+        "audit-verification.json": "d05c58ed461b85a159ff3971118363cbf59104c7123bdd8b466202bce6ba3238",
+        "execution.json": "e75e0ed93c34cfee72546435c2f3b9d917e861c9b3cfe33b0c3c93327de3f18f",
+        "fixture-post-arrivals.json": "8f1addfca3ebb259a802a5f1e97ea3b4a741bc57e5354cab31f1eb2fc4b2529c",
+        "fixture-receipts.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "fixture-spec.json": "41ab2718b02c3fd11f794129a8c9bee2fa3462f7bc348724d83c40fb3f83fcc0",
+        "godot.log": "c4ed98e03897642e9465c23d04fd69fb6850529dd5dfaa03f6eb2eb3ab9aaa1b",
+        "provenance.json": "76e4ec553c1dfff91b02b1726880becbf7bb28976e8c61667471e02faee086dc",
+        "report-checkpoint.json": "1e0b52174d89c70bd1cba43c82882481575a3130f77b994c9f8dcd5951d2591e",
+        "report.json": "4c3ed9656338676896aec1c17b5f2b2eb8d64237bba5206b2b721286b65a927c",
+        "resources.json": "1c0f2701ca4203aa9d3d89ec95ac61d8962a22b5e0fa26d6a153ba9e81e2a561"
+      },
+      "source": "e536d128f85e948223b25e13931a7a801faf956d",
+      "tree": "61d38ec119665270a9fb4eea9ae78836348d7092"
+    },
+    {
+      "arm": "prepared-8a0",
+      "audit": {
+        "audit_bytes": 33538622,
+        "audit_sha256": "b808a9b8d250d3bf5f11813f2079db3f03eb142543e3d5cccecb5f44b1a7a577",
+        "complete_value_bytes": 16769024,
+        "complete_value_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "event_kinds": {
+          "conversation": 1,
+          "conversation_edited": 1
+        },
+        "events": 2
+      },
+      "case": {
+        "actual_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "apply_completion_usec": 644979,
+        "apply_preparation": {
+          "admission_usec": 43221,
+          "asynchronous": true,
+          "commit_usec": 49149,
+          "handle": 1,
+          "prepared_after_usec": 582968,
+          "status": "committed",
+          "total_usec": 629538
+        },
+        "apply_usec": 43440,
+        "asynchronous_apply": true,
+        "case": "loaded-near-cap-edited-apply",
+        "context_bytes": 16769024,
+        "expected_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+        "fixture_admission_usec": 1064809,
+        "frames": {
+          "frames": 91,
+          "max_usec": 73356,
+          "p95_usec": 8726
+        },
+        "last_audit": {
+          "format_usec": 7414,
+          "kind": "conversation_edited",
+          "sanitize_usec": 14,
+          "schema": 1,
+          "sequence": 2,
+          "signal_usec": 8,
+          "stored": true,
+          "total_usec": 46978,
+          "write_usec": 28262
+        },
+        "open_frames": {
+          "frames": 12,
+          "max_usec": 82597,
+          "p95_usec": 82597
+        },
+        "open_usec": 17491,
+        "timing_scope": "apply_usec is click-return; completion includes preparation and durable owner commit; frames cover both",
+        "visible_characters": 4096
+      },
+      "checks": 23,
+      "runtime_hash_record": {
+        "audit-verification.json": "d05c58ed461b85a159ff3971118363cbf59104c7123bdd8b466202bce6ba3238",
+        "execution.json": "86b9090288e1e3348e5baa62fe4d890dcca149f4e230ee1ab6d656922e832a3d",
+        "fixture-post-arrivals.json": "8f1addfca3ebb259a802a5f1e97ea3b4a741bc57e5354cab31f1eb2fc4b2529c",
+        "fixture-receipts.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "fixture-spec.json": "f2608d67bacdcea60db6110dcc84a6fefa28d3b1a6dccfd03b406ea32641732e",
+        "godot.log": "73b37ebb77fce38ad49a4a688cfb3250a93b644c2291abd5298ca1037d0c7eb2",
+        "provenance.json": "be72f48009ebd68959e64bb757ba73e0514a54cebc36b2fdb9d84154f1ced4ca",
+        "report-checkpoint.json": "45a4c12e16ba5434e4e714a6127aa1e30c3af26b3393e2136f6509a678842bdb",
+        "report.json": "3937386199653b3ae9ec1280514545dddb1c4a19aa671d013aece50543b3e4f7",
+        "resources.json": "91bcc9acb51d70e98707ffb7c00dc8908745017c23abc8070489442e73c7e360"
+      },
+      "source": "8a015efbeb7926a3c835303d3b163c01d353aca3",
+      "tree": "ad991f1fe8e2c8945120526377d85392d0a3212a"
+    }
+  ],
+  "schema": "art-near-cap-apply-raw-independent-review-v1",
+  "status": "passed",
+  "verified_original_files": 29,
+  "zip_members_including_manifest": 30
+}
