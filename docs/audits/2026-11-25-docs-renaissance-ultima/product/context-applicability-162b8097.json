@@ -1,0 +1,1587 @@
+{
+  "schema_version": 1,
+  "reviewer": "Specialist B (non-implementer of retrieval method; author of some returned manuals)",
+  "review_date": "2026-11-25",
+  "source_checkpoint": "162b80977f3ce615ec5f31237d3b9ac1c4548eab",
+  "evaluation_artifact_sha256": "4095ce8c750c36471279c12ba3edd21c96ecb168d68432ba846ea3b6899a95a5",
+  "scope": "Actual method-v1 first-pass top-five contexts for DR01–12 and DR25–36, 120 supplied passages, before the separately recorded sanitizer documentation correction and method-v2 experiment. Previous semantic review is reused only for byte-identical passage bodies; all unique changed bodies were reread. Authority envelopes, source identities, question facts and ordered hits were checked against this artifact. No model answer was executed. Not blind: reviewer knows expected facts and authored some returned manuals.",
+  "summary": {
+    "questions": 24,
+    "supplied_passages": 120,
+    "sufficient": 22,
+    "partial": 2,
+    "wrong_context": 0,
+    "appropriate_abstention_supported": 1,
+    "model_answers_executed": 0,
+    "answer_accuracy": "not measured",
+    "unsupported_model_claims": "not measured",
+    "wrong_authority_identified": 0
+  },
+  "results": [
+    {
+      "id": "DR01",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Returned Windows commands distinguish companion dev.cmd from the repository launcher and require pinned runtime checks. The specific question can be answered without adopting another package launcher.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "2443de40976c8806f75908c56ff257c75db9ea3e15ae4d7df4e9ddcadafc48f2",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Windows development commands",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "d7b57b7b73c6f3ee7f15fa4535ed551253a32c2fff61c8858e2c2b1302d2207b",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 2,
+          "id": "5aa128a08645581204f9e181294610f825abe87125234bd9b5070a7db1a5fdeb",
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > Launch and prerequisites > Windows launch",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c5a4ba1a2b19cdcf0b7eb6451fd09633c3fbc650cf4085566d0c40cc104f9785",
+          "source_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
+        },
+        {
+          "rank": 3,
+          "id": "cfb8699a45315cf21c10328c8c078ca992009b3ababdec6d10a29a78e0fe65a9",
+          "path": "tools/world-art-evaluation.md",
+          "heading": "World Art Windows evaluation",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3b193e4691ce941de7b446126ac0812698897287f3b073603d0931239ad24c14",
+          "source_sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f"
+        },
+        {
+          "rank": 4,
+          "id": "db63b96818f75b0ae0014b2a702d3307ae8217d1ae25107aa4610ba4ac0904b4",
+          "path": "operations/web-threading.md",
+          "heading": "Web worker profiles and reference tests > Build and preview",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "05bef987c6af4e797dacaa7c96310b6076c4509b61fffb849997ec250dc04c0f",
+          "source_sha256": "477487fb418a8a6480d6f8da80fa4c1ad45e63e33c6044760aa4fb3a7a46ce59"
+        },
+        {
+          "rank": 5,
+          "id": "77d41c80ebcf64103fcc8182bc6e3b257f980501e16472f32418c70be01ab0f6",
+          "path": "operations/cell-layout-experiment.md",
+          "heading": "Cell layout experiment > Status and boundaries",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "f500054cda173e16587c230f0fcb5740010f0d58fd59597ee0581e26da9430be",
+          "source_sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118"
+        }
+      ]
+    },
+    {
+      "id": "DR02",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "First-launch passage supplies exact engine 4.7.stable.official.5b4e0cb0f, cpp 101ae38034304346a46ea9ea84ae156d3e860496 and API4.7, with linked locks. Previous exact-pin gap is resolved in this context.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "fa5e773b1b837a82323be540fa5f09ea6ee217ec4528f3444e372cae6837e803",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c38754e5ce741d31c04562e0653023606586a72e5afa423478d2e12172fe318f",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 2,
+          "id": "daebbc7cd376f119fc117e7db07893a9623bf4521baa0fc2e828765464e28d1b",
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Source checkout on Linux",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3fa75ebc554c868f17505d16a35a954aa1441329401cb2e9111630d13d08c84f",
+          "source_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e"
+        },
+        {
+          "rank": 3,
+          "id": "b26fc4d54eae0220f3963c789858fba50e6e61e8b27d1c4fd026a419cb127580",
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Establish source and runtime identity",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "e8019a399174b883090e1fa45c06b056b16c75d52d3505065bd85958617eb168",
+          "source_sha256": "a1fc1f741b052f67b73669110ef4bb64bb8efba1753f8500d559e9e58eaf12b6"
+        },
+        {
+          "rank": 4,
+          "id": "db63b96818f75b0ae0014b2a702d3307ae8217d1ae25107aa4610ba4ac0904b4",
+          "path": "operations/web-threading.md",
+          "heading": "Web worker profiles and reference tests > Build and preview",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "05bef987c6af4e797dacaa7c96310b6076c4509b61fffb849997ec250dc04c0f",
+          "source_sha256": "477487fb418a8a6480d6f8da80fa4c1ad45e63e33c6044760aa4fb3a7a46ce59"
+        },
+        {
+          "rank": 5,
+          "id": "056d57f43db32efdcb9e51164cfa5c76b8b3c8319c88211e56de5b12d69337b1",
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Source-matched runtime publication",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c1fc126875122ec4f761190f9f51b4c19bfd42153a4da1f2f3e2d040f358438c",
+          "source_sha256": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d"
+        }
+      ]
+    },
+    {
+      "id": "DR03",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 2,
+      "reason": "Pointer versus executable bytes, materialization, hash/size and separate source-input provenance check are explicit. Art-only LFS exception is clearly scoped to its standalone viewer.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "fa5e773b1b837a82323be540fa5f09ea6ee217ec4528f3444e372cae6837e803",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c38754e5ce741d31c04562e0653023606586a72e5afa423478d2e12172fe318f",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 2,
+          "id": "567723aa2e8c335af1a21492b18ed38d8bd56904fc1230644c1b84a2c0ff8909",
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Source checkout on Windows",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3de15f545142912acb70b875d2c47a11f431f03a3ab72f6fbeaef5d63e42859b",
+          "source_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e"
+        },
+        {
+          "rank": 3,
+          "id": "57d46854e9fa880bcb979a2683ed2f2b40d2a0a94919d6e4fa0fede3632fdfbd",
+          "path": "tools/world-art-preview.md",
+          "heading": "World Art interactive viewer > Launch one integrated checkout",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "6af1cf6ed628eb75011040808b204b966a1a27fdd39db7b9705d93b2d91a9155",
+          "source_sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b"
+        },
+        {
+          "rank": 4,
+          "id": "6e3a65c504459be45eb7f17a1af000a7dac42bc8844563d1e2185a90b6e06db3",
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Cross-issue acceptance mapping",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "8e36698a8514370d6d4eca4f8fa5b4fef57fe61294ab95dc87bd07165c27d844",
+          "source_sha256": "eb3515d1a77f3d6c1def6badfe1fc8c692df0782f05a6a8ba3f77676a91338a8"
+        },
+        {
+          "rank": 5,
+          "id": "88285fa31579261b4e8078fef2647b4fe6705eda9f7fa4c755da03876f79a48a",
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Active candidates and integration boundaries",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "8ea5b8e7bcd1cab4b31b0640a20663d8fccadbaae74f16d70019fd756acd2cdf",
+          "source_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408"
+        }
+      ]
+    },
+    {
+      "id": "DR04",
+      "disposition": "partial",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Repository identity and bounded material-compiler commands are present, but none of five supplied passages includes the focused C-header syntax command or complete cheap structural-check sequence. The build-guide link is useful but requires another read.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "fa5e773b1b837a82323be540fa5f09ea6ee217ec4528f3444e372cae6837e803",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c38754e5ce741d31c04562e0653023606586a72e5afa423478d2e12172fe318f",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 2,
+          "id": "567723aa2e8c335af1a21492b18ed38d8bd56904fc1230644c1b84a2c0ff8909",
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Source checkout on Windows",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3de15f545142912acb70b875d2c47a11f431f03a3ab72f6fbeaef5d63e42859b",
+          "source_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e"
+        },
+        {
+          "rank": 3,
+          "id": "d511a94b6541b9211f48fa438a4b9bf38f3cb1bde02df6a33cf69e4fc3936e48",
+          "path": "operations/troubleshooting.md",
+          "heading": "Troubleshooting simulation and integration > First launch and ordinary Workbench problems",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "72b159eae59b7965d0a918a3fff0ea3d60e4356e00ac080ab6fbc29e590f22e3",
+          "source_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf"
+        },
+        {
+          "rank": 4,
+          "id": "5aa128a08645581204f9e181294610f825abe87125234bd9b5070a7db1a5fdeb",
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > Launch and prerequisites > Windows launch",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c5a4ba1a2b19cdcf0b7eb6451fd09633c3fbc650cf4085566d0c40cc104f9785",
+          "source_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
+        },
+        {
+          "rank": 5,
+          "id": "57d46854e9fa880bcb979a2683ed2f2b40d2a0a94919d6e4fa0fede3632fdfbd",
+          "path": "tools/world-art-preview.md",
+          "heading": "World Art interactive viewer > Launch one integrated checkout",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "6af1cf6ed628eb75011040808b204b966a1a27fdd39db7b9705d93b2d91a9155",
+          "source_sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b"
+        }
+      ]
+    },
+    {
+      "id": "DR05",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "First two contexts explicitly separate native pool, exclusive adapter owner and main-thread scene/Rapier ownership.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "c338c6073141748f65d7160386acca28955502724b3c6051ff4b57b5a94bc78d",
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "heading": "Data ownership and lifetimes > Who may mutate each resource?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "50b07e5b85f6e5ee4ee9f76bc11637739b76daa7d3ac27b00bb3d92c6c766154",
+          "source_sha256": "c382c04501c3e728ddd4563eeec840a616503e6719cdd497300f482d999c87f3"
+        },
+        {
+          "rank": 2,
+          "id": "212cc118699ebfbbe838bdda06d25e25c6c405b4dcfbfcd2bd9a904ca1c2d050",
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > Who owns each kind of truth?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "7970f7af8fe301df25c062131723f9326e82f24c078b01f73cea4404a25e66fb",
+          "source_sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230"
+        },
+        {
+          "rank": 3,
+          "id": "1bbde8a1198164391cbce47b164a9735023708169ff082ff80e8a12cd4a0c65b",
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Foundational work boundary",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "9d0684c51aa8fd752647ffd930fe82398d72eb0f246b155c0e949077f5d74551",
+          "source_sha256": "a1fc1f741b052f67b73669110ef4bb64bb8efba1753f8500d559e9e58eaf12b6"
+        },
+        {
+          "rank": 4,
+          "id": "1de973e6c2955634474312d6c9821737c8d13ef14b8a5b862506fee9cce12b01",
+          "path": "architecture/principles-and-non-goals.md",
+          "heading": "Architectural principles and non-goals > Which constraints govern foundational work?",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "f974444ff73689cd7e8b11be57f077d0ef7d95ccaadd16529bf7af0848319c26",
+          "source_sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc"
+        },
+        {
+          "rank": 5,
+          "id": "394079df2b5e6cf8c25fa568672c2ed5aacb75eaeb3c54a1f0574557c715e4f7",
+          "path": "architecture/wave-flow-v1.md",
+          "heading": "Wave flow Water solver (experimental) > Controls",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "722d39730afc26cf135a9879d1575e79e6b552846eaadbc121ef29bf31d415d4",
+          "source_sha256": "c29922e5faf37b41cecc6383ac62d666679a056af5c3182ef21ec8c79bd90017"
+        }
+      ]
+    },
+    {
+      "id": "DR06",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Eight-byte PrecisionStorage and rejection of a permanent four-byte/sidecar-only constraint are explicit. The experiment context identifies its historical synthetic carrier.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "52d2c04b8aeaa28b206386035e52f3ae3588d4da11209b3075f6f385e62f3813",
+          "path": "architecture/chunk-tile-and-buffer-model.md",
+          "heading": "Chunk, tile, and buffer model > What is stored per cell and per chunk? > Is the old four-byte, sidecar-only rule current?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c71fcd1f0eed966448a7a4b3b7449deb5ef99f0a442ce6ab364b5d57b8d6e37f",
+          "source_sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6"
+        },
+        {
+          "rank": 2,
+          "id": "f041c82bd7064206c7ac6ffda0f1c20cb79ba734d9e944cb57d295a9477ac414",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Save, Flatten and compatibility",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "1f8a9ceddcab9bb42b771efe33b31f26d488963716ec856856c932c9b14aab1d",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 3,
+          "id": "594fa8e9f6de0bb867a3c67006c4c3dbef867caab93e42c5a5f01ae1300c5c70",
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Save, Flatten and compatibility",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "9d726ceb544f9ca02a3205fee2ad8ce831ad7572a2b9725692a6553f3c4a0329",
+          "source_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7"
+        },
+        {
+          "rank": 4,
+          "id": "5fe3f91de72a27c2f2ae0149fa6e86f578f4a8672819e52de19d2c69c4e2033f",
+          "path": "operations/cell-layout-experiment.md",
+          "heading": "Cell layout experiment > L4 concrete preregistration, September11",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "e49ed899c89c5c145f8dd3a8efec2dad3c11e1ffd88d5b858f0676db80e08858",
+          "source_sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118"
+        },
+        {
+          "rank": 5,
+          "id": "d8bce5e1b10c2f8cde0d622dacca58997d1abb09358b67d5aa6cb72d83602ac2",
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts",
+          "authority": "current-documentation",
+          "status": "Planned",
+          "context_sha256": "243b07d54743693dd4980468e9ebe2ee7b0f642f33d354a8a59239ba9a0d23e0",
+          "source_sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32"
+        }
+      ]
+    },
+    {
+      "id": "DR07",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 5,
+      "reason": "Player Wave/spill/ballistic defaults are explicit; policy text distinguishes four registered families from the Wave overlay and ballistic owner. Native construction defaults remain separately identified.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "394079df2b5e6cf8c25fa568672c2ed5aacb75eaeb3c54a1f0574557c715e4f7",
+          "path": "architecture/wave-flow-v1.md",
+          "heading": "Wave flow Water solver (experimental) > Controls",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "722d39730afc26cf135a9879d1575e79e6b552846eaadbc121ef29bf31d415d4",
+          "source_sha256": "c29922e5faf37b41cecc6383ac62d666679a056af5c3182ef21ec8c79bd90017"
+        },
+        {
+          "rank": 2,
+          "id": "f89caa1d14035e92f546176623954f3abacfb35a6bafd8f7f255c26c96d790bc",
+          "path": "operations/wave-flow-evaluation.md",
+          "heading": "Wave Flow evaluation > Water Lab (consolidated Workbench UI)",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "6d25d210744d61d4f7e8e16fca9d1511c877f06e6a9c3ec1201b01b8e8409f0c",
+          "source_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f"
+        },
+        {
+          "rank": 3,
+          "id": "2d262daea80015e4ea3d29486879bc556153a3530c1065348aeb1e117f00c44c",
+          "path": "architecture/ballistic-water-v1.md",
+          "heading": "Ballistic Water and hybrid spray (experimental) > Solver combinations: gas-free PressureFlow surface",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "4f21f64c4c8b1f14a3ca62185df1e68d1a973019aa04c0685017d8feebab345b",
+          "source_sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce"
+        },
+        {
+          "rank": 4,
+          "id": "1903e03664f8dfa8ef3d5c8323468186adbd78b759f6e9def5022a9b106d7153",
+          "path": "systems/water-design.md",
+          "heading": "Water design",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "f7431a200ccc8a123ef207d926f1e5e10b26cfb116e67bb21a50234c924757a3",
+          "source_sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed"
+        },
+        {
+          "rank": 5,
+          "id": "fabc97f62affc264cac43965ffbce42843e522e2a02100e62327bf2b4bda1a03",
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Status",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "4166e2bd6b0fecef9fa9e8bf709abfe1246a0d155c553c0974183a4f2cc40095",
+          "source_sha256": "eb3515d1a77f3d6c1def6badfe1fc8c692df0782f05a6a8ba3f77676a91338a8"
+        }
+      ]
+    },
+    {
+      "id": "DR08",
+      "disposition": "partial",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Signed IN-B1 upward velocity and historical nonnegative-vy boundary are explicit, so the blanket premise can be rejected. Separate Wave release and parcel mechanism are not explained in the five passages; following the Water contract link is needed.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "efd9d35d458c1d0dff1fd3dede96e40c08379ad74cadff765ab5900809705a34",
+          "path": "architecture/ballistic-water-v1.md",
+          "heading": "Ballistic Water and hybrid spray (experimental) > IN-B1: signed-vertical inertial law",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "75d323f3dbea44b06760e082e10fe76e6a452cba04686ecf118ec4f0eb9daffd",
+          "source_sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce"
+        },
+        {
+          "rank": 2,
+          "id": "bcab31a53d8a49c614c4aeea1a6ac4eea1ba10e0b4bba9db6a95751447b9560d",
+          "path": "architecture/liquid-state-transition-matrix.md",
+          "heading": "Liquid material and solver state-transition matrix > 5. Velocity and momentum (IN; PF flow)",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "6f9916776a1c918e6a047dd98d984d6d9ee96222773aeb1592e6a9f1b71a0b72",
+          "source_sha256": "749a4098434ac43b77bc428625f90d87287ed107647604cbf0f2f576ceec0487"
+        },
+        {
+          "rank": 3,
+          "id": "965ab59b03657915dc56ce97900e423ca2eb398dc0eec279f2d2f78107176c7a",
+          "path": "systems/granular-interaction-policy.md",
+          "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "a2909281b2801d172fbaa2e29cd1e3837e5a0c975e6ca8f884b869157ea5dff2",
+          "source_sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688"
+        },
+        {
+          "rank": 4,
+          "id": "2a0da2eb6ce79d7cff9d5ab36eee561d07b21d87c2001344bd364fe9871a7861",
+          "path": "operations/architecture-programme-water-feel-addendum.md",
+          "heading": "Post-G-P Water feel refinement > Why the refinement is needed",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "7771b8438bebb52bfbaf32059f58617fddb12b0f0a11c9e8f269fab490b0e959",
+          "source_sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5"
+        },
+        {
+          "rank": 5,
+          "id": "bdc3c98a4be8d6445e8b0a61f18d82fdb25d581a1d8ad08cc438949328b77f0e",
+          "path": "systems/player-environment-profiles-and-traversal.md",
+          "heading": "Player/environment tuning profiles and sampled traversal > Step, knee and clamber bands",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c67f359469faa4e37137cba068f40e405e81f8461162bf36e971013ea49cabe7",
+          "source_sha256": "79179b8a4e34b72348675d3b77e9e19c61c041d6b8a7cab78007f46ab4b1c3d9"
+        }
+      ]
+    },
+    {
+      "id": "DR09",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "First passage distinguishes fractional amounts, whole-cell yielding, saturation/normalization and separate Wave/pressure quantities. Historical FreeMass measurements carry local applicability labels.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "7ac97455e16b142f3204249e783e7455509255f7f70ee837d2f69533d2ffda13",
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > FreeMass and CellularYield quantity semantics",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "35791cc58d9b7f05ae0823b2b19af927274770368059c68da1a3704a96867141",
+          "source_sha256": "eb3515d1a77f3d6c1def6badfe1fc8c692df0782f05a6a8ba3f77676a91338a8"
+        },
+        {
+          "rank": 2,
+          "id": "b5e573e862d8962a83f89680bdf7164a23c6f4a4b2dba659b84e40ebcfbea6b8",
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Owner clarifications recorded 2026-09-20 > Water and other native liquids still use distinct motion/quantity paths",
+          "authority": "current-documentation",
+          "status": "Planned",
+          "context_sha256": "ad58e30bb42daf5d0dea420c377af6df642ae82b17d44072e41ebbad0bdb8988",
+          "source_sha256": "51e2b5b789476c8da9ce33706ceba3ec4fc6b2fca61cd866bc3822c78d8d2a88"
+        },
+        {
+          "rank": 3,
+          "id": "93d25be9d308675437f8c3e5b0b3b2b15ed99b038c8020eca7d7b848249af69b",
+          "path": "systems/materials-and-rule-kernels.md",
+          "heading": "Materials and rule kernels > Current material families",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "96ee03aa24742dfa2a596d1819fbd761e3cfaea5137786f3c0c2642bdd66a68c",
+          "source_sha256": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500"
+        },
+        {
+          "rank": 4,
+          "id": "4bde7f8216642a88af4f845c32e3f484785c53cda2fb0d1a7ff263bdddf775de",
+          "path": "decisions/ADR-005-water-model.md",
+          "heading": "ADR-005: Conserved fixed-point water semantics > Decision and implementation status",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "def4bb56cb31509e39a4c7d14a7ca8f23edca7d9ec40b76253303893794a6409",
+          "source_sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777"
+        },
+        {
+          "rank": 5,
+          "id": "79be9d8bda1bdfcef87ec4aecba67c326dbbb56f8a6d934e27c8a0be143ad351",
+          "path": "systems/water-design.md",
+          "heading": "Water design > WEX-005 disposition and the opt-in LCB lane (2026-10-23)",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "90efda59605eee3cc535c2d1ee4c8a1d1a22fa3a9f3422ed02e58df345b38111",
+          "source_sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed"
+        }
+      ]
+    },
+    {
+      "id": "DR10",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Declared/effective values, specialized consumers and candidate-versus-production state are explicit, including disabled viscosity controls and runtime_active=false.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "5f1d69469c86b600bd2a475215e923a00f5685e07b9c901a30436ea3bbdd99f1",
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > Browse and inspect actual behaviour",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "20ee7337ba2546fece82b0fb09673ca31a5c0493d9d500c03f9bbfe8491b0a03",
+          "source_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
+        },
+        {
+          "rank": 2,
+          "id": "c41075eb5c82177a39fefb1af011fcf6b60605e96d197a896394c0ca3ec5a6b3",
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Materials Lab effective inspection and editing",
+          "authority": "current-documentation",
+          "status": "Planned",
+          "context_sha256": "5937e6f12e80d22c129a4f1496d8d086209cc31124818f54f0b3e6f51131172b",
+          "source_sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32"
+        },
+        {
+          "rank": 3,
+          "id": "035b91ae41b8ca026debce38f93e37950dee3380ffc60123e7b46ce6d07c08f6",
+          "path": "systems/materials-and-rule-kernels.md",
+          "heading": "Materials and rule kernels > What the material catalogue and Materials Lab currently control",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "b91c7f43a7a0becf516ae7a907d51f056f5cfb0722f1e7ba76511599c632e40b",
+          "source_sha256": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500"
+        },
+        {
+          "rank": 4,
+          "id": "2e8e29e0044778494956ac657def51d7b253359d86568590aa871924f00550c9",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Live materials and layered presentation",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "1d1be61c3882ab927247684a7fa265b07813a67ee144b87345be380b9542b65d",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 5,
+          "id": "8369d84c907061ffefda11b7fcf34c76d5f6821d650a19f13bffea9e900ae396",
+          "path": "reference/configuration-reference.md",
+          "heading": "Configuration reference > Desktop fallback simulation constants",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3c0aa772c4c291effc1502f38b5c9badf09cb51e0a35938b5bd6bb8220791d11",
+          "source_sha256": "ae00ab5a85159c1df0d5f626400e47c03802a6f8ca607d72c5e1ca9a708e6fe6"
+        }
+      ]
+    },
+    {
+      "id": "DR11",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Accepted isolated Lab workflow versus unmerged live-scene audition is explicit, with owner intent separately labelled.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "f25627bcdcd91de23cfebcd5efbfe90c0a67d8610448cc3c3d5f8b6cdedf8cb1",
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > First inspection and safe experiment",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "4f28aca8ba7fa6f8163b89272f69595394ada693cd29a03c247bbf85d44afd16",
+          "source_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
+        },
+        {
+          "rank": 2,
+          "id": "2e8e29e0044778494956ac657def51d7b253359d86568590aa871924f00550c9",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Live materials and layered presentation",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "1d1be61c3882ab927247684a7fa265b07813a67ee144b87345be380b9542b65d",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 3,
+          "id": "d34a05c8795551372dc3c26287f176672655cda30a6b6aa6890dc2c3e80724aa",
+          "path": "MATERIAL_LAB.md",
+          "heading": "1024² material lab",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "38196a4a9efacee84a55f5d4feac7a7f242bb317bfe0c8fd3766efe15f361a89",
+          "source_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073"
+        },
+        {
+          "rank": 4,
+          "id": "4aebdfae6836ce977bd8d1127be71d4b06ecd64968c5d599f8c66c0abaab4190",
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Live materials and layered presentation",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "8fefa4786c0361110a852368edc196dfa4378133f815f1b6967e37f0741f0fb1",
+          "source_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7"
+        },
+        {
+          "rank": 5,
+          "id": "035b91ae41b8ca026debce38f93e37950dee3380ffc60123e7b46ce6d07c08f6",
+          "path": "systems/materials-and-rule-kernels.md",
+          "heading": "Materials and rule kernels > What the material catalogue and Materials Lab currently control",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "b91c7f43a7a0becf516ae7a907d51f056f5cfb0722f1e7ba76511599c632e40b",
+          "source_sha256": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500"
+        }
+      ]
+    },
+    {
+      "id": "DR12",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Actual controls, native operation states, shared history bounds and paused-scene restrictions are supplied. No unlimited fill or exact simulation Undo claim is needed.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "5e244d4d1304fc300233f5742564461de1d3801617204927d8f7c28021e10d0b",
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Make room to work",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "f2133cdd6a21bbc744915a1d916deb7a7f933bddb01e969c320bd5049770b6c3",
+          "source_sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a"
+        },
+        {
+          "rank": 2,
+          "id": "7e348eaedf2722444330ed8e182fb6f36fb87c950ed3c8d880662473b053e95a",
+          "path": "systems/paint-editor-bounded-shapes.md",
+          "heading": "PAINT-001 — bounded painting editor > Using the editor",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "93fd0cb53106ab186734eb3410e9c634252a346fafa702f4b3cddb4bc70094c2",
+          "source_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114"
+        },
+        {
+          "rank": 3,
+          "id": "c63c5f9213793c1c08638acf3bc10f528104da3b43882b0b857b4e16ca37ccc2",
+          "path": "operations/workbench-painting-and-history.md",
+          "heading": "Painting and history > A reusable multi-material stamp",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "88a9cf40d4ffcbd64217e289fd5c95f93b8dea1431e77ade86b556e5e3211d85",
+          "source_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d"
+        },
+        {
+          "rank": 4,
+          "id": "0baba36f5db783923578a593abc97bf559c85c9b6be096662c23f9ac2866ccaa",
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Shared agent and manual Undo/Redo — current implementation",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "6174a2a51f60b3d2446d26c01362a807c952c2a69f2f89a24a7205fcbb2d2e18",
+          "source_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252"
+        },
+        {
+          "rank": 5,
+          "id": "0278ece5a3fd0da24fd228724ded5f2cd15216364c14cea87a6d2c1ff19eaa13",
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Install, paint, save and reopen",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "30ab6c2b3a4c849bfb5a42d0af074dc3d034a95e58d040495617de60e5555c9f",
+          "source_sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573"
+        }
+      ]
+    },
+    {
+      "id": "DR25",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Standalone Strata controls and immutable background are explicit. Showcase route states ordinary Workbench integration is separate; no four-plane ordinary-Workbench claim is supported.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "f41483716dc6f0269fcca255629a1d9fb51e594c93bf94214710d7388bb6fc07",
+          "path": "systems/depth-layers-and-parallax.md",
+          "heading": "Depth layers and parallax prototypes > Strata Theatre controls",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "1be0fc6476b21ee3fcfe00b88769e45fa2251e0fdccc7ad0adc9727900e23416",
+          "source_sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d"
+        },
+        {
+          "rank": 2,
+          "id": "cbf101c68df2edb2901d6625c158cd6d974eeeec0dc1faf831ffec5f0b8a3c9b",
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Choose the correct owning contract",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "6b9a6f6ac3880cfcbd5b7c2bf328e6d03b3db45ba40df0f015f1563854a8e5ab",
+          "source_sha256": "a1fc1f741b052f67b73669110ef4bb64bb8efba1753f8500d559e9e58eaf12b6"
+        },
+        {
+          "rank": 3,
+          "id": "67ef1d9c603d65d244e62fd264f23208bde3ce185a59766fb9ac628cc9861b63",
+          "path": "operations/showcase-guide.md",
+          "heading": "Explore the showcases",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "e23b1e8f0bdf792db43e6aba36e3e858c560cfd74a7892546a68e02280dec46e",
+          "source_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1"
+        },
+        {
+          "rank": 4,
+          "id": "4cf3adfae8ed14e5cd925ef79498d3cb8fa3198abfa1d3c956bfeb54224751c9",
+          "path": "operations/deepworks-exhibition.md",
+          "heading": "Deepworks — the exhibition below > What is the map?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "a90cd0ba711155ec1dd9b43ee747c303ff7097aaeea3f423f5c579b5b1422dce",
+          "source_sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562"
+        },
+        {
+          "rank": 5,
+          "id": "b42ef440c3a14db147e99f62d6ce6c0db9c39123c1ff930d97ae3247844a27f6",
+          "path": "reference/glossary.md",
+          "heading": "Glossary > Authoring and acceptance",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "11d96620d13e2512d6db2f110a925188beed0c1ed3e08ab978876ca296751ee3",
+          "source_sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb"
+        }
+      ]
+    },
+    {
+      "id": "DR26",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Native ticks, publication, render FPS and physical progression are distinguished. Source-bound evidence and human/platform limits are supplied.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "a6f83393dca51c8f654b86a0e27ca4d16857d4f8fb09be17b214ae9e51cf1169",
+          "path": "operations/profiling-observability-and-performance.md",
+          "heading": "Profiling, observability, and performance > Avoid common misreadings",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "782ca5d48f69e62e93d3d3cf5c5d53373b7a8caa17efbcd09d5364566ebe3f8a",
+          "source_sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391"
+        },
+        {
+          "rank": 2,
+          "id": "d7312da795a7cee9ea9606e78e6a14e6310e9f727c90bbd8b5327e2618a5bf7c",
+          "path": "operations/physical-actor-programme.md",
+          "heading": "Physical actors and combined feature trials > What did the owner observe and authorize on 2026-10-18?",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "729005616fdce25310a9228fff7c21c61d8682cb72232ad934ec2230e49c9cc8",
+          "source_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65"
+        },
+        {
+          "rank": 3,
+          "id": "04ab078ff2a9c1444612b4b1aeebf18902e4c9e302d91e0854b255e117f490dc",
+          "path": "architecture/simulation-tick-and-threading.md",
+          "heading": "Simulation tick and threading > Current execution boundaries",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c392b9ee1d28c23a4a6a2c432f66d5ccbf8480bd03c07ac3f5339b1fd85f0e30",
+          "source_sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170"
+        },
+        {
+          "rank": 4,
+          "id": "fe3893441367dbaea285cb4a3775155e54cb82014a4c690a84d0a726df2d4417",
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > How does data move on desktop and Web?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "92c1686b9ba64cc5cf5d6dc3713ee3f7ff1613f620d859ca643b7196471bb6dd",
+          "source_sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230"
+        },
+        {
+          "rank": 5,
+          "id": "f7c80cc3405d191378135bb1391762d4698ee1b05d46598f590e89ae46eee872",
+          "path": "systems/explore001-generated-playable-maps.md",
+          "heading": "EXPLORE-001 — GEN-007 → Playable Workbench",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "e226b5fe2b7a69a41d7448337cbc7662133967402bbb5c7cc1a4d7d33d959dbd",
+          "source_sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac"
+        }
+      ]
+    },
+    {
+      "id": "DR27",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Both Web profiles synchronously finish cellular ticks; internal pthread work is distinct from asynchronous desktop ownership.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "2308302869e124e04add56f23c9a9895e73a6fd8f9705128841a160df940cf55",
+          "path": "operations/web-threading.md",
+          "heading": "Web worker profiles and reference tests",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "1d442066744ede1fe02787999c3547af75df55e46543dcf494183d83412fb8e3",
+          "source_sha256": "477487fb418a8a6480d6f8da80fa4c1ad45e63e33c6044760aa4fb3a7a46ce59"
+        },
+        {
+          "rank": 2,
+          "id": "21596ac95a58df29d265760b95d1afaf0e8aae6dc19ba7bd2d14cfc848482e12",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Web compile, export and execution are different checks",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "24edb14e00a9761e1f04cc2fa97e00a5bc2e37533b14178ad5e27bb719abd3e5",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 3,
+          "id": "3f62c5749b2d93feff2ae1627712ecbed5c70106d659c2f0d7676a0233ccbd9a",
+          "path": "decisions/ADR-010-failed-tick-quarantine.md",
+          "heading": "ADR-010: Quarantine failed ticks until reset or replacement > Alternatives and scope",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "a76e0246028c4237a7a5de11a373f16facf1f7608411ead7e1f8f00c79173049",
+          "source_sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74"
+        },
+        {
+          "rank": 4,
+          "id": "0ae6d73b8e492c5ffa72bea530110347ec82d4147cf876c9107926788786fd1e",
+          "path": "operations/testing-validation-and-replay.md",
+          "heading": "Testing, validation, and replay > Granular interaction regression",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "f89ba06710475e70e2e3934f65ff8d835ecc5ece798a88181166d1ad83fab892",
+          "source_sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab"
+        },
+        {
+          "rank": 5,
+          "id": "847956645caf689901470872620d5012ab56b28b3bd6834d472bfcaebccb87ef",
+          "path": "reference/glossary.md",
+          "heading": "Glossary > Authority and implementations",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "03250a653d57844195ccb41d3932e18a6b01ebeeb59a631626e7fd49a67c01e5",
+          "source_sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb"
+        }
+      ]
+    },
+    {
+      "id": "DR28",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 5,
+      "reason": "Current provenance context explicitly rejects hand-edited JSON hashes as qualification and requires source-matched artifact/build evidence.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "f13291e2ca499954dcf4812a7a595447b7b815a41c9456c8fadf9ee0909489be",
+          "path": "reference/validation-evidence.md",
+          "heading": "Validation evidence ledger > Source and artifact custody",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "655e83bce7f1b7d98cf2ffb0efe99bcfd1b326fa1239502fce467ae9a30d561e",
+          "source_sha256": "c6e31c1a6dc9d092d6f4cec3dde36a1880a0520e45ccce49c3488018245a86ff"
+        },
+        {
+          "rank": 2,
+          "id": "b26fc4d54eae0220f3963c789858fba50e6e61e8b27d1c4fd026a419cb127580",
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Establish source and runtime identity",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "e8019a399174b883090e1fa45c06b056b16c75d52d3505065bd85958617eb168",
+          "source_sha256": "a1fc1f741b052f67b73669110ef4bb64bb8efba1753f8500d559e9e58eaf12b6"
+        },
+        {
+          "rank": 3,
+          "id": "41b212abc9fc29ed88388ab5924000e964a7d12078a6a2fb7f7f2967935a09eb",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Windows development commands > Repository-contained Windows desktop launcher",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "ef551b03dedd5e0b3065b9df43c96f9b07f17a1ebcb82aa4a9dad06472574e61",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 4,
+          "id": "6a3a34b3b62b636fb3b019cf47d2bd54f9a5b9f9adac7ba7ca817adae34c271a",
+          "path": "systems/generation-workbench-2.md",
+          "heading": "Generation Workbench 2 inspection and transactional authoring > How do visual authoring and JSON roundtrip?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "451e17c19dd7336ea9eb09f7142f6c69ffb48fd6f285107f8dffbef007ea9b80",
+          "source_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606"
+        },
+        {
+          "rank": 5,
+          "id": "cf79529385cb72ad702e65369ee095a5c8b8245c81e656dcde2d8485e33b4265",
+          "path": "operations/current-and-historical-validation.md",
+          "heading": "Current validation and retained M11 integrity > What validates current source and runtime identity?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "c2e99dd35a9a6224b4df40975e7fdaf15e0a35aed55a02c8afd5ca9aaa74945d",
+          "source_sha256": "a9714e480367aec4a36dff190bf7b42296fd3b7d54958f854f054b788511e374"
+        }
+      ]
+    },
+    {
+      "id": "DR29",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Draft skips, exact applicable gates and owner-controlled Ready/merge boundary are explicit. The dated owner-intent permission is not a new authorization.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "f4a32694f7269a3298cd8e0f69f02398fcbbeceab8d64895e5726e5a215f90f8",
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Current CI provider and draft gating",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "325c9dd4b8434441f319af40c823d460b2871c7d54f0a90110c8cd9cc34a8d92",
+          "source_sha256": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d"
+        },
+        {
+          "rank": 2,
+          "id": "cf20a26248c6fb1cc2c7d3c1db0afb4da4ccf249b6853784d2df7be07aac4473",
+          "path": "systems/explore001-generated-playable-maps.md",
+          "heading": "EXPLORE-001 — GEN-007 → Playable Workbench > Protected-source integration",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "0c7304c6d153a5bfea1632e4efcfa3b31c248f986d3f5ab1894149a8f0013fb4",
+          "source_sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac"
+        },
+        {
+          "rank": 3,
+          "id": "a524bb32336f7be83fad452f77f30d22899d5b2b17b681ddf2790a024c21e96e",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Actor control prototype checks > Physical free-flight checks",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "032383d03410383a2bac9d4d17f1a1c208a365340ad1be948c43d98a8388de7f",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 4,
+          "id": "bd343fa264dee2843aab063c657ed1ea329987867814df1d211d18e0e8879aa1",
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Reading status correctly",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "f9df1389b5f2c208d243a87b53583afae17bc36c7f7ae0f0ef24fc9990dfad95",
+          "source_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408"
+        },
+        {
+          "rank": 5,
+          "id": "7d38d3b74373feabb2fd9a75a90bdcd8f1bc8a9518eafd5fc0516be04c3c5af2",
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "5ce400e2a22d5bbab8cb336e68fcd5079d479ac2319145d15a6180666ad9984a",
+          "source_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7"
+        }
+      ]
+    },
+    {
+      "id": "DR30",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "native_skip_authorized=false, non-consuming advisory scope and complete case coverage are explicit; unmerged fan-out is not accepted scheduling.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "e27c2480f532ead2b084ec821ce5729ae6d00ea4c66ca5998f30d207c34db6ff",
+          "path": "operations/ci-execution-and-performance.md",
+          "heading": "CI execution watchdogs and advisory performance > Scheduling estimates and hosted safety boundaries",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "339fa9d8b6afcc8e6a879a96c7f2e237c1de39fecbfe7c7ebc38c82aa6a3ba59",
+          "source_sha256": "bf07fe2f9781906e4db8c226dd8fc33020b99927f6fdba681d49c45a39891f55"
+        },
+        {
+          "rank": 2,
+          "id": "95c73d1fa0fdbecc7b4745d94c21cc77d8d162c51b01ff4725b0d1187abcb775",
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Parallel validation and source-scope advice — 2026-10-31",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "07b7cbe1aeabb7d43ecbaa41dfc6185663ed9fe24cb851f4c444a99bfc41165b",
+          "source_sha256": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d"
+        },
+        {
+          "rank": 3,
+          "id": "0edf6b51d7af232787110451be0e7de362d42bd226d2ba91d0537661fd9b7881",
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Linux GDExtension CI sharding",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "46f94e87517f46cb5e15f2871ffa2d402dfe10b22cb5a05e47be04263c46bdc3",
+          "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992"
+        },
+        {
+          "rank": 4,
+          "id": "d39af6cc71e1eb364b505185ee1f3e7284a2043ce8e03d7f80e11433ab33166d",
+          "path": "operations/testing-validation-and-replay.md",
+          "heading": "Testing, validation, and replay > CI execution sharding",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "eeec6fc625ba8162b81ddb9dfbcb9ebe049bbc2cabbcf5de9fde1e850af19f2d",
+          "source_sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab"
+        },
+        {
+          "rank": 5,
+          "id": "368b6a327d203fe9df7818b0f6281b8d62d6938e7cb194b404e261249b662542",
+          "path": "operations/current-and-historical-validation.md",
+          "heading": "Current validation and retained M11 integrity > Which build and CI gates use each policy?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "e22f7c45df0c44548bdca1dd5448a8f0470c8f1c941bd6110a3ff3ba20dc9972",
+          "source_sha256": "a9714e480367aec4a36dff190bf7b42296fd3b7d54958f854f054b788511e374"
+        }
+      ]
+    },
+    {
+      "id": "DR31",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Historical Approved wording grants no current permission. Current validation/publication routes and per-chunk historical envelopes are explicit.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "f41dcb5cd4007a20fe2c767af430eb5677abd7f58aff67d27b368b5e2a133a18",
+          "path": "operations/documentation-maintenance.md",
+          "heading": "Documentation maintenance and retrieval contract > Does an old Approved instruction authorize restoring a runtime?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "0bbd3b210fa946c2f6edef512512eb7782c4478c94f0bc16ba3c6d415f77b463",
+          "source_sha256": "57f5a6e0162d8f6f91e009e8cc52b9dfacfccd3602c503a2eda51a8a5a542bef"
+        },
+        {
+          "rank": 2,
+          "id": "f041c82bd7064206c7ac6ffda0f1c20cb79ba734d9e944cb57d295a9477ac414",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Save, Flatten and compatibility",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "1f8a9ceddcab9bb42b771efe33b31f26d488963716ec856856c932c9b14aab1d",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 3,
+          "id": "83b1c257f7fc84d880fc468f7e06ffd3afdf574afcf4696698df030a4baccdab",
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "heading": "ADR-004: Interest region and safe reconfiguration > Which margin policy is actually approved?",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "de0ba8cbb58722f7bfe47bd86dac53ed0a834f815bf53fbfa2cb165f625b9df5",
+          "source_sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c"
+        },
+        {
+          "rank": 4,
+          "id": "d511a94b6541b9211f48fa438a4b9bf38f3cb1bde02df6a33cf69e4fc3936e48",
+          "path": "operations/troubleshooting.md",
+          "heading": "Troubleshooting simulation and integration > First launch and ordinary Workbench problems",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "72b159eae59b7965d0a918a3fff0ea3d60e4356e00ac080ab6fbc29e590f22e3",
+          "source_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf"
+        },
+        {
+          "rank": 5,
+          "id": "dbccd749289e1fcd34ba1b8b08a29168194e7f4cb5e2549323f25ee19da9614c",
+          "path": "operations/soliding-stage3b-production-plan.md",
+          "heading": "Issue 12 Stage 3B production implementation plan > Live execution checkpoint — 2026-09-24 > Recovery-era checkpoint — 2026-09-21 (historical)",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "ed02b755e75ebbbaa6d253284745b0f305284b7fa8343d6311267ec47251b788",
+          "source_sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083"
+        }
+      ]
+    },
+    {
+      "id": "DR32",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Manifest/fallback/direct selection, explicit-only packets, strict metadata and external-cache limits are supplied. A dated programme excerpt is a research contract, not an active work assignment.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "d81285d19461044aa75d43b803bc47decbf21b49bd4ede108f0d8ca2c677d160",
+          "path": "operations/documentation-maintenance.md",
+          "heading": "Documentation maintenance and retrieval contract > Current selection, fallback and historical authority",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "bf2dd5b7f4baad69f680e3017d951f9f572ca1357f0b96d7ae15c1dd6937c377",
+          "source_sha256": "57f5a6e0162d8f6f91e009e8cc52b9dfacfccd3602c503a2eda51a8a5a542bef"
+        },
+        {
+          "rank": 2,
+          "id": "7ca2f8ed60b626c2994c9e6790d578e3dbbeaf2e63f88722206cf886c7d6905b",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Generation and model-assisted authoring",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "31a6703e82e2362315dc3f32c6d2ca4c8e2d3b8cbf62ec1479404c9944b789a8",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 3,
+          "id": "23127d387f48a21a6d83205002e2facb8085a4d8fa22ab5b530aed663d68b134",
+          "path": "tools/world-art-capture.md",
+          "heading": "World Art unattended capture — real Godot PNGs and manifests > Exit codes and failures",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "390db783925c7b49f056f679cfabf326518c27722b5fa7f193a16384af5d9a09",
+          "source_sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f"
+        },
+        {
+          "rank": 4,
+          "id": "9c6a39921e7ffc5435f4fceeb150d8c052c3745ebc9fdcf050f577968494caac",
+          "path": "operations/architecture-programme.md",
+          "heading": "CyberSand architecture experimental programme > Final quality and documentation gate",
+          "authority": "current-documentation",
+          "status": "Planned",
+          "context_sha256": "53b713bde2454f79db7950b2cff681d9db42825efad6545708fc6e99409d62ad",
+          "source_sha256": "1c1e28b76a7b0deb0256624748f8f85e88e26b5882ebb13d5398389c66a700b3"
+        },
+        {
+          "rank": 5,
+          "id": "84ef04d138876921ee9fc469705eeed35763331d07462a961efe9984f914687c",
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "11d0dcefe5a2173235e264a18a1ce1e254ce3d95c0a38a9d40b4be9cfba297e1",
+          "source_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d"
+        }
+      ]
+    },
+    {
+      "id": "DR33",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Owner-intent authority and phase-specific permission are explicit. Active task instructions remain a separate authorization source.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "7d38d3b74373feabb2fd9a75a90bdcd8f1bc8a9518eafd5fc0516be04c3c5af2",
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "5ce400e2a22d5bbab8cb336e68fcd5079d479ac2319145d15a6180666ad9984a",
+          "source_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7"
+        },
+        {
+          "rank": 2,
+          "id": "e8fb2ed3d5a368fd297726096b0eab1d8ef8a59cbc3d8857bc50ae83012e5d25",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "5d2efe2046e1cbe74dd2b41171fef92fa884c4dba91161d17f75a07085c1ab5b",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 3,
+          "id": "2c65732d333b971bb8dd5e4f1243db4a18b9f9475291d092649eb1104858d35c",
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > Historical programme and admission context",
+          "authority": "current-documentation",
+          "status": "Planned",
+          "context_sha256": "f0af76184107439e7695118ebfa1b92c63bc244f74e78b38db052404be82cc9d",
+          "source_sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32"
+        },
+        {
+          "rank": 4,
+          "id": "2800fb9e4c04a0fd9acff8c92fa422c80165e3a4df7efc8b78e04d2dc152df31",
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Status and authority",
+          "authority": "current-documentation",
+          "status": "Planned",
+          "context_sha256": "65db28e2436d5f7a305b96371ec6c67a5e7c89d389acca3a13563f9d813e98db",
+          "source_sha256": "51e2b5b789476c8da9ce33706ceba3ec4fc6b2fca61cd866bc3822c78d8d2a88"
+        },
+        {
+          "rank": 5,
+          "id": "5b861feede2b4d8d6118ae1be5bb0a9b489fd0e605bced62d9b104916a611799",
+          "path": "systems/world-storage-and-interest-region.md",
+          "heading": "World storage and interest region > Approved area intent and accepted behavior",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "82e106ca8142602f50be5c5612056937f1eee3d1c5b30d20742c127c2398453a",
+          "source_sha256": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b"
+        }
+      ]
+    },
+    {
+      "id": "DR34",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 5,
+      "reason": "Current source and intent contexts distinguish authored canvases from unmerged RAMCACHE/persistent-area catch-up and exact continuation.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "5b861feede2b4d8d6118ae1be5bb0a9b489fd0e605bced62d9b104916a611799",
+          "path": "systems/world-storage-and-interest-region.md",
+          "heading": "World storage and interest region > Approved area intent and accepted behavior",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "82e106ca8142602f50be5c5612056937f1eee3d1c5b30d20742c127c2398453a",
+          "source_sha256": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b"
+        },
+        {
+          "rank": 2,
+          "id": "8e77cd8cf6ce3d115e9163d29dbb29e399c819da5fabde440d4205102f770ce8",
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > World extent, persistence and time",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "c648b485d1b048bcc843631bfcbfd4218bdc532a5516fe15dd1ff753f72f5d66",
+          "source_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7"
+        },
+        {
+          "rank": 3,
+          "id": "d972a14ce233e99341e2319ce537567d521077a7459b5f9085827d6e2227210e",
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > World extent, persistence and time",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "2ee43bcd6c8eb1fd887fd5f265c0b68ada56e66c1a38c3e0129f5fe5203d4329",
+          "source_sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa"
+        },
+        {
+          "rank": 4,
+          "id": "ad5250e083f83bae19d6c16430d3944a01a3bc47f13e2150c192fc0eb01a9734",
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > Which contract should foundational work load next?",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "30b40ed1266d5a605106fa69b4f337eb796d181b3124f2a3cec4dc6883e58a1a",
+          "source_sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230"
+        },
+        {
+          "rank": 5,
+          "id": "a6d366c27bf89b663faf74c8b19d1072734105e686cd81076e9820d4cf0dc971",
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Approved direction and unresolved choices",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "6668485c6ab1bd5c600540398d17ec3be6fbf141b239ccf0abb6f25f0b53379c",
+          "source_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408"
+        }
+      ]
+    },
+    {
+      "id": "DR35",
+      "disposition": "sufficient",
+      "appropriate_abstention": false,
+      "canonical_rank": 1,
+      "reason": "Art input/output bounds and absence of native simulation admission are explicit in several returned contexts.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "7481535f20b46a9fbbdaa7c97d6bb7c8e971dc94e16877a079def598674b6861",
+          "path": "tools/world-art-capture.md",
+          "heading": "World Art unattended capture — real Godot PNGs and manifests > Optional bounded streamed full PNG above 50 million pixels",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3b668661f6f424436b40d72eeb8fc5e18861d164ac0905f287e9e114b7701627",
+          "source_sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f"
+        },
+        {
+          "rank": 2,
+          "id": "8cf918d6ce46e463673bb4fd777f8c15477626eb2dd2f89983679c707b790787",
+          "path": "tools/world-art-preview.md",
+          "heading": "World Art interactive viewer > Output and limits",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "de3979ec1a8f475a3b844833a7a09ed7538f68edcf5a06720c08fccb12130d77",
+          "source_sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b"
+        },
+        {
+          "rank": 3,
+          "id": "c73b023ed329bfc93985e1ed2eacf63cbc7d479d104944573b18b5448cec1dbf",
+          "path": "tools/art-pipeline-unification.md",
+          "heading": "ART-PIPELINE-UNIFICATION-001 — integrated World Art Preview and unattended capture > Compatibility contract (independent limits)",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3479211686b2e9431b1247688f131dbce9761f48639d4fa3ae58d6c4985d70e0",
+          "source_sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74"
+        },
+        {
+          "rank": 4,
+          "id": "31012454a4316c72b625d2865ba7604b4777add6a8133e6854382ff1792a8612",
+          "path": "tools/world-art-evaluation.md",
+          "heading": "World Art Windows evaluation > Capacity and compatibility",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "1b5ced452fbaba8d92d6339ba1192bad31cfdd5505b04ac8c8ac90e833ef1195",
+          "source_sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f"
+        },
+        {
+          "rank": 5,
+          "id": "f338829e889f096d21f1808a9c0c9813271dda26c8c1b81ed47a280b032ae5e1",
+          "path": "systems/workbench-direct-art-batches.md",
+          "heading": "Direct art batches — WB-ART-002 Stage 1 > Qualification and launch",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "15eb3a2424e783d75b23210dff1315d7bf7ce174755a55f292017b6a79699c32",
+          "source_sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9"
+        }
+      ]
+    },
+    {
+      "id": "DR36",
+      "disposition": "sufficient",
+      "appropriate_abstention": true,
+      "canonical_rank": null,
+      "reason": "Direct owner-intent passage describes prepare-then-declare as exploratory, not a selected algorithm. Coupling passage routes to active roadmap and limits accepted behavior. Correct abstention with a useful source route is sufficient despite canonical-rank miss.",
+      "contexts": [
+        {
+          "rank": 1,
+          "id": "b5a8c862036dac673a6134464a5548609cdc0734284f1d9187c1b404bdb1bf43",
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "heading": "Rigid-body and cellular coupling > Current actor and destructible-structure boundary",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "3659f20f7f3ae9ce33926ee86501416f93f4c634928d07d3fe70d1186432a890",
+          "source_sha256": "2024bd87238db198680e64e8b6777e9532589f42b33033fb063e60dced64e928"
+        },
+        {
+          "rank": 2,
+          "id": "c3336a81218355073d5e8f7daf90327dd1fbd15d44067013a84c6e40a8a7b0b4",
+          "path": "systems/world-storage-and-interest-region.md",
+          "heading": "World storage and interest region > Approved expansion and unresolved policy",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "f076bcbd16a4dd1a908e5eeacf0c8510731beab63bff883d16aa478aeefe3e97",
+          "source_sha256": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b"
+        },
+        {
+          "rank": 3,
+          "id": "bc2345a334b0c363ba8b0fbd2bc8cb1882450dd1822ee39574b74d0016b697e2",
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Physical character and destructible structures",
+          "authority": "owner-confirmed-intent",
+          "status": "Approved design",
+          "context_sha256": "a7eee40bfc70d3ce642067caf78e06e2481a521c597bbc8a842eb8c8d138591d",
+          "source_sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7"
+        },
+        {
+          "rank": 4,
+          "id": "64240ae554c774a2bb3b4e5e06a7c893e06e6e0ff47235e4b0e823b692d0d9e1",
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Reconciliation and design choices",
+          "authority": "current-documentation",
+          "status": "Current",
+          "context_sha256": "208a3a9f40d525818e305e1912a450616f79bc6b28e3d339ae9e54c7ea95b5d7",
+          "source_sha256": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d"
+        },
+        {
+          "rank": 5,
+          "id": "c21b58748e210ba3a95c8313a4c05258bf51f337c461ea9f1ee1c1d429e7b448",
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "heading": "ADR-004: Interest region and safe reconfiguration > Failed-world boundary",
+          "authority": "current-documentation",
+          "status": "Approved design",
+          "context_sha256": "980ffbd49a5fb1fa7c9adfbbc355071c6ab0deb1b33868961093901b548d336d",
+          "source_sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c"
+        }
+      ]
+    }
+  ],
+  "layout_review": {
+    "id": "EXPLORE-001-LAYOUT",
+    "canonical_rank": 3,
+    "disposition": "sufficient",
+    "reason": "Actual hit3 explicitly bounds first-open and saved-load popups to embedded viewport or screen usable area and keeps Install/Keep current map outside scroll content. Actual hit1 supplies the manual first-open procedure and distinguishes graphical tests from human acceptance. The changed canonical body was reread; the four other bodies match the prior review. The rank3 result remains a ranking loss rather than an applicability failure.",
+    "artifact_sha256": "8ec36e5d0cabeafd5919ec12b11796275fca4b08d70a29e3f49c232ff063c515",
+    "contexts": [
+      {
+        "rank": 1,
+        "path": "operations/explore001-desktop-playtest.md",
+        "heading": "Generated-map desktop playtest > Manual acceptance procedure",
+        "authority": "current-documentation",
+        "context_sha256": "2da94340dc15adf1d3d162ad63bb0a339369eeb7f010155d06718f556e8ea097",
+        "source_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e"
+      },
+      {
+        "rank": 2,
+        "path": "operations/architectural-generator-playtest.md",
+        "heading": "Architectural Generator walkthrough > Install, paint, save and reopen",
+        "authority": "current-documentation",
+        "context_sha256": "30ab6c2b3a4c849bfb5a42d0af074dc3d034a95e58d040495617de60e5555c9f",
+        "source_sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573"
+      },
+      {
+        "rank": 3,
+        "path": "systems/explore001-generated-playable-maps.md",
+        "heading": "EXPLORE-001 — GEN-007 → Playable Workbench > Ordinary workbench workflow > Authoring and reopen",
+        "authority": "current-documentation",
+        "context_sha256": "28f939c51bf7427d600570fe1387a13347bdf8eb6c8725823593771b27340719",
+        "source_sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac"
+      },
+      {
+        "rank": 4,
+        "path": "operations/workbench-saving.md",
+        "heading": "Saving authored worlds > Save a generated scene",
+        "authority": "current-documentation",
+        "context_sha256": "827eab10ff5530b98345ac1e17bac37cc472be4bb87a4f4e37a8a0f918855424",
+        "source_sha256": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a"
+      },
+      {
+        "rank": 5,
+        "path": "operations/gentek80-evaluation.md",
+        "heading": "GENTEK 80 — Windows evaluation > Test It",
+        "authority": "current-documentation",
+        "context_sha256": "49afaac40cd711af56a8e2cdeee9920a45cab69838864c2d1b8d7862e255b2af",
+        "source_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db"
+      }
+    ]
+  },
+  "remaining_scope": "A owns independent DR13–24 review. This receipt binds only method-v1/source162b8097 contexts and cannot be attached without comparison to the later method-v2 or changed local-build document. The original81817f84 receipt remains unchanged.",
+  "retrieval_identity_sha256": "f27867ba30dc572d5b9a133ce531d86a2eca7364cc66db84270f32f0244ede95",
+  "retrieval_identity_summary": {
+    "schema": 1,
+    "method": "source-bound-field-bm25-v1",
+    "policy": "historical-isolation-v4",
+    "historical": false,
+    "max_words": 420,
+    "manifest_sha256": "d58641656500401b5815d9b64767dedd3142e67ada6dc572f1b7b226ea677c1a",
+    "source_fingerprint": "aa477cac4664bd7ff9f9c9311a5ef0dd15e21b41dfa69c313b40bbeef6ea8c12"
+  },
+  "explicit_source_follow_review": {
+    "receipt_sha256": "f1c614d876ed1e57808760db396c69100f9528ef6a8a39c8c739357813497fda",
+    "scope": "Executed query plus explicit human-selected linked-source reads. The adapter returns source-inspection-not-acceptance and no execution permission. First-pass partial judgments remain unchanged; full-document follow is a separately measured and substantially larger context. No model generated a response or selected a source.",
+    "source_bytes_total": 141847,
+    "results": [
+      {
+        "id": "DR04",
+        "source_path": "docs/operations/local-build-and-validation.md",
+        "source_sha256": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992",
+        "source_bytes": 93005,
+        "digest_independently_verified": true,
+        "authority": "source-inspection-not-acceptance",
+        "permission": "Reading this source grants no execution permission",
+        "disposition": "sufficient after source follow",
+        "reason": "The actual returned local-build document supplies check_docs, materialized check_repository, make c-header-check and make -n, together with the exact native/tests/test_c_header.c C11 syntax-only probe and warning flags. This is sufficient after an additional source read. Its unrelated generic LeakSanitizer recipe contradiction was separately reported to lead and is not concealed by this scoped sufficiency judgment."
+      },
+      {
+        "id": "DR08",
+        "source_path": "docs/architecture/wave-flow-v1.md",
+        "source_sha256": "c29922e5faf37b41cecc6383ac62d666679a056af5c3182ef21ec8c79bd90017",
+        "source_bytes": 48842,
+        "digest_independently_verified": true,
+        "authority": "source-inspection-not-acceptance",
+        "permission": "Reading this source grants no execution permission",
+        "disposition": "sufficient after source follow",
+        "reason": "The returned Wave introduction, spill admission table and limitations distinguish grid Wave face transfer from ballistic parcel ownership, signed inertial motion and separate capacity/merge limits. The catch_falling clause correctly accounts for the default four-tick self-contact grace. The whole source supplies the previously missing mechanism distinctions."
+      }
+    ]
+  },
+  "source_tree": "9274445d92d97d0a51ca9d284644570f25a0f770",
+  "prior_review_sha256": "06f6ef4a51f3d84f9700bc66de0474d66073f4c0c450d35885e7b5b6d89f37ff",
+  "review_reuse": {
+    "prior_body_instances_identical": 109,
+    "unique_changed_bodies_reread": 10,
+    "changed_bodies": [
+      {
+        "path": "operations/web-threading.md",
+        "heading": "Web worker profiles and reference tests > Build and preview",
+        "body_sha256": "efe256790308522d61b0464daa9e106d5a1d2f1020116e31eaef644ef807a58c"
+      },
+      {
+        "path": "reference/status-and-roadmap.md",
+        "heading": "Status and foundational roadmap > Active candidates and integration boundaries",
+        "body_sha256": "c93a81b18f67cfed79302831afbabd603628bd433bf17b776958fab9992b7c90"
+      },
+      {
+        "path": "architecture/data-ownership-and-lifetimes.md",
+        "heading": "Data ownership and lifetimes > Who may mutate each resource?",
+        "body_sha256": "760dc98361872e67f8580a5a5af9428217de690d87f6ee6dd890177d34097739"
+      },
+      {
+        "path": "operations/web-threading.md",
+        "heading": "Web worker profiles and reference tests",
+        "body_sha256": "855c08154f98f743ff73d7e12d75aeeebc2e50be35f0b1450c26f44600deb576"
+      },
+      {
+        "path": "operations/local-build-and-validation.md",
+        "heading": "Local build and validation > Web compile, export and execution are different checks",
+        "body_sha256": "95c938c080d745a97a3e1ebb7ebc2dad37365d3b411935f802744ff561cabc0d"
+      },
+      {
+        "path": "operations/current-and-historical-validation.md",
+        "heading": "Current validation and retained M11 integrity > Which build and CI gates use each policy?",
+        "body_sha256": "b9130cee5031cc9566b57187555de7d8cab1f0b9d72938981d532469d7a346f9"
+      },
+      {
+        "path": "operations/documentation-maintenance.md",
+        "heading": "Documentation maintenance and retrieval contract > Current selection, fallback and historical authority",
+        "body_sha256": "84e7c4c98ada8cee21ed9dd478dacf2c249aa6d01807d04699dfd2877fcc4868"
+      },
+      {
+        "path": "reference/product-intent-and-priorities.md",
+        "heading": "Product intent and priorities > Generation and model-assisted authoring",
+        "body_sha256": "19f9a8e2200ccb605a0978483296b4d0d3b656fb0ab3be3031cdb5883977448f"
+      },
+      {
+        "path": "operations/water-hybrid-pressure-extension-programme.md",
+        "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > Status and authority",
+        "body_sha256": "346bc716ad403b959b76b33870bfd21a2e45beb82635b3fd062d59f27f662cbe"
+      },
+      {
+        "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+        "heading": "ADR-004: Interest region and safe reconfiguration > Failed-world boundary",
+        "body_sha256": "645611e50b8694dc73e31b5a7fefaf6cdfd0d8ac12d261271ce84201db7632a1"
+      }
+    ],
+    "scope": "Comparison removes only the emitted metadata envelope through the Section line; source bytes and authority are recorded separately. This avoids relabelling prior source evidence as a new runtime or model execution."
+  },
+  "retrieval_identity_digest_encoding": "UTF-8 json.dumps(identity, sort_keys=True, separators=(comma,colon))"
+}

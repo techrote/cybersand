@@ -34,6 +34,9 @@ for the Draft/HOLD candidate, not owner acceptance or merge authority.
   [fresh-process reopen](architecture-display-reopen.json) receipts.
 - [Actual retrieved-context audit](context-applicability-81817f84.json): 24
   additive questions, 120 supplied passages, with individual judgments.
+- [Source 162b8097 method-v1 context audit](context-applicability-162b8097.json):
+  separate final-checkpoint passage identities, changed-body review and
+  explicit source-follow results; the earlier receipt remains intact.
 - Recorder [before](recorder/before.json), [unit result](recorder/unit-after.json)
   and [OS result](recorder/os-after.json), plus retained original reproduction
   inputs and child logs. The [first harness result](recorder/rejected-first-harness-report.json)
@@ -104,7 +107,7 @@ export CYBERSAND_SOURCE_REVISION="$(git rev-parse HEAD)"
 | B-ULT-04 | P2 | Saved-recipe reconstruction now identifies **Embedded saved recipe** instead of the unrelated default picker choice; selecting a catalogue profile explicitly leaves embedded mode. Commit 584874f6, A independently executed 29 checks/0 failures; integrated GUI confirms label. |
 | B-ULT-05 | P2 | Physical Thunderbowl header derives 46 from its actual picker catalogue instead of stale 41. Commit 14c0b26d; A independently checked the catalogue owner, and integrated GUI confirms 46. |
 | B-ULT-06 | P2 | Combined authoring guide's stale palette/save/UI limitations corrected; legacy Water export clearly marked revealed engineering metadata that can expose hidden mapping and overwrite its fixed file. Owner-not-planned formal-study work was not reopened. Commit 12936181, A source review approved. |
-| B-ULT-07 | P1 | Gameplay recorder could report success for 128 bytes of an intended 1024-byte frame and invalid truncated JSON. Candidate 56117d19 verifies complete closed frame bytes, refuses existing/unsafe session names, preflights native capability and transactionally replaces only the manifest. Local 94-check suite and real Linux fault/normal cases pass; A independently reviews the state transitions. |
+| B-ULT-07 | P1 | Gameplay recorder could report success for 128 bytes of an intended 1024-byte frame and invalid truncated JSON. Candidate 56117d19 verifies complete closed frame bytes, refuses existing/unsafe session names, preflights native capability and transactionally replaces only the manifest. Local 94-check suite and real Linux fault/normal cases pass. A independently approved the state transitions, executed all 94 checks and both real Linux cases, and inspected retained frame bytes and the unchanged initial manifest; its receipt is in technical commit c0a1c6be. |
 | Cross-lane capture defect | P1 | Full manual/source reading exposed the same unchecked capture writer in Main and native MicroScenario CLI. A reproduced both, implemented the shared transaction and owns the cross-platform caller matrix. B corrected the two canonical capture descriptions. |
 
 B also independently reproduced A's ordinary-save defect with real
@@ -155,6 +158,16 @@ sufficient for the missing facts, separately from the original first-pass score.
 The two full-document reads cost 92564 bytes and 48613 bytes respectively; this is
 not a free improvement or an executed model decision. Reviewers were not blind,
 and B had authored some manual corrections. No generative answers were run.
+
+The separate **162b8097 method-v1** review preserves the same 22 sufficient /
+2 partial first-pass result. Of 120 passage bodies, 109 match previously reviewed
+bodies exactly; all 10 unique changed bodies were reread, and this artifact's
+authority envelopes and source identities were checked. Explicit source-follow
+again supplies the missing facts: 93005 bytes for local build and 48842 bytes for
+Wave. The local-build source read also exposed a separate generic sanitizer
+recipe contradiction, reported to lead and corrected after this checkpoint.
+Neither that later correction nor a later retrieval method inherits this
+receipt without an input comparison or rerun.
 
 DR02's supplied passages contain exact dependency pins. DR36 appropriately
 abstains from an absent owner decision and supplies an authority route. The
