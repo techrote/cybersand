@@ -119,8 +119,15 @@ def main():
                                  timeout=execution_policy.watchdog_seconds("complex_fixture_seconds"))
         require(capture.returncode == 0, "MicroScenario capture fault matrix failed")
         report["microscenario_capture"] = json.loads((output / "microscenario-capture/report.json").read_text())
+        recorder = subprocess.run([sys.executable, str(ROOT / "tools/ci/run_recorder_storage_qualification.py"),
+                                   "--godot", str(engine), "--project", str(ROOT / "godot"),
+                                   "--evidence", str(output / "recorder-storage")], env=env, cwd=ROOT,
+                                  timeout=execution_policy.watchdog_seconds("complex_fixture_seconds"))
+        require(recorder.returncode == 0, "Recorder storage fault matrix failed")
+        report["recorder_storage"] = json.loads((output / "recorder-storage/report.json").read_text())
         available = {case.name:case for case in regression.discover_cases()}
         plan = [
+            ("test_gameplay_recorder", {}),
             ("test_workbench_material_baseline", {}),
             ("test_architectural_generator_ui", {}),
             ("test_workbench_generator_discovery", {}),

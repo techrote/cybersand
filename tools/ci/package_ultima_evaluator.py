@@ -56,7 +56,7 @@ def git(*args, env=None):
 
 
 NORMAL_CASES = {
-    "import", "test_workbench_material_baseline", "test_architectural_generator_ui",
+    "import", "test_gameplay_recorder", "test_workbench_material_baseline", "test_architectural_generator_ui",
     "test_workbench_generator_discovery", "test_paint_editor_history", "test_paint_editor_history-reopen",
     "test_workbench_canvas", "test_workbench_canvas-reopen", "test_explore001_generated_workbench",
     "test_explore001_generated_workbench-reopen",
@@ -119,6 +119,18 @@ def validate_qualification(qualification, head, tree):
     require(len(capture_cases) == len(WINDOWS_CAPTURE_CASES)
             and {(c.get("kind"), c.get("fault"), c.get("evidence_class")) for c in capture_cases}
             == WINDOWS_CAPTURE_CASES, "Incomplete or duplicate Windows capture fault matrix")
+    recorder = qualification.get("recorder_storage", {})
+    require(recorder.get("schema") == 1 and recorder.get("status") == "passed"
+            and recorder.get("passed") is True and recorder.get("completed") is True
+            and recorder.get("platform") == "win32" and recorder.get("source_head") == head
+            and recorder.get("engine_version") == engine["version"]
+            and recorder.get("engine_sha256") == engine["console_sha256"],
+            "Incomplete or mismatched recorder storage qualification")
+    recorder_cases = recorder.get("cases", [])
+    require(len(recorder_cases) == 2 and {c.get("fault") for c in recorder_cases} == {"none", "locked-manifest"}
+            and all(c.get("passed") is True and c.get("exit_code") == 0
+                    and c.get("natural_completion") is True and c.get("engine_error_detected") is False
+                    for c in recorder_cases), "Incomplete or unsuccessful Windows recorder fault matrix")
 
 
 def verify(folder, expected_manifest_sha256):

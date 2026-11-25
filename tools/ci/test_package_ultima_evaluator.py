@@ -16,7 +16,7 @@ import package_ultima_evaluator as package
 HEAD = '1' * 40
 TREE = '2' * 40
 CASE_NAMES = (
-    'import', 'test_workbench_material_baseline', 'test_architectural_generator_ui',
+    'import', 'test_gameplay_recorder', 'test_workbench_material_baseline', 'test_architectural_generator_ui',
     'test_workbench_generator_discovery', 'test_paint_editor_history',
     'test_paint_editor_history-reopen', 'test_workbench_canvas',
     'test_workbench_canvas-reopen', 'test_explore001_generated_workbench',
@@ -68,6 +68,13 @@ def valid_qualification():
         'engine_version': q['engine']['version'], 'engine_sha256': q['engine']['console_sha256'],
         'cases': [{'kind': kind, 'evidence_class': evidence, **({'fault': fault} if fault else {})}
                   for kind, fault, evidence in sorted(package.WINDOWS_CAPTURE_CASES, key=str)],
+    }
+    q['recorder_storage'] = {
+        'schema': 1, 'status': 'passed', 'passed': True, 'completed': True,
+        'source_head': HEAD, 'platform': 'win32', 'engine_version': q['engine']['version'],
+        'engine_sha256': q['engine']['console_sha256'],
+        'cases': [{'fault': f, 'passed': True, 'exit_code': 0, 'natural_completion': True, 'engine_error_detected': False}
+                  for f in ('none', 'locked-manifest')],
     }
     return q
 
@@ -149,6 +156,26 @@ class QualificationAdmission(unittest.TestCase):
 
     def test_capture_failure_refuses(self):
         self.q['microscenario_capture']['status'] = 'failed'
+        self.require_refusal()
+
+    def test_recorder_missing_refuses(self):
+        del self.q['recorder_storage']
+        self.require_refusal()
+
+    def test_recorder_wrong_source_refuses(self):
+        self.q['recorder_storage']['source_head'] = 'f' * 40
+        self.require_refusal()
+
+    def test_recorder_missing_lock_refuses(self):
+        self.q['recorder_storage']['cases'][1]['fault'] = 'none'
+        self.require_refusal()
+
+    def test_recorder_forced_exit_refuses(self):
+        self.q['recorder_storage']['cases'][1]['natural_completion'] = False
+        self.require_refusal()
+
+    def test_recorder_engine_error_refuses(self):
+        self.q['recorder_storage']['cases'][1]['engine_error_detected'] = True
         self.require_refusal()
 
     def test_missing_lock_case_refuses_even_with_ten_rows(self):
