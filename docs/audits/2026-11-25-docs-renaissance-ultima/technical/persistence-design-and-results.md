@@ -84,7 +84,7 @@ calls [`workbench_file_transaction.gd`](../../../../godot/scripts/workbench_file
    `MoveFileExW(REPLACE_EXISTING | WRITE_THROUGH)`; it does not explicitly delete
    the previous file or fall back to copying across volumes.
 6. On refusal, remove only this operation's staging file when possible. If
-   cleanup fails, show its exact remaining path and say it is not a saved start.
+   cleanup fails, show its exact remaining path and say it is not a committed file.
    A later save ignores old staging files and does not promote or delete them.
 
 The helper's testable I/O object is constructor-level dependency injection.
@@ -195,6 +195,54 @@ Linux engine SHA-256:
 Materialized native SHA-256:
 `a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7`.
 Native source and the material-baseline writer have not changed in this fix.
+
+## Additional capture defect: A-ULT-11
+
+Fresh review found the same buffered-write weakness in
+`Main._write_microscenario_capture` and `tests/run_microscenario.gd`. The
+[actual before reproduction](microscenario-capture-before.json) distinguishes
+two failure sizes. At `RLIMIT_FSIZE=128`, the controller reported success after
+replacing a valid **851-byte** report with **128 invalid JSON bytes**. The CLI's
+larger write correctly refused that early limit. Moving the actual limit into
+its final buffered segment, to **12,416 bytes**, instead replaced a valid
+**14,205-byte** report with invalid truncated JSON while the CLI printed
+`MICROSCENARIO_RESULT` and exited zero. This was a second reproduced P1
+evidence-loss defect, not an inference from the authored-save result.
+
+Commit `fcec6b70` routes both callers through the same verified transaction.
+JSON fields, output names and existing report-size policy remain unchanged;
+relative CLI outputs still resolve from the selected project directory. The
+controller updates its retained capture and clipboard only after commit. A
+refusal preserves the previously acknowledged result and exposes the helper's
+failure message; a successful retry clears the prior capture error. Existing
+fixed-name `.tmp` files are neither consumed nor deleted by the new writer.
+
+The [exact-commit Linux matrix](microscenario-capture-linux.json) passes all
+**six cases**: normal replacement, actual buffered-tail resource failure and
+actual directory-permission refusal for each public caller. Every refusal
+checks the old length, digest and decoded value; every retry checks the intended
+new value. A controller acknowledgement spy verifies that refusal produces no
+acknowledgement. Normal CLI replacement also exercises a relative output path
+containing spaces. The [normal regressions](microscenario-capture-regressions.json)
+pass **84 shared-helper checks**, **38 MicroScenario Workbench assertions** and
+**27 reference-pack UI assertions**, with natural zero exits. These are
+headless functional tests; the synchronous compatibility controller exercised
+by the Workbench test is not an actual browser run.
+
+```bash
+python tools/ci/run_microscenario_capture_qualification.py \
+  --godot /absolute/path/to/pinned-godot \
+  --project godot \
+  --evidence /absolute/path/to/new-capture-evidence
+```
+
+On Windows this runner uses actual destination sharing locks for both callers
+and records four cases. The local receipt above is Linux-only; exact integrated
+Windows execution belongs to its separate hosted receipt. The expanded
+non-publishing package gate requires that additional Windows matrix before
+creating an evaluator, so the earlier `bfa40c84` qualification alone cannot
+qualify this later source. No native primitive, physics law or storage format
+was changed, and no crash/power-loss durability is claimed.
 
 ## Reproduction and independent acceptance
 

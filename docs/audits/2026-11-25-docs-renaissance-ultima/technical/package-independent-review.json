@@ -46,5 +46,17 @@
     "Windows path aliases/alternate streams and duplicate JSON keys could hide identity ambiguity; strict intake and path constraints now enforced",
     "Existing retained manifest destination could be overwritten; new-output preflight now refuses"
   ],
-  "verdict": "APPROVE for source-matched test-only packaging after these controls. Actual copied Windows import/module execution remains separate hosted qualification; no production release or physical-owner acceptance."
+  "verdict": "APPROVE for source-matched test-only packaging after these controls. Actual copied Windows import/module execution remains separate hosted qualification; no production release or physical-owner acceptance.",
+  "capture_extension_review": {
+    "reviewer": "Specialist A",
+    "verdict": "approve",
+    "tests": "35/35 unittest cases passed independently",
+    "scope": "Exact4Windows capture cases, source/platform/engine/status binding, report inclusion and artifact retention; old bfa40c84 receipt intentionally lacks the new required matrix.",
+    "files": {
+      "tools/ci/run_ultima_qualification.py": "db034694974bdcc346935fb5c90fd0f75c3ec60050f940ea87044a9f481c2baa",
+      "tools/ci/package_ultima_evaluator.py": "abd8a55f4aac224d5d293d4442e408432defbf5ca05a247edbe1b0814ddd873e",
+      "tools/ci/test_package_ultima_evaluator.py": "ba0dcfba2d83d36ed50789bbc739e36de47ee6914db907ebf88520a4f9ed4645",
+      ".github/workflows/ultima-qualification.yml": "7401b0c8b784c0c36a474af9b6f129158c29eef8a58032ae4e0b02bd348b6bc2"
+    }
+  }
 }

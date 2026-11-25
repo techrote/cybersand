@@ -1,0 +1,76 @@
+{
+  "authority": "historical-non-authoritative",
+  "finding_id": "A-ULT-11",
+  "kind": "actual pre-fix OS reproduction",
+  "original": {
+    "source_head": "f591124ea5911d98410c90ff460d8a52ba450da2",
+    "writer_sha256": {
+      "godot/scripts/main.gd": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "godot/tests/run_microscenario.gd": "1912d0471370d9ede2d5aac529ec6e4ccc751e14a8cb01aeecf3da472125be11"
+    },
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "fault": "actual RLIMIT_FSIZE=128 with SIGXFSZ ignored",
+    "cases": [
+      {
+        "kind": "controller",
+        "before": {
+          "exit_code": 0,
+          "error": "",
+          "bytes": 851,
+          "sha256": "12707fb4e1b3e5f03fe799bafd91504edf867e302824dbfe0a0a05bb1828c6b1",
+          "json_valid": true,
+          "log_sha256": "deff94cec5e11fcf37caef2ac9a117b7c4dbe2fd24be57b20dc99cc5bd3f44f0"
+        },
+        "failure_attempt": {
+          "exit_code": 0,
+          "error": "",
+          "bytes": 128,
+          "sha256": "c68b7e4d104e73ab7623724e6db31eb485d20a002d3350adf3553960fd8b87e0",
+          "json_valid": false,
+          "log_sha256": "deff94cec5e11fcf37caef2ac9a117b7c4dbe2fd24be57b20dc99cc5bd3f44f0"
+        }
+      },
+      {
+        "kind": "cli",
+        "before": {
+          "exit_code": 0,
+          "error": "",
+          "bytes": 14205,
+          "sha256": "b2360c1fb4c5f5acd6b8f4ce0a756083b7f8066e7922ab8015cb589455de9096",
+          "json_valid": true,
+          "log_sha256": "3130eb3c999a02335633a55a416bc186e7f18e440b0797bf87056fd6baa5d47b"
+        },
+        "failure_attempt": {
+          "exit_code": 2,
+          "error": "",
+          "bytes": 14205,
+          "sha256": "b2360c1fb4c5f5acd6b8f4ce0a756083b7f8066e7922ab8015cb589455de9096",
+          "json_valid": true,
+          "log_sha256": "a8702767492e2f5c150af1eee01e5c38c6308fbc8ab2914c184a81ff05d3c706"
+        }
+      }
+    ]
+  },
+  "cli_buffered_tail": {
+    "fault": "RLIMIT_FSIZE=12416, SIGXFSZ ignored",
+    "script_sha256": "1912d0471370d9ede2d5aac529ec6e4ccc751e14a8cb01aeecf3da472125be11",
+    "before": {
+      "bytes": 14205,
+      "sha256": "98cbabc760bc19742b877fb462e77bfe097052804f7495b770b595ae65dde576",
+      "json_valid": true
+    },
+    "attempt": {
+      "bytes": 12416,
+      "sha256": "6d8e14bec95202a7b7307a2fbb92b04854a00ac8aecc5b9151db0e11aca590b9",
+      "json_valid": false
+    },
+    "initial_exit": 0,
+    "attempt_exit": 0,
+    "log": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nMICROSCENARIO_RESULT /workspace/scratch/1c5fccfbe328/ultima-a/a-results/microscenario-before/cli-tail.json / 1 ticks / 9a4da97d71661885f752e248c8261e9823b42e2388e82c0b29c54d37848306f0\n"
+  },
+  "notes": [
+    "The CLI early128byte fault correctly refused. The buffered-tail12416byte fault independently reproduced silent truncation and exit0.",
+    "Original CLI source was extracted byte-exact fromf591124e, SHA256 retained. Controller original bytes are the same accepted source path recorded in the first receipt.",
+    "All paths were disposable; no owner saves or recordings were touched."
+  ]
+}
