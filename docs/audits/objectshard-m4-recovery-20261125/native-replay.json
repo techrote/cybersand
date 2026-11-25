@@ -1,0 +1,60 @@
+{
+  "schema": "objectshard-m4-recovered-native-binary-replay-v1",
+  "source_commit": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+  "source_tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+  "archive_sha256": "1629687935c7a1b13fb86c231527ed29e7de13f944e7d933eac82d243b3307cd",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "started_at_utc": "2026-11-25T00:04:34.810776+00:00",
+  "environment": {
+    "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "scope": "Independent local replay of byte-identical original sanitizer executables; not a rebuild, Windows qualification or physical performance measurement.",
+  "cases": [
+    {
+      "suite": "coordinator",
+      "command": [
+        "/home/agent/objectshard-recovery-20261125/native-replay/test_object_shard_coordinator"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.445708569997805,
+      "binary_sha256": "b653560fca2bcb7f446ba30a43a66f82ec1fb7c846bb2627d008a64b37e3cbf6",
+      "log_path": "/home/agent/objectshard-recovery-20261125/native-replay/coordinator.log",
+      "log_sha256": "3d8c2121b7e8637ce8a26c4615f573001225ed0889e4d6384f9bc64cc6d3dd25",
+      "expected_checks": 5945,
+      "reported_checks": 5945,
+      "reported_failures": 0
+    },
+    {
+      "suite": "storage",
+      "command": [
+        "/home/agent/objectshard-recovery-20261125/native-replay/test_object_shard_storage"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.10694612899897038,
+      "binary_sha256": "2f1e4268ab5fd014d20a7f5bbdc3a56a48dcbec90eedf11099011c6b30e2bf4b",
+      "log_path": "/home/agent/objectshard-recovery-20261125/native-replay/storage.log",
+      "log_sha256": "bd2ed68c24784bc4aeaaf75e7ad15df3314bc47c6e97aa1fa92da16b7a474fdc",
+      "expected_checks": 8271,
+      "reported_checks": 8271,
+      "reported_failures": 0
+    },
+    {
+      "suite": "admission",
+      "command": [
+        "/home/agent/objectshard-recovery-20261125/native-replay/test_object_shard_admission"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 2.6644985229977465,
+      "binary_sha256": "0998d4c9533c8d56060eeed96c423ac06deaf2f54b52c8daea8cfe80446c4009",
+      "log_path": "/home/agent/objectshard-recovery-20261125/native-replay/admission.log",
+      "log_sha256": "0c2146664d17b4b84bafc5991477b1ca0ba6d1b105078c4b9920bbc8b1bad4bb",
+      "expected_checks": 28092,
+      "reported_checks": 28092,
+      "reported_failures": 0
+    }
+  ],
+  "status": "PASS",
+  "ended_at_utc": "2026-11-25T00:04:47.550507+00:00",
+  "total_reported_checks": 42308
+}

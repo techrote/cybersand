@@ -1,0 +1,1229 @@
+{
+  "schema": "objectshard-m4-recovery-intake-v1",
+  "observed_date": "2026-11-25",
+  "status": "RECOVERY-IN-PROGRESS / DRAFT-HOLD",
+  "source": {
+    "repository": "techrote/cybersand",
+    "pull_request": 754,
+    "branch": "integration/objectshard-m4-mainline-20261122",
+    "published": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+    "tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+    "local_equivalent": "66365c4c20b4331c004810b4235893315a623525",
+    "main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+  },
+  "donors": [
+    {
+      "number": 726,
+      "url": "https://github.com/techrote/cybersand/pull/726",
+      "head": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "branch": "experiment/objectshard-001-m0-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001 M0 — compact ownership and real Rapier handoff"
+    },
+    {
+      "number": 728,
+      "url": "https://github.com/techrote/cybersand/pull/728",
+      "head": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "branch": "experiment/objectshard-001-m1-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001 M1 — continuing native chemistry and mutable bodies"
+    },
+    {
+      "number": 730,
+      "url": "https://github.com/techrote/cybersand/pull/730",
+      "head": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "branch": "experiment/objectshard-001-m2-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001 M2 — real exchange and source-bound Windows Lab"
+    },
+    {
+      "number": 738,
+      "url": "https://github.com/techrote/cybersand/pull/738",
+      "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "branch": "experiment/objectshard-001r-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001R — playability and stability finisher"
+    },
+    {
+      "number": 741,
+      "url": "https://github.com/techrote/cybersand/pull/741",
+      "head": "febfad1b0b1ee93dac8d5b5a76f145b9ab80ad0a",
+      "branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "[DRAFT / HOLD] OBJECTSHARD-M3-PREFLIGHT-001 — Continuous-Play Workbench Integration and Source-Matched Windows Evaluator"
+    },
+    {
+      "number": 751,
+      "url": "https://github.com/techrote/cybersand/pull/751",
+      "head": "a06537555002c12ffde231bfa051575a64bc16ca",
+      "branch": "experiment/objectshard-m4-native-seam-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "OBJECTSHARD-M4-NATIVE-001: owner-local versioned mutable body gate (HOLD)"
+    },
+    {
+      "number": 752,
+      "url": "https://github.com/techrote/cybersand/pull/752",
+      "head": "351c5a78ebf7a6f71650ecc6b092ef36123badbe",
+      "branch": "experiment/objectshard-m4-workbench-seam-20261122",
+      "draft": true,
+      "state": "open",
+      "title": "[Draft/HOLD] OBJECTSHARD-M4-WORKBENCH-001 — fail-closed same-World Workbench seam, latency and tests"
+    }
+  ],
+  "campaigns": [
+    {
+      "run": 45473059187,
+      "source": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+      "jobs": [
+        {
+          "id": 138725897119,
+          "name": "native-sanitizers",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45473059187,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Pinned read-only companion documentation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact source and authenticated compatibility history",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Exact native source, ASan UBSan and ordinary World",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post Exact source and authenticated compatibility history",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Post Pinned read-only companion documentation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 138725897840,
+          "name": "linux-workbench",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45473059187,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact source and admitted Rapier",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Build source-bound Linux native extension",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Pinned graphical engine",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 5
+            },
+            {
+              "name": "Ordinary Workbench physical and regression matrix",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 6
+            },
+            {
+              "name": "Actual graphical Workbench profile",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            }
+          ]
+        },
+        {
+          "id": 138725897873,
+          "name": "windows-native",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45473059187,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact Windows cross toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Exact-source Windows native artifact",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        },
+        {
+          "id": 138728620324,
+          "name": "windows-workbench",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45473059187,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Preserve source bytes",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Pinned native, Rapier and Godot 4.7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Windows ordinary Workbench, water, actor and equipment regressions",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Portable ordinary Workbench evaluator and shipped launcher replay",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 8
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 19
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14961723648,
+          "name": "objectshard-m4-windows-f5b7ac7e651356c9f6d5657dfb0cb9d60111be81-45473059187",
+          "size_in_bytes": 33235453,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14961723648",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14961723648/zip",
+          "expired": false,
+          "created_at": "2026-11-24T20:32:07Z",
+          "expires_at": "2027-01-23T20:32:03Z",
+          "updated_at": "2026-11-24T20:32:07Z",
+          "digest": "sha256:3f35d18a7e54ce8327d0b6f63dc57cf3e035380e7b87714c612dd0370f3650d7",
+          "workflow_run": {
+            "id": 45473059187,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81"
+          }
+        },
+        {
+          "id": 14959327733,
+          "name": "objectshard-m4-native-f5b7ac7e651356c9f6d5657dfb0cb9d60111be81-45473059187",
+          "size_in_bytes": 135239647,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14959327733",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14959327733/zip",
+          "expired": false,
+          "created_at": "2026-11-24T19:59:26Z",
+          "expires_at": "2027-01-23T19:59:14Z",
+          "updated_at": "2026-11-24T19:59:26Z",
+          "digest": "sha256:1629687935c7a1b13fb86c231527ed29e7de13f944e7d933eac82d243b3307cd",
+          "workflow_run": {
+            "id": 45473059187,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81"
+          }
+        },
+        {
+          "id": 14959065759,
+          "name": "objectshard-m4-dll-f5b7ac7e651356c9f6d5657dfb0cb9d60111be81-45473059187",
+          "size_in_bytes": 2265509,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14959065759",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14959065759/zip",
+          "expired": false,
+          "created_at": "2026-11-24T19:46:53Z",
+          "expires_at": "2027-01-23T19:46:52Z",
+          "updated_at": "2026-11-24T19:46:53Z",
+          "digest": "sha256:467f34bcb7b2c3cfcfbf90d8e4e274c44a5b9817357fc3079e5503f65a104a70",
+          "workflow_run": {
+            "id": 45473059187,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81"
+          }
+        },
+        {
+          "id": 14958307974,
+          "name": "objectshard-m4-crossbuild-f5b7ac7e651356c9f6d5657dfb0cb9d60111be81-45473059187",
+          "size_in_bytes": 8804,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14958307974",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14958307974/zip",
+          "expired": false,
+          "created_at": "2026-11-24T19:46:54Z",
+          "expires_at": "2027-01-23T19:46:53Z",
+          "updated_at": "2026-11-24T19:46:54Z",
+          "digest": "sha256:68c6b7be6390ce9c5247a2b5a01bbae90884b0b5b4cccb3037767ffd92873a67",
+          "workflow_run": {
+            "id": 45473059187,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81"
+          }
+        },
+        {
+          "id": 14957249181,
+          "name": "objectshard-m4-linux-f5b7ac7e651356c9f6d5657dfb0cb9d60111be81-45473059187",
+          "size_in_bytes": 17383,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14957249181",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14957249181/zip",
+          "expired": false,
+          "created_at": "2026-11-24T19:48:50Z",
+          "expires_at": "2027-01-23T19:48:50Z",
+          "updated_at": "2026-11-24T19:48:50Z",
+          "digest": "sha256:8cfcd863f57640f498fbe22e28556e9558c9fba2b2ad93a41a0579edd4316786",
+          "workflow_run": {
+            "id": 45473059187,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81"
+          }
+        }
+      ]
+    },
+    {
+      "run": 45457037610,
+      "jobs": [
+        {
+          "id": 138669186177,
+          "name": "linux-workbench",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45457037610,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact source and admitted Rapier",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Build source-bound Linux native extension",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Pinned graphical engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Ordinary Workbench physical and regression matrix",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Actual graphical Workbench profile",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 7
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            }
+          ]
+        },
+        {
+          "id": 138669186612,
+          "name": "native-sanitizers",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45457037610,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Pinned read-only companion documentation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact source and authenticated compatibility history",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Exact native source, ASan UBSan and ordinary World",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post Exact source and authenticated compatibility history",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Post Pinned read-only companion documentation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 138669186875,
+          "name": "windows-native",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45457037610,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact Windows cross toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Exact-source Windows native artifact",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        },
+        {
+          "id": 138673705369,
+          "name": "windows-workbench",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45457037610,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Preserve source bytes",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Pinned native, Rapier and Godot 4.7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Windows ordinary Workbench, water, actor and equipment regressions",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 7
+            },
+            {
+              "name": "Portable ordinary Workbench evaluator and shipped launcher replay",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 19
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14954007570,
+          "name": "objectshard-m4-linux-0f013ba4826730cce64bd37cf9ca95f7dcaab603-45457037610",
+          "size_in_bytes": 11738809,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14954007570",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14954007570/zip",
+          "expired": false,
+          "created_at": "2026-11-24T18:57:42Z",
+          "expires_at": "2027-01-23T18:57:39Z",
+          "updated_at": "2026-11-24T18:57:42Z",
+          "digest": "sha256:8d11121e8448a656b307b4f82d87014bf6b4f66ce45d7dfbaa01726e6c8f1520",
+          "workflow_run": {
+            "id": 45457037610,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "0f013ba4826730cce64bd37cf9ca95f7dcaab603"
+          }
+        },
+        {
+          "id": 14952831471,
+          "name": "objectshard-m4-native-0f013ba4826730cce64bd37cf9ca95f7dcaab603-45457037610",
+          "size_in_bytes": 135239486,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14952831471",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14952831471/zip",
+          "expired": false,
+          "created_at": "2026-11-24T18:32:19Z",
+          "expires_at": "2027-01-23T18:32:06Z",
+          "updated_at": "2026-11-24T18:32:19Z",
+          "digest": "sha256:0a9f3f5a6246a91f08ce7dd9b2316f42115bba0dea7924add72073ddab9851c1",
+          "workflow_run": {
+            "id": 45457037610,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "0f013ba4826730cce64bd37cf9ca95f7dcaab603"
+          }
+        },
+        {
+          "id": 14952377334,
+          "name": "objectshard-m4-windows-0f013ba4826730cce64bd37cf9ca95f7dcaab603-45457037610",
+          "size_in_bytes": 5107876,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14952377334",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14952377334/zip",
+          "expired": false,
+          "created_at": "2026-11-24T18:30:02Z",
+          "expires_at": "2027-01-23T18:30:00Z",
+          "updated_at": "2026-11-24T18:30:02Z",
+          "digest": "sha256:c4e8cc308b25a75072ab53d51aa17699cb6d25753ec653dfc3f2e8f2015e3b00",
+          "workflow_run": {
+            "id": 45457037610,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "0f013ba4826730cce64bd37cf9ca95f7dcaab603"
+          }
+        },
+        {
+          "id": 14951283499,
+          "name": "objectshard-m4-crossbuild-0f013ba4826730cce64bd37cf9ca95f7dcaab603-45457037610",
+          "size_in_bytes": 8764,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14951283499",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14951283499/zip",
+          "expired": false,
+          "created_at": "2026-11-24T18:19:45Z",
+          "expires_at": "2027-01-23T18:19:45Z",
+          "updated_at": "2026-11-24T18:19:45Z",
+          "digest": "sha256:72e3304ee651fe33b5d81fae1086aae96bd9151cc65d3f8b6c16bbb77eb2f277",
+          "workflow_run": {
+            "id": 45457037610,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "0f013ba4826730cce64bd37cf9ca95f7dcaab603"
+          }
+        },
+        {
+          "id": 14950978844,
+          "name": "objectshard-m4-dll-0f013ba4826730cce64bd37cf9ca95f7dcaab603-45457037610",
+          "size_in_bytes": 2265507,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14950978844",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14950978844/zip",
+          "expired": false,
+          "created_at": "2026-11-24T18:19:45Z",
+          "expires_at": "2027-01-23T18:19:44Z",
+          "updated_at": "2026-11-24T18:19:45Z",
+          "digest": "sha256:a40747da3b452e98fad9b802de80a0cb355294326f8a6e414b18d68ec5d1c391",
+          "workflow_run": {
+            "id": 45457037610,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "integration/objectshard-m4-mainline-20261122",
+            "head_sha": "0f013ba4826730cce64bd37cf9ca95f7dcaab603"
+          }
+        }
+      ]
+    },
+    {
+      "run": 45435990124,
+      "jobs": [
+        {
+          "id": 138593806386,
+          "name": "windows-native",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 45435990124,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact Windows cross toolchain",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Exact-source Windows native artifact",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        },
+        {
+          "id": 138593807270,
+          "name": "linux-workbench",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45435990124,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact source and admitted Rapier",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Build source-bound Linux native extension",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Pinned graphical engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Ordinary Workbench physical and regression matrix",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 6
+            },
+            {
+              "name": "Actual graphical Workbench profile",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 7
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            }
+          ]
+        },
+        {
+          "id": 138593807280,
+          "name": "native-sanitizers",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45435990124,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Pinned read-only companion documentation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Exact source and authenticated compatibility history",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Exact native source, ASan UBSan and ordinary World",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post Exact source and authenticated compatibility history",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Post Pinned read-only companion documentation",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 138597005714,
+          "name": "windows-workbench",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 45435990124,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Preserve source bytes",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Pinned native, Rapier and Godot 4.7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Windows ordinary Workbench, water, actor and equipment regressions",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 7
+            },
+            {
+              "name": "Portable ordinary Workbench evaluator and shipped launcher replay",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9
+            },
+            {
+              "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 19
+            },
+            {
+              "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21
+            }
+          ]
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14943033574,
+          "name": "objectshard-m4-linux-f4a2176f1f7688273956c2f25821488c227e90f3-45435990124",
+          "size_in_bytes": 1523204,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14943033574",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14943033574/zip",
+          "expired": false,
+          "created_at": "2026-11-24T16:49:03Z",
+          "expires_at": "2027-01-23T16:49:01Z",
+          "updated_at": "2026-11-24T16:49:03Z",
+          "digest": "sha256:df6d6171274846cd8498a55e96b7c537957e0cbd123cfa1227bf0bfbadd9eabf",
+          "workflow_run": {
+            "id": 45435990124,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "mission/objectshard-m4-completion-20261124",
+            "head_sha": "f4a2176f1f7688273956c2f25821488c227e90f3"
+          }
+        },
+        {
+          "id": 14942530356,
+          "name": "objectshard-m4-windows-f4a2176f1f7688273956c2f25821488c227e90f3-45435990124",
+          "size_in_bytes": 442,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14942530356",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14942530356/zip",
+          "expired": false,
+          "created_at": "2026-11-24T16:25:40Z",
+          "expires_at": "2027-01-23T16:25:39Z",
+          "updated_at": "2026-11-24T16:25:40Z",
+          "digest": "sha256:7274db896aedf863a8361164736f44b539ddcade9a63270f938c474ac6cd504b",
+          "workflow_run": {
+            "id": 45435990124,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "mission/objectshard-m4-completion-20261124",
+            "head_sha": "f4a2176f1f7688273956c2f25821488c227e90f3"
+          }
+        },
+        {
+          "id": 14942303025,
+          "name": "objectshard-m4-native-f4a2176f1f7688273956c2f25821488c227e90f3-45435990124",
+          "size_in_bytes": 134835249,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14942303025",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14942303025/zip",
+          "expired": false,
+          "created_at": "2026-11-24T16:37:33Z",
+          "expires_at": "2027-01-23T16:37:20Z",
+          "updated_at": "2026-11-24T16:37:33Z",
+          "digest": "sha256:e4e52276d16974570dffcae8b4e9bbb1fe8d5a0c155cacd66fd1205dd2ec628d",
+          "workflow_run": {
+            "id": 45435990124,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "mission/objectshard-m4-completion-20261124",
+            "head_sha": "f4a2176f1f7688273956c2f25821488c227e90f3"
+          }
+        },
+        {
+          "id": 14942196782,
+          "name": "objectshard-m4-crossbuild-f4a2176f1f7688273956c2f25821488c227e90f3-45435990124",
+          "size_in_bytes": 8780,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14942196782",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14942196782/zip",
+          "expired": false,
+          "created_at": "2026-11-24T16:25:07Z",
+          "expires_at": "2027-01-23T16:25:06Z",
+          "updated_at": "2026-11-24T16:25:07Z",
+          "digest": "sha256:a551e7ec7038050adde89ac4fddeb2436f96a846bc39677e9fb17c865c9be717",
+          "workflow_run": {
+            "id": 45435990124,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "mission/objectshard-m4-completion-20261124",
+            "head_sha": "f4a2176f1f7688273956c2f25821488c227e90f3"
+          }
+        },
+        {
+          "id": 14940688797,
+          "name": "objectshard-m4-dll-f4a2176f1f7688273956c2f25821488c227e90f3-45435990124",
+          "size_in_bytes": 2263572,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14940688797",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14940688797/zip",
+          "expired": false,
+          "created_at": "2026-11-24T16:25:05Z",
+          "expires_at": "2027-01-23T16:25:03Z",
+          "updated_at": "2026-11-24T16:25:05Z",
+          "digest": "sha256:6d764aa7fc1bfbbe9f6be859ef243d1a974cab96632ede459b38c15205b9a6f4",
+          "workflow_run": {
+            "id": 45435990124,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "mission/objectshard-m4-completion-20261124",
+            "head_sha": "f4a2176f1f7688273956c2f25821488c227e90f3"
+          }
+        }
+      ]
+    }
+  ],
+  "recovered_unfinished_audit": {
+    "sha256": "4ced0ee5af904228d5e8aa739e4054421c2fa7b019da0ab5e5ba0ef5d8575785",
+    "path": "docs/audits/2026-11-24-objectshard-m4-completion-qualification.md",
+    "classification": "Original uncommitted checkpoint; pending prose superseded by terminal campaign readback"
+  },
+  "known_gaps": [
+    "Original conversation full transcript not retrieved; prior local worktrees and durable GitHub evidence accessible",
+    "Current candidate has no successfully delivered evaluator from original run",
+    "Linux application execution skipped after engine acquisition failed",
+    "Production retained-runtime provenance not qualified by candidate execution",
+    "Physical Windows/NVIDIA owner acceptance absent"
+  ],
+  "new_qualification_required": [
+    "Correct provenance relocation replay and tamper refusal",
+    "Pinned Linux acquisition on hosted execution",
+    "Resulting-source Linux and Windows ordinary Workbench and graphical matrices",
+    "Actual packaged CMD and pristine extraction replay",
+    "Optional diagnostics on/off behavior and input-matched performance controls"
+  ]
+}
