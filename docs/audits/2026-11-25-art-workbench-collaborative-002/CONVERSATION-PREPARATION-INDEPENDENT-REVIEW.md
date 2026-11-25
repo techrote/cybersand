@@ -130,33 +130,106 @@ editor baseline. The test now explicitly reopens against that acknowledged
 revision before preparing the edit. These failures are retained; the stale
 guard was not relaxed to make the fixture pass.
 
-## Runtime evidence boundary
+## Verified actual execution and complete audit custody
 
-The Provider lane reports 66 successful actual worker/audit mechanism checks at
-`7e0a1e26e487117c9e652f07b33496cb71acf422`. The reviewer independently fetched
-both relevant files and confirmed they are byte-identical to the final source:
+The original lifecycle bundle is durable at
+[evidence commit 807250](https://github.com/techrote/cybersand/tree/807250dc0a1fbcfb5a6ee85747b523aa5a46ffca/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence).
+It includes the actual 66-check Provider mechanism run, the final 154-check
+ordinary headless Workbench lifecycle run, complete original audit records and
+the failed earlier attempts. The final Provider and mechanism-test bytes are
+identical to the 7e0 checkpoint, with SHA-256 values respectively
+c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891 and
+09d16bb492f7018c3f6b24b1e7bac0cc9bf096b93c38dfbec862ad84dd9069ad.
 
-- Provider SHA-256:
-  `c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891`.
-- Mechanism-test SHA-256:
-  `09d16bb492f7018c3f6b24b1e7bac0cc9bf096b93c38dfbec862ad84dd9069ad`.
+Specialist B independently authored
+[the original-byte preparation verifier](../../../tools/ci/verify_art_conversation_preparation_evidence.py).
+The lead executed that exact script unchanged against the original archive.
+The result passed **295 checks**, authenticating all 64 original payload files,
+their SHA-256 values and ZIP CRCs, the actual 154/0 and 66/0 process markers,
+the complete 13,641,575-byte admitted audit and its 28 contiguous events.
 
-The implementation owners also report an actual ordinary Workbench lifecycle
-run at the final 8a015 source: 154 checks, zero failures, 12.83 s, with clean tracked
-source and original log SHA-256
-`79efe35050fe215372ceadcf9c319705a8ce2e0c4d1e94a103a3d57e649c34ec`.
-At this reviewer checkpoint its durable original execution bundle is still
-being published; the reviewer has not independently fetched that original log.
-This paragraph attributes the runtime report and does not present it as
-reviewer-executed or as a graphical/Windows pass.
+The audit contains 14 conversation events, 12 complete edited snapshots and
+two collaboration records. The independently reconstructed successful edited
+value is exactly 1,048,599 characters, SHA-256
+326174c77f57722f97786401a4ee5356c7fd261aeb8c4d176d52b41010e3cff4.
+No registered fixture credential or model request survives in that audit.
+The verifier retains the f909 parse failure, the f605 11-check failure and both
+exit-minus-nine near-cap attempts; it does not recategorize them as passes.
 
-The final lifecycle test uses an ordinary native Workbench, actual value
-workers, complete archive replay, real append-destination failure, World
-replacement and valid-preview cross-mode controls. Deterministic text fixtures
-make no HTTP/model request. Its lifecycle pass does not establish a 16.8 MB
-performance improvement; that requires the separate matched large-value
-experiment and fresh graphical/package gates.
+The complete verifier stdout and execution custody are source-pinned at
+[d3222f29](https://github.com/techrote/cybersand/tree/d3222f291bb96cee78af6f46d4a4a17e4892024d/docs/audits/2026-11-25-art-workbench-collaborative-002/independent-apply).
+Preparation stdout SHA-256 is
+21e285170159b6e26ba542a6388d4f93aeb0750d5d3e2e194ddd3b63db340888.
+B subsequently fetched those original records, independently checked both
+verifier source digests and complete stdout identities, and reconciled the
+reported counts in **27 additional checks**. The method and output are retained
+in [the reconciliation record](independent-apply-review-reconciliation.json).
 
-Draft/HOLD remains in force. The review adds no automatic restoration of
-cross-session conversation, paid inference, new native execution authority or
-acceptance claim for physical owner hardware.
+This division of work is explicit: B authored the verification method; the lead
+brokered the original-byte execution; B independently authenticated and reduced
+the published outputs. This is not another native application run.
+
+## Independently checked near-cap responsiveness pair
+
+A later fresh-host pair completed at baseline
+e536d128f85e948223b25e13931a7a801faf956d and prepared candidate
+8a015efbeb7926a3c835303d3b163c01d353aca3.
+[The original evidence](https://github.com/techrote/cybersand/tree/956b0abcac1649344d11164cda7951daed042887/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence)
+contains one sequential baseline-first headless pair with fresh profiles.
+The inherited native test's input, ordinary key-edit path and complete-value
+assertions are unchanged; the candidate adds only the awaited asynchronous
+completion assertion and explicit timing fields.
+
+The independently authored
+[pair verifier](../../../tools/ci/verify_art_apply_pair_evidence.py) passed
+**161 checks** when executed unchanged by the lead. It checked all 29 original
+payload files and both complete 33,538,622-byte audits, then reconstructed
+the exact edited value as one *Z* followed by 16,769,023 *x* characters.
+Both original native processes retained the identical complete 16,769,024-byte
+value, SHA-256
+ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a.
+Their actual results are 22/0 and 23/0; the candidate's extra assertion waits
+for asynchronous completion. Neither arm sent a model request.
+
+| Observation | Baseline e536 | Prepared candidate 8a |
+| --- | ---: | ---: |
+| Apply action return | 620.436 ms | 43.440 ms |
+| Complete edited value available | 620.436 ms | 644.979 ms |
+| Maximum frame gap across Apply and completion | 639.012 ms | 73.356 ms |
+| Complete main-owner audit append | 259.717 ms | 46.978 ms |
+| Editor opening action | 15.768 ms | 17.491 ms |
+
+The useful result is shorter blocking. **Total completion is 24.543 ms slower**
+in the candidate, and editor opening is also slower in this observation. The
+remaining 73.356 ms maximum Apply frame is material. The 12 baseline and 91
+candidate frame samples are different denominators; their P95 values are
+within-arm descriptions, not a matched distribution estimate.
+
+Pair stdout SHA-256 is
+ca367e4a9bc2a70578121b86a0b5053bde67d881b9dfa0d234e31128ef812f61,
+retained in the same d322 original-byte execution record. The pair result's
+historically named runtime_hash_record field contains evidence-file hashes;
+runtime-binary qualification is supplied by source-specific provenance and
+package records, not by that field name.
+
+The host was Linux 6.18.57, Intel Xeon Platinum 8573C, nine logical CPUs, with
+the unchanged pinned Godot/native/Rapier runtimes. This one headless pair is
+not a statistical distribution, a cold-start result, a graphical Windows test
+or physical owner acceptance. The earlier incomplete low-memory attempts remain
+separate evidence and are not erased by the fresh success.
+
+## Final integration and acceptance boundary
+
+B independently fetched frozen application
+bcc92927ce3894a16d5544923cfbf7b1d0339fda, tree
+517164084860a19f18b36cb94f77597eb3220578.
+Its Provider, panel, editor and collaboration session are byte-identical to the
+reviewed final 8a sources. The seven-file mapping and the isolated context
+disclosure differences are retained in
+[final-bcc-source-independent-review.json](final-bcc-source-independent-review.json).
+No additional source blocker was found.
+
+Fresh full Linux/Windows application gates, portable package custody and physical
+owner acceptance are tracked separately. Draft/HOLD remains in force. The review
+adds no automatic cross-session restoration, paid inference, new native execution
+authority or unsupported owner-hardware claim.

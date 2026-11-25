@@ -1,0 +1,104 @@
+{
+  "artifact_metadata": "artifact-metadata.json",
+  "commands": [
+    [
+      "python3",
+      "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+      "/tmp/art-bcc-linux-custody/extracted/art-collaborative-displayed",
+      "--expected-source",
+      "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+    ],
+    [
+      "python3",
+      "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+      "/tmp/art-bcc-linux-custody/extracted/art-collaborative-headless",
+      "--expected-source",
+      "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+    ],
+    [
+      "python3",
+      "/workspace/scratch/75c442a4089a/art-native-independent/reconcile_final_native.py",
+      "/workspace/scratch/75c442a4089a/art-native-independent",
+      "/tmp/art-bcc-linux-custody/extracted",
+      "--platform",
+      "linux"
+    ],
+    [
+      "python3",
+      "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+      "/tmp/art-bcc-windows-custody/extracted/art-collaborative-displayed",
+      "--expected-source",
+      "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+    ],
+    [
+      "python3",
+      "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+      "/tmp/art-bcc-windows-custody/extracted/art-collaborative-headless",
+      "--expected-source",
+      "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+    ],
+    [
+      "python3",
+      "/workspace/scratch/75c442a4089a/art-native-independent/reconcile_final_native.py",
+      "/workspace/scratch/75c442a4089a/art-native-independent",
+      "/tmp/art-bcc-windows-custody/extracted",
+      "--platform",
+      "windows"
+    ]
+  ],
+  "comparison_method": {
+    "repository_path": "docs/audits/2026-11-25-art-workbench-collaborative-002/final-native-bcc/reconcile_final_native.py",
+    "sha256": "54740d9cff192d210a4b7106d68487ab28d5c8511d3bc1aa4d8e5faf7f311b40"
+  },
+  "method": "Direct independent execution on recovered reviewer environment; unchanged original-byte verifier, followed by independent cross-source reduction. No new native application or model run.",
+  "original_2743_summary_sha256": "ac9690be4e2fe52889dab30d495fb5798b9ba0c9de28af4c0a754f77b5ded33b",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "recorded_utc": "2026-11-25T05:06:57.178054+00:00",
+  "reviewer": "Specialist B",
+  "schema": "art-final-native-independent-execution-v1",
+  "source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "source_fixture": {
+    "git_blob": "33ee8dbdfead5c87f50103b2ccc4ed056132c3dd",
+    "same_file_in_both_sources": true,
+    "sha256": "88b83bc86b320b10a844a957eaa078b3bea94382b30f1104ca8ba38358a74814"
+  },
+  "stdout": {
+    "final-bcc-displayed-raw-review.json": {
+      "bytes": 16656,
+      "sha256": "a10ad008cb35a7f665d5debc424d576f23b837f0b4da069d1392cb90cb4dbe5b",
+      "status": "passed"
+    },
+    "final-bcc-headless-raw-review.json": {
+      "bytes": 14586,
+      "sha256": "3ac123fe00fdc10057243195e8a4219a01d80f34fcbc0fa413ea249e57760f09",
+      "status": "passed"
+    },
+    "final-bcc-linux-comparison.json": {
+      "bytes": 13043,
+      "sha256": "fb0cd0d00e0157574de2c3a4cb97cedb9766fde972a22159fa7b7d6ec42516af",
+      "status": "passed"
+    },
+    "final-bcc-windows-comparison.json": {
+      "bytes": 13047,
+      "sha256": "b3bfbf11c350f8789660d375ac5c266d58dd8485b556caa57f3965db75cd391d",
+      "status": "passed"
+    },
+    "final-bcc-windows-displayed-raw-review.json": {
+      "bytes": 16659,
+      "sha256": "1dfec5a83f522305352826c788b2321362daa3ac03db8dd940f37f1bb20f2623",
+      "status": "passed"
+    },
+    "final-bcc-windows-headless-raw-review.json": {
+      "bytes": 14589,
+      "sha256": "f97ad25af979cc9e166d0041ce1ef3c2e2bab19ca0ac26b6ac8f1b4cb10248d4",
+      "status": "passed"
+    }
+  },
+  "tree": "517164084860a19f18b36cb94f77597eb3220578",
+  "verifier": {
+    "repository_path": "tools/ci/verify_art_creative_native_evidence.py",
+    "sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9",
+    "source": "06a3ab765255c72d80e8e0866beae1ba725f9880"
+  }
+}

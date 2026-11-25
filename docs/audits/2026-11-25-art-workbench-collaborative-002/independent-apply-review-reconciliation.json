@@ -1,0 +1,37 @@
+{
+  "checks": 27,
+  "execution_commit": "d3222f291bb96cee78af6f46d4a4a17e4892024d",
+  "execution_sha256": "838d2908cdb53aff3b871930c4a9d2d0a732cdc52404ee52cf251b2143d274a6",
+  "failures": [],
+  "limits": [
+    "No additional native execution.",
+    "The pair result's historical runtime_hash_record field holds artifact-file hashes; binary custody remains in source-specific provenance and package evidence.",
+    "One sequential headless pair, with total completion24.543ms slower and residual73.356ms maximum frame.",
+    "Earlier incomplete attempts and the physical Windows no-listener acceptance remain separate."
+  ],
+  "method": "B independently fetched and authenticated complete stdout/execution and verifier source. The original-byte methods were independently authored by B and executed unchanged by the lead.",
+  "schema": "art-independent-apply-stdout-reconciliation-v1",
+  "status": "passed",
+  "verified_script_sources": {
+    "verify_pair.py": {
+      "commit": "06a3ab765255c72d80e8e0866beae1ba725f9880",
+      "sha256": "41aa996532d1287cf4f7ca85894b7692fc51cdf96338ccb4b6d6549a0578a472"
+    },
+    "verify_preparation.py": {
+      "commit": "216f919d1f3d2ca7af90fa3d1467a6a15bebfd10",
+      "sha256": "89d8499d2e5406370825c176140c1acca560488647e94b5bbe946d82f941c33b"
+    }
+  },
+  "verified_stdout": {
+    "pair-review.json": {
+      "bytes": 6702,
+      "result": "passed",
+      "sha256": "ca367e4a9bc2a70578121b86a0b5053bde67d881b9dfa0d234e31128ef812f61"
+    },
+    "preparation-review.json": {
+      "bytes": 2363,
+      "result": "passed",
+      "sha256": "21e285170159b6e26ba542a6388d4f93aeb0750d5d3e2e194ddd3b63db340888"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "run": 45546845554,
+  "artifacts": [
+    {
+      "id": 14993247449,
+      "node_id": "MDg6QXJ0aWZhY3QxNDk5MzI0NzQ0OQ==",
+      "name": "art-workbench-windows-evidence-bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "size_in_bytes": 12820321,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14993247449",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14993247449/zip",
+      "expired": false,
+      "digest": "sha256:45df2fecb95f21fe769f15202d15411156b658d7670e249f76e4b6877f9b3f47",
+      "created_at": "2026-11-25T04:57:02Z",
+      "updated_at": "2026-11-25T04:57:02Z",
+      "expires_at": "2027-02-23T04:26:59Z",
+      "workflow_run": {
+        "id": 45546845554,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "art/collaborative-002",
+        "head_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+      }
+    },
+    {
+      "id": 14992946063,
+      "node_id": "MDg6QXJ0aWZhY3QxNDk5Mjk0NjA2Mw==",
+      "name": "art-workbench-linux-bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "size_in_bytes": 17148660,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14992946063",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14992946063/zip",
+      "expired": false,
+      "digest": "sha256:7ff9971f911a1b417582f05a929fdda021b2d536a78eb6434e002c172676d59a",
+      "created_at": "2026-11-25T04:38:36Z",
+      "updated_at": "2026-11-25T04:38:36Z",
+      "expires_at": "2027-02-23T04:26:59Z",
+      "workflow_run": {
+        "id": 45546845554,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "art/collaborative-002",
+        "head_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+      }
+    }
+  ]
+}

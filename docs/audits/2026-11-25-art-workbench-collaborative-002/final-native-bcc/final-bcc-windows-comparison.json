@@ -1,0 +1,279 @@
+{
+  "archive_bytes": 12820321,
+  "archive_sha256": "45df2fecb95f21fe769f15202d15411156b658d7670e249f76e4b6877f9b3f47",
+  "artifact": 14993247449,
+  "campaign": 45546845554,
+  "checks": 512,
+  "execution_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "failures": [],
+  "identical_native_test_sha256": "88b83bc86b320b10a844a957eaa078b3bea94382b30f1104ca8ba38358a74814",
+  "limits": [
+    "Native chunk grouping and therefore assertion counts vary; no test gate was removed.",
+    "Original and final scene geometry/counters match; context/provenance disclosures intentionally evolved.",
+    "Timing across different hosts/campaigns is not a controlled performance comparison.",
+    "Static clearance and stored materials do not establish actor traversal, machinery function or real-model creativity.",
+    "This record replays the named platform's campaign; portable package and physical owner acceptance remain separate."
+  ],
+  "method": "B independently executed the unchanged raw native verifier twice and reconciled final headless/displayed originals against preserved2743; no new native or model execution.",
+  "native_platform": "windows",
+  "original_native_summary_sha256": "ac9690be4e2fe52889dab30d495fb5798b9ba0c9de28af4c0a754f77b5ded33b",
+  "original_source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "outcomes": [
+    {
+      "campaign_summary_sha256": "898db383996ea539a6246875dec596560f9e5ab595fbddd23f12b95957cf3acd",
+      "direct_chunks": 57,
+      "maximum_chunk_checked": 4096,
+      "mode": "displayed",
+      "native_summary_sha256": "538c920dc4815ed65c8ce2f58db9035b17e44ba453860889e1f261695d51c046",
+      "process_log_sha256": "915cab45df6c12963ede0adc66866534b38f301cbb527f4fbee04cc52c1b7a29",
+      "raw_review_sha256": "1dfec5a83f522305352826c788b2321362daa3ac03db8dd940f37f1bb20f2623",
+      "runtime_identity_from_campaign": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "payloads": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      },
+      "scenes": [
+        {
+          "after_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+          "before_materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+          "direct_chunks": 2,
+          "id": "industrial_repair",
+          "native_changed_per_arm": 5739,
+          "native_checked_per_arm": 5762,
+          "same_original_material_geometry": true,
+          "staged_chunks": 2,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "direct_chunks": 4,
+          "id": "structural_facade",
+          "native_changed_per_arm": 11585,
+          "native_checked_per_arm": 11937,
+          "same_original_material_geometry": true,
+          "staged_chunks": 5,
+          "stages": 3
+        },
+        {
+          "after_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+          "before_materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+          "direct_chunks": 3,
+          "id": "scifi_interior",
+          "native_changed_per_arm": 7952,
+          "native_checked_per_arm": 7952,
+          "same_original_material_geometry": true,
+          "staged_chunks": 3,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "direct_chunks": 3,
+          "id": "revised_arcology",
+          "native_changed_per_arm": 6229,
+          "native_checked_per_arm": 6259,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 3
+        },
+        {
+          "after_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+          "before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+          "direct_chunks": 3,
+          "id": "protected_courtyard",
+          "native_changed_per_arm": 5910,
+          "native_checked_per_arm": 5910,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "direct_chunks": 3,
+          "id": "palette_foundry",
+          "native_changed_per_arm": 10456,
+          "native_checked_per_arm": 10456,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 3
+        },
+        {
+          "after_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "direct_chunks": 9,
+          "id": "stopped_workshop",
+          "native_changed_per_arm": 31284,
+          "native_checked_per_arm": 31284,
+          "same_original_material_geometry": true,
+          "staged_chunks": 9,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+          "before_materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+          "direct_chunks": 26,
+          "id": "staged_megaframe",
+          "native_changed_per_arm": 96737,
+          "native_checked_per_arm": 100397,
+          "same_original_material_geometry": true,
+          "staged_chunks": 29,
+          "stages": 6
+        },
+        {
+          "after_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "direct_chunks": 4,
+          "id": "xeno_vault",
+          "native_changed_per_arm": 8504,
+          "native_checked_per_arm": 8660,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 2
+        }
+      ],
+      "staged_chunks": 64,
+      "stages": 25,
+      "summary_checks": 763,
+      "terminal_checks": 764,
+      "verified_original_files": 73,
+      "verified_readback_rows": 377234
+    },
+    {
+      "campaign_summary_sha256": "ffea02b675062543e0b4f1614cf21c60d3f09b47a0cc6ab1b43a27b21df616e2",
+      "direct_chunks": 56,
+      "maximum_chunk_checked": 4096,
+      "mode": "headless",
+      "native_summary_sha256": "e2cbf86a0bcd3cf0dc216ca990ba3e0be3312fdcf8dbd5f0107446fdc8de6a81",
+      "process_log_sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65",
+      "raw_review_sha256": "f97ad25af979cc9e166d0041ce1ef3c2e2bab19ca0ac26b6ac8f1b4cb10248d4",
+      "runtime_identity_from_campaign": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "payloads": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      },
+      "scenes": [
+        {
+          "after_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+          "before_materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+          "direct_chunks": 2,
+          "id": "industrial_repair",
+          "native_changed_per_arm": 5739,
+          "native_checked_per_arm": 5762,
+          "same_original_material_geometry": true,
+          "staged_chunks": 2,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "direct_chunks": 4,
+          "id": "structural_facade",
+          "native_changed_per_arm": 11585,
+          "native_checked_per_arm": 11937,
+          "same_original_material_geometry": true,
+          "staged_chunks": 5,
+          "stages": 3
+        },
+        {
+          "after_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+          "before_materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+          "direct_chunks": 3,
+          "id": "scifi_interior",
+          "native_changed_per_arm": 7952,
+          "native_checked_per_arm": 7952,
+          "same_original_material_geometry": true,
+          "staged_chunks": 3,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "direct_chunks": 3,
+          "id": "revised_arcology",
+          "native_changed_per_arm": 6229,
+          "native_checked_per_arm": 6259,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 3
+        },
+        {
+          "after_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+          "before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+          "direct_chunks": 3,
+          "id": "protected_courtyard",
+          "native_changed_per_arm": 5910,
+          "native_checked_per_arm": 5910,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "direct_chunks": 3,
+          "id": "palette_foundry",
+          "native_changed_per_arm": 10456,
+          "native_checked_per_arm": 10456,
+          "same_original_material_geometry": true,
+          "staged_chunks": 4,
+          "stages": 3
+        },
+        {
+          "after_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "direct_chunks": 9,
+          "id": "stopped_workshop",
+          "native_changed_per_arm": 31284,
+          "native_checked_per_arm": 31284,
+          "same_original_material_geometry": true,
+          "staged_chunks": 9,
+          "stages": 2
+        },
+        {
+          "after_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+          "before_materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+          "direct_chunks": 26,
+          "id": "staged_megaframe",
+          "native_changed_per_arm": 96737,
+          "native_checked_per_arm": 100397,
+          "same_original_material_geometry": true,
+          "staged_chunks": 27,
+          "stages": 6
+        },
+        {
+          "after_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "direct_chunks": 3,
+          "id": "xeno_vault",
+          "native_changed_per_arm": 8504,
+          "native_checked_per_arm": 8660,
+          "same_original_material_geometry": true,
+          "staged_chunks": 3,
+          "stages": 2
+        }
+      ],
+      "staged_chunks": 61,
+      "stages": 25,
+      "summary_checks": 738,
+      "terminal_checks": 739,
+      "verified_original_files": 55,
+      "verified_readback_rows": 377234
+    }
+  ],
+  "python": "3.12.14",
+  "schema": "art-final-bcc-native-independent-comparison-v1",
+  "source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "status": "passed",
+  "tree": "517164084860a19f18b36cb94f77597eb3220578",
+  "verifier_sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9"
+}
