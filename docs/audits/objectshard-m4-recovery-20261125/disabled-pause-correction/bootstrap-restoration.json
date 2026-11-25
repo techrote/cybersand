@@ -1,0 +1,14 @@
+{
+  "actual_before": {
+    "godot/.godot/.gdignore": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "godot/.godot/extension_list.cfg": "74559a1fa37f0cc3ec8cdd83901f0ff4a1c98deff995b88509ff252dca7c1f4a",
+    "godot/.godot/global_script_class_cache.cfg": "cc804fa70db1f8c0a0d0ad2e880cfdb8ab502dbad35d91bb9aaa0d22cb5192aa"
+  },
+  "changed_tracked": [],
+  "expected_committed_after": {
+    "godot/.godot/.gdignore": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "godot/.godot/extension_list.cfg": "74559a1fa37f0cc3ec8cdd83901f0ff4a1c98deff995b88509ff252dca7c1f4a",
+    "godot/.godot/global_script_class_cache.cfg": "cc804fa70db1f8c0a0d0ad2e880cfdb8ab502dbad35d91bb9aaa0d22cb5192aa"
+  },
+  "generated_extra": []
+}

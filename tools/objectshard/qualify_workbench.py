@@ -28,6 +28,7 @@ from process_resources import run_observed_case
 
 FOCUSED = (
     ("test_object_shard_m4_latency_probe", "objectshard-m4-workbench-probe-test-v1"),
+    ("test_object_shard_m4_edit_delivery_fence", "objectshard-m4-edit-delivery-fence-v1"),
     ("test_object_shard_m4_optional_diagnostics", "objectshard-m4-optional-diagnostics-v1"),
     ("test_object_shard_m4_same_world_extension", "objectshard-m4-actual-godot-sameworld-v1"),
     ("test_object_shard_m4_shared_main_rapier", "objectshard-m4-existing-main-rapier-v1"),

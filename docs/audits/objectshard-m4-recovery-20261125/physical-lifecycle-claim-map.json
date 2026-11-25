@@ -109,7 +109,15 @@
       "claim": "Explicit native material credit and physical RID removal on settlement",
       "coverage": "registered-native-and-ordinary-core",
       "id": "settlement",
-      "qualification_limit": "Ordinary integration fixture calls the same runtime.request_reabsorption entrypoint used by tool7; mounted Settle pointer gesture is source-routed but not separately asserted."
+      "qualification_limit": "At the original519 registration the ordinary fixture used runtime.request_reabsorption. The source successor b9cb38d33748fc2d4a585199e28645fc594b49ee adds an actual mounted mode7 press/release; local Linux headless source7095a2358e3db51e9b175f44c3686bfef4d60909 passes all132checks, including genuine sleeping contact, exact native credit and physical/native retirement. Hosted and physical owner acceptance remain separate.",
+      "successor_witness": {
+        "evidence": "mounted-settle-local.json",
+        "fixture_commit": "b9cb38d33748fc2d4a585199e28645fc594b49ee",
+        "fixture_sha256": "31bbcebf0b30354ff139d8c8048f99a92d3499d2094714829c3107205c7fee96",
+        "log_sha256": "3f32d4f3f46ec9d876b4a861eac7596ada9bd0655457f9cc1daafe958a56fe82",
+        "source_commit": "7095a2358e3db51e9b175f44c3686bfef4d60909",
+        "source_registration_preserved": true
+      }
     },
     {
       "assertions": [

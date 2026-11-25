@@ -1,0 +1,6196 @@
+{
+  "archive_bytes": 14231265,
+  "archive_sha256": "d3a1793f8e1f27cd8a3194a4fa15db1851b655d1c08ddad1aba86338d6c56f4d",
+  "artifact": 14980723384,
+  "attempt": 1,
+  "comparison_rows": [
+    {
+      "age": null,
+      "coherence": null,
+      "main": null,
+      "source_case_status": "failed",
+      "source_report": "m4_disabled_controls.json",
+      "source_report_sha256": "8120e02fd5f8c6f9ab519da028d1a66e2fe4464dfabc0956611fe0f39adc4c65",
+      "window": {
+        "actual_physics_steps": 0,
+        "callback_intervals": {
+          "count": 84,
+          "maximum_usec": 187132,
+          "p50_usec": 139102,
+          "p95_usec": 155014
+        },
+        "elapsed_usec": 12109461,
+        "label": "disabled_intact_paused",
+        "material_body_count": 0,
+        "objectshard_enabled": false,
+        "objectshard_native_attached": false,
+        "ordinary_actor_count": 1,
+        "paused": true,
+        "process_callbacks": 85,
+        "render_intervals": {
+          "count": 84,
+          "maximum_usec": 187026,
+          "p50_usec": 139149,
+          "p95_usec": 155086
+        },
+        "render_submissions": 85,
+        "render_submissions_per_second": 7.01930498805851,
+        "semantic_ticks": 2,
+        "semantic_ticks_per_second": 0.165160117366083,
+        "worker_snapshot_calls": 0,
+        "worker_snapshot_usec": 0
+      },
+      "worker": {
+        "calls": 0,
+        "usec": 0
+      },
+      "workload": "disabled_intact_paused"
+    },
+    {
+      "age": null,
+      "coherence": null,
+      "main": null,
+      "source_case_status": "failed",
+      "source_report": "m4_disabled_controls.json",
+      "source_report_sha256": "8120e02fd5f8c6f9ab519da028d1a66e2fe4464dfabc0956611fe0f39adc4c65",
+      "window": {
+        "actual_physics_steps": 81,
+        "callback_intervals": {
+          "count": 80,
+          "maximum_usec": 193452,
+          "p50_usec": 143306,
+          "p95_usec": 181775
+        },
+        "elapsed_usec": 12028969,
+        "label": "disabled_intact_playing",
+        "material_body_count": 0,
+        "objectshard_enabled": false,
+        "objectshard_native_attached": false,
+        "ordinary_actor_count": 1,
+        "paused": false,
+        "process_callbacks": 81,
+        "render_intervals": {
+          "count": 80,
+          "maximum_usec": 191581,
+          "p50_usec": 143400,
+          "p95_usec": 180423
+        },
+        "render_submissions": 81,
+        "render_submissions_per_second": 6.73374418040316,
+        "semantic_ticks": 80,
+        "semantic_ticks_per_second": 6.65061153620065,
+        "worker_snapshot_calls": 0,
+        "worker_snapshot_usec": 0
+      },
+      "worker": {
+        "calls": 0,
+        "usec": 0
+      },
+      "workload": "disabled_intact_playing"
+    },
+    {
+      "age": null,
+      "coherence": {
+        "between_callback_observations": 403,
+        "draw_observations": 403,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "main": null,
+      "source_case_status": "passed",
+      "source_report": "m4_render_controls.json",
+      "source_report_sha256": "d0938437be1013e964a841df0c7f22852c6136a2c8c126b093f75554d2ab57b4",
+      "window": {
+        "actual_physics_steps": 0,
+        "awake_bodies_after": 0,
+        "awake_bodies_before": 0,
+        "body_count_after": 0,
+        "body_count_before": 0,
+        "callback_intervals": {
+          "count": 75,
+          "maximum_usec": 194461,
+          "p50_usec": 152716,
+          "p95_usec": 191415
+        },
+        "completed_physical_intervals": 0,
+        "elapsed_usec": 12114059,
+        "label": "intact_paused",
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "paused": true,
+        "process_callbacks": 76,
+        "receipt_pump_usec": 2448,
+        "render_intervals": {
+          "count": 75,
+          "maximum_usec": 196733,
+          "p50_usec": 152838,
+          "p95_usec": 191772
+        },
+        "render_submissions": 76,
+        "render_submissions_per_second": 6.27370231563178,
+        "semantic_ticks": 0,
+        "semantic_ticks_per_second": 0.0,
+        "simulated_physical_seconds": 0.0,
+        "worker_snapshot_calls": 0,
+        "worker_snapshot_usec": 0
+      },
+      "worker": {
+        "calls": 0,
+        "usec": 0
+      },
+      "workload": "intact_paused"
+    },
+    {
+      "age": null,
+      "coherence": {
+        "between_callback_observations": 403,
+        "draw_observations": 403,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "main": null,
+      "source_case_status": "passed",
+      "source_report": "m4_render_controls.json",
+      "source_report_sha256": "d0938437be1013e964a841df0c7f22852c6136a2c8c126b093f75554d2ab57b4",
+      "window": {
+        "actual_physics_steps": 161,
+        "awake_bodies_after": 0,
+        "awake_bodies_before": 0,
+        "body_count_after": 0,
+        "body_count_before": 0,
+        "callback_intervals": {
+          "count": 81,
+          "maximum_usec": 193732,
+          "p50_usec": 145366,
+          "p95_usec": 179726
+        },
+        "completed_physical_intervals": 40,
+        "elapsed_usec": 12059152,
+        "label": "intact_playing",
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "paused": false,
+        "process_callbacks": 82,
+        "receipt_pump_usec": 363647,
+        "render_intervals": {
+          "count": 81,
+          "maximum_usec": 194156,
+          "p50_usec": 145884,
+          "p95_usec": 179119
+        },
+        "render_submissions": 82,
+        "render_submissions_per_second": 6.79981477967937,
+        "semantic_ticks": 40,
+        "semantic_ticks_per_second": 3.31698281935579,
+        "simulated_physical_seconds": 0.666666666666667,
+        "worker_snapshot_calls": 240,
+        "worker_snapshot_usec": 58573
+      },
+      "worker": {
+        "calls": 240,
+        "usec": 58573
+      },
+      "workload": "intact_playing"
+    },
+    {
+      "age": null,
+      "coherence": {
+        "between_callback_observations": 403,
+        "draw_observations": 403,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "main": null,
+      "source_case_status": "passed",
+      "source_report": "m4_render_controls.json",
+      "source_report_sha256": "d0938437be1013e964a841df0c7f22852c6136a2c8c126b093f75554d2ab57b4",
+      "window": {
+        "actual_physics_steps": 0,
+        "awake_bodies_after": 1,
+        "awake_bodies_before": 1,
+        "body_count_after": 1,
+        "body_count_before": 1,
+        "callback_intervals": {
+          "count": 84,
+          "maximum_usec": 190385,
+          "p50_usec": 138670,
+          "p95_usec": 165594
+        },
+        "completed_physical_intervals": 0,
+        "elapsed_usec": 12104859,
+        "label": "detached_paused",
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "paused": true,
+        "process_callbacks": 85,
+        "receipt_pump_usec": 2550,
+        "render_intervals": {
+          "count": 84,
+          "maximum_usec": 190375,
+          "p50_usec": 138599,
+          "p95_usec": 165614
+        },
+        "render_submissions": 85,
+        "render_submissions_per_second": 7.02197357276115,
+        "semantic_ticks": 0,
+        "semantic_ticks_per_second": 0.0,
+        "simulated_physical_seconds": 0.0,
+        "worker_snapshot_calls": 0,
+        "worker_snapshot_usec": 0
+      },
+      "worker": {
+        "calls": 0,
+        "usec": 0
+      },
+      "workload": "detached_paused"
+    },
+    {
+      "age": null,
+      "coherence": {
+        "between_callback_observations": 403,
+        "draw_observations": 403,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "main": null,
+      "source_case_status": "passed",
+      "source_report": "m4_render_controls.json",
+      "source_report_sha256": "d0938437be1013e964a841df0c7f22852c6136a2c8c126b093f75554d2ab57b4",
+      "window": {
+        "actual_physics_steps": 108,
+        "awake_bodies_after": 1,
+        "awake_bodies_before": 1,
+        "body_count_after": 1,
+        "body_count_before": 1,
+        "callback_intervals": {
+          "count": 81,
+          "maximum_usec": 196623,
+          "p50_usec": 144172,
+          "p95_usec": 170185
+        },
+        "completed_physical_intervals": 27,
+        "elapsed_usec": 12036816,
+        "label": "detached_playing",
+        "native_pose_acknowledgements": 108,
+        "native_pose_echo_checks": 108,
+        "paused": false,
+        "process_callbacks": 82,
+        "receipt_pump_usec": 467102,
+        "render_intervals": {
+          "count": 81,
+          "maximum_usec": 197342,
+          "p50_usec": 144159,
+          "p95_usec": 170527
+        },
+        "render_submissions": 82,
+        "render_submissions_per_second": 6.81243278953504,
+        "semantic_ticks": 26,
+        "semantic_ticks_per_second": 2.16003966497453,
+        "simulated_physical_seconds": 0.45,
+        "worker_snapshot_calls": 162,
+        "worker_snapshot_usec": 102033
+      },
+      "worker": {
+        "calls": 162,
+        "usec": 102033
+      },
+      "workload": "detached_playing"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 1,
+        "actual_physics_steps": 721,
+        "body_count_max": 1,
+        "body_count_min": 1,
+        "bounded_stage_samples": {
+          "physics_work": {
+            "count": 256,
+            "maximum_usec": 223,
+            "p50_usec": 134,
+            "p95_usec": 181
+          },
+          "publication_prepare": {
+            "count": 256,
+            "maximum_usec": 133,
+            "p50_usec": 76,
+            "p95_usec": 100
+          },
+          "queue_admission": {
+            "count": 256,
+            "maximum_usec": 166,
+            "p50_usec": 33,
+            "p95_usec": 96
+          },
+          "receipt_delivery": {
+            "count": 256,
+            "maximum_usec": 16862,
+            "p50_usec": 7897,
+            "p95_usec": 15624
+          },
+          "scene_callback": {
+            "count": 256,
+            "maximum_usec": 11944,
+            "p50_usec": 8868,
+            "p95_usec": 9899
+          },
+          "texture_upload_submission": {
+            "count": 49,
+            "maximum_usec": 257,
+            "p50_usec": 162,
+            "p95_usec": 197
+          },
+          "upload_to_post_draw": {
+            "count": 49,
+            "maximum_usec": 173389,
+            "p50_usec": 138611,
+            "p95_usec": 157444
+          }
+        },
+        "camera": "overview",
+        "checks": 153,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 646,
+          "draw_observations": 647,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 80190886,
+        "inventory_after": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "inventory_before": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "log_sha256": "f650c1c18054384755ff0295f1a22fed0ef606d2c23f970943ad5eeef3415093",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 184,
+            "usec": 37207
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 133,
+            "usec": 52686
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 379,
+            "usec": 93077
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 4438,
+          "chemistry_ns": 9891775,
+          "composed_reuses": 893,
+          "contact_ns": 27766787,
+          "discovery_ns": 401908,
+          "exchange_ns": 6091690,
+          "geometry_ns": 0,
+          "mask_cells": 4740159,
+          "occupancy_ns": 764078183,
+          "relocation_ns": 524245443,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 0,
+          "snapshot_ns": 6358214,
+          "sweep_samples": 0,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 720,
+        "native_pose_echo_checks": 720,
+        "process_intervals": {
+          "count": 536,
+          "maximum_usec": 198592,
+          "p50_usec": 145272,
+          "p95_usec": 186661
+        },
+        "receipt_delivery_age": {
+          "count": 256,
+          "maximum_usec": 16862,
+          "p50_usec": 7897,
+          "p95_usec": 15624
+        },
+        "receipt_pump_usec_delta": 3116662,
+        "recording_enabled": true,
+        "render_submission_intervals": {
+          "count": 536,
+          "maximum_usec": 199627,
+          "p50_usec": 145630,
+          "p95_usec": 186012
+        },
+        "render_submissions": 537,
+        "render_submissions_per_wall_second": 6.69652159722989,
+        "report": "graphical/m4_workbench_tower_overview_render.json",
+        "report_sha256": "16d9bc728dbe140e2bd35c0c39690cf2c85ce847c0d3d3ad17d2dace95f9fcfa",
+        "sampling": "cohorts",
+        "scene": "tower",
+        "semantic_ticks_per_wall_second": 2.24464411080332,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 40297,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 680094
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "tower_overview"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 3,
+        "actual_physics_steps": 721,
+        "body_count_max": 3,
+        "body_count_min": 3,
+        "bounded_stage_samples": {
+          "physics_work": {
+            "count": 256,
+            "maximum_usec": 302,
+            "p50_usec": 156,
+            "p95_usec": 225
+          },
+          "publication_prepare": {
+            "count": 256,
+            "maximum_usec": 147,
+            "p50_usec": 84,
+            "p95_usec": 110
+          },
+          "queue_admission": {
+            "count": 256,
+            "maximum_usec": 152,
+            "p50_usec": 29,
+            "p95_usec": 56
+          },
+          "receipt_delivery": {
+            "count": 256,
+            "maximum_usec": 17210,
+            "p50_usec": 6977,
+            "p95_usec": 15714
+          },
+          "scene_callback": {
+            "count": 256,
+            "maximum_usec": 11313,
+            "p50_usec": 8678,
+            "p95_usec": 9620
+          },
+          "texture_upload_submission": {
+            "count": 256,
+            "maximum_usec": 593,
+            "p50_usec": 232,
+            "p95_usec": 339
+          },
+          "upload_to_post_draw": {
+            "count": 256,
+            "maximum_usec": 193207,
+            "p50_usec": 139714,
+            "p95_usec": 191337
+          }
+        },
+        "camera": "overview",
+        "checks": 230,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 722,
+          "draw_observations": 723,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 79563365,
+        "inventory_after": {
+          "brick": 1728,
+          "wood": 2400
+        },
+        "inventory_before": {
+          "brick": 1728,
+          "wood": 2400
+        },
+        "log_sha256": "26aee18e554ca062768ac6abae77dd9ebf0af83c3e2ed943d31e28237e2ec4f7",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 175,
+            "usec": 31384
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 161,
+            "usec": 62387
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 1573,
+            "usec": 112512
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 1387,
+          "chemistry_ns": 8201088,
+          "composed_reuses": 623,
+          "contact_ns": 52067143,
+          "discovery_ns": 291846,
+          "exchange_ns": 6077519,
+          "geometry_ns": 0,
+          "mask_cells": 5689504,
+          "occupancy_ns": 918297256,
+          "relocation_ns": 628116463,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 530134,
+          "snapshot_ns": 5527259,
+          "sweep_samples": 0,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 2160,
+        "native_pose_echo_checks": 2160,
+        "process_intervals": {
+          "count": 528,
+          "maximum_usec": 201557,
+          "p50_usec": 145828,
+          "p95_usec": 188191
+        },
+        "receipt_delivery_age": {
+          "count": 256,
+          "maximum_usec": 17210,
+          "p50_usec": 6977,
+          "p95_usec": 15714
+        },
+        "receipt_pump_usec_delta": 3075567,
+        "recording_enabled": true,
+        "render_submission_intervals": {
+          "count": 528,
+          "maximum_usec": 202305,
+          "p50_usec": 146198,
+          "p95_usec": 188193
+        },
+        "render_submissions": 529,
+        "render_submissions_per_wall_second": 6.6487886730281,
+        "report": "graphical/m4_workbench_viaduct_overview_render.json",
+        "report_sha256": "514c1af468bdf6374fd66468596882958530d88d4776d7ca99c1ead605ee43f0",
+        "sampling": "cohorts",
+        "scene": "viaduct",
+        "semantic_ticks_per_wall_second": 2.26234775263716,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 35524,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 693352
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "viaduct_overview"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 1,
+        "actual_physics_steps": 721,
+        "body_count_max": 1,
+        "body_count_min": 1,
+        "bounded_stage_samples": {
+          "physics_work": {
+            "count": 256,
+            "maximum_usec": 265,
+            "p50_usec": 115,
+            "p95_usec": 174
+          },
+          "publication_prepare": {
+            "count": 256,
+            "maximum_usec": 104,
+            "p50_usec": 66,
+            "p95_usec": 85
+          },
+          "queue_admission": {
+            "count": 256,
+            "maximum_usec": 330,
+            "p50_usec": 25,
+            "p95_usec": 81
+          },
+          "receipt_delivery": {
+            "count": 256,
+            "maximum_usec": 17737,
+            "p50_usec": 7910,
+            "p95_usec": 15780
+          },
+          "scene_callback": {
+            "count": 256,
+            "maximum_usec": 12834,
+            "p50_usec": 8653,
+            "p95_usec": 11124
+          },
+          "texture_upload_submission": {
+            "count": 229,
+            "maximum_usec": 240,
+            "p50_usec": 156,
+            "p95_usec": 194
+          },
+          "upload_to_post_draw": {
+            "count": 229,
+            "maximum_usec": 190706,
+            "p50_usec": 137776,
+            "p95_usec": 181074
+          }
+        },
+        "camera": "overview",
+        "checks": 174,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 659,
+          "draw_observations": 660,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 81665617,
+        "inventory_after": {
+          "brick": 0,
+          "wood": 5472
+        },
+        "inventory_before": {
+          "brick": 0,
+          "wood": 5472
+        },
+        "log_sha256": "33262f9fbf42bb1d822714f3f9698356e4ef660b00663d6c262093ef8ff40636",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 330,
+            "usec": 31386
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 129,
+            "usec": 48792
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 335,
+            "usec": 86358
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 5893,
+          "chemistry_ns": 10063808,
+          "composed_reuses": 894,
+          "contact_ns": 143924746,
+          "discovery_ns": 406214,
+          "exchange_ns": 6271603,
+          "geometry_ns": 0,
+          "mask_cells": 5625289,
+          "occupancy_ns": 977320362,
+          "relocation_ns": 581896085,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 3,
+          "snapshot_ns": 5707558,
+          "sweep_samples": 1403,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 720,
+        "native_pose_echo_checks": 720,
+        "process_intervals": {
+          "count": 542,
+          "maximum_usec": 199149,
+          "p50_usec": 146198,
+          "p95_usec": 187740
+        },
+        "receipt_delivery_age": {
+          "count": 256,
+          "maximum_usec": 17737,
+          "p50_usec": 7910,
+          "p95_usec": 15780
+        },
+        "receipt_pump_usec_delta": 3099953,
+        "recording_enabled": true,
+        "render_submission_intervals": {
+          "count": 542,
+          "maximum_usec": 199957,
+          "p50_usec": 146600,
+          "p95_usec": 188177
+        },
+        "render_submissions": 543,
+        "render_submissions_per_wall_second": 6.64906505267694,
+        "report": "graphical/m4_workbench_timber_overview_render.json",
+        "report_sha256": "0fdb0b65a58b95a6d70cb049baab495e22445256af6ce6ae5a4f425f791b6108",
+        "sampling": "cohorts",
+        "scene": "timber",
+        "semantic_ticks_per_wall_second": 2.20410996221335,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 32537,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 776547
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "timber_overview"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 1,
+        "actual_physics_steps": 721,
+        "body_count_max": 1,
+        "body_count_min": 1,
+        "bounded_stage_samples": {
+          "physics_work": {
+            "count": 256,
+            "maximum_usec": 2023,
+            "p50_usec": 132,
+            "p95_usec": 182
+          },
+          "publication_prepare": {
+            "count": 256,
+            "maximum_usec": 106,
+            "p50_usec": 73,
+            "p95_usec": 89
+          },
+          "queue_admission": {
+            "count": 256,
+            "maximum_usec": 353,
+            "p50_usec": 24,
+            "p95_usec": 122
+          },
+          "receipt_delivery": {
+            "count": 256,
+            "maximum_usec": 16792,
+            "p50_usec": 6138,
+            "p95_usec": 15972
+          },
+          "scene_callback": {
+            "count": 256,
+            "maximum_usec": 12287,
+            "p50_usec": 8724,
+            "p95_usec": 10485
+          },
+          "texture_upload_submission": {
+            "count": 250,
+            "maximum_usec": 246,
+            "p50_usec": 189,
+            "p95_usec": 216
+          },
+          "upload_to_post_draw": {
+            "count": 250,
+            "maximum_usec": 194097,
+            "p50_usec": 136400,
+            "p95_usec": 185161
+          }
+        },
+        "camera": "overview",
+        "checks": 155,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 656,
+          "draw_observations": 657,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 80854017,
+        "inventory_after": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "inventory_before": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "log_sha256": "ce04adeba0a92b7bc6ff312c858a5f1ba9cdf8a19988e6e3d0c335772853b4e8",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 353,
+            "usec": 32405
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 116,
+            "usec": 51303
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 2023,
+            "usec": 95116
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 4708,
+          "chemistry_ns": 9512082,
+          "composed_reuses": 893,
+          "contact_ns": 284247286,
+          "discovery_ns": 403917,
+          "exchange_ns": 6331633,
+          "geometry_ns": 0,
+          "mask_cells": 4693369,
+          "occupancy_ns": 1035231144,
+          "relocation_ns": 565037931,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 3580858,
+          "snapshot_ns": 6023419,
+          "sweep_samples": 4368,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 720,
+        "native_pose_echo_checks": 720,
+        "process_intervals": {
+          "count": 543,
+          "maximum_usec": 198804,
+          "p50_usec": 143841,
+          "p95_usec": 186354
+        },
+        "receipt_delivery_age": {
+          "count": 256,
+          "maximum_usec": 16792,
+          "p50_usec": 6138,
+          "p95_usec": 15972
+        },
+        "receipt_pump_usec_delta": 3101015,
+        "recording_enabled": true,
+        "render_submission_intervals": {
+          "count": 543,
+          "maximum_usec": 199424,
+          "p50_usec": 144151,
+          "p95_usec": 186372
+        },
+        "render_submissions": 544,
+        "render_submissions_per_wall_second": 6.7281752989465,
+        "report": "graphical/m4_workbench_mixed_overview_render.json",
+        "report_sha256": "529d44201bad4e62db11e1d90baf8ece8b1b731cc518bc339c8c42ce3517ff41",
+        "sampling": "cohorts",
+        "scene": "mixed",
+        "semantic_ticks_per_wall_second": 2.22623447391612,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 35324,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 767224
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "mixed_overview"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 8,
+        "actual_physics_steps": 721,
+        "body_count_max": 8,
+        "body_count_min": 8,
+        "bounded_stage_samples": {
+          "physics_work": {
+            "count": 256,
+            "maximum_usec": 242,
+            "p50_usec": 159,
+            "p95_usec": 205
+          },
+          "publication_prepare": {
+            "count": 256,
+            "maximum_usec": 204,
+            "p50_usec": 115,
+            "p95_usec": 155
+          },
+          "queue_admission": {
+            "count": 256,
+            "maximum_usec": 96,
+            "p50_usec": 40,
+            "p95_usec": 71
+          },
+          "receipt_delivery": {
+            "count": 256,
+            "maximum_usec": 17000,
+            "p50_usec": 6094,
+            "p95_usec": 16093
+          },
+          "scene_callback": {
+            "count": 256,
+            "maximum_usec": 10910,
+            "p50_usec": 8577,
+            "p95_usec": 8916
+          },
+          "texture_upload_submission": {
+            "count": 182,
+            "maximum_usec": 225,
+            "p50_usec": 98,
+            "p95_usec": 155
+          },
+          "upload_to_post_draw": {
+            "count": 182,
+            "maximum_usec": 190170,
+            "p50_usec": 147198,
+            "p95_usec": 187373
+          }
+        },
+        "camera": "overview",
+        "checks": 386,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 987,
+          "draw_observations": 988,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 104449618,
+        "inventory_after": {
+          "brick": 704,
+          "wood": 8512
+        },
+        "inventory_before": {
+          "brick": 704,
+          "wood": 8512
+        },
+        "log_sha256": "c51144f761ebd1d64d75954222e8a19eac629752eeff11c5056643cd28da6f45",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 282,
+            "usec": 38269
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 217,
+            "usec": 84356
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 503,
+            "usec": 111936
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 1157,
+          "chemistry_ns": 17494704,
+          "composed_reuses": 793,
+          "contact_ns": 60797129,
+          "discovery_ns": 272853,
+          "exchange_ns": 13770005,
+          "geometry_ns": 0,
+          "mask_cells": 11032542,
+          "occupancy_ns": 1761934484,
+          "relocation_ns": 1207132306,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 0,
+          "snapshot_ns": 4999297,
+          "sweep_samples": 0,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 5760,
+        "native_pose_echo_checks": 5760,
+        "process_intervals": {
+          "count": 709,
+          "maximum_usec": 196007,
+          "p50_usec": 141336,
+          "p95_usec": 187720
+        },
+        "receipt_delivery_age": {
+          "count": 256,
+          "maximum_usec": 17000,
+          "p50_usec": 6094,
+          "p95_usec": 16093
+        },
+        "receipt_pump_usec_delta": 4494959,
+        "recording_enabled": true,
+        "render_submission_intervals": {
+          "count": 709,
+          "maximum_usec": 196196,
+          "p50_usec": 141592,
+          "p95_usec": 187500
+        },
+        "render_submissions": 710,
+        "render_submissions_per_wall_second": 6.79753563100633,
+        "report": "graphical/m4_workbench_stress_overview_render.json",
+        "report_sha256": "b52baabac4dea26ffaf51519cb052970e4524a205de1c774796dcb6cabb8e30a",
+        "sampling": "cohorts",
+        "scene": "stress",
+        "semantic_ticks_per_wall_second": 1.7233188923678,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 32995,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 1242394
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "stress_overview"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 1,
+        "actual_physics_steps": 721,
+        "body_count_max": 1,
+        "body_count_min": 1,
+        "bounded_stage_samples": {},
+        "camera": "overview",
+        "checks": 152,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 644,
+          "draw_observations": 645,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 77993865,
+        "inventory_after": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "inventory_before": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "log_sha256": "7d73faa6641f44e49b41f0836e6489674486828c692afc9be5e837574d004392",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 431,
+            "usec": 38191
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 135,
+            "usec": 51514
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 253,
+            "usec": 84851
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 4438,
+          "chemistry_ns": 8812851,
+          "composed_reuses": 893,
+          "contact_ns": 27388540,
+          "discovery_ns": 354914,
+          "exchange_ns": 6040352,
+          "geometry_ns": 0,
+          "mask_cells": 4740159,
+          "occupancy_ns": 762429508,
+          "relocation_ns": 522116544,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 0,
+          "snapshot_ns": 5639039,
+          "sweep_samples": 0,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 720,
+        "native_pose_echo_checks": 720,
+        "process_intervals": {
+          "count": 530,
+          "maximum_usec": 198098,
+          "p50_usec": 142947,
+          "p95_usec": 184363
+        },
+        "receipt_delivery_age": null,
+        "receipt_pump_usec_delta": 3085227,
+        "recording_enabled": false,
+        "render_submission_intervals": {
+          "count": 530,
+          "maximum_usec": 198986,
+          "p50_usec": 143286,
+          "p95_usec": 184400
+        },
+        "render_submissions": 531,
+        "render_submissions_per_wall_second": 6.80822780099435,
+        "report": "graphical/m4_workbench_tower_overview_light_render.json",
+        "report_sha256": "2915ea4e5d54ead77e6181d0463a5f2a12ed6211c131004c0e9fe60d13cf6f3f",
+        "sampling": "light",
+        "scene": "tower",
+        "semantic_ticks_per_wall_second": 2.30787383084554,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 37830,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 663729
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "tower_light_recording_off"
+    },
+    {
+      "profile": {
+        "active_body_count_max": 1,
+        "actual_physics_steps": 721,
+        "body_count_max": 1,
+        "body_count_min": 1,
+        "bounded_stage_samples": {
+          "physics_work": {
+            "count": 256,
+            "maximum_usec": 223,
+            "p50_usec": 121,
+            "p95_usec": 171
+          },
+          "publication_prepare": {
+            "count": 256,
+            "maximum_usec": 124,
+            "p50_usec": 73,
+            "p95_usec": 97
+          },
+          "queue_admission": {
+            "count": 256,
+            "maximum_usec": 136,
+            "p50_usec": 27,
+            "p95_usec": 82
+          },
+          "receipt_delivery": {
+            "count": 256,
+            "maximum_usec": 17051,
+            "p50_usec": 5490,
+            "p95_usec": 16248
+          },
+          "scene_callback": {
+            "count": 256,
+            "maximum_usec": 11308,
+            "p50_usec": 8788,
+            "p95_usec": 9375
+          },
+          "texture_upload_submission": {
+            "count": 49,
+            "maximum_usec": 186,
+            "p50_usec": 148,
+            "p95_usec": 175
+          },
+          "upload_to_post_draw": {
+            "count": 49,
+            "maximum_usec": 191229,
+            "p50_usec": 149070,
+            "p95_usec": 190738
+          }
+        },
+        "camera": "overview",
+        "checks": 153,
+        "completed_physical_intervals": 180,
+        "completed_semantic_ticks": 180,
+        "display_coherence": {
+          "between_callback_observations": 686,
+          "draw_observations": 687,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "display_driver": "X11",
+        "elapsed_usec": 79403192,
+        "inventory_after": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "inventory_before": {
+          "brick": 2232,
+          "wood": 2184
+        },
+        "log_sha256": "1fe8335c622b04b6894cf9dc821535e809252ad9fcd82bea0b92d0c39467444b",
+        "main_stage_deltas": {
+          "owner_control_admission": {
+            "calls": 901,
+            "cumulative_max_usec": 195,
+            "usec": 34459
+          },
+          "pose_packet_capture": {
+            "calls": 721,
+            "cumulative_max_usec": 124,
+            "usec": 52463
+          },
+          "rapier_segment": {
+            "calls": 721,
+            "cumulative_max_usec": 372,
+            "usec": 89962
+          }
+        },
+        "native_cost_deltas": {
+          "chemistry_cells": 4438,
+          "chemistry_ns": 11419362,
+          "composed_reuses": 893,
+          "contact_ns": 27852350,
+          "discovery_ns": 378536,
+          "exchange_ns": 5970298,
+          "geometry_ns": 0,
+          "mask_cells": 4740159,
+          "occupancy_ns": 763323578,
+          "relocation_ns": 522592828,
+          "relocation_probe_limit_hits": 0,
+          "relocation_probes": 0,
+          "snapshot_ns": 6388659,
+          "sweep_samples": 0,
+          "terrain_ns": 0,
+          "world_ns": 0
+        },
+        "native_pose_acknowledgements": 720,
+        "native_pose_echo_checks": 720,
+        "process_intervals": {
+          "count": 539,
+          "maximum_usec": 197598,
+          "p50_usec": 142504,
+          "p95_usec": 185192
+        },
+        "receipt_delivery_age": {
+          "count": 256,
+          "maximum_usec": 17051,
+          "p50_usec": 5490,
+          "p95_usec": 16248
+        },
+        "receipt_pump_usec_delta": 3102731,
+        "recording_enabled": true,
+        "render_submission_intervals": {
+          "count": 539,
+          "maximum_usec": 198308,
+          "p50_usec": 142877,
+          "p95_usec": 185443
+        },
+        "render_submissions": 540,
+        "render_submissions_per_wall_second": 6.80073415688377,
+        "report": "graphical/m4_workbench_tower_overview_light_recording_render.json",
+        "report_sha256": "02cf053781b268f559525abbe27f21d5d2e84dacc459d96a3f515e80c03057d8",
+        "sampling": "light",
+        "scene": "tower",
+        "semantic_ticks_per_wall_second": 2.26691138562792,
+        "worker_stage_deltas": {
+          "frame_copy_calls": 180,
+          "frame_copy_usec": 39677,
+          "snapshot_calls": 1080,
+          "snapshot_usec": 671038
+        }
+      },
+      "source_case_status": "passed",
+      "workload": "tower_light_recording_on"
+    }
+  ],
+  "control_identity": {
+    "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+    "camera": "overview",
+    "canvas_extent": [
+      512,
+      512
+    ],
+    "control_view": {
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        512,
+        512
+      ]
+    },
+    "scene": "tower"
+  },
+  "controls": {
+    "m4_disabled_controls.json": {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "camera": "overview",
+      "canvas_extent": [
+        512,
+        512
+      ],
+      "checks": 23,
+      "control_view": {
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          512,
+          512
+        ]
+      },
+      "display_driver": "X11",
+      "failures": [
+        "disabled_intact_paused consumes no native or Rapier time"
+      ],
+      "rendering_method": "gl_compatibility",
+      "scene": "tower",
+      "schema": "objectshard-m4-disabled-control-v1",
+      "scope": "ordinary native Workbench tower with ObjectShard disabled; renderer submissions and semantic progression are independent; physical monitor presentation owner-pending",
+      "seconds_per_window": 12.0,
+      "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+      "windows": [
+        {
+          "actual_physics_steps": 0,
+          "callback_intervals": {
+            "count": 84,
+            "maximum_usec": 187132,
+            "p50_usec": 139102,
+            "p95_usec": 155014
+          },
+          "elapsed_usec": 12109461,
+          "label": "disabled_intact_paused",
+          "material_body_count": 0,
+          "objectshard_enabled": false,
+          "objectshard_native_attached": false,
+          "ordinary_actor_count": 1,
+          "paused": true,
+          "process_callbacks": 85,
+          "render_intervals": {
+            "count": 84,
+            "maximum_usec": 187026,
+            "p50_usec": 139149,
+            "p95_usec": 155086
+          },
+          "render_submissions": 85,
+          "render_submissions_per_second": 7.01930498805851,
+          "semantic_ticks": 2,
+          "semantic_ticks_per_second": 0.165160117366083,
+          "worker_snapshot_calls": 0,
+          "worker_snapshot_usec": 0
+        },
+        {
+          "actual_physics_steps": 81,
+          "callback_intervals": {
+            "count": 80,
+            "maximum_usec": 193452,
+            "p50_usec": 143306,
+            "p95_usec": 181775
+          },
+          "elapsed_usec": 12028969,
+          "label": "disabled_intact_playing",
+          "material_body_count": 0,
+          "objectshard_enabled": false,
+          "objectshard_native_attached": false,
+          "ordinary_actor_count": 1,
+          "paused": false,
+          "process_callbacks": 81,
+          "render_intervals": {
+            "count": 80,
+            "maximum_usec": 191581,
+            "p50_usec": 143400,
+            "p95_usec": 180423
+          },
+          "render_submissions": 81,
+          "render_submissions_per_second": 6.73374418040316,
+          "semantic_ticks": 80,
+          "semantic_ticks_per_second": 6.65061153620065,
+          "worker_snapshot_calls": 0,
+          "worker_snapshot_usec": 0
+        }
+      ]
+    },
+    "m4_render_controls.json": {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "camera": "overview",
+      "canvas_extent": [
+        512,
+        512
+      ],
+      "checks": 136,
+      "control_view": {
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          512,
+          512
+        ]
+      },
+      "display_coherence": {
+        "between_callback_observations": 403,
+        "draw_observations": 403,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "failures": [],
+      "inventory_witnesses": [
+        {
+          "owned_inventory": [
+            {
+              "body_generation": 1,
+              "generation": 1,
+              "id": 1,
+              "materials": {
+                "bytes": 12250,
+                "path": "/home/runner/work/cybersand/cybersand/evidence/graphical/m4_render_controls-artifacts/inventory-000-owner-1-materials.bin",
+                "retained": true,
+                "sha256": "71a39335fe424391a090f362447741d49da0c4e20fa38e0d32823bf946c0c19c"
+              }
+            }
+          ],
+          "presentation_projection_mismatches": [],
+          "raw_grid": {
+            "bytes": 262144,
+            "path": "/home/runner/work/cybersand/cybersand/evidence/graphical/m4_render_controls-artifacts/inventory-000-stored-materials.bin",
+            "retained": true,
+            "sha256": "2ca8f905c99d10ffc105e2c1c50c1d21a36f2427420f686491ad27607fe02adf"
+          },
+          "raw_world_material_counts": [
+            234338,
+            27806,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "rendered_grid": {
+            "bytes": 524288,
+            "path": "/home/runner/work/cybersand/cybersand/evidence/graphical/m4_render_controls-artifacts/inventory-000-rendered-rg8.bin",
+            "retained": true,
+            "sha256": "980f88115078cba2161b63186cb7ceeb92b95c5d2d7ca7eefc7877a2a0d588bb"
+          },
+          "schema": "objectshard-m4-independent-inventory-v1",
+          "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+          "source": {
+            "native_instance_id": -9223371954679970190,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 237,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 78,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 52
+          },
+          "total_material_counts": [
+            0,
+            27828,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2184,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            2232,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "water": {
+            "independent_parcel_quantity": 0,
+            "independent_total_quantity": 0,
+            "native_ledger": {
+              "ballistic": 0,
+              "expected": 0,
+              "overfill": 0,
+              "total": 0,
+              "visible": 0
+            },
+            "parcel_count": 0,
+            "parcel_material_pixels": 0,
+            "raw_parcels_float64": {
+              "bytes": 0,
+              "path": "/home/runner/work/cybersand/cybersand/evidence/graphical/m4_render_controls-artifacts/inventory-000-parcels-float64.bin",
+              "retained": true,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "raw_state_scan": {
+              "content_hash": "682acb612d2e410d",
+              "state_hash": "48ac9e33182d8471",
+              "tick": 78,
+              "water_cells": 0,
+              "water_integer": 0,
+              "water_overfill": 0,
+              "water_visible": 0
+            }
+          }
+        }
+      ],
+      "rendering_method": "gl_compatibility",
+      "scene": "tower",
+      "schema": "objectshard-m4-render-control-v1",
+      "scope": "ordinary renderer submissions and actual native progression; awake counts observed only at window boundaries; physical seconds count completed 1/60 intervals; no per-callback full diagnostics, latency probe disabled; physical monitor presentation OWNER-PENDING",
+      "seconds_per_window": 12.0,
+      "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+      "windows": [
+        {
+          "actual_physics_steps": 0,
+          "awake_bodies_after": 0,
+          "awake_bodies_before": 0,
+          "body_count_after": 0,
+          "body_count_before": 0,
+          "callback_intervals": {
+            "count": 75,
+            "maximum_usec": 194461,
+            "p50_usec": 152716,
+            "p95_usec": 191415
+          },
+          "completed_physical_intervals": 0,
+          "elapsed_usec": 12114059,
+          "label": "intact_paused",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "paused": true,
+          "process_callbacks": 76,
+          "receipt_pump_usec": 2448,
+          "render_intervals": {
+            "count": 75,
+            "maximum_usec": 196733,
+            "p50_usec": 152838,
+            "p95_usec": 191772
+          },
+          "render_submissions": 76,
+          "render_submissions_per_second": 6.27370231563178,
+          "semantic_ticks": 0,
+          "semantic_ticks_per_second": 0.0,
+          "simulated_physical_seconds": 0.0,
+          "worker_snapshot_calls": 0,
+          "worker_snapshot_usec": 0
+        },
+        {
+          "actual_physics_steps": 161,
+          "awake_bodies_after": 0,
+          "awake_bodies_before": 0,
+          "body_count_after": 0,
+          "body_count_before": 0,
+          "callback_intervals": {
+            "count": 81,
+            "maximum_usec": 193732,
+            "p50_usec": 145366,
+            "p95_usec": 179726
+          },
+          "completed_physical_intervals": 40,
+          "elapsed_usec": 12059152,
+          "label": "intact_playing",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "paused": false,
+          "process_callbacks": 82,
+          "receipt_pump_usec": 363647,
+          "render_intervals": {
+            "count": 81,
+            "maximum_usec": 194156,
+            "p50_usec": 145884,
+            "p95_usec": 179119
+          },
+          "render_submissions": 82,
+          "render_submissions_per_second": 6.79981477967937,
+          "semantic_ticks": 40,
+          "semantic_ticks_per_second": 3.31698281935579,
+          "simulated_physical_seconds": 0.666666666666667,
+          "worker_snapshot_calls": 240,
+          "worker_snapshot_usec": 58573
+        },
+        {
+          "actual_physics_steps": 0,
+          "awake_bodies_after": 1,
+          "awake_bodies_before": 1,
+          "body_count_after": 1,
+          "body_count_before": 1,
+          "callback_intervals": {
+            "count": 84,
+            "maximum_usec": 190385,
+            "p50_usec": 138670,
+            "p95_usec": 165594
+          },
+          "completed_physical_intervals": 0,
+          "elapsed_usec": 12104859,
+          "label": "detached_paused",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "paused": true,
+          "process_callbacks": 85,
+          "receipt_pump_usec": 2550,
+          "render_intervals": {
+            "count": 84,
+            "maximum_usec": 190375,
+            "p50_usec": 138599,
+            "p95_usec": 165614
+          },
+          "render_submissions": 85,
+          "render_submissions_per_second": 7.02197357276115,
+          "semantic_ticks": 0,
+          "semantic_ticks_per_second": 0.0,
+          "simulated_physical_seconds": 0.0,
+          "worker_snapshot_calls": 0,
+          "worker_snapshot_usec": 0
+        },
+        {
+          "actual_physics_steps": 108,
+          "awake_bodies_after": 1,
+          "awake_bodies_before": 1,
+          "body_count_after": 1,
+          "body_count_before": 1,
+          "callback_intervals": {
+            "count": 81,
+            "maximum_usec": 196623,
+            "p50_usec": 144172,
+            "p95_usec": 170185
+          },
+          "completed_physical_intervals": 27,
+          "elapsed_usec": 12036816,
+          "label": "detached_playing",
+          "native_pose_acknowledgements": 108,
+          "native_pose_echo_checks": 108,
+          "paused": false,
+          "process_callbacks": 82,
+          "receipt_pump_usec": 467102,
+          "render_intervals": {
+            "count": 81,
+            "maximum_usec": 197342,
+            "p50_usec": 144159,
+            "p95_usec": 170527
+          },
+          "render_submissions": 82,
+          "render_submissions_per_second": 6.81243278953504,
+          "semantic_ticks": 26,
+          "semantic_ticks_per_second": 2.16003966497453,
+          "simulated_physical_seconds": 0.45,
+          "worker_snapshot_calls": 162,
+          "worker_snapshot_usec": 102033
+        }
+      ]
+    }
+  },
+  "job": 138882242425,
+  "optional_diagnostics": [
+    {
+      "case": "test_object_shard_m4_optional_diagnostics",
+      "checks": 38,
+      "log_sha256": "83c86d4a3bc2eddb9dde71d398bc3f0a0bb3fb70694d322d63017455092369fa",
+      "observations": {
+        "cli_recording": false,
+        "display_coherence": {
+          "between_callback_observations": 75,
+          "draw_observations": 75,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "final_native_tick": 32,
+        "final_physical_intervals": 31,
+        "recorded": {
+          "cadence": {
+            "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+            "capacity_dropped_intervals": 0,
+            "cohort_capacity": 64,
+            "display_backend": "X11",
+            "hardware_present_verified": false,
+            "native_progress_delivery": [
+              {
+                "elapsed_usec": 3259135,
+                "interval_count": 11,
+                "maximum_interval_usec": 377450,
+                "observed_units_per_second": 3.3751286767808,
+                "recent_interval_samples": 11,
+                "recent_p50_interval_usec": 280683,
+                "recent_p95_interval_usec": 377450,
+                "units": "native_semantic_ticks",
+                "units_observed": 11,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              }
+            ],
+            "percentile_scope": "most_recent_bounded_intervals_per_workload",
+            "post_draw_intervals": [
+              {
+                "elapsed_usec": 3720846,
+                "interval_count": 25,
+                "maximum_interval_usec": 194287,
+                "observed_units_per_second": 6.71890209914627,
+                "recent_interval_samples": 25,
+                "recent_p50_interval_usec": 143746,
+                "recent_p95_interval_usec": 183204,
+                "units": "post_draw_callbacks",
+                "units_observed": 25,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              },
+              {
+                "elapsed_usec": 182808,
+                "interval_count": 1,
+                "maximum_interval_usec": 182808,
+                "observed_units_per_second": 5.4702201216577,
+                "recent_interval_samples": 1,
+                "recent_p50_interval_usec": 182808,
+                "recent_p95_interval_usec": 182808,
+                "units": "post_draw_callbacks",
+                "units_observed": 1,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": true
+                }
+              }
+            ],
+            "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+            "render_scope": "renderer_post_draw_callback"
+          },
+          "enabled": true,
+          "epoch": 2,
+          "events_retained": 253,
+          "frame_serial_coherence_proven": false,
+          "input_to_post_draw_causally_proven": false,
+          "no_additive_stage_total": true,
+          "post_draw_callbacks_after_upload": 0,
+          "proven_presented_uploads": 0,
+          "schema": "objectshard-m4-workbench-latency-v1",
+          "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+          "stages": {
+            "physics_work": {
+              "count": 52,
+              "maximum_usec": 138,
+              "p50_usec": 80,
+              "p95_usec": 135
+            },
+            "publication_prepare": {
+              "count": 52,
+              "maximum_usec": 73,
+              "p50_usec": 48,
+              "p95_usec": 70
+            },
+            "queue_admission": {
+              "count": 65,
+              "maximum_usec": 152,
+              "p50_usec": 28,
+              "p95_usec": 128
+            },
+            "receipt_delivery": {
+              "count": 28,
+              "maximum_usec": 11896,
+              "p50_usec": 4509,
+              "p95_usec": 8662
+            },
+            "scene_callback": {
+              "count": 28,
+              "maximum_usec": 11946,
+              "p50_usec": 1822,
+              "p95_usec": 11906
+            }
+          },
+          "worker_metrics": {
+            "hard_surface_packet_time_ms": 0.0,
+            "render_exchange_time_ms": 0.0,
+            "scope": "worker_reported_potentially_nested_not_a_sum",
+            "snapshot_copy_time_ms": 0.003,
+            "snapshot_publication_time_ms": 0.294,
+            "snapshot_serial": 8143,
+            "tick": 23,
+            "worker_step_time_ms": 0.131,
+            "world_generation": 3,
+            "world_revision": 3
+          }
+        },
+        "saved_report": {
+          "ok": true,
+          "outcome": "DiagnosticsSaved",
+          "path": "/home/runner/work/cybersand/cybersand/evidence/graphical/isolated-user-data/test_object_shard_m4_optional_diagnostics/godot/app_userdata/Cyber Sand Reference Sandbox/objectshard-diagnostics/objectshard-2026-11-25-00-41-14-29311911.json",
+          "schema": "objectshard-m4-workbench-diagnostics-v1",
+          "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+          "user_path": "user://objectshard-diagnostics/objectshard-2026-11-25-00-41-14-29311911.json"
+        },
+        "stopped": {
+          "cadence": {
+            "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+            "capacity_dropped_intervals": 0,
+            "cohort_capacity": 64,
+            "display_backend": "X11",
+            "hardware_present_verified": false,
+            "native_progress_delivery": [
+              {
+                "elapsed_usec": 3259135,
+                "interval_count": 11,
+                "maximum_interval_usec": 377450,
+                "observed_units_per_second": 3.3751286767808,
+                "recent_interval_samples": 11,
+                "recent_p50_interval_usec": 280683,
+                "recent_p95_interval_usec": 377450,
+                "units": "native_semantic_ticks",
+                "units_observed": 11,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              }
+            ],
+            "percentile_scope": "most_recent_bounded_intervals_per_workload",
+            "post_draw_intervals": [
+              {
+                "elapsed_usec": 3720846,
+                "interval_count": 25,
+                "maximum_interval_usec": 194287,
+                "observed_units_per_second": 6.71890209914627,
+                "recent_interval_samples": 25,
+                "recent_p50_interval_usec": 143746,
+                "recent_p95_interval_usec": 183204,
+                "units": "post_draw_callbacks",
+                "units_observed": 25,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              },
+              {
+                "elapsed_usec": 182808,
+                "interval_count": 1,
+                "maximum_interval_usec": 182808,
+                "observed_units_per_second": 5.4702201216577,
+                "recent_interval_samples": 1,
+                "recent_p50_interval_usec": 182808,
+                "recent_p95_interval_usec": 182808,
+                "units": "post_draw_callbacks",
+                "units_observed": 1,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": true
+                }
+              }
+            ],
+            "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+            "render_scope": "renderer_post_draw_callback"
+          },
+          "enabled": false,
+          "epoch": 2,
+          "events_retained": 253,
+          "frame_serial_coherence_proven": false,
+          "input_to_post_draw_causally_proven": false,
+          "no_additive_stage_total": true,
+          "post_draw_callbacks_after_upload": 0,
+          "proven_presented_uploads": 0,
+          "schema": "objectshard-m4-workbench-latency-v1",
+          "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+          "stages": {
+            "physics_work": {
+              "count": 52,
+              "maximum_usec": 138,
+              "p50_usec": 80,
+              "p95_usec": 135
+            },
+            "publication_prepare": {
+              "count": 52,
+              "maximum_usec": 73,
+              "p50_usec": 48,
+              "p95_usec": 70
+            },
+            "queue_admission": {
+              "count": 65,
+              "maximum_usec": 152,
+              "p50_usec": 28,
+              "p95_usec": 128
+            },
+            "receipt_delivery": {
+              "count": 28,
+              "maximum_usec": 11896,
+              "p50_usec": 4509,
+              "p95_usec": 8662
+            },
+            "scene_callback": {
+              "count": 28,
+              "maximum_usec": 11946,
+              "p50_usec": 1822,
+              "p95_usec": 11906
+            }
+          },
+          "worker_metrics": {
+            "hard_surface_packet_time_ms": 0.0,
+            "render_exchange_time_ms": 0.0,
+            "scope": "worker_reported_potentially_nested_not_a_sum",
+            "snapshot_copy_time_ms": 0.003,
+            "snapshot_publication_time_ms": 0.294,
+            "snapshot_serial": 8143,
+            "tick": 23,
+            "worker_step_time_ms": 0.131,
+            "world_generation": 3,
+            "world_revision": 3
+          }
+        }
+      }
+    },
+    {
+      "case": "test_object_shard_m4_optional_diagnostics_cli",
+      "checks": 38,
+      "log_sha256": "f699c9b0b192e7a9b196e4a9c6637c113392502e364fd7ffe3fde6fb1aa5f942",
+      "observations": {
+        "cli_recording": true,
+        "display_coherence": {
+          "between_callback_observations": 83,
+          "draw_observations": 83,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "final_native_tick": 32,
+        "final_physical_intervals": 31,
+        "recorded": {
+          "cadence": {
+            "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+            "capacity_dropped_intervals": 0,
+            "cohort_capacity": 64,
+            "display_backend": "X11",
+            "hardware_present_verified": false,
+            "native_progress_delivery": [
+              {
+                "elapsed_usec": 4561036,
+                "interval_count": 12,
+                "maximum_interval_usec": 1391472,
+                "observed_units_per_second": 2.63098120690124,
+                "recent_interval_samples": 12,
+                "recent_p50_interval_usec": 284543,
+                "recent_p95_interval_usec": 1391472,
+                "units": "native_semantic_ticks",
+                "units_observed": 12,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              }
+            ],
+            "percentile_scope": "most_recent_bounded_intervals_per_workload",
+            "post_draw_intervals": [
+              {
+                "elapsed_usec": 4548116,
+                "interval_count": 31,
+                "maximum_interval_usec": 160972,
+                "observed_units_per_second": 6.81600909035741,
+                "recent_interval_samples": 31,
+                "recent_p50_interval_usec": 147081,
+                "recent_p95_interval_usec": 159422,
+                "units": "post_draw_callbacks",
+                "units_observed": 31,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              },
+              {
+                "elapsed_usec": 137146,
+                "interval_count": 1,
+                "maximum_interval_usec": 137146,
+                "observed_units_per_second": 7.29149956980153,
+                "recent_interval_samples": 1,
+                "recent_p50_interval_usec": 137146,
+                "recent_p95_interval_usec": 137146,
+                "units": "post_draw_callbacks",
+                "units_observed": 1,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": true
+                }
+              }
+            ],
+            "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+            "render_scope": "renderer_post_draw_callback"
+          },
+          "enabled": true,
+          "epoch": 5,
+          "events_retained": 271,
+          "frame_serial_coherence_proven": false,
+          "input_to_post_draw_causally_proven": false,
+          "no_additive_stage_total": true,
+          "post_draw_callbacks_after_upload": 0,
+          "proven_presented_uploads": 0,
+          "schema": "objectshard-m4-workbench-latency-v1",
+          "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+          "stages": {
+            "physics_work": {
+              "count": 52,
+              "maximum_usec": 165,
+              "p50_usec": 82,
+              "p95_usec": 150
+            },
+            "publication_prepare": {
+              "count": 52,
+              "maximum_usec": 88,
+              "p50_usec": 46,
+              "p95_usec": 74
+            },
+            "queue_admission": {
+              "count": 65,
+              "maximum_usec": 175,
+              "p50_usec": 22,
+              "p95_usec": 133
+            },
+            "receipt_delivery": {
+              "count": 34,
+              "maximum_usec": 14295,
+              "p50_usec": 7924,
+              "p95_usec": 13340
+            },
+            "scene_callback": {
+              "count": 34,
+              "maximum_usec": 12058,
+              "p50_usec": 2009,
+              "p95_usec": 11316
+            }
+          },
+          "worker_metrics": {
+            "hard_surface_packet_time_ms": 0.0,
+            "render_exchange_time_ms": 0.0,
+            "scope": "worker_reported_potentially_nested_not_a_sum",
+            "snapshot_copy_time_ms": 0.004,
+            "snapshot_publication_time_ms": 0.348,
+            "snapshot_serial": 7303,
+            "tick": 23,
+            "worker_step_time_ms": 0.15,
+            "world_generation": 3,
+            "world_revision": 3
+          }
+        },
+        "saved_report": {
+          "ok": true,
+          "outcome": "DiagnosticsSaved",
+          "path": "/home/runner/work/cybersand/cybersand/evidence/graphical/isolated-user-data/test_object_shard_m4_optional_diagnostics_cli/godot/app_userdata/Cyber Sand Reference Sandbox/objectshard-diagnostics/objectshard-2026-11-25-00-43-14-20162215.json",
+          "schema": "objectshard-m4-workbench-diagnostics-v1",
+          "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+          "user_path": "user://objectshard-diagnostics/objectshard-2026-11-25-00-43-14-20162215.json"
+        },
+        "stopped": {
+          "cadence": {
+            "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+            "capacity_dropped_intervals": 0,
+            "cohort_capacity": 64,
+            "display_backend": "X11",
+            "hardware_present_verified": false,
+            "native_progress_delivery": [
+              {
+                "elapsed_usec": 4561036,
+                "interval_count": 12,
+                "maximum_interval_usec": 1391472,
+                "observed_units_per_second": 2.63098120690124,
+                "recent_interval_samples": 12,
+                "recent_p50_interval_usec": 284543,
+                "recent_p95_interval_usec": 1391472,
+                "units": "native_semantic_ticks",
+                "units_observed": 12,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              }
+            ],
+            "percentile_scope": "most_recent_bounded_intervals_per_workload",
+            "post_draw_intervals": [
+              {
+                "elapsed_usec": 4548116,
+                "interval_count": 31,
+                "maximum_interval_usec": 160972,
+                "observed_units_per_second": 6.81600909035741,
+                "recent_interval_samples": 31,
+                "recent_p50_interval_usec": 147081,
+                "recent_p95_interval_usec": 159422,
+                "units": "post_draw_callbacks",
+                "units_observed": 31,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": false
+                }
+              },
+              {
+                "elapsed_usec": 137146,
+                "interval_count": 1,
+                "maximum_interval_usec": 137146,
+                "observed_units_per_second": 7.29149956980153,
+                "recent_interval_samples": 1,
+                "recent_p50_interval_usec": 137146,
+                "recent_p95_interval_usec": 137146,
+                "units": "post_draw_callbacks",
+                "units_observed": 1,
+                "workload": {
+                  "camera": "free",
+                  "owned_material_bodies": 0,
+                  "paused": true
+                }
+              }
+            ],
+            "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+            "render_scope": "renderer_post_draw_callback"
+          },
+          "enabled": false,
+          "epoch": 5,
+          "events_retained": 271,
+          "frame_serial_coherence_proven": false,
+          "input_to_post_draw_causally_proven": false,
+          "no_additive_stage_total": true,
+          "post_draw_callbacks_after_upload": 0,
+          "proven_presented_uploads": 0,
+          "schema": "objectshard-m4-workbench-latency-v1",
+          "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+          "stages": {
+            "physics_work": {
+              "count": 52,
+              "maximum_usec": 165,
+              "p50_usec": 82,
+              "p95_usec": 150
+            },
+            "publication_prepare": {
+              "count": 52,
+              "maximum_usec": 88,
+              "p50_usec": 46,
+              "p95_usec": 74
+            },
+            "queue_admission": {
+              "count": 65,
+              "maximum_usec": 175,
+              "p50_usec": 22,
+              "p95_usec": 133
+            },
+            "receipt_delivery": {
+              "count": 34,
+              "maximum_usec": 14295,
+              "p50_usec": 7924,
+              "p95_usec": 13340
+            },
+            "scene_callback": {
+              "count": 34,
+              "maximum_usec": 12058,
+              "p50_usec": 2009,
+              "p95_usec": 11316
+            }
+          },
+          "worker_metrics": {
+            "hard_surface_packet_time_ms": 0.0,
+            "render_exchange_time_ms": 0.0,
+            "scope": "worker_reported_potentially_nested_not_a_sum",
+            "snapshot_copy_time_ms": 0.004,
+            "snapshot_publication_time_ms": 0.348,
+            "snapshot_serial": 7303,
+            "tick": 23,
+            "worker_step_time_ms": 0.15,
+            "world_generation": 3,
+            "world_revision": 3
+          }
+        }
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 720,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 332,
+          "p50_usec": 107,
+          "p95_usec": 264
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 78,
+          "p50_usec": 49,
+          "p95_usec": 63
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 171,
+          "p50_usec": 21,
+          "p95_usec": 98
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6479,
+          "p50_usec": 2759,
+          "p95_usec": 5703
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9287,
+          "p50_usec": 3104,
+          "p95_usec": 8923
+        },
+        "texture_upload_submission": {
+          "count": 82,
+          "maximum_usec": 175,
+          "p50_usec": 57,
+          "p95_usec": 161
+        }
+      },
+      "camera": "overview",
+      "checks": 152,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1135,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 5196468,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "5c839cdeabbac2eb268c28f3be7348bae56b413609a04376726c1dc71efed57f",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 181,
+          "usec": 26605
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 96,
+          "usec": 35818
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 505,
+          "usec": 82177
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4708,
+        "chemistry_ns": 6807161,
+        "composed_reuses": 893,
+        "contact_ns": 260266280,
+        "discovery_ns": 275903,
+        "exchange_ns": 5891129,
+        "geometry_ns": 0,
+        "mask_cells": 4693369,
+        "occupancy_ns": 979910515,
+        "relocation_ns": 537933591,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3580858,
+        "snapshot_ns": 3931047,
+        "sweep_samples": 4368,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 751,
+        "maximum_usec": 10928,
+        "p50_usec": 7666,
+        "p95_usec": 9503
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6479,
+        "p50_usec": 2759,
+        "p95_usec": 5703
+      },
+      "receipt_pump_usec_delta": 3419262,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_mixed_overview_headless.json",
+      "report_sha256": "b8428fc00a026b33a168232b136392918a290d3602ebf5b905b7ebe08fd4e4ad",
+      "sampling": "cohorts",
+      "scene": "mixed",
+      "semantic_ticks_per_wall_second": 34.6389124305201,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 29584,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 741245
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 720,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 384,
+          "p50_usec": 101,
+          "p95_usec": 257
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 84,
+          "p50_usec": 48,
+          "p95_usec": 63
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 152,
+          "p50_usec": 20,
+          "p95_usec": 86
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6760,
+          "p50_usec": 2704,
+          "p95_usec": 5601
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9182,
+          "p50_usec": 3264,
+          "p95_usec": 8970
+        },
+        "texture_upload_submission": {
+          "count": 79,
+          "maximum_usec": 212,
+          "p50_usec": 63,
+          "p95_usec": 155
+        }
+      },
+      "camera": "zoom",
+      "checks": 152,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1057,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 5241335,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "bc8246858d35a6110e8851ab2824af91efbe6cf12e7a2a6d0465f74e11806bee",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 330,
+          "usec": 29059
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 143,
+          "usec": 35562
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 403,
+          "usec": 79966
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4708,
+        "chemistry_ns": 6751008,
+        "composed_reuses": 893,
+        "contact_ns": 258489782,
+        "discovery_ns": 255840,
+        "exchange_ns": 5933597,
+        "geometry_ns": 0,
+        "mask_cells": 4693369,
+        "occupancy_ns": 978755760,
+        "relocation_ns": 538690750,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3580858,
+        "snapshot_ns": 3838063,
+        "sweep_samples": 4368,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 757,
+        "maximum_usec": 11173,
+        "p50_usec": 7601,
+        "p95_usec": 9469
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6760,
+        "p50_usec": 2704,
+        "p95_usec": 5601
+      },
+      "receipt_pump_usec_delta": 3408975,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_mixed_zoom_headless.json",
+      "report_sha256": "5062685b9e243f7c2af0faeecc2d2475489d95ae54463dda9b38b422a5225462",
+      "sampling": "cohorts",
+      "scene": "mixed",
+      "semantic_ticks_per_wall_second": 34.3423955919627,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 28224,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 741171
+      }
+    },
+    {
+      "active_body_count_max": 8,
+      "actual_physics_steps": 721,
+      "body_count_max": 8,
+      "body_count_min": 8,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 431,
+          "p50_usec": 139,
+          "p95_usec": 307
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 178,
+          "p50_usec": 102,
+          "p95_usec": 126
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 171,
+          "p50_usec": 39,
+          "p95_usec": 53
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 8807,
+          "p50_usec": 3130,
+          "p95_usec": 7029
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 10333,
+          "p50_usec": 8375,
+          "p95_usec": 8785
+        },
+        "texture_upload_submission": {
+          "count": 75,
+          "maximum_usec": 89,
+          "p50_usec": 25,
+          "p95_usec": 56
+        }
+      },
+      "camera": "overview",
+      "checks": 383,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1762,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 7821381,
+      "inventory_after": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "inventory_before": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "log_sha256": "f925520951bdb08221fb561f5a0e767110d733f619fdd9eba357ea012d9fb573",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 171,
+          "usec": 34166
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 195,
+          "usec": 76115
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 512,
+          "usec": 108420
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1157,
+        "chemistry_ns": 14919858,
+        "composed_reuses": 794,
+        "contact_ns": 59995099,
+        "discovery_ns": 180855,
+        "exchange_ns": 13479843,
+        "geometry_ns": 0,
+        "mask_cells": 11021254,
+        "occupancy_ns": 1688150388,
+        "relocation_ns": 1143590782,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 4046186,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 5760,
+      "native_pose_echo_checks": 5760,
+      "process_intervals": {
+        "count": 1089,
+        "maximum_usec": 11235,
+        "p50_usec": 7688,
+        "p95_usec": 9504
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 8807,
+        "p50_usec": 3130,
+        "p95_usec": 7029
+      },
+      "receipt_pump_usec_delta": 4816005,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_stress_overview_headless.json",
+      "report_sha256": "1190ffa9b886733e7bc95e238e305267350ee4c4d50c353c20b9e15a893e33b8",
+      "sampling": "cohorts",
+      "scene": "stress",
+      "semantic_ticks_per_wall_second": 23.013838604717,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 38955,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 1281506
+      }
+    },
+    {
+      "active_body_count_max": 8,
+      "actual_physics_steps": 720,
+      "body_count_max": 8,
+      "body_count_min": 8,
+      "bounded_stage_samples": {},
+      "camera": "overview",
+      "checks": 382,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1154,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 6031737,
+      "inventory_after": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "inventory_before": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "log_sha256": "55cec38b9a33e0d4fe18f6540db088a1a33c094dcf5439fde388cdec96367975",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 179,
+          "usec": 34527
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 219,
+          "usec": 76135
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 428,
+          "usec": 105857
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1157,
+        "chemistry_ns": 14845698,
+        "composed_reuses": 794,
+        "contact_ns": 59895364,
+        "discovery_ns": 167951,
+        "exchange_ns": 13637709,
+        "geometry_ns": 0,
+        "mask_cells": 11021254,
+        "occupancy_ns": 1683600314,
+        "relocation_ns": 1142747499,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 4045327,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 5760,
+      "native_pose_echo_checks": 5760,
+      "process_intervals": {
+        "count": 849,
+        "maximum_usec": 10671,
+        "p50_usec": 8595,
+        "p95_usec": 9388
+      },
+      "receipt_delivery_age": null,
+      "receipt_pump_usec_delta": 4889574,
+      "recording_enabled": false,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_stress_overview_light_headless.json",
+      "report_sha256": "ef723d6e458c11b1af1f36557b822e47ddf54cb5429873596d4c0cba1f9120b2",
+      "sampling": "light",
+      "scene": "stress",
+      "semantic_ticks_per_wall_second": 29.8421499478508,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 42147,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 1275812
+      }
+    },
+    {
+      "active_body_count_max": 8,
+      "actual_physics_steps": 720,
+      "body_count_max": 8,
+      "body_count_min": 8,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 508,
+          "p50_usec": 140,
+          "p95_usec": 299
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 177,
+          "p50_usec": 104,
+          "p95_usec": 133
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 112,
+          "p50_usec": 39,
+          "p95_usec": 57
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 9280,
+          "p50_usec": 3118,
+          "p95_usec": 7180
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 10091,
+          "p50_usec": 8366,
+          "p95_usec": 8762
+        },
+        "texture_upload_submission": {
+          "count": 77,
+          "maximum_usec": 109,
+          "p50_usec": 24,
+          "p95_usec": 79
+        }
+      },
+      "camera": "zoom",
+      "checks": 383,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1450,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 6925722,
+      "inventory_after": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "inventory_before": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "log_sha256": "f01bd5cfd7a4519ba438efd59e1c9dff939b12729f6cead7d62f5f613c40ddee",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 175,
+          "usec": 34140
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 184,
+          "usec": 76165
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 519,
+          "usec": 109518
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1157,
+        "chemistry_ns": 14979748,
+        "composed_reuses": 794,
+        "contact_ns": 60150083,
+        "discovery_ns": 180767,
+        "exchange_ns": 13530900,
+        "geometry_ns": 0,
+        "mask_cells": 11021254,
+        "occupancy_ns": 1682852036,
+        "relocation_ns": 1140018502,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 4037842,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 5760,
+      "native_pose_echo_checks": 5760,
+      "process_intervals": {
+        "count": 964,
+        "maximum_usec": 11086,
+        "p50_usec": 8554,
+        "p95_usec": 9509
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 9280,
+        "p50_usec": 3118,
+        "p95_usec": 7180
+      },
+      "receipt_pump_usec_delta": 4816840,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_stress_zoom_headless.json",
+      "report_sha256": "e6db51e25b48d6f71be980cf75d5a01ce88f51a1f5176e7eae829ad930c54319",
+      "sampling": "cohorts",
+      "scene": "stress",
+      "semantic_ticks_per_wall_second": 25.9900700605655,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 38855,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 1279694
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 720,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 383,
+          "p50_usec": 98,
+          "p95_usec": 250
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 82,
+          "p50_usec": 48,
+          "p95_usec": 64
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 343,
+          "p50_usec": 20,
+          "p95_usec": 71
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6215,
+          "p50_usec": 2609,
+          "p95_usec": 5785
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9377,
+          "p50_usec": 3813,
+          "p95_usec": 8895
+        },
+        "texture_upload_submission": {
+          "count": 144,
+          "maximum_usec": 87,
+          "p50_usec": 32,
+          "p95_usec": 45
+        }
+      },
+      "camera": "overview",
+      "checks": 171,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1243,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 6674954,
+      "inventory_after": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "inventory_before": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "log_sha256": "89e246b3849df7ded9a74cd12c9aad23a5643635397c82bde37eb3e5269b3e97",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 343,
+          "usec": 25888
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 88,
+          "usec": 35922
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 1008,
+          "usec": 82131
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 5893,
+        "chemistry_ns": 7554469,
+        "composed_reuses": 894,
+        "contact_ns": 134672465,
+        "discovery_ns": 337751,
+        "exchange_ns": 5949721,
+        "geometry_ns": 0,
+        "mask_cells": 5625289,
+        "occupancy_ns": 945365535,
+        "relocation_ns": 562924392,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3,
+        "snapshot_ns": 3912326,
+        "sweep_samples": 1403,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 966,
+        "maximum_usec": 10135,
+        "p50_usec": 7112,
+        "p95_usec": 9366
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6215,
+        "p50_usec": 2609,
+        "p95_usec": 5785
+      },
+      "receipt_pump_usec_delta": 3400466,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_timber_overview_headless.json",
+      "report_sha256": "c2c4000894a15e2243c44044fa76aaa37423c5bf4aade33b14e44582d4f0f995",
+      "sampling": "cohorts",
+      "scene": "timber",
+      "semantic_ticks_per_wall_second": 26.966477971234,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 27438,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 753254
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 720,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 375,
+          "p50_usec": 95,
+          "p95_usec": 256
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 80,
+          "p50_usec": 49,
+          "p95_usec": 64
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 312,
+          "p50_usec": 20,
+          "p95_usec": 103
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6397,
+          "p50_usec": 2481,
+          "p95_usec": 5713
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9231,
+          "p50_usec": 3831,
+          "p95_usec": 8807
+        },
+        "texture_upload_submission": {
+          "count": 145,
+          "maximum_usec": 77,
+          "p50_usec": 33,
+          "p95_usec": 43
+        }
+      },
+      "camera": "zoom",
+      "checks": 171,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1261,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 5921187,
+      "inventory_after": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "inventory_before": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "log_sha256": "82ea785e042374a2872183c5c585d8bb961b41b9ea034811607adb4b1b607483",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 312,
+          "usec": 27186
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 90,
+          "usec": 36110
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 437,
+          "usec": 83530
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 5893,
+        "chemistry_ns": 7346307,
+        "composed_reuses": 894,
+        "contact_ns": 134251738,
+        "discovery_ns": 297739,
+        "exchange_ns": 5905423,
+        "geometry_ns": 0,
+        "mask_cells": 5625289,
+        "occupancy_ns": 940583251,
+        "relocation_ns": 558770184,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3,
+        "snapshot_ns": 3869092,
+        "sweep_samples": 1403,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 857,
+        "maximum_usec": 10275,
+        "p50_usec": 7370,
+        "p95_usec": 9343
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6397,
+        "p50_usec": 2481,
+        "p95_usec": 5713
+      },
+      "receipt_pump_usec_delta": 3414229,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_timber_zoom_headless.json",
+      "report_sha256": "f7554c8912398604d1806abc95a3e7009dfcd041d2e941a5330d3f64d21c8980",
+      "sampling": "cohorts",
+      "scene": "timber",
+      "semantic_ticks_per_wall_second": 30.3993101383219,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 27793,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 760307
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 720,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 423,
+          "p50_usec": 93,
+          "p95_usec": 247
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 84,
+          "p50_usec": 48,
+          "p95_usec": 63
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 165,
+          "p50_usec": 19,
+          "p95_usec": 87
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6520,
+          "p50_usec": 1360,
+          "p95_usec": 6118
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9519,
+          "p50_usec": 8328,
+          "p95_usec": 8986
+        },
+        "texture_upload_submission": {
+          "count": 19,
+          "maximum_usec": 73,
+          "p50_usec": 23,
+          "p95_usec": 73
+        }
+      },
+      "camera": "overview",
+      "checks": 150,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 843,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 4906618,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "8dab4044eda6a686d8a20661228cd3d213d85c997f31352fec61d8e832feefa5",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 367,
+          "usec": 29952
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 89,
+          "usec": 35518
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 423,
+          "usec": 76915
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 6749069,
+        "composed_reuses": 893,
+        "contact_ns": 26199568,
+        "discovery_ns": 271015,
+        "exchange_ns": 5815411,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 735305757,
+        "relocation_ns": 498136253,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 3838226,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 690,
+        "maximum_usec": 10743,
+        "p50_usec": 8511,
+        "p95_usec": 9544
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6520,
+        "p50_usec": 1360,
+        "p95_usec": 6118
+      },
+      "receipt_pump_usec_delta": 3060096,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_tower_overview_headless.json",
+      "report_sha256": "eee06d3854c39defdd03f0c2b2671d00d53e13a782c6eb65967d452cf036b92d",
+      "sampling": "cohorts",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 36.6851464695234,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 26503,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 654524
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {},
+      "camera": "overview",
+      "checks": 149,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 958,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 5836800,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "98fddfe64027605508d860b35c72804af1260f57fc4f9e2f616564d039f13064",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 177,
+          "usec": 27590
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 92,
+          "usec": 36395
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 501,
+          "usec": 77448
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 6709673,
+        "composed_reuses": 893,
+        "contact_ns": 26465210,
+        "discovery_ns": 246454,
+        "exchange_ns": 5853368,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 738675385,
+        "relocation_ns": 502051088,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 3729440,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 816,
+        "maximum_usec": 10526,
+        "p50_usec": 7420,
+        "p95_usec": 9565
+      },
+      "receipt_delivery_age": null,
+      "receipt_pump_usec_delta": 3043928,
+      "recording_enabled": false,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_tower_overview_light_headless.json",
+      "report_sha256": "57f1023f9d9cfd8058250503a3d34f767f926e0249bcec24a1359746a2e7a095",
+      "sampling": "light",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 30.8388157894737,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 27076,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 647403
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 720,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 516,
+          "p50_usec": 94,
+          "p95_usec": 252
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 76,
+          "p50_usec": 48,
+          "p95_usec": 63
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 152,
+          "p50_usec": 19,
+          "p95_usec": 63
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6777,
+          "p50_usec": 1323,
+          "p95_usec": 6211
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9639,
+          "p50_usec": 8399,
+          "p95_usec": 9188
+        },
+        "texture_upload_submission": {
+          "count": 19,
+          "maximum_usec": 70,
+          "p50_usec": 23,
+          "p95_usec": 70
+        }
+      },
+      "camera": "overview",
+      "checks": 150,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1110,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 6446358,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "1e31eb23f499d2b19d3d1f724459e667aa052360478ae6ee8da8dd367cbcf319",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 169,
+          "usec": 27944
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 98,
+          "usec": 36232
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 516,
+          "usec": 77491
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 6769691,
+        "composed_reuses": 893,
+        "contact_ns": 26087766,
+        "discovery_ns": 318342,
+        "exchange_ns": 5843209,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 740524899,
+        "relocation_ns": 501830299,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 3821459,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 900,
+        "maximum_usec": 10823,
+        "p50_usec": 7249,
+        "p95_usec": 9524
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6777,
+        "p50_usec": 1323,
+        "p95_usec": 6211
+      },
+      "receipt_pump_usec_delta": 3077245,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_tower_overview_light_recording_headless.json",
+      "report_sha256": "7f6e31082cbe297fd096290a7bc3cfe8ecefe6d0538b7d03cab53c105c374efa",
+      "sampling": "light",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 27.922743353689,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 27801,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 651891
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 383,
+          "p50_usec": 84,
+          "p95_usec": 230
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 101,
+          "p50_usec": 48,
+          "p95_usec": 66
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 157,
+          "p50_usec": 19,
+          "p95_usec": 85
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6598,
+          "p50_usec": 1345,
+          "p95_usec": 6203
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9562,
+          "p50_usec": 8375,
+          "p95_usec": 9164
+        },
+        "texture_upload_submission": {
+          "count": 20,
+          "maximum_usec": 82,
+          "p50_usec": 24,
+          "p95_usec": 42
+        }
+      },
+      "camera": "zoom",
+      "checks": 150,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1168,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 5261984,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "f1846ab5a7e9e79f9f25190fe719fbc72a99a7842ec95cd9315d1a31da3c5c45",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 258,
+          "usec": 29645
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 114,
+          "usec": 36362
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 386,
+          "usec": 73128
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 6730494,
+        "composed_reuses": 893,
+        "contact_ns": 26206725,
+        "discovery_ns": 254988,
+        "exchange_ns": 5813043,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 734898610,
+        "relocation_ns": 497473649,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 3767554,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 734,
+        "maximum_usec": 10617,
+        "p50_usec": 7568,
+        "p95_usec": 9639
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6598,
+        "p50_usec": 1345,
+        "p95_usec": 6203
+      },
+      "receipt_pump_usec_delta": 3057946,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_tower_zoom_headless.json",
+      "report_sha256": "bef32d9d5c862bd26e77352f5670c5d633e58a3f160111a53fc8d2b6e2ef6d10",
+      "sampling": "cohorts",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 34.2076296697215,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 26767,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 653989
+      }
+    },
+    {
+      "active_body_count_max": 3,
+      "actual_physics_steps": 720,
+      "body_count_max": 3,
+      "body_count_min": 3,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 475,
+          "p50_usec": 129,
+          "p95_usec": 292
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 113,
+          "p50_usec": 64,
+          "p95_usec": 83
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 167,
+          "p50_usec": 25,
+          "p95_usec": 40
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 7209,
+          "p50_usec": 2419,
+          "p95_usec": 5942
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9033,
+          "p50_usec": 8031,
+          "p95_usec": 8746
+        },
+        "texture_upload_submission": {
+          "count": 123,
+          "maximum_usec": 133,
+          "p50_usec": 34,
+          "p95_usec": 82
+        }
+      },
+      "camera": "overview",
+      "checks": 227,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1052,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 5848782,
+      "inventory_after": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "inventory_before": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "log_sha256": "c1786e59f89c857142c18be97078e5eb1d189054bd83234f0f4dd5a51799ac31",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 260,
+          "usec": 26394
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 117,
+          "usec": 48359
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 506,
+          "usec": 99649
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1387,
+        "chemistry_ns": 6272084,
+        "composed_reuses": 623,
+        "contact_ns": 45239137,
+        "discovery_ns": 156569,
+        "exchange_ns": 5794874,
+        "geometry_ns": 0,
+        "mask_cells": 5689504,
+        "occupancy_ns": 892377397,
+        "relocation_ns": 608674223,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 530134,
+        "snapshot_ns": 3701386,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 2160,
+      "native_pose_echo_checks": 2160,
+      "process_intervals": {
+        "count": 841,
+        "maximum_usec": 10980,
+        "p50_usec": 7440,
+        "p95_usec": 9461
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 7209,
+        "p50_usec": 2419,
+        "p95_usec": 5942
+      },
+      "receipt_pump_usec_delta": 3261843,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_viaduct_overview_headless.json",
+      "report_sha256": "e6eb9ed90e89f87274db7cf67da2ba954007772231794d1d88a030c92dae4547",
+      "sampling": "cohorts",
+      "scene": "viaduct",
+      "semantic_ticks_per_wall_second": 30.7756384149726,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 31955,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 680097
+      }
+    },
+    {
+      "active_body_count_max": 3,
+      "actual_physics_steps": 720,
+      "body_count_max": 3,
+      "body_count_min": 3,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 521,
+          "p50_usec": 176,
+          "p95_usec": 417
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 119,
+          "p50_usec": 72,
+          "p95_usec": 92
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 82,
+          "p50_usec": 28,
+          "p95_usec": 54
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 6421,
+          "p50_usec": 2225,
+          "p95_usec": 5533
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9066,
+          "p50_usec": 8136,
+          "p95_usec": 8790
+        },
+        "texture_upload_submission": {
+          "count": 125,
+          "maximum_usec": 112,
+          "p50_usec": 41,
+          "p95_usec": 96
+        }
+      },
+      "camera": "zoom",
+      "checks": 227,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1207,
+        "draw_observations": 0,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "headless",
+      "elapsed_usec": 6097554,
+      "inventory_after": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "inventory_before": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "log_sha256": "0bede5e1074d2b325dff588d46ddeea08a3cff7980c58cefe05dce22d59eecc7",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 900,
+          "cumulative_max_usec": 293,
+          "usec": 28660
+        },
+        "pose_packet_capture": {
+          "calls": 720,
+          "cumulative_max_usec": 119,
+          "usec": 51220
+        },
+        "rapier_segment": {
+          "calls": 720,
+          "cumulative_max_usec": 613,
+          "usec": 139046
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1387,
+        "chemistry_ns": 6036322,
+        "composed_reuses": 623,
+        "contact_ns": 45177442,
+        "discovery_ns": 171790,
+        "exchange_ns": 5733936,
+        "geometry_ns": 0,
+        "mask_cells": 5689504,
+        "occupancy_ns": 889204580,
+        "relocation_ns": 606311283,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 530134,
+        "snapshot_ns": 3744131,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 2160,
+      "native_pose_echo_checks": 2160,
+      "process_intervals": {
+        "count": 879,
+        "maximum_usec": 10621,
+        "p50_usec": 7444,
+        "p95_usec": 9524
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 6421,
+        "p50_usec": 2225,
+        "p95_usec": 5533
+      },
+      "receipt_pump_usec_delta": 3307336,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 0,
+        "maximum_usec": 0,
+        "p50_usec": 0,
+        "p95_usec": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_wall_second": 0.0,
+      "report": "headless/m4_workbench_viaduct_zoom_headless.json",
+      "report_sha256": "1f74d240d53bda837672adfd7809370d38daa981c4e360c6aa5a6ef9aa460ed6",
+      "sampling": "cohorts",
+      "scene": "viaduct",
+      "semantic_ticks_per_wall_second": 29.5200337709186,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 32256,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 683982
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 2023,
+          "p50_usec": 132,
+          "p95_usec": 182
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 106,
+          "p50_usec": 73,
+          "p95_usec": 89
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 353,
+          "p50_usec": 24,
+          "p95_usec": 122
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 16792,
+          "p50_usec": 6138,
+          "p95_usec": 15972
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 12287,
+          "p50_usec": 8724,
+          "p95_usec": 10485
+        },
+        "texture_upload_submission": {
+          "count": 250,
+          "maximum_usec": 246,
+          "p50_usec": 189,
+          "p95_usec": 216
+        },
+        "upload_to_post_draw": {
+          "count": 250,
+          "maximum_usec": 194097,
+          "p50_usec": 136400,
+          "p95_usec": 185161
+        }
+      },
+      "camera": "overview",
+      "checks": 155,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 656,
+        "draw_observations": 657,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 80854017,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "ce04adeba0a92b7bc6ff312c858a5f1ba9cdf8a19988e6e3d0c335772853b4e8",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 353,
+          "usec": 32405
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 116,
+          "usec": 51303
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 2023,
+          "usec": 95116
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4708,
+        "chemistry_ns": 9512082,
+        "composed_reuses": 893,
+        "contact_ns": 284247286,
+        "discovery_ns": 403917,
+        "exchange_ns": 6331633,
+        "geometry_ns": 0,
+        "mask_cells": 4693369,
+        "occupancy_ns": 1035231144,
+        "relocation_ns": 565037931,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3580858,
+        "snapshot_ns": 6023419,
+        "sweep_samples": 4368,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 543,
+        "maximum_usec": 198804,
+        "p50_usec": 143841,
+        "p95_usec": 186354
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 16792,
+        "p50_usec": 6138,
+        "p95_usec": 15972
+      },
+      "receipt_pump_usec_delta": 3101015,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 543,
+        "maximum_usec": 199424,
+        "p50_usec": 144151,
+        "p95_usec": 186372
+      },
+      "render_submissions": 544,
+      "render_submissions_per_wall_second": 6.7281752989465,
+      "report": "graphical/m4_workbench_mixed_overview_render.json",
+      "report_sha256": "529d44201bad4e62db11e1d90baf8ece8b1b731cc518bc339c8c42ce3517ff41",
+      "sampling": "cohorts",
+      "scene": "mixed",
+      "semantic_ticks_per_wall_second": 2.22623447391612,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 35324,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 767224
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 221,
+          "p50_usec": 119,
+          "p95_usec": 168
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 117,
+          "p50_usec": 67,
+          "p95_usec": 86
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 167,
+          "p50_usec": 23,
+          "p95_usec": 97
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 16815,
+          "p50_usec": 7951,
+          "p95_usec": 15725
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 11542,
+          "p50_usec": 8684,
+          "p95_usec": 9791
+        },
+        "texture_upload_submission": {
+          "count": 250,
+          "maximum_usec": 425,
+          "p50_usec": 219,
+          "p95_usec": 350
+        },
+        "upload_to_post_draw": {
+          "count": 250,
+          "maximum_usec": 173420,
+          "p50_usec": 123051,
+          "p95_usec": 156146
+        }
+      },
+      "camera": "zoom",
+      "checks": 155,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 677,
+        "draw_observations": 678,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 73427326,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "c57d518c36fca030540a715e85d5c50dc8036b08724145ba94dc8f2013412c4f",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 177,
+          "usec": 30334
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 117,
+          "usec": 48338
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 477,
+          "usec": 85923
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4708,
+        "chemistry_ns": 9303282,
+        "composed_reuses": 893,
+        "contact_ns": 281235827,
+        "discovery_ns": 433192,
+        "exchange_ns": 6306803,
+        "geometry_ns": 0,
+        "mask_cells": 4693369,
+        "occupancy_ns": 1031730592,
+        "relocation_ns": 565661371,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3580858,
+        "snapshot_ns": 5450342,
+        "sweep_samples": 4368,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 548,
+        "maximum_usec": 180549,
+        "p50_usec": 130200,
+        "p95_usec": 169233
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 16815,
+        "p50_usec": 7951,
+        "p95_usec": 15725
+      },
+      "receipt_pump_usec_delta": 3082614,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 548,
+        "maximum_usec": 180603,
+        "p50_usec": 130527,
+        "p95_usec": 169117
+      },
+      "render_submissions": 549,
+      "render_submissions_per_wall_second": 7.47678051084143,
+      "report": "graphical/m4_workbench_mixed_zoom_render.json",
+      "report_sha256": "db4050d9fa0c340e5374767495777ecfff29923a4b032eb160b991d4cd3a6c80",
+      "sampling": "cohorts",
+      "scene": "mixed",
+      "semantic_ticks_per_wall_second": 2.45140344617752,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 28572,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 752083
+      }
+    },
+    {
+      "active_body_count_max": 8,
+      "actual_physics_steps": 721,
+      "body_count_max": 8,
+      "body_count_min": 8,
+      "bounded_stage_samples": {},
+      "camera": "overview",
+      "checks": 385,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 1006,
+        "draw_observations": 1007,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 107820010,
+      "inventory_after": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "inventory_before": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "log_sha256": "47b1995a431cd16b6091ffb573639b2ab07ea7dee7862d3d2ab4afcfa9c4e5c2",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 190,
+          "usec": 41720
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 284,
+          "usec": 93343
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 4039,
+          "usec": 130031
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1157,
+        "chemistry_ns": 20650073,
+        "composed_reuses": 793,
+        "contact_ns": 61140665,
+        "discovery_ns": 295536,
+        "exchange_ns": 13833966,
+        "geometry_ns": 0,
+        "mask_cells": 11032542,
+        "occupancy_ns": 1758170657,
+        "relocation_ns": 1204262799,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 6009743,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 5760,
+      "native_pose_echo_checks": 5760,
+      "process_intervals": {
+        "count": 720,
+        "maximum_usec": 198843,
+        "p50_usec": 144236,
+        "p95_usec": 188182
+      },
+      "receipt_delivery_age": null,
+      "receipt_pump_usec_delta": 4534622,
+      "recording_enabled": false,
+      "render_submission_intervals": {
+        "count": 720,
+        "maximum_usec": 202798,
+        "p50_usec": 144440,
+        "p95_usec": 187482
+      },
+      "render_submissions": 721,
+      "render_submissions_per_wall_second": 6.68707042412628,
+      "report": "graphical/m4_workbench_stress_overview_light_render.json",
+      "report_sha256": "dd3ed81601f7f55a5a83b20778171efb3f54bd51ba31c647578c2826c7d23460",
+      "sampling": "light",
+      "scene": "stress",
+      "semantic_ticks_per_wall_second": 1.66944892696634,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 46524,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 1266666
+      }
+    },
+    {
+      "active_body_count_max": 8,
+      "actual_physics_steps": 721,
+      "body_count_max": 8,
+      "body_count_min": 8,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 242,
+          "p50_usec": 159,
+          "p95_usec": 205
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 204,
+          "p50_usec": 115,
+          "p95_usec": 155
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 96,
+          "p50_usec": 40,
+          "p95_usec": 71
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 17000,
+          "p50_usec": 6094,
+          "p95_usec": 16093
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 10910,
+          "p50_usec": 8577,
+          "p95_usec": 8916
+        },
+        "texture_upload_submission": {
+          "count": 182,
+          "maximum_usec": 225,
+          "p50_usec": 98,
+          "p95_usec": 155
+        },
+        "upload_to_post_draw": {
+          "count": 182,
+          "maximum_usec": 190170,
+          "p50_usec": 147198,
+          "p95_usec": 187373
+        }
+      },
+      "camera": "overview",
+      "checks": 386,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 987,
+        "draw_observations": 988,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 104449618,
+      "inventory_after": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "inventory_before": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "log_sha256": "c51144f761ebd1d64d75954222e8a19eac629752eeff11c5056643cd28da6f45",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 282,
+          "usec": 38269
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 217,
+          "usec": 84356
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 503,
+          "usec": 111936
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1157,
+        "chemistry_ns": 17494704,
+        "composed_reuses": 793,
+        "contact_ns": 60797129,
+        "discovery_ns": 272853,
+        "exchange_ns": 13770005,
+        "geometry_ns": 0,
+        "mask_cells": 11032542,
+        "occupancy_ns": 1761934484,
+        "relocation_ns": 1207132306,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 4999297,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 5760,
+      "native_pose_echo_checks": 5760,
+      "process_intervals": {
+        "count": 709,
+        "maximum_usec": 196007,
+        "p50_usec": 141336,
+        "p95_usec": 187720
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 17000,
+        "p50_usec": 6094,
+        "p95_usec": 16093
+      },
+      "receipt_pump_usec_delta": 4494959,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 709,
+        "maximum_usec": 196196,
+        "p50_usec": 141592,
+        "p95_usec": 187500
+      },
+      "render_submissions": 710,
+      "render_submissions_per_wall_second": 6.79753563100633,
+      "report": "graphical/m4_workbench_stress_overview_render.json",
+      "report_sha256": "b52baabac4dea26ffaf51519cb052970e4524a205de1c774796dcb6cabb8e30a",
+      "sampling": "cohorts",
+      "scene": "stress",
+      "semantic_ticks_per_wall_second": 1.7233188923678,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 32995,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 1242394
+      }
+    },
+    {
+      "active_body_count_max": 8,
+      "actual_physics_steps": 721,
+      "body_count_max": 8,
+      "body_count_min": 8,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 496,
+          "p50_usec": 183,
+          "p95_usec": 235
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 208,
+          "p50_usec": 128,
+          "p95_usec": 174
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 110,
+          "p50_usec": 43,
+          "p95_usec": 79
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 17489,
+          "p50_usec": 9879,
+          "p95_usec": 16436
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 9546,
+          "p50_usec": 8716,
+          "p95_usec": 9020
+        },
+        "texture_upload_submission": {
+          "count": 182,
+          "maximum_usec": 341,
+          "p50_usec": 132,
+          "p95_usec": 262
+        },
+        "upload_to_post_draw": {
+          "count": 182,
+          "maximum_usec": 175881,
+          "p50_usec": 134964,
+          "p95_usec": 173857
+        }
+      },
+      "camera": "zoom",
+      "checks": 386,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 992,
+        "draw_observations": 993,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 98101298,
+      "inventory_after": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "inventory_before": {
+        "brick": 704,
+        "wood": 8512
+      },
+      "log_sha256": "7f4b754ca458e6d7219a0fc734f2fc449ed12ebc76af9cf788f9abc9db58d940",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 164,
+          "usec": 40454
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 210,
+          "usec": 90831
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 535,
+          "usec": 125740
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1157,
+        "chemistry_ns": 20277613,
+        "composed_reuses": 793,
+        "contact_ns": 61738264,
+        "discovery_ns": 284067,
+        "exchange_ns": 13950430,
+        "geometry_ns": 0,
+        "mask_cells": 11032542,
+        "occupancy_ns": 1748776820,
+        "relocation_ns": 1193887523,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 5956799,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 5760,
+      "native_pose_echo_checks": 5760,
+      "process_intervals": {
+        "count": 712,
+        "maximum_usec": 186698,
+        "p50_usec": 132331,
+        "p95_usec": 176826
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 17489,
+        "p50_usec": 9879,
+        "p95_usec": 16436
+      },
+      "receipt_pump_usec_delta": 4484752,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 712,
+        "maximum_usec": 186643,
+        "p50_usec": 132553,
+        "p95_usec": 176845
+      },
+      "render_submissions": 713,
+      "render_submissions_per_wall_second": 7.26799761609678,
+      "report": "graphical/m4_workbench_stress_zoom_render.json",
+      "report_sha256": "18dd8e3bfa8c4d5b5a0089b9c46895059cea6d127db5409b137467b625ca04ee",
+      "sampling": "cohorts",
+      "scene": "stress",
+      "semantic_ticks_per_wall_second": 1.83483810785052,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 36577,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 1259173
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 265,
+          "p50_usec": 115,
+          "p95_usec": 174
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 104,
+          "p50_usec": 66,
+          "p95_usec": 85
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 330,
+          "p50_usec": 25,
+          "p95_usec": 81
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 17737,
+          "p50_usec": 7910,
+          "p95_usec": 15780
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 12834,
+          "p50_usec": 8653,
+          "p95_usec": 11124
+        },
+        "texture_upload_submission": {
+          "count": 229,
+          "maximum_usec": 240,
+          "p50_usec": 156,
+          "p95_usec": 194
+        },
+        "upload_to_post_draw": {
+          "count": 229,
+          "maximum_usec": 190706,
+          "p50_usec": 137776,
+          "p95_usec": 181074
+        }
+      },
+      "camera": "overview",
+      "checks": 174,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 659,
+        "draw_observations": 660,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 81665617,
+      "inventory_after": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "inventory_before": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "log_sha256": "33262f9fbf42bb1d822714f3f9698356e4ef660b00663d6c262093ef8ff40636",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 330,
+          "usec": 31386
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 129,
+          "usec": 48792
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 335,
+          "usec": 86358
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 5893,
+        "chemistry_ns": 10063808,
+        "composed_reuses": 894,
+        "contact_ns": 143924746,
+        "discovery_ns": 406214,
+        "exchange_ns": 6271603,
+        "geometry_ns": 0,
+        "mask_cells": 5625289,
+        "occupancy_ns": 977320362,
+        "relocation_ns": 581896085,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3,
+        "snapshot_ns": 5707558,
+        "sweep_samples": 1403,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 542,
+        "maximum_usec": 199149,
+        "p50_usec": 146198,
+        "p95_usec": 187740
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 17737,
+        "p50_usec": 7910,
+        "p95_usec": 15780
+      },
+      "receipt_pump_usec_delta": 3099953,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 542,
+        "maximum_usec": 199957,
+        "p50_usec": 146600,
+        "p95_usec": 188177
+      },
+      "render_submissions": 543,
+      "render_submissions_per_wall_second": 6.64906505267694,
+      "report": "graphical/m4_workbench_timber_overview_render.json",
+      "report_sha256": "0fdb0b65a58b95a6d70cb049baab495e22445256af6ce6ae5a4f425f791b6108",
+      "sampling": "cohorts",
+      "scene": "timber",
+      "semantic_ticks_per_wall_second": 2.20410996221335,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 32537,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 776547
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 189,
+          "p50_usec": 114,
+          "p95_usec": 165
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 228,
+          "p50_usec": 63,
+          "p95_usec": 88
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 187,
+          "p50_usec": 23,
+          "p95_usec": 91
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 16985,
+          "p50_usec": 8927,
+          "p95_usec": 15802
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 12362,
+          "p50_usec": 8648,
+          "p95_usec": 11009
+        },
+        "texture_upload_submission": {
+          "count": 229,
+          "maximum_usec": 340,
+          "p50_usec": 193,
+          "p95_usec": 311
+        },
+        "upload_to_post_draw": {
+          "count": 229,
+          "maximum_usec": 176345,
+          "p50_usec": 124463,
+          "p95_usec": 172227
+        }
+      },
+      "camera": "zoom",
+      "checks": 174,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 665,
+        "draw_observations": 666,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 74383792,
+      "inventory_after": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "inventory_before": {
+        "brick": 0,
+        "wood": 5472
+      },
+      "log_sha256": "9492c4caccbfdabb5b2ba82bae5fc84b4d88bc7273e95fd929e2bc00423d8a05",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 187,
+          "usec": 31012
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 291,
+          "usec": 47616
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 373,
+          "usec": 86255
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 5893,
+        "chemistry_ns": 10028985,
+        "composed_reuses": 894,
+        "contact_ns": 142669025,
+        "discovery_ns": 421855,
+        "exchange_ns": 6192562,
+        "geometry_ns": 0,
+        "mask_cells": 5625289,
+        "occupancy_ns": 973872440,
+        "relocation_ns": 579378209,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 3,
+        "snapshot_ns": 5495757,
+        "sweep_samples": 1403,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 545,
+        "maximum_usec": 184396,
+        "p50_usec": 132836,
+        "p95_usec": 172796
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 16985,
+        "p50_usec": 8927,
+        "p95_usec": 15802
+      },
+      "receipt_pump_usec_delta": 3089612,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 545,
+        "maximum_usec": 185157,
+        "p50_usec": 133134,
+        "p95_usec": 173308
+      },
+      "render_submissions": 546,
+      "render_submissions_per_wall_second": 7.34030875973626,
+      "report": "graphical/m4_workbench_timber_zoom_render.json",
+      "report_sha256": "6a0c3f78feb3c4d28b93975e8f60f5a842f096eeaa9c0feead5c9bdd438efa81",
+      "sampling": "cohorts",
+      "scene": "timber",
+      "semantic_ticks_per_wall_second": 2.41988200870426,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 29869,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 771178
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 223,
+          "p50_usec": 121,
+          "p95_usec": 171
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 124,
+          "p50_usec": 73,
+          "p95_usec": 97
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 136,
+          "p50_usec": 27,
+          "p95_usec": 82
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 17051,
+          "p50_usec": 5490,
+          "p95_usec": 16248
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 11308,
+          "p50_usec": 8788,
+          "p95_usec": 9375
+        },
+        "texture_upload_submission": {
+          "count": 49,
+          "maximum_usec": 186,
+          "p50_usec": 148,
+          "p95_usec": 175
+        },
+        "upload_to_post_draw": {
+          "count": 49,
+          "maximum_usec": 191229,
+          "p50_usec": 149070,
+          "p95_usec": 190738
+        }
+      },
+      "camera": "overview",
+      "checks": 153,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 686,
+        "draw_observations": 687,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 79403192,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "1fe8335c622b04b6894cf9dc821535e809252ad9fcd82bea0b92d0c39467444b",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 195,
+          "usec": 34459
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 124,
+          "usec": 52463
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 372,
+          "usec": 89962
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 11419362,
+        "composed_reuses": 893,
+        "contact_ns": 27852350,
+        "discovery_ns": 378536,
+        "exchange_ns": 5970298,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 763323578,
+        "relocation_ns": 522592828,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 6388659,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 539,
+        "maximum_usec": 197598,
+        "p50_usec": 142504,
+        "p95_usec": 185192
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 17051,
+        "p50_usec": 5490,
+        "p95_usec": 16248
+      },
+      "receipt_pump_usec_delta": 3102731,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 539,
+        "maximum_usec": 198308,
+        "p50_usec": 142877,
+        "p95_usec": 185443
+      },
+      "render_submissions": 540,
+      "render_submissions_per_wall_second": 6.80073415688377,
+      "report": "graphical/m4_workbench_tower_overview_light_recording_render.json",
+      "report_sha256": "02cf053781b268f559525abbe27f21d5d2e84dacc459d96a3f515e80c03057d8",
+      "sampling": "light",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 2.26691138562792,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 39677,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 671038
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {},
+      "camera": "overview",
+      "checks": 152,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 644,
+        "draw_observations": 645,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 77993865,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "7d73faa6641f44e49b41f0836e6489674486828c692afc9be5e837574d004392",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 431,
+          "usec": 38191
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 135,
+          "usec": 51514
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 253,
+          "usec": 84851
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 8812851,
+        "composed_reuses": 893,
+        "contact_ns": 27388540,
+        "discovery_ns": 354914,
+        "exchange_ns": 6040352,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 762429508,
+        "relocation_ns": 522116544,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 5639039,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 530,
+        "maximum_usec": 198098,
+        "p50_usec": 142947,
+        "p95_usec": 184363
+      },
+      "receipt_delivery_age": null,
+      "receipt_pump_usec_delta": 3085227,
+      "recording_enabled": false,
+      "render_submission_intervals": {
+        "count": 530,
+        "maximum_usec": 198986,
+        "p50_usec": 143286,
+        "p95_usec": 184400
+      },
+      "render_submissions": 531,
+      "render_submissions_per_wall_second": 6.80822780099435,
+      "report": "graphical/m4_workbench_tower_overview_light_render.json",
+      "report_sha256": "2915ea4e5d54ead77e6181d0463a5f2a12ed6211c131004c0e9fe60d13cf6f3f",
+      "sampling": "light",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 2.30787383084554,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 37830,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 663729
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 223,
+          "p50_usec": 134,
+          "p95_usec": 181
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 133,
+          "p50_usec": 76,
+          "p95_usec": 100
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 166,
+          "p50_usec": 33,
+          "p95_usec": 96
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 16862,
+          "p50_usec": 7897,
+          "p95_usec": 15624
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 11944,
+          "p50_usec": 8868,
+          "p95_usec": 9899
+        },
+        "texture_upload_submission": {
+          "count": 49,
+          "maximum_usec": 257,
+          "p50_usec": 162,
+          "p95_usec": 197
+        },
+        "upload_to_post_draw": {
+          "count": 49,
+          "maximum_usec": 173389,
+          "p50_usec": 138611,
+          "p95_usec": 157444
+        }
+      },
+      "camera": "overview",
+      "checks": 153,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 646,
+        "draw_observations": 647,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 80190886,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "f650c1c18054384755ff0295f1a22fed0ef606d2c23f970943ad5eeef3415093",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 184,
+          "usec": 37207
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 133,
+          "usec": 52686
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 379,
+          "usec": 93077
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 9891775,
+        "composed_reuses": 893,
+        "contact_ns": 27766787,
+        "discovery_ns": 401908,
+        "exchange_ns": 6091690,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 764078183,
+        "relocation_ns": 524245443,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 6358214,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 536,
+        "maximum_usec": 198592,
+        "p50_usec": 145272,
+        "p95_usec": 186661
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 16862,
+        "p50_usec": 7897,
+        "p95_usec": 15624
+      },
+      "receipt_pump_usec_delta": 3116662,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 536,
+        "maximum_usec": 199627,
+        "p50_usec": 145630,
+        "p95_usec": 186012
+      },
+      "render_submissions": 537,
+      "render_submissions_per_wall_second": 6.69652159722989,
+      "report": "graphical/m4_workbench_tower_overview_render.json",
+      "report_sha256": "16d9bc728dbe140e2bd35c0c39690cf2c85ce847c0d3d3ad17d2dace95f9fcfa",
+      "sampling": "cohorts",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 2.24464411080332,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 40297,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 680094
+      }
+    },
+    {
+      "active_body_count_max": 1,
+      "actual_physics_steps": 721,
+      "body_count_max": 1,
+      "body_count_min": 1,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 203,
+          "p50_usec": 138,
+          "p95_usec": 180
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 128,
+          "p50_usec": 78,
+          "p95_usec": 102
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 156,
+          "p50_usec": 29,
+          "p95_usec": 101
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 16861,
+          "p50_usec": 10063,
+          "p95_usec": 14974
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 11615,
+          "p50_usec": 8847,
+          "p95_usec": 10184
+        },
+        "texture_upload_submission": {
+          "count": 49,
+          "maximum_usec": 382,
+          "p50_usec": 174,
+          "p95_usec": 349
+        },
+        "upload_to_post_draw": {
+          "count": 49,
+          "maximum_usec": 179817,
+          "p50_usec": 138503,
+          "p95_usec": 178687
+        }
+      },
+      "camera": "zoom",
+      "checks": 153,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 652,
+        "draw_observations": 653,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 73700419,
+      "inventory_after": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "inventory_before": {
+        "brick": 2232,
+        "wood": 2184
+      },
+      "log_sha256": "00510a85acafa4588489ef0bb7d12abf46224625955c727fcc868a42b8b5f8b8",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 191,
+          "usec": 36329
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 143,
+          "usec": 53310
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 443,
+          "usec": 92355
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 4438,
+        "chemistry_ns": 10103958,
+        "composed_reuses": 893,
+        "contact_ns": 27515186,
+        "discovery_ns": 374434,
+        "exchange_ns": 6095325,
+        "geometry_ns": 0,
+        "mask_cells": 4740159,
+        "occupancy_ns": 771372016,
+        "relocation_ns": 529578917,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 0,
+        "snapshot_ns": 6761025,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 720,
+      "native_pose_echo_checks": 720,
+      "process_intervals": {
+        "count": 537,
+        "maximum_usec": 187002,
+        "p50_usec": 133000,
+        "p95_usec": 175569
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 16861,
+        "p50_usec": 10063,
+        "p95_usec": 14974
+      },
+      "receipt_pump_usec_delta": 3104746,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 537,
+        "maximum_usec": 186215,
+        "p50_usec": 133134,
+        "p95_usec": 174953
+      },
+      "render_submissions": 538,
+      "render_submissions_per_wall_second": 7.29982281376175,
+      "report": "graphical/m4_workbench_tower_zoom_render.json",
+      "report_sha256": "a41e8bc81d436502bd74665d84442a4dedc50bf0515bd7379f6b606113346187",
+      "sampling": "cohorts",
+      "scene": "tower",
+      "semantic_ticks_per_wall_second": 2.44231990051508,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 40283,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 682807
+      }
+    },
+    {
+      "active_body_count_max": 3,
+      "actual_physics_steps": 721,
+      "body_count_max": 3,
+      "body_count_min": 3,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 302,
+          "p50_usec": 156,
+          "p95_usec": 225
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 147,
+          "p50_usec": 84,
+          "p95_usec": 110
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 152,
+          "p50_usec": 29,
+          "p95_usec": 56
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 17210,
+          "p50_usec": 6977,
+          "p95_usec": 15714
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 11313,
+          "p50_usec": 8678,
+          "p95_usec": 9620
+        },
+        "texture_upload_submission": {
+          "count": 256,
+          "maximum_usec": 593,
+          "p50_usec": 232,
+          "p95_usec": 339
+        },
+        "upload_to_post_draw": {
+          "count": 256,
+          "maximum_usec": 193207,
+          "p50_usec": 139714,
+          "p95_usec": 191337
+        }
+      },
+      "camera": "overview",
+      "checks": 230,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 722,
+        "draw_observations": 723,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 79563365,
+      "inventory_after": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "inventory_before": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "log_sha256": "26aee18e554ca062768ac6abae77dd9ebf0af83c3e2ed943d31e28237e2ec4f7",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 175,
+          "usec": 31384
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 161,
+          "usec": 62387
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 1573,
+          "usec": 112512
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1387,
+        "chemistry_ns": 8201088,
+        "composed_reuses": 623,
+        "contact_ns": 52067143,
+        "discovery_ns": 291846,
+        "exchange_ns": 6077519,
+        "geometry_ns": 0,
+        "mask_cells": 5689504,
+        "occupancy_ns": 918297256,
+        "relocation_ns": 628116463,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 530134,
+        "snapshot_ns": 5527259,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 2160,
+      "native_pose_echo_checks": 2160,
+      "process_intervals": {
+        "count": 528,
+        "maximum_usec": 201557,
+        "p50_usec": 145828,
+        "p95_usec": 188191
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 17210,
+        "p50_usec": 6977,
+        "p95_usec": 15714
+      },
+      "receipt_pump_usec_delta": 3075567,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 528,
+        "maximum_usec": 202305,
+        "p50_usec": 146198,
+        "p95_usec": 188193
+      },
+      "render_submissions": 529,
+      "render_submissions_per_wall_second": 6.6487886730281,
+      "report": "graphical/m4_workbench_viaduct_overview_render.json",
+      "report_sha256": "514c1af468bdf6374fd66468596882958530d88d4776d7ca99c1ead605ee43f0",
+      "sampling": "cohorts",
+      "scene": "viaduct",
+      "semantic_ticks_per_wall_second": 2.26234775263716,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 35524,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 693352
+      }
+    },
+    {
+      "active_body_count_max": 3,
+      "actual_physics_steps": 721,
+      "body_count_max": 3,
+      "body_count_min": 3,
+      "bounded_stage_samples": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 316,
+          "p50_usec": 177,
+          "p95_usec": 241
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 156,
+          "p50_usec": 93,
+          "p95_usec": 122
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 133,
+          "p50_usec": 30,
+          "p95_usec": 61
+        },
+        "receipt_delivery": {
+          "count": 256,
+          "maximum_usec": 16864,
+          "p50_usec": 9618,
+          "p95_usec": 15182
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 11703,
+          "p50_usec": 8784,
+          "p95_usec": 9366
+        },
+        "texture_upload_submission": {
+          "count": 256,
+          "maximum_usec": 376,
+          "p50_usec": 206,
+          "p95_usec": 322
+        },
+        "upload_to_post_draw": {
+          "count": 256,
+          "maximum_usec": 175657,
+          "p50_usec": 123054,
+          "p95_usec": 158508
+        }
+      },
+      "camera": "zoom",
+      "checks": 230,
+      "completed_physical_intervals": 180,
+      "completed_semantic_ticks": 180,
+      "display_coherence": {
+        "between_callback_observations": 734,
+        "draw_observations": 735,
+        "examples": [],
+        "foreign_draw_callbacks": 0,
+        "incoherent_observations": 0,
+        "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+      },
+      "display_driver": "X11",
+      "elapsed_usec": 73964646,
+      "inventory_after": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "inventory_before": {
+        "brick": 1728,
+        "wood": 2400
+      },
+      "log_sha256": "3dac25625a01d0e4261a01dfc94121ca1d898bc41655693641ad6734304f1a8d",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 901,
+          "cumulative_max_usec": 179,
+          "usec": 30732
+        },
+        "pose_packet_capture": {
+          "calls": 721,
+          "cumulative_max_usec": 156,
+          "usec": 60525
+        },
+        "rapier_segment": {
+          "calls": 721,
+          "cumulative_max_usec": 561,
+          "usec": 108123
+        }
+      },
+      "native_cost_deltas": {
+        "chemistry_cells": 1387,
+        "chemistry_ns": 7570450,
+        "composed_reuses": 736,
+        "contact_ns": 50330546,
+        "discovery_ns": 280057,
+        "exchange_ns": 6029171,
+        "geometry_ns": 0,
+        "mask_cells": 5134618,
+        "occupancy_ns": 825552440,
+        "relocation_ns": 563352204,
+        "relocation_probe_limit_hits": 0,
+        "relocation_probes": 530676,
+        "snapshot_ns": 5097364,
+        "sweep_samples": 0,
+        "terrain_ns": 0,
+        "world_ns": 0
+      },
+      "native_pose_acknowledgements": 2160,
+      "native_pose_echo_checks": 2160,
+      "process_intervals": {
+        "count": 543,
+        "maximum_usec": 185499,
+        "p50_usec": 131807,
+        "p95_usec": 168304
+      },
+      "receipt_delivery_age": {
+        "count": 256,
+        "maximum_usec": 16864,
+        "p50_usec": 9618,
+        "p95_usec": 15182
+      },
+      "receipt_pump_usec_delta": 3084368,
+      "recording_enabled": true,
+      "render_submission_intervals": {
+        "count": 543,
+        "maximum_usec": 186403,
+        "p50_usec": 132117,
+        "p95_usec": 169053
+      },
+      "render_submissions": 544,
+      "render_submissions_per_wall_second": 7.3548651878899,
+      "report": "graphical/m4_workbench_viaduct_zoom_render.json",
+      "report_sha256": "62da0216d82b849e834d0ee472be41f21f7c159882ebf9ded1bfe84da72f7c77",
+      "sampling": "cohorts",
+      "scene": "viaduct",
+      "semantic_ticks_per_wall_second": 2.43359509893416,
+      "worker_stage_deltas": {
+        "frame_copy_calls": 180,
+        "frame_copy_usec": 30236,
+        "snapshot_calls": 1080,
+        "snapshot_usec": 683609
+      }
+    }
+  ],
+  "qualification_reports": {
+    "graphical": {
+      "cases": 31,
+      "sha256": "6f545090dba57b7422b60642d6c8d40e475481d4730dfab362d6334519256760",
+      "status": "failed"
+    },
+    "headless": {
+      "cases": 42,
+      "sha256": "067791c02f2213309b8ed7a5b8d7a078edbee27e7caff4e4836095d53629caac",
+      "status": "passed"
+    }
+  },
+  "renderer": {
+    "device_line": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+    "source_log_sha256": "f650c1c18054384755ff0295f1a22fed0ef606d2c23f970943ad5eeef3415093"
+  },
+  "review_status": "integrity-and-individual-profile-review-passed-with-retained-aggregate-failure",
+  "run": 45517975210,
+  "runtime": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "09098674d07b11fcf8a2eaa8baa792d672c8ff7a7025c013b7b3bb4196499a43",
+    "platform": "linux",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "schema": "objectshard-m4-linux-519-performance-review-v1",
+  "scope": [
+    "The failed disabled paused control is not a zero-progression witness. Its two late native ticks are retained.",
+    "Disabled/enabled ordinary controls have the same authored recipe and view, but only enabled fixtures attach per-callback coherence observation.",
+    "Disabled actual Rapier calls are1/60second steps; attached calls are1/240second segments.",
+    "Light recording on/off share sampling and fixture work; single-pair differences do not establish causal speedup.",
+    "Stage samples are recent bounded recording samples starting before the timed window, including setup/cut.",
+    "Receipt delivery age is native publication to Main observation, not material-to-monitor or input-to-monitor latency.",
+    "Main pump, worker, native occupancy/relocation and stage upload costs overlap/nest; do not sum as wall time.",
+    "Detached paused is not a running naturally sleeping-body control; that separate local scope is retained in natural-rest-local.",
+    "Still captures do not establish dynamic playfeel."
+  ],
+  "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+  "source_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+  "unavailable": [
+    "Physical NVIDIA hardware acceptance",
+    "Physical monitor scanout/FPS",
+    "Input-to-monitor response",
+    "Causal display frame identity from latency probe",
+    "Per-allocation counts/cost"
+  ]
+}

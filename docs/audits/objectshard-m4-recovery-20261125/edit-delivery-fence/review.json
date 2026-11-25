@@ -1,0 +1,33 @@
+{
+  "checks": 36,
+  "failures": [],
+  "footer_registry": "Derived by independent reviewer from exact committed FOCUSED source; this case maps to objectshard-m4-edit-delivery-fence-v1.",
+  "graphical_requires_display_unchanged": 18,
+  "limitations": [
+    "This source/input scope needs fresh full hosted qualification.",
+    "A value-only Applied receipt exercises validation; it is not evidence that native material moved."
+  ],
+  "local_natural_completion": true,
+  "local_seconds": 1.909,
+  "log_sha256": "7e187a70e50e8ffffd5b7bbb8136f10eee1ed04c5dec37942328c807d3b1e873",
+  "new_case_requires_display": false,
+  "new_registered_inventory": {
+    "graphical": 32,
+    "headless": 43,
+    "package-replay": 17
+  },
+  "physical_integration_claim": false,
+  "product_source_commit": "22b610dfaa16faf98df691cd0ccbaf9b43aebb50",
+  "receipt_sha256": "7e1216db1c24c3744a192483fb1e4e4dc873ae053374e7c1b2561e1a3fe9f3eb",
+  "retained_local_log": "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/edit-delivery-fence/execution/test_object_shard_m4_edit_delivery_fence.log",
+  "runtime": {
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "schema": "objectshard-m4-edit-delivery-fence-independent-review-v1",
+  "scope": "Metadata identity, monotonic transaction order, diagnostic-ring independence, malformed counter refusal, conflicting-owner Hold and authoritative retirement. No native World or Rapier mutation. Separate actual delayed-Main fixture is the physical proof.",
+  "status": "APPROVE-source-plus-value-level-conformance",
+  "test_source_commit": "5c9ba082f4571258cc4874e4dfb9f83a65f1a5a0",
+  "test_source_tree": "b90348cee0d521fd2626590e591b07f21a54b770"
+}

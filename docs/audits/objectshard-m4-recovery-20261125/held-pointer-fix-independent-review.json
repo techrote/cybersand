@@ -1,0 +1,49 @@
+{
+  "after": {
+    "checks": 132,
+    "failures": [],
+    "log_sha256": "c6c813159e2c879f651476a150b642d545b1697fb3c1da34efcaa39884c1a689",
+    "result_sha256": "6ce576bfff07fb563e03710e1700545d38e5ef8b2b0be1f8b755a8be3978b508",
+    "seconds": 12.738,
+    "status": "passed"
+  },
+  "all_native_inputs_equal_to_sealed_build": true,
+  "before": {
+    "checks": 32,
+    "failures": [
+      "held Cut waits for the applied native transaction to reach its actual displayed geometry"
+    ],
+    "log_sha256": "62fa2ba66528f3ee430d3f0f58da1bde85136728a87b92bac01fc3f938714576",
+    "result_sha256": "65bc3deb714ce861e49d40d9a8575839b8385c049a51f0adba76adfe48ce3116",
+    "seconds": 8.335,
+    "status": "failed"
+  },
+  "changed_execution_inputs": {
+    "godot/scripts/object_shard_m4_workbench_port.gd": "35887a6285d262d494303da6ab5caf92e926869151c10487ff039b82ae895ea3",
+    "godot/scripts/shared_workbench.gd": "308eca97913df3fcd91630b95596d6b4dac205a4b23fae66d92ba51b340eee85"
+  },
+  "disposition": "APPROVE: deterministic before-failure and after-pass with unchanged fixture and native inputs",
+  "fixture_sha256": "ef3624c5154e94846644487d86e2256b84858e0b3d94f997f983c7d3d49eae29",
+  "limits": [
+    "Local Linux headless evidence, not Windows execution or physical input/monitor acceptance.",
+    "This registered witness pauses the moving body before its precise two-cell pointer cut; continuous Cut during ongoing Play is a separate acceptance scope.",
+    "The settlement action here uses the existing runtime entrypoint; a mounted Settle gesture successor remains separate.",
+    "Original519/422 campaign failures are retained; this local correction requires a new source-exact hosted campaign."
+  ],
+  "native_input_count": 117,
+  "review_findings": [
+    "The real native Applied receipt is independently authenticated before creating the bounded latest-edit record.",
+    "Full native/world/session/incarnation/transport/port identity prevents reuse across owner replacement; retire clears the record.",
+    "A same-owner monotonic maximum transaction prevents out-of-order completion from regressing the required displayed boundary.",
+    "The existing pending, physical readiness and latest displayed publication guards are preserved; no physics, native barrier or chemistry path is bypassed.",
+    "The displayed native next_transaction must be greater than the latest applied mutation transaction. Exclusive worker mutation finishes before its snapshot publication.",
+    "The result ring is diagnostic and evictable; the new single bounded record is independent of that ring.",
+    "During the actual delayed callback, held_pointer_tool remains5 in both runs. The positive waits with intent intact, rather than passing through cancellation.",
+    "After Main resumes, unchanged strict assertions prove exactly two correct Applied source cuts, pointer-release no replay, two actual physical fragments and exact material conservation.",
+    "The positive also proves actual sleeping contact with installed terrain, exact native material credit, physical RID removal and native retirement through the existing runtime settlement path."
+  ],
+  "root_product_fix_commit": "22b610dfaa16faf98df691cd0ccbaf9b43aebb50",
+  "schema": "objectshard-m4-held-pointer-fix-independent-review-v1",
+  "source_after": "a7a0998bbf5e8ffa26ab9a24f8378b081b737d36",
+  "source_before": "c658ea51516804ae920353de20b22a786babeb40"
+}

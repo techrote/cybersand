@@ -1,0 +1,7 @@
+{
+  "checks": 36,
+  "failures": [],
+  "schema": "objectshard-m4-edit-delivery-fence-v1",
+  "scope": "value-only receipt authentication and delivered-transaction lifetime; no native or physical integration assertion",
+  "source_commit": "5c9ba082f4571258cc4874e4dfb9f83a65f1a5a0"
+}

@@ -348,3 +348,100 @@ the clock review. Its successor changes only two derived receipt fields to name
 lifetime and post-exhaustion ticks separately. The two earlier SIGKILL attempts
 remain unsuccessful observations; this independent positive does not overwrite
 them or qualify the forthcoming Windows execution.
+
+## Held-pointer receipt precedes delivered geometry: reproduced product defect
+
+The second recovery Linux Workbench job, at source
+`422d131048db573c0abd08bcca25f6b3999e8703`, failed two held-pointer assertions in
+the fragment/reabsorption case. Its later fragmentation, conservation and
+settlement assertions passed, but the aggregate case and job remain failed.
+The original process log is retained in artifact **14981832745**, archive
+SHA-256 `fb17e5444456b1495f899fcaef28751d40da90372ce18ec7c78d33c0bce13f90`;
+the process log SHA-256 is
+`080b4c58229ad5763cd98808d21b0783f593f3fc2f78080f13a50ab24f37d5ba`.
+
+A focused deterministic successor delayed only `Main._process` after the first
+actual mounted pointer press. The real child Workbench input process and
+exclusive native worker continued. No owner state, frame, receipt, physics pose
+or native result was substituted. The callback was restored before every exit.
+The fixture-only source is local `c658ea51516804ae920353de20b22a786babeb40`,
+equivalent to the lead's `ec6e1ff328511c0b03f1d0c38f1b109885eb438f` test delta;
+the product is unchanged from the published `422d1310` source.
+
+The [actual failing reproduction](objectshard-m4-recovery-20261125/held-pointer-delayed-main-before.json)
+completed naturally in **8.335 seconds**, with **32 checks and one failure**.
+While Main remained delayed, the first Cut returned `Applied`, transaction 2
+and geometry revision 2. Both current runtime frame and displayed publication
+still had sequence 27 and `next_transaction = 2`. The held-pointer handler then
+admitted a second request against that old geometry; the genuine terminal
+result was `Refused`. There were two results and no pending request before Main
+resumed. All 160 observed World/overlay identities remained coherent: a
+coherent earlier publication was insufficient evidence that the completed edit
+had reached the display. Native validation refused the stale request safely.
+
+The reproduced defect belongs to ordinary input admission, not native material
+mutation. The lead owns the narrowly scoped product repair: require the actual
+same-incarnation displayed publication to have advanced beyond the validated
+Applied transaction, in addition to the existing geometry/readiness checks.
+The strict two-Applied-results requirement is preserved. This negative result
+does not count as successful fragmentation or settlement execution.
+
+The lead's correction `22b610dfaa16faf98df691cd0ccbaf9b43aebb50` was independently
+reviewed, then replayed as local `a7a0998bbf5e8ffa26ab9a24f8378b081b737d36` with
+the **identical fixture SHA-256** and native runtime inputs. The
+[matched positive receipt](objectshard-m4-recovery-20261125/held-pointer-delayed-main-after.json)
+records **132 checks, zero failures, natural exit 0 in 12.738 seconds**.
+During the same delayed callback, the first Applied receipt remained the only
+result while both retained publications still had `next_transaction = 2`.
+Held tool 5 remained active. After Main resumed, exactly two correct Applied
+source-cell cuts completed, release did not replay input, two physical
+fragments activated, and surviving Wood was conserved. The unchanged later
+case also passed real sleeping contact, native material credit, physical RID
+removal and inventory retirement. All **577 display observations** were
+coherent. This local positive preserves the baseline failure and requires new
+source-exact hosted qualification before candidate admission.
+
+The [independent repair review](objectshard-m4-recovery-20261125/held-pointer-fix-independent-review.json)
+records the two changed product script hashes and the full before/after join.
+The single latest-edit record is independent of the evictable diagnostic result
+ring, admits only authenticated Applied mutations, keeps the maximum transaction
+for an unchanged full owner identity, refuses conflicting owners and clears on
+retirement. Existing native, physical and publication guards are unchanged.
+This witness uses paused precise Cut input and the runtime settlement entrypoint;
+it does not silently become a continuous-running Cut or mounted Settle proof.
+
+The explicit mounted Settle gap was then closed by the registered fixture
+successor `b9cb38d33748fc2d4a585199e28645fc594b49ee`, executed independently as
+local source `7095a2358e3db51e9b175f44c3686bfef4d60909` with the same corrected
+product. The [actual mounted-tool receipt](objectshard-m4-recovery-20261125/mounted-settle-local.json)
+records **132 checks, zero failures, natural exit 0 in 11.933 seconds**. On the
+naturally sleeping plank, ordinary mode 7 press/release advanced exactly one
+reabsorption action from 0 to 1 and left a real staged native request with the
+physical body still present. The later same-World completion credited the
+canvas, retired the RID and native inventory, and retained zero uncredited
+inventory cells. All **573 display observations** remained coherent. The
+stronger delayed-Main check also requires the left-button held intent to remain
+active. This is actual mounted Godot input routing in a local headless process;
+physical pointer/monitor acceptance and the new hosted campaign remain separate.
+
+The [runtime custody](objectshard-m4-recovery-20261125/held-pointer-reproduction-runtime.json)
+records the exact pinned engine, native and Rapier bytes and all 117 native
+input hashes. The older sealed Linux native build is used through explicit
+source-input equivalence; no binary provenance was rewritten. The
+[exact observed-process runner](objectshard-m4-recovery-20261125/run_held_pointer_reproduction.py)
+is retained from execution at `build/recovery-held-pointer/run_case.py`; place
+it at that relative path to repeat its recorded invocation. Raw logs and
+resource observations remain outside Git with their hashes in the result.
+
+## Existing carrier cache audit
+
+The [cache source review](objectshard-m4-recovery-20261125/carrier-cache-source-review.json)
+found no concrete invalidation defect in the existing seven packed carrier
+arrays. Their key includes the full native handle and material revision.
+Payload, role and incarnation changes advance that revision; due-time-only
+scheduling changes do not alter cached fields. Scheduling-sensitive payload
+digests, lifecycle, poses, geometry and acknowledgement state are rebuilt for
+each snapshot. Fragment children receive a new identity before their first
+snapshot, resets advance session identity, and ordinary World replacement
+destroys the previous adapter and cache. This is a source audit of the existing
+bounded cache, not a proposal to cache a full snapshot by material revision.

@@ -15,6 +15,128 @@ records OBJECTSHARD-M4-COMPLETION-RECOVERY-001. Physical Windows 11/NVIDIA
 performance acceptance remains HOLD. It grants no merge, Ready, auto-merge,
 production-default activation or unqualified runtime-publication authority.
 
+## Recovery checkpoint after executor replacement
+
+### Subsequent diagnosed application defect and campaign admission
+
+The second campaign's Linux primary result is now known: **41/42**, with only
+`test_object_shard_m4_fragment_reabsorption` failing two pointer-receipt
+assertions. Graphical qualification did not execute. The original archive is
+14981832745, 2,153,391 bytes, SHA-256
+`fb17e5444456b1495f899fcaef28751d40da90372ce18ec7c78d33c0bce13f90`.
+The [recovered Linux campaign records](objectshard-m4-recovery-20261125/replacement-linux-campaigns.json)
+retain its complete inventory and original process/report hashes.
+
+This failure exposed a real ordinary-tool delivery race, not a weakened-test
+opportunity. Delaying only Main's callback while the real child Workbench and
+exclusive native worker continued deterministically reproduced it: native Cut
+transaction 2 was Applied, but Main's frame and displayed publication both
+still named next transaction 2 and publication sequence 27. The held tool queued
+the next source-cell request against the old geometry; native correctly refused
+it. The test failed with 32 checks and natural exit 1. The held pointer remained
+active, and 160 observations remained visually coherent: coherent old data was
+insufficient evidence of edit completion.
+
+The corrective product change retains one fully authenticated applied mutation
+identity in the existing port and makes the held pointer wait until that
+transaction is actually present in the coherent displayed publication. The
+transaction bound cannot regress on out-of-order receipts, does not depend on
+the evictable diagnostics ring, ignores read-only inspection, and clears on
+real port retirement. All native, geometry, physics, stale-target and release
+guards remain. No C++, material law, ownership architecture, physics pacing or
+production default changes. The exact same adversarial fixture then passed
+132 checks with natural exit 0, including both intended cuts, fragmentation,
+natural sleeping contact, full native material credit and RID removal. A final
+fixture successor additionally uses the mounted mode-7 Settle press/release;
+it also passed 132 checks with zero incoherent observations. The
+[matched before/after review](objectshard-m4-recovery-20261125/held-pointer-fix-independent-review.json)
+and [mounted Settle receipt](objectshard-m4-recovery-20261125/mounted-settle-local.json)
+retain complete source, runtime, log and report identities.
+
+The disabled-control Pause correction remains narrowly scoped to its initial
+measurement boundary. Its exact-source local retries were interrupted by
+SIGKILL, including one that passed the new real Pause acknowledgement and
+stale-copy assertions before the complete 12-second window ended. These are
+not PASS results, and their cause is not established. The corrected complete
+control must pass the next hosted matrix. A separate value-only receipt-fence
+challenge passed 36 assertions and is added to all applicable qualifier lanes:
+43 primary, 32 graphical-lane and 17 pristine-package cases, retaining every
+prior case and the existing 18 actually rendered cases.
+
+The next source-bound campaign is required because these application and
+qualification inputs changed. All 117 native inputs remain unchanged, but the
+existing source-exact candidate build and package custody are retained; no old
+runtime provenance is relabelled. No new unrelated CI helper or workflow job is
+needed after executor recovery. The second Windows run is retained through its
+terminal outcome while the corrected source is prepared.
+
+At approximately 01:13–01:24 UTC on 25 November, the local executor became
+unavailable and returned with fresh temporary filesystems. The prior mission's
+original checkout and evidence under `/workspace` survived; this recovery's
+`/home/agent` checkouts, downloaded artifact copies and local-only supplemental
+receipts did not. No running local check is counted as passed after that loss.
+GitHub source, workflow executions and original artifacts remained available.
+The lead recovered an isolated checkout directly from published candidate
+`422d131048db573c0abd08bcca25f6b3999e8703` and independently checked tree
+`0077add3ad68ccaa782b28beb62b19552f48a124`. Three specialist worktrees were
+recreated from that exact source without changing the predecessor checkout.
+
+The first replacement run
+[45517975210](https://github.com/techrote/cybersand/actions/runs/45517975210)
+remains **FAIL**: native sanitizers and Windows-native passed, Windows primary
+qualification passed 41/42, Linux primary passed 42/42 and Linux graphical
+passed 30/31. The Windows long-burn fixture mixed native and displayed clocks;
+its strict correction is already in `422d1310`. The Linux failed case is the
+new disabled paused control. Its 12-second graphical window observed two late
+native ticks with zero Rapier steps, zero ObjectShard attachment and zero
+attached-owner snapshot calls. The predicate accepted a coherent paused
+snapshot without waiting for the existing worker-exclusive acknowledgement of
+that particular user Pause. Such an incidental paused snapshot can occur
+during Play. All three reviewers identified the existing monotonic request/ACK
+contract, also used by the ordinary actor-composition test. The correction
+retains the complete window and strict zero native/Rapier progression assertion,
+adds the exact Pause receipt and actor suspension, and records both window
+boundaries. The reviewed 9,314-byte, 156-line correction was reconstructed from
+the exact frozen file and recorded diff. Its interrupted local run is not a
+positive result.
+
+Original first-replacement Linux artifact 14980723384 is 14,231,265 bytes,
+SHA-256 `d3a1793f8e1f27cd8a3194a4fa15db1851b655d1c08ddad1aba86338d6c56f4d`.
+Both delivery and lead reviewers verified its raw bytes and full report/log
+inventory before the executor loss; its failed aggregate remains failed.
+The original hosted archive permits repeatable recovery of those reviews.
+
+Second replacement run
+[45522534938](https://github.com/techrote/cybersand/actions/runs/45522534938)
+attempt 1 still runs on exact source `422d1310`. At this checkpoint native
+sanitizers and Windows-native are PASS, Linux is terminal FAIL with exact case
+diagnosis pending, and Windows Workbench is running. These are incremental
+observations, not a final qualification verdict. The team will recover every
+terminal result before admitting the next source-bound campaign.
+
+Local-only supplemental extent/M4 authored-reopen observations had completed
+132 author checks and 69 distinct-process reopen checks before the loss and
+were independently reviewed, but their newly committed receipt bytes had not
+yet been published. They are currently inaccessible supplementary observations,
+not the sole evidence for a final gate. Published `422d1310` already preserves
+the generic authored fresh-process witness, full physical claim map, natural
+rest receipts and corrected long-burn development witness. Missing supplement
+bytes will not be invented; any replacement execution gets its own identity.
+
+The lead also examined complete first-replacement Windows headless cost windows.
+Tower, mixed and eight-body stress advanced at 25.820, 27.663 and 19.198 native
+ticks/s, while the disabled ordinary tower reached approximately 60. These
+zero-render results establish that remaining active-body overhead cannot all
+be attributed to software rendering. Worker snapshot calls occupied 10.6%,
+13.0% and 15.1% of those wall windows; native occupancy including relocation
+occupied 13.2%, 18.7% and 22.6%. Main receipt-pump counters include waits and
+nested work, so they cannot be added to those costs as independent elapsed
+time. Geometry and terrain rebuild counters stayed zero. Native coordinator
+snapshot timing excludes subsequent Godot conversion, while the worker timer
+spans that whole call; the difference identifies a marshalling investigation,
+not isolated allocator attribution. No unproved cache or scheduling change is
+admitted from these counters. Physical Windows/NVIDIA acceptance remains HOLD.
+
 ## Intake source and recovered environment
 
 Live GitHub inspection on 25 November 2026 confirmed PR #754 remains open and

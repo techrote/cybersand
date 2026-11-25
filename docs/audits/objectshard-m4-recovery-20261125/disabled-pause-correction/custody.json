@@ -1,0 +1,110 @@
+{
+  "bounded_portable_retry": {
+    "actual_bootstrap_difference": "None: all3committed files already matched; no generated extras. This was a bounded same-input retry, not a demonstrated metadata repair.",
+    "completed_subchecks": "Ordinary setup, actual initial native tick, explicit monotonic Pause request, synthetic stale ACK refusal, and real native/actor Pause acknowledgement passed.",
+    "log_sha256": "f11721b5b8ac6ddee139447f084fbd953cd3d783a94ab85a120ec55d077ed6c6",
+    "resources": {
+      "available": true,
+      "cpu_seconds": 8.88,
+      "minimum_host_mem_available_bytes": 1356460032,
+      "peak_rss_bytes": 560840704,
+      "resource_sample_count": 12,
+      "resource_samples": "corrected_disabled_control-resources.jsonl",
+      "resource_sampling_scope": "external direct child and host /proc observations at most once per wall second; no inferred termination cause",
+      "rss_bytes": 560840704,
+      "scope": "direct_process_only"
+    },
+    "returncode": -9,
+    "seconds": 11.432,
+    "source_commit": "75911d849a9a596b71fae6aa930ee0bf982474b0",
+    "status": "FAIL_EXECUTION_NO_COMPLETE_WINDOWS",
+    "termination_cause": "Not established by external observations",
+    "uncompleted": "First12-second window interrupted; no terminal receipt or complete control qualification."
+  },
+  "correction": {
+    "changes": "Require the worker receipt for the specific UI Pause, retain actor suspension and complete-image conditions; refuse coherent stale copied receipt; record before/request/ack and measurement boundaries",
+    "existing_authority": "simulation_worker.workbench_pause_request_serial and copied workbench_pause_ack_serial; existing actor-composition paused_editor gate",
+    "unchanged": "Zero native/Rapier time requirement,12-second windows, recipes, cameras, body counts, native and product application source"
+  },
+  "fixture_sha256": "6fc42b178288ddc47c5f3801f1f46535904e54d9f55ba00a2ba8d8f8fb69c8ea",
+  "import_attempt": {
+    "cause": "Not established; no import success claimed",
+    "exit_code": 137,
+    "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+  },
+  "interrupted_pre_restart_attempt": {
+    "fixture_sha256": "6fc42b178288ddc47c5f3801f1f46535904e54d9f55ba00a2ba8d8f8fb69c8ea",
+    "reason": "Executor became unavailable while external case was active; tmpfs evidence lost in restart",
+    "status": "OUTCOME_UNAVAILABLE_NOT_PASS"
+  },
+  "original_failure": {
+    "aggregate": "Linux Workbench FAILED: headless42/42, graphical30/31",
+    "archive_bytes": 14231265,
+    "archive_sha256": "d3a1793f8e1f27cd8a3194a4fa15db1851b655d1c08ddad1aba86338d6c56f4d",
+    "artifact": 14980723384,
+    "attempt": 1,
+    "failed_case_log_sha256": "353a6b25ff71d132af4bdc879181edaf7b9c8d994223cddcca99ada44d6d83df",
+    "job": 138882242425,
+    "paused_native_ticks": 2,
+    "paused_rapier_steps": 0,
+    "run": 45517975210,
+    "source": "51903088118d2a04f2dc79dd6fff7c25b226970c"
+  },
+  "qualification": {
+    "elapsed_seconds": 5.219,
+    "final_exit_code": -9,
+    "hosted_execution": "REQUIRED; no waiver or positive inherited from interrupted attempts",
+    "local_case": "FAIL: naturally terminated by SIGKILL before Workbench installation and before either window",
+    "local_parse": "PASS: script executed initial flag assertion",
+    "natural_completion": true,
+    "termination_cause": "Not established by external observations",
+    "timeout_kind": null
+  },
+  "resources": {
+    "available": true,
+    "cpu_seconds": 4.96,
+    "minimum_host_mem_available_bytes": 1178390528,
+    "peak_rss_bytes": 357523456,
+    "resource_sample_count": 6,
+    "resource_samples": "corrected_disabled_control-resources.jsonl",
+    "resource_sampling_scope": "external direct child and host /proc observations at most once per wall second; no inferred termination cause",
+    "rss_bytes": 357523456,
+    "scope": "direct_process_only"
+  },
+  "retained_local_files": {
+    "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/disabled-pause-correction/execution/corrected_disabled_control-resources.jsonl": {
+      "bytes": 1928,
+      "sha256": "36bdd297c99c3a5ef4d02ad2a2feae195a9afc71be7046e7679eefcbadeeeb4f"
+    },
+    "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/disabled-pause-correction/execution/corrected_disabled_control.log": {
+      "bytes": 298,
+      "sha256": "9618d2c73b3c9fd07085be611f7276d463c5fb4346610b956d4b1aa77775b935"
+    },
+    "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/disabled-pause-correction/execution/replay.json": {
+      "bytes": 133095,
+      "sha256": "e7ce08e705ddb118c83b15e2b8b365dea4b913736200205bc1515afe62825142"
+    },
+    "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/disabled-pause-correction/native-receipt.json": {
+      "bytes": 15316,
+      "sha256": "9314b9858959803668329605c5aab150041e5680bcfe120e3ed7256281e5c814"
+    },
+    "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/disabled-pause-correction/run.py": {
+      "bytes": 3054,
+      "sha256": "11c9b986b5139e44d519dfd335baa6fbd051b9d7d4eb0e33fb3227f77dda569d"
+    }
+  },
+  "runtime": {
+    "build_contract_inputs_verified": 5,
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_build_source": "ccdfde97c279d809eafbb6e74b880d14cfb2f60e",
+    "native_receipt_sha256": "9314b9858959803668329605c5aab150041e5680bcfe120e3ed7256281e5c814",
+    "native_sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae",
+    "native_source_inputs_verified": 117,
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "reuse": "Exact sealed development bytes, not new hosted native qualification"
+  },
+  "schema": "objectshard-m4-disabled-pause-boundary-review-v1",
+  "source_commit": "658b6b1464aecc8165cb8c77817ea5d591d56d0a",
+  "source_tree": "48c4820dec1d8d7ee1de5af75f66cde1adf3069f",
+  "status": "source-reviewed-focused-execution-failed"
+}

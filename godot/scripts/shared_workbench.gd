@@ -1758,6 +1758,9 @@ func _pump_object_shard_pointer(pressed: bool = false) -> void:
 		if pressed: message = "Holding one-cell tool: waiting for the current native/physics receipt."
 		return
 	if int(runtime.publication.get("publication_sequence",-1))!=int(runtime.frame.get("publication_sequence",-2)): return
+	if not object_shard_m4_port.latest_edit_presented(runtime.publication,runtime.capabilities):
+		if pressed: message = "Holding one-cell tool: waiting for the previous material edit to finish."
+		return
 	var attempt: Array = [runtime.publication.get("publication_sequence",-1),pos,_object_shard_pointer_tool]
 	if attempt==_object_shard_pointer_attempt: return
 	_object_shard_pointer_attempt = attempt

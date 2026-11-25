@@ -1,0 +1,202 @@
+{
+  "completion_receipts": [
+    {
+      "checks": 32,
+      "evidence": {
+        "display_coherence": {
+          "between_callback_observations": 160,
+          "draw_observations": 0,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "inventory_witnesses": [],
+        "pointer_receipt_fence": {
+          "display_next_transaction": 2,
+          "display_sequence": 27,
+          "frame_next_transaction": 2,
+          "frame_sequence": 27,
+          "held_pointer_tool": 5,
+          "main_callback_delayed": true,
+          "pending_count": 0,
+          "results": [
+            {
+              "action_id": 1,
+              "native_receipt": {
+                "accepted": true,
+                "action_id": 1,
+                "applied_physics_revision": 1,
+                "body_generation": 1,
+                "cell": 207,
+                "detail": "owned structural cell erased; exact geometry awaits physics acknowledgement",
+                "generation": 1,
+                "geometry_revision": 2,
+                "id": 1,
+                "incarnation": 3,
+                "material_revision": 312,
+                "native_instance_id": -9223371957783755216,
+                "ok": true,
+                "operation": "erase",
+                "outcome": "Accepted",
+                "owner": 1,
+                "owner_epoch": 4,
+                "phase": "Active",
+                "port_generation": 4,
+                "pose_serial": 0,
+                "position": "(154, 425)",
+                "same_world": true,
+                "session": 2,
+                "shard_session": 2,
+                "source_target": {
+                  "applied_physics_revision": 1,
+                  "body_generation": 1,
+                  "cell": 207,
+                  "expected": {
+                    "material": 7,
+                    "state_a": 0,
+                    "state_b": 0,
+                    "temperature": 200
+                  },
+                  "generation": 1,
+                  "geometry_revision": 1,
+                  "incarnation": 2,
+                  "material_revision": 311,
+                  "owner": 1,
+                  "owner_epoch": 4,
+                  "pose_serial": 0,
+                  "position": "(154, 425)",
+                  "publication_sequence": 27,
+                  "session": 2,
+                  "shard_session": 2,
+                  "transport_generation": 4,
+                  "world_incarnation": 2
+                },
+                "transaction": 2,
+                "transaction_id": 2,
+                "transport_generation": 4,
+                "world_generation": 4,
+                "world_incarnation": 2
+              },
+              "ok": true,
+              "outcome": "Applied",
+              "port_generation": 4
+            },
+            {
+              "action_id": 2,
+              "native_receipt": {},
+              "ok": false,
+              "outcome": "Refused",
+              "port_generation": 4
+            }
+          ]
+        }
+      },
+      "failures": [
+        "held Cut waits for the applied native transaction to reach its actual displayed geometry"
+      ],
+      "schema": "objectshard-m4-fragment-reabsorption-v1",
+      "scope": "actual ordinary Workbench material inventory, shared Rapier fragmentation and same-World settled return",
+      "source_commit": "c658ea51516804ae920353de20b22a786babeb40"
+    }
+  ],
+  "fixture_sha256": "ef3624c5154e94846644487d86e2256b84858e0b3d94f997f983c7d3d49eae29",
+  "record": {
+    "capture_error": null,
+    "command": [
+      "/home/agent/objectshard-recovery-20261125/shared-runtime/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/home/agent/objectshard-recovery-20261125/native/godot",
+      "--script",
+      "res://tests/test_object_shard_m4_fragment_reabsorption.gd",
+      "--",
+      "--objectshard-m4-workbench"
+    ],
+    "diagnostic_error": true,
+    "diagnostic_seconds": 0.0,
+    "diagnostics": null,
+    "execution_policy": {
+      "advisories": {
+        "drift_ratio": 1.2,
+        "drift_window": 5,
+        "minimum_baseline_samples": 3,
+        "prominent_ratio": 2.0,
+        "rolling_window": 10,
+        "warning_ratio": 1.5
+      },
+      "path": "godot/tests/support/ci_execution_policy.json",
+      "policy_id": "github-hosted-complete-execution-v1",
+      "scale": 1.0,
+      "schema_version": 1,
+      "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+      "watchdogs": {
+        "aggregate_headroom_seconds": 600.0,
+        "complex_fixture_seconds": 3600.0,
+        "dependency_prepare_seconds": 1200.0,
+        "diagnostic_capture_seconds": 30.0,
+        "godot_import_seconds": 1200.0,
+        "godot_job_minutes": 360.0,
+        "godot_metadata_seconds": 900.0,
+        "godot_setup_seconds": 4200.0,
+        "graphical_case_seconds": 1200.0,
+        "hosted_job_minutes": 180.0,
+        "main_ack_seconds": 600.0,
+        "native_case_seconds": 3600.0,
+        "native_compile_seconds": 3600.0,
+        "native_suite_seconds": 7200.0,
+        "operation_seconds": 300.0,
+        "ordinary_case_seconds": 1200.0,
+        "terminate_grace_seconds": 10.0
+      }
+    },
+    "last_heartbeat": null,
+    "last_progress": null,
+    "launch_error": null,
+    "log": "test_object_shard_m4_fragment_reabsorption.log",
+    "log_sha256": "62fa2ba66528f3ee430d3f0f58da1bde85136728a87b92bac01fc3f938714576",
+    "name": "test_object_shard_m4_fragment_reabsorption",
+    "natural_completion": true,
+    "pid": 6,
+    "requires_display": false,
+    "resource_samples": "test_object_shard_m4_fragment_reabsorption-resources.jsonl",
+    "resource_termination": {
+      "elapsed_seconds": 12.208880555997894,
+      "kind": "termination",
+      "minimum_host_mem_available_bytes": 1234251776,
+      "peak_rss_bytes": 570167296,
+      "returncode": 1,
+      "samples": 9,
+      "status": "failed",
+      "termination_cause": "not established by these observations",
+      "timeout_kind": null
+    },
+    "resources": {
+      "available": true,
+      "cpu_seconds": 8.71,
+      "minimum_host_mem_available_bytes": 1234251776,
+      "peak_rss_bytes": 570167296,
+      "resource_sample_count": 9,
+      "resource_samples": "test_object_shard_m4_fragment_reabsorption-resources.jsonl",
+      "resource_sampling_scope": "external direct child and host /proc observations at most once per wall second; no inferred termination cause",
+      "rss_bytes": 570167296,
+      "scope": "direct_process_only"
+    },
+    "returncode": 1,
+    "role": "focused-reproduction",
+    "seconds": 8.335,
+    "skip_messages": [],
+    "status": "failed",
+    "timeout_diagnostic_error": null,
+    "timeout_diagnostics": null,
+    "timeout_kind": null,
+    "timeout_seconds": 300
+  },
+  "runner_failed": true,
+  "runner_sha256": "e26392c79f74af2465dfcc59d57b9453a91799d9aa5524a34caad27ff1a6ecb1",
+  "runtime_custody_sha256": "801b55bad5ad6701cf813b96a2cdce5d03866ff4398168aa970b5067702fac92",
+  "schema": "objectshard-m4-observed-held-pointer-replay-v1",
+  "scope": "Local Linux headless; real native worker and Rapier; no physical GPU acceptance.",
+  "source_commit": "c658ea51516804ae920353de20b22a786babeb40",
+  "source_tree": "6d212c311baa43a279b5f782ab1de5e45ce3e30c"
+}

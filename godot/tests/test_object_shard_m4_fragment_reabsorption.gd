@@ -95,8 +95,34 @@ func _cut_neck_with_pointer() -> bool:
 			"selected_tool":f.bench._tool.selected,"signal_connections":f.host.world_view.gui_input.get_connections().size()}))
 		_pointer_button(first.position,false)
 		return false
+	# Delay only Main's publication callback. The real child Workbench input
+	# process and exclusive native worker continue. A native mutation receipt
+	# can therefore arrive before Main sees or installs its new geometry.
+	# This is an actual delivery interleaving, not a substituted owner/frame.
+	var main_was_processing: bool = f.host.is_processing()
+	f.host.set_process(false)
 	_pointer_move(second.position)
 	f.expect(f.bench.object_shard_m4_port.pending_count()==1,"pointer motion cannot queue an unwitnessed stroke behind pending geometry")
+	var first_received: bool = await f.until(func(): return f.bench.object_shard_m4_port.results.size()>before,
+		"actual native Cut receipt arrives while Main publication is delayed")
+	for callback: int in range(3): await process_frame
+	var fenced: bool = f.bench.object_shard_m4_port.results.size()==before+1 \
+		and f.bench.object_shard_m4_port.pending_count()==0 \
+		and f.bench._object_shard_pointer_tool==5 and f.bench._drag_button==MOUSE_BUTTON_LEFT
+	evidence.pointer_receipt_fence = {"main_callback_delayed":not f.host.is_processing(),
+		"results":f.bench.object_shard_m4_port.results.slice(before).duplicate(true),
+		"pending_count":f.bench.object_shard_m4_port.pending_count(),
+		"frame_next_transaction":f.runtime().frame.get("next_transaction",-1),
+		"display_next_transaction":f.runtime().publication.get("next_transaction",-1),
+		"frame_sequence":f.runtime().frame.get("publication_sequence",-1),
+		"display_sequence":f.runtime().publication.get("publication_sequence",-1),
+		"held_pointer_tool":f.bench._object_shard_pointer_tool}
+	# Restore the real callback on every outcome before closing or continuing.
+	f.host.set_process(main_was_processing)
+	if not first_received or not f.expect(fenced,
+		"held Cut waits for the applied native transaction to reach its actual displayed geometry"):
+		_pointer_button(second.position,false)
+		return false
 	if not await f.until(func(): return f.bench.object_shard_m4_port.results.size()==before+2 \
 		and f.runtime().physics_ready() and f.coherent(),"held current pointer cuts its next visible cell only after the first receipt and geometry"):
 		_pointer_button(second.position,false)
@@ -196,8 +222,19 @@ func _run() -> void:
 	var target: Dictionary = f.moving_target(7)
 	if not f.expect(not target.is_empty(),"settled owned Wood has exact displayed witness"):
 		await _finish(); return
-	var requested: Dictionary = f.runtime().request_reabsorption(target.position)
-	if not f.expect(requested.get("ok",false) and requested.get("applied")==false,"return starts as staged request, never a fictitious applied edit"):
+	var before_action: int = f.runtime()._reabsorption_action_serial
+	f.bench._tool.select(7)
+	f.bench._tool.item_selected.emit(7)
+	_pointer_button(target.position,true)
+	_pointer_button(target.position,false)
+	evidence.settle_pointer = {"tool":f.bench._tool.selected,
+		"action_before":before_action,"action_after":f.runtime()._reabsorption_action_serial,
+		"pending_kind":f.runtime()._pending_kind,"pending_serial":f.runtime()._pending_serial,
+		"displayed_target":target.duplicate(true),"body_count":f.body_count()}
+	if not f.expect(f.runtime()._reabsorption_action_serial==before_action+1 \
+		and f.runtime()._pending_kind=="reabsorb_prepare" and f.runtime()._pending_serial>0 \
+		and not f.runtime().last_reabsorption_receipt.get("applied",false) and f.body_count()==1,
+		"mounted Settle click stages exactly one native request, never a fictitious applied edit"):
 		await _finish(); return
 	if not await f.until(func(): return f.runtime().last_reabsorption_receipt.get("applied",false),"actual freeze, World credit, RID removal and terrain ACK complete"):
 		await _finish(); return

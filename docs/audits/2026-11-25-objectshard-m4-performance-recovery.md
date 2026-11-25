@@ -340,6 +340,97 @@ The [exact successor diff](objectshard-m4-recovery-20261125/long-burn-local/repo
 is retained. The local execution is not relabelled as those later bytes; the
 final hosted campaign must execute the exact committed successor.
 
+## Disabled-control Pause acknowledgement recovery
+
+The first recovery campaign at source
+`51903088118d2a04f2dc79dd6fff7c25b226970c` completed all 42 Linux headless
+cases, but its graphical invocation passed 30 of 31 cases. The new disabled
+control observed two native ticks and zero Rapier steps during its purportedly
+paused window. This remains a **failed control and failed Linux job**. The
+[retained correction custody](objectshard-m4-recovery-20261125/disabled-pause-correction/custody.json)
+records the exact run, job, archive and process log identities.
+
+The fixture had accepted a coherent snapshot marked paused without requiring
+acknowledgement of the particular UI Pause. Existing ordinary actor-composition
+qualification already explains why an internal held body sample can produce
+such a snapshot during Play. The correction in
+`658b6b1464aecc8165cb8c77817ea5d591d56d0a` uses the existing monotonic
+`workbench_pause_request_serial` and worker-exclusive
+`workbench_pause_ack_serial` receipt, together with actor suspension and the
+original coherent-image conditions. An otherwise coherent copied receipt from
+before that request is explicitly refused. Reports retain the requested and
+acknowledged serials, native tick, World identity and publication serial before
+and after each window. The zero-native-ticks/zero-Rapier-steps requirement and
+twelve-second workload windows remain unchanged. No product or native law is
+altered by this fixture correction.
+
+The exact corrected fixture is SHA-256
+`6fc42b178288ddc47c5f3801f1f46535904e54d9f55ba00a2ba8d8f8fb69c8ea`.
+The first external execution was interrupted by loss of the executor; its
+outcome is unavailable and is not a pass. After recovery, an exact committed
+source execution parsed and reached its initial flag assertion, then terminated
+with SIGKILL after 5.219 seconds during ordinary Workbench startup. Neither
+measurement window executed. The retained external samples observed peak RSS
+357,523,456 bytes and minimum host available memory 1,178,390,528 bytes; they do
+not establish the termination cause. The independent 117-native-input and
+five-build-contract-input comparison and engine/runtime hashes passed. This
+focused attempt is **not qualified**. Fresh actual hosted execution of the
+corrected fixture is still required; source review does not replace it.
+
+One authorized direct-script retry retained the exact committed three-file
+portable bootstrap. All three files already matched and there were no extra
+generated metadata files; this is not evidence of a metadata repair. Ordinary
+Workbench setup, the initial native tick, monotonic Pause, stale-receipt refusal
+and actual native/actor acknowledgement passed. SIGKILL at 11.432 seconds then
+interrupted the first measurement window. This second attempt also remains
+**not qualified**, with its separate log/resource custody retained.
+
+## Independent held-edit delivery review
+
+The bounded product correction at
+`22b610dfaa16faf98df691cd0ccbaf9b43aebb50` records the latest validated
+material mutation's full owner/port identity and maximum transaction number.
+The held pointer waits for a later coherent publication from that exact owner,
+in addition to its existing native/physics readiness and frame/publication
+equality. Read-only inspection creates no mutation dependency. Diagnostic
+result retention cannot erase the fence, conflicting owner identities enter
+Hold, and authoritative port retirement clears the prior identity. This is a
+transaction-delivery condition; it changes no native physics or material law.
+
+Independent source review approved that scope. The
+[value-level conformance case](objectshard-m4-recovery-20261125/edit-delivery-fence/review.json)
+at `5c9ba082f4571258cc4874e4dfb9f83a65f1a5a0` passed 36 assertions with
+natural exit 0 in 1.909 seconds. It challenges out-of-order validated receipts,
+all capability/publication owner identities, malformed counters, inspect
+exclusion, diagnostic-result eviction, conflict Hold and retirement reset.
+These copied values do not claim that native material moved. The independently
+executed delayed-Main fragment case provides the separate physical evidence.
+The new focused case is added to every appropriate existing qualifier lane;
+the explicit inventory is 43 headless, 32 graphical and 17 package-replay cases,
+with 18 cases actually requiring a display. Every prior case remains present.
+
+## First replacement Linux graphical comparison
+
+The [source-bound comparison table](objectshard-m4-recovery-20261125/linux-519-performance/readout.md)
+and [machine-readable readout](objectshard-m4-recovery-20261125/linux-519-performance/readout.json)
+independently join all 26 headless/graphical profile reports and original
+process-log hashes from the first `51903088` Linux replacement artifact.
+All 13 graphical profiles completed 180 native ticks with actual Rapier
+segments and zero observed incoherence. The two new optional-recording cases
+also executed through the actual renderer and passed 38 checks each. The
+aggregate Linux job remains failed because of the disabled-control boundary
+described above.
+
+The five overview scenes submitted approximately 6.65–6.80 frames per second
+on Mesa llvmpipe, while native progression ranged from 1.72 to 2.26 ticks per
+second. The disabled running control submitted 6.73 frames per second and
+advanced 6.65 native ticks per second. Its paused sibling submitted 7.02 frames
+per second but is not a valid zero-progression control: the two late native
+ticks remain in its report. This software-renderer evidence establishes
+neither physical NVIDIA performance nor an ObjectShard speedup. The complete
+table separates callback/render interval tails, bounded delivery age, worker
+snapshots and Main costs, and retains their nonadditive timing scopes.
+
 ## Visual review and next acceptance evidence
 
 All five recovered principal Windows overview captures were inspected

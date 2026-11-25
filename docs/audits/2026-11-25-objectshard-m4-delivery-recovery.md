@@ -150,6 +150,43 @@ can support an explicitly documented reuse relationship, but changed qualifier,
 verifier and workflow inputs require new delivery and application execution.
 The original failure remains recorded.
 
+## Replacement Linux evidence checkpoints
+
+The [replacement Linux campaign ledger](objectshard-m4-recovery-20261125/replacement-linux-campaigns.json)
+preserves the two terminal replacement failures. Their original archives were
+independently downloaded again after the local executor restarted; original
+GitHub archive digests, exact Git inputs, registered inventories and original
+process-log hashes were reverified. Acquisition of the pinned Linux engine
+succeeded in both hosted jobs.
+
+| Source and campaign | Exact retained outcome |
+| --- | --- |
+| `51903088118d2a04f2dc79dd6fff7c25b226970c`, run [45517975210](https://github.com/techrote/cybersand/actions/runs/45517975210) | Headless 42/42 passed. Graphical 30/31 passed; the disabled paused control observed two delayed ordinary native ticks and zero Rapier steps after measuring from a generic paused snapshot. The exact worker Pause acknowledgement already exists but was not awaited by this fixture. Aggregate Linux job remains **FAIL**. |
+| `422d131048db573c0abd08bcca25f6b3999e8703`, run [45522534938](https://github.com/techrote/cybersand/actions/runs/45522534938) | Headless 41/42 passed. The fragment/reabsorption process naturally exited 1 after 107 checks, failing the second held Cut receipt and post-release result-count assertions. Later fragmentation, native material conservation, physical mass and settlement checks passed. Graphical qualification was not reached. Aggregate Linux job remains **FAIL**. |
+
+The second campaign includes the independently reviewed long-burn clock repair;
+its original long-burn case passed. These outcomes neither waive the remaining
+failures nor establish qualification for a subsequent fixture or product repair.
+The exact pointer-ordering cause is still under independent investigation at
+this checkpoint.
+
+The independent ZIP auditor now streams payload hashes and bounded PE header
+reads, preserving every previous source, digest, provenance and image check.
+This avoids allocating the complete 178 MB engine image in the local reviewer.
+The [audit-only verification receipt](objectshard-m4-recovery-20261125/zip-stream-audit-checks.json)
+records both actual pinned Windows engine images passing and six malformed
+header fixtures being refused. Independent review also supplied a ZIP whose
+valid CRC covered only 90 actual image bytes while its central directory
+declared 200 bytes. The first streaming draft incorrectly trusted that length.
+The corrected member hash counts actual decompressed bytes, and both the hash
+and PE paths refuse this fixture. No evaluator was inspected using the defective
+draft. The [repeatable audit challenge](objectshard-m4-recovery-20261125/challenge_windows_zip_audit.py)
+requires the independently acquired official archive and records all ten checks.
+The ordinary package producer, shipped verifier,
+application, workflow and registered execution inventory are unchanged by this
+audit-only adjustment. A locally terminated bulk inspection is not represented
+as a pass or attributed to a diagnosed memory failure.
+
 ## Required next execution and disposition
 
 The existing completion workflow supports a principal-branch push whose commit

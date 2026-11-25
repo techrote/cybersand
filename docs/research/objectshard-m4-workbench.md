@@ -234,6 +234,19 @@ each native/geometry barrier. Release, tool change, pan, resize and navigation
 cancel the intent. A stationary igniter does not repeatedly reset an already
 burning cell's reaction lifetime.
 
+A successful edit receipt can reach the child Workbench before Main consumes
+the corresponding native publication. Equality of Main's two retained frames
+does not close that delivery gap. The port therefore retains one authenticated
+mutation boundary: the complete native/World/session/transport/port identity
+and greatest applied edit transaction. A held tool waits for a coherent
+same-owner displayed publication whose next transaction is strictly greater,
+in addition to the existing geometry and physics readiness checks. Read-only
+inspection does not advance this mutation boundary, diagnostic-result eviction
+cannot erase it, and authoritative port retirement clears it. The
+[independent delayed-Main witness](../audits/objectshard-m4-recovery-20261125/held-pointer-fix-independent-review.json)
+preserves the genuine failed interleaving and the unchanged test's successful
+replay; no native or Rapier state is fabricated to prove it.
+
 The native snapshot supplies owned inventory and material counts independently
 of the displayed World raster. That raster is a material projection: ballistic
 Water overlays and fractional-Water dithering do not constitute additional grid

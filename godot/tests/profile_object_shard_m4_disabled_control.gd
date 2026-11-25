@@ -6,21 +6,61 @@ const Setup = preload("res://scripts/workbench_setup.gd")
 var owner_generation: int = -1
 var authored_rectangles_sha256: String = ""
 var control_view: Dictionary = {}
+var pause_request_serial: int = -1
+var pause_transitions: Array[Dictionary] = []
 
 func _native_tick() -> int:
 	return int(f.host.latest_snapshot.tick_index)
 
-func _paused_coherent() -> bool:
+func _pause_boundary() -> Dictionary:
 	var snapshot: CyberSimulationSnapshot = f.host.latest_snapshot
-	return snapshot.paused and snapshot.world_revision == snapshot.simulation_world_revision \
-		and f.host.last_uploaded_render_snapshot_serial >= snapshot.render_snapshot_serial
+	return {"host_paused":f.host.paused,"native_paused":snapshot.paused,
+		"actor_suspended":f.host.physical_actor_session._suspended,
+		"requested_pause":f.host.simulation_worker.workbench_pause_request_serial(),
+		"acknowledged_pause":int(snapshot.lab_context.get("workbench_pause_ack_serial",-1)),
+		"native_tick":snapshot.tick_index,"snapshot_serial":snapshot.serial,
+		"world_generation":snapshot.render_world_generation,"world_revision":snapshot.world_revision,
+		"simulation_world_revision":snapshot.simulation_world_revision,
+		"render_serial":snapshot.render_snapshot_serial,
+		"uploaded_render_serial":f.host.last_uploaded_render_snapshot_serial}
+
+static func _pause_receipt_matches(value: Dictionary, requested: int) -> bool:
+	return requested >= 0 and value.host_paused and value.native_paused and value.actor_suspended \
+		and int(value.acknowledged_pause) >= requested \
+		and value.world_revision == value.simulation_world_revision \
+		and int(value.uploaded_render_serial) >= int(value.render_serial)
+
+func _paused_coherent() -> bool:
+	return _pause_receipt_matches(_pause_boundary(),pause_request_serial)
 
 func _pause_disabled() -> bool:
+	var before: Dictionary = _pause_boundary()
 	if not f.host.paused:
 		if not f.expect(f.bench.toggle_pause(),"disabled control ordinary Pause admitted"): return false
-	return await f.until(_paused_coherent,"disabled control paused native image completely delivered")
+		if not f.expect(f.host.simulation_worker.workbench_pause_request_serial()>int(before.requested_pause),
+			"disabled control Pause sends a new monotonic worker command"): return false
+	pause_request_serial = f.host.simulation_worker.workbench_pause_request_serial()
+	var requested: Dictionary = _pause_boundary()
+	# As in the ordinary actor-composition gate, a coherent paused snapshot can
+	# be a held body sample during Play. It does not acknowledge this UI Pause.
+	# Exercise that stale value without changing any owner or published input.
+	var stale: Dictionary = requested.duplicate(true)
+	stale.host_paused = true
+	stale.native_paused = true
+	stale.actor_suspended = true
+	stale.world_revision = stale.simulation_world_revision
+	stale.uploaded_render_serial = stale.render_serial
+	stale.acknowledged_pause = pause_request_serial-1
+	f.expect(not _pause_receipt_matches(stale,pause_request_serial),
+		"coherent paused receipt from before this command cannot admit a disabled measurement")
+	var acknowledged: bool = await f.until(_paused_coherent,
+		"disabled native and actor owners acknowledge this exact Pause and its image")
+	pause_transitions.append({"before":before,"requested":requested,"acknowledged":_pause_boundary(),
+		"required_pause_serial":pause_request_serial,"stale_negative":stale})
+	return acknowledged
 
 func _measure_disabled(label: String) -> void:
+	var first_boundary: Dictionary = _pause_boundary()
 	var first_tick: int = _native_tick()
 	var first_steps: int = f.host.rapier_bridge.manual_step_count()
 	var first_profile: Dictionary = f.host.simulation_worker.object_shard_owner_profile()
@@ -41,6 +81,7 @@ func _measure_disabled(label: String) -> void:
 	var elapsed: int = maxi(1,Time.get_ticks_usec()-started)
 	var last_profile: Dictionary = f.host.simulation_worker.object_shard_owner_profile()
 	var row: Dictionary = {"label":label,"paused":f.host.paused,"elapsed_usec":elapsed,
+		"boundary_before":first_boundary,"boundary_after":_pause_boundary(),
 		"semantic_ticks":_native_tick()-first_tick,"actual_physics_steps":f.host.rapier_bridge.manual_step_count()-first_steps,
 		"render_submissions":submissions.size(),"process_callbacks":callbacks.size(),
 		"render_submissions_per_second":float(submissions.size())*1000000.0/elapsed,
@@ -102,6 +143,7 @@ func _finish_disabled() -> void:
 		"display_driver":DisplayServer.get_name(),"rendering_method":RenderingServer.get_current_rendering_method(),
 		"scene":"tower","camera":"overview","canvas_extent":[512,512],"control_view":control_view,
 		"authored_rectangles_sha256":authored_rectangles_sha256,"seconds_per_window":seconds,"windows":rows,
+		"pause_transitions":pause_transitions,
 		"checks":f.checks,"failures":f.failures,
 		"scope":"ordinary native Workbench tower with ObjectShard disabled; renderer submissions and semantic progression are independent; physical monitor presentation owner-pending"}
 	if f.host != null: await f.close()

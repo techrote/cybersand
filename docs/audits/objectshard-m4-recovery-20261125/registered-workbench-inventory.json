@@ -2,6 +2,7 @@
   "headless": [
     "m4_workbench_import",
     "test_object_shard_m4_latency_probe",
+    "test_object_shard_m4_edit_delivery_fence",
     "test_object_shard_m4_optional_diagnostics",
     "test_object_shard_m4_same_world_extension",
     "test_object_shard_m4_shared_main_rapier",
@@ -46,6 +47,7 @@
   "graphical": [
     "m4_workbench_import",
     "test_object_shard_m4_latency_probe",
+    "test_object_shard_m4_edit_delivery_fence",
     "test_object_shard_m4_optional_diagnostics",
     "test_object_shard_m4_same_world_extension",
     "test_object_shard_m4_shared_main_rapier",
@@ -79,6 +81,7 @@
   "package-replay": [
     "m4_workbench_import",
     "test_object_shard_m4_latency_probe",
+    "test_object_shard_m4_edit_delivery_fence",
     "test_object_shard_m4_optional_diagnostics",
     "test_object_shard_m4_same_world_extension",
     "test_object_shard_m4_shared_main_rapier",

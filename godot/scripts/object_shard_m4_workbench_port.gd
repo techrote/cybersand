@@ -26,6 +26,7 @@ var _next_action: int = 0
 var _pending: Dictionary = {}
 var _held_reason: String = ""
 var _pinned_owner: Dictionary = {}
+var _latest_edit_delivery: Dictionary = {} # One authenticated mutation, not the diagnostic result ring.
 
 
 func _init(requested: bool = false) -> void:
@@ -56,6 +57,23 @@ func pending_count() -> int:
 
 func held_reason() -> String:
 	return _held_reason
+
+
+func latest_edit_presented(publication: Dictionary, capabilities: Dictionary) -> bool:
+	if _latest_edit_delivery.is_empty(): return true
+	if not _held_reason.is_empty() or _latest_edit_delivery.port_generation != generation: return false
+	for key: String in ["native_instance_id", "world_generation", "session", "owner_epoch",
+			"shard_session", "world_incarnation", "transport_generation"]:
+		if _latest_edit_delivery[key] != capabilities.get(key): return false
+	for key: String in ["world_generation", "session", "owner_epoch", "shard_session",
+			"world_incarnation", "transport_generation"]:
+		if _latest_edit_delivery[key] != publication.get(key): return false
+	# Coordinator consumes this monotonic transaction before minting its edit
+	# receipt. Main can receive that receipt while both of its retained frames
+	# still agree on the older geometry. Only a later same-owner publication,
+	# together with the caller's real physics/geometry readiness, closes that gap.
+	return typeof(publication.get("next_transaction")) == TYPE_INT \
+		and int(publication.next_transaction) > int(_latest_edit_delivery.transaction_id)
 
 
 # A status readback is a worker-published VALUE. The native specialist must
@@ -261,6 +279,18 @@ func consume_receipt(receipt: Dictionary) -> Dictionary:
 		var native_reason: String = _applied_receipt_error(receipt, request)
 		if not native_reason.is_empty():
 			return _hold("UnprovenNativeApplication", int(id), native_reason)
+		if request.operation in ["erase", "ignite"]:
+			var native: Dictionary = receipt.native_receipt
+			var delivery: Dictionary = {"port_generation":generation,"transaction_id":native.transaction_id}
+			for key: String in ["native_instance_id", "world_generation", "session", "owner_epoch",
+					"shard_session", "world_incarnation", "transport_generation"]:
+				delivery[key] = native[key]
+			if not _latest_edit_delivery.is_empty():
+				for key: String in delivery:
+					if key != "transaction_id" and delivery[key] != _latest_edit_delivery.get(key):
+						return _hold("ConflictingNativeEditOwner", int(id))
+				delivery.transaction_id = maxi(int(delivery.transaction_id),int(_latest_edit_delivery.transaction_id))
+			_latest_edit_delivery = delivery
 	_pending.erase(id)
 	var raw_native: Variant = receipt.get("native_receipt", {})
 	var terminal: Dictionary = {"ok": outcome == "Applied", "outcome": outcome,
@@ -344,6 +374,7 @@ func retire(reason: String = "OwnerRetired") -> void:
 	_pending.clear()
 	_held_reason = ""
 	_pinned_owner.clear()
+	_latest_edit_delivery.clear()
 	generation += 1
 	last_status = {"ready": false, "outcome": reason}
 
