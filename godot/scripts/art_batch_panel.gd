@@ -453,9 +453,20 @@ func _conversation_world_epoch() -> int:
 	return int(wb.host.simulation_worker.art_state().epoch)
 
 func _conversation_apply_guard(identity: Dictionary, full: bool = false) -> bool:
+	# queue_free is an owner-lifetime boundary even before the deferred deletion
+	# flush. A ready worker must not append or adopt for a retiring UI hierarchy.
+	if is_queued_for_deletion() or not is_inside_tree() \
+			or not is_instance_valid(conversation_editor) or conversation_editor.is_queued_for_deletion() \
+			or not conversation_editor.is_inside_tree() \
+			or not is_instance_valid(provider) or provider.is_queued_for_deletion():
+		return false
+	if wb != null:
+		if not is_instance_valid(wb) or wb.is_queued_for_deletion() or not wb.is_inside_tree(): return false
+		if wb.host != null and (not is_instance_valid(wb.host) or wb.host.is_queued_for_deletion() \
+				or not wb.host.is_inside_tree()): return false
 	if not _conversation_apply_preparing or identity != _conversation_apply_identity \
 			or int(identity.get("generation",-1)) != _conversation_apply_generation \
-			or not is_inside_tree() or not conversation_editor.visible:
+			or not conversation_editor.visible:
 		return false
 	if int(identity.get("revision",-1)) != conversation_revision \
 			or int(identity.get("editor_revision",-1)) != conversation_editor_revision \

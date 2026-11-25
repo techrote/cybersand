@@ -128,6 +128,20 @@ and paste spanning parts reset this text editor's local Undo history, as the
 page-control tooltip explains. Cancel still discards the complete draft. Native
 World Undo/Redo remains an independent, unchanged operation.
 
+Conversations with at least 262,144 characters prepare their complete redacted
+value and audit encoding in a bounded Provider-owned worker. The editor shows
+preparation progress and keeps Cancel available; text-changing actions and
+another Apply wait. Small edits retain the immediate path. Cancel, Stop, closing
+the editor, changed conversation/World/credentials, or a retiring owner refuses
+uncommitted work. Read-only navigation and Copy remain available. A queued
+panel, editor, Workbench or host is already retiring before deferred deletion.
+
+The owner thread still performs the complete durable journal append. Only a
+successful append adopts the redacted live conversation, before traffic
+observers run. Failed or cancelled preparation never adopts a partial draft.
+Native World history remains separate. Direct and collaborative requests,
+context refresh and stage approval wait for this pending Apply or its Cancel.
+
 Conversation remains available for persistent collaboration within the current
 Workbench session. Hiding and reopening Art preserves it. A new game session
 starts empty under accepted #727; World Save/Open is a separate native contract.
