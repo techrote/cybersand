@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped
 canonical-for: [liquid-solver-family-policy]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md, pressure-optimization.md]
 ---
 
@@ -318,7 +318,10 @@ returned by the constructing call). The #245 pressure adapter adds
 `family_parameters` (empty, or `pressure_flow_v1`: `family_version`,
 `gas_enabled`, `atmospheric_head_rows`, `flow_scale`, compartment limits,
 acceleration, retain, friction, dead bands, `overfill_limit`, `adhesion_film`)
-and `physical_state_hash_version` (2 for non-IN, 3 for any IN World; 1 only in the historical #245 record). Actual IN parameter readback is described in the [IN contract](inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry). `source_revision` and `native_binary_sha256`
+and `physical_state_hash_version` from the actual World getter (currently 2–6
+according to admitted state; 2/non-IN and 3/IN describe the earlier checkpoint).
+Use the [current version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions)
+for ballistic, signed-IN, capacity and Wave precedence. Actual IN parameter readback is described in the [IN contract](inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry). `source_revision` and `native_binary_sha256`
 are **not** in the native receipt; the host's runtime identity supplies them.
 
 **Run receipt hash (experimental GDExtension dictionary, Current on main).**
@@ -343,8 +346,9 @@ Explicit low-level requests use `build_liquid_policy_world` or the C API's
 `create_with_liquid_policy_v1`. Current application preparation additionally uses
 `CyberDemoBridge.prepare_liquid_world`, `prepare_liquid_level` and
 `prepare_liquid_default_demo`, backed by a private `PreparedWorldBuilder`
-candidate and fenced commit. `import_physical_state` decodes CYPS2/non-IN or
-CYPS3/IN with the running build; CYPS1 is historical and refused. A refused or
+candidate and fenced commit. `import_physical_state` validates supported CYPS
+versions 2–5 against the running build and encoded configuration. Wave has no
+exact physical continuation format; CYPS1 is historical and refused. A refused or
 stale policy preserves the installed World. The
 [prepared-session contract](liquid-prepared-setup-and-receipts.md) owns this
 transaction, and the [comparison host](../operations/lcb-manual-comparison-ux.md)
@@ -363,8 +367,10 @@ re-validates it in every case.
 
 **Freeze boundary.** The C API and older GDExtension dictionary remain
 experimental; CYSD1 still does not persist solver policy. The owner-requested
-narrow native setup/normalization/run/attempt/accounting codec freeze and CYPS2/3
-continuation are documented in the [shared contract](liquid-prepared-setup-and-receipts.md).
+narrow native setup/normalization/run/attempt/accounting codec freeze and the
+original CYPS2/3 continuation checkpoint are documented in the
+[shared contract](liquid-prepared-setup-and-receipts.md); later explicitly versioned
+extensions follow the current persistence table above.
 The accepted main build explicitly refuses historical CYPS1. This does not freeze production Cell
 layout, a global ABI, source/runtime verification or complete application replay.
 

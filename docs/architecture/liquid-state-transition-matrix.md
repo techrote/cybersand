@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Operation-by-operation reference model with current admission routes for accepted W-CY, pressure variants and Water/Brine IN; historical Proposed rows retain their original model and qualification scope
 canonical-for: [liquid-state-transition-matrix]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md, pressure-optimization.md]
 ---
 
@@ -127,7 +127,7 @@ constraint below does not override the [current storage contract](chunk-tile-and
 | Operation | Owner | Rule |
 |---|---|---|
 | FreeMass partial transfer | `transfer_water` | Current: `amount = min(requested, source, capacity)`. Zero source → Empty; Empty destination → Water. |
-| Whole-cell Water (W-CY main; isolated Water IN successor) | family | Current native W-CY and isolated Water IN successor: every Water cell holds exactly `maximum()`. Fractional ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink); no Godot normalization opt-in yet. |
+| Whole-cell Water (accepted W-CY and Water IN) | family | Every Water cell holds exactly `maximum()`. Fractional initial ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink). The accepted Godot comparison panel supplies this opt-in; it does not legalize fractional future sources. |
 | Overfill (PF) | family | Current: Water can hold `maximum()` + overfill, with overfill ≤ `maximum()`. Overfill enters native quantity accounting and observations and is never rendered as an extra cell. |
 | Observation of quantity | host | `water_integer` for FM/PF (visible + overfill for PF); `maximum()` per cell for whole-cell families |
 

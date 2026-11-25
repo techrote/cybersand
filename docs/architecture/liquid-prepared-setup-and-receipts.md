@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Current native prepared construction, typed outcomes, exact quantity accounting and bounded application-owner integration; original October qualification checkpoints retain their source scope and do not claim complete host/scientific acceptance
 canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, shared-workbench-authoring-data.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -539,7 +539,7 @@ blocks and retires a material block when its owner changes families. GDScript
 never edits wire offsets or interprets illustrative blockv1 as the running law.
 
 Prepared application construction takes explicit `maximum_rule_radius`2 or3,
-default2. Brine IN refuses radius2 and retains the old World/receipt. The normal
+default2. Water or Brine IN refuses radius2 and retains the old World/receipt. The normal
 Liquids panel offers a separate matched radius3 selection and native damping
 control; choosing IN never silently changes geometry. Current comparator arms
 can explicitly use the same radius3. **Original Current control** and ordinary
@@ -760,8 +760,15 @@ policy before rounding can remove a cell. Precision and ambient must match the
 requested World, and only the implemented SerialInPlace/PhasedInPlace backends
 are accepted. Policy admission precedes candidate allocation.
 
-The preparation bound is at most 1024 cells per side and 1,048,576 explicit
-records; a caller may lower the record budget. Inclusive endpoints and the
+Default preparation limits are 1024 cells per side and 1,048,576 explicit
+records. Workbench preparation supplies limits from its validated extent, up
+to the native 2048-cell side ceiling and 4,194,304 records; this does not expand
+an individual World's admitted chunk, pressure or storage capacity. Callers
+may lower the record budget. The constants and checks are in
+[`water_normalization.hpp`](../../native/include/cybersand/water_normalization.hpp)
+and the Workbench adapter in
+[`cyber_prepared_liquid_world.hpp`](../../godot/native_extension/cyber_prepared_liquid_world.hpp).
+Inclusive endpoints and the
 native reservation halo have checked coordinate bounds. World chunk capacity
 can still refuse an otherwise valid setup. Allocation/length and expected
 reservation-capacity failures return native capacity outcomes. Unexpected
@@ -777,7 +784,7 @@ normalization receipt digest. An alternative before mass such as 128 versus
 129 cannot borrow the same after-255 World to assert a different installed
 normalization history.
 
-Water `cellular_yield_v1/reference` is admitted in this native branch, with its
+Water `cellular_yield_v1/reference` is admitted in accepted native source, with its
 own optional Water material block v2 (`viscosity_index` 0–255, default 0).
 Its ingress requires `maximum()` per Water cell. A fractional public bool
 `set_cell_state` returns false before mutation/allocation; native setup/import
@@ -833,19 +840,29 @@ arbitrary rehashed lifetime history is established by these digests.
 
 ## Quantity aggregates, producers and continuation
 
-`QuantityLedgerSnapshot` schema 1 is native World-wide accounting, including
-stored cells under body masks and outside the current simulation region.
+`QuantityLedgerSnapshot` is native World-wide accounting, including stored
+cells under body masks and outside the current simulation region. Worlds with
+ballistic Water disabled retain **schema 1**. Enabling ballistic Water selects
+**schema 2**, which additionally stores exact in-flight Water quantity. This is
+an existing native codec distinction, not a new format introduced by this audit.
 
 | Data | Unit and interpretation |
 |---|---|
 | Visible Water and pressure overfill | Exact selected-precision Water integer units |
+| In-flight Water (`water_ballistic`, schema 2) | Exact quantity owned by ballistic parcels; zero for non-ballistic schema-1 Worlds |
 | Six source/sink kinds | Setup normalization, external edit, generated chunk, deferred event, pair reaction and kernel conversion; produced/consumed Water are separate unsigned totals |
 | 56 pair-rule entries and event counts | Rule-specific gross Water inputs/products, with actual consumed partial/overfill quantity and initialized full Water outputs |
 | 19 kernel-rule entries | Rule-specific Water source/sink quantities, checked against the kernel's actual source/sink roles and full-cell production quantum |
 | Current/prepared populations | Two exact arrays of 256 material cell-count slots; these are per-species counts, not inferred common liquid mass |
 | Construction seed | Original/prepared identities, original baseline, normalization source/sink and receipt digest; attached once by the private native initializer |
 
-The closed equation is `baseline + sum(produced) = visible + overfill + sum(consumed)`.
+The closed equation is
+`baseline + sum(produced) = visible + overfill + ballistic + sum(consumed)`;
+the ballistic term is zero in schema 1. Native validation selects the schema
+from the actual World configuration and rejects a contradictory identity.
+[`quantity_ledger.hpp`](../../native/include/cybersand/quantity_ledger.hpp) and
+[`world_quantity.inc`](../../native/src/world_quantity.inc) own the codec and
+equation; the [ballistic contract](ballistic-water-v1.md) owns parcel transfers.
 At construction the baseline is pre-normalization quantity and normalization is
 booked once as a declared setup-only source/sink. Runtime transport contributes
 no physical source/sink. Pair products book gross inputs and products even when

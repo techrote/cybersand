@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Accepted pressure and inertial source routes plus preserved October 25 LCB requirements; source availability, historical model and campaign qualification remain separate
 canonical-for: [lcb-pressure-inertial-handoff]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
 ---
 
@@ -323,7 +323,7 @@ Oil, Lava, Acid, Cement and Molten Glass are not admitted in v1.
   - fixtures `viscous.lane-gallery` (Brine lane),
     `density.water-brine-lock-exchange` and the mixed M1 arm.
 - **Water W-IN:**
-  - isolated successor executes the [Water adapter and actual-carrier contract](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) with qualified sourceaa8af247 Windows/Linux publication; final ready-PR/scientific/full-host qualification remains pending;
+  - accepted Water IN executes the [Water adapter and actual-carrier contract](inertial-cellular-v1.md#water-in-native-successor--2026-10-25); sourceaa8af247 was its historical Windows/Linux publication checkpoint, before #254 merged. Full scientific/manual comparison remains separately scoped;
   - whole cells at `maximum()`;
   - fractional setups refused or explicitly normalized;
   - coherence honoured; adhesion not applicable (declared);
@@ -352,8 +352,9 @@ default 0); the illustrative v1 flow-rate block is not its encoding.
   normalized (`water-normalize-v1`).
 - Adhesion is not applicable (declared). Coherence is honoured. Legal future
   cadence/viscosity/one-side opportunities retain deadlines; permanently blocked
-  pools can sleep. Native normalization is explicit and setup-only; the Godot
-  opt-in/host path remains #202. See [prepared setup](liquid-prepared-setup-and-receipts.md).
+  pools can sleep. Native normalization is explicit and setup-only; the accepted
+  comparison panel passes that opt-in through the prepared host path. Future
+  fractional sources still refuse. See [prepared setup](liquid-prepared-setup-and-receipts.md).
 
 ## Admission and review
 
@@ -365,7 +366,8 @@ runs W-PF `reference` on the registered gas acceptance fixtures and scenario
 geometries without changing those registry records; re-dispositioning arms
 belongs to the #202 comparison host.
 
-The pressure requirements are implemented as recorded in the
-[pressure reference roadmap entry](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24);
-the inertial requirements remain future work. The linked final admission
-checkpoint and that entry own the accepted scope.
+The original pressure and Water/Brine inertial implementations are now accepted,
+as mapped at the top of this page. The
+[pressure reference roadmap entry](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
+retains its original admission scope. Source availability does not re-execute
+every registered comparison or replace the remaining owner evaluation.
