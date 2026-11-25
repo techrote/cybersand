@@ -1,0 +1,111 @@
+{
+  "schema": "objectshard-m4-recovery-hosted-review-admission-v1",
+  "status": "source-reviewed-admitted-for-new-hosted-execution",
+  "mission": "OBJECTSHARD-M4-COMPLETION-RECOVERY-001",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "branch_head_before_audit": "aace2e93b0e5634a84e973747cb2bd753f4f540f",
+  "qualification": {
+    "run": 45530425519,
+    "attempt": 1,
+    "jobs": [
+      {
+        "name": "native-sanitizers",
+        "id": 138924057320,
+        "status": "success"
+      },
+      {
+        "name": "windows-native",
+        "id": 138924057296,
+        "status": "success"
+      },
+      {
+        "name": "linux-workbench",
+        "id": 138924056891,
+        "status": "success"
+      },
+      {
+        "name": "windows-workbench",
+        "id": 138926161028,
+        "status": "success"
+      }
+    ]
+  },
+  "rationale": "Second local execution environment outage prevented complete raw supplemental evidence and principal ZIP independent review. Use the existing GitHub-hosted provider with read-only original artifact acquisition and a separate exact-source auditor checkout. Do not rebuild or modify the qualified application.",
+  "impact": {
+    "application_files_changed": 0,
+    "native_files_changed": 0,
+    "original_completion_workflow_prefix_unchanged": true,
+    "original_workflow_utf8_characters": 18696,
+    "existing_four_jobs_preserved": true,
+    "new_jobs": 2,
+    "new_source_scope": [
+      "external evidence readers and observers under docs/audits",
+      "two marker-selective read-only hosted audit jobs"
+    ],
+    "application_evidence_reuse": "Exact original source, native inputs, engine/runtime pins and immutable evaluator bytes. New external witnesses generate new evidence and retain original sources instead of replacing past reports.",
+    "code_reuse": "No generic CI helper or concurrent programme branch imported"
+  },
+  "dispatch": {
+    "event": "push",
+    "marker": "[objectshard-m4-evidence-review-45530425519]",
+    "heavy_application_campaign_marker_excluded": true,
+    "expected_prior_head": "aace2e93b0e5634a84e973747cb2bd753f4f540f",
+    "force": false,
+    "merge_or_ready": false
+  },
+  "required_outputs": [
+    "all six original artifact external size/digest checks",
+    "independent native and platform source/input/runtime/log/report joins",
+    "complete immutable evaluator manifest, payload and binary/dependency review",
+    "inner ZIP name/size/SHA and actual launcher receipt join",
+    "five original graphical overview captures",
+    "fresh Windows authored saves and reopening with original bytes and full inventories",
+    "fresh actual translating and rotating Rapier Cut with exact source target, same-step velocity conservation and raw material census",
+    "natural actual engine/wrapper lifetime closure and unchanged packaged payload",
+    "Independent documented classification of the finite actual direct OS-import list; System32 presence is not portability proof"
+  ],
+  "corrections_before_execution": [
+    {
+      "defect": "Audit-only native Registry ID namespace confused with shared physics reservation IDs.",
+      "resolution": "Native carrier IDs are positive and unique with at most 16 active carriers; bind exact target owner/generation/body-generation/RID rather than requiring IDs 49–64.",
+      "executed_defective_code": false
+    },
+    {
+      "defect": "Audit-only generated-file allowances too broad inside .godot and too narrow for paired UIDs/import metadata.",
+      "resolution": "Use the established strict generated-cache/paired-source allowance with symlink/reparse rejection.",
+      "executed_defective_code": false
+    }
+  ],
+  "boundaries": {
+    "physical_owner_acceptance": "HOLD",
+    "production_runtime_provenance": "Retained pre-Ready/merge checker remains FAIL/OPEN; no production ledger or binary publication is changed.",
+    "historical_failures_retained": true,
+    "execution_results_pending": true
+  },
+  "reviewed_audit_blobs": {
+    "workflow": "90a8e3abc7102fdbd097d875384125a3932cd4cc",
+    "archive_driver": "3cc6a1ba9b6fcd78b65a8ba1ed031d5907ee1299",
+    "windows_runner": "6731c1b513481ae94c77e7453c586b36bb004ea4",
+    "authored_observer": "5f417187baf36490bfb2954d33ece5e8c34b09ec",
+    "live_cut_observer": "9c9dc34d66db7752fe681901123f95feb6b551ed"
+  },
+  "independent_source_reviews": [
+    {
+      "reviewer": "technical lead",
+      "verdict": "APPROVE",
+      "scope": "Full original workflow prefix identity, final runner orchestration, original saved schema and native ID receipt, strict generated-file and PE inventory deltas."
+    },
+    {
+      "reviewer": "specialist A / native correctness",
+      "verdict": "APPROVE",
+      "scope": "Exact native/benchmark/runtime reviewers, observer physical and material assertions, Win32 handle/lifetime contracts, native ID namespace and final package/import deltas."
+    },
+    {
+      "reviewer": "specialist B / Workbench performance",
+      "verdict": "APPROVE",
+      "scope": "Live moving/rotating Cut observer, exact source/lattice/owner/RID and velocity/census joins; final generated-file boundary."
+    }
+  ],
+  "prepared_at_utc": "2026-11-25 03:08:30 UTC"
+}

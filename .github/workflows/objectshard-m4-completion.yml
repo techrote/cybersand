@@ -275,3 +275,87 @@ jobs:
           name: objectshard-m4-windows-${{ github.sha }}-${{ github.run_id }}
           path: evidence/
           retention-days: 60
+
+  recovery-independent-audit:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[objectshard-m4-evidence-review-45530425519]') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    outputs:
+      audit_summary_sha256: ${{ steps.archive_audit.outputs.audit_summary_sha256 }}
+    steps:
+      - name: Separately identified audit orchestration
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: auditor
+          persist-credentials: false
+      - name: Immutable qualified application source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a
+          path: candidate
+          persist-credentials: false
+      - name: Audit-only provider policy and source syntax
+        working-directory: auditor
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile docs/audits/objectshard-m4-recovery-20261125/review_delivery_45530425519.py docs/audits/objectshard-m4-recovery-20261125/run_windows_owner_witnesses.py
+      - name: Independent original archive, source, native and principal ZIP review
+        id: archive_audit
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 auditor/docs/audits/objectshard-m4-recovery-20261125/review_delivery_45530425519.py --candidate candidate --auditor auditor --output recovery-review
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-recovery-independent-review-45530425519-${{ github.run_id }}
+          path: |
+            recovery-review/reports/
+            recovery-review/metadata/
+            recovery-review/job-logs/
+          if-no-files-found: error
+          retention-days: 60
+  recovery-windows-owner-witnesses:
+    needs: recovery-independent-audit
+    if: ${{ needs.recovery-independent-audit.result == 'success' }}
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - name: Preserve exact external observer source bytes
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Separately identified external observer checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: auditor
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: objectshard-m4-recovery-independent-review-45530425519-${{ github.run_id }}
+          path: independent-review
+      - name: New external owner witnesses against the byte-identical principal evaluator
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          AUDIT_SUMMARY_SHA256: ${{ needs.recovery-independent-audit.outputs.audit_summary_sha256 }}
+        run: |
+          python auditor/docs/audits/objectshard-m4-recovery-20261125/run_windows_owner_witnesses.py --audit-summary independent-review/reports/summary.json --audit-summary-sha256 $env:AUDIT_SUMMARY_SHA256 --output windows-owner-witnesses --work (Join-Path $env:RUNNER_TEMP 'objectshard-owner-witnesses-45530425519')
+          if ($LASTEXITCODE -ne 0) { throw 'New external Windows owner witnesses failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-windows-owner-witnesses-45530425519-${{ github.run_id }}
+          path: windows-owner-witnesses/
+          if-no-files-found: error
+          retention-days: 60
