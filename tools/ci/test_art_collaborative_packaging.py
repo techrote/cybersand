@@ -179,13 +179,17 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
             with patch.object(gates, "ROOT", root):
                 self.assertTrue(gates.source_identity()["tracked_source_clean"])
                 source.write_bytes(b"uncommitted changed source\n")
+                (root / "new.import").write_bytes(b"staged import fixture\n")
+                run_git("add", "new.import")
                 diagnostic = root / "failure.json"
                 with self.assertRaisesRegex(ValueError, "ordinary.gd"):
                     gates.source_identity(diagnostic)
                 proof = json.loads(diagnostic.read_text())
                 self.assertIn("ordinary.gd", proof["tracked_porcelain"])
                 self.assertEqual(proof["unstaged_paths"], ["ordinary.gd"])
-                self.assertEqual(proof["staged_paths"], [])
+                self.assertEqual(proof["staged_paths"], ["new.import"])
+                self.assertFalse(proof["import_descriptors"]["new.import"]["head_present"])
+                self.assertIsNone(proof["import_descriptors"]["new.import"]["head_sha256"])
                 self.assertRegex(proof["unstaged_diff_sha256"], r"^[0-9a-f]{64}$")
                 self.assertNotIn("uncommitted changed source", diagnostic.read_text())
 

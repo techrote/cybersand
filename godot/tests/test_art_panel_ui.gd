@@ -198,7 +198,7 @@ func collaboration_layout_checks() -> void:
 	check(not panel.collaboration.context.is_empty() and not view.context_text.text.is_empty(),
 		"integrated Context displays actual bounded native observation")
 	check(panel.size == Vector2i(820,620) and panel.min_size == Vector2i(520,320),
-		"first explicit Collaborate expands only the compact default and preserves the minimum")
+		"first explicit Collaborate expands a compact opening and preserves the minimum")
 	var scroll: ScrollContainer = view.context_text.get_parent().get_parent()
 	var popup_rect := window_screen_rect(panel)
 	var text_rect := control_screen_rect(view.context_text)

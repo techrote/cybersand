@@ -300,9 +300,10 @@ func _size_collaboration_first_open() -> void:
 	_collaboration_opened = true
 	# Direct keeps its compact default. The first explicit Collaborate action
 	# needs enough space for an inspectable context/proposal and its footer.
-	# Respect an owner-resized window, and never resize it again on a toggle.
+	# Preserve an existing larger layout and all later owner resizing. An
+	# ordinary popup may have clamped the compact default to its minimum.
 	var compact := Vector2i((Vector2(640,400)*content_scale_factor).ceil())
-	if size != compact: return
+	if size.x > compact.x or size.y > compact.y: return
 	var bounds := Rect2i()
 	var ancestor := get_parent()
 	while ancestor != null:

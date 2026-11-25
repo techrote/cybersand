@@ -80,12 +80,18 @@ def source_rejection_details(tracked: str, status: str) -> dict:
         path = ROOT / relative
         if path.is_file() and not path.is_symlink():
             current = path.read_bytes()
-            original = subprocess.check_output(["git", "show", "HEAD:" + relative], cwd=ROOT, timeout=60)
+            lookup = subprocess.run(["git", "show", "HEAD:" + relative], cwd=ROOT, timeout=60,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+            original = lookup.stdout if lookup.returncode == 0 else None
             result["import_descriptors"][relative] = {
-                "worktree_sha256": hashlib.sha256(current).hexdigest(), "head_sha256": hashlib.sha256(original).hexdigest(),
-                "worktree_bytes": len(current), "head_bytes": len(original),
+                "worktree_sha256": hashlib.sha256(current).hexdigest(),
+                "head_present": original is not None,
+                "head_sha256": hashlib.sha256(original).hexdigest() if original is not None else None,
+                "head_lookup_exit_code": lookup.returncode,
+                "worktree_bytes": len(current), "head_bytes": len(original) if original is not None else None,
                 "worktree_crlf": current.count(b"\r\n"), "worktree_lf": current.count(b"\n"),
-                "head_crlf": original.count(b"\r\n"), "head_lf": original.count(b"\n")}
+                "head_crlf": original.count(b"\r\n") if original is not None else None,
+                "head_lf": original.count(b"\n") if original is not None else None}
     result["omitted_import_descriptors"] = max(0, len(imports) - 64)
     return result
 

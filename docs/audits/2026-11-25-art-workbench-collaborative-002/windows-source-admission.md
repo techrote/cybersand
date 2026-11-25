@@ -51,6 +51,9 @@ not copied into diagnostics. An isolated Git test checks failure diagnostics;
 a second uses the real tracked descriptor and source attributes to check the
 Windows EOL checkout/rewrite sequence.
 
+The independent reproduction script, complete result and original artifact review
+are source-pinned at [provider evidence 4cf4fdfa](https://github.com/techrote/cybersand/blob/4cf4fdfa130e45a88bc4cafc57543316fb0ebfe6/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/windows-source-admission-review.md).
+
 The next complete campaign must qualify its own source, including this
 correction, the finite direct-run admission guard and integrated Context layout.
 The intermediate failure remains part of the mission record.
