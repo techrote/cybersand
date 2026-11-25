@@ -54,9 +54,13 @@ the runtime shader cache lives under the user profile, outside the project's
 Complete original measurements, logs and audits are in
 [original-measurements.zip](original-measurements.zip), with the
 [manifest](original-measurements-manifest.json) and
-[four-arm derived index](four-arm-summary.json). Only reproducible shader and
-editor-documentation cache binaries were omitted from that small durable archive;
-their original hashes are preserved separately. The complete original
+[four-arm derived index](four-arm-summary.json). Reproducible shader/editor cache
+binaries and an unneeded CI-generated debug signing keystore are omitted from
+that small durable archive; their original paths, sizes, hashes and explicit
+omission reasons remain in the manifest. The generated keystore is unrelated
+to owner/provider credentials. This hygiene correction changes only the compact
+derivative, and preserves every measurement, process log and complete audit.
+The complete original
 [artifact 14993266843](https://github.com/techrote/cybersand/actions/runs/45549435385/artifacts/14993266843)
 is 4,981,131 bytes, SHA-256
 `c79ffd7960cb02c66d66e1e09d3c6fc167aa288d101b748771b5af2def7ffe1f`.
