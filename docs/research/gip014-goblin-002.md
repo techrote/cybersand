@@ -860,3 +860,127 @@ The reviewed test-only repair is gate blob`4bdd1f625d84dc6a0095b76768cfe861ef070
 ### Full5ee Linux campaign completed, independent review in progress
 
 The separate5ee [run45550152509](https://github.com/techrote/cybersand/actions/runs/45550152509) completed its Linux queue at07:01UTC. Its runner reports142observed episodes/142retained attempts,139budget completions and three retained failures. Overall qualification remains failed. Artifact`15000115723` is75,777,228bytes, SHA-256`e4548f77291076ea289ec90415789ef24eb1944dff349bc1d73d7f2755e63170`,2,235members/704,194,137expanded bytes, independently downloaded with exact digest/CRC/path checks. Full hosted log`56e1c12e829f68252593a6bf6c961614b7b89677` is retained. A is executing the frozen coverage/memory analysis, B is adjudicating the three actual failures, and C is auditing source and process custody. The lead's frozen position-cost supplement waits for the primary reader's exact passing custody result. No fresh coverage or performance total is claimed at this preliminary checkpoint.
+
+
+### Exact5ee full matrix, memory experiment and independent adjudication
+
+The raw5ee Linux artifact has now completed independent analysis. A's frozen primary reader validated all142tapes and recomputed coverage from1,138consumed file hashes; actual analysis SHA-256`49de3782a724baba68284cf9f934518efe58b5bc2d1ed45ac15cfd160269d28c`, exact queue SHA-256`41ff6d67e9366674d741fcd73ff71303ec635ca68d8ca58525265783738a307a`. The reader ran as data-only Python for13.409seconds, sampled157,270,016bytes peak tree RSS and left no owned process. It did not rerun or relabel gameplay.
+
+All142episodes were attempted and retained:139budget-complete,11,554attempted actions,11,538completed,16expected refusals and zero partial actions or failed gameplay assertions. All108matched64episodes completed(6,912attempts/6,909completed); all16personality episodes completed(1,024/1,022); allten scenario episodes completed(640/640). Five of eight long episodes completed(2,978attempted/2,967completed across all eight). Deduplicated observed unions are53action IDs,975adjacent transitions,5,889state transitions,96material keys,69tool/material keys,127actor/environment keys, eight lifecycle keys, three refusal keys and77outcomes. No map saturated. These unions include valid partial long tapes and never impute missing suffixes.
+
+A's compact source-bound comparison SHA-256`8b8f78acafff0b8dd9d560914af9941720d2c006417807e990836cf4f499f929` retains all nine12-episode policy rows, spreads and three focal paired contrasts. Every comparison has12complete initial-fixture/seed blocks. Coverage Hunter minus Random has paired medians+1action ID,0adjacent transitions,0state transitions,−4material keys,+1tool/material key. Coverage Hunter minus Novelty has+3/+1/0/−3/−2; Novelty minus Random has−1/+2/0/+3/+3. A median of paired differences is not the difference between group medians. Coverage Hunter's material difference is negative against Novelty in all12blocks(−7..−1), and never positive against Random(−7..0). Curiosity has the largest per-episode median action-ID count35in this cohort. No general policy winner, reaction-discovery benefit or cross-episode learning claim follows.
+
+State-v1 includes observed Undo/Redo availability, selected tool/material/brush, selection/clipboard, authored-save presence, actor modes/capabilities/coarse zones, camera/UI, coarse native phase/source and admitted regional material samples. It does not concatenate a recent-action window. A state-transition key combines before/after projections with action ID and completion status. Counts reaching64in a64-row episode are opportunity-limited and do not establish64physically distinct Worlds or increased defect yield. Later fixture replacement is ordinary policy behaviour, so only the initial authored starts are matched. All142matrix profiles start with fresh memory.
+
+B's166-check completed-action ledger independently hashes all142campaign tapes plus the focused reports. The matrix's two missing completed IDs are `actor_trigger` and `preview_cancel`. Both complete with accepted admission in the expanded native group: preview_cancel ends an actual drag through the ordinary Cancel button; actor_trigger is delivered through the human Runner and its equipment receipt records accepted/consumed/applied with five changed native cells. The expanded86attempts/83completed actions contain completed instances of every29new ID; its three expected refusals do not erase those distinct positive instances. Matrix plus focused evidence therefore covers all55completed contracts at exact5ee, with no nominal-only ID credit. Per-ID path/hash/row evidence and parameter exclusions are retained in`debabd50e4d2110481791d57166fa64e1faf2dc7`; these focused rows are not added to matrix counts or substituted for later6fqualification.
+
+The three retained long failures are bounded campaign attrition. RANDOM512has466attempts/464completed and active616.431seconds against614.4configured, outer622.944seconds against674. RANDOM1024has570/568 and active901.918seconds against900, outer909.517against960. COVERAGE_HUNTER1024has662/660 and active902.175against900, outer908.820against960. Decision-boundary active checks allow a currently admitted bounded operation to finish; every outer process cap is respected. Each has a terminal marker, no pending action, no assertion/native failure, and no surviving owned process. B passed62deadline/source/readback checks in`666c5b94bfce2412abb1d66728631080b652f406`; the original failed runner results and unresolved automatic classifications remain intact. A review-only assumption that configured0ms pacing implies measured0ms overhead was corrected, and the failed review attempt was retained.
+
+C's exact5ee custody packet`9b366a385c45bcfa33c8948c80bc6bf6f16bab93` passed20,696checks over169process receipts and ten archived game-source snapshots. All observed owned trees had no survivor. The142game processes cost6,693.686aggregate seconds, maximum848,502,784bytes sampled tree RSS; queue6,733.147seconds stayed within7,200. The actual4-action controller and24-action graphical semantic replays pass while exact asynchronous equality remains separately false. The existing legal4→1reduction retains six fresh probes4,4,2,2,1,1; it remains a legal outcome, not a discovered defect.
+
+The separate7episode memory experiment at5ee passed all448actual admitted/completed actions. Its read-only analysis SHA-256 is`07d5477506d0c28e9738c3ce35843e6e43b34c2124ea9ee25c72f56259ba1904`. Control64cultivation supplies an unchanged corpus; seeds65and129 compare fresh, hints-only and explicit-prefix Coverage Hunter64. Both hint-only runs choose a different first action at equal initial abstract state and matching paused native identity. Both prefix runs propose the exact four retained actions and independently reproduce64Empty→58cell edits. Hints versus fresh change action coverage−2/+3and material0/−2; prefix versus fresh changes action−2/+2and material−1/0. Imported history contributes zero fresh coverage. The measured mechanism works, but one corpus/two paired seeds do not establish an advantage. Cultivation20.315seconds; all seven game processes177.241seconds; supervisor188.633seconds, peak780,333,056bytes, no survivor.
+
+The preregistered one-episode/seed605personality readout distinguishes actual interactions: Builder20rectangles; Tinkerer28history-family operations; Disaster Artist23rectangles/four reservoir-breach-repair intentions begun; Actor Enthusiast29actor+35simulation; Impatient14UI+17actor operations. History Goblin and Obsessive Reproducer both perform40history-family operations, but goals refer to five versus two repeated experiment locations. Counts of goal text are not counts of spatial edits. Alchemist performs no completed history-family operation and skips eight unavailable intention steps; no chemical-reaction success is inferred. These are observed signatures at one seed, not proof of human recognizability or broad reliability.
+
+### Preregistered positional cost result and independent source-boundary review
+
+The lead's frozen cost reader ran once against the passing exact primary custody result:6.273seconds,152,465,408bytes peak sampled tree RSS, no survivor. Full output503,810bytes, SHA-256`60d669a5fc311e482f8bfa3800dafe15df9736aa300f4cd0e6b947d7e228874d`, binds142records and286input hashes with no missing record. The five budget-complete long episodes have all-action late/early quartile median ratios2.473,3.390,4.736,7.324and6.042. **Zero** exact action/arguments/current-fixture/pause strata meet the preregistered minimum of three observations in each quarter. The adjusted comparison remains empty; the rule was not relaxed after seeing results. Three budget-incomplete episodes are retained for resource accounting and excluded from positional comparison.
+
+Complete source/output/process/summary packet`84bc5ddb3f09cc75743d62db4b868c31b3ef43a7` is66,755bytes encoded, SHA-256`45096aa681d881bcc7a5a741b574b0f29394ba5cfde3adaa0ab68943457da036`,566,694decoded bytes. A draft summary accidentally included separate editor import in the process denominator; source review corrected that wording before publication. C independently recomputed898checks in`5f63438f0b01639a2bd2f59f3330a0beec4175d1`, including286input hashes, all eight process denominators and the five quartile/stratum calculations. Process elapsed begins before Popen and includes game initialization, teardown and monitor cleanup/log hashing; it excludes separate import, prelaunch profile preparation and postprocess reader/coverage/result writing. Adapter row duration includes admission checkpoint serialization/I/O and native waits, then stops before controller assertions, append, coverage and completed-snapshot work. Changing action/environment mixtures remain uncontrolled. No engine FPS, causal component slowdown, leak or statistical-significance conclusion is supported.
+
+### Request11 exact source and preservation checkpoint
+
+Request11 source`6f359ce2b24291ee219810773c641d53802fd31d`, tree`a4f389cd3cc1a21dfe3d5566703eb946b66734ed`, [run45565621408](https://github.com/techrote/cybersand/actions/runs/45565621408), is separately qualifying the reviewed material-history correction and repaired test comparator. Linux owns the focused and graphical gates followed by the registered eight-long/seven-memory programme. Windows owns the source and extracted-evaluator gates, including the same four native lineage cases. A froze its distinct reader before outcomes: source blob`fe0b8a5c522f3495dfdf7d9f43690c07d73a60d2`, preparation envelope`c6cc7d548263b3bd38db2d8ce6beeceeeefe6d13`; all24reader-file bytes and metric code are unchanged from the earlier binding, ten pure controls pass. Earlier9/10readers and failures remain. Linux4050's strict after-audit also confirms1,087of1,094checks pass with only original failed process/report/four-case status obligations,20completed actions and all independent material/lineage relationships preserved; full review`48fcff66a32f4e5060d9769f887bb0bfb183390a` and process receipt`e247a98961d2efc785ee8085847268a599123675` retain that failed outcome.
+
+At07:10UTC the lead refreshed main to unchanged`00cdb02f103265b6dc5224c68283e9a0c8cb449f` and inspected current open programme heads, including AMBIENT779, Art780/782, Strata776, Materials768, Gentek758andObjectShard754. No branch or native implementation was imported or modified. Optional capability families remain disabled until a separately qualified adapter is compiled.
+
+C assembled the already retained predecessor evidence without new execution/download: six original raw tapes with recovery-matching hashes and all seven qualification/profile/log records, retaining five completions/two unattributed SIGKILLs/988observed actions. The missing seventh tape stays unknown. Passive bundle1,343,584bytes, SHA-256`75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc`,59members/21,539,771expanded bytes. The original predecessor Windows evaluator remains linked at its original artifact; this bundle does not pretend to contain it. Final durable evidence retains original successor ZIPs, full frozen reader closures and complete independent outputs rather than relying solely on unreferenced Git blobs.
+
+
+A's complete independent evidence is now durable in binary Gitblob`b8ad23fb9ca847650a89f5a1346cb930c25a37c1`:1,566,720bytes of XZ-compressed versioned ZIP, SHA-256`262f5bd5190809fa97ed1190a4bcf5f7fb93e6119d7b29e24f16d5e236dd0beb`. The contained2,062,035-byte archive has SHA-256`3c54d0a1afbf1af48f93bead0b159bed18c97ded918e06507100db73bf5613f4`,228payload files and manifest`183fb52fe4262894ba715c47818528280f89d7964b4ee43ab55dd610e323a883`. It includes six frozen source closures, complete historical/5eeprimary/memory outputs, executed analyzers, preregistered personality controls and actual reviews. Owner readout`b6b6be2db0ea7ca68b47658d3c3da4bb3688b55c` is separately readable. C includes the actual passive ZIP in the durable archive;11outcomes will be a separate subsequent packet, never an overwrite of prior records.
+
+B independently approved the decision packet's actual comparison/deadline/capability section in`0007dcf2eccbe08bd277294c20d5048285c6b0ca`. All16matrix refusals were inspected:11bounded Fill, four body-protected captures and one out-of-view geometry. Each was preadmission with native and authored identities unchanged; inventory`88ff75e1ff2aaedf90d26958b9b11c008184a36f`. A reviewed the numeric tables and corrected two prose ambiguities: zero partial action statuses do not prove the absence of every incidental physical effect, and material-interaction key differences are not changed-cell counts. A separately recomputed the actual timing output at286input hashes/142records/five eligible long episodes, with zero eligible adjusted strata among566candidate strata; review SHA-256`0153353cd87e971429307b401004316e8c6bae9c464679587622fea711061a48`.
+
+
+### Corrected Windows evaluator qualified and independently accepted
+
+Request 11 Windows job `139039653335` completed successfully at exact source
+`6f359ce2b24291ee219810773c641d53802fd31d`, tree
+`a4f389cd3cc1a21dfe3d5566703eb946b66734ed`. Qualified artifact
+`15001055330` is 95,315,154 bytes, SHA-256
+`edfa20c4d6aca64d32396139642db7bee3f70ff7d54e536ac616a4043b7ca7d6`.
+Its sealed inner evaluator is 95,816,253 bytes, SHA-256
+`daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e`.
+Original Windows evidence artifact `15000825524` is 201,496,963 bytes,
+SHA-256 `75c3e351e1c9459516c6708508adfdd2b669dc916d40af459c040fdacee67314`.
+The complete job log is `764c58279208261200db2dbe052262e19b112c30`.
+
+The actual source passed 136 Python controls in 3.266 seconds, including hosted
+GDS parity. The expanded native group passed 2,030 gate checks over 86 action
+rows: 83 completed and three expected refusals. All 29 added IDs have completed
+observations. B's 731-check action/origin review found a completed union of all
+55 operation IDs across the source groups and six representative source tapes,
+including ordinary preview cancellation, acknowledged actor equipment use and
+reset_fixture at Coverage Hunter row 23. These observations are separate from
+the 5ee comparative matrix's 53-ID union.
+
+The four native material-lineage cases completed 20 actions in source and 20
+more in the extracted evaluator. B's independent source audit passed 1,094
+checks; its extracted audit passed 273, including independently rendered
+authored planes, current source/receipt fences, latest progression witnesses,
+immutable Save proof and both positive/negative equality relationships.
+Complete review manifest `621448b4456b77c0acab8a7eeb88b627a9561f12` binds these
+results and the current action review. Earlier parser/comparator failures remain
+failed records; this result does not relabel them or establish a production bug.
+
+C's full package/source/custody audit passed 3,995 checks over 1,243 payload files,
+24 supplements and 38 observed process receipts, all without owned survivors.
+The inherited-environment PowerShell probe remains an expected failed control;
+the cleaned child environment passed. The extracted wrapper used 261.094 seconds
+and peaked at 993,378,304 sampled tree-RSS bytes. Three fresh extracted campaigns
+completed 192/192 actions, and the separate 64-action semantic replay passed
+while exact asynchronous observation equality was false. Graphical qualification
+passed 36 checks. The lead inspected all three actual 1600-by-900 PNGs individually:
+the Workbench construction, animated pointer and readable, scrollable Play,
+Discovery and Memory controls are visible. No physical NVIDIA acceptance follows.
+
+The first local attempt to dispatch C's read-only audit lost its tool connection
+before any audit process/result was observed. A minimal read-only host check
+confirmed the files remained. The lead then ran the exact frozen reader once:
+5.432 seconds, 80,896,000 sampled RSS bytes and no owned survivor. Full packet
+`6dadaa33179ce4bb665daf7be7a5a1988f0ce0cf` retains the transport failure, successful
+audit, unchanged reader, actual outputs and recovery receipt separately. It is
+48,083 bytes encoded, SHA-256
+`abbd83e7c5223af22f4f4bc15fe21d970d24f22867b9456124068f2bdef8cba1`.
+
+A independently verified the exact archived GDS and frozen Python reader bytes,
+172 synthetic exploration controls/16 policies, actual Python/GDS parity and all
+nine recomputed coverage counts from the four actual native lineage tapes.
+All 40 adapter-v3 endpoints use State-v2: 28 zero-tick and 12 early. These state
+categories do not infer authorship or add nominal material coverage. Packet
+`a4368dca6478402432c08e7c5fe1982df1afa5e1` includes 15 actual review files. The
+temporary parity-driver log is retained by its recorded digest/receipt, not
+claimed as a saved set of raw vectors. A's separate decision/index snapshot
+review `d288c46a5614f3a589e37bc84714fabe414ad737` found no numerical or source-scope
+blocker; its initial presentation-parser failure is retained. The lead clarified
+that Linux owns long8/memory7 while Windows owns source/extracted qualification.
+
+The corrected primary owner download was replaced only after root visual review,
+B's extracted material-contract signoff and C's full custody pass. Its bytes were
+verified again against the exact sealed ZIP; the earlier qualified version remains
+historical evidence. The new portable sample contains eight raw serializations
+of four parsed tapes: three originals with 199/199 completed actions plus one
+64/64 semantic replay, totaling 263 rows without duplicate execution credit.
+The seven-action original is the actual actor-reset lineage case.
+
+General documentation CI run `45565629200`, job `139039584949`, completed
+successfully at the same source, including workflow policy, source-derived
+contracts, material catalogue parity, documentation and retrieval checks.
+Its dependency-provenance step was skipped; skipped gates receive no pass credit.
+Linux request 11 remains running at this checkpoint. Its eight long and seven
+memory episodes will retain their own source-bound outcomes, independent of both
+this Windows pass and the earlier full142 comparison. C's frozen Linux custody
+reader SHA-256 is
+`80c3d813938a38b9028db0ed7c0e77494b466ac2f0e25b682ab60f6fe4d63745`;
+the lead independently reviewed its six exact binding/label/count changes from
+the already used 5ee reader before outcomes. Acceptance rules are unchanged.

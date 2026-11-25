@@ -705,3 +705,43 @@ extra fields. Those controls add no gameplay-action credit. Gate blob
 the request-9 and request-10 original failures remain intact. The production
 game, lineage tracker, runtime assertions and independent Python reader have no
 further changes from the request-9 correction.
+
+## Request-11 Windows actual after evidence
+
+Exact source `6f359ce2b24291ee219810773c641d53802fd31d`, tree
+`a4f389cd3cc1a21dfe3d5566703eb946b66734ed`, now passes the independently
+registered native lineage audit both in the Windows source gate (1,094/1,094
+checks) and in the actual extracted evaluator (273/273). Each execution contains
+four distinct campaigns and 20 completed ordinary actions. Fresh construction
+and Restore require and satisfy exact authored Save/Reopen material equality;
+retaining response replacement and selected actor Reset retain observed
+simulation exposure and correctly make that equality inapplicable. Their saved
+material planes differ from the authored plane that Reopen reconstructs. Full
+native capture identities, canonical construction receipts, latest observed
+progress witnesses and immutable saved proof are independently checked. This
+qualifies the corrected oracle applicability; it is not a production-game fix
+or an unchanged-invariant regression pass. The original 070 observation and the
+request-9/request-10 gate failures remain unchanged.
+
+The final Windows ZIP has 95,816,253 bytes and SHA256
+`daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e`.
+B's extracted review read only 12 exact source/provenance files plus the actual
+manifest, lineage report and log; no engine payload was extracted or executed
+locally. C separately owns the complete package and wrapper custody audit.
+The sealed B packet is Git blob
+`621448b4456b77c0acab8a7eeb88b627a9561f12`; it links full review outputs, exact
+reader/pins, package selection custody and the bounded data-only process receipts.
+
+A separate retrospective read-only audit of the current Windows source reports
+and six representative source tapes passes 731 checks and finds completed
+instances of all 55 supported action IDs. The expanded gate reports 2,030 checks,
+86 attempted rows, 83 completed actions and three expected refusals. Its stored
+row assertions comprise 1,591 passes and three inapplicable checks; the gate
+check count is not an action count. All 29 added IDs complete, including an
+accepted equipment use with five changed cells and ordinary cancellation of an
+observed preview. Six supported model-origin contracts are independently checked
+through Place, Move, Reset and Replace, with the extra Monowheel Capture/Reset
+observation retained separately from any idempotence claim. Deliberate invalid
+and preadmission refused inputs receive no completion credit. The comparative
+5ee matrix still has its own 53-ID union and source-specific metrics. Linux
+request-11 qualification remains separate and pending this Windows handover.

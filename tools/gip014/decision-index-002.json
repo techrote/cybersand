@@ -5,8 +5,8 @@
   "decision": "draft_hold",
   "pr": "https://github.com/techrote/cybersand/pull/781",
   "qualified_source": {
-    "commit": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
-    "tree": "287795a8534c5622ede5d71710714ea467197e79"
+    "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
   },
   "predecessor": {
     "live_head": "d4484bd5b488cb419bfaa94f1e69be8128734405",
@@ -15,7 +15,18 @@
     "linux_source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
     "qualified_windows_run": 45474099351,
     "qualified_windows_artifact": 14958249728,
-    "evidence_relabelled": false
+    "evidence_relabelled": false,
+    "retained_passive_evidence": {
+      "original_tapes": 6,
+      "attempt_records": 7,
+      "complete_episodes": 5,
+      "incomplete_processes": 2,
+      "observed_completed_actions": 988,
+      "missing_tape_inferred": false,
+      "zip_bytes": 1343584,
+      "zip_sha256": "75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc",
+      "original_windows_evaluator_included": false
+    }
   },
   "capabilities": {
     "action_contracts": 55,
@@ -29,19 +40,28 @@
   },
   "windows": {
     "status": "qualified",
-    "run_id": 45550152509,
-    "job_id": 138989207208,
-    "artifact_id": 14994660661,
-    "artifact_bytes": 95057461,
-    "artifact_sha256": "9207c151eda60115527753a91bec0fa5266d6d27a770c9a5efe66d2ac1709d1e",
+    "source": {
+      "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+      "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+    },
+    "run_id": 45565621408,
+    "job_id": 139039653335,
+    "artifact_id": 15001055330,
+    "artifact_bytes": 95315154,
+    "artifact_sha256": "edfa20c4d6aca64d32396139642db7bee3f70ff7d54e536ac616a4043b7ca7d6",
     "inner_evaluator": "CyberSand-goblin.zip",
-    "inner_bytes": 95549310,
-    "inner_sha256": "513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee",
-    "base_zip_sha256": "a9efed4856bef37454bfc0c0169a252c639aeed7d80c97155942ac5ff7aabbd6",
-    "evidence_artifact_id": 14994755244,
-    "evidence_artifact_bytes": 193844401,
-    "evidence_artifact_sha256": "2168527b5359f4bcdd09b62526c1aa203be5c38e9f07c5d3a9287f6b9329867b",
-    "python_controls": 103,
+    "inner_bytes": 95816253,
+    "inner_sha256": "daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e",
+    "base_zip_bytes": 94642679,
+    "base_zip_sha256": "8e4a27ccbb389f4d06f73402aaba9f340333a2e08e88f4cbf639343c67ade950",
+    "evidence_artifact_id": 15000825524,
+    "evidence_artifact_bytes": 201496963,
+    "evidence_artifact_sha256": "75c3e351e1c9459516c6708508adfdd2b669dc916d40af459c040fdacee67314",
+    "python_controls": 136,
+    "expanded_assertions": 2030,
+    "expanded_attempted_actions": 86,
+    "expanded_completed_actions": 83,
+    "expanded_expected_refusals": 3,
     "extracted_campaigns": 3,
     "extracted_attempted_actions": 192,
     "extracted_completed_actions": 192,
@@ -50,31 +70,64 @@
     "exact_observation_replay_pass": false,
     "graphical_checks": 36,
     "retained_screenshots": 3,
-    "owned_process_receipts": 36,
+    "root_visual_review": "all_three_actual_1600x900_pngs_inspected_2026-11-25",
+    "owned_process_receipts": 38,
     "surviving_owned_pids": [],
-    "independent_delivery_checks": 3841,
-    "independent_gameplay_checks": 248,
+    "independent_delivery_checks": 3995,
+    "independent_lineage_source_checks": 1094,
+    "independent_lineage_extracted_checks": 273,
+    "native_lineage_cases_per_scope": 4,
+    "native_lineage_completed_actions_per_scope": 20,
+    "package_contract_version": 3,
     "physical_nvidia_acceptance": false,
-    "delivery_report_blob": "e4321ad82203bb9a3a516cfa425795fa8cbd71d6",
-    "reproducible_audit_blob": "3bd9fcfe697e46fa046480ee0944aa22410a6dec",
-    "gameplay_review_blob": "8088b38271d1238455fb5871406b125b684266b5",
-    "job_log_blob": "d2a90d1c48c230067a7623f5b4b319fb99dac877",
-    "renamed_audit_copy": "CyberSand-goblin-5ee5dffc78d5.zip",
+    "job_log_blob": "764c58279208261200db2dbe052262e19b112c30",
+    "renamed_audit_copy": "CyberSand-goblin-6f359ce2b242.zip",
     "direct_deliverable_filename": "CyberSand-goblin-Windows-evaluator.zip",
+    "payload_files": 1243,
+    "supplementary_files": 24,
     "portable_corpus": {
       "catalogue_files": 8,
+      "unique_raw_tapes": 8,
       "unique_parsed_tapes": 4,
       "original_experiments": 3,
-      "original_completed_actions": 256,
+      "original_action_rows": 199,
       "semantic_replay_actions": 64,
+      "unique_action_rows_including_replay": 263,
       "duplicate_serializations_count_as_execution": false,
-      "review_packet_blob": "19b8ac00e489de6a4018a196ddf9562f7138e066"
+      "original_completed_actions": 199,
+      "original_refused_actions": 0,
+      "completed_actions_including_replay": 263,
+      "originals": [
+        {
+          "policy": "CONTROL",
+          "fixture": "actor_workshop",
+          "completed_actions": 64
+        },
+        {
+          "policy": "BUILDER",
+          "fixture": "liquid_channel",
+          "completed_actions": 128
+        },
+        {
+          "native_case": "actor_reset_retains_evolved",
+          "completed_actions": 7
+        }
+      ]
     },
-    "acceptance_review_blob": "557bf1f12beaec62a6b43d9960f008bbb9720b70",
-    "subsequent_known_oracle_limitation": "Retaining World replacement can preserve evolved material at tick0; the070diagnostic independently establishes false Save/Reopen equality applicability. A corrected replacement is pending separate qualification."
+    "extracted_wrapper_seconds": 261.094,
+    "extracted_wrapper_peak_sampled_tree_rss_bytes": 993378304,
+    "delivery_report_blob": "6dadaa33179ce4bb665daf7be7a5a1988f0ce0cf",
+    "reproducible_audit_blob": "6dadaa33179ce4bb665daf7be7a5a1988f0ce0cf",
+    "gameplay_review_blob": "621448b4456b77c0acab8a7eeb88b627a9561f12",
+    "exploration_review_blob": "a4368dca6478402432c08e7c5fe1982df1afa5e1",
+    "independent_current_action_checks": 731,
+    "same_source_completed_operation_ids": 55,
+    "all_38_processes_passed_claim": false,
+    "expected_inherited_powershell_probe_failure_retained": true,
+    "clean_powershell_child_passed": true
   },
   "linux_corrected": {
-    "status": "running_unadjudicated",
+    "status": "completed_with_retained_time_limits_independently_reviewed",
     "run_id": 45550152509,
     "job_id": 138989207218,
     "source": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
@@ -84,12 +137,187 @@
     "frozen_analyzer_blob": "bec5469d3111badcc1ae9f8a576005bd7d74cc2f",
     "frozen_reader_packet_blob": "8cc5a1f54cfdb3713810d605a296ab9fcce3e1f4",
     "descriptive_cost_supplement": {
-      "status": "prepared_without_runtime_results",
+      "status": "actual_data_reviewed",
       "reader_blob": "b05a70a4448feb4e35519a9555b60ea402bd9cfc",
       "reader_sha256": "584d523ee23ece26f86d35e6aec9ace259b0298db855035d146eac9771470e40",
       "independent_review_blob": "6e6a2eecae7258806beef48612da9336b603b839",
       "preparation_blob": "55e7e05c1151d0053f337bad288a96b146050c3f",
-      "engine_fps_or_causal_slowdown_claim": false
+      "engine_fps_or_causal_slowdown_claim": false,
+      "full_report_sha256": "60d669a5fc311e482f8bfa3800dafe15df9736aa300f4cd0e6b947d7e228874d",
+      "output_packet_blob": "84bc5ddb3f09cc75743d62db4b868c31b3ef43a7",
+      "c_actual_review_blob": "5f63438f0b01639a2bd2f59f3330a0beec4175d1",
+      "consumed_input_hashes": 286,
+      "validated_episodes": 142,
+      "position_eligible_complete_long_episodes": 5,
+      "eligible_adjusted_strata": 0,
+      "adjusted_comparison": "empty_preregistered_minimum_not_relaxed",
+      "unadjusted_median_ratio_range": [
+        2.4733528646904883,
+        7.324324532546476
+      ],
+      "incomplete_episodes_excluded_from_position_comparison": 3,
+      "editor_import_in_process_denominator": false,
+      "a_actual_review_sha256": "0153353cd87e971429307b401004316e8c6bae9c464679587622fea711061a48"
+    },
+    "tree": "287795a8534c5622ede5d71710714ea467197e79",
+    "qualification_pass": false,
+    "artifact_id": 15000115723,
+    "artifact_bytes": 75777228,
+    "artifact_sha256": "e4548f77291076ea289ec90415789ef24eb1944dff349bc1d73d7f2755e63170",
+    "planned_episodes": 142,
+    "observed_episodes": 142,
+    "valid_tapes": 142,
+    "budget_complete_episodes": 139,
+    "campaign_timeouts": 3,
+    "attempted_actions": 11554,
+    "completed_actions": 11538,
+    "refused_actions": 16,
+    "partial_admitted_actions": 0,
+    "failed_gameplay_assertions": 0,
+    "unique_observed_coverage": {
+      "action": 53,
+      "action_transition": 975,
+      "state_transition": 5889,
+      "material_interaction": 96,
+      "tool_material": 69,
+      "actor_environment": 127,
+      "lifecycle": 8,
+      "boundary_refusal": 3,
+      "outcome": 77
+    },
+    "primary_analysis_sha256": "49de3782a724baba68284cf9f934518efe58b5bc2d1ed45ac15cfd160269d28c",
+    "queue_sha256": "41ff6d67e9366674d741fcd73ff71303ec635ca68d8ca58525265783738a307a",
+    "compact_comparison_sha256": "8b8f78acafff0b8dd9d560914af9941720d2c006417807e990836cf4f499f929",
+    "custody_review_blob": "9b366a385c45bcfa33c8948c80bc6bf6f16bab93",
+    "deadline_review_blob": "666c5b94bfce2412abb1d66728631080b652f406",
+    "completed_id_review_blob": "debabd50e4d2110481791d57166fa64e1faf2dc7",
+    "completed_matrix_ids": 53,
+    "completed_matrix_and_focused_ids": 55,
+    "matrix_missing_ids": [
+      "actor_trigger",
+      "preview_cancel"
+    ],
+    "focused_rows_added_to_matrix": false,
+    "owned_process_receipts": 169,
+    "surviving_owned_pids": [],
+    "game_process_seconds_sum": 6693.686,
+    "queue_seconds": 6733.147,
+    "maximum_game_peak_sampled_tree_rss_bytes": 848502784,
+    "full_log_blob": "56e1c12e829f68252593a6bf6c961614b7b89677",
+    "cohorts": {
+      "matched": {
+        "episodes": 108,
+        "budget_complete": 108,
+        "attempted": 6912,
+        "completed": 6909,
+        "refused": 3
+      },
+      "long": {
+        "episodes": 8,
+        "budget_complete": 5,
+        "attempted": 2978,
+        "completed": 2967,
+        "refused": 11
+      },
+      "personality": {
+        "episodes": 16,
+        "budget_complete": 16,
+        "attempted": 1024,
+        "completed": 1022,
+        "refused": 2
+      },
+      "scenario": {
+        "episodes": 10,
+        "budget_complete": 10,
+        "attempted": 640,
+        "completed": 640,
+        "refused": 0
+      }
+    },
+    "matched_comparison": {
+      "blocks": 12,
+      "all_budget_complete": true,
+      "attempt_slots": 64,
+      "initial_fixtures": [
+        "construction",
+        "liquid_channel",
+        "actor_workshop",
+        "history_edges"
+      ],
+      "seeds": [
+        13,
+        605,
+        1701
+      ],
+      "metrics": [
+        "action",
+        "action_transition",
+        "state_transition",
+        "material_interaction",
+        "tool_material"
+      ],
+      "median_paired_differences": {
+        "COVERAGE_HUNTER_minus_RANDOM": [
+          1,
+          0,
+          0,
+          -4,
+          1
+        ],
+        "COVERAGE_HUNTER_minus_NOVELTY": [
+          3,
+          1,
+          0,
+          -3,
+          -2
+        ],
+        "NOVELTY_minus_RANDOM": [
+          -1,
+          2,
+          0,
+          3,
+          3
+        ]
+      },
+      "source_scope": "Whole policies with matched initial fixtures; later ordinary replacement can change exposure; no causal ranking/significance claim"
+    },
+    "memory_experiment": {
+      "status": "pass",
+      "episodes": 7,
+      "cultivation_episodes": 1,
+      "matched_seeds": [
+        65,
+        129
+      ],
+      "measured_episodes": 6,
+      "attempted_actions": 448,
+      "completed_actions": 448,
+      "refused_actions": 0,
+      "full_analysis_sha256": "07d5477506d0c28e9738c3ce35843e6e43b34c2124ea9ee25c72f56259ba1904",
+      "two_hint_first_choices_changed": true,
+      "native_prefix_cell_edits_per_reuse": 64,
+      "retained_prefix_actions": 4,
+      "imported_observations_credited_as_fresh_coverage": false,
+      "cultivation_seconds": 20.315,
+      "all_game_seconds": 177.241,
+      "supervisor_seconds": 188.633,
+      "supervisor_peak_tree_rss_bytes": 780333056,
+      "general_search_advantage_established": false
+    },
+    "full_independent_analysis_packet_blob": "b8ad23fb9ca847650a89f5a1346cb930c25a37c1",
+    "full_independent_analysis_packet_format": "xz-compressed versioned ZIP",
+    "full_independent_analysis_packet_sha256": "262f5bd5190809fa97ed1190a4bcf5f7fb93e6119d7b29e24f16d5e236dd0beb",
+    "independent_analysis_archive_sha256": "3c54d0a1afbf1af48f93bead0b159bed18c97ded918e06507100db73bf5613f4",
+    "independent_analysis_payload_files": 228,
+    "owner_readout_blob": "b6b6be2db0ea7ca68b47658d3c3da4bb3688b55c",
+    "decision_section_review_blob": "0007dcf2eccbe08bd277294c20d5048285c6b0ca",
+    "refusal_inventory": {
+      "bounded_fill": 11,
+      "body_protected_capture": 4,
+      "out_of_view_geometry": 1,
+      "all_preadmission": true,
+      "native_and_authored_identity_unchanged": true,
+      "review_blob": "88ff75e1ff2aaedf90d26958b9b11c008184a36f"
     }
   },
   "linux_historical": {
@@ -312,7 +540,7 @@
     "coverage_state_schema": "cybersand-goblin-state-v2",
     "legacy_coverage_state_schema_preserved": "cybersand-goblin-state-v1",
     "full142_comparison_rerun_claim": false,
-    "status": "prepared_not_executed",
+    "status": "windows_qualified_linux_running",
     "integration_pure_tests": 130,
     "local_parity_group_skipped": true,
     "integration_controls_blob": "8366c62c5e4ac900005ec035aaa05680ac0220d6",
@@ -325,7 +553,18 @@
     "gameplay_oracle_package_acceptance_changed_since_request9": false,
     "gate_repair_blob": "4bdd1f625d84dc6a0095b76768cfe861ef07014c",
     "artificial_provenance_controls": 14,
-    "a_gate_review_blob": "6aefa469508985ecb4d61dba7ce475cfbc9be6f2"
+    "a_gate_review_blob": "6aefa469508985ecb4d61dba7ce475cfbc9be6f2",
+    "source": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+    "run_id": 45565621408,
+    "windows_job": 139039653335,
+    "linux_job": 139039653373,
+    "frozen_analysis_reader_blob": "fe0b8a5c522f3495dfdf7d9f43690c07d73a60d2",
+    "frozen_analysis_preparation_blob": "c6cc7d548263b3bd38db2d8ce6beeceeeefe6d13",
+    "windows_qualification_pass": true,
+    "linux_qualification_pass": null,
+    "c_frozen_linux_custody_reader_sha256": "80c3d813938a38b9028db0ed7c0e77494b466ac2f0e25b682ab60f6fe4d63745",
+    "c_frozen_linux_custody_reader_review": "Root independently inspected exact six metadata/binding/count changes from used5ee reader before outcomes; acceptance rules unchanged"
   },
   "corrective_qualification_attempts": [
     {
@@ -385,7 +624,9 @@
         "gate_seconds": 23.974,
         "gate_peak_tree_rss_bytes": 649887744,
         "report_sha256": "48661825a833760b2b33e0b6df7c7e75dfde0604f2a1f1b87f4437d8d15ac6fa",
-        "log_blob": "4124b2738a7ebfe265f412a687496ca81ce5b281"
+        "log_blob": "4124b2738a7ebfe265f412a687496ca81ce5b281",
+        "b_review_blob": "48fcff66a32f4e5060d9769f887bb0bfb183390a",
+        "b_review_process_blob": "e247a98961d2efc785ee8085847268a599123675"
       },
       "windows": {
         "job": 139032101010,
@@ -412,7 +653,74 @@
     "runner_budget_completions": 139,
     "runner_retained_failures": 3,
     "qualification_status": "failed",
-    "independent_analysis_status": "in_progress",
+    "independent_analysis_status": "superseded_by_full_linux_corrected_record",
     "full_log_blob": "56e1c12e829f68252593a6bf6c961614b7b89677"
+  },
+  "historical_windows_evaluators": [
+    {
+      "status": "historically_qualified_superseded_with_known_oracle_limitation",
+      "run_id": 45550152509,
+      "job_id": 138989207208,
+      "artifact_id": 14994660661,
+      "artifact_bytes": 95057461,
+      "artifact_sha256": "9207c151eda60115527753a91bec0fa5266d6d27a770c9a5efe66d2ac1709d1e",
+      "inner_evaluator": "CyberSand-goblin.zip",
+      "inner_bytes": 95549310,
+      "inner_sha256": "513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee",
+      "base_zip_sha256": "a9efed4856bef37454bfc0c0169a252c639aeed7d80c97155942ac5ff7aabbd6",
+      "evidence_artifact_id": 14994755244,
+      "evidence_artifact_bytes": 193844401,
+      "evidence_artifact_sha256": "2168527b5359f4bcdd09b62526c1aa203be5c38e9f07c5d3a9287f6b9329867b",
+      "python_controls": 103,
+      "extracted_campaigns": 3,
+      "extracted_attempted_actions": 192,
+      "extracted_completed_actions": 192,
+      "semantic_replay_actions": 64,
+      "semantic_replay_pass": true,
+      "exact_observation_replay_pass": false,
+      "graphical_checks": 36,
+      "retained_screenshots": 3,
+      "owned_process_receipts": 36,
+      "surviving_owned_pids": [],
+      "independent_delivery_checks": 3841,
+      "independent_gameplay_checks": 248,
+      "physical_nvidia_acceptance": false,
+      "delivery_report_blob": "e4321ad82203bb9a3a516cfa425795fa8cbd71d6",
+      "reproducible_audit_blob": "3bd9fcfe697e46fa046480ee0944aa22410a6dec",
+      "gameplay_review_blob": "8088b38271d1238455fb5871406b125b684266b5",
+      "job_log_blob": "d2a90d1c48c230067a7623f5b4b319fb99dac877",
+      "renamed_audit_copy": "CyberSand-goblin-5ee5dffc78d5.zip",
+      "direct_deliverable_filename": "CyberSand-goblin-Windows-evaluator.zip",
+      "portable_corpus": {
+        "catalogue_files": 8,
+        "unique_parsed_tapes": 4,
+        "original_experiments": 3,
+        "original_completed_actions": 256,
+        "semantic_replay_actions": 64,
+        "duplicate_serializations_count_as_execution": false,
+        "review_packet_blob": "19b8ac00e489de6a4018a196ddf9562f7138e066"
+      },
+      "acceptance_review_blob": "557bf1f12beaec62a6b43d9960f008bbb9720b70",
+      "subsequent_known_oracle_limitation": "Retaining World replacement can preserve evolved material at tick zero; the070diagnostic establishes false Save/Reopen equality applicability. The separately qualified6f evaluator repairs applicability.",
+      "source": {
+        "commit": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+        "tree": "287795a8534c5622ede5d71710714ea467197e79"
+      }
+    }
+  ],
+  "general_documentation_ci": {
+    "run_id": 45565629200,
+    "job_id": 139039584949,
+    "status": "success",
+    "source_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "dependency_provenance_step": "skipped",
+    "skips_claimed_as_passes": false
+  },
+  "decision_checkpoint_review": {
+    "reviewer": "Specialist A",
+    "review_blob": "d288c46a5614f3a589e37bc84714fabe414ad737",
+    "decision_sha256": "74d7d9fbbf2b1d1cde53cb93ffac7a2d61a754915b3c54268cf1df98a56e35c9",
+    "index_sha256": "b26b3defedc1bcd4a49426b4abbc1ba8f1257246cf5ef4936431c9f89b2b8bf9",
+    "scope": "Exact pre-reference-addendum snapshots; all5ee tables, matched contrasts, memory, timing and separate6fWindows qualification; Linux11 still pending at this checkpoint"
   }
 }

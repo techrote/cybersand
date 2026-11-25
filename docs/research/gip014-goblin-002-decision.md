@@ -14,9 +14,9 @@ related-documents: [gip014-goblin-002.md, goblin002-exploration-handover.md, gob
 55 typed gameplay operations, 16 policy identities, ten authored scenarios,
 observation-based discovery, bounded persistent memory, native game tapes and
 automatic reproduction/reduction tools. A self-contained Windows evaluator is
-qualified at the exact source below. A later adversarial experiment identified
-a narrow oracle applicability defect; its corrective candidate is being
-qualified separately before replacing that evaluator. No novel production gameplay defect has
+qualified at the exact corrected source below. An adversarial experiment identified
+a narrow oracle applicability defect; the replacement evaluator now passes its
+source and extracted native regression gates. No novel production gameplay defect has
 been established. No merge, Ready promotion, default activation, unfinished
 programme integration or physical NVIDIA acceptance is authorized or claimed.
 
@@ -29,7 +29,7 @@ qualify a different game source.
 
 ## Owner evaluator and first session
 
-Download the qualified [Windows evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/14994660661),
+Download the qualified [Windows evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45565621408/artifacts/15001055330),
 extract its inner `CyberSand-goblin.zip` to a writable folder, then run
 **Open goblin.cmd**. The package contains the actual ordinary Workbench, Godot,
 native libraries, Rapier and required runtime files. A separate engine, compiler
@@ -61,13 +61,13 @@ Optional overlays show actually observed trajectories and edit regions.
 | Item | Identity and interpretation |
 | --- | --- |
 | Successor | [Draft PR #781](https://github.com/techrote/cybersand/pull/781), branch `experiment/gip014-goblin-002-20261125` |
-| Qualified Windows game/source | `5ee5dffc78d59a721f62be49fd51d24b870556c7` |
-| Qualified source tree | `287795a8534c5622ede5d71710714ea467197e79` |
-| Focused qualification | [Run 45550152509](https://github.com/techrote/cybersand/actions/runs/45550152509), Windows job `138989207208` |
-| Inner evaluator | `CyberSand-goblin.zip`, **95,549,310 bytes** |
-| Inner evaluator SHA-256 | `513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee` |
-| Artifact wrapper | `14994660661`, **95,057,461 bytes**, SHA-256 `9207c151eda60115527753a91bec0fa5266d6d27a770c9a5efe66d2ac1709d1e` |
-| Windows evidence artifact | [14994755244](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/14994755244), SHA-256 `2168527b5359f4bcdd09b62526c1aa203be5c38e9f07c5d3a9287f6b9329867b` |
+| Qualified Windows game/source | `6f359ce2b24291ee219810773c641d53802fd31d` |
+| Qualified source tree | `a4f389cd3cc1a21dfe3d5566703eb946b66734ed` |
+| Focused qualification | [Run 45565621408](https://github.com/techrote/cybersand/actions/runs/45565621408), Windows job `139039653335` |
+| Inner evaluator | `CyberSand-goblin.zip`, **95,816,253 bytes** |
+| Inner evaluator SHA-256 | `daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e` |
+| Artifact wrapper | `15001055330`, **95,315,154 bytes**, SHA-256 `edfa20c4d6aca64d32396139642db7bee3f70ff7d54e536ac616a4043b7ca7d6` |
+| Windows evidence artifact | [15000825524](https://github.com/techrote/cybersand/actions/runs/45565621408/artifacts/15000825524), SHA-256 `75c3e351e1c9459516c6708508adfdd2b669dc916d40af459c040fdacee67314` |
 | Engine | Godot `4.7.stable.official.5b4e0cb0f` |
 | Windows Godot executable SHA-256 | `b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8` |
 | Windows console executable SHA-256 | `d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c` |
@@ -118,13 +118,28 @@ scenario tables](gip014-goblin-002.md#choosing-a-personality) explain what to wa
 
 ## Qualification already established
 
-The exact Windows source passed **103 Python controls** and the native unit,
+The exact corrected Windows source passed **136 Python controls** and the native unit,
 discovery, adapter, expanded-action, controller, laboratory, gameplay,
-metamorphic, baseline and regression-export programme. Independent gameplay
-review passed **248 checks**. The expanded native group recorded **86 attempts,
+metamorphic, authored-lineage, baseline and regression-export programme.
+The expanded native group recorded **86 attempts,
 83 completed actions and three expected refusals**, with all 29 new operation
-IDs and 25 fresh actor-origin cases across six models. Its 1,729 checks are
-assertions, not 1,729 gameplay actions.
+IDs and 25 fresh actor-origin cases across six models. Its **2,030 gate checks**
+are separate from gameplay-action counts. The source groups and six representative
+source tapes jointly contain completed observations for **all 55 operation IDs**
+at this exact corrected source; this does not increase the separate comparative
+matrix's episode or action counts. The new four-case native lineage gate
+completed **20 actions in source and another 20 in the extracted evaluator**.
+Fresh authored Save/Reopen and Restore start preserve the justified positive
+equality check. Retaining response-mode and actor-reset replacements preserve
+simulation exposure, so their actually unequal live/reopened planes no longer
+trigger an inapplicable equality assertion.
+
+Independent material-contract review passed **1,094 source checks and 273
+extracted-package checks**. An independent exploration review verified the
+archived GDS modules and frozen reader bytes, recomputed all nine coverage
+counts from the four actual lineage tapes, and confirmed that all 40 observed
+adapter-v3 endpoints use State-v2. Its 172 GDS exploration controls and Python
+parity controls are labelled synthetic; they contribute no gameplay episodes.
 
 The extracted final evaluator completed three fresh 64-action campaigns:
 Control in actor_workshop, Control in save_reopen, and Coverage Hunter in alchemy.
@@ -139,22 +154,192 @@ animated goblin and readable Play/Discovery/Memory controls. This is hosted
 Windows graphical evidence, not physical NVIDIA acceptance or broad usability
 research.
 
-Delivery review independently passed **3,841 checks** over 1,230 base payload
-files and 22 supplements, source bindings, final extraction and receipts. Five
+Delivery review independently passed **3,995 checks** over **1,243 base payload
+files and 24 supplements**, source bindings, final extraction and receipts. Five
 launcher aliases differ from raw Git only by the exact Windows Git archive
 LF-to-CRLF conversion proved against committed attributes; no blanket source
-normalization was used. All **36 observed process receipts** ended without
-surviving owned processes. The largest sampled tree was **1,031,335,936 bytes**
-during the extracted qualification wrapper. Source qualification processes consumed
-369.829 seconds in aggregate; imports consumed 131.794 seconds; the extracted
-wrapper consumed 265.219 seconds. These scopes overlap and are not summed into
-an invented single process time.
+normalization was used. All **38 observed process receipts** ended without
+surviving owned processes. The extracted qualification wrapper consumed
+261.094 seconds with a sampled tree peak of **993,378,304 bytes**. Nested game,
+import and wrapper scopes overlap and are not summed into an invented total.
+The separately retained inherited-environment PowerShell probe failed as
+expected; the launcher's cleaned child environment passed the actual check.
 
-The independent report is [Git blob e4321ad](https://api.github.com/repos/techrote/cybersand/git/blobs/e4321ad82203bb9a3a516cfa425795fa8cbd71d6);
-the reproducible custody/EOL audit is [3bd9fcf](https://api.github.com/repos/techrote/cybersand/git/blobs/3bd9fcfe697e46fa046480ee0944aa22410a6dec).
-The gameplay review is [8088b38](https://api.github.com/repos/techrote/cybersand/git/blobs/8088b38271d1238455fb5871406b125b684266b5).
+The earlier `5ee5dffc` evaluator retains its original historical qualification,
+95,549,310-byte ZIP and SHA-256
+`513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee`.
+Its [3,841-check delivery report](https://api.github.com/repos/techrote/cybersand/git/blobs/e4321ad82203bb9a3a516cfa425795fa8cbd71d6),
+[custody audit](https://api.github.com/repos/techrote/cybersand/git/blobs/3bd9fcfe697e46fa046480ee0944aa22410a6dec)
+and [248-check gameplay review](https://api.github.com/repos/techrote/cybersand/git/blobs/8088b38271d1238455fb5871406b125b684266b5)
+are not relabelled as `6f359ce2` results. Its subsequently identified Save/Reopen oracle
+limitation is repaired only in the separately qualified successor.
+
+The corrected-source review packets retain the complete
+[package custody audit](https://api.github.com/repos/techrote/cybersand/git/blobs/6dadaa33179ce4bb665daf7be7a5a1988f0ce0cf),
+[independent material and action review](https://api.github.com/repos/techrote/cybersand/git/blobs/621448b4456b77c0acab8a7eeb88b627a9561f12),
+and [State-v2/parity review](https://api.github.com/repos/techrote/cybersand/git/blobs/a4368dca6478402432c08e7c5fe1982df1afa5e1).
+The [decision-table review](https://api.github.com/repos/techrote/cybersand/git/blobs/d288c46a5614f3a589e37bc84714fabe414ad737)
+binds its exact pre-reference-addendum document and index snapshots.
+
+The portable sample corpus contains eight raw serializations of four parsed
+tapes. Its three original executions completed 64, 128 and seven actions; the
+fourth is a completed 64-action semantic replay. The resulting 263 completed
+rows are not 263 independent episodes. The seven-action original is the actual
+actor-reset material-history case, preserving its ordinary Place, Play, Pause,
+Reset, Remove, Save and Reopen sequence.
 
 ## Comparative exploration and longer episodes
+
+The complete second matrix ran at exact source
+`5ee5dffc78d59a721f62be49fd51d24b870556c7`, before the later material-history
+correction. All **142 independently identified episodes and 11,554 attempted
+actions** are retained: **11,538 completed, 16 expected refusals, no partial
+admitted actions and no failed gameplay assertions**. Of142 episodes,139 completed their
+attempt budgets; three longer episodes reached their configured campaign limits.
+The overall Linux qualification remains failed on those incomplete budgets.
+
+| Exact5ee cohort | Episodes | Budget complete | Attempted actions | Completed actions | Refusals |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Nine policies × four initial fixtures × three seeds,64slots | 108 | 108 | 6,912 | 6,909 | 3 |
+| Random/Coverage Hunter,128/256/512/1024slots | 8 | 5 | 2,978 | 2,967 | 11 |
+| Sixteen personalities, mixed_stress, seed605 | 16 | 16 | 1,024 | 1,022 | 2 |
+| Ten scenarios, Coverage Hunter, seed2309 | 10 | 10 | 640 | 640 | 0 |
+
+The independent reader recomputed53completed action IDs,975adjacent action
+transitions,5,889state-transition keys,96material-interaction keys,69tool/material
+keys,127actor/environment keys, eight lifecycle keys, three refusal keys and77
+outcome keys. These are deduplicated unions over valid observed tapes, including
+incomplete long episodes; no missing suffix is credited. No per-dimension map
+saturated. The two absent matrix IDs, `actor_trigger` and `preview_cancel`, both
+completed in the separately qualified expanded native group. The trigger has an
+accepted/consumed/applied equipment receipt and five actual changed cells;
+cancellation ends an observed drag through the ordinary Cancel control. Together
+the matrix and focused native evidence contain completed instances of all55
+contracts, without adding those focused rows to the matrix totals.
+
+All nine matched policies have12budget-complete episodes at64attempt slots,
+using construction, liquid_channel, actor_workshop and history_edges with seeds
+13,605and1701. Refusals consume a slot. The following are **per-episode medians**,
+not unions or paired effect estimates.
+
+| Policy | Action IDs | Adjacent pairs | State transitions | Material interactions | Tool/material |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Control | 23 | 32 | 53 | 5 | 3 |
+| Wanderer | 10 | 13 | 59 | 4 | 3 |
+| Builder | 7 | 12 | 29 | 6 | 3 |
+| Tinkerer | 14 | 16 | 64 | 8 | 4 |
+| Curiosity | 35 | 52 | 64 | 9.5 | 4 |
+| Seeded random | 25 | 57 | 64 | 11 | 8.5 |
+| Stateful explorer | 17 | 25 | 62 | 6 | 5 |
+| Novelty seeker | 23.5 | 57 | 64 | 10 | 9 |
+| Coverage Hunter | 26 | 58 | 64 | 7 | 9 |
+
+The exact paired median differences use the same12initial-fixture/seed blocks.
+They must not be reconstructed by subtracting the separate policy medians.
+
+| Candidate minus baseline | Action IDs | Adjacent pairs | State transitions | Material interactions | Tool/material |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Coverage Hunter minus random | +1 | 0 | 0 | −4 | +1 |
+| Coverage Hunter minus novelty | +3 | +1 | 0 | −3 | −2 |
+| Novelty minus random | −1 | +2 | 0 | +3 | +3 |
+
+Coverage Hunter's material count is lower than Novelty in every block
+(differences−7to−1), and never higher than Random(−7to0). It is not a universal
+winner. Curiosity's broad action vocabulary and the specialized policies'
+repeated interactions answer different testing questions. Material keys describe
+sampled adjacency and edit variants, not verified reactions. State-transition
+keys include before/after bounded gameplay projections, action ID and status;
+they are not a count of physically distinct whole Worlds. Several medians reach
+the64-row opportunity ceiling without establishing greater semantic breadth or
+defect yield. Ordinary fixture replacement remains part of each whole strategy,
+so later environment exposure is not held constant. All142matrix profiles used
+fresh memory; these results do not measure cross-episode learning.
+
+### Actual memory reuse and personality behaviour
+
+A separate unchanged5ee experiment completed all seven64-slot episodes:
+448admitted/completed actions, no refusals or failed assertions. One Control
+construction episode supplied the retained corpus. Two matched seeds,65and129,
+then compared fresh Coverage Hunter, imported hints and explicit prefix reuse.
+The two hint-only runs changed the first action at equal initial abstract state
+and matching paused native identity. Both explicit-reuse runs proposed the exact
+retained four-action prefix and independently verified64cells changing from
+Empty to the selected material58.
+
+Search benefit was mixed. Hints versus fresh changed action-type coverage by−2
+and+3at the two seeds, with material-interaction key differences0and−2. Explicit prefix versus fresh
+changed action types by−2and+2, with material-interaction key differences−1and0. Imported observations
+never counted as fresh coverage. One corpus and two paired seeds establish
+working reuse, not a general improvement. Cultivation cost20.315seconds;
+all seven game processes177.241seconds; supervisor188.633seconds with
+780,333,056bytes peak sampled owned-tree RSS and no survivors.
+
+The separately registered one-episode personality readout found concrete
+behaviour differences: Builder completed20rectangles; Tinkerer28history-family
+actions; Disaster Artist23rectangles and began four reservoir/breach/repair
+intentions; Actor Enthusiast29actor-family and35simulation actions; Impatient
+Switcher14UI and17actor-family actions. History Goblin and Obsessive Reproducer
+both completed40history-family actions, but their experiment goals referred to
+five versus two repeated locations. Independently, History’s five completed
+rectangles use five locations; Obsessive’s first four rectangles have identical
+arguments, followed by one at a different location. The surrounding goal counts
+are not counts of spatial edits. Alchemist completed no history-family action and skipped eight unavailable
+goal steps; successful chemical reactions are not established. These signatures
+come from one initial mixed_stress episode per personality at seed605, not a
+human recognizability or population-reliability study.
+
+### Long-horizon completion and cost
+
+| Policy | Requested slots | Actual attempts | Completed actions | Terminal outcome | Game-process seconds |
+| --- | ---: | ---: | ---: | --- | ---: |
+| Random | 128 | 128 | 128 | Budget complete | 76.080 |
+| Coverage Hunter | 128 | 128 | 128 | Budget complete | 53.215 |
+| Random | 256 | 256 | 254 | Budget complete | 234.825 |
+| Coverage Hunter | 256 | 256 | 255 | Budget complete | 171.637 |
+| Random | 512 | 466 | 464 | Campaign timeout | 622.944 |
+| Coverage Hunter | 512 | 512 | 510 | Budget complete | 573.779 |
+| Random | 1024 | 570 | 568 | Campaign timeout | 909.517 |
+| Coverage Hunter | 1024 | 662 | 660 | Campaign timeout | 908.820 |
+
+There is one episode per policy/budget, so these are observed outcomes, not
+reliability estimates. The three timeout tapes have completion markers, no
+pending action, no failed assertion or native failure, and no surviving owned
+process. Their active times616.431/901.918/902.175seconds cross configured
+614.4/900/900second decision-boundary limits; the outer674/960/960second process
+caps are respected. No1024completion is claimed at5ee. The independently frozen
+reader passed all142tapes; B's62contract checks distinguish bounded attrition
+from gameplay failure while retaining the original runner's failed/unresolved
+records.
+
+The142game processes consumed6,693.686aggregate seconds. Queue elapsed time was
+6,733.147seconds within7,200; maximum sampled game-process tree RSS was
+848,502,784bytes. C verified169process receipts with no survivors and20,696source,
+log and archive checks. The later6f qualification has its own separately frozen
+eight-long/seven-memory programme; no state-v1/state-v2 coverage is pooled.
+
+The lead's preregistered cost supplement consumed142validated tapes and286exact
+input hashes. In the five completed long episodes, later all-action quartile
+medians were2.47to7.32times the early medians. Those quarters can contain different
+actions and environments. **Zero** exact action/arguments/fixture/pause strata
+met the preregistered minimum of three observations in each quarter, so the
+adjusted comparison is empty. No threshold was relaxed after seeing results.
+The three incomplete episodes are excluded from that positional comparison.
+Process time includes game initialization, teardown and monitor overhead, but
+excludes the separate editor import and postprocess analysis. Adapter intervals
+include admission checkpoint I/O and native waits, and exclude post-return
+assertion/coverage/completed-tape work. Neither measure isolates engine FPS,
+causal slowdown or a memory leak. C independently recomputed898timing/custody
+checks. This is a measured long-horizon cost limitation, not a discovered
+production defect.
+
+Primary analysis SHA-256 is
+`49de3782a724baba68284cf9f934518efe58b5bc2d1ed45ac15cfd160269d28c`;
+memory analysis is`07d5477506d0c28e9738c3ce35843e6e43b34c2124ea9ee25c72f56259ba1904`.
+[Original5ee Linux evidence](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/15000115723)
+retains all raw results. Independent custody, deadline, completed-ID and cost
+reviews are recorded in the machine index and durable campaign archive.
+
+### Historical matrix retained at its actual source
 
 The first complete registered Linux matrix ran at exact earlier source
 `d849be8ef99cd9226cfc3ca0925752e42b691515`. All **142 independently identified
@@ -198,12 +383,10 @@ started with fresh memory and corpus_reuse=false. These observations establish
 useful diversity, not a universally best policy or a causal persistent-learning
 advantage.
 
-The5ee source's complete matrix and registered seven-episode memory
-experiment are still being qualified at this checkpoint. Until their raw
-artifacts are independently examined, no corrected-source 256/512/1024 completion
-rate, persistent-memory advantage or new comparative total is claimed. The old
-long-horizon stops were assertion stops, not resource-limit results, and each
-policy/budget had only one scheduled episode.
+The original long-horizon stops were assertion stops, not resource-limit
+results, and each policy/budget had only one scheduled episode. The separately
+reviewed5ee results above retain their own source and different attrition; the
+historical failures are not overwritten or pooled with the later matrix.
 
 The original matrix [artifact](https://github.com/techrote/cybersand/actions/runs/45538643315/artifacts/14990308987)
 and [fixed-64 analysis](https://api.github.com/repos/techrote/cybersand/git/blobs/b169d11e39d6fdc8102dde243af5281891b594a5)
@@ -269,12 +452,14 @@ The [actual native diagnostic](https://github.com/techrote/cybersand/actions/run
 and [committed original five-action tape](../../tools/gip014/cases/retained-clock-070-original.json.gz)
 retain the counterexample at source070addb0. The original automatic candidate
 remains unchanged and unresolved; independent classification is separate.
-A narrow corrective candidate now tracks simulation exposure across retaining
+A narrow correction now tracks simulation exposure across retaining
 replacements and requires actual fresh-authored proof before equality becomes
-applicable again. It preserves a positive fresh-equality gate. A new four-case,
-20-action native programme must pass in source and in the extracted Windows
-package before that candidate supersedes the qualified5ee evaluator. No new
-package qualification or unchanged-invariant production fix is claimed yet.
+applicable again. It preserves a positive fresh-equality gate. The four-case,
+20-action native programme passed in Windows source and again in the extracted
+package at `6f359ce2b24291ee219810773c641d53802fd31d`. This separately qualified
+package supersedes the owner download. The five-action historical tape remains
+an original counterexample, without an automatic-minimization claim. The repair
+corrects oracle applicability; it is not a production physics fix.
 
 ## Boundaries, remaining work and decision
 
@@ -302,21 +487,23 @@ Source capabilities are broader than the independently qualified combinations.
 No universal performance, reliability, behavioural-recognisability or training
 claim follows from these campaigns. The final owner decision remains **retain
 the qualified evaluator for experimental review and keep PR #781 Draft/HOLD**.
-Corrected Linux/memory analysis and the new material-history corrective
-candidate must complete their explicit gates before a replacement evaluator is
-qualified. The original5ee package retains its recorded pass and the newly
-identified oracle limitation.
+The complete `5ee5dffc` comparative and memory results are independently reviewed
+at their own exact source. The corrected Windows evaluator has passed its
+separate package gates. The corrected-source Linux long and memory outcomes
+remain pending until their raw evidence is retained and reviewed; no outcome is
+inferred from the Windows pass. The original package retains its historical
+pass and subsequently identified oracle limitation.
 
 
 ## Corrective qualification scope
 
-Request9 qualifies the material-history applicability correction independently.
+Requests 9 through 11 qualify the material-history applicability correction independently.
 Linux runs all focused and graphical gates, four native lineage cases with20
 actual actions, the seven-episode memory experiment, and the existing eight long
 episodes at128/256/512/1024actions for RANDOM and COVERAGE_HUNTER. Windows runs
 full source, graphical, portable-replay, isolation and extracted qualification;
 package contract3 additionally requires the actual four lineage tapes and their
-material captures before sealing. The5ee142-episode comparison is not relabelled
+material captures before sealing. The `5ee5dffc` 142-episode comparison is not relabelled
 as a result of this source. State-v1 and state-v2 coverage remain separate, and
 cross-source path differences do not isolate the causal effect of the repair.
 
@@ -351,10 +538,12 @@ representation/mutation controls, recorded separately from native actions.
 It preserves source, runtime, incidental metadata, missing/extra-field and
 Boolean distinctions; it does not substitute the smaller replay identity.
 The original failed reports remain intact. A and C independently reviewed the
-exact gate, and gameplay/oracle/package acceptance stay unchanged. The same
-both-platform long8/memory7 scope must now execute successfully before delivery.
+exact gate, and gameplay/oracle/package acceptance stay unchanged. Windows has
+now passed its source and extracted-package gates. The separately registered
+Linux eight-long/seven-memory programme retains every completion or bounded
+incomplete outcome; it is not replaced by a more favorable selected cohort.
 
-The separate5ee full142campaign finished with all142attempts retained. Its
-runner reports139budget completions and three failures. These are preliminary
-runner totals while independent tape, coverage, memory and failure reviews are
-in progress; they are not a claim that the Linux qualification passed.
+The separate5ee full142campaign and seven-memory experiment have now received
+independent raw-tape, coverage, source/custody, deadline and timing review, as
+reported above. Its original overall Linux result remains failed because three
+long budgets were incomplete. Request11 at6f remains a separate qualification.
