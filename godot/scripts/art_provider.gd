@@ -54,6 +54,8 @@ var _export_output: FileAccess
 var _export_temporary := ""
 var _export_destination := ""
 var _export_bytes := 0
+var _export_hash: HashingContext
+var _export_verifier: RefCounted
 const Archive = preload("res://scripts/art_traffic_archive.gd")
 const MAX_CONVERSATION_TURNS := 16384
 const MAX_CONVERSATION_BYTES := 16 * 1024 * 1024
@@ -405,17 +407,24 @@ func begin_export(destination: String) -> Error:
 		export_message = "Cannot create export staging file."
 		return export_error
 	_export_archive = archive
+	_export_hash = HashingContext.new()
+	_export_hash.start(HashingContext.HASH_SHA256)
+	_export_verifier = null
 	_reset_image_validation()
 	export_active = true
 	return OK
 
 func _end_export(result: Error, message: String = "") -> void:
 	_export_output = null
+	if _export_verifier != null: _export_verifier.close()
+	_export_verifier = null
+	_export_hash = null
 	export_active = false
 	export_error = result
 	export_message = message
 	if result != OK and not _export_temporary.is_empty():
-		DirAccess.remove_absolute(_export_temporary)
+		if FileAccess.file_exists(_export_temporary) and DirAccess.remove_absolute(_export_temporary) != OK:
+			export_message += " An uncommitted staging file remains at " + _export_temporary + "."
 	_export_temporary = ""
 	_export_archive = null
 	_reset_image_validation()
@@ -423,12 +432,21 @@ func _end_export(result: Error, message: String = "") -> void:
 func poll_export(max_bytes: int = 1048576) -> Dictionary:
 	if not export_active: return {"done":true,"error":export_error,"bytes":_export_bytes,"total":_export_bytes}
 	var archive: RefCounted = _export_archive
+	var total: int = archive.total_bytes
+	if _export_verifier != null:
+		_export_verifier.step(clampi(max_bytes, 1, 1048576))
+		if _export_verifier.done:
+			if not str(_export_verifier.error).is_empty():
+				_end_export(ERR_FILE_CANT_WRITE, "Export refused; this export did not replace the destination. " + str(_export_verifier.error))
+			else:
+				_commit_verified_export(archive)
+		return {"done":not export_active,"error":export_error,"bytes":_export_bytes,"total":total,"phase":"verify"}
 	var callback := func(event: Dictionary, source: String, offset: int, raw: PackedByteArray) -> String:
 		var problem := _validate_conversation_event(event, source, offset, archive.segments, _queue_image)
 		if not problem.is_empty(): return problem
 		archive.paused = not _image_queue.is_empty()
-		_export_output.store_buffer(raw)
-		if _export_output.get_error() != OK: return "Traffic export disk write failed."
+		if not _export_output.store_buffer(raw) or _export_output.get_error() != OK: return "Traffic export disk write failed."
+		if _export_hash.update(raw) != OK: return "Cannot verify the submitted export buffers."
 		_export_bytes += raw.size()
 		return ""
 	if not _image_queue.is_empty():
@@ -437,32 +455,35 @@ func poll_export(max_bytes: int = 1048576) -> Dictionary:
 	else:
 		archive.paused = false
 		archive.step(clampi(max_bytes, 1, 1048576), callback)
-	var total: int = archive.total_bytes
 	if archive.done:
 		if not archive.error.is_empty():
 			_end_export(ERR_FILE_CORRUPT, archive.error)
 		else:
 			_export_output.flush()
 			var write_error := _export_output.get_error()
+			_export_output.close()
 			_export_output = null
 			if write_error != OK:
 				_end_export(write_error, "Traffic export flush failed.")
 			else:
-				# Rename is the sole commit point. The final filename never contains a
-				# partially validated export; replacing a symlink does not follow it.
-				var canonical_destination := Archive.canonical_path(_export_destination)
-				var safe := not canonical_destination.is_empty()
-				for segment: Dictionary in archive.segments:
-					if Archive.canonical_path(segment.path) == canonical_destination: safe = false
-				if not safe:
-					_end_export(ERR_INVALID_PARAMETER, "Export destination became an alias of a conversation source.")
-				else:
-					var replacement := Archive.atomic_replace(_export_temporary, _export_destination)
-					_end_export(OK if replacement.get("ok", false) else ERR_FILE_CANT_WRITE, archive.warning if replacement.get("ok", false) else "Could not commit export; previous destination preserved: " + str(replacement.get("error", "")))
+				_export_verifier = Archive.ClosedFileVerification.new(_export_temporary, 0, _export_bytes, _export_hash.finish().hex_encode())
 	return {"done":not export_active,"error":export_error,"bytes":_export_bytes,"total":total}
 
+func _commit_verified_export(archive: RefCounted) -> void:
+	# Same-directory native replacement is the sole commit point. Recheck aliases
+	# after cooperative validation; a source archive must never be replaced.
+	var canonical_destination := Archive.canonical_path(_export_destination)
+	var safe := not canonical_destination.is_empty()
+	for segment: Dictionary in archive.segments:
+		if Archive.canonical_path(segment.path) == canonical_destination: safe = false
+	if not safe:
+		_end_export(ERR_INVALID_PARAMETER, "Export destination became an alias of a conversation source.")
+	else:
+		var replacement := Archive.atomic_replace(_export_temporary, _export_destination)
+		_end_export(OK if replacement.get("ok", false) else ERR_FILE_CANT_WRITE, archive.warning if replacement.get("ok", false) else "Could not commit export; this export did not replace the destination: " + str(replacement.get("error", "")))
+
 func cancel_export() -> void:
-	if export_active: _end_export(ERR_SKIP, "Export cancelled; previous destination preserved.")
+	if export_active: _end_export(ERR_SKIP, "Export cancelled; this export did not replace the destination.")
 
 func export_traffic(destination: String) -> Error:
 	var result := begin_export(destination)
@@ -855,7 +876,7 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 		log_warning = "Segment metadata cannot be appended as a conversation event."
 		return false
 	if _write_broken:
-		log_warning = "Traffic append was interrupted; restart Workbench to recover its complete events."
+		log_warning = "Traffic append was interrupted; this session log is read-only. Retain or export its complete events."
 		return false
 	if not _pending_history_segment.is_empty(): return _retry_history_segment_checkpoint(kind,data,admission)
 	var new_segment := log_path.is_empty()
@@ -887,6 +908,10 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 	if file == null:
 		log_warning = "Cannot write traffic log; live traffic remains available."
 		return false
+	var write_hash := HashingContext.new()
+	write_hash.start(HashingContext.HASH_SHA256)
+	var stored := true
+	var verify_offset := 0 if new_segment else _written_size
 	if new_segment:
 		var header := {"kind":"session_start","schema":2,"segment_id":id,"data":{}}
 		if not parent_log_path.is_empty():
@@ -912,7 +937,8 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 			file = null; DirAccess.remove_absolute(temporary)
 			log_warning = "Conversation metadata reached its bounded replay capacity; nothing written."
 			return false
-		file.store_buffer(header_line)
+		stored = file.store_buffer(header_line)
+		write_hash.update(header_line)
 		if retain_history_segment: history_segment_hash.update(header_line)
 	else:
 		if file.get_length() != _written_size:
@@ -921,19 +947,29 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 			return false
 		file.seek_end()
 	var offset := file.get_position()
-	file.store_buffer(encoded)
+	var event_stored := file.store_buffer(encoded)
+	stored = stored and event_stored
+	write_hash.update(encoded)
 	if retain_history_segment: history_segment_hash.update(encoded)
 	file.flush()
 	var error := file.get_error()
-	var length := file.get_position()
-	file = null # Close before signalling a durable pointer to the panel.
+	var length := offset + encoded.size()
+	file.close()
+	file = null # Close and verify before signalling a stored pointer to the panel.
+	if not stored: error = ERR_FILE_CANT_WRITE
+	if error == OK:
+		var verification := Archive.ClosedFileVerification.new(temporary, verify_offset, length, write_hash.finish().hex_encode())
+		while not verification.done: verification.step()
+		if not verification.error.is_empty(): error = ERR_FILE_CANT_WRITE
 	if error == OK and new_segment:
 		var replacement := Archive.atomic_replace(temporary, destination)
 		if not replacement.get("ok", false): error = ERR_FILE_CANT_WRITE
 	if error != OK:
-		if new_segment: DirAccess.remove_absolute(temporary)
+		log_warning = "Traffic write failed; the new event was not confirmed. Prior complete events remain in the session log."
+		if new_segment:
+			if FileAccess.file_exists(temporary) and DirAccess.remove_absolute(temporary) != OK:
+				log_warning += " An uncommitted staging file remains at " + temporary + "."
 		else: _write_broken = true
-		log_warning = "Traffic write failed; prior conversation remains preserved."
 		return false
 	if retain_history_segment:
 		var parent := _segment(parent_log_path,_validated_segments)

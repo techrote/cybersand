@@ -722,16 +722,17 @@ func _poll_traffic_export() -> void:
 	var progress: Dictionary = provider.poll_export()
 	if bool(progress.get("done",false)):
 		var err := int(progress.get("error",FAILED))
-		export_message = "Full session export completed: "+export_destination if err == OK else "Export failed (%d); existing destination preserved. %s" % [err,provider.export_message]
+		export_message = "Full session export completed: "+export_destination if err == OK else "Export refused (%d). %s" % [err,provider.export_message]
 		if err == OK and not provider.export_message.is_empty(): export_message += " · "+provider.export_message
 	else:
-		export_message = "Exporting · %.1f / %.1f MiB · Cancel export or Stop to interrupt" % [float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
+		var phase := "Verifying closed export" if progress.get("phase", "") == "verify" else "Exporting"
+		export_message = "%s · %.1f / %.1f MiB · Cancel export or Stop to interrupt" % [phase,float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
 	traffic_path.text = export_message
 
 func _cancel_traffic_export() -> void:
 	if not provider.export_active: return
 	provider.cancel_export()
-	export_message = "Export cancelled; existing destination preserved."
+	export_message = provider.export_message if not provider.export_message.is_empty() else "Export cancelled; this export did not replace the destination."
 	traffic_path.text = export_message
 
 func _save_settings() -> Error:

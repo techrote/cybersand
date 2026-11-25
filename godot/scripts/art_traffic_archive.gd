@@ -131,6 +131,69 @@ static func atomic_replace(temporary: String, destination: String) -> Dictionary
 		return {"ok":false,"error":"Native runtime lacks atomic file replacement; rebuild the GDExtension."}
 	return bridge.call(&"replace_material_baseline_file", ProjectSettings.globalize_path(temporary).simplify_path(), ProjectSettings.globalize_path(destination).simplify_path())
 
+class ClosedFileVerification extends RefCounted:
+	# The expected digest comes from the buffers actually submitted by the writer.
+	# Verify only after it closes: Godot get_error() misses some buffered failures.
+	# Export callers advance this bounded reader cooperatively and can cancel it.
+	var done := false
+	var error := ""
+	var _file: FileAccess
+	var _hash: HashingContext
+	var _remaining := 0
+	var _expected := ""
+	var _expected_length := 0
+
+	func _init(path: String, offset: int, expected_length: int, expected_sha256: String) -> void:
+		if offset < 0 or expected_length < offset or expected_sha256.length() != 64 or not expected_sha256.is_valid_hex_number(false):
+			_fail("Invalid closed-file verification bounds.")
+			return
+		_file = FileAccess.open(path, FileAccess.READ)
+		if _file == null:
+			_fail("Cannot reopen the closed output for verification.")
+			return
+		if _file.get_length() != expected_length:
+			_fail("The closed output is incomplete; check free space and write permissions.")
+			return
+		_file.seek(offset)
+		if _file.get_position() != offset:
+			_fail("Cannot seek to the submitted output region.")
+			return
+		_remaining = expected_length - offset
+		_expected = expected_sha256
+		_expected_length = expected_length
+		_hash = HashingContext.new()
+		_hash.start(HashingContext.HASH_SHA256)
+
+	func close() -> void:
+		if _file != null: _file.close()
+		_file = null
+
+	func _fail(message: String) -> void:
+		error = message
+		done = true
+		close()
+
+	func step(max_bytes: int = 65536) -> void:
+		if done: return
+		var budget := clampi(max_bytes, 1, 1048576)
+		while budget > 0 and _remaining > 0:
+			var amount := mini(mini(budget, _remaining), 65536)
+			var raw := _file.get_buffer(amount)
+			var state := _file.get_error()
+			if raw.size() != amount or (state != OK and state != ERR_FILE_EOF) or _hash.update(raw) != OK:
+				_fail("Cannot verify the complete closed output.")
+				return
+			budget -= amount
+			_remaining -= amount
+		if _remaining == 0:
+			if _file.get_length() != _expected_length:
+				_fail("The closed output length changed during verification.")
+				return
+			var observed := _hash.finish().hex_encode()
+			close()
+			done = true
+			if observed != _expected: error = "The closed output bytes differ from the submitted data."
+
 static func read_record(file: FileAccess, limit: int = -1) -> Dictionary:
 	var start := file.get_position()
 	var end := file.get_length() if limit < 0 else mini(limit, file.get_length())
