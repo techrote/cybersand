@@ -232,7 +232,12 @@ into the common UI. `--observers=off` disables optional logs/timings, not physic
 objective semantics. Allowed ticks are 0..3600 and worker count 1..32, subject to
 native platform support. The output directory must exist. Unknown options and
 invalid values fail with exit 2; run failure or a failure objective exits 1.
-Output is written to a temporary file and renamed after a successful write.
+The ULTIMA candidate writes to a unique sibling temporary file, verifies its
+complete closed bytes, then uses the native replacement operation. A refused
+write preserves an existing output and exits with failure; no truncated output
+is acknowledged as a completed capture. This is the
+[shared verified replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling),
+not a promise of power-loss durability or browser storage behavior.
 
 The runner refuses player/body-enabled definitions rather than silently omitting
 those owners and claiming interactive parity. It records its native-only scope.

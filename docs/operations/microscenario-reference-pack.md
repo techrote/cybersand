@@ -230,10 +230,17 @@ Different completed ticks/runtime/seed/workers do not receive a matched flag. Ev
 matching flags do not certify unmatched manual brush input as a controlled experiment.
 Blind workflows keep this generic definition/capture route disabled.
 
-GUI capture atomically writes `user://microscenario-observation.json` and copies it
-to the clipboard where supported. Capture is a definition plus observations, **not
-a save/replay** of all runtime state or organic input. Existing controlled-scenario
-CYSD1 save restrictions remain.
+GUI capture writes `user://microscenario-observation.json`. In the **ULTIMA
+candidate**, desktop capture and the native CLI verify complete staged bytes
+before the native file-replacement operation. A refused write leaves the previous
+valid capture intact; clipboard and GUI acknowledgement follow a successful
+commit. This repairs an observed buffered-write failure in the accepted writer,
+which could acknowledge truncated output. The guarantee is scoped to the
+[verified replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+and its actual platform tests; it does not establish browser persistence,
+filesystem synchronization or power-loss durability. Capture is a definition plus
+observations, **not a save/replay** of all runtime state or organic input. Existing
+controlled-scenario CYSD1 save restrictions remain.
 
 For INT-000 batch evidence, use the same catalogue definitions through
 `tools/interactions/batch.py`. The run command executes the declared proof set at

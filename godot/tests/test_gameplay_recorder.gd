@@ -3,8 +3,27 @@ extends SceneTree
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 
 const Recorder = preload("res://scripts/gameplay_recorder.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
+
+class NoReplacement extends FileTransaction.FileOperations:
+	func replacement_bridge() -> Object: return null
+
+class TruncateFrame extends FileTransaction.FileOperations:
+	func verify(path: String, expected: PackedByteArray) -> String:
+		if path.ends_with(".ids"):
+			var file := FileAccess.open(path, FileAccess.WRITE)
+			file.store_buffer(expected.slice(0, maxi(0, expected.size() - 1)))
+			file.close()
+		return super.verify(path, expected)
+
+class RefuseFinalManifest extends FileTransaction.FileOperations:
+	var refuse := false
+	func replace(bridge: Object, staging: String, target: String) -> Dictionary:
+		if refuse: return {"ok":false, "error":"injected final-manifest replacement refusal"}
+		return super.replace(bridge, staging, target)
 
 var _failures: int = 0
+var _checks: int = 0
 
 
 func _init() -> void:
@@ -17,8 +36,12 @@ func _run() -> void:
 	_test_threaded_output_and_provenance()
 	_test_async_finalization()
 	_test_incomplete_disposition()
+	_test_missing_replacement_and_session_names()
+	_test_existing_session_preserved()
+	_test_failed_frame_not_complete()
+	_test_failed_final_manifest_preserved()
 	if _failures == 0:
-		print("Gameplay recorder regression passed")
+		print("Gameplay recorder regression passed: ", _checks, " checks")
 	quit(_failures)
 
 
@@ -456,7 +479,81 @@ func _test_incomplete_disposition() -> void:
 		)
 
 
+func _test_missing_replacement_and_session_names() -> void:
+	var root := "user://rec001-missing-%d" % Time.get_ticks_usec()
+	var recorder = Recorder.new()
+	recorder._file_io = NoReplacement.new()
+	var config := {"output_root":root, "session_name":"missing-capability"}
+	_expect(recorder.start_recording(config, {}, true) == ERR_UNAVAILABLE, "missing replacement capability was admitted")
+	_expect(not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(root)), "missing capability created an output directory")
+	_expect(not recorder.is_active() and not recorder.status().accepting, "missing capability left recording active")
+	_expect(recorder.start_recording(config, {}, false) == OK, "in-memory recorder incorrectly requires native replacement")
+	recorder.stop_recording()
+	for unsafe: String in ["../escape", "/absolute", "a/b", "a\\b", ".", ".."]:
+		var invalid = Recorder.new()
+		_expect(invalid.start_recording({"output_root":root,"session_name":unsafe}, {}, true) == ERR_INVALID_PARAMETER,
+			"unsafe session name was admitted: " + unsafe)
+	_expect(not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(root)), "unsafe name created output directories")
+
+
+func _test_existing_session_preserved() -> void:
+	var root := "user://rec001-tests"
+	var name := "retained-%d" % Time.get_ticks_usec()
+	var target := root.path_join(name)
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(target))
+	var manifest := target.path_join("recording.json")
+	var old := "{\"retained\":true}\n"
+	var file := FileAccess.open(manifest, FileAccess.WRITE)
+	file.store_string(old)
+	file.close()
+	var recorder = Recorder.new()
+	_expect(recorder.start_recording({"output_root":root,"session_name":name}, {}, true) != OK,
+		"existing session was silently reused")
+	_expect(FileAccess.get_file_as_string(manifest) == old, "existing session manifest was replaced")
+	_expect(not recorder.is_active(), "existing-session refusal left recorder active")
+	_expect(not recorder._write_text_file(manifest, "replacement").is_empty(), "immutable frame writer overwrote an existing file")
+	_expect(FileAccess.get_file_as_string(manifest) == old, "refused immutable write changed old bytes")
+
+
+func _test_failed_frame_not_complete() -> void:
+	var recorder = Recorder.new()
+	recorder._file_io = TruncateFrame.new()
+	var root := "user://rec001-tests"
+	var name := "failed-frame-%d" % Time.get_ticks_usec()
+	var error: Error = recorder.start_recording({"roi":Rect2i(11,21,2,2),"output_root":root,"session_name":name}, {}, true)
+	_expect(error == OK, "frame-failure fixture did not start")
+	if error != OK: return
+	recorder.ingest_snapshot(_full_snapshot(6, Time.get_ticks_usec() + 100))
+	var final: Dictionary = recorder.stop_recording()
+	_expect(final.failed and int(final.written_frames) == 0, "truncated frame was counted written")
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(root.path_join(name).path_join("recording.json")))
+	_expect(parsed is Dictionary, "frame failure did not retain readable final metadata")
+	if parsed is Dictionary:
+		_expect(parsed.disposition == "incomplete" and parsed.failure, "frame failure was labelled complete")
+
+
+func _test_failed_final_manifest_preserved() -> void:
+	var recorder = Recorder.new()
+	var io := RefuseFinalManifest.new()
+	recorder._file_io = io
+	var root := "user://rec001-tests"
+	var name := "failed-final-%d" % Time.get_ticks_usec()
+	var error: Error = recorder.start_recording({"roi":Rect2i(11,21,2,2),"output_root":root,"session_name":name}, {}, true)
+	_expect(error == OK, "final-manifest fixture did not start")
+	if error != OK: return
+	var path := root.path_join(name).path_join("recording.json")
+	var before := FileAccess.get_file_as_bytes(path)
+	io.refuse = true
+	recorder.ingest_snapshot(_full_snapshot(7, Time.get_ticks_usec() + 100))
+	var final: Dictionary = recorder.stop_recording()
+	_expect(final.failed and not final.active and int(final.written_frames) == 1, "final-manifest refusal was not surfaced after verified frame")
+	_expect(FileAccess.get_file_as_bytes(path) == before, "failed final publication replaced previous valid manifest")
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	_expect(parsed is Dictionary and parsed.disposition == "recording", "failed final publication falsely claimed complete")
+
+
 func _expect(condition: bool, message: String) -> void:
+	_checks += 1
 	if condition:
 		return
 	_failures += 1
