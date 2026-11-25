@@ -8,6 +8,9 @@ var content := preload("res://scripts/art_conversation_text_edit.gd").new()
 var role := Label.new()
 var notice := Label.new()
 var remove_button := Button.new()
+var note_button := Button.new()
+var clear_button := Button.new()
+var apply_pending := false
 var page_controls := HBoxContainer.new()
 var previous_page := Button.new()
 var next_page := Button.new()
@@ -56,26 +59,28 @@ func _ready() -> void:
 	notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(notice)
 	var actions := HBoxContainer.new()
-	var note := Button.new()
-	note.text = "+ Note"
-	note.pressed.connect(func() -> void:
+	note_button.text = "+ Note"
+	note_button.pressed.connect(func() -> void:
+		if apply_pending: return
 		flush_message()
 		draft.append({"role":"user","content":""})
 		_rebuild(draft.size()-1)
 		content.grab_focus())
-	actions.add_child(note)
+	actions.add_child(note_button)
 	remove_button.text = "Remove"
 	remove_button.pressed.connect(func() -> void:
+		if apply_pending: return
 		flush_message()
 		if selected >= 0 and selected < draft.size():
 			draft.remove_at(selected)
 			_rebuild(mini(selected,draft.size()-1)))
 	actions.add_child(remove_button)
-	var clear := Button.new()
-	clear.text = "Clear draft"
-	clear.tooltip_text = "Remove all messages from this draft. Cancel still preserves live history."
-	clear.pressed.connect(func() -> void: draft.clear(); _rebuild(-1))
-	actions.add_child(clear)
+	clear_button.text = "Clear draft"
+	clear_button.tooltip_text = "Remove all messages from this draft. Cancel still preserves live history."
+	clear_button.pressed.connect(func() -> void:
+		if apply_pending: return
+		draft.clear(); _rebuild(-1))
+	actions.add_child(clear_button)
 	box.add_child(actions)
 	var split := HSplitContainer.new()
 	split.custom_minimum_size.y = 150
@@ -116,6 +121,7 @@ func _ready() -> void:
 	detail.add_child(content)
 
 func open_history(turns: Array) -> void:
+	set_apply_pending(false)
 	baseline = turns.duplicate(true)
 	# Keep one immutable snapshot. Draft entries are copied only when edited;
 	# an additional deep copy of every turn delays opening large transcripts.
@@ -124,6 +130,15 @@ func open_history(turns: Array) -> void:
 	_rebuild(0 if not draft.is_empty() else -1)
 	# Fit the popup's actual embedding viewport or native screen at this scale.
 	popup_centered_clamped(Vector2i((Vector2(760,480)*content_scale_factor).ceil()),0.9)
+
+func set_apply_pending(pending: bool, message: String = "") -> void:
+	apply_pending = pending
+	note_button.disabled = pending
+	clear_button.disabled = pending
+	remove_button.disabled = pending or selected < 0
+	content.editable = not pending and selected >= 0
+	get_ok_button().disabled = pending
+	if not message.is_empty(): notice.text = message
 
 func _sync_minimum() -> void:
 	var scaled := Vector2i((Vector2(480,280)*content_scale_factor).ceil())
@@ -177,8 +192,8 @@ func _append_message_items(generation: int) -> void:
 func _select_message(index: int) -> void:
 	loading = true
 	selected = index if index >= 0 and index < draft.size() else -1
-	content.editable = selected >= 0
-	remove_button.disabled = selected < 0
+	content.editable = selected >= 0 and not apply_pending
+	remove_button.disabled = selected < 0 or apply_pending
 	if selected >= 0:
 		var turn: Dictionary = draft[selected]
 		role.text = "%d / %d · %s%s" % [selected+1,draft.size(),str(turn.role).capitalize(),
@@ -237,6 +252,7 @@ func _jump_page(value: String) -> void:
 	content.grab_focus()
 
 func _content_changed() -> void:
+	if apply_pending: return
 	if loading or selected < 0 or selected >= draft.size() or _pages.is_empty(): return
 	# A normal edit reads at most the current 4 Ki-character part. Clipboard
 	# growth is intercepted before insertion; this also handles other edits
@@ -275,6 +291,7 @@ func _append_page_text(pages: Array[String], value: String) -> void:
 		offset += count
 
 func _intercept_paste(value: String, caret_index: int, whole_line: bool, one_line_each: bool) -> bool:
+	if apply_pending: return true
 	if loading or selected < 0 or selected >= draft.size() or _pages.is_empty(): return true
 	var current := content.text
 	var caret_count := content.get_caret_count() if caret_index == -1 else 1
@@ -344,6 +361,7 @@ func _update_selected_caption() -> void:
 	messages.set_item_text(selected,"%d · %s · %s" % [selected+1,str(draft[selected].get("role","user")),preview])
 
 func flush_message() -> void:
+	if apply_pending: return
 	if loading or selected < 0 or selected >= draft.size(): return
 	_content_changed()
 	if not _pages_dirty: return

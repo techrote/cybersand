@@ -681,6 +681,11 @@ func loaded_conversation_apply_checks() -> void:
 	began = Time.get_ticks_usec()
 	click(editor.get_ok_button())
 	var apply_usec := Time.get_ticks_usec()-began
+	var async_apply: bool = panel.conversation_apply_pending()
+	if async_apply:
+		check(await until(func() -> bool: return not panel.conversation_apply_pending(),90000),
+			"large Apply finishes its bounded background preparation and owner commit")
+	var apply_completion_usec := Time.get_ticks_usec()-began
 	for _index in range(12): await process_frame
 	var apply_frames := end_measurement()
 	check(not editor.visible,"ordinary Apply closes changed large-message draft")
@@ -694,7 +699,10 @@ func loaded_conversation_apply_checks() -> void:
 	check(native_tick()>tick_before,"native simulation progresses while loaded conversation is edited")
 	cases.append({"case":"loaded-near-cap-edited-apply","context_bytes":content_bytes,
 		"fixture_admission_usec":seed_usec,"open_usec":open_usec,"open_frames":open_frames,
-		"apply_usec":apply_usec,"frames":apply_frames,"expected_sha256":expected_sha256,"actual_sha256":actual_sha256,
+		"apply_usec":apply_usec,"apply_completion_usec":apply_completion_usec,"asynchronous_apply":async_apply,
+		"apply_preparation":panel.last_conversation_apply_timing.duplicate(true),
+		"timing_scope":"apply_usec is click-return; completion includes preparation and durable owner commit; frames cover both",
+		"frames":apply_frames,"expected_sha256":expected_sha256,"actual_sha256":actual_sha256,
 		"last_audit":panel.provider.last_audit_timing.duplicate(true),"visible_characters":editor.content.text.length()})
 	checkpoint("edited near-cap Apply completed")
 
