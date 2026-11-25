@@ -19,6 +19,24 @@
       "independent_review": "Specialist C APPROVE; lead concurred",
       "decision_comment": "https://github.com/techrote/cybersand/pull/736#issuecomment-7175345538",
       "post_merge": "in progress"
+    },
+    {
+      "pr": 758,
+      "programme": "Gentek Windows acceptance tooling",
+      "candidate_sha": "da83f83ff20a5ae0ec0184079146d6d696a9c0e3",
+      "previous_main": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "merge_commit": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "resulting_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "method": "merge",
+      "qualification_runs": [
+        45106062789,
+        45106062785,
+        45106062758,
+        45100222225
+      ],
+      "independent_review": "Specialist C APPROVE and B independent binary/package readback",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/758#issuecomment-7175373448",
+      "post_merge": "in progress"
     }
   ],
   "decisions": [
@@ -59,6 +77,20 @@
         44978447468
       ],
       "next": "Expected-head merge; record main and post-merge results"
+    },
+    {
+      "id": "CI-WAVE-001",
+      "decision": "Combine #771 and exact #778 donor with accepted #736/#758 main for one full Ready resulting-source campaign; preserve all original ancestry and rollback identities. No native/Godot/third-party input change.",
+      "source": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+      "local_identical_tree_source": "e85b1f73d5649158bc628834d169917d5d60ff16",
+      "scope": [
+        771,
+        778
+      ],
+      "registration": "https://github.com/techrote/cybersand/pull/771#issuecomment-7175458828",
+      "ready_at": "2026-11-25T21:43:37Z",
+      "status": "Ready qualification in progress; no merge approval yet"
     }
   ]
 }

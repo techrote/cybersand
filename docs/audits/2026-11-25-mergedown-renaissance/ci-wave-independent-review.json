@@ -1,0 +1,83 @@
+{
+  "schema": "cybersand-mergedown-ci-independent-review-v1",
+  "reviewer": "Specialist C",
+  "source": "e85b1f73d5649158bc628834d169917d5d60ff16",
+  "tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+  "base": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "constituents": {
+    "ci_closure": "911a3448e8e331cb097f1654bf861e20d77f57ca",
+    "ready_repair": "585520e7e62b67ce8c4c86605b08e1f8cc920bba"
+  },
+  "verdict": "APPROVE_READY_QUALIFICATION",
+  "merge_approval": "PENDING_REQUIRED_RESULTING_SOURCE_HOSTED_GATES",
+  "source_paths_changed": [
+    ".github/workflows/documentation.yml",
+    ".github/workflows/gdextension.yml",
+    "docs/README.md",
+    "docs/audits/2026-11-24-ci-engineering-closure/independent-review.json",
+    "docs/audits/2026-11-24-ci-engineering-closure/independent-review.md",
+    "docs/audits/2026-11-24-ci-engineering-closure/performance.json",
+    "docs/audits/2026-11-24-ci-engineering-closure/performance.md",
+    "docs/operations/ci-campaign-coordination.md",
+    "docs/operations/ci-engineering-closure-001/CI_REQUEST_LEDGER.json",
+    "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.json",
+    "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+    "docs/operations/ci-engineering-closure-001/actor-custody-replay-acquisition.json",
+    "docs/operations/ci-engineering-closure-001/actor-custody-replay-contract.json",
+    "docs/operations/ci-engineering-closure-001/actor-custody-replay-pin.json",
+    "docs/operations/ci-engineering-closure-001/actor-custody-replay-result.json",
+    "docs/operations/ci-engineering-closure-001/campaign-observation-20261124.json",
+    "docs/operations/ci-engineering-closure-001/campaign-status-20261124.json",
+    "docs/operations/ci-engineering-closure-001/current-contract-inventory.json",
+    "docs/operations/ci-engineering-closure-001/local-validation.json",
+    "docs/operations/ci-engineering-closure-001/publication-evidence.json",
+    "docs/operations/ci-engineering-closure-001/reducer-imports-verified.json",
+    "docs/operations/ci-execution-and-performance.md",
+    "docs/operations/publication-custody.md",
+    "docs/reference/retrieval-corpus.json",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/retrieval-questions.json",
+    "tools/ci/ci_campaign_status.py",
+    "tools/ci/ci_run_metrics.py",
+    "tools/ci/publication_custody.py",
+    "tools/ci/test_ci_campaign_status.py",
+    "tools/ci/test_ci_run_metrics.py",
+    "tools/ci/test_godot_job_plan.py",
+    "tools/ci/test_publication_custody.py",
+    "tools/play/run_palette_shader_qualification.py"
+  ],
+  "native_godot_third_party_paths_changed": [],
+  "test_results": {
+    "planner": {
+      "methods": 12,
+      "result": "PASS"
+    },
+    "campaign_coordination_python_optimized": {
+      "methods": 28,
+      "result": "PASS"
+    },
+    "publication_custody_python_optimized": {
+      "methods": 39,
+      "result": "PASS",
+      "seconds": 17.878
+    },
+    "missing_plan_shell_controls": {
+      "cases": 12,
+      "result": "PASS"
+    }
+  },
+  "design_boundaries": [
+    "Only Palette Windows concurrency3 is selected and already accepted through736",
+    "GDExtension remains8/8; RAM experiments absent",
+    "No native source or published runtime change",
+    "Source-sensitive input admission and original evidence/attempt identities remain mandatory",
+    "Custody helper grants no publication or semantic/physical approval",
+    "Metadata summary is GET-only and cannot dispatch/cancel; incomplete observations remain partial"
+  ],
+  "notes": [
+    "Exact donor585520e ancestry is preserved",
+    "Both coverage reducers fail for missing/failed/skipped/cancelled planning or invalid counts",
+    "No independent migration of active programme publishers",
+    "39 custody adversaries pass with python -O, so correctness checks do not depend on removable asserts"
+  ]
+}

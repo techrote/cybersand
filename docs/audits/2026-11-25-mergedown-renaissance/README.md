@@ -41,4 +41,12 @@ Use ancestry-preserving merges. Each new source checkpoint receives appropriate 
 - [Decision register](decisions.json): authority, reviews, actual merges and next gates.
 - Specialist reviews and the final report will be added as their source-bound work completes.
 
-No merge or current-main evaluator has yet been recorded at this initial checkpoint.
+## Current execution checkpoint
+
+- #736 merged as `dacd5976b9d62e8332bc8d64ab5e3921a88c8cef`.
+- #758 merged as `be87b18b30506ccead610c7035ae1ffa8e65a347`.
+- #771 plus exact #778 donor are undergoing one full Ready qualification at `0da970283d076ae4660a9d93efd0e5180d313247`; original ancestry is preserved.
+- Goblin001/AMBIENT001 combined local default-OFF, actor control, native painting/history and persistence checks pass; final resulting-source hosted gates remain separate.
+- [Initial independent tooling review](independent-review.md) and [CI-wave independent review](ci-wave-independent-review.md) retain their source and actual evidence scopes.
+
+No current-main Windows evaluator is yet claimed. The existing #758 package remains labeled by its original `da83f83` source.

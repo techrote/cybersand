@@ -1,0 +1,158 @@
+{
+  "source_commit": "e85b1f73d5649158bc628834d169917d5d60ff16",
+  "source_tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_ci_campaign_status.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.119,
+      "log": "00-test_ci_campaign_status.py.log",
+      "log_sha256": "2d21a4e7b369d3ebbba98219979e4c202da36a880acfe6ead554d85861949442"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_publication_custody.py"
+      ],
+      "exit_code": 0,
+      "seconds": 18.429,
+      "log": "01-test_publication_custody.py.log",
+      "log_sha256": "965daacf2bbd812a4421820355c134cdc7ad5dbbd28d563b821f5706c8e2cd49"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_ci_run_metrics.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.066,
+      "log": "02-test_ci_run_metrics.py.log",
+      "log_sha256": "133449d6f429f0588126e0403937f271f33f90517460d5c4b39d69c2eeda0f25"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_godot_job_plan.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.761,
+      "log": "03-test_godot_job_plan.py.log",
+      "log_sha256": "50e0e81248118544320bcab9da947f49fbc33555e6eac43c0a20735cf73bc269"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_godot_scheduling.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.125,
+      "log": "04-test_godot_scheduling.py.log",
+      "log_sha256": "2d407504d003cfe404f23be48347e686ae1f67393860d4067d9a0bf06b1ddd60"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_verify_linux_godot_shards.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.353,
+      "log": "05-test_verify_linux_godot_shards.py.log",
+      "log_sha256": "fcbd7f6301ddcb174c3e522d447c5f4f186b76753fb4c41c53d01fb0ad6ac3c8"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_verify_windows_godot_shards.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.709,
+      "log": "06-test_verify_windows_godot_shards.py.log",
+      "log_sha256": "d5d9c95f133c9408e1f5753ba337e2f449c214581f47be92fe90557d48712288"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.108,
+      "log": "07-check_ci_provider_policy.py.log",
+      "log_sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/test_ci_scheduling_policy.py"
+      ],
+      "exit_code": 0,
+      "seconds": 2.15,
+      "log": "08-test_ci_scheduling_policy.py.log",
+      "log_sha256": "c9cfaeb0e93faa5bbf89bbe382b9151efc3a55a56d9d574a185502e0004b369e"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_ci_scheduling_policy.py",
+        "--output",
+        "/workspace/scratch/2e90cf7b4aa3/ci-runtime/build/mergedown-ci-focused/workflow-inventory.json"
+      ],
+      "exit_code": 0,
+      "seconds": 1.345,
+      "log": "09-check_ci_scheduling_policy.py.log",
+      "log_sha256": "3d3bf4cb0c96979e05ad687a8198e0e01d30b7d9764fa87cb98a13ac4566f420"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit_code": 0,
+      "seconds": 2.026,
+      "log": "10-check_repository.py.log",
+      "log_sha256": "935bdabca3973835c22287497284b1541670dfaffbca1896fef85a6a287f95cd"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit_code": 0,
+      "seconds": 96.286,
+      "log": "11-check_m11_consistency.py.log",
+      "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "be87b18b30506ccead610c7035ae1ffa8e65a347..HEAD"
+      ],
+      "exit_code": 0,
+      "seconds": 0.034,
+      "log": "12-diff.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "all_passed": true,
+  "schema": "cybersand-mergedown-ci-local-review-v1",
+  "published_equivalent_commit": "0da970283d076ae4660a9d93efd0e5180d313247",
+  "published_tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+  "tree_equality_verified_by": "lead",
+  "accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "original_constituents": {
+    "771": "911a3448e8e331cb097f1654bf861e20d77f57ca",
+    "778": "585520e7e62b67ce8c4c86605b08e1f8cc920bba"
+  },
+  "native_or_product_source_changed": false,
+  "actionlint": {
+    "version": "1.7.12",
+    "archive_sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+    "exit_code": 0
+  },
+  "physical_owner_acceptance": "not performed"
+}

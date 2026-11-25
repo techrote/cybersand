@@ -1,0 +1,111 @@
+{
+  "schema": "cybersand-mergedown-independent-review-v1",
+  "reviewer": "Specialist C \u2014 independent adversarial QA",
+  "checked_utc": "2026-11-25T21:40:00Z",
+  "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "decisions": [
+    {
+      "pr": 736,
+      "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+      "verdict": "APPROVE_AUTHORIZED_TOOLING_MERGE",
+      "scope": "One Windows Palette max-parallel line 2 to 3; no native or application change",
+      "ready": true,
+      "mergeable": true,
+      "runs": [
+        44978447427,
+        44978447442,
+        44978447468
+      ],
+      "palette_required_jobs": 8,
+      "palette_success_jobs": 8,
+      "skipped_palette_steps": 0,
+      "main_overlap": "None: since original merge base, only unrelated Art logging and Gentek qualification paths changed",
+      "physical_owner_acceptance": "Not applicable to this CI-only change"
+    },
+    {
+      "pr": 758,
+      "source": "da83f83ff20a5ae0ec0184079146d6d696a9c0e3",
+      "tree": "6321f44284bb68f0026875195bfcb1e705c202b4",
+      "verdict": "APPROVE_AUTHORIZED_TOOLING_MERGE",
+      "scope": "13 acceptance, qualification, package, workflow and documentation files; no production Godot/native or physics modification",
+      "ready": true,
+      "mergeable": true,
+      "ready_runs": [
+        45106062789,
+        45106062785,
+        45106062758,
+        45106062751
+      ],
+      "ready_gdextension_jobs": {
+        "success": 55,
+        "skipped_scope_inapplicable_physical_actor_stress": 1
+      },
+      "frozen_evaluator_run": 45100222225,
+      "frozen_evaluator_attempt": 1,
+      "frozen_evaluator_jobs_success": 3,
+      "owner_kit_run": 45100222152,
+      "actual_windows_powershell_tests": 9,
+      "local_reexecution": {
+        "example_admission_methods": 5,
+        "process_and_receipt_methods": 11,
+        "provider_policy": "PASS"
+      },
+      "artifact_id": 14794541671,
+      "artifact_sha256": "aa67ddb91487f331545c28f328aab83d93d6436f04397eafcb0829f113a67978",
+      "archive_name": "CyberSand-Gentek80-Windows-da83f83ff20a.zip",
+      "archive_sha256": "3f7aa1d973f65bb847fdc2c25a1620797c5dd5bc89bebbd4498c3d1b2aa60346",
+      "archive_bytes": 94041592,
+      "manifest_sha256": "1864290d13f678cc458f87cd9660c65070ab61bac9cf9a90c7747d0068959e00",
+      "verified_payload_files": 1086,
+      "unlisted_payload_files": 0,
+      "native_sha256": "8036894b9011147ea8a4898b166a60b09440859c8d45833e9e3d94979c9fa0de",
+      "native_bytes": 5820416,
+      "native_PE_x64": true,
+      "native_input_hashes_matched": 105,
+      "evidence_artifact_id": 14794327367,
+      "evidence_artifact_sha256": "0b298011f03443df4a83749a54cc16a18a735316051a3579e13b3588b959cf46",
+      "independent_original_receipt_readback": {
+        "source_all80": {
+          "styles": 80,
+          "process_ids": [
+            1772,
+            2580
+          ],
+          "empty_console_and_gui_boundaries": 4
+        },
+        "extracted_all80": {
+          "styles": 80,
+          "process_ids": [
+            8176,
+            1964
+          ],
+          "empty_console_and_gui_boundaries": 4
+        },
+        "source_compositions": {
+          "compositions": 2,
+          "process_ids": [
+            5848,
+            4676
+          ],
+          "original_frames_verified": 10,
+          "empty_console_and_gui_boundaries": 4
+        },
+        "extracted_compositions": {
+          "compositions": 2,
+          "process_ids": [
+            140,
+            7348
+          ],
+          "original_frames_verified": 10,
+          "empty_console_and_gui_boundaries": 4
+        }
+      },
+      "physical_owner_acceptance": "OUTSTANDING \u2014 tooling merge does not certify physical Windows 11/NVIDIA playfeel, aesthetics, traversal or performance",
+      "observations": [
+        "Historical pending comments are stale: exact da83 campaign now succeeded",
+        "Original frozen evaluators retain exact source labels; none is relabelled as merged main",
+        "Existing source workflow has a nonfunctional blank line at EOF; no safety effect"
+      ]
+    }
+  ]
+}
