@@ -22,7 +22,9 @@ independent. Specialist C separately reviewed their native and evidence paths.
 The reviewer's executor was unavailable. Runtime observations below are
 explicitly identified as lead-reported; source inspection used the immutable
 GitHub tree. Final source identities, original logs and any later qualification
-must be recorded in the mission ledger. A later fix does not retroactively
+must be recorded in the mission ledger. The subsequent temporary-environment
+loss and required recovery are recorded in
+[ENVIRONMENT-RECOVERY.md](ENVIRONMENT-RECOVERY.md). A later fix does not retroactively
 change this reviewed source.
 
 ## Source findings
@@ -104,7 +106,10 @@ The lead reported that the first actual-native campaign completed eight staged
 scenes, eight matched direct controls, exact readbacks and ordinary Setup saves,
 then received exit 137 after the ninth scene's baseline and before its complete
 capture. That attempt has no successful nine-scene terminal marker and must not
-be counted as a full pass. Partial original evidence remains useful.
+be counted as a full pass. The original partial evidence was written locally, but a subsequent environment
+reset removed the temporary working area before durable preservation. See
+[ENVIRONMENT-RECOVERY.md](ENVIRONMENT-RECOVERY.md); those files are not asserted
+to remain available, and fresh runs must use new identities.
 
 A source retention review found no obvious accumulation of full material planes
 in the cross-scenario `outcomes` or `originals` arrays: they retain metadata,
