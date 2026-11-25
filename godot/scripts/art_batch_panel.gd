@@ -168,6 +168,7 @@ var _conversation_apply_generation := 0
 var _conversation_apply_handle := -1
 var _conversation_apply_identity: Dictionary = {}
 var _conversation_apply_snapshot: Array = []
+var _conversation_apply_last_result := ""
 var _conversation_apply_started_usec := 0
 var last_conversation_apply_timing: Dictionary = {}
 var model_controls: Array[Control] = []
@@ -461,6 +462,7 @@ func _conversation_apply_guard(identity: Dictionary, full: bool = false) -> bool
 			or int(identity.get("world_epoch",-1)) != _conversation_world_epoch() \
 			or int(identity.get("provider_serial",-1)) != provider.serial:
 		return false
+	if last_result != _conversation_apply_last_result: return false
 	if not _conversation_block_reason(full).is_empty(): return false
 	if full and conversation_editor.draft != _conversation_apply_snapshot: return false
 	return true
@@ -470,6 +472,7 @@ func _begin_conversation_apply(clean: Array, began_usec: int) -> void:
 	_conversation_apply_started_usec = began_usec
 	_conversation_apply_preparing = true
 	_conversation_apply_snapshot = conversation_editor.draft.duplicate(true)
+	_conversation_apply_last_result = last_result
 	_conversation_apply_identity = {"generation":_conversation_apply_generation,
 		"revision":conversation_revision,"editor_revision":conversation_editor_revision,
 		"world_epoch":_conversation_world_epoch(),"provider_serial":provider.serial}
@@ -542,6 +545,7 @@ func _clear_conversation_apply() -> void:
 	_conversation_apply_handle = -1
 	_conversation_apply_identity = {}
 	_conversation_apply_snapshot = []
+	_conversation_apply_last_result = ""
 	conversation_editor.set_apply_pending(false)
 
 func _conversation_apply_failed(message: String) -> void:

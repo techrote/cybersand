@@ -31,7 +31,14 @@ collaborative page. Its first opening expands a compact Art window (up to 640×4
 an 820×620 workspace when the host has room. Larger existing layouts and all later
 manual resizing are preserved; the minimum remains 520×320 with shared actions
 reachable.
-The existing direct drawing route remains available. The
+The existing direct drawing route remains available.
+Conversation messages still use 4096-character parts. Applying a large edited
+conversation shows a preparation state while its complete value is redacted and
+encoded. The draft remains readable and Cancel stays available; editing resumes
+after Cancel or a refusal. A successful complete journal append updates future
+context once. Stop, closing the editor, a replaced World, a newer conversation
+revision or changed credentials retires an uncommitted preparation. Apply itself
+never writes native cells or creates a native Undo entry. The
 evaluator creates its own local profile, and opening the application or a panel
 sends no model request.
 
