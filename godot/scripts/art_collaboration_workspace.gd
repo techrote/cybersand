@@ -48,6 +48,7 @@ var pinned := BoundedEdit.new()
 var palette := LineEdit.new()
 var palette_picker := OptionButton.new()
 var preserve := ItemList.new()
+var focus_bounded := Button.new()
 var brief_notice := Label.new()
 var brief_apply := Button.new()
 var brief_cancel := Button.new()
@@ -90,6 +91,7 @@ var _proposal_page_index := 0
 var _proposal_json := ""
 var _context: Dictionary = {}
 var _context_full_text := ""
+var _context_json := ""
 var _context_page_index := 0
 var _turns: Array = []
 var _conversation_revision := -1
@@ -291,6 +293,10 @@ func _build_brief() -> void:
 	preserve.custom_minimum_size.y = 56
 	body.add_child(preserve)
 	var selection_actions := HFlowContainer.new()
+	focus_bounded.text = "Focus 256 × 256"
+	focus_bounded.tooltip_text = "Ask the Workbench owner for a bounded native region centred in the current view. The reported bounds are clipped to the World; no native write occurs."
+	focus_bounded.pressed.connect(func() -> void: selection_requested.emit("bounded"))
+	selection_actions.add_child(focus_bounded)
 	_button(selection_actions, "Focus viewport", func() -> void: selection_requested.emit("viewport"))
 	_button(selection_actions, "Use selection", func() -> void: selection_requested.emit("focus"))
 	_button(selection_actions, "Protect selection", func() -> void: selection_requested.emit("preserve"))
@@ -394,7 +400,7 @@ func _build_context() -> void:
 	var row := HBoxContainer.new()
 	_button(row, "Inspect next context", func() -> void: context_refresh_requested.emit(context_options()))
 	_button(row, "Copy context", func() -> void:
-		if not _context_full_text.is_empty(): DisplayServer.clipboard_set(_context_full_text))
+		if not _context_json.is_empty(): DisplayServer.clipboard_set(_context_json))
 	box.add_child(row)
 
 func _bound_edit(edit: Variant, limit: int) -> void:
@@ -562,9 +568,11 @@ func set_context_inspection(value: Dictionary) -> void:
 	_context = value.duplicate(true)
 	authorize.button_pressed = false
 	var inspector: Variant = value.get("inspector", value)
-	_context_full_text = _readable(inspector)
-	if _context_full_text.length() > MAX_CONTEXT_CHARACTERS:
+	_context_json = JSON.stringify(inspector, "\t")
+	_context_full_text = "Readable summary. Copy context retains the complete admitted JSON, including nested detail.\n\n" + _readable(inspector)
+	if _context_json.length() > MAX_CONTEXT_CHARACTERS or _context_full_text.length() > MAX_CONTEXT_CHARACTERS:
 		_context_full_text = "Context inspector exceeded its display contract. No disclosure authorization is available."
+		_context_json = ""
 		_context = {}
 	_context_page_index = 0
 	_render_page(_context_full_text, _context_page_index, context_text, context_page, context_previous, context_next)
@@ -593,6 +601,11 @@ func set_proposal(value: Dictionary, lineage: Array = []) -> void:
 
 func _show_proposal(value: Dictionary) -> void:
 	var actual: Dictionary = value.get("proposal", value)
+	# Copy follows the displayed revision and contains its reusable typed payload.
+	# Host budgets, preview estimates and receipts remain inspection data.
+	_proposal_json = JSON.stringify(actual, "\t")
+	if _proposal_json.length() > MAX_PROPOSAL_CHARACTERS: _proposal_json = ""
+	proposal_copy.disabled = _proposal_json.is_empty()
 	proposal_title.text = str(actual.get("title", "Authoring proposal")).left(256)
 	proposal_title.tooltip_text = str(actual.get("title", "Authoring proposal"))
 	stages.clear()

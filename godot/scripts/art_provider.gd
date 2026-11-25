@@ -1534,7 +1534,7 @@ func _dispatch_prepared_request(prepared: RefCounted, asynchronous: bool) -> Str
 	# Godot4.7's threaded client joins a blocking read before closing its socket.
 	# The bounded, nonblocking poll path keeps Stop/timeout/teardown responsive.
 	request.use_threads = false
-	request.download_chunk_size = 64*1024
+	request.download_chunk_size = 256*1024
 	request.timeout = prepared.request_seconds
 	request.body_size_limit = 16*1024*1024
 	request.max_redirects = 0

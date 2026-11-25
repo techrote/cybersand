@@ -253,7 +253,11 @@ chunk receipts, protected-region readback, complete material-plane hashes
 and ordinary authored-start Save/reopen. It pairs staged constructions with
 matched geometry through the original direct route in separate virgin
 regions. Native before/after diagnostics and actual displayed Workbench
-screenshots are labelled separately.
+screenshots are labelled separately. Timings expose both scenario wall time
+(including readback and image artifacts) and per-stage native submission to
+terminal time, summed separately. Only the latter has a matching scope in
+the direct control. Fixed arm order and differing stage boundaries mean these
+are observed fixture costs, not a randomized performance or causal speed claim.
 
 Static Empty rectangles are clearance diagnostics only. Actor traversal,
 physical stability, playfeel and subjective usefulness need their own

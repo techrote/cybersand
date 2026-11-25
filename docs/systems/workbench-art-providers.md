@@ -10,6 +10,27 @@ related-documents: [workbench-direct-art-batches.md, ../architecture/shared-work
 
 # Art workbench provider connection — Stage 2
 
+## Collaborative owned consumers — 25 November 2026
+
+The Draft/HOLD collaborative successor preserves direct painting and adds
+Discuss, Propose, Develop and Review through the same Provider. The
+[owned transport contract](art-owned-proposal-transport.md) defines `send_owned`
+and the injected Architecture dispatch/cancel interface. Owned replies never
+emit ordinary completion-to-paint. World and applied-policy guards protect the
+actual eventual transport admission, including asynchronous preparation.
+Opening Art or a catalogue makes no request.
+
+The [native contract](art-native-context-proposals.md) defines bounded observations,
+palette/protection and zero-write preview. The [owner guide](../operations/art-workbench-collaborative-evaluation.md)
+explains exact-context authorization for remote/custom endpoints. Optional images
+are cropped from the Workbench canvas, with mapping/bytes disclosed; no desktop
+is captured. Admitted images retain their current-session audit references.
+Recent request memory is at most eight turns, 4096 characters each and 16384
+total including omission markers. Complete originals remain in Conversation
+and the redacted audit. Develop's proposal and Review's actual host receipts
+are disclosed. Replies refresh bounded memory; edited conversations require
+updated disclosure before Send. New sessions restore no old conversation or approval.
+
 ## Current candidate and controls
 
 The original #559/#560 Art and PAINT integration is present in accepted main.

@@ -10,6 +10,20 @@ related-documents: [../architecture/shared-workbench-authoring-data.md, ../refer
 
 # Direct art batches — WB-ART-002 Stage 1
 
+## Approved collaborative stages — 25 November 2026
+
+The [collaborative successor](../operations/art-workbench-collaborative-evaluation.md)
+uses this executor for individually approved finite stages. `submit_guarded`
+adds copied source identity, explicit destructive permission and a host budget.
+The worker checks the identity at admission and inside exclusive native mutation;
+only an acknowledged completed receipt advances the next chunk's source.
+Protection, body coverage, palette, scope and the Empty/Hard Wall source rule
+remain enforced. Previously painted concrete/metal outside `[0,58]` cannot be
+recolored or carved through this authority. Preview exposes that restriction.
+Stop retains actual prefixes; continuation needs fresh context and approval.
+Native history remains shared with ordinary painting, with no atomic multi-stage
+transaction or competing mutation engine. See the [context/proposal contract](art-native-context-proposals.md).
+
 ## Candidate and purpose
 
 **Current candidate, unmerged:** issue #559 Stage 1 on

@@ -202,6 +202,19 @@ func run() -> void:
 	outcomes.append({"kind":"two-stage construction","receipts":session.receipts.duplicate(true)})
 	await exchange("review","The verified frame and upper accent are present; the lower passage remains unchanged.","Review the completed room.")
 	check(session.context.disclosure.acknowledged_results_for_review.size()==2,"review context contains actual acknowledged native receipts")
+	if DisplayServer.get_name()!="headless":
+		wb._set_view(Vector2.ZERO,Vector2i(256,192))
+		for frame: int in 4: await process_frame
+		options.image=true
+		var visual: Dictionary=await exchange("discuss","The rendered frame agrees with the admitted material context.","Discuss this explicitly selected canvas image.")
+		check(not session._png.is_empty() and session._image_mapping.get("world_xywh",[])==[0.0,0.0,256.0,192.0],"displayed image admits only the selected native canvas mapping")
+		check(session._image_mapping.pixels[0]<=768 and session._image_mapping.pixels[1]<=768,"rendered image obeys its bounded pixel envelope")
+		check(JSON.stringify(visual.get("request",{})).contains("data:image/png;base64,"),"explicitly admitted canvas image reaches the actual loopback transport")
+		var image_turn: Dictionary=panel.conversation[panel.conversation.size()-2]
+		check(int(image_turn.get("image_offset",-1))>=0,"admitted image retains its original session audit reference")
+		options.image=false
+		await inspect()
+		check(session._png.is_empty() and panel.collaboration_workspace.visual_context.texture==null,"new image-free disclosure clears both transport bytes and prior thumbnail")
 	var revised:=packet([block(8,8,12,7)],"Taller frame, existing accent preserved")
 	await exchange("develop",JSON.stringify(revised),"Make the frame taller, keep the lower passage and accent.")
 	check(session.lineage.size()==1 and not session.compiled.diff.parent_digest.is_empty(),"Develop retains revision lineage")
@@ -309,7 +322,7 @@ func run() -> void:
 		check(str(turn.content).length()<=4096,"each summarized turn respects its complete bound including omission marker")
 	check(total<=16384 and memory.size()<=8,"reviewable conversation memory has a finite total budget")
 	check(panel.conversation.size()==long_history.size()+8,"bounded request memory never truncates admitted originals")
-	check(ordinary_completions==0 and http_requests==6,"six deterministic actual HTTP exchanges have one exclusive consumer each")
+	check(ordinary_completions==0 and http_requests==(6 if DisplayServer.get_name()=="headless" else 7),"all deterministic actual HTTP exchanges have one exclusive consumer each")
 	check(FileAccess.get_file_as_string(panel.provider.log_path).contains("collaboration_stage_approval"),"redacted audit retains explicit stage approval records")
 	var saved_conversation_size: int=panel.conversation.size()
 	var generation_before: int=source().generation

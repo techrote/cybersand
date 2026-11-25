@@ -33,6 +33,12 @@ on:
       - 'godot/tests/test_art_traffic_integrity.gd'
       - 'godot/tests/test_art_history_receipt_identity.gd'
       - 'godot/tests/test_art_batch_native.gd'
+      - 'godot/tests/test_art_batch_native_render.gd'
+      - 'godot/tests/test_art_undo.gd'
+      - 'godot/tests/test_art_stored_material.gd'
+      - 'godot/tests/test_art_deferred_manual.gd'
+      - 'godot/tests/test_art_provider.gd'
+      - 'godot/scripts/workbench_paint_editor_controller.gd'
       - 'godot/tests/test_art_provider_failure_lifecycle.gd'
       - 'godot/tests/run_art_workbench_final.gd'
       - 'godot/tests/run_art_owner_evaluator.gd'
@@ -146,11 +152,12 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_art_evaluator_packaging.py > evidence/evaluator-packaging-tests.log 2>&1
-          for case in test_art_session_log test_art_manual_audit test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_model_roster test_art_invalid_local_model_close test_art_traffic_integrity test_art_history_receipt_identity test_art_provider_failure_lifecycle test_art_redaction_equivalence test_art_response_preparation test_art_request_preparation test_art_request_admission test_art_conversation_paging test_art_conversation_clipboard test_art_owner_evaluator test_art_batch_native; do
+          for case in test_art_session_log test_art_manual_audit test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_model_roster test_art_invalid_local_model_close test_art_traffic_integrity test_art_history_receipt_identity test_art_provider_failure_lifecycle test_art_redaction_equivalence test_art_response_preparation test_art_request_preparation test_art_request_admission test_art_conversation_paging test_art_conversation_clipboard test_art_owner_evaluator test_art_batch_native test_art_provider test_art_deferred_manual test_art_stored_material test_art_undo; do
             export XDG_DATA_HOME="$RUNNER_TEMP/session-$case"
             mkdir -p "$XDG_DATA_HOME"
             budget=240
             if [ "$case" = test_art_batch_native ]; then budget=600; fi
+            if [ "$case" = test_art_undo ]; then budget=$(python3 tools/ci/execution_policy.py seconds ordinary_case_seconds); fi
             echo "BEGIN $case timeout=${budget}s"
             timeout "$budget" "$GODOT" --headless --path godot -s "res://tests/$case.gd" 2>&1 | tee "evidence/$case.log"
             if grep -E 'SCRIPT ERROR:|Parse Error:' "evidence/$case.log"; then exit 1; fi
@@ -159,6 +166,8 @@ jobs:
           grep -F 'ART_SESSION_RESULT ' evidence/test_art_session_log.log
           grep -F 'ART_EVALUATOR_INPUT_RESULT ' evidence/test_art_owner_evaluator.log
           grep -F 'ART_STAGE1_RESULT ' evidence/test_art_batch_native.log
+          grep -F 'ART_STORED_RESULT ' evidence/test_art_stored_material.log
+          grep -F 'ART_UNDO_RESULT ' evidence/test_art_undo.log
           python3 tools/ci/run_art_local_close.py --godot "$GODOT" --project godot --output evidence/art-close-fixture
           for group in network preparation request-preparation lifecycle conversation-apply; do
             python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output "evidence/art-final-headless-$group" --group "$group"
@@ -203,6 +212,15 @@ jobs:
           fi
           if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-clipboard-displayed.log; then display_failed=1; fi
           if ! grep -F '"native_clipboard_differential":true' evidence/art-clipboard-displayed.log; then display_failed=1; fi
+          export XDG_DATA_HOME="$RUNNER_TEMP/art-display-native-batch"
+          mkdir -p "$XDG_DATA_HOME" evidence/art-native-displayed
+          native_display_budget=$(python3 tools/ci/execution_policy.py seconds graphical_case_seconds)
+          if ! CYBERSAND_TEST_ARTIFACT_DIR="$GITHUB_WORKSPACE/evidence/art-native-displayed" xvfb-run -a -s '-screen 0 1920x1080x24' timeout "$native_display_budget" "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_batch_native_render.gd > evidence/art-native-displayed/process.log 2>&1; then
+            cat evidence/art-native-displayed/process.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-native-displayed/process.log; then display_failed=1; fi
+          if ! grep -F 'ART_STAGE1_RESULT ' evidence/art-native-displayed/process.log; then display_failed=1; fi
           for group in network preparation request-preparation lifecycle conversation-apply; do
             if ! xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output "evidence/art-final-displayed-$group" --group "$group" --graphical; then
               display_failed=1
@@ -278,13 +296,19 @@ jobs:
           Invoke-CheckedGodot 'import' @('--headless','--path','godot','--editor','--import') 180
           python tools/ci/test_art_evaluator_packaging.py *> evidence/evaluator-packaging-tests.log
           if ($LASTEXITCODE -ne 0) { throw 'Evaluator package boundary regression failed' }
-          foreach ($case in @('test_art_session_log','test_art_manual_audit','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_model_roster','test_art_invalid_local_model_close','test_art_traffic_integrity','test_art_history_receipt_identity','test_art_provider_failure_lifecycle','test_art_redaction_equivalence','test_art_response_preparation','test_art_request_preparation','test_art_request_admission','test_art_conversation_paging','test_art_conversation_clipboard','test_art_owner_evaluator')) {
+          foreach ($case in @('test_art_session_log','test_art_manual_audit','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_model_roster','test_art_invalid_local_model_close','test_art_traffic_integrity','test_art_history_receipt_identity','test_art_provider_failure_lifecycle','test_art_redaction_equivalence','test_art_response_preparation','test_art_request_preparation','test_art_request_admission','test_art_conversation_paging','test_art_conversation_clipboard','test_art_owner_evaluator','test_art_batch_native','test_art_provider','test_art_deferred_manual','test_art_stored_material','test_art_undo')) {
             $env:APPDATA = Join-Path $env:RUNNER_TEMP "art-session-$case"
             New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
-            Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") 240
+            $budget = 240
+            if ($case -eq 'test_art_batch_native') { $budget = 600 }
+            if ($case -eq 'test_art_undo') { $budget = [int](python tools/ci/execution_policy.py seconds ordinary_case_seconds) }
+            Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") $budget
           }
           if ((Get-Content evidence/test_art_session_log.stdout.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing session test receipt' }
           if ((Get-Content evidence/test_art_owner_evaluator.stdout.log -Raw) -notmatch 'ART_EVALUATOR_INPUT_RESULT ') { throw 'Missing evaluator input receipt' }
+          if ((Get-Content evidence/test_art_batch_native.stdout.log -Raw) -notmatch 'ART_STAGE1_RESULT ') { throw 'Missing direct native batch receipt' }
+          if ((Get-Content evidence/test_art_stored_material.stdout.log -Raw) -notmatch 'ART_STORED_RESULT ') { throw 'Missing stored native material receipt' }
+          if ((Get-Content evidence/test_art_undo.stdout.log -Raw) -notmatch 'ART_UNDO_RESULT ') { throw 'Missing native Undo receipt' }
           python tools/ci/run_art_local_close.py --godot $env:GODOT_EXE --project godot --output evidence/art-close-fixture
           if ($LASTEXITCODE -ne 0) { throw 'ART-LOCAL-CLOSE fixture failed' }
           foreach ($group in @('network','preparation','request-preparation','lifecycle','conversation-apply')) {
@@ -326,6 +350,19 @@ jobs:
             Write-Warning $_.Exception.Message
           } finally {
             Remove-Item Env:CYBERSAND_TEST_OWNED_CLIPBOARD
+          }
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-native-batch'
+          $env:CYBERSAND_TEST_ARTIFACT_DIR = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-native-displayed'
+          New-Item -ItemType Directory -Force $env:APPDATA,$env:CYBERSAND_TEST_ARTIFACT_DIR | Out-Null
+          try {
+            $nativeDisplayBudget = [int](python tools/ci/execution_policy.py seconds graphical_case_seconds)
+            Invoke-CheckedGodot 'art-native-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_batch_native_render.gd') $nativeDisplayBudget
+            if ((Get-Content evidence/art-native-displayed.stdout.log -Raw) -notmatch 'ART_STAGE1_RESULT ') { throw 'Missing displayed direct native batch receipt' }
+          } catch {
+            $displayedFailures.Add('Direct native batch: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          } finally {
+            Remove-Item Env:CYBERSAND_TEST_ARTIFACT_DIR
           }
           foreach ($group in @('network','preparation','request-preparation','lifecycle','conversation-apply')) {
             python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output "evidence/art-final-displayed-$group" --group $group --graphical

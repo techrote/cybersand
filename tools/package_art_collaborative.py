@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 import zipfile
@@ -39,6 +40,41 @@ EXAMPLE_SUFFIXES = (
 EXAMPLE_DIRECTORY = "examples/art-collaborative-evaluated"
 MAX_EXAMPLE_FILE_BYTES = 16 * 1024 * 1024
 MAX_EXAMPLE_TOTAL_BYTES = 256 * 1024 * 1024
+
+
+def expected_setup_labels() -> dict:
+    return {f"art02-{name}": f"{index:02d}-{name}-editable-setup.json"
+            for index, name in enumerate(SCENARIO_IDS)}
+
+
+def validate_packaged_examples(identity: dict, displayed: dict) -> None:
+    """Require the complete displayed cohort, including nonmissing SHA identities."""
+    examples = identity.get("creative_examples", {})
+    if (examples.get("scenario_ids") != list(SCENARIO_IDS)
+            or type(examples.get("model_calls")) is not int or examples["model_calls"] != 0):
+        raise ValueError("Native example cohort identity differs")
+    if examples.get("setup_labels") != expected_setup_labels():
+        raise ValueError("Native example named-start mapping differs")
+    if examples.get("source_receipt") != QUALIFICATION_DIR + "/collaborative-displayed.json":
+        raise ValueError("Native example displayed source receipt differs")
+    native_case = next(case for case in displayed["cases"] if case["name"] == "test_art_collaborative_native")
+    hashes = native_case.get("artifacts_sha256", {})
+    manifest = identity.get("files_sha256", {})
+    if not isinstance(hashes, dict) or not isinstance(manifest, dict):
+        raise ValueError("Native example artifact identities must be explicit dictionaries")
+    names = [f"{index:02d}-{name}-{suffix}" for index, name in enumerate(SCENARIO_IDS) for suffix in EXAMPLE_SUFFIXES]
+    names.append("creative-native-summary.json")
+    expected = {}
+    for name in names:
+        digest = hashes.get(name)
+        relative = EXAMPLE_DIRECTORY + "/" + name
+        if not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+            raise ValueError("Required displayed native example hash is absent or invalid: " + name)
+        if relative not in manifest or manifest[relative] != digest:
+            raise ValueError("Required native example is absent from the immutable manifest: " + name)
+        expected[relative] = digest
+    if examples.get("original_files_sha256") != expected:
+        raise ValueError("Native example files are not bound to displayed original evidence")
 
 
 def stage_example_artifacts(output: Path, receipt_path: Path, displayed: dict) -> dict:
@@ -72,8 +108,7 @@ def stage_example_artifacts(output: Path, receipt_path: Path, displayed: dict) -
                 raise ValueError("Native example JSON has no object/array document: " + name)
         shutil.copyfile(source, target_dir / name)
         verified[EXAMPLE_DIRECTORY + "/" + name] = actual
-    labels = {f"art02-{name}": f"{index:02d}-{name}-editable-setup.json"
-              for index, name in enumerate(SCENARIO_IDS)}
+    labels = expected_setup_labels()
     lines = [
         "@echo off", "setlocal",
         'set "ART_EXAMPLE_DEST=%~dp0profile\\Godot\\app_userdata\\Cyber Sand Reference Sandbox\\workbench"',
@@ -214,7 +249,7 @@ def verify(output: Path) -> dict:
     scope = identity.get("collaborative_qualification", {})
     if scope.get("source_commit") != identity["source_commit"] or scope.get("source_tree") != identity["source_tree"]:
         raise ValueError("Collaborative qualification is not source-bound")
-    if scope.get("model_calls") != 0 or scope.get("required_cases") != sorted(TESTS):
+    if type(scope.get("model_calls")) is not int or scope["model_calls"] != 0 or scope.get("required_cases") != sorted(TESTS):
         raise ValueError("Collaborative qualification scope differs")
     values = []
     for name, graphical in (("headless", False), ("displayed", True)):
@@ -224,15 +259,7 @@ def verify(output: Path) -> dict:
         values.append(receipt(output / relative, identity["source_commit"], identity["source_tree"],
                               graphical, check_logs=False))
     validate_pair(*values)
-    examples = identity.get("creative_examples", {})
-    if examples.get("scenario_ids") != list(SCENARIO_IDS) or examples.get("model_calls") != 0:
-        raise ValueError("Native example cohort identity differs")
-    native_case = next(case for case in values[1]["cases"] if case["name"] == "test_art_collaborative_native")
-    expected_names = [f"{index:02d}-{name}-{suffix}" for index, name in enumerate(SCENARIO_IDS) for suffix in EXAMPLE_SUFFIXES]
-    expected_names.append("creative-native-summary.json")
-    expected = {EXAMPLE_DIRECTORY + "/" + name: native_case.get("artifacts_sha256", {}).get(name) for name in expected_names}
-    if examples.get("original_files_sha256") != expected or any(identity["files_sha256"].get(name) != digest for name, digest in expected.items()):
-        raise ValueError("Native example files are not bound to displayed original evidence")
+    validate_packaged_examples(identity, values[1])
     for relative in (retained.NATIVE, retained.retained.RAPIER):
         if values[0]["runtime"]["payloads"].get(relative) != retained.sha(output / relative):
             raise ValueError("Delivered runtime differs from application qualification")

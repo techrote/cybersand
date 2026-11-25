@@ -10,6 +10,7 @@ var briefs: Array = []
 var approvals := 0
 var cancellations := 0
 var previews := 0
+var selections: Array[String] = []
 
 func _initialize() -> void: run.call_deferred()
 
@@ -48,12 +49,15 @@ func run() -> void:
 	view.approve_requested.connect(func() -> void: approvals += 1)
 	view.cancel_requested.connect(func() -> void: cancellations += 1)
 	view.preview_requested.connect(func() -> void: previews += 1)
+	view.selection_requested.connect(func(kind: String) -> void: selections.append(kind))
 	window.popup_centered()
 	for i: int in 3: await process_frame
 	check(requests.is_empty() and approvals == 0, "opening collaboration is inert")
 	check(view.mode.item_count == 4, "four conversational intents share one prompt")
 	check(view.tabs.get_tab_count() == 4, "one workspace has conversation, brief, proposal and context")
 	check(view.stop_button.disabled, "idle Stop is disabled")
+	view.focus_bounded.pressed.emit()
+	check(selections == ["bounded"] and requests.is_empty() and approvals == 0, "bounded focus asks its host once without model or native execution")
 	view.set_provider_capabilities({"label":"Fixture","endpoint_category":"loopback","text":true,
 		"image_model":"unverified","streaming":false})
 	check(view.provider_status.text.contains("loopback"), "provider category is explicit")
@@ -112,6 +116,15 @@ func run() -> void:
 	check(requests.size() == 1, "visual preview never dispatches")
 	view.set_visual_context(null,"")
 	check(not view.visual_context.visible, "removed image leaves no stale preview")
+	var nested_context := {"level_one":{"level_two":{"level_three":{"level_four":{"level_five":{"native_cell":[17,31,58],"sentinel":"complete-admitted-context"}}}}}}
+	view.set_context_inspection({"digest":"nested-context","inspector":nested_context})
+	# JSON numbers decode as floats; compare complete JSON-domain values, not GDScript integer Variant types.
+	var copied_context: Variant = JSON.parse_string(view._context_json)
+	var expected_context: Variant = JSON.parse_string(JSON.stringify(nested_context))
+	check(copied_context == expected_context, "Copy context preserves every nested admitted value without readable-summary truncation")
+	var copied_cells: Array = copied_context.level_one.level_two.level_three.level_four.level_five.native_cell if copied_context == expected_context else []
+	check(copied_cells == [17.0,31.0,58.0], "complete context copy retains exact native cell coordinates and material values")
+	check(view._context_full_text.contains("Copy context") and not view._context_full_text.contains("complete-admitted-context"), "bounded readable summary accurately discloses omitted nested detail")
 	var full_context := "native-context ".repeat(1000)
 	view.set_context_inspection({"digest":"fixture-context-b","inspector":{"detail":full_context}})
 	check(view.context_text.text.length() <= 4096, "context view shapes at most 4096 characters")
@@ -126,7 +139,10 @@ func run() -> void:
 			"budget":{"cells_upper_bound":512},"protected_conflicts":[]},
 			{"id":"detail","title":"Surface detail","depends_on":["roof"],"budget":{"cells_upper_bound":256}}],
 		"budget":{"cells_upper_bound":768},"warnings":["Existing material overwrite is subject to native authority."]}
-	view.set_proposal(proposal,[{"label":"Revision 1","snapshot":proposal}])
+	var earlier := proposal.duplicate(true)
+	earlier.proposal.title = "Earlier room proposal"
+	view.set_proposal(proposal,[{"label":"Revision 1","snapshot":earlier}])
+	check(JSON.parse_string(view._proposal_json) == proposal.proposal, "Copy contains only the reusable typed proposal payload")
 	check(view.stages.item_count == 2, "proposal displays finite stages")
 	check(not view.approve_button.disabled, "fresh applicable approval control is offered")
 	check(approvals == 0, "proposal display is zero-write")
@@ -134,12 +150,14 @@ func run() -> void:
 	check(previews == 1 and approvals == 0, "preview action is distinct from approval")
 	view.revision_history.select(1)
 	view.revision_history.item_selected.emit(1)
+	check(JSON.parse_string(view._proposal_json) == earlier.proposal, "Copy follows the displayed historical revision")
 	view.set_request_state({"message":"Idle","busy":false})
 	check(view.approve_button.disabled, "historical revision remains unapprovable after status refresh")
 	view.approve_button.pressed.emit()
 	check(approvals == 0, "historical approval handler is fenced")
 	view.revision_history.select(0)
 	view.revision_history.item_selected.emit(0)
+	check(JSON.parse_string(view._proposal_json) == proposal.proposal, "returning to current revision restores its typed Copy payload")
 	view.approve_button.pressed.emit()
 	check(approvals == 1, "current stage approval is explicit")
 	view.revise_button.pressed.emit()

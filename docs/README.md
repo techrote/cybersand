@@ -71,6 +71,8 @@ Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-inte
 
 Workbench Art uses [one write-only audit per game session](systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026), accepted in #727. New sessions do not restore old conversations. The [Art finisher and Windows evaluator](operations/art-workbench-final-evaluation.md) consolidate dialog, provider and responsiveness repairs as a separate Draft/HOLD candidate.
 
+The [collaborative Art successor](operations/art-workbench-collaborative-evaluation.md) adds Discuss, Propose, Develop and Review beside direct drawing. Read the [exclusive provider handoff](systems/art-owned-proposal-transport.md) for Architecture integration and the [native context/proposal contract](systems/art-native-context-proposals.md) for bounded observations, zero-write previews and separately approved native stages. #780 remains Draft/HOLD; qualification identities and retained failures are in its [mission ledger](audits/2026-11-25-art-workbench-collaborative-002/README.md).
+
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 defines the common desktop/agent/remote foundation and the GEN-008 candidate
 material-only Flatten contract: two bytes per cell, unchanged live World, explicit

@@ -131,7 +131,9 @@ func matched_direct_control(index: int, entry: Dictionary, example: Dictionary, 
 	write_json("%02d-%s-direct-original-native-receipts.json" % [index,entry.id],receipts)
 	return {"arm":"existing_direct_matched_geometry","region":Context.rect_values(target),
 		"native_changed":changed,"native_checked":checked,"native_chunks":receipts.size(),
-		"elapsed_usec":elapsed,"complete_material_plane_matches":matches,
+		"elapsed_usec":elapsed,"native_execution_usec":elapsed,
+		"timing_scope":"Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts.",
+		"complete_material_plane_matches":matches,
 		"material_sha256":Context.hash_materials(after.get("materials",PackedInt32Array())),
 		"interpretation":"Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity."}
 
@@ -178,6 +180,8 @@ func exercise(index: int, entry: Dictionary) -> void:
 	var native_chunks: Array = []
 	var changed := 0
 	var checked := 0
+	var native_execution_usec := 0
+	var stage_timings: Array = []
 	var started := Time.get_ticks_usec()
 	for stage_index: int in compiled.stages.size():
 		var stage: Dictionary = compiled.stages[stage_index]
@@ -185,11 +189,16 @@ func exercise(index: int, entry: Dictionary) -> void:
 		var on_receipt := func(receipt: Dictionary) -> void:
 			stage_receipts.append(receipt.duplicate(true))
 		executor.native_receipt.connect(on_receipt)
+		var stage_started := Time.get_ticks_usec()
 		var admitted: Dictionary = executor.submit_guarded(stage.operations,stage.scope,stage.guards,stage.allowed,
 			Context.source_of(latest),bool(compiled.allow_destructive),int(stage.budget.candidate_cells))
 		check(admitted.status=="queued","fresh explicit fixture-stage approval "+entry.id+"/"+stage.id)
 		if admitted.status=="queued":
 			await until(func(): return not executor.active,"native stage terminal "+entry.id+"/"+stage.id)
+		var stage_execution_usec := Time.get_ticks_usec()-stage_started
+		native_execution_usec += stage_execution_usec
+		stage_timings.append({"stage":stage.id,"native_execution_usec":stage_execution_usec,
+			"admission":str(admitted.get("status","")),"terminal":str(executor.result.get("status",""))})
 		executor.native_receipt.disconnect(on_receipt)
 		check(executor.result.status=="completed","native stage completion is authoritative")
 		var stage_changed := 0
@@ -242,6 +251,9 @@ func exercise(index: int, entry: Dictionary) -> void:
 		"native_changed":changed,"preview_changed":predicted.predicted_changed,
 		"constraint_preservation":protected_unchanged,"static_clearance":empty_routes,
 		"route_claim":example.route_claim,"elapsed_usec":staged_elapsed,
+		"native_execution_usec":native_execution_usec,"stage_timings":stage_timings,
+		"timing_scope":"elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+		"timing_caveat":"Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
 		"comparisons":[direct_comparison,context_comparison],
 		"source_before":Context.source_of(before),"source_after":Context.source_of(latest),
 		"context_inspector":context.inspector,"proposal":compiled.proposal,"preview":predicted}

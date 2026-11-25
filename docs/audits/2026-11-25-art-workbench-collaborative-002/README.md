@@ -51,6 +51,37 @@ The shared local execution environment became unavailable during intake. Source 
 
 Next: implement and independently exercise the exclusive response route, then context/compiler/session/UI and creative scenarios; complete source-bound Linux and Windows campaigns and pristine extracted package checks before any evaluator claim.
 
+## Recovery and fresh qualification boundary
+
+The first durable integration is `7db8d1592642c7bd7298ba8f8fb008345de35e07`, tree
+`c9ba0ddc7e7ec5de1e62eed3f27123a20c52cd61`. Independent review found and the lead
+repaired completed-but-unverified receipt loss, overlap with idle direct-run
+timers, stale Discuss/Review memory and reentrant proposal replacement during
+approval. A temporary executor reset subsequently removed the local follow-up
+checkout and its unpublished raw logs. The [recovery record](ENVIRONMENT-RECOVERY.md)
+and [provider recovery record](provider-recovery.md) explicitly retain this loss.
+
+Root repairs were replayed from the recorded exact patches onto durable7db and
+published as `05307debd40e544c6a7739661b86aa32d6af565f`, tree
+`48d060f5f589a17fd7631c152598a8020c504f5f`. The remote native and experience lanes
+were preserved, including matched timing corrections, complete context Copy,
+the bounded-focus control and strict package/source/log custody. Native runtime
+bytes are reverified against their unchanged Git LFS OIDs before use.
+
+Earlier lead-reported development outcomes (169 native-session assertions,
+75 copied-value proposal assertions, the24brief cohort, displayed UI checks and
+eight completed native scenarios before an exit137) are **not fresh qualification
+of the recovered source**. Their lost raw files are not recreated as originals.
+All nine native scenes, direct controls, Save/reopen, image disclosure, session,
+provider, history, graphical and pristine Windows package gates must execute at
+the committed recovery candidate and retain original outputs durably.
+
+The [native review](NATIVE-INDEPENDENT-REVIEW.md) and
+[experience review](EXPERIENCE-INDEPENDENT-REVIEW.md) distinguish source analysis
+from execution. The first-run no-listener Windows/NVIDIA acceptance remains
+owner-pending, and every model cohort so far is deterministic with zero real
+inference. No predecessor or counterpart readiness/evaluator is changed.
+
 ## Implementation checkpoint, 25 November 2026
 
 Local execution became available after intake. The lead integrates three independently owned lanes: exclusive provider dispatch and a source-pinned Architecture probe; bounded native context, typed proposal compiler/preview, nine native scenes and 24 creative briefs; a single-window collaborative workspace plus strict package gates. The predecessor direct page, complete redacted audit, session-only conversation and native history remain authoritative.
