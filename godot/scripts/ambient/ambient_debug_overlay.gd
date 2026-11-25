@@ -35,6 +35,8 @@ func _draw() -> void:
 	var intent: Dictionary = ambient.get("intent", {})
 	_draw_places(ambient.get("authored_regions", environment.get("regions", [])))
 	_draw_memory(ambient.get("memory", {}))
+	_draw_navigation(environment.get("navigation", {}))
+	_draw_peers(environment.get("neighbors", {}), centre)
 	if intent.get("goal_target") is Vector2 and not str(intent.get("selected_goal", "")).is_empty():
 		var goal: Vector2 = intent.goal_target
 		draw_line(_point(centre), _point(goal), Color(0.9, 0.65, 1.0, 0.7), 1.5, true)
@@ -116,3 +118,29 @@ func _draw_memory(memory: Dictionary) -> void:
 		var point := _point(entry.position)
 		draw_line(point - Vector2(4, 4), point + Vector2(4, 4), Color("f58c85"), 1.5, true)
 		draw_line(point - Vector2(4, -4), point + Vector2(4, -4), Color("f58c85"), 1.5, true)
+
+
+func _draw_navigation(navigation: Dictionary) -> void:
+	var directions: Array = navigation.get("directions", [])
+	for index: int in mini(directions.size(), 8):
+		var ray: Dictionary = directions[index]
+		if not ray.get("origin") is Vector2 or not ray.get("position") is Vector2: continue
+		var color := Color("a5e4d4") if not bool(ray.get("hit", false)) else Color("f58c85")
+		if not bool(ray.get("available", false)): color = Color("a0a7b5")
+		draw_line(_point(ray.origin), _point(ray.position), Color(color, 0.6), 1.0, true)
+		if bool(ray.get("hit", false)): draw_circle(_point(ray.position), 2.5, color, true)
+
+
+func _draw_peers(neighbors: Dictionary, centre: Vector2) -> void:
+	if not bool(neighbors.get("available", false)): return
+	var peers: Array = neighbors.get("actors", [])
+	for index: int in mini(peers.size(), 16):
+		var peer: Dictionary = peers[index]
+		if not peer.get("position") is Vector2: continue
+		var color := Color("a9e5c4") if bool(peer.get("compatible", false)) else Color("f58c85")
+		if float(peer.get("affinity", 0.0)) < 0.0: color = Color("f58c85")
+		var point := _point(peer.position)
+		draw_line(_point(centre), point, Color(color, 0.22), 1.0, true)
+		draw_circle(point, 8.0, Color(color, 0.7), false, 1.0, true)
+		draw_string(ThemeDB.fallback_font, point + Vector2(10, 10),
+			"peer #%d" % int(peer.get("id", -1)), HORIZONTAL_ALIGNMENT_LEFT, 130, 11, color)

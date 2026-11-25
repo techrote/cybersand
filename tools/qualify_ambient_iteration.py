@@ -74,10 +74,18 @@ def main():
             print(log[-16000:],flush=True)
             require(result["status"] == "passed","Failed actual case: "+script)
             terminal = row.get("terminal","")
-            require(bool(terminal),"A completed-test terminal contract is required")
-            matches = [line[len(terminal)+1:] for line in log.splitlines() if line.startswith(terminal+" ")]
-            require(len(matches) == 1,"Missing/repeated completion: "+script)
-            completed = json.loads(matches[0])
+            pattern = row.get("terminal_pattern","")
+            require(bool(terminal) != bool(pattern),"Exactly one completed-test terminal contract is required")
+            if pattern:
+                require(pattern.startswith("^") and pattern.endswith("$"),"Text completion must match a complete line")
+                matches = re.findall(pattern,log,flags=re.MULTILINE)
+                require(len(matches) == 1 and isinstance(matches[0],tuple) and len(matches[0]) == 2,
+                        "Missing/repeated/malformed text completion: "+script)
+                completed = dict(zip(("checks","failures"),map(int,matches[0])))
+            else:
+                matches = [line[len(terminal)+1:] for line in log.splitlines() if line.startswith(terminal+" ")]
+                require(len(matches) == 1,"Missing/repeated completion: "+script)
+                completed = json.loads(matches[0])
             require(type(completed.get("checks")) is int and completed["checks"] > 0 and completed.get("failures") in (0,[]),"Incomplete/failing assertions: "+script)
             result["completion"] = completed
             result["log_sha256"] = sha(output/script/"process.log")

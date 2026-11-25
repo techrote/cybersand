@@ -46,6 +46,116 @@ visited cells, remembered material targets, failed approaches, goals, timers,
 drives and seeded random streams restart. A scene save is not an exact physical
 continuation or a cross-platform deterministic replay.
 
+## Composition and finite intentions
+
+One profile contains at most 16 module instances selected from a catalogue of
+29 types. Each instance has its own stable ID, enabled flag, priority, weight,
+parameters and private seeded stream. Disabled and zero-weight modules do not
+evaluate or request optional material/terrain sensing. The editor uses the same
+schema as validation and runtime admission; unknown fields, nonfinite values,
+unsupported capabilities and invalid parameter relations are refused.
+
+The eleven original rules remain `wander`, `seek_material`, `avoid_material`,
+`avoid_ledge`, `avoid_boundary`, `escape_obstruction`, `return_home`, `rest`,
+`follow_actor`, `avoid_crowding` and `maintain_altitude`. The version-1 contract
+defines their unchanged authored vocabulary. Eighteen version-2 primitives add
+the following distinct mechanisms:
+
+| Module | Mechanism and observable consequence |
+| --- | --- |
+| `investigate_material` | Latches a newly observed material patch, approaches, inspects briefly, then releases interest. Retained exposure reduces later novelty. |
+| `explore_unfamiliar` | Chooses a nearby destination using remembered visits and failed approaches; exploration drive and curiosity affect utility. |
+| `revisit_interest` | Returns to an old remembered material observation after a minimum age. The historical location is not a claim that the material remains there. |
+| `patrol_route` | Advances through 2–16 home-relative waypoints with arrival dwell, finite leg deadlines and optional looping. Unreachable legs can expire. |
+| `prefer_region` | Makes finite attempts to enter an authored home or activity region; territoriality changes its utility. |
+| `avoid_region` | Selects the nearest supported exit direction while inside an authored avoidance region and its margin. |
+| `search_last_seen` | Searches bounded offsets around a formerly observed material after supported observation of target loss. Unavailable coverage does not prove disappearance. |
+| `exploration_destination` | Chooses and pursues a finite seeded destination, rather than continually changing heading. It does not require visited-space novelty. |
+| `withdraw_obstruction` | Uses accumulated, contact-supported failure records to retreat, pause and cool down after repeated unsuccessful approaches. |
+| `rest_resource` | Requests neutral input when an actual normalized rig-energy observation crosses its threshold, releasing on recovery or timeout. It does not create an invented fatigue resource. |
+| `seek_home_drive` | Starts a finite homeward journey when exploration drive declines, then requests a bounded home rest. |
+| `observe_actor` | Temporarily approaches an admitted copied peer, watches from a preferred distance and releases attention. |
+| `regroup` | Approaches the local centroid of admitted compatible peers when separated beyond preferred spacing. |
+| `align_peers` | Adds a weak heading preference from observed moving-peer velocities. |
+| `disperse` | Converts a sufficiently dense local congregation into a finite outward intention and cooldown. |
+| `follow_material_boundary` | Uses a sampled material edge's local tangent plus standoff correction. It does not infer a continuous remote boundary. |
+| `steer_obstacles` | Chooses an observed clearer supported direction, penalizes remembered failures and briefly retains the alternative heading. |
+| `avoid_peer` | Uses authored dislike tags and entry/release hysteresis to move away from an observed peer. |
+
+Arbitration has three layers. Active overrides choose the highest authored
+priority, with list order breaking an exact tie. Otherwise one temporary goal
+wins by `weight × utility`; priority breaks equal utility, then list order.
+An existing goal retains a finite commitment when its utility multiplied by
+`1.25 + 0.75 × persistence` still matches the challenger. Its commitment duration
+is `commit_seconds × (0.5 + persistence)`, clamped to 0.05–45 seconds and renewed
+only when the goal identity changes. This permits a much stronger interest or
+reflex to interrupt without making ordinary preferences chatter every decision.
+
+The selected goal contributes 2.5 times its utility-weighted steering alongside
+continuous preferences. An inspection/rest phase may instead request neutral
+input; reflex overrides still take precedence. Close vector cancellation uses a
+stable dominant preference rather than numerical sign noise. Every active
+candidate remains visible in diagnostics, including reasons for inactivity.
+Candidate deadlines are simulation-time opportunities: eligibility is not proof
+that the actor executed that goal, reached a waypoint or remained physically
+still. Scientific intention occupancy counts the selected result, not all active
+candidates.
+
+All time advances from admitted, completed physical progression. Repeated
+inspection or a duplicate sampling tick cannot draw randomness or consume time.
+A missed interval over 0.25 seconds ages deadlines but cannot establish
+continuous contact or dwelling. Seeded variation is deterministic for the same
+validated profile, authored actor identity and copied observation sequence.
+Rapier outcomes are not claimed bit-identical across platforms.
+
+## Personality, drives and memory
+
+Traits affect explicit shared mechanisms; a personality has no unique controller.
+The six predecessor profiles remain version 1 until an explicit copied upgrade.
+Version-2 trait settings are independent and can be switched to their neutral
+defaults for a matched ablation.
+
+| Setting | Range | Mechanism |
+| --- | --- | --- |
+| Curiosity | 0–1 | Raises novel material and unfamiliar-destination utility. Retained habituation still reduces novelty. |
+| Persistence | 0–1 | Scales approach deadlines and goal commitment, and strengthens remembered-target/search preference. |
+| Caution | 0–1 | Scales material avoidance entry distance and required local obstacle clearance. It grants no immunity or extra observation. |
+| Sociability | 0–1 | Scales peer observation, regrouping, alignment and legacy-follow utility, plus social-drive accumulation. |
+| Activity | 0–1 | Scales non-reflex pace by 0.6–1.4, clamped to the legal actuator range; changes wander idle probability and exploration-drive depletion. |
+| Territoriality | 0–1 | Raises authored-region utility and the exploration-drive threshold that initiates a homeward attempt. |
+| Preferred distance | 4–64 cells | Sets a comfort distance for observation and regrouping, bounded by each module's sensing radius. |
+| Failed-attempt tolerance | 1–10 | Sets the remembered obstruction-attempt count required by `withdraw_obstruction`. |
+
+Exploration drive starts at 0.85 and social drive at 0.45. Both remain in [0, 1].
+Exploration recovers by 0.09 per simulated second while near home with a restful
+intention; otherwise it declines at `0.006 + 0.018 × activity` per second of
+observed movement, or 35% of that rate without observed movement. Social drive
+declines by 0.06 per second near an admitted compatible peer and accumulates by
+`0.005 + 0.01 × sociability` per second otherwise. These are procedural drives,
+separate from actual rig energy. Disabling drives fixes them at exploration 0.65
+and social 0.5. No new physical resource or physics law is introduced.
+
+The spatial memory holds 8–128 visited grid cells, 1–32 material interests and
+1–32 failed approaches, independently bounded. Grid width is 8–96 native cells;
+observation lifetime is 5–600 simulation seconds. Obstruction records expire no
+later than 30 seconds. The least recently seen record is evicted at capacity,
+with stable key ordering for timestamp ties. Records expose their identity,
+capacity, admissions, reentries, failures, evictions and expiry counts.
+
+A failed approach requires requested movement, less than one cell/second of
+actual progress along that request, and observed nearby physical contact.
+Continuous evidence must last at least 0.8 seconds, with at least one second
+between recorded failures. Neutral intentions, gait alone and unobserved contact
+do not establish obstruction. Memories of moving or vanished material patches
+are historical observations and age out; nearest-sample sensing cannot prove
+the continued contents of every remembered point.
+
+Disabling spatial memory removes visited-space, material-interest and obstruction
+learning/use. It does not remove finite module latches, patrol phase, cooldowns
+or last-seen search state. Reports must name that ablation precisely. Every
+ephemeral component is reset by an admitted new World identity, explicit profile
+Apply, actor/session replacement or restart; none is serialized as authored data.
+
 ## Budgeted local perception
 
 Version 1 retains the four-cell material lattice. Version 2 explicitly configures

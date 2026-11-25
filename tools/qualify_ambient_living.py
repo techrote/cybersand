@@ -74,6 +74,7 @@ CASES = (
     ("living_engine", "test_ambient_living_engine", ()),
     ("living_group", "test_ambient_group_transaction", ()),
     ("living_spatial", "test_ambient2_spatial", ()),
+    ("living_episodes", "test_ambient2_episodes", ()),
     ("living_examples", "test_ambient_living_examples_native", ()),
     ("legacy_catalog", "test_workbench_actor_catalog", ()),
     ("legacy_composition", "test_workbench_actor_composition", ()),
@@ -81,6 +82,7 @@ CASES = (
     ("legacy_physical", "test_physical_actor_session", ()),
 )
 REPORTS = {
+    "living_episodes": "CYBERSAND_AMBIENT2_EPISODES_REPORT",
     "living_engine": "CYBERSAND_AMBIENT_LIVING_ENGINE_REPORT",
     "living_spatial": "CYBERSAND_AMBIENT2_SPATIAL_REPORT",
     "living_editor": "CYBERSAND_AMBIENT_LIVING_EDITOR_REPORT",
@@ -93,6 +95,7 @@ REPORTS = {
     "examples": "CYBERSAND_AMBIENT_EXAMPLES_REPORT",
 }
 TERMINALS = {
+    "living_episodes": "AMBIENT2_EPISODES",
     "living_engine": "AMBIENT_LIVING_ENGINE_RESULT",
     "living_group": "AMBIENT_GROUP",
     "living_spatial": "AMBIENT2_SPATIAL",

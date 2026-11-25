@@ -153,7 +153,8 @@ class AmbientDeliveryCustody(unittest.TestCase):
         identity = {"source_commit": "fixture-only", "source_tree": "fixture-tree",
                     "source_inputs_sha256": {}, "local_delta": []}
         qualification.update({**identity, "schema_version": 1, "kind": "ambient-002-qualification",
-                              "status": "passed", "input_custody": "passed", "headless": False})
+                              "status": "passed", "input_custody": "passed", "headless": False,
+                              "platform": "win32"})
         log = self.write("graphical/process.log", "AMBIENT_CAPTURE fixture receipt\n")
         receipt = {"command": ["fixture-godot", "--script", "capture-fixture.gd"], "timeout_seconds": 30,
                    "status": "passed", "pid": 124, "exit_code": 0, "seconds": 0.02,
@@ -195,6 +196,17 @@ class AmbientDeliveryCustody(unittest.TestCase):
     def test_original_graphical_receipt_with_summary_digest_is_admitted(self) -> None:
         identity, qualification = self.graphical_fixture()
         self.assertEqual(package.verify_graphical(self.folder, identity), qualification)
+
+    def test_missing_graphical_campaign_cannot_build_windows_evaluator(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "actual Windows graphical"):
+            package.required_graphical_qualification(None, {})
+
+    def test_linux_graphics_cannot_qualify_windows_evaluator(self) -> None:
+        identity, qualification = self.graphical_fixture()
+        qualification["platform"] = "linux"
+        self.write("qualification.json", json.dumps(qualification))
+        with self.assertRaisesRegex(RuntimeError, "Graphical source/custody mismatch"):
+            package.required_graphical_qualification(self.folder, identity)
 
     def test_changed_graphical_receipt_is_refused(self) -> None:
         identity, _qualification = self.graphical_fixture()

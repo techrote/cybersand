@@ -364,12 +364,14 @@ static func upgrade(value: Dictionary) -> Dictionary:
 	if int(value.version) == VERSION: return canonicalize(value)
 	var result: Dictionary = value.duplicate(true)
 	result.version = VERSION
-	result.personality = personality_defaults()
-	result.drives_enabled = true
-	result.memory = memory_defaults()
-	result.perception = perception_defaults()
-	result.relations = {"tags":[],"prefer_tags":[],"avoid_tags":[],"peer_id":-1}
-	result.regions = []
+	# New authored keys must be String. Godot's dot assignment creates StringName
+	# keys for absent entries, which the strict portable JSON schema rejects.
+	result["personality"] = personality_defaults()
+	result["drives_enabled"] = true
+	result["memory"] = memory_defaults()
+	result["perception"] = perception_defaults()
+	result["relations"] = {"tags":[],"prefer_tags":[],"avoid_tags":[],"peer_id":-1}
+	result["regions"] = []
 	return canonicalize(result)
 
 

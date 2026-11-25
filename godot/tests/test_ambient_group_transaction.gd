@@ -140,6 +140,17 @@ func run() -> void:
 	var peer_copy: Array = session._ambient_peer_observations.duplicate(true)
 	session._ambient_environment(1,session._view(1,false),expected_profile)
 	check(peer_copy == session._ambient_peer_observations, "same-tick decisions share immutable copied peers")
+	var scoped_profile: Dictionary = expected_profile.duplicate(true)
+	scoped_profile.modules.append(Profile.make_module("avoid_ledge"))
+	scoped_profile.modules[-1].weight = 0.0
+	scoped_profile.regions = [{"id":"home-pad", "name":"Home pad", "kind":"home",
+		"x":100.0, "y":80.0, "width":48.0, "height":32.0}]
+	var scoped: Dictionary = session._ambient_environment(0,session._view(0,false),scoped_profile)
+	check(not bool(scoped.ledges.available) and scoped.ledges.get("modules",{}).is_empty(),
+		"zero-weight ledge rules issue no optional terrain observations")
+	check(scoped.regions == scoped_profile.regions, "authored places enter the copied local environment")
+	scoped.regions[0].x = 7.0
+	check(float(scoped_profile.regions[0].x) == 100.0, "copied region inspection cannot change authoring")
 	var steps: int = session.bridge.manual_step_count()
 	session.close()
 	check(session._ambient_world_generation == -1 and session._ambient_peer_observations.is_empty(),

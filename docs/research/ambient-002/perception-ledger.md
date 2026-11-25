@@ -117,3 +117,45 @@ is approximately 94 ms of sensor CPU time per simulated second, before policy
 or physics. V2 remains explicit opt-in; this is a material cost tradeoff, not a
 performance win or physical display acceptance. The all-actor physical campaign
 must measure progression separately.
+
+## Physical campaign registration and initial smoke
+
+The new `test_ambient2_episodes.gd` runs the production physical session with a
+fresh native World and Rapier World2D per campaign. Its full registry contains
+95 campaigns and 137 actual actor episodes, with at most eight actors live:
+
+| Hypothesis family | Actual actor episodes | Controls and scope |
+|---|---:|---|
+| Main embodied comparison | 63 | Seven arms, three rig families, three seeds, 30 seconds each: legacy personality, legal seeded random, accepted scripted, stateful, memory disabled, personality/drives disabled, and coarse sensing |
+| Local social activity | 32 | Four actors, four controls, two seeds, 30 seconds: legacy, stateful, social modules disabled, random |
+| Adverse material and route | 12 | Sealed attractive material, moved material, newly blocked route; stateful/memory-disabled, two seeds, 30 seconds |
+| Actual departing peers | 8 | Two actual actors, stateful/social-disabled, two seeds; one peer moves through legal actuators after half the horizon |
+| Existing supported capacity | 16 | Eight real Runner actors in a native courtyard, two seeds, 30 seconds |
+| Sustained episodes | 6 | Stateful/memory-disabled: Runner and Trainer for 120 seconds; Monowheel for 300 seconds |
+
+Matched groups compare exact initial native publication bytes, complete physical
+actor poses, velocities, resource states and geometry before advancing. A common
+independent Oil/Water observer covers radius50 with the same sampling settings
+for every control. Causal ablations retain the base profile and material request
+scope. Legacy/new system comparisons intentionally retain their documented
+profile/sensor differences; the coarse-only arm exposes that sensing difference.
+Random and ambient share authored seed values but use declared different stream
+mixing. No cross-platform physical bit determinism is claimed.
+
+Default smoke executes 13 actual actors across nine fresh campaigns for two
+seconds each. The initial integrated-source local smoke completed **5,091 checks,
+zero failures**, all 13 command/physical horizons, and the applicable initial
+state comparisons. This run used integrated c814fe1d plus the uncommitted harness
+and is an implementation checkpoint, not final source qualification. Its first
+attempt failed parsing one inferred Boolean variable; after explicit typing the
+complete run passed. Set `CYBERSAND_AMBIENT2_EPISODES_MODE=full` for the registered
+long campaign, `CYBERSAND_AMBIENT2_EPISODES_REPORT` for the checkpointed JSON;
+completion terminal is `AMBIENT2_EPISODES`.
+
+Every report separates native ticks, actual Rapier ticks, completed simulation
+time, real parts/masks, native-step and physics-step cost, production policy
+stage cost, per-actor policy/sensor cost, and independent observer overhead.
+The trajectory records retain actual body path and drift during neutral commands.
+The analyzer treats ground exploration as horizontal territory with dwell, so
+vertical gait movement alone cannot inflate explored area. Physical peer range
+loss is measured; a requested departing command is not proof the peer escaped.

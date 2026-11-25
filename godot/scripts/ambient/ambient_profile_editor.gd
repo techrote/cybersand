@@ -132,8 +132,8 @@ func mount(workbench: Control) -> void:
 	var left := VBoxContainer.new()
 	left.custom_minimum_size.x = 245
 	split.add_child(left)
-	_label(left, "Modules · list order breaks equal-priority ties")
-	_module_list.custom_minimum_size.y = 160
+	_label(left, "Modules · equal priorities use list order")
+	_module_list.custom_minimum_size.y = 150
 	_module_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left.add_child(_module_list)
 	_module_list.item_selected.connect(func(index: int) -> void: _selected_module = index; _show_module())

@@ -527,7 +527,7 @@ func _ambient_environment(slot: int, view: Dictionary, profile: Dictionary) -> D
 	var spatial: Dictionary = {"available":false, "modules":{}}
 	var probes: Dictionary = {}
 	for module: Dictionary in profile.get("modules", []):
-		if bool(module.enabled) and str(module.type) == "avoid_ledge":
+		if bool(module.enabled) and float(module.weight) > 0.0 and str(module.type) == "avoid_ledge":
 			var lookahead := float(module.params.lookahead)
 			var max_drop := minf(64.0, float(module.params.allowed_drop) + 8.0)
 			var key := "%0.9f:%0.9f" % [lookahead, max_drop]
@@ -557,6 +557,7 @@ func _ambient_environment(slot: int, view: Dictionary, profile: Dictionary) -> D
 		"bounds":Rect2(Vector2.ZERO, Vector2(_definitions[slot].canvas_extent)),
 		"home":_definitions[slot].position, "spatial":spatial, "neighbors":neighbors,
 		"perception":AmbientPerception.settings(profile), "relations":profile.get("relations", {}),
+		"regions":profile.get("regions", []),
 		"navigation":navigation, "world_generation":_ambient_world_generation,
 		"simulation_time_seconds":_completed_time_seconds})
 	_ambient_sensor_cost_usec[slot] = Time.get_ticks_usec() - begun

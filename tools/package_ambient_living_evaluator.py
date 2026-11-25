@@ -25,6 +25,11 @@ from qualify_workbench_landscapes import windows, project_identity
 GUIDE = "docs/operations/ambient-living-workbench.md"
 
 
+def required_graphical_qualification(folder: Path | None, identity: dict) -> dict:
+    require(folder is not None, "Windows evaluator requires actual Windows graphical qualification")
+    return verify_graphical(folder, identity)
+
+
 def verify_package(folder: Path, pristine: bool = False) -> dict:
     manifest = json.loads((folder / "evaluation-manifest.json").read_text(encoding="utf-8"))
     require(manifest.get("schema_version") == 1 and manifest.get("kind") == "ambient-002-owner-evaluation",
@@ -80,6 +85,7 @@ def verify_graphical(folder: Path, identity: dict) -> dict:
     qualification = json.loads((folder / "qualification.json").read_text(encoding="utf-8"))
     require(qualification.get("status") == "passed" and qualification.get("input_custody") == "passed"
             and qualification.get("headless") is False
+            and qualification.get("platform") == "win32"
             and qualification.get("source_commit") == identity["source_commit"]
             and qualification.get("source_tree") == identity["source_tree"]
             and qualification.get("source_inputs_sha256") == identity["source_inputs_sha256"]
@@ -115,7 +121,7 @@ def build(args) -> None:
             {row[0] for row in CASES}, "Qualification must cover the entire scoped campaign")
     require(qualification.get("platform") == "win32", "The portable Windows evaluator requires actual Windows qualification")
     verify_qualification(args.qualification, qualification)
-    graphical = verify_graphical(args.graphical_qualification, identity) if args.graphical_qualification else None
+    graphical = required_graphical_qualification(args.graphical_qualification, identity)
     dependencies = args.dependencies.resolve(strict=True)
     for name, digest in DEPENDENCIES.items():
         require(sha(dependencies / name) == digest, "Pinned Windows dependency mismatch: " + name)
@@ -126,7 +132,7 @@ def build(args) -> None:
     names = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json",
              "third_party/native-toolchain.lock.json", "third_party/rapier-bvh-build.lock.json",
              "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch", "THIRD_PARTY_NOTICES.md",
-             "LICENSE_STATUS.md", GUIDE, "docs/systems/ambient-actors.md",
+             "LICENSE_STATUS.md", GUIDE, "docs/systems/ambient-actors.md", "docs/systems/ambient-living-inhabitants.md",
              "docs/research/ambient-001", "docs/research/ambient-002", "docs/systems/workbench-actor-composition.md",
              "docs/systems/physical-actor-rigs.md", "tools/ci/test_ambient_delivery.py", "tools/ci/test_ambient_living_delivery.py"]
     archive = subprocess.check_output(
@@ -186,7 +192,7 @@ def build(args) -> None:
         "Read the [owner walkthrough](docs/operations/ambient-living-workbench.md) to build a profile, "
         "paint Oil/Water, edit a timer, pilot an actor and save/reopen. "
         "Choose Foundry Row or Common Ground for eight inhabitants, then open Behaviour profile to edit traits, places, relationships or a group. "
-        "The [module-authoring contract](docs/systems/ambient-actors.md) explains the extension API.\n")
+        "The [module-authoring contract](docs/systems/ambient-living-inhabitants.md) explains the extension API.\n")
     (output / "READ-ME.md").write_text(preface, encoding="utf-8")
     evidence = output / "qualification"
     for path in sorted(args.qualification.rglob("*")):

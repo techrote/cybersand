@@ -101,3 +101,36 @@ The companion integration receipt records exact tested source and runtime hashes
 The first documentation job failed because this new ledger lacked a corpus
 exclusion entry. The repair adds explicit evidence routing and a separate
 canonical successor contract; it does not weaken the documentation checker.
+
+## Integrated checkpoint and retained failure
+
+The integrated local commit `c814fe1da416e367fdb2edc32b888e1fb9a7889d`
+and remote commit `5ffb30a7d567dad0efa02277a54be067ba83eb9c` have exactly the
+same Git tree, `07af11350fb0eef221791284d5a744052d7bff71`. Authenticated API
+publication verified all 53 changed blob identities and the resulting tree.
+The remote history preserves the predecessor and immutable specialist intake
+commits. Local working-branch commit identities are not misreported as remote
+qualification identities.
+
+[Hosted iteration 45528068362](https://github.com/techrote/cybersand/actions/runs/45528068362)
+passed 895 engine, 214 independent, 130 perception, 2,644 spatial, 35 group and
+21 simulation-clock checks. The authoring case then failed six of its 238
+checks, one explicit version-2 upgrade check for each original personality.
+This campaign is **failed**, despite 3,939 successful preceding assertions.
+[Artifact 14983117459](https://github.com/techrote/cybersand/actions/runs/45528068362/artifacts/14983117459)
+retains the original receipts. The defect is being resolved jointly by the
+behaviour and authoring owners; no completion or package claim follows from it.
+
+The same source passed the hosted documentation/provenance, architectural
+generator, Art logging and native source-scope advisory jobs. Draft-gated native
+build and GDExtension jobs were skipped, not passed. The explicit final Linux
+and Windows workflow is prepared but was intentionally not triggered. It will
+run only at a coherent source freeze using the qualification marker and the
+`[ambient-002-qualify]` commit-message gate, or explicit workflow dispatch.
+
+A local integrated import was terminated by signal 9 before any case ran while
+the shared execution environment was under storage/memory pressure. Its failure
+receipt is retained under `lead/integrated-first`; no source parser defect was
+reported and no pass is inferred. Identical retained Linux runtime binaries in
+the four owned worktrees were hash-verified and hardlinked, recovering about
+368 MB without modifying their bytes or deleting another project's work.

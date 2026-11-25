@@ -218,8 +218,8 @@ func run() -> void:
 	check([Catalog.control_for(ui.actor(ui.applied, 1)), Catalog.control_for(ui.actor(ui.applied, 2))] == group_before, "incompatible group refusal preserves every admitted controller")
 	editor.revert_draft()
 	check(editor.load_library_profile(0), "shared profile stages without code")
-	var library_before := ui.ambient_library()
-	var invalid_library := library_before.duplicate(true)
+	var library_before: Dictionary = ui.ambient_library()
+	var invalid_library: Dictionary = library_before.duplicate(true)
 	invalid_library.profiles[0].memory.capacity = -1
 	check(not ui.set_ambient_library(invalid_library, library_before, editor._bound_run, editor._bound_epoch), "invalid library rejected through actual host seam")
 	check(ui.ambient_library() == library_before, "invalid library retains exact admitted library")
