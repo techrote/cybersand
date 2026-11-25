@@ -1,0 +1,81 @@
+{
+  "caption_limit": "The native-snap PNG shows selected-part inspection; candidate list is below the visible scroll position. Executed UI tests separately establish the bounded snap interactions.",
+  "format": "cybersand-m67-independent-linux-visual-review-c-v1",
+  "images": [
+    {
+      "extent": [
+        640,
+        440
+      ],
+      "id": "collaborative-module-semantics",
+      "notes": "Anchor/transform controls, semantics tabs, authored-meaning scope, explicit v2 upgrade and validate/save controls are legible and contained. The captured tab does not display the connector or material-role forms themselves.",
+      "path": "ui/collaborative-module-semantics.png",
+      "sha256": "b345297648f51519f9a3aceed2d15c19df2e95ae74b61633cb5df77764e2d3da"
+    },
+    {
+      "extent": [
+        774,
+        520
+      ],
+      "id": "collaborative-native-snap",
+      "notes": "Selected complete pier, authored-guide overlay, current-observation=false provenance, pose controls and scrollable module panel are visible. The lower native-target/candidate controls lie below this captured scroll position; this PNG alone is not visual evidence of their contents.",
+      "path": "ui/collaborative-native-snap.png",
+      "sha256": "26384740dbfe8b15f1b6939179e53ead69ebcd200d798318a5d616c34419ba24"
+    },
+    {
+      "extent": [
+        774,
+        520
+      ],
+      "id": "collaborative-detail-controls",
+      "notes": "Typed mounted-rib dimensions, spacing, density, seed, maximum changed cells and Metal choice are visible. Current source/scope and ZERO-WRITE proposal are explicit; review and native approval are separate.",
+      "path": "ui/collaborative-detail-controls.png",
+      "sha256": "8b6bd411faaf78cd5bbc0b64339b9a70ddcb9a3dd6109370a39fbc53e236a70d"
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "id": "recovered-workshop",
+      "notes": "Whole 512x512 orthographic recovered workshop. Broad central negative space, two attached hanging-fin bays and retained lower detail are visible. No dynamic stability or actor traversal is inferred.",
+      "path": "hierarchy/recovered-workshop-godot.png",
+      "sha256": "d579536f7d275c54d8f0e8815c7ae5252b9825eca1830ec9015091ef7a7eba51"
+    },
+    {
+      "extent": [
+        512,
+        192
+      ],
+      "id": "delegated-detail",
+      "notes": "Exact lower 512x192 region: wall-mounted ribs, panel/infill detail and right-wall service routing remain visible with open floor space.",
+      "path": "hierarchy/delegated-detail-godot.png",
+      "sha256": "34e6b326b28cbad030a7afc0ac6ed3cc23f2ee3ed091c66eafec7b39e39d8e6b"
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "id": "stopped-prefix",
+      "notes": "Whole 512x512 pre-recovery retained partial stripe and unchanged lower detail are visible. It is labelled stopped native geometry, not completed recovery.",
+      "path": "hierarchy/stopped-prefix-godot.png",
+      "sha256": "d834a6fc75200e8f92fc9ba2e58c1d63128ec2befefc849be4dab7c1f9ee0307"
+    }
+  ],
+  "native_planes_sha256": {
+    "hierarchy/stopped-workshop.u16le": "961f17b139d37135ec87f9d53e20612e6286f7aaeb5ecf398d04b13596f92386",
+    "hierarchy/workshop.u16le": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe"
+  },
+  "phase": "successful Linux source qualification within a campaign whose Windows source later failed",
+  "physical_owner_acceptance": "pending",
+  "reports_sha256": {
+    "hierarchy/hierarchy-render.json": "06b641614c1c11f3305dc78e165fe7f05792675b02a53cd7b816993ac43d28b4",
+    "ui/collaborative-ui.json": "20127e0bf13219bfd8750a030864cdcb9f04c7392a0eff04b6bc490338853394"
+  },
+  "required_application_changes": [],
+  "run_id": 45506178712,
+  "scope": "Read-only direct inspection of six original actual Godot PNGs and exact report/plane custody. No current d948 campaign outcome, physical acceptance or general gameplay is inferred.",
+  "source_revision": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+  "status": "REVIEWED_WITH_CAPTURE_SCOPE_LIMIT"
+}

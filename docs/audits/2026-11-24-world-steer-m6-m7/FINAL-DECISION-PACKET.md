@@ -32,7 +32,7 @@ passed. Linux completed 89/89 process groups; independent inspection verified
 all 499 collaborative custody files. Windows completed the catalogue, detail,
 comparison and four native flagship construction/render gates, then failed one
 of 126 full-World gameplay assertions. All four routes reached their waypoint
-and recorded 12 persistent landing contacts, with no native/actor fault or
+and recorded 12 successive grounded observations at the landing, with no native/actor fault or
 refused command. The vault's render-cached native counter reported 1,130 ticks
 against 1,133 actor ticks; its contemporaneous worker publication was 1,133.
 This is retained as a failed qualification attempt;
@@ -40,11 +40,40 @@ packaging and extracted execution did not run.
 
 The gameplay witness sampled `host.latest_snapshot`, a render-cached value,
 while the accepted physics path consumes the worker's immutable completion
-publication before a later render callback. A source-specific correction is
-being qualified against that publication. It changes the witness, not production
-physics, actor control, route geometry or the accepted advancement bound. A
-second full campaign is required; no earlier-source PASS qualifies its successor.
-Final exact source and outcome fields remain pending until witnessed.
+publication before a later render callback. The source-specific correction reads
+that publication while retaining the render-cache and acknowledged-Pause counters
+separately. Production physics, actor control, route geometry and the accepted
+advancement bound did not change.
+
+The corrected application `d948deab5d280adfe1e890bddf85725b2efd59bc`, tree
+`1d8fec406a53a21e3321d1619e56da01520e5501`, passed all 89 source process
+groups on both Linux and Windows in
+[run 45512988153](https://github.com/techrote/cybersand/actions/runs/45512988153).
+This includes 126 full-World gameplay checks and 66 fresh-process gameplay
+reopen checks on each platform. Its packaging step then failed the pristine
+delivered-CMD launch witness before the other 71 extracted process groups ran.
+No owner ZIP was published. The original source passes and failed launcher
+remain separate, immutable outcomes.
+
+The fresh-profile log reached the Workbench route marker, but Windows PowerShell
+5.1 nested the verifier's JSON executable-path array and excluded allowed
+processes. Startup alone is not a full visible-launch pass. The
+[narrow query correction](windows-launcher-query-correction.md) explicitly
+enumerates scalar paths, requires a real Windows self-query before expensive
+application tests and retains bounded poll diagnostics. It preserves the
+parent/image/creation, visible-window, route, CMD-exit, timeout and payload gates.
+
+The third candidate is `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d`, tree
+`ea59a4a95d647c58820c943d37dd14e3d760b2f8`, exactly equal to local
+`a6d762be24c2985d7281b5ad9fd6ac703151412c`.
+[Run 45520561849](https://github.com/techrote/cybersand/actions/runs/45520561849)
+started at the API-recorded `2026-11-25T00:45:29Z`. Its Linux source application
+has passed all 89 process groups; root independently compared all 297 listed
+regular source files with exact Git blobs and rehashed all 499 collaborative
+custody files. The Windows source application step also passed; actual final
+extracted outcomes and package custody remain pending. The five changed files contain only the verifier/tests, early
+preflight, request and correction record; application and native inputs are
+unchanged. Earlier source passes do not certify the new package.
 
 #770 archival `f5f6e9f35727d81868bcced4da8b913b470ea635` is preserved. Its tested
 application remains `fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52`, qualified by
@@ -178,15 +207,16 @@ advantage: its four context-aware arms produced identical matched geometry.
 That uninformative contrast does not prove there can be no effect. Native
 success did not establish a retrieval, language-model or prompt advantage.
 
-In the new60-proposal study, retrieval admitted10/12 cases, compared with3/12
+In the new60-proposal study, retrieval completed10/12 native placements, compared with3/12
 random-valid,4/12 hand-typed,4/12 reference-guided and2/12 procedural cases.
 An independently held-out pressure-dock brief has128 cells simultaneously
 required to be immutable Hardwall and Empty. All ten corresponding proposals
 correctly refused. They remain in the original denominator; the revealed brief
 was not repaired to improve the outcome. The held-out portion contains four
 independently frozen briefs, of which three are feasible. Its two seeds per brief
-are repeated conditions, not independent new architectural tasks. This compares
-specific deterministic selection/tool policies, not prompts, learned
+are repeated conditions, not independent new architectural tasks. These are
+held-out task briefs within the available vocabulary, not an unseen source-artwork
+visual-family cohort. This compares specific deterministic selection/tool policies, not prompts, learned
 intelligence or aesthetics.
 
 The24-case detail study retains full native planes and independently replayed
@@ -235,12 +265,24 @@ block is an exclusively owned proposal-only request route and explicit handoff,
 which the Art PR still identifies as separate future coordination. The stable
 Art source is not mislabelled as failed and is not silently imported.
 
+At the 00:16 UTC refresh on 25 November, the Art owner's
+[readback](https://github.com/techrote/cybersand/pull/773#issuecomment-7148153448)
+explicitly acknowledged this adapter and confirmed that no exclusive production
+proposal route is delivered. Its source remains unchanged. GitHub now reports
+that upstream PR as non-Draft while its declared disposition remains HOLD;
+the actor or intent of that state change is not established here. Our #777 remains
+Draft and unmerged. We did not change either upstream state or source, and the
+upstream broader Ready validation issues remain separate from its qualified
+isolated Art application/package.
+
 The executable bridge receives owner-injected dispatch, scoped cancellation
 and live-context validation. It creates no Provider, stores no credentials,
 attaches no competing ordinary completion listener and grants no native approval.
 Independent review closed teardown and nested-request reentrancy races. An
-isolated probe against the qualified Art source passes43 fixtures, including
-its asynchronous pre-dispatch guard. The owner must forward that guard as the
+isolated probe against the qualified Art source passes 43 compatibility fixtures,
+including actual Provider refusal when its pre-dispatch guard fails. Source
+review confirms the guard is checked again after asynchronous preparation.
+The owner must forward that guard as the
 eleventh `Provider.send` argument; a caller-only check cannot cover later
 asynchronous preparation. See [the exact-source interface review](qualified-art-bridge-review-b.md).
 These fixtures remain distinct from integrated conversation UI, real transport
@@ -251,7 +293,10 @@ supplies runnable offline preflight commands and an inert three-brief protocol.
 It retains one original response per brief, no automatic retries and explicit
 request/native ceilings. It has not run. The missing exclusive proposal route,
 truthful transport UI mode and identified authorized local serving model remain
-prerequisites. No paid provider is authorized by that protocol.
+prerequisites. The mission already authorizes bounded trials on an available
+approved local model; no redundant permission gate is imposed. No approved
+reachable model or exclusive live route was established here, so actual calls
+remain zero. No paid or cloud provider is authorized by that protocol.
 
 ## Final qualification and owner gates
 
@@ -265,6 +310,7 @@ executable application and runtime identities remain strict.
 Until final outcomes are observed, this packet does not present a new qualified
 Windows evaluator. Failed, skipped, interrupted and pending groups stay distinct
 from PASS. Physical owner Windows/NVIDIA acceptance, architectural preference,
-qualified Art integration and an authorized genuine model trial remain separate
+the exclusive qualified Art proposal route and an actual bounded approved-local
+model trial remain separate
 gates. Merge, Ready, release, production activation, paid inference and training
 are outside this mission's authority.

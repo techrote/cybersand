@@ -4,6 +4,17 @@
     "adapter_scope": "Independent explicit owner seam; controlled fixtures are not inference or completed Art integration.",
     "application_run": 45482969231,
     "current_boundary": "Stable Art source is identified, but no exclusively owned proposal-only request route or ownership handoff is supplied. Independent accepted-interface seam remains the delivery boundary.",
+    "owner_acknowledgment": {
+      "broader_ready_validation": "separate failures reported by owner; isolated qualified Art application/package preserved",
+      "comment_id": 7148153448,
+      "declared_disposition": "HOLD",
+      "exclusive_proposal_route_delivered": false,
+      "github_draft": false,
+      "observed_utc": "2026-11-25T00:16:25Z",
+      "our_action": "Read-only refresh; no import or unrelated PR state change.",
+      "same_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+      "state_change_actor_or_intent": "not_established"
+    },
     "owner_proposal_only_handoff": false,
     "packaging_outcome": "Current actual extracted package, immutable manifest and loaded-module gates passed; Linux application run reused through qualified proof.",
     "packaging_run": 45497650568,
@@ -32,6 +43,7 @@
     "source": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
     "unchanged": true
   },
+  "capability_limits_review": "capability-limits-review-b.md",
   "composition_comparison": {
     "arm_admitted_out_of_12": {
       "hand_typed": 4,
@@ -51,8 +63,10 @@
       "all_original_proposals_retained": true,
       "feasible_briefs": 3,
       "independent_briefs": 4,
+      "scope_note": "Four independently frozen architectural task briefs within the available vocabulary; not an unseen source-artwork visual-family cohort.",
       "seed_replications_are_independent_briefs": false,
-      "seeds_per_brief": 2
+      "seeds_per_brief": 2,
+      "visual_family_blind_holdout": false
     },
     "manifest_sha256": "4763904334ec5f275f9980075aa6d02d89cb5ebc0595834ba989cd9a68c8ff76",
     "proposals": 60,
@@ -84,10 +98,30 @@
     "geometry_input_source": "5e6ef0d1fe412e369b0550ca2d9502087cd21e3a",
     "left_corridor": false,
     "native_ticks": 1091,
-    "persistent_contact_samples": 12,
+    "recorded_grounded_landing_samples": 12,
     "report_sha256": "bbd9a8de04093dc643060fca6373f9d179ba0077ca29045e92f85955af7591fd",
     "scope": "One actual full-size hangar Midge route at normal capacity, headless on the compatible reused development native runtime. Does not replace the final four displayed source/extracted trials.",
     "source": "ff3f1a9436a0155db32d714b099e5f71ec409e61"
+  },
+  "development_full_world_vault_publication": {
+    "actor_ticks": 1115,
+    "capacity": 1024,
+    "checks": 32,
+    "cropped": false,
+    "display": "headless",
+    "failures": [],
+    "fresh_reopen_checks": 18,
+    "fresh_reopen_report_sha256": "a8f779deeb9fc14b9eb683b71ce51edd61aa3503e5ee3e3d411edeb04bf16421",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "maximum_actor_minus_worker_per_sample": 0,
+    "recorded_grounded_landing_samples": 12,
+    "render_cached_ticks": 1114,
+    "render_cap_fps": 30,
+    "report_sha256": "c6cf5ed4680830d0a9532820f7c30391c828b0a9bb654ee68c1ec61a9ba966de",
+    "scope": "Focused one-family headless preflight of changed measurement at normal capacity; final displayed all-family source/extracted gates are separate.",
+    "source": "85a151e6e3948d11e9b2c0268ada214ebd1563a9",
+    "tree_equivalent_published_source": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+    "worker_publication_ticks": 1115
   },
   "development_observations": [
     {
@@ -255,7 +289,48 @@
     "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
     "scope": "Development runtime reuse only; no successor application qualification inherited."
   },
+  "development_source_checkpoints": {
+    "bundle_verify": "passed",
+    "bytes": 534031,
+    "file": "CyberSand-M6-M7-Development-Source-Checkpoints.bundle",
+    "git_foundation_prerequisite": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+    "independent_review_sha256": "b0dee053afca4e3ebd9adc2b7238a31537a2f03b71c884d269d0e0ac999729ab",
+    "scope": "Incremental selected development source only, delivered separately; canonical application source is the published continuation commit. No runtime or reference-art payload. Requires the preserved #770 foundation in a local clone.",
+    "selected_refs": 12,
+    "sha256": "0ea233e985399fc043416ac6560e8192fc05746ca8b5706393c0fa240c1cf2f7"
+  },
   "disposition": "DRAFT_HOLD",
+  "documentation_checks": {
+    "docs": "passed",
+    "historical_m11": "passed:18 records/28 historical hashes; not current acceptance",
+    "repository_identity": "passed; local Linux materializations only",
+    "retrieval_evaluation": {
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 30,
+      "missed_queries": [
+        "Q19",
+        "Q32"
+      ],
+      "mrr_at_k": 0.724,
+      "questions": 32,
+      "scope": "Existing documentation lexical evaluation, not architecture retrieval or answer correctness."
+    }
+  },
+  "environment_recovery": {
+    "development_archive_sha256": "52302bcdb03a2f4d631b8a171c5c69df7adb49ba1bd0420586d1bbd5e1171849",
+    "development_restoration": {
+      "archived_files_restored": 113,
+      "qualification": "Five additional entries from the earlier local directory count were excluded from the preserved archive or created afterward. Their identities are not established; no full restoration claim is made for them. All retained core source-bound construction records and final hosted artifacts remain independently available.",
+      "scope": "Selected native planes, starts, recipes, sessions, receipt records and diagnostics in three previously staged directories. No execution repeated or result regenerated.",
+      "unarchived_temporary_bytes": 831920,
+      "unarchived_temporary_files": 5
+    },
+    "local_docs_checkpoint_preserved": "69f3fa802aaac47fecc0ed9cac2209aa69137bf5",
+    "original_hosted_archives": "Four first/second campaign archives downloaded again from original immutable artifact IDs; size, SHA-256 and ZIP CRC agree with pre-interruption observations. Final Linux archive separately verified.",
+    "published_application_preserved": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "second_recovery_observed_utc": "2026-11-25T01:24:47Z",
+    "temporary_memory_files_cleared": true
+  },
   "final_campaign": null,
   "final_source_tree": null,
   "final_tested_application": null,
@@ -300,6 +375,19 @@
       "producer": "b4ed0fc462a5e10f3d502b4b5593ef9b4ce70041",
       "scope": "Actual immutable export parsed read-only;70maps/27hints,25unchangedcards,0nativeimports and0owneracceptance. Initial longer-tag refusal retained; consumer-local bounded512-character tags corrected.",
       "sha256": "711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557"
+    },
+    "upstream_final_refresh": {
+      "archive_head": "0634a8eee4b172c28a6936b957dbe2998b664ddb",
+      "knowledge_bytes_unchanged": true,
+      "knowledge_sha256": "711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557",
+      "new_overlay_applied": false,
+      "owner_accepted": false,
+      "pr": 217,
+      "qualified_delivery_source": "8c709093672c6761d1056187399ccc487760606b",
+      "review": "goldmaps-successor-consumer-review-b.json",
+      "root_coordination_comment": 7147864212,
+      "run": 45500179792,
+      "scope": "Prior actually consumed bytes independently match latest committed package member and upstream original-archive review. This mission did not download or requalify the final GOLD evaluator."
     }
   },
   "implementation": {
@@ -324,7 +412,13 @@
   },
   "independent_reviews": {
     "comparison": "B audited all60 outcomes; C independently diagnosed the frozen contradictory brief.",
+    "corrected_source_science": "B independently rehashed198 comparison and96 detail referenced files per platform at d948, preserving60 proposals/23 completed/37 refused and24 complete detail cases. All four native planes and frozen outcomes match the earlier source. Extracted launcher failed; no extracted science result inferred. Review corrected-hosted-science-review-b.json.",
     "detail": "A and B replayed 24 full material planes and receipts; negatives retained.",
+    "first_hosted_visual": "B inspected24 original Linux/Windows whole+district Godot PNGs, hashed all images and checked four byte-identical native planes across platforms; PNG and RGBA differences retained. Informed specialist review, not blind human preference. See first-hosted-visual-review-b.json.",
+    "first_linux_custody": "Root independently verified89/89 process groups and499 collaborative file hashes; inspected4 UI images,40-part gallery and4 whole-scene original Godot frames. Review53e7e7e1194670ce68f0d94197a84d5216c9c7ac0d5c5b55cc1a1181352844b2. First-source scope only.",
+    "gameplay_publication_correction": "A independently reviewed c5c9fd5 five-file test/custody diff, original failed Windows raw publications and root focused32+18 native reports. Production/controller/route/bound unchanged. Second exact-source campaign remains separate.",
+    "history_authority": "B independently checked ten admission/terminal correlations,13 retained file hashes,6 actual Windows originals and fresh Reopen12 checks at d948. Saved geometry is separate from historical decisions; no restored approval/live-instance authority. See history-authority-review-b.json.",
+    "launcher_query_correction": "A/B/root reviewed exact five-file d948-to-17c6b5 delta;26 synthetic adversaries pass. Explicit typed path enumeration addresses PowerShell5.1 semantics. Real Windows self-query and visible CMD launch remain required by the new source-specific campaign.",
     "native_flagships_current": "A independently replayed55stages/337chunks/1,160,376changed rows at5e6ef0d1fe412e369b0550ca2d9502087cd21e3a;4actualplanes equal reviewed projections. A/B diagnosticvisualreview retains disconnected detail component counts6/35/14/2; no all-connected or Godot-render claim.",
     "native_hierarchy_current": "A reducer96584,53adversaries; actual10stages/20chunks/49,898changed rows/default1024 sourceff5d PASS;128contacts/256outside exact; freshReopen12checks.",
     "native_parts": "Root/B checked v2 contact aliases, capacities, live source and placement guards.",
@@ -336,14 +430,21 @@
   "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
   "model_trial_handoff": {
     "automatic_retries": 0,
+    "availability_observation": {
+      "observed_utc": "2026-11-25T00:21:29Z",
+      "report_sha256": "0c0e50c88f3245e7a7489e5a78244c73d875fc11b7c3a5ecc004e398d172b8e8",
+      "scope": "This executor only: common localhost11434/api/tags and accepted LM Studio default1234/v1/models refused connection; ollama/lms/llama-server executables absent. No prompt, credential access or inference. Does not establish availability on owner devices or custom endpoints."
+    },
     "briefs": 3,
     "calls_observed": 0,
     "current_ui": "offline_only",
-    "missing_gate": "Exclusive qualified owner proposal route, truthful transport UI mode and identified authorized local serving model.",
+    "execution_conditions_satisfied": false,
+    "missing_gate": "Identified available approved local serving model and exclusive qualified owner proposal route with truthful transport UI; standing conditional local-trial authorization is already present.",
     "paid_calls_authorized": false,
     "protocol": "owner-local-model-trial.v1.json",
     "requests_per_brief": 1,
-    "sha256": "c73c8873f826961a7a1d18a74237006b7434e63602e41e9c6bb02fa70c4f9d81",
+    "sha256": "d44b20ba0fa84dea15e951c1b09bff211d3b9044549bfccdac6358f7a505d2b5",
+    "standing_conditional_local_authorization": true,
     "status": "registered_not_executed"
   },
   "native_inputs": {
@@ -363,16 +464,18 @@
     "Recovered system default was Godot4.7.2; its60fixture checks remain diagnostic. Required pinned4.7 was recovered and60checks repeated successfully.",
     "First dff native-hierarchy launch stopped at GDScript type inference before creating a World; explicit Dictionary annotation fixed and sourceff5d passed89native checks/default1024 plus12freshreopen checks.",
     "Actual GOLDexport initially refused legitimate source tags longer than128characters; a bounded512-character tag reader passed31checks without mutating the corpus.",
-    "First hosted run45506178712 at fc8194 passed Linux89/89 but failed Windows1/126 gameplay assertions: all four routes completed; render-cached native tick sampling lagged the actor counter by3 on the vault. No owner package or extracted qualification resulted. Original failed evidence retained; correction requires a new source."
+    "First hosted run45506178712 at fc8194 passed Linux89/89 but failed Windows1/126 gameplay assertions: all four routes completed; render-cached native tick sampling lagged the actor counter by3 on the vault. No owner package or extracted qualification resulted. Original failed evidence retained; correction requires a new source.",
+    "Second hosted run45512988153 passed both source applications89/89 but failed the pristine delivered-CMD witness before extracted native cases. Windows PowerShell5.1 nested the JSON path array and returned no allowed processes; fresh-profile route startup was observed, full owned-visible launch was not qualified, and owner publication was skipped. Original ZIP and failure reports retained."
   ],
   "owner_gates": [
     "Draft/HOLD review",
     "physical Windows/NVIDIA acceptance",
     "subjective architectural preference",
     "separately qualified Art proposal-only handoff",
-    "authorized genuine model trial",
+    "actual bounded trial on an identified available approved local model through the owned proposal route",
     "broader physical stability or general traversal claims"
   ],
+  "packaged_documentation_limit": "The immutable evaluator bundles the selected self-contained owner walkthrough as READ-ME.md and its source path. Optional background/trial/contract links refer to repository documents; use the source-bound web guide linked in final delivery. They are not all bundled local documents.",
   "paid_inference": false,
   "prohibited_actions_not_taken": [
     "merge",
@@ -416,23 +519,121 @@
         "gameplay_checks": 126,
         "gameplay_failures": 1,
         "outcome": "failed",
-        "persistent_contact_samples_per_route": 12,
+        "recorded_grounded_landing_samples_per_route": 12,
         "routes_completed": 4
+      }
+    },
+    {
+      "guard": "passed",
+      "independent_reviews": [
+        "corrected-hosted-science-review-b.json",
+        "corrected-linux-ui-hierarchy-review-c.json",
+        "second-windows-launcher-failure-45512988153-c.json"
+      ],
+      "linux": {
+        "artifact": 14977921869,
+        "artifact_bytes": 26224529,
+        "artifact_sha256": "8e315e6d34b7b9fc9404f088c7d5aeb342eb90dc1d48694c62caca700e925d82",
+        "collaborative_custody_checks": 4388,
+        "independently_hashed_files": 499,
+        "passed": 89,
+        "process_groups": 89,
+        "qualification_sha256": "2b1028f8d168b0d94a65cbf90edd74af5b2a6751821c4220a1caa60162f2d07e"
+      },
+      "native_runtime": {
+        "linux_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "windows_bytes": 5820416,
+        "windows_sha256": "028a4c5c3c7d7ec905cb61dd45674f09d9004ac1c584652f6bb4db4f2b9e8df9"
+      },
+      "retained_as_failed": true,
+      "run": 45512988153,
+      "source": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+      "tree": "1d8fec406a53a21e3321d1619e56da01520e5501",
+      "windows_extracted": {
+        "attempted_process_groups": 1,
+        "failed": 1,
+        "failure": "Pristine delivered CMD watcher timed out before correlating a visible owned child. The fresh profile reached the Workbench route marker; the defective PowerShell 5.1 path filter excluded observed processes. No full launch or extracted native PASS is inferred.",
+        "later_job_cleanup_observed_gui": true,
+        "launcher_sha256": "fb5dcdd9099d1bb438ff4ec22ef9fe4db65dfd66441f6f3582772993a41d2ef5",
+        "observed_route_marker": true,
+        "original_poll_predicates_retained": false,
+        "outcome": "failed",
+        "passed": 0,
+        "qualification_sha256": "a7532fa3ee856c4b48a7e2058abecda490f27740c3529ce2d93a36b620c327b3",
+        "remaining_process_groups_not_run": 71
+      },
+      "windows_package": {
+        "inner_zip_built": true,
+        "published": false,
+        "qualified": false
+      },
+      "windows_runtime_build": "passed",
+      "windows_source": {
+        "artifact": 14979431856,
+        "artifact_bytes": 24721624,
+        "artifact_sha256": "41d3c5882a363a93a77f4d120482d6f43231486dcb786d4cdfc84e1b4b07da64",
+        "fresh_gameplay_reopen_checks": 66,
+        "gameplay_checks": 126,
+        "outcome": "passed",
+        "passed": 89,
+        "process_groups": 89,
+        "qualification_sha256": "489a8e843b9f7cedb8a0d616e166dd027f150cec22a0174c4670d9a4e8f7e853"
+      }
+    },
+    {
+      "guard": "passed",
+      "independent_correction_review_sha256": "0100aedb42a8350bebf4523f803c16fc5e510d9d41a5aebd98d1ceb6ed9a14ac",
+      "linux": {
+        "artifact": 14981408538,
+        "artifact_bytes": 26226147,
+        "artifact_sha256": "2d2c94c44629d9a87a322d3834ad5dd327d91467aacfdb696dcf32b92b658146",
+        "collaborative_custody_checks": 4388,
+        "independently_hashed_files": 499,
+        "outcome": "passed",
+        "passed": 89,
+        "process_groups": 89,
+        "qualification_sha256": "ce2428b05762f88c60c4c937c4e91b3646e123150a779ad5fc110b4b5962f389",
+        "root_review": "final-linux-custody-review-root.json",
+        "root_review_sha256": "bbb7c6080a220f63039084b4e7b11f577d8d57157d0110134f82b7f4e188e5ac"
+      },
+      "local_synthetic_adversaries_passed": 26,
+      "local_tree_equivalent": "a6d762be24c2985d7281b5ad9fd6ac703151412c",
+      "native_runtime": {
+        "build_artifact": 14980481166,
+        "build_artifact_bytes": 8230,
+        "build_artifact_sha256": "b4375848209601366a66670d2f613f9e0c58b799eee51b7f03095eb4deec4c4a",
+        "linux_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "runtime_artifact": 14978269731,
+        "runtime_artifact_bytes": 2106710,
+        "runtime_artifact_sha256": "ad2ca41bfb8111a17fe20e21d6dd133fa43a81da02957b1ac9de03e412d6d3ad",
+        "windows_bytes": 5820416,
+        "windows_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d"
+      },
+      "run": 45520561849,
+      "source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "source_specific_reason": "Five-file PowerShell query correction, real Windows self-query preflight, bounded diagnostics and request/evidence update; application/CMD/native/geometry/physics/materials unchanged.",
+      "started_utc": "2026-11-25T00:45:29Z",
+      "state": "pending",
+      "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+      "windows_runtime_build": "passed",
+      "windows_source": {
+        "outcome": "passed",
+        "scope": "Completed hosted job step observed; raw final report audit pending artifact upload."
       }
     }
   ],
   "repository": "techrote/cybersand",
   "schema": "cybersand-collaborative-architecture-decision-packet-v1",
   "source_freeze": {
-    "application": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
-    "local_tree_equivalent": "a8dbe1142707f0f7520fd8c6e720d5ecb7ba804b",
-    "run": 45506178712,
-    "started_utc": "2026-11-24T23:00:50Z",
-    "state": "first_campaign_linux_pass_windows_gameplay_witness_failure",
-    "tree": "d632b6b77f7829c1e61d035844b52060c972e908"
+    "application": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "local_tree_equivalent": "a6d762be24c2985d7281b5ad9fd6ac703151412c",
+    "run": 45520561849,
+    "started_utc": "2026-11-25T00:45:29Z",
+    "state": "third_campaign_in_progress_after_two_retained_witness_failures",
+    "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8"
   },
   "state": "implementation_checkpoint_final_qualification_pending",
   "training": false,
-  "updated_utc": "2026-11-24T23:45:00Z",
+  "updated_utc": "2026-11-25T01:39:00.902823+00:00",
   "windows_evaluator": null
 }

@@ -123,3 +123,71 @@ Only the existing WORLD-STEER workflow is extended for the combined campaign.
 No merge, Ready, release, paid inference, training, native inputs or unrelated
 programme sources change. Final source/runtime/artifact identities will be added
 to the decision packet after their actual outcomes.
+
+## Second qualification source — publication measurement correction
+
+The first source `fc8194c00294d54a0e148aa933ccfb57ce194c6e`, run
+45506178712, passed Linux 89/89 process groups and failed Windows one of 126
+gameplay checks. All four actor routes completed, but the vault's render cache
+reported 1,130 ticks while its actor and fresh worker publication both reported
+1,133. The failed attempt and original artifact remain immutable. No Windows
+package or extracted PASS was produced by that run.
+
+C corrected only the test-side observation and custody checks at
+`c5c9fd5ff3f5a416753f280444bf83dc976efdc3`; A and root independently reviewed
+the exact diff. The accepted worker publication now supplies native progress;
+render-cache and acknowledged-Pause counters remain distinct diagnostics.
+Production physics, actor control, route geometry, native inputs and the prior
+advancement bound did not change. Root's normal-capacity full-World vault probe
+at local `85a151e6e3948d11e9b2c0268ada214ebd1563a9`, pinned Godot 4.7 and a
+30 FPS render cap, passed 32 checks plus 18 in a fresh process. Every sampled
+worker counter kept pace with its paired actor counter. This remains a scoped
+headless preflight, not final displayed qualification.
+
+Second application `d948deab5d280adfe1e890bddf85725b2efd59bc` has exactly
+that local tree, `1d8fec406a53a21e3321d1619e56da01520e5501`. The existing
+four-job campaign 45512988153 began at 23:48 UTC. Its own outcomes are required.
+The same source includes the reviewed owner loading guide and inert future
+model-trial protocol. Final closeout documents are a separate descendant and
+must retain this tested application identity.
+
+Final responsibilities: root owns integration, Linux/UI evidence and the
+canonical packet; A owns independent runtime/native-source and complete ZIP
+manifest custody; B owns comparative interpretation, actual visual review and
+GOLDMAPS continuity; C owns Windows source/extracted lifecycle and actual launcher
+evidence. Original #720/#770 evaluators and unrelated programme branches remain
+unchanged. The final GOLDMAPS consumer acknowledgment was posted to upstream
+PR #217 as comment 7147864212; it changes no corpus files or owner labels.
+
+## Third qualification source — pristine Windows launch observation
+
+The second campaign 45512988153 passed all 89 source process groups on both
+Linux and Windows, including the corrected full-World gameplay publication
+checks. Its pristine delivered-CMD witness then failed before the remaining
+71 extracted process groups. Original Windows artifact 14979431856 is retained;
+no owner ZIP was published. Its fresh-profile log contains the Workbench route
+marker, which does not replace the missing full visible owned-process witness.
+
+C isolated a Windows PowerShell 5.1 JSON-array nesting defect in the process
+filter. A, B and root independently reviewed the narrow correction. Root added
+its real self-query at the beginning of the existing Windows custody step.
+The corrected query, synthetic adversaries and bounded poll diagnostics preserve
+the existing direct-parent/image/creation, window, route, CMD-exit, 150-second
+launch and payload checks. All 26 local synthetic checks and the documentation
+and CI-provider guards pass. Actual Windows correction qualification remains
+hosted; a mock inventory is not counted as it.
+
+Published source `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d` has tree
+`ea59a4a95d647c58820c943d37dd14e3d760b2f8`, exactly matching local
+`a6d762be24c2985d7281b5ad9fd6ac703151412c`. Run 45520561849 has API-recorded
+start `2026-11-25T00:45:29Z`. Its five-file delta changes qualification tooling,
+request and evidence only. Native, application, launcher CMD and geometry are
+unchanged. The existing same-run source/runtime contract has no extracted-only
+reuse path, so its four jobs remain required. CI owner coordination is recorded
+in #771 comment 7148841956. Draft/HOLD, original evaluators and all unrelated
+ownership remain intact.
+
+Closeout evidence is assembled separately on `docs/m67-final-delivery`, based on
+the tested-candidate source. It will identify itself as a documentation/evidence
+child, preserve each application's original reports and wait for actual final
+artifact review before claiming a qualified owner evaluator.

@@ -135,6 +135,10 @@ regions and attachment faces remain protected.
 A compact native connection exercise uses **Stepped bearing foundation** and
 **Tapered monumental pier** on an Empty 512 × 512 World:
 
+The Modules tab scrolls vertically. Native target and snap-candidate controls
+are below the placement and palette controls; scroll down to reach them in a
+small window.
+
 1. In Modules set the authorized region to X128, Y128, W256, H256. Select the
    foundation, choose identity transform, one column and one row, and destination
    X200, Y250. Choose **Propose placement**.
@@ -289,7 +293,7 @@ physical acceptance gates are explicitly resolved.
 
 ## Delegated workshop and stopped recovery
 
-Use an Empty World of at least 512 × 512 and add the curated templates or import the source-matched curated native library. In Construction, **Load delegated workshop** creates the finite task hierarchy without constructing it. Review each leaf in Tasks, return to Construction for **Inspect + preview**, and approve only the current projection. The three ready procedural leaves expose **Prepare local job**; preparation reads the actual source and creates a bounded proposal, then requires a fresh preview and approval.
+Use an Empty World of at least 512 × 512 and add the curated templates or import the source-matched curated native library. In Construction, **Load delegated workshop** creates the finite task hierarchy without constructing it. Review each leaf in Tasks, return to Construction for **Inspect + zero-write preview**, and approve only the current projection. The three ready procedural leaves expose **Prepare local job**; preparation reads the actual source and creates a bounded proposal, then requires a fresh preview and approval.
 
 The first access-gallery proposal deliberately intersects a protected passage and should refuse. Select that leaf and choose **Propose clear access gallery** to review the finite repair. The optional screen may be explicitly skipped. To exercise Stop, start the cladding trial and stop it while it is running. Wait for its acknowledged native terminal. **Propose recovery from stopped trial** is available only for that partial stage and requires the stopped region to remain unchanged; the host re-inspects it. The new recovery campaign retains prior history, has separate preview and approval for every stage, and does not erase on selection. If the trial already completed before Stop, this convenience recovery is unavailable; no partial result is invented.
 

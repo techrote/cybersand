@@ -3,7 +3,7 @@
   "id": "WORLD-STEER-OWNER-LOCAL-TRIAL-001",
   "version": 1,
   "state": "registered_not_executed",
-  "scope": "Three exploratory local-model planning requests after an explicit proposal-only owner handoff; no quality comparison, training cohort, authorization or automatic dispatch is created by this document.",
+  "scope": "Three exploratory local-model planning requests under the mission's standing conditional authorization for an approved, actually available local model, once the exclusive proposal-only owner route exists. This inert document creates no automatic dispatch, training cohort, paid/cloud authority or quality comparison.",
   "implementation_baseline": {
     "source": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
     "tree": "d632b6b77f7829c1e61d035844b52060c972e908",
@@ -13,19 +13,14 @@
   },
   "execution": {
     "currently_callable": false,
-    "block": "No exclusive proposal-only owner transport entrypoint or ownership handoff is supplied; current Intent UI explicitly uses the offline deterministic planner.",
-    "owner_authorized": false,
+    "block": "No identified approved local endpoint/model is available in the observed executor, and no exclusive proposal-only owner transport entrypoint or ownership handoff is supplied; current Intent UI explicitly uses the offline deterministic planner.",
     "requests_sent": 0,
     "real_model_calls": 0,
     "native_writes": 0,
-    "credentials": null
+    "credentials": null,
+    "standing_conditional_local_authorization": true,
+    "execution_conditions_satisfied": false
   },
-  "authorization_requirements": [
-    "Explicit owner approval for these three local requests on the named model/server.",
-    "A qualified owner-controlled proposal-only entrypoint that cannot also enter ordinary Art automatic painting.",
-    "Exact future integrated source/runtime and handoff identity retained before any request.",
-    "Owner attests that the selected loopback service runs the named local model and does not forward to a paid/cloud service."
-  ],
   "request_policy": {
     "provider_profile": "LM Studio",
     "endpoint": null,
@@ -228,5 +223,17 @@
     "reviewer": "specialist C, staged execution / Workbench UI",
     "outcome": "Source/document review PASS before any model execution.",
     "scope": "Verified exact UI labels and five offline fixture paths, pinned executable/project command shape, admitted family IDs, in-bounds Empty-source clearances, missing exclusive owner route and optional11th guard requirement. This is not a native/model trial result."
+  },
+  "execution_prerequisites": [
+    "Identify the already-approved existing local model and concrete server; verify actual availability under the mission's standing conditional local-trial authorization. No renewed permission is required for this already-authorized bounded scope.",
+    "Supply a qualified owner-controlled proposal-only entrypoint that cannot also enter ordinary Art automatic painting.",
+    "Retain the exact future integrated source/runtime and handoff identity before any request.",
+    "Verify that the selected literal-loopback service runs the named local model and does not forward to a paid/cloud service. Paid/cloud requests remain unauthorized."
+  ],
+  "authority_clarification": {
+    "recorded_utc": "2026-11-24T23:59:58.663738+00:00",
+    "earlier_protocol_sha256": "c73c8873f826961a7a1d18a74237006b7434e63602e41e9c6bb02fa70c4f9d81",
+    "earlier_source": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+    "reason": "Correct the authorization record to reflect the user's existing conditional permission; do not create a redundant permission gate. No execution, brief, policy, budget, outcome or source-availability observation changed."
   }
 }
