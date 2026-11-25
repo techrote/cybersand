@@ -1,0 +1,1486 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh independent context and answer applicability review; not an external model benchmark",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "reviewer": "Specialist B /root/product_docs",
+  "recorded_at": "2026-11-25T00:26:25.248554+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "input_packet": "answer-b-delivered-input.json",
+  "input_packet_sha256": "4cd86c209df86c070b0ab0b8524517a268ff934fae7950ecd4b044a3ad12093f",
+  "source_report": "qualified-v2/candidate/renaissance.json",
+  "source_report_sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+  "evaluator_sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+  "policy_sha256": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+  "question_ids": [
+    "DR01",
+    "DR02",
+    "DR03",
+    "DR04",
+    "DR05",
+    "DR21",
+    "DR22",
+    "DR23",
+    "DR24",
+    "DR25",
+    "DR26",
+    "DR27",
+    "DR28",
+    "DR29",
+    "DR30"
+  ],
+  "summary": {
+    "questions": 15,
+    "passages_examined": 75,
+    "sufficient": 13,
+    "partial": 2,
+    "wrong_context": 0,
+    "known_initial_context_defects_resolved": [
+      "B-CLOSE-01 counterpart generated reopening",
+      "B-CLOSE-05 save-failure preservation guarantee"
+    ]
+  },
+  "method": [
+    "Read all five saved contexts for each allocated query, including irrelevant and dated passages; ranking was recorded but not used as a substitute for applicability.",
+    "Wrote bounded answers from saved context only. Independently inspected accepted source for consequential claims and missing facts; known source-only values were deliberately excluded from incomplete context answers.",
+    "This is a reviewer-authored applicability audit. The reviewer also had source/task knowledge and expected-fact definitions; it is not a blinded generative-model benchmark, provider trial or external retrieval qualification.",
+    "The initial packet and its negative findings remain retained by C. Final approval requires the final packet equality delta and fresh review of every changed passage.",
+    "Independently recomputed passage equality for original → first final (74 unchanged, one newly read) and first final → qualified (72 unchanged, three newly read positions). Final DR22 ranks 3/4 reflect movement of an unchanged conversation passage and the corrected save boundary; final DR23 rank 3 repeats that corrected boundary. Scores are not evidence of answer quality."
+  ],
+  "source_inputs": [
+    {
+      "path": ".github/workflows/native-scope-advisory.yml",
+      "sha256": "f5a34961a64dc160277a787897fc57414fffad3d04e34f2ba8a8ab273e034777",
+      "bytes": 5015,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "d05efcff91b0a94c4c0a72cd4709111285ae6981",
+      "accepted_source_sha256": "f5a34961a64dc160277a787897fc57414fffad3d04e34f2ba8a8ab273e034777",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": ".github/workflows/native.yml",
+      "sha256": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+      "bytes": 12009,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "54558e632057165eb410b1e61562fc499a9b9a67",
+      "accepted_source_sha256": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+      "bytes": 10289,
+      "identity_role": "candidate_policy_document",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "5325fb6750575409d17476380ee66b3e429c5c0e",
+      "accepted_source_sha256": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "Makefile",
+      "sha256": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7",
+      "bytes": 39045,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "03a756ed6d88a90d9c76ee9fd0e6bc8c6f1d6b9e",
+      "accepted_source_sha256": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/project.godot",
+      "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "bytes": 905,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "3055b7976da5d9378d226805492554b75717a1a1",
+      "accepted_source_sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/art_batch_panel.gd",
+      "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "bytes": 79677,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "c3ab6ea1c68b4565ca1792dde990a2e34cc4e751",
+      "accepted_source_sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/art_provider.gd",
+      "sha256": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+      "bytes": 55160,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "1c7d283737f19e3ea0628beccd4c9d84695b8fed",
+      "accepted_source_sha256": "34be4443feff2713166bba0c5d25667a13c43ca2ccb6928edede3a8e3a1dae60",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/depth/depth_layer_runtime.gd",
+      "sha256": "c9498a006fe98d30408478ef78cad1c7784049fa84791a9b64d201631c38c3cd",
+      "bytes": 18684,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "119fd36651ccc7ec77b01a1396f7936cbd7a36bc",
+      "accepted_source_sha256": "c9498a006fe98d30408478ef78cad1c7784049fa84791a9b64d201631c38c3cd",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "bytes": 243726,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1",
+      "accepted_source_sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "bytes": 80950,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "2c24ed7bac47203e7a53cefe07632336da03d71b",
+      "accepted_source_sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+      "bytes": 159560,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+      "accepted_source_sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "godot/scripts/web_demo_controller.gd",
+      "sha256": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb",
+      "bytes": 87363,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "1d8e64927a73bdb9a2e7e2ee7703a78152206242",
+      "accepted_source_sha256": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+      "bytes": 47418,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a",
+      "accepted_source_sha256": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "third_party/godot-runtime.lock.json",
+      "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+      "bytes": 1517,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "747bd7c9cc213ec4b3f22006ed40e8909e0bce8f",
+      "accepted_source_sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "third_party/native-toolchain.lock.json",
+      "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+      "bytes": 8627,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "26907e1dff6eee6de8438a35b3d1300537934554",
+      "accepted_source_sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "tools/ci/check_docs.py",
+      "sha256": "8c5e0ccebbab698c379410fd4db2ed88fa286e109f38c2c85be861149ecb050b",
+      "bytes": 12622,
+      "identity_role": "candidate_documentation_validation_tool",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "10d4793e6a0db8b1ac153c78a6acf5b2cc3effd2",
+      "accepted_source_sha256": "69cec3189b81770c26b368884f37c6351a5a2a150ac0c57aa06cfec9e5e55e5e",
+      "raw_bytes_match": false,
+      "lf_normalized_match": false,
+      "comparison_note": "Candidate retrieval-containment changes intentionally differ from accepted main. This source spot-check only identifies the current standalone documentation-check entry point, not accepted runtime functionality."
+    },
+    {
+      "path": "tools/ci/check_repository.py",
+      "sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "bytes": 8763,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "5e86aab672b71d6c33ba6a67f6f58cf44057962f",
+      "accepted_source_sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "tools/ci/gen007_architectural_runtime_publication.py",
+      "sha256": "f4e88c70091fe54f793d91f33ea5d74a1deadcff9d81f80f6aad837cccee9c1e",
+      "bytes": 13527,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "b8590a46f452cb6bfae2aba60bc39f674a8e32bc",
+      "accepted_source_sha256": "f4e88c70091fe54f793d91f33ea5d74a1deadcff9d81f80f6aad837cccee9c1e",
+      "raw_bytes_match": true,
+      "lf_normalized_match": true
+    },
+    {
+      "path": "tools/launch_desktop.ps1",
+      "sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570",
+      "bytes": 6999,
+      "identity_role": "accepted_source_spot_check",
+      "comparison_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "git_blob": "64f22deedefe1bf648cc2832990efe04ff3cfe2c",
+      "accepted_source_sha256": "48ef1027a257b0639954e3b6a17c4f67555b8b3cdddcd91a7d553ca513de7f29",
+      "raw_bytes_match": false,
+      "lf_normalized_match": true
+    }
+  ],
+  "rows": [
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        3,
+        4
+      ],
+      "bounded_answer": "No. A source-only checkout has its own launch-desktop.cmd; dev.cmd belongs to the separate companion workspace. Materialize the intended Git LFS runtime objects, run the repository/provenance check, and use the exactly pinned Godot executable. The repository launcher accepts an explicit Godot path or CYBERSAND_GODOT, so C:/kybersand is not a required checkout location. Its default project opens the Feature Launcher, which routes to the Shared Workbench. The wrapper checks runtime presence, the CyberSand DLL hash and the Godot version; the separate repository check compares source provenance. These are launch instructions, not proof that a launch or graphical acceptance has occurred.",
+      "missing_facts": [],
+      "scope_assessment": "Materials Lab and World Art evaluation passages describe separate routes. They do not override the source-only launcher route or establish that an old evaluator is presently available.",
+      "conflict_assessment": "No consequential conflict in the ordinary source-checkout route.",
+      "source_spot_checks": [
+        {
+          "path": "tools/launch_desktop.ps1",
+          "symbol": "Godot selection and Assert-MaterializedRuntime",
+          "finding": "Explicit Godot override, exact version and native DLL hash check exist; no companion dev.cmd dependency."
+        },
+        {
+          "path": "godot/project.godot",
+          "symbol": "application/run/main_scene",
+          "finding": "Feature Launcher is the configured main scene."
+        }
+      ],
+      "id": "DR01",
+      "query": "I cloned CyberSand on Windows. Must I have C:/kybersand and dev.cmd before I can open the Workbench?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Windows development commands",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "b65141639580cba25c0795fe3b8d1426306ccf09d333642bb8d044fbb5f1396b"
+        },
+        {
+          "rank": 2,
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > Launch and prerequisites > Windows launch",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "c5a4ba1a2b19cdcf0b7eb6451fd09633c3fbc650cf4085566d0c40cc104f9785"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "590faa16904293399178f7f09288df195181d3668c0b735353a8af6c039bd080"
+        },
+        {
+          "rank": 4,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Windows development commands > Repository-contained Windows desktop launcher",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "cadc85a18f48158ef284cd5147809f4c0c6873a549b949137506e3afb9409cb6"
+        },
+        {
+          "rank": 5,
+          "path": "tools/world-art-evaluation.md",
+          "heading": "World Art Windows evaluation",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "3b193e4691ce941de7b446126ac0812698897287f3b073603d0931239ad24c14"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "partial",
+      "supporting_ranks": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "No. The retrieved handover specifies Godot 4.7.stable.official.5b4e0cb0f and says a nearby patch release is a different qualification target. The native build passage requires pinned godot-cpp and enforces its revision through the build scripts; version similarity is not sufficient. However, none of these five passages supplies the exact godot-cpp commit or its API pin. I cannot identify that revision from the retrieved context alone. Read the native toolchain lock before choosing or rebuilding the dependency, then qualify the actual candidate runtime and provenance.",
+      "missing_facts": [
+        "Exact godot-cpp revision is absent from all five passages.",
+        "The godot-cpp API 4.7 pin is absent from all five passages."
+      ],
+      "scope_assessment": "The canonical build page ranks first, but its selected section concerns commands and custody rather than the dependency table. Canonical page rank does not establish answer completeness.",
+      "conflict_assessment": "No contradictory dependency pin is present; the failure is omitted essential detail.",
+      "abstention": "Abstains from naming the missing godot-cpp commit or API solely from context.",
+      "source_spot_checks": [
+        {
+          "path": "third_party/godot-runtime.lock.json",
+          "symbol": "version",
+          "finding": "Exact Godot 4.7.stable.official.5b4e0cb0f is source-confirmed."
+        },
+        {
+          "path": "third_party/native-toolchain.lock.json",
+          "symbol": "godot_cpp",
+          "finding": "The independently inspected lock supplies commit 101ae38034304346a46ea9ea84ae156d3e860496 and API 4.7. These values grade the missing facts; they are deliberately not inserted into the bounded answer."
+        }
+      ],
+      "id": "DR02",
+      "query": "Can I use any Godot 4 build, and which godot-cpp version matches the native library?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Repository-native build and test commands",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "34854ccb4fe8f8d905fcd7c19a368c6e30feb2823dbe334fa743917efb1ca83d"
+        },
+        {
+          "rank": 2,
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Source checkout on Linux",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "3fa75ebc554c868f17505d16a35a954aa1441329401cb2e9111630d13d08c84f"
+        },
+        {
+          "rank": 3,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Establish source and runtime identity",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "e8019a399174b883090e1fa45c06b056b16c75d52d3505065bd85958617eb168"
+        },
+        {
+          "rank": 4,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "590faa16904293399178f7f09288df195181d3668c0b735353a8af6c039bd080"
+        },
+        {
+          "rank": 5,
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Source-matched runtime publication",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "1a043e1bea7b34e4a0ec18851c6a536e4989a907c8f9efd4997845004359732b"
+        }
+      ]
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        4
+      ],
+      "bounded_answer": "No. That text is an unresolved Git LFS pointer, not executable native-library bytes. Obtain the intended committed runtime object with Git LFS and run check_repository.py --require-materialized to verify the materialized runtime, recorded source inputs and related dependencies. Use the exact platform and Godot pin. The Windows launcher additionally checks that the libraries are present and the CyberSand DLL matches its recorded hash. A pointer, a filename, a successful import or a provenance-only identity report does not qualify a running evaluator.",
+      "missing_facts": [],
+      "scope_assessment": "The World Art viewer passage that can run without native LFS describes its separate tool route; it is not an alternative native Workbench runtime.",
+      "conflict_assessment": "No conflict once the standalone viewer and native desktop scopes are separated.",
+      "source_spot_checks": [
+        {
+          "path": "tools/launch_desktop.ps1",
+          "symbol": "Assert-MaterializedRuntime",
+          "finding": "Small Git LFS pointers are rejected before desktop launch."
+        },
+        {
+          "path": "tools/ci/check_repository.py",
+          "symbol": "verify_runtime; check",
+          "finding": "Materialized size/hash and source-input comparisons are separate from pointer-only identity."
+        }
+      ],
+      "id": "DR03",
+      "query": "The native DLL is tiny text beginning version https://git-lfs.github.com/spec/v1. Is this a usable evaluator?",
+      "canonical_rank": 2,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "590faa16904293399178f7f09288df195181d3668c0b735353a8af6c039bd080"
+        },
+        {
+          "rank": 2,
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Source checkout on Windows",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "3de15f545142912acb70b875d2c47a11f431f03a3ab72f6fbeaef5d63e42859b"
+        },
+        {
+          "rank": 3,
+          "path": "tools/world-art-preview.md",
+          "heading": "World Art interactive viewer > Launch one integrated checkout",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "6af1cf6ed628eb75011040808b204b966a1a27fdd39db7b9705d93b2d91a9155"
+        },
+        {
+          "rank": 4,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Actor control prototype checks > Shared Play session and owner qualification",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "295af7df7dc9f28dc5b0274a964b5fc931893a2cb0447703c0845bada19412e3"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "heading": "Liquid solver family policy and API specification > Cross-issue acceptance mapping",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "2e6055f5810ffc1f1737f5a5d3519f0281fae777664fceadefe180fd0e83bec1"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "partial",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "Start by identifying the checkout HEAD and dirty state, materializing the required Git LFS objects, and running python3 tools/ci/check_repository.py --require-materialized from the source root. The retrieved procedure says this checks runtime bytes, recorded source inputs, documentation and dependencies, so inspect its actual failure. Verify the exact Godot version; on Windows, launch-desktop.cmd -PrintIdentityOnly checks the launcher prerequisites without launching or rebuilding. Any later Godot test should use an isolated test profile and preserve the actual result and first relevant error. These checks do not establish a complete native/Godot matrix or physical playability. The five passages do not provide a focused test selection or the bounded native interface probe requested by the full question; that part needs further retrieval.",
+      "missing_facts": [
+        "The C header syntax-only probe make c-header-check is not in these five passages.",
+        "A concrete route to relevant focused tests and a small documentation structural-check command is missing; check_repository is only described as also checking documentation."
+      ],
+      "scope_assessment": "Most retrieved material is first-launch/prerequisite guidance. It supports a safe partial procedure but not the complete bounded engineering validation request.",
+      "conflict_assessment": "No misleading pass claim or contradictory command; this is an answer-sufficiency gap despite canonical rank 2.",
+      "abstention": "Does not invent the missing focused-test menu or C-header command in the context-only answer.",
+      "source_spot_checks": [
+        {
+          "path": "Makefile",
+          "symbol": "c-header-check",
+          "finding": "The accepted target invokes a C11 syntax-only check of native/tests/test_c_header.c; this is independent grading evidence, absent from these contexts."
+        },
+        {
+          "path": "tools/ci/check_docs.py",
+          "symbol": "main",
+          "finding": "The standalone documentation checker exists; the contexts did not retrieve its direct bounded invocation."
+        },
+        {
+          "path": "tools/ci/check_repository.py",
+          "symbol": "check",
+          "finding": "Repository validation supports the retrieved structural/provenance step; no native full-suite pass follows from it."
+        }
+      ],
+      "id": "DR04",
+      "query": "What is a small source-checkout validation before I launch expensive native and Godot matrices?",
+      "canonical_rank": 2,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Choose your installation route",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "74b7a3c3e0e4288d1999a1a83369904194d6a263e66770440c45c8dd18c042a6"
+        },
+        {
+          "rank": 2,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > First launch from a source checkout",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "590faa16904293399178f7f09288df195181d3668c0b735353a8af6c039bd080"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "d17a78947f48f194bce961b54b0401cda8ab5baee2367b48f7063ec817fee0bf"
+        },
+        {
+          "rank": 4,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Windows development commands > Repository-contained Windows desktop launcher",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "cadc85a18f48158ef284cd5147809f4c0c6873a549b949137506e3afb9409cb6"
+        },
+        {
+          "rank": 5,
+          "path": "operations/getting-started.md",
+          "heading": "Getting started with CyberSand > Source checkout on Windows",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "3de15f545142912acb70b875d2c47a11f431f03a3ab72f6fbeaef5d63e42859b"
+        }
+      ]
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "bounded_answer": "No. Native C++ owns authoritative cellular state and its internal pool workers call no Godot APIs. The exclusive desktop simulation owner may use its permitted adapter/value APIs, but live scene-tree and Rapier objects remain main-thread owned. Mutations are serialized through the owner boundary and consumers receive immutable owned observations; a worker must not share mutable World storage with presentation or use a Rapier body as native cellular authority.",
+      "missing_facts": [],
+      "scope_assessment": "The ownership table includes dated experimental LCB host rows. Those rows do not promote experimental full-host import or change the general native-worker/main-thread boundary used by this answer.",
+      "conflict_assessment": "No contradiction in the directly responsive ownership rules. Historical prototype qualification is kept separate.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "symbol": "worker-owned request execution and copied observations",
+          "finding": "The desktop owner boundary separates serialized native work from main-thread host objects."
+        },
+        {
+          "path": "native/include/cybersand/world.hpp",
+          "symbol": "World ownership interface",
+          "finding": "Authoritative World access is native; internal workers are not Godot scene owners."
+        }
+      ],
+      "id": "DR05",
+      "query": "Can native pool workers touch scene-tree objects and Rapier bodies?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "heading": "Data ownership and lifetimes > Who may mutate each resource?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "b113611798c407aa9bea07d514abd6d43681284d7e2c8dc1d0d5a611c0c139cf"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > Who owns each kind of truth?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "7970f7af8fe301df25c062131723f9326e82f24c078b01f73cea4404a25e66fb"
+        },
+        {
+          "rank": 3,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Foundational work boundary",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "9d0684c51aa8fd752647ffd930fe82398d72eb0f246b155c0e949077f5d74551"
+        },
+        {
+          "rank": 4,
+          "path": "architecture/principles-and-non-goals.md",
+          "heading": "Architectural principles and non-goals > Which constraints govern foundational work?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "f974444ff73689cd7e8b11be57f077d0ef7d95ccaadd16529bf7af0848319c26"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "heading": "Data ownership and lifetimes > Optional actor prototype ownership",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "b65f7f59614f368358b7cc5609c1d1590a0a10c2fdf0e20030aa1953c519623d"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        4
+      ],
+      "bounded_answer": "Open Art batches, choose Model prompt and select the LM Studio provider preset. Use the local endpoint, normally http://127.0.0.1:1234/v1, and replace the model field with the exact model actually loaded by your local server. Leave the key empty unless that server requires one; do not fabricate a token. Keep the first turn count small and use the intended focus/work area. Configuration by itself does not need a paid cloud request; Direct JSON and the documented deterministic/keyless checks are available for a non-model walkthrough. Provider availability and parsed model output remain separate from native-confirmed geometry application, so inspect receipts.",
+      "missing_facts": [],
+      "scope_assessment": "The endpoint and model are editable source presets, not a promise that a local model is installed or currently available. No external provider was contacted in this review.",
+      "conflict_assessment": "No consequential conflict. Broader pacing and scanline sections are optional modes, not prerequisites for the small local setup.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol": "provider presets; local model/endpoint controls",
+          "finding": "Local preset, editable endpoint/model and optional key behavior agree with the guide."
+        },
+        {
+          "path": "godot/scripts/art_provider.gd",
+          "symbol": "send",
+          "finding": "Provider request construction is separate from native authoring receipts; no request was executed for this review."
+        }
+      ],
+      "id": "DR21",
+      "query": "How do I configure a local LM Studio endpoint and custom model without sending a paid cloud request?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Connect a provider you already use",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "7edf99f4d034ad920e668cebd7dde458a18c43a86ebb2b265880764f15131183"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Current candidate and controls",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "152dff96ddb4ac4622c9ccd6767c8bb1592f14157329368edf71e6ad03cb9827"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Offset-area repair",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "28ccf5dfc11cb7d0c3a7316a9a681da5db73871c683e684ebb07b201e35523a9"
+        },
+        {
+          "rank": 4,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Reproducible qualification and local setup",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "a2bb48623b5c8a2b2c14ad5d8577d6c780e31706133313560adfba72589abdb8"
+        },
+        {
+          "rank": 5,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Collaboration, scanline and pacing preview",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "63ceebca3388a90a0ebdc2e5856435f88a09b18cf4d91039eaaf13985e1b4abf"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3
+      ],
+      "bounded_answer": "No. Hiding the Art window preserves its current session and does not mean a request stopped. Use Stop to cancel HTTP/capture/scheduled turns and request cancellation of native drawing at its admitted boundary. An already acknowledged or in-flight bounded part may remain, so wait for the terminal native result, inspect actual confirmed changed counts, and let pending work and receipts settle before Undo. Queued work alone is not applied success; Stop is not an automatic rollback of all prior drawing.",
+      "missing_facts": [],
+      "scope_assessment": "The responsive lifecycle passages distinguish window visibility, provider request cancellation, native execution and session end. The integrated save workflow is adjacent context, not a cancellation guarantee.",
+      "conflict_assessment": "The first packet included an unrelated overbroad failed-save preservation statement at rank 3. That was registered as B-CLOSE-05 and corrected against all writer paths before final-context approval. The bounded Hide/Stop answer never relied on that statement.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol": "close_requested; stop_all",
+          "finding": "Window close calls hide; explicit Stop cancels request/capture/turn activity and requests executor cancellation."
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "symbol": "save_setup",
+          "finding": "Pending mutations and unconsumed receipts remain separate admission fences."
+        }
+      ],
+      "id": "DR22",
+      "query": "Does hiding the Art window mean its request was stopped?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention > Session-scoped, write-only Art traffic — 22 November 2026",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "11d0dcefe5a2173235e264a18a1ce1e254ce3d95c0a38a9d40b4be9cfba297e1"
+        },
+        {
+          "rank": 2,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Stop, Hide and native results",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "f4901e1c35938edefd80812fff39532e9fc1c71716ce9d2f8a6a22352ebd0aa9"
+        },
+        {
+          "rank": 3,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 4,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "4f5f79cde538c260d5e752e6b0d403c5efb878dec043bfede0e18b02d722fd19"
+        },
+        {
+          "rank": 5,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > A small end-to-end authoring exercise",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "c3275100d24a2a022ef3bd0f467f5feb42080529b7a199cbc7e327edcaf08770"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "No. The accepted session policy starts a new in-memory conversation for each game/session. Hiding and reopening the panel within that same session keeps its messages, while ending the session and launching again does not restore yesterday's chat. Provider preferences can persist separately. Each session has a write-only JSONL audit; old audit files may remain on disk but are not automatically reattached as model conversation. A World Save is not a provider-conversation save.",
+      "missing_facts": [],
+      "scope_assessment": "Session-local history and persistent provider preferences are separate data. Old traffic archives remain evidence, not an implicit request to restore chat.",
+      "conflict_assessment": "No current lazy-restore instruction competes with the accepted session-only rule. The unrelated save-preservation overstatement in the initial rank-3 passage was corrected as B-CLOSE-05 before final review.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol": "_ensure_history_loaded; session traffic setup",
+          "finding": "Current _ensure_history_loaded returns without restoring old messages; a session traffic stream is distinct from persistent provider settings."
+        }
+      ],
+      "id": "DR23",
+      "query": "After accepted ART-SESSION-LOG-001, are yesterday’s Art conversation messages automatically restored on the next game launch?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Collaboration, scanline and pacing preview",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "63ceebca3388a90a0ebdc2e5856435f88a09b18cf4d91039eaaf13985e1b4abf"
+        },
+        {
+          "rank": 3,
+          "path": "operations/wb-art-paint-integrated-candidate.md",
+          "heading": "Integrated PAINT and agent Shared Workbench > Preserved interfaces and persistence",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "4f5f79cde538c260d5e752e6b0d403c5efb878dec043bfede0e18b02d722fd19"
+        },
+        {
+          "rank": 4,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "d7c02c77d3ff4dd71a0c728d3c6c0dd705f341fb365666bb2f48813a3abf972b"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Context, limits and repeated requests",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "c0883df1cdd6800f01ffbbc94ce3c19ef81c93d49d5782de298f8f218b2cd029"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "Share a minimal, inspected and redacted failure report: source HEAD/dirty state, exact Godot and runtime/provenance identity, platform, command or synthetic reproduction, expected versus actual result, first relevant error and whether work was queued, applied, displayed or refused. Art traffic can include prompts, responses, endpoint information and images; automatic secret redaction does not make the whole file public-safe. Do not attach credentials, an entire user-data directory or an unreviewed conversation archive. Prefer a small synthetic setup and only the relevant sanitized excerpt.",
+      "missing_facts": [],
+      "scope_assessment": "This is practical minimization of the data the current diagnostics can contain, not a blanket claim that all redacted output is safe.",
+      "conflict_assessment": "No conflict: retained logs may aid reproduction while requiring user inspection before public attachment.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/art_provider.gd",
+          "symbol": "send; traffic logging and redaction",
+          "finding": "Request/response bodies can be logged while authorization handling/redaction is narrower than arbitrary private content."
+        },
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "symbol": "session traffic retention",
+          "finding": "Conversation audit lifetime is independent of an exported public bug report."
+        }
+      ],
+      "id": "DR24",
+      "query": "Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?",
+      "canonical_rank": 2,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/troubleshooting.md",
+          "heading": "Troubleshooting simulation and integration > A useful failure report",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "92d9e8e21a8b3dd1b6d68dbe3d7db54d509c6557cefa0e68ca4b1ab1c900320c"
+        },
+        {
+          "rank": 2,
+          "path": "systems/workbench-art-providers.md",
+          "heading": "Art Workbench provider and session contract > Diagnostics and retention",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "d7c02c77d3ff4dd71a0c728d3c6c0dd705f341fb365666bb2f48813a3abf972b"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Isolated test data and diagnostics",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "d17a78947f48f194bce961b54b0401cda8ab5baee2367b48f7063ec817fee0bf"
+        },
+        {
+          "rank": 4,
+          "path": "operations/workbench-art.md",
+          "heading": "Art Workbench > Conversation and private traffic",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112"
+        },
+        {
+          "rank": 5,
+          "path": "reference/validation-evidence.md",
+          "heading": "Validation evidence ledger > Platform limits and honest outcomes",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "af40dbeba5742c047d9f37ebb04546fb4db0bd41804f6291a0d8602cb70521cc"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "No. The standalone Strata Theatre has its own layered presentation and authoring route; it is not evidence that ordinary Shared Workbench on the declared accepted source can edit those layers. The Workbench integration is a separately unmerged candidate at that source. Even the standalone controls do not mean every plane is freely paintable: the background is frozen, and standalone layer work has its own constraints rather than the ordinary Workbench Save/Flatten/history contract. Use the standalone guide for the demonstrated route and refresh candidate status before treating a later integration as accepted.",
+      "missing_facts": [],
+      "scope_assessment": "Accepted standalone availability, the background edit refusal and unmerged Workbench integration are explicitly separated. This answer is revision-sensitive.",
+      "conflict_assessment": "No authority promotion from standalone screenshots or candidate links into accepted integrated functionality.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/depth/depth_layer_runtime.gd",
+          "symbol": "paint_disc",
+          "finding": "Background painting is explicitly refused with background_frozen. Ordinary Workbench is a separate host path."
+        }
+      ],
+      "id": "DR25",
+      "query": "Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "systems/depth-layers-and-parallax.md",
+          "heading": "Depth layers and parallax prototypes > Strata Theatre controls",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "1be0fc6476b21ee3fcfe00b88769e45fa2251e0fdccc7ad0adc9727900e23416"
+        },
+        {
+          "rank": 2,
+          "path": "systems/depth-layers-and-parallax.md",
+          "heading": "Depth layers and parallax prototypes > Purpose",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "14e4fc7602f41d2f716129ecd96518aac96653380aeb672db7a00283f99b21bc"
+        },
+        {
+          "rank": 3,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Choose the correct owning contract",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "6b9a6f6ac3880cfcbd5b7c2bf328e6d03b3db45ba40df0f015f1563854a8e5ab"
+        },
+        {
+          "rank": 4,
+          "path": "operations/showcase-guide.md",
+          "heading": "Explore the showcases",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "e23b1e8f0bdf792db43e6aba36e3e858c560cfd74a7892546a68e02280dec46e"
+        },
+        {
+          "rank": 5,
+          "path": "systems/depth-layers-and-parallax.md",
+          "heading": "Depth layers and parallax prototypes > Generated semantic-depth host",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "ac12495b0a86e268b3d44652632edf9fc4645c88616f1c284b91b4c196df3315"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "No. Render FPS and texture upload duration measure presentation work; they do not establish physical simulation progression, input responsiveness or playable actor motion. Desktop presentation and the native owner have separate schedules, and CPU upload timing does not by itself measure GPU completion. Use source-matched material/actor progression witnesses, actual input/result observations and the declared platform; keep native/Rapier progress distinct from render counters. Hosted/software rendering and dated owner observations cannot substitute for current physical Windows/GPU acceptance.",
+      "missing_facts": [],
+      "scope_assessment": "The October owner observation is a dated account of a problem and authorization, not a fresh acceptance result. Source-based ownership is general; playfeel needs actual execution evidence.",
+      "conflict_assessment": "No conflict when performance counters and physical owner acceptance retain their distinct meanings.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "symbol": "independent native owner and observations",
+          "finding": "Native progress can be separate from presentation cadence; a presentation counter is not proof of completed native steps."
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "symbol": "frame processing and owner presentation",
+          "finding": "Presentation consumes owner outputs; source inspection is not a physical playability test."
+        }
+      ],
+      "id": "DR26",
+      "query": "The render FPS is high and texture uploads are fast. Does that prove physical simulation and actor movement are playable?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/profiling-observability-and-performance.md",
+          "heading": "Profiling, observability, and performance > Avoid common misreadings",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "782ca5d48f69e62e93d3d3cf5c5d53373b7a8caa17efbcd09d5364566ebe3f8a"
+        },
+        {
+          "rank": 2,
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > How does data move on desktop and Web?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "92c1686b9ba64cc5cf5d6dc3713ee3f7ff1613f620d859ca643b7196471bb6dd"
+        },
+        {
+          "rank": 3,
+          "path": "operations/physical-actor-programme.md",
+          "heading": "Physical actors and combined feature trials > What did the owner observe and authorize on 2026-10-18?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "729005616fdce25310a9228fff7c21c61d8682cb72232ad934ec2230e49c9cc8"
+        },
+        {
+          "rank": 4,
+          "path": "architecture/simulation-tick-and-threading.md",
+          "heading": "Simulation tick and threading > Current execution boundaries",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "c392b9ee1d28c23a4a6a2c432f66d5ccbf8480bd03c07ac3f5339b1fd85f0e30"
+        },
+        {
+          "rank": 5,
+          "path": "operations/profiling-observability-and-performance.md",
+          "heading": "Profiling, observability, and performance > Current observations and their limits",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "586926d2a00667f637ef0e1e1a11a71f7525201d59d22925ab56fc1f4053bbe6"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        4
+      ],
+      "bounded_answer": "No. In the current Web native profiles, _physics_process waits synchronously for the native simulation tick. Enabling pthreads permits internal native parallel work; it does not establish that browser presentation continues while that tick runs. Desktop has a separate simulation-owner scheduling path. Do not infer asynchronous Web presentation or exact backend parity from internal worker count, a successful compile/export or a separate desktop result.",
+      "missing_facts": [],
+      "scope_assessment": "Web compile, export and execution are separate checks. The historical physics baseline passage does not override the current synchronous ownership statement.",
+      "conflict_assessment": "No contradictory asynchronous Web claim in the five passages.",
+      "source_spot_checks": [
+        {
+          "path": "godot/scripts/web_demo_controller.gd",
+          "symbol": "_physics_process",
+          "finding": "Calls native simulation_tick synchronously on the Web update path."
+        },
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "symbol": "desktop worker ownership",
+          "finding": "Desktop worker scheduling is a different ownership path."
+        }
+      ],
+      "id": "DR27",
+      "query": "Does enabling Web pthreads make the browser keep presenting while a native tick is running?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/web-threading.md",
+          "heading": "Web worker profiles and reference tests",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "c610743b20bf181cb3839b476f7ae6ce4fed194a68f72109002a908e09cac90b"
+        },
+        {
+          "rank": 2,
+          "path": "operations/web-threading.md",
+          "heading": "Web worker profiles and reference tests > Acceptance and unresolved limits",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "d192b110e94655717182cd746f25b3c49402ac2926d31a01cf3c4673d7668120"
+        },
+        {
+          "rank": 3,
+          "path": "decisions/ADR-010-failed-tick-quarantine.md",
+          "heading": "ADR-010: Quarantine failed ticks until reset or replacement > Alternatives and scope",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "a76e0246028c4237a7a5de11a373f16facf1f7608411ead7e1f8f00c79173049"
+        },
+        {
+          "rank": 4,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Web compile, export and execution are different checks",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "199a469e7314adc9b5760da858a601941986d213f734ac17574ff266b2881b2c"
+        },
+        {
+          "rank": 5,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > How is the physics baseline rebuilt?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "5b1efac8104494f7e55d850c8e5a68b94d6cfbd860f3526ce1219f5cb72a842c"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        4
+      ],
+      "bounded_answer": "No. Changing a provenance hash does not qualify or authorize publication. Retain the exact source and declared delta, dependency/build inputs, actual artifact bytes and hashes, scoped execution evidence and guarded branch/source custody. A runtime must match the recorded source inputs and intended committed LFS object; a predecessor pass, filename or edited metadata is insufficient. Follow the applicable guarded publisher and its authorization/lease, then verify the resulting head. A documentation-only change may retain an earlier build when its source inputs still match, without relabelling the build as the documentation commit.",
+      "missing_facts": [],
+      "scope_assessment": "The visual authoring/JSON passage at rank 5 is unrelated to native publication and contributes no publication authority.",
+      "conflict_assessment": "The launcher verifies a narrower prerequisite set than repository/source publication. The answer does not treat those checks as equivalent.",
+      "source_spot_checks": [
+        {
+          "path": "tools/ci/check_repository.py",
+          "symbol": "verify_runtime",
+          "finding": "Source-input hashes and materialized runtime identity are checked against provenance."
+        },
+        {
+          "path": "tools/ci/gen007_architectural_runtime_publication.py",
+          "symbol": "guarded source/runtime publication contract",
+          "finding": "Publisher rejects unmatched source/artifact evidence and uses declared source custody; no publisher was run in this review."
+        }
+      ],
+      "id": "DR28",
+      "query": "Can I publish a rebuilt native DLL by editing its hash in the provenance JSON?",
+      "canonical_rank": 4,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "reference/validation-evidence.md",
+          "heading": "Validation evidence ledger > Source and artifact custody",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "46547e8485ef1fd5ad5de061b0cec83ed84b63ea5294e2e42b62987dd9ffbc9d"
+        },
+        {
+          "rank": 2,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "heading": "Development handover > Establish source and runtime identity",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "e8019a399174b883090e1fa45c06b056b16c75d52d3505065bd85958617eb168"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Windows development commands > Repository-contained Windows desktop launcher",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "cadc85a18f48158ef284cd5147809f4c0c6873a549b949137506e3afb9409cb6"
+        },
+        {
+          "rank": 4,
+          "path": "operations/current-and-historical-validation.md",
+          "heading": "Current validation and retained M11 integrity > What validates current source and runtime identity?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "b9d5aa957d9146d443e741d641e297ec86ce7a05297199bd6c6bfda4a3b1897f"
+        },
+        {
+          "rank": 5,
+          "path": "systems/generation-workbench-2.md",
+          "heading": "Generation Workbench 2 inspection and transactional authoring > How do visual authoring and JSON roundtrip?",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "451e17c19dd7336ea9eb09f7142f6c69ffb48fd6f285107f8dffbef007ea9b80"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "bounded_answer": "No. A Draft skip is an unexecuted gate, not a behavior pass or permission to promote. Ready and merge remain owner-controlled; this documentation mission stays Draft/HOLD until explicit owner adjudication. Implementation acceptance requires the applicable exact-resulting-head documentation/provenance, native, Godot, scoped apparatus and graphical evidence. Documentation qualification does not establish a runtime or physical acceptance result. A phase-specific owner instruction is not a general delegation to publish or merge.",
+      "missing_facts": [],
+      "scope_assessment": "Current repository policy and the phase-specific owner decision are authority boundaries. Dated platform test passages are limited evidence, not approval for this mission.",
+      "conflict_assessment": "No conflict after differentiating implementation qualification requirements from documentation-only scope.",
+      "source_spot_checks": [
+        {
+          "path": "AGENTS.md",
+          "symbol": "CI and merge safety",
+          "finding": "Draft gates, exact-head qualification and owner actions are explicitly separate."
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "symbol": "Draft condition",
+          "finding": "Expensive execution is intentionally gated by Draft status; a skip is not an executed test."
+        }
+      ],
+      "id": "DR29",
+      "query": "A documentation or implementation Draft has skipped expensive jobs. Can I mark it Ready or merge it automatically?",
+      "canonical_rank": 1,
+      "authority_assessment": "Ranks 1–4 carry current-documentation envelopes; rank 5 explicitly carries owner-confirmed-intent. The owner record provides phase-specific intent and authorization boundaries, not accepted runtime functionality or general permission to promote or merge. All five stored context identities already recorded these authority values correctly.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Current CI provider and draft gating",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "2175e6eab1097385daeb0196d3379d1a7b9cc40fc3ab2d77954edfd23107ea28"
+        },
+        {
+          "rank": 2,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "heading": "EXPLORE-001 — GEN-007 → Playable Workbench > Protected-source integration",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "85763fe46c5201ccd48a56832eccdb18c1e71f18775459e8e9880b72648691b3"
+        },
+        {
+          "rank": 3,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Actor control prototype checks > Physical free-flight checks",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "da43a69fbb051d62c5db5001e43beeeac2a98a3501865bce2cbf3cb6f2f0ac01"
+        },
+        {
+          "rank": 4,
+          "path": "reference/status-and-roadmap.md",
+          "heading": "Status and foundational roadmap > Reading status correctly",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "21669dd935ad9b991e352012c8887515b545520888caaae99b99e301e802ee06"
+        },
+        {
+          "rank": 5,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "heading": "Owner authoring and world intent — 14 November 2026 > Authorisation remains phase-specific",
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "5ce400e2a22d5bbab8cb336e68fcd5079d479ac2319145d15a6180666ad9984a"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    },
+    {
+      "assessment": "sufficient",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bounded_answer": "No. The native-scope advisory is informational and explicitly sets native_skip_authorized=false. It grants no exemption from required jobs. Use accepted workflow policy and preserve every mandatory case and sanitizer requirement; ongoing higher-fanout experiments are candidates until accepted. Scheduling estimates and concurrency limits do not turn incomplete, cancelled or failed evidence into success. Changing native-skip policy requires its own explicit decision and qualification.",
+      "missing_facts": [],
+      "scope_assessment": "Timing/scheduling advice is not scientific acceptance authority. Current accepted workflow behavior controls execution, while unmerged experiments remain candidates.",
+      "conflict_assessment": "No permission to skip is present; the explicit false authorization field is decisive.",
+      "source_spot_checks": [
+        {
+          "path": ".github/workflows/native-scope-advisory.yml",
+          "symbol": "native_skip_authorized",
+          "finding": "The emitted authorization is False; the advisory does not change required execution."
+        }
+      ],
+      "id": "DR30",
+      "query": "May I use the native-scope advisory to skip required jobs or copy an unmerged higher-fanout CI experiment into production policy?",
+      "canonical_rank": 1,
+      "authority_assessment": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+      "revision_sensitive": true,
+      "abstention_required_by_fixture": false,
+      "context_identities": [
+        {
+          "rank": 1,
+          "path": "operations/github-development-and-release.md",
+          "heading": "Repository development and release > Parallel validation and source-scope advice — 2026-10-31",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "5e799ebe2d0c3477c95c36f142c3bbf4b6bc75f918dd1b79634056bffa1e3651"
+        },
+        {
+          "rank": 2,
+          "path": "operations/local-build-and-validation.md",
+          "heading": "Local build and validation > Linux GDExtension CI sharding",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "30e57a23a547c2a25a66ea8ee1065d0e82bd584022a6d0efe38c48c74ed6af65"
+        },
+        {
+          "rank": 3,
+          "path": "operations/ci-execution-and-performance.md",
+          "heading": "CI execution watchdogs and advisory performance > Shared capacity and concurrency",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "157bb22e841fe1122afab7669f80c78472dddf3958b459cccfbd5a5063c71cb5"
+        },
+        {
+          "rank": 4,
+          "path": "operations/ci-execution-and-performance.md",
+          "heading": "CI execution watchdogs and advisory performance > Scheduling estimates and hosted safety boundaries",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "7b136af20a862dd36fd57dba9f122d1113304d3f1dcaf92af749ae404c5f6480"
+        },
+        {
+          "rank": 5,
+          "path": "operations/ci-execution-and-performance.md",
+          "heading": "CI execution watchdogs and advisory performance > Reproducing the apparatus checks",
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text_sha256": "c98885417919d3e6f555d99479a33e1ded145ca1ba2d99dbc7796ed134934372"
+        }
+      ],
+      "abstention": "No unresolved fact is filled from outside the saved passages; execution and acceptance claims remain bounded."
+    }
+  ],
+  "limitations": [
+    "No external embedding index, cached third-party RAG system, model provider or autonomous coding integration was exercised.",
+    "Two practical questions remain partial despite canonical hits: the exact godot-cpp pin and a compact engineering-validation menu were not retrieved in the supplied chunks.",
+    "Source inspection and context sufficiency do not establish graphical/runtime execution or owner acceptance."
+  ],
+  "context_transfer": [
+    {
+      "old_packet": "answer-b-input.json",
+      "old_sha256": "631fcf6013763fcc9154a6684ae373ed5aa4cc844c06bacfbf2a6e2efd97c69b",
+      "new_packet": "answer-b-final-input.json",
+      "new_sha256": "16daabe519ebebf6510c2e6d4c38b19ae0f8e18366e19a842b3c34beaf8a724e",
+      "comparison_fields": [
+        "rank",
+        "path",
+        "title",
+        "heading",
+        "part",
+        "authority",
+        "retrieval_policy",
+        "text"
+      ],
+      "scores_excluded_from_applicability_comparison": true,
+      "identical_passages_at_same_rank": 74,
+      "changed_passages": [
+        {
+          "id": "DR22",
+          "rank": 5,
+          "old_path": "operations/wb-art-paint-integrated-candidate.md",
+          "new_path": "operations/wb-art-paint-integrated-candidate.md",
+          "old_text_sha256": "d27f25f88191a30ab4f383e232b941df5819c2ee14ab04de2624455f2968b226",
+          "new_text_sha256": "c3275100d24a2a022ef3bd0f467f5feb42080529b7a199cbc7e327edcaf08770",
+          "fresh_review": "PASS; read complete changed passage and its scope"
+        }
+      ]
+    },
+    {
+      "old_packet": "answer-b-final-input.json",
+      "old_sha256": "16daabe519ebebf6510c2e6d4c38b19ae0f8e18366e19a842b3c34beaf8a724e",
+      "new_packet": "answer-b-qualified-input.json",
+      "new_sha256": "bbb51639c411adb4da8b0c3164278911c575421a7efc288bd5b2a82edb599874",
+      "comparison_fields": [
+        "rank",
+        "path",
+        "title",
+        "heading",
+        "part",
+        "authority",
+        "retrieval_policy",
+        "text"
+      ],
+      "scores_excluded_from_applicability_comparison": true,
+      "identical_passages_at_same_rank": 72,
+      "changed_passages": [
+        {
+          "id": "DR22",
+          "rank": 3,
+          "old_path": "operations/wb-art-paint-integrated-candidate.md",
+          "new_path": "operations/workbench-art.md",
+          "old_text_sha256": "58e285677c73f04416690525febef5a20e3ba2956e40724ef89956f8ffb1c754",
+          "new_text_sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112",
+          "fresh_review": "PASS; read complete changed passage and its scope"
+        },
+        {
+          "id": "DR22",
+          "rank": 4,
+          "old_path": "operations/workbench-art.md",
+          "new_path": "operations/wb-art-paint-integrated-candidate.md",
+          "old_text_sha256": "0514706e8c17cd69be04fbcb062238521fe334a369d92512aa9a178033135112",
+          "new_text_sha256": "4f5f79cde538c260d5e752e6b0d403c5efb878dec043bfede0e18b02d722fd19",
+          "fresh_review": "PASS; read complete changed passage and its scope"
+        },
+        {
+          "id": "DR23",
+          "rank": 3,
+          "old_path": "operations/wb-art-paint-integrated-candidate.md",
+          "new_path": "operations/wb-art-paint-integrated-candidate.md",
+          "old_text_sha256": "58e285677c73f04416690525febef5a20e3ba2956e40724ef89956f8ffb1c754",
+          "new_text_sha256": "4f5f79cde538c260d5e752e6b0d403c5efb878dec043bfede0e18b02d722fd19",
+          "fresh_review": "PASS; read complete changed passage and its scope"
+        }
+      ]
+    },
+    {
+      "old_packet": "answer-b-qualified-input.json",
+      "old_sha256": "bbb51639c411adb4da8b0c3164278911c575421a7efc288bd5b2a82edb599874",
+      "new_packet": "answer-b-delivered-input.json",
+      "new_sha256": "4cd86c209df86c070b0ab0b8524517a268ff934fae7950ecd4b044a3ad12093f",
+      "comparison_fields": [
+        "rank",
+        "path",
+        "title",
+        "heading",
+        "part",
+        "authority",
+        "retrieval_policy",
+        "text"
+      ],
+      "scores_excluded_from_applicability_comparison": true,
+      "identical_passages_at_same_rank": 75,
+      "changed_passages": [],
+      "review_transfer": "B independently verified all 75 passages equal after the last two generated-reopen corrections; existing answer applicability judgments transfer without regrading from rank."
+    }
+  ],
+  "final_context_status": "DELIVERED_INPUT_ALL_75_PASSAGES_INDEPENDENTLY_VERIFIED_EQUAL",
+  "previous_qualified_review": {
+    "path": "answer-b-review-before-final-reopen.json",
+    "sha256": "f9c21177fc7167fd16a5fd2f7e6dfb3d251e2344e6ede960b02fc34f7d47c55e"
+  },
+  "authority_description_correction": {
+    "query": "DR29",
+    "previous_review": "answer-b-review-before-authority-wording.json",
+    "previous_review_sha256": "6e13a7f8959c27c5ca28773a31e388873549bee0609efdb21b68e40a87f222ed",
+    "old_description": "Every supplied passage carries an explicit current-documentation authority envelope. Current status in that envelope is not a blanket adoption of dated experiment results or approved/planned intent inside the passage.",
+    "correction": "Corrected overbroad prose description of rank 5 to match its already-correct owner-confirmed-intent passage envelope. No context identity, bounded answer, source grading, ranking or verdict changed.",
+    "recorded_at": "2026-11-25T00:26:25.248542+00:00"
+  }
+}

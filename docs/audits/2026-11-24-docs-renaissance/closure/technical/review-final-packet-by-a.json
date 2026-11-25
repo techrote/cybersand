@@ -1,0 +1,290 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_truth",
+  "authors_reviewed": "Technical lead with Specialist B final editorial corrections",
+  "reviewed_utc": "2026-11-25T00:34:07.501951+00:00",
+  "source_checkpoint": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "method": "Read all six final decision/index/matrix/recovery/findings files and the complete PR description template. Independently source-grade consequential summaries against A/B/C reviewed evidence, source700 and accepted source, actual-hosted report equality and separately fetched failure logs. Re-read final editorial/hosted amendments and verify all matrix receipt hashes; this does not repeat every original scientific experiment.",
+  "reviewed_documents": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "sha256": "2a37e16f0a20187621b20bf74a6b01680c3175dee6f9a95832207532b4f3be0f"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "sha256": "42f9c2d89c45a5249b03646c5f12133e622afff50ec61d73fd8e94ffedacb730"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.json",
+      "sha256": "5e616cbe06e0fc72475ed8a8d7d3775f5ff3b1f7d56dd9025521639a2cac0f8b"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "sha256": "6e2fb4d8fbb0ba372c5c9a0b882909fbdfad6e8502b5b5dd1bad21431c5be33c"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/remaining-findings.json",
+      "sha256": "71c7dbd64536c9f05c44b55b7db4663088ef626274439e9cd00d571dc11ff9bf"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/recovery-ledger.json",
+      "sha256": "b5128f4e5aa7a216943a92284f22f5a2a7d2adc73cde198ecdce5af555a10e92"
+    }
+  ],
+  "pr_description_template": {
+    "path": "/tmp/cybersand-docs-closure-pr-body.md",
+    "sha256": "54fce3d61b34d2d67747ce6a81e265a796f86ddbfd2cd12d6968bab0d28bfe80",
+    "unfilled_tokens": [
+      "__DELIVERY_SHA__",
+      "__DELIVERY_TREE__"
+    ],
+    "approved_remaining_change": "Replace only delivery SHA/tree tokens with actual verified evidence publication commit/tree; verify published body and retained Draft state. This review does not itself claim publication happened."
+  },
+  "assessment": [
+    {
+      "area": "Recovery and review provenance",
+      "finding": "Actual176 composite groups,20 original independent reviews,139 document paths and207 document pairs are correctly distinguished from fresh12-theme technical review and new36-question applicability work.389 recovered artifacts and unavailable original final/transcript are explicitly separated.",
+      "result": "PASS"
+    },
+    {
+      "area": "Source/technical doctrine",
+      "finding": "Eight-byte storage, distinct Water owners/profiles, source versus effective material properties, native/main-thread Rapier ownership, native receipts, cancellation prefix and authored versus physical persistence match declared source. Accepted constructors and pending programmes remain separate.",
+      "result": "PASS"
+    },
+    {
+      "area": "Save/reopen failure boundaries",
+      "finding": "Generated preview requires Install; all affected practical routes are source-qualified. Ordinary/generated/project rename lacks native material-baseline failure guarantee. Final packet now attributes overbroad error strings specifically to generated/project writers and claims no observed data loss or new fault campaign.",
+      "result": "PASS"
+    },
+    {
+      "area": "Retrieval outcomes",
+      "finding": "Five-suite top1/top5/MRR values match qualified-v2 and hosted raw reports.32/32 frozen,161/164 challenge,35/36 additive,4/6 owner and10/10 historical are reported with retained misses, layout rank1-to2 regression and MRR decline.31 sufficient/5 partial180-passage audit is not called a model benchmark.",
+      "result": "PASS"
+    },
+    {
+      "area": "Exact-source hosted qualification",
+      "finding": "Source700 and synthetic merge0250 are distinct commits with independently API-verified identical full tree9d55f3ad. All five hosted report objects equal local final objects except time/root metadata. Final docs PASS is separate from Draft provenance skip and runtime ancillary failures.",
+      "result": "PASS"
+    },
+    {
+      "area": "Ancillary failures and runtime limits",
+      "finding": "A independently fetched four delivered and four original job logs: three HTTP403 failures and the same actor-source guard refusal recur before runtime/causal execution. Accepted/original/delivered actor blob56df9dde matches. Windows statuses remain separately scoped; no fresh physical owner acceptance inferred.",
+      "result": "PASS"
+    },
+    {
+      "area": "Historical/evidence integrity",
+      "finding": "Original audit bytes and historical instruction scope remain preserved. Direct Git diff confirms docs/history unchanged from accepted main. Matrix distinguishes exact preserved whitespace exceptions from current-doc/tooling cleanliness.",
+      "result": "PASS"
+    },
+    {
+      "area": "Matrix and remaining findings",
+      "finding": "29 unique check IDs; all26 referenced receipt hashes match. Executed ranking measurements, scoped PASS, historical claims, skipped, blocked and NOT RUN remain distinct. Remaining inherited limitations do not pretend to be closed runtime defects.",
+      "result": "PASS"
+    },
+    {
+      "area": "Owner authority and publication",
+      "finding": "Recommendation is OWNER-READY WITH EXPLICIT LIMITATIONS. Draft/HOLD, no Ready/merge/release/principal issue closure and unmerged successor boundaries remain explicit. Only actual delivery SHA/tree substitutions and publication verification remain for the lead.",
+      "result": "PASS"
+    }
+  ],
+  "corrections_resolved_during_review": [
+    {
+      "id": "A-FINAL-01",
+      "priority": "P2",
+      "before": "Unqualified source code unchanged wording could conceal retrieval Python edits.",
+      "after": "Final report names engine and simulation source unchanged; retrieval/tooling changes separately explained."
+    },
+    {
+      "id": "A-FINAL-02",
+      "priority": "P2",
+      "before": "Generic malformed metadata wording exceeded bounded selection parser scope.",
+      "after": "Final report names malformed authority or selection metadata."
+    },
+    {
+      "id": "A-FINAL-03",
+      "priority": "P2",
+      "before": "Save error-string attribution could imply ordinary Setup explicitly promises prior-file preservation.",
+      "after": "Generated-start/project message wording is named separately from all three rename paths."
+    },
+    {
+      "id": "A-FINAL-04",
+      "priority": "P2",
+      "before": "Two hosted-delivered matrix entries had the same key with different statuses.",
+      "after": "Unique hosted-delivered-documentation and hosted-delivered-ancillary IDs prevent conflation."
+    }
+  ],
+  "matrix_receipt_identity_checks": [
+    {
+      "check": "ci-provider",
+      "receipt": "validation/delivered-source/ci-provider.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "ci-scheduling",
+      "receipt": "validation/delivered-source/ci-scheduling.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "documentation",
+      "receipt": "validation/delivered-source/documentation.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "historical-selection",
+      "receipt": "validation/delivered-source/historical-selection.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "history-integrity",
+      "receipt": "validation/delivered-source/history-integrity.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "m11",
+      "receipt": "validation/delivered-source/m11.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "repository",
+      "receipt": "validation/delivered-source/repository.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "selection",
+      "receipt": "validation/delivered-source/selection.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "retrieval-frozen",
+      "receipt": "retrieval/qualified-v2/candidate/frozen.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "retrieval-challenges",
+      "receipt": "retrieval/qualified-v2/candidate/challenges.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "retrieval-renaissance",
+      "receipt": "retrieval/qualified-v2/candidate/renaissance.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "retrieval-owner-intent",
+      "receipt": "retrieval/qualified-v2/candidate/owner-intent.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "retrieval-historical",
+      "receipt": "retrieval/qualified-v2/candidate/historical.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "preservation-manifest",
+      "receipt": "preservation-manifest.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "inbound-link-reconciliation",
+      "receipt": "inbound-link-reconciliation.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "manifest-fallback-comparison",
+      "receipt": "retrieval/qualified-v2/candidate/manifest-fallback-comparison.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "direct-ingestion",
+      "receipt": "retrieval/qualified-v2/candidate/direct-ingestion.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "source-custody",
+      "receipt": "source-custody.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "answer-applicability-summary",
+      "receipt": "retrieval/answer-applicability-summary.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "final-source-identity",
+      "receipt": "technical/final-source-identity.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "whitespace",
+      "receipt": "validation/whitespace-disposition.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "hosted-original-documentation",
+      "receipt": "hosted-original/documentation-job-readback.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "hosted-source366-documentation",
+      "receipt": "hosted-source366/documentation-job-readback.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "hosted-delivered-documentation",
+      "receipt": "hosted-delivered/documentation-job-readback.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "hosted-delivered-ancillary",
+      "receipt": "hosted-delivered/ancillary-readback.json",
+      "matches_recorded_sha256": true
+    },
+    {
+      "check": "fresh-browser-and-Godot-GUI",
+      "receipt": "product/browser-fallback-attempt-by-lead.json",
+      "matches_recorded_sha256": true
+    }
+  ],
+  "evidence_inputs": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/technical/consequential-claims.json",
+      "sha256": "755af8a3c2f5f9a55ba414204e2eb7bb41a335a2a9909c857610899be2686539"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/technical/final-source-identity.json",
+      "sha256": "f6e0c448430e85a151b4193a1355322767dda4bdaed59cddfecfc0c8780cfa8c"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/technical/review-hosted-equivalence-by-a.json",
+      "sha256": "a77a1393ac2d5ccae38f03d0e4c1a94dfb2e2535cc137efc52ff089b475ee2f2"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/technical/review-hosted-merge-tree-by-a.json",
+      "sha256": "b0c7655f5efb741581880eec04205a41df863e87e935e60374931d1e96fe552e"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/hosted-delivered/ancillary-readback.json",
+      "sha256": "dec56e52f175feb0b87e3756ff0328f0fb7f465459bb02d9a21b9c16eaea5b5e"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/source-custody.json",
+      "sha256": "3f62f84bbc8074fa671eaa2df6916a49f7f11a7338bf32d5a6a33b87d30659eb"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/answer-applicability-summary.json",
+      "sha256": "20d97f7dfcb3158b78d374d76144d32b81dafe952e3c5e5c7e30921e4d1b9732"
+    }
+  ],
+  "open_p0": 0,
+  "open_p1": 0,
+  "remaining_blockers": [],
+  "recommendation": "OWNER-READY WITH EXPLICIT LIMITATIONS; retain Draft/HOLD for owner adjudication",
+  "limits": [
+    "A did not independently rerun all176 original semantic reviews, every preserved historical experiment or the full native runtime campaign.",
+    "Full evidence publication/PR readback occurs after this pre-publication review; delivery identity placeholders cannot be assumed filled or verified in advance.",
+    "Future source or substantive report edits require delta review; evidence-only additions are still bound by the full source input map."
+  ]
+}

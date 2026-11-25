@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh closure owner-navigation destination check",
+  "reviewer": "Specialist B /root/product_docs",
+  "recorded_at": "2026-11-25T00:21:30.628417+00:00",
+  "document": "closure/coverage-map.md",
+  "document_sha256": "383d2bea38e65a6d0607a78e77a8c6365198950ee290f36d5119a0a60d71c1c0",
+  "links_checked": 44,
+  "broken": [],
+  "links": [
+    {
+      "target": "../../../../README.md",
+      "exists": true
+    },
+    {
+      "target": "../../../README.md",
+      "exists": true
+    },
+    {
+      "target": "../../../../README.md#a-few-places-to-explore",
+      "exists": true
+    },
+    {
+      "target": "../../../images/gentek80-integration/README.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/showcase-guide.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/getting-started.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/workbench-first-session.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/workbench-painting-and-history.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/workbench-saving.md",
+      "exists": true
+    },
+    {
+      "target": "../../../reference/level-saves-and-replay.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/architectural-generator-playtest.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/architectural-generator.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/explore001-desktop-playtest.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/procedural-world-generation.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/generation-workbench-2.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/workbench-art.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/workbench-art-providers.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/materials-lab-authoring.md",
+      "exists": true
+    },
+    {
+      "target": "../../../reference/material-effects-register.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/workbench-water-lab.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/workbench-liquid-equipment.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/workbench-actor-composition.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/actor-usables.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/showcase-guide.md",
+      "exists": true
+    },
+    {
+      "target": "../../../systems/depth-layers-and-parallax.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/semantic-depth-authoring.md",
+      "exists": true
+    },
+    {
+      "target": "../../../architecture/overview.md",
+      "exists": true
+    },
+    {
+      "target": "../../../architecture/data-ownership-and-lifetimes.md",
+      "exists": true
+    },
+    {
+      "target": "../../../architecture/simulation-tick-and-threading.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/cybersand-codex-development-handover.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/local-build-and-validation.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/testing-validation-and-replay.md",
+      "exists": true
+    },
+    {
+      "target": "../../../operations/github-development-and-release.md",
+      "exists": true
+    },
+    {
+      "target": "../../../reference/status-and-roadmap.md",
+      "exists": true
+    },
+    {
+      "target": "../../../reference/product-intent-and-priorities.md",
+      "exists": true
+    },
+    {
+      "target": "../../../decisions/2026-11-14-owner-authoring-intent.md",
+      "exists": true
+    },
+    {
+      "target": "../../../history/engineering/README.md",
+      "exists": true
+    },
+    {
+      "target": "../../m11/README.md",
+      "exists": true
+    },
+    {
+      "target": "product/product-handover.md",
+      "exists": true
+    },
+    {
+      "target": "technical/technical-handover.md",
+      "exists": true
+    },
+    {
+      "target": "retrieval/README.md",
+      "exists": true
+    },
+    {
+      "target": "../preview/readme-desktop.pdf",
+      "exists": true
+    },
+    {
+      "target": "../preview/readme-narrow.pdf",
+      "exists": true
+    },
+    {
+      "target": "product/visual-qualification.json",
+      "exists": true
+    }
+  ],
+  "anchor_checks": [
+    {
+      "target": "../../../../README.md#a-few-places-to-explore",
+      "heading": "A few places to explore",
+      "exists": true
+    }
+  ],
+  "scope": "Local destination existence and the single named README heading were verified; no external fetch or browser rendering claim."
+}

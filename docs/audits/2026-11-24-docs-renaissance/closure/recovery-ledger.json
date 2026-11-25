@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "original_published_anchor": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "original_local_head": "ff66f4b385fcddf4544c2e8769eb2dd72b15398a",
+  "original_local_published_trees_identical": true,
+  "original_files": 389,
+  "original_bytes": 55803045,
+  "original_dispositions": {
+    "recovered-later-original-version": 11,
+    "recovered-unpublished": 285,
+    "published-identical": 93
+  },
+  "original_manifest": {
+    "path": "recovery/original-recovery-manifest.json",
+    "sha256": "7902df16632aa4ecc89e9af1714040cabf2da05533981626a56f5a2837dfaa43"
+  },
+  "artifact_classes": [
+    {
+      "class": "original-github-intake-and-source-freezes",
+      "disposition": "recovered-original",
+      "examples": [
+        "../github-intake.json",
+        "../github-final-refresh.json"
+      ]
+    },
+    {
+      "class": "original-coverage-preservation-and-inbound-work",
+      "disposition": "recovered-original",
+      "qualification": "New consolidated verification is separate in document-inventory, preservation-manifest and inbound-link-reconciliation."
+    },
+    {
+      "class": "original176-composite-claim-matrix-and20-independent-reviews",
+      "disposition": "recovered-original-and-identity-verified",
+      "examples": [
+        "../claim-matrix.json",
+        "technical/claim-recovery-verification.json"
+      ],
+      "original_count": 176,
+      "new_rows_invented": 0
+    },
+    {
+      "class": "all-three-original-specialist-workstreams-and-handovers",
+      "disposition": "recovered-original",
+      "qualification": "New closure handovers explicitly identify themselves and supplement original semantics."
+    },
+    {
+      "class": "original-retrieval-baseline-candidate-raw-contexts-and-negative-receipts",
+      "disposition": "recovered-original-and-independently-reproduced",
+      "examples": [
+        "retrieval/recovered-result-reproduction.json"
+      ]
+    },
+    {
+      "class": "original-hosted-retrieval-artifact",
+      "disposition": "recovered-from-GitHub-Actions",
+      "run_id": 45482710814,
+      "artifact_id": 14962681475,
+      "examples": [
+        "hosted-original/artifact-custody.json"
+      ]
+    },
+    {
+      "class": "original-images-provenance-static-previews-and-failed-graphical-attempt",
+      "disposition": "recovered-original-and-hash-verified",
+      "examples": [
+        "../assets-b.json",
+        "product/visual-qualification.json"
+      ]
+    },
+    {
+      "class": "original-complete-conversation-transcript",
+      "disposition": "not-recovered",
+      "reconstruction": "No transcript or original participation fabricated; original durable artifacts establish what is recoverable."
+    },
+    {
+      "class": "original-standalone-integrated-final-decision-packet",
+      "disposition": "not-found-in-retained-workspace-published-candidate-or-inspected-hosted-artifacts",
+      "reconstruction": "This closure produces a new independently reviewed final report and matrix, never labelled original."
+    },
+    {
+      "class": "fresh-normalized-claim-ledger-preservation-inventory-and-source-custody",
+      "disposition": "new-closure-reconciliation",
+      "qualification": "Preserves original identities/review levels and adds final-source bindings."
+    },
+    {
+      "class": "fresh-v3-authority-controls-and-final-five-suite-reruns",
+      "disposition": "new-closure-engineering-and-qualification",
+      "qualification": "Old scoring/fixtures unchanged; negative-before results retained."
+    },
+    {
+      "class": "complete36-question-actual-context-answer-audit",
+      "disposition": "new-independent-closure-audit",
+      "qualification": "Original final packet covered19 questions; fresh36-question review covers180 actual passages. No model benchmark claim."
+    },
+    {
+      "class": "fresh-specialist-handover-crossreviews-and-final-decision",
+      "disposition": "new-closure-evidence",
+      "examples": [
+        "technical/technical-handover.md",
+        "product/product-handover.md",
+        "retrieval/specialist-c-handover.md",
+        "FINAL-REPORT.md"
+      ]
+    }
+  ],
+  "search_scope": [
+    "Published candidate/history and recovery comment",
+    "Retained original execution repository and mission/lane artifacts",
+    "Original documentation workflow artifact and selected original ancillary logs",
+    "Current source/PR and exact-source hosted runs"
+  ],
+  "scope_limit": "This is a complete account of inspected legitimate sources, not a claim to enumerate every possible unrelated Actions artifact."
+}

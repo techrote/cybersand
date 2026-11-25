@@ -1,0 +1,19 @@
+{
+  "classification": "fresh-frozen-source-validation",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "source_tree": "216d41d5a04174a4c330c9224e7f5fa7e23c8c91",
+  "dirty_tracked_paths": [],
+  "command": [
+    "python",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/ci",
+    "-p",
+    "test_historical_retrieval.py"
+  ],
+  "exit_code": 0,
+  "output": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.019s\n\nOK\n",
+  "recorded_at": "2026-11-25T00:08:42.865346+00:00"
+}

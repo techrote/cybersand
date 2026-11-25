@@ -1,0 +1,1500 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "recorded_utc": "2026-11-25T00:18:16.427629+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "original_published_candidate": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "method": "Recovered original176 composite claims and all linked independent semantic reviews; verified IDs, artifact hashes and original reviewed-document identities. Fresh closure semantic source checks and independently reviewed corrections supplement the recovered reviews. Identity automation is not a second semantic audit and never creates an independent reviewer. Current documents use full content hashes; final delivery commit is bound by the lead validation packet.",
+  "original_reported_claim_count": 176,
+  "reconciled_actual_claim_count": 176,
+  "new_claims_added_to_match_reported_count": 0,
+  "summary": {
+    "by_original_author": {
+      "a": 45,
+      "b": 43,
+      "c": 27,
+      "lead": 61
+    },
+    "by_consequence_priority": {
+      "P1": 121,
+      "P0": 54,
+      "P2": 1
+    },
+    "original_independent_review_artifacts": 20,
+    "unique_original_document_paths": 139,
+    "authority_component_counts": {
+      "current-accepted-implementation": 138,
+      "planned-unresolved-or-unmerged": 35,
+      "historical-evidence": 75,
+      "approved-owner-intent": 11,
+      "current-process-or-validation-contract": 42,
+      "dated-github-lifecycle-snapshot": 11,
+      "unmerged-documentation-retrieval-candidate": 6
+    },
+    "original_document_identity_gaps": 0,
+    "unresolved_source_or_review_identity_errors": 0,
+    "pending_final_review_identity_pairs": 0
+  },
+  "important_limits": [
+    "A priority on a claim describes consequence if wrong, not an unresolved P0/P1 finding.",
+    "The recovered zero review-or-identity gaps was an evidence coverage statement, not proof of absence of semantic defects. Closure found and corrected additional defects.",
+    "Original source/runtime/owner acceptance scopes are not expanded. External URLs are locators, not freshly fetched or content-hashed receipts.",
+    "Changed documents retain original review for unchanged content plus the explicitly linked independent closure review of changed claims.",
+    "New closure corrections remain in amendment/source-review files and are not invented rows used to inflate the recovered176 count."
+  ],
+  "errors": [],
+  "pending_final_reviews": [],
+  "original_document_checks": [
+    {
+      "claim": "A-01",
+      "path": "docs/architecture/overview.md",
+      "reviewed_sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-02",
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "reviewed_sha256": "b6ad1a6e57f91e4e97ed2be3ab690fac85bdc875a964e73f0a4c51a618696810",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-03",
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "reviewed_sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-04",
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "reviewed_sha256": "06031844ea34676d3fbd6a616e5fcd7e41d1212b88af5c2f24ad760d642f5f68",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-05",
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "reviewed_sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-06",
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "reviewed_sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-07",
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "reviewed_sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-08",
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "reviewed_sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-09",
+      "path": "docs/reference/level-saves-and-replay.md",
+      "reviewed_sha256": "f89f3809989f9d1ff01beb25225b01d568fc7e32be5559846c2aefb8c3496964",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-10",
+      "path": "docs/reference/glossary.md",
+      "reviewed_sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-11",
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "reviewed_sha256": "20db2741af9deaa1ad79a5c2d7b8d99dbdfd723a61c8e9fef3fe61de474c4b14",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-12",
+      "path": "docs/systems/water-design.md",
+      "reviewed_sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-13",
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "reviewed_sha256": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-14",
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "reviewed_sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-15",
+      "path": "docs/systems/workbench-actor-composition.md",
+      "reviewed_sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-16",
+      "path": "docs/reference/configuration-reference.md",
+      "reviewed_sha256": "efad0c6b106e57195a04ed79867093023efb20a83f1b3306bfafd8a0bb1b9412",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-17",
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "reviewed_sha256": "c86a286ddeea49ec3dc0124ae1eb6f866bb4b98d454fda30381177042d0de44c",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-18",
+      "path": "docs/reference/invariants.md",
+      "reviewed_sha256": "9046c10bb957d545ae5b8aa3929af47d1f05e89547900c25bd3de01d7e0e3f1c",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-19",
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "reviewed_sha256": "f86472cc3467883814544fc3bce98f6cf8d3576ae80ac6b6f3f74930008cd289",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-20",
+      "path": "docs/systems/architectural-generator.md",
+      "reviewed_sha256": "d3b42911f626ac1bc857d6e1fb11e7ea09f71b10137d1bf917be1ce9e5c3cecd",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-21",
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "reviewed_sha256": "3f33223ef0e88e20b22f0775cd731145ac9f946c8f396747d09f69735a7aa022",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-22",
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "reviewed_sha256": "57e42584e1320481b46f2f0a62894047b08a7b935197d8edcded228997d1fc9c",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-23",
+      "path": "docs/architecture/pressure-optimization.md",
+      "reviewed_sha256": "1df19ea0874396cd77e2b39ca84b47ecb7f616b68f0ff6cabcfaaa8b05264698",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-24",
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "reviewed_sha256": "700bfea745a7a9d3d35da618ddf4b730f1718bad85bcf5ca45b7c85a92d0eee4",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-25",
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "reviewed_sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-26",
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "reviewed_sha256": "1f8bae20d9fe8fe39f340430fd1a5216d6c429dfd46e13921ee380349973b802",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-27",
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "reviewed_sha256": "3995a836ec1c0b5599ac7d2b7a7f8da2e4ee2f750f9866113358e5613081ac01",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-28",
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "reviewed_sha256": "28a761724505a50abf26e118be38ab0c777f05b3bea0f8686da1b306fcacd14e",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-29",
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "reviewed_sha256": "7c0cec2e6da081eb47e8cfab73917c4d40c79a6d1370b38881eabd9b2337b16b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-30",
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "reviewed_sha256": "8ee8ef37d787b35c7c0cfd6b74278eb9dd135d7f664e99ad860e06db252ea580",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-31",
+      "path": "docs/architecture/module-boundaries.md",
+      "reviewed_sha256": "f6a112f5017fa0c0d964d912c0e39451a04d46340a6515fe250dbce808ab177f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-32",
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "reviewed_sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-33",
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "reviewed_sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-34",
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "reviewed_sha256": "e2ca5966ecf90b0e4d40b013646ac4f3bb34c0c5ae3d9efe7ab641c6c9a96dae",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-35",
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "reviewed_sha256": "0ab911b1e8b30a3ca83fa525ca927c59e12635412a1cdbf1cf4e3847806aaab8",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-36",
+      "path": "docs/systems/actor-usables.md",
+      "reviewed_sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-37",
+      "path": "docs/systems/physical-actor-rigs.md",
+      "reviewed_sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-38",
+      "path": "docs/systems/procedural-world-generation.md",
+      "reviewed_sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-39",
+      "path": "docs/systems/intermaterial-interactions.md",
+      "reviewed_sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-40",
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "reviewed_sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-41",
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "reviewed_sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-42",
+      "path": "docs/systems/settled-region-discovery.md",
+      "reviewed_sha256": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-43",
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "reviewed_sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-44",
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "reviewed_sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "A-45",
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "reviewed_sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-01",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-01",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "reviewed_sha256": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-01",
+      "path": "docs/operations/gentek80-evaluation.md",
+      "reviewed_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-02",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-02",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "reviewed_sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-02",
+      "path": "docs/operations/getting-started.md",
+      "reviewed_sha256": "058e577a398309e70c32dd9e26b4a97527d1105e1b8cf3cd89f172a3824936b6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-03",
+      "path": "docs/operations/getting-started.md",
+      "reviewed_sha256": "058e577a398309e70c32dd9e26b4a97527d1105e1b8cf3cd89f172a3824936b6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-03",
+      "path": "docs/operations/workbench-first-session.md",
+      "reviewed_sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-04",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "reviewed_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-05",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-05",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "reviewed_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-06",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "reviewed_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-06",
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "reviewed_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-07",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-07",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-07",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "reviewed_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-07",
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "reviewed_sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-08",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-08",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "reviewed_sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-08",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-08",
+      "path": "docs/operations/workbench-saving.md",
+      "reviewed_sha256": "cb276e7738e40e17911da5946ae3665b8250357776b421f02dc8f1f2a0e7b0db",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-09",
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "reviewed_sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-09",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-09",
+      "path": "docs/operations/workbench-saving.md",
+      "reviewed_sha256": "cb276e7738e40e17911da5946ae3665b8250357776b421f02dc8f1f2a0e7b0db",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-10",
+      "path": "docs/operations/workbench-saving.md",
+      "reviewed_sha256": "cb276e7738e40e17911da5946ae3665b8250357776b421f02dc8f1f2a0e7b0db",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-11",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "reviewed_sha256": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-11",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "reviewed_sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-11",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-11",
+      "path": "docs/operations/workbench-first-session.md",
+      "reviewed_sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-12",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "reviewed_sha256": "0fb80ba550fb3baee8c195064a5ae9a79d89bf906409e3d46c8eb4dfb07bf724",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-13",
+      "path": "docs/operations/gentek80-evaluation.md",
+      "reviewed_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-13",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-13",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-13",
+      "path": "docs/systems/workbench-art-providers.md",
+      "reviewed_sha256": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-14",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-14",
+      "path": "docs/systems/workbench-art-providers.md",
+      "reviewed_sha256": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-15",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-15",
+      "path": "docs/systems/workbench-art-providers.md",
+      "reviewed_sha256": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-16",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-16",
+      "path": "docs/systems/workbench-art-providers.md",
+      "reviewed_sha256": "7a2e2ed2bba4007d82f80c1f7f4494aab49ffbde2c01ccd4cba9183a9f6be6ab",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-17",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "5d317c09042603ea196e500c67413ca831ad8ab3355dab7b8af080774d292240",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-17",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "50395d7010bf9c7e8bbc42a6578e1fe443959a569d7c13d3435f01038ea89e5d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-17",
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "reviewed_sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-18",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-18",
+      "path": "docs/operations/workbench-water-lab.md",
+      "reviewed_sha256": "d68e5979fc3627d591a068eaecbcf6e8148b978664612678c5a51955c93ea9fa",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-19",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-19",
+      "path": "docs/operations/materials-lab-authoring.md",
+      "reviewed_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-20",
+      "path": "docs/operations/workbench-actor-composition.md",
+      "reviewed_sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-21",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-21",
+      "path": "docs/operations/showcase-guide.md",
+      "reviewed_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-22",
+      "path": "docs/audits/2026-11-24-docs-renaissance/assets-b.json",
+      "reviewed_sha256": "123f1a5aa7254adc75cb4b110e91ba96f544c08109ed12bb11c1d1d49b47f5ca",
+      "verified": true,
+      "basis": "Recovered later original audit artifact bytes"
+    },
+    {
+      "claim": "B-23",
+      "path": "docs/operations/gentek80-evaluation.md",
+      "reviewed_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-24",
+      "path": "docs/MATERIAL_LAB.md",
+      "reviewed_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-25",
+      "path": "docs/MATERIAL_LAB.md",
+      "reviewed_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-26",
+      "path": "docs/MATERIAL_LAB.md",
+      "reviewed_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-27",
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "reviewed_sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-27",
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "reviewed_sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-28",
+      "path": "docs/systems/generation-workbench-2.md",
+      "reviewed_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-29",
+      "path": "docs/operations/deepworks-exhibition.md",
+      "reviewed_sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-30",
+      "path": "docs/systems/player-control-playground.md",
+      "reviewed_sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-31",
+      "path": "docs/systems/player-control-playground.md",
+      "reviewed_sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-32",
+      "path": "docs/operations/experiment-tower.md",
+      "reviewed_sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-33",
+      "path": "docs/operations/experiment-tower.md",
+      "reviewed_sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-34",
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "reviewed_sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-35",
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "reviewed_sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-36",
+      "path": "docs/systems/physical-free-flight.md",
+      "reviewed_sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-37",
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "reviewed_sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-38",
+      "path": "docs/systems/actor-control-prototypes.md",
+      "reviewed_sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-39",
+      "path": "docs/systems/actor-rigs.md",
+      "reviewed_sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-40",
+      "path": "docs/tools/art-pipeline-unification.md",
+      "reviewed_sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-41",
+      "path": "docs/tools/world-art-preview.md",
+      "reviewed_sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-42",
+      "path": "docs/tools/world-art-capture.md",
+      "reviewed_sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "B-43",
+      "path": "docs/tools/world-art-evaluation.md",
+      "reviewed_sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-01",
+      "path": "docs/operations/local-build-and-validation.md",
+      "reviewed_sha256": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-02",
+      "path": "docs/operations/local-build-and-validation.md",
+      "reviewed_sha256": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-03",
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "reviewed_sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-04",
+      "path": "docs/operations/local-build-and-validation.md",
+      "reviewed_sha256": "1529382735871225a407fad0bd1eacb02b93e544fbf62b5054aa3ba5502e3eaa",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-05",
+      "path": "docs/operations/github-development-and-release.md",
+      "reviewed_sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-06",
+      "path": "docs/operations/github-development-and-release.md",
+      "reviewed_sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-07",
+      "path": "tools/docs/retrieval_eval.py",
+      "reviewed_sha256": "2ec79404dec6509d7bce065be7ac866e16f01a76647cda0fdf95d45b50ca8687",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-08",
+      "path": "docs/operations/documentation-maintenance.md",
+      "reviewed_sha256": "5330204fbce4760de584fb8cf89f252f7fdeeb60fa20776f991a96cf75c17300",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-09",
+      "path": "docs/reference/retrieval-questions-docs-renaissance-v1.json",
+      "reviewed_sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-10",
+      "path": "docs/operations/architecture-programme.md",
+      "reviewed_sha256": "2058a267c012000c43c4d08b2dfb6fcba3eb40889571f46d737becbbd0efc619",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-11",
+      "path": "docs/operations/cell-layout-experiment.md",
+      "reviewed_sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-12",
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "reviewed_sha256": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-13",
+      "path": "docs/operations/current-and-historical-validation.md",
+      "reviewed_sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-14",
+      "path": "docs/README.md",
+      "reviewed_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-14",
+      "path": "docs/reference/retrieval-index.md",
+      "reviewed_sha256": "37aa6cc9c04af60c8fa7a3b89c2fbc732e63db560434abe612de9fa5f04f51b6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-15",
+      "path": "CONTRIBUTING.md",
+      "reviewed_sha256": "bc291623ae12a4923d4b52329d5a8858fdc9316241bb7a0b97d71f8c9effc1af",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-16",
+      "path": "docs/operations/web-threading.md",
+      "reviewed_sha256": "44e06717dcc4b44ab11704c5aa04742e4cdf41ec3f73e548bc8f38f9af08c0f0",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-17",
+      "path": "docs/operations/troubleshooting.md",
+      "reviewed_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-18",
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "reviewed_sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-19",
+      "path": "docs/operations/atlas-agent-runner.md",
+      "reviewed_sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-20",
+      "path": "docs/operations/physics-characterisation.md",
+      "reviewed_sha256": "819fa3cae011b127aaad1d9d053caf2cf6519f4af5f9d5347995a8818ef2b33f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-21",
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "reviewed_sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-22",
+      "path": "docs/operations/microscenarios.md",
+      "reviewed_sha256": "cb16396e805d9224d47b11eb4010eb273e68343b822f2e1998dd0f59606245e6",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-23",
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "reviewed_sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-24",
+      "path": "docs/systems/physical-flight-lab.md",
+      "reviewed_sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-25",
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "reviewed_sha256": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-26",
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "reviewed_sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "C-27",
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "reviewed_sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-01",
+      "path": "docs/reference/status-and-roadmap.md",
+      "reviewed_sha256": "7970d3d3453f3174f43a445d8fea7a29a4290fb831cae8ec0fcf7f4759c07e65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-02",
+      "path": "docs/reference/status-and-roadmap.md",
+      "reviewed_sha256": "7970d3d3453f3174f43a445d8fea7a29a4290fb831cae8ec0fcf7f4759c07e65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-03",
+      "path": "docs/reference/status-and-roadmap.md",
+      "reviewed_sha256": "7970d3d3453f3174f43a445d8fea7a29a4290fb831cae8ec0fcf7f4759c07e65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-04",
+      "path": "docs/reference/status-and-roadmap.md",
+      "reviewed_sha256": "7970d3d3453f3174f43a445d8fea7a29a4290fb831cae8ec0fcf7f4759c07e65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-05",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "reviewed_sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-06",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "reviewed_sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-07",
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "reviewed_sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-08",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "reviewed_sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-09",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "reviewed_sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-10",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "reviewed_sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-11",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "reviewed_sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-12",
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "reviewed_sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-13",
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "reviewed_sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-14",
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "reviewed_sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-15",
+      "path": "docs/reference/validation-evidence.md",
+      "reviewed_sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-16",
+      "path": "docs/reference/validation-evidence.md",
+      "reviewed_sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-17",
+      "path": "docs/reference/validation-evidence.md",
+      "reviewed_sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-18",
+      "path": "docs/reference/validation-evidence.md",
+      "reviewed_sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-19",
+      "path": "docs/reference/validation-evidence.md",
+      "reviewed_sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-20",
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "reviewed_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-21",
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "reviewed_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-22",
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "reviewed_sha256": "081fa7d9831c8af6606ddb9023a25e47383383d1a37e2b0b04c76aa9bb1eeeff",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-23",
+      "path": "docs/operations/material-liveness-investigation.md",
+      "reviewed_sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-24",
+      "path": "docs/operations/material-liveness-investigation.md",
+      "reviewed_sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-25",
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "reviewed_sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-26",
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "reviewed_sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-27",
+      "path": "docs/operations/gameplay-recording.md",
+      "reviewed_sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-28",
+      "path": "docs/operations/gameplay-recording.md",
+      "reviewed_sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-29",
+      "path": "docs/operations/physical-actor-programme.md",
+      "reviewed_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-30",
+      "path": "docs/operations/physical-actor-programme.md",
+      "reviewed_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-31",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "reviewed_sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-32",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "reviewed_sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-33",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "reviewed_sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-34",
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "reviewed_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-35",
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "reviewed_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-36",
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "reviewed_sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-37",
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "reviewed_sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-38",
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "reviewed_sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-39",
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "reviewed_sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-40",
+      "path": "docs/architecture/wave-flow-v1.md",
+      "reviewed_sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-41",
+      "path": "docs/architecture/wave-flow-v1.md",
+      "reviewed_sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-42",
+      "path": "docs/operations/liquid-characterization.md",
+      "reviewed_sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-43",
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "reviewed_sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-44",
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "reviewed_sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-45",
+      "path": "docs/reference/material-effects-register.md",
+      "reviewed_sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-46",
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "reviewed_sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-47",
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "reviewed_sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-48",
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "reviewed_sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-49",
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "reviewed_sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-50",
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "reviewed_sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-51",
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "reviewed_sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-52",
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "reviewed_sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-53",
+      "path": "docs/operations/soliding-measurement.md",
+      "reviewed_sha256": "a6d26cad646ce6ab4055885d70a463b600999d6e00fc47ae243187c52c1a7e23",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-54",
+      "path": "docs/operations/state-precision-experiment.md",
+      "reviewed_sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-55",
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "reviewed_sha256": "49c2564896cc7eeacc4bbbc83e1bbf74ddccefb47fadb07b84025cbe30724e1f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-56",
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "reviewed_sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-57",
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "reviewed_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-58",
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "reviewed_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-59",
+      "path": "docs/reference/status-and-roadmap.md",
+      "reviewed_sha256": "7970d3d3453f3174f43a445d8fea7a29a4290fb831cae8ec0fcf7f4759c07e65",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-60",
+      "path": "docs/operations/soliding-programme.md",
+      "reviewed_sha256": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    },
+    {
+      "claim": "L-61",
+      "path": "docs/operations/microscenarios-programme.md",
+      "reviewed_sha256": "2d041aa1cf9ed44cf16c94daa427fde5dac7873f2f51377195d745cffbcec83c",
+      "verified": true,
+      "basis": "Published original candidate Git blob"
+    }
+  ],
+  "original_claim_matrix_sha256": "2d9887807452bca2a8d3288db77af9879d6d30d8ce373e0815057d3156787147"
+}

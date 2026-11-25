@@ -1,0 +1,76 @@
+{
+  "authority": "historical-non-authoritative",
+  "head": "47f3603eb48fe0a7ba7707c697872a00f1695d2a",
+  "inputs": {
+    "tools/docs/retrieval_policy.py": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+    "tools/docs/retrieval_eval.py": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+    "tools/ci/check_docs.py": "8c5e0ccebbab698c379410fd4db2ed88fa286e109f38c2c85be861149ecb050b",
+    "tools/ci/test_current_retrieval_selection.py": "f1e2272224e930c6cbec19a9cf317037c8918a6d63b30c07a5dafa7b7f2eb48a",
+    "tools/ci/test_historical_retrieval.py": "0b38f09152af71322ed95f7decb0d7dcea9902d1225f42e861eb73354cf938cd",
+    ".github/workflows/documentation.yml": "9ad8ea50486d337c7a0876ee33e38d60f0f680dd41727e1781c69a96d4a6b997"
+  },
+  "receipts": [
+    {
+      "created_utc": "2026-11-24T23:51:09.058744+00:00",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_current_retrieval_selection.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.194s\n\nOK\n"
+    },
+    {
+      "created_utc": "2026-11-24T23:51:09.195600+00:00",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_historical_retrieval.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.021s\n\nOK\n"
+    },
+    {
+      "created_utc": "2026-11-24T23:51:09.307780+00:00",
+      "command": [
+        "python3",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"active CI provider and runner routing\",\n  \"errors\": [],\n  \"policy\": {\n    \"routine_provider\": \"GitHub-hosted Actions\",\n    \"external_provider_config\": \"forbidden unless policy is explicitly changed\",\n    \"runner_indirection\": \"forbidden\"\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "created_utc": "2026-11-24T23:51:10.181386+00:00",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"documents\": 151,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 280,\n  \"local_links\": 3521,\n  \"heading_anchors\": 491,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "created_utc": "2026-11-24T23:51:12.261498+00:00",
+      "command": [
+        "python3",
+        "tools/ci/test_ci_scheduling_policy.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "..........\n----------------------------------------------------------------------\nRan 10 tests in 1.965s\n\nOK\n"
+    }
+  ]
+}

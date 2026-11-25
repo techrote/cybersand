@@ -1,0 +1,245 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "recorded_utc": "2026-11-25T00:16:46.348425+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "qualification_head_at_recording": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "findings": [
+    {
+      "id": "A-CLOSE-01",
+      "priority": "P1",
+      "disposition": "corrected-and-independently-reviewed",
+      "finding": "Residual native-default/App/Trial constructor text called accepted #256/#257 functionality current unmerged #202 work.",
+      "correction": "Use accepted constructor/host scope while retaining original historical qualification gaps and open parent-programme boundaries.",
+      "documents": [
+        "docs/reference/level-saves-and-replay.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/invariants.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/operations/local-build-and-validation.md"
+      ],
+      "source_locators": [
+        "godot/native_extension/cyber_demo_bridge.hpp::prepare_liquid_level/prepare_liquid_default_demo/prepare_liquid_candidate",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "godot/scripts/simulation_worker.gd::_apply_prepared_default_liquid"
+      ],
+      "accepted_merge_ancestry": [
+        "56422c050bd5ed2ceb5f816b1269748764e2dcb7",
+        "#256",
+        "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+        "#257"
+      ],
+      "review": "closure/product/review-technical-by-b.json"
+    },
+    {
+      "id": "A-CLOSE-02",
+      "priority": "P1",
+      "disposition": "corrected-and-independently-reviewed",
+      "finding": "Architecture programme current-retrieval paragraphs repeated September local dirty-DLL custody and C:/ paths as present directives.",
+      "correction": "Local historical-machine qualifier in measurement and baseline sections; new campaigns declare current source/runtime/workspace/output identities under current release procedure.",
+      "documents": [
+        "docs/operations/architecture-programme.md"
+      ],
+      "source_locators": [
+        "docs/operations/architecture-programme-source-ledger.md",
+        "docs/operations/github-development-and-release.md"
+      ],
+      "review": "closure/product/review-technical-delta-by-b.json"
+    },
+    {
+      "id": "A-CLOSE-03",
+      "priority": "P2",
+      "disposition": "normalized-with-original-preserved",
+      "finding": "Original recovered L-44 source locator named nonexistent cyber_demo_bridge.cpp.",
+      "correction": "New ledger resolves owning bridge header and prepared-world implementation; original176 matrix unchanged.",
+      "documents": [
+        "docs/audits/2026-11-24-docs-renaissance/claim-matrix.json"
+      ],
+      "source_locators": [
+        "godot/native_extension/cyber_demo_bridge.hpp",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp"
+      ],
+      "review": "closure/retrieval/review-evidence-methodology.json"
+    },
+    {
+      "id": "B-CLOSE-01",
+      "priority": "P1",
+      "disposition": "shared-finding-corrected-and-independently-reviewed",
+      "finding": "Generated Load procedures omitted verified preview installation.",
+      "correction": "Five practical generated routes plus Water Lab generic comparison now require explicit Install confirmation. Count belongs to B finding register; not a new A duplicate.",
+      "documents": [
+        "docs/operations/workbench-saving.md",
+        "docs/operations/architectural-generator-playtest.md",
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/systems/explore001-generated-playable-maps.md",
+        "docs/operations/explore001-desktop-playtest.md",
+        "docs/operations/workbench-water-lab.md"
+      ],
+      "source_locators": [
+        "godot/scripts/shared_workbench.gd::load_setup",
+        "godot/scripts/workbench_generator_dialog.gd::open_saved/_complete/_install"
+      ],
+      "review": "closure/technical/product-cross-review-by-a.json and closure/technical/review-product-final-delta-by-a.json; B reviews A counterparts"
+    },
+    {
+      "id": "B-CLOSE-04",
+      "priority": "P2",
+      "disposition": "shared-finding-corrected-and-independently-reviewed",
+      "finding": "Compacted Art said12turns although source slices12 individual conversation entries.",
+      "correction": "Provider table and practical guide say12 messages including feedback; latest-result summary only when older entries omitted.",
+      "documents": [
+        "docs/systems/workbench-art-providers.md",
+        "docs/operations/workbench-art.md"
+      ],
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::model_context/remember_turn"
+      ],
+      "review": "closure/product/review-technical-by-b.json and closure/technical/product-cross-review-by-a.json"
+    },
+    {
+      "id": "B-CLOSE-05",
+      "priority": "P1",
+      "disposition": "documentation-corrected-and-independently-reviewed; inherited implementation limit explicit",
+      "finding": "Blanket named-save preservation/atomicity claims exceeded ordinary/generated/project Godot rename behavior.",
+      "correction": "Distinguish pre-write admission refusal and format-specific native material-baseline replacement; recommend new names to retain ordinary/generated/project files. Do not change runtime or claim new I/O tests.",
+      "documents": [
+        "docs/operations/wb-art-paint-integrated-candidate.md",
+        "docs/systems/explore001-generated-playable-maps.md",
+        "docs/systems/architectural-generator.md"
+      ],
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd::write_named",
+        "godot/scripts/workbench_generated_map.gd::write_named",
+        "godot/scripts/architectural_generator_dialog.gd::save_project",
+        "godot/scripts/workbench_material_baseline.gd::write_named",
+        "godot/native_extension/material_baseline_file.cpp::replace"
+      ],
+      "review": "closure/product/review-technical-delta-by-b.json"
+    }
+  ],
+  "clarity_improvements": [
+    {
+      "documents": [
+        "docs/reference/level-saves-and-replay.md"
+      ],
+      "scope": "Explicit authored Save versus physical-continuation exclusions; retained old anchors."
+    },
+    {
+      "documents": [
+        "docs/architecture/liquid-solver-family-policy.md"
+      ],
+      "scope": "Family-specific FreeMass/CY quantities, saturation and explicit normalization."
+    },
+    {
+      "documents": [
+        "docs/systems/world-storage-and-interest-region.md"
+      ],
+      "scope": "Camera/interest examples are not native world-size limits."
+    }
+  ],
+  "specialist_a_document_write_set": [
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5"
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03"
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb"
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d"
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b"
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d"
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a"
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d"
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7"
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2"
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861"
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b"
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073"
+    }
+  ],
+  "new_independent_product_review": [
+    "closure/technical/product-cross-review-by-a.json",
+    "closure/technical/review-product-final-delta-by-a.json"
+  ],
+  "validation": {
+    "command": "python tools/ci/check_docs.py",
+    "exit_code": 0,
+    "observed_result": {
+      "documents": 151,
+      "navigation_link_documents": 8,
+      "canonical_claims": 280,
+      "local_links": 3523,
+      "heading_anchors": 491,
+      "questions": 32,
+      "errors": [],
+      "warnings": []
+    },
+    "whitespace_command": "git diff --check",
+    "whitespace_exit_code": 0,
+    "scope": "Executed after final two reopening corrections; exact delivered-head comprehensive validation belongs to lead packet."
+  },
+  "open_documentation_p0": 0,
+  "open_documentation_p1": 0,
+  "remaining_limitations": [
+    {
+      "id": "A-LIM-01",
+      "scope": "Inherited implementation",
+      "text": "Ordinary/generated/project Godot rename path lacks the material-baseline failure-preservation guarantee; generated/project error text may overstate it. Source-qualified docs are corrected; runtime remediation/fault execution is outside this documentation lane."
+    },
+    {
+      "id": "A-LIM-02",
+      "scope": "Evidence method",
+      "text": "Original176 are composite source-qualified claim groups with recovered original independent reviews. Fresh closure semantic spot review covers12themes and changed passages; it is not a new full176 semantic re-execution."
+    },
+    {
+      "id": "A-LIM-03",
+      "scope": "Retrieval applicability",
+      "text": "DR08 needs actual ballistic/Wave parcel context, DR20 lacks pending recovery status, DR36 lacks primary owner programme context but supports required abstention."
+    },
+    {
+      "id": "A-LIM-04",
+      "scope": "Runtime qualification",
+      "text": "No fresh graphical launch, physical Windows/NVIDIA acceptance, native rebuild or I/O-fault campaign was performed by this lane."
+    }
+  ],
+  "delivered_source_checkpoint": {
+    "commit": "700c89c451903fac07188196a2f94b5c8997cb53",
+    "tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+    "scope": "Final source/docs checkpoint reported by lead; technical document hashes below are the binding for this lane. Later evidence-only commits may follow."
+  }
+}

@@ -1,0 +1,80 @@
+"""Bind the three independent additive context reviews to all36 final questions."""
+import collections
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path.cwd()
+HERE = ROOT / "docs/audits/2026-11-24-docs-renaissance/closure/retrieval"
+sha = lambda b: hashlib.sha256(b).hexdigest()
+source = HERE / "qualified-v2/candidate/renaissance.json"
+report = json.loads(source.read_text())
+expected = {r["id"]: r for r in report["results"]}
+rows = []
+receipts = []
+errors = []
+
+for lane in ["a", "b", "lead"]:
+    path = HERE / f"answer-{lane}-review.json"
+    data = json.loads(path.read_text())
+    packet = HERE / f"answer-{lane}-delivered-input.json"
+    if lane == "a":
+        packet_hash = data["input"]["sha256"]
+        report_hash = data["input"]["source_report_sha256"]
+    elif lane == "b":
+        packet_hash = data["input_packet_sha256"]
+        report_hash = data["source_report_sha256"]
+    else:
+        packet_hash = data["source_packet_sha256"]
+        report_hash = data["source_report_sha256"]
+    assert packet_hash == sha(packet.read_bytes())
+    assert report_hash == sha(source.read_bytes())
+    actual_rows = data.get("rows", data.get("reviews"))
+    assert {r["id"] for r in actual_rows} == {r["id"] for r in json.loads(packet.read_text())["rows"]}
+    receipts.append({"lane": lane, "reviewer": data["reviewer"], "path": str(path.relative_to(ROOT)), "sha256": sha(path.read_bytes()), "packet_sha256": packet_hash, "questions": len(actual_rows)})
+    for r in actual_rows:
+        q = expected[r["id"]]
+        contexts = r.get("reviewed_contexts", r.get("context_identities", r.get("hit_context_sha256")))
+        assert len(contexts) == len(q["hits"]) == 5
+        for c, h in zip(contexts, q["hits"]):
+            assert c["rank"] == h["rank"] and c["path"] == h["path"]
+            assert c.get("text_sha256", c.get("sha256")) == sha(h["text"].encode())
+        assert r["canonical_rank"] == q["canonical_rank"] and r["query"] == q["query"]
+        rows.append({
+            "id": r["id"], "query": r["query"], "reviewer_lane": lane,
+            "independent_reviewer": data["reviewer"], "canonical_rank": q["canonical_rank"],
+            "context_applicability": r.get("verdict", r.get("assessment", r.get("context_applicability"))),
+            "bounded_answer": r.get("bounded_answer_from_retrieved_context_only", r.get("bounded_answer", r.get("answer_from_context_only"))),
+            "missing_essential_qualifications": r.get("missing_essential_qualifications", r.get("missing_facts", [])),
+            "required_abstention_by_fixture": q.get("abstention_required", False),
+            "reviewed_passage_count": len(contexts), "review_record": path.name,
+            "passage_identity_binding": "All5 passage path/rank/SHA-256 match qualified report exactly"
+        })
+
+assert len(rows) == len({r["id"] for r in rows}) == len(expected) == 36
+assert {r["id"] for r in rows} == expected.keys()
+rows.sort(key=lambda r: r["id"])
+counts = dict(collections.Counter(r["context_applicability"] for r in rows))
+out = {
+    "schema": 1, "authority": "historical-non-authoritative",
+    "classification": "fresh-integrated-independent-context-and-answer-applicability-audit",
+    "integrator": "Specialist C /root/retrieval_evidence",
+    "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip(),
+    "recorded_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "source_report": "qualified-v2/candidate/renaissance.json", "source_report_sha256": sha(source.read_bytes()),
+    "fixture_sha256": report["fixture_sha256"], "evaluator_sha256": report["evaluator_sha256"],
+    "policy_sha256": report["authority_policy_sha256"],
+    "method": "A, B and lead independently read their allocated final actual contexts, authored bounded answers and source-checked consequential content. C read all36 authored answers/missing-fact/scope assessments, checked all180 passage identities and full ID coverage, and reviewed the disclosed non-blind methodology. Equality deltas transfer only identical passages; changed contexts were freshly read by the reviewer.",
+    "summary": {"questions": len(rows), "actual_passages_reviewed": sum(r["reviewed_passage_count"] for r in rows), "verdicts": counts, "canonical_top_five": report["summary"]["canonical_hit_at_k"], "partial_questions": [r["id"] for r in rows if r["context_applicability"] == "partial"], "wrong_context": counts.get("wrong-context", 0), "required_abstention_questions": [r["id"] for r in rows if r["required_abstention_by_fixture"]]},
+    "review_receipts": receipts, "rows": rows, "identity_errors": errors,
+    "limitations": [
+        "Independent means independent of the retriever author; reviewers also authored or cross-reviewed some source documentation. This is not a blind production-model benchmark.",
+        "Five partial questions remain even though35/36 find a canonical page. Correct bounded abstention does not fill missing context or turn a partial answer into a sufficient one.",
+        "No external retrieval service, embedding index, stale cache, production agent integration or provider model was exercised.",
+        "Source/context review does not constitute fresh graphical execution or physical Windows/NVIDIA acceptance."
+    ]
+}
+(HERE / "answer-applicability-summary.json").write_text(json.dumps(out, indent=2) + "\n")
+print(json.dumps(out["summary"], indent=2))

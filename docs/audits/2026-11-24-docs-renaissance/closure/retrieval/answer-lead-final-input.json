@@ -1,0 +1,1076 @@
+{
+  "authority": "historical-non-authoritative",
+  "purpose": "Fresh closure applicability review of actual final top-five contexts; no model benchmark claim. Write bounded answer from only these contexts, then independently source-grade the result. Leave missing facts explicit.",
+  "reviewer": "lead",
+  "source_report": "final/candidate/renaissance.json",
+  "source_report_sha256": "e11067d9f69533e1a15198cebda8ec6eb7236bfe4e9267f1c8a74460222bdc30",
+  "source_corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "bytes": 16238
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "bytes": 17327
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "bytes": 10175
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+      "bytes": 41215
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a",
+      "bytes": 12992
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "3f33223ef0e88e20b22f0775cd731145ac9f946c8f396747d09f69735a7aa022",
+      "bytes": 31169
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "bytes": 6455
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "1f8bae20d9fe8fe39f340430fd1a5216d6c429dfd46e13921ee380349973b802",
+      "bytes": 23097
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "e2ca5966ecf90b0e4d40b013646ac4f3bb34c0c5ae3d9efe7ab641c6c9a96dae",
+      "bytes": 88611
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "bytes": 70018
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "8ee8ef37d787b35c7c0cfd6b74278eb9dd135d7f664e99ad860e06db252ea580",
+      "bytes": 29052
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "bytes": 69643
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "f6a112f5017fa0c0d964d912c0e39451a04d46340a6515fe250dbce808ab177f",
+      "bytes": 10964
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "bytes": 9128
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "57e42584e1320481b46f2f0a62894047b08a7b935197d8edcded228997d1fc9c",
+      "bytes": 32910
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "1df19ea0874396cd77e2b39ca84b47ecb7f616b68f0ff6cabcfaaa8b05264698",
+      "bytes": 20589
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc",
+      "bytes": 7404
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "bytes": 10171
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+      "bytes": 16647
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "b6ad1a6e57f91e4e97ed2be3ab690fac85bdc875a964e73f0a4c51a618696810",
+      "bytes": 26234
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "bytes": 27268
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "bytes": 20144
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "bytes": 48613
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "bytes": 5746
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2",
+      "bytes": 4914
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223",
+      "bytes": 6515
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "bytes": 3630
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26",
+      "bytes": 5122
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "bytes": 9102
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "bytes": 11010
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "2058a267c012000c43c4d08b2dfb6fcba3eb40889571f46d737becbbd0efc619",
+      "bytes": 56325
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "bytes": 20045
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "bytes": 14615
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "bytes": 27225
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "bytes": 13189
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+      "bytes": 7683
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "bytes": 12481
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "bytes": 18598
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "d1f928da8a0b60abc88e427c2901f79a4b409155cc787b3925727e97ade1c3f8",
+      "bytes": 13302
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "bytes": 16253
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "bytes": 4574
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "bytes": 13392
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "bytes": 14701
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "bytes": 19496
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "bytes": 6351
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "bytes": 12936
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "bytes": 39122
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59",
+      "bytes": 27379
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "28a761724505a50abf26e118be38ab0c777f05b3bea0f8686da1b306fcacd14e",
+      "bytes": 23982
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "bytes": 5889
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "bytes": 91797
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "7c0cec2e6da081eb47e8cfab73917c4d40c79a6d1370b38881eabd9b2337b16b",
+      "bytes": 21405
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "bytes": 13874
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "bytes": 32883
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "bytes": 18679
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "2d041aa1cf9ed44cf16c94daa427fde5dac7873f2f51377195d745cffbcec83c",
+      "bytes": 31717
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "cb16396e805d9224d47b11eb4010eb273e68343b822f2e1998dd0f59606245e6",
+      "bytes": 21633
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "bytes": 15031
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "bytes": 16946
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "bytes": 25289
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "819fa3cae011b127aaad1d9d053caf2cf6519f4af5f9d5347995a8818ef2b33f",
+      "bytes": 24190
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "bytes": 10072
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "bytes": 12165
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "081fa7d9831c8af6606ddb9023a25e47383383d1a37e2b0b04c76aa9bb1eeeff",
+      "bytes": 7980
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "bytes": 6545
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "a6d26cad646ce6ab4055885d70a463b600999d6e00fc47ae243187c52c1a7e23",
+      "bytes": 17732
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9",
+      "bytes": 13117
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+      "bytes": 25259
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083",
+      "bytes": 24306
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "bytes": 6662
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "bytes": 11700
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "bytes": 30798
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "bytes": 9516
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "49c2564896cc7eeacc4bbbc83e1bbf74ddccefb47fadb07b84025cbe30724e1f",
+      "bytes": 16955
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "3995a836ec1c0b5599ac7d2b7a7f8da2e4ee2f750f9866113358e5613081ac01",
+      "bytes": 39620
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "bytes": 18621
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "12f1cb477207d063ded7fc3c1e785bcdc27c5f168b8d97e25cfd85d33b33ac6f",
+      "bytes": 10254
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "44e06717dcc4b44ab11704c5aa04742e4cdf41ec3f73e548bc8f38f9af08c0f0",
+      "bytes": 7829
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "bytes": 14161
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "bytes": 8429
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "bytes": 5045
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "bytes": 5546
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "bytes": 6611
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "d68e5979fc3627d591a068eaecbcf6e8148b978664612678c5a51955c93ea9fa",
+      "bytes": 18917
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+      "bytes": 93736
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "bytes": 8086
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+      "bytes": 101025
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+      "bytes": 50072
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+      "bytes": 19574
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae",
+      "bytes": 13436
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "bytes": 15494
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "bytes": 20793
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "bytes": 12818
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "700bfea745a7a9d3d35da618ddf4b730f1718bad85bcf5ca45b7c85a92d0eee4",
+      "bytes": 7644
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "bytes": 18984
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "bytes": 26054
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+      "bytes": 19303
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "d3b42911f626ac1bc857d6e1fb11e7ea09f71b10137d1bf917be1ce9e5c3cecd",
+      "bytes": 26154
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "bytes": 13126
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "19148b908f46d5ce66a06d1d1ed327ea741c633cf7119a61949897bd36e2524b",
+      "bytes": 14776
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "bytes": 9004
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "bytes": 22856
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6",
+      "bytes": 12191
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "bytes": 18974
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "bytes": 23882
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2",
+      "bytes": 17482
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "bytes": 15769
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+      "bytes": 18939
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "bytes": 19052
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "bytes": 22554
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "bytes": 62186
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10",
+      "bytes": 8279
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "bytes": 23128
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "bytes": 24063
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "bytes": 29409
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b",
+      "bytes": 24451
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "bytes": 6783
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "bytes": 42135
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "bytes": 23202
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "bytes": 24686
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "bytes": 11341
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "bytes": 11511
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "0ab911b1e8b30a3ca83fa525ca927c59e12635412a1cdbf1cf4e3847806aaab8",
+      "bytes": 12031
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a",
+      "bytes": 14053
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "bytes": 12921
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "bytes": 16771
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "bytes": 12488
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "bytes": 9139
+    }
+  ],
+  "evaluator_sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+  "policy_sha256": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+  "rows": [
+    {
+      "id": "DR31",
+      "category": "history",
+      "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+      "canonical": [
+        "operations/documentation-maintenance.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Historical records retain their original scope and confer no present implementation authority.",
+        "Ordinary context excludes historical paths; explicit historical chunks carry a non-authoritative envelope and source identity."
+      ],
+      "sources": [
+        "../tools/docs/retrieval_policy.py",
+        "../AGENTS.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 25.810241,
+          "path": "operations/documentation-maintenance.md",
+          "title": "Documentation maintenance and retrieval contract",
+          "heading": "Documentation maintenance and retrieval contract > Does an old Approved instruction authorize restoring a runtime?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Documentation maintenance and retrieval contract\nPath: operations/documentation-maintenance.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow\ncanonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]\nlast-reviewed: 2026-11-24\nSection: Documentation maintenance and retrieval contract > Does an old Approved instruction authorize restoring a runtime?\nA September audit or earlier execution packet retains its original source, date and scope even if it says **Approved**, **Current**, or tells an agent to restore a runtime. Historical evidence does not authorize that action today. Ordinary retrieval excludes historical paths; an explicitly requested historical chunk carries a non-authoritative envelope. A quoted old instruction inside a current programme page must also state its dated applicability locally. Before changing a runtime, inspect the present checkout and active task, then follow [current source validation](current-and-historical-validation.md) and the [source-matched publication contract](github-development-and-release.md#source-matched-runtime-publication). Preserve the old receipt; do not edit an old hash, resume an old branch assignment or substitute an earlier pass for current source and publication custody."
+        },
+        {
+          "rank": 2,
+          "score": 12.362647,
+          "path": "operations/soliding-stage3b-production-plan.md",
+          "title": "Issue 12 Stage 3B production implementation plan",
+          "heading": "Issue 12 Stage 3B production implementation plan > Live execution checkpoint \u2014 2026-09-24 > Recovery-era checkpoint \u2014 2026-09-21 (historical)",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Issue 12 Stage 3B production implementation plan\nPath: operations/soliding-stage3b-production-plan.md\nauthority: current-documentation\ndocument-kind: runbook\nstatus: Approved design\nscope: Retained Stage-3B dependency and validation contract, current accepted discovery boundary and separately qualified September checkpoints; no automatic branch or campaign authorization\ncanonical-for: [soliding-stage3b-production-plan]\nlast-reviewed: 2026-11-24\nSection: Issue 12 Stage 3B production implementation plan > Live execution checkpoint \u2014 2026-09-24 > Recovery-era checkpoint \u2014 2026-09-21 (historical)\nAt that checkpoint main was `20337053911d28f985a3211b5cd7c8f70fd4d9b5`, #65 / PR #106 was still the active join package, and exact-head sanitizer/runtime publication gates remained open. The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) records how those blockers were resolved. This historical state is retained here only to explain the transition; it is not current routing."
+        },
+        {
+          "rank": 3,
+          "score": 11.539353,
+          "path": "operations/troubleshooting.md",
+          "title": "Troubleshooting simulation and integration",
+          "heading": "Troubleshooting simulation and integration > First launch and ordinary Workbench problems",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Troubleshooting simulation and integration\nPath: operations/troubleshooting.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Symptom routing and discriminating checks; fixes require a separate implementation checkpoint\ncanonical-for: [symptom-routing]\nlast-reviewed: 2026-11-24\nSection: Troubleshooting simulation and integration > First launch and ordinary Workbench problems\nStart with a small repeatable case. Record the actual checkout or evaluator identity, then choose the matching symptom below. A portable evaluator, a source checkout and an experimental package can have different launchers and content. The [first-launch guide](getting-started.md) distinguishes those paths. | Symptom | What to check first | Safe next step | |---|---|---| | Launcher rejects Godot or a native library | Exact Godot version and selected runtime identity; a Git LFS pointer is text, not a library | Follow [source/runtime checks](local-build-and-validation.md). Materialize and verify the required inputs before launch; do not substitute a nearby engine version or relabel a stale binary. | | Project opens but a feature or native class is missing | Source, native runtime and complete package contents; normal startup is the feature launcher | Follow the matching [getting-started route](getting-started.md). A script-only import cannot implement a missing native method. | | Drawing is pending, Save is refused, or Stop leaves a partial edit | Native completion receipt, active/pending gesture and history state | Stop or wait as the UI instructs, inspect the actual result and use the supported recovery/Undo path. Queue admission is not completed drawing. See [painting and history](workbench-painting-and-history.md). | | Generated scene is refused or a large import will not install | Native admission result, format, extent and host claim; preview completion versus World installation | Keep the existing World and reduce or correct the authored request. Do not infer success from a preview or silently raise native limits. See [generator walkthrough](architectural-generator-playtest.md). | | A saved scene reopens with different motion or reactions | Which format was saved and which fields it contains | Ordinary Workbench Save preserves the authored start. Flatten stores material IDs and retires old authoring history; it is not exact physical continuation. See [saving](workbench-saving.md). | | Native owner has failed but the authored setup is valuable | Failed World status versus settled authored document | Save the settled authored start if its edit fences permit it, then restart and Load that start. This does not capture or resume the failed physical state. See [saving](workbench-saving.md). | | Art cannot reach a model/provider | Selected provider, endpoint/model, availability, response/error and credentials entered locally | Use [Art setup and errors](workbench-art.md). An offline documentation check needs no provider request. Keep credentials and full request/response traffic out of bug reports. | | Hiding Art did not cancel work, or reopening the game did not restore chat | Hide versus Stop, application-session lifetime and native receipt state | Follow [Art lifecycle](workbench-art.md). Accepted session-only logging does"
+        },
+        {
+          "rank": 4,
+          "score": 10.050107,
+          "path": "operations/soliding-programme.md",
+          "title": "Scalable reversible soliding programme",
+          "heading": "Scalable reversible soliding programme > What does issue 12 now own?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Scalable reversible soliding programme\nPath: operations/soliding-programme.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Planned\nscope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission\ncanonical-for: [scalable-soliding-programme]\nlast-reviewed: 2026-11-24\nSection: Scalable reversible soliding programme > What does issue 12 now own?\n**Approved owner direction, implementation Planned:** [issue #12](https://github.com/techrote/cybersand/issues/12) was reclassified on 2026-09-19 as the foundational reversible representation programme. Performance in large settled/high-activity worlds and useful macro physics are co-equal objectives. Phase 0 / PR #23 is retained proof and reusable material, not the endpoint. This page supersedes the old [bounded supplement](architecture-programme-prompts/soliding-supplement.md) for current scope and order, without rewriting its dated evidence or the #14 intake. **Historical September intake, not a current branch instruction:** `de332ea` (then main including MS-000); successor branch `codex/issue-12-incremental-foundation`, separate worktree under `C:/kybersand/worktrees/`. The [Phase 0 audit](../audits/2026-09-19-issue-12-phase0-reuse.md) owns the precise reuse/adapt/historical/obsolete map. Original `0b96ce2` remains a recoverable control. No Phase 0 runtime is integrated merely by documenting the lifecycle. Main's later CI-only update `9c46bf4` is integrated in the successor branch; it does not change the frozen native control or reinterpret concurrent experiments. The representation ladder is active cells -> ordinary sleep -> tracked summary -> measured stationary acceleration -> admitted coherent dynamic aggregate. Fracture partitions material into coherent moving/stationary children and only locally loose cellular debris. Rest does not authorize rigid cohesion. Sand and Stone stationary opportunities remain independent of dynamic admission. The separately authorized LCB-002 / #201 pressure-specific optimization may extend ordinary Water motion sleep while retaining all authoritative cells and mandatory material work. Its [pressure contract](../architecture/pressure-flow-v1.md#known-limits) requires exact invalidation, future-work and body-contact equivalence. It does not promote discovery observations into skip authority, create a rigid mask or admit generic Stage 4. Generic discovered-region acceleration retains this programme's gates; #201 must route any such additional dependency here."
+        },
+        {
+          "rank": 5,
+          "score": 9.99009,
+          "path": "decisions/ADR-004-interest-region-and-reconfiguration.md",
+          "title": "ADR-004 \u2014 Interest region and safe reconfiguration",
+          "heading": "ADR-004: Interest region and safe reconfiguration > Which margin policy is actually approved?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: ADR-004 \u2014 Interest region and safe reconfiguration\nPath: decisions/ADR-004-interest-region-and-reconfiguration.md\nauthority: current-documentation\ndocument-kind: decision\nstatus: Approved design\nscope: Accepted scalable interest/capacity direction, current construction limits and unresolved margin/reconfiguration semantics\ncanonical-for: [decision-interest-capacity-reconfiguration]\nlast-reviewed: 2026-09-08\nSection: ADR-004: Interest region and safe reconfiguration > Which margin policy is actually approved?\nThe retained direction says 10% horizontal and 20% vertical margins, but does not resolve whether those mean each side or total expansion, which dimensions are the base, or how rounding applies. **Ambiguous:** that percentage policy requires clarification before implementation. **Current:** desktop presets and Web quality profiles use explicit per-side pixel pairs, not one universal percentage formula. Their values and actual region behavior belong in the [interest contract](../systems/world-storage-and-interest-region.md) and [configuration reference](../reference/configuration-reference.md). Do not silently select an interpretation to make documentation agree."
+        }
+      ]
+    },
+    {
+      "id": "DR32",
+      "category": "fallback",
+      "query": "If the retrieval manifest is missing, may fallback load old execution prompts and omit the current World Art guides?",
+      "canonical": [
+        "operations/documentation-maintenance.md"
+      ],
+      "facts": [
+        "Fallback must preserve current selection and authority boundaries, including explicit-only document routing and navigation exclusion.",
+        "Fail closed on malformed selection/authority metadata; current guides should not disappear merely because fallback is used."
+      ],
+      "sources": [
+        "../tools/docs/retrieval_eval.py",
+        "../tools/docs/retrieval_policy.py"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 19.251417,
+          "path": "operations/documentation-maintenance.md",
+          "title": "Documentation maintenance and retrieval contract",
+          "heading": "Documentation maintenance and retrieval contract > Current selection, fallback and historical authority",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Documentation maintenance and retrieval contract\nPath: operations/documentation-maintenance.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow\ncanonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]\nlast-reviewed: 2026-11-24\nSection: Documentation maintenance and retrieval contract > Current selection, fallback and historical authority\nAuthority and retrieval selection are separate. Keep the supported authority values `current-documentation`, `owner-confirmed-intent` and `historical-non-authoritative`; this programme adds no new authority category. Every chunk preserves an explicit `owner-confirmed-intent` declaration. That source can establish approved direction, but its inclusion in current retrieval does not turn desired behavior into delivered implementation or task permission. The flat metadata field `retrieval: explicit-only` marks a current-path research or execution packet that is deliberately outside ordinary answers. Omitted `retrieval`, or explicit `retrieval: default`, permits current selection subject to the manifest and authority checks. It does not mean the claims are approved implementation or verified runtime behavior. The default [manifest](../reference/retrieval-corpus.json) is authoritative for selection. Its excluded focused packets also carry `retrieval: explicit-only` so the missing-manifest fallback preserves that boundary. The evaluator refuses explicit-only or navigation documents in a default manifest and in direct default chunking. Fallback discovers the focused architecture, systems, operations, reference, decisions, research and tools directories plus `MATERIAL_LAB.md`, then excludes navigation and explicit-only packets. It validates authority first, so an excluded packet cannot hide malformed authority or a copied historical tag. The supported flat parser accepts quoted/padded field names and ordinary quoted selection values; duplicate authority, retrieval or document-kind keys and unsupported selection/document-kind syntax fail closed. A second document-kind cannot override an earlier navigation exclusion. This is not a guarantee for arbitrary YAML anchors, tags or complex keys. [Current-selection tests](../../tools/ci/test_current_retrieval_selection.py) exercise manifest, fallback and direct chunking, including real-corpus equality; the original [historical tests](../../tools/ci/test_historical_retrieval.py) remain separate and unchanged. Explicit `--historical` retrieval still requires the isolated historical manifest and puts `historical-non-authoritative` plus a non-current instruction warning on every chunk. Existing `retrieval: explicit-history-only` archive metadata retains its own accepted scope; it is not parsed as a new current selection value. No link expansion imports audits into default context. Direct agent instructions must observe the same boundary rather than recursively loading every historical link. The local evaluator reads no persistent cache. Selection policy is now `historical-isolation-v3`; external indexes must rebuild with the current selection rules and per-chunk authority envelope before claiming equivalent containment. This repository cannot attest an unseen external cache, vector index or assistant prompt assembly."
+        },
+        {
+          "rank": 2,
+          "score": 18.023617,
+          "path": "operations/documentation-maintenance.md",
+          "title": "Documentation maintenance and retrieval contract",
+          "heading": "Documentation maintenance and retrieval contract > What makes a page independently retrievable?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Documentation maintenance and retrieval contract\nPath: operations/documentation-maintenance.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow\ncanonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]\nlast-reviewed: 2026-11-24\nSection: Documentation maintenance and retrieval contract > What makes a page independently retrievable?\nEvery focused page has one clear purpose and frontmatter with `title`, `status`, `document-kind`, `scope`, `canonical-for`, `last-reviewed`, and `related-documents`. Use ISO dates and inline lists. `canonical-for` contains unique topic identifiers; another page may summarize and link that topic but must not become a second owner. Use informative headings, short source-backed paragraphs and explicit platform names. Keep constants at their canonical configuration/API home. The default corpus is the explicit [retrieval manifest](../reference/retrieval-corpus.json). It selects contracts, design decisions, guides and references. Navigation pages route readers; historical records require an explicit historical question and are excluded from default answers. When chunking, attach title, scope, status, date, canonical topics and heading path to **every** chunk. A whole-page status alone does not make a mixed Current/Planned subsection safe to retrieve. | Claim label | Meaning | |---|---| | **Current** | Inspected executable source/configuration; runtime outcomes additionally require dated artifact/platform evidence | | **Approved** | Accepted requirement or direction; implementation may be partial | | **Planned** | Intended future work, not implemented or validated merely by being listed | | **Deferred** | Deliberately postponed with the applicable scope stated | | **Rejected** | Considered and intentionally declined; not silently reopened | Frontmatter `Approved design` is the existing checker-compatible alias for Approved. `Ambiguous` marks unresolved evidence or intent, not approval. A page's status describes its purpose; label conflicting or future claims individually. Source establishes present behavior; ADRs establish accepted direction. If they disagree, record both and the missing decision before changing implementation."
+        },
+        {
+          "rank": 3,
+          "score": 17.313319,
+          "path": "operations/architecture-programme.md",
+          "title": "CyberSand architecture synthesis and experimental programme",
+          "heading": "CyberSand architecture experimental programme > Final quality and documentation gate",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: CyberSand architecture synthesis and experimental programme\nPath: operations/architecture-programme.md\nauthority: current-documentation\ndocument-kind: design\nstatus: Planned\nscope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection\ncanonical-for: [architecture-experimental-programme]\nlast-reviewed: 2026-11-24\nSection: CyberSand architecture experimental programme > Final quality and documentation gate\nReview the [ledger](architecture-programme-source-ledger.md) and every prompt for the user's 30 requirements: full four-source trajectory; Current/proposal and ADR/issue-local distinctions; occupancy/material separation; no external-source reanalysis or mandatory ladder; independent width/packing/epoch/precision/solver; independent geometry; characterizing both liquids; conservation and retained physics policy; cross-dependencies, negative/ambiguous/no-go outcomes; master before issues and overlap check; self-contained prompts; conditional downstream work; bounded ownership/determinism; no production edits. Documentation synchronization: programme owns only future research, with ledger and prompts excluded from ordinary Current answers. Navigation, roadmap and retrieval manifest route to it. Existing subsystem/ADR/runtime/evidence claims are unchanged. Run documentation, historical M11, repository, frozen retrieval, supplementary programme questions and diff checks; report inherited provenance failures separately. No physics/runtime campaign is needed for this planning-only change. Final issue readback, link/section/dependency checks and source-scope inspection complete this task. The [planning execution report](../audits/2026-09-10-architecture-programme.md) records created issues, exact remote/dependency readback, manual quality review and separate documentation/retrieval versus inherited publication-check outcomes."
+        },
+        {
+          "rank": 4,
+          "score": 16.907636,
+          "path": "operations/documentation-maintenance.md",
+          "title": "Documentation maintenance and retrieval contract",
+          "heading": "Documentation maintenance and retrieval contract > Documentation-update checklist",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Documentation maintenance and retrieval contract\nPath: operations/documentation-maintenance.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow\ncanonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]\nlast-reviewed: 2026-11-24\nSection: Documentation maintenance and retrieval contract > Documentation-update checklist\nApply this at every implementation checkpoint, including tuning-only changes. 1. **Identify the actual inputs.** Record source Git root/HEAD/branch/status, relevant LFS objects and dirty paths; name a recoverable checkpoint. Preserve user work. Use [source checkpoint guidance](source-checkpoint-and-recovery.md). 2. **Map changed claims.** Search symbols, old values, aliases and reverse links. Review the affected subsystem, ownership/lifetime, interface layout, invariants, configuration/capacity, ADR, roadmap, build/test guide and user controls. A change matrix should name each affected page or explain why it is unaffected. 3. **Edit canonical homes first.** Attach source path plus symbol to important Current claims; use stable named sections for cross-links. Explain native, desktop, Web and fallback differences wherever they change the answer. 4. **Reconcile statuses and uncertainty.** Distinguish code from Approved intent. Record partial enforcement, failures, missing tests and decisions precisely. An observed defect must not become a promised invariant by omission. 5. **Synchronize routes and execution order.** Update the manifest, retrieval question destinations, documentation/retrieval indexes and roadmap. Update the handover for operational changes and owner-intent reference for new preferences. When a dependency/order/scope decision changes, update its canonical programme graph and all affected GitHub issue mirrors/comments in the same checkpoint; issue numbers and creation dates are never an ordering authority. Preserve old anchors that still have useful incoming links or update every caller. 6. **Record evidence separately.** Include date, command, timeout, OS/architecture, tool/dependency versions, fixture/configuration/profile/worker count, source revision plus dirty-file identity, artifact hashes and actual outcome. Identify whether evidence is inspection, compile, checksum, HTTP, native runtime, browser runtime or visual acceptance. Name exactly what was compared: level bytes, content/state hash, conservation, body tolerance or full replay. 7. **Preserve history.** Keep past results, failures, inconclusive runs and release hashes intact. Add a new evidence record and scope/link the old one. Never update historical hashes to make a new revision look validated. 8. **Check structure and retrieval.** Run the commands below. Inspect answers to affected natural questions for factual completeness and wrong-status/platform substitution, not only keyword hits. Add questions for newly discovered gaps; report them separately from a previously frozen evaluation set. 9. **Review the final diff and checkpoint.** Verify implementation scope, generated files and history preservation. Commit the authorized change locally with its validation report. State unresolved contradictions and readiness limits."
+        },
+        {
+          "rank": 5,
+          "score": 15.789659,
+          "path": "tools/world-art-capture.md",
+          "title": "World Art unattended capture",
+          "heading": "World Art unattended capture \u2014 real Godot PNGs and manifests > Exit codes and failures",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: World Art unattended capture\nPath: tools/world-art-capture.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Production Godot framebuffer capture, streamed PNG transport, provenance and publication safety\ncanonical-for: [world-art-unattended-capture]\nlast-reviewed: 2026-11-24\nSection: World Art unattended capture \u2014 real Godot PNGs and manifests > Exit codes and failures\n| Code | Meaning | | --- | --- | | 0 | Completed: images + manifest written and verified | | 2 | Invalid arguments, missing/empty pack, unsafe output location | | 3 | Godot executable missing, unusable or not 4.7 | | 4 | Render failed: Godot error/timeout, invalid pack, unknown feature/variant, crop outside the map, blank framebuffer (override with `--allow-blank`), shader/script error in the log | | 5 | Evidence invalid: PNG/manifest missing or inconsistent, renderer differs from the request | | 6 | The read-only art source changed during capture | | 7 | No graphical display (headless display server; run under X11/Xvfb or a desktop session) | Failures print `WORLD_ART_ERROR <actionable message>` on stderr. When the output directory was created, `batch-manifest.json` is still written with `status: \"failed\"` and the failure list so nothing looks complete by accident."
+        }
+      ]
+    },
+    {
+      "id": "DR33",
+      "category": "intent",
+      "query": "Does the 14 November owner authoring-intent decision itself authorize engine implementation or historical ticket retirement?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md",
+        "reference/product-intent-and-priorities.md",
+        "operations/documentation-maintenance.md"
+      ],
+      "facts": [
+        "The record captures approved intent and limits, not automatic implementation or historical-retirement permission.",
+        "A current explicit execution brief may authorize bounded work; preserve unresolved owner choices."
+      ],
+      "sources": [
+        "decisions/2026-11-14-owner-authoring-intent.md",
+        "../AGENTS.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 33.932665,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent \u2014 14 November 2026",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Authorisation remains phase-specific",
+          "part": 1,
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Owner authoring and world intent \u2014 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: owner-confirmed-intent\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent \u2014 14 November 2026 > Authorisation remains phase-specific\nThe owner authorised Milestone 1 investigation and capture on one isolated branch and one Draft/HOLD PR. Merge, canonical successor issue creation, historical retirement, broad Markdown/RAG rewriting and implementation remain separate gates. Current active work and historical custody holds are protected. Product intent does not automatically resume a held branch or grant execution permission."
+        },
+        {
+          "rank": 2,
+          "score": 28.993838,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent \u2014 14 November 2026",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Paint, play and the Workbench",
+          "part": 1,
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Owner authoring and world intent \u2014 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: owner-confirmed-intent\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent \u2014 14 November 2026 > Paint, play and the Workbench\n**Confirmed:** CyberSand is a paint-and-play engine as an authoring system. Workbench is the creative workshop, control centre and monitoring outpost, with creative-mode and development/cheat-level control in an ergonomic interface. Make valuable capabilities compatible with and accessible through Workbench. Provide easy-to-learn, multiple levels of access to dials, modifiers and controls, while allowing deeper manipulation. Painting should develop toward the range between classic MSPaint and GIMP/Krita. The engine should remain flexible across a passive plasma chamber, a forest drone game, a digging game and other experiments. The owner wants continued integration, testing, tuning and incremental improvements while personally evaluating authored scenes. **Game-facing scoring and consequential player/actor combat damage wait until the arrangements, materials and actors feel fun.** This is not a prohibition on internal diagnostic or training metrics. **Confirmed near-term interest:** revisit NPC controllers, Rapier actors and drone training. Envisaged authoring roles include conversational autofill, automated feature/flavour/item generation, and tiny/local models for detailing, texture and randomisation. Model roles may evolve; these are not permanent capability claims about any model or instructions to start training."
+        },
+        {
+          "rank": 3,
+          "score": 28.102818,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent \u2014 14 November 2026",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Provenance and scope",
+          "part": 1,
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Owner authoring and world intent \u2014 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: owner-confirmed-intent\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent \u2014 14 November 2026 > Provenance and scope\nThe owner supplied these clarifications directly in the engineering archaeology conversation and then explicitly authorised their capture under Milestone 1. The authorised assistant transferred that conversation into the [programme plan record](https://github.com/techrote/cybersand/issues/571#issuecomment-6871615830). That GitHub comment is a transcription by the assistant, not an independently owner-authored GitHub approval. This record preserves the stated intent and marks interpretations and unresolved engineering details separately. The owner said [#534](https://github.com/techrote/cybersand/pull/534) **broadly** matches their intent. This does not adopt every sentence, milestone quota or acceptance condition in that PR, and does not authorise its merge. The current record governs these clarified product questions; historical implementation failures and source-qualified results remain evidence with their original limits."
+        },
+        {
+          "rank": 4,
+          "score": 27.897216,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent \u2014 14 November 2026",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Live materials and layered presentation",
+          "part": 1,
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Owner authoring and world intent \u2014 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: owner-confirmed-intent\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent \u2014 14 November 2026 > Live materials and layered presentation\n**Confirmed:** Materials Lab should support easy material modification and audition, including changing values in a Workbench window for dynamic/custom trials. The existing comparison tabs are appreciated; isolated comparisons alone do not fulfil the desired current-scene interaction. Which properties can apply safely at runtime remains an engineering question. **Confirmed:** the four-layer Strata Theatre presentation should be an available Workbench option. Its visual impact is important. Historical integration exclusions are not a permanent rejection; the prototype's exact clocks and cross-layer event rules are not automatically the eventual product contract."
+        },
+        {
+          "rank": 5,
+          "score": 26.713014,
+          "path": "decisions/2026-11-14-owner-authoring-intent.md",
+          "title": "Owner authoring and world intent \u2014 14 November 2026",
+          "heading": "Owner authoring and world intent \u2014 14 November 2026 > Interpreting abandoned attempts",
+          "part": 1,
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Owner authoring and world intent \u2014 14 November 2026\nPath: decisions/2026-11-14-owner-authoring-intent.md\nauthority: owner-confirmed-intent\ndocument-kind: decision\nstatus: Approved design\nscope: Direct owner clarification of product intent; implementation, qualification and execution permissions remain separate\ncanonical-for: [owner-clarifications-2026-11-14]\nlast-reviewed: 2026-11-14\nSection: Owner authoring and world intent \u2014 14 November 2026 > Interpreting abandoned attempts\n**Confirmed history:** implementations were sometimes set aside because results disappointed, a concurrent approach looked more promising, supporting systems landed elsewhere, or the branch became stale relative to short-term goals. A second implementation could begin minutes after the first exploratory one. Missing debriefs therefore do not establish rejection of the idea. Preserve the purpose, result, stopping reason when evidenced, surviving value and successor separately. An unknown stopping reason remains unknown. Substantial past effort also does not establish present merit."
+        }
+      ]
+    },
+    {
+      "id": "DR34",
+      "category": "ramcache",
+      "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "Persistent-area and RAMCACHE successors remain unmerged at the recorded source.",
+        "Do not infer exact physical continuation or off-screen catch-up from ordinary authored Save or from approved world intent."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "revision_sensitive": true,
+      "abstention_required": false,
+      "canonical_rank": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 27.458819,
+          "path": "systems/world-storage-and-interest-region.md",
+          "title": "World storage and interest region",
+          "heading": "World storage and interest region > Approved area intent and accepted behavior",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: World storage and interest region\nPath: systems/world-storage-and-interest-region.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate\ncanonical-for: [world-storage, camera-interest-region]\nlast-reviewed: 2026-11-24\nSection: World storage and interest region > Approved area intent and accepted behavior\nThe [14 November owner record](../decisions/2026-11-14-owner-authoring-intent.md#world-extent-persistence-and-time) asks for one fixed canvas plus persistent areas, with useful approximation and bounded catch-up measured in **game time**, not real offline wall time. Existing interest-region re-entry only restores current eligibility; it does not implement that catch-up. Do not turn a source limitation into a permanent rejection of the owner's desired feature, or describe an unmerged RAMCACHE evaluator as accepted. The [roadmap](../reference/status-and-roadmap.md) is the current programme route."
+        },
+        {
+          "rank": 2,
+          "score": 26.274627,
+          "path": "reference/product-intent-and-priorities.md",
+          "title": "Product intent and priorities",
+          "heading": "Product intent and priorities > World extent, persistence and time",
+          "part": 1,
+          "authority": "owner-confirmed-intent",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Product intent and priorities\nPath: reference/product-intent-and-priorities.md\nauthority: owner-confirmed-intent\ndocument-kind: reference\nstatus: Approved design\nscope: Source-linked owner direction and preserved preferences; implementation, qualification and execution permission remain separate\ncanonical-for: [owner-intent, product-priorities, preserved-material-feel]\nlast-reviewed: 2026-11-24\nSection: Product intent and priorities > World extent, persistence and time\n**Approved:** one fixed canvas plus persistent areas loaded while travelling should cover most intended uses. Broad continuous canvases should support biomes or small towns; presentation can later disguise boundaries. Non-square/broad maps do not imply a change to the display-pixel scale. A useful simulated border around the active view, potentially extended in the travel direction, is desirable. On returning to an area, approximate headless catch-up is preferred to a visibly frozen room. Use **game time**, not elapsed real-world offline time. Occasional transitions lasting a few seconds and an optional deliberate **simulate ahead** control are acceptable. Quantized or approximate catch-up can be useful. Retained state, cross-area exchanges, safe workload budgets, activity margins and policy evolution need their own contracts. Track last accounted simulation time when an area can continue running in a border. Headless work still costs compute. Persistent-area/RAMCACHE candidates are not accepted-main guarantees merely because this intent is approved."
+        },
+        {
+          "rank": 3,
+          "score": 23.030914,
+          "path": "architecture/overview.md",
+          "title": "Architecture overview",
+          "heading": "Architecture overview > Which contract should foundational work load next?",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Architecture overview\nPath: architecture/overview.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Current execution paths and authority map; routes to the contracts that govern changes\ncanonical-for: [architecture-entry-point]\nlast-reviewed: 2026-11-24\nSection: Architecture overview > Which contract should foundational work load next?\n- Ownership/concurrency: [lifetimes](data-ownership-and-lifetimes.md), [tick order](simulation-tick-and-threading.md), [spatial geometry](chunk-tile-and-buffer-model.md). - Materials and Water: [kernels](../systems/materials-and-rule-kernels.md), [solver distinctions](../systems/water-design.md), [native policy](liquid-solver-family-policy.md). - Authoring: [shared data](shared-workbench-authoring-data.md), [save boundaries](../reference/level-saves-and-replay.md), [actor composition](../systems/workbench-actor-composition.md). - Physics/presentation: [coupling](rigid-body-and-cellular-coupling.md), [render bridge](rendering-and-gameplay-bridges.md), [standalone Strata Theatre](../systems/depth-layers-and-parallax.md). - Evidence and decisions: [invariants](../reference/invariants.md), [roadmap](../reference/status-and-roadmap.md), [ADRs](../decisions/). **Approved direction, not accepted implementation at this source:** persistent areas with bounded catch-up, ordinary Workbench four-plane authoring, live-scene material audition and further physical-structure integration. Follow their programme records before claiming availability. **Planned:** complete application replay, safe live capacity reconfiguration and broader typed command contracts. **Deferred:** asynchronous Web ownership and GPU field experiments. **Rejected in the current architecture:** shared mutable rendering reads, per-cell locks and full-world double buffering as the ordinary model."
+        },
+        {
+          "rank": 4,
+          "score": 22.01414,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Approved direction and unresolved choices",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\nauthority: current-documentation\ndocument-kind: reference\nstatus: Current\nscope: Accepted-main implementation, separately identified candidates, approved direction and unresolved decisions\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-24\nSection: Status and foundational roadmap > Approved direction and unresolved choices\nThe [14 November owner record](../decisions/2026-11-14-owner-authoring-intent.md) establishes paint-and-play authoring, convincing physical behavior, useful prepared destruction, live material experimentation, four-layer presentation and fixed canvases connected by persistent areas. It also specifies **game-time** catch-up, not real-world offline elapsed time. These intentions remain separate from implementation and from permission to resume a held branch. | Question | Current disposition and owning route | |---|---| | Does ordinary Save capture all evolved materials and physical state? | Authored formats and material-baseline capture have distinct semantics. Desired evolved-layout Save must not be described as complete physical continuation. [Save contracts](level-saves-and-replay.md) and [owner intent](product-intent-and-priorities.md#save-flatten-and-compatibility) preserve the difference. | | Do large scenes and busy physics remain responsive? | This is an active owner-visible problem. PUBPRES, PAINT and actor successors own their repairs; counters and hosted graphical passes do not settle playfeel. | | Can every material property be edited live? | No such general accepted contract exists. Effective consumers, specialized kernels and safe audition scope must be identified separately. | | Are rigid-body motion, cutting and chemistry fully unified? | Accepted coupling and actor tools have bounded contracts. ObjectShard owns the unmerged successor; no automatic promotion from an isolated prototype. | | Is complete replay or cross-platform physical identity available? | No general authored-save promise supplies it. Use [determinism](../architecture/determinism-and-boundary-transfers.md) and the versioned native checkpoint contracts for exact supported scopes. | | Are wider persistent worlds complete? | Fixed authored canvases are current; general residency/streaming/catch-up remain separately scoped candidate or Planned work. | | May old material source locks be updated to make validation pass? | No. Preserve frozen evidence and use the existing reviewed transition process for authorized changes. Documentation does not grant a protected-source transition. | | Is the project publicly licensed or ready for public distribution? | No project license has been selected. [License status](../../LICENSE_STATUS.md) and [third-party notices](../../THIRD_PARTY_NOTICES.md) remain authoritative. |"
+        },
+        {
+          "rank": 5,
+          "score": 21.064433,
+          "path": "operations/documentation-maintenance.md",
+          "title": "Documentation maintenance and retrieval contract",
+          "heading": "Documentation maintenance and retrieval contract > Updating documentation when a programme is accepted",
+          "part": 1,
+          "authority": "current-documentation",
+          "retrieval_policy": "historical-isolation-v3",
+          "text": "Document: Documentation maintenance and retrieval contract\nPath: operations/documentation-maintenance.md\nauthority: current-documentation\ndocument-kind: guide\nstatus: Current\nscope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow\ncanonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]\nlast-reviewed: 2026-11-24\nSection: Documentation maintenance and retrieval contract > Updating documentation when a programme is accepted\nRefresh accepted main and the principal live record before editing status. The [current-state register](../reference/status-and-roadmap.md) owns the dated programme snapshot; keep acceptance facts there instead of copying an active PR ledger into every guide. The README presents durable capabilities and links to current manuals, not a queue of Draft candidates. | Accepted change area | Reconcile these canonical reader paths | |---|---| | Publication/progression or renderer/camera | Ownership/threading and rendering references, player controls, troubleshooting, validation interpretation | | ObjectShard or actor/equipment behavior | Body/cell coupling, actor composition and usable contracts, player tutorials, save boundaries | | Art providers/UI/lifetime | Provider/direct-batch contracts, Art user guide, cancellation/privacy and any actual setup labels | | Architectural catalogue or SWARM | Generator contract, architectural walkthrough, terminology/limits and examples; only then README capability text | | Batch/model orchestration or Gremlin | Accepted host/action/receipt contract, user/developer entry points and honest prototype/runtime boundary | | Materials Lab audition | Declared/effective and candidate states, Lab user workflow, production-source boundaries | | Strata Theatre integration | Layer ownership, current Workbench controls and persistence; retain standalone demonstration identity | | Persistent areas/RAMCACHE | Authored-save versus physical-state contract, residency/catch-up and failure semantics, user recovery guide | | CI engineering/publication | Accepted build/release/CI policy and exact-source procedures; preserve required case coverage and historical measurements | | PAINT/history | Operation limits, partial receipts, Undo/Redo, protection and end-to-end tutorial | For each update: inspect source, record the acceptance basis and remaining physical limits, revise the canonical contract first, then the current-state register, user guide, navigation, corpus and affected additive questions. Preserve old captured evidence and frozen question sets. Rerun structure, containment, ranking and a small source-grounded answer audit; explicitly distinguish the three results. Update the asset manifest if an image's feature/source scope changes. A changed status or screenshot caption must not imply tests that never ran."
+        }
+      ]
+    }
+  ]
+}

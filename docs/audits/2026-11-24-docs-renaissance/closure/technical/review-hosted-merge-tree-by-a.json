@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A / technical_truth",
+  "captured_utc": "2026-11-25T00:30:47.380Z",
+  "method": "Independent authenticated GitHub git-commit API read; local checkout did not contain the synthetic merge commit, so its tree was not guessed from a failed local lookup.",
+  "api_source": "https://api.github.com/repos/techrote/cybersand/git/commits/0250f99ee814debb2c03ceddbb5489c00d3fba47",
+  "hosted_checkout": "0250f99ee814debb2c03ceddbb5489c00d3fba47",
+  "hosted_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "hosted_parents": [
+    "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "700c89c451903fac07188196a2f94b5c8997cb53"
+  ],
+  "message": "Merge 700c89c451903fac07188196a2f94b5c8997cb53 into 00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "source_checkpoint": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "source_tree_equals_hosted_merge_tree": true,
+  "limits": "Full Git tree equality supports exact source input equivalence; it does not claim the branch commit and synthetic merge commit are the same Git commit."
+}

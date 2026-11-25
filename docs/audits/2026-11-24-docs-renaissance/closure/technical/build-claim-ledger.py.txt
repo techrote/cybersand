@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""Reconstruct identity-linked claim ledger from recovered original evidence.
+
+Run from the repository root. This verifies provenance and binds semantic review
+receipts; it does not infer semantic correctness from hashes or manufacture reviews.
+"""
+from pathlib import Path
+import collections, datetime, hashlib, json, re, subprocess
+ROOT=Path.cwd()
+AUDIT=ROOT/'docs/audits/2026-11-24-docs-renaissance'
+OUT=AUDIT/'closure/technical'
+BASE='00cdb02f103265b6dc5224c68283e9a0c8cb449f'
+RECOVERED='ddd7c88fd97d8b85056dd7910896ec3a897ecb87'
+SHA=lambda data:hashlib.sha256(data).hexdigest()
+def git(*args):
+ p=subprocess.run(['git',*args],cwd=ROOT,capture_output=True)
+ return p.returncode,p.stdout
+
+def current_identity(path):
+ data=(ROOT/path).read_bytes()
+ return {'path':path,'sha256':SHA(data),'git_blob':subprocess.check_output(['git','hash-object','--stdin'],input=data,cwd=ROOT).decode().strip(),'bytes':len(data)}
+
+matrix=json.loads((AUDIT/'claim-matrix.json').read_text())
+errors=[];original_reviews={};sources={};normalizations=[]
+
+def resolve_source(locator):
+ if locator in sources:return locator
+ original=locator; entry={'original_locator':locator}
+ if locator.startswith(('https://','http://')):
+  entry.update(kind='external-evidence-locator',url=locator,identity_scope='URL is not a content hash. Lifecycle uses separately saved authenticated GitHub intake and closure refresh; no new fetch is implied by this ledger.')
+ elif locator.startswith('git:'):
+  code,out=git('rev-parse',locator[4:]+'^{commit}')
+  entry.update(kind='git-commit',commit=out.decode().strip() if code==0 else None,available=code==0)
+  if code==0:entry['ancestor_of_accepted_source']=git('merge-base','--is-ancestor',out.decode().strip(),BASE)[0]==0
+  else:errors.append({'kind':'missing-git-source','locator':original})
+ else:
+  path,_,symbol=locator.partition('::');ref=None
+  if '@' in path:
+   path,ref=path.rsplit('@',1);ref=BASE if ref=='baseline' else ref
+  if '#' in path:
+   path,anchor=path.split('#',1);symbol=('#'+anchor)+(' '+symbol if symbol else '')
+  if ' ' in path:
+   path,description=path.split(' ',1);symbol=description+(' '+symbol if symbol else '')
+  if path=='godot/native_extension/cyber_demo_bridge.cpp':
+   path='godot/native_extension/cyber_demo_bridge.hpp';symbol='declarations/bindings; implementation in cyber_prepared_liquid_world.hpp'
+   normalizations.append({'original_locator':original,'corrected_path':path,'reason':'Original L-44 named a nonexistent .cpp; actual bridge declarations and bindings are header-defined. Fresh CA-T-10 source review verifies owning headers.'})
+  paths=sorted(str(p.relative_to(ROOT)) for p in ROOT.glob(path)) if '*' in path else [path]
+  if (ROOT/path).is_dir(): paths=sorted(str(p.relative_to(ROOT)) for p in (ROOT/path).rglob('*') if p.is_file())
+  records=[]
+  for p in paths:
+   work=ROOT/p
+   if ref:
+    code,data=git('show',ref+':'+p)
+    if code==0:
+     records.append({'path':p,'source_identity':ref,'git_blob':git('rev-parse',ref+':'+p)[1].decode().strip(),'sha256':SHA(data),'scope':'explicit source revision','working_path_need_not_match':True})
+    else:errors.append({'kind':'missing-revision-source','locator':original,'ref':ref,'path':p})
+   elif work.is_file():
+    data=work.read_bytes();code,baseline=git('show',BASE+':'+p)
+    if code==0 and baseline.replace(b'\r\n',b'\n')==data.replace(b'\r\n',b'\n'):
+     scope='accepted-source';identity=BASE
+    elif p.startswith('docs/audits/'):
+     scope='recovered-or-closure-evidence';identity='content-sha256'
+    elif p.startswith(('tools/docs/','tools/ci/test_current_retrieval_selection','docs/reference/retrieval-questions-docs-renaissance')):
+     scope='unmerged-documentation-retrieval-candidate';identity='content-sha256'
+    else:
+     scope='candidate-documentation-or-evidence';identity='content-sha256'
+    records.append({**current_identity(p),'source_identity':identity,'scope':scope,'accepted_baseline_git_blob':git('rev-parse',BASE+':'+p)[1].decode().strip() if code==0 else None,'matches_accepted_baseline_lf_normalized':code==0 and baseline.replace(b'\r\n',b'\n')==data.replace(b'\r\n',b'\n')})
+   else: errors.append({'kind':'missing-file-source','locator':original,'path':p})
+  entry.update(kind='repository-source',symbol_or_evidence_locator=symbol or None,files=records)
+ sources[original]=entry;return original
+
+# Only explicitly named independent review receipts are eligible. Ordinary source
+# checks/handover records are not silently promoted into independent reviews.
+review_files=[
+ AUDIT/'closure/product/review-technical-by-b.json',
+ OUT/'product-cross-review-by-a.json',
+ AUDIT/'closure/retrieval/review-lead-by-c.json',
+ OUT/'additional-final-reviews.json',
+ AUDIT/'closure/review-by-lead.json',
+]
+# Root can provide further verified paths in a small explicit manifest.
+extra=OUT/'additional-review-files.json'
+if extra.exists():review_files += [ROOT/p for p in json.loads(extra.read_text())['paths']]
+closure_reviews=collections.defaultdict(list)
+def collect_docs(data):
+ found={}
+ def walk(x):
+  if isinstance(x,dict):
+   if isinstance(x.get('reviewed_document_sha256'),dict):found.update(x['reviewed_document_sha256'])
+   if isinstance(x.get('document_sha256'),dict):found.update(x['document_sha256'])
+   if isinstance(x.get('document_sha256'),str) and isinstance(x.get('document'),str):found[x['document']]=x['document_sha256']
+   if isinstance(x.get('sha256'),str) and isinstance(x.get('path'),str) and x['path'].endswith(('.md','.py','.json','.yml')):found[x['path']]=x['sha256']
+   for k,v in x.items():
+    if k not in ['source_inputs','source_identities','sources','source_hashes']:walk(v)
+  elif isinstance(x,list):
+   for v in x:walk(v)
+ walk(data);return found
+for p in review_files:
+ if not p.exists():continue
+ data=json.loads(p.read_text());reviewer=data.get('reviewer','reviewer in receipt')
+ for path,digest in collect_docs(data).items():
+  closure_reviews[path].append({'record':str(p.relative_to(ROOT)),'record_sha256':SHA(p.read_bytes()),'reviewer':reviewer,'reviewed_document_sha256':digest,'scope':data.get('scope',data.get('method',data.get('kind','See review record'))),'provenance':'new closure independent review'})
+
+authority_record=json.loads((OUT/'claim-authority-classification.json').read_text())
+def authority(c):
+ return authority_record['claims'][c['id']]
+
+rows=[];gaps=[];orig_doc_checks=[]
+for c in matrix['claims']:
+ review_entries=[]
+ for r in c.get('independent_reviews',[]):
+  p=AUDIT/r['record'];data=p.read_bytes();text=data.decode()
+  has_id=bool(re.search(r'"(?:claim_id|claim)"\s*:\s*"'+re.escape(c['id'])+'"',text))
+  has_hashes=all(digest in text for digest in r['reviewed_document_sha256'].values())
+  if not has_id or not has_hashes:errors.append({'kind':'original-review-reference-mismatch','claim':c['id'],'record':r['record']})
+  review_entries.append({**r,'record':str(p.relative_to(ROOT)),'record_sha256':SHA(data),'provenance':'recovered original independent review, not newly executed','claim_id_present':has_id,'document_hashes_present':has_hashes})
+  original_reviews[r['record']]={'sha256':SHA(data),'bytes':len(data)}
+ final=[]
+ for d in c['final_document_identity_checks']:
+  path=d['path'];now=current_identity(path);old=d['current_sha256']
+  code,prior=git('show',RECOVERED+':'+path)
+  recovered_match=code==0 and SHA(prior)==old
+  # One claim intentionally reviewed an unpublished later original asset ledger.
+  if not recovered_match and path.startswith('docs/audits/'):
+   recovered_match=SHA((ROOT/path).read_bytes())==old
+   original_basis='Recovered later original audit artifact bytes'
+  else:original_basis='Published original candidate Git blob'
+  if not recovered_match:errors.append({'kind':'original-document-identity-gap','claim':c['id'],'path':path})
+  orig_doc_checks.append({'claim':c['id'],'path':path,'reviewed_sha256':old,'verified':recovered_match,'basis':original_basis})
+  unchanged=now['sha256']==old
+  matched=[r for r in closure_reviews[path] if r['reviewed_document_sha256']==now['sha256']]
+  state='recovered-review-remains-content-identical' if unchanged else ('recovered-review-plus-independent-closure-diff-review' if matched else 'pending-independent-closure-review')
+  if not unchanged and not matched:gaps.append({'claim_id':c['id'],'path':path,'sha256':now['sha256']})
+  final.append({**now,'original_reviewed_sha256':old,'content_unchanged_from_original_review':unchanged,'review_disposition':state,'closure_independent_reviews':matched})
+ srefs=[resolve_source(x) for x in c.get('sources',c.get('evidence',[])) if isinstance(x,str)]
+ rows.append({'claim_id':c['id'],'consequence_priority':c['priority'],'claim_text':c['claim'],'original_author_lane':c['author_lane'],'documentation_locations':c['documents'],'source_locators':srefs,'original_source_baseline':c.get('source_baseline',BASE),'current_authority_classification':authority(c),'original_disposition':c.get('disposition',c.get('status','as recorded')),'independent_original_reviews':review_entries,'final_document_identities':final,'closure_review_disposition':'pending-final-review' if any(x['review_disposition'].startswith('pending') for x in final) else 'supported-with-explicit-scope','required_correction_or_unresolved_question':'See pending final review identity gaps' if any(x['review_disposition'].startswith('pending') for x in final) else ('L-44 source locator corrected in normalized source registry; original remains unchanged' if c['id']=='L-44' else 'No unresolved issue identified for carried-forward claim; fresh closure findings and limitations are separately registered')})
+
+out={'schema':1,'authority':'historical-non-authoritative','mission':'DOCS-RENAISSANCE-CLOSURE-001','recorded_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'accepted_source':BASE,'original_published_candidate':RECOVERED,'qualification_head_at_generation':git('rev-parse','HEAD')[1].decode().strip(),'method':'Recovered original176 composite claims and all linked independent semantic reviews; verified IDs, artifact hashes and original reviewed-document identities. Fresh closure semantic source checks and independently reviewed corrections supplement the recovered reviews. Identity automation is not a second semantic audit and never creates an independent reviewer. Current documents use full content hashes; final delivery commit is bound by the lead validation packet.','original_reported_claim_count':176,'reconciled_actual_claim_count':len(rows),'new_claims_added_to_match_reported_count':0,'authority_classification_record':{'path':str((OUT/'claim-authority-classification.json').relative_to(ROOT)),'sha256':SHA((OUT/'claim-authority-classification.json').read_bytes())},'summary':{'by_original_author':dict(collections.Counter(c['original_author_lane'] for c in rows)),'by_consequence_priority':dict(collections.Counter(c['consequence_priority'] for c in rows)),'original_independent_review_artifacts':len(original_reviews),'unique_original_document_paths':len({d['path'] for c in rows for d in c['final_document_identities']}),'authority_component_counts':dict(collections.Counter(component['classification'] for c in rows for component in c['current_authority_classification']['components'])),'original_document_identity_gaps':sum(not d['verified'] for d in orig_doc_checks),'unresolved_source_or_review_identity_errors':len(errors),'pending_final_review_identity_pairs':len(gaps)},'important_limits':['A priority on a claim describes consequence if wrong, not an unresolved P0/P1 finding.','The recovered zero review-or-identity gaps was an evidence coverage statement, not proof of absence of semantic defects. Closure found and corrected additional defects.','Original source/runtime/owner acceptance scopes are not expanded. External URLs are locators, not freshly fetched or content-hashed receipts.','Changed documents retain original review for unchanged content plus the explicitly linked independent closure review of changed claims.','New closure corrections remain in amendment/source-review files and are not invented rows used to inflate the recovered176 count.'],'original_review_artifacts':original_reviews,'source_registry':sources,'source_locator_normalizations':normalizations,'errors':errors,'pending_final_reviews':gaps,'claims':rows}
+(OUT/'consequential-claims.json').write_text(json.dumps(out,indent=2)+'\n')
+verification={k:out[k] for k in ['schema','authority','mission','recorded_utc','accepted_source','original_published_candidate','method','original_reported_claim_count','reconciled_actual_claim_count','new_claims_added_to_match_reported_count','summary','important_limits','errors','pending_final_reviews']}
+verification['original_document_checks']=orig_doc_checks
+verification['original_claim_matrix_sha256']=SHA((AUDIT/'claim-matrix.json').read_bytes())
+(OUT/'claim-recovery-verification.json').write_text(json.dumps(verification,indent=2)+'\n')
+print(json.dumps(out['summary'],indent=2));print('ERRORS',json.dumps(errors));print('PENDING',json.dumps(gaps))

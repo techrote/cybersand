@@ -1,0 +1,340 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "qualified_source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "qualified_source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "qualification_input_digest_sha256": "a7323f8d3cf700ed6f65f4d0dc21bb531b5bfd05dcd58ba246baa1f46d980286",
+  "source_custody": {
+    "path": "source-custody.json",
+    "sha256": "3f62f84bbc8074fa671eaa2df6916a49f7f11a7338bf32d5a6a33b87d30659eb"
+  },
+  "rows": [
+    {
+      "check": "ci-provider",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "scope": "Existing CI provider/routing policy.",
+      "receipt": {
+        "path": "validation/delivered-source/ci-provider.json",
+        "sha256": "3366a737e45869bba9f7020f00f1cb1d08102eabe14ca2ef18b52b5581457fa7"
+      }
+    },
+    {
+      "check": "ci-scheduling",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "tools/ci/test_ci_scheduling_policy.py"
+      ],
+      "scope": "10 scheduling-policy tests.",
+      "receipt": {
+        "path": "validation/delivered-source/ci-scheduling.json",
+        "sha256": "3dad04b6bc1323803be216a9350faef08e3d3ba2d11685502360262ebc3429d5"
+      }
+    },
+    {
+      "check": "documentation",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "scope": "151 current documents;8 navigation pages;280 canonical topics;3,523 local links;491 anchors;0 errors/warnings.",
+      "receipt": {
+        "path": "validation/delivered-source/documentation.json",
+        "sha256": "6984488ca03b49c2e28a6ab37c71c58e5f1d3cd0ae45f0e6f97e93eb0e2b2c0a"
+      }
+    },
+    {
+      "check": "historical-selection",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_historical_retrieval.py"
+      ],
+      "scope": "16 historical-isolation tests.",
+      "receipt": {
+        "path": "validation/delivered-source/historical-selection.json",
+        "sha256": "3c0b9e13b9b080ee44f1990b0e20f10a4cf17e3e1d2ff6308beb0e91df3dc745"
+      }
+    },
+    {
+      "check": "history-integrity",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "tools/docs/engineering_history.py",
+        "check"
+      ],
+      "scope": "274 scope/582 ledger/308 closed-reference/98 findings/74 protected historical items.",
+      "receipt": {
+        "path": "validation/delivered-source/history-integrity.json",
+        "sha256": "dc97f8441ffb297ff68172c3cf3a2c9283cf5e6864df6bf53c9afff74a0be175"
+      }
+    },
+    {
+      "check": "m11",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "scope": "18 records/28 source hashes against original05ea45 historical revision.",
+      "receipt": {
+        "path": "validation/delivered-source/m11.json",
+        "sha256": "9025bbf2aafcf2f79f17fae880455b9c93c18079289e5c4ae2b6be382fcd3ef8"
+      }
+    },
+    {
+      "check": "repository",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "scope": "Source/dependency/pointer consistency;18 unmaterialized LFS runtime objects,0 materialized. No runtime acceptance.",
+      "receipt": {
+        "path": "validation/delivered-source/repository.json",
+        "sha256": "0a7fc6b1ab5b607c75afb93d7ec20d27d9fdc0be61b923c00f5d60ea0e07d48e"
+      }
+    },
+    {
+      "check": "selection",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_current_retrieval_selection.py"
+      ],
+      "scope": "15 current-selection/authority tests.",
+      "receipt": {
+        "path": "validation/delivered-source/selection.json",
+        "sha256": "48eeaf7b450ca57b5146a5bcbcf53774e41b97d03f9e4c90f454ba305ec2e14a"
+      }
+    },
+    {
+      "check": "retrieval-frozen",
+      "status": "EXECUTED",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "18 top1;32/32 top5;MRR0.7302. Ranking misses are not hidden as a PASS.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/frozen.json",
+        "sha256": "147d1979c8d626acde5230fd5e984425e118ae13b136aef71356169586fbd344"
+      }
+    },
+    {
+      "check": "retrieval-challenges",
+      "status": "EXECUTED",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "126 top1;161/164 top5;MRR0.8575. Ranking misses are not hidden as a PASS.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/challenges.json",
+        "sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7"
+      }
+    },
+    {
+      "check": "retrieval-renaissance",
+      "status": "EXECUTED",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "27 top1;35/36 top5;MRR0.8426. Ranking misses are not hidden as a PASS.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/renaissance.json",
+        "sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5"
+      }
+    },
+    {
+      "check": "retrieval-owner-intent",
+      "status": "EXECUTED",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "1 top1;4/6 top5;MRR0.3389. Ranking misses are not hidden as a PASS.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/owner-intent.json",
+        "sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152"
+      }
+    },
+    {
+      "check": "retrieval-historical",
+      "status": "EXECUTED",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "7 top1;10/10 top5;MRR0.8033. Ranking misses are not hidden as a PASS.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/historical.json",
+        "sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64"
+      }
+    },
+    {
+      "check": "preservation-manifest",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "82/82 exact original Git blobs/SHA-256;0 failures.",
+      "receipt": {
+        "path": "preservation-manifest.json",
+        "sha256": "3fda7bc2f284bc8557e52ec4f4ea11ccdb769045a5e63d8d76f16dbed3ab156d"
+      }
+    },
+    {
+      "check": "inbound-link-reconciliation",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "2,003 current inbound routes;0 unresolved within declared508/514 Markdown scan;8 superseded references retained.",
+      "receipt": {
+        "path": "inbound-link-reconciliation.json",
+        "sha256": "0c08b372cef146dc41dbda3c0bc0982baad2b2e1ea9205818e64be519747c32c"
+      }
+    },
+    {
+      "check": "manifest-fallback-comparison",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "All four current suites identical across manifest/fallback.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/manifest-fallback-comparison.json",
+        "sha256": "4d8effa199bf5e70e5137bbf3da7e2eab0e07e263fb9456b39d4e2f995b52556"
+      }
+    },
+    {
+      "check": "direct-ingestion",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "151 current docs;31 default-excluded files;13 explicit historical docs/331 per-chunk envelopes.",
+      "receipt": {
+        "path": "retrieval/qualified-v2/candidate/direct-ingestion.json",
+        "sha256": "7d7adc3c644aed1000f28b8cca1ae66502455068a2aea30ccaaccac9819450b0"
+      }
+    },
+    {
+      "check": "source-custody",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "4,090 qualification inputs;1,137 protected runtime/dependency/policy files;0 unexpected drift;exact source700.",
+      "receipt": {
+        "path": "source-custody.json",
+        "sha256": "3f62f84bbc8074fa671eaa2df6916a49f7f11a7338bf32d5a6a33b87d30659eb"
+      }
+    },
+    {
+      "check": "answer-applicability-summary",
+      "status": "REVIEWED WITH LIMITS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "All36 reviewed;31 sufficient/5 partial/0 wrong-context;180 actual contexts.",
+      "receipt": {
+        "path": "retrieval/answer-applicability-summary.json",
+        "sha256": "20d97f7dfcb3158b78d374d76144d32b81dafe952e3c5e5c7e30921e4d1b9732"
+      }
+    },
+    {
+      "check": "final-source-identity",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "176 recovered composite claims;207 final claim/document identity pairs;0 errors/pending.",
+      "receipt": {
+        "path": "technical/final-source-identity.json",
+        "sha256": "f6e0c448430e85a151b4193a1355322767dda4bdaed59cddfecfc0c8780cfa8c"
+      }
+    },
+    {
+      "check": "whitespace",
+      "status": "SCOPED PASS / ORIGINAL-BYTE EXCEPTIONS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "Current documents/tooling clean. Full evidence diff retains original trailing whitespace/EOF diagnostics.",
+      "receipt": {
+        "path": "validation/whitespace-disposition.json",
+        "sha256": "92ea54793fe5fabb4205c4e0b29f8e42e59135d70754804e7137cfdbef8ff128"
+      }
+    },
+    {
+      "check": "hosted-original-documentation",
+      "status": "PASS",
+      "source_head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+      "scope": "Original docs run45482710814; published-runtime provenance skipped.",
+      "receipt": {
+        "path": "hosted-original/documentation-job-readback.json",
+        "sha256": "1c28798afb33a4802c1e1c45fd53a0b9a7a32b22de51768c4d0054cdd253e3fa"
+      }
+    },
+    {
+      "check": "hosted-source366-documentation",
+      "status": "PASS",
+      "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+      "scope": "Fresh docs run45515022255; focused/current-history suites and allfive evaluations executed; provenance skipped.",
+      "receipt": {
+        "path": "hosted-source366/documentation-job-readback.json",
+        "sha256": "0a86c854a2bb2862cfd7f0c90162dce887005a8f1ef1cf042a947dbfe68ef923"
+      }
+    },
+    {
+      "check": "hosted-delivered-documentation",
+      "status": "PASS",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "Final-source documentation job; actual recorded steps govern scope.",
+      "receipt": {
+        "path": "hosted-delivered/documentation-job-readback.json",
+        "sha256": "7e08c73b532612a5d3888053d01f5a5753f7258aa76f13dfe5ae45e26f5419b9"
+      }
+    },
+    {
+      "check": "hosted-delivered-ancillary",
+      "status": "FAILURES RETAINED",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "Three Linux downloadHTTP403 failures and inherited Windows source guard refusal; separately scoped Windows successes.",
+      "receipt": {
+        "path": "hosted-delivered/ancillary-readback.json",
+        "sha256": "dec56e52f175feb0b87e3756ff0328f0fb7f465459bb02d9a21b9c16eaea5b5e"
+      }
+    },
+    {
+      "check": "fresh-browser-and-Godot-GUI",
+      "status": "BLOCKED / NOT RUN",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "Both supported browser routes failed before page load; no fresh Godot graphical execution.",
+      "receipt": {
+        "path": "product/browser-fallback-attempt-by-lead.json",
+        "sha256": "0b634f060008f598037c68e438bac6f4aca9539f6433feff305d0e171ada7c13"
+      }
+    },
+    {
+      "check": "physical-Windows-NVIDIA",
+      "status": "NOT RUN",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "No physical acceptance inferred from hosted runs, static images, counters or FPS."
+    },
+    {
+      "check": "external-retrieval-model-integration",
+      "status": "NOT RUN",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "No external embedding/cache/index/agent integration or blind model-answer benchmark."
+    },
+    {
+      "check": "fresh-native-runtime-rebuild",
+      "status": "NOT RUN",
+      "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "scope": "No unrelated local rebuild for a documentation/retrieval candidate; source/dependencies unchanged."
+    }
+  ],
+  "exact_delivery_rule": "The final publication receipt/PR comment must identify the delivered commit and verify all4090 source/tooling/corpus inputs match source700. Evidence-only descendants do not claim new runtime acceptance.",
+  "recommendation": "OWNER-READY WITH EXPLICIT LIMITATIONS"
+}

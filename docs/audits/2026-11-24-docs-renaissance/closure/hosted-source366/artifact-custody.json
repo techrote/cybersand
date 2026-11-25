@@ -1,0 +1,63 @@
+{
+  "authority": "historical-non-authoritative",
+  "classification": "fresh-hosted-retrieval-artifact-readback",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "run_id": 45515022255,
+  "job_id": 138872226660,
+  "artifact_id": 14976869800,
+  "zip_sha256": "dc3aa7939470c4a1f697da2ea7e0e595eafeb95cc005ac068742a0eed894da4f",
+  "github_digest_matches": true,
+  "retrieved_at": "2026-11-25T00:18:36.881331+00:00",
+  "files": [
+    {
+      "path": "challenges.contexts.md",
+      "bytes": 2494564,
+      "sha256": "085e5aa6f82e33d4765333adcc537133540fb75b7d3fb223f2597f1117987b4b"
+    },
+    {
+      "path": "challenges.json",
+      "bytes": 2857555,
+      "sha256": "5e3ec4dbf767c15887f3863b275e5ca1241cfae0f282e203a8a4e57cd8c927b5"
+    },
+    {
+      "path": "frozen.contexts.md",
+      "bytes": 371583,
+      "sha256": "fe45fd316327f6c78f7463d3d85406c27140afae5ea718d7f0be25943e0150c8"
+    },
+    {
+      "path": "frozen.json",
+      "bytes": 462957,
+      "sha256": "451b25d9b62f0ad8d901a64ede754b92f10b03830f5c1888a8f3bc0dff1a251a"
+    },
+    {
+      "path": "historical.contexts.md",
+      "bytes": 146569,
+      "sha256": "3e50cab78bfb432546382eb4bf15455a9002c54c01751cb881cd9a0644efd93e"
+    },
+    {
+      "path": "historical.json",
+      "bytes": 170782,
+      "sha256": "6a6b42d62d9f316a870c0a6e11a37e6cc269feeb50d2fc4ccfcd11c87be00cc0"
+    },
+    {
+      "path": "owner-intent.contexts.md",
+      "bytes": 65989,
+      "sha256": "07a15851148049b34dc4c856df0857fd7651ad921c11f546cd086dd434e6ae95"
+    },
+    {
+      "path": "owner-intent.json",
+      "bytes": 105795,
+      "sha256": "c0dbcf277f6538fd819e19fab5d04a6f0a0b76a6eab5e1141b44522d05c87a81"
+    },
+    {
+      "path": "renaissance.contexts.md",
+      "bytes": 421960,
+      "sha256": "c4375778e4867d5b2d5be51a0d993c2d17185f1f21059feb4a38076d5a7066e3"
+    },
+    {
+      "path": "renaissance.json",
+      "bytes": 524385,
+      "sha256": "5cbab724a95fb0f05b5bf41c31b47a564d8ee812ca56bcc2336c3f613ec30979"
+    }
+  ]
+}

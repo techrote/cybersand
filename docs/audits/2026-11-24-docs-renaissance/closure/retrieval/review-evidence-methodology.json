@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "classification": "fresh-independent-closure-methodology-and-identity-review",
+  "reviewer": "Specialist C /root/retrieval_evidence; independent of lead custody and A ledger authors",
+  "recorded_utc": "2026-11-25T00:21:27.885147+00:00",
+  "source_head_at_review": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "result": "PASS",
+  "method": "Read both generator implementations, actual manifests, original claim matrix/reviews and current/retained file bytes. Independently compare every preserved original, all recovered artifacts, all inventory paths/dispositions, every declared inbound route and all normalized source/document/review identities. This does not convert identity automation into a new semantic re-review of176 composites.",
+  "reviewed_evidence_sha256": {
+    "docs/audits/2026-11-24-docs-renaissance/closure/verify-preservation-and-links.py.txt": "d941d470a5465db5a160d0b208cd02fa241b9b3d5fc0373a20187997e9ac1f9f",
+    "docs/audits/2026-11-24-docs-renaissance/closure/technical/build-claim-ledger.py.txt": "a6b6a4e30dd9358eda666a851aa3f29aa7699f2d4bd34e53a50a4d3d48b15edd",
+    "docs/audits/2026-11-24-docs-renaissance/closure/recovery/original-recovery-manifest.json": "7902df16632aa4ecc89e9af1714040cabf2da05533981626a56f5a2837dfaa43",
+    "docs/audits/2026-11-24-docs-renaissance/closure/preservation-manifest.json": "3fda7bc2f284bc8557e52ec4f4ea11ccdb769045a5e63d8d76f16dbed3ab156d",
+    "docs/audits/2026-11-24-docs-renaissance/closure/document-inventory.json": "13a42cb61fb1e015723c202507df833c9b8279508790266a28abe8cf798d7b98",
+    "docs/audits/2026-11-24-docs-renaissance/inventory.json": "74b0701487164d83c6f83e567a55ff8646b3f2713dbc14c76be92c0b4cd2d738",
+    "docs/audits/2026-11-24-docs-renaissance/closure/lead/review-remaining-default-pages.json": "e0b81bf55725c281a3df1187b2a8cb0cf2b105341070280dbbbe1f388cda6840",
+    "docs/audits/2026-11-24-docs-renaissance/closure/inbound-link-reconciliation.json": "0c08b372cef146dc41dbda3c0bc0982baad2b2e1ea9205818e64be519747c32c",
+    "docs/audits/2026-11-24-docs-renaissance/closure/technical/consequential-claims.json": "755af8a3c2f5f9a55ba414204e2eb7bb41a335a2a9909c857610899be2686539",
+    "docs/audits/2026-11-24-docs-renaissance/claim-matrix.json": "2d9887807452bca2a8d3288db77af9879d6d30d8ce373e0815057d3156787147"
+  },
+  "counts": {
+    "recovery": {
+      "recovered-later-original-version": 11,
+      "recovered-unpublished": 285,
+      "published-identical": 93
+    },
+    "recovered_artifacts": 389,
+    "preserved_originals_independently_compared_in_full": 82,
+    "inventory_items_reconciled": 547,
+    "original_review_levels_preserved": {
+      "metadata-and-structural": 6,
+      "instruction-read": 1,
+      "source-reconciled": 133,
+      "inventory-only": 71,
+      "metadata-only": 284,
+      "metadata-and-selection-only": 27,
+      "source-reviewed-preserved": 21,
+      "implementation-and-regression-reviewed": 4
+    },
+    "additional_narrow_page_reviews_explicitly_scoped": 3,
+    "current_inbound_routes_independently_rechecked": 2003,
+    "superseded_baseline_reference_occurrences_verified": 8,
+    "composite_claims_reconciled": 176,
+    "original_independent_review_artifacts": 20,
+    "unique_claim_document_paths": 139,
+    "closure_review_document_bindings_checked": 51,
+    "unique_source_paths_identity_checked": 322,
+    "source_locator_entries": 395
+  },
+  "errors": [],
+  "methodology_findings": [
+    "All176 identifiers and composite claim texts are recovered original rows; no invented rows inflate the historical count. Actual manual per-claim authority components distinguish implementation, intent, historical scope, candidate work and process contracts.",
+    "The original20 independent review artifacts have actual claim-specific observations. Their original reviewer and document identities remain separate from fresh closure diff reviews; consequence priorities are not unresolved findings.",
+    "L-44's nonexistent bridge.cpp locator is retained as original input and explicitly normalized to the owning header; original evidence bytes are untouched.",
+    "The547-item inventory retains lower review levels and deferred semantic dispositions. Metadata/structural coverage is not mislabeled a full semantic review.",
+    "Inbound reconciliation is scoped to inline links into changed documents within the original508/514 Markdown universe. All8 superseded occurrences have original baseline caller/target evidence; preserved .md.txt bytes are not claimed to be live relative navigation.",
+    "Historical evidence remains outside the ordinary retrieval corpus; preservation and original workspace recovery do not authorize old commands or runtime restoration."
+  ],
+  "limitations": [
+    "Semantic source review is targeted in the specialist receipts and recovered claim-level reviews. This independent verification does not claim a second full semantic audit of176 composites.",
+    "Anchor verification uses repository check_docs slug semantics, not an independent browser rendering implementation; reference-style/HTML or external pinned-source links outside the declared scan are not freshly fetched here.",
+    "External evidence URLs in the source registry are locators. The separate authenticated GitHub intake and hosted-artifact custody establish their applicable lifecycle/provenance scope.",
+    "Exact-byte source checks and documented runtime receipts do not establish fresh graphical, physical Windows/NVIDIA or external retrieval integration acceptance."
+  ]
+}

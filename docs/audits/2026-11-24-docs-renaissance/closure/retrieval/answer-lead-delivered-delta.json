@@ -1,0 +1,39 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewer": "lead",
+  "old_input": "answer-lead-qualified-input.json",
+  "old_input_sha256": "dfc9e96a8f61bc6367696c3c5a41ea86e5bc0c59ed8c09e59b402991e71f4a27",
+  "delivered_input": "answer-lead-delivered-input.json",
+  "delivered_input_sha256": "d6c8849119a7b371aefc5b2cd9e978804aae6d87b29205a934075d11d97ec981",
+  "meaning": "Only identical actual passage text/order/metadata permits carrying forward a review; no inference from score. All corpus hashes change consistently with the last approved two-guide correction.",
+  "delta": [
+    {
+      "id": "DR31",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR32",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR33",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR34",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 4,
+      "delivered_canonical_rank": 4
+    }
+  ]
+}

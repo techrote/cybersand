@@ -1,0 +1,36 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "checks": [
+    {
+      "check": "current-docs-and-tooling",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "700c89c451903fac07188196a2f94b5c8997cb53",
+        "--",
+        ".",
+        ":(exclude)docs/audits/2026-11-24-docs-renaissance"
+      ],
+      "exit_code": 0,
+      "output": "",
+      "scope": "Current documentation and bounded tooling changes; exact historical evidence excluded."
+    },
+    {
+      "check": "full-preserved-diff",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "700c89c451903fac07188196a2f94b5c8997cb53"
+      ],
+      "exit_code": 2,
+      "output": "docs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log:7: trailing whitespace.\n+(EE) \ndocs/audits/2026-11-24-docs-renaissance/capture-b/xvfb.log:9: trailing whitespace.\n+(EE) Cannot establish any listening sockets - Make sure an X server isn't already running(EE) \ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt:214: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3b-production-plan.md.txt:393: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt:271: new blank line at EOF.\ndocs/audits/2026-11-24-docs-renaissance/validation/ci-checkpoint6-138759800931-excerpt.log.txt:18: trailing whitespace.\n+2026-11-24T20:37:28.8251762Z \ndocs/audits/2026-11-24-docs-renaissance/validation/ci-checkpoint6-138759801034-excerpt.log.txt:18: trailing whitespace.\n+2026-11-24T20:37:34.8579907Z \n",
+      "scope": "All changes including exact-byte original evidence; inherited whitespace retained."
+    }
+  ],
+  "interpretation": "Current documentation/tooling diff passes. Full historical-evidence diff returns2 for byte-exact original whitespace; originals are not rewritten to make a mechanical check green."
+}

@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh local evidence-link existence check",
+  "recorded_at": "2026-11-25T00:13:22.653592+00:00",
+  "files": [
+    "docs/audits/2026-11-24-docs-renaissance/closure/product/review-lead-scope-by-b.md",
+    "docs/audits/2026-11-24-docs-renaissance/closure/product/review-technical-delta-by-b.md",
+    "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+    "docs/audits/2026-11-24-docs-renaissance/closure/product/review-technical-by-b.md",
+    "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/answer-b-review.md"
+  ],
+  "links_checked": 24,
+  "broken": [],
+  "limits": [
+    "File destinations only; no external URL or anchor/browser rendering claim."
+  ]
+}

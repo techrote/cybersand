@@ -1,0 +1,13 @@
+{
+  "classification": "fresh-frozen-source-validation",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "source_tree": "216d41d5a04174a4c330c9224e7f5fa7e23c8c91",
+  "dirty_tracked_paths": [],
+  "command": [
+    "python",
+    "tools/ci/check_docs.py"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"documents\": 151,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 280,\n  \"local_links\": 3523,\n  \"heading_anchors\": 491,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+  "recorded_at": "2026-11-25T00:08:40.612051+00:00"
+}

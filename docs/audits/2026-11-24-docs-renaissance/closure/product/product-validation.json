@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B /root/product_docs",
+  "recorded_at": "2026-11-24T23:51:34.460726+00:00",
+  "source_anchor": "47f3603eb48fe0a7ba7707c697872a00f1695d2a",
+  "scope": "Closure working tree; concurrent lanes still integrating. Final exact delivered-head matrix belongs to lead.",
+  "checks": [
+    {
+      "command": "python tools/ci/check_docs.py --json docs/audits/2026-11-24-docs-renaissance/closure/product/check-docs.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "receipt": "check-docs.json"
+    },
+    {
+      "command": "git diff --check -- README.md docs/operations/getting-started.md docs/operations/workbench-first-session.md docs/operations/workbench-painting-and-history.md docs/operations/workbench-saving.md docs/operations/workbench-art.md docs/operations/showcase-guide.md docs/operations/architectural-generator-playtest.md",
+      "exit_code": 0,
+      "result": "PASS",
+      "scope": "B authored current scopes only; does not erase preserved raw whitespace limitations."
+    },
+    {
+      "command": "Independent Python SHA-256/size/PIL dimension comparisons against recovered assets-b.json and preview/manifest.json; baseline git show comparison for9 reused images",
+      "result": "PASS",
+      "receipt": "visual-qualification.json"
+    }
+  ],
+  "runtime_gui_walkthrough": "NOT_RUN; supported browser unavailable before page load, no fresh graphical Godot session performed",
+  "native_render_regeneration": "NOT_RUN; original3 native-render receipts and files recovered/verified",
+  "provider_dispatch": "NOT_RUN; no paid/live provider request"
+}

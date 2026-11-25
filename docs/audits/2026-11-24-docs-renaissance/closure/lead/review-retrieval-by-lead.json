@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "/root (closure lead), independent of /root/retrieval_evidence",
+  "reviewed_at": "2026-11-24T23:55:09.175209+00:00",
+  "review_scope": "Read actual six-file closure diff, parser/selection/chunker/ranker bodies, regression fixtures and hosted workflow commands; independently execute selection/history/provider checks. Not external retrieval or runtime qualification.",
+  "document_sha256": {
+    "tools/docs/retrieval_policy.py": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+    "tools/docs/retrieval_eval.py": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+    "tools/ci/check_docs.py": "8c5e0ccebbab698c379410fd4db2ed88fa286e109f38c2c85be861149ecb050b",
+    "tools/ci/test_current_retrieval_selection.py": "f1e2272224e930c6cbec19a9cf317037c8918a6d63b30c07a5dafa7b7f2eb48a",
+    ".github/workflows/documentation.yml": "9ad8ea50486d337c7a0876ee33e38d60f0f680dd41727e1781c69a96d4a6b997",
+    "docs/operations/documentation-maintenance.md": "d1f928da8a0b60abc88e427c2901f79a4b409155cc787b3925727e97ade1c3f8"
+  },
+  "disposition": "PASS",
+  "findings": [
+    {
+      "id": "CLOSURE-LEAD-R01",
+      "priority": "P1",
+      "finding": "Intent declaration used to be flattened into current-documentation envelope. The return now preserves validated owner-confirmed-intent; all chunks retain explicit status/scope.",
+      "verification": "New multi-chunk regression passes and checks both machine authority and rendered envelope.",
+      "status": "resolved"
+    },
+    {
+      "id": "CLOSURE-LEAD-R02",
+      "priority": "P1",
+      "finding": "Duplicate document-kind could override navigation selection; unknown/list/tag kinds could enter raw direct ingestion. Both metadata parsers reject duplicate normalized keys; shared policy validates kind scalars before default selection.",
+      "verification": "Manifest, absent manifest and direct chunk regressions cover real bypass and malformed values; original historical suite remains unchanged.",
+      "status": "resolved"
+    },
+    {
+      "id": "CLOSURE-LEAD-R03",
+      "priority": "P1",
+      "finding": "Original hosted documentation workflow did not explicitly invoke focused selection/additive evaluation. New bounded commands invoke focused+historical tests and additive/owner/historical fixtures within existing documentation job.",
+      "verification": "Source inspected workflow retains existing runner/concurrency/draft/provenance scheduling, adds no runtime authority relaxation; requires observed hosted run before claiming hosted pass.",
+      "status": "implemented-awaiting-hosted-evidence"
+    }
+  ],
+  "checks": [
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_current_retrieval_selection.py"
+      ],
+      "exit_code": 0,
+      "output": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.212s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_historical_retrieval.py"
+      ],
+      "exit_code": 0,
+      "output": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.020s\n\nOK\n"
+    },
+    {
+      "argv": [
+        "python",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "exit_code": 0,
+      "output": "{\n  \"status\": \"passed\",\n  \"scope\": \"active CI provider and runner routing\",\n  \"errors\": [],\n  \"policy\": {\n    \"routine_provider\": \"GitHub-hosted Actions\",\n    \"external_provider_config\": \"forbidden unless policy is explicitly changed\",\n    \"runner_indirection\": \"forbidden\"\n  }\n}\n"
+    }
+  ],
+  "tokenization_ast_unchanged": true,
+  "ranking_and_score_span_unchanged": true,
+  "frozen_fixture_byte_equality": {
+    "docs/reference/retrieval-questions.json": true,
+    "docs/reference/retrieval-challenges.json": true,
+    "docs/reference/owner-intent-retrieval-questions.json": true,
+    "docs/history/engineering/retrieval-questions.json": true,
+    "docs/reference/retrieval-questions-docs-renaissance-v1.json": true
+  },
+  "open_consequential_code_findings": [],
+  "limitations": [
+    "Parser intentionally supports documented flat frontmatter, not all YAML.",
+    "Corpus routing and answer audits qualify local deterministic lexical retriever only.",
+    "Original challenge regression and owner-intent canonical misses remain visible."
+  ]
+}

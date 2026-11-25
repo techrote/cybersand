@@ -1,0 +1,130 @@
+{
+  "authority": "historical-non-authoritative",
+  "reviewer": "a",
+  "old_input": "answer-a-qualified-input.json",
+  "old_input_sha256": "9cbc3bd2496f713bf718eba59cf813422b46381848f490370bf415c2fd32408b",
+  "delivered_input": "answer-a-delivered-input.json",
+  "delivered_input_sha256": "4eb44140715cd660fa2f54c1c94af6d35916df04707e29d95180de443d9bacbf",
+  "meaning": "Only identical actual passage text/order/metadata permits carrying forward a review; no inference from score. All corpus hashes change consistently with the last approved two-guide correction.",
+  "delta": [
+    {
+      "id": "DR06",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR07",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 2,
+      "delivered_canonical_rank": 2
+    },
+    {
+      "id": "DR08",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR09",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR10",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR11",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR12",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR13",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR14",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR15",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR16",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR17",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR18",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR19",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 3,
+      "delivered_canonical_rank": 3
+    },
+    {
+      "id": "DR20",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 2,
+      "delivered_canonical_rank": 2
+    },
+    {
+      "id": "DR35",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": 1,
+      "delivered_canonical_rank": 1
+    },
+    {
+      "id": "DR36",
+      "passage_text_order_and_metadata_identical": true,
+      "changed_ranks": [],
+      "old_canonical_rank": null,
+      "delivered_canonical_rank": null
+    }
+  ]
+}

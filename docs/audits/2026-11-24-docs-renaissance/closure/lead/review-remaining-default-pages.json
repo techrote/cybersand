@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "classification": "fresh-narrow-source-and-scope-review",
+  "reviewer": "/root closure lead",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "recorded_at": "2026-11-25T00:05:50.251589+00:00",
+  "scope": "Read three default-corpus pages that original inventory had classified metadata-only. Perform bounded source/scope inspection and retain them unchanged; this is not exhaustive numeric or scientific requalification.",
+  "documents": [
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "disposition": "preserved; narrowly source-inspected",
+      "observations": [
+        "Read full136-line operator inventory. All53 exact native operator names are represented in its grouped table.",
+        "Checked native parameter tables, derivative4/5/9 sample costs and units, Voronoi/Delaunay/Poisson work references, and preparation admission counters against the stated compiler sources.",
+        "Logical-work bounds and conservative memory estimates are explicitly distinguished from measured runtime performance."
+      ],
+      "limits": [
+        "Did not execute53 operator semantics or repeat original GEN-003 runtime qualification.",
+        "This does not certify every floating-point or geometry boundary."
+      ]
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "disposition": "preserved frozen preregistration; scoped source inspected",
+      "observations": [
+        "Read complete frozen344-line preregistration, Arm-B supersession and payload-preserving relocation amendment.",
+        "Accepted diagnostic script retains4events,32cell moves,12steps,10cellhorizon,250Pa threshold and bounded work constants; test source retains D0\u2013D8 scenario roles.",
+        "Historical Arm-A native placement is explicitly superseded by ArmB; this is a non-production diagnostic contract and not a current instruction to resume or retune an old experiment."
+      ],
+      "limits": [
+        "No diagnostic execution or graphical/physics acceptance rerun.",
+        "Original frozen thresholds and negative outcomes are preserved unchanged."
+      ]
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "disposition": "preserved scoped research result",
+      "observations": [
+        "Read complete434-line feasibility result. It explicitly supplies no executable topology proof, runtime timings or production atmosphere adoption.",
+        "Gas amount/volume, split accounting, topology validity and unresolved refusal are proposed contracts; numeric byte estimates are illustrative, with world-spanning split worstcase admitted.",
+        "Current Water programme retains separate WEX-003/004 scopes and #45 NARROW routing; conceptual gas bookkeeping does not choose or implement Water transport."
+      ],
+      "limits": [
+        "No external scientific-reference re-review or integrated topology benchmark.",
+        "Unknown production layout/capacity/cadence and persistence remain explicitly unresolved."
+      ]
+    }
+  ],
+  "source_sha256": {
+    "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+    "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "godot/scripts/decompression_diagnostic.gd": "fda5d64f917ddb4b65fd811784ce693177f1f1c76830ea55efe7c0a710c77ee9",
+    "godot/tests/test_wex004_decompression.gd": "a4c23b7a21bc5ddb63767833b388b6518c399eb6d322b327004f7a3b3bc7023a",
+    "docs/operations/water-hybrid-pressure-extension-programme.md": "3995a836ec1c0b5599ac7d2b7a7f8da2e4ee2f750f9866113358e5613081ac01",
+    "docs/systems/smoke-heat-pressure-roadmap.md": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8"
+  },
+  "operator_name_coverage": {
+    "native_count": 53,
+    "covered": 53,
+    "missing": []
+  },
+  "original_document_bytes_unchanged": {
+    "docs/reference/procedural-spatial-operators.md": true,
+    "docs/research/bounded-decompression-impulse-events.md": true,
+    "docs/research/lumped-gas-region-pressure-bookkeeping.md": true
+  },
+  "open_p0_p1_in_reviewed_scope": [],
+  "effect_on_original_claim_count": "No invented claim IDs or expansion of the recovered176; these are fresh page-scope observations."
+}

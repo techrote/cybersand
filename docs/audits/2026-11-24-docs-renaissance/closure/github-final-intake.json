@@ -1,0 +1,132 @@
+{
+  "authority": "historical-non-authoritative",
+  "classification": "final-source-GitHub-intake",
+  "recorded_at": "2026-11-25T00:29:13.142Z",
+  "accepted_main": {
+    "sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "tree": "06b62d73138028d1f7615b83edc9810491bf6287"
+  },
+  "pr": {
+    "number": 774,
+    "url": "https://github.com/techrote/cybersand/pull/774",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head_sha": "700c89c451903fac07188196a2f94b5c8997cb53",
+    "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "head_branch": "docs/docs-renaissance-001"
+  },
+  "source_runs": [
+    {
+      "id": 45516959648,
+      "name": "World-art integrated preview real GUI qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 73,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959648/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959648/logs",
+      "workflow_id": 409938750
+    },
+    {
+      "id": 45516959677,
+      "name": "Art session-only logging qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 133,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959677/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959677/logs",
+      "workflow_id": 426427472
+    },
+    {
+      "id": 45516959619,
+      "name": "Atlas agent runner CI",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 49,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959619/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959619/logs",
+      "workflow_id": 410095510
+    },
+    {
+      "id": 45516959904,
+      "name": "GDExtension build and current Godot regression",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 6252,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959904/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959904/logs",
+      "workflow_id": 344993861
+    },
+    {
+      "id": 45516959826,
+      "name": "World-art integrated unattended capture qualification",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_number": 47,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959826/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959826/logs",
+      "workflow_id": 410013586
+    },
+    {
+      "id": 45516959626,
+      "name": "Native source-scope advisory (report only)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 4647,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959626/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959626/logs",
+      "workflow_id": 402341461
+    },
+    {
+      "id": 45516959665,
+      "name": "Palette shader actual backend qualification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 1800,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959665/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959665/logs",
+      "workflow_id": 403062058
+    },
+    {
+      "id": 45516959696,
+      "name": "Native C++ validation",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 6231,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959696/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959696/logs",
+      "workflow_id": 344993864
+    },
+    {
+      "id": 45516959646,
+      "name": "IN-TOOLS 361 renewed-main Windows causal gate",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 56,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959646/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959646/logs",
+      "workflow_id": 407666696
+    },
+    {
+      "id": 45516959787,
+      "name": "PLAY desktop manual packet identity",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 49,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959787/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959787/logs",
+      "workflow_id": 402516490
+    },
+    {
+      "id": 45516959615,
+      "name": "Documentation and provenance",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 6456,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959615/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45516959615/logs",
+      "workflow_id": 344993860
+    }
+  ],
+  "scope": "Live status before final evidence-only publication. Later publication receipt binds delivered head; incomplete jobs are not passed."
+}

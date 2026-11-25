@@ -1,0 +1,35 @@
+{
+  "command": [
+    "python",
+    "tools/ci/check_docs.py"
+  ],
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"passed\",\n  \"documents\": 151,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 280,\n  \"local_links\": 3521,\n  \"heading_anchors\": 491,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+  "started_at": "2026-11-24T23:56:28.068890+00:00",
+  "classification": "fresh-closure-execution",
+  "scope": "Source/documentation validation; no platform-runtime or owner acceptance claim",
+  "source_commit": "07e3b1f59bcf0ed7c4b742c493ae6eacc8591f05",
+  "dirty_paths": [
+    ".github/workflows/documentation.yml",
+    "docs/architecture/data-ownership-and-lifetimes.md",
+    "docs/architecture/liquid-solver-family-policy.md",
+    "docs/operations/architectural-generator-playtest.md",
+    "docs/operations/documentation-maintenance.md",
+    "docs/operations/getting-started.md",
+    "docs/operations/local-build-and-validation.md",
+    "docs/operations/wb-art-paint-integrated-candidate.md",
+    "docs/operations/workbench-art.md",
+    "docs/operations/workbench-saving.md",
+    "docs/reference/configuration-reference.md",
+    "docs/reference/interfaces-and-message-contracts.md",
+    "docs/reference/invariants.md",
+    "docs/reference/level-saves-and-replay.md",
+    "docs/reference/status-and-roadmap.md",
+    "docs/systems/workbench-art-providers.md",
+    "docs/systems/world-storage-and-interest-region.md",
+    "tools/ci/check_docs.py",
+    "tools/ci/test_current_retrieval_selection.py",
+    "tools/docs/retrieval_eval.py",
+    "tools/docs/retrieval_policy.py"
+  ]
+}

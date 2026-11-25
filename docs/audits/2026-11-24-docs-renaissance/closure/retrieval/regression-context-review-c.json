@@ -1,0 +1,621 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C /root/retrieval_evidence",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "recorded_utc": "2026-11-25T00:15:25.543645+00:00",
+  "scope": "Focused regression, owner-intent and explicit historical context/answer review; separate from all36 additive independent reviewers. C authored retriever changes and is not independent of them; technical cross-review is linked separately.",
+  "summary": {
+    "questions": 8,
+    "sufficient": 6,
+    "partial": 2,
+    "wrong_context": 0
+  },
+  "reviews": [
+    {
+      "id": "C06",
+      "suite": "challenges",
+      "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
+      "canonical_rank": null,
+      "context_applicability": "partial",
+      "bounded_answer": "The barrel evidence concerns a generic rectangular Rapier reference body and a bounded historical support fixture. The retrieved material identifies open coupling questions and experiments, so it does not establish a guaranteed half-depth equilibrium or an accepted reversible-soliding implementation. A current implementation choice needs the owning programme and owner decision, beyond these passages.",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "missing_expected_facts": [
+        "The specific owner recollection that the historical barrel-support result was not recalled as final acceptance is absent.",
+        "The full independent issue12/WEX substrate relationship is not stated in these five contexts."
+      ],
+      "required_abstention_or_scope": "Do not select a buoyancy law, promise half-depth behavior, or infer owner acceptance from the fixture.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "heading": "Rigid-body and cellular coupling > What does the fixture prove, and what remains open?",
+          "authority": "current-documentation",
+          "text_sha256": "afc2d8f38dcec83ab132afee9f21708357191c651404406627af6bb019d242cf"
+        },
+        {
+          "rank": 2,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Scope and evidence boundary",
+          "authority": "current-documentation",
+          "text_sha256": "61a03bf6a5afcb833aca415f1c1416bd041a060af99b5474bf60eb398c1b6d87"
+        },
+        {
+          "rank": 3,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Phase 3: parameter experiments, then model changes",
+          "authority": "current-documentation",
+          "text_sha256": "0926923e6b4f6264521b39b6c575b8d04446136818bdf63a096a392043a496f7"
+        },
+        {
+          "rank": 4,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Phase 2: isolate each behaviour",
+          "authority": "current-documentation",
+          "text_sha256": "53cedf0650e9c2f787b5e1954a082d368a6a6e1e28f90c8d662b9246dacc813c"
+        },
+        {
+          "rank": 5,
+          "path": "operations/physics-characterisation-plan.md",
+          "heading": "Physics characterisation and soliding plan > Measured follow-up, 2026-09-09",
+          "authority": "current-documentation",
+          "text_sha256": "f66ffcd696feb54f40551530e23e3f7475a2a4bf0a4064a6095f71d7ee4c1d38"
+        }
+      ],
+      "fresh_final_passage_changes": [],
+      "source_identities": [
+        {
+          "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+          "sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        },
+        {
+          "path": "docs/operations/physics-characterisation-plan.md",
+          "sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        },
+        {
+          "path": "docs/operations/soliding-programme.md",
+          "sha256": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    },
+    {
+      "id": "USABLE02",
+      "suite": "challenges",
+      "query": "Can a delayed physical equipment request or receipt fire a replaced, dropped or cancelled tool, and how is the worker queue bounded?",
+      "canonical_rank": null,
+      "context_applicability": "sufficient",
+      "bounded_answer": "A physical action is tied to the issued run/actor/generation, body and equipment identity, usable instance and request ID. Worker admission retains at most eight requests globally and one per actor, including extracted in-flight work; a refusal does not replace admitted work. Consumption rechecks identity and lease under the same mutex used for cancellation. A stale or cancelled request cannot become a new transaction, and duplicate feedback cannot repeat recoil. Cancellation does not roll back already committed projectiles or devices; they remain governed by their ordinary or World lifetime.",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "missing_expected_facts": [],
+      "required_abstention_or_scope": "No guarantee of reversing a committed effect or firing a replaced tool can be inferred.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "systems/actor-usables.md",
+          "heading": "Actor usables \u2014 32-item catalogue and physical equipment > Desktop controls > Ordinary sandbox and standalone actor scenes",
+          "authority": "current-documentation",
+          "text_sha256": "b079d236174a539c709b6f586a23001c04cd9c112368a084d59517b9694d97f5"
+        },
+        {
+          "rank": 2,
+          "path": "systems/actor-usables.md",
+          "heading": "Actor usables \u2014 32-item catalogue and physical equipment > Action and readback contract > Physical actions and copied feedback",
+          "authority": "current-documentation",
+          "text_sha256": "6ae2d7a1dc1cea2a87cc7f416b00f374fd6f9023dab4632ff0341f18e87b3f1b"
+        },
+        {
+          "rank": 3,
+          "path": "systems/workbench-actor-composition.md",
+          "heading": "Shared Workbench actor composition > Physical equipment and material authority",
+          "authority": "current-documentation",
+          "text_sha256": "e7038b304d3970ca9d911b05cc2f9851ed1825a50ebfec64a22473d6b3b63816"
+        },
+        {
+          "rank": 4,
+          "path": "reference/configuration-reference.md",
+          "heading": "Configuration reference > Actor usable values",
+          "authority": "current-documentation",
+          "text_sha256": "6e48ac86ade2bab0edcbff8542bbe1be9e187b5317757e02f561934659db0588"
+        },
+        {
+          "rank": 5,
+          "path": "systems/player-control-playground.md",
+          "heading": "Player control playground > Live adversarial delivery qualification",
+          "authority": "current-documentation",
+          "text_sha256": "ab8a511988b8dc59e265c87165997c56ae8a65405ae2f04f4fd257ae5e444900"
+        }
+      ],
+      "fresh_final_passage_changes": [],
+      "source_identities": [
+        {
+          "path": "godot/scripts/simulation_worker.gd",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "scope": "accepted implementation source at00cdb02"
+        },
+        {
+          "path": "godot/scripts/physical_usable_runtime.gd",
+          "sha256": "f1bb3377da73df672e24abbe06a84621042c64ced45fa96ec6de01616a3c7b18",
+          "scope": "accepted implementation source at00cdb02"
+        },
+        {
+          "path": "docs/systems/actor-usables.md",
+          "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    },
+    {
+      "id": "LCB01",
+      "suite": "challenges",
+      "query": "Has LCB-000 passed, what landed, and may #200 or #212 start?",
+      "canonical_rank": null,
+      "context_applicability": "partial",
+      "bounded_answer": "The retrieved dated checkpoint says LCB-000 Gates A\u2013E passed and issue213 completed. It distinguishes the initially scoped opt-in start from later owner-authorized bounded pressure and inertial implementations; those bounded capabilities do not authorize production-default, generic cell/Rapier ownership or global-carrier changes. The passages do not supply the complete exact landed PR/SHA chain or the narrow later codec-freeze qualification, so I would consult that primary record before acting.",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "missing_expected_facts": [
+        "Expected exact landed #215/#217/#226 at e95fe85 is not fully supplied.",
+        "The narrow native codec freeze and exclusions are not fully supplied."
+      ],
+      "required_abstention_or_scope": "Do not reconstruct missing exact commits, reuse historical starts as new authorization, or claim current application-host acceptance.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "operations/lcb-scenario-catalogue.md",
+          "heading": "LCB scenario catalogue and controlled runner > Status",
+          "authority": "current-documentation",
+          "text_sha256": "acc037cb5ed4f8ac1f0c172745a1abaf297dfab6c499a123ed5f7da343f0c527"
+        },
+        {
+          "rank": 2,
+          "path": "operations/water-hybrid-pressure-extension-programme.md",
+          "heading": "Water hybrid, saturated-head and compartment-pressure extension programme > LCB experimental pressure lane reconciliation (2026-10-23)",
+          "authority": "current-documentation",
+          "text_sha256": "76b89b1a460f31870eeb2739f63ec52e39b5fe21cc0ed2281e06c0c6a0309a1e"
+        },
+        {
+          "rank": 3,
+          "path": "operations/lcb-water-comparison-and-fixtures.md",
+          "heading": "LCB Water comparison contract and reference fixtures > Negative controls (registered; owners in brackets)",
+          "authority": "current-documentation",
+          "text_sha256": "1f94adb628e75d7fdeda693431d920f62f0858ce6aff4f21ea4436419c506843"
+        },
+        {
+          "rank": 4,
+          "path": "operations/architecture-programme.md",
+          "heading": "CyberSand architecture experimental programme > Water hybrid/pressure extension checkpoint \u2014 2026-09-20",
+          "authority": "current-documentation",
+          "text_sha256": "d20d3999a947759f1f25dfad2363103f11b82637544b76c3bb09b54378668e7b"
+        },
+        {
+          "rank": 5,
+          "path": "operations/lcb-water-comparison-and-fixtures.md",
+          "heading": "LCB Water comparison contract and reference fixtures > Status",
+          "authority": "current-documentation",
+          "text_sha256": "6eb5191287f69f71b69d6ee8d70cd1db0e2e37e97b1d89d881723e9030f6aa3e"
+        }
+      ],
+      "fresh_final_passage_changes": [],
+      "source_identities": [
+        {
+          "path": "docs/operations/lcb-scenario-catalogue.md",
+          "sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        },
+        {
+          "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+          "sha256": "28a761724505a50abf26e118be38ab0c777f05b3bea0f8686da1b306fcacd14e",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        },
+        {
+          "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+          "sha256": "e2ca5966ecf90b0e4d40b013646ac4f3bb34c0c5ae3d9efe7ab641c6c9a96dae",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    },
+    {
+      "id": "EXPLORE-001-LAYOUT",
+      "suite": "challenges",
+      "query": "How does the first-open generated map dialog keep Install and Keep current map buttons visible on a small window?",
+      "canonical_rank": 2,
+      "context_applicability": "sufficient",
+      "bounded_answer": "Both first-open generation and saved-load popups are bounded to the embedded viewport or native screen usable area. On small windows their content scrolls while Install and Keep current map stay outside the scrolling container. A source-matched graphical first-open check tests that geometry; it does not by itself establish human camera or traversal acceptance.",
+      "supporting_ranks": [
+        2,
+        3,
+        4
+      ],
+      "missing_expected_facts": [],
+      "required_abstention_or_scope": "Do not describe retained geometry tests as fresh desktop or physical play acceptance.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/challenges.json",
+      "report_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Install, paint, save and reopen",
+          "authority": "current-documentation",
+          "text_sha256": "0b162174f42a0138fc52b9f963e27d2a9d033f7637b206afd10c72e59446cb42"
+        },
+        {
+          "rank": 2,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "heading": "EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Ordinary workbench workflow > Authoring and reopen",
+          "authority": "current-documentation",
+          "text_sha256": "94c8c5ba880c84df4224ca781954241df43fd7f545b02090973b87d97aff7f59"
+        },
+        {
+          "rank": 3,
+          "path": "operations/explore001-desktop-playtest.md",
+          "heading": "Generated-map desktop playtest > Manual acceptance procedure",
+          "authority": "current-documentation",
+          "text_sha256": "2da94340dc15adf1d3d162ad63bb0a339369eeb7f010155d06718f556e8ea097"
+        },
+        {
+          "rank": 4,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "heading": "EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Qualification commands (run against a **source-matched** native runtime)",
+          "authority": "current-documentation",
+          "text_sha256": "603ebb2f36337d1d931f50bb8fb652b8d07297d729015f4b292a2bc8833e0e48"
+        },
+        {
+          "rank": 5,
+          "path": "operations/workbench-saving.md",
+          "heading": "Saving authored worlds > Save a generated scene",
+          "authority": "current-documentation",
+          "text_sha256": "45cde8a6c4a020369639d45f870f85ec62cc10088532a8024aa87c55bc717146"
+        }
+      ],
+      "fresh_final_passage_changes": [
+        2
+      ],
+      "source_identities": [
+        {
+          "path": "godot/scripts/workbench_generator_dialog.gd",
+          "sha256": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+          "scope": "accepted implementation source at00cdb02"
+        },
+        {
+          "path": "docs/systems/explore001-generated-playable-maps.md",
+          "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        }
+      ],
+      "final_reopen_changed_ranks": [
+        3
+      ]
+    },
+    {
+      "id": "OI01",
+      "suite": "owner-intent",
+      "query": "What does the owner want CyberSand and Workbench to become?",
+      "canonical_rank": null,
+      "context_applicability": "sufficient",
+      "bounded_answer": "The retrieved owner-intent synthesis describes a paint-and-play authoring system: useful capabilities should be reachable through an accessible Workbench, with simple front-door controls and deeper controls when needed. This is intended direction. It does not mean all proposed capability is already implemented or authorize speculative successor work.",
+      "supporting_ranks": [
+        4
+      ],
+      "missing_expected_facts": [],
+      "required_abstention_or_scope": "Use the primary owner decision for a revision-sensitive new scope decision; the primary-record canonical miss remains.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/owner-intent.json",
+      "report_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "operations/workbench-first-session.md",
+          "heading": "Your first Workbench session > Save what you mean",
+          "authority": "current-documentation",
+          "text_sha256": "b382a45e17162a3961826410e2b04c99cb13112200aed8cb1d35b338c1420fdc"
+        },
+        {
+          "rank": 2,
+          "path": "operations/architectural-generator-playtest.md",
+          "heading": "Architectural Generator walkthrough > Install, paint, save and reopen",
+          "authority": "current-documentation",
+          "text_sha256": "0b162174f42a0138fc52b9f963e27d2a9d033f7637b206afd10c72e59446cb42"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/overview.md",
+          "heading": "Architecture overview > How does authoring become a running scene?",
+          "authority": "current-documentation",
+          "text_sha256": "426df7d9775bf329673b848002820961dd130b5ecc76071d5ea9114d6fbdd913"
+        },
+        {
+          "rank": 4,
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > What the owner wants Workbench to become",
+          "authority": "owner-confirmed-intent",
+          "text_sha256": "efd8a0b12aa2dc84dba320194a3517e386c08971eb0598cfa4fb16418d5a5228"
+        },
+        {
+          "rank": 5,
+          "path": "operations/materials-lab-authoring.md",
+          "heading": "Materials Lab v1 > First inspection and safe experiment",
+          "authority": "current-documentation",
+          "text_sha256": "4f28aca8ba7fa6f8163b89272f69595394ada693cd29a03c247bbf85d44afd16"
+        }
+      ],
+      "fresh_final_passage_changes": [
+        5
+      ],
+      "source_identities": [
+        {
+          "path": "docs/reference/product-intent-and-priorities.md",
+          "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        },
+        {
+          "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    },
+    {
+      "id": "OI04",
+      "suite": "owner-intent",
+      "query": "Does prepared declared destruction require automatic whole-building stability and storage-sized chunks?",
+      "canonical_rank": null,
+      "context_applicability": "sufficient",
+      "bounded_answer": "Prepared or declared destruction remains exploratory. The owner wants convincing blast/cut behavior and rolling pieces, without requiring automatic whole-building structural stability as a prerequisite. Fracture pieces have not been prescribed to equal storage chunks. These contexts do not choose an implementation algorithm or supply new authorization to build one.",
+      "supporting_ranks": [
+        1
+      ],
+      "missing_expected_facts": [],
+      "required_abstention_or_scope": "Do not choose a solver, equate fracture geometry with storage chunks, or convert exploratory intent into accepted implementation.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/owner-intent.json",
+      "report_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "reference/product-intent-and-priorities.md",
+          "heading": "Product intent and priorities > Convincing physical behavior and prepared destruction",
+          "authority": "owner-confirmed-intent",
+          "text_sha256": "c4ac1324c639c0de17786046d72e3817c25262d9cb4c82ce464fd462643014dd"
+        },
+        {
+          "rank": 2,
+          "path": "reference/invariants.md",
+          "heading": "Architectural and simulation invariants > Hierarchical generation invariants",
+          "authority": "current-documentation",
+          "text_sha256": "7c1f8c3552484a3478f4719eaef7ae2082281ef26e98a04cf9eed88d84494dae"
+        },
+        {
+          "rank": 3,
+          "path": "architecture/inertial-cellular-v1.md",
+          "heading": "Inertial cellular reference > Why does IN require radius three?",
+          "authority": "current-documentation",
+          "text_sha256": "f408fe7beba98cf1b8c3e04ce324f3dfc65e6ed5ae5b8570837e238c5bce63da"
+        },
+        {
+          "rank": 4,
+          "path": "systems/explore001-generated-playable-maps.md",
+          "heading": "EXPLORE-001 \u2014 GEN-007 \u2192 Playable Workbench > Ordinary workbench workflow > Explicit first-version limits",
+          "authority": "current-documentation",
+          "text_sha256": "dc92477dbeb0a38170407832d353e6ef4421fe6c35f6de95e8ab839716e3e280"
+        },
+        {
+          "rank": 5,
+          "path": "architecture/data-ownership-and-lifetimes.md",
+          "heading": "Data ownership and lifetimes > Which transitions require exclusive ownership?",
+          "authority": "current-documentation",
+          "text_sha256": "9560d57b1db6dbab0c09d2218bfaebf6e09f9cc2c945896c0dbdf3edcb2f33eb"
+        }
+      ],
+      "fresh_final_passage_changes": [],
+      "source_identities": [
+        {
+          "path": "docs/reference/product-intent-and-priorities.md",
+          "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        },
+        {
+          "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+          "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+          "scope": "source-qualified candidate documentation or owner-intent record; no new owner authorization"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    },
+    {
+      "id": "H01",
+      "suite": "historical",
+      "query": "What did original MAT-003 S2A packed carrier evidence actually show, and does it permanently require four-byte cells?",
+      "canonical_rank": 3,
+      "context_applicability": "sufficient",
+      "bounded_answer": "In this explicitly historical corpus, the archive distinguishes the accepted eight-byte carrier from the older four-byte control. Its recovered S2A readback re-reduced original bytes from224 processes,112 pairs and16 contrasts; that is not a new execution. Safe representation and access-method performance are separate conclusions. This is dated experiment evidence, not permanent storage doctrine or permission for a new run.",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "missing_expected_facts": [],
+      "required_abstention_or_scope": "Do not turn the archived comparison into a permanent four-byte rule, a new architecture decision, or fresh execution evidence.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/historical.json",
+      "report_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "history/engineering/views/coverage.md",
+          "heading": "Individual coverage and four-asset dispositions > state-carrier",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "284d0093e3ddb1dac2b9cb49681d1ebce5217736e0d24461cb0a16646c7f9ce7"
+        },
+        {
+          "rank": 2,
+          "path": "history/engineering/views/coverage.md",
+          "heading": "Individual coverage and four-asset dispositions > state-carrier",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "fc3cb3dc644e9479fb714366cc261929d29dd91b5286ecfab704336a24517ae2"
+        },
+        {
+          "rank": 3,
+          "path": "history/engineering/REPORT.md",
+          "heading": "Milestone 1 \u2014 Investigation and knowledge capture > 5. Evidence recovery and remaining loss",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "6244a9dec3e91bf979206503d4d913bcc7587436f48394b917f3ae594dfe6f54"
+        },
+        {
+          "rank": 4,
+          "path": "history/engineering/REPORT.md",
+          "heading": "Milestone 1 \u2014 Investigation and knowledge capture > 3. Material findings and M0 corrections > Carrier and motion doctrine: current facts changed; architecture remains a choice",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "3c41fd2f060a9f9b54d84dbdf2e227e59852ad680f95b99378f0db99199790a6"
+        },
+        {
+          "rank": 5,
+          "path": "history/engineering/qa/review.md",
+          "heading": "Independent challenge and correction record > Lead review and verification limits",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "76064e882e47ad392d8b6f2099c0a541864034a40fa3bdeacec0bb6c9e043017"
+        }
+      ],
+      "fresh_final_passage_changes": [],
+      "source_identities": [
+        {
+          "path": "docs/history/engineering/REPORT.md",
+          "sha256": "b17fee8fb34f3e46cc8afe78e538f66e54cbc7f58fd70e99d8be788ad55a4ad3",
+          "scope": "historical-non-authoritative archive"
+        },
+        {
+          "path": "docs/history/engineering/views/coverage.md",
+          "sha256": "ab8a427550f96a0616694ccca4da6c422d01530e2b59c05e02a6df617f45cb43",
+          "scope": "historical-non-authoritative archive"
+        },
+        {
+          "path": "docs/history/engineering/qa/review.md",
+          "sha256": "9fbf67b1d0e8a255c8af89b1085d006b9a6f3daff0666b4f460e70e53ef00761",
+          "scope": "historical-non-authoritative archive"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    },
+    {
+      "id": "H09",
+      "suite": "historical",
+      "query": "Is the SOL cutter stack #519 active again because prepared declared destruction sounds promising?",
+      "canonical_rank": 1,
+      "context_applicability": "sufficient",
+      "bounded_answer": "The historical capture records the protected soliding/Workbench work as paused and says renewed conceptual interest is not restart permission. The archive therefore gives no authority to resume the protected work. It cannot establish a current live branch state on its own; a new task must use current owner direction and current source custody.",
+      "supporting_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "missing_expected_facts": [],
+      "required_abstention_or_scope": "Do not restart paused work from historical instructions or claim that an archive alone proves today\u2019s live branch status.",
+      "review_method": "All five actual passages read; final changed passages reread after source freeze. Facts checked against cited accepted source or explicit dated evidence. No blind production answer-model experiment.",
+      "report": "qualified-v2/candidate/historical.json",
+      "report_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+      "hits": [
+        {
+          "rank": 1,
+          "path": "history/engineering/families/simulation.md",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > SIM-07 \u2014 Backend readiness and protected Workbench cutting",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "89bc1e73042265d9d684b7ef510c89f3e9f38633f95018b3ce8b402297df69d2"
+        },
+        {
+          "rank": 2,
+          "path": "history/engineering/REPORT.md",
+          "heading": "Milestone 1 \u2014 Investigation and knowledge capture > 2. Repository state and protected work",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "7260fe51827b9451ac6c2fbe0b01c4cdae2eef7d3a64a4b2854709ea1fca3506"
+        },
+        {
+          "rank": 3,
+          "path": "history/engineering/views/doctrine.md",
+          "heading": "Historical doctrine and constraints > SIM-F15 \u2014 doctrine",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "aab140b13170fe8da92a156d4a6618808cecd54160f7a8de5f50f77601a1bea7"
+        },
+        {
+          "rank": 4,
+          "path": "history/engineering/REPORT.md",
+          "heading": "Milestone 1 \u2014 Investigation and knowledge capture > 7. Owner agenda and remaining engineering work",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "8a03ba23afd81b966d9d6a30e40f56889fa991508f883dc6c0545af1541a4b26"
+        },
+        {
+          "rank": 5,
+          "path": "history/engineering/families/simulation.md",
+          "heading": "M1 capture lane: simulation, liquids and material authoring > SIM-02 \u2014 Discovery and reversible ownership primitives",
+          "authority": "historical-non-authoritative",
+          "text_sha256": "3076a2d6c89fee8fca8842123c5b4947a6814735a8c621471ab2b946f0993cdc"
+        }
+      ],
+      "fresh_final_passage_changes": [],
+      "source_identities": [
+        {
+          "path": "docs/history/engineering/families/simulation.md",
+          "sha256": "2ec8f6ebab93ae6aa8b931a807b45785d677835434821280c70ca36030995e23",
+          "scope": "historical-non-authoritative archive"
+        },
+        {
+          "path": "docs/history/engineering/REPORT.md",
+          "sha256": "b17fee8fb34f3e46cc8afe78e538f66e54cbc7f58fd70e99d8be788ad55a4ad3",
+          "scope": "historical-non-authoritative archive"
+        },
+        {
+          "path": "docs/history/engineering/views/doctrine.md",
+          "sha256": "d9422e5ef73ad02ecfa32b554c4305fb3d95f029995b1a70314559f8636710f7",
+          "scope": "historical-non-authoritative archive"
+        }
+      ],
+      "final_reopen_changed_ranks": []
+    }
+  ],
+  "limitations": [
+    "Canonical path ranking measures frozen expected routes, not answer correctness. Correct owner-intent synthesis can be sufficient while the primary owner-decision record is missed.",
+    "Partial answers are intentionally incomplete and abstain from missing exact source or owner decisions; they are not scored as fully correct answers.",
+    "All historical chunks carry historical-non-authoritative envelopes; the exercised route is the repository lexical evaluator, not external embeddings/indexes/agent integrations."
+  ],
+  "cross_review_refinements": [
+    "A independently read all40 actual passages and requested direct OI04 supporting-rank precision: only rank1 is owner-intent evidence.",
+    "A requested explicit H01 original-byte re-reduction scope and recovered224-process/112-pair/16-contrast counts; no new historical execution is claimed."
+  ],
+  "last_source_refinement": "Two generated-reopening procedures now require verified preview installation. Retained pre-refinement review and raw contexts remain in before-final-reopen/qualified records; final only layout rank3 changed.",
+  "source_identity_binding": "Final projection corpus hashes independently compared to delivered source commit; projection formed before source checkpoint publication."
+}

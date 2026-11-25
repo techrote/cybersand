@@ -1,0 +1,2971 @@
+{
+  "authority": "historical-non-authoritative",
+  "method": "Compare immutable original fixture identities and every canonical rank; no score/query/expected-answer edits. Full rankings and context texts remain in cited raw reports.",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "suites": [
+    {
+      "suite": "frozen",
+      "fixtures_identical_across_stages": true,
+      "reports": {
+        "baseline": {
+          "path": "baseline/frozen.json",
+          "sha256": "f33fe2bd1802ec54ed229e1570716cd3fe320b06bb265ca45b0653a0f5d49543",
+          "documents": 145,
+          "chunks": 1941,
+          "summary": {
+            "questions": 32,
+            "canonical_hit_at_1": 19,
+            "canonical_hit_at_k": 30,
+            "mrr_at_k": 0.7292,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "recovered": {
+          "path": "recovery/frozen.json",
+          "sha256": "48280d54f251f40ac742b3745716da185044bbea8c272851de31525f71575925",
+          "documents": 151,
+          "chunks": 1784,
+          "summary": {
+            "questions": 32,
+            "canonical_hit_at_1": 18,
+            "canonical_hit_at_k": 31,
+            "mrr_at_k": 0.7146,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "qualified": {
+          "path": "qualified-v2/candidate/frozen.json",
+          "sha256": "147d1979c8d626acde5230fd5e984425e118ae13b136aef71356169586fbd344",
+          "documents": 151,
+          "chunks": 1789,
+          "summary": {
+            "questions": 32,
+            "canonical_hit_at_1": 18,
+            "canonical_hit_at_k": 32,
+            "mrr_at_k": 0.7302,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        }
+      },
+      "queries": [
+        {
+          "id": "Q01",
+          "query": "Which exact local version do we have, and can I recover its uncommitted changes?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q02",
+          "query": "Who is allowed to mutate the cells, and can a worker touch a Godot object?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q03",
+          "query": "Does enabling browser threads let drawing continue while the simulation tick is still running?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q04",
+          "query": "What CPU counts does Auto choose in compatibility and threaded Web builds?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q05",
+          "query": "Are body physics, the player, and cellular updates ordered the same on desktop and Web?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q06",
+          "query": "What happens to play when a native simulation tick fails?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q07",
+          "query": "Are we using Rapier or Godot physics, which version, and who advances it?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q08",
+          "query": "When a crate moves across sand, do we erase its old pixels and put them back?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q09",
+          "query": "What prevents terrain contacts and sand coupling from pushing a body twice?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q10",
+          "query": "What exactly crosses the rigid body bridge, and how many bodies can it handle?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q11",
+          "query": "If importing a level gives the exact same save string, will the next tick replay exactly too?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q12",
+          "query": "What is inside a CYSD1 file, and can it save an arbitrary sparse world?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q13",
+          "query": "Can saving the level alter anything, and does a bad import damage the running world?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q14",
+          "query": "Do matching state hashes prove complete deterministic replay, including bodies and future inputs?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q15",
+          "query": "Can the renderer read live cells or reuse a patch buffer before upload finishes?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q16",
+          "query": "If all snapshot slots are still in use or a patch is too large, is dirty data lost?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q17",
+          "query": "Dirty rectangles are small, so are we uploading only those pixels to the GPU?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q18",
+          "query": "Are simulation tiles double buffered, and how are writes into a neighboring tile made safe?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q19",
+          "query": "Is the world really limited to 1024 pixels or twice the camera size?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": "improved",
+          "qualified_miss": false
+        },
+        {
+          "id": "Q20",
+          "query": "What happens if I enqueue too many explosions or run out of reserved simulation space?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q21",
+          "query": "Does native Water move twenty-four cells per update, and what does viscosity mean?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q22",
+          "query": "How do calm water emission and the adhesion toggle differ?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q23",
+          "query": "How should I tell whether a shimmering pool is a fluid bug or just its shader?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q24",
+          "query": "Can we approximate interactions to keep frame times stable, and is strict mode available now?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q25",
+          "query": "Can we move authoritative materials to GPU compute, or author their rules in arbitrary JavaScript?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q26",
+          "query": "Do SimulationCore and GameplayBridge already exist as reusable implementation modules?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q27",
+          "query": "What smoke, pressure and heat simulation actually runs today?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q28",
+          "query": "Which exact tools should I build with, and can I share the native and Web bindings checkout?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q29",
+          "query": "If an export checksum passes or build-info names the base commit, is the browser build proven current?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q30",
+          "query": "Do the old sanitizer results and current Windows fixtures prove Linux, Firefox and Safari work?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q31",
+          "query": "Why is the old consistency check red, and should I update its hashes to make the release pass?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "Q32",
+          "query": "After changing physics ownership, which documentation and evidence must I update before a checkpoint?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        }
+      ]
+    },
+    {
+      "suite": "challenges",
+      "fixtures_identical_across_stages": true,
+      "reports": {
+        "baseline": {
+          "path": "baseline/challenges.json",
+          "sha256": "ebf1c205f64d33f9a1c2a98ca19380eecd9191b1b67d819b6441972734eac42f",
+          "documents": 145,
+          "chunks": 1941,
+          "summary": {
+            "questions": 164,
+            "canonical_hit_at_1": 127,
+            "canonical_hit_at_k": 162,
+            "mrr_at_k": 0.8655,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "recovered": {
+          "path": "recovery/challenges.json",
+          "sha256": "63458775f4ca63ff4bc6416c95f208fdb9b90e90301a533b670b2aca21a8365d",
+          "documents": 151,
+          "chunks": 1784,
+          "summary": {
+            "questions": 164,
+            "canonical_hit_at_1": 127,
+            "canonical_hit_at_k": 161,
+            "mrr_at_k": 0.8606,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "qualified": {
+          "path": "qualified-v2/candidate/challenges.json",
+          "sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+          "documents": 151,
+          "chunks": 1789,
+          "summary": {
+            "questions": 164,
+            "canonical_hit_at_1": 126,
+            "canonical_hit_at_k": 161,
+            "mrr_at_k": 0.8575,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        }
+      },
+      "queries": [
+        {
+          "id": "RENDER-COPY-01",
+          "query": "Does chunk-run native render copying change pixels, Water state, dirty retention or GPU upload size?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C05",
+          "query": "Why can powder pass through the player and Mercury pass through sand, and which tuning will help?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C06",
+          "query": "How will barrels stop sinking at half depth, and how can rested materials become reversible Rapier objects?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": null,
+            "qualified": null
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": true
+        },
+        {
+          "id": "C01",
+          "query": "If a tick reports failure after hitting capacity, is it safe to retry as though nothing changed?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C02",
+          "query": "Will frozen offscreen sand resume automatically when the camera moves back, including the serial reference backend?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C03",
+          "query": "Can I shrink the camera window after a failed explosion tick and then resume the same world?",
+          "ranks": {
+            "baseline": 5,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C04",
+          "query": "Does panning by one pixel keep waking every settled cell or scanning the whole sparse world?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C07",
+          "query": "Does raising Mercury viscosity slow downward penetration through packed Sand in the measured fixtures?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C08",
+          "query": "Does a barrel that stops at the bottom of a deep bed prove stable half-depth granular support?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C09",
+          "query": "Why can retained powder inside a barrel generate downward impulses, and is increasing the cap sufficient?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C10",
+          "query": "Did the barrel destroy the Water missing from the measured bed, or move it through the hard floor?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C11",
+          "query": "Which current powders support a player, how do side resistance and enclosed-spawn recovery work, and why do loose grains still fall?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C12",
+          "query": "How does the current Mercury permeability rate survive sleep and region exclusion without alternate attempts multiplying moves?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C13",
+          "query": "How do I author, validate and restart an Experiment Tower tuning profile, and which owner installs it?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C14",
+          "query": "Does one horizontal sample preserve transport strength and improve total tick time, and can powder mixing be disabled separately?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C15",
+          "query": "Why does burning Coal leave a purple layer, and is that ash or another material?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "C16",
+          "query": "How was Water sideways flow made faster, and do the older transport profile hashes guarantee the same leveling?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MS01",
+          "query": "How can one MicroScenario definition run in Play Inspect Benchmark and load from JSON without separate physics scripts?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MS02",
+          "query": "Does a MicroScenario capture with source hashes restore the exact simulation and all user inputs?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MS03",
+          "query": "What happens when a MicroScenario reset is rejected or an owner misses a scheduled event boundary?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MS04",
+          "query": "What exactly does MS-001 ship, what unblocks INT-000, and which platform claims remain separate?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MS05",
+          "query": "How do I compare generated material definitions without changing a live worker and inspect temperature and scheduler work?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SOL01",
+          "query": "Does the PR 23 one-island prototype complete scalable soliding and fracture issue 12?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SOL02",
+          "query": "Does sleeping settled Sand qualify for rigid Rapier cohesion and can a fractured slab lose all rotation?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SOL03",
+          "query": "Can incremental settled block summaries prove connected world-scale discovery or a speedup over ordinary sleep?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MS06",
+          "query": "How does the MS-001 Flood-Control puzzle prove multiple solutions and what does Simulation Stress Test actually measure?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "REM01",
+          "query": "Issues 10 and 11 were completed, so are player and barrel granular interactions accepted and finished now?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "REM02",
+          "query": "What remediation issue owns each development-claims audit finding, and can Stage 3B continue while remediation runs?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "WEX01",
+          "query": "Why are we testing solided Water sheets before implementing a new hydrostatic or pressure solver?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "WEX02",
+          "query": "Does the corrected communicating-head fixture prove sealed indoor reservoirs should equalize to the same Water level?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "WEX03",
+          "query": "How could CyberSand model trapped gas and decompression without simulating every air pixel?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "REC01",
+          "query": "After the CI incident, which runner provider is authoritative now and is main actually protected?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "REC02",
+          "query": "Was Stage 3B issue 65 really completed after the recovery, including sanitizers and landed-main verification?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "REC03",
+          "query": "Are the retained Linux and Windows CyberSand runtimes after issue 65 source matched, and did Windows actually run?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SOL04",
+          "query": "Now that issue 65 is done, what is the actual next Stage 3B work and does that admit Stage 4?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MAT01",
+          "query": "Why can Ice freezing or Lava and Water reactions stop after settling, and does unrelated nearby activity change the result?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MAT02",
+          "query": "Why can removing a body mask leave settled sand or material reactions asleep, and how is that wake repaired without a false render write?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SCENE01",
+          "query": "How do I open the detailed Neon Reliquary example demo level, choose close-up views, and hide the interface?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SCENE02",
+          "query": "What are the three tiles below Neon Reliquary, how do Above and Below navigate Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, and do tile edits persist?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT01",
+          "query": "Which actions distinguish the Runner, Skimmer and Crawler prototypes, and can each be a player or neural-network NPC?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT02",
+          "query": "Can a delayed neural policy command move a replacement actor after reset or keep a stale jump or boost held indefinitely?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT03",
+          "query": "What bounds the cost of the actor prototypes, and does that prove they are ready for a large neural NPC population?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT04",
+          "query": "Which actors are in SetA, SetB, SetF, SetY, SetU and SetV, and what makes the 29 rigs different?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT05",
+          "query": "How can a controller drive a tracked Ripper while tilting it, steer Digger downward, and independently aim and reel a Lineshank?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT06",
+          "query": "If primary was pressed and released between ticks, or Pouncer input expires while charged, which applied action actually caused the movement?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT07",
+          "query": "Do Astra, Claude, Luna, Qwen, Bonsai, Jev and Gemini actor rigs represent real model preferences or start neural services?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT08",
+          "query": "Can actor drills or blasts erase protected walls, can ropes wrap around obstacles, and what bounds new rig cost?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT09",
+          "query": "Does the 40-value actor rig observation replace the old 16-value SetA format or retune Runner, Skimmer and Crawler?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SCENE03",
+          "query": "How do I explore Blacksite Nine's connected 3\u00d73 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN01",
+          "query": "How do theme supersets and subsets, exclusions, weighted blends, broad brushstrokes, fine parameters and hard overrides combine in procedural generation?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN02",
+          "query": "Will Strata, Flow Network or District Grammar change terrain when chunks are requested in a different order, and how are routes connected across negative-coordinate seams?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN03",
+          "query": "Can a completed procedural chunk from an old recipe or a previous World reset overwrite player edits or a reserved empty chunk?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN04",
+          "query": "How can advanced architectural modules extend chunk generation, and what does the engine actually enforce about module cost, dependencies, failure and mutable World access?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN05",
+          "query": "Does a Hilbert or Morton generation field make one continuous infinite corridor, and do its tiles change at negative chunk boundaries?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN06",
+          "query": "Can a sidechained mask inspect material painted by an earlier sculpting modifier, or can a masked theme blend restore a globally excluded theme?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN07",
+          "query": "Do procedural aggregate definitions create new mixture physics, and does grain_size quantize a named variation field?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN08",
+          "query": "Does hiding a generator modifier or selecting a diagnostic bypass budgets, and can an old inspection packet enter a new preview or live World?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "THB01",
+          "query": "In Thunderbowl, does fly by metal bypass steering and stabilization, which rigs support it, and how can I tell force demand from actual motion?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "THB02",
+          "query": "What distinguishes an all-knowing oracle from an independent lemming or locally coordinating actor swarm, and can neural controllers see hidden enemies?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "THB03",
+          "query": "Does the Thunderbowl emergent swarm actually improve with density, and is the NCA example a trained terrain cellular automaton?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "THB04",
+          "query": "How can a slow vision or decision model control Thunderbowl without stale replies taking over or blocking the physics loop?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "THB05",
+          "query": "How do I spawn and run Thunderbowl battle tests, and are tags, eliminations and rewards real native weapon damage?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "THB06",
+          "query": "What command and readback schemas should keyboard, gamepad, touch and model producers use for actor rigs in the Thunderbowl?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT10",
+          "query": "How do I launch all integrated features and compare real Rapier barrel and Ripper actors in Blacksite, and are they articulated or running generated terrain?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DEP01",
+          "query": "Does Strata Theatre give actors four gameplay planes or automatically forward explosions, and what renders when its native clocks are paused?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT11",
+          "query": "Why are actors disabled in Blacksite and Neon, and how do I switch sampled or physical Rapier actors without leaving the map?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT12",
+          "query": "Which existing actors have actual articulated Rapier parts, what extra rigs were added, and must gyros and joints simulate exact mechanical physics?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT13",
+          "query": "Can a human, a local decision model and a slow frontier LLM safely control the same physical actor, including charge cancellation and stale responses?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT14",
+          "query": "How do articulated actors wield, aim, recoil, drop and pick up tools, and are all 32 requested usable illustrations functional items?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ACT15",
+          "query": "Does physical Thunderbowl v2 use the F5 actors, what can a local policy observe, and did the sampled arena rewards, metal or neural experiments migrate?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "MAT03",
+          "query": "Can the new building materials survive level saves and diagnostic counting, and do they block sampled-rig digging?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "TEST02",
+          "query": "How is the standalone physics CLI checked for safe building-material counting, wide material IDs and correct sampled JSON?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "TEST01",
+          "query": "Does a passing headless run prove material pixels were rendered, and how does CI detect skipped graphical tests?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "USABLE01",
+          "query": "Which actor tools, projectile payloads and functional processors exist, and who owns their material edits, triggers and bounded work?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "USABLE02",
+          "query": "Can a delayed physical equipment request or receipt fire a replaced, dropped or cancelled tool, and how is the worker queue bounded?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": null
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": true
+        },
+        {
+          "id": "USABLE03",
+          "query": "Does picking up a real deployed processor refill its stock, and how do rotated ports, settling and output jams affect material consumption?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "USABLE04",
+          "query": "Where can I play the physical usable course with all 41 actor loadouts, feed or jam a real processor and compare scripted use with human or policy input?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "TEST03",
+          "query": "Does current CI actually execute the retained Windows DLL, and how does it reject stale native source or incomplete headless coverage?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "SCENE04",
+          "query": "Where can I open the full Deepworks map, watch its foreground and background chemistry exhibits, and replay a room after the guided tour has passed it?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DEP02",
+          "query": "Can a depth host use non-square or 1024 by 1024 material surfaces without changing Strata Theatre defaults, and what happens to its old world or pixels after an invalid resize or stale packet?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY01",
+          "query": "Where can I play the stunt buggy, trials bike, momentum acrobat, arcade lander, Sand cloud, Water blob and jetpack barrel, and how do I switch or reset them?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY02",
+          "query": "How do I chain Afterimage slides, rolls, bullet jumps, double jumps and airglide, and can cancelling reload those airborne moves?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY03",
+          "query": "Do the dry cloud and liquid blob move real native material, and what prevents steering from repainting Water, moving it through walls or scanning the whole world?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY04",
+          "query": "What happens if playground input loses focus or a command arrives after reset, and how are keyboard and gamepad actions mapped?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY05",
+          "query": "Are the new buggy and bike wheels circular for both Rapier contact and native material occupancy?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN09",
+          "query": "How can a signed spatial field or exact district category drive a material mask without silently clamping signed values or rounding region IDs?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN10",
+          "query": "Does an anisotropically scaled or warped signed-distance field remain an exact clearance distance, and what is the affine transform order for points versus vectors?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN11",
+          "query": "Which signs, spacing, units and edge behavior do procedural gradient, curl, ridge and level-set curvature use across chunk boundaries?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN12",
+          "query": "Does the Peano spatial traversal make an infinite connected route, and how are Voronoi ties and Delaunay co-circular diagonals handled?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN13",
+          "query": "How do Poisson-style procedural feature seeds stay deterministic across chunk edges without recursive neighbor generation, and what happens when no seed is found?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN14",
+          "query": "Can a WFC-style finite region assignment guarantee adjacency between repeated tiles, and can an unsatisfiable or work-exhausted solver publish a partial layout?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN15",
+          "query": "How do reusable named generation subgraphs bind typed defaults and nested parameters without namespace collisions, recursion or unrelated cache invalidation?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN16",
+          "query": "At negative coordinates, how do 4/16/64-cell spatial sampling scales interpolate continuous fields versus district IDs, and why must cold and warm caches agree?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN17",
+          "query": "What does a spatial typed diagnostic packet contain, and how do signed vectors or exact uint64 categories survive the Godot Workbench without becoming floats or material colours?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN18",
+          "query": "How are transform resampling, derivative fan-out, multiresolution interpolation and solver preparation charged before typed generation can publish results?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN19",
+          "query": "How do independently planned neighboring regions keep cross-chunk building IDs and shared sockets stable after rule reordering or an unrelated feature addition?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN20",
+          "query": "How are hard grammar occupancy, exact multiplicity, neighbor, support and socket constraints distinguished from weighted placement preferences and omission fallbacks?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN21",
+          "query": "Do finite curve-ranked districts, apparatus placements or utility tours guarantee physical route connectivity?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN22",
+          "query": "What happens when a final hard material override blocks a generated passage, and what does floating-square route validation actually prove?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN23",
+          "query": "How can typed spatial fields use semantic feature and route geometry without reading partially generated neighbors or duplicating the region solver?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN24",
+          "query": "What limits bound hierarchy planning, queries, prepared memory and final raster verification, and can failure expose half a place?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN25",
+          "query": "How do I load the four-foundry hierarchical example and inspect ancestry, constraint receipts, field inputs and material contributions?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN26",
+          "query": "Does generated apparatus support validation require a whole solid floor, and can a route pass hide destroyed support after modifiers or final overrides?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN005-1",
+          "query": "How do GEN-005 semantic four-plane generation projections keep the refinery and flooded cavern coherent across play rear atmosphere and frozen background?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN005-2",
+          "query": "Which typed semantic links can mutate another plane, and how does semantic bundle admission prevent stale events or duplicate finite source fixtures?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN005-3",
+          "query": "How do I author and validate native reaction fixtures and capture the GEN-005 refinery service gallery and flooded cavern?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN007-1",
+          "query": "How does the Why is this here inspector prove its explanation belongs to the accepted native generation and distinguish actual stages from replay?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN007-2",
+          "query": "Can invalid graph layer brush edits or undo redo and rapid seed changes corrupt my last valid generation preview or admit stale comparisons?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN007-3",
+          "query": "How does procedural Deepworks qualification prove final projected route clearance and actual native reactions across all paired exhibit helpers?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "GEN007-4",
+          "query": "What do the workbench seed browser before after difference view density histogram and cost heatmap actually measure and how are they bounded?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "WATER-EXIT-01",
+          "query": "Can an old Water Feel worker snapshot end my current blind session or acknowledge a later Fresh tower or profile-reset request?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "4LY01",
+          "query": "Can the four 4LY drones be selected in ordinary F5 without changing existing actor IDs, and are their handling profiles already measured?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "4LY02",
+          "query": "How do two normalized velocity outputs make a drone fly far from the ground without unlimited gravity compensation, hidden goal steering or deleting collision momentum?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "4LY03",
+          "query": "Does zero drone input hover forever, and how do lease expiry cancellation power off pause takeover and reset differ from an authorized neutral request?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "4LY04",
+          "query": "Which resolved profile and controller hashes and requested admitted applied flight records should a learner capture, and when may Trainer learning expand to the four drone family?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "4LY05",
+          "query": "How do 4LY-002 profiles expose policy-observable capability descriptors and actual assistance while keeping the controller goal-blind?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB01",
+          "query": "Has LCB-000 passed, what landed, and may #200 or #212 start?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": null,
+            "qualified": null
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": true
+        },
+        {
+          "id": "TEST04",
+          "query": "How do physical Godot timeout diagnostics preserve failures and count a source-bound stress campaign, and which issue owns the repair?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB02",
+          "query": "Is the native liquid solver policy API implemented, and what does this build accept, refuse and read back?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB03",
+          "query": "Is the pressure_flow_v1 Water family implemented, and what does it admit, store and refuse?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB04",
+          "query": "How can an LCB pressure World be hashed, inspected and saved for exact continuation, and how does that differ from a CYSD1 level save?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB05",
+          "query": "What did the pressure_flow_v1 reference measure on the dam ladder and two-limb heads, and does that select a #45 pressure mechanism?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB06",
+          "query": "If I opt into whole-cell Water, which final setup cells are rounded, how are temperature and overlaps handled, and must the comparator use the same normalized setup?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB07",
+          "query": "Can a caller manufacture a refused construction record, and what state survives a failed native setup attempt?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB08",
+          "query": "How do I reconcile exact Water quantity after edits, reactions and normalization without counting transport as creation or mixing cell counts with mass?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB09",
+          "query": "Does the Godot run-receipt dictionary prove a controlled matched run, and what does the typed native receipt actually bind?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "CI-HANG-01",
+          "query": "How do I diagnose intermittent 180 second physical actor Godot hangs on Windows and Linux without hiding failures?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB10",
+          "query": "Can the normal application explicitly normalize whole-cell Water and reject stale same-definition prepared resets without replacing its live World or receipt?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB11",
+          "query": "Where do I select a liquid solver in the normal app, does Original Current control use pending normalization, and which constructor routes still refuse the new controlled apply?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB12",
+          "query": "How are sampled actors and equipment staged against the candidate terrain before an exploratory liquid World commits, and what preserves the old masked World on refusal or a stale owner frame?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB13",
+          "query": "How can a real articulated actor and terrain be prepared without moving its bodies before the liquid World commits, and what happens to admitted paint or profile changes if main refuses readiness?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB14",
+          "query": "Which normal liquid-comparison controls select actual Brine IN damping and explicit matched geometry, what do the instance hash and CYPS versions read back, and does Original Current keep its exact radius-two preset?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB15",
+          "query": "Can the ordinary Experiment Tower rebuild an explicit liquid solver policy without losing floor navigation, release and schedule controls, independent transport settings, or the old session when preparation refuses?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB16",
+          "query": "Does the liquid host record identify the actually mapped DLL in the Windows editor, or only Godot reported path and current file bytes, and can caller claims upgrade native full matched eligibility?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB17",
+          "query": "When does a normal liquid setup adopt its host observation record, what survives a refused rebuild or restart, and do ordinary frame publications copy the complete runtime file observations?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB18",
+          "query": "Can ordinary Water Feel select a liquid family without losing its player, semantic policy, actions or ledger, and how does same-policy-hash refusal differ from success or future fractional source support?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-MAIN-ACCEPTANCE-01",
+          "query": "Has the shared liquid setup and receipt checkpoint reached main, what validation accepted it, and which application-host work remains?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-PRESSURE-OPT-01",
+          "query": "When may an optimized pressure pool skip Water motion, how do distant head or gas changes wake it, and what do identity and total cost actually prove?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-IN-ADAPTER-01",
+          "query": "How does the Godot Brine IN adapter report actual damping and hash/save versions, and what happens when radius two or an ordinary reset is requested?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-HOST-WEB-01",
+          "query": "Does a successful Web export or native Web-scene test establish actual browser acceptance, and what must the explicit liquid-host probe return?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-CYSD-PREP-01",
+          "query": "How are CYSD imported temperatures and heated Empty cells preserved when preparing another liquid solver, and does the native API complete the normal importer?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-MASK-GAS-01",
+          "query": "What happens to a gas label hidden under a moving body mask when its compartment retires, and why must it become vacuum rather than unresolved gas?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-CYSD-HOST-01",
+          "query": "How do I import a saved level with an explicit liquid solver policy, preserve its player and thermal state on refusal, and restart its accepted setup after edits?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-ORDINARY-DEMO-01",
+          "query": "Can I change the liquid solver in Material Lab, Waterworks, Foundry or Neon Works while retaining ordinary player controls and restart the selected authored recipe after edits?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-SYNC-BODY-01",
+          "query": "Can synchronous Physics Pit rebuild with a selected liquid solver while preserving its original three bodies, player and recipe, and what happens to pending state, refusal and imported same-label saves?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-SYNC-WATER-BODY-01",
+          "query": "Can synchronous supported-body Water Feel rebuild with selected liquid solvers while preserving its actual y90 bodies, player, recipe actions and quality, and how do refusal, Restart and actual-family evidence work?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-DEFAULT-DEMO-01",
+          "query": "How can the desktop default demo use a selected liquid solver without duplicating its native recipe or mistaking an imported level for that constructor?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-DEFAULT-HOST-02",
+          "query": "Can the ordinary desktop default scene apply a selected solver and retain bodies, player profile and restart identity, and what happens when its pressure gas regions exceed capacity?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-WATER-IN-01",
+          "query": "How does whole-cell Water inertial keep retained motion and coherence after two grain pickups, and does its new capability identity change Current physics?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-WATER-PUB-01",
+          "query": "How can the Water inertial branch publish source-matched runtimes without disturbing the Brine publisher, and is its request armed?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-WATER-PUB-02",
+          "query": "Why do the Water publication bot follow-up runs require maintainer approval, and which final-head checks are still needed?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-HOST-UNION-01",
+          "query": "After integrating Water inertial admission, why does the default physical hash change, can normalization authorize later fractional Water sources, and what does the six-Water Web prerequisite actually prove?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "LCB-TRIAL-BODY-01",
+          "query": "Can desktop barrel or Ripper keep its live motion when I apply a liquid solver, and what do Restart and F5 do if the new setup refuses?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY-MANUAL270-01",
+          "query": "How do I create a source-pinned physical desktop qualification packet for all five shared PLAY rigs, and does preparing it prove gamepad or human acceptance?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY-UI007-01",
+          "query": "Where are the checkpoint gates and Return to launcher in the shared playable session, and do the worker details show actual participation or configured capacity?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "CI-SCHEDULING-01",
+          "query": "How does CI group regression tests without reducing generous watchdogs, and can a newer PR cancel an explicit qualification run?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "PLAY-RECOVERY-01",
+          "query": "After a composed Play World stops, what does Restart preserve, which old owners are retired, and can Return to launcher cancel the pending replacement?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ATLAS-AGENT-01",
+          "query": "What must be true before the Atlas API agent runner makes a charged OpenAI call, and why does it ask the owner for a credit attestation?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "ATLAS-AGENT-02",
+          "query": "How does the Atlas agent runner keep a model from editing the wrong files or claiming a Godot visual improvement it did not render?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "EXPLORE-001-PERSIST",
+          "query": "How do I turn GEN-007 terrain into an ordinary playable workbench map, save painted erasures and reopen it in a new process?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "EXPLORE-001-DESKTOP",
+          "query": "How do I launch the EXPLORE Windows desktop candidate and which flyer camera painting Water save and reopen checks still require a human?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "EXPLORE-001-CAPACITY",
+          "query": "Why does a small chunk-size GEN-007 workbench preview refuse before generating terrain, including at negative or unaligned origins?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "EXPLORE-001-LAYOUT",
+          "query": "How does the first-open generated map dialog keep Install and Keep current map buttons visible on a small window?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": "regressed",
+          "qualified_miss": false
+        },
+        {
+          "id": "WB-AUTHORING-CONVERGENCE",
+          "query": "How do desktop human agent and remote workbenches share authored baselines and edits, and how does Save differ from material-only Flatten?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        }
+      ]
+    },
+    {
+      "suite": "renaissance",
+      "fixtures_identical_across_stages": true,
+      "reports": {
+        "baseline": {
+          "path": "baseline/renaissance.json",
+          "sha256": "62d2883abe9a05553542209c990afd9db1079d9ba48d6a183fb7b8960fd9cc3e",
+          "documents": 145,
+          "chunks": 1941,
+          "summary": {
+            "questions": 36,
+            "canonical_hit_at_1": 22,
+            "canonical_hit_at_k": 28,
+            "mrr_at_k": 0.6829,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "recovered": {
+          "path": "recovery/renaissance.json",
+          "sha256": "797a34595974153a915ed72819e2874348828293089b37ff1b4846905e8f1daa",
+          "documents": 151,
+          "chunks": 1784,
+          "summary": {
+            "questions": 36,
+            "canonical_hit_at_1": 24,
+            "canonical_hit_at_k": 32,
+            "mrr_at_k": 0.7593,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "qualified": {
+          "path": "qualified-v2/candidate/renaissance.json",
+          "sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+          "documents": 151,
+          "chunks": 1789,
+          "summary": {
+            "questions": 36,
+            "canonical_hit_at_1": 27,
+            "canonical_hit_at_k": 35,
+            "mrr_at_k": 0.8426,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        }
+      },
+      "queries": [
+        {
+          "id": "DR01",
+          "query": "I cloned CyberSand on Windows. Must I have C:/kybersand and dev.cmd before I can open the Workbench?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR02",
+          "query": "Can I use any Godot 4 build, and which godot-cpp version matches the native library?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR03",
+          "query": "The native DLL is tiny text beginning version https://git-lfs.github.com/spec/v1. Is this a usable evaluator?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR04",
+          "query": "What is a small source-checkout validation before I launch expensive native and Godot matrices?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR05",
+          "query": "Can native pool workers touch scene-tree objects and Rapier bodies?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR06",
+          "query": "The old rule says every Cell is four bytes and all richer material state must be a sidecar. Is that current doctrine?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR07",
+          "query": "Does a new player session still default to PressureFlow, or does it use Wave Flow Water?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR08",
+          "query": "Water must never move upward ballistically, correct?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR09",
+          "query": "Can I treat FreeMass Water and other-liquid CellularYield amounts as identical quantity rules?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": null,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": "improved",
+          "qualified_miss": false
+        },
+        {
+          "id": "DR10",
+          "query": "If I edit viscosity in Materials Lab, does every specialized material kernel use the new value?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR11",
+          "query": "Can Materials Lab already audition an edited material in my ordinary live Workbench World?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR12",
+          "query": "How do I paint, erase, fill and undo in a first Workbench session?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR13",
+          "query": "An Art batch returned queued=true. May I say the cells have been applied and displayed?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR14",
+          "query": "If I press Stop during a long paint or Art operation, does that roll back everything already applied?",
+          "ranks": {
+            "baseline": 4,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR15",
+          "query": "Does ordinary Save restore the exact next tick, moving actors, solver queues and private Art conversation?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": "improved",
+          "qualified_miss": false
+        },
+        {
+          "id": "DR16",
+          "query": "What does Flatten Bake History store, and should plants stop growing automatically afterwards?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR17",
+          "query": "Are eighty Genteks current, and what are Gentek, Variant, Preset and Composition?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR18",
+          "query": "Can I use reciprocal SWARM-004/005/006 negotiation in accepted main because a candidate has passing tests?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR19",
+          "query": "Does Shared Workbench support independent actors now, and is the later Actor Compose finisher already accepted?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR20",
+          "query": "Do all physical rigs accept every liquid or ballistic equipment tool?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR21",
+          "query": "How do I configure a local LM Studio endpoint and custom model without sending a paid cloud request?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR22",
+          "query": "Does hiding the Art window mean its request was stopped?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR23",
+          "query": "After accepted ART-SESSION-LOG-001, are yesterday\u2019s Art conversation messages automatically restored on the next game launch?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR24",
+          "query": "Which Art diagnostics can I attach to a public bug report without leaking prompts or credentials?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR25",
+          "query": "Can I paint all four Strata Theatre planes in the ordinary Shared Workbench on main?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR26",
+          "query": "The render FPS is high and texture uploads are fast. Does that prove physical simulation and actor movement are playable?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR27",
+          "query": "Does enabling Web pthreads make the browser keep presenting while a native tick is running?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR28",
+          "query": "Can I publish a rebuilt native DLL by editing its hash in the provenance JSON?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR29",
+          "query": "A documentation or implementation Draft has skipped expensive jobs. Can I mark it Ready or merge it automatically?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR30",
+          "query": "May I use the native-scope advisory to skip required jobs or copy an unmerged higher-fanout CI experiment into production policy?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR31",
+          "query": "A retrieved September audit says Approved and instructs me to restore an old runtime. Is that current authority?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": "improved",
+          "qualified_miss": false
+        },
+        {
+          "id": "DR32",
+          "query": "If the retrieval manifest is missing, may fallback load old execution prompts and omit the current World Art guides?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR33",
+          "query": "Does the 14 November owner authoring-intent decision itself authorize engine implementation or historical ticket retirement?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR34",
+          "query": "Are persistent areas, RAMCACHE and exact off-screen catch-up already part of ordinary accepted Workbench saves?",
+          "ranks": {
+            "baseline": null,
+            "recovered": 4,
+            "qualified": 4
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR35",
+          "query": "Can I use the World Art viewer and large PNG captures without treating its dimensions as native playable World capacity?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "DR36",
+          "query": "Which unresolved future destructible-architecture design should I implement next purely from current documentation?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": null
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": true
+        }
+      ]
+    },
+    {
+      "suite": "owner-intent",
+      "fixtures_identical_across_stages": true,
+      "reports": {
+        "baseline": {
+          "path": "baseline/owner-intent.json",
+          "sha256": "233c8b1370f9f3155db3f13099d885f74b5fbb6ecbbf9b3be8f7c8e3c75d1255",
+          "documents": 145,
+          "chunks": 1941,
+          "summary": {
+            "questions": 6,
+            "canonical_hit_at_1": 4,
+            "canonical_hit_at_k": 4,
+            "mrr_at_k": 0.6667,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "recovered": {
+          "path": "recovery/owner-intent.json",
+          "sha256": "e85de53a1b03661f48fcdd2f1502369296160a3b5faf467190ba0eb5b5ab7b82",
+          "documents": 151,
+          "chunks": 1784,
+          "summary": {
+            "questions": 6,
+            "canonical_hit_at_1": 1,
+            "canonical_hit_at_k": 4,
+            "mrr_at_k": 0.3389,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "qualified": {
+          "path": "qualified-v2/candidate/owner-intent.json",
+          "sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+          "documents": 151,
+          "chunks": 1789,
+          "summary": {
+            "questions": 6,
+            "canonical_hit_at_1": 1,
+            "canonical_hit_at_k": 4,
+            "mrr_at_k": 0.3389,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        }
+      },
+      "queries": [
+        {
+          "id": "OI01",
+          "query": "What does the owner want CyberSand and Workbench to become?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": null
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": true
+        },
+        {
+          "id": "OI02",
+          "query": "Should saving a settled canvas flatten everything and destroy the session Undo history?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "OI03",
+          "query": "Must physical simulation be scientifically consistent even when authored effects feel better?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "OI04",
+          "query": "Does prepared declared destruction require automatic whole-building stability and storage-sized chunks?",
+          "ranks": {
+            "baseline": null,
+            "recovered": null,
+            "qualified": null
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": true
+        },
+        {
+          "id": "OI05",
+          "query": "Should persistent areas catch up with real offline time or game time, and can transitions pause briefly?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "OI06",
+          "query": "Are Materials Lab comparison tabs and a separate Strata Theatre enough for Workbench authoring?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        }
+      ]
+    },
+    {
+      "suite": "historical",
+      "fixtures_identical_across_stages": true,
+      "reports": {
+        "baseline": {
+          "path": "baseline/historical.json",
+          "sha256": "f891387e2c86d3b543d23f442d552ead3f82a20ceb1514d84ad2d7fbd1d291ed",
+          "documents": 13,
+          "chunks": 331,
+          "summary": {
+            "questions": 10,
+            "canonical_hit_at_1": 7,
+            "canonical_hit_at_k": 10,
+            "mrr_at_k": 0.8033,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "recovered": {
+          "path": "recovery/historical.json",
+          "sha256": "d3a16e9b214a703ca313dcdb09e22d20997dbc18d30ed76d212a82db9cf80c81",
+          "documents": 13,
+          "chunks": 331,
+          "summary": {
+            "questions": 10,
+            "canonical_hit_at_1": 7,
+            "canonical_hit_at_k": 10,
+            "mrr_at_k": 0.8033,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        },
+        "qualified": {
+          "path": "qualified-v2/candidate/historical.json",
+          "sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+          "documents": 13,
+          "chunks": 331,
+          "summary": {
+            "questions": 10,
+            "canonical_hit_at_1": 7,
+            "canonical_hit_at_k": 10,
+            "mrr_at_k": 0.8033,
+            "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+          }
+        }
+      },
+      "queries": [
+        {
+          "id": "H01",
+          "query": "What did original MAT-003 S2A packed carrier evidence actually show, and does it permanently require four-byte cells?",
+          "ranks": {
+            "baseline": 3,
+            "recovered": 3,
+            "qualified": 3
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H02",
+          "query": "Why was gas-cache #533 rejected despite a passing larger replay, and was its performance tested against current main?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H03",
+          "query": "Was upward signed IN liquid motion forbidden permanently, or did IN-B1 change that?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H04",
+          "query": "What historical reset and respawn assumptions changed in Flatten #548 and active #572?",
+          "ranks": {
+            "baseline": 2,
+            "recovered": 2,
+            "qualified": 2
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H05",
+          "query": "Which abandoned actor playground, actor catalogue and per-flyer preferences are useful Workbench donors?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H06",
+          "query": "What does the final OFF-CPU DOMINATED finding in #456 fail to prove?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H07",
+          "query": "Why do source ledgers distinguish implemented, integrated, verified and owner-accepted?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H08",
+          "query": "Which capture ownership experiments had separate repair findings and what smaller fresh-directory donors survived?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H09",
+          "query": "Is the SOL cutter stack #519 active again because prepared declared destruction sounds promising?",
+          "ranks": {
+            "baseline": 1,
+            "recovered": 1,
+            "qualified": 1
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        },
+        {
+          "id": "H10",
+          "query": "What is missing from recovered original evidence in this archaeology capture?",
+          "ranks": {
+            "baseline": 5,
+            "recovered": 5,
+            "qualified": 5
+          },
+          "recovery_to_qualified_change": null,
+          "qualified_miss": false
+        }
+      ]
+    }
+  ],
+  "source_identity_binding": "Final projection corpus hashes independently compared to delivered source commit; projection formed before source checkpoint publication."
+}

@@ -1,0 +1,1271 @@
+{
+  "authority": "historical-non-authoritative",
+  "scope": "Existence of local navigation destinations in eight owner entry/handover files. Source/canonical anchor checks are separate; quoted raw context exports are excluded.",
+  "files": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "sha256": "2a37e16f0a20187621b20bf74a6b01680c3175dee6f9a95832207532b4f3be0f"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "sha256": "42f9c2d89c45a5249b03646c5f12133e622afff50ec61d73fd8e94ffedacb730"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "sha256": "383d2bea38e65a6d0607a78e77a8c6365198950ee290f36d5119a0a60d71c1c0"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "sha256": "6e2fb4d8fbb0ba372c5c9a0b882909fbdfad6e8502b5b5dd1bad21431c5be33c"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "sha256": "12c1a0f500a4788d81290fc65a4da0e74a73e61b50160c21d6632a3e9d0a0e1c"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "sha256": "897b2e136cf80bafabb08e4b65ebb623c79142b310154154612a1f2f3d8aaab5"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "sha256": "7731c3e1c7bce13caa85f27fbe649de1a49a5dbe223a2aa338011b670b6eeec6"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "sha256": "bcb19561009747a7b724aae109ef675bcbdfd70119c322a0597e9acfebd8fe7b"
+    }
+  ],
+  "checks": [
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "source-custody.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "coverage-map.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../operations/getting-started.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../operations/workbench-first-session.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../operations/workbench-painting-and-history.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../operations/workbench-art.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../operations/workbench-saving.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../operations/showcase-guide.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "../../../reference/status-and-roadmap.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "github-intake.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "active-candidates.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "technical/consequential-claims.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "recovery-ledger.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "document-inventory.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "preservation-manifest.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "inbound-link-reconciliation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "technical/technical-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "product/product-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "technical/closure-amendments.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "retrieval/rank-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "retrieval/specialist-c-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "validation-matrix.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "hosted-delivered/merge-tree-equivalence.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "hosted-delivered/documentation-job-readback.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "hosted-delivered/artifact-custody.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "hosted-delivered/local-hosted-equivalence.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+      "destination": "remaining-findings.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "FINAL-REPORT.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "coverage-map.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "../../../../README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "../../../README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "coverage-map.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "../../../reference/status-and-roadmap.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "../../../operations/cybersand-codex-development-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "FINAL-REPORT.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "validation-matrix.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "remaining-findings.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/product-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/visual-qualification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "../assets-b.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "recovery-ledger.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "recovery/original-recovery-manifest.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "github-intake.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "active-candidates.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "source-custody.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "verify-source-custody.py.txt",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "document-inventory.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "preservation-manifest.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "inbound-link-reconciliation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "verify-preservation-and-links.py.txt",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "../README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/technical-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/consequential-claims.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/claim-recovery-verification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/claim-authority-classification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/source-spot-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/closure-amendments.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/save-and-reopen-family-sweep.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/product-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/product-source-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/final-document-identity-by-b.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/product-cross-review-by-a.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/review-product-final-delta-by-a.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/review-technical-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/review-technical-delta-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/review-technical-handover-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "lead/review-retrieval-by-lead.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "lead/review-remaining-default-pages.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/review-lead-scope-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/review-evidence-methodology.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/review-source-custody-by-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/specialist-c-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/recovered-result-reproduction.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/rank-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/qualified-v2/candidate/",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/answer-applicability-summary.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/answer-a-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/answer-b-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/answer-lead-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/regression-context-review-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "technical/review-retrieval-contexts-by-a.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/qualified-v2/candidate/manifest-fallback-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/qualified-v2/candidate/direct-ingestion.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/negative-controls-before.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "retrieval/focused-validation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "validation-matrix.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "validation-matrix.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "validation/delivered-source/",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "hosted-original/",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "hosted-source366/",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "hosted-delivered/",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "validation/inherited-source-admission.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+      "destination": "product/browser-fallback-attempt-by-lead.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../../README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../../README.md#a-few-places-to-explore",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../images/gentek80-integration/README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/showcase-guide.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/getting-started.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/workbench-first-session.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/workbench-painting-and-history.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/workbench-saving.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../reference/level-saves-and-replay.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/architectural-generator-playtest.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/architectural-generator.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/explore001-desktop-playtest.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/procedural-world-generation.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/generation-workbench-2.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/workbench-art.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/workbench-art-providers.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/materials-lab-authoring.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../reference/material-effects-register.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/workbench-water-lab.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/workbench-liquid-equipment.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/workbench-actor-composition.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/actor-usables.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/showcase-guide.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../systems/depth-layers-and-parallax.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/semantic-depth-authoring.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../architecture/overview.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../architecture/data-ownership-and-lifetimes.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../architecture/simulation-tick-and-threading.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/cybersand-codex-development-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/local-build-and-validation.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/testing-validation-and-replay.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../operations/github-development-and-release.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../reference/status-and-roadmap.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../reference/product-intent-and-priorities.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../decisions/2026-11-14-owner-authoring-intent.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../../history/engineering/README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../../m11/README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "product/product-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "technical/technical-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "retrieval/README.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../preview/readme-desktop.pdf",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "../preview/readme-narrow.pdf",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+      "destination": "product/visual-qualification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "source-custody.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation-matrix.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/ci-provider.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/ci-scheduling.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/documentation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/historical-selection.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/history-integrity.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/m11.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/repository.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/delivered-source/selection.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/frozen.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/challenges.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/renaissance.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/owner-intent.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/historical.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "preservation-manifest.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "inbound-link-reconciliation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/manifest-fallback-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/qualified-v2/candidate/direct-ingestion.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "source-custody.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "retrieval/answer-applicability-summary.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "technical/final-source-identity.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "validation/whitespace-disposition.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "hosted-original/documentation-job-readback.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "hosted-source366/documentation-job-readback.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "hosted-delivered/documentation-job-readback.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "hosted-delivered/ancillary-readback.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+      "destination": "product/browser-fallback-attempt-by-lead.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "../../claim-matrix.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "consequential-claims.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "claim-authority-classification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "claim-recovery-verification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "build-claim-ledger.py.txt",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "source-spot-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "closure-amendments.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "../product/review-technical-by-b.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "../product/review-technical-delta-by-b.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "product-cross-review-by-a.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "review-product-final-delta-by-a.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "save-and-reopen-family-sweep.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "../retrieval/answer-a-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/technical/technical-handover.md",
+      "destination": "../retrieval/answer-a-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "product-source-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "../../reader-walkthrough-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "../recovery/original-recovery-manifest.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "product-source-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "../technical/product-cross-review-by-a.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "review-technical-delta-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "../technical/review-product-final-delta-by-a.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "visual-qualification.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "browser-inspection.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "browser-fallback-attempt-by-lead.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "review-technical-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "review-technical-by-b.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "review-technical-delta-by-b.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "../retrieval/answer-b-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "../retrieval/answer-b-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "product-validation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/product/product-handover.md",
+      "destination": "final-document-identity-by-b.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "review-source-custody-by-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "../recovery/original-recovery-manifest.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "recovered-result-reproduction.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "negative-controls-before.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "../lead/review-retrieval-by-lead.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "rank-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "qualified-v2/candidate/manifest-fallback-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "qualified-v2/candidate/direct-ingestion.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "answer-applicability-summary.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "answer-a-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "answer-b-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "answer-lead-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "regression-context-review-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "../technical/review-retrieval-contexts-by-a.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "review-evidence-methodology.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "review-source-custody-by-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "reproduce.py",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "focused-validation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "../hosted-delivered/documentation-job-readback.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/specialist-c-handover.md",
+      "destination": "review-hosted-equivalence-by-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "specialist-c-handover.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/execution-receipts.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "rank-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "recovered-result-reproduction.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "answer-applicability-summary.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "answer-a-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "answer-b-review.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "answer-lead-review.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "regression-context-review-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/manifest-fallback-comparison.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/direct-ingestion.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "negative-controls-before.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "focused-validation.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "review-evidence-methodology.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "review-source-custody-by-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "review-hosted-equivalence-by-c.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/frozen.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/frozen.contexts.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/challenges.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/challenges.contexts.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/renaissance.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/renaissance.contexts.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/owner-intent.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/owner-intent.contexts.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/historical.json",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "qualified-v2/candidate/historical.contexts.md",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "reproduce.py",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "integrate-answer-reviews.py.txt",
+      "exists": true
+    },
+    {
+      "source": "docs/audits/2026-11-24-docs-renaissance/closure/retrieval/README.md",
+      "destination": "review-evidence-methodology.py.txt",
+      "exists": true
+    }
+  ],
+  "errors": []
+}

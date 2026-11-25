@@ -1,0 +1,57 @@
+"""Independently bind final retrieval bytes and the lead input map to Git."""
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path.cwd()
+OUT = ROOT / "docs/audits/2026-11-24-docs-renaissance/closure"
+SHA = lambda b: hashlib.sha256(b).hexdigest()
+custody_path = OUT / "source-custody.json"
+data = json.loads(custody_path.read_text())
+tree = {}
+for row in subprocess.check_output(["git", "ls-tree", "-rz", data["source_head"]]).split(b"\0"):
+    if not row:
+        continue
+    header, raw_path = row.split(b"\t", 1)
+    mode, kind, obj = header.decode().split()
+    path = raw_path.decode()
+    if not path.startswith("docs/audits/2026-11-24-docs-renaissance/"):
+        tree[path] = {"mode": mode, "type": kind, "git_object": obj}
+assert tree == {k: {z: v[z] for z in ["mode", "type", "git_object"]} for k, v in data["qualification_inputs_excluding_mission_evidence"].items()}
+
+checked = {}
+for suite in ["frozen", "challenges", "renaissance", "owner-intent", "historical"]:
+    report = json.loads((OUT / "retrieval/qualified-v2/candidate" / (suite + ".json")).read_text())
+    for row in report["corpus"]:
+        if row["path"] not in checked:
+            blob = subprocess.check_output(["git", "show", data["source_head"] + ":" + row["path"]])
+            assert SHA(blob) == row["sha256"]
+            checked[row["path"]] = SHA(blob)
+for path in ["tools/docs/retrieval_eval.py", "tools/docs/retrieval_policy.py", "tools/ci/test_current_retrieval_selection.py", "tools/ci/check_docs.py", ".github/workflows/documentation.yml"]:
+    blob = subprocess.check_output(["git", "show", data["source_head"] + ":" + path])
+    assert blob == (ROOT / path).read_bytes()
+    checked[path] = SHA(blob)
+assert subprocess.run(["git", "diff", "--quiet", data["accepted_main"], data["source_head"], "--", "native", "godot", "third_party", "docs/history"]).returncode == 0
+
+report = {
+    "authority": "historical-non-authoritative",
+    "reviewer": "Specialist C /root/retrieval_evidence",
+    "recorded_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "source_head": data["source_head"], "source_tree": data["source_tree"],
+    "accepted_source": data["accepted_main"], "result": "PASS",
+    "reviewed_custody_sha256": SHA(custody_path.read_bytes()),
+    "qualification_tree_entries_compared": len(tree),
+    "all_recorded_modes_types_git_objects_match_source_commit": True,
+    "qualified_corpus_and_tooling_bytes_independently_compared": checked,
+    "runtime_dependency_historical_source_diff": "git diff --quiet baseline source -- native godot third_party docs/history returned0",
+    "reproduction_script_sha256": SHA(Path(__file__).read_bytes()),
+    "limits": [
+        "The4090 input entry map is checked against Git object identities; it is not a materialized LFS runtime qualification.",
+        "All164 distinct current/historical corpus documents plus5 tool/workflow inputs were separately compared to source-commit bytes.",
+        "New evidence publication may change HEAD while this exact execution-input tree remains unchanged; root final-head qualification supplies that relation."
+    ]
+}
+(OUT / "retrieval/review-source-custody-by-c.json").write_text(json.dumps(report, indent=2) + "\n")
+print(json.dumps({"result": report["result"], "source_head": data["source_head"], "git_entries": len(tree), "corpus_and_helper_files": len(checked)}, indent=2))

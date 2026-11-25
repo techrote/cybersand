@@ -1,0 +1,1246 @@
+{
+  "authority": "historical-non-authoritative",
+  "kind": "immutable working-document projection",
+  "source_revision": null,
+  "checkout_head": "31cd2e5f29b666ae76ca976192e8f8045fa9709e",
+  "source_tree": null,
+  "projection_scope": "Markdown outside audits, selected question fixtures and evaluator/policy helpers; no runtime or image reconstruction",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+      "bytes": 10289
+    },
+    {
+      "path": "README.md",
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "bytes": 8056
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "0a969455d61b0ab30f5feff59cf59ac8337c358cc3cd4b6e0b779bc5033b86f0",
+      "bytes": 8963
+    },
+    {
+      "path": "docs/BUILD_ID.md",
+      "sha256": "7a89c254ade720d22b7daef5a23869221ed98e1fb2191dad3daa784ff16a3dad",
+      "bytes": 13506
+    },
+    {
+      "path": "docs/LARGE_WORLD_PROOF.md",
+      "sha256": "e4fd47d3c06f8f20ba1236bc247a53c3e072d9fc0264bbb04493508786c1fdf9",
+      "bytes": 11428
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "bytes": 16238
+    },
+    {
+      "path": "docs/NEXT_MILESTONE.md",
+      "sha256": "071c2be740e061cba13c2d9b6eff7c1fc047d2fc6dbb4f47f63d7fbd2f50b47f",
+      "bytes": 4740
+    },
+    {
+      "path": "docs/PERFORMANCE.md",
+      "sha256": "ade546c75863ca8a4cb8125993e98fb9316738a161ddc86a0204d64d4c19cc6b",
+      "bytes": 14940
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "bytes": 11916
+    },
+    {
+      "path": "docs/STATUS.md",
+      "sha256": "020bd134e2615c6561cbb443de2b002011e40dd45121e8ae8599ce6b08022ac9",
+      "bytes": 7570
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "bytes": 17327
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "bytes": 10175
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+      "bytes": 41215
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a",
+      "bytes": 12992
+    },
+    {
+      "path": "docs/architecture/in-tools-gameplay-admission.md",
+      "sha256": "673ab239932f8e069630d24b989806b2e626adba797cc7c9428baeceed665a48",
+      "bytes": 7434
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "3f33223ef0e88e20b22f0775cd731145ac9f946c8f396747d09f69735a7aa022",
+      "bytes": 31169
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "bytes": 6455
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "1f8bae20d9fe8fe39f340430fd1a5216d6c429dfd46e13921ee380349973b802",
+      "bytes": 23097
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "e2ca5966ecf90b0e4d40b013646ac4f3bb34c0c5ae3d9efe7ab641c6c9a96dae",
+      "bytes": 88611
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "bytes": 70018
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "8ee8ef37d787b35c7c0cfd6b74278eb9dd135d7f664e99ad860e06db252ea580",
+      "bytes": 29052
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "bytes": 69643
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "f6a112f5017fa0c0d964d912c0e39451a04d46340a6515fe250dbce808ab177f",
+      "bytes": 10964
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "bytes": 9128
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "57e42584e1320481b46f2f0a62894047b08a7b935197d8edcded228997d1fc9c",
+      "bytes": 32910
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "1df19ea0874396cd77e2b39ca84b47ecb7f616b68f0ff6cabcfaaa8b05264698",
+      "bytes": 20589
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc",
+      "bytes": 7404
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "bytes": 10171
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "29f9df2f79676c0bd9374bbe248a7e9b59dd4412e5fc059bf1c115795f5a2b23",
+      "bytes": 16647
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "b6ad1a6e57f91e4e97ed2be3ab690fac85bdc875a964e73f0a4c51a618696810",
+      "bytes": 26234
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "bytes": 27268
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "bytes": 20144
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "bytes": 48613
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "bytes": 8458
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "bytes": 5746
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2",
+      "bytes": 4914
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223",
+      "bytes": 6515
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "bytes": 3630
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26",
+      "bytes": 5122
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/experiments/script-hotpath-001-native-fill.md",
+      "sha256": "6b4710423e32a8e4b4277bd26101fc44b631f7612f3f4934681177aa0a6aeaf3",
+      "bytes": 6807
+    },
+    {
+      "path": "docs/history/engineering/README.md",
+      "sha256": "19ffc2b3f2a4fa07bf1eb9da97fcb13856c28bb741e3e50afd5dd1e8c6df3616",
+      "bytes": 4537
+    },
+    {
+      "path": "docs/history/engineering/REPORT.md",
+      "sha256": "b17fee8fb34f3e46cc8afe78e538f66e54cbc7f58fd70e99d8be788ad55a4ad3",
+      "bytes": 24825
+    },
+    {
+      "path": "docs/history/engineering/SCHEMA.md",
+      "sha256": "b732e94e686fb3aeae5f30cd4de07a8ea2e4d1516d1e17b19fc3a68d7b7fdc84",
+      "bytes": 6373
+    },
+    {
+      "path": "docs/history/engineering/families/governance.md",
+      "sha256": "d137bfe1ce515bb7ed86c039f585452b253929b625ce30684048cce5973b2d76",
+      "bytes": 17795
+    },
+    {
+      "path": "docs/history/engineering/families/runtime.md",
+      "sha256": "c957c6560d59703fe93d21c46c8655e28d9fdf68aae250d8ce892dbb0fba3633",
+      "bytes": 67273
+    },
+    {
+      "path": "docs/history/engineering/families/simulation.md",
+      "sha256": "2ec8f6ebab93ae6aa8b931a807b45785d677835434821280c70ca36030995e23",
+      "bytes": 63606
+    },
+    {
+      "path": "docs/history/engineering/families/state.md",
+      "sha256": "52f097a3ae300b3191ed0350d73ffe413a73295c17d69fd9d60c26c39ebfd84c",
+      "bytes": 50962
+    },
+    {
+      "path": "docs/history/engineering/qa/review.md",
+      "sha256": "9fbf67b1d0e8a255c8af89b1085d006b9a6f3daff0666b4f460e70e53ef00761",
+      "bytes": 4204
+    },
+    {
+      "path": "docs/history/engineering/retrieval-corpus.json",
+      "sha256": "cc5d22a677d0f6e5c072965e276ae9143919b8b55dd79940eb10f069c62f13fa",
+      "bytes": 951
+    },
+    {
+      "path": "docs/history/engineering/retrieval-questions.json",
+      "sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "bytes": 6584
+    },
+    {
+      "path": "docs/history/engineering/sources/m0-report.md",
+      "sha256": "9cbf0027513ce141b558b636474de5a9886e215f0195f8a834029cdb8f60f1ef",
+      "bytes": 100047
+    },
+    {
+      "path": "docs/history/engineering/views/coverage.md",
+      "sha256": "ab8a427550f96a0616694ccca4da6c422d01530e2b59c05e02a6df617f45cb43",
+      "bytes": 149600
+    },
+    {
+      "path": "docs/history/engineering/views/doctrine.md",
+      "sha256": "d9422e5ef73ad02ecfa32b554c4305fb3d95f029995b1a70314559f8636710f7",
+      "bytes": 32373
+    },
+    {
+      "path": "docs/history/engineering/views/opportunities.md",
+      "sha256": "73a255adcc8a01b082842050144863d1abfcb4adbf6396e7d3e376292a170689",
+      "bytes": 12942
+    },
+    {
+      "path": "docs/history/engineering/views/salvage.md",
+      "sha256": "f8d365d3f770984b40aabc1b1c19508ce291089a524cca0e3e5190d59c926fa1",
+      "bytes": 101965
+    },
+    {
+      "path": "docs/images/gentek-interlaced/README.md",
+      "sha256": "734357003a89013d1f38ccf9fe7004d9bd8221e66a7e77ee725882b4618607fa",
+      "bytes": 6604
+    },
+    {
+      "path": "docs/images/gentek-interlaced/independent-review.md",
+      "sha256": "c5e778b38f7e6f65dee9faf79239e85500d5afc3a242bed0fff5a458af555104",
+      "bytes": 7350
+    },
+    {
+      "path": "docs/images/gentek-interlock/README.md",
+      "sha256": "35a927eec3797ec62836b963a37f7de392f2dac07d2ae210b114acb485681030",
+      "bytes": 15555
+    },
+    {
+      "path": "docs/images/gentek-interlock/independent-review.md",
+      "sha256": "7b39a60b17780d6f1c7859563aea99a8dbe3366c5d9af9332fc434f818db17f4",
+      "bytes": 7418
+    },
+    {
+      "path": "docs/images/gentek-megablock/README.md",
+      "sha256": "ee4fde7ea943951440997d2a84eb40228d45d387ae69f6f251f753ec308dd968",
+      "bytes": 7228
+    },
+    {
+      "path": "docs/images/gentek-megablock/independent-review.md",
+      "sha256": "fad225c594f274a177cf4f0eb3569d5e433f675d00175f99b857d06b672eb00a",
+      "bytes": 28293
+    },
+    {
+      "path": "docs/images/gentek-megablock/native-validation.md",
+      "sha256": "1c8e3af9a5e5f8e594ed152b9b67b9a7e8e309cc24b17b1774beec04b3fff700",
+      "bytes": 8629
+    },
+    {
+      "path": "docs/images/gentek-megablock/performance.md",
+      "sha256": "924c2efd3c4c0cc30d913659d9879fbdeddbf07946e22ff5525de55fc04ce6f6",
+      "bytes": 720
+    },
+    {
+      "path": "docs/images/gentek-megablock/qualification.md",
+      "sha256": "01cfd32493d23f2debe30d8a9882e246acf32a9ad63d138c14149ebaf0e0dd7b",
+      "bytes": 16795
+    },
+    {
+      "path": "docs/images/gentek-megablock/seed-survey.md",
+      "sha256": "39418a89b8df37bf5f3165202183eab94c62d5cc1a9d488fa3614270d71c1079",
+      "bytes": 4467
+    },
+    {
+      "path": "docs/images/gentek-megablock/showcase-programmes.md",
+      "sha256": "6a15cecb3123a5879cfa134c93a3fb59e950be82254cf4354ffbfe6af5c74d60",
+      "bytes": 3044
+    },
+    {
+      "path": "docs/images/gentek-megatruss/GALLERY.md",
+      "sha256": "2ff69ddc72be9842d6a19e1f327e3e36c7a47d2450309c2529da90aa8d660984",
+      "bytes": 4756
+    },
+    {
+      "path": "docs/images/gentek-metabolist/README.md",
+      "sha256": "4d6db6798ef71f6ad1def0d6dd0f9d309d3e73c8249d5d0a7061cf79d46a788e",
+      "bytes": 12531
+    },
+    {
+      "path": "docs/images/gentek-metabolist/independent-review.md",
+      "sha256": "5293534bef2013cdc9ae4de2bcdb49e2bebfd8e5c5959131c4ee7d7757866dcb",
+      "bytes": 7485
+    },
+    {
+      "path": "docs/images/gentek-rosework/README.md",
+      "sha256": "a581275c2f0ddc3dd405130eddf297de033d809fd2a956d29b3d0cd1b69d93b7",
+      "bytes": 5636
+    },
+    {
+      "path": "docs/images/gentek-rosework/independent-review.md",
+      "sha256": "ff7d765fbb0a253e7f971a49191e1481e51b7618ef4d169dd193b1c97599748d",
+      "bytes": 7591
+    },
+    {
+      "path": "docs/images/gentek-suspended/README.md",
+      "sha256": "b9225a0dba9220ca3d3745dd186fb41ada48abfddc7f78c8a6ae14b3f1db09c2",
+      "bytes": 15284
+    },
+    {
+      "path": "docs/images/gentek-suspended/independent-review.md",
+      "sha256": "dd15c94865299bc426a3b70701807ac6217a3431e900ccab66b53774cadc1453",
+      "bytes": 7496
+    },
+    {
+      "path": "docs/images/gentek80-integration/README.md",
+      "sha256": "49f8997c912ea3ad2b8f357ac701728c49ad0bba17f89a72eae59a25feca089e",
+      "bytes": 17720
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "bytes": 9102
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/cell-layout.md",
+      "sha256": "2a95c46deb46acabfccf6960154400449bccd6ab5dc8ab42cd75bb4bf6082b04",
+      "bytes": 13560
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/compact-motion.md",
+      "sha256": "d8eb7e745f9c6d885beecd0041edbcd00e7460863ed4f762c708453b7ffecead",
+      "bytes": 12945
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/decision-review.md",
+      "sha256": "3a571d0a281f681d408c1c494fc52cf4ab1725274fa56bdeedd7875a58ff4af2",
+      "bytes": 11709
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/fractional-presentation.md",
+      "sha256": "6ccce4538aab59b3d9438467751bed14d99ee442fa8313f3a908af97e7cbd348",
+      "bytes": 22636
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/liquid-characterization.md",
+      "sha256": "f51bb09f9a624d02defe41c60b0bf7e4085ef223550b496c15013ed9606643cd",
+      "bytes": 12723
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/soliding-supplement.md",
+      "sha256": "71311f29ae1ed780ee97c01d3838c0e35a43154a1ab56a126327377a342cf60f",
+      "bytes": 14648
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/sparse-motion.md",
+      "sha256": "3a87412340fcb5bb213cf27d8442433c535c046ad3215c02a0d64d0803107518",
+      "bytes": 13690
+    },
+    {
+      "path": "docs/operations/architecture-programme-prompts/state-precision.md",
+      "sha256": "efd60a39e67f97d642ca79ec3ab61120439f882c8b8b33e0af268b0e280de06e",
+      "bytes": 13217
+    },
+    {
+      "path": "docs/operations/architecture-programme-source-ledger.md",
+      "sha256": "7d01de47967af967319009cac892f75703851a2bc6d541198f96491a9c176eeb",
+      "bytes": 19439
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "bytes": 11010
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861",
+      "bytes": 56825
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "bytes": 20045
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "bytes": 14615
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "bytes": 27225
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+      "bytes": 18644
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "bytes": 13189
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+      "bytes": 7683
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "bytes": 12481
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "bytes": 18803
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "bytes": 18598
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "d1f928da8a0b60abc88e427c2901f79a4b409155cc787b3925727e97ade1c3f8",
+      "bytes": 13302
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "bytes": 16253
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "261127787c02c60a57ae007e97531768f8e7edcf1ac89d0e2979efaffa358669",
+      "bytes": 4574
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "bytes": 13392
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "bytes": 14701
+    },
+    {
+      "path": "docs/operations/gentek-interlaced-viaduct.md",
+      "sha256": "0436034bac0454bc26a8dd479d0e89d927eae3d6c1ff78d7e9156a09edc0c1df",
+      "bytes": 7192
+    },
+    {
+      "path": "docs/operations/gentek-rosework-showcase.md",
+      "sha256": "9c3205a5d8898508d8ee4e25d90f88d0b278e8c4348177b6973fe6044ad4e62b",
+      "bytes": 7486
+    },
+    {
+      "path": "docs/operations/gentek-showcase-integration-001.md",
+      "sha256": "2a2713a1b6925082c9091c393c123386110bc0fd80a41f8aaccf8e5ddfb1860a",
+      "bytes": 5758
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "bytes": 19496
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "bytes": 6351
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "bytes": 12936
+    },
+    {
+      "path": "docs/operations/in-tools-fixtures-and-playtest.md",
+      "sha256": "4134827c6a6cf6690a680002c4738b83e972d8b81e9f337ea91c87e60bc040e2",
+      "bytes": 3431
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "bytes": 39122
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59",
+      "bytes": 27379
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "28a761724505a50abf26e118be38ab0c777f05b3bea0f8686da1b306fcacd14e",
+      "bytes": 23982
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "bytes": 5889
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "bytes": 91797
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "7c0cec2e6da081eb47e8cfab73917c4d40c79a6d1370b38881eabd9b2337b16b",
+      "bytes": 21405
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "bytes": 13874
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "bytes": 32883
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "bytes": 18679
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "2d041aa1cf9ed44cf16c94daa427fde5dac7873f2f51377195d745cffbcec83c",
+      "bytes": 31717
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "cb16396e805d9224d47b11eb4010eb273e68343b822f2e1998dd0f59606245e6",
+      "bytes": 21633
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "bytes": 15031
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "bytes": 16946
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "bytes": 25289
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "819fa3cae011b127aaad1d9d053caf2cf6519f4af5f9d5347995a8818ef2b33f",
+      "bytes": 24190
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "bytes": 10072
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "bytes": 12165
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "081fa7d9831c8af6606ddb9023a25e47383383d1a37e2b0b04c76aa9bb1eeeff",
+      "bytes": 7980
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "bytes": 6545
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "a6d26cad646ce6ab4055885d70a463b600999d6e00fc47ae243187c52c1a7e23",
+      "bytes": 17732
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9",
+      "bytes": 13117
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+      "bytes": 25259
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-connectivity.md",
+      "sha256": "1aeae1badee2c3e1cc5a6d64342226c21139de94f42bfb5e0a2c6f94108ebc5e",
+      "bytes": 6184
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-measurement.md",
+      "sha256": "a14868f0ac950266c80bcb57c7e78f2c45c4e36ca52a5b65a77181c8fb92cea6",
+      "bytes": 4234
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-producer.md",
+      "sha256": "8128d60bb12641ed23aee91cff932404b205d21a9d1165f90c6cd257c37683ca",
+      "bytes": 6390
+    },
+    {
+      "path": "docs/operations/soliding-stage3-spark-verification.md",
+      "sha256": "4ed8936ec09494fdf590aec9045f570a07c8ed8a8058be513a2cc016b969cabe",
+      "bytes": 3797
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-astra-review.md",
+      "sha256": "cf9ab2440ed6414d64530184c427149825a76106c5be122d2344dde638c7ee2f",
+      "bytes": 14788
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083",
+      "bytes": 24306
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "bytes": 6662
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "bytes": 11700
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "bytes": 30798
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "bytes": 9516
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "49c2564896cc7eeacc4bbbc83e1bbf74ddccefb47fadb07b84025cbe30724e1f",
+      "bytes": 16955
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "3995a836ec1c0b5599ac7d2b7a7f8da2e4ee2f750f9866113358e5613081ac01",
+      "bytes": 39620
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "bytes": 18621
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "bytes": 10765
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "44e06717dcc4b44ab11704c5aa04742e4cdf41ec3f73e548bc8f38f9af08c0f0",
+      "bytes": 7829
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "bytes": 14161
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "bytes": 8429
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "bytes": 5045
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "bytes": 5546
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "bytes": 6611
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "d68e5979fc3627d591a068eaecbcf6e8148b978664612678c5a51955c93ea9fa",
+      "bytes": 18917
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+      "bytes": 93736
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "bytes": 8086
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+      "bytes": 101025
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+      "bytes": 50072
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+      "bytes": 19574
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae",
+      "bytes": 13436
+    },
+    {
+      "path": "docs/reference/owner-intent-retrieval-questions.json",
+      "sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "bytes": 3012
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "bytes": 15494
+    },
+    {
+      "path": "docs/reference/retrieval-challenges.json",
+      "sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "bytes": 222689
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "sha256": "d58641656500401b5815d9b64767dedd3142e67ada6dc572f1b7b226ea677c1a",
+      "bytes": 50668
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "sha256": "37aa6cc9c04af60c8fa7a3b89c2fbc732e63db560434abe612de9fa5f04f51b6",
+      "bytes": 15478
+    },
+    {
+      "path": "docs/reference/retrieval-questions-docs-renaissance-v1.json",
+      "sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "bytes": 28635
+    },
+    {
+      "path": "docs/reference/retrieval-questions.json",
+      "sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "bytes": 27099
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "bytes": 20793
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "bytes": 12818
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/gentek-80-integration-001.md",
+      "sha256": "e52eaa2dce8db77f0911887e82ab74e2de1cc7252e5ac88f7c2ff3cac4eb11a1",
+      "bytes": 27600
+    },
+    {
+      "path": "docs/research/gentek-classic-001.md",
+      "sha256": "9a3a35bc3bc5815428683b68ba8ab97fef3c62f56aeceb02e66e9e80fc8f6003",
+      "bytes": 10711
+    },
+    {
+      "path": "docs/research/gentek-interlock-001.md",
+      "sha256": "b7d5f4d099007bceea8ff5fed11d6d344d994668725435f192363e0832047b2f",
+      "bytes": 6830
+    },
+    {
+      "path": "docs/research/gentek-metabolist-001.md",
+      "sha256": "c84a9f1fa94a8bbaa55ba776b1b8972770a0e276113c8411a65cbbd869394c27",
+      "bytes": 7716
+    },
+    {
+      "path": "docs/research/gentek-showcase-cathedral-001.md",
+      "sha256": "9fb5352f3f60e3b0cba29db7ebc07d2c122e476015a73228c8b6c1c9d849dc3e",
+      "bytes": 17835
+    },
+    {
+      "path": "docs/research/gentek-showcase-megablock-001.md",
+      "sha256": "db8fd0959d5452d69ae05de708d52f3dbcd333a4cf5420d05761134498c7cc6d",
+      "bytes": 12560
+    },
+    {
+      "path": "docs/research/gentek-showcase-megatruss-001.md",
+      "sha256": "12d4fd05daaecd0da38203ceef7fbc3eb0a0eef5347ca9c3fcdc960c1fcdf5f8",
+      "bytes": 17222
+    },
+    {
+      "path": "docs/research/gentek-suspended-001.md",
+      "sha256": "063944124ce87e83b6390c12959dde4a65a904dadabb72bbaada1c2d4bb41282",
+      "bytes": 6672
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "700bfea745a7a9d3d35da618ddf4b730f1718bad85bcf5ca45b7c85a92d0eee4",
+      "bytes": 7644
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "bytes": 12979
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "bytes": 18984
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "bytes": 26054
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+      "bytes": 19303
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "bytes": 26474
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "bytes": 13126
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "bytes": 15021
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "bytes": 9004
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "bytes": 22856
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6",
+      "bytes": 12191
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "bytes": 18974
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "bytes": 23882
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "1a964911b31acf4c86e277601211e801480f1a7dff8f5c59faeb0623f6bcc9a2",
+      "bytes": 17482
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "bytes": 15769
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+      "bytes": 18939
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "bytes": 19052
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "bytes": 22554
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "bytes": 62186
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10",
+      "bytes": 8279
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "bytes": 23128
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "bytes": 24063
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "bytes": 29409
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "181b98c23e118f0f1b68ba3259fda81f877269f65365578e3f722524bbe4e90b",
+      "bytes": 24451
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "bytes": 6783
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "bytes": 42135
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "bytes": 23202
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "bytes": 24686
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "bytes": 11341
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "bytes": 11511
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "0ab911b1e8b30a3ca83fa525ca927c59e12635412a1cdbf1cf4e3847806aaab8",
+      "bytes": 12031
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a",
+      "bytes": 14053
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "bytes": 12921
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "bytes": 16771
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "bytes": 12488
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "bytes": 9139
+    },
+    {
+      "path": "docs/world-design/QUALITY_BAR.md",
+      "sha256": "92bb4c2a608a3b9af91aa050f85a7933380e965fd5a4bf434ea767590ee783f4",
+      "bytes": 9065
+    },
+    {
+      "path": "docs/world-design/README.md",
+      "sha256": "9c82b5e2fe95244507507b45bb3b06f69628c6ecbc113144a5a2caf31919127b",
+      "bytes": 5151
+    },
+    {
+      "path": "docs/world-design/ashroot-nursery/README.md",
+      "sha256": "a994c6eac86ae616ce18e9bd763a27c42bc6327c60d5df86c86c3ae956ddb167",
+      "bytes": 19899
+    },
+    {
+      "path": "docs/world-design/carved-ice-choir/README.md",
+      "sha256": "72b699e885b1b66b20e1bba429b6df7571ddce900dd012f9b53084808d64884b",
+      "bytes": 23200
+    },
+    {
+      "path": "docs/world-design/cathedral-of-capacitors/README.md",
+      "sha256": "8aa9446475efd298c451b5b8b8ca8b0910f613551e5c1d42c7c3fb764852218c",
+      "bytes": 20111
+    },
+    {
+      "path": "docs/world-design/chalkbone-coast/README.md",
+      "sha256": "567939517e4ac4b2e4e26e270542c5d55ad2126adafa3ad8a4185904459e89e7",
+      "bytes": 21293
+    },
+    {
+      "path": "docs/world-design/coral-telegraph/README.md",
+      "sha256": "cc92026425a5b13c2aee4e5bda90827ff5531baa810639187223b700ccecc61c",
+      "bytes": 17028
+    },
+    {
+      "path": "docs/world-design/drowned-observatory/README.md",
+      "sha256": "f8f2d81cc52015fc2dc93c21d1834df7d3afb21dd4d2943d7ee4a9df8796797f",
+      "bytes": 21284
+    },
+    {
+      "path": "docs/world-design/dust-meridian/README.md",
+      "sha256": "079a344116a41ea9f3983f78f2d22e0f53efc2c2e79cbd55a74a6ff2178ed67e",
+      "bytes": 18418
+    },
+    {
+      "path": "docs/world-design/emberglass-fumaroles/README.md",
+      "sha256": "7affb44febfba9e5dffa9c780598f13ee1138853929d228ff72908003b5fc679",
+      "bytes": 24680
+    },
+    {
+      "path": "docs/world-design/fallow-carnival/README.md",
+      "sha256": "9e3212bda50434699a2f1b94ddafc8660f4109db2ae0d0d14a691064d2fde896",
+      "bytes": 20264
+    },
+    {
+      "path": "docs/world-design/ironroot-necropolis/README.md",
+      "sha256": "fc0d6a87a703ec093a55646fd61fcf22c29b9a068636e861a435a6286697bacd",
+      "bytes": 20078
+    },
+    {
+      "path": "docs/world-design/lumen-fault/README.md",
+      "sha256": "5a9732c92f8d456c7a370e1b349d4f0267db3829d6d5ef2582a9ac9cd6887b5e",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/world-design/mirror-marsh/README.md",
+      "sha256": "5f08d9fa5a094dc2e1548bed6824a1c935990bebcd73539c4b62630ae3a4b3b2",
+      "bytes": 23766
+    },
+    {
+      "path": "docs/world-design/signal-orchard/README.md",
+      "sha256": "4b7386872cb13366a5091ce02ee175275e0fbee96005bda98cf8a1be9b742c59",
+      "bytes": 15011
+    },
+    {
+      "path": "docs/world-design/silt-clockworks/README.md",
+      "sha256": "350f1879cd444c706de0c7522b2445908ec4dc2d949ee1f569b87f12e8c43bd1",
+      "bytes": 23206
+    },
+    {
+      "path": "docs/world-design/tectonic-archive/README.md",
+      "sha256": "055a3454feb268617317166c8df1462436536ac4a413fb87495c7be425ea7bd4",
+      "bytes": 22723
+    },
+    {
+      "path": "tools/docs/retrieval_eval.py",
+      "sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+      "bytes": 12500
+    },
+    {
+      "path": "tools/docs/retrieval_policy.py",
+      "sha256": "7b1cd3ee211f875a1ba896a5e238f9d53996779a225be6c8d9b18669bbe53c68",
+      "bytes": 5860
+    }
+  ],
+  "runner_sha256": "48d46aa16df57d1412bac8f5ac0907bbaa781a8edbde86aff65d52c398424a19"
+}

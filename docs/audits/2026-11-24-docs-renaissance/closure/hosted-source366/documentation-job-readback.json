@@ -1,0 +1,237 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_head": "36653e85360d0c5d1f0f5f8f6b27ff57070ebf37",
+  "run_id": 45515022255,
+  "job_id": 138872226660,
+  "jobs": [
+    {
+      "id": 138872226660,
+      "name": "consistency",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 45515022255,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Check out pinned companion workspace documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Check out current source and complete audited history",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Validate active CI provider policy",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Test CI provider policy checker",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Validate Actions syntax with pinned actionlint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Audit workflow inventory and scheduling policies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Retain machine-readable workflow inventory",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Validate current documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Validate dependency pins and published runtime provenance",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10
+        },
+        {
+          "name": "Verify soliding object reuse and original compiler contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Retain soliding build contract evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Check LCB capability matrix is source-derived",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Check LCB policy wire/hash contract vectors",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Check native LCB setup and run receipt canonical vectors",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        },
+        {
+          "name": "Check material catalogue shadow compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16
+        },
+        {
+          "name": "Check LCB scenario definitions and registry are source-derived",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        },
+        {
+          "name": "Verify retained M11 records against their audited Git revision",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18
+        },
+        {
+          "name": "Test validation failure contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19
+        },
+        {
+          "name": "Test soliding evidence integrity contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Test coupled-lockstep evidence reducer contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        },
+        {
+          "name": "Test retrieval selection and authority boundaries",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22
+        },
+        {
+          "name": "Evaluate current retrieval routes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Validate Git LFS objects and whitespace",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Retain retrieval evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        },
+        {
+          "name": "Retain material catalogue parity evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26
+        },
+        {
+          "name": "Post Check out current source and complete audited history",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 51
+        },
+        {
+          "name": "Post Check out pinned companion workspace documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 52
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 53
+        }
+      ]
+    }
+  ],
+  "selected_log_lines": [
+    "2026-11-25T00:04:15.5157848Z  * [new branch]          docs/docs-renaissance-001                -> origin/docs/docs-renaissance-001",
+    "2026-11-25T00:04:27.7121822Z Ran 6 tests in 0.003s",
+    "2026-11-25T00:04:27.7122050Z OK",
+    "2026-11-25T00:04:27.8866225Z /home/runner/work/_temp/actionlint.tar.gz: OK",
+    "2026-11-25T00:04:33.4934889Z Ran 10 tests in 1.462s",
+    "2026-11-25T00:04:33.4935353Z OK",
+    "2026-11-25T00:04:34.2724165Z Ran 7 tests in 0.004s",
+    "2026-11-25T00:04:34.2724510Z OK",
+    "2026-11-25T00:04:48.8032508Z Ran 12 tests in 10.743s",
+    "2026-11-25T00:04:48.8032684Z OK",
+    "2026-11-25T00:04:50.4066021Z Ran 15 tests in 0.016s",
+    "2026-11-25T00:04:50.4066246Z OK",
+    "2026-11-25T00:10:32.9407763Z Ran 231 tests in 341.356s",
+    "2026-11-25T00:10:32.9408177Z OK",
+    "2026-11-25T00:11:01.1074554Z Ran 81 tests in 19.209s",
+    "2026-11-25T00:11:01.1074751Z OK",
+    "2026-11-25T00:11:11.3848866Z Ran 24 tests in 10.062s",
+    "2026-11-25T00:11:11.3849057Z OK",
+    "2026-11-25T00:11:11.7247581Z Ran 33 tests in 0.104s",
+    "2026-11-25T00:11:11.7247772Z OK",
+    "2026-11-25T00:11:11.8450520Z Ran 16 tests in 0.028s",
+    "2026-11-25T00:11:11.8450920Z OK",
+    "2026-11-25T00:11:13.1237925Z Ran 24 tests in 1.187s",
+    "2026-11-25T00:11:13.1339770Z OK",
+    "2026-11-25T00:11:13.1365624Z ##[group]Run timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 -m unittest discover -s tools/ci -p test_historical_retrieval.py",
+    "2026-11-25T00:11:13.1366377Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 -m unittest discover -s tools/ci -p test_historical_retrieval.py\u001b[0m",
+    "2026-11-25T00:11:13.1367078Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 -m unittest discover -s tools/ci -p test_current_retrieval_selection.py\u001b[0m",
+    "2026-11-25T00:11:13.2257862Z Ran 16 tests in 0.018s",
+    "2026-11-25T00:11:13.2258064Z OK",
+    "2026-11-25T00:11:13.4672769Z Ran 15 tests in 0.170s",
+    "2026-11-25T00:11:13.4672986Z OK",
+    "2026-11-25T00:11:13.4784989Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json\u001b[0m",
+    "2026-11-25T00:11:13.4785838Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json\u001b[0m",
+    "2026-11-25T00:11:13.4786859Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-docs-renaissance-v1.json --output build/retrieval/renaissance.json\u001b[0m",
+    "2026-11-25T00:11:13.4787925Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/docs/retrieval_eval.py --queries docs/reference/owner-intent-retrieval-questions.json --output build/retrieval/owner-intent.json\u001b[0m",
+    "2026-11-25T00:11:13.4788959Z \u001b[36;1mtimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/docs/retrieval_eval.py --historical --queries docs/history/engineering/retrieval-questions.json --output build/retrieval/historical.json\u001b[0m",
+    "2026-11-25T00:11:13.9314161Z   \"mrr_at_k\": 0.7302,",
+    "2026-11-25T00:11:14.9412880Z   \"mrr_at_k\": 0.8575,",
+    "2026-11-25T00:11:15.4277018Z   \"mrr_at_k\": 0.8426,",
+    "2026-11-25T00:11:15.7964322Z   \"mrr_at_k\": 0.3389,",
+    "2026-11-25T00:11:15.9079344Z   \"mrr_at_k\": 0.8033,",
+    "2026-11-25T00:11:16.5893420Z Git LFS fsck OK"
+  ],
+  "selection_scope": "Relevant retrieval command, test summary and evaluation lines; not full hosted log."
+}

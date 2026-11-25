@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""Generate compact decision registers from the immutable source-scoped receipts."""
+import collections
+import datetime
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[3]
+SOURCE = '700c89c451903fac07188196a2f94b5c8997cb53'
+BASE = '00cdb02f103265b6dc5224c68283e9a0c8cb449f'
+
+def read(name):
+    return json.loads((HERE / name).read_text())
+
+def write(name, value):
+    (HERE / name).write_text(json.dumps(value, indent=2) + '\n')
+
+def evidence(name):
+    p = HERE / name
+    return {'path': name, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
+
+recovered = read('recovery/original-recovery-manifest.json')
+counts = dict(collections.Counter(x['recovery_disposition'] for x in recovered['files']))
+write('recovery-ledger.json', {
+    'schema': 1, 'authority': 'historical-non-authoritative', 'mission': 'DOCS-RENAISSANCE-CLOSURE-001',
+    'source_head': SOURCE,
+    'original_published_anchor': recovered['published_recovery_head'],
+    'original_local_head': recovered['original_local_head'],
+    'original_local_published_trees_identical': recovered['local_published_trees_identical'],
+    'original_files': len(recovered['files']), 'original_bytes': sum(x['bytes'] for x in recovered['files']),
+    'original_dispositions': counts,
+    'original_manifest': evidence('recovery/original-recovery-manifest.json'),
+    'artifact_classes': [
+        {'class': 'original-github-intake-and-source-freezes', 'disposition': 'recovered-original', 'examples': ['../github-intake.json', '../github-final-refresh.json']},
+        {'class': 'original-coverage-preservation-and-inbound-work', 'disposition': 'recovered-original', 'qualification': 'New consolidated verification is separate in document-inventory, preservation-manifest and inbound-link-reconciliation.'},
+        {'class': 'original176-composite-claim-matrix-and20-independent-reviews', 'disposition': 'recovered-original-and-identity-verified', 'examples': ['../claim-matrix.json', 'technical/claim-recovery-verification.json'], 'original_count': 176, 'new_rows_invented': 0},
+        {'class': 'all-three-original-specialist-workstreams-and-handovers', 'disposition': 'recovered-original', 'qualification': 'New closure handovers explicitly identify themselves and supplement original semantics.'},
+        {'class': 'original-retrieval-baseline-candidate-raw-contexts-and-negative-receipts', 'disposition': 'recovered-original-and-independently-reproduced', 'examples': ['retrieval/recovered-result-reproduction.json']},
+        {'class': 'original-hosted-retrieval-artifact', 'disposition': 'recovered-from-GitHub-Actions', 'run_id': 45482710814, 'artifact_id': 14962681475, 'examples': ['hosted-original/artifact-custody.json']},
+        {'class': 'original-images-provenance-static-previews-and-failed-graphical-attempt', 'disposition': 'recovered-original-and-hash-verified', 'examples': ['../assets-b.json', 'product/visual-qualification.json']},
+        {'class': 'original-complete-conversation-transcript', 'disposition': 'not-recovered', 'reconstruction': 'No transcript or original participation fabricated; original durable artifacts establish what is recoverable.'},
+        {'class': 'original-standalone-integrated-final-decision-packet', 'disposition': 'not-found-in-retained-workspace-published-candidate-or-inspected-hosted-artifacts', 'reconstruction': 'This closure produces a new independently reviewed final report and matrix, never labelled original.'},
+        {'class': 'fresh-normalized-claim-ledger-preservation-inventory-and-source-custody', 'disposition': 'new-closure-reconciliation', 'qualification': 'Preserves original identities/review levels and adds final-source bindings.'},
+        {'class': 'fresh-v3-authority-controls-and-final-five-suite-reruns', 'disposition': 'new-closure-engineering-and-qualification', 'qualification': 'Old scoring/fixtures unchanged; negative-before results retained.'},
+        {'class': 'complete36-question-actual-context-answer-audit', 'disposition': 'new-independent-closure-audit', 'qualification': 'Original final packet covered19 questions; fresh36-question review covers180 actual passages. No model benchmark claim.'},
+        {'class': 'fresh-specialist-handover-crossreviews-and-final-decision', 'disposition': 'new-closure-evidence', 'examples': ['technical/technical-handover.md', 'product/product-handover.md', 'retrieval/specialist-c-handover.md', 'FINAL-REPORT.md']},
+    ],
+    'search_scope': ['Published candidate/history and recovery comment', 'Retained original execution repository and mission/lane artifacts', 'Original documentation workflow artifact and selected original ancillary logs', 'Current source/PR and exact-source hosted runs'],
+    'scope_limit': 'This is a complete account of inspected legitimate sources, not a claim to enumerate every possible unrelated Actions artifact.'
+})
+
+limitations = [
+    ('LIMIT-01', 'retrieval-primary-record-and-ranking-gaps', 'bounded-open', 'Challenge C06/USABLE02/LCB01, additive DR36 and owner OI01/OI04 miss canonical top five. Layout regresses1 to2; challenge MRR0.8575. Safe bounded answers/abstention retained.', 'Improve natural primary-record routing without altering frozen fixtures; rerun only the affected evaluations.', 'retrieval/rank-comparison.json'),
+    ('LIMIT-02', 'partial-context-sufficiency', 'bounded-open', 'DR02/DR04/DR08/DR20/DR36 omit essential details;31 sufficient/5 partial/0 wrong-context across36 actual-context answers.', 'Use the named canonical/source route before acting on an omitted exact fact; no invented owner decision.', 'retrieval/answer-applicability-summary.json'),
+    ('LIMIT-03', 'ordinary-project-save-error-wording', 'inherited-implementation-limit', 'Generated-start/project failure messages can overstate atomicity or prior-file preservation; ordinary/generated/project rename paths lack the native material-baseline guarantee on every I/O failure. Documentation corrected; no runtime changes, observed data loss or fresh fault injection.', 'Use a distinct save name to retain an older variant; owning runtime programme may qualify and correct failure handling/message semantics.', 'technical/closure-amendments.json'),
+    ('LIMIT-04', 'fresh-graphical-and-physical-qualification', 'blocked-or-not-run', 'Supported browser attempts failed before page load; no fresh Godot GUI walkthrough or physical Windows/NVIDIA acceptance. Static previews and source review remain explicitly scoped.', 'A permitted, qualified graphical host can perform first-session, Direct JSON, Save/Flatten and current UI capture.', 'product/product-handover.md'),
+    ('LIMIT-05', 'external-retrieval-and-generative-benchmark', 'not-run', 'No embeddings, external cache/index, provider model or agent integration was exercised. Applicability reviews are authored and non-blind.', 'Rebuild and independently qualify any actual deployed retriever with per-chunk authority.', 'retrieval/specialist-c-handover.md'),
+    ('LIMIT-06', 'inherited-ancillary-hosted-failures', 'observed-failures-retained', 'Linux pinned-engine downloadHTTP403 and Windows IN-TOOLS source-identity refusal remain distinct from documentation checks; no authority guard changed.', 'Resolve in the owning runtime/qualification programme with exact-source evidence before claiming its acceptance.', 'hosted-delivered/ancillary-readback.json'),
+    ('LIMIT-07', 'draft-published-runtime-provenance', 'skipped-by-existing-policy', 'Hosted published-runtime provenance is skipped while Draft. Local repository PASS checks tracked source/pointers;18 LFS runtime objects are not materialized locally.', 'Owner-controlled promotion/publication and source-matched materialized-runtime checks are separate future actions.', 'validation/delivered-source/repository.json'),
+    ('LIMIT-08', 'original-final-conversation-and-decision-unavailable', 'reconstructed-honestly', 'Original conversation and standalone final decision not recovered; new closure packet clearly separates recovered originals from fresh work.', 'No further evidence invention; use recovered originals and independently qualified new closure packet.', 'recovery-ledger.json'),
+]
+findings = {}
+for row in read('technical/closure-amendments.json')['findings']:
+    findings[row['id']] = {'id': row['id'], 'priority': row['priority'], 'status': row['disposition'], 'description': row['finding'], 'evidence': 'technical/closure-amendments.json'}
+for row in read('product/product-source-review.json')['findings']:
+    if row['id'] not in findings:
+        findings[row['id']] = {'id': row['id'], 'priority': row['priority'], 'status': 'corrected-and-independently-reviewed', 'evidence': 'product/product-source-review.json'}
+for id_,description in [('C-CLOSE-01','Owner-confirmed intent authority lost in current chunks'),('C-CLOSE-02','Duplicate document-kind could bypass navigation exclusion'),('C-CLOSE-03','Unsupported document-kind syntax could evade selection')]:
+    findings[id_]={'id':id_,'priority':'P1','status':'corrected-and-independently-reviewed','description':description,'evidence':'retrieval/negative-controls-before.json'}
+write('remaining-findings.json', {'schema':1,'authority':'historical-non-authoritative','source_head':SOURCE,'recommendation':'OWNER-READY WITH EXPLICIT LIMITATIONS','pr_disposition':'Draft/HOLD pending explicit owner adjudication','open_admitted_documentation_p0':0,'open_admitted_documentation_p1':0,'scope_caveat':'No known admitted P0/P1 remains in reviewed documentation/retrieval scope; this is not proof of semantic perfection or acceptance of every runtime programme.','resolved_findings':list(findings.values()),'limitations':[{'id':i,'topic':t,'status':s,'finding':f,'minimum_followup':m,'evidence':e} for i,t,s,f,m,e in limitations]})
+
+rows=[]
+descriptions={'documentation':'151 current documents;8 navigation pages;280 canonical topics;3,523 local links;491 anchors;0 errors/warnings.', 'repository':'Source/dependency/pointer consistency;18 unmaterialized LFS runtime objects,0 materialized. No runtime acceptance.', 'm11':'18 records/28 source hashes against original05ea45 historical revision.', 'history-integrity':'274 scope/582 ledger/308 closed-reference/98 findings/74 protected historical items.', 'selection':'15 current-selection/authority tests.', 'historical-selection':'16 historical-isolation tests.', 'ci-provider':'Existing CI provider/routing policy.', 'ci-scheduling':'10 scheduling-policy tests.'}
+for p in sorted((HERE/'validation/delivered-source').glob('*.json')):
+    d=json.loads(p.read_text())
+    rows.append({'check':p.stem,'status':'PASS' if d['exit_code']==0 else 'FAIL','source_head':d['source_head'],'command':d['command'],'scope':descriptions.get(p.stem,''),'receipt':evidence(str(p.relative_to(HERE)))})
+for suite in read('retrieval/rank-comparison.json')['suites']:
+    d=suite['reports']['qualified'];s=d['summary']
+    rows.append({'check':'retrieval-'+suite['suite'],'status':'EXECUTED','source_head':SOURCE,'scope':f"{s['canonical_hit_at_1']} top1;{s['canonical_hit_at_k']}/{s['questions']} top5;MRR{s['mrr_at_k']}. Ranking misses are not hidden as a PASS.",'receipt':evidence('retrieval/'+d['path'])})
+for name,scope in [('preservation-manifest.json','82/82 exact original Git blobs/SHA-256;0 failures.'),('inbound-link-reconciliation.json','2,003 current inbound routes;0 unresolved within declared508/514 Markdown scan;8 superseded references retained.'),('retrieval/qualified-v2/candidate/manifest-fallback-comparison.json','All four current suites identical across manifest/fallback.'),('retrieval/qualified-v2/candidate/direct-ingestion.json','151 current docs;31 default-excluded files;13 explicit historical docs/331 per-chunk envelopes.'),('source-custody.json','4,090 qualification inputs;1,137 protected runtime/dependency/policy files;0 unexpected drift;exact source700.'),('retrieval/answer-applicability-summary.json','All36 reviewed;31 sufficient/5 partial/0 wrong-context;180 actual contexts.'),('technical/final-source-identity.json','176 recovered composite claims;207 final claim/document identity pairs;0 errors/pending.')]:
+    rows.append({'check':name.split('/')[-1].removesuffix('.json'),'status':'PASS' if not name.startswith('retrieval/answer-') else 'REVIEWED WITH LIMITS','source_head':SOURCE,'scope':scope,'receipt':evidence(name)})
+
+ws=[]
+for name,cmd,scope in [
+ ('current-docs-and-tooling',['git','diff','--check',BASE,SOURCE,'--','.',':(exclude)docs/audits/2026-11-24-docs-renaissance'],'Current documentation and bounded tooling changes; exact historical evidence excluded.'),
+ ('full-preserved-diff',['git','diff','--check',BASE,SOURCE],'All changes including exact-byte original evidence; inherited whitespace retained.')]:
+    p=subprocess.run(cmd,cwd=ROOT,capture_output=True,text=True);ws.append({'check':name,'command':cmd,'exit_code':p.returncode,'output':p.stdout+p.stderr,'scope':scope})
+write('validation/whitespace-disposition.json',{'authority':'historical-non-authoritative','source_head':SOURCE,'checks':ws,'interpretation':'Current documentation/tooling diff passes. Full historical-evidence diff returns2 for byte-exact original whitespace; originals are not rewritten to make a mechanical check green.'})
+rows.append({'check':'whitespace','status':'SCOPED PASS / ORIGINAL-BYTE EXCEPTIONS','source_head':SOURCE,'scope':'Current documents/tooling clean. Full evidence diff retains original trailing whitespace/EOF diagnostics.','receipt':evidence('validation/whitespace-disposition.json')})
+for name,source,status,scope in [('hosted-original/documentation-job-readback.json','ddd7c88fd97d8b85056dd7910896ec3a897ecb87','PASS','Original docs run45482710814; published-runtime provenance skipped.'),('hosted-source366/documentation-job-readback.json','36653e85360d0c5d1f0f5f8f6b27ff57070ebf37','PASS','Fresh docs run45515022255; focused/current-history suites and allfive evaluations executed; provenance skipped.'),('hosted-delivered/documentation-job-readback.json',SOURCE,'PASS','Final-source documentation job; actual recorded steps govern scope.'),('hosted-delivered/ancillary-readback.json',SOURCE,'FAILURES RETAINED','Three Linux downloadHTTP403 failures and inherited Windows source guard refusal; separately scoped Windows successes.')]:
+    if (HERE/name).exists():
+        d=read(name)
+        if 'documentation-job' in name and name.startswith('hosted-delivered/'):
+            status='PASS' if all(j.get('conclusion')=='success' for j in d.get('jobs',[])) and d.get('jobs') else 'IN PROGRESS / NOT QUALIFIED'
+        rows.append({'check':name.split('/')[0]+('-documentation' if 'documentation-job' in name else '-ancillary'),'status':status,'source_head':source,'scope':scope,'receipt':evidence(name)})
+rows += [
+ {'check':'fresh-browser-and-Godot-GUI','status':'BLOCKED / NOT RUN','source_head':SOURCE,'scope':'Both supported browser routes failed before page load; no fresh Godot graphical execution.','receipt':evidence('product/browser-fallback-attempt-by-lead.json')},
+ {'check':'physical-Windows-NVIDIA','status':'NOT RUN','source_head':SOURCE,'scope':'No physical acceptance inferred from hosted runs, static images, counters or FPS.'},
+ {'check':'external-retrieval-model-integration','status':'NOT RUN','source_head':SOURCE,'scope':'No external embedding/cache/index/agent integration or blind model-answer benchmark.'},
+ {'check':'fresh-native-runtime-rebuild','status':'NOT RUN','source_head':SOURCE,'scope':'No unrelated local rebuild for a documentation/retrieval candidate; source/dependencies unchanged.'},
+]
+custody=read('source-custody.json')
+matrix={'schema':1,'authority':'historical-non-authoritative','mission':'DOCS-RENAISSANCE-CLOSURE-001','qualified_source_head':SOURCE,'qualified_source_tree':custody['source_tree'],'accepted_main':BASE,'qualification_input_digest_sha256':custody['qualification_input_digest_sha256'],'source_custody':evidence('source-custody.json'),'rows':rows,'exact_delivery_rule':'The final publication receipt/PR comment must identify the delivered commit and verify all4090 source/tooling/corpus inputs match source700. Evidence-only descendants do not claim new runtime acceptance.','recommendation':'OWNER-READY WITH EXPLICIT LIMITATIONS'}
+write('validation-matrix.json',matrix)
+md='''---
+title: Final documentation qualification matrix
+status: Current
+document-kind: evidence
+authority: historical-non-authoritative
+retrieval: explicit-history-only
+scope: Observed checks bound to their actual source; no runtime acceptance transfer
+last-reviewed: 2026-11-25
+---
+
+# Final qualification matrix
+
+Qualified source: `'''+SOURCE+'''`. Accepted implementation: `'''+BASE+'''`.
+
+All 4,090 qualification inputs are bound by [source custody](source-custody.json), digest `'''+custody['qualification_input_digest_sha256']+'''`. Each check below names its actual source and receipt. An executed evaluation with misses is shown as executed, rather than called perfect. The full [machine-readable matrix](validation-matrix.json) includes exact commands and SHA-256 identities.
+
+| Check | Observed status | Scope and receipt |
+| --- | --- | --- |
+'''
+for row in rows:
+    receipt=row.get('receipt');link=(' ['+receipt['path']+']('+receipt['path']+')') if receipt else ''
+    md+='| '+row['check']+' | '+row['status']+' | '+row['scope']+link+' |\n'
+md+='''
+## Interpretation
+
+The applicable documentation, historical containment and source-pointer checks passed within their stated scopes. Exact originals retain original whitespace. Runtime failure and skipped/not-run rows remain visible; no runtime authority, guard, dependency or engine source was changed to turn them green.
+
+The delivered evidence commit is joined to this tested source through the final publication receipt and PR conversation. Full input-map equality, not merely a short commit label, is the transfer condition. Source700 and the containing evidence commit are deliberately distinct identities.
+'''
+(HERE/'validation-matrix.md').write_text(md)
+print(json.dumps({'recovered':len(recovered['files']),'resolved_documentation_findings':len(findings),'bounded_limits':len(limitations),'validation_rows':len(rows)},indent=2))

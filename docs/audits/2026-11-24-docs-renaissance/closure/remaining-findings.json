@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "recommendation": "OWNER-READY WITH EXPLICIT LIMITATIONS",
+  "pr_disposition": "Draft/HOLD pending explicit owner adjudication",
+  "open_admitted_documentation_p0": 0,
+  "open_admitted_documentation_p1": 0,
+  "scope_caveat": "No known admitted P0/P1 remains in reviewed documentation/retrieval scope; this is not proof of semantic perfection or acceptance of every runtime programme.",
+  "resolved_findings": [
+    {
+      "id": "A-CLOSE-01",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "description": "Residual native-default/App/Trial constructor text called accepted #256/#257 functionality current unmerged #202 work.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "A-CLOSE-02",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "description": "Architecture programme current-retrieval paragraphs repeated September local dirty-DLL custody and C:/ paths as present directives.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "A-CLOSE-03",
+      "priority": "P2",
+      "status": "normalized-with-original-preserved",
+      "description": "Original recovered L-44 source locator named nonexistent cyber_demo_bridge.cpp.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "B-CLOSE-01",
+      "priority": "P1",
+      "status": "shared-finding-corrected-and-independently-reviewed",
+      "description": "Generated Load procedures omitted verified preview installation.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "B-CLOSE-04",
+      "priority": "P2",
+      "status": "shared-finding-corrected-and-independently-reviewed",
+      "description": "Compacted Art said12turns although source slices12 individual conversation entries.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "B-CLOSE-05",
+      "priority": "P1",
+      "status": "documentation-corrected-and-independently-reviewed; inherited implementation limit explicit",
+      "description": "Blanket named-save preservation/atomicity claims exceeded ordinary/generated/project Godot rename behavior.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "B-CLOSE-02",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "evidence": "product/product-source-review.json"
+    },
+    {
+      "id": "B-CLOSE-03",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "evidence": "product/product-source-review.json"
+    },
+    {
+      "id": "C-CLOSE-01",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "description": "Owner-confirmed intent authority lost in current chunks",
+      "evidence": "retrieval/negative-controls-before.json"
+    },
+    {
+      "id": "C-CLOSE-02",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "description": "Duplicate document-kind could bypass navigation exclusion",
+      "evidence": "retrieval/negative-controls-before.json"
+    },
+    {
+      "id": "C-CLOSE-03",
+      "priority": "P1",
+      "status": "corrected-and-independently-reviewed",
+      "description": "Unsupported document-kind syntax could evade selection",
+      "evidence": "retrieval/negative-controls-before.json"
+    }
+  ],
+  "limitations": [
+    {
+      "id": "LIMIT-01",
+      "topic": "retrieval-primary-record-and-ranking-gaps",
+      "status": "bounded-open",
+      "finding": "Challenge C06/USABLE02/LCB01, additive DR36 and owner OI01/OI04 miss canonical top five. Layout regresses1 to2; challenge MRR0.8575. Safe bounded answers/abstention retained.",
+      "minimum_followup": "Improve natural primary-record routing without altering frozen fixtures; rerun only the affected evaluations.",
+      "evidence": "retrieval/rank-comparison.json"
+    },
+    {
+      "id": "LIMIT-02",
+      "topic": "partial-context-sufficiency",
+      "status": "bounded-open",
+      "finding": "DR02/DR04/DR08/DR20/DR36 omit essential details;31 sufficient/5 partial/0 wrong-context across36 actual-context answers.",
+      "minimum_followup": "Use the named canonical/source route before acting on an omitted exact fact; no invented owner decision.",
+      "evidence": "retrieval/answer-applicability-summary.json"
+    },
+    {
+      "id": "LIMIT-03",
+      "topic": "ordinary-project-save-error-wording",
+      "status": "inherited-implementation-limit",
+      "finding": "Generated-start/project failure messages can overstate atomicity or prior-file preservation; ordinary/generated/project rename paths lack the native material-baseline guarantee on every I/O failure. Documentation corrected; no runtime changes, observed data loss or fresh fault injection.",
+      "minimum_followup": "Use a distinct save name to retain an older variant; owning runtime programme may qualify and correct failure handling/message semantics.",
+      "evidence": "technical/closure-amendments.json"
+    },
+    {
+      "id": "LIMIT-04",
+      "topic": "fresh-graphical-and-physical-qualification",
+      "status": "blocked-or-not-run",
+      "finding": "Supported browser attempts failed before page load; no fresh Godot GUI walkthrough or physical Windows/NVIDIA acceptance. Static previews and source review remain explicitly scoped.",
+      "minimum_followup": "A permitted, qualified graphical host can perform first-session, Direct JSON, Save/Flatten and current UI capture.",
+      "evidence": "product/product-handover.md"
+    },
+    {
+      "id": "LIMIT-05",
+      "topic": "external-retrieval-and-generative-benchmark",
+      "status": "not-run",
+      "finding": "No embeddings, external cache/index, provider model or agent integration was exercised. Applicability reviews are authored and non-blind.",
+      "minimum_followup": "Rebuild and independently qualify any actual deployed retriever with per-chunk authority.",
+      "evidence": "retrieval/specialist-c-handover.md"
+    },
+    {
+      "id": "LIMIT-06",
+      "topic": "inherited-ancillary-hosted-failures",
+      "status": "observed-failures-retained",
+      "finding": "Linux pinned-engine downloadHTTP403 and Windows IN-TOOLS source-identity refusal remain distinct from documentation checks; no authority guard changed.",
+      "minimum_followup": "Resolve in the owning runtime/qualification programme with exact-source evidence before claiming its acceptance.",
+      "evidence": "hosted-delivered/ancillary-readback.json"
+    },
+    {
+      "id": "LIMIT-07",
+      "topic": "draft-published-runtime-provenance",
+      "status": "skipped-by-existing-policy",
+      "finding": "Hosted published-runtime provenance is skipped while Draft. Local repository PASS checks tracked source/pointers;18 LFS runtime objects are not materialized locally.",
+      "minimum_followup": "Owner-controlled promotion/publication and source-matched materialized-runtime checks are separate future actions.",
+      "evidence": "validation/delivered-source/repository.json"
+    },
+    {
+      "id": "LIMIT-08",
+      "topic": "original-final-conversation-and-decision-unavailable",
+      "status": "reconstructed-honestly",
+      "finding": "Original conversation and standalone final decision not recovered; new closure packet clearly separates recovered originals from fresh work.",
+      "minimum_followup": "No further evidence invention; use recovered originals and independently qualified new closure packet.",
+      "evidence": "recovery-ledger.json"
+    }
+  ]
+}

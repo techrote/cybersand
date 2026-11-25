@@ -1,0 +1,554 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "classification": "fresh-independent-exact-source-hosted-log-readback",
+  "reviewer": "Specialist A / technical_truth",
+  "captured_utc": "2026-11-25T00:24:01.434Z",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "method": "Authenticated GitHub job logs and run-job step summaries fetched independently for the four700 source failures and the four originalddd7 failures. Exact checkout identity is present in each fresh failure log. Compare actual failure lines after removing timestamps; do not reclassify skipped runtime checks as passed.",
+  "failures": [
+    {
+      "label": "Windows IN-TOOLS causal gate",
+      "run_id": 45516959646,
+      "job_id": 138878756516,
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/45516959646",
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45516959646/job/138878756516",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        {
+          "name": "Authenticate successor source authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 5
+        }
+      ],
+      "skipped_execution_steps": [
+        {
+          "name": "Download official Windows Godot archive",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6
+        },
+        {
+          "name": "Execute unchanged desktop-default fixture with natural process completion",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7
+        }
+      ],
+      "checkout_identity_lines": [
+        {
+          "line": 37,
+          "text": "2026-11-25T00:17:49.4615120Z   ref: 700c89c451903fac07188196a2f94b5c8997cb53"
+        },
+        {
+          "line": 824,
+          "text": "2026-11-25T00:18:11.7011092Z 700c89c451903fac07188196a2f94b5c8997cb53"
+        }
+      ],
+      "download_command_lines": [
+        {
+          "line": 52,
+          "text": "2026-11-25T00:17:49.4626826Z   GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+        },
+        {
+          "line": 928,
+          "text": "2026-11-25T00:18:15.8344748Z   GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+        },
+        {
+          "line": 943,
+          "text": "2026-11-25T00:18:16.0296666Z   GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+        },
+        {
+          "line": 963,
+          "text": "2026-11-25T00:18:18.7038206Z   GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+        },
+        {
+          "line": 993,
+          "text": "2026-11-25T00:18:20.2385702Z   GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+        }
+      ],
+      "selected_failure_lines": [
+        {
+          "line": 981,
+          "text": "2026-11-25T00:18:20.1831300Z AdmissionError: working source changed for godot/scripts/physical_actor_session.gd: 56df9dde65f3d2a8650bc7575e886fe19a24380e != bde4503df99d7e317cfb0987004d525f72177316"
+        },
+        {
+          "line": 982,
+          "text": "2026-11-25T00:18:20.2189550Z ##[error]Process completed with exit code 1."
+        }
+      ],
+      "original_comparison": {
+        "run_id": 45482711019,
+        "job_id": 138759802250,
+        "source_head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+        "selected_failure_lines": [
+          {
+            "line": 983,
+            "text": "2026-11-24T20:37:49.8256181Z AdmissionError: working source changed for godot/scripts/physical_actor_session.gd: 56df9dde65f3d2a8650bc7575e886fe19a24380e != bde4503df99d7e317cfb0987004d525f72177316"
+          },
+          {
+            "line": 984,
+            "text": "2026-11-24T20:37:49.8527949Z ##[error]Process completed with exit code 1."
+          }
+        ],
+        "identical_failure_message_ignoring_timestamp": true,
+        "decoded_log_utf8_sha256": "f60e1bc5cb088db789387ee5124ab9c79033968ee20686f2bfbab3db58e9d5d0",
+        "decoded_log_utf8_bytes": 128268,
+        "decoded_log_line_count": 1031,
+        "declared_source_head_observed_in_log": true
+      },
+      "interpretation": "Same source-authority mismatch as original run; failure precedes Godot download and causal execution. This is not a freshly executed causal test failure.",
+      "decoded_log_utf8_sha256": "ddad2bbbde513c03244155d2e3644e9e8c756298045d44da66e789110373da4b",
+      "decoded_log_utf8_bytes": 128235,
+      "decoded_log_line_count": 1029,
+      "declared_source_head_observed_in_log": true
+    },
+    {
+      "label": "Linux PLAY packet",
+      "run_id": 45516959787,
+      "job_id": 138878863503,
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/45516959787",
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45516959787/job/138878863503",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        {
+          "name": "Authenticate and extract pinned engine without executing it",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8
+        }
+      ],
+      "skipped_execution_steps": [
+        {
+          "name": "Create actual-host identity packet",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Independently reverify the original identity packet",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10
+        },
+        {
+          "name": "Preserve final clean source observation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        }
+      ],
+      "checkout_identity_lines": [
+        {
+          "line": 136,
+          "text": "2026-11-25T00:18:10.1563794Z   ref: 700c89c451903fac07188196a2f94b5c8997cb53"
+        },
+        {
+          "line": 941,
+          "text": "2026-11-25T00:18:24.6658789Z 700c89c451903fac07188196a2f94b5c8997cb53"
+        }
+      ],
+      "download_command_lines": [
+        {
+          "line": 1154,
+          "text": "2026-11-25T00:18:38.9308640Z \u001b[36;1m  url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'\u001b[0m"
+        },
+        {
+          "line": 1156,
+          "text": "2026-11-25T00:18:38.9309928Z \u001b[36;1m  url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'\u001b[0m"
+        }
+      ],
+      "selected_failure_lines": [
+        {
+          "line": 1206,
+          "text": "2026-11-25T00:18:39.0012811Z curl: (22) The requested URL returned error: 403"
+        },
+        {
+          "line": 1207,
+          "text": "2026-11-25T00:18:39.0038434Z ##[error]Process completed with exit code 22."
+        }
+      ],
+      "original_comparison": {
+        "run_id": 45482710840,
+        "job_id": 138759932882,
+        "source_head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+        "selected_failure_lines": [
+          {
+            "line": 1207,
+            "text": "2026-11-24T20:38:14.2898282Z curl: (22) The requested URL returned error: 403"
+          },
+          {
+            "line": 1208,
+            "text": "2026-11-24T20:38:14.2936784Z ##[error]Process completed with exit code 22."
+          }
+        ],
+        "identical_failure_message_ignoring_timestamp": true,
+        "decoded_log_utf8_sha256": "0ebe86a0236e288e498b96770ef1fc4f2f680fb2ac1a552e50e521558435543a",
+        "decoded_log_utf8_bytes": 148838,
+        "decoded_log_line_count": 1264,
+        "declared_source_head_observed_in_log": true
+      },
+      "interpretation": "Same Godot download HTTP403 as original run; downstream runtime qualification is skipped. This is neither a runtime pass nor a new physical failure.",
+      "decoded_log_utf8_sha256": "23810d89f9b27096bec4719c55081f86018b5a833bda45d6e019e0b4840f8686",
+      "decoded_log_utf8_bytes": 148871,
+      "decoded_log_line_count": 1263,
+      "declared_source_head_observed_in_log": true
+    },
+    {
+      "label": "Linux World Art GUI",
+      "run_id": 45516959648,
+      "job_id": 138878756854,
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/45516959648",
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45516959648/job/138878756854",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        {
+          "name": "Prepare Godot 4.7 stable on Linux",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 3
+        }
+      ],
+      "skipped_execution_steps": [
+        {
+          "name": "Compile/import scripts and run exact RG8 geometry oracles",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4
+        },
+        {
+          "name": "Launch the standalone scene via the documented Godot CLI",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5
+        },
+        {
+          "name": "Run actual interactive GUI with screenshot and 120-feature coverage",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6
+        }
+      ],
+      "checkout_identity_lines": [
+        {
+          "line": 36,
+          "text": "2026-11-25T00:17:50.7196178Z   ref: 700c89c451903fac07188196a2f94b5c8997cb53"
+        },
+        {
+          "line": 163,
+          "text": "2026-11-25T00:18:02.1427996Z 700c89c451903fac07188196a2f94b5c8997cb53"
+        }
+      ],
+      "download_command_lines": [
+        {
+          "line": 176,
+          "text": "2026-11-25T00:18:02.1984389Z \u001b[36;1m  'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'\u001b[0m"
+        }
+      ],
+      "selected_failure_lines": [
+        {
+          "line": 194,
+          "text": "2026-11-25T00:18:02.4883761Z curl: (22) The requested URL returned error: 403"
+        },
+        {
+          "line": 195,
+          "text": "2026-11-25T00:18:02.4910540Z ##[error]Process completed with exit code 22."
+        }
+      ],
+      "original_comparison": {
+        "run_id": 45482710579,
+        "job_id": 138759800931,
+        "source_head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+        "selected_failure_lines": [
+          {
+            "line": 156,
+            "text": "2026-11-24T20:37:29.1883848Z curl: (22) The requested URL returned error: 403"
+          },
+          {
+            "line": 157,
+            "text": "2026-11-24T20:37:29.1922040Z ##[error]Process completed with exit code 22."
+          }
+        ],
+        "identical_failure_message_ignoring_timestamp": true,
+        "decoded_log_utf8_sha256": "f1adf7f35c38ee60516e8e99f215dba41a88ec29ed0464149f719328be15d521",
+        "decoded_log_utf8_bytes": 15462,
+        "decoded_log_line_count": 194,
+        "declared_source_head_observed_in_log": true
+      },
+      "interpretation": "Same Godot download HTTP403 as original run; downstream runtime qualification is skipped. This is neither a runtime pass nor a new physical failure.",
+      "decoded_log_utf8_sha256": "7dd1ce526acea0b6dfc962c9ae0960cc7f7b8a7f50ec91ce8a5aee1345e1168f",
+      "decoded_log_utf8_bytes": 17812,
+      "decoded_log_line_count": 232,
+      "declared_source_head_observed_in_log": true
+    },
+    {
+      "label": "Linux World Art unattended capture",
+      "run_id": 45516959826,
+      "job_id": 138878757614,
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/45516959826",
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45516959826/job/138878757614",
+      "status": "completed",
+      "conclusion": "failure",
+      "failed_steps": [
+        {
+          "name": "Prepare Godot 4.7 stable on Linux",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 3
+        }
+      ],
+      "skipped_execution_steps": [
+        {
+          "name": "Publication and evaluation-package regressions",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4
+        },
+        {
+          "name": "Unattended capture qualification (Xvfb + OpenGL/llvmpipe)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5
+        }
+      ],
+      "checkout_identity_lines": [
+        {
+          "line": 36,
+          "text": "2026-11-25T00:17:49.8118494Z   ref: 700c89c451903fac07188196a2f94b5c8997cb53"
+        },
+        {
+          "line": 164,
+          "text": "2026-11-25T00:18:01.8620563Z 700c89c451903fac07188196a2f94b5c8997cb53"
+        }
+      ],
+      "download_command_lines": [
+        {
+          "line": 177,
+          "text": "2026-11-25T00:18:01.9165311Z \u001b[36;1m  'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'\u001b[0m"
+        }
+      ],
+      "selected_failure_lines": [
+        {
+          "line": 197,
+          "text": "2026-11-25T00:18:02.0099769Z curl: (22) The requested URL returned error: 403"
+        },
+        {
+          "line": 198,
+          "text": "2026-11-25T00:18:02.0125378Z ##[error]Process completed with exit code 22."
+        }
+      ],
+      "original_comparison": {
+        "run_id": 45482710800,
+        "job_id": 138759801034,
+        "source_head": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+        "selected_failure_lines": [
+          {
+            "line": 200,
+            "text": "2026-11-24T20:37:34.9014588Z curl: (22) The requested URL returned error: 403"
+          },
+          {
+            "line": 201,
+            "text": "2026-11-24T20:37:34.9040440Z ##[error]Process completed with exit code 22."
+          }
+        ],
+        "identical_failure_message_ignoring_timestamp": true,
+        "decoded_log_utf8_sha256": "73e9b74b8937a617b679a6ec7370fe7bebd267590777813bd1e0c76b8844275f",
+        "decoded_log_utf8_bytes": 19832,
+        "decoded_log_line_count": 257,
+        "declared_source_head_observed_in_log": true
+      },
+      "interpretation": "Same Godot download HTTP403 as original run; downstream runtime qualification is skipped. This is neither a runtime pass nor a new physical failure.",
+      "decoded_log_utf8_sha256": "3fe2bd76c29a62f18ae5b9caf6aaefae717ec84a634d066342c371f775175d62",
+      "decoded_log_utf8_bytes": 19633,
+      "decoded_log_line_count": 254,
+      "declared_source_head_observed_in_log": true
+    }
+  ],
+  "windows_status_at_capture": [
+    {
+      "job_id": 138878863540,
+      "run_id": 45516959787,
+      "name": "windows",
+      "status": "completed",
+      "conclusion": "success",
+      "qualification_steps": [
+        {
+          "name": "Check out pinned companion documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Check out exact source and all retained runtime objects",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Select Python",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Preserve exact source identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Run original adverse packet controls",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Verify every retained LFS object",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Authenticate and extract pinned engine without executing it",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Create actual-host identity packet",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Independently reverify the original identity packet",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Preserve final clean source observation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Retain original identity checks and untested manual sheet",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        }
+      ]
+    },
+    {
+      "job_id": 138878756645,
+      "run_id": 45516959648,
+      "name": "windows-angle",
+      "status": "completed",
+      "conclusion": "success",
+      "qualification_steps": [
+        {
+          "name": "Download source-pinned Windows Godot and verify archive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Import scripts and execute real Windows ANGLE GUI smoke",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Preserve ANGLE original framebuffer evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        }
+      ]
+    },
+    {
+      "job_id": 138878758021,
+      "run_id": 45516959826,
+      "name": "windows-angle",
+      "status": "in_progress",
+      "conclusion": null,
+      "qualification_steps": [
+        {
+          "name": "Download source-pinned Windows Godot and verify archive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Publication and evaluation-package regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Unattended capture qualification (Windows OpenGL ANGLE)",
+          "status": "in_progress",
+          "conclusion": null,
+          "number": 6
+        },
+        {
+          "name": "Summarise evidence",
+          "status": "pending",
+          "conclusion": null,
+          "number": 7
+        },
+        {
+          "name": "Prepare pinned Godot license and copyright notices",
+          "status": "pending",
+          "conclusion": null,
+          "number": 8
+        },
+        {
+          "name": "Build source-qualified portable Windows evaluation package",
+          "status": "pending",
+          "conclusion": null,
+          "number": 9
+        },
+        {
+          "name": "Publish qualified Windows evaluation ZIP",
+          "status": "pending",
+          "conclusion": null,
+          "number": 10
+        },
+        {
+          "name": "Preserve Windows package qualification",
+          "status": "pending",
+          "conclusion": null,
+          "number": 11
+        },
+        {
+          "name": "Preserve ANGLE framebuffer evidence",
+          "status": "pending",
+          "conclusion": null,
+          "number": 12
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Logs were returned decoded by the GitHub connector. Any log SHA256 records the UTF-8 decoded content, not the original HTTP archive bytes.",
+    "Windows success statuses are observed workflow outcomes; their artifacts and physical owner acceptance were not requalified by this failure readback.",
+    "Windows unattended capture was still in progress at this snapshot; this record does not claim its eventual outcome.",
+    "No workflow policy, source authority, engine code or test expectation was changed to obtain a green PR."
+  ],
+  "changes_made": "None. Evidence-only readback.",
+  "in_tools_source_identity": {
+    "path": "godot/scripts/physical_actor_session.gd",
+    "accepted_main_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+    "original_candidate_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+    "delivered_source_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+    "guard_expected_blob_reported": "bde4503df99d7e317cfb0987004d525f72177316",
+    "conclusion": "The reported actual source blob is identical in accepted main, original documentation candidate and delivered documentation source. The guarded expected blob is different; this readback preserves the refusal rather than changing authority."
+  }
+}

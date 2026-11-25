@@ -1,0 +1,225 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh independent final owner-packet editorial, scope, evidence and destination review",
+  "reviewer": "Specialist B /root/product_docs",
+  "author_reviewed": "/root closure lead",
+  "recorded_at": "2026-11-25T00:34:31.261441+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "qualified_source": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "qualified_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "reviewed_artifacts": [
+    {
+      "path": "../FINAL-REPORT.md",
+      "sha256": "2a37e16f0a20187621b20bf74a6b01680c3175dee6f9a95832207532b4f3be0f",
+      "bytes": 17180
+    },
+    {
+      "path": "../README.md",
+      "sha256": "42f9c2d89c45a5249b03646c5f12133e622afff50ec61d73fd8e94ffedacb730",
+      "bytes": 6652
+    },
+    {
+      "path": "../validation-matrix.md",
+      "sha256": "6e2fb4d8fbb0ba372c5c9a0b882909fbdfad6e8502b5b5dd1bad21431c5be33c",
+      "bytes": 7337
+    },
+    {
+      "path": "../validation-matrix.json",
+      "sha256": "5e616cbe06e0fc72475ed8a8d7d3775f5ff3b1f7d56dd9025521639a2cac0f8b",
+      "bytes": 13394
+    },
+    {
+      "path": "../remaining-findings.json",
+      "sha256": "71c7dbd64536c9f05c44b55b7db4663088ef626274439e9cd00d571dc11ff9bf",
+      "bytes": 7698
+    },
+    {
+      "path": "../recovery-ledger.json",
+      "sha256": "b5128f4e5aa7a216943a92284f22f5a2a7d2adc73cde198ecdce5af555a10e92",
+      "bytes": 4693
+    },
+    {
+      "path": "../coverage-map.md",
+      "sha256": "383d2bea38e65a6d0607a78e77a8c6365198950ee290f36d5119a0a60d71c1c0",
+      "bytes": 7233
+    }
+  ],
+  "pr_description_template": {
+    "temporary_path": "/tmp/cybersand-docs-closure-pr-body.md",
+    "sha256": "54fce3d61b34d2d67747ce6a81e265a796f86ddbfd2cd12d6968bab0d28bfe80",
+    "scope": "Read complete prepared PR description. Only the two actual publication identity values remain to be substituted by the lead after committing; no other text change is covered by this template readback.",
+    "allowed_placeholders": [
+      "__DELIVERY_SHA__",
+      "__DELIVERY_TREE__"
+    ],
+    "repository_links_checked": [
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+        "candidate_path": "docs/audits/2026-11-24-docs-renaissance/closure/FINAL-REPORT.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+        "candidate_path": "docs/audits/2026-11-24-docs-renaissance/closure/README.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+        "candidate_path": "docs/audits/2026-11-24-docs-renaissance/closure/validation-matrix.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/README.md",
+        "candidate_path": "README.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/README.md",
+        "candidate_path": "docs/README.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+        "candidate_path": "docs/audits/2026-11-24-docs-renaissance/closure/coverage-map.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/reference/status-and-roadmap.md",
+        "candidate_path": "docs/reference/status-and-roadmap.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/operations/cybersand-codex-development-handover.md",
+        "candidate_path": "docs/operations/cybersand-codex-development-handover.md",
+        "exists": true
+      },
+      {
+        "url": "https://github.com/techrote/cybersand/blob/docs/docs-renaissance-001/docs/audits/2026-11-24-docs-renaissance/closure/remaining-findings.json",
+        "candidate_path": "docs/audits/2026-11-24-docs-renaissance/closure/remaining-findings.json",
+        "exists": true
+      }
+    ]
+  },
+  "presentation_corrections": "See final-packet-polish-record-by-b.json for the original draft hashes and changes. Corrected showcase URL, numeric spacing, scope wording, save-message precision and final hosted evidence wording.",
+  "checks": [
+    {
+      "topic": "Owner usefulness and routes",
+      "finding": "Report leads with recommendation, Draft/HOLD and exact source. README/portal, six practical manuals, state/handover, gallery and subsystem routes are reachable through the index and coverage map. No full PR diff is needed to understand the result."
+    },
+    {
+      "topic": "Recovered versus fresh evidence",
+      "finding": "389 recovered artifacts are distinguished from newly produced closure reports; 176 are recovered composite claim groups, not 176 new runtime tests or complete fresh semantic audits. Missing conversation/final decision are disclosed. The original 19-question packet and new 36-question audit are separate."
+    },
+    {
+      "topic": "Coverage and preservation scope",
+      "finding": "547 explicit dispositions retain review depths; 82 exact originals, 2003 scoped current inbound routes, 8 superseded references, and 207 final claim/document pairs match their machine records. The 151-page save/reopen sweep is explicitly mechanical plus matched-procedure review, not full semantic requalification."
+    },
+    {
+      "topic": "Retrieval interpretation",
+      "finding": "35/36 canonical ranking is separate from 31 sufficient/5 partial/0 wrong-context answers. The challenge 162-to-161 top-five regression, MRR decline, layout rank shift, owner misses and safe DR36 abstention remain visible. No external or blind-model benchmark is claimed."
+    },
+    {
+      "topic": "Actual hosted source",
+      "finding": "Final run 45516959615 passed selection/history/all-five evaluations. Its actual PR merge checkout 0250f99ee814debb2c03ceddbb5489c00d3fba47 has the same complete tree as qualified source 700. Artifact 14978346740 digest is retained. B independently reproduced complete hosted/local report equality after removing only time/root fields. Runtime-provenance skip remains explicit."
+    },
+    {
+      "topic": "Source and runtime boundaries",
+      "finding": "Only five bounded documentation/retrieval tooling paths differ outside docs. Engine/Godot/dependency/policy protected paths do not differ from accepted main. Local repository PASS has 0 materialized / 18 unmaterialized runtime objects and is not a launch/runtime pass. Historical M11 results and ancillary failures retain their actual scope."
+    },
+    {
+      "topic": "Outstanding limitations and disposition",
+      "finding": "Generated/project failure-message overstatement is separated from the ordinary/generated/project rename limitation; no new data-loss event or I/O-fault test is invented. Browser failures, no fresh Godot GUI/physical acceptance, external retrieval gaps and Draft limits remain clear. No owner decision or merge permission is manufactured."
+    }
+  ],
+  "evidence_checks": {
+    "matrix_unique_rows": 29,
+    "matrix_receipt_hash_mismatches": [],
+    "qualification_input_count": 4090,
+    "recomputed_input_digest": "a7323f8d3cf700ed6f65f4d0dc21bb531b5bfd05dcd58ba246baa1f46d980286",
+    "non_documentation_paths": [
+      ".github/workflows/documentation.yml",
+      "tools/ci/check_docs.py",
+      "tools/ci/test_current_retrieval_selection.py",
+      "tools/docs/retrieval_eval.py",
+      "tools/docs/retrieval_policy.py"
+    ],
+    "protected_drift": [],
+    "complete_hosted_local_equality": [
+      {
+        "suite": "frozen",
+        "hosted_sha256": "778c800ec725f4a8e51557e3a294d6a9f4b319d1577023806246c692d3bc09e3",
+        "local_sha256": "147d1979c8d626acde5230fd5e984425e118ae13b136aef71356169586fbd344",
+        "complete_reports_equal_except_created_utc_and_corpus_root": true,
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 18,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.7302,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      },
+      {
+        "suite": "challenges",
+        "hosted_sha256": "8f03cf6f6b93945110d76ea071222004a58093f61d9b71502dda199c1838608f",
+        "local_sha256": "68b78ccb2509fb6f609470ab15bd7434ba895c32bc79a6d261b2949d924b96f7",
+        "complete_reports_equal_except_created_utc_and_corpus_root": true,
+        "summary": {
+          "questions": 164,
+          "canonical_hit_at_1": 126,
+          "canonical_hit_at_k": 161,
+          "mrr_at_k": 0.8575,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      },
+      {
+        "suite": "renaissance",
+        "hosted_sha256": "bb6f58a7c16b33f2e00df9619cb557f7b76660dd764ba3982c862597b630f804",
+        "local_sha256": "cf99fb78c12aa2f3a9e94e58d42d59b54f35a408cd22f3a25b043d8ef668abc5",
+        "complete_reports_equal_except_created_utc_and_corpus_root": true,
+        "summary": {
+          "questions": 36,
+          "canonical_hit_at_1": 27,
+          "canonical_hit_at_k": 35,
+          "mrr_at_k": 0.8426,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      },
+      {
+        "suite": "owner-intent",
+        "hosted_sha256": "a72224faee9f60f1e100be97ca1d8c20ca18767931b413bfcc867acfada9947d",
+        "local_sha256": "587d76625d111c8ada4af1c52b1d634236aa7f7bbb6b6911d94f35cedae61152",
+        "complete_reports_equal_except_created_utc_and_corpus_root": true,
+        "summary": {
+          "questions": 6,
+          "canonical_hit_at_1": 1,
+          "canonical_hit_at_k": 4,
+          "mrr_at_k": 0.3389,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      },
+      {
+        "suite": "historical",
+        "hosted_sha256": "ff217f6ffd5669a7fa7c9bcce29ea3061089e5979492530b5712e55183668ec7",
+        "local_sha256": "9495b89c350d4cf9118e2804a92db609487cf72991d2a79f5ecebc51da3ecd64",
+        "complete_reports_equal_except_created_utc_and_corpus_root": true,
+        "summary": {
+          "questions": 10,
+          "canonical_hit_at_1": 7,
+          "canonical_hit_at_k": 10,
+          "mrr_at_k": 0.8033,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    ]
+  },
+  "link_verification": {
+    "local_links_checked": 166,
+    "broken": [],
+    "limitations": "Local destination existence and repository-path mapping only. External Actions/comment links refer to supplied or retrieved records; no live browser rendering or external URL availability claim."
+  },
+  "open_p0": 0,
+  "open_p1": 0,
+  "result": "OWNER_READY_WITH_EXPLICIT_LIMITATIONS_FOR_REVIEWED_PACKET",
+  "delivery_boundary": "Lead must publish completed artifacts and fill the two PR delivery identities from the actual evidence commit. Later evidence-only commits transfer qualification only when the full recorded input map remains equal; this review does not substitute for that final readback."
+}

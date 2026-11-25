@@ -1,0 +1,185 @@
+"""Fresh closure verification; run from the CyberSand source root.
+
+Reads recovered original inventories but never rewrites them. Verifies all exact
+preserved bytes against accepted Git objects, and rechecks incoming anchors in
+the original documentation universe. Retrieval context exports are quoted
+evidence, so are not treated as new executable navigation pages.
+"""
+from pathlib import Path
+from urllib.parse import urlsplit, unquote
+import collections
+import datetime
+import hashlib
+import json
+import re
+import subprocess
+import sys
+
+ROOT = Path.cwd().resolve()
+AUDIT = ROOT / "docs/audits/2026-11-24-docs-renaissance"
+OUT = AUDIT / "closure"
+BASE = "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+sys.path.insert(0, str(ROOT / "tools/ci"))
+import check_docs
+
+
+def git(*args):
+    return subprocess.check_output(["git", *args], cwd=ROOT)
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write(name, data):
+    (OUT / name).write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+
+
+def resolve_link(source, target):
+    u = urlsplit(target)
+    if u.scheme:
+        prefix = "/techrote/cybersand/blob/main/"
+        if u.netloc != "github.com" or not u.path.startswith(prefix):
+            return None
+        destination = unquote(u.path[len(prefix):])
+    elif target.startswith("//"):
+        return None
+    else:
+        destination = ((ROOT / source).parent / unquote(u.path)).resolve() if u.path else ROOT / source
+        if not destination.is_relative_to(ROOT):
+            return None
+        destination = destination.relative_to(ROOT).as_posix()
+    return destination, unquote(u.fragment)
+
+
+inventory = json.loads((AUDIT / "inventory.json").read_text())
+original_rows = inventory["documents"]
+baseline_paths = [r["path"] for r in original_rows if r["baseline_present"]]
+raw = subprocess.run(["git", "cat-file", "--batch"], cwd=ROOT,
+                     input="".join(BASE + ":" + p + "\n" for p in baseline_paths).encode(),
+                     stdout=subprocess.PIPE, check=True).stdout
+baseline = {}
+offset = 0
+for path in baseline_paths:
+    end = raw.index(b"\n", offset)
+    header = raw[offset:end].decode().split()
+    size = int(header[-1])
+    baseline[path] = {"blob": header[0], "data": raw[end + 1:end + size + 1]}
+    offset = end + size + 2
+
+current = {r["path"]: (ROOT / r["path"]).read_bytes() for r in original_rows}
+md_paths = sorted(p for p in current if p.endswith(".md"))
+old_anchors = {p: check_docs.anchors(v["data"].decode("utf-8-sig"))
+               for p, v in baseline.items() if p.endswith(".md")}
+new_anchors = {p: check_docs.anchors(current[p].decode("utf-8-sig")) for p in md_paths}
+changed = {p for p in md_paths if p not in baseline or baseline[p]["data"] != current[p]}
+
+
+def scan(texts):
+    links = []
+    for source, data in texts.items():
+        text = data.decode("utf-8-sig")
+        for target in re.findall(r"\[[^\]]*\]\(([^\s)]+)(?:\s+[^)]*)?\)", check_docs.visible_markdown(text)):
+            resolved = resolve_link(source, target)
+            if not resolved:
+                continue
+            destination, fragment = resolved
+            if destination not in changed:
+                continue
+            links.append({"from": source, "target": destination, "anchor": fragment or None,
+                          "current_target_exists": (ROOT / destination).is_file(),
+                          "old_anchor_exists": fragment in old_anchors.get(destination, set()) if fragment else None,
+                          "current_anchor_exists": fragment in new_anchors.get(destination, set()) if fragment else None,
+                          "source_scope": "historical-evidence" if source.startswith(("docs/history/", "docs/audits/")) else "current-or-focused"})
+    return links
+
+
+old_links = scan({p: v["data"] for p, v in baseline.items() if p.endswith(".md")})
+now_links = scan({p: current[p] for p in md_paths})
+current_keys = {(r["from"], r["target"], r["anchor"]) for r in now_links}
+lost = [r for r in old_links if r["old_anchor_exists"] and not r["current_anchor_exists"]]
+newly_unresolved = [r for r in lost if (r["from"], r["target"], r["anchor"]) in current_keys]
+superseded = [dict(r, disposition="The old caller was rewritten; original caller and target remain in the exact baseline Git tree.",
+                   immutable_target=f"https://github.com/techrote/cybersand/blob/{BASE}/{r['target']}#{r['anchor']}")
+              for r in lost if (r["from"], r["target"], r["anchor"]) not in current_keys]
+unresolved = [r for r in now_links if not r["current_target_exists"] or r["current_anchor_exists"] is False]
+inbound_report = {"schema": 1, "authority": "historical-non-authoritative", "classification": "fresh-closure-verification",
+                  "baseline": BASE, "source_head": git("rev-parse", "HEAD").decode().strip(),
+                  "scope": "All original 508 baseline Markdown files and 514 current inventoried Markdown files; inline links into every changed Markdown target, including retained historical callers. Source-pinned external links are preserved, not fetched. New quoted context exports are evidence, not navigation.",
+                  "baseline_markdown_count": len(old_anchors), "current_markdown_count": len(md_paths),
+                  "changed_markdown_targets": len(changed), "baseline_links_to_changed_targets": len(old_links),
+                  "current_links_to_changed_targets": len(now_links), "newly_unresolved": newly_unresolved,
+                  "current_unresolved": unresolved, "superseded_baseline_references": superseded,
+                  "current_inbound_links": now_links,
+                  "input_document_sha256": {p: sha(current[p]) for p in md_paths},
+                  "limitations": ["Markdown parser shares repository anchor semantics; this is not a browser render.",
+                                  "Unchanged historical broken anchors remain historical evidence and are reported separately.",
+                                  "GitHub history retains original headings; .md.txt preservation files retain bytes, not live relative navigation."]}
+write("inbound-link-reconciliation.json", inbound_report)
+
+rows = []
+for preserved in sorted((AUDIT / "preserved").glob("*.md.txt")):
+    original = preserved.name[:-4].replace("__", "/")
+    original_record = baseline.get(original)
+    if original_record is None:
+        original_record = {"blob": git("rev-parse", BASE + ":" + original).decode().strip(),
+                           "data": git("show", BASE + ":" + original)}
+    b = preserved.read_bytes()
+    incoming = [r for r in now_links if r["target"] == original]
+    broken = [r for r in newly_unresolved if r["target"] == original]
+    rows.append({"original_path": original, "original_source_commit": BASE,
+                 "original_git_blob": original_record["blob"], "original_content_sha256": sha(original_record["data"]),
+                 "preserved_destination": preserved.relative_to(ROOT).as_posix(), "preserved_content_sha256": sha(b),
+                 "preserved_bytes": len(b), "current_replacement_destination": original,
+                 "current_replacement_sha256": sha((ROOT / original).read_bytes()),
+                 "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+                 "historical_routing": {"immutable_rendered_source": f"https://github.com/techrote/cybersand/blob/{BASE}/{original}",
+                                        "exact_byte_copy": preserved.relative_to(ROOT).as_posix(),
+                                        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"},
+                 "original_heading_count": len(old_anchors.get(original, set())),
+                 "retained_current_heading_count": len(old_anchors.get(original, set()) & new_anchors.get(original, set())),
+                 "original_only_headings": sorted(old_anchors.get(original, set()) - new_anchors.get(original, set())),
+                 "inbound_link_disposition": {"current_inventoried_references": len(incoming),
+                                              "newly_broken_references": broken,
+                                              "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links" if not broken else "FAIL"},
+                 "verification_status": "PASS" if b == original_record["data"] else "FAIL"})
+preservation = {"schema": 1, "authority": "historical-non-authoritative", "classification": "fresh-closure-verification",
+                "verified_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "baseline": BASE,
+                "source_head": git("rev-parse", "HEAD").decode().strip(),
+                "method": "Compare every .md.txt preserved file to exact baseline Git blob bytes, SHA-256 and content length; independently recheck inbound anchors.",
+                "total": len(rows), "pass": sum(r["verification_status"] == "PASS" for r in rows),
+                "fail": sum(r["verification_status"] != "PASS" for r in rows), "records": rows}
+write("preservation-manifest.json", preservation)
+
+narrow_path = OUT / "lead/review-remaining-default-pages.json"
+narrow = json.loads(narrow_path.read_text()) if narrow_path.exists() else {}
+narrow_by_path = {r["path"]: r for r in narrow.get("documents", [])}
+fresh_rows = []
+for old in original_rows:
+    p = old["path"]
+    same = sha(current[p]) == old["current_sha256"]
+    fresh_rows.append({"path": p, "baseline_sha256": old["baseline_sha256"],
+                       "delivered_sha256": sha(current[p]), "original_reviewed_sha256": old["current_sha256"],
+                       "original_review_level": old["review_level"], "original_review_state": old["review_state"],
+                       "original_disposition": old["disposition"], "original_disposition_reason": old["disposition_reason"],
+                       "priority": old["priority"], "corpus_role": old["corpus_role_after"],
+                       "original_review_records": old["source_review_records"],
+                       "closure_disposition": "Fresh narrow source/scope review; retain bytes unchanged; not exhaustive numeric/scientific requalification" if p in narrow_by_path else "Recovered reviewed bytes unchanged; retain original stated review scope" if same else "Fresh closure correction; source and independent review are in closure specialist ledgers",
+                       "additional_closure_review": {"path": narrow_path.relative_to(ROOT).as_posix(), "sha256": sha(narrow_path.read_bytes()), "scope": narrow_by_path[p]} if p in narrow_by_path else None,
+                       "changed_since_recovered_review": not same,
+                       "canonical_topics": old["canonical_topics"]})
+write("document-inventory.json", {"schema": 1, "authority": "historical-non-authoritative",
+                                 "classification": "fresh-closure-reconciliation-of-original-inventory",
+                                 "source_head": git("rev-parse", "HEAD").decode().strip(),
+                                 "original_inventory_sha256": sha((AUDIT / "inventory.json").read_bytes()),
+                                 "scope": "The original 547-item documentation/tooling universe; new closure evidence is indexed separately. Dispositions do not inflate structural checks into semantic review.",
+                                 "summary": {"items": len(fresh_rows), "changed_since_original_review": sum(r["changed_since_recovered_review"] for r in fresh_rows),
+                                             "roles": dict(collections.Counter(r["corpus_role"] for r in fresh_rows)),
+                                             "additional_narrow_source_reviews": len(narrow_by_path),
+                                             "original_review_levels": dict(collections.Counter(r["original_review_level"] for r in fresh_rows))},
+                                 "documents": fresh_rows})
+print(json.dumps({"preserved": preservation["total"], "identical": preservation["pass"],
+                  "newly_broken_inbound": len(newly_unresolved), "current_unresolved_including_inherited": len(unresolved),
+                  "superseded_baseline_references": len(superseded), "inventory_items": len(fresh_rows)}, indent=2))
+if preservation["fail"] or newly_unresolved:
+    raise SystemExit(1)

@@ -1,0 +1,245 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "kind": "fresh final document identity equality with explicit two-guide amendment",
+  "recorded_at": "2026-11-25T00:18:26.097376+00:00",
+  "reviewer": "Specialist B /root/product_docs",
+  "frozen_source_commit": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "frozen_source_tree": "9d55f3adc403aba5aa4814904859e47e7fbef88b",
+  "prior_identity_receipt": {
+    "path": "document-identity-36653-by-b.json",
+    "sha256": "d2135783ba90f1e18ecf94bb56294649e1224a93d3f04799cacf399576997510"
+  },
+  "records": [
+    {
+      "review_record": "product-source-review.json",
+      "path": "README.md",
+      "reviewed_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "frozen_commit_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "git_blob": "b1c9efe1d3586caa070c58372ec90c8e6a4fec56",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/README.md",
+      "reviewed_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "frozen_commit_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "git_blob": "70129448218f1ed0b9e76dbd7fb97a8d802971de",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/getting-started.md",
+      "reviewed_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "frozen_commit_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "git_blob": "bfd99cdc7782e347ead2b83c68d4c6db34771cef",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/workbench-first-session.md",
+      "reviewed_sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "frozen_commit_sha256": "8a6c776e347327984d0c1a4e22ffb84fd783cae55d4c71c2259fcbbe2c1b641f",
+      "git_blob": "d8c8d6b7163d34395c6aab7c8ada024983724ab7",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "reviewed_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "frozen_commit_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "git_blob": "2337ec8354d22042f402ad7d2dd423921de6c529",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/workbench-saving.md",
+      "reviewed_sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "frozen_commit_sha256": "b554300c5ca5e2d5a1357a7f43bd50b0df62deec1451b6d2fe535d38ac59ea7a",
+      "git_blob": "0f4891491fd44d84997cdf9ab2de68172115e9a6",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/workbench-art.md",
+      "reviewed_sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "frozen_commit_sha256": "0ce8ecd0a6122adf2542d612a8bb3f740c160f735c7cd137beba1b43cc312d3f",
+      "git_blob": "739a5a64213a70cf2d760d6f3ca303b7fe57f320",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/showcase-guide.md",
+      "reviewed_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "frozen_commit_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "git_blob": "bfa8261df26185ae3c54b1285c8cf84f0b01a14e",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "reviewed_sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "frozen_commit_sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "git_blob": "d6cb06bb741b40961932b9f7782fd3368c09b61e",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "frozen_commit_sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "git_blob": "12b5fd9a9301b84b60f16e46ef1207461a495bba",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "reviewed_sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "frozen_commit_sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "git_blob": "d0b0a5417fdd0061263d57714a49848972e5a538",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/systems/architectural-generator.md",
+      "reviewed_sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "frozen_commit_sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "git_blob": "68789f16b6dd17c2cb94a1de1dfc8b5e3af1cac9",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "reviewed_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "frozen_commit_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "git_blob": "ccac69e75a4a470a676715b49624e22deb3d3b4f",
+      "equal": true
+    },
+    {
+      "review_record": "product-source-review.json",
+      "path": "docs/operations/workbench-water-lab.md",
+      "reviewed_sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "frozen_commit_sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "git_blob": "b7cfaed235971bcf38434be2fad1b5b5b8447377",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/reference/level-saves-and-replay.md",
+      "reviewed_sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+      "frozen_commit_sha256": "5a6088b6cf86de8334cf1f1cf9cbe09fc6bf8e9e116f7f34789b8e6d28e1d3d5",
+      "git_blob": "97aac1cb0247fd50d2ee4b46884883721319411e",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/reference/configuration-reference.md",
+      "reviewed_sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+      "frozen_commit_sha256": "90d437ab3f8a168a40293bb634e2a1e46515f3f6098f6a736b08ddab442bcf03",
+      "git_blob": "8b6a206590a196fc1bb73ebd8af781d290829db1",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/reference/invariants.md",
+      "reviewed_sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+      "frozen_commit_sha256": "11b2e4cad98237aa76549948992af6ed244fd46c6c2d7117ac738ec3cff681eb",
+      "git_blob": "d20204d6993bef6cdbae33c0c79c72822f172539",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "reviewed_sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+      "frozen_commit_sha256": "425bf3992bdfce6d0cc0afc6beb5e8bd8ccc1d275dc56a8048a6d0788064454d",
+      "git_blob": "5a9e4e764dd9232777e8c3b9b064422c327e93c0",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "reviewed_sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+      "frozen_commit_sha256": "b90184ba201822d6fdfbb9dd121bc1d9cb4396bec660cc454e3533323cd80a9b",
+      "git_blob": "8debe5bc428c15a3e2d93807ef4f629aa2e6bc7c",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "reviewed_sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "frozen_commit_sha256": "a8ee279146a6fbff6c3e62e3608f8f72364c88c5c26bc5eac0a2c6b94d51e79d",
+      "git_blob": "314eef2ed87db829c79d5d3fc2c2365f279637b7",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "reviewed_sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a",
+      "frozen_commit_sha256": "68d2b95cfb5632f952f000d46d25bb70c87fda84ad620b01f88a9b57a861793a",
+      "git_blob": "199b4338eaa3898e5fd6c4404ae27649718c672e",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/systems/workbench-art-providers.md",
+      "reviewed_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "frozen_commit_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "git_blob": "b5637f9f28c7c1deb07784c86b416d29bb3c69d7",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-by-b.json",
+      "path": "docs/operations/local-build-and-validation.md",
+      "reviewed_sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "frozen_commit_sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "git_blob": "e0f162cce3512a3d76c236344ef51ff975cd10f4",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-delta-by-b.json",
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "reviewed_sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "frozen_commit_sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "git_blob": "12b5fd9a9301b84b60f16e46ef1207461a495bba",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-delta-by-b.json",
+      "path": "docs/operations/architecture-programme.md",
+      "reviewed_sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861",
+      "frozen_commit_sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861",
+      "git_blob": "35d3bb94fb47f33cc41a0b52906db59b0cb4bdc4",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-delta-by-b.json",
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "reviewed_sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "frozen_commit_sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "git_blob": "d0b0a5417fdd0061263d57714a49848972e5a538",
+      "equal": true
+    },
+    {
+      "review_record": "review-technical-delta-by-b.json",
+      "path": "docs/systems/architectural-generator.md",
+      "reviewed_sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "frozen_commit_sha256": "7defc9cf1d61913100e9befab9ab152e7c15c5fd686ffd161eded86b9b417073",
+      "git_blob": "68789f16b6dd17c2cb94a1de1dfc8b5e3af1cac9",
+      "equal": true
+    }
+  ],
+  "review_record_count": 3,
+  "comparison_count": 27,
+  "unique_documents": 24,
+  "all_equal": true,
+  "meaning": "All reviewed document bytes, including both final reopening corrections, equal the published frozen-source commit. This is identity transfer, not runtime execution or a claim about the later evidence-only commit.",
+  "answer_review": {
+    "path": "../retrieval/answer-b-review.json",
+    "sha256": "93abdb8b0d026a4e4edfd254a322afc5c385370e57049d703b119268ede4fbfc",
+    "authority_wording_amendment": "DR29 rank 5 owner-confirmed-intent description corrected; preserved previous review and unchanged passage identities/answer verdicts documented in the review."
+  },
+  "independent_final_amendment": {
+    "path": "../technical/review-product-final-delta-by-a.json",
+    "sha256": "71a5d78f8cb4792a4bbafc1b31ed26ba65daa9f398dec2b81bab61432d06f4b7"
+  }
+}

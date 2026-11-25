@@ -1,0 +1,312 @@
+{
+  "schema": 1,
+  "mission": "DOCS-RENAISSANCE-CLOSURE-001",
+  "record_kind": "fresh independent closure verification of recovered artifacts",
+  "reviewer": "Specialist B /root/product_docs",
+  "recorded_at": "2026-11-24T23:49:09.939380+00:00",
+  "accepted_source": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "candidate_anchor": "ddd7c88fd97d8b85056dd7910896ec3a897ecb87",
+  "readme": {
+    "path": "README.md",
+    "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+    "bytes": 8056,
+    "git_blob": "b1c9efe1d3586caa070c58372ec90c8e6a4fec56"
+  },
+  "readme_matches_recovered_preview_manifest": true,
+  "assets": [
+    {
+      "path": "docs/images/gentek80-integration/eight-showcases.png",
+      "sha256": "e3d467367af9076b3ac581a23251c116375a5c2c569e387f4f0b201635909805",
+      "bytes": 59498,
+      "git_blob": "0d0fe980f7f2ba4450d40b9f5182a1b7d66a7c1b",
+      "expected_sha256": "e3d467367af9076b3ac581a23251c116375a5c2c569e387f4f0b201635909805",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1536,
+        932
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/images/gentek80-integration/gallery-manifest.json",
+      "source_record_exists": true,
+      "capture_scope": "Original native renders, contact-sheet nearest-neighbour scale and labels. Retained unchanged.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/neon-reliquary/overview.png",
+      "sha256": "e1e0e0efcfcc63cf5160fbdcb462a5d92edf7a21470f8fa608598c4c0b0fe1a9",
+      "bytes": 927453,
+      "git_blob": "88b3b630209ff5b438f8c16243701ddbe5d27635",
+      "expected_sha256": "e1e0e0efcfcc63cf5160fbdcb462a5d92edf7a21470f8fa608598c4c0b0fe1a9",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/2026-10-18-neon-reliquary-evidence.json",
+      "source_record_exists": true,
+      "capture_scope": "Retained original standalone Godot render; not current Workbench UI.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/materials-lab-v1/01-inspector-water.png",
+      "sha256": "030edca4c12fe267dd56091f655228fa69f40ed4a3ed0c723dfe3d33175fced6",
+      "bytes": 355198,
+      "git_blob": "d0f6358a5b15ac5b831a369efee9fad78602c617",
+      "expected_sha256": "030edca4c12fe267dd56091f655228fa69f40ed4a3ed0c723dfe3d33175fced6",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1680,
+        1050
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/materials-lab-v1/graphical-capture-receipt.json",
+      "source_record_exists": true,
+      "capture_scope": "Original graphical Linux X11 application capture; no new GUI or Windows claim.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/materials-lab-v1/02-inspector-slush.png",
+      "sha256": "feb22c26e60ea5a337d5a187f6bc1ac445d4c5528b308aae1b212da8a616baa0",
+      "bytes": 278702,
+      "git_blob": "23bc41b196bf527f24f59f64c0807ccca8b17f3f",
+      "expected_sha256": "feb22c26e60ea5a337d5a187f6bc1ac445d4c5528b308aae1b212da8a616baa0",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1680,
+        1050
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/materials-lab-v1/graphical-capture-receipt.json",
+      "source_record_exists": true,
+      "capture_scope": "Retained graphical Linux X11 inspector.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/deepworks/deepworks-atlas.png",
+      "sha256": "331431e917a612857d60ecd71c92af83e066f405468ba80c4ec79282fa6b7ac0",
+      "bytes": 2698657,
+      "git_blob": "00edc2fe5c378f7df281ecc7796d777d693a0e44",
+      "expected_sha256": "331431e917a612857d60ecd71c92af83e066f405468ba80c4ec79282fa6b7ac0",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/images/deepworks/capture-manifest.json",
+      "source_record_exists": true,
+      "capture_scope": "Retained paused tick-zero llvmpipe material composite.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/blacksite-nine/blacksite-nine.png",
+      "sha256": "a0b42651d8459bcb24b8aa1803ed2e8fa807e47d0c9734c01a2f0e87b5a08080",
+      "bytes": 2174686,
+      "git_blob": "369d99dd715b876ddb0c2cc78f10470bf525fd16",
+      "expected_sha256": "a0b42651d8459bcb24b8aa1803ed2e8fa807e47d0c9734c01a2f0e87b5a08080",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        2880,
+        2880
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/images/blacksite-nine/capture.json",
+      "source_record_exists": true,
+      "capture_scope": "Retained paused tick-zero X11 llvmpipe render, 3 pixels per cell.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/semantic-depth/refinery-guide.png",
+      "sha256": "ecf9521d1b37419c36f50c8211658f13ff9a6150ed78301438469a41a75520ec",
+      "bytes": 275164,
+      "git_blob": "8cfffb4ca64036986fd0f21b84deb44e21a87a18",
+      "expected_sha256": "ecf9521d1b37419c36f50c8211658f13ff9a6150ed78301438469a41a75520ec",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/images/semantic-depth/capture-manifest.json",
+      "source_record_exists": true,
+      "capture_scope": "Retained standalone semantic-depth illustration; not integrated Workbench layers.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/wcx-ballistic-water/drop-spray-t114.png",
+      "sha256": "2ad4d7bd74bda893d481cbd4848339115cb0138819fb6f46c46fde7492b6546a",
+      "bytes": 152495,
+      "git_blob": "bd73fdb383b07b82110fe17a315e695b88f02ea0",
+      "expected_sha256": "2ad4d7bd74bda893d481cbd4848339115cb0138819fb6f46c46fde7492b6546a",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/2026-11-05-wcx-ballistic-water.md",
+      "source_record_exists": true,
+      "capture_scope": "Retained Windows rendered 1280x720 frame at tick114; no current performance claim.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/in-tools-361/liquid-lab-leak.png",
+      "sha256": "6b4e3c87a856ef8d3fd1b5f62ea63aa6f31809724587ceaef895b7f5f815dfa9",
+      "bytes": 192305,
+      "git_blob": "c773ce9329c254cc15cd168bc6eecbb1592e88fc",
+      "expected_sha256": "6b4e3c87a856ef8d3fd1b5f62ea63aa6f31809724587ceaef895b7f5f815dfa9",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/2026-11-09-in-tools-361-workbench-equipment.md",
+      "source_record_exists": true,
+      "capture_scope": "Retained real windowed equipment evaluation; historical toolbar layout.",
+      "retained_or_new_in_original_mission": "retained_historical_asset",
+      "unchanged_from_accepted_baseline": true
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-interlaced-viaduct-native.png",
+      "sha256": "a4c6387ea94069b86fce410e8b54ba71d020f588be282b29b68f4abc6ac9408f",
+      "bytes": 16919,
+      "git_blob": "ddb2937b894e27476b35e85e5595eb9b6c1222e4",
+      "expected_sha256": "a4c6387ea94069b86fce410e8b54ba71d020f588be282b29b68f4abc6ac9408f",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1024,
+        512
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.json",
+      "source_record_exists": true,
+      "capture_scope": "Fresh headless CyberWorldGenerator output; 1024x512 upper crop of1024-square project, seed271828; stored IDs to canonical baseRGBA; no scaling/smoothing/GUI.",
+      "retained_or_new_in_original_mission": "original_mission_native_render"
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-cathedral-megaframe-native.png",
+      "sha256": "c6afa8fd16af8e52e27bf8918ba338e2d6dae5aeecccc05676907d58455a6e32",
+      "bytes": 13821,
+      "git_blob": "45ee022e5648bb978a5d217e69766dbfc577d108",
+      "expected_sha256": "c6afa8fd16af8e52e27bf8918ba338e2d6dae5aeecccc05676907d58455a6e32",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1024,
+        512
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.json",
+      "source_record_exists": true,
+      "capture_scope": "Fresh headless CyberWorldGenerator output; 1024x512 upper crop of1024-square project, seed271828; stored IDs to canonical baseRGBA; no scaling/smoothing/GUI.",
+      "retained_or_new_in_original_mission": "original_mission_native_render"
+    },
+    {
+      "path": "docs/images/docs-renaissance/gentek-megatruss-station-native.png",
+      "sha256": "1b009fe4c33b3b830be8f7d177057be40e5bb4fc2560d24e1fa2b33e77e4f12c",
+      "bytes": 9970,
+      "git_blob": "73d6404ed27095b122df94e4c00cd280ed104ddd",
+      "expected_sha256": "1b009fe4c33b3b830be8f7d177057be40e5bb4fc2560d24e1fa2b33e77e4f12c",
+      "hash_matches": true,
+      "size_matches": true,
+      "dimensions": [
+        1024,
+        512
+      ],
+      "dimensions_match": true,
+      "source_record": "docs/audits/2026-11-24-docs-renaissance/capture-b/native-render.json",
+      "source_record_exists": true,
+      "capture_scope": "Fresh headless CyberWorldGenerator output; 1024x512 upper crop of1024-square project, seed271828; stored IDs to canonical baseRGBA; no scaling/smoothing/GUI.",
+      "retained_or_new_in_original_mission": "original_mission_native_render"
+    }
+  ],
+  "asset_summary": {
+    "total": 12,
+    "original_mission_native_renders": 3,
+    "retained_assets": 9,
+    "hash_size_dimensions_and_provenance_paths_pass": true,
+    "nine_retained_assets_identical_to_accepted_baseline": true
+  },
+  "preview_scope": "Static Markdown layout approximation, not actual GitHub browser rendering. Narrow code blocks wrap for printed review; GitHub may scroll them. No application capture or physical GPU claim.",
+  "previews": [
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop.pdf",
+      "sha256": "57c93b1dc9bdc610ff75d4a6c9fdd484362182872b6548f2a7e6675764098b1d",
+      "bytes": 1457330,
+      "git_blob": "000368f58b127dc4b3946e62d3ec0e35cc4260a0",
+      "matches_recovered_manifest": true,
+      "fresh_visual_review": "hash verification only; four PNG excerpts visually inspected"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop-top.png",
+      "sha256": "daa917888185eda89aea8a1120cc2de94651ad2ebe956ac63eac8aa2bede4dd5",
+      "bytes": 254435,
+      "git_blob": "98ceb8c5a6cec2d161685d5642d50161a5fb4363",
+      "matches_recovered_manifest": true,
+      "fresh_visual_review": "independently viewed by closure Specialist B"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-desktop-gallery.png",
+      "sha256": "1ddf14f295c1d3272c8c828440a36fafa8896c05c8b5fa3b2a5c3010868c9b7e",
+      "bytes": 796428,
+      "git_blob": "91d83743c15d9ab11dbbbbdffe407d1a5984b4b3",
+      "matches_recovered_manifest": true,
+      "fresh_visual_review": "independently viewed by closure Specialist B"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow.pdf",
+      "sha256": "66542cbe388f3c3e3cd9e72e7bf6481b9656cdb99f890a947be19408b8c5782c",
+      "bytes": 1457543,
+      "git_blob": "0c12467b509c475c1c29ed3e4cf7c29cf1cd3288",
+      "matches_recovered_manifest": true,
+      "fresh_visual_review": "hash verification only; four PNG excerpts visually inspected"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow-top.png",
+      "sha256": "30b2039cc9e76a8d3167ea8edf7a84221a20897b394d9ba56d6684287cc309ac",
+      "bytes": 153157,
+      "git_blob": "b20711a5d95e954e34de074c6e2bb23b00c9ca00",
+      "matches_recovered_manifest": true,
+      "fresh_visual_review": "independently viewed by closure Specialist B"
+    },
+    {
+      "path": "docs/audits/2026-11-24-docs-renaissance/preview/readme-narrow-gallery.png",
+      "sha256": "72a0933323578a664985eee740cbde0d221bd1381d6bf9ce6b5e1e26d3de030b",
+      "bytes": 186311,
+      "git_blob": "0bb44b2ecf14d6d12387a5582e8fddcc4f11f647",
+      "matches_recovered_manifest": true,
+      "fresh_visual_review": "independently viewed by closure Specialist B"
+    }
+  ],
+  "visual_observations": [
+    "Desktop and narrow top/gallery excerpts have readable hierarchy, captions and navigation with no observed text overlap or clipping in those excerpts.",
+    "At narrow width, gallery images remain recognizable; small UI text in retained Materials Lab screenshot requires opening the full-size image. The adjacent guide supplies instructions in text.",
+    "Three native architectural renders independently viewed: crisp material-map geometry with declared 1024x512 crop, no UI or runtime-performance inference.",
+    "Original Blacksite capture lacks full checkout revision; retain its script-set/native hashes and do not recertify as current."
+  ],
+  "limitations": [
+    "Only recovered static Pandoc/PyMuPDF layouts were visually inspected. Actual GitHub/browser layout remains unexecuted.",
+    "No fresh graphical Godot session, first-session runtime walkthrough, physical Windows/NVIDIA acceptance or frame pacing test was performed.",
+    "Original native render receipts were recovered and verified by bytes/provenance; rendering was not rerun during closure."
+  ]
+}
