@@ -717,13 +717,14 @@ func _conversation_edit_guard(guard: Callable) -> bool:
 	return allowed is bool and allowed
 
 func _conversation_edit_matches(handle: int, identity: Dictionary, check_guard: bool = true) -> bool:
+	if not is_inside_tree() or is_queued_for_deletion(): return false
 	var owned := _conversation_edit_owner
 	if owned.is_empty() or int(owned.handle) != handle or owned.identity != identity \
 			or int(owned.provider_serial) != serial or str(owned.path) != log_path or int(owned.event_index) != _event_index \
 			or _conversation_edit_preparation == null or _conversation_edit_preparation.is_cancelled() \
 			or _conversation_edit_preparation.secrets_snapshot != secrets: return false
 	if check_guard and not _conversation_edit_guard(owned.guard): return false
-	return not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle \
+	return is_inside_tree() and not is_queued_for_deletion() and not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle \
 		and _conversation_edit_preparation != null and not _conversation_edit_preparation.is_cancelled() \
 		and _conversation_edit_preparation.secrets_snapshot == secrets and int(owned.provider_serial) == serial \
 		and str(owned.path) == log_path and int(owned.event_index) == _event_index
@@ -731,6 +732,8 @@ func _conversation_edit_matches(handle: int, identity: Dictionary, check_guard: 
 func begin_conversation_edit(turns: Variant, last_result: String, identity: Dictionary,
 		completion: Callable, guard: Callable) -> Dictionary:
 	var began := Time.get_ticks_usec()
+	if not is_inside_tree() or is_queued_for_deletion():
+		return {"ok":false,"handle":-1,"error":"Conversation provider owner is closing or unavailable."}
 	if active or request != null or _preparation_active() or export_active or resume_active:
 		return {"ok":false,"handle":-1,"error":"Finish or Stop current provider work before applying conversation edits."}
 	if identity.is_empty() or not bounded_json_values(identity,{"items":64,"bytes":8192}) \
@@ -745,7 +748,8 @@ func begin_conversation_edit(turns: Variant, last_result: String, identity: Dict
 		characters += str(turn.content).length()
 		if characters > MAX_CONVERSATION_BYTES:
 			return {"ok":false,"handle":-1,"error":"Conversation edit exceeds the 16 MiB character admission bound."}
-	if not _conversation_edit_guard(guard) or active or request != null or _preparation_active():
+	if not _conversation_edit_guard(guard) or not is_inside_tree() or is_queued_for_deletion() \
+			or active or request != null or _preparation_active():
 		return {"ok":false,"handle":-1,"error":"Conversation edit context changed before preparation."}
 	_conversation_edit_serial += 1
 	var handle := _conversation_edit_serial

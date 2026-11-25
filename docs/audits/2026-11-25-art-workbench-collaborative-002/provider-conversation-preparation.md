@@ -32,3 +32,12 @@ rotates the credential set inside the final guard and checks byte-identical arch
 raw Traffic and readable Traffic, including absence of the unpublished draft marker.
 The earlier54-check checkpoint did not exercise this visibility edge; retain it as
 an intermediate result, not qualification of the correction.
+
+The lead's independent review additionally required the Provider's own queued
+teardown to invalidate admission and commit before the SceneTree deletion flush,
+even if an injected host guard still returns true. The Provider now checks its
+in-tree and queued-deletion lifecycle before admission and on both sides of a
+reentrant owner guard. The mechanism test holds a real ready worker value, queues
+the Provider for deletion, then synchronously attempts admission, preview and
+commit; all refuse before the owner is freed and neither live projection nor the
+archive changes.
