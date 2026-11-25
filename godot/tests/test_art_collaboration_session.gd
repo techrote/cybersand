@@ -14,6 +14,7 @@ var http_requests := 0
 var outcomes: Array = []
 var options := {"native":true,"knowledge":true,"recent":true,"image":false,"image_scope":"selected"}
 var stop_after_receipt := false
+var stop_before_readback := false
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",2)
@@ -141,6 +142,10 @@ func run() -> void:
 	session=panel.collaboration
 	panel.provider.finished.connect(func(_id: int,_text: String,_response: Dictionary,_error: String) -> void: ordinary_completions+=1)
 	panel.executor.native_receipt.connect(native_receipt)
+	panel.provider.traffic_changed.connect(func() -> void:
+		if stop_before_readback and not session.pending_stage_receipt.is_empty() and session.running_batch<0:
+			stop_before_readback=false
+			panel.stop_all("Owner Stop before native verification capture"))
 	panel.show_collaboration(true)
 	panel.show()
 	panel.focus_selection(Rect2i(0,0,256,192))
@@ -153,6 +158,16 @@ func run() -> void:
 	var original:=source()
 	if not await inspect(): finish(); return
 	check(source()==original and session.context.inspector.captured_cells==49152,"native inspection is bounded and read-only")
+	var direct_serial: int=panel.provider.serial
+	panel.remaining_turns=1
+	panel.waiting_until_ms=Time.get_ticks_msec()+60000
+	session.request("discuss","This must wait for the retained direct run.",session.brief,options)
+	check(panel.provider.serial==direct_serial and not session.busy(),"paced direct interval owns transport admission even while its provider is idle")
+	session.inspect_context(options)
+	session.load_example("industrial_repair")
+	check(session.capture_id<0 and session.compiled.is_empty() and source()==original,"pending direct run also excludes collaborative capture and offline admission")
+	panel.stop_all("Owner explicitly stopped the paced direct fixture")
+	check(panel.remaining_turns==0 and not session._direct_pending(),"ordinary Stop releases the direct-run admission fence")
 	var bad_brief:=brief.duplicate(true)
 	bad_brief.palette=[255]
 	check(not session.apply_brief(bad_brief) and session.brief==brief,"unavailable palette refuses without replacing owner brief")
@@ -160,12 +175,23 @@ func run() -> void:
 	var discussion: Dictionary=await exchange("discuss","Preserve the lower passage and strengthen the frame. No construction has occurred.","What could make this room more legible?")
 	check(not discussion.is_empty() and session.compiled.is_empty(),"discussion remains ordinary prose and has no executable proposal")
 	check(panel.conversation.size()>=2,"admitted discussion retains complete user and assistant messages")
+	var followup: Dictionary=await exchange("discuss","Yes, a taller frame can keep that lower passage unchanged.","Can it be taller while retaining that passage?")
+	var includes_first_reply:=false
+	for turn: Dictionary in followup.get("request",{}).get("messages",[]):
+		if turn.get("role","")=="assistant" and str(turn.get("content","")).contains("Preserve the lower passage and strengthen the frame."): includes_first_reply=true
+	check(includes_first_reply,"second discussion sends the first acknowledged exchange in bounded session memory")
 	var raw:=packet([block(8,8,12,4)])
 	raw.stages.append({"id":"detail","title":"Distinct upper accent","depends_on":["structure"],"operations":[block(32,8,8,3,28)]})
 	await exchange("propose",JSON.stringify(raw),"Propose two bounded stages, preserving my passage.")
 	if not check(not session.compiled.is_empty() and session.preview_result.get("ok",false),"provider proposal produces one zero-write preview"): finish(); return
 	check(session.compiled.stages.size()==2 and session.stage_index==0,"stage count is host compiled; no automatic execution")
-	check(session.context.disclosure.proposal_for_develop==raw,"context inspector discloses the proposal supplied to Develop")
+	panel.remaining_turns=1
+	panel.waiting_until_ms=Time.get_ticks_msec()+60000
+	session.approve_next()
+	check(session.running_batch<0,"collaborative approval refuses during a retained direct timer")
+	panel.remaining_turns=0
+	panel.waiting_until_ms=0
+	check(session.context.disclosure.proposal_for_develop==session.compiled.proposal,"context inspector discloses the normalized proposal supplied to Develop")
 	if not await approve(): finish(); return
 	check(session.stage_index==1 and session.stage_status.structure=="verified" and not panel.executor.active,"first approval stops at stage boundary")
 	var first:=await observe(Rect2i(32,8,8,3))
@@ -224,6 +250,36 @@ func run() -> void:
 		await approve()
 	var completed:=await observe(Rect2i(20,30,200,100))
 	check(completed.materials.count(58)==20000,"freshly approved continuation completes actual native region")
+	await inspect()
+	check(session.admit_proposal(packet([block(230,135,5,5)]),"completed result awaiting readback").ok,"finite readback-cancellation case admits")
+	await wait_preview()
+	var receipts_before_cancel: int=session.receipts.size()
+	stop_before_readback=true
+	session.approve_next()
+	await until(settled,"Stop before verification retires native result")
+	check(session.receipts.size()==receipts_before_cancel+1 and session.pending_stage_receipt.is_empty(),"completed-but-unverified receipt is retained exactly once")
+	check(session.receipts.back().status=="completed" and session.receipts.back().changed==25 \
+		and not session.receipts.back().verified and session.receipts.back().verification_error.contains("Stop"),"unverified readback preserves actual completed work and its cancellation reason")
+	await inspect()
+	check(session.admit_proposal(packet([block(230,150,2,1)],"Superseded approval candidate")).ok,"reentrant approval fixture admits")
+	await wait_preview()
+	var replacement:=packet([block(235,150,2,1)],"Owner replacement during audit")
+	var approval_count:=FileAccess.get_file_as_string(panel.provider.log_path).count('"kind":"collaboration_stage_approval"')
+	var armed:={"value":true,"admitted":false}
+	var replace_during_audit:=func() -> void:
+		if armed.value and FileAccess.get_file_as_string(panel.provider.log_path).count('"kind":"collaboration_stage_approval"')>approval_count:
+			armed.value=false
+			armed.admitted=session.admit_proposal(replacement,"explicit reentrant owner revision").get("ok",false)
+	panel.provider.traffic_changed.connect(replace_during_audit)
+	var source_before_reentry:=source()
+	session.approve_next()
+	panel.provider.traffic_changed.disconnect(replace_during_audit)
+	check(armed.admitted and session.running_batch<0 and source()==source_before_reentry,"proposal replacement during approval audit invalidates the old approval before native admission")
+	await wait_preview()
+	check(session.compiled.proposal.title==replacement.title,"replacement proposal retains its own identity after reentry")
+	await approve()
+	var superseded:=await observe(Rect2i(230,150,2,1))
+	check(superseded.materials.count(0)==2,"superseded geometry never entered the native World")
 
 	var current_digest: String=session.compiled.proposal_digest
 	await exchange("propose","{ this is malformed","Please return a proposal.")
@@ -239,6 +295,11 @@ func run() -> void:
 	session.inspect_context(disabled)
 	await until(func() -> bool: return not session.busy(),"owner context exclusions rebuild disclosure")
 	check(not session.context.wire_model.has("material_distribution") and not session.context.wire_model.has("knowledge"),"disabled native details and knowledge are absent from admitted model context")
+	var guarded_policy: String=session.context.policy_digest
+	check(session._live_request_guard(session.generation,source(),guarded_policy),"eventual request guard admits current native source and policy")
+	panel.focus_selection(Rect2i(0,0,128,128))
+	check(not session._live_request_guard(session.generation,source(),guarded_policy),"eventual request guard refuses changed focus even without World mutation")
+	panel.focus_selection(Rect2i(0,0,256,192))
 	var long_history: Array=panel.conversation.duplicate(true)
 	for index: int in 8: panel.remember_turn("user","bounded memory ".repeat(1000))
 	var memory: Array=session._recent_messages()

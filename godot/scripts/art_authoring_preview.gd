@@ -153,7 +153,7 @@ func _finish(status: String, error: String) -> void:
 		"predicted_materials_sha256":Context.hash_materials(_materials),
 		"maximum_poll_usec":_maximum_poll_usec,"configure_usec":_configure_usec,"elapsed_usec":Time.get_ticks_usec()-_started_usec,
 		"zero_native_writes":true,
-		"notice":"Predictions from copied materials, not execution receipts. Fresh source validation and explicit approval are still required."}
+		"notice":"Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply."}
 	_plan = null
 
 func predicted_materials() -> PackedInt32Array:

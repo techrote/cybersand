@@ -25,6 +25,8 @@ var stage_index := 0
 var stage_status: Dictionary = {}
 var status := "Inspect a native region, then discuss or develop a proposal."
 var generation := 0
+var proposal_generation := 0
+var _stopping := false
 var capture_id := -1
 var running_batch := -1
 var pending_stage_receipt: Dictionary = {}
@@ -76,7 +78,11 @@ func _state() -> Dictionary:
 	return editor.art_context_state() if editor != null else {}
 
 func busy() -> bool:
-	return capture_id >= 0 or _image_capturing or _provider_id >= 0 or preview.active or running_batch >= 0
+	return _stopping or capture_id >= 0 or _image_capturing or _provider_id >= 0 or preview.active or running_batch >= 0 or not pending_stage_receipt.is_empty()
+
+func _direct_pending() -> bool:
+	return panel.remaining_turns != 0 or panel.waiting_until_ms > Time.get_ticks_msec() \
+		or panel.capturing or panel.log_draw
 
 func _set_status(message: String) -> void:
 	status = message
@@ -91,7 +97,7 @@ func _publish() -> void:
 	display.current_stage = stage_index
 	display.preview = preview_result.duplicate(true)
 	display.stage_status = stage_status.duplicate(true)
-	display.can_approve = not busy() and not stale and bool(preview_result.get("ok",false)) \
+	display.can_approve = not busy() and not _direct_pending() and not stale and bool(preview_result.get("ok",false)) \
 		and not bool(compiled.get("requires_resolution",true)) and stage_index < compiled.get("stages",[]).size()
 	display.can_skip = not busy() and not stale and stage_index < compiled.get("stages",[]).size()
 	view.set_proposal(display,lineage)
@@ -126,7 +132,7 @@ func _policy_snapshot() -> Dictionary:
 			return {"error":"The palette contains a material unavailable to the ordinary Art executor."}
 		if id not in result.allowed: result.allowed.append(id)
 	var reason := Context.policy_error(result)
-	if not reason.is_empty(): return {"error":reason+" Use a smaller Focus rectangle or choose the current viewport."}
+	if not reason.is_empty(): return {"error":reason+" Choose Focus 256 × 256, zoom in, or draw a smaller PAINT selection."}
 	return result
 
 func apply_brief(value: Dictionary) -> bool:
@@ -153,6 +159,11 @@ func select_region(kind: String) -> void:
 	var region: Rect2i = editor.selection
 	if kind in ["viewport","view"]:
 		region = Rect2i(Vector2i(panel.wb.host.camera_origin.floor()),panel.wb.host.current_view_size).intersection(Rect2i(Vector2i.ZERO,editor.extent()))
+	elif kind == "bounded":
+		var size: Vector2i = Vector2i(256,256).min(editor.extent())
+		var center: Vector2 = panel.wb.host.camera_origin+Vector2(panel.wb.host.current_view_size)*0.5
+		var origin := Vector2i((center-Vector2(size)*0.5).floor()).clamp(Vector2i.ZERO,editor.extent()-size)
+		region = Rect2i(origin,size)
 	if not region.has_area():
 		_set_status("Use PAINT Select to mark a native region first.")
 		return
@@ -171,7 +182,7 @@ func _option_signature(options: Dictionary) -> Dictionary:
 		"image_scope":str(options.get("image_scope","selected"))}
 
 func inspect_context(options: Dictionary) -> void:
-	if busy() or panel.provider.active or panel.executor.active:
+	if busy() or _direct_pending() or panel.provider.active or panel.executor.active:
 		_set_status("Finish or Stop current work before observing a new context.")
 		return
 	var proposed := _policy_snapshot()
@@ -182,16 +193,21 @@ func inspect_context(options: Dictionary) -> void:
 	policy.include_native_summary = bool(_inspection_options.get("native",true))
 	_png = ""
 	_image_mapping = {}
+	view.set_visual_context(null,"")
 	_begin_capture("inspection")
 
 func _begin_capture(purpose: String) -> void:
 	var editor := _editor()
-	if editor == null: _set_status("Native context owner is unavailable."); return
+	if editor == null:
+		if purpose == "verify": _retire_pending_verification("Native context owner is unavailable.")
+		_set_status("Native context owner is unavailable.")
+		return
 	_capture_generation = generation
 	_capture_purpose = purpose
 	var answer: Dictionary = editor.art_context_capture(policy.region,_capture_finished.bind(generation,purpose))
 	if not answer.get("ok",false):
 		capture_id = -1
+		if purpose == "verify": _retire_pending_verification(str(answer.get("error","Native observation refused.")))
 		_set_status(str(answer.get("error","Native observation refused.")))
 		return
 	capture_id = int(answer.operation_id)
@@ -203,6 +219,7 @@ func _capture_finished(receipt: Dictionary, ticket: int, purpose: String) -> voi
 	var observed := Context.build(receipt,policy,decisions)
 	if not observed.get("ok",false):
 		stale = not compiled.is_empty()
+		if purpose == "verify": _retire_pending_verification(str(observed.get("error","Native observation refused.")))
 		_set_status(str(observed.get("error","Native observation refused.")))
 		return
 	context = observed
@@ -262,6 +279,7 @@ func _publish_inspection() -> void:
 		"proposal_for_develop":context.wire_parent,"acknowledged_results_for_review":context.wire_receipts}).sha256_text()
 	context.disclosure_digest = disclosure.digest
 	context.disclosure = disclosure
+	context.conversation_revision = panel.conversation_revision
 	view.set_context_inspection({"digest":disclosure.digest,"inspector":disclosure})
 	_set_status("Native context is ready for inspection. Send makes one request; proposals still need approval.")
 
@@ -315,7 +333,7 @@ func _is_loopback() -> bool:
 	return Capabilities.endpoint_category(panel.endpoint.text) == "loopback-address"
 
 func request(mode: String, prompt: String, current_brief: Dictionary, options: Dictionary) -> void:
-	if mode not in ["discuss","propose","develop","review"] or busy() or panel.provider.active or panel.executor.active:
+	if mode not in ["discuss","propose","develop","review"] or busy() or _direct_pending() or panel.provider.active or panel.executor.active:
 		_set_status("Finish or Stop current work before sending another collaborative request."); return
 	if prompt.strip_edges().is_empty() or prompt.length() > 4096: _set_status("Use a request of one to 4096 characters."); return
 	if current_brief != brief and not apply_brief(current_brief): return
@@ -327,6 +345,10 @@ func request(mode: String, prompt: String, current_brief: Dictionary, options: D
 			or str(context.get("disclosure",{}).get("endpoint","")) != panel.endpoint.text.strip_edges() \
 			or str(context.get("disclosure",{}).get("provider","")) != panel.current_provider:
 		inspect_context(options)
+		return
+	if int(context.get("conversation_revision",-1)) != int(panel.conversation_revision):
+		_publish_inspection()
+		_set_status("Conversation changed. Review the updated context, then Send the next request.")
 		return
 	if not _is_loopback() and (not bool(options.get("external_authorized",false)) or str(options.get("inspected_digest","")) != str(context.disclosure_digest)):
 		_set_status("Review Context, then authorize this exact context for the selected external endpoint and press Send."); return
@@ -385,6 +407,7 @@ func _response(id: int, text: String, response: Dictionary, error: String, ticke
 	panel.remember_turn("assistant",text)
 	if ticket != generation: return
 	if _request_mode in ["discuss","review"]:
+		_publish_inspection()
 		_set_status(_request_mode.capitalize()+" response received. The native World is unchanged.")
 		return
 	var parsed := Proposal.parse_text(text)
@@ -392,6 +415,12 @@ func _response(id: int, text: String, response: Dictionary, error: String, ticke
 	admit_proposal(parsed.proposal,"provider "+str(response.get("request_id",id)))
 
 func admit_proposal(raw: Dictionary, origin: String = "owner-supplied fixture") -> Dictionary:
+	if busy() or panel.provider.active or panel.executor.active:
+		return {"ok":false,"error":"Finish or Stop the active request, preview or native verification before replacing its proposal."}
+	if _direct_pending():
+		var error := "Finish or Stop the pending direct authoring run before admitting a collaborative proposal."
+		_set_status(error)
+		return {"ok":false,"error":error}
 	if context.is_empty() or _state().get("source",{}) != context.get("source",{}):
 		var error := "Inspect fresh native context before admitting a proposal."
 		_set_status(error)
@@ -402,6 +431,7 @@ func admit_proposal(raw: Dictionary, origin: String = "owner-supplied fixture") 
 		lineage.append({"label":"Revision %d · %s" % [lineage.size()+1,compiled.proposal.title],"snapshot":compiled.duplicate(true)})
 		if lineage.size() > MAX_REVISIONS: lineage.pop_front()
 	compiled = candidate
+	proposal_generation += 1
 	stage_index = 0
 	stage_status = {}
 	stale = false
@@ -416,14 +446,14 @@ func _audit_proposal(value: Dictionary) -> Dictionary:
 		"context_digest":value.context_digest,"policy_digest":value.policy_digest,"budget":value.budget,"diff":value.diff}
 
 func refresh_preview() -> void:
-	if busy() or compiled.is_empty(): return
+	if busy() or _direct_pending() or compiled.is_empty(): return
 	if stage_index > 0 or stale or _state().get("source",{}) != compiled.get("source",{}):
 		_set_status("The existing proposal has changed dependencies. Inspect current context and Develop a new revision."); return
 	if not preview.configure(compiled,context): _set_status(str(preview.result.get("error","Preview refused."))); return
 	_set_status("Previewing exact native geometry without writing…")
 
 func approve_next() -> void:
-	if busy() or stale or compiled.is_empty() or not preview_result.get("ok",false) or bool(compiled.get("requires_resolution",true)): return
+	if busy() or _direct_pending() or panel.provider.active or panel.executor.active or stale or compiled.is_empty() or not preview_result.get("ok",false) or bool(compiled.get("requires_resolution",true)): return
 	if stage_index >= compiled.stages.size(): return
 	var live := _state()
 	var current_policy := _policy_snapshot()
@@ -437,9 +467,11 @@ func approve_next() -> void:
 	if context.inspector.materials_sha256 != prediction.before_materials_sha256:
 		stale = true; _set_status("Native material dependencies changed; preview is obsolete."); return
 	var ticket := generation
+	var revision := proposal_generation
 	panel.provider.log_event("collaboration_stage_approval",{"proposal_digest":compiled.proposal_digest,"stage":stage.id,
 		"source":context.source,"policy_digest":compiled.policy_digest,"requested":prediction.requested})
-	if ticket != generation: return
+	if ticket != generation or revision != proposal_generation or _direct_pending() \
+			or not _live_request_guard(ticket,context.source,str(compiled.policy_digest)): return
 	var answer: Dictionary = panel.executor.submit_guarded(stage.operations,stage.scope,stage.guards,stage.allowed,
 		context.source,bool(compiled.allow_destructive),int(stage.budget.candidate_cells))
 	if answer.get("status","") != "queued": _set_status(str(answer.get("reason","Native stage refused."))); return
@@ -461,24 +493,44 @@ func _stage_finished() -> void:
 	running_batch = -1
 	pending_stage_receipt = result
 	panel.provider.log_event("collaboration_stage_result",result)
+	# Audit observers may Stop or replace the World. A completed native result
+	# retains custody even when readback can no longer start.
+	if pending_stage_receipt.is_empty(): return
 	if result.get("status","") != "completed" or int(result.get("excluded",0)) != 0 or int(result.get("refused",0)) != 0:
+		pending_stage_receipt = {}
 		result.verified = false
 		stage_status[result.stage] = "partial" if int(result.get("changed",0)) > 0 else "refused"
 		_remember_receipt(result)
 		stale = true
 		_set_status("Stage stopped or incomplete: %d changed, %d excluded. Prefix retained; inspect and Develop a fresh continuation." % [int(result.get("changed",0)),int(result.get("excluded",0))])
 		return
+	if stale:
+		_retire_pending_verification("Work stopped or the proposal was invalidated before native readback.")
+		return
 	_begin_capture("verify")
+
+func _retire_pending_verification(reason: String) -> void:
+	if pending_stage_receipt.is_empty(): return
+	var result := pending_stage_receipt
+	pending_stage_receipt = {}
+	result.verified = false
+	result.verification_error = reason
+	stage_status[str(result.get("stage",""))] = "unverified"
+	stale = true
+	_remember_receipt(result)
 
 func _finish_stage_verification() -> void:
 	var result := pending_stage_receipt
 	pending_stage_receipt = {}
+	var ticket := generation
+	var revision := proposal_generation
 	var prediction: Dictionary = preview_result.stages[stage_index]
 	result.observed_source = context.source.duplicate()
 	result.materials_sha256 = context.inspector.materials_sha256
 	result.verified = result.materials_sha256 == prediction.after_materials_sha256 \
 		and int(result.get("changed",-1)) == int(prediction.predicted_changed)
 	_remember_receipt(result)
+	if ticket != generation or revision != proposal_generation: return
 	if not result.verified:
 		stage_status[result.stage] = "unverified"
 		stale = true
@@ -504,15 +556,20 @@ func skip_next() -> void:
 	var stage: Dictionary = compiled.stages[stage_index]
 	stage_status[stage.id] = "skipped"
 	stale = true
+	var revision := proposal_generation
 	panel.provider.log_event("collaboration_skip",{"proposal_digest":compiled.proposal_digest,"stage":stage.id,"reason":"Owner skipped. Dependent preview is retired; replan from current native World."})
+	if revision != proposal_generation: return
 	if overlay != null: overlay.clear()
 	_set_status("Stage skipped. Develop a fresh proposal from the current World before continuing.")
 
 func stop(reason: String) -> void:
+	if _stopping: return
+	_stopping = true
 	generation += 1
 	var editor := _editor()
 	if capture_id >= 0 and editor != null: editor.art_context_cancel(capture_id)
 	capture_id = -1
+	_retire_pending_verification(reason)
 	if _provider_id >= 0: panel.provider.cancel_owned(_provider_id,_request_id,reason)
 	_provider_id = -1
 	_pending_turn = {}
@@ -520,6 +577,7 @@ func stop(reason: String) -> void:
 	if running_batch >= 0: panel.executor.stop(reason)
 	if not compiled.is_empty(): stale = true
 	if overlay != null: overlay.clear()
+	_stopping = false
 	_set_status(reason)
 
 func poll() -> void:
@@ -556,7 +614,7 @@ func _refresh_examples() -> void:
 		view.set_examples(script.catalogue())
 
 func load_example(id: String) -> void:
-	if busy() or panel.provider.active or panel.executor.active: return
+	if busy() or _direct_pending() or panel.provider.active or panel.executor.active: return
 	if not ResourceLoader.exists("res://scripts/art_creative_examples.gd"): _set_status("Offline examples are unavailable in this source."); return
 	var proposed := _policy_snapshot()
 	if proposed.has("error"): _set_status(str(proposed.error)); return
