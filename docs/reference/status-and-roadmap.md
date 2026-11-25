@@ -10,7 +10,7 @@ related-documents: [product-intent-and-priorities.md, validation-evidence.md, in
 
 # Status and foundational roadmap
 
-**Source baseline: accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`,
+**Source baseline: accepted main `be87b18b30506ccead610c7035ae1ffa8e65a347`,
 rechecked 25 November 2026.** This register answers what is in that source, what
 remains a candidate, and where to find the owning contract. It is not a promise
 that every feature has passed physical owner evaluation on every platform.
@@ -61,6 +61,10 @@ automatically close or satisfy its whole programme.
 
 These live merge records were checked independently of their titles. The list
 captures the major documentation transitions; it is not a complete release log.
+The latest two accepted merges change Palette CI scheduling and Windows evaluator
+tooling. They leave the inspected native simulation, ordinary application runtime
+source and dependency pins from `00cdb02f` unchanged; the dated technical source
+inspections remain applicable.
 
 | Foundation | Accepted record | Documentation consequence |
 |---|---|---|
@@ -78,6 +82,8 @@ captures the major documentation transitions; it is not a complete release log.
 | Native paint fill | [#690](https://github.com/techrote/cybersand/pull/690) | Native implementation exists; end-to-end latency successors remain separate. |
 | CI preflight and compilation reuse | [#714](https://github.com/techrote/cybersand/pull/714), [#722](https://github.com/techrote/cybersand/pull/722), [#723](https://github.com/techrote/cybersand/pull/723) | These source changes are accepted. Other scheduling experiments are not policy. |
 | Session-only Art traffic | [#727](https://github.com/techrote/cybersand/pull/727) | One current-session JSONL audit; do not follow the superseded linked-history restore instructions. |
+| Palette Windows cohort scheduling | [#736](https://github.com/techrote/cybersand/pull/736) | The qualified Windows cohort parallelism change is accepted CI tooling; it adds no product capability. |
+| Source-exact Gentek Windows owner tooling | [#758](https://github.com/techrote/cybersand/pull/758) | Offline archive/source verification, packaging and acceptance tooling are accepted. Use the [explicit owner guide](../operations/gentek80-physical-owner-acceptance.md) with the exact archive/source/digest handoff. A historical ZIP is not a new-main build, and physical Windows/NVIDIA acceptance remains outstanding. |
 
 ## Active candidates and integration boundaries
 
@@ -90,14 +96,13 @@ reported evaluator results do not admit its application into accepted main.
 
 | Programme | Principal record | Boundary for accepted-main documentation |
 |---|---|---|
-| ULTIMA save safety and practical documentation | Successor [#783](https://github.com/techrote/cybersand/pull/783), retained predecessor [#774](https://github.com/techrote/cybersand/pull/774); [candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Verified staged-byte replacement, retrieval/authority corrections and practical UX repairs are candidate changes. Accepted `00cdb02f` does not acquire them through documentation. The compact successor preserves the full predecessor's evidence lineage. |
+| ULTIMA save safety and practical documentation | Successor [#783](https://github.com/techrote/cybersand/pull/783), retained predecessor [#774](https://github.com/techrote/cybersand/pull/774); [candidate file-replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling), [product qualification](../audits/2026-11-25-docs-renaissance-ultima/product/README.md) | Verified staged-byte replacement, retrieval/authority corrections and practical UX repairs are candidate changes. Accepted `be87b18b` does not acquire them through documentation. The compact successor preserves the full predecessor's evidence lineage. |
 | PUBPRES physical progression and presentation | [#717](https://github.com/techrote/cybersand/issues/717), current finisher [#767](https://github.com/techrote/cybersand/pull/767), predecessor [#757](https://github.com/techrote/cybersand/pull/757) | Do not claim publication stalls or physical freezes are resolved by accepted main. |
 | ObjectShard moving destructible materials | [#754](https://github.com/techrote/cybersand/pull/754) | Moving native chemistry, mutable body ownership and ordinary Workbench integration are candidate behavior. |
 | Actor Compose continuous play and pilot recovery | [#762](https://github.com/techrote/cybersand/pull/762) | Preserve accepted #683 controls and disclose successor repair scope. |
 | Equipment recovery | [#724](https://github.com/techrote/cybersand/pull/724) | Historical #561 merge does not prove every later ballistic-solid/equipment path is present or correct. |
 | Persistent authored areas / RAMCACHE | [#745](https://github.com/techrote/cybersand/pull/745), [#734](https://github.com/techrote/cybersand/pull/734) | Persistent-area loading, native hot residency, durability and catch-up are not accepted-main save guarantees. |
 | Consolidated Gentek SWARM-004/005/006 | [#729](https://github.com/techrote/cybersand/pull/729) | Accepted Gentek generation does not imply accepted reciprocal negotiation/recovery. |
-| Gentek Windows owner evaluator | [#758](https://github.com/techrote/cybersand/pull/758) | GitHub reported this PR open and non-draft despite its HOLD title. Evaluator work and physical acceptance remain separate from the accepted catalogue. |
 | Collaborative Art and provider/window repairs | Collaborative successor [#780](https://github.com/techrote/cybersand/pull/780), retained finisher [#773](https://github.com/techrote/cybersand/pull/773), owner issue [#744](https://github.com/techrote/cybersand/issues/744); earlier donors [#765](https://github.com/techrote/cybersand/pull/765), [#766](https://github.com/techrote/cybersand/pull/766), [#756](https://github.com/techrote/cybersand/pull/756), [#763](https://github.com/techrote/cybersand/pull/763) | Proposal/development/review stages, context inspection and successor provider/window repairs remain unmerged. The candidate distinguishes deterministic response fixtures from genuine-model creative acceptance and retains physical Windows/NVIDIA checks as owner-pending. |
 | WORLD-STEER / Batch Lab | M6–M7 successor [#777](https://github.com/techrote/cybersand/pull/777), M3–M5 [#770](https://github.com/techrote/cybersand/pull/770), predecessor [#720](https://github.com/techrote/cybersand/pull/720), [#579](https://github.com/techrote/cybersand/issues/579) | Native module harvesting, architectural knowledge retrieval, structural parts and staged construction remain candidate work. |
 | goblin experimental gameplay testing | Persistent laboratory successor [#781](https://github.com/techrote/cybersand/pull/781), real-game predecessor [#772](https://github.com/techrote/cybersand/pull/772); retained contract-model prototype [#749](https://github.com/techrote/cybersand/pull/749) | Workbench QA operations, experiment memory, semantic replay and reduction remain unmerged candidate capabilities. The candidate retains long-run timeouts and distinguishes semantic replay from exact asynchronous physical replay. The earlier Python contract model is not native runtime evidence. |
