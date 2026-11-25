@@ -5,8 +5,8 @@
   "reviewed_branch_head": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
   "scope": "Product/user route and assigned product-heavy system semantic review. This inventory distinguishes full-text reading from selected source checks, actual execution and inherited evidence. It is not a claim that every numerical sentence or every platform was independently executed. Source locators identify reviewed files, not exhaustive per-line verification. Earlier hashes remain where subsequent cross-lane changes did not receive a fresh full-body reread.",
   "summary": {
-    "documents": 51,
-    "full_text": 44,
+    "documents": 53,
+    "full_text": 46,
     "selected_sections": 7
   },
   "documents": [
@@ -1267,6 +1267,34 @@
       "qualification_limit": "Status/source-route delta only; lead independently owns full catalogue-table review. No package execution or physical acceptance inferred.",
       "reviewed_source": "5f5e919306e7653a2be8cac5f39ac97502cd1950",
       "independent_reviewer": "Specialist C approved against accepted merge and source."
+    },
+    {
+      "path": "docs/operations/ci-campaign-coordination.md",
+      "document_sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+      "review_depth": "full-text current runbook reading and selected source/control/CLI-schema review",
+      "consequential_claims_reviewed": "Read-only GET collection/offline reduction, bounded status/attempt observations, current programme request ownership, historical ledger isolation and no inferred account capacity or dispatch authority.",
+      "source_locators": [
+        {
+          "path": "tools/ci/ci_campaign_status.py",
+          "sha256": "fc88a08b5c74dacf4bf105776ed47891e63b6366e36c405c7e56dcabe50779c6"
+        }
+      ],
+      "qualification_limit": "Read-only --help and selected source/schema comparison; no full new test campaign, publication or product execution. Dated retained results remain separately scoped.",
+      "reviewed_source": "c3da716523d535f654eeb786397dd4496e4b0c84"
+    },
+    {
+      "path": "docs/operations/publication-custody.md",
+      "document_sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+      "review_depth": "full-text current runbook reading and selected source/control/CLI-schema review",
+      "consequential_claims_reviewed": "Accepted standalone tool versus future publisher migration; trusted external pins, source/artifact/process identities, local versus remote LFS, stage remote lease reads, exact unchanged-pointer semantics and explicit false authority fields.",
+      "source_locators": [
+        {
+          "path": "tools/ci/publication_custody.py",
+          "sha256": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873"
+        }
+      ],
+      "qualification_limit": "Read-only --help and selected source/schema comparison; no full new test campaign, publication or product execution. Dated retained results remain separately scoped.",
+      "reviewed_source": "c3da716523d535f654eeb786397dd4496e4b0c84"
     }
   ],
   "cross_lane_reviews": [
@@ -1274,9 +1302,12 @@
     "A module boundaries/coupling torque correction3af3370d: source/path and language review",
     "A Wave catch_falling correction: exact age/config branch read",
     "C maintenance/index and explicit reference-adapter CLI/cache35test qualification",
-    "C owner Web policy: primary owner comment5593128559 independently read"
+    "C owner Web policy: primary owner comment5593128559 independently read",
+    "C accepted CI runbooks, historical custody wrapper and additive corrected CI case: full reader review with selected source/caps/schema checks; inaccurate always-emits output claim reported and corrected."
   ],
-  "unread_product_routes_for_lead_assignment": [
+  "remaining_execution": "Rendered documentation remains blocked by the recorded browser access policy. Actual final integrated native GUI evidence is completed separately in final-gui-receipt.json at source a83c6988; it is not physical Windows/NVIDIA acceptance.",
+  "additional_review_identity": "Accepted-main tooling driftbe87b18b and5e29b111 reviewed after frozen retrieval67245ba5. Per-document hashes preserve earlier full-body review identity; late four-profile save manual deltas receive separate source/UX review.",
+  "routes_whose_full_body_was_delegated_to_lead": [
     "docs/operations/gentek80-evaluation.md (actual supplied TestIt passage read; full file not newly reviewed)",
     "docs/operations/gentek-showcase-integration-001.md",
     "docs/operations/gentek-rosework-showcase.md",
@@ -1286,6 +1317,5 @@
     "docs/operations/semantic-depth-authoring.md",
     "docs/operations/experiment-tower.md"
   ],
-  "remaining_execution": "Rendered documentation remains blocked by the recorded browser access policy. Actual final integrated native GUI evidence is completed separately in final-gui-receipt.json at source a83c6988; it is not physical Windows/NVIDIA acceptance.",
-  "additional_review_identity": "Accepted-main tooling driftbe87b18b reviewed after frozen retrieval67245ba5; earlier per-document identities retained where no body reread occurred."
+  "unread_product_routes_for_lead_assignment": []
 }

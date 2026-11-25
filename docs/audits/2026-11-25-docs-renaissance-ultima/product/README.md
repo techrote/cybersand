@@ -205,6 +205,15 @@ independently approved that correction. Accepted tooling, a qualified exact ZIP,
 and physical owner acceptance remain distinct. This review did not execute the
 new Windows harness or reopen a physical gate as passed.
 
+The subsequent accepted CI closure at 5e29b111 adds standalone coordination and
+publication-custody tools. B fully read both revised runbooks, checked their
+actual workflow caps and selected CLI/source contracts, and independently
+reviewed the separately corrected CI case before scoring. The original 32 and
+accepted 33 fixture bytes were verified separately. A misleading always-emits
+output claim was corrected to the successful-result schema. The
+[reader-review receipt](accepted-ci-reader-review.json) retains exact reviewed
+hashes; it claims no new hosted campaign, publisher integration or authority.
+
 ## Exact external boundaries and owner continuation
 
 **Rendered documentation remains blocked.** The connected browser extension
