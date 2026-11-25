@@ -83,3 +83,26 @@ working corpus. To reproduce delivered #774 itself after Ultima corrections,
 run the same command against a detached disposable #774 worktree. The original
 runner reports real contexts and missing-manifest comparisons. Those are lexical
 retrieval measurements; canonical recall is not answer correctness.
+
+## Independent execution and review records
+
+| Record | What it establishes |
+|---|---|
+| [Historical reproduction](baseline-reproduction.json) | All 15 original source/suite combinations reproduced with unchanged expected records/scoring; compact per-query ranks and context identities retain failures as well as successes. |
+| [Authority negative before](authority-negative-before.json) / [after](authority-negative-after.json) | Malformed metadata and current/historical selection controls, with original failure evidence. Later live-instance and cache destination challenges are also independently reviewed by A and lead. |
+| [Cache destination negative](cache-path-negative-before.json) | Disposable reproduction of source clobber before the destination guard; final source includes refusal tests and independent reviewer checks. |
+| [Consumer scope](consumer-scope.json) | Actual local adapter/index investigation and the absence of executed generative inference; this reference harness is not represented as a deployed RAG service. |
+| [Semantic coverage](coverage-c.json) | C's 53 full-body reads: 46 current-corpus documents and seven navigation/explicit-history records, with individual source/authority review depth and limits. |
+| [Operations checks](operations-validation.json) | Copied quick commands passed 20 tests; deterministic Stage3b planning produced 168 fixtures/6,488 planned runs. The scientific campaign was not executed by these checks. |
+| [Persistence review](review-persistence-by-c.json) | C independently inspected A's mechanism and executed the Linux public-save/fault matrix, including actual old/new payload values. |
+| [Capture review](review-capture-by-c.json) | Independent execution of six real Linux controller/CLI cases: replacement, buffered write refusal, permission refusal, retry and truthful acknowledgements. |
+| [Physics provenance correction](physics-provenance.json) | Before/after actual Linux measurement exposed Windows DLL pointer attribution; the fix selects materialized platform libraries, checks pinned version and detects drift. Ten focused tests and five one-tick cases passed; no new physics acceptance is inferred. |
+| [Original physics evidence](physics-provenance-originals.zip) | Digest-indexed original manifests, inputs, outputs and logs for that bounded reproduction and metadata capture. |
+| [Cross-reviews](cross-review-c.json) | C's source-grounded challenges of A/B/lead changes, separating source inspection, executed tests and outstanding graphical/physical acceptance. |
+| [Candidate route readback](candidate-route-readback.json) | Actual GitHub lifecycle/head/base readbacks for #778–781 and #783; reported feature qualification is attributed, not promoted into accepted main. |
+
+The proposed retrieval method was frozen before the lead's sealed holdout was
+exposed to its evaluator. C has not read that holdout. Integrated five-suite
+comparisons and final actual-context reviews are published against the final
+source checkpoint separately; these interim coverage receipts do not attach an
+earlier score or GUI observation to a changed source.
