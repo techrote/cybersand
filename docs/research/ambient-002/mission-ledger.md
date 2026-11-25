@@ -275,3 +275,34 @@ matched initial-state/ablation checks.
 At this checkpoint a fresh read confirms #762 is still open/Draft/unaccepted at
 47e87cb84cf302b4e283cfc7e8f884e01b7b4c73. #775 remains owner-Ready at its original
 d0af9b60 head. Neither predecessor nor capacity programme was changed.
+
+## Physical negative evidence and independent baseline custody
+
+The second frozen candidate is `83a3db6ffb207761df999abedac77eb1401604a8`,
+with tree `9037dc374a782d60df116e1731a05abacb54a6cf`. Its hosted
+[full campaign45536810257](https://github.com/techrote/cybersand/actions/runs/45536810257)
+and separate local194-episode reexecution remain source-bound to that exact
+revision. Reexecutions of the same registered case identities are not counted as
+additional independent scientific episodes.
+
+The first19 local Worlds/actor episodes are preserved as original bytes in
+[evidence/local-83a-partial-019.zip](evidence/local-83a-partial-019.zip), with
+[external metadata](evidence/local-83a-partial-019.json) and an internal
+`checkpoint.json` inventory. This is explicitly an incomplete programme, not a
+194-episode completion claim. ZIP SHA256 is
+`f6ed13be0e3dd7c0eb64bf2d34f039ad0e6e66a2f8d85898b9c87bd5bc025df4`.
+
+Independent review identified a real obstacle-steering defect in the Runner
+and Monowheel stateful seed605 episodes:21 observations during6.5–8.5 simulation
+seconds contain20 horizontal command reversals, while horizontal position spans
+only0.087875 and0.089798 cells respectively. The selected `explore_unfamiliar`
+goal remains in `approach`; these command changes are not new goals or useful
+exploration. A copied-value probe independently demonstrates premature release
+of the finite alternative-heading commitment.
+
+The [negative review](recovery-negative-review.md) preserves both original
+reports losslessly, original execution receipts/consoles, exact source/runtime
+identities, the probe and a trace readback. No memory failure events were recorded
+in these episodes, so sampled wall contacts cannot be relabelled as learned
+failed approaches or successful recovery. A bounded steering-retention repair is
+being developed separately; the frozen baseline runs remain untouched.

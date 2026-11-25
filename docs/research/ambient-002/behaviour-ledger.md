@@ -10,6 +10,18 @@ related-documents: [mission-ledger.md, ../../systems/ambient-actors.md]
 
 # AMBIENT-002 behavioural intelligence lane
 
+## Canonical physical recovery negative review
+
+Independent readback of two completed source-83a3 physical shards found twenty
+requested-heading reversals in two seconds, less than 0.1 cell of horizontal
+range, and zero internally remembered failures for Runner and Monowheel. A
+fresh copied-value probe reproduces the obstacle module dropping its retained
+clear alternative before its existing deadline. The
+[recovery review](recovery-negative-review.md) preserves the original reports,
+hashes, reset-cause limitations and a bounded correction proposal. These are
+two members of the existing local 194-episode programme, not additional cases.
+No runtime source was edited to produce this negative result.
+
 ## Source and authority
 
 The lane begins at predecessor `d0af9b6015c27417fddd67f79afdcf656a609571`.
