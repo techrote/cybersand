@@ -799,6 +799,7 @@ func authoring(reopening: bool, multistyle: bool = false) -> void:
 		wb._name.text = SAVE_NAME
 		preview_clock.begin()
 		if not check(wb.load_setup(), "ordinary Load start reconstructs embedded recipe"): return
+		check(dialog._profile.text == "Embedded saved recipe", "reopened architectural source is not labelled as an unrelated packaged profile")
 	else:
 		dialog.open_new()
 		var project: Dictionary = Project.default_project()

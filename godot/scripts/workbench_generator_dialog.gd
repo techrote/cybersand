@@ -303,6 +303,7 @@ func _stop() -> void:
 
 func _invalidate() -> void:
 	_stop()
+	_update_profile_caption()
 	_preview.texture = null
 	_composition.text = "No accepted material proposal."
 	_zone_overlay.texture = null
@@ -311,6 +312,12 @@ func _invalidate() -> void:
 	_zone_diagnostics.visible = false
 	_status.text = _profile_error if not _profile_error.is_empty() and _saved_recipe.is_empty() else "Generate a complete native preview before replacing the current map."
 	_preview_button.disabled = _profile.selected < 0 and _saved_recipe.is_empty()
+
+func _update_profile_caption() -> void:
+	# Reopening uses the embedded recipe, not the selected packaged profile.
+	# Keep the selectable list intact: explicitly choosing a profile leaves reopen mode.
+	_profile.text = "Embedded saved recipe" if not _saved_recipe.is_empty() else (
+		_profile.get_item_text(_profile.selected) if _profile.selected >= 0 else "")
 
 func _fail(reason: String) -> void:
 	_stop()
@@ -414,6 +421,7 @@ func restore_previous_preview() -> bool:
 	_architecture_project = saved.architecture_project.duplicate(true)
 	_architecture_result = saved.architecture_result.duplicate(true)
 	_architecture_active = saved.architecture_active
+	_update_profile_caption()
 	_phase = "ready"
 	_show_zone_diagnostics()
 	get_ok_button().disabled = false
