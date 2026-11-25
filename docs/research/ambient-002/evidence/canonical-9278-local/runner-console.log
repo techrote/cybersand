@@ -1,0 +1,7 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+AMBIENT2_EPISODES_PROGRESS main-pockets-runner-s1701-t30-n1-stateful native=1800 physical=1800
+AMBIENT2_EPISODES_CAMPAIGN main-pockets-runner-s1701-t30-n1-stateful actors=1 complete_ticks=1800 elapsed_ms=11934.2
+AMBIENT2_EPISODES {"campaigns":1,"case_id":"main-pockets-runner-s1701-t30-n1-stateful","checks":7513,"complete":true,"episodes":1,"expected_episodes":1,"failures":[],"mode":"shard","report":"/tmp/ambient-002/evidence/perception/canonical-9278-preflights/main-pockets-runner-s1701-t30-n1-stateful/report.json","source_revision":"9278de5757b29b9df40a089e11a4daef744990f7"}

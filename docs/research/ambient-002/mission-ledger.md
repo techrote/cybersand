@@ -231,3 +231,47 @@ actionlint archive (`curl` connection failure), before executing the lint tool.
 No source error or pass follows from that infrastructure failure; the frozen head
 must complete its own documentation/provenance job. Current source-scope, Art and
 architectural generation checks passed at3ff; broad Draft-gated jobs were skipped.
+
+
+## Frozen9278 platform failure and bounded fixture correction
+
+The first full recovered candidate is published source
+`9278de5757b29b9df40a089e11a4daef744990f7`, tree
+`eb964f17e9cf1fb38682bb336490a3ebf08de851` (local3e253b26).
+[Full run45535280983](https://github.com/techrote/cybersand/actions/runs/45535280983)
+failed on both actual Linux and Windows at the new live editor case. The14
+preceding cases passed5809 assertions per platform. The editor reported95
+checks with one failed assertion. The complete campaign is **failed**; later
+cases, graphics, packaging and the registered194-episode science were not run.
+Original evidence remains in
+[Linux artifact14987286240](https://github.com/techrote/cybersand/actions/runs/45535280983/artifacts/14987286240)
+(SHA-256419f335357c45319e85edbe59b237c19033e88e1c952f5596e955a3955a22561)
+and
+[Windows artifact14986952576](https://github.com/techrote/cybersand/actions/runs/45535280983/artifacts/14986952576)
+(SHA-25621560969480fda35e0d6142b15ea55621e2e17990608723f4c3696d114655e0a).
+Both original ZIPs and the specific failure were independently inspected.
+
+The test compared controller generation across Pause-to-Play. The existing
+`set_suspended(false)` contract deliberately revokes paused leases before fresh
+observations; that required generation increment is not a draft mutation. The
+correction preserves the draft-isolation assertion against the explicit resumed
+baseline and adds a separate assertion that Resume fences old authority without
+applying staged configuration. No production lifecycle or controller code changes.
+Fresh actual mounted execution at local99a18ad2 passed96 checks with source/input
+custody: paused4, playing5, still-unapplied5, then applied6. Both pre-Apply
+configuration comparisons remained equal. The final platform rerun remains
+required; this local correction does not relabel the failed Windows/Linux campaign.
+
+The next request is `freeze-002-live-audition`. It also includes a separately
+implemented original-trace reviewer and its boundary tests in execution custody.
+The primary scientific runner now may proceed after a separate UI/graphics failure
+only when retained inputs and the pinned engine were authenticated successfully.
+A failed platform job remains failed and cannot qualify packaging. This preserves
+independent physical evidence instead of discarding an entire scientific window
+because of an unrelated authoring assertion. Reduction and independent readback
+still require complete194-episode success, exact source, original hashes and
+matched initial-state/ablation checks.
+
+At this checkpoint a fresh read confirms #762 is still open/Draft/unaccepted at
+47e87cb84cf302b4e283cfc7e8f884e01b7b4c73. #775 remains owner-Ready at its original
+d0af9b60 head. Neither predecessor nor capacity programme was changed.

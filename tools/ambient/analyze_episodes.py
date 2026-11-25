@@ -273,11 +273,13 @@ DEFINITIONS = {
     "territory":"Ground: horizontal16-cell bins ignoring vertical gait; flight:16x16 grid. Stable requires0.5s cumulative dwell. Starting bin is included; grid-edge oscillation can populate adjacent bins. Pair bins with x-range/displacement; nominal bin extent is not exact traversed extent.",
     "path":"Actual center path includes gait and vertical bobbing; path length is not exploration.",
     "idle":"Procedural neutral intention, neutral command and physical stillness differ. Actual neutral drift is retained.",
-    "obstruction":"Horizontal wall-ray proxy: priorabs(move.x)>0.05, wall<=10cells, forwardprogress<0.25cells in0.1s. Vertical flight obstruction is unclassified.",
+    "obstruction":"Horizontal wall-ray proxy: priorabs(move.x)>0.05, wall<=10cells, forwardprogress<0.25cells in0.1s. Entries are changes into this sampled proxy, not unique failed approach attempts. Vertical flight obstruction is unclassified.",
     "recovery":"At least8cells from a measured blocked-approach point within5s; not proof the original goal became reachable.",
-    "home":"Leave40cells and returnwithin16cells of authored start; ground usesxonly, flight Euclidean.",
+    "home":"Sampled geometric departure40cells and returnwithin16cells of authored start; ground usesxonly, flight Euclidean. A zero return count is not failure when no home intention was requested, and geometric return alone does not establish intention.",
     "social":"Connected components of actual centers at40cells. Formation/dissolution counts membership-set changes, not human sociability.",
-    "cost":"Environment builds before decision timing. Sensor and decision-core/adapter costs are disjoint; both lie within production advance. Independent observer is evaluation overhead.",
+    "cost":"Measured elapsed invocation time, not OS CPU utilization. Environment builds before decision timing. Sensor and decision-core/adapter costs are disjoint; both lie within production advance. Independent observer is evaluation overhead.",
+    "selection":"intention_transitions counts changes of the selected module/blend label. It does not count distinct goal instances or same-module target changes; phase changes are distinct observations.",
+    "materials":"Distances describe actual observed sampled material sites. Finite coarse coverage cannot prove absence of thin patches between sites; all arms share the outcome observer's declared scope.",
     "causality":"Ablations retain starting profile and scope. Legacy/new comparison includes documented profile/sensor differences. Held random exposes steering smoothness effects.",
     "replicates":"Population actors share campaign Worlds. Campaign clusters are separate; no independent-actor significance claim. Catalogue passive companions are auxiliary."
 }
@@ -382,7 +384,7 @@ def plots(report, summary, output):
         labels=[c["arm"] if catalogue else c["model"]+" / "+c["arm"] for c in cases]
         ax.set_yticks(range(len(cases)),labels,fontsize=8)
         ax.set_xlabel("Completed simulation seconds")
-        ax.set_title("Actual selected intentions; neutral intervals can still contain physical drift")
+        ax.set_title("Selected module/blend labels; changes are not distinct goal-instance counts")
         ax.legend([Rectangle((0,0),1,1,color=state_colors[s]) for s in states],states,ncol=4,fontsize=7,loc="upper center",bbox_to_anchor=(.5,-.12))
         fig.savefig(output/filename,dpi=170,bbox_inches="tight"); plt.close(fig)
     timeline([c for c in report["campaigns"] if c["group"]=="main" and c["seed"]==1701],"behaviour-timelines.png")
@@ -414,7 +416,7 @@ def plots(report, summary, output):
                 ax.plot([p["position"][0] for p in trace],[p["position"][1] for p in trace],
                         color="#a0a8b0" if auxiliary else "#129574",linewidth=1 if auxiliary else 1.6,linestyle="--" if auxiliary else "-")
             m=metrics[subject["episode_id"]]
-            ax.set_title(c["arm"]+" / "+c["model"]+"\n"+str(m["stable_territory_cells"])+" bins; "+str(m["intention_transitions"])+" transitions",fontsize=9)
+            ax.set_title(c["arm"]+" / "+c["model"]+"\n"+str(m["stable_territory_cells"])+" bins; "+str(m["intention_transitions"])+" label changes",fontsize=9)
             ax.tick_params(labelsize=7); ax.set_xlabel("Native x",fontsize=8); ax.set_ylabel("Native y",fontsize=8)
         for ax in list(axes.flat)[len(catalogue):]: ax.set_visible(False)
         fig.suptitle("Editable catalogue: one descriptive subject per preset, matched within locomotion; 30 seconds")
@@ -430,8 +432,8 @@ def decision_note(summary):
         "Mode: "+summary["mode"]+"; complete: "+str(summary["complete"])+".","",
         "Raw report SHA-256: "+summary["raw_report_sha256"]+".","",
         "## Matched main comparisons","",
-        "Medians across declared seeds. More travel, transitions or larger groups are measurements, not automatic judgments of entertainment or intelligence.","",
-        "| Rig / control | Episodes | Stable bins | X range | Transitions | Active stall fraction | Sensor ms / decision |",
+        "Medians across declared seeds. More travel, selected-label changes or larger groups are measurements, not automatic judgments of entertainment or intelligence.","",
+        "| Rig / control | Episodes | Stable bins | X range | Selected-label changes | Active stall fraction | Sensor elapsed ms / decision |",
         "|---|---:|---:|---:|---:|---:|---:|"]
     for row in summary["cohorts"]:
         if row["group"]!="main": continue

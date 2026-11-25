@@ -42,6 +42,7 @@ OWN_INPUTS = (
     "tools/ci/test_ambient_delivery.py",
     "tools/ambient/run_episodes.py", "tools/ambient/analyze_episodes.py",
     "tools/ambient/test_episode_tools.py",
+    "tools/ambient/review_episodes.py", "tools/ambient/test_independent_review.py",
     ".github/workflows/ambient-002-qualification.yml",
     "tools/fixtures/ambient-002-qualification-request.json",
     "godot/data/ambient/profiles.json",

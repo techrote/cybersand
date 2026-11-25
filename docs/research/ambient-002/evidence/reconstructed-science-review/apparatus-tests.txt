@@ -1,0 +1,15 @@
+test_resume_refuses_edited_receipt (test_episode_tools.CustodyTests.test_resume_refuses_edited_receipt) ... ok
+test_resume_refuses_missing_console (test_episode_tools.CustodyTests.test_resume_refuses_missing_console) ... ok
+test_resume_requires_original_console_report_and_receipt (test_episode_tools.CustodyTests.test_resume_requires_original_console_report_and_receipt) ... ok
+test_terminal_must_agree_with_original_report (test_episode_tools.CustodyTests.test_terminal_must_agree_with_original_report) ... ok
+test_auxiliary_companions_are_not_subject_replicates (test_episode_tools.ReductionTests.test_auxiliary_companions_are_not_subject_replicates) ... ok
+test_ground_gait_is_not_exploration_or_active_progress (test_episode_tools.ReductionTests.test_ground_gait_is_not_exploration_or_active_progress) ... ok
+test_intentional_inactivity_retains_physical_drift (test_episode_tools.ReductionTests.test_intentional_inactivity_retains_physical_drift) ... ok
+test_reject_missing_source_and_wrong_actual_roster (test_episode_tools.ReductionTests.test_reject_missing_source_and_wrong_actual_roster) ... ok
+test_valid_synthetic_contract (test_episode_tools.ReductionTests.test_valid_synthetic_contract) ... ok
+test_vertical_flight_progress_is_not_discarded (test_episode_tools.ReductionTests.test_vertical_flight_progress_is_not_discarded) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.022s
+
+OK

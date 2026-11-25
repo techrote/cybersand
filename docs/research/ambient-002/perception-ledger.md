@@ -113,7 +113,7 @@ The hosted query microbenchmark measured approximately 0.40–0.42 ms per legacy
 observation and 1.17 ms per adaptive observation at radius50, near8, refinement
 enabled. Adaptive sampling read about 1.42 times as many unique sites and used
 about 2.8 times the wall time. At eight actors and ten decisions per second this
-is approximately 94 ms of sensor CPU time per simulated second, before policy
+is approximately 94 ms of elapsed sensor-call time per simulated second, before policy
 or physics. V2 remains explicit opt-in; this is a material cost tradeoff, not a
 performance win or physical display acceptance. The all-actor physical campaign
 must measure progression separately.
@@ -256,4 +256,39 @@ trajectory maps, intention timelines and sixteen catalogue subject maps.
 Forty-cell connected peer groups are descriptive spatial components, not a
 human sociability or believability score. Actual ordinary Workbench graphical
 inspection and physical Windows/NVIDIA owner acceptance remain separate.
+
+## Canonical integration preflights at 9278de57
+
+Fresh execution at canonical published source
+9278de5757b29b9df40a089e11a4daef744990f7 completed two 30-second stateful
+integration shards: Runner/persistent_scavenger and 4LY/cautious_flyer. Each
+completed 7,513 checks, 1,800 actual native/Rapier steps and 300 admitted
+commands. Full source/project/engine/runtime custody agreed before and after.
+These two local episodes are outside the primary hosted 194-episode programme.
+
+The [archive manifest](evidence/canonical-9278-local/archive-manifest.json) binds
+losslessly compressed original reports and full custody, original process logs
+and receipts, the exact local driver, and reduced metrics. No original is
+replaced with a reconstruction or assigned a different source identity.
+
+The Runner covered a 32.26-cell horizontal range and three stable occupancy
+bins, selected five module labels with 25 label changes, and stalled in 45.1%
+of active sampled intervals. Its total center path was 197.61 cells, illustrating
+why center path alone is not exploration. The flyer covered a 135.19-cell
+horizontal range and eighteen stable two-dimensional bins, with seventeen
+selected-label changes and 0.74% active stalls. Neither returned home during
+these short horizons. No comparative superiority follows from two integration
+examples without their matched controls.
+
+The exported intention_transitions metric counts changes of the selected label,
+including changes in a blended label. It does not identify new goal instances
+within the same module. Material distance metrics refer to actual observed
+sample sites; finite coarse coverage cannot prove the absence of thinner
+material patches between sites. These limits also apply to the final reduction.
+
+The Runner's 5.1 seconds of neutral intention still contained 10.40 cells of
+sampled physical drift; the flyer's 2.9 seconds contained 6.58 cells. Neutral
+intent is therefore visibly distinct from guaranteed stillness. The recorded
+policy/sensor/physics timers are elapsed invocation time, not OS CPU-accounting
+utilization. The full matched hosted programme remains the scientific authority.
 

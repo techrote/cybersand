@@ -206,3 +206,34 @@ wall-time record includes preparation, so it is not a rendering FPS measure.
 No framebuffer was rendered in this headless case. This recovered branch
 predates the final integrated behavioural refinements, which require their own
 frozen-source Linux and Windows campaigns.
+
+## Frozen campaign failure and corrected live-audition premise
+
+Both platform jobs for frozen source
+`9278de5757b29b9df40a089e11a4daef744990f7` failed the new mounted editor case after
+the preceding fourteen cases passed. The sole failure among 95 assertions was
+the unapplied-draft authority comparison. Graphical capture, portable packaging
+and the full scientific steps were consequently skipped, not passed.
+
+The Windows failure artifact `14986952576` from
+[run 45535280983](https://github.com/techrote/cybersand/actions/runs/45535280983)
+was independently downloaded and matched outer SHA-256
+`21560969480fda35e0d6142b15ea55621e2e17990608723f4c3696d114655e0a`.
+Its original mounted-case process, log and report are retained alongside the
+[repair receipt](evidence/live-editor-99a18ad2/summary.json).
+
+The fixture had captured its authority generation before Play. The established
+`set_suspended(false)` lifecycle deliberately revokes paused leases on Resume;
+that valid fence is unrelated to staged edits. The corrected test asserts the
+resume fence and unchanged authored configuration, then checks live-draft
+isolation against the post-resume generation. Production behaviour and the
+existing isolation, Apply, Revert and owner-progression checks are unchanged.
+
+Actual source-bound Linux execution at
+`99a18ad26a21c427856cb94aba8a6804e91452ca` passed all 96 mounted assertions and input
+custody. Observed generations were paused 4, resumed 5, still-unapplied 5 and
+applied 6; configuration remained unchanged at Resume and before Apply. All
+eight living tab layouts passed. The negative tab Y positions in minimum-size
+receipts follow deliberate scrolling to the bottom and do not indicate hidden
+Apply/inspector controls. New frozen-source Windows and graphical qualification
+remain required.

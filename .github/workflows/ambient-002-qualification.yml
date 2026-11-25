@@ -47,6 +47,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Ambient completion and delivery custody tests failed' }
           python tools/ambient/test_episode_tools.py
           if ($LASTEXITCODE -ne 0) { throw 'Physical episode reduction and custody tests failed' }
+          python tools/ambient/test_independent_review.py
+          if ($LASTEXITCODE -ne 0) { throw 'Independent physical readback boundary tests failed' }
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
           git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
@@ -178,6 +180,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Verify provider, custody tests and retained native runtimes
+        id: retained_inputs
         run: |
           set -euo pipefail
           mkdir -p evidence
@@ -185,9 +188,11 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/test_ambient_living_delivery.py
           python3 tools/ambient/test_episode_tools.py
+          python3 tools/ambient/test_independent_review.py
           git lfs install --local
           git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
       - name: Authenticate pinned official engine and graphical dependencies
+        id: engine_inputs
         run: |
           set -euo pipefail
           sudo apt-get update
@@ -211,15 +216,25 @@ jobs:
         run: |
           xvfb-run -a -s "-screen 0 1600x1000x24" python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --capture --output evidence/ambient-graphical
       - name: Execute full matched physical episode programme
+        id: physical_programme
+        # Independent evidence may proceed after a UI/graphics failure; the job
+        # still fails overall and no failed platform qualifies a package.
+        if: ${{ !cancelled() && steps.retained_inputs.outcome == 'success' && steps.engine_inputs.outcome == 'success' }}
         run: |
           python3 tools/ambient/run_episodes.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --root "$GITHUB_WORKSPACE" --output evidence/episodes-full
       - name: Reduce original physical traces and render scientific figures
+        id: reduced_physics
+        if: ${{ !cancelled() && steps.physical_programme.outcome == 'success' }}
         run: |
           set -euo pipefail
           python3 -m venv "$RUNNER_TEMP/ambient-002-analysis"
           "$RUNNER_TEMP/ambient-002-analysis/bin/python" -m pip install --disable-pip-version-check 'matplotlib==3.10.8' > evidence/analysis-dependencies.log
           "$RUNNER_TEMP/ambient-002-analysis/bin/python" -m pip freeze > evidence/analysis-environment.txt
           "$RUNNER_TEMP/ambient-002-analysis/bin/python" tools/ambient/analyze_episodes.py --report evidence/episodes-full/episodes.json --output evidence/analysis --source-root "$GITHUB_WORKSPACE"
+      - name: Independently audit matched physical evidence and ablations
+        if: ${{ !cancelled() && steps.reduced_physics.outcome == 'success' }}
+        run: |
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" tools/ambient/review_episodes.py --report evidence/episodes-full/episodes.json --summary evidence/analysis/summary.json --source-sha "$GITHUB_SHA" --output evidence/independent-review
       - name: Retain original Linux source, runtime, graphical and scientific evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -15,6 +15,7 @@ var failures: Array[String] = []
 var save_name := "ambient-editor-002-test"
 var started := 0
 var layout: Dictionary = {}
+var live_audition: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -245,7 +246,7 @@ func run() -> void:
 func finish() -> void:
 	var report := {"checks":checks, "failures":failures, "platform":OS.get_name(), "display":DisplayServer.get_name(),
 		"godot":Engine.get_version_info().string, "elapsed_seconds":float(Time.get_ticks_msec()-started)/1000.0,
-		"layout":layout,
+		"layout":layout, "live_audition":live_audition,
 		"scope":"actual mounted editor + ordinary native/Rapier owner; staged and live Apply/Revert, not sustained behavioural or physical display acceptance"}
 	var path := OS.get_environment("CYBERSAND_AMBIENT_LIVING_EDITOR_REPORT")
 	if not path.is_empty():
@@ -267,25 +268,36 @@ func _live_audition() -> void:
 	draft.personality.curiosity = 0.17
 	draft.memory.enabled = false
 	check(editor.replace_draft(draft), "live audition stages a complete edited profile")
-	var old_generation: int = host.physical_actor_session.workbench_control(1).generation
+	var paused_generation: int = host.physical_actor_session.workbench_control(1).generation
 	var old_run: String = host.physical_actor_session.run_id
 	var old_epoch: int = host.physical_actor_session.epoch
 	var old_world: int = host.latest_snapshot.render_world_generation
 	var initial_tick: int = host.physical_actor_session.tick
 	var initial_native: int = host.latest_snapshot.tick_index
 	if not check(ui.toggle_pause() and not host.paused, "ordinary Play begins live configuration audition"): return
+	# Resume deliberately revokes paused command leases. Establish the live
+	# baseline after that lifecycle fence, before any physics advances; a draft
+	# must not alter the admitted configuration on either side of the fence.
+	var playing_generation: int = host.physical_actor_session.workbench_control(1).generation
+	live_audition = {"paused_generation":paused_generation, "playing_generation":playing_generation,
+		"resume_configuration_unchanged":Catalog.control_for(ui.actor(ui.applied, 1)) == admitted}
+	check(playing_generation > paused_generation and bool(live_audition.resume_configuration_unchanged),
+		"ordinary resume fences paused leases without applying the staged configuration")
 	var moving := await until(func() -> bool:
 		return int(host.physical_actor_session.tick) >= initial_tick + 12 and int(host.latest_snapshot.tick_index) >= initial_native + 11,
 		"actual native and physical owners progress with an unapplied draft")
 	if moving:
-		check(Catalog.control_for(ui.actor(ui.applied, 1)) == admitted and host.physical_actor_session.workbench_control(1).generation == old_generation,
+		live_audition["unapplied_generation"] = host.physical_actor_session.workbench_control(1).generation
+		live_audition["unapplied_configuration_unchanged"] = Catalog.control_for(ui.actor(ui.applied, 1)) == admitted
+		check(bool(live_audition.unapplied_configuration_unchanged) and int(live_audition.unapplied_generation) == playing_generation,
 			"unapplied live draft cannot change admitted control or authority")
 		check(editor.apply_draft() and not host.paused, "Apply receives acknowledgement without stopping Play")
 		var current := Catalog.control_for(ui.actor(ui.applied, 1))
 		check(current.ambient == editor.staged_profile() and current.ambient.seed == draft.seed and not current.ambient.memory.enabled,
 			"live acknowledgement admits the exact edited personality, seed and memory configuration")
 		var new_generation: int = host.physical_actor_session.workbench_control(1).generation
-		check(new_generation > old_generation and host.physical_actor_session.run_id == old_run and host.physical_actor_session.epoch == old_epoch
+		live_audition["applied_generation"] = new_generation
+		check(new_generation > playing_generation and host.physical_actor_session.run_id == old_run and host.physical_actor_session.epoch == old_epoch
 			and host.latest_snapshot.render_world_generation == old_world, "live Apply retires controller authority while retaining both owner identities")
 		var applied_tick: int = host.physical_actor_session.tick
 		var applied_native: int = host.latest_snapshot.tick_index

@@ -134,3 +134,17 @@ The fresh informational eight-engine workload measured 960 eleven-module
 decisions at 322.26 microseconds each. Shared-host timing variation prevents
 interpreting differences from earlier local runs as a performance improvement.
 Sensor, native, Rapier, presentation and Windows qualification remain separate.
+
+## Reconstructed independent scientific review
+
+The [independent review](independent-science-review.md) now records a fresh
+source-9278 custody verification, ten apparatus tests, nine independent reader
+tests and exact reanalysis of the two retained integration preflights. Original
+test consoles, the complete source/project manifest and a hash-bound receipt
+are committed under `evidence/reconstructed-science-review`. The primary hosted
+194-actor programme remains a separate campaign; no preflight or synthetic test
+is added to that count. The reader distinguishes selection labels from actual
+recorded phase changes, preserves unknown goal-instance counts, and explains
+why zero home returns need the profile's homeward eligibility and a qualifying
+departure before they can be treated as failures. No runtime source changed
+for this analysis.
