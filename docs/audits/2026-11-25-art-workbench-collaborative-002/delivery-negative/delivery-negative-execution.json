@@ -1,0 +1,27 @@
+{
+  "schema": "art-delivery-negative-execution-v1",
+  "operator": "Specialist B independent direct executor",
+  "recorded_at_utc": "2026-11-25T06:02:20.978585+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/scratch/75c442a4089a/art-native-independent/verify_delivery_negative.py"
+  ],
+  "exit_code": 0,
+  "checks": 31,
+  "failures": [],
+  "method": "Read-only ZIP, original log and Git-object verification. No application run or original archive upload.",
+  "files": {
+    "verify_delivery_negative.py": {
+      "bytes": 8398,
+      "sha256": "4465fe49bd5b9872a2ad2d24a4567a20534011b43e9f3d737eee1233db8203ba"
+    },
+    "delivery-negative-inputs.json": {
+      "bytes": 693,
+      "sha256": "39fa29fe0e0bbfd8de26faccc7893dadbc966813a26f649decfc14878bc4cda2"
+    },
+    "delivery-negative-review.json": {
+      "bytes": 4590,
+      "sha256": "8f2d1a0a5dc1c8553976a7b42aa094c1f69b243800fdd96da64e9f795833b5f1"
+    }
+  }
+}

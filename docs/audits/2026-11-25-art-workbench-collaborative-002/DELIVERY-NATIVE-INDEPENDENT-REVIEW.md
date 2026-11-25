@@ -10,8 +10,9 @@ last-reviewed: 2026-11-25
 
 **The corrected delivery's Linux native results preserve all nine qualified
 scene geometries and their native authority.** This is an independent read-only
-review of actual original Actions evidence. The Windows evidence review is
-pending at this incremental checkpoint; no result is predicted for that arm.
+review of actual original Actions evidence. The Windows attempt failed an
+earlier retained responsiveness gate and did not reach the new native cohort or
+packaging. Its negative remains separate from the successful Linux observations.
 
 The source is 3a0ec3659f23d8e997e6721aa754d5a8ebe48512, tree
 99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf, in
@@ -27,7 +28,7 @@ are not reuploaded.
 | Platform | Original Actions artifact | Bytes | Independently recomputed SHA-256 |
 | --- | --- | ---: | --- |
 | Linux | [14995036920](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995036920) | 17,140,236 | 007a008531860110fa552d377748a99548b63d94300c634ab3f237dd7f7f7236 |
-| Windows | Pending | Pending | Pending |
+| Windows retained negative | [14995049040](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040) | 4,393,990 | 195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94 |
 
 Specialist B independently refreshed the Actions metadata, rehashed the original
 Linux ZIP and checked every original member CRC: 928 members. B then executed
@@ -57,8 +58,8 @@ Complete derived outputs are in [delivery-native-3a](delivery-native-3a).
 | --- | ---: | ---: | ---: | ---: |
 | Linux headless | 739 / 0 | 9 / 25 | 377,234 | 55 |
 | Linux displayed | 757 / 0 | 9 / 25 | 377,234 | 73 |
-| Windows headless | Pending | Pending | Pending | Pending |
-| Windows displayed | Pending | Pending | Pending | Pending |
+| Windows collaborative headless | Not reached | Not reached | Not reached | Not reached |
+| Windows collaborative displayed | Not reached | Not reached | Not reached | Not reached |
 
 Each complete arm records 184,396 acknowledged material transitions and 188,617
 checked cells. Those totals include cells visited across multiple stages; they
@@ -103,7 +104,8 @@ pristine-launch review.
 | Linux native execution | Pass | Both original modes completed; independently replayed exact cell arrays and planes |
 | Native geometry and constraints | Pass for recorded nine-scene cohort | Exact bcc equality, stage/direct/source/protected checks |
 | Linux runtime identity | Pass | Full original recorded hashes equal bcc and source LFS identities |
-| Windows native execution | Pending | Await original final-delivery rows |
+| Windows retained native responsiveness gate | Failed | First progress 2,187 ms against unchanged less-than-2,000 ms bound; 151 checks, one failure |
+| Windows new collaborative native cohort | Not reached | Earlier aggregate failure correctly blocked the nine new groups and packaging |
 | Portable Windows extraction/launcher | Separate qualification | A/C own actual pristine payload/launch evidence |
 | Genuine model creativity or retrieval benefit | Unqualified | Zero genuine inference; fixed-proposal ablations do not test model decisions |
 | Actor traversal or physical stability | Unqualified | Static material clearance is the supported diagnostic |
@@ -114,3 +116,8 @@ remain preserved in the bcc and mission evidence. Equal geometry across differen
 hosted campaigns does not establish a causal timing improvement. The native
 review does not substitute for aesthetic acceptance, real-model judgment or the
 Architecture programme's independent qualification. Draft/HOLD remains.
+
+The independently checked [negative and strict-repeat source review](DELIVERY-NEGATIVE-INDEPENDENT-REVIEW.md)
+preserves the exact failed original, the unprinted active operand, the timing
+scope and the one-file ledger-only successor. No later result is substituted
+into this source-specific 3a partial campaign.

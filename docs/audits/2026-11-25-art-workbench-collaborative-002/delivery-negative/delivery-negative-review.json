@@ -1,0 +1,87 @@
+{
+  "schema": "art-delivery-negative-independent-review-v1",
+  "passed": true,
+  "checks": 31,
+  "failures": [],
+  "artifact": {
+    "id": 14995049040,
+    "name": "art-workbench-windows-evidence-3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "bytes": 4393990,
+    "sha256": "195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94",
+    "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "campaign": 45553413100,
+    "actions_url": "https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040"
+  },
+  "original_archive_members_crc_checked": 530,
+  "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "source_tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+  "observations": {
+    "headless": {
+      "original_log": "test_art_batch_native.stdout.log",
+      "bytes": 7326,
+      "sha256": "d5f4dfef2e6c61907020e7beca54b23c1e389858de445e441dd83bed22b3fb25",
+      "original_assertions": 148,
+      "original_failures": 0,
+      "first_progress_ms": 55,
+      "native_backend": "CyberNativeCellWorld",
+      "early_native_receipt_assertion": true,
+      "image_pixel_assertion": true,
+      "active_operand_separately_reported": false,
+      "active_operand_value": null
+    },
+    "displayed": {
+      "original_log": "art-native-displayed.stdout.log",
+      "bytes": 7679,
+      "sha256": "6bc12fa1a4630bdcd610211a7288f587b8ce5a279577e4cd57b5723ba56df4a0",
+      "original_assertions": 151,
+      "original_failures": 1,
+      "first_progress_ms": 2187,
+      "native_backend": "CyberNativeCellWorld",
+      "early_native_receipt_assertion": true,
+      "image_pixel_assertion": true,
+      "active_operand_separately_reported": false,
+      "active_operand_value": null
+    }
+  },
+  "displayed_stderr_sha256": "e1a1b666c3696e58abfdb7aaaf105827d335243ab758f4d00a3f6e9df8edbc16",
+  "session_foundation": {
+    "checks": 35,
+    "failures": 0,
+    "log_sha256": "ab613e78b6322dee50c5feba9834e80c42f7d0daf04883da3d59576e6c6aacfe"
+  },
+  "unchanged_source_sha256": {
+    "godot/tests/test_art_batch_native.gd": "299fe1851c695ea8ed14775d89e6ef270fb02a4c8c2623284b00340646af8403",
+    "godot/scripts/art_batch_plan.gd": "b9b011c8d38470ff7dab46e741e5d610addcda7ae9adbd79adcc3ef2b7d76df2",
+    "godot/scripts/art_batch_executor.gd": "ad0126c5fe8211c8051329895b9cbd4942c72867413bd1e863cca3eb909f401a",
+    ".github/workflows/art-session-logging.yml": "337feea46b17fa5d51b4e1b7dae9f270f5dbe55ed9d1d485638bf7c9a21daa67"
+  },
+  "bcc_to_3a_delta": [
+    "docs/operations/art-workbench-collaborative-evaluation.md",
+    "tools/ci/test_art_collaborative_packaging.py",
+    "tools/package_art_collaborative.py"
+  ],
+  "repeat": {
+    "commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+    "parents": [
+      "3a0ec3659f23d8e997e6721aa754d5a8ebe48512"
+    ],
+    "only_changed_path": "docs/audits/2026-11-25-art-workbench-collaborative-002/README.md",
+    "append_only_bytes": 2822,
+    "prior_ledger_sha256": "dff32e69eef0e02e788ccb56a88ccfe0805528ad29c8f04045410e5209ac3090",
+    "repeat_ledger_sha256": "fc96a22f37aadca0815fea15e6675a0a4e7d2ab3978ac786e525a314a13b2a35",
+    "application_native_test_workflow_guide_packager_bytes_unchanged_from_3a": true
+  },
+  "historical_ledger_wording_clarification": "The 3a paragraph uses tests broadly. Precisely: application/Godot native fixtures and workflows are unchanged from bcc, while packaging tests were intentionally extended. The d503 descendant changes no test at all.",
+  "review_script_sha256": "4465fe49bd5b9872a2ad2d24a4567a20534011b43e9f3d737eee1233db8203ba",
+  "limits": [
+    "The strict first-progress timing bound failed; later geometry success does not change that outcome.",
+    "The original active operand is unprinted and unknown; a failed conjunction is not evidence of either active value.",
+    "Timer includes raster/executor/native publication and polling until the CPU image material value appears; it is not an isolated native-worker or physical-display latency measure.",
+    "No causal attribution to provider, native code, renderer, OS scheduling or host contention follows from this record.",
+    "Headless and displayed observations are different conditions; neither is substituted for the other.",
+    "The failed Windows attempt did not reach the nine new groups or packaging; the independent 3a Linux result remains separate.",
+    "The proposed fresh full repeat has no inferred outcome and must retain the original failure.",
+    "Derived data only; no original archive, log, image or audit is reuploaded."
+  ]
+}

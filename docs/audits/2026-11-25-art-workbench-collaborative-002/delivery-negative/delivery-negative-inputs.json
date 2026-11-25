@@ -1,0 +1,19 @@
+{
+  "schema": "art-delivery-negative-input-identities-v1",
+  "artifact": {
+    "id": 14995049040,
+    "name": "art-workbench-windows-evidence-3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "bytes": 4393990,
+    "sha256": "195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94",
+    "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "campaign": 45553413100,
+    "actions_url": "https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040"
+  },
+  "repeat": {
+    "commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+    "parents": [
+      "3a0ec3659f23d8e997e6721aa754d5a8ebe48512"
+    ]
+  }
+}

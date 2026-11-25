@@ -1,0 +1,330 @@
+{
+  "schema": "art-foundation-source-review-v1",
+  "art_source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "refreshed_pull_requests": [
+    {
+      "number": 727,
+      "url": "https://github.com/techrote/cybersand/pull/727",
+      "title": "[Draft/HOLD] ART-SESSION-LOG-001 — one JSONL audit per game session, no chat restore",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "head": "64a9ff4cfc5758998e315c250d1c443f83385331",
+      "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "merge_commit_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "merge_preview_ignored": false
+    },
+    {
+      "number": 720,
+      "url": "https://github.com/techrote/cybersand/pull/720",
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M0–M2 — Native Workbench Batch Lab",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "merge_commit_sha": null,
+      "merge_preview_ignored": true
+    },
+    {
+      "number": 770,
+      "url": "https://github.com/techrote/cybersand/pull/770",
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M3–M5: native modules, GOLDMAPS retrieval and staged architecture",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "merge_commit_sha": null,
+      "merge_preview_ignored": true
+    },
+    {
+      "number": 773,
+      "url": "https://github.com/techrote/cybersand/pull/773",
+      "title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 — Art Workbench finisher",
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "merge_commit_sha": null,
+      "merge_preview_ignored": true
+    },
+    {
+      "number": 777,
+      "url": "https://github.com/techrote/cybersand/pull/777",
+      "title": "[Draft/HOLD] WORLD-STEER M6–M7 — Collaborative native architecture, rich parts and bounded delegation",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "merge_commit_sha": null,
+      "merge_preview_ignored": true
+    }
+  ],
+  "repository_is_shallow": false,
+  "method": "Read-only git show/rev-parse and git merge-base --is-ancestor on complete repository objects; no fetch/import/checkout mutation.",
+  "identities": {
+    "session_head": {
+      "commit": "64a9ff4cfc5758998e315c250d1c443f83385331",
+      "tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+      "parents": [
+        "379cba17538f24a4034d7c37256ce9f71b5d4dbb"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "accepted_main": {
+      "commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+      "parents": [
+        "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "64a9ff4cfc5758998e315c250d1c443f83385331"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "batch_original": {
+      "commit": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "tree": "7413eec0f05f0176dcd7104b187f80c920470894",
+      "parents": [
+        "9c9e61df392fb619c5c9824df83be6b51c014607"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "batch_application": {
+      "commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+      "parents": [
+        "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "batch_archive": {
+      "commit": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "tree": "5067c3c293331042235a90a3f6a992e7b48d000a",
+      "parents": [
+        "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "architecture_application": {
+      "commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+      "parents": [
+        "d948deab5d280adfe1e890bddf85725b2efd59bc"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "art_predecessor": {
+      "commit": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "tree": "7b6e7d8bf951ea9e92e973fe2285ddf54dfb56a9",
+      "parents": [
+        "fa22d386b802b686c371bb6e12996c7a93c18588",
+        "585520e7e62b67ce8c4c86605b08e1f8cc920bba"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    },
+    "art_delivery": {
+      "commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+      "parents": [
+        "bcc92927ce3894a16d5544923cfbf7b1d0339fda"
+      ],
+      "native_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "materials_tree": "0402173c387905f1a3a910750edb62f3fb3613a6"
+    }
+  },
+  "ancestry": [
+    {
+      "ancestor_name": "session_head",
+      "ancestor": "64a9ff4cfc5758998e315c250d1c443f83385331",
+      "descendant_name": "accepted_main",
+      "descendant": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "accepted_main",
+      "ancestor": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "descendant_name": "art_predecessor",
+      "descendant": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "art_predecessor",
+      "ancestor": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "descendant_name": "art_delivery",
+      "descendant": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "batch_original",
+      "ancestor": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "descendant_name": "batch_application",
+      "descendant": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "batch_application",
+      "ancestor": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "descendant_name": "batch_archive",
+      "descendant": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "batch_original",
+      "ancestor": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "descendant_name": "architecture_application",
+      "descendant": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "batch_archive",
+      "ancestor": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "descendant_name": "architecture_application",
+      "descendant": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "is_ancestor": true,
+      "git_exit_code": 0
+    },
+    {
+      "ancestor_name": "batch_original",
+      "ancestor": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "descendant_name": "art_predecessor",
+      "descendant": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "is_ancestor": false,
+      "git_exit_code": 1
+    },
+    {
+      "ancestor_name": "batch_application",
+      "ancestor": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "descendant_name": "art_predecessor",
+      "descendant": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "is_ancestor": false,
+      "git_exit_code": 1
+    },
+    {
+      "ancestor_name": "batch_archive",
+      "ancestor": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "descendant_name": "art_delivery",
+      "descendant": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "is_ancestor": false,
+      "git_exit_code": 1
+    },
+    {
+      "ancestor_name": "architecture_application",
+      "ancestor": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "descendant_name": "art_delivery",
+      "descendant": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "is_ancestor": false,
+      "git_exit_code": 1
+    }
+  ],
+  "owner_paths": {
+    "accepted_main": {
+      "godot/scripts/batch_lab/architecture_stage_session.gd": {
+        "present": false,
+        "git_blob": null
+      },
+      "godot/scripts/batch_lab/native_module_library.gd": {
+        "present": false,
+        "git_blob": null
+      },
+      "godot/scripts/batch_lab/batch_lab_controller.gd": {
+        "present": false,
+        "git_blob": null
+      },
+      "godot/scripts/art_batch_executor.gd": {
+        "present": true,
+        "git_blob": "ccfd7adc6bb8bc8a596e17666a2256a39463fc85"
+      },
+      "godot/tests/test_art_session_log.gd": {
+        "present": true,
+        "git_blob": "4bb23767866bbb32553c87c61da93a0c44b3d015"
+      }
+    },
+    "batch_application": {
+      "godot/scripts/batch_lab/architecture_stage_session.gd": {
+        "present": true,
+        "git_blob": "35c87409d5edc717dff6c09af675da9bac44f9f2"
+      },
+      "godot/scripts/batch_lab/native_module_library.gd": {
+        "present": true,
+        "git_blob": "9a8395358f4ff2cd216b792ef20ef6def8b6f714"
+      },
+      "godot/scripts/batch_lab/batch_lab_controller.gd": {
+        "present": true,
+        "git_blob": "75b6615cee5f11c8dc29a359e94263a4bf8eb138"
+      },
+      "godot/scripts/art_batch_executor.gd": {
+        "present": true,
+        "git_blob": "ccfd7adc6bb8bc8a596e17666a2256a39463fc85"
+      },
+      "godot/tests/test_art_session_log.gd": {
+        "present": true,
+        "git_blob": "4bb23767866bbb32553c87c61da93a0c44b3d015"
+      }
+    },
+    "architecture_application": {
+      "godot/scripts/batch_lab/architecture_stage_session.gd": {
+        "present": true,
+        "git_blob": "8008358933dc9cbf1150bd825b04bb57750f4fa3"
+      },
+      "godot/scripts/batch_lab/native_module_library.gd": {
+        "present": true,
+        "git_blob": "004c9e2469ddddf20076fa148878a1ec5ddd34e7"
+      },
+      "godot/scripts/batch_lab/batch_lab_controller.gd": {
+        "present": true,
+        "git_blob": "75b6615cee5f11c8dc29a359e94263a4bf8eb138"
+      },
+      "godot/scripts/art_batch_executor.gd": {
+        "present": true,
+        "git_blob": "ccfd7adc6bb8bc8a596e17666a2256a39463fc85"
+      },
+      "godot/tests/test_art_session_log.gd": {
+        "present": true,
+        "git_blob": "4bb23767866bbb32553c87c61da93a0c44b3d015"
+      }
+    },
+    "art_delivery": {
+      "godot/scripts/batch_lab/architecture_stage_session.gd": {
+        "present": false,
+        "git_blob": null
+      },
+      "godot/scripts/batch_lab/native_module_library.gd": {
+        "present": false,
+        "git_blob": null
+      },
+      "godot/scripts/batch_lab/batch_lab_controller.gd": {
+        "present": false,
+        "git_blob": null
+      },
+      "godot/scripts/art_batch_executor.gd": {
+        "present": true,
+        "git_blob": "4242b9b502d75eea0c3d4e74efa9e21edcd00ab7"
+      },
+      "godot/tests/test_art_session_log.gd": {
+        "present": true,
+        "git_blob": "1366bdd5d50c5625a4652d7a276f648585b84115"
+      }
+    }
+  },
+  "limits": [
+    "Actual PR flags are distinct from stale Draft/HOLD body wording.",
+    "An unmerged PR merge-preview SHA is not treated as accepted source or ancestry.",
+    "Application/evidence source pins remain distinct; qualification receipts cited here are not re-executed.",
+    "Identical native source trees do not imply identical rebuilt runtime binaries."
+  ]
+}
