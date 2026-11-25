@@ -39,13 +39,18 @@ Use ancestry-preserving merges. Each new source checkpoint receives appropriate 
 
 - [Candidate inventory](inventory.json): exact intake sources, targets and disposition.
 - [Decision register](decisions.json): authority, reviews, actual merges and next gates.
-- Specialist reviews and the final report will be added as their source-bound work completes.
+- [Art/Architecture integration](art-architecture-integration.md): implemented native-authority seam, original reproduced failures and exact local qualification.
+- [Goblin001 final independent approval](goblin001-final-independent-approval.md).
+- [Material/AMBIENT independent review](material-ambient-independent-review.md).
+- [Mainline evaluator adapter review](mainline-evaluator-independent-review.md): source approval only; actual Windows execution remains pending.
 
 ## Current execution checkpoint
 
 - #736 merged as `dacd5976b9d62e8332bc8d64ab5e3921a88c8cef`.
 - #758 merged as `be87b18b30506ccead610c7035ae1ffa8e65a347`.
-- #771 plus exact #778 donor passed full Ready qualification at `0da970283d076ae4660a9d93efd0e5180d313247` and merged as `5e29b111be6202a76c0042976f74de98bd8ead78`; original ancestry is preserved. The actual main tree equals the qualified candidate tree. Post-merge checks are tracked separately.
+- #771 plus exact #778 donor passed full Ready qualification at `0da970283d076ae4660a9d93efd0e5180d313247` and merged as `5e29b111be6202a76c0042976f74de98bd8ead78`; original ancestry is preserved. The actual main tree equals the qualified candidate tree. All five applicable post-merge workflows passed, including full Native/GDE coverage.
+- #772 Goblin001 passed full resulting-source Ready qualification and merged as `c8421a81b8f7f61516ed055f3200b49aee57bd65`; its exact merge tree equals the qualified `950bff73` candidate. Ordinary startup remains unchanged; physical owner acceptance remains outstanding.
+- #775 AMBIENT001 candidate `0c1152c2` is undergoing current Ready qualification against that accepted main. Its68-assertion default-OFF regression and native/runtime invariants independently passed locally; the original current Palette failure is being investigated and is not waived.
 - Original older-main dependency acquisition failures remain recorded in [recovered failures](recovered-failures.json); they are not relabeled successful.
 - Superseded exact-ancestor PRs #720/#770 and #769 are closed in favor of #777 and #776, with branches and original evidence retained.
 - #762 ordinary PR qualification is awaiting a maintainer workflow approval; the existing feature evaluator is not substituted for those unexecuted checks.

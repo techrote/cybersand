@@ -1,0 +1,52 @@
+{
+  "acquisition_allowance_seconds": 1200.0,
+  "acquisition_duration_seconds": 11.494962498,
+  "attempt": 1,
+  "classification": "Git LFS server request timeout before Godot execution",
+  "downstream_failures": [
+    "Cohort readback has no manifest because materialization never completed",
+    "Complete reducer refuses missing actual Linux/Windows visual or Main cache cohort"
+  ],
+  "downstream_reducer_job": 139561978525,
+  "failed_cohort": "linux main-cache 0/1",
+  "github_rerun_semantics": "https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#re-run-a-job-from-a-workflow-run",
+  "logs": [
+    {
+      "decoded_log_bytes": 137770,
+      "decoded_utf8_sha256": "657ecfe77d26be828c35180d124f2c25655c239b3bfdfb2129ac7091b493bd31",
+      "digest_scope": "Connector-decoded UTF-8 text, not original compressed log bytes",
+      "job_id": 139560080793,
+      "local_log_name": "ambient-palette-job-139560080793.decoded.log"
+    },
+    {
+      "decoded_log_bytes": 150026,
+      "decoded_utf8_sha256": "385620d6d3d2bc4d5a6e2bd551ca003be5e7094142a90a2a86f09c739cdb6b67",
+      "digest_scope": "Connector-decoded UTF-8 text, not original compressed log bytes",
+      "job_id": 139561978525,
+      "local_log_name": "ambient-palette-job-139561978525.decoded.log"
+    }
+  ],
+  "original_conclusion": "failure",
+  "original_error": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.",
+  "primary_job": 139560080793,
+  "retained_artifacts": [
+    {
+      "artifact_id": 15070081207,
+      "bytes": 3257,
+      "sha256": "a6204bbabbb03048caf89eca1c65dd8406ef4c03f5d849503bcb495645e1f172"
+    },
+    {
+      "artifact_id": 15069532909,
+      "bytes": 3582,
+      "sha256": "63dc4c66c6371726063cb606980da0a691e26ff09c9cca55c3022c7a48edf029"
+    }
+  ],
+  "retry_operation": "Lead reran plan job139559850136 and its dependent jobs at unchanged source; attempt2 completion remains a separate result.",
+  "retry_recommendation": "Rerun original plan job139559850136 with all dependents at unchanged source, so six cohorts and reducer share a complete new attempt. Failed-jobs-only cannot meet current-attempt artifact pattern. No rerun issued by this receipt.",
+  "retry_registered_by_lead": "https://github.com/techrote/cybersand/pull/775#issuecomment-7176822644",
+  "run_id": 45715343561,
+  "schema": "cybersand-mergedown-palette-failure-v1",
+  "source_commit": "0c1152c21427125066df931cf06a53b7dda0075d",
+  "source_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+  "successful_other_cohorts": 5
+}

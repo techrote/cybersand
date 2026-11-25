@@ -65,7 +65,7 @@
         },
         "native": {
           "run": 45706427271,
-          "status": "refresh_required"
+          "status": "success"
         },
         "gde": {
           "run": 45706427647,
@@ -96,11 +96,58 @@
       "qualification_attempt": 1,
       "independent_review": "Specialist B exact source/runtime/campaign review and C final APPROVE MERGE with both coverage reducers independently read; lead concurs",
       "decision_comment": "https://github.com/techrote/cybersand/pull/771#issuecomment-7176007075",
-      "post_merge": "pending",
+      "post_merge": {
+        "documentation": {
+          "run": 45710781079,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45710781067,
+          "status": "success"
+        },
+        "palette": {
+          "run": 45710781190,
+          "status": "success"
+        },
+        "native": {
+          "run": 45710781082,
+          "status": "success"
+        },
+        "gde": {
+          "run": 45710783369,
+          "status": "success"
+        }
+      },
       "incorporated_repair": {
         "pr": 778,
         "source": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
         "github_state": "merged through preserved ancestry; no separate mainline merge operation"
+      }
+    },
+    {
+      "pr": 772,
+      "programme": "Goblin Gameplay QA001 opt-in foundation",
+      "candidate_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+      "candidate_tree": "f36b303be771028e5ffbda4b94e924dcb66fb704",
+      "previous_main": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "merge_commit": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "resulting_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "method": "merge",
+      "qualification_runs": [
+        45711129917,
+        45711129916,
+        45711130583,
+        45711129922,
+        45711129986
+      ],
+      "qualification_attempt": 1,
+      "independent_review": "Specialist C final APPROVE after all65 jobs and exact merge tree/reducers; lead concurs",
+      "review_record": "goblin001-final-independent-approval.json",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/772#issuecomment-7176602153",
+      "owner_physical_acceptance": "outstanding",
+      "default_enabled": false,
+      "post_merge": {
+        "status": "pending readback"
       }
     }
   ],
@@ -161,6 +208,47 @@
       "id": "CONSOLIDATE-001",
       "decision": "Closed exact-ancestor historical PRs720/770 in favor of777 and769 in favor of776 after independent review and all276 open PR targets checked. Branches/evaluators/evidence retained; owner gates remain.",
       "record": "superseded-closures.json"
+    },
+    {
+      "id": "GOBLIN001-QUALIFY",
+      "source": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+      "tree": "f36b303be771028e5ffbda4b94e924dcb66fb704",
+      "parents": [
+        "d4484bd5b488cb419bfaa94f1e69be8128734405",
+        "5e29b111be6202a76c0042976f74de98bd8ead78"
+      ],
+      "decision": "Qualify exact resulting source in existing Ready PR772;28Goblin-only files, no ordinary scripts/project/native inputs change. Physical owner acceptance remains outstanding.",
+      "registration": "https://github.com/techrote/cybersand/pull/772#issuecomment-7176057490",
+      "runs": [
+        45711129917,
+        45711129916,
+        45711130583,
+        45711129922,
+        45711129986
+      ],
+      "status": "All current-source Ready gates passed; independently approved; merged as c8421a81."
+    },
+    {
+      "id": "AMBIENT001-QUALIFY",
+      "source": "0c1152c21427125066df931cf06a53b7dda0075d",
+      "tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+      "parents": [
+        "d0af9b6015c27417fddd67f79afdcf656a609571",
+        "c8421a81b8f7f61516ed055f3200b49aee57bd65"
+      ],
+      "decision": "Qualify AMBIENT001 plus68-assertion ordinary default-OFF integration test against accepted Goblin001 main; original native/runtime/motor inputs unchanged. Owner physical acceptance remains outstanding.",
+      "registration": "https://github.com/techrote/cybersand/pull/775#issuecomment-7176666734",
+      "runs": [
+        45715343586,
+        45715343583,
+        45715343621,
+        45715343854,
+        45715343614,
+        45715343581,
+        45715343561
+      ],
+      "status": "Ready qualification in progress; original Palette failure45715343561 under investigation before any retry or merge"
     }
-  ]
+  ],
+  "current_accepted_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65"
 }

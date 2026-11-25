@@ -114,7 +114,7 @@ changes. The already accepted Palette cap is absent from this delta.
 
 | Checkpoint | Local reviewed commit | Published equivalent commit | Exact shared tree |
 |---|---|---|---|
-| #771 plus accepted infrastructure main | `d94a686d074b335fa7f25cfa91df4feda7b7ac85` | `80f1b708` (full identity in lead ledger) | `5a1c47d719623971b4263c87c1272c87f3598ac2` |
+| #771 plus accepted infrastructure main | `d94a686d074b335fa7f25cfa91df4feda7b7ac85` | `80f1b7087fd8952d500a85898c8f6fa32d7c8bd2` | `5a1c47d719623971b4263c87c1272c87f3598ac2` |
 | Combined #771 plus #778 donor | `e85b1f73d5649158bc628834d169917d5d60ff16` | `0da970283d076ae4660a9d93efd0e5180d313247` | `209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88` |
 
 Lead verified remote tree equality, recorded the [campaign request and authority](https://github.com/techrote/cybersand/pull/771#issuecomment-7175458828),
@@ -138,4 +138,37 @@ read and independently joined. The immediately preceding Draft Native/GDE/Palett
 runs were skipped. Draft Docs/advisory were superseded automatically by Ready
 under the existing PR concurrency policy; they are cancelled, not passed.
 
-Final mainline merge remains the lead's operation after current-source gates.
+### Final infrastructure qualification
+
+All five applicable Ready workflows at exact published source `0da970283d076ae4660a9d93efd0e5180d313247`,
+attempt 1, completed successfully. Documentation passed its consistency job;
+Native passed all nine jobs; Palette passed its plan, all six actual backend
+cohorts and independent readback; GDE passed 55 jobs including separate Linux
+and Windows builds and complete source/runtime/attempt-bound coverage reducers.
+The GDE physical-actor-stress job was intentionally outside this changed-source
+scope and skipped. It is not counted as a pass or physical acceptance. The
+report-only scope advisory passed separately. Full run and job identities are
+retained in `ci-runtime-hosted-qualification.json`.
+
+The automatic post-merge campaign on earlier accepted `be87b18b30506ccead610c7035ae1ffa8e65a347`
+failed before the repair landed. Its Linux Godot redirect returned HTTP 403 on
+all four curl attempts; actual tests never started. One Windows shard's Git LFS
+batch endpoint also timed out before producing a test report, and the Windows
+coverage reducer correctly rejected 22 reports where 23 were required. These
+are retained dependency-acquisition failures, not passes or discovered gameplay
+regressions. The exact repair campaign used the pinned official release asset
+route and completed all resulting-source coverage. The original failed run
+`45706427647/1` remains untouched; compact job/log evidence is recorded in
+`inherited-main-ci-failure.json`.
+
+This lane's final engineering disposition for combined #771/#778 is **qualified
+for the lead's authorised ancestry-preserving merge**, subject to the independent
+review join and final source lease. Mainline merging remains the lead's operation.
+
+Lead subsequently recorded the actual #771 merge as
+`5e29b111be6202a76c0042976f74de98bd8ead78`, preserving candidate tree
+`209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88`. #778 was incorporated through its exact
+preserved ancestry. The next product campaign is #772 source
+`950bff73404f2fdaeb09362ec1bba408888a4ba9`, tree
+`f36b303be771028e5ffbda4b94e924dcb66fb704`; those gates are separate from this
+completed infrastructure qualification.

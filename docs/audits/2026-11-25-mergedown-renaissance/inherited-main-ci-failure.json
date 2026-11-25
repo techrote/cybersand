@@ -1,0 +1,39 @@
+{
+  "schema": "cybersand-mergedown-inherited-ci-failure-v1",
+  "source_commit": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "run_id": 45706427647,
+  "run_attempt": 1,
+  "conclusion": "failure",
+  "records": [
+    {
+      "job_id": 139533187674,
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45706427647/job/139533187674",
+      "category": "dependency_acquisition",
+      "finding": "Pinned Linux Godot redirect returned HTTP403 on all four curl attempts before tests.",
+      "retained_decoded_log_sha256": "a51289853aa5948ff50f988773df5fe3a5c5c53eaef6c431fe78b237eb3a75b9",
+      "retained_decoded_log_bytes": 133704,
+      "log_encoding": "UTF-8 with LF line endings, retained from decoded GitHub API job log"
+    },
+    {
+      "job_id": 139531504031,
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45706427647/job/139531504031",
+      "category": "runner_service_dependency",
+      "finding": "Windows shard18 Git LFS batch endpoint failed to respond in time; no test/report was produced.",
+      "retained_decoded_log_sha256": "e4e8f79ed2e18dcbc759f98b00d616418939281f67385139f9f389ef801c719a",
+      "retained_decoded_log_bytes": 131909,
+      "log_encoding": "UTF-8 with LF line endings, retained from decoded GitHub API job log"
+    },
+    {
+      "job_id": 139539105160,
+      "job_url": "https://github.com/techrote/cybersand/actions/runs/45706427647/job/139539105160",
+      "category": "correct_fail_closed_reducer",
+      "finding": "Windows coverage correctly refused22reports for23expected shards after shard18 failed acquisition.",
+      "retained_decoded_log_sha256": "f653dcc9b9b8d5720716dc3c8c62804a7b86e399aca1aff0ee740796248a7a7b",
+      "retained_decoded_log_bytes": 44967,
+      "log_encoding": "UTF-8 with LF line endings, retained from decoded GitHub API job log"
+    }
+  ],
+  "repair_source": "0da970283d076ae4660a9d93efd0e5180d313247",
+  "linux_asset_repair": "Exact585520e donor changes only acquisition route, preserving archive digest/size/version. Current repaired-source Linux shards and actual graphics execute successfully; complete resulting-source coverage still pending at this observation.",
+  "windows_lfs_disposition": "External batch response timeout, separate from Linux acquisition repair. No runtime bytes/source changed and no incomplete coverage treated as pass. Existing evidence retained; do not cancel/relabel historical run."
+}

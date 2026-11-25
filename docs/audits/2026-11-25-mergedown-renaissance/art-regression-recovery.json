@@ -9,7 +9,15 @@
     "tools/ci/test_windows_godot_regressions.py"
   ],
   "implementer": "Specialist C",
-  "independent_approval": "PENDING_A_OR_LEAD_REVIEW",
+  "independent_approval": {
+    "reviewed_commits": [
+      "23fd85d9d9d8af14b81822ca942b3274079e8595",
+      "83fbf6de58db8a3a09f15029625a0502b8be7017"
+    ],
+    "reviewer": "Specialist A / product_integration",
+    "scope": "Fixture serial, existing-profile delta, empty session reopen, original loopback fixture; strict diagnostics and native assertions preserved",
+    "status": "APPROVED"
+  },
   "initial_repair": "23fd85d9d9d8af14b81822ca942b3274079e8595",
   "notes": [
     "First local staged combined test omitted repository-relative examples and failed discovery; complete examples restored before attributing the three native assertions to the stale fixture",

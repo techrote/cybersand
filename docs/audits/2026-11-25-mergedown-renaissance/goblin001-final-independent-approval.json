@@ -1,0 +1,724 @@
+{
+  "schema": "cybersand-mergedown-goblin001-final-independent-approval-v1",
+  "reviewer": "Specialist C / adversarial_qa",
+  "disposition": "APPROVE_MERGE_EXACT_SOURCE",
+  "pr": 772,
+  "head": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+  "base": "5e29b111be6202a76c0042976f74de98bd8ead78",
+  "tree": "f36b303be771028e5ffbda4b94e924dcb66fb704",
+  "ready": true,
+  "mergeable": true,
+  "executed_source": {
+    "commit": "8627da9174a8ad7a1c36fe2262048b04fb71dba4",
+    "tree": "f36b303be771028e5ffbda4b94e924dcb66fb704",
+    "parents": [
+      "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "950bff73404f2fdaeb09362ec1bba408888a4ba9"
+    ],
+    "head_tree_identical": true
+  },
+  "source_rationale": {
+    "preserved_original_foundation": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+    "main_relative_files": 28,
+    "goblin_code_change_since_foundation": false,
+    "ordinary_scripts_changed": false,
+    "native_or_runtime_inputs_changed": false,
+    "opt_in": true,
+    "ancestry_preserving_merge_required": true,
+    "physical_owner_acceptance": false
+  },
+  "workflows": [
+    {
+      "id": 45711130583,
+      "name": "Architectural Generator A+B source qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 763,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711130583/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711130583/logs",
+      "workflow_id": 417954798
+    },
+    {
+      "id": 45711129916,
+      "name": "Native source-scope advisory (report only)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 4730,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129916/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129916/logs",
+      "workflow_id": 402341461
+    },
+    {
+      "id": 45711129917,
+      "name": "Documentation and provenance",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 6539,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129917/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129917/logs",
+      "workflow_id": 344993860
+    },
+    {
+      "id": 45711129986,
+      "name": "GDExtension build and current Godot regression",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 6330,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129986/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129986/logs",
+      "workflow_id": 344993861
+    },
+    {
+      "id": 45711129922,
+      "name": "Native C++ validation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 6309,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129922/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45711129922/logs",
+      "workflow_id": 344993864
+    }
+  ],
+  "jobs": {
+    "native": [
+      {
+        "id": 139545526400,
+        "name": "Native evidence and provider policy",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545527985,
+        "name": "ready validation scope",
+        "status": "completed",
+        "conclusion": "skipped",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545955763,
+        "name": "Native family / soliding-asan",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545955935,
+        "name": "Native family / asan-ubsan",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545955961,
+        "name": "Native family / soliding-normal",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545955983,
+        "name": "Native family / native-normal",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545956013,
+        "name": "Native family / tsan",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545956244,
+        "name": "Native family / worldgen",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139556345825,
+        "name": "native",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      }
+    ],
+    "gdextension": [
+      {
+        "id": 139545527317,
+        "name": "windows x86_64",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545527648,
+        "name": "complete execution budgets",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545527810,
+        "name": "linux build x86_64",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545528545,
+        "name": "physical-actor-stress",
+        "status": "completed",
+        "conclusion": "skipped",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139545578406,
+        "name": "ready validation scope",
+        "status": "completed",
+        "conclusion": "skipped",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218325,
+        "name": "windows headless regression shard 2",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218338,
+        "name": "windows headless regression shard 15",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218340,
+        "name": "windows headless regression shard 0",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218372,
+        "name": "windows headless regression shard 11",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218380,
+        "name": "windows headless regression shard 3",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218384,
+        "name": "windows headless regression shard 16",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218385,
+        "name": "windows headless regression shard 6",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218390,
+        "name": "windows headless regression shard 10",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218394,
+        "name": "windows headless regression shard 13",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218445,
+        "name": "windows headless regression shard 1",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218473,
+        "name": "windows headless regression shard 17",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218484,
+        "name": "windows headless regression shard 12",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218489,
+        "name": "windows headless regression shard 9",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218567,
+        "name": "windows headless regression shard 8",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218602,
+        "name": "windows headless regression shard 4",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218607,
+        "name": "windows headless regression shard 5",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218662,
+        "name": "windows headless regression shard 7",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548218700,
+        "name": "windows headless regression shard 14",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548220514,
+        "name": "windows headless regression shard 19",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548220598,
+        "name": "windows headless regression shard 20",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548220607,
+        "name": "windows headless regression shard 18",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548220754,
+        "name": "windows headless regression shard 21",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139548220808,
+        "name": "windows headless regression shard 22",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549175909,
+        "name": "art workbench graphical smoke",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176016,
+        "name": "linux regression shard 0",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176075,
+        "name": "linux regression shard 6",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176078,
+        "name": "linux regression shard 5",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176079,
+        "name": "linux regression shard 7",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176086,
+        "name": "linux regression shard 3",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176102,
+        "name": "linux regression shard 8",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176106,
+        "name": "linux regression shard 2",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176114,
+        "name": "linux regression shard 12",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176123,
+        "name": "linux regression shard 10",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176125,
+        "name": "linux regression shard 4",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176130,
+        "name": "linux regression shard 14",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176133,
+        "name": "linux regression shard 17",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176138,
+        "name": "linux regression shard 13",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176152,
+        "name": "linux regression shard 1",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176170,
+        "name": "linux regression shard 11",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176220,
+        "name": "linux regression shard 16",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176227,
+        "name": "linux regression shard 9",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549176258,
+        "name": "linux regression shard 15",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549177716,
+        "name": "linux regression shard 20",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549177781,
+        "name": "linux regression shard 19",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549177788,
+        "name": "linux regression shard 18",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549178016,
+        "name": "linux regression shard 21",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549178125,
+        "name": "linux regression shard 23",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139549178332,
+        "name": "linux regression shard 22",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139554561224,
+        "name": "windows sharded execution coverage",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139554978374,
+        "name": "retained execution and physical timing history",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      },
+      {
+        "id": 139554978391,
+        "name": "linux x86_64",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+        "run_attempt": 1,
+        "failed_steps": []
+      }
+    ]
+  },
+  "reducers": {
+    "native": {
+      "job": 139556345825,
+      "run": 45711129922,
+      "attempt": 1,
+      "status": "passed",
+      "families": 6,
+      "executed_source": "8627da9174a8ad7a1c36fe2262048b04fb71dba4",
+      "tree": "f36b303be771028e5ffbda4b94e924dcb66fb704"
+    },
+    "windows": {
+      "job": 139554561224,
+      "run": 45711129986,
+      "attempt": 1,
+      "status": "passed",
+      "cases": 319,
+      "shards": 23,
+      "hash_verified_logs": 342,
+      "artifact": 15069620018,
+      "executed_source": "8627da9174a8ad7a1c36fe2262048b04fb71dba4"
+    },
+    "linux": {
+      "job": 139554978391,
+      "run": 45711129986,
+      "attempt": 1,
+      "status": "passed",
+      "cases": 342,
+      "shards": 24,
+      "artifact": 15069435738,
+      "source_inputs_verified": 41,
+      "executed_source": "8627da9174a8ad7a1c36fe2262048b04fb71dba4",
+      "tree": "f36b303be771028e5ffbda4b94e924dcb66fb704"
+    }
+  },
+  "explicit_skips": {
+    "native": [
+      "ready validation scope"
+    ],
+    "gdextension": [
+      "ready validation scope",
+      "physical-actor-stress"
+    ],
+    "rationale": "Ready-event scope sentinels apply only to ready_for_review, not this synchronize; optional physical stress was not requested. Every required family/shard/build/graphics/reducer executed successfully."
+  },
+  "owner_registration_comment": 7176057490,
+  "reported_lead_merge": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+  "limitations": [
+    "Hosted source/platform qualification is not physical owner acceptance",
+    "Original feature-specific evaluator and long-horizon SIGKILL failures remain frozen at their original sources",
+    "No runtime publication is performed by this approval"
+  ]
+}

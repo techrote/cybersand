@@ -1,7 +1,7 @@
 # Art resulting-source regression recovery
 
-Implementer and investigator: Specialist C. **Independent patch approval is
-pending Specialist A or the lead; this is not self-approval or owner acceptance.**
+Implementer and investigator: Specialist C. **Specialist A independently
+approved both fixture/runner commits; physical owner acceptance remains pending.**
 The source repair is seven runner/test files, with no production script, native
 input, runtime binary or watchdog change.
 
@@ -101,9 +101,11 @@ its digest are preserved in the machine-readable recovery record. A later
 passing successor campaign does not erase this measurement or prove this patch
 fixed it.
 
-A's asynchronous invalid-URL admission still requires independent validation of
-the original request-preparation and request-admission cases. The resulting
-Art/Architecture candidate must then receive source-bound qualification with
-the production mount and security guards actually present. Existing genuine
+The original asynchronous invalid-scheme request-preparation and admission
+cases now pass independently on the reconciled source. The
+[subsequent integration review](art-architecture-independent-review.md) records
+those results, actual production mount/native execution and the separate PNG
+repair. Malformed authority/port URL controls and broader resulting-source
+qualification remain required. Existing genuine
 model creative acceptance and physical Windows/NVIDIA acceptance remain
 outstanding. Nothing in this repair authorizes a mainline merge of Art.
