@@ -1,0 +1,13 @@
+diff --git a/godot/scripts/object_shard_m4_runtime.gd b/godot/scripts/object_shard_m4_runtime.gd
+index 4b9a690c0..b58305e94 100644
+--- a/godot/scripts/object_shard_m4_runtime.gd
++++ b/godot/scripts/object_shard_m4_runtime.gd
+@@ -113,7 +113,7 @@ func poll(host: Control) -> void:
+ 			if _pending_serial == 0 and phase != "AwaitingCompletedNativeTick": break
+ 			# Bounded rendezvous only for work already admitted. This creates no
+ 			# semantic ticks and never invokes native or Rapier on the worker.
+-			OS.delay_usec(100)
++			OS.delay_usec(0)
+ 	var elapsed: int = Time.get_ticks_usec()-started
+ 	total_pump_usec += elapsed
+ 	max_pump_usec = maxi(max_pump_usec,elapsed)
