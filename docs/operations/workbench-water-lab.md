@@ -24,9 +24,11 @@ consolidation and Waterwall repairs include [#672](https://github.com/techrote/c
    **Apply solver / tuning**. Confirm the **Applied** native column.
 3. On **Wave tuning**, select **Gameplay default** and apply. Run for a chosen
    number of steps, then pause and note the result.
-4. **Load start** again before the second trial. Change one supported setting,
-   apply it and run the same number of steps. Applying alone retains current
-   cells; it does not restore the beginning of the experiment.
+4. **Load start** again before the second trial. For a generated start, wait for
+   its source-verified preview and confirm **Install into workbench** first.
+   Change one supported setting, apply it and run the same number of steps.
+   Applying alone retains current cells; it does not restore the beginning of
+   the experiment.
 5. Record the law, applied values, authored start, number of native ticks and
    any refused request. A screenshot by itself cannot establish equal quantity
    accounting or solver equivalence.

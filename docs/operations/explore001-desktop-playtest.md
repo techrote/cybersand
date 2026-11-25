@@ -52,8 +52,9 @@ actor spawns; it does not resume the evolved simulation at the exit tick.
 6. In the painting row, enter a unique name and click **Save start [Ctrl+S]**. Record
    source/seed/region, spawn, selected flyer, paint marks and erased opening.
    Close Godot completely and relaunch through the same checked launcher.
-7. Enter the same name and **Load start**. Let native regeneration finish;
-   confirm authored terrain, ordered edits, actor spawn and selection, then
+7. Enter the same name and **Load start**. Let native regeneration and source
+   verification finish, then click **Install into workbench** on the verified
+   preview. Confirm authored terrain, ordered edits, actor spawn and selection, then
    continue painting and save again. Close/reopen once more if reporting a bug.
 8. Repeat a bounded 512 test and, if resources permit, a 2048 test. Large
    preparation temporarily retains old and candidate Worlds plus copied grids;
