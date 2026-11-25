@@ -82,7 +82,7 @@ func busy() -> bool:
 
 func _direct_pending() -> bool:
 	return panel.remaining_turns != 0 or panel.waiting_until_ms > Time.get_ticks_msec() \
-		or panel.capturing or panel.log_draw
+		or panel.capturing or panel.log_draw or panel.conversation_apply_pending()
 
 func _set_status(message: String) -> void:
 	status = message

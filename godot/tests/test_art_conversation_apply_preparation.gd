@@ -78,7 +78,7 @@ func apply() -> Dictionary:
 		and not panel.conversation_editor.get_cancel_button().disabled,
 		"pending draft is read-only while Cancel remains available")
 	check(panel.conversation_editor.content.text.length() <= 4096,
-		"pending Apply keeps the visible message within4096characters")
+		"pending Apply keeps the visible message within 4096 characters")
 	before.handle = panel._conversation_apply_handle
 	before.identity = panel._conversation_apply_identity.duplicate(true)
 	return before
@@ -236,6 +236,63 @@ func failed_append_check() -> void:
 	unchanged(before,"real append-destination failure")
 	panel.conversation_editor.hide()
 
+func collaboration_fence_checks() -> void:
+	await seed()
+	var session: RefCounted = panel.collaboration
+	panel.focus_selection(Rect2i(0,0,256,192))
+	session.load_example("industrial_repair")
+	if not await until(func() -> bool: return not session.busy(),"real offline proposal capture and preview finish"): return
+	if not check(not session.compiled.is_empty() and session.preview_result.get("ok",false) \
+		and not session.compiled.get("requires_resolution",true) and not session.stale,
+		"pending-Apply collaboration check starts with an actually approvable native preview"): return
+	var workspace: Control = panel.collaboration_workspace
+	var request_serial: int = panel.provider.serial
+	var generation: int = session.generation
+	var proposal_digest: String = session.compiled.proposal_digest
+	var disclosure_digest: String = session.context.disclosure_digest
+	var before := apply()
+	workspace.mode.select(0)
+	workspace.prompt.text = "Discuss this inspected industrial room."
+	workspace.send_button.pressed.emit()
+	check(panel.provider.serial==request_serial and session.generation==generation,
+		"ordinary collaborative Send refuses while an edited conversation is preparing")
+	workspace.context_refresh_requested.emit(workspace.context_options())
+	check(session.capture_id<0 and session.context.disclosure_digest==disclosure_digest,
+		"ordinary Inspect refuses a new capture while Apply owns the conversation")
+	workspace.approve_button.pressed.emit()
+	check(session.running_batch<0 and session.stage_index==0 and session.compiled.proposal_digest==proposal_digest
+		and event_count(int(before.offset),"collaboration_stage_approval")==0,
+		"ordinary Approve cannot consume a valid preview during pending Apply")
+	check(panel.conversation_apply_pending() and panel._conversation_apply_handle==before.handle
+		and panel.conversation_editor.visible and panel.conversation_editor.apply_pending,
+		"refused collaborative controls preserve the pending draft and its scoped preparation")
+	unchanged(before,"pending-Apply collaborative Send, Inspect and Approve")
+	panel.conversation_editor.get_cancel_button().pressed.emit()
+	await drain()
+
+func queued_owner_check() -> void:
+	await seed()
+	var before := apply()
+	var held_ready: Dictionary = {}
+	# Only callback delivery is held by this fixture. The original Provider
+	# performs real preparation, credential checks and its ready transition.
+	panel.provider._conversation_edit_owner.completion = func(handle: int, identity: Dictionary, error: String) -> void:
+		held_ready.handle=handle
+		held_ready.identity=identity.duplicate(true)
+		held_ready.error=error
+	if not await until(func() -> bool: return held_ready.has("handle"),"actual worker reaches ready before owner teardown"): return
+	check(str(held_ready.error).is_empty() and panel.provider.conversation_edit_state().phase=="ready",
+		"held completion belongs to a successfully prepared actual value worker")
+	panel.queue_free()
+	check(panel.is_inside_tree() and panel.is_queued_for_deletion(),
+		"owner deletion is requested before the tree deletion flush")
+	check(not panel._conversation_apply_guard(before.identity) and not panel._conversation_apply_guard(before.identity,true),
+		"cheap and final Apply guards reject a queued owner before the deletion flush")
+	panel._conversation_apply_ready(int(held_ready.handle),held_ready.identity,str(held_ready.error))
+	check(panel.conversation_revision==before.revision and not panel.conversation_apply_pending(),
+		"a ready completion cannot adopt an edited conversation for the queued owner")
+	unchanged(before,"ready-before-delete-flush owner teardown")
+
 func run() -> void:
 	root.size=Vector2i(1280,900)
 	set_meta("cybersand_feature","shared_workbench")
@@ -245,9 +302,10 @@ func run() -> void:
 	panel=wb._ensure_art_batches()
 	if not await until(ready,"ordinary native Workbench ready"): quit(1); return
 	var fresh: Dictionary=Setup.fresh(PackedInt32Array(wb.applied.liquid_policy),Vector2i(512,512))
-	check(wb.apply(fresh),"fresh512native World is admitted")
+	check(wb.apply(fresh),"fresh 512-cell World is admitted")
 	if not await until(ready,"fresh native World installed"): quit(1); return
 	wb.open_art_batches()
+	await collaboration_fence_checks()
 	await cancellation_checks()
 	await stale_checks()
 	await success_checks()
@@ -255,6 +313,7 @@ func run() -> void:
 	check(event_count(0,"request")==0 and not panel.provider.active,
 		"all conversation preparation cases send zero HTTP/model requests")
 	check(panel.executor.batch_sequence==0,"no conversation preparation creates a native drawing batch")
+	await queued_owner_check()
 	var metadata := {"checks":checks,"failures":failures,"display":DisplayServer.get_name(),
 		"model_calls":0,"outcomes":outcomes,"evidence_kind":"ordinary Workbench and actual value workers; deterministic text fixtures"}
 	host.queue_free()
