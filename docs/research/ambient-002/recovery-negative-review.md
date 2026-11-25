@@ -154,3 +154,24 @@ independent conditions. They qualify the narrowed comparison only. A complete
 candidate programme, Windows execution, presentation and owner-hardware
 playfeel remain separate evidence scopes. Concurrent local elapsed timings are
 excluded from this comparison.
+
+## Recovering the exact historical probe source
+
+The targeted experiment executed local commit
+`941b79154c890098350725f274b85f26b44f77b0`. Its exact Git objects are retained in
+[evidence/probe-941b-source.bundle](evidence/probe-941b-source.bundle), with
+[hashes and prerequisites](evidence/probe-941b-source.json), rather than assuming
+that a later source with matching application bytes has the same commit identity.
+All three bundle prerequisites are already published ancestors of83a3. In an
+ordinary clone of this repository, restore the historical source as follows:
+
+```sh
+git fetch origin 83a3db6ffb207761df999abedac77eb1401604a8
+git bundle verify /path/probe-941b-source.bundle
+git fetch /path/probe-941b-source.bundle refs/ambient-002/probe-941b:refs/ambient-002/probe-941b
+git worktree add --detach ../ambient-probe-941b 941b79154c890098350725f274b85f26b44f77b0
+```
+
+The source bundle does not contain an alternate engine or substitute native
+runtime. Use the separately authenticated dependencies named in the original
+probe custody, and preserve original execution reports when rerunning it.

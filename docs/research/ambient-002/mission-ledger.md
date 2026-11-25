@@ -375,3 +375,51 @@ The next explicit request is `freeze-003-observed-recovery`. It must repeat the
 full Linux/Windows, actual graphics, extracted Windows and registered physical
 programme on the new canonical source. Draft/HOLD, eight actual logical actors,
 unchanged retained runtimes and all predecessor evidence remain in force.
+
+## Complete baseline and supplementary observation checkpoint
+
+The third canonical application freeze is
+`a7250e15495667b2fcf564cbed1eaa8dea217c45`, tree
+`a038e6df65d58529f4c496c01f26c65975654fa6`. Its full platform/scientific campaign
+is [run45540569052](https://github.com/techrote/cybersand/actions/runs/45540569052).
+Subsequent evidence and external observation work must leave this application's
+`godot/` project bytes unchanged. The owner package will be identified by its
+actual qualified application source, separately from closing documentation.
+
+The complete preceding83a campaign45536810257 succeeded on both Linux and
+Windows. The primary [Linux artifact14988238799](https://github.com/techrote/cybersand/actions/runs/45536810257/artifacts/14988238799)
+has SHA256 `996c30c61f2edc55cc51d6467652ceb5b128e4ac678809d35e1898214365a199`.
+Independent review checks its original122 report/console/execution chains,
+1,141 source inputs,855 loaded project inputs and complete194 physical episodes.
+The frozen reducer and independent readback reproduce their original outputs
+from that artifact. The separate complete local original is durably preserved in
+[verified byte parts](evidence/local-83a-complete/README.md); its reconstructed
+ZIP SHA256 is `7cbe9d219568f911573a72b3e07a29bfd030e6de40cd07c889e88feb4ce9be7c`.
+
+The [hosted readback](evidence/hosted-83a-independent/scientific-findings.md)
+retains poor ground exploration, social counterexamples and measured sensing
+costs. Equal starting materials, poses and authored seeds do not imply identical
+physical trajectories across execution hosts:23,252 of67,200 copied positions
+were bit-equal in these two executions, and44 of194 whole actor traces matched.
+This is reported physical execution variation, not a promise of cross-host
+Rapier determinism. Local numerical outcomes are not relabelled as hosted facts.
+
+Local desktop control was unavailable and the isolated local graphical server
+could not establish listening sockets. The team therefore prepares a separate
+explicitly triggered hosted observation of the ordinary frozen Workbench. It
+will use three fresh native scene processes, each with60 simulated seconds,
+actual sampled rendered frames and copied decision records. External scripts
+remain outside the frozen application project; this is a planned observation,
+not an already completed graphical or physical-display acceptance claim.
+
+The [curiosity preregistration](curiosity-preregistration.md), frozen before
+execution at specialist commit31f8ecf8b6d8821740b545e046501f90c86e06f3, defines
+six supplementary physical episodes. Ordinary equal-priority investigation and
+patrol modules compete while only curiosity changes, under three matched seeds.
+The primary outcomes are selected investigation time and supported horizontal
+approach during the first ten seconds. This resolves a narrower causal question
+than the primary programme's joint traits-and-drives ablation. Outcomes must be
+retained whether they support the predeclared direction or not, and these cases
+remain separate from the original194 registry. A separate small actual-native
+material probe addresses near-field thin-patch detection without claiming added
+behavioral episodes.

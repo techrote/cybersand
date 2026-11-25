@@ -277,3 +277,72 @@ execution was similar. This is slow hosted software rendering and does not
 qualify physical NVIDIA playfeel. Source 83a remains an exact baseline: any later
 behaviour correction requires its own qualification and is not covered by this
 receipt.
+
+### Frozen a725 Windows delivery and independent image review
+
+Frozen source `a7250e15495667b2fcf564cbed1eaa8dea217c45`, tree
+`a038e6df65d58529f4c496c01f26c65975654fa6`, completed Windows job
+`138957772680` in [run 45540569052](https://github.com/techrote/cybersand/actions/runs/45540569052).
+The [independent readback](evidence/windows-a7250e15-review.json) verifies both
+outer artifact digests, the exact portable member set, all **1,330** payload
+hashes, four matching source/runtime/project identities, every original
+process/log/report receipt and all **58** images against their own campaign.
+
+The original 24 cases passed **15,319** assertions; pristine extraction passed
+the eight selected cases and **9,270** assertions. Both mounted editor runs
+passed 96 checks with authority generations 4 → 5 → 5 → 6 and unchanged
+unapplied configuration. The ordinary packaged launcher emitted its readiness
+marker without error markers. Inner portable ZIP
+`CyberSand-AMBIENT-002-Windows-a7250e154956.zip` is 109,251,295 bytes with SHA-256
+`51efb2851ebe5a56cddd6345187fc6cad9248bc6744ac807a3445627ced15eb9`.
+The earlier qualified 83a ZIP remains preserved as its own baseline.
+
+All 29 original and 29 extracted PNGs were individually inspected. Native
+geometry, all eleven examples, authored regions and all editor tabs render.
+Rain Exchange visibly drains its native Water tank; Common Ground's two nearby
+runners converge in the copied physical positions as well as the images.
+Long settings scroll while Apply/Revert and the inspector stay visible.
+The limits persist: inhabitants are small in Overview, model/policy labels do
+not identify personality, and some social/region labels overlap. These short
+captures cannot establish sustained group formation or interesting lives.
+
+Actual framebuffers remain 1028 × 578. New-scene two-second Play phases took
+20.334–25.113 wall seconds originally and 21.431–25.743 after extraction.
+Original mean draw-completion intervals were 168.957–207.034 ms on Microsoft's
+Basic Render Driver through ANGLE. This is actual hosted graphical execution,
+not physical NVIDIA/display acceptance. A local non-streaming hash attempt was
+killed with exit 137; the completed independent audit streamed archive members
+and passed. No hosted evidence was changed. Only the redundant outer portable
+artifact wrappers were later removed locally to recover space; their recorded
+digests, both inner portable ZIPs, evidence ZIPs and original images remain.
+
+### External sustained observer, separate from frozen application
+
+Observer commit `d2ac76092e14ff93154ed540dc2747cf4333647b` adds three files under
+`tools/ambient/`, with no change to the frozen Godot project. Its GDScript
+extends the existing capture helper and uses ordinary Load, Play, Overview,
+Follow selected and copied-overlay controls. It submits no actor commands,
+teleports no body, changes no profile and never directly advances World.
+The default itinerary follows Common Ground actor 1, Pipe Orchard actor 5 and
+Foundry Row actor 7 for 60 simulation seconds each in separate processes.
+
+The runner imports the frozen application's qualification helpers, requires
+exact application HEAD `a7250e15`, authenticates its engine/runtimes and all 855
+project inputs before and after, and identifies observer source separately.
+It retains one real PNG near each requested simulation second, actual physical
+and native tick identities, actual draw timing and bounded copied intent,
+drive, memory, peer and perception diagnostics. Optional derivative movies are
+explicitly labelled sampled timelapses at six samples per playback second.
+Original frames are unchanged; they are not a continuous video or hardware
+frame-rate measurement.
+
+The [preflight receipt](evidence/external-watch-d2ac7609-review.json) and
+[unchanged original records](evidence/external-watch-d2ac7609-originals.zip)
+retain both successes and failures. The initial wrong-HEAD attempt was refused
+by custody checks. A precommit exact-a725 import/compile passed; a repeated
+committed editor import was killed with exit −9 under concurrent resource
+pressure. Direct compile of the committed observer then passed in 0.719 s using
+the already imported exact project, with all 855 inputs unchanged. Nine strict
+synthetic receipt checks passed. Both optional media filters passed on an
+explicit synthetic converter fixture. None of these preflights is sustained
+graphical gameplay evidence; actual observation awaits its hosted run.

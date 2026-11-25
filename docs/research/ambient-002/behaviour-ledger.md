@@ -42,6 +42,15 @@ The [recovery review](recovery-negative-review.md#subsequent-matched-repair-revi
 retains the exact source, reproducible independent receipt and causal limits.
 This selected comparison does not stand in for a complete final-source campaign.
 
+The complete local source-83a3 baseline subsequently passed independent readback:
+194 actual actor episodes in 122 Worlds, 2,910 numeric metric agreements,
+67,200 copied peer samples and 40 exact matched ablation groups. The
+[full baseline interpretation](independent-science-review.md#complete-local-baseline-and-independent-agreement)
+retains the main negative memory/random comparisons, actual drive/home cycles,
+sixteen descriptive catalogue outcomes and important phase-chatter limits.
+Original readback JSON and Markdown are retained with source and data hashes.
+These baseline results remain separately labelled from the later repaired source.
+
 ## Source and authority
 
 The lane begins at predecessor `d0af9b6015c27417fddd67f79afdcf656a609571`.

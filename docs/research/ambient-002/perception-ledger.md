@@ -292,3 +292,56 @@ intent is therefore visibly distinct from guaranteed stillness. The recorded
 policy/sensor/physics timers are elapsed invocation time, not OS CPU-accounting
 utilization. The full matched hosted programme remains the scientific authority.
 
+## Complete baseline programme and independent hosted readback
+
+Frozen source `83a3db6ffb207761df999abedac77eb1401604a8` completed the
+registered 122 fresh World campaigns and 194 actual actor episodes locally:
+178 subjects plus 16 real passive catalogue companions, at most eight actors
+in any World. All 30-second, 120-second and 300-second horizons completed.
+The programme advanced 273,600 native and Rapier steps, accepted 62,400 legal
+commands, rejected none, and recorded no actor-center canvas incidents.
+Whole-source/project/engine/runtime custody matched before and after.
+
+The [complete local archive](evidence/local-83a-complete/README.md) preserves
+all original process reports, consoles and execution receipts, complete
+custody, aggregate, final runner receipt, reduced metrics and five figures.
+Its 20,808,554-byte ZIP is retained as two consecutive byte parts because the
+GitHub connector limits request bodies to 16 MiB. The reconstructed SHA-256
+is `7cbe9d219568f911573a72b3e07a29bfd030e6de40cd07c889e88feb4ce9be7c`.
+The earlier 19-case partial archive remains an explicitly incomplete checkpoint.
+Local elapsed timings after approximately 03:20 UTC were contended by a
+separate authorized targeted probe and are not clean performance estimates.
+
+Hosted run 45536810257 also completed this same registered programme.
+Artifact 14988238799 was downloaded once and verified against SHA-256
+`996c30c61f2edc55cc51d6467652ceb5b128e4ac678809d35e1898214365a199`.
+The independent [hosted audit and scientific readback](evidence/hosted-83a-independent/scientific-findings.md)
+verified all 122 original receipt chains, 1,141 committed source inputs and
+855 loaded project inputs. Re-running the frozen reducer and independent
+reader produced byte-identical hosted summaries; the reader checked 2,910
+metric values and 40 exact ablation groups. All 29 original Linux graphical
+captures were hash-verified and visually inspected; the renderer was llvmpipe,
+and physical-display acceptance remains false.
+
+The two physical executions are not bit-identical: only 23,252 of 67,200
+corresponding position samples and 44 of 194 complete actor traces match
+exactly. Initial materials, complete initial poses, profiles and runtime
+bytes do match. The largest corresponding-position difference is 118.99
+cells. The audit retains every per-case comparison. Neither this variability
+nor the second execution creates extra independent registered cases.
+
+Retained negatives include weaker main-case exploration than held random,
+negative paired memory effects on horizontal range, poor sustained baseline
+Monowheel progress, lower grouping for some social treatments, and additional
+sensor cost. Hosted eight-actor sensor elapsed time rises from 45.23 to
+116.48 ms per simulated second, while production advance rises from 190.65
+to 285.10 ms. These are elapsed invocation costs, not OS CPU utilization or
+presentation acceptance. Positive evidence includes actual obstruction
+withdrawals, differentiated editable catalogue mechanisms, and a sustained
+flying home-seeking cycle. The report keeps these mechanisms separate from
+claims of general superiority or entertainment.
+
+The baseline exposed the steering-retention defect. Its original source,
+plots and negative outcomes remain unchanged; the later finite-latch
+candidate and its qualification have separate identities.
+
