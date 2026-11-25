@@ -1,0 +1,74 @@
+{
+  "application_inputs_sha256": "252b835a90e449f320eebdeba02475d4c28c1238e8f011bbb894346342937fdb",
+  "checks": 138,
+  "coherent_observations": 732,
+  "complete_godot_inputs": 1023,
+  "complete_native_inputs": 117,
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "executed_local_source": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+  "geometry": {
+    "actual_angular_velocity_at_dispatch": -0.747926652431488,
+    "actual_physical_step": 364,
+    "actual_speed_at_dispatch": 48.1458778381348,
+    "angular_jump": 0,
+    "mass_debit": 1,
+    "point_velocity_error_godot_float": 7.62939453125e-06,
+    "point_velocity_error_independent_double": 1.5181563088673194e-06,
+    "pose_jump": 0,
+    "revision_after": 2,
+    "revision_before": 1,
+    "same_rid": 19441,
+    "source_cell": 883,
+    "surviving_cell": 884
+  },
+  "incoherent_observations": 0,
+  "inventory": [
+    {
+      "all_255_material_totals_verified": true,
+      "brick": 2232,
+      "raw_grid_sha256": "5931753e503e8921302c1c3509265c5859ecd801e02a04817afb847c964fe872",
+      "raw_owners": [],
+      "rendered_rg8_matches_raw_grid": true,
+      "stage": "initial_inventory",
+      "wall": 28600,
+      "water_quantity": 0,
+      "wood": 2184
+    },
+    {
+      "all_255_material_totals_verified": true,
+      "brick": 2232,
+      "raw_grid_sha256": "2ca8f905c99d10ffc105e2c1c50c1d21a36f2427420f686491ad27607fe02adf",
+      "raw_owners": [
+        "a1189cb1b528415cd4ca785de4256f7ac087337735c0be792c9d28186673f566"
+      ],
+      "rendered_rg8_matches_raw_grid": true,
+      "stage": "final_inventory",
+      "wall": 27828,
+      "water_quantity": 0,
+      "wood": 2183
+    }
+  ],
+  "limits": [
+    "Local Linux headless event injection is not physical pointer, GPU or monitor acceptance.",
+    "One live cut is established; no claim of arbitrary uncontrolled long strokes or evolved-state persistence."
+  ],
+  "log_sha256": "2e730208632d498c2f8a13d898af36dbfe06ea3e276c872d5e97581e04bad8c2",
+  "native_build_contract_inputs": 5,
+  "natural_exit": 0,
+  "observer_sha256": "0827847d7cc74f1b89a31832c60dbb7a874e89d19d00d65c7580fca196f3014c",
+  "published_tree_equivalent_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "receipt_sha256": "9df743f48a28c34f7b0b46cc838e29738e8b4f41d147a8ee3ec39e71bf714e8b",
+  "retained_runtime_build_source": "ccdfde97c279d809eafbb6e74b880d14cfb2f60e",
+  "reviewer": "native-correctness lane",
+  "runner_sha256": "6878830b032fb1da62e2d5f6473ad4e37b965a6c49aaf252fdaae89ca62116e7",
+  "schema": "objectshard-m4-independent-live-cut-review-v1",
+  "seconds": 12.44,
+  "source_review": [
+    "External observer selects mounted Cut option and emits actual World-view left press/release; ordinary dispatcher/native receipt route is preserved.",
+    "PhysicsServer2D calls are readback only. Early and late observers isolate the actual geometry replacement without freezing, forcing or rewriting physics.",
+    "Exact receipt source_target equals the already displayed target; same-step geometry revision, same RID and independent COM-based material-point velocity calculation agree.",
+    "All frozen Godot inputs, retained runtime payloads, complete native/build input maps, log footer and original raw grid/carrier/parcels/RG8 hashes were independently reread."
+  ],
+  "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "verdict": "approved"
+}

@@ -1,0 +1,78 @@
+{
+  "artifact_id": 14984556771,
+  "external_metadata_sha256": {
+    "artifacts.json": "63386d5347d0707f458b36785fadbbf4ce82544c47b9763b440c38990c6f17df",
+    "jobs.json": "5736f77e157672be912da72d797a046095c328646a9b4ab1524f33cd459a70f3",
+    "run.json": "4af285a70564986b50d63564226918fdf1803c04e20b3fb9994207ad7b034560"
+  },
+  "independent_archive_review_sha256": "4423a68b0c32d4e63d1c6cd83397068182a2e3e45115eeebb231344369c4e56c",
+  "job": {
+    "conclusion": "success",
+    "id": 138924057296,
+    "logs_url": null,
+    "name": "windows-native",
+    "run_id": 45530425519,
+    "status": "completed",
+    "steps": [
+      {
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "number": 2,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Exact Windows cross toolchain",
+        "number": 3,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Exact-source Windows native artifact",
+        "number": 4,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "number": 5,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "number": 6,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "number": 12,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 13,
+        "status": "completed"
+      }
+    ]
+  },
+  "limits": [
+    "Terminal success of this cross-build job plus independently reviewed PE identity does not execute Windows. Actual Windows runtime behavior belongs to the Windows Workbench job.",
+    "Overall campaign was in progress at capture, not passed."
+  ],
+  "schema": "objectshard-m4-windows-native-campaign-binding-v1",
+  "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "workflow_conclusion_at_capture": null,
+  "workflow_run_attempt": 1,
+  "workflow_run_id": 45530425519,
+  "workflow_status_at_capture": "in_progress"
+}

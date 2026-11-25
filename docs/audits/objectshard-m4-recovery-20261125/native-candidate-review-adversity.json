@@ -1,0 +1,72 @@
+{
+  "challenger_sha256": "e1ae41751b84a1fc34d67daa6cd5ed9a2a0f7fd1b218de94b1956351503727de",
+  "inspector_sha256": "75578c66675b6ad3a60e230f0b8bbee437ee46570f162cd2d458188a3f8b4844",
+  "negative_controls": [
+    {
+      "archive_bytes": 135240056,
+      "archive_sha256": "3b601de80307fb44930ba77e0a1bab822503935202d62ffe9d75def0898479d4",
+      "case": "incorrect-external-digest",
+      "metadata_sha256": "5b16bd2a8d89180e1069568c86d5299eb2305201a6eebea3801810a731a4f398",
+      "reason": "Native archive differs from external GitHub size or digest",
+      "refused": true
+    },
+    {
+      "archive_bytes": 135240056,
+      "archive_sha256": "3b601de80307fb44930ba77e0a1bab822503935202d62ffe9d75def0898479d4",
+      "case": "incorrect-source",
+      "metadata_sha256": "df44ba04401af27640a01f6af93fde80c28fc929b2ca8c1f678c8c61dccc6ebc",
+      "reason": "External artifact source differs",
+      "refused": true
+    },
+    {
+      "archive_bytes": 135240056,
+      "archive_sha256": "3b601de80307fb44930ba77e0a1bab822503935202d62ffe9d75def0898479d4",
+      "case": "incorrect-source-tree",
+      "metadata_sha256": "df44ba04401af27640a01f6af93fde80c28fc929b2ca8c1f678c8c61dccc6ebc",
+      "reason": "Reviewed Git tree differs from published candidate tree",
+      "refused": true
+    },
+    {
+      "archive_bytes": 13656,
+      "archive_sha256": "1f42cd9b575a4a19cdb666ada4ecc50299d2007bef0dd8408ed597e0f66cc9e7",
+      "case": "missing-native-source-key",
+      "input_digest_recomputed": true,
+      "metadata_sha256": "4cce57dfc4b9c669b7ba79bff89491d8bdaef47c40f97014065b3c1ce0ee52db",
+      "reason": "native incomplete or unexpected source-input inventory",
+      "refused": true,
+      "removed_source_key": "Makefile",
+      "synthetic_external_metadata_repinned": true
+    },
+    {
+      "archive_bytes": 993961,
+      "archive_sha256": "e965e5fcfa07ba09f2bcc3e0190a286d3cf84256a73632d2820a9b4fad5760cf",
+      "case": "missing-benchmark-source-key",
+      "input_digest_recomputed": true,
+      "metadata_sha256": "f307af4637cf75e119dd520055d7489fde0ee350a8d3263b71931ec4a29f9999",
+      "reason": "retained-lab-native-budgets incomplete or unexpected source-input inventory",
+      "refused": true,
+      "removed_source_key": "native/include/cybersand/ballistic_water.hpp",
+      "synthetic_external_metadata_repinned": true
+    },
+    {
+      "archive_bytes": 133816145,
+      "archive_sha256": "ce5ef87456f859ee1fed72d20d228d2e76bd5e68f10e4e209498168f875e29c2",
+      "case": "substituted-benchmark-command",
+      "metadata_sha256": "f5957067f0cb7d4fd891c61b38c6595a1282993ad54f0aa9851ded92c7c9797b",
+      "mutated_summary_copies": [
+        "retained-lab-native-budgets/20261125T011424.787620Z-19953dab4175/summary.json",
+        "retained-lab-native-budgets/summary.json"
+      ],
+      "reason": "Benchmark executable or exact unfiltered sample arguments differ",
+      "refused": true,
+      "synthetic_external_metadata_repinned": true
+    }
+  ],
+  "original_archive_sha256": "3b601de80307fb44930ba77e0a1bab822503935202d62ffe9d75def0898479d4",
+  "original_archive_unchanged": true,
+  "retention": "Keep original externally pinned artifact and these repeatable recipes; generated mutant ZIPs removed after recorded refusal to conserve shared memory.",
+  "schema": "objectshard-m4-native-candidate-review-adversity-v1",
+  "scope": "Six focused false-PASS challenges; synthetic metadata never becomes qualification evidence; no native executable is run.",
+  "source_commit": "422d131048db573c0abd08bcca25f6b3999e8703",
+  "status": "passed"
+}

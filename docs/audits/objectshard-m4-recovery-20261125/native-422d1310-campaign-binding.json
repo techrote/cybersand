@@ -1,0 +1,106 @@
+{
+  "application_source": "422d131048db573c0abd08bcca25f6b3999e8703",
+  "artifact": {
+    "bytes": 135240056,
+    "id": 14981898048,
+    "sha256": "3b601de80307fb44930ba77e0a1bab822503935202d62ffe9d75def0898479d4"
+  },
+  "external_metadata_sha256": {
+    "native-422d1310-artifacts.json": "65c284bf6a89a5e3542c493d7d74f72bf44a8eaaa9b2d520bfe471f03a297af4",
+    "native-422d1310-jobs.json": "5e48fafcaef54b7de82995b847c3cb0a9f0670dd4fb46aa6491f75a389927b85",
+    "native-422d1310-run.json": "0cf2dce5429501fa2f1720e4de3195d3687c0615099ad9cc1c0fae42c65680c1"
+  },
+  "independent_raw_review": {
+    "path": "native-422d1310-independent-review.json",
+    "reviewer_sha256": "75578c66675b6ad3a60e230f0b8bbee437ee46570f162cd2d458188a3f8b4844",
+    "sha256": "2a5fe1d9e486b0748f3aced9a1b9ed5d7cecd165af3910f374747b160f988f9f"
+  },
+  "limits": [
+    "This qualifies native archive evidence for422, not later changed application inputs.",
+    "The overall422 campaign includes a failed Linux Workbench case and remains unqualified as an aggregate.",
+    "The parity report binds eight exact current source inputs but its source_commit field names historical compatibility baseline0fd4, not the current execution head.",
+    "The metadata/query parity executable is temporary and was not retained; no new parity process is executed by this review.",
+    "Physical Windows/NVIDIA owner acceptance remains HOLD."
+  ],
+  "material_parity": {
+    "actual_execution_source": "422d131048db573c0abd08bcca25f6b3999e8703",
+    "compiled_queries": {
+      "appearance_projection_cases": 17170432,
+      "capability_byte_ids": 256,
+      "density_exchange_cases": 327680,
+      "descriptor_byte_ids": 256,
+      "family_membership_cases": 2048,
+      "lateral_rate_cases": 65536,
+      "layer_kind_byte_ids": 256,
+      "pair_roll_cases": 16777216,
+      "pair_wrapper_cases": 16777216,
+      "physics_qualification": false,
+      "status": "PASS",
+      "validity_uint16_inputs": 65536,
+      "viscosity_cases": 16777216,
+      "world_executed": false
+    },
+    "historical_compatibility_baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "input_count": 8,
+    "input_records": [
+      {
+        "bytes": 195969,
+        "path": "materials/catalogue/catalogue.json",
+        "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+      },
+      {
+        "bytes": 53002,
+        "path": "materials/catalogue/generated/catalogue.shadow.hpp",
+        "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+      },
+      {
+        "bytes": 180360,
+        "path": "materials/catalogue/generated/catalogue_shadow.gd",
+        "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+      },
+      {
+        "bytes": 215517,
+        "path": "materials/catalogue/generated/inspection.json",
+        "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+      },
+      {
+        "bytes": 15569,
+        "path": "materials/catalogue/compatibility-lock.json",
+        "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+      },
+      {
+        "bytes": 23316,
+        "path": "tools/material_catalogue/native_oracle.cpp",
+        "sha256": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256"
+      },
+      {
+        "bytes": 22888,
+        "path": "tools/material_catalogue/check_native_parity.py",
+        "sha256": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696"
+      },
+      {
+        "bytes": 53241,
+        "path": "tools/material_catalogue/compatibility.py",
+        "sha256": "d5f4925cdce27333e241a7b7714a3ac08b3fb293a371bb7430deb4cb64082ad6"
+      }
+    ],
+    "native_oracle_binaries_retained": false,
+    "no_world_or_godot_execution": true,
+    "report_member": "material-native-parity.json",
+    "report_sha256": "66d8d74e185cd38de99fb3110e9d66558bfcd509ea802d77b326269bbf8aa283",
+    "scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
+    "status": "PASS"
+  },
+  "run": {
+    "aggregate_conclusion": "failure",
+    "aggregate_status": "completed",
+    "attempt": 1,
+    "id": 45522534938,
+    "job_conclusion": "success",
+    "job_id": 138897718330,
+    "job_name": "native-sanitizers"
+  },
+  "schema": "objectshard-m4-native-candidate-campaign-binding-v1",
+  "source_tree": "0077add3ad68ccaa782b28beb62b19552f48a124",
+  "status": "passed-native-source-and-retained-evidence"
+}

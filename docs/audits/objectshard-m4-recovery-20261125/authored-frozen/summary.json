@@ -1,0 +1,136 @@
+{
+  "application_inputs_sha256": "877ab28afb759d98f0eb181355aef11a2d2e0b2d27c546488886f85cda360e07",
+  "checks": 215,
+  "complete_godot_inputs": 1023,
+  "failed_observer_retained": {
+    "author_checks": 136,
+    "author_result": "passed",
+    "correction": "One external parent records two complete subprocess lifetimes and unique launch identities; loaded setup compares to canonical validation of the exact independently SHA-bound saved file. Product, save schema and native physics unchanged.",
+    "failures": [
+      "Numeric PID inequality was invalid across separate tool process namespaces.",
+      "Prior receipt JSON numbers were floats, unlike canonical integer-typed loaded setup fields."
+    ],
+    "reopen_checks": 77,
+    "reopen_result": "failed"
+  },
+  "inventories": [
+    {
+      "brick": 2232,
+      "coherent_observations": 517,
+      "incoherent_observations": 0,
+      "phase": "author",
+      "raw_grid_sha256": "2ca8f905c99d10ffc105e2c1c50c1d21a36f2427420f686491ad27607fe02adf",
+      "raw_owner_sha256": [
+        "71a39335fe424391a090f362447741d49da0c4e20fa38e0d32823bf946c0c19c"
+      ],
+      "wall": 27828,
+      "wood": 2184
+    },
+    {
+      "brick": 2232,
+      "coherent_observations": 350,
+      "incoherent_observations": 0,
+      "phase": "reopen",
+      "raw_grid_sha256": "2ca8f905c99d10ffc105e2c1c50c1d21a36f2427420f686491ad27607fe02adf",
+      "raw_owner_sha256": [
+        "71a39335fe424391a090f362447741d49da0c4e20fa38e0d32823bf946c0c19c"
+      ],
+      "wall": 27828,
+      "wood": 2184
+    }
+  ],
+  "limits": [
+    "Headless injected mounted signals are not physical mouse, GPU or monitor acceptance.",
+    "The authored setup includes support brush erasures and original construction. Evolved poses, moving-cell cuts and chemistry are not serialized checkpoints.",
+    "1024 blank attachment is established; the demonstrated moving Tower uses512.",
+    "Raw process logs and inventory binaries remain outside Git; exact hashes, compact receipts, observer and reproduction code are committed."
+  ],
+  "local_equivalent": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+  "native_build_contract_inputs": 5,
+  "native_source_equivalence_inputs": 117,
+  "observer_sha256": "342eda9d9e5cc439e7a1a3f1fbc033bdfdef5b80753bfed940cdf0d34c5298b0",
+  "pair_custody_sha256": "e81f8e7a39a4af31cc7c97782ee211b97f39b0124b0e6aa8a658de0d244c7381",
+  "prior_lost_supplement": "Pre-restart local-only132+69 supplement remains inaccessible. These are newly identified executions, not reconstructed old receipts.",
+  "processes": [
+    {
+      "checks": 136,
+      "completed_utc": "2026-11-25T02:13:39.157350+00:00",
+      "launch_nonce": "00aea39e35fc4cc2a28530b354a5f2d5",
+      "log_sha256": "1ff587365a5b508b3623f8a949bb1bf855e4eec60c4f6f2ac0530c1417fbf129",
+      "natural_completion": true,
+      "phase": "author",
+      "process_id": 7,
+      "receipt_sha256": "8567f7d5ef4e53e876399ec91870697685faec39685395d595c7d274c3e31ddf",
+      "seconds": 11.757,
+      "started_utc": "2026-11-25T02:13:22.921109+00:00",
+      "status": "passed"
+    },
+    {
+      "checks": 79,
+      "completed_utc": "2026-11-25T02:13:49.919111+00:00",
+      "launch_nonce": "7e03e4306cfb47498f431cac0bf84ffc",
+      "log_sha256": "1adf89c4837cdca7c8084027a2f997c83d0934262ecf730af55544ac347f2f00",
+      "natural_completion": true,
+      "phase": "reopen",
+      "process_id": 185,
+      "receipt_sha256": "4f6ff61152a5c2a0aaf6162525c2dd34cfafb571026b8eb7215bfd7b9b5e25ce",
+      "seconds": 10.755,
+      "started_utc": "2026-11-25T02:13:39.159156+00:00",
+      "status": "passed"
+    }
+  ],
+  "production_default": {
+    "authored_setup_unchanged": true,
+    "enabled": false,
+    "extent": [
+      2048,
+      2048
+    ],
+    "mounted_enable_refused": true,
+    "semantic_tick_unchanged": true,
+    "worker_unchanged": true,
+    "world_generation_unchanged": true,
+    "world_revision_unchanged": true
+  },
+  "reopened": {
+    "canonical_complete_authored_setup_equal": true,
+    "cut_bodies": 1,
+    "cut_supports": 6,
+    "exact_file_bytes_preserved": true,
+    "intact_bodies": 0,
+    "intact_supports": 800,
+    "natural_detachment": true
+  },
+  "runner_sha256": "b56f213300a5eb21ebaadb2ad4c1ccd76b710d5822219fab70ae8fb0a3b5a61b",
+  "saved_starts": [
+    {
+      "body_count": 0,
+      "bytes": 949,
+      "edits": 14,
+      "label": "m4-recovery-intact",
+      "sha256": "0b68dafb7c4761dfb14178c08465a2151b6698f1de862866bfeb07ac8da7774e",
+      "support_material_cells": 800
+    },
+    {
+      "body_count": 1,
+      "bytes": 1621,
+      "edits": 62,
+      "label": "m4-recovery-cut",
+      "sha256": "549c11a122e41b25b289dd51a6e97f111a69506a25cc4d7b78a637f693edee29",
+      "support_material_cells": 6
+    }
+  ],
+  "schema": "objectshard-m4-authored-extent-recovery-summary-v1",
+  "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "status": "passed-local-linux-headless",
+  "supported1024": {
+    "actual_same_world_attachment": true,
+    "body_count": 0,
+    "extent": [
+      1024,
+      1024
+    ],
+    "ordinary_new_blank": true
+  }
+}
