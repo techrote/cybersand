@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [sandspiel-attribution-and-port-status, imported-material-ids]
 status: Current
 scope: Current CyberSand adaptation inventory plus explicitly historical upstream study and hosted performance observations
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/water-design.md, ../reference/validation-evidence.md, ../../THIRD_PARTY_NOTICES.md]
 ---
 
@@ -60,8 +60,9 @@ Slot 10 remains invalid. IDs 20–37 are in the
 project-authored IDs 38–80 are in the
 [construction catalogue](../systems/themed-construction-materials.md).
 The JSON records provenance and adaptation intent; runtime does not parse it
-in the hot path. Its prose describing bundled Linux execution is not evidence
-that this workspace's unresolved Linux LFS payload runs.
+in the hot path. Its prose describing bundled Linux execution does not qualify
+a different checkout's runtime. Check the actual materialized binary, its
+source identity and a fresh execution receipt before claiming local execution.
 
 ## Current adoption boundaries
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: How to locate and interpret source-bound validation; dated results do not certify a new runtime or every platform
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [status-and-roadmap.md, level-saves-and-replay.md, ../operations/testing-validation-and-replay.md, ../operations/current-and-historical-validation.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -138,8 +138,12 @@ Firefox or Safari work. Historical M11, dated Chromium compatibility/threaded
 results, later Linux native/headless/rendered evidence and physical Windows
 observations retain separate scope. Browser support must be established on the
 actual source, profile and browser; a successful Web compile is insufficient.
-The existing records do not supply universal Firefox/Safari acceptance. Web
-toolchain/template/export-identity obligations remain separately tracked.
+The existing records do not supply universal Firefox/Safari acceptance.
+The [owner-directed issue #3 closure](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559)
+makes maintained Web CI and long-term reproducible Web releases out of scope.
+A disposable experiment repairs only its admitted prerequisites and still
+records tested source, artifact and actual coverage; it creates no standing
+Web support obligation or desktop release blocker.
 
 Use explicit outcomes: **PASS** for executed criteria that passed; **FAIL** for an
 executed failure; **SKIP** for a deliberately suppressed gate; **NOT RUN** for no

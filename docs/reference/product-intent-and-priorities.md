@@ -5,7 +5,7 @@ document-kind: reference
 authority: owner-confirmed-intent
 scope: Source-linked owner direction and preserved preferences; implementation, qualification and execution permission remain separate
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [status-and-roadmap.md, ../decisions/2026-11-14-owner-authoring-intent.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md]
 ---
 
@@ -223,6 +223,19 @@ The delegated region policy preserves paused phased activity and wakes re-entere
 resident blocks without general field catch-up or state-preserving live resize.
 
 ## Authority, unfinished work and historical attempts
+
+### Disposable Web experiments
+
+The [owner-directed closure of issue #3](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559)
+makes Web builds occasional disposable experiments. Ongoing browser support,
+maintained Web CI and reproducible long-term Web releases are not standing
+requirements or blockers for desktop work. A newly authorized experiment may
+repair the specific prerequisites it needs. Any experiment cited as evidence
+still needs an honest source, artifact and coverage record. This policy does
+not waive the separate native provenance and documentation checks completed
+through PRs #6 and #7.
+
+### Current work and preserved attempts
 
 The owner welcomes interesting playable MicroScenarios before all physics is
 mature. Capture an anomaly, reduce it to a reproducible fixture, and route it to
