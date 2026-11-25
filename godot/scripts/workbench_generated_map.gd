@@ -4,6 +4,7 @@ extends RefCounted
 # migration: it nests an unchanged validated v2 starting setup, and stores the
 # native GEN-007 recipe instead of millions of material cells or brush records.
 const Setup = preload("res://scripts/workbench_setup.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const FORMAT := "cybersand-generated-start-v1"
 const LIMIT := 1024 * 1024
 # Native generation receipts are bounded in saved/reloaded authored-start maps.
@@ -137,19 +138,7 @@ static func write_named(label: String, setup: Dictionary, packet: Dictionary) ->
 	if body.to_utf8_buffer().size() > LIMIT: return "Generated-map manifest exceeds 1 MiB."
 	if DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(Setup.DIRECTORY)) != OK:
 		return "Could not create the map directory."
-	var target := ProjectSettings.globalize_path(path)
-	var temp := target + "." + Crypto.new().generate_random_bytes(8).hex_encode() + ".tmp"
-	var file := FileAccess.open(temp,FileAccess.WRITE)
-	if file == null: return "Could not create the temporary generated-map file."
-	file.store_string(body)
-	file.flush()
-	var state := file.get_error()
-	file.close()
-	if state == OK: state = DirAccess.rename_absolute(temp,target)
-	if state != OK:
-		DirAccess.remove_absolute(temp)
-		return "Could not atomically replace the existing generated map."
-	return ""
+	return str(FileTransaction.write_text(path, body, LIMIT).error)
 
 static func read_named(label: String) -> Dictionary:
 	var path: String = Setup._path(label)
