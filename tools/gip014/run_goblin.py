@@ -24,12 +24,12 @@ import zipfile
 from verify_transcript import verify
 from minimize import minimize
 from vocabulary import MAX_ACTIONS, FIXTURES, POLICIES
-from owned_process import execute as execute_owned
+from owned_process import execute as execute_owned, read_log_prefix
 import replay_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 TESTS = {
-    "unit": ("test_goblin_policies", "test_goblin_contract"),
+    "unit": ("test_goblin_policies", "test_goblin_contract", "goblin_gameplay_contracts"),
     "adapter": ("goblin_adapter",),
     "expanded": ("goblin_expanded",),
     "metamorphic": ("goblin_metamorphic",),
@@ -42,7 +42,7 @@ TESTS = {
 }
 PROFILE_SCHEMA = "cybersand-goblin-profile-v1"
 ERROR_MARKERS = ("SCRIPT ERROR:", "Parse Error:", "ERROR:", "Fatal signal", "Segmentation fault")
-COMPLETION_MARKERS = {"campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_expanded": "GOBLIN_EXPANDED_RESULT ",
+COMPLETION_MARKERS = {"campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_gameplay_contracts": "GOBLIN_GAMEPLAY_CONTRACT_RESULT ", "goblin_expanded": "GOBLIN_EXPANDED_RESULT ",
                       "goblin_metamorphic": "GOBLIN_METAMORPHIC_RESULT ", "goblin_exploration": "GOBLIN_EXPLORATION_UNIT ", "goblin_laboratory": "GOBLIN_LABORATORY ", "goblin_adapter": "GOBLIN_ADAPTER ",
                       "goblin_controller": "GOBLIN_CONTROLLER ", "test_goblin_policies": "GOBLIN_POLICY_UNIT ",
                       "goblin_interactive": "GOBLIN_INTERACTIVE_RESULT ",
@@ -156,7 +156,9 @@ def stage_project(destination: Path, reuse_import_cache: bool = False) -> dict:
     if source_changed:
         raise ValueError("Source changed during project snapshot; retry after the checkpoint settles")
     digest = hashlib.sha256(json.dumps(entries, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    return {"project_files_sha256": digest, "files": entries, "reused_resource_cache": reused_cache,
+    normalized_imports = {name: hashlib.sha256((destination / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                          for name in replay_identity.IMPORT_DESCRIPTORS if name in entries}
+    return {"project_files_sha256": digest, "files": entries, "normalized_import_descriptors": normalized_imports, "reused_resource_cache": reused_cache,
             "cache_scope": "Explicit resource-import reuse only; no editor-import qualification claimed" if reuse_import_cache else "fresh editor import required"}
 
 
@@ -217,7 +219,8 @@ def read_transcript(profile: Path) -> tuple[dict | None, Path | None]:
 
 
 def reduce_gameplay(original: dict, *, out: Path, godot: Path, project: Path, provenance: dict,
-                    timeout: int, max_attempts: int, repeats: int, graphical: bool) -> dict:
+                    timeout: int, max_attempts: int, repeats: int, graphical: bool,
+                    target_outcome: bool = False, max_seconds: int = 1800) -> dict:
     """The reducer callback can invoke only the fixed goblin test entrypoint."""
     if not replay_identity.same(original.get("header", {}).get("provenance"), provenance):
         raise ValueError("Reduction requires the recorded exact source snapshot and runtime identities")
@@ -226,14 +229,18 @@ def reduce_gameplay(original: dict, *, out: Path, godot: Path, project: Path, pr
         raise ValueError("Reduction must use the original headless/graphical execution mode")
     write_json(out / "original-transcript.json", original)
     attempts = []
+    deadline = time.monotonic() + max_seconds
     def replay_actions(actions: list[dict]) -> dict:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise ValueError("Reduction wall-clock limit reached")
         index = len(attempts)
         target = out / f"probe-{index:03d}"
         target.mkdir()
         plan = {"schema": "cybersand-goblin-action-fixture-v1", "header": original["header"], "actions": actions}
         write_json(target / "reproduction-fixture.json", plan)
         launch = {"fixture_id": original["header"]["fixture_id"], "policy": original["header"]["policy"],
-                  "seed": original["header"]["seed"], "budget": len(actions), "pacing_ms": 0,
+                  "seed": original["header"]["seed"], "budget": len(actions), "pacing_ms": original["header"].get("pacing_ms", 0),
                   "reproduce": True, "evidence_kind": wanted_kind}
         profile = target / "profile"
         env = make_profile(profile, launch, provenance, reproduction=plan)
@@ -241,19 +248,36 @@ def reduce_gameplay(original: dict, *, out: Path, godot: Path, project: Path, pr
         if graphical and os.name == "nt":
             command += ["--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle"]
         command += ["--path", str(project), "--script", "res://goblin/run_campaign.gd"]
-        process = execute(command, env, target / "replay.log", timeout)
+        process = execute(command, env, target / "replay.log", min(timeout, max(1, int(remaining))))
         attempts.append(process)
         write_json(target / "process.json", process)
         tape, _ = read_transcript(profile)
         if tape is None:
             raise ValueError(f"No observed reproduction transcript ({process['status']})")
         write_json(target / "transcript.json", tape)
-        if process["status"] in {"timeout", "crash", "diagnostic_failure"}:
-            raise ValueError(f"Reproduction process {process['status']}; retained attempted evidence")
-        if (target / "replay.log").read_text(encoding="utf-8", errors="replace").splitlines().count(COMPLETION_MARKERS["campaign"]) != 1:
+        lines = read_log_prefix(target / "replay.log").splitlines()
+        if process["status"] == "output_limit" or lines.count(COMPLETION_MARKERS["campaign"]) != 1:
             raise ValueError("Reproduction process did not complete cleanup")
+        results = [line.removeprefix("GOBLIN_CAMPAIGN_RESULT ") for line in lines if line.startswith("GOBLIN_CAMPAIGN_RESULT ")]
+        if len(results) != 1:
+            raise ValueError("Reproduction terminal observation is absent or ambiguous")
+        terminal = json.loads(results[0])
+        if terminal.get("validation", {}).get("ok") is not True or terminal.get("validation", {}).get("errors") or terminal.get("summary") != tape.get("summary"):
+            raise ValueError("Reproduction terminal validation disagrees with retained evidence")
+        expected_assertion_exit = (process["status"] == "test_failure" and process["exit_code"] == 1
+                                   and not process["diagnostic_errors"]
+                                   and tape.get("summary", {}).get("termination") == "assertion_failure"
+                                   and bool(tape.get("summary", {}).get("failures")))
+        if process["status"] != "pass" and not expected_assertion_exit:
+            raise ValueError(f"Reproduction process {process['status']}; retained attempted evidence")
         return tape
-    result = minimize(original, replay_actions, max_attempts=max_attempts, repeats=repeats)
+    result = minimize(original, replay_actions, max_attempts=max_attempts, repeats=repeats,
+                      target_outcome=target_outcome, max_seconds=max_seconds)
+    selected = result.get("selected_probe")
+    if isinstance(selected, int):
+        selected_tape = out / f"probe-{selected:03d}" / "transcript.json"
+        if selected_tape.is_file():
+            shutil.copy2(selected_tape, out / "reduced-transcript.json")
     write_json(out / "reduction.json", result)
     fixture = {"schema": "cybersand-goblin-action-fixture-v1", "header": original["header"],
                "actions": result["actions"], "expected_failures": result["target_failures"],
@@ -277,6 +301,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fixture-file", type=Path, help="A previously reduced bounded action fixture")
     parser.add_argument("--max-probes", type=int, default=24)
     parser.add_argument("--confirmations", type=int, default=2)
+    parser.add_argument("--target-outcome", action="store_true", help="Explicitly reduce a legal completed action outcome; not a defect claim")
+    parser.add_argument("--reduction-seconds", type=int, default=1800)
     parser.add_argument("--timeout-seconds", type=int, default=0, help="0 derives a bounded deadline from the action budget")
     parser.add_argument("--memory-limit-mib", type=int, default=3072)
     parser.add_argument("--corpus", type=Path, help="Optional bounded corpus, staged at a fixed isolated profile path")
@@ -297,6 +323,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--case reproduce requires --fixture-file")
     if not 1 <= args.max_probes <= 64 or not 1 <= args.confirmations <= 3:
         parser.error("reduction supports 1..64 probes and 1..3 confirmations")
+    if not 1 <= args.reduction_seconds <= 7200:
+        parser.error("reduction wall-clock limit must be 1..7200 seconds")
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=False)
     try:
@@ -349,7 +377,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.case == "reduce":
             result = reduce_gameplay(replay, out=out, godot=godot, project=project, provenance=provenance,
                                      timeout=args.timeout_seconds, max_attempts=args.max_probes,
-                                     repeats=args.confirmations, graphical=graphical)
+                                     repeats=args.confirmations, graphical=graphical,
+                                     target_outcome=args.target_outcome, max_seconds=args.reduction_seconds)
             if not args.retain_project:
                 retain_source_and_remove_project(out, project)
             print(json.dumps({"output": str(out), "status": result["status"], "original_actions": result["original_actions"],
@@ -373,7 +402,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if case == "campaign":
                     script = "res://goblin/run_campaign.gd"
-                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_exploration", "goblin_laboratory"):
+                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_exploration", "goblin_laboratory", "goblin_gameplay_contracts"):
                     script = f"res://goblin/tests/test_{case.removeprefix('goblin_')}.gd"
                 else:
                     script = f"res://tests/{case}.gd"
@@ -381,7 +410,7 @@ def main(argv: list[str] | None = None) -> int:
             process_limit = None if args.case == "interactive" else args.timeout_seconds + (args.budget * args.pacing_ms // 1000)
             result = execute(command, active_env, out / f"{case}.log", process_limit, memory_limit_mib=args.memory_limit_mib)
             result["case"] = case
-            log_text = (out / f"{case}.log").read_text(encoding="utf-8", errors="replace")
+            log_text = read_log_prefix(out / f"{case}.log")
             if args.case != "interactive":
                 result["completion_marker"] = COMPLETION_MARKERS[case]
                 marker = COMPLETION_MARKERS[case]
@@ -396,8 +425,8 @@ def main(argv: list[str] | None = None) -> int:
                 result["summary"] = transcript.get("summary", {})
                 readback = verify(transcript)
                 write_json(out / f"{case}-independent-readback.json", readback)
-                result["independent_readback"] = {key: readback[key] for key in ("valid", "errors", "independent_failures", "unreported_failures")}
-                if result["status"] == "pass" and (not readback["valid"] or readback["unreported_failures"]):
+                result["independent_readback"] = {key: readback.get(key, [] if key != "valid" else False) for key in ("valid", "errors", "independent_failures", "unreported_failures")}
+                if result["status"] == "pass" and (not readback["valid"] or readback.get("unreported_failures")):
                     result["status"] = "evidence_failure"
                 if case == "campaign" and args.case != "interactive" and result["status"] == "pass" and transcript.get("summary", {}).get("termination") != "budget_complete":
                     result["status"] = "incomplete_evidence"

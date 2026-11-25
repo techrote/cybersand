@@ -5,6 +5,7 @@ extends RefCounted
 ## records are unverified hints until the separate replay pipeline reproduces them.
 const Coverage = preload("res://goblin/goblin_coverage.gd")
 const State = preload("res://goblin/goblin_state.gd")
+const GameplayOracles = preload("res://goblin/goblin_gameplay_oracles.gd")
 const SCHEMA := "cybersand-goblin-corpus-v1"
 const MAX_RECORDS := 64
 const MAX_PREFIX := 128
@@ -203,12 +204,13 @@ static func _context_valid(value: Dictionary) -> bool:
 		and value.get("personality", "") is String and str(value.get("personality", "")).length() <= 80
 
 static func _classification(record: Dictionary, failures: Array[String]) -> String:
-	if not failures.is_empty(): return "unresolved_observation"
+	if not failures.is_empty() or record.get("classification") in ["timeout", "native_failure", "adapter_failure"]:
+		return "unresolved_observation"
+	if GameplayOracles.expected_boundary_refusal(record): return "expected_refusal"
 	if record.get("admission", {}).get("unsupported") == true: return "unsupported_action"
-	if record.get("classification") == "invalid_action": return "unresolved_observation"
+	if record.get("classification") == "invalid_action" or record.get("status") == "partial": return "unresolved_observation"
 	if record.get("status") == "refused":
 		return "expected_refusal" if record.get("classification") in ["not_applicable", "cancelled"] else "unresolved_observation"
-	if record.get("classification") in ["timeout", "native_failure", "adapter_failure"]: return "unresolved_observation"
 	return "legal_unusual_gameplay"
 
 func _retire_index() -> int:

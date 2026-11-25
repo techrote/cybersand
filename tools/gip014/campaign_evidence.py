@@ -9,6 +9,7 @@ from __future__ import annotations
 from collections import Counter
 import hashlib
 import math
+import re
 import statistics
 
 from verify_transcript import bounded, canonical, digest, integer
@@ -17,6 +18,7 @@ DIMENSIONS = ("action", "action_transition", "state_transition", "material_inter
               "actor_environment", "lifecycle", "boundary_refusal", "outcome")
 MAX_KEYS = 2048
 EDIT_ACTIONS = {"brush", "erase", "rectangle", "outline", "line", "paste", "fill", "undo", "redo", "stroke", "live_stroke", "interrupt_stroke"}
+PAINT_TOOLS = {"brush": "Brush", "rectangle": "Rectangle", "outline": "Outline", "line": "Line", "stroke": "Brush", "fill": "Fill"}
 UNKNOWN = "unknown"
 
 
@@ -52,6 +54,39 @@ def progression(before, after):
     return "advanced" if b["tick"] > a["tick"] else ("unchanged" if b["tick"] == a["tick"] else "regressed")
 
 
+def probe_summary(probe, native):
+    unknown = {"available": False, "scope": "unobserved"}
+    if not isinstance(probe, dict) or probe.get("current") is not True or probe.get("evidence_kind") != "actual_native_material_capture":
+        return unknown
+    if any(not bounded(probe.get(k), 0, 2147483647) or probe[k] != native.get(k) for k in ("generation", "revision", "tick")):
+        return unknown
+    region, counts = probe.get("region"), probe.get("counts")
+    if not isinstance(region, list) or len(region) != 4 or not all(bounded(v, 0, 4096) for v in region) or not isinstance(counts, dict) or not 1 <= len(counts) <= 128:
+        return unknown
+    area = region[2] * region[3]
+    if not 1 <= area <= 4096:
+        return unknown
+    total, occupied, ids = 0, 0, []
+    for key, count in counts.items():
+        if not isinstance(key, str) or re.fullmatch(r"[+-]?\d+", key) is None or not bounded(int(key), 0, 65535) or not bounded(count, 1, 4096):
+            return unknown
+        total += int(count)
+        if int(key) != 0:
+            occupied += int(count)
+        ids.append(str(int(key)))
+    if total != area:
+        return unknown
+    fraction = occupied / total
+    return {"available": True, "scope": "captured_region_only", "materials": sorted(ids),
+            "occupancy": "empty" if occupied == 0 else ("trace" if fraction < 0.05 else ("sparse" if fraction < 0.25 else ("mixed" if fraction < 0.75 else "dense")))}
+
+
+def godot_scalar(value):
+    if type(value) is bool:
+        return "true" if value else "false"
+    return str(int(value)) if type(value) is float and value.is_integer() else str(value)
+
+
 def state(value):
     def truth(obj, key):
         return obj[key] if type(obj.get(key)) is bool else UNKNOWN
@@ -83,11 +118,15 @@ def state(value):
             "selection": area(value.get("selection"), True), "clipboard": area(value.get("clipboard_size")),
             "actor_models": sorted(str(a.get("model", UNKNOWN))[:64] for a in observed_actors),
             "actor_zones": sorted(str(a.get("model", UNKNOWN))[:64] + ":" + zone(a.get("position"), value.get("world_size")) for a in observed_actors),
+            "actor_controls": sorted(str(a.get("model", UNKNOWN))[:64] + ":" + godot_scalar(a.get("authored_control", {}).get("source", UNKNOWN)) + ":" + godot_scalar(a.get("authored_control", {}).get("enabled", UNKNOWN)) + ":" + godot_scalar(a.get("authored_control", {}).get("usable_index", UNKNOWN)) for a in observed_actors),
+            "actor_capabilities": sorted(str(a.get("model", UNKNOWN))[:64] + ":" + c[:64] for a in observed_actors for c in a.get("capabilities", {}).get("capabilities", [])[:16] if isinstance(c, str)),
             "actor_count": len(actors) if "actors" in value else UNKNOWN, "selected": role("selected_actor"), "pilot": role("pilot_actor"),
             "saved": bool(str(value["saved_authored_digest"])) if "saved_authored_digest" in value else UNKNOWN,
             "camera_origin": coarse, "camera_size": pair(camera.get("size")), "details_open": truth(value, "details_open"),
-            "material_sample": {"available": False, "scope": "unobserved"},
-            "response_mode": value.get("response_mode", UNKNOWN), "camera_mode": value.get("camera_mode", UNKNOWN)}
+            "material_sample": probe_summary(value.get("material_probe", {}), native),
+            "response_mode": value.get("configuration", {}).get("response", UNKNOWN), "camera_mode": camera.get("mode", UNKNOWN),
+            "preview_active": truth(value.get("paint_preview", {}), "dragging"),
+            "source_present": bool(value.get("source", {}).get("authored", [])) if "source" in value else UNKNOWN}
 
 
 def valid_capture(capture, native):
@@ -123,8 +162,8 @@ def coverage(tape: dict) -> dict:
         totals["attempted_records"] += 1
         if status == "refused":
             totals["refused_actions"] += 1
-            refusals.add(digest({"id": name, "args": action["args"]}))
             if factual:
+                refusals.add(digest({"id": name, "args": action["args"]}))
                 add("boundary_refusal", name + ":" + str(row.get("classification", "unclassified")) + ":" + hashlib.sha256(str(row.get("error", ""))[:200].encode()).hexdigest())
         if not factual:
             totals["records_without_native_observation"] += 1
@@ -158,7 +197,7 @@ def coverage(tape: dict) -> dict:
             for contact in contacts:
                 add("material_interaction", contact)
             if name in EDIT_ACTIONS and row.get("native_receipt", {}).get("status") == "completed":
-                if isinstance(after.get("tool"), str) and bounded(after.get("material"), 0, 65535):
+                if status == "completed" and name in PAINT_TOOLS and after.get("tool") == PAINT_TOOLS[name] and bounded(before.get("material"), 0, 65535) and bounded(after.get("material"), 0, 65535) and before["material"] == after["material"]:
                     add("tool_material", after["tool"] + ":" + str(int(after["material"])))
                 if valid_capture(old_capture, before.get("native", {})) and old_capture["region"] == new_capture["region"]:
                     for changed in {"edit:%d>%d" % (a, b) for a, b in zip(old_capture["materials"], cells) if a != b}:
@@ -171,7 +210,7 @@ def coverage(tape: dict) -> dict:
                     add("actor_environment", str(actor.get("model", ""))[:64] + ":" + str(after.get("fixture_id", ""))[:80] + ":" + place + ":" + role)
         if progression(before, after) == "world_replaced":
             add("lifecycle", "native_world_replacement")
-        if before.get("scene_identity") != after.get("scene_identity"):
+        if "scene_identity" in before and "scene_identity" in after and before["scene_identity"] != after["scene_identity"]:
             add("lifecycle", "authored_identity_change")
         if type(before.get("paused")) is bool and type(after.get("paused")) is bool and before["paused"] != after["paused"]:
             add("lifecycle", "pause_to_play" if before["paused"] else "play_to_pause")
@@ -180,9 +219,9 @@ def coverage(tape: dict) -> dict:
                 add("lifecycle", "actor_added")
             if len(before["actors"]) > len(after["actors"]):
                 add("lifecycle", "actor_retired")
-        if before.get("pilot_actor") != after.get("pilot_actor"):
+        if "pilot_actor" in before and "pilot_actor" in after and before["pilot_actor"] != after["pilot_actor"]:
             add("lifecycle", "control_transfer")
-        if before.get("saved_authored_digest") != after.get("saved_authored_digest"):
+        if "saved_authored_digest" in before and "saved_authored_digest" in after and before["saved_authored_digest"] != after["saved_authored_digest"]:
             add("lifecycle", "authored_save_changed")
         receipt = row.get("native_receipt", {})
         changed = receipt.get("changed")
@@ -207,32 +246,39 @@ def compare(episodes: list[dict], plan: dict) -> dict:
     groups = {}
     for entry in episodes:
         key = entry["episode"]["cohort"] + "/" + entry["episode"]["policy"]
-        group = groups.setdefault(key, {"episodes": 0, "completed_episodes": 0, "attempted_actions": 0, "admitted_actions": 0,
+        group = groups.setdefault(key, {"episodes": 0, "attempted_budget_completed_episodes": 0, "attempted_actions": 0, "admitted_actions": 0,
                                        "completed_actions": 0, "partial_actions": 0, "refusals": 0, "process_status": Counter(),
                                        "keys": {dim: set() for dim in DIMENSIONS}, "wall": [], "memory": [], "state_per_episode": [], "oracle_failures": 0})
         group["episodes"] += 1
-        group["completed_episodes"] += int(entry["status"] == "pass")
+        group["attempted_budget_completed_episodes"] += int(entry["status"] == "pass")
         group["process_status"][entry["status"]] += 1
-        group["wall"].append(entry.get("process", {}).get("elapsed_seconds", 0))
-        group["memory"].append(entry.get("process", {}).get("peak_tree_rss_bytes", 0))
+        if "elapsed_seconds" in entry.get("process", {}):
+            group["wall"].append(entry["process"]["elapsed_seconds"])
+        if "peak_tree_rss_bytes" in entry.get("process", {}):
+            group["memory"].append(entry["process"]["peak_tree_rss_bytes"])
         values = entry.get("coverage", {})
         for target, source in (("attempted_actions", "attempted_records"), ("admitted_actions", "admitted_observed_actions"), ("completed_actions", "completed_admitted_actions"), ("partial_actions", "partial_admitted_actions"), ("refusals", "refused_actions")):
             group[target] += values.get(source, 0)
         group["oracle_failures"] += len(entry.get("summary", {}).get("failures", []))
         for dim in DIMENSIONS:
             group["keys"][dim].update(values.get("keys", {}).get(dim, []))
-        group["state_per_episode"].append(values.get("unique", {}).get("state_transition", 0))
+        if "state_transition" in values.get("unique", {}):
+            group["state_per_episode"].append(values["unique"]["state_transition"])
     for group in groups.values():
         group["unique_observed_coverage"] = {dim: len(keys) for dim, keys in group.pop("keys").items()}
         wall = group.pop("wall")
-        group["wall_seconds"] = round(sum(wall), 3)
-        group["median_episode_seconds"] = round(statistics.median(wall), 3)
-        group["peak_tree_rss_bytes"] = max(group.pop("memory"))
-        group["median_unique_state_transitions_per_episode"] = statistics.median(group.pop("state_per_episode"))
+        group["observed_wall_measurements"] = len(wall)
+        group["wall_seconds"] = round(sum(wall), 3) if wall else None
+        group["median_episode_seconds"] = round(statistics.median(wall), 3) if wall else None
+        memory, transitions = group.pop("memory"), group.pop("state_per_episode")
+        group["observed_coverage_measurements"] = len(transitions)
+        group["peak_tree_rss_bytes"] = max(memory) if memory else None
+        group["median_unique_state_transitions_per_episode"] = statistics.median(transitions) if transitions else None
         group["process_status"] = dict(group["process_status"])
     return {"schema": "cybersand-goblin-campaign-comparison-v1", "source_commit": plan["provenance"]["source_commit"],
             "source_tree": plan["provenance"]["source_tree"], "plan_sha256": plan["plan_sha256"], "planned_episodes": len(plan["episodes"]),
             "observed_episodes": len(episodes), "complete_episodes": sum(e["status"] == "pass" for e in episodes),
+            "estimand": "Latest attempted result per immutable episode ID; complete means attempted budget reached, not every action admitted",
             "incomplete_episodes": [e["episode"]["id"] for e in episodes if e["status"] != "pass"], "groups": groups,
             "confirmed_production_defects": [], "confirmation_scope": "No automatic promotion of oracle failure to production defect",
             "material_scope": "captured-region adjacency and edit transformation, not inferred reaction success",

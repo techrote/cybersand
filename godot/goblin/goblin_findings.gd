@@ -2,6 +2,7 @@ extends RefCounted
 
 ## Observation triage, never automatic production-defect adjudication. Raw evidence
 ## stays in exact-source game tapes; this bounded queue stores references only.
+const GameplayOracles = preload("res://goblin/goblin_gameplay_oracles.gd")
 const SCHEMA := "cybersand-goblin-findings-v1"
 const MAX_RECORDS := 128
 const CLASSIFICATIONS := ["unresolved_observation", "legal_unusual_gameplay", "expected_refusal", "unsupported_action",
@@ -25,6 +26,7 @@ func observe(row: Dictionary, novelty: Dictionary = {}) -> void:
 	var classification := "legal_unusual_gameplay"
 	if not failed.is_empty(): classification = "unresolved_observation"
 	elif row.get("classification") in ["timeout", "native_failure", "adapter_failure"]: classification = "unresolved_observation"
+	elif GameplayOracles.expected_boundary_refusal(row): classification = "expected_refusal"
 	elif row.get("admission", {}).get("unsupported", false): classification = "unsupported_action"
 	elif row.get("classification") == "invalid_action": classification = "unresolved_observation"
 	elif status == "refused":

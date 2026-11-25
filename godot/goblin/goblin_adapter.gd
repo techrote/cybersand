@@ -9,6 +9,7 @@ const Setup = preload("res://scripts/workbench_setup.gd")
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const Gameplay = preload("res://goblin/goblin_gameplay_actions.gd")
+const GameplayOracles = preload("res://goblin/goblin_gameplay_oracles.gd")
 const Capabilities = preload("res://goblin/goblin_capabilities.gd")
 const Fixtures = preload("res://goblin/goblin_fixtures.gd")
 const SAVE_NAME := "goblin-layout"
@@ -230,6 +231,11 @@ func install_fixture(id: String, data: Dictionary, admission_row: Dictionary = {
 func observe() -> Dictionary:
 	if host == null or worker == null: return {"mounted": false, "fixture_id": fixture_id}
 	var source: Dictionary = worker.paint_state()
+	# Read the bounded worker queue under its actual owner mutex; never mutate
+	# it. An unchanged configure still needs observed command consumption.
+	worker._mutex.lock()
+	var pending_source_commands: int = worker._workbench_source_commands.size()
+	worker._mutex.unlock()
 	var actors: Array = []
 	var actor_ids: Array = []
 	var controllable_ids: Array = []
@@ -258,10 +264,13 @@ func observe() -> Dictionary:
 	var undo: bool = editor != null and editor.history_available("undo")
 	var redo: bool = editor != null and editor.history_available("redo")
 	return {"mounted": mounted, "fixture_id": fixture_id, "scene_identity": fixture_digest,
+		"progress_refusal": _observed_progress_refusal(source),
 		"world_size": json_value(Setup.extent_of(bench.applied)),
 		"adapter_version": 2, "feature_capabilities": Capabilities.negotiate(host, bench),
 		"configuration": {"response": str(bench.applied.get("response", "")), "thruster_fire": bool(bench.applied.get("fire", false))},
 		"source": {"authored": json_value(bench.applied.get("source", [])),
+			"pending_commands": pending_source_commands,
+			"snapshot_serial": int(host.latest_snapshot.serial) if host.latest_snapshot != null else -1,
 			"receipt": json_value(host.latest_snapshot.lab_context.get("workbench_source", {})) if host.latest_snapshot != null else {},
 			"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1},
 		"paint_preview": {"dragging": bool(editor.dragging), "samples": editor.stroke.size(),
@@ -292,6 +301,7 @@ func observe() -> Dictionary:
 		"saved_authored_digest": _saved_authored_digest, "saved_material_digest": _saved_material_digest,
 		"saved_native_tick": _saved_native_tick,
 		"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1,
+		"snapshot_serial": int(host.latest_snapshot.serial) if host.latest_snapshot != null else -1,
 		"native_worker_request": int(host.latest_snapshot.native_worker_request) if host.latest_snapshot != null else -1,
 		"physical_epoch": int(host._physical_epoch),
 		"physical_session_active": host.physical_actor_session != null,
@@ -645,6 +655,19 @@ func _finish(row: Dictionary, started: int, status: String, classification: Stri
 	row.classification = classification
 	row.error = error
 	row.after = observe()
+	if status == "partial" and classification != "native_failure":
+		var interval: Dictionary = row.get("interval", {})
+		if interval.get("progress_refusal", {}).is_empty():
+			interval = row.get("actor_delivery", {}).get("release_interval", {})
+		if not interval.get("progress_refusal", {}).is_empty():
+			row["expected_refusal"] = interval.progress_refusal.duplicate(true)
+			row.classification = "game_observation"
+			if GameplayOracles.expected_boundary_refusal(row):
+				row.error = str(row.expected_refusal.reason)
+			else:
+				# A stale publication or a different owner never downgrades failure.
+				row.erase("expected_refusal")
+				row.classification = classification
 	row.duration_usec = Time.get_ticks_usec() - started
 	if row.get("_owns_execution", false): executing = false
 	row.erase("_owns_execution")
@@ -800,17 +823,40 @@ func _wait_failure_classification() -> String:
 	if worker != null and worker.has_failed(): return "native_failure"
 	return "cancelled" if stopped else "timeout"
 
+
+func _observed_progress_refusal(state: Dictionary) -> Dictionary:
+	if host == null or host.latest_snapshot == null or worker == null: return {}
+	var snapshot: Variant = host.latest_snapshot
+	var published: Dictionary = snapshot.lab_context
+	var native: Dictionary = {"generation": state.get("generation"), "revision": state.get("revision"),
+		"tick": state.get("tick"), "paused": state.get("paused"), "failed": worker.has_failed()}
+	return GameplayOracles.finite_canvas_refusal(native, {
+		"reason": str(published.get("workbench_refusal", "")),
+		"generation": published.get("liquid_construction_receipt", {}).get("session_generation", -1),
+		"tick": int(snapshot.tick_index), "serial": int(snapshot.serial),
+		"paused": bool(host.paused), "failed": bool(snapshot.simulation_failed)})
+
+
 func _tick_interval(ticks: int, require_actor: bool = false) -> Dictionary:
 	var start: Dictionary = observe()
 	var frames: int = Engine.get_process_frames()
+	var refusal := {}
 	var ok: bool = await _until(func() -> bool:
-		return int(worker.paint_state().get("tick", -1)) >= int(start.native.tick) + ticks \
+		var state: Dictionary = worker.paint_state()
+		var published_refusal := _observed_progress_refusal(state)
+		if not published_refusal.is_empty():
+			refusal.merge(published_refusal, true)
+			return true
+		return int(state.get("tick", -1)) >= int(start.native.tick) + ticks \
 			and (not require_actor or (host.physical_actor_session != null and host.physical_actor_session.tick >= int(start.actor_tick) + ticks)),
 		"operation_seconds")
 	var end: Dictionary = observe()
+	if not refusal.is_empty():
+		ok = false
+		last_error = str(refusal.reason)
 	return {"ok": ok, "requested_ticks": ticks, "start_tick": start.native.tick, "end_tick": end.native.tick,
 		"observed_frames": Engine.get_process_frames() - frames,
-		"start_actor_tick": start.actor_tick, "end_actor_tick": end.actor_tick}
+		"start_actor_tick": start.actor_tick, "end_actor_tick": end.actor_tick, "progress_refusal": refusal}
 
 func _paused_interval() -> Dictionary:
 	var start: Dictionary = observe()
@@ -883,5 +929,7 @@ func _material_probe(source: Dictionary) -> Dictionary:
 		"evidence_kind": "actual_native_material_capture"}
 
 func _capabilities_for(model: String) -> Dictionary:
-	if not _model_capabilities.has(model): _model_capabilities[model] = Setup.ActorCatalog.entry(model)
+	if not _model_capabilities.has(model):
+		_model_capabilities[model] = Setup.ActorCatalog.entry(model)
+		_model_capabilities[model]["actuators"] = Gameplay.ports_for(model)
 	return _model_capabilities[model]

@@ -53,8 +53,12 @@ def validate_corpus(value) -> dict:
     if not isinstance(records, list) or len(records) > 64 or any(not bounded(value.get(k), 0, 1000000) for k in ("sequence", "total_observed", "evicted")):
         raise ValueError("Corpus record or counter bound")
     hints = value.get("search_hints", {})
-    if not isinstance(hints, dict) or hints.get("schema") != "cybersand-goblin-coverage-v1" or not isinstance(hints.get("action"), dict) or len(hints["action"]) > 2048 or any(not isinstance(k, str) or len(k) > 80 or not bounded(v, 0, 1000000) for k, v in hints["action"].items()):
+    if not isinstance(hints, dict) or hints.get("schema") != "cybersand-goblin-coverage-v1" or not isinstance(hints.get("action"), dict):
         raise ValueError("Malformed corpus search hints")
+    for dimension in ("action", "state_action", "action_transition", "variants"):
+        supplied = hints.get(dimension, {})
+        if not isinstance(supplied, dict) or len(supplied) > 256 or any(not isinstance(k, str) or len(k) > 170 or not bounded(v, 0, 1000000) for k, v in supplied.items()):
+            raise ValueError("Malformed bounded corpus search hints")
     identities = set()
     for record in records:
         if not isinstance(record, dict) or not _hash(record.get("id")) or record["id"] in identities or record.get("classification") not in CLASSIFICATIONS:
@@ -81,7 +85,7 @@ def validate_corpus(value) -> dict:
             raise ValueError("Failed/partial corpus prefix cannot be reused")
         if not isinstance(record.get("native_observation_identity"), dict) or not isinstance(record.get("retention_scope"), str) or any(record.get(k) != "" and not _hash(record.get(k)) for k in ("semantic_sha256", "observation_sha256")):
             raise ValueError("Missing corpus observation custody")
-        if any(action_error(action) for action in actions):
+        if any(action_error(action) or ("goal" in action and (not isinstance(action["goal"], str) or len(action["goal"]) > 240)) for action in actions):
             raise ValueError("Corpus contains unsupported game action")
         identity = {k: record[k] for k in ("context", "step", "before_state", "after_state", "actions", "failed_assertions")}
         encoded = json.dumps(_canonical(identity), sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()

@@ -49,6 +49,7 @@ var _frame_previous_usec := 0
 var _frame_samples: Array[int] = []
 var _run_serial := 0
 var _run_archive := ""
+var _candidate_archive := ""
 var _decision_pause_msec := 0
 var _pacing_msec := 0
 var _active_limit_msec := 150000
@@ -79,6 +80,12 @@ static func same_identity(recorded: Variant, current: Variant) -> bool:
 	# Host labels and Python versions are preserved as evidence, but do not make
 	# identical shipped code a different semantic experiment. Legacy stays strict.
 	return Transcript.same_execution_identity(recorded, current)
+
+
+static func evidence_digest(value: Variant) -> String:
+	# JSON readers represent integer numbers as floats. Evidence identity follows
+	# the transcript's canonical numeric contract across save/import boundaries.
+	return Adapter.digest(Transcript._json_value(value))
 
 
 static func read_replay() -> Dictionary:
@@ -141,6 +148,7 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		config.fixture_id = replay.header.fixture_id
 		config.policy = replay.header.policy
 		config.seed = int(replay.header.seed)
+		config.pacing_ms = int(replay.header.get("pacing_ms", 0))
 		config.budget = maxi(1, replay_actions.size())
 	if not reproduction.is_empty():
 		if reproduction.get("schema") != "cybersand-goblin-action-fixture-v1" \
@@ -155,6 +163,7 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		config.fixture_id = reproduction.header.get("fixture_id", "")
 		config.policy = reproduction.header.get("policy", "CONTROL")
 		config.seed = reproduction.header.get("seed", 0)
+		config.pacing_ms = int(reproduction.header.get("pacing_ms", 0))
 		config.budget = replay_actions.size()
 	var prescribed: bool = not replay.is_empty() or not reproduction.is_empty()
 	if _run_serial >= MAX_PROFILE_RUNS:
@@ -200,6 +209,7 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		_absolute_limit_msec = mini(_absolute_limit_msec, int(config.absolute_limit_msec))
 	_run_serial += 1
 	_run_archive = OUTPUT_DIR + ("/run-%03d.json" % _run_serial)
+	_candidate_archive = OUTPUT_DIR + ("/candidate-%03d.json" % _run_serial)
 	_started_msec = Time.get_ticks_msec()
 	state = "initializing"
 	goal = "Preparing the disposable " + str(config.fixture_id) + " scene"
@@ -241,8 +251,10 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		last_error = str(installed.get("error", "fixture installation failed"))
 		return await _finish("stopped" if stop_requested else "fixture_failure", replay)
 	transcript.header["fixture_state"] = "installed"
+	var memory_identity: Dictionary = {"replay_identity": provenance.replay_identity, "source_dirty": provenance.source_dirty} \
+		if Transcript._valid_replay_identity(provenance) else provenance
 	var context := {"fixture_id": str(config.fixture_id), "fixture_version": Fixtures.VERSION,
-		"fixture_sha256": str(transcript.header.fixture_sha256), "provenance_sha256": Adapter.digest(provenance),
+		"fixture_sha256": str(transcript.header.fixture_sha256), "provenance_sha256": evidence_digest(memory_identity),
 		"source_sha": str(provenance.get("source_commit", "")), "seed": int(config.seed), "personality": str(config.policy)}
 	policy.bind_memory(corpus, context, bool(config.get("reuse_memory", false)) and not prescribed)
 	findings.begin_episode(context, _run_serial)
@@ -251,7 +263,8 @@ func run_campaign(configuration: Dictionary, provenance: Dictionary, replay: Dic
 		or str(replay.header.get("initial_scene_identity", "")) != str(transcript.header.initial_scene_identity)):
 		last_error = "the installed authored fixture differs from the selected transcript"
 		return await _finish("replay_fixture_mismatch", replay)
-	if not reproduction.is_empty() and str(reproduction.header.get("initial_scene_identity", "")) != str(transcript.header.initial_scene_identity):
+	if not reproduction.is_empty() and (str(reproduction.header.get("fixture_sha256", "")) != str(transcript.header.fixture_sha256) \
+		or str(reproduction.header.get("initial_scene_identity", "")) != str(transcript.header.initial_scene_identity)):
 		last_error = "reproduction fixture identity differs from the actual installed scene"
 		return await _finish("replay_fixture_mismatch", replay)
 	latest_observation = adapter.observe()
@@ -360,6 +373,8 @@ func _finish(termination: String, replay: Dictionary) -> Dictionary:
 		"run_serial": _run_serial, "run_archive": _run_archive,
 		"final_observation": adapter.observe() if adapter != null else {},
 		"stop_requested": stop_requested, "export_location": TRANSCRIPT_PATH}
+	var capture_candidate: bool = termination == "assertion_failure" and _reduction_target(transcript).get("kind") == "failed_invariant"
+	if capture_candidate: transcript.controller["automatic_candidate_bundle"] = _candidate_archive
 	var replay_exported := true
 	if not replay.is_empty():
 		replay_result = Transcript.compare(replay, transcript)
@@ -372,11 +387,19 @@ func _finish(termination: String, replay: Dictionary) -> Dictionary:
 		if archive != null:
 			_archive_bytes += archive.get_length()
 			archive.close()
+	var candidate_exported := true
+	if capture_candidate:
+		candidate_exported = _write_fixed(_candidate_archive, _reproduction_bundle(transcript, {}, {}, true))
+		if candidate_exported:
+			var candidate_file := FileAccess.open(_candidate_archive, FileAccess.READ)
+			if candidate_file != null:
+				_archive_bytes += candidate_file.get_length()
+				candidate_file.close()
 	var corpus_exported: bool = _write_fixed(CORPUS_PATH, corpus.export_data())
 	var findings_exported: bool = _write_fixed(FINDINGS_PATH, findings.export_data())
 	var summary_exported: bool = _write_fixed(SUMMARY_PATH, {"header": transcript.header, "summary": transcript.summary,
 		"controller": transcript.controller, "replay_result": replay_result})
-	export_path = ProjectSettings.globalize_path(TRANSCRIPT_PATH) if exported and archived and summary_exported and replay_exported and corpus_exported and findings_exported else ""
+	export_path = ProjectSettings.globalize_path(TRANSCRIPT_PATH) if exported and archived and summary_exported and replay_exported and corpus_exported and findings_exported and candidate_exported else ""
 	if export_path.is_empty() and last_error.is_empty(): last_error = "the final evidence files could not all be retained"
 	running = false
 	decisions_paused = false
@@ -508,40 +531,58 @@ func export_reproduction(original: Dictionary, reduced: Dictionary = {}) -> Dict
 	var chosen: Dictionary = reduced if not reduced.is_empty() else original
 	if not Transcript.validate(chosen).get("ok", false): return {"ok": false, "error": "Reduced tape is not valid"}
 	var target := _reduction_target(original)
-	var matching_reduction: bool = reduction_result.get("original_tape_sha256", "") == Adapter.digest(original)
+	if target.is_empty(): return {"ok": false, "error": "Raw tape is retained; reproduction export requires a completed or failed-invariant target"}
+	var matching_reduction: bool = reduction_result.get("original_tape_sha256", "") == evidence_digest(original)
 	if not reduced.is_empty():
 		if not matching_reduction or not reduction_result.get("ok", false) or not _accept_reduction(reduced, target):
 			return {"ok": false, "error": "reduced tape lacks a matching successful reduction acceptance record"}
-		for key: String in ["provenance", "fixture_id", "fixture_version", "fixture_sha256", "initial_scene_identity"]:
+		if not same_identity(chosen.header.get("provenance", {}), original.header.get("provenance", {})):
+			return {"ok": false, "error": "reduced source/runtime identity differs from original"}
+		for key: String in ["fixture_id", "fixture_version", "fixture_sha256", "initial_scene_identity", "policy", "seed", "pacing_ms", "evidence_kind"]:
 			if JSON.stringify(Transcript._json_value(chosen.header.get(key))) != JSON.stringify(Transcript._json_value(original.header.get(key))):
 				return {"ok": false, "error": "reduced source/runtime/fixture identity differs from original"}
-		if Adapter.digest(reduced) != Adapter.digest(reduction_result.get("reduced_tape", {})):
+		if evidence_digest(reduced) != evidence_digest(reduction_result.get("reduced_tape", {})):
 			return {"ok": false, "error": "reduced tape differs from the recorded observed probe"}
-	var bundle := {"schema": "cybersand-goblin-reproduction-bundle-v1",
+	var bundle := _reproduction_bundle(original, reduced, reduction_result if matching_reduction else {})
+	var saved := _write_fixed(REPRODUCTION_PATH, bundle)
+	return {"ok": saved, "path": ProjectSettings.globalize_path(REPRODUCTION_PATH), "error": last_error if not saved else ""}
+
+
+static func _reproduction_bundle(original: Dictionary, reduced: Dictionary, reduction: Dictionary, automatic: bool = false) -> Dictionary:
+	var chosen: Dictionary = reduced if not reduced.is_empty() else original
+	var target := _reduction_target(original)
+	return {"schema": "cybersand-goblin-reproduction-bundle-v1",
 		"classification": "unresolved_observation" if target.get("kind") == "failed_invariant" else "legal_unusual_gameplay",
+		"captured_automatically": automatic,
 		"original_tape": original, "reduced_tape": reduced, "initial_authored_fixture": original.get("initial_authored_fixture", {}),
 		"exact_provenance": original.header.provenance, "required_action_ids": chosen.summary.get("action_attempts", {}).keys(),
 		"expected_invariant": target,
-		"observed_failures": chosen.summary.get("failures", []), "reduction": reduction_result if matching_reduction else {},
+		"observed_failures": chosen.summary.get("failures", []), "reduction": reduction,
 		"action_fixture": _action_fixture(chosen, Transcript.replay_actions(chosen)),
 		"instructions": "Use the committed fixed goblin reproduction entrypoint in a fresh marked test profile at the recorded source/runtime. This is an authored restart, not exact asynchronous continuation.",
 		"gameplay_defect_confirmed": false}
-	var saved := _write_fixed(REPRODUCTION_PATH, bundle)
-	return {"ok": saved, "path": ProjectSettings.globalize_path(REPRODUCTION_PATH), "error": last_error if not saved else ""}
 
 
 static func _action_fixture(tape: Dictionary, actions: Array) -> Dictionary:
 	return {"schema": "cybersand-goblin-action-fixture-v1", "header": tape.header.duplicate(true), "actions": actions.duplicate(true)}
 
 
+static func _admission_identity(row: Dictionary) -> Dictionary:
+	var admission: Dictionary = row.get("admission", {})
+	return {"accepted": admission.get("accepted"), "status": admission.get("status"), "unsupported": admission.get("unsupported")}
+
+
 static func _reduction_target(tape: Dictionary) -> Dictionary:
-	for row: Dictionary in tape.get("steps", []):
-		for assertion: Dictionary in row.get("assertions", []):
-			if assertion.get("status") == "fail":
-				return {"kind": "failed_invariant", "id": str(assertion.id), "assertion_kind": str(assertion.get("kind", "")),
-					"action_id": str(row.get("action", {}).get("id", "")),
-					"scope": "candidate observation; reproduction alone does not establish a production defect"}
-	if not tape.get("steps", []).is_empty():
+	if tape.get("summary", {}).get("termination") == "assertion_failure":
+		for row: Dictionary in tape.get("steps", []):
+			for assertion: Dictionary in row.get("assertions", []):
+				if assertion.get("status") == "fail":
+					return {"kind": "failed_invariant", "id": str(assertion.id), "assertion_kind": str(assertion.get("kind", "")),
+						"action_id": str(row.get("action", {}).get("id", "")), "action_args": row.get("action", {}).get("args", {}).duplicate(true),
+						"expected": assertion.get("expected"), "original_status": str(row.get("status", "")),
+						"original_classification": str(row.get("classification", "")), "admission": _admission_identity(row),
+						"scope": "candidate observation; reproduction alone does not establish a production defect"}
+	if tape.get("summary", {}).get("termination") == "budget_complete" and not tape.get("steps", []).is_empty():
 		var row: Dictionary = tape.steps.back()
 		if row.get("status") == "completed":
 			return {"kind": "semantic_outcome", "action_id": str(row.action.id), "semantic_sha256": str(row.get("semantic_sha256", "")),
@@ -554,10 +595,13 @@ static func _accept_reduction(tape: Dictionary, target: Dictionary) -> bool:
 	if target.get("kind") == "failed_invariant":
 		if tape.get("summary", {}).get("termination") != "assertion_failure": return false
 		for row: Dictionary in tape.get("steps", []):
-			if row.get("action", {}).get("id") != target.get("action_id"): continue
+			if row.get("action", {}).get("id") != target.get("action_id") or row.get("status") != target.get("original_status") \
+				or row.get("classification") != target.get("original_classification"): continue
+			if evidence_digest(_admission_identity(row)) != evidence_digest(target.get("admission")) \
+				or evidence_digest(row.get("action", {}).get("args", {})) != evidence_digest(target.get("action_args")): continue
 			for assertion: Dictionary in row.get("assertions", []):
 				if assertion.get("id") == target.get("id") and assertion.get("kind") == target.get("assertion_kind") \
-					and assertion.get("status") == "fail": return true
+					and assertion.get("status") == "fail" and evidence_digest(assertion.get("expected")) == evidence_digest(target.get("expected")): return true
 	elif target.get("kind") == "semantic_outcome" and tape.get("summary", {}).get("termination") == "budget_complete" \
 		and tape.get("summary", {}).get("failures", ["missing"]).is_empty():
 		for row: Dictionary in tape.get("steps", []):
@@ -627,7 +671,7 @@ func reduce_tape(original: Dictionary, provenance: Dictionary) -> Dictionary:
 			else: cursor += width
 		else: cursor += width
 	reduction_result = {"schema": "cybersand-goblin-interactive-reduction-v1", "ok": reproduced == 2,
-		"original_tape_sha256": Adapter.digest(original),
+		"original_tape_sha256": evidence_digest(original),
 		"status": "cancelled" if _maintenance_stop else ("reproduced" if reproduced == 2 else "not_reproduced"),
 		"classification": "unresolved_observation" if target.kind == "failed_invariant" else "legal_unusual_gameplay",
 		"acceptance_rule": target, "original_actions": original.steps.size(), "reduced_actions": actions.size(),
@@ -644,7 +688,7 @@ func reduce_tape(original: Dictionary, provenance: Dictionary) -> Dictionary:
 
 
 func _write_fixed(path: String, value: Dictionary) -> bool:
-	if path not in [TRANSCRIPT_PATH, SUMMARY_PATH, REPLAY_RESULT_PATH, _run_archive,
+	if path not in [TRANSCRIPT_PATH, SUMMARY_PATH, REPLAY_RESULT_PATH, _run_archive, _candidate_archive,
 		CORPUS_PATH, CORPUS_EXPORT_PATH, FINDINGS_PATH, REPRODUCTION_PATH, REDUCTION_PATH] or path.is_empty(): return false
 	if not Adapter.verify_profile().get("ok", false): return false
 	if DirAccess.make_dir_recursive_absolute(OUTPUT_DIR) != OK: return false
@@ -657,7 +701,8 @@ func _write_fixed(path: String, value: Dictionary) -> bool:
 	# The fixed byte bound applies to the actual serialized bytes before writing.
 	var serialized := JSON.stringify(value, "", true) + "\n"
 	var byte_limit: int = Corpus.MAX_BYTES if path in [CORPUS_PATH, CORPUS_EXPORT_PATH] else Transcript.MAX_BYTES
-	if serialized.to_utf8_buffer().size() > byte_limit:
+	var encoded_bytes := serialized.to_utf8_buffer().size()
+	if encoded_bytes > byte_limit or (path in [_run_archive, _candidate_archive] and _archive_bytes + encoded_bytes > MAX_PROFILE_EVIDENCE_BYTES):
 		file.close()
 		last_error = "fixed evidence byte budget exceeded"
 		return false

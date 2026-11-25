@@ -23,6 +23,7 @@ import psutil
 
 import campaign_evidence
 import replay_identity
+from owned_process import read_log_prefix
 from corpus_io import load_corpus
 from run_goblin import (ROOT, COMPLETION_MARKERS, execute, git, make_profile, read_transcript,
                         runtime_identity, sha_file, stage_project, write_json)
@@ -91,12 +92,15 @@ def acquire(out: Path, resume: bool) -> Path:
 
 
 def check_stage(project: Path, snapshot: dict) -> None:
-    # Import caches and the established editor-owned import descriptors may be
-    # regenerated. Executed scripts, scenes, resource data and binaries may not.
+    # Caches may be generated. Only CRLF-to-LF is accepted in the four declared
+    # descriptors; no arbitrary editor rewrite bypasses exact input custody.
     for name, expected in snapshot["files"].items():
-        if name in replay_identity.IMPORT_DESCRIPTORS:
-            continue
         path = project / name
+        if name in replay_identity.IMPORT_DESCRIPTORS:
+            canonical_expected = snapshot.get("normalized_import_descriptors", {}).get(name)
+            if canonical_expected is None or not path.is_file() or __import__("hashlib").sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest() != canonical_expected:
+                raise ValueError("Immutable normalized import descriptor changed: " + name)
+            continue
         if not path.is_file() or sha_file(path) != expected:
             raise ValueError("Immutable staged source changed: " + name)
 
@@ -134,24 +138,35 @@ def run_episode(episode: dict, target: Path, project: Path, provenance: dict, go
     process = execute(command, env, target / "campaign.log", episode["timeout_seconds"],
                       memory_limit_mib=memory, cancel_path=cancel)
     write_json(target / "process.json", process)
-    tape, tape_path = read_transcript(profile)
-    checked, cov = None, None
+    tape, tape_path, checked, cov = None, None, None, None
     result = {"episode": episode, "process": process, "completed_utc": utc(), "status": "unreported",
               "classification": "unresolved_observation", "fresh_disposable_profile": True, "physical_resume": False}
-    if tape is not None:
-        checked = verify(tape)
-        write_json(target / "independent-readback.json", checked)
-        result["transcript"] = tape_path.relative_to(target).as_posix()
-        result["transcript_sha256"] = sha_file(tape_path)
-        result["summary"] = tape.get("summary", {})
-        if checked["valid"]:
-            cov = campaign_evidence.coverage(tape)
-            write_json(target / "coverage.json", cov)
-            result["coverage_sha256"] = sha_file(target / "coverage.json")
-        result["pending_action_retained"] = "pending_action" in tape
-    lines = (target / "campaign.log").read_text(encoding="utf-8", errors="replace").splitlines()
-    completion = lines.count(COMPLETION_MARKERS["campaign"]) == 1
+    try:
+        tape, tape_path = read_transcript(profile)
+        if tape is not None:
+            result["transcript"] = tape_path.relative_to(target).as_posix()
+            result["transcript_sha256"] = sha_file(tape_path)
+            checked = verify(tape)
+            write_json(target / "independent-readback.json", checked)
+            result["readback_sha256"] = sha_file(target / "independent-readback.json")
+            result["summary"] = tape.get("summary", {})
+            if checked["valid"]:
+                cov = campaign_evidence.coverage(tape)
+                write_json(target / "coverage.json", cov)
+                result["coverage_sha256"] = sha_file(target / "coverage.json")
+            result["pending_action_retained"] = "pending_action" in tape
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, OverflowError) as error:
+        # Malformed or truncated evidence is a retained attempted process, not a
+        # reason to abandon the rest of a finite experiment queue.
+        result["evidence_error"] = type(error).__name__ + ": " + str(error)[:1000]
+        candidates = list(profile.rglob("goblin/transcript.json"))
+        result["retained_raw_transcripts"] = [{"path": p.relative_to(target).as_posix(), "bytes": p.stat().st_size,
+                                               "sha256": sha_file(p)} for p in candidates[:4] if p.is_file()]
+    lines = read_log_prefix(target / "campaign.log").splitlines()
+    completion = process["status"] != "output_limit" and lines.count(COMPLETION_MARKERS["campaign"]) == 1
     result["status"] = _terminal(episode, process, tape, checked, cov, completion)
+    if result.get("evidence_error") and process["status"] == "pass":
+        result["status"] = "evidence_failure"
     result["completion_marker"] = completion
     if result["status"] == "pass":
         result["classification"] = "legal_unusual_gameplay"
@@ -162,42 +177,96 @@ def run_episode(episode: dict, target: Path, project: Path, provenance: dict, go
     return result
 
 
-def collect(out: Path, queue: dict, recheck: bool = False) -> list[dict]:
+def collect_attempts(out: Path, queue: dict, recheck: bool = False, *, latest_only: bool = False) -> list[dict]:
+    """Custody-checked attempts; missing measurements stay absent, never zero."""
     evidence = []
     for row in queue["episodes"]:
-        if not row["attempts"]:
-            continue
-        attempt = row["attempts"][-1]
-        target = out / row["episode"]["id"] / f"attempt-{attempt['number']:02d}"
-        result_path = target / "result.json"
-        if not result_path.is_file():
-            evidence.append({"episode": row["episode"], "status": attempt["status"], "classification": "infrastructure_failure"})
-            continue
-        if attempt.get("result_sha256") != sha_file(result_path):
-            raise ValueError("Retained attempt receipt changed")
-        result = json.loads(result_path.read_text())
-        if result.get("episode") != row["episode"]:
-            raise ValueError("Retained attempt identity differs")
-        if "coverage_sha256" in result:
-            path = target / "coverage.json"
-            if result["coverage_sha256"] != sha_file(path):
-                raise ValueError("Retained coverage evidence changed")
-            result["coverage"] = json.loads(path.read_text())
-        if recheck and "transcript" in result:
-            transcript = target / result["transcript"]
-            if not transcript.resolve().is_relative_to(target.resolve()) or result["transcript_sha256"] != sha_file(transcript):
-                raise ValueError("Retained transcript custody differs")
-            tape = load(transcript)
-            if tape["header"]["provenance"] != queue["plan"]["provenance"] or not verify(tape)["valid"]:
-                raise ValueError("Retained transcript source/readback differs")
-            if "coverage" in result and campaign_evidence.coverage(tape) != result["coverage"]:
-                raise ValueError("Independent coverage recomputation differs")
-        evidence.append(result)
+        for attempt in (row["attempts"][-1:] if latest_only else row["attempts"]):
+            target = out / row["episode"]["id"] / f"attempt-{attempt['number']:02d}"
+            if not target.resolve().is_relative_to(out.resolve()):
+                raise ValueError("Retained attempt path is outside its queue")
+            result_path = target / "result.json"
+            if not result_path.is_file():
+                evidence.append({"episode": row["episode"], "attempt_number": attempt["number"], "status": attempt["status"], "classification": "infrastructure_failure"})
+                continue
+            if attempt.get("result_sha256") != sha_file(result_path):
+                raise ValueError("Retained attempt receipt changed")
+            result = json.loads(result_path.read_text())
+            if result.get("episode") != row["episode"]:
+                raise ValueError("Retained attempt identity differs")
+            result["attempt_number"] = attempt["number"]
+            if "coverage_sha256" in result:
+                path = target / "coverage.json"
+                if result["coverage_sha256"] != sha_file(path):
+                    raise ValueError("Retained coverage evidence changed")
+                result["coverage"] = json.loads(path.read_text())
+            if recheck and "transcript" in result:
+                transcript = target / result["transcript"]
+                if not transcript.resolve().is_relative_to(target.resolve()) or result["transcript_sha256"] != sha_file(transcript):
+                    raise ValueError("Retained transcript custody differs")
+                try:
+                    tape = load(transcript)
+                    checked = verify(tape)
+                except (ValueError, KeyError, TypeError) as error:
+                    if result["status"] == "pass" or not result.get("evidence_error"):
+                        raise ValueError("Retained transcript cannot be read") from error
+                    tape, checked = None, None
+                if checked is not None:
+                    if "readback_sha256" in result:
+                        prior = target / "independent-readback.json"
+                        if sha_file(prior) != result["readback_sha256"] or json.loads(prior.read_text()) != checked:
+                            raise ValueError("Retained independent readback differs")
+                    if result["status"] == "pass" and not checked["valid"]:
+                        raise ValueError("Passing transcript no longer validates")
+                    if checked["valid"]:
+                        if tape["header"]["provenance"] != queue["plan"]["provenance"]:
+                            raise ValueError("Retained transcript source differs")
+                        if "coverage" in result and campaign_evidence.coverage(tape) != result["coverage"]:
+                            raise ValueError("Independent coverage recomputation differs")
+            if recheck:
+                process = result.get("process", {})
+                if "log_sha256" in process and sha_file(target / "campaign.log") != process["log_sha256"]:
+                    raise ValueError("Retained process log custody differs")
+                for raw in result.get("retained_raw_transcripts", []):
+                    path = target / raw["path"]
+                    if not path.resolve().is_relative_to(target.resolve()) or sha_file(path) != raw["sha256"]:
+                        raise ValueError("Retained malformed transcript custody differs")
+            evidence.append(result)
     return evidence
 
 
+def collect(out: Path, queue: dict, recheck: bool = False) -> list[dict]:
+    """One latest attempted result per independently identified planned episode."""
+    return collect_attempts(out, queue, recheck, latest_only=True)
+
+
+def recover_interrupted(out: Path, queue: dict) -> None:
+    """Reconcile a completed receipt if the queue owner died before checkpoint."""
+    for row in queue["episodes"]:
+        for attempt in row["attempts"]:
+            if attempt["status"] != "running":
+                continue
+            target = out / row["episode"]["id"] / f"attempt-{attempt['number']:02d}"
+            receipt = target / "result.json"
+            attempt["interruption_observed_utc"] = utc()
+            if receipt.is_file():
+                result = json.loads(receipt.read_text())
+                if result.get("episode") != row["episode"] or result.get("status") in (None, "running", "unreported"):
+                    raise ValueError("Interrupted attempt receipt has inconsistent identity")
+                attempt.update(status=result["status"], result_sha256=sha_file(receipt), recovered_receipt=True)
+            else:
+                attempt["status"] = "interrupted"
+        if row["status"] == "running":
+            row["status"] = row["attempts"][-1]["status"]
+    collect_attempts(out, queue, recheck=True)
+
+
 def report(out: Path, queue: dict, recheck: bool = False) -> dict:
-    result = campaign_evidence.compare(collect(out, queue, recheck), queue["plan"])
+    episodes = collect(out, queue, recheck)
+    attempts = collect_attempts(out, queue, recheck)
+    result = campaign_evidence.compare(episodes, queue["plan"])
+    import paired_comparison
+    result["paired_comparison"] = paired_comparison.compare(episodes, queue["plan"], attempts=attempts)
     result["queue_status"] = queue["status"]
     result["retained_attempts"] = sum(len(row["attempts"]) for row in queue["episodes"])
     result["attempt_statuses"] = dict(Counter(attempt["status"] for row in queue["episodes"] for attempt in row["attempts"]))
@@ -262,13 +331,7 @@ def main(argv=None) -> int:
             if queue["plan"]["memory_limit_mib"] != args.memory_limit_mib:
                 raise ValueError("Resume cannot change matched process resource limits")
             check_stage(project, snapshot)
-            for row in queue["episodes"]:
-                for attempt in row["attempts"]:
-                    if attempt["status"] == "running":
-                        attempt["status"] = "interrupted"
-                        attempt["interruption_observed_utc"] = utc()
-                if row["status"] == "running":
-                    row["status"] = "interrupted"
+            recover_interrupted(out, queue)
             if (out / "cancel-requested.json").exists():
                 (out / "cancel-requested.json").rename(out / ("retained-cancel-" + uuid.uuid4().hex + ".json"))
         else:

@@ -10,6 +10,7 @@ const MAX_KEYS := 2048
 const MAX_PRIOR_KEYS := 256
 const MAX_RECENT := 32
 const EDIT_ACTIONS := ["brush", "erase", "rectangle", "outline", "line", "paste", "fill", "undo", "redo", "stroke", "live_stroke", "interrupt_stroke"]
+const PAINT_TOOLS := {"brush":"Brush", "rectangle":"Rectangle", "outline":"Outline", "line":"Line", "stroke":"Brush", "fill":"Fill"}
 var _counts: Dictionary = {}
 var _state_actions: Dictionary = {}
 var _variants: Dictionary = {}
@@ -119,7 +120,14 @@ func _material_coverage(record: Dictionary, action: Dictionary, fresh: Dictionar
 	if action_id not in EDIT_ACTIONS: return
 	var receipt: Dictionary = record.get("native_receipt", {})
 	if receipt.get("status") != "completed": return
-	if typeof(last.get("tool")) == TYPE_STRING and State._integer(last.get("material"), 0, 65535):
+	# Tool/material coverage requires the operation to use that observed selected
+	# pair. History, clipboard and eraser edits do not use the palette material.
+	# Interrupted/live operations retain their own action and effect evidence.
+	var first: Dictionary = record.get("before", {})
+	if record.get("status") == "completed" and PAINT_TOOLS.has(action_id) \
+		and last.get("tool") == PAINT_TOOLS[action_id] \
+		and State._integer(first.get("material"), 0, 65535) and State._integer(last.get("material"), 0, 65535) \
+		and first.material == last.material:
 		_add("tool_material", str(last.tool) + ":" + str(int(last.material)), fresh)
 	if not State.valid_capture(before, record.get("before", {}).get("native", {})) or before.region != after.region or before.materials.size() != cells.size(): return
 	var changes: Dictionary = {}
@@ -199,7 +207,8 @@ func summary() -> Dictionary:
 		"last_novelty": last_novelty.duplicate(true), "recent_novelty": _recent.duplicate(true),
 		"prior_memory_loaded": not _prior.is_empty(), "scope": "current episode actual admitted observations only",
 		"material_interaction_scope": "source-matched captured-region adjacency and edit transformations; no inferred chemical reaction",
-		"actor_environment_scope": "observed actor model, authored fixture, spatial zone and pilot role; no inferred route success"}
+		"actor_environment_scope": "observed actor model, authored fixture, spatial zone and pilot role; no inferred route success",
+		"tool_material_scope": "completed captured paint operation matching observed selected tool and unchanged selected material; excludes eraser/history/clipboard/interrupted/live edits"}
 
 func memory() -> Dictionary:
 	return {"schema": SCHEMA, "action": _bounded_hints(_counts.action),

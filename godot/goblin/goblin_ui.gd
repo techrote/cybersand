@@ -209,8 +209,8 @@ func _make_ui() -> void:
 	replay_button = _button(play, "Replay previous campaign", _replay)
 	replay_button.disabled = true
 	reuse_memory = CheckBox.new()
-	reuse_memory.text = "Reuse an exact-matching retained prefix"
-	reuse_memory.tooltip_text = "Explicitly proposes a previous authored-fixture prefix. Imported records are unverified hints."
+	reuse_memory.text = "Reuse matching memory (new personalities)"
+	reuse_memory.tooltip_text = "Successor personalities can propose a matching authored prefix. The original six remain unchanged comparators. Imported records are unverified hints."
 	play.add_child(reuse_memory)
 	overlay_toggle = CheckBox.new()
 	overlay_toggle.text = "Observed trajectory and edit overlays"
@@ -346,8 +346,9 @@ func _start() -> void:
 func _replay() -> void:
 	if controller.running or controller.maintenance_running or last_tape.is_empty(): return
 	var replay: Dictionary = last_tape.duplicate(true)
+	controller.reduction_result.clear()
 	recent.clear()
-	var result: Dictionary = await controller.run_campaign({"pacing_ms": int(pacing.value), "evidence_kind": "graphical_godot"}, launch.provenance, replay)
+	var result: Dictionary = await controller.run_campaign({"pacing_ms": int(replay.header.get("pacing_ms", 0)), "evidence_kind": "graphical_godot"}, launch.provenance, replay)
 	_show_refusal(result)
 
 
@@ -386,7 +387,9 @@ func _refresh() -> void:
 	seed_value.editable = not busy
 	action_budget.editable = not busy
 	pacing.editable = not busy
-	reuse_memory.disabled = busy
+	var baseline: bool = Policy.PERSONALITIES[personality.selected] in Policy.BASELINE_PERSONALITIES
+	reuse_memory.disabled = busy or baseline
+	if baseline: reuse_memory.button_pressed = false
 	reduce_button.disabled = busy or last_tape.get("steps", []).is_empty() or last_tape.get("steps", []).size() > 128
 	reproduction_button.disabled = busy or last_tape.is_empty()
 	for button: Button in memory_buttons: button.disabled = busy

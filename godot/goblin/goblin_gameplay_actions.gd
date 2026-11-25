@@ -117,8 +117,31 @@ static func validate_action(action: Dictionary) -> Dictionary:
 	return {"ok": true}
 
 
+static func ports_for(model: String) -> Array[String]:
+	var result: Array[String] = []
+	if Catalog.Fleet.index_for_id(model) >= 0:
+		return ["q", "e", "boost"]
+	var profile: Dictionary = Catalog.definition(model).get("profile", {})
+	for port: String in ["primary", "secondary"]:
+		if str(profile.get(port, "none")) not in ["", "none"]: result.append(port)
+	if profile.get("rope", false): result.append_array(["reel_in", "reel_out"])
+	return result
+
+
 static func _offer(menu: Array[Dictionary], id: String, args: Dictionary = {}) -> void:
 	menu.append({"id": id, "args": args})
+
+
+static func _pending_settings(a: Variant) -> Dictionary:
+	# Apply settings reads the currently displayed fields, including values left
+	# pending after an expected refusal. Preflight that actual ordinary form.
+	var candidate: Dictionary = a.bench.applied.duplicate(true)
+	candidate.response = str(a.bench._requested_response)
+	var selected: Dictionary = a.bench.actor(candidate, a.bench.selected_id())
+	if not selected.is_empty():
+		for field: String in a.bench._fields:
+			selected.options[field] = float(a.bench._fields[field].value)
+	return candidate
 
 
 static func available_actions(a: Variant) -> Array[Dictionary]:
@@ -144,10 +167,11 @@ static func available_actions(a: Variant) -> Array[Dictionary]:
 	if int(a.bench._zoom) > 0: _offer(menu, "camera_zoom", {"direction": -1})
 	if int(a.bench._zoom) < a.bench.ZOOMS.size() - 1: _offer(menu, "camera_zoom", {"direction": 1})
 	for mode: String in ["free", "overview"]:
-		_offer(menu, "camera_mode", {"mode": mode})
+		if int(a.bench._camera.selected) != (0 if mode == "free" else 2):
+			_offer(menu, "camera_mode", {"mode": mode})
 	if a.bench.selected_id() > 0:
 		_offer(menu, "camera_focus")
-		_offer(menu, "camera_mode", {"mode": "follow"})
+		if int(a.bench._camera.selected) != 1: _offer(menu, "camera_mode", {"mode": "follow"})
 	var source: Dictionary = observation.get("source", {}).get("receipt", {})
 	var stream: bool = bool(source.get("stream_enabled", false))
 	if int(a.editor.material_id) in POWDERS:
@@ -161,7 +185,7 @@ static func available_actions(a: Variant) -> Array[Dictionary]:
 		if a.bench.pilot_id() > 0:
 			var pilot: Dictionary = a.bench.actor(a.bench.applied, a.bench.pilot_id())
 			var model: String = str(pilot.get("model", ""))
-			var ports: Array = ["q", "e", "boost"] if a.bench.Fleet.index_for_id(model) >= 0 else ["primary", "reel_in", "reel_out"]
+			var ports: Array = ports_for(model)
 			for port: String in ports: _offer(menu, "actor_actuate", {"port": port, "ticks": 4})
 			if Catalog.entry(model).get("equipment", false) and int(Catalog.control_for(pilot).usable_index) >= 0:
 				for button: String in EQUIPMENT_KEYS: _offer(menu, "actor_trigger", {"button": button, "ticks": 4})
@@ -182,23 +206,29 @@ static func available_actions(a: Variant) -> Array[Dictionary]:
 				if Catalog.has_model(model) and model in a.bench._model_ids:
 					_offer(menu, "actor_replace", {"model": model})
 		for field: String in ["budget", "mass_multiplier", "inertia_multiplier"]:
-			if field == "budget" and a.bench.applied.response == "RFT": continue
 			if a.bench._fields.has(field) and a.bench._fields[field].editable:
-				_offer(menu, "actor_settings", {"field": field, "value": 15.0 if field == "budget" else 1.25})
+				var value: float = 15.0 if field == "budget" else 1.25
+				var candidate: Dictionary = _pending_settings(a)
+				a.bench.actor(candidate, selected).options[field] = snappedf(value, float(a.bench._fields[field].step))
+				if Setup.validate(candidate, false).is_empty():
+					_offer(menu, "actor_settings", {"field": field, "value": value})
 	if a.bench.pilot_id() > 0:
 		_offer(menu, "actor_release")
 		_offer(menu, "actor_hand_back")
 	for actor: Dictionary in a.bench.applied.get("actors", []):
+		var current_control: Dictionary = Catalog.control_for(actor)
 		for producer: String in ["human", "scripted", "passive"]:
+			if current_control.source == producer and current_control.enabled: continue
 			if Catalog.supports(str(actor.model), producer):
 				_offer(menu, "actor_control", {"actor_id": int(actor.id), "producer": producer, "enabled": true})
 		if Catalog.entry(str(actor.model)).get("equipment", false):
 			for usable: int in [-1, int(Catalog.default_control(str(actor.model)).usable_index)]:
+				if int(current_control.usable_index) == usable: continue
 				if Catalog.equipment_error(str(actor.model), usable).is_empty():
 					_offer(menu, "actor_equipment", {"actor_id": int(actor.id), "usable_index": usable})
 	for mode: String in Setup.RESPONSES:
 		if mode == a.bench.applied.response: continue
-		var candidate: Dictionary = a.bench.applied.duplicate(true)
+		var candidate: Dictionary = _pending_settings(a)
 		candidate.response = mode
 		if Setup.validate(candidate, false).is_empty(): _offer(menu, "response_mode", {"mode": mode})
 	_offer(menu, "restore_start")
@@ -239,8 +269,8 @@ static func _input_pulse(a: Variant, row: Dictionary, args: Dictionary, equipmen
 	if equipment and (not Catalog.entry(str(actor.model)).get("equipment", false) or int(Catalog.control_for(actor).usable_index) < 0):
 		row.error = "pilot has no mounted selected equipment"
 		return false
-	if not equipment and str(args.port) in ["q", "e", "boost"] and not fleet:
-		row.error = "pilot does not expose the ordinary flyer port controls"
+	if not equipment and str(args.port) not in ports_for(str(actor.model)):
+		row.error = "pilot does not expose that ordinary actuator capability"
 		return false
 	var focus: Control = a.get_viewport().gui_get_focus_owner()
 	if focus != null: focus.release_focus()
@@ -434,13 +464,19 @@ static func execute(a: Variant, action: Dictionary, row: Dictionary, started: in
 			a._admit(row, {"accepted": accepted})
 			if not accepted: return _result(a, row, started, "refused", str(a.bench.message))
 			if not await a._until(func() -> bool:
-				var actual: Dictionary = a.observe().get("source", {}).get("receipt", {})
-				return actual.get("material", -1) == int(a.editor.material_id) and actual.get("origin", []) == [int(args.x), int(args.y)],
+				var observed: Dictionary = a.observe().get("source", {})
+				var actual: Dictionary = observed.get("receipt", {})
+				return int(observed.get("pending_commands", -1)) == 0 \
+					and int(observed.get("snapshot_serial", -1)) > int(row.before.get("snapshot_serial", -1)) \
+					and actual.get("material", -1) == int(a.editor.material_id) and actual.get("origin", []) == [int(args.x), int(args.y)] \
+					and not actual.get("stream_enabled", true) and not actual.get("burst_queued", true) and int(actual.get("stream_ticks", -1)) == 0,
 				"operation_seconds", true):
 				return _result(a, row, started, "partial", a.last_error, a._wait_failure_classification())
 		"source_burst", "source_stream":
 			if a.host.paused or a.bench.applied.get("source", []).is_empty():
 				return _result(a, row, started, "refused", "source requires a configured running fixture", "not_applicable")
+			if id == "source_stream" and bool(args.enabled) and row.before.get("source", {}).get("receipt", {}).get("stream_enabled", false):
+				return _result(a, row, started, "refused", "the bounded stream is already active; stop it before restarting", "not_applicable")
 			if id == "source_burst" and row.before.get("source", {}).get("receipt", {}).get("stream_enabled", false):
 				return _result(a, row, started, "refused", "stop the stream before the isolated burst experiment", "not_applicable")
 			var accepted: bool = a.bench.burst() if id == "source_burst" else a.bench.stream(bool(args.enabled))
@@ -451,8 +487,11 @@ static func execute(a: Variant, action: Dictionary, row: Dictionary, started: in
 			if not row.interval.ok: return _result(a, row, started, "partial", a.last_error, a._wait_failure_classification())
 			var initial: Dictionary = row.before.get("source", {}).get("receipt", {})
 			if not await a._until(func() -> bool:
-				var actual: Dictionary = a.observe().get("source", {}).get("receipt", {})
-				return (int(actual.get("attempted", 0)) >= int(initial.get("attempted", 0)) + 96 if id == "source_burst"
+				var observed: Dictionary = a.observe().get("source", {})
+				var actual: Dictionary = observed.get("receipt", {})
+				return int(observed.get("pending_commands", -1)) == 0 \
+					and int(observed.get("snapshot_serial", -1)) > int(row.before.get("snapshot_serial", -1)) \
+					and (int(actual.get("attempted", 0)) >= int(initial.get("attempted", 0)) + 96 if id == "source_burst"
 					else bool(actual.get("stream_enabled", false)) == bool(args.enabled)),
 				"operation_seconds", true):
 				return _result(a, row, started, "partial", a.last_error, a._wait_failure_classification())

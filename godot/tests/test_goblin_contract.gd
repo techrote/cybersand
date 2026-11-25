@@ -298,6 +298,57 @@ func _initialize() -> void:
 	test_observers()
 	test_protected_persistence()
 	test_tape()
+	test_portable_identity_and_long_tape()
 	print("GOBLIN_CONTRACT_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"evidence_kind":"unit_fixture",
 		"deliberately_inconsistent_data":true,"native_gameplay_executed":false}))
 	quit(0 if failures.is_empty() else 1)
+
+func test_portable_identity_and_long_tape() -> void:
+	var first: Dictionary = metadata().provenance
+	first.platform = "linux"
+	first.host = "synthetic-host-one"
+	first.replay_identity = {"schema":"cybersand-goblin-replay-identity-v1", "source_commit":first.source_commit,
+		"source_tree":first.source_tree, "platform":first.platform, "godot_sha256":first.godot_sha256,
+		"native_sha256":first.native_sha256, "rapier_sha256":first.rapier_sha256,
+		"game_sources_sha256":"6".repeat(64), "game_source_files":250,
+		"import_normalization":"existing-four-rapier-import-descriptors-crlf-to-lf"}
+	var second: Dictionary = first.duplicate(true)
+	second.host = "synthetic-host-two"
+	check(Transcript.same_execution_identity(first, second), "verified portable identity excludes incidental host metadata only")
+	for key: String in ["source_commit", "source_tree", "godot_sha256", "native_sha256", "rapier_sha256"]:
+		var changed: Dictionary = second.duplicate(true)
+		changed[key] = "9".repeat(40 if key in ["source_commit", "source_tree"] else 64)
+		check(not Transcript.same_execution_identity(first, changed), "portable identity binds outer provenance " + key)
+		changed.replay_identity[key] = changed[key]
+		check(not Transcript.same_execution_identity(first, changed), "different admitted portable authority rejects " + key)
+	var changed: Dictionary = second.duplicate(true)
+	changed.replay_identity.game_sources_sha256 = "9".repeat(64)
+	check(not Transcript.same_execution_identity(first, changed), "different canonical game sources reject portable replay")
+	changed = second.duplicate(true)
+	changed.source_dirty = true
+	check(not Transcript.same_execution_identity(first, changed), "dirty source cannot impersonate clean portable identity")
+	second.erase("replay_identity")
+	check(not Transcript.same_execution_identity(first, second), "portable identity cannot silently fall back to legacy")
+	first.erase("replay_identity")
+	check(not Transcript.same_execution_identity(first, second), "legacy full provenance remains strict across hosts")
+	var header := metadata()
+	header.budget = 1024
+	header.fixture_version = 2
+	header.fixture_sha256 = "7".repeat(64)
+	header.pacing_ms = 100
+	var long_tape: Dictionary = Transcript.create(header)
+	var row := record({"id":"pause", "args":{}})
+	row.interval = {"start_tick":0, "end_tick":0, "observed_frames":3}
+	var all_appended := true
+	for index: int in range(1024):
+		all_appended = all_appended and Transcript.append(long_tape, row, []).ok
+	check(all_appended and long_tape.steps.size() == 1024, "bounded 1024-action synthetic tape retains every action")
+	check(not Transcript.append(long_tape, row, []).ok, "1025th synthetic record is refused")
+	Transcript.finish(long_tape, "budget_complete")
+	check(Transcript.validate(long_tape).ok, "long tape independent complete byte bound validates")
+	var replay: Dictionary = long_tape.duplicate(true)
+	replay.header.fixture_sha256 = "8".repeat(64)
+	check(not Transcript.compare(long_tape, replay).semantic_match, "semantic replay binds authored fixture digest")
+	replay = long_tape.duplicate(true)
+	replay.header.pacing_ms = 0
+	check(not Transcript.compare(long_tape, replay).semantic_match, "semantic replay preserves recorded pacing")

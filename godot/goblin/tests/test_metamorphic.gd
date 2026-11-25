@@ -5,12 +5,17 @@ extends SceneTree
 const Adapter = preload("res://goblin/goblin_adapter.gd")
 const Fixtures = preload("res://goblin/goblin_fixtures.gd")
 const Assertions = preload("res://goblin/goblin_assertions.gd")
+const GameplayOracles = preload("res://goblin/goblin_gameplay_oracles.gd")
 var adapter: Node
 var oracle: RefCounted
 var checks := 0
 var failures: Array[String] = []
 var records: Array[Dictionary] = []
 var experiments: Array[Dictionary] = []
+var _boundary_deadline := 0
+var _boundary_native_limit := 0
+var _boundary_actor_limit := 0
+var _boundary_limit_reason := ""
 
 
 func _initialize() -> void:
@@ -24,14 +29,105 @@ func check(ok: bool, label: String) -> void:
 		push_error("GOBLIN_METAMORPHIC " + label)
 
 
-func action(id: String, args: Dictionary = {}) -> Dictionary:
+func action(id: String, args: Dictionary = {}, allow_boundary: bool = false) -> Dictionary:
+	print("GOBLIN_METAMORPHIC_PROPOSED ", JSON.stringify({"index": records.size(), "id": id, "args": args}))
 	var row: Dictionary = await adapter.execute({"id": id, "args": args})
 	row["assertions"] = oracle.evaluate(row)
 	records.append(row)
-	check(row.status == "completed", id + " completed: " + str(row.error))
+	check(row.status == "completed" or (allow_boundary and GameplayOracles.expected_boundary_refusal(row)),
+		id + " completed or explicitly expected boundary partial: " + str(row.error))
 	for result: Dictionary in row.assertions:
 		check(result.status != "fail", id + " / " + result.id + " / " + str(result.actual))
 	return row
+
+
+func _boundary_watchdog() -> void:
+	if _boundary_deadline <= 0 or adapter == null: return
+	var observed: Dictionary = adapter.observe()
+	if Time.get_ticks_msec() >= _boundary_deadline:
+		_boundary_limit_reason = "20-second boundary experiment wall limit"
+	elif int(observed.native.tick) >= _boundary_native_limit:
+		_boundary_limit_reason = "256 observed native ticks boundary experiment limit"
+	elif int(observed.actor_tick) >= _boundary_actor_limit:
+		_boundary_limit_reason = "160 observed physical ticks boundary experiment limit"
+	if not _boundary_limit_reason.is_empty():
+		_boundary_deadline = 0
+		adapter.request_stop()
+
+
+func finite_boundary_experiment() -> void:
+	# This fixture has no upper retaining wall. Ordinary placement, pilot
+	# selection and W input alone move the Kestrel toward the finite canvas.
+	if not await install("history_edges"): return
+	var first_record := records.size()
+	var placed := await action("actor_place", {"model": "kestrel", "x": 256, "y": 32})
+	if placed.status != "completed":
+		experiments.append({"id": "finite_canvas_refusal_recovery", "status": "coverage_unqualified",
+			"reason": "ordinary placement did not complete", "first_record": first_record, "gameplay_defect_confirmed": false})
+		return
+	var pilot := await action("actor_pilot", {"actor_id": 1})
+	if pilot.status != "completed":
+		experiments.append({"id": "finite_canvas_refusal_recovery", "status": "coverage_unqualified",
+			"reason": "ordinary pilot selection did not complete", "first_record": first_record, "gameplay_defect_confirmed": false})
+		return
+	var initial: Dictionary = adapter.observe()
+	var start_msec := Time.get_ticks_msec()
+	_boundary_deadline = start_msec + 20000
+	_boundary_native_limit = int(initial.native.tick) + 256
+	_boundary_actor_limit = int(initial.actor_tick) + 160
+	_boundary_limit_reason = ""
+	process_frame.connect(_boundary_watchdog)
+	var refusal := {}
+	var first_play := await action("play", {"ticks": 1}, true)
+	if GameplayOracles.expected_boundary_refusal(first_play): refusal = first_play
+	var pulses := 0
+	for _pulse: int in 8:
+		if not refusal.is_empty() or not _boundary_limit_reason.is_empty(): break
+		# An edge may be published between two ordinary inputs. A bounded Play
+		# attempt then exercises the same current-publication interval path.
+		var observed: Dictionary = adapter.observe()
+		if not observed.get("progress_refusal", {}).is_empty():
+			var retry := await action("play", {"ticks": 1}, true)
+			if GameplayOracles.expected_boundary_refusal(retry): refusal = retry
+			break
+		var driven := await action("actor_drive", {"direction": "up", "ticks": 16}, true)
+		pulses += 1
+		if GameplayOracles.expected_boundary_refusal(driven): refusal = driven
+		elif driven.status != "completed": break
+	_boundary_deadline = 0
+	process_frame.disconnect(_boundary_watchdog)
+	var stopped: Dictionary = adapter.observe()
+	var elapsed_to_stop: int = Time.get_ticks_msec() - start_msec
+	var reached := not refusal.is_empty()
+	check(reached, "actual finite-edge refusal exercised within the bounded ordinary input experiment")
+	if reached:
+		check(stopped.paused and stopped.native.paused and not stopped.native.failed,
+			"finite-edge refusal leaves an actually healthy paused native owner")
+		check(int(stopped.native.generation) == int(initial.native.generation), "edge refusal preserves native World identity")
+		check(stopped.actors.size() == 1 and stopped.actors[0].position[1] < initial.actors[0].position[1],
+			"ordinary Kestrel input produced actual upward movement before the edge stop")
+	var recovery_ok := false
+	if not stopped.native.failed:
+		adapter.resume_actions()
+		if not stopped.paused: await action("pause")
+		var reset := await action("actor_reset")
+		if reset.status == "completed":
+			var resumed := await action("play", {"ticks": 2})
+			recovery_ok = resumed.status == "completed" and int(resumed.after.native.generation) > int(stopped.native.generation) \
+				and int(resumed.after.native.tick) > int(resumed.before.native.tick) \
+				and resumed.after.get("progress_refusal", {}).is_empty() and not resumed.after.native.failed
+			check(recovery_ok, "ordinary reset adopts a new healthy owner and resumed native ticks")
+			await action("pause")
+	experiments.append({"id": "finite_canvas_refusal_recovery",
+		"status": "qualified" if reached and recovery_ok else "coverage_unqualified",
+		"preconditions": "open upper history_edges fixture; ordinary Kestrel placement at (256,32), pilot and up input",
+		"classification": "expected_refusal" if reached else "unresolved_observation", "gameplay_defect_confirmed": false,
+		"first_record": first_record, "last_record": records.size() - 1, "up_pulses": pulses,
+		"max_up_pulses": 8, "requested_ticks_per_pulse": 16, "wall_limit_msec": 20000,
+		"native_tick_limit": 256, "physical_tick_limit": 160, "limit_reason": _boundary_limit_reason,
+		"elapsed_to_stop_msec": elapsed_to_stop,
+		"initial": initial, "at_stop": stopped, "expected_refusal": refusal.get("expected_refusal", {}),
+		"recovery_observed": recovery_ok})
 
 
 func install(id: String) -> bool:
@@ -125,6 +221,30 @@ func run() -> void:
 		check(sum_y_after > sum_y_before, "independent Sand centre of mass moves downward")
 		experiments.append({"id": "closed_sand_conservation", "preconditions": "hard sealed enclosure, 64 Sand, no reactions, actors or sources",
 			"before": before, "after": after, "sum_y_before": sum_y_before, "sum_y_after": sum_y_after})
+		# These readonly stale-source requests are diagnostic negative controls,
+		# not ordinary gameplay actions and never action-vocabulary coverage.
+		var stable: Dictionary = adapter.observe().native
+		var stale_controls: Array[Dictionary] = []
+		for field: String in ["generation", "revision", "tick"]:
+			var request := {"kind": "capture", "region": Rect2i(48, 48, 8, 8),
+				"expected_generation": int(stable.generation), "expected_revision": int(stable.revision), "expected_tick": int(stable.tick)}
+			check(int(stable[field]) > 0, "positive source identity permits stale " + field + " control")
+			request["expected_" + field] -= 1
+			var admission: Dictionary = adapter.worker.paint_queue(request)
+			check(admission.get("status") == "refused", "actual worker refuses stale " + field + " before native capture")
+			var unexpected_receipt := {}
+			if admission.get("status") == "queued":
+				if await adapter._until(func() -> bool: return adapter.worker.paint_state().get("receipt_ready", false), "operation_seconds", true):
+					unexpected_receipt = adapter.worker.paint_take_result()
+			stale_controls.append({"field": field, "request": Adapter.json_value(request),
+				"admission": Adapter.json_value(admission), "unexpected_receipt": Adapter.json_value(unexpected_receipt)})
+		var unchanged: Dictionary = await capture(enclosure)
+		check(adapter.observe().native == stable and unchanged.get("materials") == after.get("materials"),
+			"stale readonly diagnostic controls preserve current native owner and material plane")
+		experiments.append({"id": "stale_native_identity_refusal", "classification": "deliberately injected negative control",
+			"preconditions": "paused settled source; stale generation, revision and tick independently decremented",
+			"controls": stale_controls, "before": after, "after": unchanged})
+	await finite_boundary_experiment()
 	await finish()
 
 

@@ -103,6 +103,35 @@ func _coverage_tests() -> void:
 	_check(coverage.summary().unique.action_transition == 0, "refusal or partial interrupts adjacent completed-action pairs")
 	coverage.observe(_row("pause"))
 	_check(coverage.summary().unique.action_transition == 1, "adjacent completed actions earn transition coverage")
+	var painted: Dictionary = row.duplicate(true)
+	for edit_id: String in ["undo", "redo", "paste", "erase", "interrupt_stroke", "live_stroke"]:
+		var excluded: RefCounted = Coverage.new()
+		var changed: Dictionary = painted.duplicate(true)
+		changed.action.id = edit_id
+		excluded.observe(changed)
+		_check(excluded.summary().unique.tool_material == 0 and excluded.summary().unique.material_interaction > 0,
+			"captured " + edit_id + " effect does not claim the selected paint tool/material")
+	var wrong_tool: RefCounted = Coverage.new()
+	var mismatch: Dictionary = painted.duplicate(true)
+	mismatch.after.tool = "Line"
+	wrong_tool.observe(mismatch)
+	_check(wrong_tool.summary().unique.tool_material == 0, "observed tool must match the admitted paint operation")
+	var changed_palette: RefCounted = Coverage.new()
+	mismatch = painted.duplicate(true)
+	mismatch.after.material = 2
+	changed_palette.observe(mismatch)
+	_check(changed_palette.summary().unique.tool_material == 0, "palette change during operation does not manufacture a tool/material pair")
+	var partial_paint: RefCounted = Coverage.new()
+	mismatch = painted.duplicate(true)
+	mismatch.status = "partial"
+	partial_paint.observe(mismatch)
+	_check(partial_paint.summary().unique.tool_material == 0, "partial operation retains effects without claiming completed tool/material exercise")
+	var rectangle_paint: RefCounted = Coverage.new()
+	mismatch = painted.duplicate(true)
+	mismatch.action.id = "rectangle"
+	mismatch.after.tool = "Rectangle"
+	rectangle_paint.observe(mismatch)
+	_check(rectangle_paint.summary().unique.tool_material == 1, "completed observed geometry tool with stable selected material earns its own pair")
 	var prior: RefCounted = Coverage.new()
 	_check(prior.load_memory(coverage.memory()), "bounded prior search hints load")
 	_check(prior.summary().completed_admitted_actions == 0 and prior.summary().unique.action == 0, "imported hints never become current evidence")
@@ -167,6 +196,24 @@ func _corpus_tests() -> void:
 	_check(reloaded.import_data(long_data, _finite_action).get("ok", false), "long-horizon bounded observation corpus remains portable")
 	corpus.clear()
 	_check(corpus.summary().records == 0 and corpus.reuse_actions(_context()).is_empty(), "explicit clear retires memory and prefixes")
+	var partial := _row("wait_ticks")
+	partial.status = "partial"
+	_check(Corpus._classification(partial, []) == "unresolved_observation", "unknown partial outcome is not automatically legal unusual gameplay")
+	var reason := "A body reached the finite canvas edge. Move, reset or remove it while paused."
+	var proof := {"kind":"finite_canvas_edge", "reason":reason, "source":"immutable_workbench_publication",
+		"generation":1, "revision":2, "tick":41, "snapshot_serial":9,
+		"publication":{"reason":reason, "generation":1, "tick":41, "serial":9, "paused":true, "failed":false}}
+	partial.after.native.tick = 41
+	partial.after.progress_refusal = proof.duplicate(true)
+	partial.expected_refusal = proof.duplicate(true)
+	partial.interval = {"ok":false, "start_tick":40, "end_tick":41, "progress_refusal":proof.duplicate(true)}
+	_check(Corpus._classification(partial, []) == "expected_refusal", "source-matched published finite boundary proof classifies expected partial refusal")
+	var stale_partial: Dictionary = partial.duplicate(true)
+	stale_partial.after.native.generation = 2
+	_check(Corpus._classification(stale_partial, []) == "unresolved_observation", "supplied boundary label cannot authorize a stale source proof")
+	_check(Corpus._classification(partial, ["synthetic_failed_invariant"]) == "unresolved_observation", "failing oracle takes precedence over a known legal boundary")
+	partial.classification = "native_failure"
+	_check(Corpus._classification(partial, []) == "unresolved_observation", "native failure cannot be downgraded by a retained boundary proof")
 
 func _policy_tests() -> void:
 	var menu := _menu()
@@ -215,6 +262,17 @@ func _policy_tests() -> void:
 	_check(chooser.bind_memory(corpus, _context(), true), "explicit memory reuse can be bound before episode")
 	_check(chooser.next_action(_observation(), menu).id == "pause", "matching retained authored prefix is proposed first")
 	_check(chooser.summary().coverage.unique.action == 0, "reused prefix is not credited until actual observation")
+	# Counter-only synthetic queue fixture: a one-action budget must not report
+	# all four retained candidates as proposed, admitted, or completed.
+	var short_budget: RefCounted = Policy.new()
+	short_budget.configure("OBSESSIVE_REPRODUCER", 13)
+	for _index: int in range(4): short_budget._reuse_prefix.append({"id":"pause", "args":{}})
+	var one_proposal: Dictionary = short_budget.next_action(_observation(), [{"id":"pause", "args":{}}])
+	var short_summary: Dictionary = short_budget.summary()
+	_check(one_proposal.id == "pause" and short_summary.retained_prefix_actions_queued == 4
+		and short_summary.retained_prefix_actions_proposed == 1 and short_summary.actions_proposed == 1
+		and short_summary.coverage.completed_admitted_actions == 0,
+		"one-action synthetic budget reports four queued retained steps but only one proposal and no gameplay coverage")
 
 func _observation() -> Dictionary:
 	return {"mounted":true, "fixture_id":"construction", "scene_identity":"fixture", "world_size":[512, 512],

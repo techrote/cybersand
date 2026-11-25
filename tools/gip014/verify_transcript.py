@@ -319,6 +319,7 @@ def _verify(tape: Any) -> dict:
     issue(no_installed_scene or (isinstance(header.get("initial_scene_identity"), str) and bool(header.get("initial_scene_identity"))), "missing initial scene identity")
     issue(integer(header.get("fixture_version")) and header.get("fixture_version") in (1, 2), "unknown fixture version")
     issue(header.get("policy") in POLICIES, "unknown policy")
+    issue("pacing_ms" not in header or bounded(header["pacing_ms"], 0, 3000), "invalid recorded pacing")
     issue(bounded(header.get("seed"), -(2**31), 2**31 - 1), "seed outside signed int32")
     issue(bounded(header.get("budget"), 1, MAX_ACTIONS), "invalid action budget")
     issue(len(steps) <= MAX_ACTIONS and bounded(header.get("budget"), len(steps), MAX_ACTIONS), "too many attempted actions")

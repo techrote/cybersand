@@ -161,6 +161,10 @@
   ],
   "excluded": [
     {
+      "path": "research/goblin002-replay-delivery-handover.md",
+      "reason": "Draft/HOLD goblin successor implementation and qualification handover; not accepted production authority."
+    },
+    {
       "path": "research/gip014-goblin-002.md",
       "reason": "Branch-scoped GIP-014-goblin-002 Draft/HOLD developer laboratory, source and qualification ledger. Explicit research retrieval only."
     },

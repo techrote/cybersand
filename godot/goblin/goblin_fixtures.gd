@@ -107,7 +107,8 @@ static func build(fixture_id: String, policy: PackedInt32Array) -> Dictionary:
 			for x: int in [32, 96, 160, 224]:
 				_box(edits, x, 144, 2, 60, Setup.WALL)
 				_box(edits, x + 46, 144, 2, 60, Setup.WALL)
-				_box(edits, x + 2, 202, 44, 2, Setup.WALL)
+			# One ordinary floor rectangle supports all four separate pockets.
+			_box(edits, 34, 202, 236, 2, Setup.WALL)
 			_box(edits, 34, 178, 44, 24, Setup.OIL)
 			_box(edits, 98, 178, 44, 24, Setup.WATER)
 			_box(edits, 162, 178, 44, 24, Setup.ICE)

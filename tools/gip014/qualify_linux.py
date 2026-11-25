@@ -14,6 +14,7 @@ import zipfile
 
 import campaign_queue
 import run_goblin
+import qualify_reproduction
 
 ENGINE_URL = "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
 ENGINE_SHA256 = "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c"
@@ -55,8 +56,9 @@ def main() -> int:
             raise ValueError("Focused qualification requires clean committed source")
         ledger["provenance"] = identity
         run_goblin.write_json(out / "linux-qualification.json", ledger)
+        contracts_env = dict(os.environ, GOBLIN_PARITY_GODOT=str(godot))
         process = run_goblin.execute([sys.executable, "-m", "unittest", "discover", "-s", "tools/gip014", "-p", "test_*.py"],
-                                     dict(os.environ), out / "python-contracts.log", 180)
+                                     contracts_env, out / "python-contracts.log", 180)
         run_goblin.write_json(out / "python-contracts.json", process)
         okay = save("python-contracts", 0 if process["status"] == "pass" else 2)
         if okay:
@@ -64,6 +66,9 @@ def main() -> int:
                 code = run_goblin.main(["--godot", str(godot), "--out", str(out / "source-tests" / case), "--case", case,
                                         "--timeout-seconds", "300"])
                 okay = save(case, code) and okay
+        if okay:
+            exported = qualify_reproduction.qualify(out / "source-tests" / "laboratory", out / "regression-case")
+            okay = save("native-regression-export", 0 if exported["status"] == "pass" else 2) and okay
         if okay:
             # One actual graphical Godot laboratory gate, with software X11
             # presentation honestly labeled. No external desktop input occurs.

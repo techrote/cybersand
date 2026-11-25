@@ -8,6 +8,7 @@ const REPLACEMENTS := ["actor_remove", "actor_move", "actor_replace", "actor_equ
 const NO_NATIVE_MUTATION := ["select_tool", "brush_radius", "preview_begin", "preview_cancel",
 	"camera_pan", "camera_zoom", "camera_focus", "camera_mode", "actor_save_spawn",
 	"actor_capture_spawn", "actor_release", "actor_hand_back", "actor_control"]
+const FINITE_CANVAS_REFUSAL := "A body reached the finite canvas edge. Move, reset or remove it while paused."
 
 
 static func _check(rows: Array[Dictionary], id: String, ok: bool, expected: Variant, actual: Variant, kind: String = "gameplay") -> void:
@@ -49,6 +50,50 @@ static func _same_poses(first: Dictionary, last: Dictionary) -> bool:
 	return true
 
 
+static func finite_canvas_refusal(native: Dictionary, publication: Dictionary) -> Dictionary:
+	# simulation_worker.gd:_consume loop publishes this exact legal edge stop;
+	# a generic healthy body-sample refusal has no equivalent accepted contract.
+	if publication.get("reason") != FINITE_CANVAS_REFUSAL or publication.get("paused") != true \
+		or publication.get("failed") != false or native.get("failed") != false or native.get("paused") != true:
+		return {}
+	for field: String in ["generation", "revision", "tick"]:
+		var value: Variant = native.get(field)
+		if typeof(value) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(value)) \
+			or float(value) != floor(float(value)) or value < (1 if field == "generation" else 0): return {}
+	for field: String in ["generation", "tick", "serial"]:
+		var value: Variant = publication.get(field)
+		if typeof(value) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(value)) \
+			or float(value) != floor(float(value)) or value < (0 if field == "tick" else 1): return {}
+	if publication.generation != native.generation or publication.tick != native.tick: return {}
+	return {"kind": "finite_canvas_edge", "reason": FINITE_CANVAS_REFUSAL,
+		"source": "immutable_workbench_publication", "generation": native.generation,
+		"revision": native.revision, "tick": native.tick, "snapshot_serial": publication.serial,
+		"publication": {"reason": publication.reason, "generation": publication.generation,
+			"tick": publication.tick, "serial": publication.serial, "paused": true, "failed": false}}
+
+
+static func expected_boundary_refusal(record: Dictionary) -> bool:
+	if record.get("status") != "partial" or record.get("classification") != "game_observation" \
+		or record.get("admission", {}).get("accepted") != true: return false
+	var after: Dictionary = record.get("after", {})
+	var proof: Variant = record.get("expected_refusal", {})
+	if not proof is Dictionary or not proof.get("publication") is Dictionary or after.get("paused") != true: return false
+	var observed := finite_canvas_refusal(after.get("native", {}), proof.publication)
+	if observed.is_empty() or not _same(proof, observed) or not _same(after.get("progress_refusal"), observed): return false
+	var interval: Variant = record.get("interval", {})
+	if not interval is Dictionary or not interval.get("progress_refusal", {}) is Dictionary: return false
+	if interval.get("progress_refusal", {}).is_empty():
+		var delivery: Variant = record.get("actor_delivery", {})
+		if not delivery is Dictionary: return false
+		interval = delivery.get("release_interval", {})
+		if not interval is Dictionary: return false
+	if not _same(interval.get("progress_refusal"), observed): return false
+	return interval.get("ok") == false and interval.get("end_tick") == observed.tick \
+		and typeof(interval.get("start_tick")) in [TYPE_INT, TYPE_FLOAT] and interval.start_tick <= observed.tick \
+		and interval.start_tick >= 0 and float(interval.start_tick) == floor(float(interval.start_tick)) \
+		and record.get("before", {}).get("native", {}).get("generation") == observed.generation
+
+
 static func evaluate(record: Dictionary) -> Array[Dictionary]:
 	var rows: Array[Dictionary] = []
 	var action: Dictionary = record.get("action", {})
@@ -58,6 +103,9 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 	var after: Dictionary = record.get("after", {})
 	var first: Dictionary = before.get("native", {})
 	var last: Dictionary = after.get("native", {})
+	if record.has("expected_refusal"):
+		_check(rows, "finite_canvas_refusal_current_source", expected_boundary_refusal(record),
+			"source-matched published finite edge stop after partial progress", record.get("expected_refusal"), "evidence")
 	if record.get("status") == "refused" and record.get("admission", {}).is_empty() \
 		and before.get("paused") == true and after.get("paused") == true and not first.is_empty() and not last.is_empty():
 		_check(rows, "unadmitted_paused_action_keeps_native", _same_native(first, last), first, last)
@@ -72,6 +120,12 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 		if inside: inside = origin[0] >= 0 and origin[1] >= 0 and size[0] > 0 and size[1] > 0 \
 			and origin[0] + size[0] <= 512 and origin[1] + size[1] <= 512
 		_check(rows, "camera_inside_actual_world", inside, "positive camera extent wholly inside World", camera)
+	if id in ["source_place", "source_burst", "source_stream"]:
+		var publication: Dictionary = after.get("source", {})
+		_check(rows, "source_command_consumed_and_published", int(publication.get("pending_commands", -1)) == 0 \
+			and int(publication.get("snapshot_serial", -1)) > int(before.get("snapshot_serial", -1)),
+			"actual command queue drained and newer immutable publication observed",
+			{"pending": publication.get("pending_commands"), "serial": publication.get("snapshot_serial")}, "evidence")
 	if id in NO_NATIVE_MUTATION and before.get("paused") == true and after.get("paused") == true:
 		_check(rows, "control_only_keeps_native", _same_native(first, last), first, last)
 	if id in REPLACEMENTS:
@@ -151,7 +205,13 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 			var target: int = int(before.get("selected_actor", 0))
 			var old_actor := _actor(before, target)
 			var new_actor := _actor(after, target)
-			var expected: Array = old_actor.get("position", []) if id == "actor_capture_spawn" else [args.x, args.y]
+			var expected: Array = old_actor.get("position", []).duplicate() if id == "actor_capture_spawn" else [args.x, args.y]
+			if id == "actor_capture_spawn" and expected.size() == 2:
+				# Ordinary X/Y fields are hundredth-cell SpinBoxes; entered_position
+				# then crosses the Vector2 float boundary before authored serialization.
+				var entered := Vector2(floorf(float(expected[0]) * 100.0 + 0.5) / 100.0,
+					floorf(float(expected[1]) * 100.0 + 0.5) / 100.0)
+				expected = [entered.x, entered.y]
 			_check(rows, "authored_reset_spawn_readback", _same(new_actor.get("authored_spawn"), expected), expected, new_actor.get("authored_spawn"))
 			if id == "actor_move":
 				_check(rows, "actor_move_actual_position", _same(new_actor.get("position"), expected), expected, new_actor.get("position"))
@@ -192,9 +252,20 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 			var delivery: Dictionary = record.get("actor_delivery", {})
 			var accepted: Dictionary = delivery.get("during", {})
 			var prior: Dictionary = delivery.get("before", {})
-			_check(rows, "actuator_live_input_admission", int(accepted.get("accepted", 0)) > int(prior.get("accepted", 0)) \
+			var pilot: int = int(before.get("pilot_actor", 0))
+			var owner_ok: bool = pilot > 0 and delivery.get("instance_id") == pilot \
+				and accepted.get("instance_id") == pilot and accepted.get("producer") == "human" \
+				and accepted.get("generation") == prior.get("generation") and accepted.get("epoch") == prior.get("epoch") \
+				and int(accepted.get("lease_remaining", 0)) > 0
+			_check(rows, "actuator_live_input_admission", owner_ok and int(accepted.get("accepted", 0)) > int(prior.get("accepted", 0)) \
 				and int(accepted.get("last_sequence", 0)) > int(prior.get("last_sequence", 0)),
-				"actual accepted actor input sequence advanced", accepted, "evidence")
+				"current human owner accepted a new bounded input sequence",
+				{"instance_id": accepted.get("instance_id"), "producer": accepted.get("producer"), "generation": accepted.get("generation"),
+				"epoch": accepted.get("epoch"), "accepted": accepted.get("accepted"), "last_sequence": accepted.get("last_sequence")}, "evidence")
+			var interval: Dictionary = record.get("interval", {})
+			_check(rows, "actuator_native_and_physical_progress", int(interval.get("end_tick", -1)) - int(interval.get("start_tick", -1)) >= int(args.ticks) \
+				and int(interval.get("end_actor_tick", -1)) > int(interval.get("start_actor_tick", -1)),
+				"requested native interval and actual physical input samples advanced", interval, "evidence")
 			var command: Dictionary = delivery.get("sampled_command", {})
 			var released: Dictionary = delivery.get("released_command", {})
 			var sampled := false
@@ -215,13 +286,35 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 					neutral = float(released.get("reel", 1.0)) == 0.0
 			_check(rows, "requested_actuator_sampled", sampled, args, command)
 			_check(rows, "requested_actuator_released", neutral, "neutral released input", released)
+			if id == "actor_trigger":
+				var current_actor := _actor(after, pilot)
+				var control: Dictionary = current_actor.get("control_observation", {})
+				var equipment: Dictionary = control.get("equipment", {})
+				var receipt: Dictionary = equipment.get("last_receipt", {})
+				var previous_receipt: Dictionary = _actor(before, pilot).get("control_observation", {}).get("equipment", {}).get("last_receipt", {})
+				if not receipt.is_empty() and receipt.get("request_id") != previous_receipt.get("request_id"):
+					var receipt_owner: bool = receipt.get("instance_id") == equipment.get("instance_id") \
+						and receipt.get("equipment_epoch") == equipment.get("equipment_epoch") \
+						and receipt.get("usable_index") == equipment.get("usable_index") \
+						and receipt.get("generation") == control.get("control_generation") \
+						and receipt.get("epoch") == control.get("epoch") and receipt.get("run_id") == control.get("run_id") \
+						and receipt.get("actor_id") == control.get("actor_id")
+					_check(rows, "equipment_receipt_current_owner", receipt_owner, "actual current actor, equipment and controller identities", receipt, "evidence")
+					var charge: float = float(receipt.get("charge", -1))
+					var cooldown: float = float(receipt.get("cooldown", -1))
+					_check(rows, "equipment_receipt_resource_bounds", is_finite(charge) and charge >= 0.0 and charge <= 100.0 \
+						and is_finite(cooldown) and cooldown >= 0.0 and cooldown <= 60.0,
+						{"charge": [0, 100], "cooldown": [0, 60]}, {"charge": charge, "cooldown": cooldown})
 		"response_mode":
 			_check(rows, "response_configuration_readback", after.get("configuration", {}).get("response") == args.mode,
 				args.mode, after.get("configuration"))
 		"actor_settings":
 			var actor := _actor(after, int(before.get("selected_actor", 0)))
-			_check(rows, "actor_tuning_readback", is_equal_approx(float(actor.get("options", {}).get(str(args.field), -999)), float(args.value)),
-				args.value, actor.get("options", {}).get(str(args.field)))
+			# The ordinary budget field uses integer steps; mass/inertia use 0.01.
+			var units: float = 1.0 if args.field == "budget" else 100.0
+			var expected: float = floorf(float(args.value) * units + 0.5) / units
+			_check(rows, "actor_tuning_readback", is_equal_approx(float(actor.get("options", {}).get(str(args.field), -999)), expected),
+				{"requested": args.value, "ordinary_control_value": expected}, actor.get("options", {}).get(str(args.field)))
 		"restore_start":
 			_check(rows, "restore_current_authored_start", before.get("authored_digest") == after.get("authored_digest"),
 				before.get("authored_digest"), after.get("authored_digest"))
@@ -229,7 +322,9 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 		"source_place":
 			var source: Dictionary = after.get("source", {}).get("receipt", {})
 			_check(rows, "source_configuration_native_ack", _same(source.get("origin"), [args.x, args.y]) \
-				and source.get("material") == before.get("material"), {"origin": [args.x, args.y], "material": before.get("material")}, source)
+				and source.get("material") == before.get("material") and source.get("stream_enabled") == false \
+				and source.get("burst_queued") == false and int(source.get("stream_ticks", -1)) == 0,
+				{"origin": [args.x, args.y], "material": before.get("material"), "stream": false, "ticks": 0}, source)
 		"source_burst", "source_stream":
 			var source: Dictionary = after.get("source", {}).get("receipt", {})
 			_check(rows, "source_accounting_partition", int(source.get("attempted", -1)) == int(source.get("inserted", -2)) + int(source.get("blocked", -2)),

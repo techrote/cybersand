@@ -54,6 +54,7 @@ jobs:
             ${{ runner.temp }}/goblin002-linux/**/*.log
             ${{ runner.temp }}/goblin002-linux/**/*.png
             ${{ runner.temp }}/goblin002-linux/**/executed-game-source.zip
+            ${{ runner.temp }}/goblin002-linux/regression-case/
             !${{ runner.temp }}/goblin002-linux/**/project/**
           if-no-files-found: warn
           retention-days: 30
@@ -98,6 +99,8 @@ jobs:
             ${{ runner.temp }}/goblin002-windows/extracted/CyberSand-goblin/goblin-evaluator-manifest.json
             ${{ runner.temp }}/goblin002-windows/*.json
             ${{ runner.temp }}/goblin002-windows/*.log
+            ${{ runner.temp }}/goblin002-windows/regression-case/
+            ${{ runner.temp }}/goblin002-windows/CyberSand-goblin-base.zip
           if-no-files-found: warn
           retention-days: 30
       - name: Retain only the qualified Draft Windows evaluator

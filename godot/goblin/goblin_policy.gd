@@ -37,6 +37,8 @@ var _memory_result: Dictionary = {}
 var _reuse_prefix: Array[Dictionary] = []
 var _reuse_requested := false
 var _reused_actions := 0
+var _reuse_queued_actions := 0
+var _reuse_remaining := 0
 var _last_family := ""
 var _intention: Dictionary = {}
 var _intentions_started: Dictionary = {}
@@ -65,6 +67,8 @@ func configure(name: String, seed_value: int) -> bool:
 	_reuse_prefix.clear()
 	_reuse_requested = false
 	_reused_actions = 0
+	_reuse_queued_actions = 0
+	_reuse_remaining = 0
 	_last_family = ""
 	_intention.clear()
 	_intentions_started.clear()
@@ -83,7 +87,8 @@ func next_action(observation: Dictionary, legal_actions: Array) -> Dictionary:
 		_set_intention("retained_prefix", "revisit", _reuse_prefix.size())
 		_queue = _reuse_prefix.duplicate(true)
 		_reuse_prefix.clear()
-		_reused_actions = _queue.size()
+		_reuse_queued_actions = _queue.size()
+		_reuse_remaining = _queue.size()
 	if personality == "RANDOM":
 		goal = "Try one seeded legal action"
 		return _emit(legal_actions[_rng.randi_range(0, legal_actions.size() - 1)])
@@ -96,7 +101,10 @@ func next_action(observation: Dictionary, legal_actions: Array) -> Dictionary:
 		if _queue.is_empty():
 			break
 		var candidate: Dictionary = _queue.pop_front()
+		var retained_candidate: bool = _reuse_remaining > 0
+		if retained_candidate: _reuse_remaining -= 1
 		if _has_id(legal_actions, str(candidate.id)) and _observed_preconditions(candidate, observation):
+			if retained_candidate: _reused_actions += 1
 			return _emit(candidate)
 		_skipped += 1
 	goal = "Inspect an available control"
@@ -141,7 +149,7 @@ func summary() -> Dictionary:
 		"intention":_intention.duplicate(true), "intentions_started":_intentions_started.duplicate(true),
 		"memory":_corpus.summary() if _corpus != null else {"records":0, "enabled":false},
 		"memory_result":_memory_result.duplicate(true), "prefix_reuse_requested":_reuse_requested,
-		"retained_prefix_actions_proposed":_reused_actions,
+		"retained_prefix_actions_proposed":_reused_actions, "retained_prefix_actions_queued":_reuse_queued_actions,
 		"decision_contract":"seeded supplied-observation decisions; no predicted action success"}
 
 

@@ -22,6 +22,10 @@ import tarfile
 import tempfile
 import zipfile
 
+import replay_identity
+from corpus_io import load_corpus
+from verify_transcript import load as load_tape, verify as verify_tape
+
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "cybersand-goblin-evaluator-v1"
 MANIFEST = "goblin-evaluator-manifest.json"
@@ -106,7 +110,9 @@ def copy_committed_source(destination: Path, source_inputs: dict) -> dict:
     normalized_imports = {}
     names = ["godot", "examples/worldgen", "third_party/godot-runtime.lock.json", "THIRD_PARTY_NOTICES.md",
              "LICENSE_STATUS.md", "docs/operations/gip014-goblin-gameplay-qa.md", "docs/research/gip014-goblin-gameplay-qa.md",
-             "tools/gip014/Open-goblin.cmd", "tools/gip014/Open-goblin.ps1", *source_inputs]
+             "docs/research/gip014-goblin-002.md", "docs/research/goblin002-exploration-handover.md",
+             "docs/research/goblin002-gameplay-handover.md", "docs/research/goblin002-replay-delivery-handover.md",
+             "tools/gip014", *source_inputs]
     committed = set(git("ls-tree", "-r", "--name-only", "HEAD").splitlines())
     names = [name for name in names if name in committed or any(path.startswith(name + "/") for path in committed)]
     payload = subprocess.check_output(["git", "archive", "HEAD", "--", *names], cwd=ROOT, timeout=60)
@@ -147,13 +153,191 @@ def copy_committed_source(destination: Path, source_inputs: dict) -> dict:
             "rule_source": rule.relative_to(ROOT).as_posix(), "rule_source_sha256": sha(rule), "files": normalized_imports}
 
 
-def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> dict:
+def stage_campaign_evidence(source: Path, destination: Path, provenance: dict) -> dict:
+    """Copy immutable, independently checked native tapes as explicit replay examples."""
+    if not source.is_dir() or source.is_symlink():
+        raise ValueError("Campaign evidence must be an ordinary retained directory")
+    candidates = sorted(source.rglob("transcript.json"), key=lambda p: (p != source / "control-64/transcript.json", str(p)))
+    root = destination / "replay-corpus"
+    root.mkdir()
+    seen, cases = set(), []
+    for path in candidates:
+        if path.is_symlink() or path.stat().st_size > 32 * 1024 * 1024:
+            continue
+        digest = sha(path)
+        if digest in seen:
+            continue
+        tape = load_tape(path)
+        checked = verify_tape(tape)
+        if not checked["valid"] or tape["header"].get("evidence_kind") == "unit_fixture" or tape["summary"].get("termination") != "budget_complete" or tape["summary"].get("failures"):
+            continue
+        if not replay_identity.same(tape["header"].get("provenance"), provenance):
+            continue
+        case_id = f"case-{len(cases):03d}"
+        target = root / (case_id + ".json")
+        shutil.copyfile(path, target)
+        record = {"id": case_id, "path": target.relative_to(destination).as_posix(), "sha256": digest,
+                  "fixture": tape["header"]["fixture_id"], "policy": tape["header"]["policy"],
+                  "seed": tape["header"]["seed"], "attempted_actions": len(tape["steps"]),
+                  "evidence_kind": tape["header"]["evidence_kind"], "source_bytes_preserved": True}
+        memory = [path.parent / "corpus.json"] if (path.parent / "corpus.json").is_file() else list(path.parent.glob("profile/**/goblin/corpus.json"))
+        if len(memory) == 1:
+            load_corpus(memory[0])
+            memory_target = root / (case_id + "-memory.json")
+            shutil.copyfile(memory[0], memory_target)
+            record.update(memory_path=memory_target.relative_to(destination).as_posix(), memory_sha256=sha(memory_target))
+        cases.append(record)
+        seen.add(digest)
+        if len(cases) == 8:
+            break
+    if not cases:
+        raise ValueError("Successor evaluator requires at least one actual source-matched replay tape")
+    index = {"schema": "cybersand-goblin-portable-replay-v1", "source_commit": provenance["source_commit"],
+             "source_bytes_preserved": True, "physical_checkpoint_resume": False, "cases": cases}
+    path = root / "index.json"
+    path.write_text(json.dumps(index, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return {"path": "replay-corpus/index.json", "sha256": sha(path), "cases": len(cases), "required_replay_case": cases[0]["id"]}
+
+
+def verify_memory_roundtrip(directory: Path, memory: dict, manifest: dict) -> None:
+    if not isinstance(memory, dict) or memory.get("status") != "pass" or memory.get("initial_memory_absent") is not True or memory.get("final_fixed_memory_absent") is not True or memory.get("clear_preserved_archives") is not True or memory.get("backup_count") != 1 or memory.get("cleared_fixed_files") != 3:
+        raise ValueError("Actual isolated memory save/import/backup/clear gate is incomplete")
+    imported = memory.get("fresh_profile_import", {})
+    if memory.get("first_memory_sha256") != memory.get("backup_sha256") or memory.get("latest_memory_sha256") != memory.get("source_corpus_sha256") or memory.get("latest_memory_sha256") != imported.get("staged_sha256") or memory.get("first_memory_sha256") == memory.get("latest_memory_sha256"):
+        raise ValueError("Persistent memory publication/backup identities disagree")
+    corpora = []
+    for path_key, hash_key, value in (("first_corpus", "first_corpus_sha256", memory),
+                                     ("source_corpus", "source_corpus_sha256", memory),
+                                     ("staged_corpus", "staged_sha256", imported)):
+        path = checked_member(directory, value.get(path_key, ""))
+        if not path.is_file() or sha(path) != value.get(hash_key):
+            raise ValueError("Memory roundtrip artifact hash mismatch")
+        data = load_corpus(path)
+        if not data["records"]:
+            raise ValueError("Memory qualification requires actual nonempty campaign records")
+        corpora.append(data)
+    if memory["first_corpus_sha256"] != memory["first_memory_sha256"] or imported.get("source_sha256") != memory["latest_memory_sha256"]:
+        raise ValueError("Memory publication does not preserve exact actual source bytes")
+    count = len(corpora[-1]["records"])
+    if not 1 <= count <= 64 or imported.get("records") != count or memory.get("records") != count:
+        raise ValueError("Imported memory record accounting differs")
+    log = checked_member(directory, imported.get("admission_log", ""))
+    if not log.is_file() or sha(log) != imported.get("admission_log_sha256"):
+        raise ValueError("Memory admission log hash mismatch")
+    text = log.read_text(encoding="utf-8-sig")
+    lines = [line.removeprefix("GOBLIN_CORPUS_IMPORT_VALID ") for line in text.splitlines() if line.startswith("GOBLIN_CORPUS_IMPORT_VALID ")]
+    if len(lines) != 1 or any(marker in text for marker in ("SCRIPT ERROR:", "Parse Error:", "ERROR:")):
+        raise ValueError("Memory admission lacks a unique clean actual validator result")
+    result = json.loads(lines[0])
+    if result.get("ok") is not True or result.get("records") != count or result.get("verification") != "imported hints only":
+        raise ValueError("Memory import did not validate supported hints")
+    archives = memory.get("archive_checks", [])
+    if not 1 <= len(archives) <= 8:
+        raise ValueError("Memory clear must retain bounded actual archived tapes")
+    for item in archives:
+        path = checked_member(directory, item["path"])
+        if not path.is_file() or sha(path) != item["sha256"]:
+            raise ValueError("Archived native tape changed during memory clear")
+        tape = load_tape(path)
+        if not verify_tape(tape)["valid"] or tape["header"].get("provenance") != manifest["provenance"] or tape["header"].get("evidence_kind") != "packaged_evaluator":
+            raise ValueError("Preserved memory archive is not the packaged actual campaign")
+
+
+def portable_index(directory: Path, manifest: dict) -> dict:
+    item = manifest.get("portable_replay_index", {})
+    if item.get("path") != "replay-corpus/index.json":
+        raise ValueError("Portable replay index must use its fixed package location")
+    path = checked_member(directory, item["path"])
+    if not path.is_file() or sha(path) != item.get("sha256"):
+        raise ValueError("Portable replay index hash mismatch")
+    index = json.loads(path.read_text(encoding="utf-8"))
+    cases = index.get("cases", [])
+    if index.get("schema") != "cybersand-goblin-portable-replay-v1" or not 1 <= len(cases) <= 8 or len(cases) != item.get("cases"):
+        raise ValueError("Portable replay catalogue is missing or exceeds its bound")
+    if index.get("source_commit") != manifest["source_commit"] or index.get("physical_checkpoint_resume") is not False:
+        raise ValueError("Portable replay identity/scope mismatch")
+    ids = set()
+    for case in cases:
+        case_id = case.get("id")
+        if not isinstance(case_id, str) or re.fullmatch(r"case-[0-9]{3}", case_id) is None or case_id in ids or case.get("path") != f"replay-corpus/{case_id}.json":
+            raise ValueError("Unsupported portable replay case identity")
+        ids.add(case_id)
+        tape_path = checked_member(directory, case["path"])
+        if sha(tape_path) != case.get("sha256"):
+            raise ValueError("Portable tape hash mismatch")
+        tape = load_tape(tape_path)
+        if not verify_tape(tape)["valid"] or not replay_identity.same(tape["header"].get("provenance"), manifest["provenance"]) or tape["header"].get("evidence_kind") == "unit_fixture":
+            raise ValueError("Portable tape lacks actual source-matched evidence")
+        if "memory_path" in case:
+            if case["memory_path"] != f"replay-corpus/{case_id}-memory.json":
+                raise ValueError("Unsupported portable memory path")
+            memory = checked_member(directory, case["memory_path"])
+            if sha(memory) != case.get("memory_sha256"):
+                raise ValueError("Portable memory hash mismatch")
+            load_corpus(memory)
+    if item.get("required_replay_case") not in ids:
+        raise ValueError("Required portable replay case is absent")
+    return index
+
+
+def verify_portable_replay(directory: Path, report: dict, manifest: dict) -> None:
+    result = report.get("portable_replay", {})
+    if result.get("status") != "pass" or result.get("semantic_match") is not True or result.get("case_id") != manifest["portable_replay_index"]["required_replay_case"]:
+        raise ValueError("Actual extracted portable semantic replay has not passed")
+    expected = f"replay-corpus/{result['case_id']}.json"
+    if result.get("original") != expected:
+        raise ValueError("Portable replay report identifies another source tape")
+    for key in ("original", "transcript", "log"):
+        path = checked_member(directory, result[key])
+        if not path.is_file() or sha(path) != result.get(key + "_sha256"):
+            raise ValueError("Portable replay evidence hash mismatch")
+    original = load_tape(checked_member(directory, result["original"]))
+    actual = load_tape(checked_member(directory, result["transcript"]))
+    if not verify_tape(actual)["valid"] or actual["header"].get("provenance") != manifest["provenance"] or actual.get("replay_result", {}).get("semantic_match") is not True:
+        raise ValueError("Actual portable replay validation/source identity failed")
+    for key in ("fixture_id", "fixture_version", "fixture_sha256", "initial_scene_identity", "seed", "pacing_ms"):
+        if original["header"].get(key, 0 if key == "pacing_ms" else None) != actual["header"].get(key, 0 if key == "pacing_ms" else None):
+            raise ValueError("Portable replay changed its fixture/seed/pacing")
+    if [row["semantic_sha256"] for row in original["steps"]] != [row["semantic_sha256"] for row in actual["steps"]]:
+        raise ValueError("Portable replay semantic observations differ")
+    text = checked_member(directory, result["log"]).read_text(encoding="utf-8-sig")
+    results = [line.removeprefix("GOBLIN_CAMPAIGN_RESULT ") for line in text.splitlines() if line.startswith("GOBLIN_CAMPAIGN_RESULT ")]
+    if text.splitlines().count("GOBLIN_CAMPAIGN_COMPLETE") != 1 or len(results) != 1 or any(marker in text for marker in ("SCRIPT ERROR:", "Parse Error:", "ERROR:")):
+        raise ValueError("Portable replay has no unique clean completion")
+    terminal = json.loads(results[0])
+    if terminal.get("validation", {}).get("ok") is not True or terminal.get("validation", {}).get("errors") or terminal.get("summary") != actual["summary"] or terminal.get("replay", {}).get("semantic_match") is not True or terminal.get("evidence_exported") is not True:
+        raise ValueError("Portable replay terminal acknowledgement differs from its tape")
+
+
+def verify_graphical(directory: Path, report: dict) -> None:
+    graphical = report.get("graphical_smoke", {})
+    if graphical.get("status") != "pass":
+        raise ValueError("Extracted graphical laboratory has not passed")
+    path = checked_member(directory, graphical.get("log", ""))
+    if not path.is_file() or sha(path) != graphical.get("log_sha256"):
+        raise ValueError("Graphical evidence log hash mismatch")
+    text = path.read_text(encoding="utf-8-sig")
+    lines = [line.removeprefix("GOBLIN_INTERACTIVE_RESULT ") for line in text.splitlines() if line.startswith("GOBLIN_INTERACTIVE_RESULT ")]
+    if len(lines) != 1 or any(marker in text for marker in ("SCRIPT ERROR:", "Parse Error:", "ERROR:")) or json.loads(lines[0]).get("failures"):
+        raise ValueError("Graphical laboratory did not complete cleanly")
+    screenshots = graphical.get("screenshots", [])
+    if not 1 <= len(screenshots) <= 16:
+        raise ValueError("Actual graphical screenshots are required")
+    for image in screenshots:
+        path = checked_member(directory, image["path"])
+        if not path.is_file() or sha(path) != image["sha256"] or path.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
+            raise ValueError("Graphical screenshot is missing or changed")
+
+
+def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path, campaign_evidence: Path | None = None) -> dict:
     if git("status", "--porcelain", "--untracked-files=all"):
         raise ValueError("Evaluator packaging requires clean committed source")
     if output.exists():
         raise ValueError("Evaluator output must be new; original evidence is retained")
     if output.suffix.lower() != ".zip":
         raise ValueError("Evaluator output must be a ZIP file")
+    if campaign_evidence is None:
+        raise ValueError("Successor packaging requires actual source-matched campaign evidence")
     pins = windows_pin()
     if sha(archive_path, "sha512") != pins["GODOT_SHA512"]:
         raise ValueError("Windows Godot archive differs from existing exact pin")
@@ -185,7 +369,9 @@ def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> 
         stage_vc_runtime(vc_runtime, staged)
         for name in ("cmd", "ps1"):
             shutil.copyfile(staged / "tools/gip014" / ("Open-goblin." + name), staged / ("Open goblin." + name))
-        guide = staged / "docs/operations/gip014-goblin-gameplay-qa.md"
+        guide = staged / "docs/research/gip014-goblin-002.md"
+        if not guide.is_file():
+            guide = staged / "docs/operations/gip014-goblin-gameplay-qa.md"
         if not guide.is_file():
             guide = staged / "docs/research/gip014-goblin-gameplay-qa.md"
         if not guide.is_file():
@@ -193,6 +379,8 @@ def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> 
         shutil.copyfile(guide, staged / "READ-ME.md")
         (staged / "source-inputs.json").write_text(json.dumps({"source_commit": provenance["source_commit"],
             "source_tree": provenance["source_tree"], "source_inputs": inputs}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        provenance["replay_identity"] = replay_identity.build(provenance, staged / "godot")
+        portable = stage_campaign_evidence(campaign_evidence, staged, provenance)
         files = {path.relative_to(staged).as_posix(): sha(path) for path in sorted(staged.rglob("*")) if path.is_file()}
         project_files = {name.removeprefix("godot/"): digest for name, digest in files.items()
                          if name.startswith("godot/") and not name.startswith("godot/.godot/")}
@@ -200,7 +388,10 @@ def build(archive_path: Path, notices: Path, vc_runtime: Path, output: Path) -> 
         manifest = {"schema": SCHEMA, "qualification": "unqualified candidate; extracted Windows self-tests required",
                     "source_commit": provenance["source_commit"], "source_tree": provenance["source_tree"], "provenance": provenance,
                     "godot_archive_sha512": pins["GODOT_SHA512"], "files_sha256": files,
-                    "import_descriptor_normalization": import_normalization,
+                    "import_descriptor_normalization": import_normalization, "successor_contract_version": 2,
+                    "portable_replay_index": portable,
+                    "required_discovery": {"fixture": "alchemy", "policy": "COVERAGE_HUNTER", "seed": 13, "budget": 64,
+                                           "minimum_completed_features": 12, "minimum_expanded_features": 3},
                     "required_selftests": [{"fixture": name, "policy": "CONTROL", "seed": 13, "budget": 64} for name in REQUIRED_CASES]}
         (staged / MANIFEST).write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         verify_extracted(staged)
@@ -223,6 +414,13 @@ def verify_extracted(directory: Path, qualification: Path | None = None) -> dict
         path = checked_member(directory, name)
         if not path.is_file() or not isinstance(expected, str) or re.fullmatch(r"[0-9a-f]{64}", expected) is None or sha(path) != expected:
             raise ValueError("Extracted evaluator payload hash mismatch: " + name)
+    successor = manifest.get("successor_contract_version") == 2
+    if successor:
+        provenance = manifest.get("provenance", {})
+        names = [name.removeprefix("godot/") for name in manifest["files_sha256"] if name.startswith("godot/")]
+        if not replay_identity.valid(provenance) or replay_identity.build(provenance, directory / "godot", names) != provenance["replay_identity"]:
+            raise ValueError("Portable replay identity differs from exact packaged game inputs")
+        portable_index(directory, manifest)
     if qualification is None:
         return {"payload_verified": True, "qualified": False, "files": len(manifest["files_sha256"])}
     report = json.loads(qualification.read_text(encoding="utf-8-sig"))
@@ -231,10 +429,11 @@ def verify_extracted(directory: Path, qualification: Path | None = None) -> dict
     if report.get("manifest_sha256") != sha(manifest_path) or report.get("source_commit") != manifest.get("source_commit") or report.get("source_tree") != manifest.get("source_tree"):
         raise ValueError("Windows self-test qualifies a different package/source")
     rows = report.get("cases", [])
-    if len(rows) != 2 or {row.get("fixture") for row in rows} != set(REQUIRED_CASES):
+    required_cases = {*REQUIRED_CASES, "alchemy"} if successor else set(REQUIRED_CASES)
+    if len(rows) != len(required_cases) or {row.get("fixture") for row in rows} != required_cases:
         raise ValueError("Complete actor-workshop and save/reopen cases are required")
     for row in rows:
-        if row.get("status") != "pass" or row.get("policy") != "CONTROL" or row.get("budget") != 64 or row.get("seed") != 13 or row.get("termination") != "budget_complete" or row.get("attempted_actions") != 64 or not 1 <= row.get("completed_actions", 0) <= 64 or row.get("assertion_failures") != 0 or row.get("validation_ok") is not True or row.get("completion_marker") is not True:
+        if row.get("status") != "pass" or row.get("policy") != ("COVERAGE_HUNTER" if successor and row.get("fixture") == "alchemy" else "CONTROL") or row.get("budget") != 64 or row.get("seed") != 13 or row.get("termination") != "budget_complete" or row.get("attempted_actions") != 64 or not 1 <= row.get("completed_actions", 0) <= 64 or row.get("assertion_failures") != 0 or row.get("validation_ok") is not True or row.get("completion_marker") is not True:
             raise ValueError("Incomplete extracted Windows self-test evidence")
         for key in ("log", "transcript"):
             path = checked_member(directory, row[key])
@@ -260,11 +459,21 @@ def verify_extracted(directory: Path, qualification: Path | None = None) -> dict
         completion = json.loads(results[0])
         if completion.get("validation", {}).get("ok") is not True or completion.get("validation", {}).get("errors") or completion.get("summary") != tape["summary"]:
             raise ValueError("Godot completion/validation does not match actual transcript")
+        if successor and row["fixture"] == "alchemy":
+            from vocabulary import NEW_ARGUMENTS
+            features = {name for name, count in tape["summary"]["completed_features"].items() if count > 0}
+            if len(features) < 12 or len(features & set(NEW_ARGUMENTS)) < 3:
+                raise ValueError("Extracted discovery omitted useful expanded gameplay vocabulary")
+            continue
         required_features = {"brush", "rectangle", "undo", "redo", "play", "save_layout", "reopen_layout"}
         if row["fixture"] == "actor_workshop":
             required_features.add("actor_drive")
         if not all(tape["summary"]["completed_features"].get(name, 0) > 0 for name in required_features):
             raise ValueError("Extracted Windows campaign omitted required actual gameplay features")
+    if successor:
+        verify_memory_roundtrip(directory, report.get("memory_roundtrip"), manifest)
+        verify_portable_replay(directory, report, manifest)
+        verify_graphical(directory, report)
     return {"payload_verified": True, "qualified": True, "source_commit": manifest["source_commit"],
             "manifest_sha256": sha(manifest_path), "qualification_sha256": sha(qualification), "cases": len(rows),
             "scope": "hosted extracted Windows developer evaluator; no physical NVIDIA acceptance claim"}
@@ -276,13 +485,14 @@ def main() -> int:
     parser.add_argument("--engine-notices", type=Path)
     parser.add_argument("--vc-runtime", type=Path)
     parser.add_argument("--out", type=Path)
+    parser.add_argument("--campaign-evidence", type=Path)
     parser.add_argument("--verify-extracted", type=Path)
     parser.add_argument("--qualification", type=Path)
     args = parser.parse_args()
     if args.verify_extracted:
         result = verify_extracted(args.verify_extracted.resolve(), args.qualification)
     elif all((args.godot_archive, args.engine_notices, args.vc_runtime, args.out)):
-        result = build(args.godot_archive.resolve(), args.engine_notices.resolve(), args.vc_runtime.resolve(), args.out.resolve())
+        result = build(args.godot_archive.resolve(), args.engine_notices.resolve(), args.vc_runtime.resolve(), args.out.resolve(), args.campaign_evidence.resolve() if args.campaign_evidence else None)
     else:
         parser.error("build requires --godot-archive, --engine-notices, --vc-runtime, --out; or --verify-extracted")
     print(json.dumps(result, indent=2, sort_keys=True))

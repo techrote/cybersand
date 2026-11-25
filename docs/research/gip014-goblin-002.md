@@ -85,8 +85,10 @@ and additive camera observation fields. After checking the ordinary Workbench an
 native contracts, corrections stayed within goblin. `expanded-002` completed all
 29 additional operation IDs in 20.488 seconds, peak observed process-tree RSS
 583,782,400 bytes, with no diagnostics or surviving owned processes. Its source
-was local checkpoint `06893e99` plus the retained dirty source snapshot; this is
-development evidence, not qualification of the later published source.
+was local checkpoint `06893e99` plus a recorded dirty source snapshot; this is
+development evidence, not qualification of the later published source. The raw local
+artifact bytes were subsequently lost with the execution host. The recorded checks
+are not a substitute for fresh hosted evidence.
 
 `metamorphic-001` was externally killed during import (exit -9 at 4.137 seconds,
 peak sampled RSS 665,964,544 bytes). `laboratory-001` was externally killed without
@@ -94,7 +96,7 @@ import, before the first test output (exit -9 at 0.507 seconds, peak sampled RSS
 150,646,784 bytes). Neither reached its gameplay assertions. The configured child
 RSS ceiling did not attribute these kills, and no surviving owned process remained.
 The cause is unresolved infrastructure; further equivalent local retries were
-stopped in favor of dedicated hosted qualification. These failures are retained.
+stopped in favor of dedicated hosted qualification. Their process results and identities remain recorded; the second host loss described below removed the local raw files.
 
 The first published successor source is `c947143a7cb62bc8b56acd0b78b683a9fef749e0`,
 tree `4c234199b1db9934aa5ba40e84b96fbb57c2c844`, in
@@ -102,6 +104,78 @@ tree `4c234199b1db9934aa5ba40e84b96fbb57c2c844`, in
 publication reproduced the exact local committed tree after CLI authentication
 was unavailable. Local and remote commit IDs differ; their trees were explicitly
 compared before switching the local parent while preserving uncommitted work.
+
+
+### First hosted qualification and independent challenge
+
+[Run 45527805069](https://github.com/techrote/cybersand/actions/runs/45527805069)
+executed exact clean source `be64fa7896a37672c3e5d0652517789e469b9061`,
+tree `c0d2875b01c41f7287fa9191922e2b3bf88b222b`. Both platforms failed the
+existing fixture-edit budget control: the new Alchemy recipe contained 22 initial
+edits, above the established 20-edit contract. The recipe was simplified to 18
+ordinary rectangles; the gate was preserved. This was a goblin fixture defect.
+
+The Linux run retained passing focused discovery, original adapter, expanded
+adapter, controller, laboratory, gameplay, metamorphic, ordinary deferred-paint
+and ordinary input checks. Graphical and full campaign execution did not start
+after the failed unit gate. Windows stopped at that gate and did not qualify a
+package. These partial passes do not qualify either platform as a whole.
+
+- [Linux evidence artifact 14983617239](https://github.com/techrote/cybersand/actions/runs/45527805069/artifacts/14983617239):
+  25,349,638 bytes; ZIP SHA-256
+  `99b6a53dd8dd20ac5efa290e459d91a22c8f77c319ca31d9c42d6d4a1721893e`.
+- [Windows evidence artifact 14983177716](https://github.com/techrote/cybersand/actions/runs/45527805069/artifacts/14983177716):
+  6,029,271 bytes; ZIP SHA-256
+  `19092618b62cbe440fc85cdcd7b64a61cce0f6585f9807ec34e8ed27b97dfe9f`.
+
+Independent examination of the first native laboratory tape found two campaigns,
+six completed admitted actions and zero simulation ticks. The retained-prefix
+selection reused one Pause action, followed by new history actions. This proves
+a native corpus round trip and selected-prefix dispatch, not an edited construction
+replay, behavioral improvement or successful native reduction. The next laboratory
+gate therefore cultivates a real four-action construction prefix, demands positive
+native material readback on reuse, and separately reduces an actual legal semantic
+outcome through fresh repeated probes.
+
+### Recovery and stricter regression capture
+
+The integrated local checkpoint `eaf193eaca9330a4e49ed9a5430047e0c5f82f57`,
+tree `a33744521d8b4b14183f4757b58163cf5f52a59c`, passed 60 Python controls
+before a second execution-host replacement. No gameplay process was running.
+That local commit was not published. Exact Git blobs recovered most specialist
+sources; several lead files and one gameplay action file were reconstructed from
+the retained design and patches. The next published candidate is explicitly a
+new source tree, and receives fresh qualification. The lost tree's local test
+result does not qualify the reconstructed tree.
+
+Automatic failing-invariant capture writes a fixed `candidate-NNN.json` beside
+the raw tape. Original action arguments, semantic admission, disposition, assertion
+identity and expected value are bound into reduction acceptance. Interrupted,
+timed-out or unrelated failing probes cannot substitute for the target. A passing
+regression must complete the originally accepted operation; changing an accepted
+partial effect into a refusal cannot make the regression pass.
+
+A subsequent independent artificial counterexample found that an earlier duplicate
+successful action could still mask refusal at the actual failing occurrence. The
+reader now derives the target occurrence from the chosen retained tape and checks
+that aligned step in fresh observed evidence. The same before-fix counterexample
+is rejected after correction. This is a confirmed regression-reader defect, not a
+production gameplay defect; exact challenge and reader identities are retained in
+the gameplay handover.
+
+The data-only `regression_bundle.py` exporter supplies original and reduced tapes,
+authored fixture, material evidence, exact source/runtime provenance, a hashed
+fixed-member manifest, a reproduction plan and a constant ordinary unittest.
+The test reads a separately produced `observed-transcript.json`; it never executes
+commands supplied by a tape. Corrective-source provenance must be explicit.
+Export itself makes no claim that a fresh reproduction has occurred.
+
+An ordinary finite-canvas body stop is legal product behavior. Classification now
+requires the exact authoritative refusal reason in a healthy paused immutable
+Workbench publication, matching World generation and tick, plus matching action
+interval evidence. Arbitrary partial effects remain unresolved. The new native
+metamorphic gate must actually encounter this stop and recover through ordinary
+actor reset; inability to reach it is unqualified coverage, not a production bug.
 
 ## Experimental contract
 

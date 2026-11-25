@@ -316,6 +316,7 @@ static func validate(transcript: Variant) -> Dictionary:
 		or header.get("initial_scene_identity", "").is_empty()): errors.append("Missing initial authored scene identity.")
 	if not _in_range(header.get("fixture_version"), 1, 2): errors.append("Unknown committed fixture version.")
 	if header.get("policy") not in POLICIES: errors.append("Unknown policy.")
+	if header.has("pacing_ms") and not _in_range(header.pacing_ms, 0, 3000): errors.append("Invalid recorded pacing.")
 	if not _in_range(header.get("seed"), -2147483648, 2147483647): errors.append("Seed must be a signed int32.")
 	if not _in_range(header.get("budget"), 1, MAX_ACTIONS): errors.append("Invalid action budget.")
 	if transcript.steps.size() > MAX_ACTIONS or transcript.steps.size() > int(header.get("budget", 0)): errors.append("Too many actions.")
@@ -387,6 +388,8 @@ static func compare(expected: Dictionary, actual: Dictionary) -> Dictionary:
 		and expected.header.seed == actual.header.seed \
 		and expected.header.get("initial_scene_identity", "") == actual.header.get("initial_scene_identity", "") \
 		and expected.header.get("fixture_version", 1) == actual.header.get("fixture_version", 1) \
+		and expected.header.get("fixture_sha256") == actual.header.get("fixture_sha256") \
+		and expected.header.get("pacing_ms", 0) == actual.header.get("pacing_ms", 0) \
 		and same_execution_identity(expected.header.provenance, actual.header.provenance)
 	var same_count: bool = expected.steps.size() == actual.steps.size()
 	var semantic_match: bool = same_header and same_count
