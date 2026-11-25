@@ -327,6 +327,7 @@ func _fail(reason: String) -> void:
 func _cancel_preview() -> void:
 	if _phase == "ready": return
 	_stop()
+	_composition.text = "No installable material proposal."
 	_status.text = "Preview cancelled. The installed World is unchanged."
 	if not _accepted_proposal.is_empty():
 		_status.text += " Restore previous preview recovers its verified bytes and settings."

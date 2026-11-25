@@ -839,6 +839,9 @@ func authoring(reopening: bool, multistyle: bool = false) -> void:
 		dialog._process(0.0)
 		dialog._cancel_preview()
 		check(host._physical_epoch == old_epoch, "cancelled proposal does not replace existing native World")
+		check(dialog.get_ok_button().disabled and dialog._composition.text == "No installable material proposal." and
+				dialog._status.text.contains("Restore previous preview"),
+			"cancelled proposal clears progress and explains retained-preview recovery")
 		check(not dialog.attests(packet), "cancelled or superseded work cannot attest prior material bytes")
 		check(dialog.restore_previous_preview() and dialog.attests(packet), "previous accepted preview and settings are recoverable before installation")
 		var previous_sha: String = packet.sha256
