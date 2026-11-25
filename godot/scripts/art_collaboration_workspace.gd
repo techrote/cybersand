@@ -48,6 +48,7 @@ var pinned := BoundedEdit.new()
 var palette := LineEdit.new()
 var palette_picker := OptionButton.new()
 var preserve := ItemList.new()
+var focus_bounded := Button.new()
 var brief_notice := Label.new()
 var brief_apply := Button.new()
 var brief_cancel := Button.new()
@@ -291,6 +292,10 @@ func _build_brief() -> void:
 	preserve.custom_minimum_size.y = 56
 	body.add_child(preserve)
 	var selection_actions := HFlowContainer.new()
+	focus_bounded.text = "Focus 256 × 256"
+	focus_bounded.tooltip_text = "Ask the Workbench owner for a bounded native region centred in the current view. The reported bounds are clipped to the World; no native write occurs."
+	focus_bounded.pressed.connect(func() -> void: selection_requested.emit("bounded"))
+	selection_actions.add_child(focus_bounded)
 	_button(selection_actions, "Focus viewport", func() -> void: selection_requested.emit("viewport"))
 	_button(selection_actions, "Use selection", func() -> void: selection_requested.emit("focus"))
 	_button(selection_actions, "Protect selection", func() -> void: selection_requested.emit("preserve"))

@@ -10,6 +10,7 @@ var briefs: Array = []
 var approvals := 0
 var cancellations := 0
 var previews := 0
+var selections: Array[String] = []
 
 func _initialize() -> void: run.call_deferred()
 
@@ -48,12 +49,15 @@ func run() -> void:
 	view.approve_requested.connect(func() -> void: approvals += 1)
 	view.cancel_requested.connect(func() -> void: cancellations += 1)
 	view.preview_requested.connect(func() -> void: previews += 1)
+	view.selection_requested.connect(func(kind: String) -> void: selections.append(kind))
 	window.popup_centered()
 	for i: int in 3: await process_frame
 	check(requests.is_empty() and approvals == 0, "opening collaboration is inert")
 	check(view.mode.item_count == 4, "four conversational intents share one prompt")
 	check(view.tabs.get_tab_count() == 4, "one workspace has conversation, brief, proposal and context")
 	check(view.stop_button.disabled, "idle Stop is disabled")
+	view.focus_bounded.pressed.emit()
+	check(selections == ["bounded"] and requests.is_empty() and approvals == 0, "bounded focus asks its host once without model or native execution")
 	view.set_provider_capabilities({"label":"Fixture","endpoint_category":"loopback","text":true,
 		"image_model":"unverified","streaming":false})
 	check(view.provider_status.text.contains("loopback"), "provider category is explicit")

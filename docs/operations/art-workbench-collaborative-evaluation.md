@@ -63,7 +63,9 @@ history or the redacted audit.
 
 ## Set the creative brief
 
-Use **Focus viewport** or **Use selection** to choose a bounded native region.
+Use **Focus 256 × 256** for a bounded region centred in the current view. The
+Workbench reports its exact bounds after clipping to the World. **Focus viewport**
+uses the whole visible native rectangle; **Use selection** uses the PAINT selection.
 If a zoomed-out region exceeds the context capacity, zoom in or select a smaller
 area before inspection. Use the Creative brief page to record the objective,
 style, complexity and variation. Choose available materials, pin constraints and protect native
@@ -140,7 +142,7 @@ fresh applicable validation and approval.
 
 The offline example selector supplies deterministic typed proposals. It neither
 contacts a provider nor pretends to be an LLM. Start with a small repair, then
-inspect a façade, a traversable interior, a protected-region edit and a staged
+inspect a façade, an interior with preserved clear passages, a protected-region edit and a staged
 composition. Compare the original scene, the proposal, zero-write preview and
 actual material result.
 
@@ -194,7 +196,10 @@ A short owner-operated local protocol is:
    explanation. Record unsupported claims as failures.
 
 This procedure is explicit, finite and owner-operated. It does not enable paid
-inference, download a model or automatically retry failed requests.
+inference, download a model or automatically retry failed requests. For a complete
+24-brief matched evaluation, retained refusals, true future held-out procedure,
+context ablations and qualitative scoring, use the [independent native review and
+owner-model protocol](../audits/2026-11-25-art-workbench-collaborative-002/NATIVE-INDEPENDENT-REVIEW.md).
 
 ## Retain the original responsiveness acceptance
 
@@ -240,3 +245,6 @@ The delivery packet must state the exact qualified commit, platform campaigns,
 principal artifact and checksum, retained failures and remaining owner checks.
 Until those actual results are recorded, this guide describes the evaluation
 procedure and must not be read as a completed qualification claim.
+
+Exact predecessor sources, software-rendered hosted hardware scope and recorded
+measurements are preserved in the [provider performance evidence](../audits/2026-11-25-art-workbench-collaborative-002/provider-performance.md).
