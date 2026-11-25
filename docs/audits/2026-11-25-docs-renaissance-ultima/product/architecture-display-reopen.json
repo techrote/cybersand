@@ -1,0 +1,40 @@
+{
+	"cases": [
+		{
+			"case": "ui-preview-latency",
+			"display": "X11",
+			"extent": [
+				1024,
+				1024
+			],
+			"first_frame_drawn_us": 16976543,
+			"label": "architecture-preview-reopened",
+			"material_sha256": "f17d7b07a7a770cbf12f9e2657a625de36e32ad06a9460df2bf9fa00c791d62b",
+			"native_configure_to_ready_us": 11266086,
+			"ready_us": 16935030,
+			"recipe_sha256": "ec2b6daea939c6c24ab6b97298a2e5db9e4ae11260cac9a746e6cb9d1abc2ec4",
+			"request_started_us": 5663881,
+			"request_to_first_drawn_frame_us": 11312662,
+			"request_to_ready_us": 11271149,
+			"scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+			"seed": 271828.0,
+			"status": "Verified native proposal · 1024x1024 · 152971 nonempty cells · 64 source receipts · 11.27s to preview. Install replaces unsaved work."
+		},
+		{
+			"case": "reopen",
+			"display": "X11",
+			"native_receipts": 64,
+			"recipe_sha256": "ec2b6daea939c6c24ab6b97298a2e5db9e4ae11260cac9a746e6cb9d1abc2ec4",
+			"saved_edits": 2,
+			"source_sha256": "f17d7b07a7a770cbf12f9e2657a625de36e32ad06a9460df2bf9fa00c791d62b"
+		}
+	],
+	"checks": 22,
+	"display": "X11",
+	"elapsed_us": 17767335,
+	"failures": 0,
+	"godot": "4.7-stable (official)",
+	"os": "Linux",
+	"phase": "reopen",
+	"schema": 1
+}

@@ -4,110 +4,194 @@ status: Current
 document-kind: evidence
 authority: historical-non-authoritative
 retrieval: explicit-history-only
-scope: Source-grounded manual corrections, genuine Linux software-rendered Workbench tasks and independent persistence review
+scope: Product manual review, actual Linux native GUI tasks, source-scoped storage faults and independent context review
 last-reviewed: 2026-11-25
 ---
 
 # Product documentation and graphical qualification
 
 Specialist B began with [independent reader observations](independent-intake.md)
-before reading other lanes' patch proposals. The existing README, portal and
-task-oriented manuals are useful and are retained. This lane corrects observed
-workflow friction and misleading feedback, with narrow source changes where
-appropriate. This is test evidence, not owner acceptance or merge authority.
+before reading the other lanes' patch proposals. The existing README, portal
+and task manuals remain the product front door. This lane corrected observed
+workflow friction, repaired three misleading runtime labels and a recorder
+storage defect, and exercised actual Workbench tasks. This packet is evidence
+for the Draft/HOLD candidate, not owner acceptance or merge authority.
 
-## Exact environment and scope
+## Evidence index and coverage
 
-The interactive process was launched from predecessor
-`20170bd6259498c3d2774ab274567febb043fc1d` using Godot
-`4.7.stable.official.5b4e0cb0f`, executable SHA-256
-`f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`.
-The Linux native extension SHA-256 is
-`a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7`;
-Rapier2D v0.35.2 is
-`566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a`.
-All 18 tracked LFS payloads were materialized and the repository provenance
-check passed after the pinned companion source inputs became available.
+- [Document coverage](coverage.json): **49 distinct documents**, comprising
+  **43 full-text semantic reviews** and **6 selected-section reviews**. Each row
+  identifies actual depth, reviewed bytes, source locators and execution limits.
+  A full-text read is not a claim that every numerical sentence was experimentally
+  reproduced. Other lanes own the remaining canonical corpus.
+- [Capture manifest](captures.json): ten actual native-window screenshots, with
+  source identity, bytes and SHA-256. These are evidence images, not concept art.
+- [Independent persistence reproduction](persistence-independent.json): B's
+  separate before/after execution of A's ordinary-save correction.
+- [Real permission-denied UI receipt](final-permission-ui.json) and
+  [integrated launch log](final-workbench.log.txt).
+- Display-backed architecture [author](architecture-display-author.json) and
+  [fresh-process reopen](architecture-display-reopen.json) receipts.
+- [Actual retrieved-context audit](context-applicability-81817f84.json): 24
+  additive questions, 120 supplied passages, with individual judgments.
+- Recorder [before](recorder/before.json), [unit result](recorder/unit-after.json)
+  and [OS result](recorder/os-after.json), plus retained original reproduction
+  inputs and child logs. The [first harness result](recorder/rejected-first-harness-report.json)
+  remains failed: it inspected frame 000000 although the writer starts at 000001.
+  Correcting that fixture did not change the production writer.
 
-The permitted Linux desktop used X11, Mesa 25.0.7, OpenGL Compatibility and
-llvmpipe LLVM 19.1.7 software rendering at a 1366×1024 window. Audio fell back to
-Dummy; the environment reported no usable ALSA device and unsupported VSync.
-These are real interactive native windows and source-matched simulation, not
-static concept renders, browser mockups, physical Windows/NVIDIA acceptance,
-performance measurements or evidence that every feature works.
+## Source, runtime and environment
 
-The launch used a fresh disposable profile, with `XDG_DATA_HOME`,
-`XDG_CONFIG_HOME` and `XDG_CACHE_HOME` set to separate task directories, then:
+The first interactive process used predecessor
+`20170bd6259498c3d2774ab274567febb043fc1d`. A separate integrated process used
+`a83c6988f33499632d813d58dadd2b6f64c68941`, exported to the child as
+`CYBERSAND_SOURCE_REVISION`. Later storage and documentation changes retain their
+own test/input identities; this GUI process is not relabelled as a different
+final source.
+
+| Component | Exact identity |
+|---|---|
+| Engine | `4.7.stable.official.5b4e0cb0f` |
+| Executable SHA-256 | `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75` |
+| Linux native extension SHA-256 | `a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7` |
+| Rapier2D | v0.35.2; SHA-256 `566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a` |
+| Desktop | Linux X11, 1366×1024 |
+| Graphics | Mesa 25.0.7, OpenGL Compatibility, llvmpipe LLVM 19.1.7 software rendering |
+| Audio | Dummy; no usable physical audio device |
+
+All 18 tracked LFS payloads were materialized and the repository provenance check
+passed after pinned companion source inputs became available. The installed
+unqualified default Godot 4.7.2 was not used. VSync was unsupported by this driver.
+These are actual interactive native windows and source-matched simulation, not
+physical Windows/NVIDIA playfeel, a browser mockup or a performance acceptance.
+
+The profile was disposable. `XDG_DATA_HOME`, `XDG_CONFIG_HOME` and
+`XDG_CACHE_HOME` pointed to separate task directories. After the normal project
+import, the integrated launch was:
 
 ```sh
-"$CYBERSAND_GODOT" --headless --path godot --editor --import --quit
-"$CYBERSAND_GODOT" --path godot --resolution 1366x1024 --position 0,0 -- --workbench
+export CYBERSAND_SOURCE_REVISION="$(git rev-parse HEAD)"
+"$CYBERSAND_GODOT" --audio-driver Dummy --rendering-method gl_compatibility --path godot --resolution 1366x1024 --position 0,0 -- --workbench
 ```
 
-The installed default `godot` executable was 4.7.2 and was deliberately not used
-for this project qualification. Screenshots below are lossless native-window
-captures; their sizes and digests are in [the capture manifest](captures.json).
+## Actual interactive task matrix
 
-## Observed user tasks
-
-| Task | Actual observation | Evidence scope |
+| Workflow | Observed outcome | Source/evidence scope |
 |---|---|---|
-| First launch | Ordinary Development workbench opened paused with Observer/no human pilot, 2048-square canvas and visible controls. | Interactive Linux process; launch log reached `SHARED_WORKBENCH_LAUNCH_READY`. |
-| Container construction | Main Paint picker showed `Reinforced Concrete · 58`; Line created floor and side walls. Native completion reported 2563, 1773 and 1773 changed cells. Sand Brush reported 6054 changed cells. | Actual gestures and terminal native receipts; tutorial label corrected. |
-| Undo/Redo | Undo removed the Sand patch; Redo returned it, each reporting 6054 cells. | Paused construction only. |
-| Ordinary Save | `ultima-container` saved successfully; file was 1738 bytes, SHA-256 `50d7b9a5139d5cfff0290adf1c95af36a4704f0c740e738bf4f109b58667c6d7`. | Isolated disposable profile, predecessor writer. |
-| Simulation and Restore | Sand visibly fell to the floor; the UI cleared construction history after source evolution. Restore rebuilt the authored floating patch. Free camera initially hid it; Overview revealed it. | Visible reconstruction, not exact physical continuation. |
-| Fresh-session ordinary reload | F2 ended the session; a new Workbench loaded `ultima-container`. Overview showed the authored container and Sand. | [Reload screenshot](captures/reloaded-authored.png). |
-| Direct JSON | The guide's rectangle/disc example completed: 8633 checked, 8633 changed, 0 refused. Art's picker still said `Hard wall (58)`. | [Actual Art receipt](captures/art-direct-completed.png); no provider call. |
-| Invalid Direct JSON | `{bad` produced an explicit JSON parse error and left the prior shape visible. | Actual UI refusal, no model evaluation. |
-| Architectural preview and cancellation | Default three-style 1024-square preview was started and stopped. Installed scene stayed unchanged and Install disabled, but the composition label falsely retained `Preparing a new native material proposal.` | [Before-fix screenshot](captures/cancelled-preview.png); repaired by this candidate. |
-| Architectural preview/install/edit/save | Complete preview reported 64 receipts, 136685 nonempty cells and 17.10 seconds to preview. Explicit Install replaced the scene. A 452-cell Sand Brush edit completed; `ultima-generated` saved. | [Verified preview](captures/architecture-preview.png); generated scene used the ordinary native Workbench. |
-| Generated reopen | New Workbench opened the saved-recipe verification dialog and began reconstructing; explicit Install remained required. | Final graphical installation/reload and candidate follow-up are recorded separately when completed. |
+| First launch | Ordinary Workbench opened paused, Observer/no human pilot, 2048-square canvas and visible controls; launch reached `SHARED_WORKBENCH_LAUNCH_READY`. | Predecessor and integrated processes. |
+| New scene and painting | Main palette displayed Reinforced Concrete/58. Line created a floor and two walls with 2563/1773/1773 changed cells; Sand Brush changed 6054 cells. | Original actual gestures; manual label corrected. |
+| Selection/Copy/Paste/Fill | Integrated selection copied 20001 native cells including Empty; paste acknowledged all 20001. Water Fill changed 6054 cells. Undo restored Sand and Redo returned Water, each acknowledging 6054. | [Integrated paint/history capture](captures/final-paint-history.png). |
+| Ordinary Save and evolution | Original named save was 1738 bytes. Sand visibly settled; Restore rebuilt authored floating Sand. Overview recovered content hidden by the reset Free camera. | [Original authored reload](captures/reloaded-authored.png); this is authored reconstruction, not physical continuation. |
+| Candidate same-name Save | Integrated save committed 4595 bytes. Actual directory mode 0500 then caused explicit UI refusal and left all 4595 old bytes/hash unchanged. Restoring 0700 allowed retry 5578 bytes and valid JSON. | [Refusal image](captures/final-save-refusal.png), [byte/digest receipt](final-permission-ui.json). Disposable data only. |
+| Candidate ordinary reopen | F2 ended the session; a new Workbench loaded the successful retry. Overview showed the Water-filled original and pasted Sand. | Fresh scene/session in the same process; not described as process restart. |
+| Direct JSON | Guide rectangle/disc example acknowledged 8633 checked/changed and 0 refused. Invalid `{bad` produced an explicit parse error and preserved prior content. Art still uses legacy Hard wall/58 wording. | [Actual Art receipt](captures/art-direct-completed.png); zero provider/model calls. |
+| Generated preview/cancel | Original cancellation left stale Preparing text. Integrated Start/Stop displayed `Preview cancelled. The installed World is unchanged.` and `No installable material proposal.`; Install disabled and old world retained. | [Before](captures/cancelled-preview.png), [after](captures/final-cancelled-preview.png). |
+| Generated install/edit/save | Three-style1024-square native proposal reported 64 receipts/136685 nonempty cells. Explicit Install replaced the scene; a 452-cell Sand edit was saved. | [Original verified preview](captures/architecture-preview.png); observed 17.10 seconds is this host's sample, not a latency guarantee. |
+| Generated reopen | Integrated Load displayed **Embedded saved recipe**, reconstructed the saved proposal, required explicit Install and retained the 452-cell edit. CtrlS acknowledged generated-save success. | [Corrected recipe label](captures/final-embedded-recipe.png); actual rebuilt preview 16.11 seconds. Separate automated fresh-process reopen 22/0 below. |
+| Flatten | Actual confirmation reported the 1024-square 2 MiB material baseline. Live scene stayed visible, old operation history was discarded, and a saved flattened start loaded from a fresh blank session without rerunning the generator. | Original source-matched native material writer; no exact physical continuation claim. |
+| Water Lab | Five tabs and requested/applied Wave controls were visible. Two Crests 512-square loaded; Play/Pause visibly changed/stopped the scene. | Representative controls, not all hydrodynamic claims qualified. |
+| Materials Lab | Water+Salt, seed 2, 120 ticks/1 worker completed 120/120 in its isolated native world; observed Water 329/Brine 134/Salt 6381 from Water 384/Salt 6448. | Standalone experiment; no claim of live Workbench audition or chemical calibration. |
+| Actors and equipment | Actor Composition placed Midge #1 in a disposable session. Integrated Physical Thunderbowl displayed 46 rigs; four default actors advanced to tick 655 and paused with equipment cancellation. | [Thunderbowl capture](captures/final-thunderbowl.png); not all 46 rigs manually tested. |
+| Showcase | Integrated Deepworks showed 16 districts/4 worlds/32 exhibits. A1 Customs of Dust opened; native Sand/Dust visibly fell and formed heaps; Pause stopped it and the rear-layer checkbox changed presentation. | [Deepworks capture](captures/final-deepworks.png); representative showcase, not 32-exhibit quantitative acceptance. |
 
-## Corrections and independent review
+## Implemented findings and review
 
-| ID | Priority | Finding and implemented response |
+| ID | Priority | Concrete correction and evidence |
 |---|---|---|
-| B-ULT-01 | P2 | First-session material name did not match the actual main Paint palette. Tutorial now names Reinforced Concrete/58 and Art guide explains its separate legacy Hard wall/58 label. |
-| B-ULT-02 | P2 | Load/Restore could appear to lose offscreen construction after resetting Free camera. First-session and saving manuals now provide the observed Overview recovery step. |
-| B-ULT-03 | P2 | Cancelled native preview retained an active preparation message. `_cancel_preview` now says `No installable material proposal.` Existing discovery and architecture tests exercise cancellation and retained-preview recovery. |
-| B-ULT-04 | P2 | Saved architectural reconstruction displays the selector's default `gen007-deepworks` label while using the embedded recipe. Correct native recipe verification remains in place; the misleading selector is under follow-up review. |
+| B-ULT-01 | P2 | First-session main palette name corrected to Reinforced Concrete/58; Art's distinct legacy label explained. Source and actual UI agree. |
+| B-ULT-02 | P2 | Save/Restore/Load instructions now include Overview when reset camera placement hides authored content. Reproduced in actual ordinary reload. |
+| B-ULT-03 | P2 | Cancelled native preview no longer retains a Preparing message. Runtime commit 523de8e5; source reviewed by A, discovery regression and integrated GUI passed. |
+| B-ULT-04 | P2 | Saved-recipe reconstruction now identifies **Embedded saved recipe** instead of the unrelated default picker choice; selecting a catalogue profile explicitly leaves embedded mode. Commit 584874f6, A independently executed 29 checks/0 failures; integrated GUI confirms label. |
+| B-ULT-05 | P2 | Physical Thunderbowl header derives 46 from its actual picker catalogue instead of stale 41. Commit 14c0b26d; A independently checked the catalogue owner, and integrated GUI confirms 46. |
+| B-ULT-06 | P2 | Combined authoring guide's stale palette/save/UI limitations corrected; legacy Water export clearly marked revealed engineering metadata that can expose hidden mapping and overwrite its fixed file. Owner-not-planned formal-study work was not reopened. Commit 12936181, A source review approved. |
+| B-ULT-07 | P1 | Gameplay recorder could report success for 128 bytes of an intended 1024-byte frame and invalid truncated JSON. Candidate 56117d19 verifies complete closed frame bytes, refuses existing/unsafe session names, preflights native capability and transactionally replaces only the manifest. Local 94-check suite and real Linux fault/normal cases pass; A independently reviews the state transitions. |
+| Cross-lane capture defect | P1 | Full manual/source reading exposed the same unchecked capture writer in Main and native MicroScenario CLI. A reproduced both, implemented the shared transaction and owns the cross-platform caller matrix. B corrected the two canonical capture descriptions. |
 
-The cancellation patch is `523de8e5`. The focused headless discovery regression
-passed **27 checks / 0 failures**. An initial headless run of the existing
-architecture `author` phase completed all 62 checks but **failed four viewport-fit
-assertions**. Its own form assertions require a 1280-pixel display-backed run;
-that failed attempt is retained in [the log](architecture-headless-attempt.log.txt),
-not represented as a pass. The actual native install/save/cancel/recovery checks
-completed. A display-backed rerun is a separate result.
+B also independently reproduced A's ordinary-save defect with real
+`RLIMIT_FSIZE=128`: before, success after 475→128 byte corruption and invalid JSON;
+after, explicit refusal and identical 475-byte old file. The
+[technical report](../technical/persistence-design-and-results.md) owns all
+three save callers, staged-failure boundaries and platform-specific results.
+No manual wording is substituted for the runtime fix.
 
-B independently executed A's original public-writer child before and after
-`6fec5da5`, using the same engine, native library and real Linux
-`RLIMIT_FSIZE=128` fault. Before: success was returned after truncating the old
-475-byte JSON to 128 bytes, and reload failed. After: explicit refusal, identical
-old-file SHA-256 and valid 475-byte reload. [Independent before/after receipts](persistence-independent.json)
-retain source and child identities. B reviewed the helper and three callers;
-the candidate manuals distinguish replacement safety from fsync/power-loss
-durability, concurrent editing and exact physical continuation. The
-[technical lane report](../technical/persistence-design-and-results.md) owns the
-full injected/OS fault matrix and platform-specific contract.
+The recorder's storage change is a per-file contract. A frame count advances
+only after all requested constituent files verify. A failed final manifest keeps
+the initial valid `recording` disposition and surfaces failure. Partial files can
+remain in the failed session and must not be treated as a complete recording.
+Disk mode explicitly requires native replacement before any output creation;
+in-memory mode remains independent. No whole-recording atomicity, fsync,
+power-loss durability, hostile-directory race defense or zero-overhead promise
+was added. Fresh Windows lock results belong to the integrated hosted receipt;
+the local Linux result does not establish them.
 
-The build guide now brings engine, godot-cpp and API pins into the first-launch
-route, puts copyable bounded validation commands together, and explains the
-C-header syntax-only probe. Status retains the historical bounded LCB-000
-admission without granting old execution instructions. Equipment sections route
-locally to #724's unmerged status. Four preservation links now target immutable
-predecessor content so compact delivery does not break custody routes.
+## Focused tests and retained negatives
 
-## Remaining qualification boundary
+| Qualification | Actual result | Scope |
+|---|---|---|
+| Generator discovery | 29 checks, 0 failures; A independently repeated | Headless pinned runtime; captions, explicit profile choice and cancellation state. |
+| Architecture author | 73 checks, 0 failures | Real X11 display, original integrated B source and normal frame scheduling. |
+| Architecture fresh-process reopen | 22 checks, 0 failures; natural exit 0 | Source a83c6988, 17.77 seconds, 64 native receipts, two saved edits, matching recipe/material hashes. [Receipt](architecture-display-reopen.json). |
+| Initial headless architecture attempt | 62 checks, 4 failures | Viewport-fit assertions failed without required 1280-pixel display. [Original log](architecture-headless-attempt.log.txt) retained; not called a pass. |
+| Physical catalogue | 6267 checks, 0 failures | 46 definitions and scoped source invariants; distinct from the limited manual GUI sample. |
+| Recorder unit regression | 94 checks, 0 failures; natural exit 0 | Missing capability, in-memory mode, unsafe names, existing sessions, partial frame, final-manifest refusal and existing timing/queue behavior. |
+| Recorder real Linux OS matrix | 2 cases passed | Normal frame 1024 bytes/complete; actual 128 byte file-size limit produces failed status/written 0/unchanged valid initial manifest. |
+| Documentation checker in B worktree |Failed on one cross-lane link | A's technical report was absent in the isolated B branch; root integration owns the complete final documentation gate. No new local route error was reported. |
 
-Physical Windows/NVIDIA playfeel and locked-destination Windows behavior require
-their own execution environment. Provider/model requests were not run: Direct
-JSON supplied the available non-generative Art exercise without introducing
-credentials or paid calls. This report does not convert a skipped, headless,
-source-only or software-rendered case into physical owner acceptance.
+The OS recorder runner also implements a Windows target-sharing-lock case:
+lock a valid initial manifest without delete sharing, write a complete frame,
+and require failed finalization plus unchanged prior manifest. The receipt
+records natural completion and rejects engine/script/native-load errors even
+when a result marker appears. Do not call this executed on Windows until the
+separate actual Windows receipt passes.
 
-The integrated candidate still needs its final exact-source graphical readback,
-rendered documentation review and independent cross-lane adjudication. This
-checkpoint intentionally preserves those outstanding tasks instead of claiming
-mission completion from the observations above.
+## Retrieval and independent cross-review
+
+B inspected the **actual** proposed contexts at 81817f84 for DR01–12 and DR25–36:
+**22 sufficient, 2 partial, 0 wholly wrong-context**,120 passages. DR04 lacked focused
+validation/C-header detail in its first-pass passages; DR08 lacked the full
+Wave-versus-ballistic distinction. C then exercised explicit source-following
+through a retrieved canonical link. B judged those returned source documents
+sufficient for the missing facts, separately from the original first-pass score.
+The two full-document reads cost 92564 bytes and 48613 bytes respectively; this is
+not a free improvement or an executed model decision. Reviewers were not blind,
+and B had authored some manual corrections. No generative answers were run.
+
+DR02's supplied passages contain exact dependency pins. DR36 appropriately
+abstains from an absent owner decision and supplies an authority route. The
+Explore layout primary document moved in rank, but the inspected practical
+passages still support a bounded correct next action. A owns DR13–24; the
+retrieval lane's final source-bound report owns all 36 combined outcomes.
+
+B independently reviewed A's torque/rotation and Wave catch/grace corrections,
+C's maintenance/index/authority explanations, owner Web policy routes, actual
+PENV picker label and accepted PLAY-WAIT ancestry, and the physics manifest
+portability correction. Lead's compact LCB reader procedure and Tower/Water
+readiness boundary were checked separately. Approvals concern the reviewed
+source/diff; they do not requalify another programme's runtime or historical
+campaign. B also reviewed 26 sealed holdout expectations without exposing them to
+C; one ambiguous premise was reported for a separately versioned fact correction.
+
+## Exact external boundaries and owner continuation
+
+**Rendered documentation remains blocked.** The connected browser extension
+reported that it required an originating browser context. The permitted cloud
+fallback could not connect to the local preview (`ERR_CONNECTION_REFUSED`). A
+subsequent attempt to inspect that failed tab received an explicit browser
+security-policy denial for its resulting URL/protocol. That path was stopped;
+no alternative browser surface or raw browser automation was used to bypass the
+denial. README/portal/manual markup, routes and image provenance were reviewed,
+but there is no fresh desktop/narrow browser rendering pass to claim.
+
+Physical Windows/NVIDIA playfeel, a genuine provider/model creative run and the
+recorder's matched recording OFF/ON owner-performance campaign were not available
+in this lane. A software-rendered desktop, a headless case, a source review and
+Direct JSON are each labelled by their actual evidence class.
+
+On a permitted owner host, use the exact candidate's qualified runtime, an empty
+user-data profile and the ordinary Workbench. Repeat the first-session painting,
+same-name Save/reopen, generated Load/explicit Install, Restore/Flatten and
+Direct JSON steps above. Confirm visible failure feedback with disposable data,
+then run the platform storage qualification scripts from the canonical manuals.
+Separately render README, portal and first-session/saving manuals at desktop and
+narrow widths. Record source/build, OS/GPU, actual result and captures; a pass
+must not be inferred from this Linux session or a later evidence-only commit.

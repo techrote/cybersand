@@ -1,0 +1,12 @@
+extends SceneTree
+const Recorder = preload("res://scripts/gameplay_recorder.gd")
+func _initialize() -> void:
+	var recorder := Recorder.new()
+	var path := OS.get_environment("B_RECORDING_PATH")
+	var text := "Q".repeat(1024)
+	var binary_error: String = recorder._write_binary_file(path + ".ids", text.to_utf8_buffer())
+	var text_error: String = recorder._write_text_file(path + ".json", JSON.stringify({"scope":"disposable", "payload":text}))
+	var binary := FileAccess.get_file_as_bytes(path + ".ids")
+	var metadata := FileAccess.get_file_as_string(path + ".json")
+	print("B_RECORDER_RESULT ", JSON.stringify({"binary_error":binary_error,"binary_bytes":binary.size(),"expected_binary_bytes":1024,"text_error":text_error,"text_bytes":metadata.to_utf8_buffer().size(),"text_valid_json":JSON.parse_string(metadata)!=null}))
+	quit()

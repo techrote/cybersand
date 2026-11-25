@@ -2,11 +2,11 @@
   "schema_version": 1,
   "reviewer": "Specialist B",
   "date": "2026-11-25",
-  "reviewed_branch_head": "14c0b26ddc98a7eed9e6a967f06a5b2e6437494b",
-  "scope": "Product/user route and assigned product-heavy system semantic review. This inventory distinguishes full-text reading from selected source checks, actual execution and inherited evidence. It is not a claim that every numerical sentence or every platform was independently executed.",
+  "reviewed_branch_head": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
+  "scope": "Product/user route and assigned product-heavy system semantic review. This inventory distinguishes full-text reading from selected source checks, actual execution and inherited evidence. It is not a claim that every numerical sentence or every platform was independently executed. Source locators identify reviewed files, not exhaustive per-line verification. Earlier hashes remain where subsequent cross-lane changes did not receive a fresh full-body reread.",
   "summary": {
-    "documents": 37,
-    "full_text": 31,
+    "documents": 49,
+    "full_text": 43,
     "selected_sections": 6
   },
   "documents": [
@@ -117,7 +117,7 @@
           "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
         }
       ],
-      "qualification_limit": "Actual Line/Brush/Undo/Redo; no claim that every shape/Fill adversary was manually exercised."
+      "qualification_limit": "Actual Line/Brush, selection Copy/Paste20001cells, Fill6054cells, Undo/Redo; not every shape/adversarial fixture manually exercised."
     },
     {
       "path": "docs/systems/paint-editor-bounded-shapes.md",
@@ -142,7 +142,7 @@
           "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
         }
       ],
-      "qualification_limit": "Actual Line/Brush/Undo/Redo; no claim that every shape/Fill adversary was manually exercised."
+      "qualification_limit": "Actual Line/Brush, selection Copy/Paste20001cells, Fill6054cells, Undo/Redo; not every shape/adversarial fixture manually exercised."
     },
     {
       "path": "docs/operations/workbench-saving.md",
@@ -272,7 +272,7 @@
           "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
         }
       ],
-      "qualification_limit": "Real three-style preview/install/edit/reopen; display-backed author73/0 and focused discovery29/0; no all80-style fresh campaign."
+      "qualification_limit": "Real three-style preview/install/edit/reopen; display author73/0 and fresh-process reopen22/0; discovery29/0; not all80styles freshly rendered."
     },
     {
       "path": "docs/systems/architectural-generator.md",
@@ -297,7 +297,7 @@
           "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
         }
       ],
-      "qualification_limit": "Real three-style preview/install/edit/reopen; display-backed author73/0 and focused discovery29/0; no all80-style fresh campaign."
+      "qualification_limit": "Real three-style preview/install/edit/reopen; display author73/0 and fresh-process reopen22/0; discovery29/0; not all80styles freshly rendered."
     },
     {
       "path": "docs/systems/explore001-generated-playable-maps.md",
@@ -322,7 +322,7 @@
           "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
         }
       ],
-      "qualification_limit": "Real three-style preview/install/edit/reopen; display-backed author73/0 and focused discovery29/0; no all80-style fresh campaign."
+      "qualification_limit": "Real three-style preview/install/edit/reopen; display author73/0 and fresh-process reopen22/0; discovery29/0; not all80styles freshly rendered."
     },
     {
       "path": "docs/systems/procedural-world-generation.md",
@@ -550,7 +550,7 @@
       "path": "docs/systems/building-material-catalogue.md",
       "document_sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
       "review_depth": "full-text semantic review with selected material/presentation source checks",
-      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "consequential_claims_reviewed": "Material81\u2013131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
       "source_locators": [
         {
           "path": "native/include/cybersand/material.hpp",
@@ -579,7 +579,7 @@
       "path": "docs/systems/themed-construction-materials.md",
       "document_sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
       "review_depth": "full-text semantic review with selected material/presentation source checks",
-      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "consequential_claims_reviewed": "Material81\u2013131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
       "source_locators": [
         {
           "path": "native/include/cybersand/material.hpp",
@@ -608,7 +608,7 @@
       "path": "docs/systems/material-appearance-and-rendering.md",
       "document_sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
       "review_depth": "full-text semantic review with selected material/presentation source checks",
-      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "consequential_claims_reviewed": "Material81\u2013131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
       "source_locators": [
         {
           "path": "native/include/cybersand/material.hpp",
@@ -637,7 +637,7 @@
       "path": "docs/systems/material-visual-pattern-library.md",
       "document_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
       "review_depth": "full-text semantic review with selected material/presentation source checks",
-      "consequential_claims_reviewed": "Material81–131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
+      "consequential_claims_reviewed": "Material81\u2013131 catalogue, stable58 label, declared interactions versus thermal/presentation effects, RG8 versus8bytecell, full-image uploads,50non-neutralflairs, historical image scope.",
       "source_locators": [
         {
           "path": "native/include/cybersand/material.hpp",
@@ -853,13 +853,9 @@
     {
       "path": "docs/architecture/shared-workbench-authoring-data.md",
       "document_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066",
-      "review_depth": "selected consequential sections; not full-document claim",
-      "consequential_claims_reviewed": "Authored formats, Flatten and complete new save replacement contract; other ownership sections are independently assigned A.",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Complete authoring model, operation history, save/load/project/Flatten, material baseline and candidate failure-safe replacement, not physical continuation.",
       "source_locators": [
-        {
-          "path": "godot/scripts/workbench_file_transaction.gd",
-          "sha256": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac"
-        },
         {
           "path": "godot/scripts/workbench_setup.gd",
           "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
@@ -867,9 +863,22 @@
         {
           "path": "godot/scripts/workbench_generated_map.gd",
           "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        },
+        {
+          "path": "godot/scripts/workbench_file_transaction.gd",
+          "sha256": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
         }
       ],
-      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+      "qualification_limit": "Actual GUI save/load/Flatten and independent Linux fault reproduction; not power-loss durability.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
+      "earlier_review": {
+        "document_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066",
+        "review_depth": "selected consequential sections; not full-document claim"
+      }
     },
     {
       "path": "docs/reference/level-saves-and-replay.md",
@@ -890,42 +899,329 @@
     },
     {
       "path": "docs/reference/status-and-roadmap.md",
-      "document_sha256": "ffa060d60479ca981571136c9bfc31d22d30e6d540b207b55fe516908d006d90",
-      "review_depth": "selected consequential sections; not full-document claim",
-      "consequential_claims_reviewed": "Accepted/candidate rows, LCB foundation and custody routes; full reference review assigned C.",
+      "document_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+      "review_depth": "selected consequential sections and independent cross-lane review",
+      "consequential_claims_reviewed": "Foundation/successor rows independently checked against supplied live PR readback #778-781/#783; no external application requalification.",
       "source_locators": [
         {
-          "path": "godot/scripts/workbench_actor_catalog.gd",
-          "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927"
+          "path": "godot/scripts/feature_launcher.gd",
+          "sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
         }
       ],
-      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+      "qualification_limit": "Selected consequential sections/diff review; full body owned by another lane.",
+      "reviewed_source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab",
+      "earlier_review": {
+        "document_sha256": "ffa060d60479ca981571136c9bfc31d22d30e6d540b207b55fe516908d006d90",
+        "review_depth": "selected consequential sections; not full-document claim"
+      }
     },
     {
       "path": "docs/systems/workbench-liquid-equipment.md",
       "document_sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
-      "review_depth": "selected consequential sections; not full-document claim",
-      "consequential_claims_reviewed": "Device/nozzle user controls and explicit unmerged#724 boundary; native equipment contract assigned A.",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Configured/applied state, queue/budget bounds, validation, save/restore and accepted versus candidate #724.",
       "source_locators": [
         {
-          "path": "godot/scripts/workbench_water_lab.gd",
-          "sha256": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d"
+          "path": "godot/scripts/workbench_liquid_equipment.gd",
+          "sha256": "27411a621e6fb3faf98a19688aa31c7df8843c60dc4fcb662751162b27ff5ee4"
+        },
+        {
+          "path": "godot/scripts/workbench_liquid_equipment_panel.gd",
+          "sha256": "30fd3eba2e3e68ff9859192fd46a5ada5955de536d4cdee4db601cf3505b44dc"
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
         }
       ],
-      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+      "qualification_limit": "Selected API and validation checks; not all equipment geometry/capacity scenarios executed.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
+      "earlier_review": {
+        "document_sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
+        "review_depth": "selected consequential sections; not full-document claim"
+      }
     },
     {
       "path": "docs/operations/explore001-desktop-playtest.md",
       "document_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
-      "review_depth": "selected consequential sections; not full-document claim",
-      "consequential_claims_reviewed": "Complete actual retrieved manual acceptance sequence and generated first-open layout facts; full remaining file not claimed.",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Full reader workflow for preview/load/install and authored-save/play boundaries.",
       "source_locators": [
         {
           "path": "godot/scripts/workbench_generator_dialog.gd",
           "sha256": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
         }
       ],
-      "qualification_limit": "Review scope is limited to listed sections; broader review assigned as stated."
+      "qualification_limit": "Representative real native tasks; not every preset graphically exercised.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
+      "earlier_review": {
+        "document_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+        "review_depth": "selected consequential sections; not full-document claim"
+      }
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "document_sha256": "624ea59925efc795e86c2834ff4627e32c975570aafd7c35bc2f42cb99a70180",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Immutable snapshot/ROI ownership, queue/drop/finalization, schema timing identity, buffered-write false success and candidate repair; no zero-overhead/exact-replay claim.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/gameplay_recorder.gd",
+          "sha256": "4e66f09c3c640221c86595ca7289e7d8b4cf85cd710c31faeace65a05d40f97f"
+        },
+        {
+          "path": "godot/tests/test_gameplay_recorder.gd",
+          "sha256": "3212cf766ba07ff5f01e77be16313622d8e53748972fbc8335a59456028a885c"
+        },
+        {
+          "path": "godot/tests/gameplay_recorder_fault_child.gd",
+          "sha256": "a5e2201a4636ed47f5868a17226011c8134727141f6d11f64176c9b1d44eeb40"
+        },
+        {
+          "path": "tools/ci/run_recorder_storage_qualification.py",
+          "sha256": "6ecc2ee537bc48b27edeaecff02c8ecd6ff2831bbea88df8ff3bbb6923c82141"
+        }
+      ],
+      "qualification_limit": "94 unit checks and real Linux before/after RLIMIT/normal cases. Interactive F10 and matched OFF/ON owner-performance campaign not run.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "document_sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Material-only Flatten, baseline/edit distinction, native replacement limits, exact format and source-scoped qualification routes.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
+        },
+        {
+          "path": "godot/scripts/workbench_generated_map.gd",
+          "sha256": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a"
+        },
+        {
+          "path": "godot/native_extension/material_baseline_file.cpp",
+          "sha256": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873"
+        }
+      ],
+      "qualification_limit": "Actual Workbench Flatten confirmation/reload; not all historical GEN008 campaigns rerun.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "document_sha256": "7fcf79dd6e9589cf63e90586b34a2b28505ba7e4165e72cbf63bf25f16d0185e",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Catalogue/schema2 apparatus scope, reset and acknowledgement, native/headless boundaries and candidate capture safety.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/microscenario_reference_pack.gd",
+          "sha256": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f"
+        },
+        {
+          "path": "godot/scripts/microscenario_workbench.gd",
+          "sha256": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84"
+        }
+      ],
+      "qualification_limit": "Selected source contracts. New capture defect reproduced/fixed by A; apparatus physics not comprehensively rerun.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "document_sha256": "ada3ca97404341bdbc496843a97ce4fe9514431b0d631c453b8ab65dc9f19086",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Strict schemas/budgets, owner lifecycle, reset/acknowledgement, capture authority, headless limits and hidden-mapping legacy boundary.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/microscenario_contract.gd",
+          "sha256": "0a32ecacd2dff9f4712fd752d6d356d4937739abbf9f1d3c1c810047b7779af1"
+        },
+        {
+          "path": "godot/scripts/microscenario_host.gd",
+          "sha256": "e60e291eba2c3ed21a9f55e598616c3f7a61f95a2bb723863c74cee4c847ad2b"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84"
+        },
+        {
+          "path": "godot/tests/run_microscenario.gd",
+          "sha256": "1912d0471370d9ede2d5aac529ec6e4ccc751e14a8cb01aeecf3da472125be11"
+        }
+      ],
+      "qualification_limit": "Selected source tracing; formal blinded-study acceptance not run. Capture-writer qualification belongs A.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "document_sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Historical checkpoint versus current qualification commands, generation ownership, budgets, source identity and render claims.",
+      "source_locators": [
+        {
+          "path": "native/include/cybersand/world_generation.hpp",
+          "sha256": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d"
+        },
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f"
+        },
+        {
+          "path": "godot/scripts/architectural_generator_dialog.gd",
+          "sha256": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b"
+        }
+      ],
+      "qualification_limit": "Historical four-seed/large-campaign metrics retain original scope; not all native procedural cases rerun.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "document_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Combined authoring runbook, palette labels, candidate Save contract and accurate graphical scope.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "sha256": "a0b13f8b116f23c03ac3a5589531109856ae4ae0b82061cbc48957fe3ae5221d"
+        },
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "sha256": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3"
+        },
+        {
+          "path": "godot/scripts/workbench_paint_editor_controller.gd",
+          "sha256": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e"
+        }
+      ],
+      "qualification_limit": "Actual paused painting, Direct JSON and save/reopen; no external model or physical Windows.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "document_sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Native material/source-image ownership, commands, render/stream bounds and proposal versus ordinary scene application.",
+      "source_locators": [
+        {
+          "path": "tools/world_art_preview_launcher.py",
+          "sha256": "1475f0a77cf1eae5e68431681303cd3d0dc67a71be9bcf46217f35a196640fd4"
+        },
+        {
+          "path": "tools/world_art_capture_support.py",
+          "sha256": "4f8f1c1fec4fd11626c5b5ab758b177204fe72451a19b699fbd9ce69d7d4af20"
+        },
+        {
+          "path": "tools/world_art_stream_png.py",
+          "sha256": "4352b180b59fedced2c284398d3bfbd871d80f93c9dc2e6da71ffbfc4234ea26"
+        }
+      ],
+      "qualification_limit": "Source and CLI help verified; no fresh full World-Art model/capture campaign.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "document_sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Manifest publication, evidence identity, output isolation and opt-in tooling boundaries.",
+      "source_locators": [
+        {
+          "path": "tools/world_art_evaluation_package.py",
+          "sha256": "42978207589dcf5741b90dc261c54a02f0c26ac2bcc6d16425b02d34ae420382"
+        },
+        {
+          "path": "tools/world_art_preview_launcher.py",
+          "sha256": "1475f0a77cf1eae5e68431681303cd3d0dc67a71be9bcf46217f35a196640fd4"
+        },
+        {
+          "path": "tools/world_art_capture_support.py",
+          "sha256": "4f8f1c1fec4fd11626c5b5ab758b177204fe72451a19b699fbd9ce69d7d4af20"
+        }
+      ],
+      "qualification_limit": "Source and CLI help verified; no fresh full World-Art or generative campaign.",
+      "reviewed_source": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd"
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "document_sha256": "155555f1c6c8bb5049d1b204b43f961886ca89bc7a3e7c4d80b88458b2ad4ddc",
+      "review_depth": "full-text semantic review with selected source-contract checks",
+      "consequential_claims_reviewed": "Full compact reader procedure, requested/applied state, IN geometry, normalized image versus conservation, historical metrics and owner Web boundary.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/liquid_comparison_panel.gd",
+          "sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        }
+      ],
+      "qualification_limit": "Reader review of lead correction; C separately source-reviewed. No fresh117-case LCB campaign.",
+      "reviewed_source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab"
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "document_sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8",
+      "review_depth": "selected consequential sections and independent cross-lane review",
+      "consequential_claims_reviewed": "Readiness label dated; formal-study limitation routed.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        },
+        {
+          "path": "godot/scripts/water_experiment_blind.gd",
+          "sha256": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85"
+        }
+      ],
+      "qualification_limit": "Selected consequential sections/diff review; full body owned by another lane.",
+      "reviewed_source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab"
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "document_sha256": "c392ce43a64f7f389c3f01b35ec53f8e726a4fd05f32b47d86de31b999b354f4",
+      "review_depth": "selected consequential sections and independent cross-lane review",
+      "consequential_claims_reviewed": "Closed-not-planned owner boundary, hidden mapping and fixed overwrite path.",
+      "source_locators": [
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        },
+        {
+          "path": "godot/scripts/water_experiment_blind.gd",
+          "sha256": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85"
+        }
+      ],
+      "qualification_limit": "Selected consequential sections/diff review; full body owned by another lane.",
+      "reviewed_source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab"
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "document_sha256": "a3f45b9bab5f7e34fd79bd5c73833e4f54a25c33db073a849a69c007e7785bde",
+      "review_depth": "selected consequential sections and independent cross-lane review",
+      "consequential_claims_reviewed": "Platform-selected materialized artifacts, engine version, fresh output, before/after checks and configured-vs-loaded scope.",
+      "source_locators": [
+        {
+          "path": "tools/physics/runtime_identity.py",
+          "sha256": "e12720f5c0b12f9395fe2a7e398c5892f8010a95827214b6daab66a0e9a9bf6e"
+        },
+        {
+          "path": "tools/physics/capture.py",
+          "sha256": "d1c6fe32f9f45eb6415b08eb088345e45937a430f54c9067fc8c23d6e9fc104d"
+        },
+        {
+          "path": "tools/physics/run.py",
+          "sha256": "8de559870667babf05628c4bb06c9a339ebaeb8e8fba27f68847b1ca501ac174"
+        }
+      ],
+      "qualification_limit": "Selected consequential sections/diff review; full body owned by another lane.",
+      "reviewed_source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab"
     }
   ],
   "cross_lane_reviews": [

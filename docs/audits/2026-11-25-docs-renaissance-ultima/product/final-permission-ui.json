@@ -1,0 +1,19 @@
+{
+  "path": "/workspace/scratch/1c5fccfbe328/b-gui-profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-container.json",
+  "before_fault_bytes": 4595,
+  "before_fault_sha256": "aa80cd3210fbea37c354f93cea43d07e03c8957c0377de718f4e25c8e3c2daee",
+  "before_fault_valid_json": true,
+  "mode_before": "0o700",
+  "fault": "chmod workbench directory 0500; same-name ordinary Save through actual UI",
+  "after_fault_bytes": 4595,
+  "after_fault_sha256": "aa80cd3210fbea37c354f93cea43d07e03c8957c0377de718f4e25c8e3c2daee",
+  "after_fault_valid_json": true,
+  "unchanged_after_refusal": true,
+  "ui_observation": "Refused \u00b7 Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+  "mode_restored": "0o700",
+  "after_retry_bytes": 5578,
+  "after_retry_sha256": "5e4042009fd248021237e4d0301d02e1f644c14a21ecb50d18f29078ac254c0a",
+  "after_retry_valid_json": true,
+  "ui_retry": "Saved starting setup \u00b7 ultima-container",
+  "ui_reload": "F2 ended session; new Workbench Load reconstructed Water-filled original and pasted Sand patch; Overview revealed both."
+}

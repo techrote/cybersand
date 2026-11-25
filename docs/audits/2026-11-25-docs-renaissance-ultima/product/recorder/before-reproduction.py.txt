@@ -1,0 +1,15 @@
+from pathlib import Path
+import os,resource,signal,subprocess,json,hashlib
+base=Path('/workspace/scratch/1c5fccfbe328/b-recording-checks')
+engine='/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64'
+project='/workspace/scratch/1c5fccfbe328/ultima-b/godot'
+def limit():
+ signal.signal(signal.SIGXFSZ,signal.SIG_IGN)
+ resource.setrlimit(resource.RLIMIT_FSIZE,(128,128))
+env=os.environ.copy()
+env.update(B_RECORDING_PATH=str(base/'before'),XDG_DATA_HOME=str(base/'profile/data'),XDG_CONFIG_HOME=str(base/'profile/config'),XDG_CACHE_HOME=str(base/'profile/cache'))
+cmd=[engine,'--headless','--audio-driver','Dummy','--path',project,'--script',str(base/'reproduce.gd')]
+r=subprocess.run(cmd,env=env,text=True,capture_output=True,preexec_fn=limit,timeout=30)
+report={'command':cmd,'source':subprocess.check_output(['git','rev-parse','HEAD'],cwd=Path(project).parent,text=True).strip(),'file_sha256':hashlib.sha256((Path(project)/'scripts/gameplay_recorder.gd').read_bytes()).hexdigest(),'fault':'actual Linux RLIMIT_FSIZE128 / SIGXFSZ ignored','exit_code':r.returncode,'stdout':r.stdout,'stderr':r.stderr}
+(base/'before.json').write_text(json.dumps(report,indent=2)+'\n')
+print(json.dumps(report,indent=2))
