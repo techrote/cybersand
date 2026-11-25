@@ -69,6 +69,21 @@ the finding and is implementing the helper plus an actual-native Stop-during-
 verification regression. **The fix and fresh passing source remain to be
 recorded in the mission ledger.**
 
+**Discuss/Review continuity can reuse an old message selection.** At the
+reviewed source, `_publish_inspection` freezes the recent-message payload.
+Discuss/Review `_response` adds the reply to Conversation but does not refresh
+that snapshot, and `request` does not compare the conversation revision with
+the inspected one. Consequently, the next follow-up can omit the preceding
+exchange. Explicit Conversation edits can similarly leave superseded text in
+the next disclosed request until a manual reinspection. Propose/Develop refresh
+through proposal admission, so the issue is mode-specific.
+
+The review requests refreshing the disclosed snapshot after Discuss/Review,
+detecting Conversation edits before Send, preserving exact external-context
+authorization and adding a two-discussion transport assertion. Refreshing
+context must not itself dispatch HTTP. **Closure and the fresh source are
+pending in the mission ledger.**
+
 **The first native comparison used unequal timer scopes.** Specialist C found
 that staged `elapsed_usec` included per-stage native readback, constraint checks,
 PNG creation and displayed screenshot waits, while the direct arm timed only
