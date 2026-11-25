@@ -43,7 +43,7 @@ jobs:
           GODOT_SILENCE_ROOT_WARNING: '1'
           DISPLAY: ':99'
         run: |
-          python tools/gip014/qualify_linux.py --out '${{ runner.temp }}/goblin002-linux' --plan full
+          python tools/gip014/qualify_linux.py --out '${{ runner.temp }}/goblin002-linux' --qualification-request
       - name: Preserve all Linux attempts, including failures and pending actions
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -99,6 +99,7 @@ jobs:
             ${{ runner.temp }}/goblin002-windows/extracted/CyberSand-goblin/goblin-evaluator-manifest.json
             ${{ runner.temp }}/goblin002-windows/*.json
             ${{ runner.temp }}/goblin002-windows/*.log
+            ${{ runner.temp }}/goblin002-windows/extracted-selftest.powershell-probe.ps1
             ${{ runner.temp }}/goblin002-windows/regression-case/
             ${{ runner.temp }}/goblin002-windows/CyberSand-goblin-base.zip
           if-no-files-found: warn

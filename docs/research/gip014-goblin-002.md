@@ -240,6 +240,57 @@ The added hostile pure oracle controls passed 110/110. The next hosted candidate
 must requalify this repair, the transcript fixture correction, graphical controls,
 full comparative queue and extracted Windows package together.
 
+### Third hosted qualification and extracted-launch environment
+
+[Run 45538643315](https://github.com/techrote/cybersand/actions/runs/45538643315)
+executes clean source `d849be8ef99cd9226cfc3ca0925752e42b691515`, tree
+`b6da28e8df80247bbfffb968cbe66e99b386959a`. The Windows source gates passed,
+including the repaired strict transcript fixture, finite-edge recovery, native
+edited-prefix reuse, repeated reduction and fixed regression export. Its six
+representative campaign/replay executions retained 448 completed actions; 64 of
+those belong to the separately identified replay, not a new random episode.
+
+The base Windows package was created, then extracted qualification stopped before
+launching a game process: Windows PowerShell could not discover `Get-FileHash`.
+The extracted monitor retained exit 1 after 4.859 seconds, sampled peak tree RSS
+98,684,928 bytes, one observed process and no surviving owned process. This is an
+extracted-test environment failure, not a gameplay defect or a qualified evaluator.
+
+- [Windows evidence artifact 14988048860](https://github.com/techrote/cybersand/actions/runs/45538643315/artifacts/14988048860):
+  188,047,155 bytes; SHA-256
+  `60c0e25fbec428bb767eb2c2a923a0e39566579327d08653d78b8cab1e6f3922`.
+- Retained unqualified base ZIP SHA-256:
+  `be5d7e6cce09ff2d3d7c4a2dba9fdc6798c001fa8bd8876ba3d5a48efb32032e`.
+
+Microsoft documents the precise [PowerShell module-path inheritance boundary](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6#starting-windows-powershell-from-powershell-7):
+a Python intermediary can pass PowerShell 7 module paths to Windows PowerShell,
+preventing standard module autoload. The focused qualifier removes only that
+variable, case-insensitively, from its child environment. Actual extracted execution
+must still establish the repair; the package launcher, Godot sources and native
+bytes are preserved.
+
+The wrapper includes a fixed, bounded inherited/clean environment probe which
+checks the discovered standard command by hashing its own exact script. It records
+command/version identity without dumping environment values. The four added
+environment-boundary controls and existing Python suite passed 67/67, including
+actual pinned-engine pure parity, in 3.422 seconds with no surviving owned process.
+These are local tooling controls; actual Windows repair evidence is still required.
+
+Request 4 explicitly selects all Linux focused/regression/graphical gates plus
+the existing two-episode smoke, and all Windows source/extracted-package gates.
+The original 142-episode Linux programme continues separately at request 3's exact
+source. Its results must retain that identity. The command-line Linux qualifier
+still defaults to the full programme; `--qualification-request` selects only the
+committed `full` or `smoke` plan and records that scope in its ledger.
+
+A separate source review raised a possible cached-pause-field issue for Step then
+Save. A bounded controller diagnostic did not reproduce it: both Pause/Save and
+Step/Save completed with valid full captures, four total completed actions and
+39 passing action assertions. A preceding diagnostic setup error correctly hit
+the authored-fixture identity fence before dispatching any actions. Both attempts
+are retained in the gameplay handover. No oracle relaxation or game-code change
+followed the negative result.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing

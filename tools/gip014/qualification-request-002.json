@@ -1,12 +1,14 @@
 {
   "schema": "cybersand-goblin-discovery-qualification-request-v1",
   "mission": "GIP-014-goblin-002",
-  "request": 3,
+  "request": 4,
   "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
-  "previous_source": "89c91ba5342d485e787d39e64103fc6c91c5f92b",
-  "previous_run": 45536048675,
-  "plan": "108 matched episodes plus long-horizon, personality and authored-scenario cohorts",
-  "changes": "Repair synthetic1024-row assertion fixture without weakening validation; source-proof-gated legal finite-edge capture refusal and ordinary recovery, confirmed native before/after; requalify full source, graphical,142episode and extracted Windows gates",
+  "previous_source": "d849be8ef99cd9226cfc3ca0925752e42b691515",
+  "previous_run": 45538643315,
+  "linux_plan": "smoke",
+  "plan": "All Linux focused, regression-export and graphical gates plus the two-episode smoke; full Windows source and extracted-package qualification",
+  "comparative_campaign": "The separate request3 run45538643315 retains its142episode full programme at exact d849be8 source. Do not relabel it as a later-commit pass.",
+  "changes": "Repair Python-to-Windows-PowerShell module-path inheritance in the extracted qualifier. Preserve every Godot gameplay, native, launcher and policy byte. Record explicit qualification plan scope.",
   "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
   "evidence": "Retain every attempted process; production defects require independent reproduction and examination"
 }

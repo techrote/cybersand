@@ -24,13 +24,23 @@ ENGINE_NAME = "Godot_v4.7-stable_linux.x86_64"
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--plan", choices=campaign_queue.PLAN_KINDS, default="full")
+    plans = parser.add_mutually_exclusive_group()
+    plans.add_argument("--plan", choices=campaign_queue.PLAN_KINDS)
+    plans.add_argument("--qualification-request", action="store_true",
+                       help="Read the explicit finite Linux plan from the committed qualification request")
     parser.add_argument("--godot", type=Path, help="Optional locally provisioned exact pinned engine")
     args = parser.parse_args()
+    plan = args.plan or "full"
+    if args.qualification_request:
+        request = json.loads((run_goblin.ROOT / "tools/gip014/qualification-request-002.json").read_text(encoding="utf-8"))
+        plan = request.get("linux_plan", "full")
+        if plan not in ("full", "smoke"):
+            parser.error("The committed qualification request must select the full or smoke Linux plan")
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=False)
     ledger = {"schema": "cybersand-goblin-linux-qualification-v2", "status": "running", "source_commit": run_goblin.git("rev-parse", "HEAD"),
-              "steps": [], "scope": "Actual Linux Godot and retained source-matched native/Rapier runtime; no physical NVIDIA acceptance"}
+              "steps": [], "campaign_plan": plan,
+              "scope": "Actual Linux Godot and retained source-matched native/Rapier runtime; no physical NVIDIA acceptance"}
     def save(name, code):
         ledger["steps"].append({"case": name, "exit_code": code, "status": "pass" if code == 0 else "failed"})
         run_goblin.write_json(out / "linux-qualification.json", ledger)
@@ -78,9 +88,9 @@ def main() -> int:
             run_goblin.write_json(out / "graphical-driver.json", process)
             okay = save("graphical", 0 if process["status"] == "pass" else 2) and okay
         if okay:
-            code = campaign_queue.main(["--godot", str(godot), "--out", str(out / "campaign"), "--plan", args.plan,
+            code = campaign_queue.main(["--godot", str(godot), "--out", str(out / "campaign"), "--plan", plan,
                                          "--wall-seconds", "7200", "--max-output-mib", "8192"])
-            okay = save("campaign-" + args.plan, code) and okay
+            okay = save("campaign-" + plan, code) and okay
         ledger["status"] = "pass" if okay else "failed"
         run_goblin.write_json(out / "linux-qualification.json", ledger)
         print("GOBLIN_LINUX_QUALIFICATION " + json.dumps({"status": ledger["status"], "source_commit": identity["source_commit"]}), flush=True)

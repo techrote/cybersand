@@ -398,6 +398,48 @@ This is a confirmed and repaired **goblin harness defect**. No production gamepl
 implementation changed, and no production gameplay defect is claimed. The new
 integrated source still requires its own hosted platform qualification.
 
+## Step-to-Save timing hypothesis: bounded negative result
+
+Read-only review of the retained Linux metamorphic observations found a legal
+cached-context transition: the capture following 16 exact Steps started with
+`source_before.paused=false` and completed with `source_after.paused=true`, at
+unchanged generation/revision/tick. `simulation_worker.gd:paint_state` returns the
+last paint context; a single-step turn temporarily sets `local_paused=false`,
+while capture admission separately checks the actual mutex-owned `_paused` flag
+and consumption rechecks the owner context. The next ordinary worker turn
+refreshes that cache; Workbench is excluded from the unrelated lockstep hold.
+This observation suggested, but did not establish, a false persistence-oracle
+failure if Save immediately follows Step.
+
+One bounded Controller diagnostic at clean source
+`d849be8ef99cd9226cfc3ca0925752e42b691515` plus its explicitly hashed diagnostic
+overlay exercised two prescribed campaigns at pacing zero: Pause→Save as the
+control, then a fresh `history_edges` Single Step→Save. The ordinary Controller's
+proposal/admission checkpoints and source/fixture identity fences remained
+active. Both two-action tapes finished `budget_complete`; all four actions and
+39 action assertions passed, as did all 10 diagnostic checks. The candidate Save
+started and finished with `paused=true`. The suspected oracle failure did **not**
+reproduce, so neither the GDScript nor Python persistence oracle was changed.
+No automatic anomaly bundle was expected or created.
+
+The process completed in 12.595 seconds, sampled 649,310,208 bytes peak owned-tree
+RSS, and left no owned process. Its bounds were 90 seconds and 3072 MiB, with no
+editor import. The complete raw evidence ZIP is Git blob
+`ab80f56c991535351cd53fd2292975d37f2547f9`, SHA256
+`744156247e66d90f4c3302e401f4519b8a58da8bcf48f8bc5cd17cc2ce316104`.
+The diagnostic and fixed runner are blobs
+`85b81481c6796ffc148ce24dd5651dc87cf57bb2` and
+`05dd7a1b44d5b4968c05fcd7716252dfc9d354da`.
+
+The first diagnostic attempt is also retained. Its newly constructed action
+fixture omitted `fixture_sha256` and `initial_scene_identity`; the Controller
+correctly rejected it before dispatching any gameplay actions. This was a
+diagnostic setup error, not a deliberate negative control or gameplay defect.
+The corrected replacement used the exact retained installation identity without
+relaxing the guard. Original setup-error ZIP: Git blob
+`9d71415ed443be8dea8f27de988a8eab84da3401`, SHA256
+`8beea0981ab37b00781a7421eed5e19bc57eda184156a6befdd2383e88c0c9f7`.
+
 ## Ownership and next handoff
 
 The lead owns controller/UI/anomaly classification and final integration.
