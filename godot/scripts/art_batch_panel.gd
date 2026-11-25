@@ -162,7 +162,24 @@ var conversation_button := Button.new()
 var selection_editor: Control
 var protected_row := HBoxContainer.new()
 var conversation_error := ""
+const CONVERSATION_PREPARATION_CHARACTERS := 262144
+var _conversation_apply_preparing := false
+var _conversation_apply_generation := 0
+var _conversation_apply_handle := -1
+var _conversation_apply_identity: Dictionary = {}
+var _conversation_apply_snapshot: Array = []
+var _conversation_apply_last_result := ""
+var _conversation_apply_started_usec := 0
+var last_conversation_apply_timing: Dictionary = {}
 var model_controls: Array[Control] = []
+const CollaborationWorkspace = preload("res://scripts/art_collaboration_workspace.gd")
+const CollaborationSession = preload("res://scripts/art_collaboration_session.gd")
+var collaboration: RefCounted
+var collaboration_workspace: Control
+var collaboration_button := Button.new()
+var collaboration_page := false
+var _collaboration_opened := false
+var _direct_controls: Array[Control] = []
 
 func _ready() -> void:
 	title = "Art workbench"
@@ -208,6 +225,10 @@ func _ready() -> void:
 		actions.add_child(button)
 	undo_button.tooltip_text = "Undo the latest paused Workbench edit, including agent drawing. Stop active agent runs first."
 	redo_button.tooltip_text = "Redo the latest undone Workbench edit while the native source remains unchanged."
+	collaboration_button.text = "Collaborate"
+	collaboration_button.tooltip_text = "Discuss native context, develop a proposal and approve bounded stages. Uses this same Art provider, conversation and native history."
+	collaboration_button.pressed.connect(func() -> void: show_collaboration(not collaboration_page))
+	actions.add_child(collaboration_button)
 	column.add_child(actions)
 	mount_provider_controls(column)
 	state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -253,6 +274,62 @@ func _ready() -> void:
 	add_child(conversation_editor)
 	conversation_editor.hide()
 	conversation_editor.confirmed.connect(_apply_conversation_edits)
+	conversation_editor.visibility_changed.connect(_conversation_editor_visibility_changed)
+	conversation_editor.canceled.connect(func() -> void: _cancel_conversation_apply("Conversation Apply cancelled."))
+	for node: Node in column.get_children():
+		if node != actions and node is Control: _direct_controls.append(node)
+	collaboration_workspace = CollaborationWorkspace.new()
+	collaboration_workspace.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(collaboration_workspace)
+	collaboration_workspace.hide()
+	collaboration = CollaborationSession.new()
+	collaboration.bind(self,collaboration_workspace)
+	if collaboration_workspace.has_method("set_material_options"):
+		var choices: Array = []
+		for i: int in ArtPlan.Setup.MATERIALS.size():
+			choices.append({"id":ArtPlan.Setup.MATERIALS[i],"name":ArtPlan.Setup.MATERIAL_NAMES[i]})
+		collaboration_workspace.set_material_options(choices)
+
+func show_collaboration(on: bool = true) -> void:
+	if on: _size_collaboration_first_open()
+	collaboration_page = on
+	collaboration_button.text = "Direct" if on else "Collaborate"
+	for control: Control in _direct_controls: control.visible = not on
+	if not on:
+		protected_row.visible = protect.button_pressed
+		for row: Control in rows: row.visible = input_mode.selected != 0
+		for control: Control in model_controls: control.visible = input_mode.selected != 0
+	collaboration_workspace.visible = on
+	draw.visible = not on
+	input_mode.visible = not on
+	tools_button.visible = not on and input_mode.selected != 2
+	if collaboration != null and collaboration.overlay != null:
+		collaboration.overlay.visible = on
+
+func _size_collaboration_first_open() -> void:
+	if _collaboration_opened: return
+	_collaboration_opened = true
+	# Direct keeps its compact default. The first explicit Collaborate action
+	# needs enough space for an inspectable context/proposal and its footer.
+	# Preserve an existing larger layout and all later owner resizing. An
+	# ordinary popup may have clamped the compact default to its minimum.
+	var compact := Vector2i((Vector2(640,400)*content_scale_factor).ceil())
+	if size.x > compact.x or size.y > compact.y: return
+	var bounds := Rect2i()
+	var ancestor := get_parent()
+	while ancestor != null:
+		if ancestor is Viewport and ancestor.gui_embed_subwindows:
+			bounds = Rect2i(Vector2i.ZERO,Vector2i(ancestor.get_visible_rect().size))
+			break
+		ancestor = ancestor.get_parent()
+	if not bounds.has_area():
+		bounds = DisplayServer.screen_get_usable_rect(current_screen)
+	var preferred := Vector2i((Vector2(820,620)*content_scale_factor).ceil())
+	if bounds.has_area():
+		preferred = preferred.min(Vector2i((Vector2(bounds.size)*0.9).floor()))
+	size = preferred.max(min_size)
+	if bounds.has_area():
+		position = bounds.position+(bounds.size-size)/2
 
 func _bind_selection() -> void:
 	if wb == null or wb.paint_editor == null or selection_editor == wb.paint_editor: return
@@ -292,6 +369,7 @@ func focus_selection(region: Rect2i) -> void:
 	# Do not change request_area, request_guards or the executor's captured scope.
 
 func _open_conversation() -> void:
+	_cancel_conversation_apply("Conversation reopened; the earlier prepared draft was discarded.")
 	conversation_error = ""
 	conversation_editor_revision = conversation_revision
 	conversation_editor.open_history(conversation)
@@ -313,12 +391,24 @@ func _conversation_block_reason(check_contents: bool = false) -> String:
 	return ""
 
 func _update_conversation_guard() -> void:
+	if _conversation_apply_preparing:
+		if not _conversation_apply_guard(_conversation_apply_identity):
+			_cancel_conversation_apply("Conversation, World or authoring state changed. Review the draft and Apply again.")
+		else:
+			conversation_editor.get_ok_button().disabled = true
+			conversation_editor.notice.text = "Preparing complete conversation changes… Cancel discards this preparation; no edited snapshot has been committed."
+			return
+	if is_queued_for_deletion() or not is_instance_valid(conversation_editor) \
+			or conversation_editor.is_queued_for_deletion(): return
+	if wb != null and not is_instance_valid(wb): return
 	if conversation_editor.visible:
 		var blocked := _conversation_block_reason()
 		conversation_editor.get_ok_button().disabled = not blocked.is_empty()
 		conversation_editor.notice.text = blocked if not blocked.is_empty() else (conversation_error if not conversation_error.is_empty() else ConversationEditor.HELP)
 
 func _apply_conversation_edits() -> void:
+	if _conversation_apply_preparing: return
+	var apply_began_usec := Time.get_ticks_usec()
 	conversation_editor.flush_message()
 	conversation_error = ""
 	var blocked := _conversation_block_reason(true)
@@ -329,6 +419,11 @@ func _apply_conversation_edits() -> void:
 	if clean == null:
 		conversation_error = "Invalid conversation. Only user/assistant text and retained image references are supported."
 		_update_conversation_guard()
+		return
+	var characters := 0
+	for entry: Dictionary in clean: characters += str(entry.content).length()
+	if characters >= CONVERSATION_PREPARATION_CHARACTERS:
+		_begin_conversation_apply(clean,apply_began_usec)
 		return
 	for entry: Dictionary in clean: entry.content = provider.redact(entry.content)
 	if clean == conversation:
@@ -348,6 +443,152 @@ func _apply_conversation_edits() -> void:
 	last_image = "" # The next request must not rely on an image removed from context.
 	conversation_editor.hide()
 	input_error = "Conversation updated for future requests; no canvas edits were executed."
+
+func conversation_apply_pending() -> bool:
+	return _conversation_apply_preparing
+
+func _conversation_editor_visibility_changed() -> void:
+	if not is_instance_valid(conversation_editor) or not conversation_editor.visible:
+		_cancel_conversation_apply("Conversation closed; prepared changes were discarded.")
+
+func _conversation_world_epoch() -> int:
+	if wb == null or wb.host == null or wb.host.simulation_worker == null: return -1
+	return int(wb.host.simulation_worker.art_state().epoch)
+
+func _conversation_apply_guard(identity: Dictionary, full: bool = false) -> bool:
+	# queue_free is an owner-lifetime boundary even before the deferred deletion
+	# flush. A ready worker must not append or adopt for a retiring UI hierarchy.
+	if is_queued_for_deletion() or not is_inside_tree() \
+			or not is_instance_valid(conversation_editor) or conversation_editor.is_queued_for_deletion() \
+			or not conversation_editor.is_inside_tree() \
+			or not is_instance_valid(provider) or provider.is_queued_for_deletion():
+		return false
+	if wb != null:
+		if not is_instance_valid(wb) or wb.is_queued_for_deletion() or not wb.is_inside_tree(): return false
+		if wb.host != null and (not is_instance_valid(wb.host) or wb.host.is_queued_for_deletion() \
+				or not wb.host.is_inside_tree()): return false
+	if not _conversation_apply_preparing or identity != _conversation_apply_identity \
+			or int(identity.get("generation",-1)) != _conversation_apply_generation \
+			or not conversation_editor.visible:
+		return false
+	if int(identity.get("revision",-1)) != conversation_revision \
+			or int(identity.get("editor_revision",-1)) != conversation_editor_revision \
+			or int(identity.get("world_epoch",-1)) != _conversation_world_epoch() \
+			or int(identity.get("provider_serial",-1)) != provider.serial:
+		return false
+	if last_result != _conversation_apply_last_result: return false
+	if not _conversation_block_reason(full).is_empty(): return false
+	if full and conversation_editor.draft != _conversation_apply_snapshot: return false
+	return true
+
+func _begin_conversation_apply(clean: Array, began_usec: int) -> void:
+	_conversation_apply_generation += 1
+	_conversation_apply_started_usec = began_usec
+	_conversation_apply_preparing = true
+	_conversation_apply_snapshot = conversation_editor.draft.duplicate(true)
+	_conversation_apply_last_result = last_result
+	_conversation_apply_identity = {"generation":_conversation_apply_generation,
+		"revision":conversation_revision,"editor_revision":conversation_editor_revision,
+		"world_epoch":_conversation_world_epoch(),"provider_serial":provider.serial}
+	conversation_editor.set_apply_pending(true,"Preparing complete conversation changes… Cancel remains available.")
+	var identity := _conversation_apply_identity.duplicate(true)
+	last_conversation_apply_timing = {"asynchronous":true,"status":"preparing",
+		"admission_usec":0,"handle":-1}
+	var result: Dictionary = provider.begin_conversation_edit(clean,last_result,identity,
+		_conversation_apply_ready,_conversation_apply_guard.bind(identity))
+	if not result.get("ok",false):
+		_conversation_apply_failed(str(result.get("error","Conversation preparation was refused.")))
+		return
+	if not _conversation_apply_preparing or identity != _conversation_apply_identity:
+		provider.cancel_conversation_edit(int(result.handle),identity,"Conversation preparation was superseded during admission.")
+		return
+	_conversation_apply_handle = int(result.handle)
+	last_conversation_apply_timing.admission_usec = Time.get_ticks_usec()-began_usec
+	last_conversation_apply_timing.handle = _conversation_apply_handle
+	_update_conversation_guard()
+
+func _conversation_apply_ready(handle: int, identity: Dictionary, error: String) -> void:
+	if not _conversation_apply_preparing or handle != _conversation_apply_handle \
+			or identity != _conversation_apply_identity: return
+	if not error.is_empty():
+		_conversation_apply_failed(error)
+		return
+	if not _conversation_apply_guard(identity,true):
+		_cancel_conversation_apply("Conversation or World changed before Apply could commit. Reopen and review the latest conversation.")
+		return
+	var clean: Variant = provider.prepared_conversation_edit_turns(handle,identity)
+	if clean == null:
+		_conversation_apply_failed("Prepared conversation is no longer valid. Review and Apply again.")
+		return
+	if clean == conversation:
+		provider.cancel_conversation_edit(handle,identity,"No conversation changes")
+		last_conversation_apply_timing.status = "unchanged"
+		last_conversation_apply_timing.total_usec = Time.get_ticks_usec()-_conversation_apply_started_usec
+		_clear_conversation_apply()
+		conversation_editor.hide()
+		return
+	var commit_began := Time.get_ticks_usec()
+	var timing := last_conversation_apply_timing
+	timing.prepared_after_usec = commit_began-_conversation_apply_started_usec
+	var result: Dictionary = provider.commit_conversation_edit(handle,identity,
+		_adopt_conversation_apply.bind(identity),_conversation_apply_guard.bind(identity,true))
+	# The provider calls adoption after durable append and before any audit
+	# observers. Those observers may already start later owner work here.
+	if result.get("committed",false) and result.get("adopted",false):
+		timing.commit_usec = Time.get_ticks_usec()-commit_began
+		return
+	if _conversation_apply_preparing and identity == _conversation_apply_identity:
+		_conversation_apply_failed(str(result.get("error","Conversation changes could not be committed.")))
+
+func _adopt_conversation_apply(clean: Array, identity: Dictionary) -> bool:
+	# Provider has just durably appended the exact prepared value under its
+	# private capability and final guard. No observer runs before this adoption.
+	if not _conversation_apply_preparing or identity != _conversation_apply_identity: return false
+	conversation = clean
+	conversation_revision += 1
+	last_image = ""
+	last_conversation_apply_timing.status = "committed"
+	last_conversation_apply_timing.total_usec = Time.get_ticks_usec()-_conversation_apply_started_usec
+	_clear_conversation_apply()
+	conversation_editor.hide()
+	input_error = "Conversation updated for future requests; no canvas edits were executed."
+	return true
+
+func _clear_conversation_apply() -> void:
+	_conversation_apply_preparing = false
+	_conversation_apply_handle = -1
+	_conversation_apply_identity = {}
+	_conversation_apply_snapshot = []
+	_conversation_apply_last_result = ""
+	if is_instance_valid(conversation_editor) and not conversation_editor.is_queued_for_deletion():
+		conversation_editor.set_apply_pending(false)
+
+func _conversation_apply_failed(message: String) -> void:
+	if not _conversation_apply_preparing: return
+	var handle := _conversation_apply_handle
+	var identity := _conversation_apply_identity.duplicate(true)
+	last_conversation_apply_timing.status = "refused"
+	last_conversation_apply_timing.total_usec = Time.get_ticks_usec()-_conversation_apply_started_usec
+	_conversation_apply_generation += 1
+	_clear_conversation_apply()
+	if handle >= 0 and is_instance_valid(provider) and not provider.is_queued_for_deletion():
+		provider.cancel_conversation_edit(handle,identity,message)
+	conversation_error = message
+	input_error = message
+	_update_conversation_guard()
+
+func _cancel_conversation_apply(reason: String) -> void:
+	if not _conversation_apply_preparing: return
+	var handle := _conversation_apply_handle
+	var identity := _conversation_apply_identity.duplicate(true)
+	last_conversation_apply_timing.status = "cancelled"
+	last_conversation_apply_timing.total_usec = Time.get_ticks_usec()-_conversation_apply_started_usec
+	_conversation_apply_generation += 1
+	_clear_conversation_apply()
+	if handle >= 0 and is_instance_valid(provider) and not provider.is_queued_for_deletion():
+		provider.cancel_conversation_edit(handle,identity,reason)
+	conversation_error = reason
+	input_error = reason
 
 func mount_tools(actions: HBoxContainer) -> void:
 	var options := Window.new()
@@ -441,6 +682,12 @@ func _finish_manual_audit(on_shutdown: bool = false) -> void:
 	_manual_active_batch_sequence = -1
 
 func submit_text() -> void:
+	if conversation_apply_pending():
+		input_error = "Wait for conversation Apply, or Cancel it, before direct drawing."
+		return
+	if collaboration != null and collaboration.busy():
+		input_error = "Finish or Stop collaborative work before direct drawing."
+		return
 	var epoch := ui_epoch
 	executor.wb = wb
 	_register_provider_keys_for_redaction()
@@ -497,6 +744,7 @@ func _process(_delta: float) -> void:
 	var native_poll_begin_usec := Time.get_ticks_usec()
 	executor.poll()
 	last_native_poll_usec = Time.get_ticks_usec() - native_poll_begin_usec
+	if collaboration != null: collaboration.poll()
 	_finish_manual_audit()
 	_update_conversation_guard()
 	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
@@ -527,9 +775,10 @@ func _process(_delta: float) -> void:
 	draw.disabled = executor.active
 	var history_replaying: bool = wb.paint_editor != null and wb.paint_editor.history_replaying()
 	stop.disabled = not executor.active and not provider.active and not capturing \
-		and remaining_turns == 0 and not history_replaying and not provider.export_active and not provider.resume_active
+		and remaining_turns == 0 and not history_replaying and not provider.export_active and not provider.resume_active \
+		and (collaboration == null or not collaboration.busy()) and not conversation_apply_pending()
 	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0 \
-		or provider.export_active or provider.resume_active or (wb.paint_editor != null and wb.paint_editor.busy())
+		or provider.export_active or provider.resume_active or conversation_apply_pending() or (wb.paint_editor != null and wb.paint_editor.busy())
 	export_button.disabled = not history_block_reason().is_empty()
 	export_cancel.disabled = not provider.export_active
 	conversation_button.disabled = provider.resume_active
@@ -542,6 +791,9 @@ func _process(_delta: float) -> void:
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	for control: Control in model_controls: control.visible = input_mode.selected!=0
+	if collaboration_page:
+		for control: Control in _direct_controls: control.hide()
+		tools_button.hide()
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
 	input_mode.tooltip_text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
 	var status_text := "Idle"
@@ -658,7 +910,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	turn_limit.prefix = "Turns"
 	turn_limit.min_value = 0
 	turn_limit.value = 1
-	turn_limit.tooltip_text = "Maximum requests per Send. Zero continues until Stop, model completion or another limit."
+	turn_limit.tooltip_text = "Maximum requests per Send. Zero requires a positive Run s limit; Stop remains available."
 	turn_limit.max_value = 1000
 	row.add_child(turn_limit)
 	minimum_interval.prefix = "Gap s"
@@ -669,7 +921,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	run_seconds.prefix = "Run s"
 	run_seconds.custom_minimum_size.x = 100
 	run_seconds.max_value = 86400
-	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
+	run_seconds.tooltip_text = "Maximum seconds for this run. Zero requires a positive Turns limit."
 	var spending := Window.new()
 	spending.title = "Run limits and estimated spending"
 	add_child(spending)
@@ -961,6 +1213,8 @@ func load_profile() -> void:
 
 func stop_all(reason: String = "Human Stop") -> void:
 	var began_usec := Time.get_ticks_usec()
+	_cancel_conversation_apply(reason)
+	if collaboration != null: collaboration.stop(reason)
 	if provider.resume_active:
 		provider.cancel_resume()
 		history_load_error = "Conversation restoration cancelled; saved history preserved. Reopen Art or Conversation to retry."
@@ -983,6 +1237,7 @@ func stop_all(reason: String = "Human Stop") -> void:
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
 func history_block_reason() -> String:
+	if collaboration != null and collaboration.busy(): return "Stop collaborative work and wait for its native receipt before Undo or Redo."
 	if not _history_lost_receipt_error.is_empty(): return _history_lost_receipt_error
 	if not _history_persistence_error.is_empty(): return _history_persistence_error
 	if provider.resume_active: return "Finish or stop conversation restoration before changing history."
@@ -1455,12 +1710,23 @@ func persist_traffic_path() -> bool:
 	return provider.last_event_stored and not provider.log_path.is_empty()
 
 func send_prompt() -> void:
+	if conversation_apply_pending():
+		input_error = "Wait for conversation Apply, or Cancel it, before sending."
+		return
+	if collaboration != null and collaboration.busy():
+		input_error = "Finish or Stop collaborative work before direct model painting."
+		return
 	if executor.active or provider.active or capturing or remaining_turns != 0 or provider.export_active: return
 	if wb.paint_editor != null and wb.paint_editor.busy():
 		input_error = "Wait for the shared edit to finish before sending another model request."
 		return
 	if wb.busy() or wb.applied.is_empty():
 		input_error = "Canvas is not ready."
+		return
+	# A spending estimate alone cannot bound requests or elapsed time.
+	# Keep direct authoring convenient while refusing indefinite automatic turns.
+	if turn_limit.value <= 0 and run_seconds.value <= 0:
+		input_error = "Set Turns or Run s above zero so this run has a finite limit."
 		return
 	sent_turns = 0
 	run_spend = 0.0

@@ -10,6 +10,27 @@ related-documents: [workbench-direct-art-batches.md, ../architecture/shared-work
 
 # Art workbench provider connection — Stage 2
 
+## Collaborative owned consumers — 25 November 2026
+
+The Draft/HOLD collaborative successor preserves direct painting and adds
+Discuss, Propose, Develop and Review through the same Provider. The
+[owned transport contract](art-owned-proposal-transport.md) defines `send_owned`
+and the injected Architecture dispatch/cancel interface. Owned replies never
+emit ordinary completion-to-paint. World and applied-policy guards protect the
+actual eventual transport admission, including asynchronous preparation.
+Opening Art or a catalogue makes no request.
+
+The [native contract](art-native-context-proposals.md) defines bounded observations,
+palette/protection and zero-write preview. The [owner guide](../operations/art-workbench-collaborative-evaluation.md)
+explains exact-context authorization for remote/custom endpoints. Optional images
+are cropped from the Workbench canvas, with mapping/bytes disclosed; no desktop
+is captured. Admitted images retain their current-session audit references.
+Recent request memory is at most eight turns, 4096 characters each and 16384
+total including omission markers. Complete originals remain in Conversation
+and the redacted audit. Develop's proposal and Review's actual host receipts
+are disclosed. Replies refresh bounded memory; edited conversations require
+updated disclosure before Send. New sessions restore no old conversation or approval.
+
 ## Current candidate and controls
 
 The original #559/#560 Art and PAINT integration is present in accepted main.
@@ -107,13 +128,27 @@ and paste spanning parts reset this text editor's local Undo history, as the
 page-control tooltip explains. Cancel still discards the complete draft. Native
 World Undo/Redo remains an independent, unchanged operation.
 
+Conversations with at least 262,144 characters prepare their complete redacted
+value and audit encoding in a bounded Provider-owned worker. The editor shows
+preparation progress and keeps Cancel available; text-changing actions and
+another Apply wait. Small edits retain the immediate path. Cancel, Stop, closing
+the editor, changed conversation/World/credentials, or a retiring owner refuses
+uncommitted work. Read-only navigation and Copy remain available. A queued
+panel, editor, Workbench or host is already retiring before deferred deletion.
+
+The owner thread still performs the complete durable journal append. Only a
+successful append adopts the redacted live conversation, before traffic
+observers run. Failed or cancelled preparation never adopts a partial draft.
+Native World history remains separate. Direct and collaborative requests,
+context refresh and stage approval wait for this pending Apply or its Cancel.
+
 Conversation remains available for persistent collaboration within the current
 Workbench session. Hiding and reopening Art preserves it. A new game session
 starts empty under accepted #727; World Save/Open is a separate native contract.
 
 ## Provider/native boundary and Stop
 
-`art_provider.gd` owns one nonblocking Godot HTTPRequest with a 64 KiB
+`art_provider.gd` owns one nonblocking Godot HTTPRequest with a 256 KiB
 download chunk and static payload/response adapters. `art_batch_panel.gd` supplies compact controls and dispatches parsed
 operations to the existing Stage-1 executor. No second simulation or controller
 is introduced. Plain JSON arrays, an operations envelope, a single shape, JSON
@@ -157,6 +192,24 @@ again before publication. There is at most one retained preparation job per
 provider; repeated Send while a cancelled job drains asks the user to retry
 shortly. The main thread reaps completed tasks and owns durable append and
 assistant/native ordering.
+
+Large conversation edits have a separate finite pure-value preparation slot.
+`begin_conversation_edit` snapshots typed turns, a bounded host identity and the
+current credentials; its worker redacts and encodes without accessing the scene,
+native World or filesystem. HTTP `active` remains false. No model request is
+created. New provider dispatch refuses while this slot is preparing or ready.
+
+The deferred completion supplies only the handle, host identity and error. A
+guarded copied preview permits the owner to recognize a no-op. The one-shot
+`commit_conversation_edit` consumes the private prepared value only while the
+same credential set, provider serial, journal identity and owner guards remain
+applicable. Current image/history authority is checked on the main owner.
+After the complete durable append, the owner adopts the redacted turns before
+traffic observers run. Thus an observer's later Stop or new conversation does
+not retroactively undo the already committed edit. No caller-provided sanitized
+flag or replacement encoding grants this authority. Stop, scoped Cancel,
+owner destruction and stale credentials retire unpublished preparation; worker
+completion alone never writes an edited conversation.
 
 Large outgoing bodies also prepare their wire JSON and redacted request encoding
 on that single value-worker slot, starting at a 65,536-character payload weight.
@@ -363,8 +416,10 @@ promotion are implied by this implementation.
 ## Collaboration, scanline and pacing preview
 
 Model prompt and Scanline keep a conversation for the mounted workbench. Turns
-limits requests per Send, including refusals and rate retries. Zero continues
-until Stop, completion or another limit. Run s adds an
+limits requests per Send, including refusals and rate retries. Zero requires a
+positive Run s limit. Send refuses when both are zero, even if an estimated
+spending ceiling is set. A positive Turns limit still permits Run s to be zero;
+Stop remains available in either finite mode. Run s adds an
 optional elapsed-time ceiling. After native completion, the next request can
 use the actual changed count and world epoch. An empty array ends the run.
 Stop cancels pending inference, pacing and queued native work. Clear starts

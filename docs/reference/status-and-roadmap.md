@@ -10,6 +10,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Collaborative Art candidate — 2026-11-25
+
+ART-WORKBENCH-COLLABORATIVE-002 / #780 is a Draft/HOLD successor with one owned
+provider consumer per request, prose discussion, proposal revision, bounded
+native/context disclosure, zero-write preview and finite native construction.
+Each stage has fresh approval and actual readback. The
+[owner guide](../operations/art-workbench-collaborative-evaluation.md) explains
+the controls and limits; the [mission ledger](../audits/2026-11-25-art-workbench-collaborative-002/README.md)
+owns exact source/platform/package outcomes, recovery and retained failures.
+Fixture evidence is separate from genuine model creativity. Architecture
+validation/execution stays with #777; no production default, merge, Ready
+promotion or automatic model dispatch is authorized.
+
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
 The [bounded showcase scheduling change](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution)

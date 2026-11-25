@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Collaborative Art successor — 2026-11-25
+
+#780 preserves #773's qualified ancestry and evaluator while adding owned
+discussion/proposal responses, bounded actual-native context, a creative brief,
+revision lineage, zero-write previews and fresh native stage approval/readback.
+Start with the [owner guide](art-workbench-collaborative-evaluation.md),
+[provider handoff](../systems/art-owned-proposal-transport.md),
+[native contract](../systems/art-native-context-proposals.md) and
+[mission ledger](../audits/2026-11-25-art-workbench-collaborative-002/README.md).
+The [environment recovery record](../audits/2026-11-25-art-workbench-collaborative-002/ENVIRONMENT-RECOVERY.md)
+distinguishes lost provisional outputs from durable source and fresh qualification.
+Architecture owns its StageSession and native composition; no combined evaluator
+is inferred from the provider probe. Remain Draft/HOLD. #773's actual non-Draft
+flag is recorded and left unchanged; the physical no-listener case stays pending.
+
 ## Art Workbench finisher — 2026-11-24
 
 Accepted #727 supplies an empty conversation and one lazy root JSONL per new

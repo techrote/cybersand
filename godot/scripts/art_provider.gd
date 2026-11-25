@@ -21,11 +21,27 @@ const ASYNC_REQUEST_CHARACTERS := 65536
 var _redactor := Redactor.new()
 var _preparation: RefCounted
 var _dispatch_guard: Callable
+# A non-direct request owns exactly one completion callable. Its response never
+# enters the ordinary finished signal, whose panel consumer paints immediately.
+# Keep the delivered serial separately: clearing the callable must not turn a
+# duplicate owned completion into an ordinary direct-paint completion.
+var _response_owner: Dictionary = {}
+var _last_owned_outcome: Dictionary = {}
+var _finished_serial := -1
+const OWNED_MODES := ["discuss", "propose", "develop", "review", "architecture-proposal"]
+const MAX_OWNED_REQUEST_BYTES := 2 * 1024 * 1024
+const MAX_OWNED_IMAGE_BYTES := 2 * 1024 * 1024
 var _prepared_assistant: Dictionary = {}
 var response_preparation_jobs := 0
 var peak_response_preparation_jobs := 0
 var request_preparation_jobs := 0
 var peak_request_preparation_jobs := 0
+var _conversation_edit_serial := 0
+var _conversation_edit_owner: Dictionary = {}
+var _conversation_edit_preparation: RefCounted
+var conversation_edit_preparation_jobs := 0
+var peak_conversation_edit_preparation_jobs := 0
+var last_conversation_edit_timing: Dictionary = {}
 var traffic := ""
 var readable := ""
 var log_path := ""
@@ -683,6 +699,191 @@ func historical_image(offset: int, source_path: String = "") -> String:
 	if segment.is_empty(): return ""
 	return _read_historical_image(offset, path, int(segment.limit))
 
+# Large conversation edits use a distinct finite value job, never provider.active.
+# A ready handle authenticates the private prepared value; callers cannot supply
+# a sanitized flag, encoded body or substitute turns at commit.
+func conversation_edit_active() -> bool:
+	return not _conversation_edit_owner.is_empty() or (_conversation_edit_preparation != null and not _conversation_edit_preparation.reaped)
+
+func conversation_edit_state() -> Dictionary:
+	var phase: String = str(_conversation_edit_owner.get("phase","idle"))
+	if phase == "idle" and _conversation_edit_preparation != null and not _conversation_edit_preparation.reaped: phase="stopping"
+	return {"active":conversation_edit_active(),"phase":phase,
+		"handle":int(_conversation_edit_owner.get("handle",_conversation_edit_preparation.request_id if _conversation_edit_preparation != null else -1))}
+
+func _conversation_edit_guard(guard: Callable) -> bool:
+	if not guard.is_valid(): return false
+	var allowed: Variant = guard.call()
+	return allowed is bool and allowed
+
+func _conversation_edit_matches(handle: int, identity: Dictionary, check_guard: bool = true) -> bool:
+	if not is_inside_tree() or is_queued_for_deletion(): return false
+	var owned := _conversation_edit_owner
+	if owned.is_empty() or int(owned.handle) != handle or owned.identity != identity \
+			or int(owned.provider_serial) != serial or str(owned.path) != log_path or int(owned.event_index) != _event_index \
+			or _conversation_edit_preparation == null or _conversation_edit_preparation.is_cancelled() \
+			or _conversation_edit_preparation.secrets_snapshot != secrets: return false
+	if check_guard and not _conversation_edit_guard(owned.guard): return false
+	return is_inside_tree() and not is_queued_for_deletion() and not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle \
+		and _conversation_edit_preparation != null and not _conversation_edit_preparation.is_cancelled() \
+		and _conversation_edit_preparation.secrets_snapshot == secrets and int(owned.provider_serial) == serial \
+		and str(owned.path) == log_path and int(owned.event_index) == _event_index
+
+func begin_conversation_edit(turns: Variant, last_result: String, identity: Dictionary,
+		completion: Callable, guard: Callable) -> Dictionary:
+	var began := Time.get_ticks_usec()
+	if not is_inside_tree() or is_queued_for_deletion():
+		return {"ok":false,"handle":-1,"error":"Conversation provider owner is closing or unavailable."}
+	if active or request != null or _preparation_active() or export_active or resume_active:
+		return {"ok":false,"handle":-1,"error":"Finish or Stop current provider work before applying conversation edits."}
+	if identity.is_empty() or not bounded_json_values(identity,{"items":64,"bytes":8192}) \
+			or not completion.is_valid() or not guard.is_valid():
+		return {"ok":false,"handle":-1,"error":"Conversation preparation needs a bounded identity, completion and live owner guard."}
+	if not turns is Array or turns.size() > MAX_CONVERSATION_TURNS or last_result.length() > MAX_CONVERSATION_BYTES:
+		return {"ok":false,"handle":-1,"error":"Conversation edit exceeds its bounded turn or text capacity."}
+	var checked: Variant = checked_conversation(turns)
+	if checked == null: return {"ok":false,"handle":-1,"error":"Malformed conversation edit; nothing written."}
+	var characters := 0
+	for turn: Dictionary in checked:
+		characters += str(turn.content).length()
+		if characters > MAX_CONVERSATION_BYTES:
+			return {"ok":false,"handle":-1,"error":"Conversation edit exceeds the 16 MiB character admission bound."}
+	if not _conversation_edit_guard(guard) or not is_inside_tree() or is_queued_for_deletion() \
+			or active or request != null or _preparation_active():
+		return {"ok":false,"handle":-1,"error":"Conversation edit context changed before preparation."}
+	_conversation_edit_serial += 1
+	var handle := _conversation_edit_serial
+	var job := ResponsePreparation.new()
+	job.direction="conversation_edit"
+	job.request_id=handle
+	job.conversation_turns=checked
+	job.conversation_last_result=last_result
+	job.secrets_snapshot=secrets.duplicate()
+	job.received_usec=Time.get_ticks_usec()
+	job.timing={"handle":handle,"phase":"preparing","admission_usec":0,"worker_usec":0,
+		"wait_usec":0,"commit_usec":0,"committed":false,"adopted":false}
+	_conversation_edit_preparation=job
+	_conversation_edit_owner={"handle":handle,"identity":identity.duplicate(true),"completion":completion,
+		"guard":guard,"phase":"preparing","provider_serial":serial,"path":log_path,"event_index":_event_index}
+	# Establish an owned journal before the worker runs. Later edited append
+	# must not invoke a first-segment adoption callback between write/adoption.
+	# This bounded metadata never contains the unpublished draft.
+	if log_path.is_empty():
+		var stored := log_event("conversation_edit_preparing",{"handle":handle,"turn_count":checked.size()})
+		if not stored or _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.get("handle",-1)) != handle:
+			_retire_conversation_edit(handle,"Could not admit conversation preparation.",false)
+			return {"ok":false,"handle":-1,"error":"Could not admit conversation preparation; live history is unchanged."}
+		_conversation_edit_owner.path=log_path
+		_conversation_edit_owner.event_index=_event_index
+	if not _conversation_edit_matches(handle,identity):
+		_retire_conversation_edit(handle,"Conversation context changed before preparation.",false)
+		return {"ok":false,"handle":-1,"error":"Conversation context changed before preparation; live history is unchanged."}
+	conversation_edit_preparation_jobs=1
+	peak_conversation_edit_preparation_jobs=maxi(peak_conversation_edit_preparation_jobs,1)
+	job.timing.admission_usec=Time.get_ticks_usec()-began
+	last_conversation_edit_timing=job.timing
+	job.start(self)
+	return {"ok":true,"handle":handle,"error":""}
+
+func _notify_conversation_edit(completion: Callable, handle: int, identity: Dictionary, error: String) -> void:
+	if completion.is_valid(): completion.call(handle,identity,error)
+
+func _retire_conversation_edit(handle: int, reason: String, notify_owner: bool = true) -> void:
+	if _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.handle) != handle: return
+	var owned := _conversation_edit_owner
+	_conversation_edit_owner={}
+	if _conversation_edit_preparation != null and int(_conversation_edit_preparation.request_id) == handle:
+		var job := _conversation_edit_preparation
+		job.cancel()
+		job.timing.phase="cancelled"
+		last_conversation_edit_timing=job.timing
+		if job.reaped or not job.asynchronous: _conversation_edit_preparation=null
+	if notify_owner:
+		var completion: Callable = owned.get("completion",Callable())
+		var safe_reason := redact(reason) if reason.length() <= 512 else "Conversation preparation cancelled."
+		_notify_conversation_edit.call_deferred(completion,handle,owned.identity.duplicate(true),safe_reason)
+
+func cancel_conversation_edit(handle: int, identity: Dictionary, reason: String = "Owner cancelled conversation edit") -> bool:
+	if _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.handle) != handle \
+			or _conversation_edit_owner.identity != identity: return false
+	_retire_conversation_edit(handle,reason)
+	return true
+
+func _conversation_edit_preparation_finished(job: RefCounted) -> void:
+	if _conversation_edit_preparation != job: return
+	conversation_edit_preparation_jobs=0
+	job.timing.worker_usec=int(job.metrics.get("total_usec",0))
+	job.timing.wait_usec=Time.get_ticks_usec()-job.received_usec
+	if _conversation_edit_owner.is_empty() or job.is_cancelled():
+		_conversation_edit_preparation=null
+		return
+	var handle: int = job.request_id
+	var identity: Dictionary = _conversation_edit_owner.identity
+	if not _conversation_edit_matches(handle,identity):
+		_retire_conversation_edit(handle,"Conversation, World or credential context changed; Apply again.")
+		return
+	if not str(job.preparation_error).is_empty():
+		_retire_conversation_edit(handle,str(job.preparation_error))
+		return
+	_conversation_edit_owner.phase="ready"
+	job.timing.phase="ready"
+	last_conversation_edit_timing=job.timing
+	var completion: Callable = _conversation_edit_owner.completion
+	_conversation_edit_owner.completion=Callable()
+	# Even a very short job reports readiness on a later main-thread boundary.
+	_notify_conversation_edit.call_deferred(completion,handle,identity.duplicate(true),"")
+
+func prepared_conversation_edit_turns(handle: int, identity: Dictionary) -> Variant:
+	if not _conversation_edit_matches(handle,identity) or _conversation_edit_owner.get("phase") != "ready": return null
+	return _conversation_edit_preparation.sanitized.turns.duplicate(true)
+
+func _conversation_edit_commit_valid(job: RefCounted, check_guard: bool = false) -> bool:
+	if job == null or job != _conversation_edit_preparation or not job.reaped \
+			or _conversation_edit_owner.get("phase") != "committing": return false
+	var handle: int = job.request_id
+	var identity: Dictionary = _conversation_edit_owner.identity
+	if not _conversation_edit_matches(handle,identity,check_guard): return false
+	if check_guard and not _conversation_edit_guard(_conversation_edit_owner.commit_guard): return false
+	return job == _conversation_edit_preparation and not _conversation_edit_owner.is_empty() \
+		and int(_conversation_edit_owner.handle) == handle and job.secrets_snapshot == secrets and not job.is_cancelled() \
+		and _conversation_edit_matches(handle,identity,false)
+
+func commit_conversation_edit(handle: int, identity: Dictionary, adopt: Callable, guard: Callable) -> Dictionary:
+	var refusal := {"ok":false,"committed":false,"adopted":false,"error":"Conversation preparation is stale or unavailable; Apply again."}
+	if not adopt.is_valid() or not guard.is_valid() or not _conversation_edit_matches(handle,identity) \
+			or _conversation_edit_owner.get("phase") != "ready":
+		if not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle and _conversation_edit_owner.identity == identity:
+			_retire_conversation_edit(handle,"Conversation preparation is stale or unavailable.",false)
+		return refusal
+	var job := _conversation_edit_preparation
+	_conversation_edit_owner.phase="committing"
+	_conversation_edit_owner.adopt=adopt
+	_conversation_edit_owner.commit_guard=guard
+	job.timing.phase="committing"
+	var began := Time.get_ticks_usec()
+	var stored := _record_event("conversation_edited",job.sanitized,null,null,"",PackedByteArray(),job)
+	job.timing.commit_usec=Time.get_ticks_usec()-began
+	job.timing.committed=stored
+	var adopted := bool(job.timing.get("adopted",false))
+	job.timing.phase="committed" if stored and adopted else "refused"
+	if _conversation_edit_serial == handle: last_conversation_edit_timing=job.timing
+	if not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle:
+		_retire_conversation_edit(handle,"Conversation edit was not committed.",false)
+	return {"ok":stored and adopted,"committed":stored,"adopted":adopted,
+		"error":"" if stored and adopted else (log_warning if not log_warning.is_empty() else "Conversation edit was not adopted; complete audit custody is retained.")}
+
+func _adopt_prepared_conversation_edit(job: RefCounted) -> void:
+	# _store_event has completed and set the durable journal identity. This
+	# main-thread callback commits live ownership before any traffic observer.
+	var handle: int = job.request_id
+	if _conversation_edit_owner.is_empty() or int(_conversation_edit_owner.handle) != handle: return
+	var adopt: Callable = _conversation_edit_owner.get("adopt",Callable())
+	var adopted: Variant = adopt.call(job.sanitized.turns.duplicate(true)) if adopt.is_valid() else false
+	job.timing.adopted=adopted is bool and adopted
+	if not bool(job.timing.adopted): log_warning="Edited audit snapshot committed, but its live owner could not adopt it."
+	if not _conversation_edit_owner.is_empty() and int(_conversation_edit_owner.handle) == handle: _conversation_edit_owner={}
+	if _conversation_edit_preparation == job: _conversation_edit_preparation=null
+
 func log_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null) -> bool:
 	# These are exact pre-encoded values from the current response job, not a
 	# general journal bypass. Native admission and durable append stay here.
@@ -696,13 +897,13 @@ func _matches_prepared_assistant(value: String) -> bool:
 	return not _prepared_assistant.is_empty() and int(_prepared_assistant.serial) == serial \
 		and _prepared_assistant.secrets == secrets and value == _prepared_assistant.text
 
-func _record_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
+func _record_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray(), prepared_edit: RefCounted = null) -> bool:
 	var began_usec := Time.get_ticks_usec()
 	_audit_sequence += 1
 	var timing := {"schema":1,"sequence":_audit_sequence,"kind":kind,
 		"sanitize_usec":0,"format_usec":0,"write_usec":0,"signal_usec":0,
 		"total_usec":0,"stored":false}
-	var stored := _append_event(kind,data,timing,sanitized_projection,prepared_encoding,prepared_bytes)
+	var stored := _append_event(kind,data,timing,sanitized_projection,prepared_encoding,prepared_bytes,prepared_edit)
 	timing.total_usec = Time.get_ticks_usec() - began_usec
 	timing.stored = stored
 	# Signal observers may append another event. Do not replace the newer receipt.
@@ -710,7 +911,7 @@ func _record_event(kind: String, data: Variant, sanitized_projection: Variant = 
 	if audit_projection is Dictionary: audit_projection.merge(timing,true)
 	return stored
 
-func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_projection: Variant, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
+func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_projection: Variant, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray(), prepared_edit: RefCounted = null) -> bool:
 	last_event_stored = false
 	if kind == "request": last_request_offset = -1
 	if export_active or resume_active:
@@ -735,13 +936,17 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 	# Only the private response-preparation path supplies this encoding, after
 	# its immutable secret snapshot was checked against the owner on this thread.
 	var prepared_response := kind in ["request","response","assistant","message","conversation"] and not prepared_encoding.is_empty()
-	var sanitized: Variant = data if prepared_response else (data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data))
+	var prepared_conversation := prepared_edit != null and kind == "conversation_edited" and _conversation_edit_commit_valid(prepared_edit)
+	if prepared_edit != null and not prepared_conversation:
+		log_warning="Conversation prepared-value authority changed before append."
+		return false
+	var sanitized: Variant = prepared_edit.sanitized if prepared_conversation else (data if prepared_response else (data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data)))
 	timing.sanitize_usec = Time.get_ticks_usec() - sanitize_begin_usec
 	# A response caller can reuse its already-redacted body for a short error
 	# preview. This is not retained globally and never skips sanitization.
 	if sanitized_projection is Dictionary and sanitized is Dictionary:
 		sanitized_projection.merge(sanitized,true)
-	var admission := _admit_conversation_event(kind, sanitized)
+	var admission := _admit_conversation_event(kind, sanitized,prepared_edit if prepared_conversation else null)
 	if not admission.ok:
 		log_warning = admission.error; traffic_changed.emit()
 		return false
@@ -754,41 +959,52 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 	# Encode the (potentially multi-megabyte) payload exactly once. Envelope
 	# metadata is small; the same complete payload reaches the live and disk
 	# forms without serializing it independently three times on the UI thread.
-	var encoded_data := prepared_encoding if prepared_response else JSON.stringify(sanitized)
+	var encoded_data: String = prepared_edit.encoded_data if prepared_conversation else (prepared_encoding if prepared_response else JSON.stringify(sanitized))
+	# Keep refused prepared drafts out of the live projections. Ordinary events
+	# retain their existing failure-preview behavior; prepared edits publish only
+	# after their final guard and complete durable append succeed.
+	var next_traffic := traffic
+	var next_readable := readable
 	var live_metadata := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind}
 	if encoded_data.length() > 2000000:
 		# The live tail was already bounded; do not first allocate a full giant
 		# envelope and append it to the previous buffer merely to discard it.
 		# Keep the complete small suffix, including kind/request/time identity.
 		var suffix := ","+JSON.stringify(live_metadata).trim_prefix("{")+"\n"
-		traffic = "[Earlier traffic retained on disk]\n"+encoded_data.right(1500000-suffix.length())+suffix
+		next_traffic = "[Earlier traffic retained on disk]\n"+encoded_data.right(1500000-suffix.length())+suffix
 	else:
 		var line := _encoded_event(live_metadata,encoded_data)
-		traffic += line + "\n"
-	readable += "\n" + Time.get_datetime_string_from_system(true) + " #" + str(serial) + " " + kind + "\n"
+		next_traffic += line + "\n"
+	next_readable += "\n" + Time.get_datetime_string_from_system(true) + " #" + str(serial) + " " + kind + "\n"
 	if encoded_data.length() > 262144:
 		# A readable preview is not a second giant pretty-printed archive. The
 		# session log/export retain the complete payload; Raw JSONL is a tail.
-		readable += "[Large event; full redacted content in session log/export. Last 65536 characters:]\n"+encoded_data.right(65536)+"\n"
+		next_readable += "[Large event; full redacted content in session log/export. Last 65536 characters:]\n"+encoded_data.right(65536)+"\n"
 	elif kind == "request" and sanitized is Dictionary and sanitized.get("body") is Dictionary:
 		var body: Dictionary = sanitized.body
-		readable += "Model: " + str(body.get("model", "")) + "\n"
-		if body.has("instructions"): readable += "Instructions:\n" + str(body.instructions) + "\n"
+		next_readable += "Model: " + str(body.get("model", "")) + "\n"
+		if body.has("instructions"): next_readable += "Instructions:\n" + str(body.instructions) + "\n"
 		for message: Variant in body.get("messages", body.get("input", [])):
 			if not message is Dictionary: continue
-			readable += str(message.get("role", "message")) + ":\n"
+			next_readable += str(message.get("role", "message")) + ":\n"
 			var content: Variant = message.get("content", "")
-			if content is String: readable += content + "\n"
+			if content is String: next_readable += content + "\n"
 			elif content is Array:
 				for block: Variant in content:
-					readable += str(block.text) + "\n" if block is Dictionary and block.has("text") else "[Image attached; exact bytes in Raw JSONL]\n"
-	elif sanitized is String: readable += sanitized + "\n"
-	else: readable += JSON.stringify(sanitized, "  ") + "\n"
-	if readable.length() > 2000000: readable = "[Earlier traffic retained on disk]\n" + readable.right(1500000)
-	if traffic.length() > 2000000: traffic = "[Earlier traffic retained on disk]\n" + traffic.right(1500000)
+					next_readable += str(block.text) + "\n" if block is Dictionary and block.has("text") else "[Image attached; exact bytes in Raw JSONL]\n"
+	elif sanitized is String: next_readable += sanitized + "\n"
+	else: next_readable += JSON.stringify(sanitized, "  ") + "\n"
+	if next_readable.length() > 2000000: next_readable = "[Earlier traffic retained on disk]\n" + next_readable.right(1500000)
+	if next_traffic.length() > 2000000: next_traffic = "[Earlier traffic retained on disk]\n" + next_traffic.right(1500000)
 	timing.format_usec = Time.get_ticks_usec() - format_begin_usec
+	if not prepared_conversation:
+		traffic = next_traffic
+		readable = next_readable
+	if prepared_conversation and not _conversation_edit_commit_valid(prepared_edit,true):
+		log_warning="Conversation, World or credentials changed before the actual edited append."
+		return false
 	var write_begin_usec := Time.get_ticks_usec()
-	var stored := _store_event(kind, sanitized, admission, encoded_data, prepared_bytes)
+	var stored := _store_event(kind, sanitized, admission, encoded_data,prepared_edit.encoded_data_bytes if prepared_conversation else prepared_bytes)
 	timing.write_usec = Time.get_ticks_usec() - write_begin_usec
 	if stored:
 		observed = _observe_history_event(kind,sanitized,log_path,_active_history_segments(),_history_receipts,true,true)
@@ -797,6 +1013,10 @@ func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_pr
 			log_warning = str(observed.error)+" Restart Workbench to validate the committed archive."
 			stored = false
 	last_event_stored = stored
+	if stored and prepared_conversation:
+		traffic = next_traffic
+		readable = next_readable
+		_adopt_prepared_conversation_edit(prepared_edit)
 	var signal_begin_usec := Time.get_ticks_usec()
 	traffic_changed.emit()
 	timing.signal_usec = Time.get_ticks_usec() - signal_begin_usec
@@ -825,7 +1045,7 @@ func _model_projection(reported: Variant) -> String:
 	if reported.length() > 512: return "unknown (oversized model metadata; see response)"
 	return redact(reported)
 
-func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
+func _admit_conversation_event(kind: String, data: Variant, prepared_edit: RefCounted = null) -> Dictionary:
 	var result := {"ok":true,"turns":_conversation_turns,"bytes":_conversation_bytes,"error":""}
 	var turns: Variant = []
 	if kind == "conversation":
@@ -841,7 +1061,10 @@ func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
 	else: return result
 	if turns == null: return {"ok":false,"error":"Malformed conversation turn; nothing written."}
 	result.turns += turns.size()
-	for turn: Dictionary in turns: result.bytes += str(turn.content).to_utf8_buffer().size()
+	if prepared_edit != null and kind == "conversation_edited" and _conversation_edit_commit_valid(prepared_edit):
+		result.bytes=int(prepared_edit.conversation_bytes)
+	else:
+		for turn: Dictionary in turns: result.bytes += str(turn.content).to_utf8_buffer().size()
 	if int(result.turns) > MAX_CONVERSATION_TURNS or int(result.bytes) > MAX_CONVERSATION_BYTES:
 		return {"ok":false,"error":"Conversation exceeds the 16384-turn / 16 MiB replay limit; nothing written."}
 	var segments := _validated_segments.duplicate(true)
@@ -1003,6 +1226,7 @@ func _exit_tree() -> void:
 	# The panel normally stops first, but provider ownership must also be safe
 	# when removed directly or when scene teardown has no next process tick.
 	if active or request != null: cancel("Workbench closed")
+	if not _conversation_edit_owner.is_empty(): _retire_conversation_edit(int(_conversation_edit_owner.handle),"Workbench closed",false)
 	cancel_export()
 	cancel_resume()
 
@@ -1013,12 +1237,18 @@ func request_preparation_active() -> bool:
 	return _preparation != null and _preparation.direction == "request" and not _preparation.reaped
 
 func _preparation_active() -> bool:
-	return _preparation != null and not _preparation.reaped
+	return (_preparation != null and not _preparation.reaped) or conversation_edit_active()
 
 func cancel(reason: String = "Human Stop") -> void:
 	var begin_usec := Time.get_ticks_usec()
+	if not _conversation_edit_owner.is_empty(): _retire_conversation_edit(int(_conversation_edit_owner.handle),reason)
 	var was_active := active or request != null
 	var timing := last_request_timing
+	var retired := _response_owner
+	_response_owner = {}
+	if not retired.is_empty():
+		_finished_serial = int(retired.id)
+		_last_owned_outcome = _owned_projection(retired,"cancelled")
 	# A completed value task can be reaped just before a queued owner deletion.
 	# Until its owner consumes it, it is still an unpublished preparation.
 	var preparing := _preparation != null
@@ -1044,6 +1274,32 @@ func cancel(reason: String = "Human Stop") -> void:
 	if was_active and not timing.is_empty():
 		timing["status"] = "cancelled"
 		timing["cancel_usec"] = Time.get_ticks_usec() - begin_usec
+	# Retire before audit/callback reentrancy. This callback belongs to the old
+	# request even if an audit observer has already dispatched its successor.
+	if not retired.is_empty():
+		var callback: Callable = retired.completion
+		if callback.is_valid():
+			var cancelled_reason := reason if not reason.strip_edges().is_empty() else "Owned request cancelled."
+			callback.call(int(retired.id),"",_owned_projection(retired,"cancelled"),redact(cancelled_reason).left(512))
+
+func cancel_owned(provider_id: int, request_id: String, reason: String = "Owner Stop") -> bool:
+	# -1 is the Architecture bridge's synchronous-dispatch cancellation token.
+	# It still requires the exact textual identity. It is never a wildcard for
+	# cancelling an ordinary Art request or an unrelated owner's successor.
+	if _response_owner.is_empty() or _response_owner.request_id != request_id: return false
+	if provider_id != -1 and provider_id != int(_response_owner.id): return false
+	if int(_response_owner.id) != serial: return false
+	cancel(reason)
+	return true
+
+static func _owned_projection(owner: Dictionary, state: String) -> Dictionary:
+	return {"format":"cybersand-art-owned-completion-v1", "provider_id":int(owner.id),
+		"request_id":str(owner.request_id), "mode":str(owner.mode), "state":state}
+
+func owned_request() -> Dictionary:
+	# No credentials, endpoint, prompt, context, image or callable escapes here.
+	if _response_owner.is_empty(): return _last_owned_outcome.duplicate(true)
+	return _owned_projection(_response_owner,str(last_request_timing.get("status","preparing")))
 
 static func quota_reset_seconds(headers: PackedStringArray) -> float:
 	var values: Dictionary = {}
@@ -1096,7 +1352,14 @@ static func request_url(provider: String, endpoint: String) -> String:
 
 func _finish_request(id: int, text: String, data: Dictionary, error: String,
 		timing: Dictionary, callback_begin_usec: int) -> void:
-	if id != serial: return
+	if id != serial or id == _finished_serial: return
+	if not _response_owner.is_empty():
+		# Context can change while HTTP or response preparation is running too.
+		# A refusal retires the owned callback; it never falls through to paint.
+		if not _dispatch_allowed(id): return
+		if not (_response_owner.get("completion",Callable()) as Callable).is_valid():
+			cancel("The proposal response owner is no longer available")
+			return
 	var redact_begin_usec := Time.get_ticks_usec()
 	var safe_text := redact(text)
 	var safe_error := redact(error)
@@ -1108,8 +1371,22 @@ func _finish_request(id: int, text: String, data: Dictionary, error: String,
 	timing.status = "completed"
 	timing.outcome = "success" if safe_error.is_empty() else "failure"
 	active = false
+	_finished_serial = id
+	var completed_owner := _response_owner
+	_response_owner = {}
+	_dispatch_guard = Callable()
 	var signal_begin_usec := Time.get_ticks_usec()
-	finished.emit(id,safe_text,data,safe_error)
+	if completed_owner.is_empty():
+		finished.emit(id,safe_text,data,safe_error)
+	else:
+		_last_owned_outcome = _owned_projection(completed_owner,timing.outcome)
+		# The full admitted redacted envelope stays in this provider's audit.
+		# Consumers receive redacted text plus a small host-generated receipt,
+		# never raw echoed credentials or an invented native execution receipt.
+		var receipt := _last_owned_outcome.duplicate(true)
+		receipt.usage = usage.duplicate(true)
+		var callback: Callable = completed_owner.completion
+		callback.call(id,safe_text,receipt,safe_error)
 	# Only the synchronous completion/panel audit chain needs these full JSON
 	# encodings. Release them now, without clearing a successor's own cache.
 	if int(_prepared_assistant.get("serial",-1)) == id: _prepared_assistant = {}
@@ -1155,6 +1432,9 @@ func _request_completed(result: int, code: int, headers: PackedStringArray, byte
 	_publish_response(prepared,callback_begin_usec)
 
 func _preparation_finished(prepared: RefCounted) -> void:
+	if prepared.direction == "conversation_edit":
+		_conversation_edit_preparation_finished(prepared)
+		return
 	if _preparation != prepared: return
 	_preparation = null
 	if prepared.direction == "request": request_preparation_jobs = 0
@@ -1307,6 +1587,82 @@ static func _request_value_weight(value: Variant, depth: int = 0) -> int:
 	return -1
 
 func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "", context: Array = [], pre_dispatch_guard: Callable = Callable()) -> String:
+	return _send(provider,endpoint,model,key,prompt,instructions,tokens,seconds,png,context,pre_dispatch_guard,{})
+
+func send_owned(parameters: Dictionary, completion: Callable, pre_dispatch_guard: Callable) -> Dictionary:
+	# Only the Art owner supplies these transport settings. Model/Architecture
+	# requests go through art_proposal_transport, which obtains a fresh settings
+	# snapshot without accepting credential or endpoint overrides from the model.
+	if active: return {"ok":false,"provider_id":-1,"reason":"A model request is already active."}
+	if _preparation_active(): return {"ok":false,"provider_id":-1,"reason":"Previous provider preparation is stopping. Retry Send shortly."}
+	var problem := _owned_parameters_error(parameters)
+	if not completion.is_valid(): problem = "One live response consumer is required."
+	if not pre_dispatch_guard.is_valid(): problem = "A live owner context guard is required."
+	if not problem.is_empty(): return {"ok":false,"provider_id":-1,"reason":problem}
+	var expected_id := serial + 1
+	var owner := {"id":expected_id,"request_id":parameters.request_id,"mode":parameters.mode,"completion":completion}
+	problem = _send(parameters.provider,parameters.endpoint,parameters.model,parameters.get("key",""),
+		parameters.prompt,parameters.instructions,int(parameters.tokens),float(parameters.seconds),
+		parameters.get("png",""),parameters.get("context",[]),pre_dispatch_guard,owner)
+	# A synchronous audit/guard observer may cancel and start a newer request.
+	# Return the captured identity, never the successor's current serial.
+	if problem.is_empty() and serial != expected_id: problem = "Owned request retired during dispatch."
+	return {"ok":problem.is_empty(),"provider_id":expected_id if problem.is_empty() else -1,
+		"request_id":parameters.request_id,"mode":parameters.mode,"reason":problem}
+
+static func _owned_parameters_error(parameters: Dictionary) -> String:
+	for field: String in ["request_id","mode","provider","endpoint","model","prompt","instructions"]:
+		if not parameters.get(field) is String: return "Owned request field '%s' must be text." % field
+	if parameters.mode not in OWNED_MODES: return "Unknown owned request mode."
+	if parameters.request_id.is_empty() or parameters.request_id.length() > 256:
+		return "Owned requests need a nonempty identity of at most 256 characters."
+	if parameters.provider not in ["OpenAI","NVIDIA","LM Studio"]: return "Unknown provider protocol."
+	if parameters.endpoint.length() > 2048 or parameters.model.length() > 512:
+		return "Owned provider endpoint or model identifier exceeds its bounded setting length."
+	if not parameters.get("tokens") is int or int(parameters.tokens) < 1 or int(parameters.tokens) > 65536:
+		return "Owned requests need a finite output allowance from 1 to 65536 tokens."
+	if not (parameters.get("seconds") is int or parameters.get("seconds") is float):
+		return "Owned requests need a numeric timeout."
+	if not parameters.get("key","") is String or not parameters.get("png","") is String or not parameters.get("context",[]) is Array:
+		return "Owned request credentials, image or conversation have invalid value types."
+	if str(parameters.get("key","")).length() > 4096: return "Provider credential exceeds 4096 characters."
+	if parameters.get("context",[]).size() > 128: return "Owned context exceeds 128 admitted messages."
+	var image_text: String = parameters.get("png","")
+	if image_text.length() > MAX_OWNED_IMAGE_BYTES or image_text.to_utf8_buffer().size() > MAX_OWNED_IMAGE_BYTES:
+		return "Owned image exceeds the two MiB encoded-image budget."
+	var values := {"prompt":parameters.prompt,"instructions":parameters.instructions,"context":parameters.get("context",[])}
+	var budget := {"bytes":MAX_OWNED_REQUEST_BYTES,"items":32768}
+	if not bounded_json_values(values,budget): return "Owned context exceeds its two MiB, depth or finite-value budget."
+	return ""
+
+static func bounded_json_values(value: Variant, budget: Dictionary, depth: int = 0) -> bool:
+	# Bound traversal as well as bytes. Large hostile arrays and cyclic containers
+	# cannot keep validation busy or enter a value preparation worker unexamined.
+	if depth > 24 or int(budget.get("items",0)) <= 0: return false
+	budget.items = int(budget.items)-1
+	budget.bytes = int(budget.bytes)-1 # Separator/colon allowance per value.
+	if value is String:
+		if value.length() > int(budget.bytes): return false
+		budget.bytes = int(budget.bytes)-value.json_escape().to_utf8_buffer().size()-2
+	elif value is Dictionary:
+		if value.size() > int(budget.items): return false
+		budget.bytes = int(budget.bytes)-2
+		for field: Variant in value:
+			if not (field is String or field is int) or not bounded_json_values(str(field),budget,depth+1) or not bounded_json_values(value[field],budget,depth+1): return false
+	elif value is Array:
+		if value.size() > int(budget.items): return false
+		budget.bytes = int(budget.bytes)-2
+		for item: Variant in value:
+			if not bounded_json_values(item,budget,depth+1): return false
+	elif value is float:
+		if not is_finite(value): return false
+		budget.bytes = int(budget.bytes)-24
+	elif value == null or value is bool or value is int:
+		budget.bytes = int(budget.bytes)-24
+	else: return false
+	return int(budget.bytes) >= 0
+
+func _send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String, context: Array, pre_dispatch_guard: Callable, response_owner: Dictionary) -> String:
 	if active: return "A model request is already active."
 	if _preparation_active(): return "Previous provider preparation is stopping. Retry Send shortly."
 	if model.strip_edges().is_empty(): return "Enter a model ID (discovery is optional)."
@@ -1333,10 +1689,14 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 	last_request_offset = -1
 	_prepared_assistant = {}
 	_dispatch_guard = pre_dispatch_guard
+	_response_owner = response_owner
 	usage = {}; returned_model = ""
 	retry_after_seconds = 0.0
 	active = true
 	if not _dispatch_allowed(id): return "Request was cancelled before preparation."
+	if not response_owner.is_empty():
+		log_event("owned_request",_owned_projection(response_owner,"preparing"))
+		if not _dispatch_allowed(id): return "Owned request was cancelled before preparation."
 	var prepared := ResponsePreparation.new()
 	prepared.direction = "request"
 	prepared.request_id = id
@@ -1366,7 +1726,8 @@ func _dispatch_allowed(id: int) -> bool:
 		if not _dispatch_guard.is_valid():
 			cancel("Request context became unavailable before dispatch")
 			return false
-		if not bool(_dispatch_guard.call()):
+		var allowed: Variant = _dispatch_guard.call()
+		if not (allowed is bool and allowed):
 			if id == serial: cancel("Request context changed before dispatch")
 			return false
 	return id == serial
@@ -1391,7 +1752,7 @@ func _dispatch_prepared_request(prepared: RefCounted, asynchronous: bool) -> Str
 	# Godot4.7's threaded client joins a blocking read before closing its socket.
 	# The bounded, nonblocking poll path keeps Stop/timeout/teardown responsive.
 	request.use_threads = false
-	request.download_chunk_size = 64*1024
+	request.download_chunk_size = 256*1024
 	request.timeout = prepared.request_seconds
 	request.body_size_limit = 16*1024*1024
 	request.max_redirects = 0

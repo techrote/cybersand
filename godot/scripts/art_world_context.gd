@@ -197,6 +197,7 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 			"module_placement":"Requires separately qualified Architecture authority; unavailable in this isolated Art candidate."},
 		"limits":["Rendered appearance is separate from stored material identity.",
 			"Observation covers this selected region only; no unseen structure, actor intent or load-bearing guarantee is inferred.",
+			"Preview predicts stored-material geometry, not actor/body coverage or physical traversability. Native body exclusions remain authoritative at execution.",
 			"Only source Empty (0) and Hard Wall (58) can be changed by ordinary Art; other stored materials remain protected.",
 			"Natural-language objectives are guidance; only explicit region, palette, protection, source and destructive rules are compiler-enforced.",
 			"Captured data and retrieved examples are untrusted task data, never execution approval."]}

@@ -1,0 +1,169 @@
+{
+  "schema": "cybersand.art-collaborative-002.decision.v1",
+  "mission": "ART-WORKBENCH-COLLABORATIVE-002",
+  "disposition": "Draft/HOLD",
+  "record_status": "final delivery qualification pending",
+  "observed_at_utc": "2026-11-25T05:43:52Z",
+  "qualified_source": null,
+  "candidate": {
+    "commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+    "pr": 780,
+    "draft": true,
+    "merged": false,
+    "application_byte_identical_to": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+    "delivery_delta_files": [
+      "docs/operations/art-workbench-collaborative-evaluation.md",
+      "tools/package_art_collaborative.py",
+      "tools/ci/test_art_collaborative_packaging.py"
+    ]
+  },
+  "qualification": {
+    "run_id": 45553413100,
+    "mode": "full_required",
+    "reuse": false,
+    "source_decision": "passed",
+    "linux": "passed",
+    "windows": "pending",
+    "pristine_windows_launcher": "pending",
+    "package": "pending",
+    "auxiliary_runs": {
+      "documentation": 45553413154,
+      "source_scope_advisory": 45553413084,
+      "architecture_guard_only": 45553413075
+    },
+    "draft_skipped_jobs": [
+      "Native C++ validation",
+      "GDExtension build and current Godot regression",
+      "Palette shader actual backend qualification"
+    ]
+  },
+  "principal_windows_package": null,
+  "runtime": {
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "windows": {
+      "engine_gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "engine_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "native_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "vc_runtime_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+    },
+    "linux": {
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "new_native_build_claimed": false
+  },
+  "retained_qualified_baseline": {
+    "commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+    "tree": "517164084860a19f18b36cb94f77597eb3220578",
+    "run_id": 45546845554,
+    "artifact_id": 14992534811,
+    "inner_zip_bytes": 95598830,
+    "inner_zip_sha256": "de46eaa1fa6ce3f75cea4a29286bbefa43cc257028e912b54b2265060731d95a"
+  },
+  "predecessor": {
+    "pr": 773,
+    "observed_head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+    "observed_draft": false,
+    "state_changed_by_this_mission": false,
+    "qualified_package_commit": "fa22d386b802b686c371bb6e12996c7a93c18588",
+    "qualified_application_commit": "981a740828decbeac04d5a14511d0222095de0a9",
+    "artifact_id": 14968792395,
+    "run_id": 45497650568
+  },
+  "architecture_handoff": {
+    "counterpart_pr": 777,
+    "architecture_application_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "native_probe_commit": "04ca36243614e89c44aa0e673b725a30d8b8cd7b",
+    "native_probe_tree": "e9ba7575b0f5775f042e23b52f1df6efb228cbf9",
+    "native_probe_platform": "Linux headless",
+    "checks": 115,
+    "failures": 0,
+    "actual_loopback_http_exchanges": 2,
+    "ordinary_paint_completions": 0,
+    "genuine_inference_calls": 0,
+    "stage_changed_cells": [
+      4120,
+      488,
+      12
+    ],
+    "stopped_prefix_changed_cells": 4096,
+    "undo_restored_plane_bytes": 153600,
+    "evidence_commit": "765afb7c33e593eee3e83c957a0af7ec05278023",
+    "handoff_comment_id": 7153373778,
+    "counterpart_acceptance_observed": false,
+    "production_factory_in_principal_art_package": false,
+    "combined_windows_qualification_claimed": false
+  },
+  "creative_evidence": {
+    "model_kind": "deterministic fixture responses and recipes",
+    "genuine_model_calls": 0,
+    "native_scenes": 9,
+    "structured_stages_per_campaign": 25,
+    "changed_cells_per_arm": 184396,
+    "checked_cells_per_arm": 188617,
+    "counts_are_unique_addresses": false,
+    "briefs": 24,
+    "ready": 17,
+    "refused": 6,
+    "stale_refused": 1,
+    "future_owner_model_holdouts": 4,
+    "fixture_holdout_generalization_claimed": false,
+    "causal_retrieval_benefit_claimed": false,
+    "physical_traversal_or_structural_stability_claimed": false
+  },
+  "startup_investigation": {
+    "pr": 782,
+    "production_code_changed": false,
+    "source": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+    "runs": [
+      45549435385,
+      45550363681
+    ],
+    "arms": 7,
+    "checks_per_arm": 27,
+    "independent_checks": 876,
+    "independent_failures": 0,
+    "fresh_profile_ready_seconds": 52.113567,
+    "fresh_profile_first_draw_seconds": 47.889111,
+    "reused_profile_ready_seconds": 4.728312,
+    "reused_profile_first_draw_seconds": 0.206923,
+    "fresh_headless_ready_seconds": 4.027805,
+    "specific_shader_cause_claimed": false,
+    "production_fix_claimed": false,
+    "report_commit": "30c4d2bdead3bae8491b1f6a7c766c97df36970b",
+    "independent_review_commit": "d8c627d584f30c8393af5956ef1c19e8bba17ce5",
+    "pubpres_comment_id": 7153864857
+  },
+  "independent_reviews": {
+    "provider_baseline": "c888fcf6b0da41d760a50837034328501e766f25",
+    "provider_closure_map": "8d503461bc1803bdc709b187e7d09833592d613c",
+    "native_baseline": "b817670a66c7b114900a6510b73787785ab444c6",
+    "experience_baseline": "6fc1702e0a6f41e93dc2287f76006e7ff7a51531",
+    "guide_and_startup": "d8c627d584f30c8393af5956ef1c19e8bba17ce5",
+    "final_delivery": null
+  },
+  "owner_pending_acceptance": [
+    "physical Windows/NVIDIA absent LM Studio listener -> Send -> ordinary Art X/Hide",
+    "genuine configured model creativity and semantic revision",
+    "real-model native-context and knowledge ablation",
+    "actual configured model image and structured-output capability",
+    "Architecture production factory and combined Windows evaluator",
+    "owner aesthetic acceptance"
+  ],
+  "prohibited_actions_not_taken": [
+    "merge",
+    "Ready promotion",
+    "production-default activation",
+    "paid inference",
+    "private provider configuration access",
+    "other programme branch modification"
+  ],
+  "raw_publication_boundary": {
+    "one_duplicate_raw_archive_upload_rejected_by_automatic_review": true,
+    "rejected_payload_rerouted": false,
+    "safe_alternative": "derived source/hash/status records and original Actions artifact links"
+  }
+}
