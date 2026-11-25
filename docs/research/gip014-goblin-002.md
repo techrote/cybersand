@@ -1189,18 +1189,89 @@ the memory report is 123,204 bytes
 The lineage and custody reports and their hashes are in the machine index.
 Decoded log projections are clearly distinguished from original report bytes.
 
-The six predecessor Linux raw tape bodies previously recovered locally remain
-unavailable after the executor interruption. Their recorded hashes and recovery
-summaries survive, and the actual original predecessor Windows artifacts are now
-preserved. Windows bytes are not substitutes for those six Linux tapes.
-Completion and process-survivor status of the interrupted local predecessor
-download remain unknown. The new hosted receipts describe only their own owned
-processes.
+At the pre-seal RESULTS checkpoint, the six predecessor Linux raw tape bodies
+were unavailable after the executor interruption. Their exact metadata survived.
+After sealing, all six selected native bodies were recovered at their original
+byte/hash identities and saved in a separate supplement, as recorded in
+the final delivery and late predecessor custody section below.
+The sealed RESULTS snapshot remains unchanged. Windows bytes were never treated
+as substitutes for those Linux tapes. Completion and process-survivor status of
+the interrupted local predecessor download remain unknown; later receipts
+describe only their own owned processes.
 
-This is the pre-seal RESULTS record. The final passive archive will snapshot this
-exact documentation commit; a later delivery record will identify its actual
-bytes and hash. Archive preparation is not a new gameplay qualification.
+This was the pre-seal RESULTS checkpoint. The sealed archive contains that exact
+`e8df89b48757096428ee6a9d12e55c7e417c10d5` documentation snapshot. The final
+delivery entry below records actual archive identity, later recovery and
+transfer limitations without changing historical gameplay outcomes.
 
 Two substantive test-oracle defects were established. The Monowheel oracle incorrectly equated the authored assembly origin with the offset physical root; independent native reproduction preserved that wrong expectation and automatically reduced a retained 44-action tape to one action. The persistence oracle incorrectly treated a reset native tick as proof that live materials still matched the authored layout. Its five-action retained-clock counterexample was automatically captured and independently verified, but was not automatically minimized. The corrected checks follow the pinned actor-part geometry and observed material lineage, with fresh-authored equality checks retained. No novel production gameplay defect was confirmed. Test-fixture setup, parser declarations, numeric provenance comparison and other harness repairs are recorded separately from these two oracle findings. Original failed, unresolved and incomplete attempts retain their original statuses; later corrections do not retroactively turn them into passes.
 
 The final actual-result readout packets are A `2cc2e185e1654bb2701224e5fdb459457c653eab`, B `097ac6bd740192173792c0d5cfc61bf4a2ae4394` and C `e809acb4dbfdeace11f64bce60ee749a9bed9a57`. Their updated complete handovers are committed alongside this RESULTS checkpoint. A's twenty-five output consistency checks do not add gameplay executions. The existing exact frozen readers consumed the raw evidence in the successful passive run, with full reports retained in its stage.
+
+
+## Final passive seal and late predecessor custody closure
+
+The final archive was actually sealed by run 45582958798 / job 139097304609 at
+driver f3324f462091d1778b9472ebcafbab35372e6411. It preserves the exact e8df89b4
+RESULTS snapshot and retains the thirteen unchanged original artifact ZIPs,
+fourteen review inputs, evidence index and README. The 29-member inner
+CyberSand-goblin-campaign-evidence.zip is 666,742,658 bytes,
+SHA-256 0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f.
+The separate artifact 15008615196 wrapper is 666,742,848 bytes,
+SHA-256 104e680cf4e85f445a549886a0b847efac288e9e30535e508c5ef2ac67e2bbce.
+Every member was rehashed after write. The 2.357-second builder and 30.148-second
+outer supervisor passed with no observed surviving owned PID. This packaging
+executed no game, reran no reader and downloaded none of the original 13
+artifact endpoints again.
+
+The executor later returned. Specialist A read six exact selected native
+predecessor tape bodies from the surviving old workspace; all six byte sizes
+and SHA-256 values matched the unchanged original recovery metadata. Five
+compact aliases also matched, for eleven paths total. The six pretty runner
+serializations were not reverified. The selected bodies total 20,516,496 bytes.
+The old 1,343,584-byte 75b4f783 ZIP was not located in the two scoped search
+directories, so a clearly NEW supplementary archive was made instead.
+The sealed evidence archive was not modified.
+
+Historical outcome accounting remains unchanged: five completed predecessor
+processes, two unattributed -9 interruptions, 988 observed completed actions,
+and no tape or inferred action count for Random a01. This is passive byte
+preservation, not another gameplay execution or resolution of an old process
+outcome. The original local transfer interruption record retains its unknown
+completion/survivor status.
+
+The qualified Windows evaluator remains saved and unchanged. The new
+predecessor-six-tapes-recovery-v1.zip was saved as a direct owner download:
+960,187 bytes, SHA-256
+c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74.
+A verified all original body hashes and reopened member hashes/CRC; B passed
+13 metadata/custody checks; C and the lead independently rehashed the completed
+ZIP and checked its inventory. C's bounded save took 8.056 seconds, peaked at
+53,104,640 sampled tree-RSS bytes and recorded no surviving owned PID.
+
+The large sealed archive remains downloadable from GitHub artifact 15008615196,
+currently expiring 2026-12-25 09:12:25 UTC. A second direct copy was blocked
+before download by the connector's 536,870,912-byte limit and the workspace's
+observed 69,832,704 free bytes. No retry, alternate transfer, split, repackaging
+or deletion of existing evidence was performed. That limitation is retained,
+not relabelled as a successful direct save.
+
+Final review records: A RESULTS b946696c686598936f43f176312923e084851b73,
+B seal binding e8981dff499a2a836d712ba7b2b2eca4f33e70c9,
+C actual seal 71d44072202b6be2bfc5367d3e0d9ce4c4aba1af,
+lead actual seal e071192947400c93c6af7329232e6237b06d887f,
+A recovery ba46c0d4fcde350923ee796aa9bd691e1b58e75c,
+B recovery a7273bfcdd601940e273ee094317052d594afd58,
+lead supplement dd8ec240e2f54bc0cedf36361ad6ff4ee02e5f19 and
+C final delivery 86e1dc88d8863e5d69fa2d73bf1addf7a9e5f31e.
+The actual seal job log is 4a1102beef673b8fbd6f6229f0ec2b80a712e132.
+The committed final delivery JSON binds these public records; private owner
+identifiers and signed transfer URLs are not committed.
+
+The final qualified runtime is still 6f359ce2b24291ee219810773c641d53802fd31d.
+The final current-source Linux cohort has four budget-complete long episodes
+and four retained timeouts; Windows qualification remains a separate pass.
+The broad 142-episode comparative experiment remains attributed to 5ee5dffc.
+No production defect, default activation, Ready promotion, merge, candidate
+programme import or physical NVIDIA acceptance is claimed. PR #781 remains
+Draft/HOLD. The deferred CONTROL 1024 experiment was not launched.

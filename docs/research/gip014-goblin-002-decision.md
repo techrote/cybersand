@@ -26,6 +26,96 @@ interruptions, source corrections and specialist handovers. The
 public identities. Later documentation or diagnostic commits do not silently
 qualify a different game source.
 
+## Final delivery and evidence custody
+
+The qualified game remains `6f359ce2b24291ee219810773c641d53802fd31d`
+(tree `a4f389cd3cc1a21dfe3d5566703eb946b66734ed`). Later RESULTS, seal and
+DELIVERY commits contain documentation, evidence or passive tooling; they do not
+requalify a different executable.
+
+The final [campaign evidence artifact](https://github.com/techrote/cybersand/actions/runs/45582958798/artifacts/15008615196)
+was sealed successfully by [run 45582958798](https://github.com/techrote/cybersand/actions/runs/45582958798),
+job `139097304609`. Its inner `CyberSand-goblin-campaign-evidence.zip` is
+**666,742,658 bytes**, SHA-256
+`0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f`.
+The GitHub artifact wrapper is **666,742,848 bytes**, SHA-256
+`104e680cf4e85f445a549886a0b847efac288e9e30535e508c5ef2ac67e2bbce`.
+These are distinct files. GitHub currently records artifact expiry at
+2026-12-25 09:12:25 UTC; owner copies are described by the final delivery record.
+
+The inner archive preserves thirteen unchanged original artifact ZIPs, fourteen
+review inputs, an evidence index and README: **29 members**. The builder rehashed
+every input while copying and every final member after closing the archive.
+Its exact embedded RESULTS snapshot is commit
+`e8df89b48757096428ee6a9d12e55c7e417c10d5`, tree
+`c5c6f89c377d78843c919101671aff1c2001f6c0`.
+The sealing driver is separately pinned to
+`f3324f462091d1778b9472ebcafbab35372e6411`, tree
+`23955d51fbe0f570fed1589c5f2a82ff5e36eb98`.
+The index SHA-256 is
+`e12b4f5625671020e81ae5b547b0f0874ab5034c856e2d314f848a198553df49`.
+
+Sealing reused the verified passive stage, downloaded none of the thirteen
+original artifact endpoints again, and ran no gameplay or evidence reader.
+The bounded builder took 2.357 seconds and peaked at 21,237,760 sampled tree-RSS
+bytes. Its outer supervisor took 30.148 seconds and peaked at 58,462,208 bytes.
+Both receipts recorded successful exit and no surviving owned PID; neither is a
+global machine process audit. Independent A, B, C and lead records distinguish
+source review, actual result review, archive execution and owner delivery.
+
+### Late predecessor tape recovery
+
+After the sealed RESULTS snapshot, the execution environment returned and the
+original predecessor workspace was accessible. Six selected native tape bodies
+were read from their exact previously recorded paths and independently matched
+the recorded byte sizes and SHA-256 values. Five compact aliases also matched:
+**eleven compact paths total**, not eleven additional tapes. The six pretty runner
+serializations were not reverified in this recovery.
+
+The six distinct selected bodies total **20,516,496 bytes**. A separately named,
+new supplemental archive preserves them with unchanged original metadata and
+fresh passive custody receipts. It does not replace the sealed campaign archive.
+The historical 1,343,584-byte `75b4f783…` assembled ZIP was not located in the
+two scoped old evidence/delivery directories; no reconstruction of that exact
+archive is claimed. The final delivery record below supplies the new supplement's
+actual identity.
+
+This closes the six-body availability gap reported at the earlier RESULTS
+checkpoint. The earlier archive and its then-correct outage statement remain
+unchanged. Historical predecessor accounting remains **seven attempts, five
+completed processes, two unattributed -9 interruptions and 988 observed completed
+actions**. Random attempt a01 has no recorded tape; its action count remains
+unknown. No new native experiment, additional completed episode, physical
+checkpoint or interrupted-process cleanup is inferred from file recovery.
+The separate interrupted local download's completion and survivor status also
+remain unknown.
+
+### Delivered copies and remaining transfer limit
+
+The previously saved qualified Windows evaluator is unchanged. The new
+`predecessor-six-tapes-recovery-v1.zip` was saved successfully as a direct owner
+download: **960,187 bytes**, SHA-256
+`c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74`,
+eleven members. Its six original tape bodies were checked against immutable
+metadata; the completed ZIP was independently rehashed, and its member inventory
+was checked. B's independent metadata review passed thirteen checks.
+
+The main sealed archive remains available through the GitHub artifact above.
+A second direct copy could not be created here: its 666,742,848-byte wrapper
+exceeds the supported download connector's 536,870,912-byte limit, and observed
+workspace free space was 69,832,704 bytes. The transfer stopped before local
+download or an upload of the large archive. No alternative transfer, split or
+repackaging was attempted. The separate supplement save used one bounded
+invocation, completed in 8.056 seconds at 53,104,640 sampled tree-RSS bytes, and
+recorded no surviving owned PID.
+
+The [final delivery record](../../tools/gip014/evidence/passive/final-delivery.json)
+binds the public identities and the final status. Private owner-download
+identifiers and signed transfer URLs are intentionally absent from this
+repository. The recorded GitHub artifact expiry makes the provider download's
+retention limit explicit; a permanent second copy of that large archive is not
+claimed.
+
 ## Owner evaluator and first session
 
 Download the qualified [Windows evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45565621408/artifacts/15001055330),
@@ -601,13 +691,15 @@ the memory report is 123,204 bytes
 The lineage and custody reports and their hashes are in the machine index.
 Decoded log projections are clearly distinguished from original report bytes.
 
-The six predecessor Linux raw tape bodies previously recovered locally remain
-unavailable after the executor interruption. Their recorded hashes and recovery
-summaries survive, and the actual original predecessor Windows artifacts are now
-preserved. Windows bytes are not substitutes for those six Linux tapes.
-Completion and process-survivor status of the interrupted local predecessor
-download remain unknown. The new hosted receipts describe only their own owned
-processes.
+At the pre-seal RESULTS checkpoint, the six predecessor Linux raw tape bodies
+were unavailable after the executor interruption. Their exact metadata survived.
+After sealing, all six selected native bodies were recovered at their original
+byte/hash identities and saved in a separate supplement, as recorded in
+[Final delivery and evidence custody](#final-delivery-and-evidence-custody).
+The sealed RESULTS snapshot remains unchanged. Windows bytes were never treated
+as substitutes for those Linux tapes. Completion and process-survivor status of
+the interrupted local predecessor download remain unknown; later receipts
+describe only their own owned processes.
 
 
 The final [A analysis readout](../../tools/gip014/evidence/passive/A-final6f-readout.json),
@@ -616,9 +708,10 @@ and [C custody readout](../../tools/gip014/evidence/passive/C-final6f-readout.js
 are committed with the complete specialist handovers. Their source-bound reviews
 separate original report bytes from decoded log projections and later interpretation.
 
-This is the pre-seal RESULTS record. The final passive archive will snapshot this
-exact documentation commit; a later delivery record will identify its actual
-bytes and hash. Archive preparation is not a new gameplay qualification.
+The sealed archive contains the pre-seal RESULTS record at
+`e8df89b48757096428ee6a9d12e55c7e417c10d5`. The final delivery section above
+identifies the actual sealed archive and the later predecessor supplement.
+Archive preparation and file recovery add no gameplay qualification.
 
 ## Boundaries, remaining work and decision
 

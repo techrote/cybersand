@@ -788,3 +788,32 @@ Custody anchors:
 - Passive stage artifact: `15005776720`, 942,877,571 bytes, SHA256 `8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9`.
 
 The passive driver is commit `2a627a3131be72fcb876acec0d0b848a7e42c3e3`, not the executed game source. This handover reads the exact transported report object; the frozen driver hashed and retained the original report file. The full raw results, reader bytes, pins and owned receipts remain in the stage for final passive sealing. Original failed and unresolved diagnostic attempts, the two established oracle defects, and the earlier Windows qualification retain their separate identities and dispositions.
+
+
+## Final delivery and late recovery addendum
+
+The main evidence archive sealed successfully at driver f3324f462091d1778b9472ebcafbab35372e6411,
+embedding the exact e8df89b48757096428ee6a9d12e55c7e417c10d5 RESULTS snapshot.
+Its 666,742,658-byte inner ZIP is available through GitHub artifact 15008615196;
+a second direct copy was blocked before local download by the connector size
+limit and available workspace space. The qualified Windows evaluator remains
+saved and unchanged at game source 6f359ce2b24291ee219810773c641d53802fd31d.
+
+After sealing, all six selected predecessor native tape bodies were recovered
+at their original byte/hash identities. A's new 960,187-byte supplement has
+SHA-256 c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74
+and was saved successfully. Eleven compact paths were checked in total: six
+selected bodies and five identical aliases. The pretty serializations were not
+reverified. Five historical completions, two unattributed -9 interruptions,
+988 observed completed actions and Random a01's missing tape/count remain
+unchanged. The old assembled 75b4 ZIP was not located in the two scoped roots;
+this new supplement is not a reconstruction claim.
+
+A recovery record ba46c0d4fcde350923ee796aa9bd691e1b58e75c, B's thirteen-check
+review a7273bfcdd601940e273ee094317052d594afd58 and C's actual delivery record
+86e1dc88d8863e5d69fa2d73bf1addf7a9e5f31e retain the distinct verification scopes.
+The [final delivery record](../../tools/gip014/evidence/passive/final-delivery.json)
+and [owner decision packet](gip014-goblin-002-decision.md) record the actual final
+status. The sealed archive and historical incomplete outcomes are unchanged.
+This final passive work adds no gameplay, analysis cohort, native qualification
+or production defect. Draft/HOLD remains in force.
