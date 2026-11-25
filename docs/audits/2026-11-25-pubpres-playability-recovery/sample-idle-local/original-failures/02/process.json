@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-comparison-02/campaign/template-C/project",
+    "--editor",
+    "--import"
+  ],
+  "source_commit": "0bd275a36669a18217f7861372bbf54a837af750",
+  "elapsed_seconds": 8.520314084999882,
+  "exit_code": 0,
+  "timed_out": false,
+  "surviving_children_at_exit": true,
+  "interruption": null,
+  "wrapper_pid": 418,
+  "observed_application_pid": 418,
+  "sampled_peak_rss_bytes": 795373568,
+  "memory_scope": "250ms actual Godot process working-set/RSS samples including setup and capture; valid only after receipt PID match. Windows virtual size unavailable; commit reported separately."
+}

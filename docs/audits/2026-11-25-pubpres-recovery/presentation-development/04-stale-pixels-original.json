@@ -1,0 +1,32 @@
+{
+  "actual_picking_mapping": "[X: (4.454321, 0.0), Y: (0.0, 4.454321), O: (-429.0, -262.0)]",
+  "diagnostic_sha256": "596f888a14cc83b1109d3588a4e6e906806b6dc22d645e56d145a3cd7912fa5e",
+  "journal_unchanged": true,
+  "new_framebuffer_sha256": "f3a4056d358d48eb94689662e3614a849afae59b86fb448377aac9261fdcebaa",
+  "old_framebuffer_sha256": "580be4d06bb59cb334a5424d0941c5298fa536bdfefde00950839e706f29b6d4",
+  "old_mapping": "[X: (4.454321, 0.0), Y: (0.0, 4.454321), O: (-429.0, -262.0)]",
+  "pixels_changed": true,
+  "prototype_main_sha256": "9e20f228bfd54c419fc25302bcd71114a9a87bc21dd2474e72f7cd6831a53d1e",
+  "prototype_transaction_sha256": "f8781e1c0f4cfe74d4bf30d6f026df29e98f188f7a707d472fde934bee7e4fbd",
+  "schema": "pubpres-stale-candidate-pixels-reproduction-v1",
+  "scope": "actual graphical proof of rejected staged canvas still drawn; not performance",
+  "source_revision": "df480e6d29118e0512303e26f10efc2249d02370",
+  "staged_mapping": "[X: (4.454321, 0.0), Y: (0.0, 4.454321), O: (-572.0, -262.0)]",
+  "status": {
+    "candidate_ready": false,
+    "committed_count": 82,
+    "connected": true,
+    "draw_notifications": 83,
+    "enabled": true,
+    "last_rejection": "policy_changed",
+    "owner_instance": 81285613043,
+    "prepared_count": 83,
+    "process_frame": 82,
+    "rejected_count": 1,
+    "schema": "pubpres-actual-submission-v1",
+    "source_revision": "df480e6d29118e0512303e26f10efc2249d02370",
+    "source_valid": true,
+    "superseded_count": 0,
+    "unprepared_draws": 0
+  }
+}

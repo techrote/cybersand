@@ -50,12 +50,12 @@ SUPPLEMENTAL = {
         "environment": {"CYBERSAND_DIAG_WATER_COMPOSITION": "1"}},
     "test_workbench_water_composition_native": {
         "prefix": "PUBPRES_WATER_COMPOSITION_NATIVE_RESULT ", "minimum_checks": 1,
-        "environment": {"CYBERSAND_DIAG_ACTUAL_SUBMISSION": "1", "CYBERSAND_DIAG_WATER_COMPOSITION": "1"},
+        "environment": {"CYBERSAND_DIAG_WATER_COMPOSITION": "1"},
         "output_environment": "CYBERSAND_WATER_COMPOSITION_OUTPUT"},
 }
 
 
-def supplemental_result(test, text, folder, source, project):
+def supplemental_result(test, text, folder, source, project, *, engine_sha=None, expected_inline=None, expected_lookahead=None, receipt_path=None):
     expected = SUPPLEMENTAL[test]
     lines = [line.removeprefix(expected["prefix"]) for line in text.splitlines() if line.startswith(expected["prefix"])]
     need(len(lines) == 1, "Missing/duplicate exact supplemental completion: " + test)
@@ -64,7 +64,7 @@ def supplemental_result(test, text, folder, source, project):
          and terminal["checks"] >= expected["minimum_checks"], "Incomplete supplemental assertions: " + test)
     result = {"terminal": terminal, "test_sha256": digest(project / "tests" / (test + ".gd"))}
     if expected.get("output_environment") or expected.get("output_argument"):
-        path = folder / "receipt.json"
+        path = receipt_path or folder / "receipt.json"
         need(path.is_file(), "Supplemental graphical receipt was not retained: " + test)
         data = json.loads(path.read_bytes())
         need(data.get("failures") == [] and data.get("source_revision") == source["source_commit"],
@@ -72,17 +72,53 @@ def supplemental_result(test, text, folder, source, project):
         if "schema" in expected:
             need(data.get("schema") == expected["schema"], "Unknown supplemental receipt schema")
         if test == "test_workbench_presentation_submission":
+            if engine_sha is not None:
+                need(data.get("engine_sha256") == engine_sha and type(data.get("process_id")) is int
+                     and data["process_id"] > 0 and data.get("render_thread_inline") is expected_inline
+                     and data.get("requested_render_lookahead") == str(expected_lookahead),
+                     "Actual transaction executable, PID, render owner or bounded selector differs")
             need(data.get("engine_atomic_admission") is True,
                  "Journal-only pre-draw refusal cannot reject already-flushed candidate pixels")
             refusals = data.get("refusal_framebuffers", [])
-            need(isinstance(refusals, list) and refusals
+            need(isinstance(refusals, list) and len(refusals) == 8
                  and {row.get("case") for row in refusals} == {
-                     "owner", "material", "policy", "camera", "lifecycle", "physical_completion", "manual_before_flush"}
+                     "owner", "material", "policy", "camera", "lifecycle", "physical_completion", "manual_before_flush", "manual_during_flush"}
                  and all(row.get("before_sha256") == row.get("after_sha256")
                          and isinstance(row.get("before_sha256"), str) and len(row["before_sha256"]) == 64
                          and row.get("mapping_unchanged") is True
                          and row.get("pre_draw_delta") == row.get("post_draw_delta") == row.get("submission_delta") == 0
                          for row in refusals), "Stale candidate refusal lacks actual unchanged framebuffer evidence")
+            during = next(row for row in refusals if row["case"] == "manual_during_flush")
+            need(during.get("journal_delta") == 0 and during.get("next_submission_delta") == 1
+                 and type(during.get("staged_candidate_serial")) is int and during["staged_candidate_serial"] > 0
+                 and during.get("next_candidate_serial") == during["staged_candidate_serial"]
+                 and isinstance(during.get("next_framebuffer_sha256"), str) and len(during["next_framebuffer_sha256"]) == 64
+                 and during["next_framebuffer_sha256"] != during["before_sha256"],
+                 "Manual draw during message flush must refuse without consuming candidate, then actually draw it after flush")
+            fallback = data.get("fallback_ui", [])
+            need(isinstance(fallback, list) and len(fallback) == 4
+                 and {row.get("case") for row in fallback} == {
+                     "invalid_initial_source", "invalid_actor_receipt", "retired_physical_owner", "physical_owner_restart"},
+                 "Atomic invalid-owner/source fallback inventory is incomplete")
+            fallback = {row["case"]: row for row in fallback}
+            initial = fallback["invalid_initial_source"]
+            need(initial.get("enabled") is False and initial.get("refusal") == "source_identity_invalid"
+                 and initial.get("handshake_absent") is True and initial.get("pre_draw_delta", 0) > 0
+                 and initial.get("framebuffer_available") is True and initial.get("native_workbench_initialized") is True,
+                 "Invalid atomic source must refuse opt-in while ordinary native UI still draws")
+            for case in ("invalid_actor_receipt", "retired_physical_owner"):
+                row = fallback[case]
+                need(row.get("pre_draw_delta") == row.get("submission_delta") == 1
+                     and row.get("frame_valid") is False and row.get("visible_parts") == 0,
+                     "Invalid/retired actor owner must admit an actual safe empty-overlay UI draw")
+            need(fallback["retired_physical_owner"].get("picking_refused") is True,
+                 "Retired owner must refuse picking without a submitted map")
+            restarted = fallback["physical_owner_restart"]
+            need(type(restarted.get("retired_owner")) is int and restarted["retired_owner"] > 0
+                 and type(restarted.get("new_owner")) is int and restarted["new_owner"] > 0
+                 and restarted["new_owner"] != restarted["retired_owner"] and restarted.get("submission_delta", 0) > 0
+                 and restarted.get("frame_valid") is True and restarted.get("visible_parts") == 2,
+                 "Ordinary Restore must rebuild a different physical owner and actually draw its actor")
             completed = next(row for row in refusals if row["case"] == "physical_completion")
             need(completed.get("real_step_delta") == completed.get("real_manual_step_delta") == 1,
                  "Physical-completion refusal did not execute one real normal physical step")
@@ -168,6 +204,8 @@ def main():
                 environment["CYBERSAND_ENGINE_RENDER_LOOKAHEAD_TRACE"] = str(folder / "engine-draws.json")
         if test in SUPPLEMENTAL:
             environment.update(SUPPLEMENTAL[test]["environment"])
+            if test == "test_workbench_water_composition_native":
+                environment["CYBERSAND_DIAG_ACTUAL_SUBMISSION"] = "1" if engine_proof else "0"
             if SUPPLEMENTAL[test].get("output_environment"):
                 environment[SUPPLEMENTAL[test]["output_environment"]] = str(folder / "receipt.json")
         if test == "test_workbench_physics_causal_trace":
@@ -194,7 +232,8 @@ def main():
             need(item["returncode"] == 0 and not item.get("timed_out", False), "Godot process failed or timed out")
             need("SCRIPT ERROR:" not in text and "ERROR:" not in text, "Strict Godot diagnostic failure")
             if test in SUPPLEMENTAL:
-                item["evidence"] = supplemental_result(test, text, folder, source, project)
+                item["evidence"] = supplemental_result(test, text, folder, source, project, engine_sha=report["engine_sha256"],
+                    expected_inline=args.render_thread == "safe", expected_lookahead=args.lookahead)
             elif test == "test_full_image_ring_publication":
                 item["evidence"] = ring_result(text, source["source_commit"], project, driver, engine_sha256=report["engine_sha256"])
             elif test == "pubpres_full_image_ring_oracle":

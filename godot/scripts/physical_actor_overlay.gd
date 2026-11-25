@@ -28,7 +28,7 @@ func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2)
 	position = content.position
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
-	if not _is_water_layer and _water_layer != null:
+	if not _is_water_layer and _water_layer != null and not _water_state.is_empty():
 		var water_parts: Array = []
 		for part: Dictionary in _parts:
 			if part.get("water_composed", false): water_parts.append(part)
@@ -46,10 +46,17 @@ func set_water_composition(state: Dictionary) -> void:
 	var enabled: bool = state.get("enabled", false) and state.get("current_texture") is Texture2D \
 		and state.get("previous_texture") is Texture2D and state.get("world_size") is Vector2i
 	if not enabled:
+		# Proof availability can alternate on consecutive admitted frames. Keep
+		# one bounded layer/material rather than allocate and retire GPU resources
+		# on every transition. Drop texture references while it is inactive.
+		if not _water_state.is_empty() and _water_layer != null:
+			_water_layer._parts.clear()
+			_water_layer.hide()
+			var shader: ShaderMaterial = _water_layer.material
+			shader.set_shader_parameter("current_material", null)
+			shader.set_shader_parameter("previous_material", null)
+			_water_layer.queue_redraw()
 		_water_state.clear()
-		if _water_layer != null:
-			_water_layer.queue_free()
-			_water_layer = null
 		return
 	if _water_layer == null:
 		_water_layer = CyberPhysicalActorOverlay.new()

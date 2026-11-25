@@ -1,0 +1,27 @@
+{
+  "schema": "pubpres-recovery-current-main-workbench-equivalence-v1",
+  "historical_accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "current_accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "historical_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "current_tree": "0e97842e60e71f10ead6ea752d34e952de2b6a35",
+  "compared_scopes": [
+    "godot",
+    "native",
+    "third_party",
+    "tools/build_native_extension_linux.sh",
+    "tools/build_native_extension_windows.sh",
+    "tools/build_pinned_godot_cpp.sh",
+    "tools/pubpres_playability_build"
+  ],
+  "exact_changes": [
+    {
+      "status": "added",
+      "path": "godot/tools/qualify_gentek80_compositions.gd",
+      "role": "independent qualification tooling, not ordinary Workbench entrypoint"
+    }
+  ],
+  "common_projection_files": 1135,
+  "common_projection_sha256": "3a9ef33b5fa758e48f4b9067a6bad47cbbff6296936734f320cab64d63e5410b",
+  "complete": true,
+  "scope": "Exact committed ordinary application/native/dependency/build-input equivalence, with one explicitly named new qualification tool excluded. This does not relabel old binary source, inherit hardware results, or claim full repository trees equal. Current main must refresh before any integration decision."
+}

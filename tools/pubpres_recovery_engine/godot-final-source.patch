@@ -205,10 +205,10 @@ index bcd838c..52e834d 100644
  					tex.texture = ImageTexture::create_from_image(img);
  				} else {
 diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/rendering_server_default.cpp
-index 49b80b1..0bd5283 100644
+index 49b80b1..e050976 100644
 --- a/servers/rendering/rendering_server_default.cpp
 +++ b/servers/rendering/rendering_server_default.cpp
-@@ -30,6 +30,9 @@
+@@ -30,7 +30,11 @@
  
  #include "rendering_server_default.h"
  
@@ -216,9 +216,11 @@ index 49b80b1..0bd5283 100644
 +#include "core/io/file_access.h"
 +#include "core/io/json.h"
  #include "core/object/callable_mp.h"
++#include "core/object/message_queue.h"
  #include "core/os/os.h"
  #include "core/profiling/profiling.h"
-@@ -300,6 +303,10 @@ void RenderingServerDefault::finish() {
+ #include "servers/display/display_server.h"
+@@ -300,6 +304,10 @@ void RenderingServerDefault::finish() {
  	} else {
  		_finish();
  	}
@@ -229,7 +231,7 @@ index 49b80b1..0bd5283 100644
  }
  
  /* STATUS INFORMATION */
-@@ -330,6 +337,10 @@ RenderingDeviceEnums::DeviceType RenderingServerDefault::get_video_adapter_type(
+@@ -330,6 +338,10 @@ RenderingDeviceEnums::DeviceType RenderingServerDefault::get_video_adapter_type(
  }
  
  void RenderingServerDefault::set_frame_profiling_enabled(bool p_enable) {
@@ -240,7 +242,7 @@ index 49b80b1..0bd5283 100644
  	RSG::utilities->capturing_timestamps = p_enable;
  }
  
-@@ -362,6 +373,10 @@ void RenderingServerDefault::sdfgi_set_debug_probe_select(const Vector3 &p_posit
+@@ -362,6 +374,10 @@ void RenderingServerDefault::sdfgi_set_debug_probe_select(const Vector3 &p_posit
  }
  
  void RenderingServerDefault::set_print_gpu_profile(bool p_enable) {
@@ -251,7 +253,7 @@ index 49b80b1..0bd5283 100644
  	RSG::utilities->capturing_timestamps = p_enable;
  	print_gpu_profile = p_enable;
  }
-@@ -426,6 +441,11 @@ void RenderingServerDefault::_thread_loop() {
+@@ -426,6 +442,11 @@ void RenderingServerDefault::_thread_loop() {
  /* INTERPOLATION */
  
  void RenderingServerDefault::set_physics_interpolation_enabled(bool p_enabled) {
@@ -263,7 +265,7 @@ index 49b80b1..0bd5283 100644
  	RSG::canvas->set_physics_interpolation_enabled(p_enabled);
  	RSG::scene->set_physics_interpolation_enabled(p_enabled);
  }
-@@ -433,23 +453,291 @@ void RenderingServerDefault::set_physics_interpolation_enabled(bool p_enabled) {
+@@ -433,23 +454,303 @@ void RenderingServerDefault::set_physics_interpolation_enabled(bool p_enabled) {
  /* EVENT QUEUING */
  
  void RenderingServerDefault::sync() {
@@ -283,11 +285,14 @@ index 49b80b1..0bd5283 100644
 +}
 +
 +bool RenderingServerDefault::_pubpres_get_handshake(Dictionary &r_handshake, Object *&r_owner) {
-+	const Variant metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
-+	if (metadata.get_type() != Variant::DICTIONARY) {
++	if (!has_meta(SNAME("cybersand_actual_submission_v1"))) {
 +		return false;
 +	}
-+	r_handshake = metadata;
++	const Variant submission_metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
++	if (submission_metadata.get_type() != Variant::DICTIONARY) {
++		return false;
++	}
++	r_handshake = submission_metadata;
 +	const Variant schema = r_handshake.get("schema", Variant());
 +	const Variant enabled = r_handshake.get("enabled", Variant());
 +	const Variant connected = r_handshake.get("connected", Variant());
@@ -336,16 +341,25 @@ index 49b80b1..0bd5283 100644
 +}
 +
 +bool RenderingServerDefault::_pubpres_application_admission(PubpresApplicationReceipt &r_receipt) {
-+	const Variant metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
-+	if (metadata.get_type() == Variant::NIL) {
++	if (!has_meta(SNAME("cybersand_actual_submission_v1"))) {
++		return true;
++	}
++	const Variant submission_metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
++	if (submission_metadata.get_type() == Variant::NIL) {
 +		return true; // Ordinary applications have not selected this contract.
 +	}
-+	if (metadata.get_type() == Variant::DICTIONARY) {
-+		const Dictionary state = metadata;
++	if (submission_metadata.get_type() == Variant::DICTIONARY) {
++		const Dictionary state = submission_metadata;
 +		const Variant enabled = state.get("enabled", Variant());
 +		if (enabled.get_type() == Variant::BOOL && !bool(enabled)) {
 +			return true;
 +		}
++	}
++	// A deferred manual draw may follow the application's marker while later
++	// nested canvas callbacks are still queued. Only the completed Main flush
++	// establishes that every staged command has reached the rendering queue.
++	if (MessageQueue::get_main_singleton()->is_flushing()) {
++		return false;
 +	}
 +	Dictionary handshake;
 +	Object *owner = nullptr;
@@ -557,7 +571,7 @@ index 49b80b1..0bd5283 100644
  }
  
  void RenderingServerDefault::tick() {
-@@ -469,6 +757,23 @@ RenderingServerDefault::RenderingServerDefault(bool p_create_thread) {
+@@ -469,6 +770,23 @@ RenderingServerDefault::RenderingServerDefault(bool p_create_thread) {
  	RenderingServer::init();
  
  	create_thread = p_create_thread;

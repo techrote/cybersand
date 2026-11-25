@@ -1,0 +1,1218 @@
+{
+  "pid": 10,
+  "code": 0,
+  "baseline": [],
+  "pending": [],
+  "survivors": true,
+  "rows": [
+    {
+      "time": 6847.520222345,
+      "children": [
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 87 0 0 0 0 0 0 0 20 0 1 0 684751 148475904 64 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 0 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6847.771000745,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 19831 1453 24 0 8 14 0 0 20 0 13 0 684751 936529920 32620 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6848.022226734,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 31018 10545 27 0 17 27 3 0 20 0 13 0 684751 1034657792 44329 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6848.273168835,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 41066 28729 29 0 23 39 9 0 20 0 13 0 684751 1075363840 54847 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6848.523871306,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 48502 60874 29 0 26 52 18 2 20 0 13 0 684751 1105768448 62239 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6848.784922609,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 53828 87954 29 0 30 62 27 4 20 0 13 0 684751 1127669760 67679 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6849.035975107,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 66827 115234 29 0 34 74 35 5 20 0 13 0 684751 1180778496 80863 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6849.28680208,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 75559 139563 29 0 39 86 42 6 20 0 13 0 684751 1216598016 89775 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6849.53756401,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 89500 148656 29 0 47 101 45 6 20 0 13 0 684751 1273450496 104114 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6849.788292339,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 103998 153732 29 0 56 115 46 6 20 0 14 0 684751 1341313024 118815 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6850.041021968,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 109085 157749 32 0 73 121 48 7 20 0 15 0 684751 1433657344 124102 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6850.291857799,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 120857 157749 33 0 95 131 48 7 20 0 16 0 684751 1559064576 136009 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6850.54266339,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 141001 157749 33 0 125 151 48 7 20 0 16 0 684751 1617866752 151634 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6850.795837388,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 153872 157749 33 0 156 170 48 7 20 0 16 0 684751 1633968128 164530 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6851.046697005,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 164466 157749 33 0 190 186 48 7 20 0 16 0 684751 1662177280 172287 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6851.297567614,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 168544 157749 33 0 208 194 48 7 20 0 15 0 684751 1678692352 176351 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6851.54852591,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 171026 157749 33 0 228 198 48 7 20 0 15 0 684751 1688866816 178847 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6851.799605643,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 171927 157749 33 0 251 200 48 7 20 0 15 0 684751 1692491776 179743 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6852.05182645,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 172668 157749 33 0 273 204 48 7 20 0 15 0 684751 1695518720 180511 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6852.302797951,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 178201 157749 33 0 314 210 48 7 20 0 17 0 684751 1786941440 186695 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6852.553692636,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 193994 157749 33 0 360 217 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6852.807739379,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 195164 157749 33 0 392 219 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6853.058553943,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 196569 157749 33 0 415 225 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6853.309523621,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 197973 157749 33 0 440 228 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6853.560479703,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 199416 157749 33 0 464 232 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6853.811742949,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 202103 157749 36 0 492 234 48 7 20 0 15 0 684751 1859743744 204572 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6854.062722356,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 202120 157749 36 0 517 234 48 7 20 0 15 0 684751 1859743744 204636 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6854.313987975,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 202147 157749 36 0 543 234 48 7 20 0 15 0 684751 1851351040 204668 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6854.564951167,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 202157 157749 36 0 550 234 48 7 20 0 12 0 684751 1771667456 191361 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    },
+    {
+      "time": 6854.815724756,
+      "children": [
+        {
+          "pid": 26,
+          "command": "",
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n"
+        },
+        {
+          "pid": 11,
+          "command": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 202157 157749 36 0 550 234 48 7 20 0 12 0 684751 1771667456 191361 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n"
+        }
+      ]
+    }
+  ],
+  "child_scans": [
+    {
+      "owner": 10,
+      "time": 6847.51943586,
+      "result": [],
+      "details": []
+    },
+    {
+      "owner": 10,
+      "time": 6847.520190687,
+      "result": [
+        11
+      ],
+      "details": [
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 50 0 0 0 0 0 0 0 20 0 1 0 684751 147288064 32 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 0 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t  143976 kB\nVmSize:\t  143976 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t     328 kB\nVmRSS:\t     328 kB\nRssAnon:\t      44 kB\nRssFile:\t     284 kB\nRssShmem:\t       0 kB\nVmData:\t    2824 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t     168 kB\nVmPTE:\t      40 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t0\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6847.770940144,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 19818 1453 24 0 8 14 0 0 20 0 13 0 684751 936529920 32620 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t  914580 kB\nVmSize:\t  914580 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  130864 kB\nVmRSS:\t  130864 kB\nRssAnon:\t   66524 kB\nRssFile:\t   63216 kB\nRssShmem:\t    1124 kB\nVmData:\t  176932 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     480 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t34\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6848.022133403,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 31009 10545 27 0 17 27 3 0 20 0 13 0 684751 1034522624 44329 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1068672 kB\nVmSize:\t 1010276 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  177916 kB\nVmRSS:\t  177916 kB\nRssAnon:\t  104936 kB\nRssFile:\t   71856 kB\nRssShmem:\t    1124 kB\nVmData:\t  207224 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     572 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t151\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6848.273088664,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 41040 28729 29 0 23 39 9 0 20 0 13 0 684751 1075228672 54815 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1068672 kB\nVmSize:\t 1050028 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  219812 kB\nVmRSS:\t  219812 kB\nRssAnon:\t  144656 kB\nRssFile:\t   74032 kB\nRssShmem:\t    1124 kB\nVmData:\t  246976 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     648 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t335\nnonvoluntary_ctxt_switches:\t2\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6848.523820078,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 48502 60874 29 0 26 52 18 2 20 0 13 0 684751 1105768448 62239 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1079888 kB\nVmSize:\t 1079852 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  249772 kB\nVmRSS:\t  249772 kB\nRssAnon:\t  174424 kB\nRssFile:\t   74224 kB\nRssShmem:\t    1124 kB\nVmData:\t  276800 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     708 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t642\nnonvoluntary_ctxt_switches:\t10\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6848.78486309,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 53828 87743 29 0 30 62 27 4 20 0 13 0 684751 1127669760 67679 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1101276 kB\nVmSize:\t 1101240 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  271216 kB\nVmRSS:\t  271216 kB\nRssAnon:\t  195676 kB\nRssFile:\t   74416 kB\nRssShmem:\t    1124 kB\nVmData:\t  298188 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     748 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t893\nnonvoluntary_ctxt_switches:\t12\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6849.035897851,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 66827 115234 29 0 34 74 35 5 20 0 13 0 684751 1180778496 80863 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1153140 kB\nVmSize:\t 1153104 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  323972 kB\nVmRSS:\t  323972 kB\nRssAnon:\t  247604 kB\nRssFile:\t   75244 kB\nRssShmem:\t    1124 kB\nVmData:\t  350052 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     848 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1156\nnonvoluntary_ctxt_switches:\t17\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6849.286750823,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 75549 139563 29 0 39 86 42 6 20 0 13 0 684751 1216462848 89743 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1187952 kB\nVmSize:\t 1187952 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  359648 kB\nVmRSS:\t  359648 kB\nRssAnon:\t  282368 kB\nRssFile:\t   76156 kB\nRssShmem:\t    1124 kB\nVmData:\t  384900 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t     916 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1385\nnonvoluntary_ctxt_switches:\t21\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6849.537510489,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 89493 148656 29 0 47 101 45 6 20 0 13 0 684751 1273450496 104114 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1243604 kB\nVmSize:\t 1243604 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  417088 kB\nVmRSS:\t  417088 kB\nRssAnon:\t  338016 kB\nRssFile:\t   77948 kB\nRssShmem:\t    1124 kB\nVmData:\t  440552 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1032 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t13\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1474\nnonvoluntary_ctxt_switches:\t25\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6849.788242203,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 103998 153732 29 0 56 115 46 6 20 0 14 0 684751 1341313024 118815 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 2 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1309912 kB\nVmSize:\t 1309876 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  475980 kB\nVmRSS:\t  475980 kB\nRssAnon:\t  395960 kB\nRssFile:\t   78896 kB\nRssShmem:\t    1124 kB\nVmData:\t  506820 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1148 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t14\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1529\nnonvoluntary_ctxt_switches:\t27\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6850.04094329,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 109084 157749 32 0 73 121 48 7 20 0 15 0 684751 1433657344 124102 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1400056 kB\nVmSize:\t 1400056 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  497200 kB\nVmRSS:\t  497200 kB\nRssAnon:\t  412480 kB\nRssFile:\t   83596 kB\nRssShmem:\t    1124 kB\nVmData:\t  531592 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1188 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1569\nnonvoluntary_ctxt_switches:\t67\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6850.291804439,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 120846 157749 33 0 95 131 48 7 20 0 16 0 684751 1559064576 136009 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1547940 kB\nVmSize:\t 1522524 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  544764 kB\nVmRSS:\t  544764 kB\nRssAnon:\t  457804 kB\nRssFile:\t   85836 kB\nRssShmem:\t    1124 kB\nVmData:\t  594772 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1300 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1572\nnonvoluntary_ctxt_switches:\t68\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6850.542613705,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 140989 157749 33 0 125 151 48 7 20 0 16 0 684751 1617866752 151634 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1579948 kB\nVmSize:\t 1579948 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  607268 kB\nVmRSS:\t  607268 kB\nRssAnon:\t  519984 kB\nRssFile:\t   86160 kB\nRssShmem:\t    1124 kB\nVmData:\t  647440 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1412 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1724\nnonvoluntary_ctxt_switches:\t75\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6850.795783878,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 153862 157749 33 0 156 170 48 7 20 0 16 0 684751 1633968128 164498 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1595672 kB\nVmSize:\t 1595672 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  658820 kB\nVmRSS:\t  658820 kB\nRssAnon:\t  571408 kB\nRssFile:\t   86288 kB\nRssShmem:\t    1124 kB\nVmData:\t  706576 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1524 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1854\nnonvoluntary_ctxt_switches:\t75\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6851.046634541,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 164466 157749 33 0 190 186 48 7 20 0 16 0 684751 1662177280 172287 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1635888 kB\nVmSize:\t 1623220 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  696776 kB\nVmRSS:\t  690012 kB\nRssAnon:\t  602476 kB\nRssFile:\t   86412 kB\nRssShmem:\t    1124 kB\nVmData:\t  734124 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1576 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1876\nnonvoluntary_ctxt_switches:\t76\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6851.297510698,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 168543 157749 33 0 208 194 48 7 20 0 15 0 684751 1678692352 176351 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1639348 kB\nVmSize:\t 1639348 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  706180 kB\nVmRSS:\t  706180 kB\nRssAnon:\t  618628 kB\nRssFile:\t   86428 kB\nRssShmem:\t    1124 kB\nVmData:\t  750252 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1608 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1910\nnonvoluntary_ctxt_switches:\t77\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6851.548457717,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 171026 157749 33 0 228 198 48 7 20 0 15 0 684751 1688866816 178847 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1649284 kB\nVmSize:\t 1649284 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  716112 kB\nVmRSS:\t  716112 kB\nRssAnon:\t  628560 kB\nRssFile:\t   86428 kB\nRssShmem:\t    1124 kB\nVmData:\t  760188 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1628 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1970\nnonvoluntary_ctxt_switches:\t84\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6851.799553755,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 171927 157749 33 0 251 200 48 7 20 0 15 0 684751 1692491776 179743 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1652824 kB\nVmSize:\t 1652824 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  719560 kB\nVmRSS:\t  719560 kB\nRssAnon:\t  632008 kB\nRssFile:\t   86428 kB\nRssShmem:\t    1124 kB\nVmData:\t  763728 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1632 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1970\nnonvoluntary_ctxt_switches:\t84\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6852.051763325,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 172668 157749 33 0 273 204 48 7 20 0 15 0 684751 1695518720 180511 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1655780 kB\nVmSize:\t 1655780 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  722700 kB\nVmRSS:\t  722700 kB\nRssAnon:\t  634960 kB\nRssFile:\t   86616 kB\nRssShmem:\t    1124 kB\nVmData:\t  766684 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t    4192 kB\nVmPTE:\t    1640 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1971\nnonvoluntary_ctxt_switches:\t84\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6852.302678251,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 178201 157749 33 0 314 210 48 7 20 0 17 0 684751 1786941440 186695 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1810596 kB\nVmSize:\t 1745060 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  747408 kB\nVmRSS:\t  747408 kB\nRssAnon:\t  651700 kB\nRssFile:\t   94584 kB\nRssShmem:\t    1124 kB\nVmData:\t  787104 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1712 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t17\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2014\nnonvoluntary_ctxt_switches:\t86\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6852.553624984,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 193994 157749 33 0 360 217 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1824352 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  808912 kB\nVmRSS:\t  808912 kB\nRssAnon:\t  712096 kB\nRssFile:\t   95692 kB\nRssShmem:\t    1124 kB\nVmData:\t  880352 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2062\nnonvoluntary_ctxt_switches:\t110\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6852.807659188,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 195164 157749 33 0 392 219 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1824352 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  808912 kB\nVmRSS:\t  808912 kB\nRssAnon:\t  712096 kB\nRssFile:\t   95692 kB\nRssShmem:\t    1124 kB\nVmData:\t  880352 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2105\nnonvoluntary_ctxt_switches:\t110\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6853.05843868,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 196569 157749 33 0 415 225 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1824352 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  808912 kB\nVmRSS:\t  808912 kB\nRssAnon:\t  712096 kB\nRssFile:\t   95692 kB\nRssShmem:\t    1124 kB\nVmData:\t  880352 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2143\nnonvoluntary_ctxt_switches:\t111\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6853.309440025,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 197973 157749 33 0 440 228 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1824352 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  808912 kB\nVmRSS:\t  808912 kB\nRssAnon:\t  712096 kB\nRssFile:\t   95692 kB\nRssShmem:\t    1124 kB\nVmData:\t  880352 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2181\nnonvoluntary_ctxt_switches:\t111\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6853.560403909,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 199416 157749 33 0 464 232 48 7 20 0 16 0 684751 1868136448 202108 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1824352 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  808912 kB\nVmRSS:\t  808912 kB\nRssAnon:\t  712096 kB\nRssFile:\t   95692 kB\nRssShmem:\t    1124 kB\nVmData:\t  880352 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1852 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t16\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2219\nnonvoluntary_ctxt_switches:\t113\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6853.811649268,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 202103 157749 36 0 492 234 48 7 20 0 15 0 684751 1859743744 204572 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1816156 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  819048 kB\nVmRSS:\t  819048 kB\nRssAnon:\t  722092 kB\nRssFile:\t   95832 kB\nRssShmem:\t    1124 kB\nVmData:\t  882028 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1860 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2226\nnonvoluntary_ctxt_switches:\t118\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6854.062640583,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 202120 157749 36 0 517 234 48 7 20 0 15 0 684751 1859743744 204636 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1816156 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  819176 kB\nVmRSS:\t  819176 kB\nRssAnon:\t  722156 kB\nRssFile:\t   95896 kB\nRssShmem:\t    1124 kB\nVmData:\t  882028 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1860 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2226\nnonvoluntary_ctxt_switches:\t120\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6854.31391813,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) R 10 11 11 0 -1 4194304 202147 157749 36 0 543 234 48 7 20 0 15 0 684751 1851351040 204668 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tR (running)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1807960 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  819332 kB\nVmRSS:\t  819332 kB\nRssAnon:\t  722240 kB\nRssFile:\t   95968 kB\nRssShmem:\t    1124 kB\nVmData:\t  873836 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1856 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t15\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2226\nnonvoluntary_ctxt_switches:\t123\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6854.564876124,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 202157 157749 36 0 550 234 48 7 20 0 12 0 684751 1771667456 191361 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1730144 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  818672 kB\nVmRSS:\t  766052 kB\nRssAnon:\t  668960 kB\nRssFile:\t   95968 kB\nRssShmem:\t    1124 kB\nVmData:\t  796032 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1744 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t12\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2241\nnonvoluntary_ctxt_switches:\t123\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6854.815670584,
+      "result": [
+        11,
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        },
+        {
+          "pid": 11,
+          "stat": "11 (Godot_v4.7-stab) S 10 11 11 0 -1 4194304 202157 157749 36 0 550 234 48 7 20 0 12 0 684751 1771667456 191361 18446744073709551615 4227072 87040841 140735646660688 0 0 0 0 0 1160 0 0 0 17 6 0 0 0 0 0 148207792 148378112 833032192 140735646669012 140735646669249 140735646669249 140735646674859 0\n",
+          "status": "Name:\tGodot_v4.7-stab\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t11\nNgid:\t0\nPid:\t11\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t11\nNSpid:\t11\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nVmPeak:\t 1857136 kB\nVmSize:\t 1730144 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  818672 kB\nVmRSS:\t  766052 kB\nRssAnon:\t  668960 kB\nRssFile:\t   95968 kB\nRssShmem:\t    1124 kB\nVmData:\t  796032 kB\nVmStk:\t     136 kB\nVmExe:\t   80876 kB\nVmLib:\t   15504 kB\nVmPTE:\t    1744 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t12\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000100000488\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2241\nnonvoluntary_ctxt_switches:\t123\n",
+          "cmdline": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path /workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project --editor --import ",
+          "exe": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6855.067038077,
+      "result": [
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        }
+      ]
+    },
+    {
+      "owner": 10,
+      "time": 6855.067355625,
+      "result": [
+        26
+      ],
+      "details": [
+        {
+          "pid": 26,
+          "stat": "26 (dbus-launch) Z 10 11 11 0 -1 4227148 88 0 0 0 0 0 0 0 20 0 1 0 684759 0 0 18446744073709551615 0 0 0 0 0 0 0 0 0 1 0 0 17 4 0 0 0 0 0 0 0 0 0 0 0 0 256\n",
+          "status": "Name:\tdbus-launch\nState:\tZ (zombie)\nTgid:\t26\nNgid:\t0\nPid:\t26\nPPid:\t10\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t0\nGroups:\t \nNStgid:\t26\nNSpid:\t26\nNSpgid:\t11\nNSsid:\t11\nKthread:\t0\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t0\n",
+          "cmdline": "",
+          "exe_error": "[Errno 2] No such file or directory: '/proc/26/exe'"
+        }
+      ]
+    },
+    {
+      "owner": 26,
+      "time": 6855.067580614,
+      "result": [],
+      "details": []
+    },
+    {
+      "owner": 10,
+      "time": 6855.067766694,
+      "result": [],
+      "details": []
+    }
+  ]
+}

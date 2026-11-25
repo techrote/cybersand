@@ -13,9 +13,9 @@ WORKFLOW = '.github/workflows/pubpres-recovery-engine-build.yml'
 REQUEST = '.github/pubpres-recovery-engine-build-run.json'
 EXPECTED = {
     'schema': 'pubpres-recovery-atomic-component-build-v1',
-    'request_id': 'PUBPRES-PLAYABILITY-FINAL-RECOVERY-001-atomic-engine-build-01',
+    'request_id': 'PUBPRES-PLAYABILITY-FINAL-RECOVERY-001-atomic-engine-build-02',
     'maximum_deferred_opportunities': 4,
-    'purpose': 'Build a separately identified default-off atomic application admission engine atop the exact three-patch bounded component. Retain every preceding compiler/dependency/API/PE gate, prove exact four-patch composition, and conserve refused-draw elapsed time. Application correctness and gameplay remain separately required.',
+    'purpose': 'Build the corrected atomic admission component after actual Safe0/Separate0/Separate4 graphical correctness passed locally. Preserve optional-metadata guards and reject manual draw during the real Main message flush. Retain exact four-patch compiler/dependency/API/PE gates and rejected-time conservation. Supersedes build01 without replacing its original evidence; application and physical performance qualification remain separately required.',
     'physical_acceptance': 'HOLD',
 }
 

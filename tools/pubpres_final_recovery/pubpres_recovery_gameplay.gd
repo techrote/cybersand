@@ -32,10 +32,13 @@ func _actual_submission(frame: Dictionary) -> void:
 		transaction_dropped += 1
 		transaction_observer_usec += Time.get_ticks_usec()-began
 		return
-	presentation_probe.observe_submission(host)
+	var probe_before: int = presentation_probe.submissions.size()
+	var body_owner_available: bool = is_instance_valid(host.physical_actor_session)
+	if body_owner_available: presentation_probe.observe_submission(host)
+	var probe_index: int = probe_before if presentation_probe.submissions.size() == probe_before+1 else -1
 	var status: Dictionary = host.workbench_presentation_submission_status()
 	var row: Dictionary = {"index":transaction_rows.size(),"time_usec":began,
-		"probe_index":presentation_probe.submissions.size()-1,
+		"probe_index":probe_index,"body_owner_available":body_owner_available,
 		"owner_instance":host.get_instance_id(),"source_revision":status.get("source_revision",""),
 		"submission_serial":frame.get("submission_serial",-1),
 		"candidate_serial":frame.get("candidate_serial",-1),
@@ -43,11 +46,14 @@ func _actual_submission(frame: Dictionary) -> void:
 		"submitted_process_frame":frame.get("submitted_process_frame",-1),
 		"prepared_usec":frame.get("prepared_usec",-1),"submitted_usec":frame.get("submitted_usec",-1),
 		"submission_scope":frame.get("submission_scope",""),
-		"process_frame":Engine.get_process_frames(),"physical_tick":host.physical_actor_session.tick,
+		"process_frame":Engine.get_process_frames(),"physical_tick":frame.get("rapier_step",-1),
 		"committed_count":status.get("committed_count",-1),"prepared_count":status.get("prepared_count",-1),
 		"superseded_count":status.get("superseded_count",-1),"rejected_count":status.get("rejected_count",-1),
-		"render_serial":host.last_uploaded_render_snapshot_serial,
-		"world_generation":host.last_uploaded_world_generation,"material_revision":host.last_uploaded_revision}
+		"render_serial":frame.get("upload_serial",-1),
+		"world_generation":frame.get("world_generation",-1),"material_revision":frame.get("material_revision",-1)}
+	for key: String in ["preparation_samples","preparation_total_usec","preparation_max_usec",
+		"last_preparation_usec","last_preparation_candidate_serial"]:
+		row[key] = status.get(key,-1)
 	row["observer_usec"] = Time.get_ticks_usec()-began
 	transaction_observer_usec += row.observer_usec
 	transaction_rows.append(row)

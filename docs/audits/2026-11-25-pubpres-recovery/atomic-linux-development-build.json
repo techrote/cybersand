@@ -1,0 +1,32 @@
+{
+  "schema": "pubpres-atomic-linux-development-build-v1",
+  "disposition": "DEVELOPMENT_BUILD_ONLY_NOT_WINDOWS_LOCKED_RUNTIME",
+  "engine_upstream": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "patch_identity": {
+    "patch_sha256": "5424c3bc48556e93f28887e7ff1a6ca6781a8da5fab9eb8383c44e4b442cca97",
+    "combined_sha256": "7d931daede8c08b6331916160d52a545bc5666d42a4aae0d39c5f63c8f064798",
+    "files": {
+      "main/main.cpp": {
+        "before_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491",
+        "after_sha256": "3bacaf979be7ff2b69c0bc0b0414d8b45ea6646f8f938332b1c30e0ce0eb45b7"
+      },
+      "servers/rendering/rendering_server_default.cpp": {
+        "before_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32",
+        "after_sha256": "2cb46d231d42b2729cad9310c9efd585c95bce7ae671621dcfe8a48f790b398a"
+      },
+      "servers/rendering/rendering_server_default.h": {
+        "before_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed",
+        "after_sha256": "0b9c4f7d12c284b7b743ae1161f1c8c67483ea0ee1afabb444d73d397afa671d"
+      }
+    },
+    "helper": "admission_clock.h",
+    "test": "test_admission_clock.cpp"
+  },
+  "binary_sha256": "a4c50c8df34062162e2d755168d39d70fd13cc0e51ce1438f88cbbc9da09ad15",
+  "binary_bytes": 90377368,
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+  "build": "Linux template_debug, GCC14.2, x11/gl_compatibility, no Vulkan/audio/dbus/udev/fontconfig; SCons4.10.1 -j4 production optimize=speed lto=none single precision; not locked Windows editor flags",
+  "runtime_tests": "Actual v2 graphical application tests pending at checkpoint; compile and component tests only.",
+  "build_log_sha256": "7b652d20d0850bdfde9217774c0bf9d66d83bf78ddfa2cb5126a4bf5914e2426"
+}

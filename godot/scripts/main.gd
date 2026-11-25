@@ -13,6 +13,7 @@ const WorkbenchPresentationCoherence = preload("res://scripts/workbench_presenta
 const WorkbenchWaterComposition = preload("res://scripts/workbench_water_composition.gd")
 const WorkbenchMaterialTimeline = preload("res://scripts/workbench_material_timeline.gd")
 const WorkbenchPresentationHistory = preload("res://scripts/workbench_presentation_history.gd")
+const WorkbenchPresentationSubmission = preload("res://scripts/workbench_presentation_submission.gd")
 const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
 const WorkbenchNativeRendezvous = preload("res://scripts/workbench_native_rendezvous.gd")
 const WorkbenchSameFrameContinuation = preload("res://scripts/workbench_same_frame_continuation.gd")
@@ -95,6 +96,15 @@ var _workbench_presentation_policy: String = ""
 var _workbench_presentation_turn: int = 0
 var _workbench_follow_state: Dictionary = {}
 var _workbench_mapping_locked: bool = false
+# Default-off live transaction required by the bounded engine experiment.
+# Only the actual pre-draw callback commits visible history and mapping.
+signal workbench_presentation_submitted(frame: Dictionary)
+var _workbench_submission_requested: bool = OS.get_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION") == "1"
+var _workbench_submission: Node
+var _workbench_submission_preparing: bool = false
+var _workbench_submission_refusal: String = ""
+var _workbench_submission_notification_pending: bool = false
+var _workbench_observation_identity: Array = []
 # Sample serials are not Rapier steps. Retain their real correspondence at
 # publication, independently of the physics bridge's short impulse history.
 const PRESENTATION_SAMPLE_HISTORY: int = 2048
@@ -104,6 +114,9 @@ var _workbench_presentation_history = WorkbenchPresentationHistory.new()
 var _workbench_completed_step: int = -1
 var _workbench_completed_step_usec: int = 0
 var _workbench_water_dependencies: Dictionary = {}
+var _workbench_water_completion_context: Dictionary = {}
+var _workbench_water_closure_cache: Dictionary = {}
+var _workbench_water_closure_cache_hits: int = 0
 var engine_lab_wait_native_sample: bool = true
 var engine_lab_ack_delay_frames: int = 0
 var _engine_lab_pending_ack_serial: int = 0
@@ -1971,6 +1984,19 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	if _workbench_submission_requested:
+		if WorkbenchPresentationSubmission.atomic_admission_supported():
+			if WorkbenchPresentationSubmission.revision_is_valid(OS.get_environment("CYBERSAND_SOURCE_REVISION")):
+				_workbench_submission = WorkbenchPresentationSubmission.new()
+				_workbench_submission.bind(self)
+				add_child(_workbench_submission)
+				RenderingServer.frame_pre_draw.connect(_commit_workbench_presentation_submission)
+			else:
+				# Refuse an unidentifiable experiment before publishing an enabled
+				# handshake. Ordinary Workbench/error UI must remain drawable.
+				_workbench_submission_refusal = "source_identity_invalid"
+		else:
+			_workbench_submission_refusal = "engine_atomic_admission_unavailable"
 	_material_deadline.configure(_material_deadline_hz)
 	_configure_material_steps()
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
@@ -2154,6 +2180,8 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	_workbench_submission_notification_pending = false
+	if _workbench_submission != null: _workbench_submission.close()
 	_material_deadline.cancel("exit_tree")
 	_material_steps.cancel("exit_tree")
 	if workbench_pose_trace.active:
@@ -2224,11 +2252,12 @@ func _process(delta: float) -> void:
 		maximum_collider_time_ms,
 		rapier_bridge.last_hard_surface_build_time_ms()
 	)
-	if shared_workbench != null:
-		_resolve_workbench_presentation_frame(workbench_display_frame())
-	update_camera(delta)
-	if shared_workbench != null:
-		_resolve_workbench_camera_mapping()
+	if not workbench_presentation_submission_enabled():
+		if shared_workbench != null:
+			_resolve_workbench_presentation_frame(workbench_display_frame())
+		update_camera(delta)
+		if shared_workbench != null:
+			_resolve_workbench_camera_mapping()
 	if shared_workbench == null:
 		tower_panel.refresh(tower_active,tower_floor,tower_context)
 	update_brush_preview()
@@ -2242,12 +2271,13 @@ func _process(delta: float) -> void:
 		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables) if latest_snapshot != null else {},
 		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
-	if shared_workbench != null:
-		_submit_workbench_presentation_frame()
-	else:
-		_present_physical_actor_overlay({})
+	if not workbench_presentation_submission_enabled():
+		if shared_workbench != null:
+			_submit_workbench_presentation_frame()
+		else:
+			_present_physical_actor_overlay({})
 	update_worker_frame_state()
-	update_shader_parameters()
+	if not workbench_presentation_submission_enabled(): update_shader_parameters()
 	_workbench_mapping_locked = false
 
 	status_accumulator += delta
@@ -3704,6 +3734,9 @@ func _present_physical_actor_overlay(frame: Dictionary) -> void:
 			if physical_actor_session != null else [],presentation_camera_origin(),
 			current_view_size,view_content_rect())
 		return
+	if workbench_presentation_submission_enabled():
+		_prepare_workbench_presentation_candidate(0.0,frame)
+		return
 	_workbench_mapping_locked = false
 	_resolve_workbench_presentation_frame(frame)
 	update_camera(0.0)
@@ -3799,6 +3832,8 @@ func _workbench_water_composition_enabled() -> bool:
 
 func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) -> void:
 	_workbench_water_dependencies.clear()
+	_workbench_water_completion_context.clear()
+	_workbench_water_closure_cache.clear()
 	if not _workbench_water_composition_enabled() or physical_actor_session == null or snapshot == null:
 		return
 	var bridge: Variant = physical_actor_session.bridge
@@ -3818,6 +3853,11 @@ func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) ->
 			or not packet.get("valid",false) or bridge._history.is_empty(): return
 	var history: Dictionary = bridge._history[sample % bridge._history.size()]
 	if history.get("serial",-1) != sample or history.get("bodies",[]).size() != bridge._members.size(): return
+	_workbench_water_completion_context = {"bridge":bridge.get_instance_id(),"session":bridge._session,
+		"epoch":bridge._epoch,"world":snapshot.physics_world_generation,"step":physical_actor_session.tick,
+		"native_tick":snapshot.tick_index,"sample":sample,"revision":snapshot.simulation_world_revision,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec,"completed_usec":_workbench_completed_step_usec}
+	_workbench_water_completion_context.make_read_only()
 	for action: Dictionary in bridge.last_application.get("bodies",[]):
 		var slot: int = int(action.get("id",0))-1
 		if slot < 0 or slot >= bridge._members.size() or action.has("refusal") \
@@ -3826,10 +3866,13 @@ func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) ->
 		_workbench_water_dependencies[slot] = {"bridge":bridge.get_instance_id(),
 			"session":bridge._session,"epoch":bridge._epoch,"world":snapshot.physics_world_generation,
 			"step":physical_actor_session.tick,"native_tick":snapshot.tick_index,"sample":sample,
+			"revision":snapshot.simulation_world_revision,"rid":bridge._body_rids[slot].get_id(),
+			"rectangles":bridge._rects[slot].duplicate(true),
 			"instance_id":member.instance_id,"generation":member.generation,
 			"native_response_applied":true,"input_pose":history.bodies[slot].pose,
 			"output_pose":bridge.body_transform(slot),"completed_usec":_workbench_completed_step_usec,
 			"native_completed_usec":snapshot.last_native_tick_completed_usec}
+		WorkbenchWaterComposition.freeze(_workbench_water_dependencies[slot])
 
 
 func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary,
@@ -3841,23 +3884,76 @@ func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary
 		return {}
 	var bridge: Variant = physical_actor_session.bridge
 	if bridge != rapier_bridge or slot < 0 or slot >= bridge._members.size() \
-			or physical_actor_session.tick != _workbench_completed_step \
-			or int(observation.get("completed_usec",-1)) != _workbench_completed_step_usec \
-			or _workbench_sample_identity != [bridge._session,bridge._epoch] \
-			or int(frame.get("native_completed_usec",0)) <= 0:
+			or _workbench_sample_identity != [bridge._session,bridge._epoch]:
 		return {}
+	var initialized: bool = physical_actor_session.tick == 0 and bridge.manual_step_count() == 0 \
+		and bridge.is_initialized() and _workbench_completed_step <= 0 and _workbench_completed_step_usec == 0
+	if not initialized and (physical_actor_session.tick != _workbench_completed_step \
+			or int(observation.get("completed_usec",-1)) != _workbench_completed_step_usec):
+		return {}
+	var member: Dictionary = bridge._members[slot]
+	var visible: Dictionary = {"world":last_uploaded_world_generation,"revision":last_uploaded_revision,
+		"upload_serial":last_uploaded_render_snapshot_serial,"current_content":_presentation_current_content_id,
+		"previous_content":_presentation_previous_content_id,"native_tick":frame.get("tick",-1),
+		"native_sample":entry.get("sample",-1)}
+	if not initialized and not _workbench_water_completion_context.is_empty():
+		var current: Dictionary = _workbench_water_completion_context.duplicate()
+		# Bind the immutable completion capsule to the CURRENT owner/World and
+		# exact current member geometry. Visible material keeps separate clocks.
+		current.merge({"bridge":bridge.get_instance_id(),"session":bridge._session,"epoch":bridge._epoch,
+			"world":last_uploaded_world_generation,"step":physical_actor_session.tick,
+			"rid":bridge._body_rids[slot].get_id(),"rectangles":bridge._rects[slot],
+			"completed_usec":_workbench_completed_step_usec},true)
+		var completed_proof: Dictionary = WorkbenchWaterComposition.completed_dependency(current,member,
+			observation,_workbench_water_dependencies.get(slot,{}))
+		if not completed_proof.is_empty():
+			completed_proof["visible_material"] = visible
+			return completed_proof
 	var serial: int = int(entry.get("sample",-1))
-	var sampled: Dictionary = _workbench_bound_sample(entry).duplicate()
-	if serial < 0 or bridge._history.is_empty(): return {}
-	var history: Dictionary = bridge._history[serial % bridge._history.size()]
-	if history.get("serial",-1) == serial and history.get("bodies",[]).size() == bridge._members.size():
-		sampled.merge({"pose":history.bodies[slot].pose,"session":bridge._session,"epoch":bridge._epoch})
+	if serial < 0 or (not initialized and int(frame.get("native_completed_usec",0)) <= 0): return {}
 	var context: Dictionary = {"bridge":bridge.get_instance_id(),"session":bridge._session,
 		"epoch":bridge._epoch,"world":last_uploaded_world_generation,"revision":last_uploaded_revision,
 		"step":physical_actor_session.tick,"native_tick":int(frame.get("tick",-1)),"sample":serial,
-		"native_completed_usec":int(frame.get("native_completed_usec",-1))}
-	return WorkbenchWaterComposition.dependency(context,bridge._members[slot],entry,
-		observation,sampled,_workbench_water_dependencies.get(slot,{}))
+		"native_completed_usec":int(frame.get("native_completed_usec",-1)),
+		"rid":bridge._body_rids[slot].get_id(),"initialized":initialized,"manual_steps":bridge.manual_step_count(),
+		"initialized_pose":bridge.body_transform(slot),"completed_usec":_workbench_completed_step_usec}
+	var identity: Dictionary = {"context":context,"entry":entry.duplicate(true),
+		"member":[member.instance_id,member.generation,bridge._body_rids[slot].get_id(),
+			bridge._rects[slot].duplicate(true)],
+		"observation":[observation.get("instance_id"),observation.get("generation"),
+			observation.get("step"),observation.get("completed_usec"),observation.get("pose")]}
+	# Paused Main can publish enough same-step samples to evict the short
+	# native wrench ring while its uploaded material frame stays unchanged.
+	# Eviction retires force-application authority, not an already proved exact
+	# completed-pose provenance. Retain at most one immutable proof per member.
+	# Material/Water clearance is NEVER cached: both actual image histories are
+	# scanned afresh below. Transport-only refresh/blend changes cannot expire
+	# this proof when every native/world/revision/pose/completion identity agrees.
+	var cached: Dictionary = _workbench_water_closure_cache.get(slot,{})
+	if cached.get("identity") == identity:
+		_workbench_water_closure_cache_hits += 1
+		var retained: Dictionary = cached.proof.duplicate(true)
+		retained["visible_material"] = visible
+		return retained
+	_workbench_water_closure_cache.erase(slot)
+	var sampled: Dictionary = _workbench_bound_sample(entry).duplicate()
+	if bridge._history.is_empty(): return {}
+	var history: Dictionary = bridge._history[serial % bridge._history.size()]
+	if sampled.get("water_poses",[]).size() == bridge._members.size():
+		sampled.merge({"pose":sampled.water_poses[slot],"session":bridge._session,"epoch":bridge._epoch})
+	elif history.get("serial",-1) == serial and history.get("bodies",[]).size() == bridge._members.size():
+		sampled.merge({"pose":history.bodies[slot].pose,"session":bridge._session,"epoch":bridge._epoch})
+	var proof: Dictionary = WorkbenchWaterComposition.initialized_closure(context,member,entry,observation,sampled) \
+		if initialized else WorkbenchWaterComposition.dependency(context,member,entry,
+			observation,sampled,_workbench_water_dependencies.get(slot,{}))
+	if not proof.is_empty():
+		WorkbenchWaterComposition.freeze(identity)
+		proof.make_read_only()
+		_workbench_water_closure_cache[slot] = {"identity":identity,"proof":proof}
+	# The resolver attaches this draw's fresh coverage result to its own copy.
+	var result: Dictionary = proof.duplicate(true)
+	if not result.is_empty(): result["visible_material"] = visible
+	return result
 
 
 func _assess_workbench_water_sweep(start: Transform2D, target: Transform2D,
@@ -3933,8 +4029,10 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 	var identity: Array = [bridge._session,bridge._epoch,last_uploaded_world_generation] \
 		if bridge is WorkbenchBridge else []
 	if identity != _workbench_presentation_identity or mode != _workbench_presentation_policy:
-		if identity != _workbench_presentation_identity:
+		if identity != _workbench_presentation_identity \
+				and (not workbench_presentation_submission_enabled() or identity != _workbench_observation_identity):
 			_workbench_presentation_history.clear()
+			_workbench_observation_identity = identity.duplicate()
 		_workbench_presentation_state.clear()
 		_workbench_follow_state.clear()
 		_workbench_presentation_identity = identity
@@ -4245,9 +4343,154 @@ func _submit_workbench_presentation_frame() -> void:
 	var resolved: Dictionary = workbench_presentation_frame
 	physical_actor_overlay.set_water_composition(resolved.get("water_composition",{}))
 	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect)
-	if workbench_pose_trace.active and physical_actor_session != null:
+	if not _workbench_submission_preparing and workbench_pose_trace.active and physical_actor_session != null:
 		_workbench_trace_presentation_frame(resolved.original_mask_frame,resolved.mask_frame,
 			resolved.poses,resolved.parts,resolved.camera_origin,resolved.content_rect)
+
+
+func workbench_presentation_submission_enabled() -> bool:
+	return _workbench_submission != null and shared_workbench != null \
+		and _workbench_submission_requested and _workbench_submission._alive
+
+
+func workbench_presentation_submission_status() -> Dictionary:
+	return _workbench_submission.status() if _workbench_submission != null else {
+		"schema":WorkbenchPresentationSubmission.SCHEMA,"enabled":false,
+		"connected":false,"candidate_ready":false,"committed_count":0,
+		"requested":_workbench_submission_requested,"refusal":_workbench_submission_refusal,
+		"engine_atomic_admission":WorkbenchPresentationSubmission.atomic_admission_supported()}
+
+
+func _workbench_presentation_bookkeeping() -> Dictionary:
+	return {"state":_workbench_presentation_state,"identity":_workbench_presentation_identity,
+		"policy":_workbench_presentation_policy,"turn":_workbench_presentation_turn,
+		"follow":_workbench_follow_state,"totals":workbench_presentation_totals,
+		"last":workbench_presentation_last,"frame":workbench_presentation_frame,
+		"reasons":_workbench_pose_trace_reasons,"cache_usec":_presentation_pending_cache_usec,
+		"camera_request":camera_origin,"view_request":current_view_size,
+		"focus_pending":shared_workbench._focus_pending if shared_workbench != null else false}
+
+
+func _install_workbench_presentation_bookkeeping(state: Dictionary) -> void:
+	_workbench_presentation_state = state.state
+	_workbench_presentation_identity = state.identity
+	_workbench_presentation_policy = state.policy
+	_workbench_presentation_turn = state.turn
+	_workbench_follow_state = state.follow
+	workbench_presentation_totals = state.totals
+	workbench_presentation_last = state.last
+	workbench_presentation_frame = state.frame
+	_workbench_pose_trace_reasons = state.reasons
+	_presentation_pending_cache_usec = state.cache_usec
+	camera_origin = state.camera_request
+	current_view_size = state.view_request
+	if shared_workbench != null: shared_workbench._focus_pending = state.focus_pending
+
+
+func _workbench_presentation_submission_fence() -> Dictionary:
+	var bridge: Variant = physical_actor_session.bridge if physical_actor_session != null else null
+	var members: Array = []
+	if bridge is WorkbenchBridge:
+		for slot: int in bridge._members.size():
+			var member: Dictionary = bridge._members[slot]
+			members.append([member.instance_id,member.generation,bridge.body_transform(slot),
+				bridge._body_rids[slot].get_id(),bridge._rects[slot]])
+	return {"engine_admission":WorkbenchPresentationSubmission.atomic_admission_supported(),
+		"owner":get_instance_id(),"worker":simulation_worker.get_instance_id(),
+		"physical_owner":physical_actor_session.get_instance_id() if physical_actor_session != null else 0,
+		"bridge":bridge.get_instance_id() if bridge != null else 0,
+		"world":[last_uploaded_world_generation,world_extent],
+		"session":[bridge._session,bridge._epoch] if bridge is WorkbenchBridge else [],
+		"physical_completion":[physical_actor_session.tick if physical_actor_session != null else -1,
+			_workbench_completed_step,_workbench_completed_step_usec],
+		"members":members,"selected":shared_workbench.selected_id() if shared_workbench != null else -1,
+		"material":[last_uploaded_revision,last_uploaded_render_snapshot_serial,
+			_presentation_current_content_id,_presentation_previous_content_id,
+			_presentation_current_content_shape,_presentation_previous_content_shape,
+			_material_publication_rid(texture).get_id(),_material_publication_rid(previous_texture).get_id(),
+			_presentation_previous_unknown],
+		"policy":[_workbench_presentation_mode(),_material_publication_mode,
+			_material_publication_fallback,cadence_lod_enabled,render_snapshot_hz,
+			OS.get_environment("CYBERSAND_DIAG_MATERIAL_TIMING"),
+			OS.get_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION"),
+			OS.get_environment("CYBERSAND_DIAG_WATER_COMPOSITION"),
+			OS.get_environment("CYBERSAND_SOURCE_REVISION")],
+		"camera":[camera_origin,current_view_size,view_content_rect(),_world_view_screen_transform(),
+			shared_workbench._camera.selected if shared_workbench != null else -1,
+			shared_workbench._focus_pending if shared_workbench != null else false],
+		"lifecycle":[paused,_physical_epoch,_actor_reset_receipt,_workbench_frame_error,
+			pending_microscenario_apply,simulation_worker.has_failed(),_playable_recovery_queued,
+			_pending_physical_candidate.get_instance_id() if _pending_physical_candidate != null else 0,
+			shared_workbench.step_pending if shared_workbench != null else false]}
+
+
+func _prepare_workbench_presentation_candidate(delta: float, supplied: Dictionary = {}) -> void:
+	if not workbench_presentation_submission_enabled() or _workbench_submission_preparing: return
+	var preparation_started: int = Time.get_ticks_usec()
+	# Run the existing selection against a private copy of last SUBMITTED
+	# bookkeeping. Its guard results stage canvas commands, but a skipped idle
+	# turn cannot become a visible hold, recovery, Follow or fairness turn.
+	var submitted: Dictionary = _workbench_presentation_bookkeeping()
+	_install_workbench_presentation_bookkeeping(submitted.duplicate(true))
+	_workbench_submission_preparing = true
+	_workbench_mapping_locked = false
+	_resolve_workbench_presentation_frame(workbench_display_frame() if supplied.is_empty() else supplied)
+	update_camera(delta)
+	_resolve_workbench_camera_mapping()
+	update_brush_preview()
+	_present_playable_course_targets()
+	actor_prototype_overlay.present(
+		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
+		presentation_camera_origin(),current_view_size,view_content_rect())
+	usable_overlay.present(
+		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables)
+			if latest_snapshot != null else {},presentation_camera_origin(),current_view_size,view_content_rect())
+	_submit_workbench_presentation_frame()
+	update_shader_parameters()
+	var staged_frame: Dictionary = workbench_presentation_frame
+	var next_state: Dictionary = _workbench_presentation_bookkeeping()
+	_install_workbench_presentation_bookkeeping(submitted)
+	_workbench_mapping_locked = false
+	_workbench_submission_preparing = false
+	_workbench_submission.stage(staged_frame,next_state,_workbench_presentation_submission_fence())
+	_workbench_submission.record_preparation_cost(Time.get_ticks_usec()-preparation_started)
+
+
+func _commit_workbench_presentation_submission(engine_admission: bool = false) -> Dictionary:
+	if not workbench_presentation_submission_enabled(): return {}
+	if not engine_admission:
+		# The engine validated the returned receipt and allocated an actual draw
+		# before emitting this ordinary signal. External observers run only now;
+		# no callbacks can intervene between the direct admission and its receipt.
+		if _workbench_submission_notification_pending:
+			_workbench_submission_notification_pending = false
+			var submitted: Dictionary = workbench_presentation_frame
+			if workbench_pose_trace.active and physical_actor_session != null:
+				_workbench_trace_presentation_frame(submitted.original_mask_frame,submitted.mask_frame,
+					submitted.poses,submitted.parts,submitted.camera_origin,submitted.content_rect)
+			workbench_presentation_submitted.emit(submitted)
+		return {}
+	var accepted: Dictionary = _workbench_submission.take(_workbench_presentation_submission_fence())
+	if accepted.is_empty(): return {}
+	# This exact typed receipt is constructed before any visible-history commit.
+	# Its fields come from the same immutable candidate and current owner/frame
+	# checked above. The engine validates the handshake before calling us. There
+	# is no fallible branch or external observer between commit and return.
+	var receipt: Dictionary = {"accepted":true,"owner_instance":get_instance_id(),
+		"submission_serial":int(accepted.frame.submission_serial),
+		"candidate_serial":int(accepted.frame.candidate_serial),
+		"process_frame":Engine.get_process_frames(),
+		"submitted_usec":int(accepted.frame.submitted_usec),
+		"source_revision":str(_workbench_submission.source_revision)}
+	receipt.make_read_only()
+	# Bookkeeping only. CanvasItem drawing, shader values and node transforms
+	# were prepared BEFORE Main's message flush. The new engine refuses the
+	# entire draw on an empty receipt: no stale canvas reaches the framebuffer,
+	# no draw signals/token/frames_drawn are fabricated, and time is conserved.
+	_install_workbench_presentation_bookkeeping(accepted.next_state)
+	workbench_presentation_frame = accepted.frame
+	_workbench_submission_notification_pending = true
+	return receipt
 
 
 func begin_workbench_pose_trace(settings: Dictionary = {}) -> bool:
@@ -5347,6 +5590,12 @@ func _adopt_prepared_physical_candidate() -> void:
 	_actor_usable_power = float(loadout.get("power",0.8))
 	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
 	simulation_worker.set_physical_actor_epoch(_physical_epoch)
+	if _workbench_water_composition_enabled() and rapier_bridge is WorkbenchBridge:
+		# Native preparation already admitted this exact frozen owner sample.
+		# Preserve its presentation provenance BEFORE adoption retires the
+		# provisional force ring. This records no new native publication, wait
+		# target or completed physical step; the birth closure remains step zero.
+		_record_workbench_presentation_sample(accepted.initial_workbench_sample())
 	accepted.adopt()
 	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
 
@@ -5395,6 +5644,8 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 
 func _close_physical_actors() -> void:
+	_workbench_submission_notification_pending = false
+	if _workbench_submission != null: _workbench_submission.retire("physical_owner_closed")
 	_material_deadline.cancel("physical_owner_closed")
 	_material_steps.cancel("physical_owner_closed")
 	_workbench_presentation_state.clear()
@@ -5402,11 +5653,14 @@ func _close_physical_actors() -> void:
 	_workbench_sample_steps.clear()
 	_workbench_sample_identity.clear()
 	_workbench_presentation_history.clear()
+	_workbench_observation_identity.clear()
 	_workbench_completed_step = -1
 	_workbench_completed_step_usec = 0
 	_workbench_water_dependencies.clear()
+	_workbench_water_completion_context.clear()
+	_workbench_water_closure_cache.clear()
 	_workbench_follow_state.clear()
-	workbench_presentation_frame.clear()
+	workbench_presentation_frame = {}
 	_workbench_mapping_locked = false
 	_physical_terrain_ready = false
 	_playable_course_observation_valid = false
@@ -5429,6 +5683,35 @@ func _close_physical_actors() -> void:
 		physical_actor_overlay.present([], Vector2.ZERO, current_view_size, view_content_rect())
 
 
+func _record_workbench_presentation_sample(sample: Dictionary) -> void:
+	if physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or sample.is_empty() or not sample.get("states") is PackedFloat64Array or sample.states.size() <= 10:
+		return
+	var bridge: Variant = physical_actor_session.bridge
+	if sample.get("session") != bridge._session or sample.get("epoch") != bridge._epoch: return
+	var serial: int = int(sample.states[10])
+	var sample_identity: Array = [sample.session,sample.epoch]
+	if sample_identity != _workbench_sample_identity:
+		_workbench_sample_steps.clear()
+		_workbench_presentation_history.clear()
+		_workbench_sample_identity = sample_identity
+	_workbench_sample_steps[serial % PRESENTATION_SAMPLE_HISTORY] = {
+		"serial":serial,"step":physical_actor_session.tick,
+		"completed_usec":_workbench_completed_step_usec if _workbench_completed_step == physical_actor_session.tick else 0,
+		"sampled_usec":Time.get_ticks_usec()}
+	if _workbench_water_composition_enabled() and not bridge._history.is_empty():
+		# This independent bounded copy never extends impulse eligibility in the
+		# short native force ring. Both actual material images are still scanned.
+		var source: Dictionary = bridge._history[serial % bridge._history.size()]
+		if source.get("serial",-1) == serial and source.get("bodies",[]).size() == bridge._members.size():
+			var poses: Array = []
+			for body: Dictionary in source.bodies: poses.append(body.pose)
+			poses.make_read_only()
+			_workbench_sample_steps[serial % PRESENTATION_SAMPLE_HISTORY]["water_poses"] = poses
+	for slot: int in range(bridge._members.size()):
+		_observe_workbench_presentation(slot,serial)
+
+
 func _publish_physical_body_state() -> void:
 	if shared_workbench != null and microscenario_definition.get("id","") == CyberMicroScenarioContract.WORKBENCH_ID:
 		if physical_actor_session != null:
@@ -5437,17 +5720,7 @@ func _publish_physical_body_state() -> void:
 				var admission: Dictionary = simulation_worker.set_workbench_sample(sample)
 				if admission.get("accepted",false):
 					_workbench_wait_sample = int(sample.states[10])
-					var sample_identity: Array = [sample.session,sample.epoch]
-					if sample_identity != _workbench_sample_identity:
-						_workbench_sample_steps.clear()
-						_workbench_presentation_history.clear()
-						_workbench_sample_identity = sample_identity
-					_workbench_sample_steps[_workbench_wait_sample % PRESENTATION_SAMPLE_HISTORY] = {
-						"serial":_workbench_wait_sample,"step":physical_actor_session.tick,
-						"completed_usec":_workbench_completed_step_usec if _workbench_completed_step == physical_actor_session.tick else 0,
-						"sampled_usec":Time.get_ticks_usec()}
-					for slot: int in range(physical_actor_session.bridge._members.size()):
-						_observe_workbench_presentation(slot,_workbench_wait_sample)
+					_record_workbench_presentation_sample(sample)
 				if str(admission.get("status","")) == "refused":
 					physical_actor_session.reject_equipment_requests(sample.get("equipment_requests",[]),str(admission.get("reason","admission")))
 				if not admission.get("accepted",false):
@@ -6010,6 +6283,7 @@ func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
 	if not pointer.is_finite() or content.size.x <= 0.0 or content.size.y <= 0.0 or not content.has_point(pointer):
 		return Vector2.ZERO
 	var world_point: Vector2 = world_position_from_local_point(pointer)
+	if not world_point.is_finite(): return Vector2.ZERO
 	return (world_point - character_centre()).normalized()
 
 
@@ -6224,6 +6498,9 @@ func clamped_camera_origin(candidate: Vector2) -> Vector2:
 
 func presentation_camera_origin() -> Vector2:
 	if _workbench_mapping_locked: return workbench_presentation_frame.camera_origin
+	if workbench_presentation_submission_enabled() and not _workbench_submission_preparing \
+			and workbench_presentation_frame.has("camera_origin"):
+		return workbench_presentation_frame.camera_origin
 	var content := view_content_rect()
 	if content.size.x <= 0.0 or content.size.y <= 0.0: return clamped_camera_origin(camera_origin)
 	return PixelCamera.screen_to_world(_world_view_screen_transform() * content.position,
@@ -6241,6 +6518,9 @@ func _world_view_screen_transform() -> Transform2D:
 
 func presentation_camera_screen_transform() -> Transform2D:
 	if _workbench_mapping_locked: return workbench_presentation_frame.camera_mapping
+	if workbench_presentation_submission_enabled() and not _workbench_submission_preparing \
+			and workbench_presentation_frame.has("camera_mapping"):
+		return workbench_presentation_frame.camera_mapping
 	return PixelCamera.presentation_screen_transform(camera_origin, current_view_size,
 		view_content_rect(), _world_view_screen_transform(),
 		Vector2(maxi(0, world_extent.x-current_view_size.x), maxi(0, world_extent.y-current_view_size.y)))
@@ -6260,6 +6540,15 @@ func configure_pixel_camera(material: ShaderMaterial) -> void:
 
 
 func world_position_from_local_point(local: Vector2) -> Vector2:
+	if not local.is_finite(): return Vector2.INF
+	if workbench_presentation_submission_enabled():
+		if not workbench_presentation_frame.has("camera_mapping"): return Vector2.INF
+		# Input localization already used the CURRENT Control/viewport transform.
+		# Recover its physical screen point with that same transform, then address
+		# the LAST SUBMITTED camera. Reapplying the old transform to new-local
+		# coordinates would mis-pick during an unsubmitted resize/rotation.
+		return PixelCamera.screen_to_world(_world_view_screen_transform() * local,
+			workbench_presentation_frame.camera_mapping)
 	return PixelCamera.screen_to_world(_world_view_screen_transform() * local,
 		presentation_camera_screen_transform())
 
@@ -6282,16 +6571,22 @@ func _world_view_pointer_screen_position(local: Vector2, screen: Transform2D) ->
 
 func world_cell_from_local_point(local: Vector2, use_submitted_mapping: bool = false) -> Vector2i:
 	if not local.is_finite(): return Vector2i(-1, -1)
+	if workbench_presentation_submission_enabled() and not workbench_presentation_frame.has("camera_mapping"):
+		return Vector2i(-1,-1)
 	var content: Rect2 = view_content_rect()
-	var screen: Transform2D = _world_view_screen_transform()
+	var input_screen: Transform2D = _world_view_screen_transform()
+	var screen: Transform2D = input_screen
 	var mapping: Transform2D = presentation_camera_screen_transform()
-	if use_submitted_mapping and workbench_presentation_frame.has("camera_mapping"):
+	if (use_submitted_mapping or workbench_presentation_submission_enabled()) \
+			and workbench_presentation_frame.has("camera_mapping"):
 		# Input can arrive between two submissions, after pan or zoom has
 		# changed requested values. Use the terrain/pose mapping still on screen.
 		content = workbench_presentation_frame.content_rect
 		screen = workbench_presentation_frame.screen_transform
 		mapping = workbench_presentation_frame.camera_mapping
-	var sample_position := _world_view_pointer_screen_position(local, screen).floor() + Vector2(0.5, 0.5)
+	# The content bound belongs to the submitted image; event-local coordinates
+	# belong to the current transform. Keep those two mappings distinct.
+	var sample_position := _world_view_pointer_screen_position(local, input_screen).floor() + Vector2(0.5, 0.5)
 	if not PixelCamera.content_contains_screen_sample(sample_position, content, screen): return Vector2i(-1, -1)
 	var cell := Vector2i(PixelCamera.screen_to_world(sample_position, mapping).floor())
 	return cell if Rect2i(Vector2i.ZERO, world_extent).has_point(cell) else Vector2i(-1, -1)

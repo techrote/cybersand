@@ -1,8 +1,8 @@
 {
   "schema": "pubpres-recovery-atomic-component-build-v1",
-  "request_id": "PUBPRES-PLAYABILITY-FINAL-RECOVERY-001-atomic-engine-build-01",
+  "request_id": "PUBPRES-PLAYABILITY-FINAL-RECOVERY-001-atomic-engine-build-02",
   "maximum_deferred_opportunities": 4,
-  "purpose": "Build a separately identified default-off atomic application admission engine atop the exact three-patch bounded component. Retain every preceding compiler/dependency/API/PE gate, prove exact four-patch composition, and conserve refused-draw elapsed time. Application correctness and gameplay remain separately required.",
+  "purpose": "Build the corrected atomic admission component after actual Safe0/Separate0/Separate4 graphical correctness passed locally. Preserve optional-metadata guards and reject manual draw during the real Main message flush. Retain exact four-patch compiler/dependency/API/PE gates and rejected-time conservation. Supersedes build01 without replacing its original evidence; application and physical performance qualification remain separately required.",
   "physical_acceptance": "HOLD",
-  "payload_sha256": "10e0c9d3210df0861ffd4b411a4de5b5c39a72533842864a02f4cf88bbf92c87"
+  "payload_sha256": "2aa47dde3576bbf9b8b19d20d9df9d838f384dfc3fee2ebcf673947934043560"
 }

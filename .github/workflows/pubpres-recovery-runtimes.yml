@@ -1,0 +1,86 @@
+name: PUBPRES recovery shared-dependency M C D runtimes
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-recovery-runtimes-run.json']
+
+permissions:
+  contents: read
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PUBPRES_MAIN_REFERENCE: 00cdb02f103265b6dc5224c68283e9a0c8cb449f
+  PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Exact final resulting-source runtime request
+        run: |
+          python3 tools/pubpres_final_recovery/runtime_request.py
+          python3 tools/ci/check_ci_provider_policy.py
+
+  runtimes:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        platform: [linux, windows]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - name: Frozen historical controls and exact dependency source
+        run: |
+          timeout 240 git fetch --no-tags origin "$PUBPRES_MAIN_REFERENCE" "$PUBPRES_FROZEN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-main-reference" "$PUBPRES_MAIN_REFERENCE"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-frozen" "$PUBPRES_FROZEN"
+          python3 -m venv "$RUNNER_TEMP/recovery-scons"
+          "$RUNNER_TEMP/recovery-scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/recovery-godot-cpp"
+          git -C "$RUNNER_TEMP/recovery-godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/recovery-godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/recovery-godot-cpp" checkout --detach FETCH_HEAD
+      - name: Pinned Windows cross compiler
+        if: matrix.platform == 'windows'
+        run: |
+          curl --fail --location --retry 3 --max-time 300 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/recovery-llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/recovery-llvm-mingw" --strip-components=1
+          ln -s llvm-ar "$RUNNER_TEMP/recovery-llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: One exact dependency followed by independent M C D native builds
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          GODOT_CPP_ROOT: ${{ runner.temp }}/recovery-godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/recovery-scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/recovery-llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/recovery-llvm-mingw/bin/x86_64-w64-mingw32-g++
+          PUBPRES_GODOT_CPP_BUILD_LOG: build/recovery-runtimes/godot-cpp.log
+        run: |
+          mkdir -p build/recovery-runtimes
+          timeout 2400 bash tools/build_pinned_godot_cpp.sh "$PLATFORM" > build/recovery-runtimes/godot-cpp.log 2>&1
+          status=0
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-main-reference" --source-sha "$PUBPRES_MAIN_REFERENCE" --output-dir build/recovery-runtimes/M || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$PWD" --source-sha "$GITHUB_SHA" --output-dir build/recovery-runtimes/C || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-frozen" --source-sha "$PUBPRES_FROZEN" --output-dir build/recovery-runtimes/D || status=1
+          if [[ "$status" != '0' ]]; then exit "$status"; fi
+          python3 tools/pubpres_final_recovery/verify_shared_runtimes.py --root build/recovery-runtimes --main-source "$RUNNER_TEMP/pubpres-main-reference" --donor-source "$RUNNER_TEMP/pubpres-frozen" --platform "$PLATFORM"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-shared-runtime-${{ matrix.platform }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/recovery-runtimes/
+          retention-days: 90
+          if-no-files-found: warn

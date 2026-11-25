@@ -1,0 +1,159 @@
+{
+  "schema": "pubpres-atomic02-independent-review-v1",
+  "application_source": "f8e0fb7cd4c770a31ecb43dd0161717d21cbf17b",
+  "engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+  "qualification_scope": "Actual local Linux mounted native graphical fixture; no Windows, hosted or physical NVIDIA acceptance",
+  "original_reader_failure": {
+    "source": "f79d929c0",
+    "message": "Terminal engine summary differs from retained raw trace",
+    "cause": "Godot terminal JSON rounds six elapsed doubles while file retains full precision. Raw SHA matched. Example consumed rejected seconds: raw1.2877791249983999 versus terminal1.2877791249984.",
+    "repair": "Known six elapsed fields only: rel_tol=abs_tol=1e-14. All other values and field inventory exact; original raw SHA binding and conservation predicates unchanged. Adversarial tests reject 1e-7 change, missing field and changed draw count."
+  },
+  "outcomes": [
+    {
+      "thread": "safe",
+      "lookahead": 0,
+      "checks": 98,
+      "receipt_sha256": "121bab21a9331df19a605c5485da4bdad359e76b9f7f9f87f3d8b696f45e39cb",
+      "stdout_sha256": "017b7f5b7e52493b9923230f8ec93a7ec46b2a45ebdab1b8968a94bf5369b4a7",
+      "launch_sha256": "2309aed33bfa77a09665ad0242991bfcaea43f640088f2fa680f95f3807e6955",
+      "engine_trace_sha256": "5661a18ae9bb446d7cc1e1e848fbaac2c612c86b434a4f1e30621dc1fc0f1c9d",
+      "first_read_sha256": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+      "input_commit_and_working_bytes_verified": true,
+      "engine_analysis": {
+        "schema": "pubpres-recovery-engine-trace-analysis-v1",
+        "whole_process_draws": 196,
+        "capture_draws": 168,
+        "capture_deferred_opportunities": 0,
+        "treatment_executed": true,
+        "whole_process_deferrals": 0,
+        "maximum_deferred_per_draw": 0,
+        "rejected_draw_opportunities": 64,
+        "pending_deferred_render_step": 0.0,
+        "pending_rejected_render_step": 0.0,
+        "sync_total_ms": 0.04,
+        "sync_max_ms": 0.001,
+        "capture_draw_cpu_ms": {
+          "count": 168,
+          "max": 286.095,
+          "p50": 28.322499999999998,
+          "p95": 35.73895,
+          "p99": 68.99845000000091
+        },
+        "capture_queue_to_render_ms": {
+          "count": 168,
+          "max": 0.064,
+          "p50": 0.008,
+          "p95": 0.011,
+          "p99": 0.04333000000000001
+        },
+        "capture_submission_gap_ms": {
+          "count": 167,
+          "max": 891.244,
+          "p50": 32.293,
+          "p95": 106.00149999999945,
+          "p99": 198.3777200000005
+        },
+        "scope": "CPU actual draw admission/render-owner execution and conserved elapsed render time only; no GPU, scanout or physical-step credit."
+      },
+      "disposition": "PASS_LOCAL_DEVELOPMENT_GRAPHICAL_ONLY"
+    },
+    {
+      "thread": "separate",
+      "lookahead": 0,
+      "checks": 98,
+      "receipt_sha256": "5b3452b2127366a04759831fff97cb0f8b0710603797f1e7e9cb8c38865cc0f6",
+      "stdout_sha256": "9c5dd350ed1d8fee644069706a2cb80f37512c62c5925eecb0246cb51888f14f",
+      "launch_sha256": "5d6691db261211232d26e840bddfe097e32f79781cf3f6dbe4dcad9b2ad7cc3c",
+      "engine_trace_sha256": "8083292c97f54f4aae4d0bf201d0c125c317d6427d098d1a6d6a1343d5bc50a3",
+      "first_read_sha256": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+      "input_commit_and_working_bytes_verified": true,
+      "engine_analysis": {
+        "schema": "pubpres-recovery-engine-trace-analysis-v1",
+        "whole_process_draws": 182,
+        "capture_draws": 161,
+        "capture_deferred_opportunities": 0,
+        "treatment_executed": true,
+        "whole_process_deferrals": 0,
+        "maximum_deferred_per_draw": 0,
+        "rejected_draw_opportunities": 28,
+        "pending_deferred_render_step": 0.0,
+        "pending_rejected_render_step": 0.0,
+        "sync_total_ms": 5567.957,
+        "sync_max_ms": 675.056,
+        "capture_draw_cpu_ms": {
+          "count": 161,
+          "max": 370.243,
+          "p50": 27.734,
+          "p95": 36.712,
+          "p99": 47.57020000000005
+        },
+        "capture_queue_to_render_ms": {
+          "count": 161,
+          "max": 0.261,
+          "p50": 0.045,
+          "p95": 0.075,
+          "p99": 0.13540000000000033
+        },
+        "capture_submission_gap_ms": {
+          "count": 160,
+          "max": 776.065,
+          "p50": 29.491,
+          "p95": 82.59425000000024,
+          "p99": 261.2296599999994
+        },
+        "scope": "CPU actual draw admission/render-owner execution and conserved elapsed render time only; no GPU, scanout or physical-step credit."
+      },
+      "disposition": "PASS_LOCAL_DEVELOPMENT_GRAPHICAL_ONLY"
+    },
+    {
+      "thread": "separate",
+      "lookahead": 4,
+      "checks": 98,
+      "receipt_sha256": "26e7e7b0d7e1d4f44e29daeb480c60ee7dea8784ed0af19ba4dd99975e213c11",
+      "stdout_sha256": "19aac339f9be39f6d170c43d8de793af30b1973bcb5f6ca8be3e9edf1776cb84",
+      "launch_sha256": "ca90c70f5082e1ff251eb7a6733ca1eb57b4ca29cc0da9f267a4fbd79771be25",
+      "engine_trace_sha256": "64db52284a304ddf3db4979e6a651e68f96acd25d08d4b87882b2a32ad686609",
+      "first_read_sha256": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+      "input_commit_and_working_bytes_verified": true,
+      "engine_analysis": {
+        "schema": "pubpres-recovery-engine-trace-analysis-v1",
+        "whole_process_draws": 137,
+        "capture_draws": 122,
+        "capture_deferred_opportunities": 403,
+        "treatment_executed": true,
+        "whole_process_deferrals": 403,
+        "maximum_deferred_per_draw": 4,
+        "rejected_draw_opportunities": 31,
+        "pending_deferred_render_step": 0.0,
+        "pending_rejected_render_step": 0.0,
+        "sync_total_ms": 4400.269,
+        "sync_max_ms": 971.362,
+        "capture_draw_cpu_ms": {
+          "count": 122,
+          "max": 319.147,
+          "p50": 39.413,
+          "p95": 52.93835000000001,
+          "p99": 63.721620000000044
+        },
+        "capture_queue_to_render_ms": {
+          "count": 122,
+          "max": 8.676,
+          "p50": 0.047,
+          "p95": 2.5506,
+          "p99": 4.5300400000000005
+        },
+        "capture_submission_gap_ms": {
+          "count": 121,
+          "max": 943.259,
+          "p50": 43.698,
+          "p95": 131.737,
+          "p99": 304.42779999999976
+        },
+        "scope": "CPU actual draw admission/render-owner execution and conserved elapsed render time only; no GPU, scanout or physical-step credit."
+      },
+      "disposition": "PASS_LOCAL_DEVELOPMENT_GRAPHICAL_ONLY"
+    }
+  ],
+  "disposition": "PASS_LOCAL_DEVELOPMENT_GRAPHICAL_ONLY / HOLD_FOR_RESULTING_SOURCE_AND_WINDOWS"
+}

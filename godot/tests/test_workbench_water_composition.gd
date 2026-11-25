@@ -63,6 +63,67 @@ func identity_checks() -> void:
 	bad_sample.pose = Transform2D(0,Vector2(3.6,3))
 	check(Composition.dependency(context,member,entry,observation,bad_sample,{}).is_empty(),"closure pose must be exact sampled geometry")
 
+func independent_authority_checks() -> void:
+	var pose := Transform2D(0,Vector2(3.5,3))
+	var member := {"instance_id":2,"generation":6}
+	var context := {"bridge":-999,"session":1,"epoch":7,"world":3,"revision":12,
+		"step":44,"native_tick":43,"sample":45,"native_completed_usec":100,
+		"completed_usec":200,"rid":99,"rectangles":[{"center":Vector2.ZERO,"size":Vector2(7,3)}]}
+	var observation := {"pose":pose,"step":44,"instance_id":2,"generation":6,"completed_usec":200}
+	var consumed: Dictionary = context.duplicate(true)
+	consumed.merge({"instance_id":2,"generation":6,"input_pose":Transform2D(0,Vector2(3.0,3)),
+		"output_pose":pose,"native_response_applied":true})
+	var joined: Dictionary = Composition.completed_dependency(context,member,observation,consumed)
+	check(joined.get("kind")=="current_completed_native_dependency" and joined.get("physical_completion_claim",false),
+		"current consumed physical authority is independent of an image's older native identity")
+	for key: String in ["bridge","session","epoch","world","step","native_tick","sample","revision","rid","native_completed_usec","completed_usec"]:
+		var changed: Dictionary = consumed.duplicate(true)
+		changed[key] = int(changed[key])+1
+		check(Composition.completed_dependency(context,member,observation,changed).is_empty(),"current dependency refuses changed "+key)
+	for key: String in ["session","epoch"]:
+		var changed: Dictionary = context.duplicate(true)
+		var bad: Dictionary = consumed.duplicate(true)
+		changed[key] = -1
+		bad[key] = -1
+		check(Composition.completed_dependency(changed,member,observation,bad).is_empty(),"negative current native owner domain refuses "+key)
+	var changed: Dictionary = consumed.duplicate(true)
+	changed.output_pose = Transform2D(0,Vector2(3.6,3))
+	check(Composition.completed_dependency(context,member,observation,changed).is_empty(),"stale actual output pose refuses")
+	changed = consumed.duplicate(true)
+	changed.rectangles[0].size = Vector2(8,3)
+	check(Composition.completed_dependency(context,member,observation,changed).is_empty(),"changed current member geometry refuses")
+	changed = consumed.duplicate(true)
+	changed.native_response_applied = false
+	check(Composition.completed_dependency(context,member,observation,changed).is_empty(),"unapplied native response cannot prove a current pose")
+	var birth: Dictionary = context.duplicate(true)
+	birth.merge({"step":0,"manual_steps":0,"initialized":true,"completed_usec":0,"native_completed_usec":-1,
+		"initialized_pose":pose},true)
+	var entry := {"pose":pose,"sample":45,"generation":6}
+	var initial := {"pose":pose,"step":0,"instance_id":2,"generation":6,"completed_usec":0}
+	var sampled := {"serial":45,"step":0,"session":1,"epoch":7,"pose":pose,"completed_usec":0}
+	joined = Composition.initialized_closure(birth,member,entry,initial,sampled)
+	check(joined.get("kind")=="initialized_authoring_closure" and not joined.get("physical_completion_claim",true) \
+		and not joined.get("consumed_by_step",true) and joined.get("completed_usec",-1)==0,
+		"initialized Water pose grants no physical completion or consumed-step credit")
+	for key: String in ["step","manual_steps","completed_usec"]:
+		changed = birth.duplicate(true)
+		changed[key] = 1
+		check(Composition.initialized_closure(changed,member,entry,initial,sampled).is_empty(),"birth authority refuses nonzero "+key)
+		changed[key] = 0.0
+		check(Composition.initialized_closure(changed,member,entry,initial,sampled).is_empty(),"birth authority refuses coerced "+key)
+	for key: String in ["serial","step","session","epoch","completed_usec"]:
+		changed = sampled.duplicate(true)
+		changed[key] = float(changed[key])
+		check(Composition.initialized_closure(birth,member,entry,initial,changed).is_empty(),"birth closure refuses coerced "+key)
+	changed = birth.duplicate(true)
+	changed.initialized = false
+	check(Composition.initialized_closure(changed,member,entry,initial,sampled).is_empty(),"uninitialized owner cannot claim an authored pose")
+	for key: String in ["instance_id","generation"]:
+		var bad_member: Dictionary = member.duplicate()
+		bad_member.erase(key)
+		check(Composition.completed_dependency(context,bad_member,observation,consumed).is_empty(),"current authority rejects missing member "+key)
+		check(Composition.initialized_closure(birth,bad_member,entry,initial,sampled).is_empty(),"birth authority rejects missing member "+key)
+
 func color_error(a: Color, b: Color) -> float:
 	return maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 
@@ -115,11 +176,38 @@ func graphical_checks() -> void:
 	await RenderingServer.frame_post_draw
 	check(color_error(viewport.get_texture().get_image().get_pixel(56,56),background.color)<0.015,
 		"old visible non-Water material clips actor pixels")
+	# Repeated real disable/re-enable must release immutable-history bindings,
+	# preserve exactly one layer/material, and never leave stale actor pixels.
+	var layer_id: int = overlay._water_layer.get_instance_id()
+	var material_rid: RID = overlay._water_layer.material.get_rid()
+	previous.set_pixel(3,3,Color(3.0/255.0,0,0,1))
+	previous_texture.update(previous)
+	var stable: bool = true
+	var clean_disabled: bool = true
+	var restored: bool = true
+	for cycle: int in range(12):
+		overlay.set_water_composition({})
+		overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
+		await RenderingServer.frame_post_draw
+		clean_disabled = clean_disabled and color_error(viewport.get_texture().get_image().get_pixel(56,48),background.color)<0.015
+		stable = stable and overlay._water_layer.get_instance_id()==layer_id \
+			and overlay._water_layer.material.get_rid()==material_rid and overlay.get_child_count()==1 \
+			and overlay._water_layer.material.get_shader_parameter("current_material")==null \
+			and overlay._water_layer.material.get_shader_parameter("previous_material")==null
+		overlay.set_water_composition({"enabled":true,"current_texture":current_texture,
+			"previous_texture":previous_texture,"world_size":Vector2i(8,8),"previous_active":true,"snapshot_blend":1.0})
+		overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
+		await RenderingServer.frame_post_draw
+		restored = restored and color_error(viewport.get_texture().get_image().get_pixel(56,48),background.color.lerp(body_color,0.65))<0.015
+	check(stable,"Water layer and material remain singly owned; disabled histories are unbound")
+	check(clean_disabled,"disabled Water layer leaves no retained framebuffer actor pixels")
+	check(restored,"re-enabled Water layer has correct first-read opacity on every transition")
 	viewport.queue_free()
 	await process_frame
 
 func _run() -> void:
 	identity_checks()
+	independent_authority_checks()
 	var water: Image = picture(3)
 	var empty: Image = picture(0)
 	check(not proof(water,water,false).safe,"ordinary empty-footprint guard still refuses retained Water")

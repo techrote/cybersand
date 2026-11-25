@@ -1,0 +1,71 @@
+{
+  "schema": "pubpres-atomic-graphical-checkpoint-v1",
+  "application_source": "f8e0fb7cd4c770a31ecb43dd0161717d21cbf17b",
+  "engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+  "scope": "Linux developmental custom engine, Xorg dummy Mesa llvmpipe; actual native/Rapier and actual first-read framebuffer; no Windows/NVIDIA acceptance or comparative performance claim",
+  "arms": [
+    {
+      "name": "safe0",
+      "thread": "safe",
+      "lookahead": 0,
+      "checks": 98,
+      "failures": [],
+      "actual_draws": 196,
+      "actual_render_cpu_completions": 196,
+      "deferrals": 0,
+      "maximum_deferred_per_draw": 0,
+      "admission_faults": 0,
+      "completion_fault": false,
+      "sha256": {
+        "launch.json": "2309aed33bfa77a09665ad0242991bfcaea43f640088f2fa680f95f3807e6955",
+        "receipt.json": "121bab21a9331df19a605c5485da4bdad359e76b9f7f9f87f3d8b696f45e39cb",
+        "engine.json": "5661a18ae9bb446d7cc1e1e848fbaac2c612c86b434a4f1e30621dc1fc0f1c9d",
+        "process.log": "017b7f5b7e52493b9923230f8ec93a7ec46b2a45ebdab1b8968a94bf5369b4a7",
+        "submission-first-read.png": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+        "xorg.log": "71fbf1e2002b40dda8ebbfcf6e54a2de76015c6040111339cc7e0d2bccb27ed4"
+      }
+    },
+    {
+      "name": "separate0",
+      "thread": "separate",
+      "lookahead": 0,
+      "checks": 98,
+      "failures": [],
+      "actual_draws": 182,
+      "actual_render_cpu_completions": 182,
+      "deferrals": 0,
+      "maximum_deferred_per_draw": 0,
+      "admission_faults": 0,
+      "completion_fault": false,
+      "sha256": {
+        "launch.json": "5d6691db261211232d26e840bddfe097e32f79781cf3f6dbe4dcad9b2ad7cc3c",
+        "receipt.json": "5b3452b2127366a04759831fff97cb0f8b0710603797f1e7e9cb8c38865cc0f6",
+        "engine.json": "8083292c97f54f4aae4d0bf201d0c125c317d6427d098d1a6d6a1343d5bc50a3",
+        "process.log": "9c5dd350ed1d8fee644069706a2cb80f37512c62c5925eecb0246cb51888f14f",
+        "submission-first-read.png": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+        "xorg.log": "dc1fbf8f4fe46e97facc1c3c2dea1fe33da20d5fc6d93996a5aab1240bc18ca2"
+      }
+    },
+    {
+      "name": "separate4",
+      "thread": "separate",
+      "lookahead": 4,
+      "checks": 98,
+      "failures": [],
+      "actual_draws": 137,
+      "actual_render_cpu_completions": 137,
+      "deferrals": 403,
+      "maximum_deferred_per_draw": 4,
+      "admission_faults": 0,
+      "completion_fault": false,
+      "sha256": {
+        "launch.json": "ca90c70f5082e1ff251eb7a6733ca1eb57b4ca29cc0da9f267a4fbd79771be25",
+        "receipt.json": "26e7e7b0d7e1d4f44e29daeb480c60ee7dea8784ed0af19ba4dd99975e213c11",
+        "engine.json": "64db52284a304ddf3db4979e6a651e68f96acd25d08d4b87882b2a32ad686609",
+        "process.log": "19aac339f9be39f6d170c43d8de793af30b1973bcb5f6ca8be3e9edf1776cb84",
+        "submission-first-read.png": "9640b1b3a0ce40c3511326d1a12951ede2189ef8f5d1e50074e3803cf8e0de02",
+        "xorg.log": "ac43eb1012879b818888bf959e589d9dfde5aff38f9d4571ab7a060160ea0253"
+      }
+    }
+  ]
+}

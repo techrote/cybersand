@@ -58,3 +58,68 @@ bytes, Water quantities, body masks, physics and material textures remain intact
 No result is admitted here in advance. Failure retains the original control and
 keeps the candidate off. Raw results, source/runtime identities and independent
 review are recorded separately from this prospective contract.
+
+## Recovery amendment: retained proof and independent physical/image authorities
+
+Registered before testing the amended implementation, 2026-11-25. The initial
+composition implementation's positive headless checks do not resolve its actual
+paused-camera graphical failure or its observed frequent omitted body-frames.
+Those original results remain retained. This amendment changes the mechanism,
+not the native, material, framebuffer, freshness or physical-progression gates.
+
+A short native wrench ring can evict an already verified sample after later
+legitimate body publications. Ordinary acknowledged Pause does not itself
+publish samples: it returns before that seam. The original paused-camera
+failure therefore does not establish ring eviction as its cause. Retain that
+negative result and test explicit publication stress separately from elapsed
+paused frames.
+That retires its eligibility to apply forces; it does not invalidate the exact
+initialized or completed pose already proved against the native closure. Retain
+at most one immutable proof per physical member, keyed by the exact owner,
+World, native revision/tick/sample, member generation and geometry, physical
+step/completion clock and pose. A real step or owner retirement invalidates it.
+Return a separate mutable copy to the resolver for this draw's coverage result.
+Never cache Water/Empty geometry clearance or update an old completion clock.
+Transport-only re-publication and changing blend weights do not manufacture a
+new native dependency and must not cause otherwise valid paused poses to vanish.
+
+Two additional authorities are subject to independent review and execution:
+
+- `initialized_authoring_closure`: an actual initialized, accepted actor owner
+  at session step zero and actual manual Rapier count zero, with no claimed
+  physical completion. The current RID cache, exact admitted native sample,
+  actor generation and uploaded native frame must describe the same pose.
+  Existing material/terrain/owner readiness and both image-history guards apply.
+  This is distinct from a consumed dependency or a completed physical pose.
+- `current_completed_native_dependency`: the current real completed Rapier pose
+  may be proved by its own exact, actually applied native dependency even when
+  uploaded material is older. Preserve the consumed native World/tick/sample,
+  input/output poses and completion clocks, separately from the image's native
+  provenance. Require the same actual World/member and current completed pose.
+  Never claim that an older image packet was consumed by that newer step.
+
+Both image histories are still independently immutable uploaded resources. The
+entire relevant continuous pose sweep must admit only Empty/Water; any visible
+other-material cell or unknown history still refuses the Water composition.
+The shader clips visible hard-material borders, including fractional pixels
+outside cell-centre masks. An older image cannot confer physical authority.
+An actual physical dependency cannot waive image coverage or presentation age.
+
+Required new witnesses are initial paused full submersion; long paused stability;
+separate actual publication stress past both sample-ring capacities; material resync;
+actual newer completed poses with older visible Water; stale/replaced owner and
+World refusal; current/previous Sand and solid-border refusal; repeated layer
+disable/re-enable first reads; and actual submitted mapping under camera changes.
+The layer retains at most one child and material, unbinds textures while disabled,
+and must leave no stale framebuffer pixels. Source and engine/app transaction
+identities accompany every result. No implementation in this amendment is
+selected on the strength of the earlier headless or shader-only checks.
+
+The native mounted fixture then found that the initial accepted prepared owner
+has a real admitted sample, but no Main-side sample record: adoption deliberately
+retires its provisional force ring and acknowledged Pause never publishes a new
+sample. The repair captures that exact already accepted sample immediately before
+adoption retires the ring. It records only presentation provenance, without a new
+native publication, waiting target, body mutation or physical completion. The
+initial closure still independently requires step zero, clock zero and identical
+actual initialized pose. This seam must execute in the native graphical fixture.

@@ -1,6 +1,6 @@
 {
-  "patch_sha256": "5424c3bc48556e93f28887e7ff1a6ca6781a8da5fab9eb8383c44e4b442cca97",
-  "combined_sha256": "7d931daede8c08b6331916160d52a545bc5666d42a4aae0d39c5f63c8f064798",
+  "patch_sha256": "f17555f97681bb1c843ade738c738405789f21aa4a487c70a0c778bf83cfb085",
+  "combined_sha256": "0f4491e7211f58e2b39d7a37878148e8bc0d94451f356c51796e26c15eda0571",
   "files": {
     "main/main.cpp": {
       "before_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491",
@@ -8,7 +8,7 @@
     },
     "servers/rendering/rendering_server_default.cpp": {
       "before_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32",
-      "after_sha256": "2cb46d231d42b2729cad9310c9efd585c95bce7ae671621dcfe8a48f790b398a"
+      "after_sha256": "38df3aeed8b72db4251c948734daf39976f04da8d16dd98682bafabef04fa89c"
     },
     "servers/rendering/rendering_server_default.h": {
       "before_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed",

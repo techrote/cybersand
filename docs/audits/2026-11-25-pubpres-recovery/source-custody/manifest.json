@@ -1,0 +1,67 @@
+{
+  "schema": "pubpres-recovery-exact-source-bundle-v1",
+  "created_utc": "2026-11-25T22:47:09.075576+00:00",
+  "prerequisite_commit": "f4089809c7294336db26cf576b0ac3c57fc54775",
+  "bundle": "source-checkpoint-01.bundle",
+  "bundle_sha256": "8d1e99613c71a855b5be3f1b30154fa3f74d7574dbbff7c4cefa73e7d00922af",
+  "bundle_bytes": 877680,
+  "sources": [
+    {
+      "source": "5954b3916510a2fb836196ff8a39ba51431a37c9",
+      "tree": "6b02c090c1966a162c5450c8bbec959e2d231591",
+      "ref": "refs/mission/pubpres-recovery/archive01/5954b3916510"
+    },
+    {
+      "source": "0bd275a36669a18217f7861372bbf54a837af750",
+      "tree": "2999f6f1188f9c17b2b70fcf673bfa615e2cbc6b",
+      "ref": "refs/mission/pubpres-recovery/archive01/0bd275a36669"
+    },
+    {
+      "source": "675aeb64e11d236089ef212fdc44f7f8fb537b86",
+      "tree": "55a43a209ea99f74818189aa004f9029be0211d3",
+      "ref": "refs/mission/pubpres-recovery/archive01/675aeb64e11d"
+    },
+    {
+      "source": "ce2bfb1fa0a9ccd945ed5fc6e89b05e8f4d05e0a",
+      "tree": "7c67f245194431422d1d7f3fcd767a15b1c7ca09",
+      "ref": "refs/mission/pubpres-recovery/archive01/ce2bfb1fa0a9"
+    },
+    {
+      "source": "aa2b8fadd2638d7d5487ac1a0fd19f3bf3ee078d",
+      "tree": "87d891913e2e89cbe79e58d33972d44173c28e9b",
+      "ref": "refs/mission/pubpres-recovery/archive01/aa2b8fadd263"
+    },
+    {
+      "source": "df480e6d29118e0512303e26f10efc2249d02370",
+      "tree": "b0d2829c69ebfcdd791fa5c93c07adc6ef440b6a",
+      "ref": "refs/mission/pubpres-recovery/archive01/df480e6d2911"
+    },
+    {
+      "source": "e43c1a157e36c39af5033db461dd0de6b5a0d64d",
+      "tree": "1b4af5c3919c5623861a1a8774179206c23537bb",
+      "ref": "refs/mission/pubpres-recovery/archive01/e43c1a157e36"
+    },
+    {
+      "source": "ba52babd3acf425b46ff3c9bdae960d8b2870055",
+      "tree": "8dfe500e82706aa61274e1062171843bb923544d",
+      "ref": "refs/mission/pubpres-recovery/archive01/ba52babd3acf"
+    },
+    {
+      "source": "a94e706e85f48ce0b78b8d7738fb9f791a065368",
+      "tree": "7d13774fd9a3f637ad07d70f0db4fe276c14947a",
+      "ref": "refs/mission/pubpres-recovery/archive01/a94e706e85f4"
+    },
+    {
+      "source": "f79d929c04aa93ec295ac4dfc9bbdc6865236937",
+      "tree": "6e57d06c9ddd9c0701d410651cae81f72e6f8f03",
+      "ref": "refs/mission/pubpres-recovery/archive01/f79d929c04aa"
+    },
+    {
+      "source": "11870788cc0a3bf23cf57f0e6546e35da4a434c7",
+      "tree": "80ebb091e2dac1985021a0f800adcd2d352a8a60",
+      "ref": "refs/mission/pubpres-recovery/archive01/11870788cc0a"
+    }
+  ],
+  "scope": "Exact original local commit objects for actually measured or reviewed implementation and test-driver sources; tree-equivalent principal-PR publication commits are separate identities. No remote branch or evidence history rewritten. Fetch this bundle into a clone containing prerequisite f408 to recover these original source commits.",
+  "verification": "The bundle contains these 11 refs:\n5954b3916510a2fb836196ff8a39ba51431a37c9 refs/mission/pubpres-recovery/archive01/5954b3916510\n0bd275a36669a18217f7861372bbf54a837af750 refs/mission/pubpres-recovery/archive01/0bd275a36669\n675aeb64e11d236089ef212fdc44f7f8fb537b86 refs/mission/pubpres-recovery/archive01/675aeb64e11d\nce2bfb1fa0a9ccd945ed5fc6e89b05e8f4d05e0a refs/mission/pubpres-recovery/archive01/ce2bfb1fa0a9\naa2b8fadd2638d7d5487ac1a0fd19f3bf3ee078d refs/mission/pubpres-recovery/archive01/aa2b8fadd263\ndf480e6d29118e0512303e26f10efc2249d02370 refs/mission/pubpres-recovery/archive01/df480e6d2911\ne43c1a157e36c39af5033db461dd0de6b5a0d64d refs/mission/pubpres-recovery/archive01/e43c1a157e36\nba52babd3acf425b46ff3c9bdae960d8b2870055 refs/mission/pubpres-recovery/archive01/ba52babd3acf\na94e706e85f48ce0b78b8d7738fb9f791a065368 refs/mission/pubpres-recovery/archive01/a94e706e85f4\nf79d929c04aa93ec295ac4dfc9bbdc6865236937 refs/mission/pubpres-recovery/archive01/f79d929c04aa\n11870788cc0a3bf23cf57f0e6546e35da4a434c7 refs/mission/pubpres-recovery/archive01/11870788cc0a\nThe bundle requires this ref:\nf4089809c7294336db26cf576b0ac3c57fc54775 \nThe bundle uses this hash algorithm: sha1\n/workspace/scratch/8a0b6cd48416/cybersand/docs/audits/2026-11-25-pubpres-recovery/source-custody/source-checkpoint-01.bundle is okay\n"
+}

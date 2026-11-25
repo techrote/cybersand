@@ -26,16 +26,27 @@ diff --git a/main/main.cpp b/main/main.cpp
 diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/rendering_server_default.cpp
 --- a/servers/rendering/rendering_server_default.cpp
 +++ b/servers/rendering/rendering_server_default.cpp
-@@ -468,56 +468,126 @@
+@@ -34,6 +34,7 @@
+ #include "core/io/file_access.h"
+ #include "core/io/json.h"
+ #include "core/object/callable_mp.h"
++#include "core/object/message_queue.h"
+ #include "core/os/os.h"
+ #include "core/profiling/profiling.h"
+ #include "servers/display/display_server.h"
+@@ -468,56 +469,138 @@
  	}
  }
  
 +bool RenderingServerDefault::_pubpres_get_handshake(Dictionary &r_handshake, Object *&r_owner) {
-+	const Variant metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
-+	if (metadata.get_type() != Variant::DICTIONARY) {
++	if (!has_meta(SNAME("cybersand_actual_submission_v1"))) {
 +		return false;
 +	}
-+	r_handshake = metadata;
++	const Variant submission_metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
++	if (submission_metadata.get_type() != Variant::DICTIONARY) {
++		return false;
++	}
++	r_handshake = submission_metadata;
 +	const Variant schema = r_handshake.get("schema", Variant());
 +	const Variant enabled = r_handshake.get("enabled", Variant());
 +	const Variant connected = r_handshake.get("connected", Variant());
@@ -120,16 +131,25 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  }
  
 +bool RenderingServerDefault::_pubpres_application_admission(PubpresApplicationReceipt &r_receipt) {
-+	const Variant metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
-+	if (metadata.get_type() == Variant::NIL) {
++	if (!has_meta(SNAME("cybersand_actual_submission_v1"))) {
++		return true;
++	}
++	const Variant submission_metadata = get_meta(SNAME("cybersand_actual_submission_v1"), Variant());
++	if (submission_metadata.get_type() == Variant::NIL) {
 +		return true; // Ordinary applications have not selected this contract.
 +	}
-+	if (metadata.get_type() == Variant::DICTIONARY) {
-+		const Dictionary state = metadata;
++	if (submission_metadata.get_type() == Variant::DICTIONARY) {
++		const Dictionary state = submission_metadata;
 +		const Variant enabled = state.get("enabled", Variant());
 +		if (enabled.get_type() == Variant::BOOL && !bool(enabled)) {
 +			return true;
 +		}
++	}
++	// A deferred manual draw may follow the application's marker while later
++	// nested canvas callbacks are still queued. Only the completed Main flush
++	// establishes that every staged command has reached the rendering queue.
++	if (MessageQueue::get_main_singleton()->is_flushing()) {
++		return false;
 +	}
 +	Dictionary handshake;
 +	Object *owner = nullptr;
@@ -190,7 +210,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  	const uint64_t started = OS::get_singleton()->get_ticks_usec();
  	// Exactly one real draw. Its returned CPU work is not a GPU fence and does
  	// not grant a Rapier step or a scanout/pixel visibility claim.
-@@ -533,6 +603,8 @@
+@@ -533,6 +616,8 @@
  		row.previous_batch_deferred_turns = p_deferred_turns;
  		row.applied_render_step = p_step;
  		row.carried_render_step = p_carried_step;
@@ -199,7 +219,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  		row.actual_render_owner = create_thread && Thread::get_caller_id() == server_thread;
  		row.inline_main = !create_thread && Thread::is_main_thread();
  	} else {
-@@ -546,7 +618,13 @@
+@@ -546,7 +631,13 @@
  
  void RenderingServerDefault::_pubpres_write_evidence() {
  	Dictionary result;
@@ -214,7 +234,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  	result["requested"] = pubpres_budget_requested;
  	result["render_thread_created"] = create_thread;
  	result["eligibility_checks"] = pubpres_eligibility_checks;
-@@ -580,6 +658,11 @@
+@@ -580,6 +671,11 @@
  		entry["previous_batch_deferred_turns"] = row.previous_batch_deferred_turns;
  		entry["applied_render_step"] = row.applied_render_step;
  		entry["carried_render_step"] = row.carried_render_step;
@@ -226,7 +246,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  		entry["actual_render_owner"] = row.actual_render_owner;
  		entry["inline_main"] = row.inline_main;
  		rows.push_back(entry);
-@@ -603,7 +686,7 @@
+@@ -603,7 +699,7 @@
  
  void RenderingServerDefault::draw(bool p_present, double frame_step) {
  	ERR_FAIL_COND_MSG(!Thread::is_main_thread(), "Manually triggering the draw function from the RenderingServer can only be done on the main thread. Call this function from the main thread or use call_deferred().");
@@ -235,7 +255,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  		// A completed old draw does not retire later material/canvas commands.
  		// Every manual/forced entry drains them before replenishing allowance.
  		sync();
-@@ -611,14 +694,14 @@
+@@ -611,14 +707,14 @@
  	_pubpres_admit_draw(p_present, frame_step);
  }
  
@@ -256,7 +276,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  	if (!pubpres_budget_track) {
  		// With no registered experiment, preserve the original draw path.
  		RS::get_singleton()->emit_signal(SNAME("frame_pre_draw"));
-@@ -628,8 +711,15 @@
+@@ -628,8 +724,15 @@
  		} else {
  			_draw(p_present, frame_step);
  		}
@@ -274,7 +294,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  	const uint32_t previous_deferred = pubpres_frame_budget.current_budget_spent();
  	const double carried_step = pubpres_frame_budget.pending_render_step();
  	frame_step = pubpres_frame_budget.consume_render_step(frame_step);
-@@ -637,16 +727,17 @@
+@@ -637,16 +740,17 @@
  	const uint64_t submitted = pubpres_budget_track ? OS::get_singleton()->get_ticks_usec() : 0;
  	const uint64_t process_frame = Engine::get_singleton()->get_process_frames();
  	// Needs to be done before changes is reset to 0, to not force the editor to redraw.
@@ -297,7 +317,7 @@ diff --git a/servers/rendering/rendering_server_default.cpp b/servers/rendering/
  }
  
  void RenderingServerDefault::tick() {
-@@ -669,6 +760,12 @@
+@@ -669,6 +773,12 @@
  	pubpres_budget_requested = OS::get_singleton()->get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD");
  	pubpres_budget_trace_path = OS::get_singleton()->get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD_TRACE");
  	pubpres_budget_track = pubpres_budget_requested == "0" || pubpres_budget_requested == "4";

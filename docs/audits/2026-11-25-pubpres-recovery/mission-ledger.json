@@ -1,14 +1,20 @@
 {
   "schema": "pubpres-recovery-ledger-v1",
   "mission": "PUBPRES-PLAYABILITY-FINAL-RECOVERY-001",
-  "updated_utc": "2026-11-25T21:35:33.797322+00:00",
+  "updated_utc": "2026-11-25T22:46:38.901960+00:00",
   "disposition": "ENGINEERING_IN_PROGRESS_DRAFT_HOLD",
   "principal_pr": 767,
   "source": {
     "intake": "f4089809c7294336db26cf576b0ac3c57fc54775",
     "intake_tree": "2f130ccd838ebdefd9f6dfee85a421ca2b9d38e9",
-    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-    "donor_D": "c90dbc46e1f57f28e06b1f4205b83467335ff657"
+    "accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+    "donor_D": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "current_checkpoint": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+    "current_checkpoint_tree": "a523de4e418caf16c6a2f65c888bf1b785d5d924",
+    "intake_accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "accepted_main_refreshed_utc": "2026-11-25T21:58:00Z",
+    "accepted_main_runtime_equivalence": "1135 common production/native source files identical to historical main; one new qualification script. Existing M/C runtime dependency binaries differ and do not satisfy shared-toolchain comparative gates.",
+    "local_implementation_checkpoint": "5954b3916510a2fb836196ff8a39ba51431a37c9"
   },
   "owners": {
     "lead": "Water composition, integration, engine execution, final decisions",
@@ -29,7 +35,7 @@
       "application": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
       "windows": "FAIL",
       "cause": "count2 treatment failed prospective actual-exercise gate on Wave512; first candidate had no deferred or replaced offers; no correctness crash inferred",
-      "correctness": "19 reported pass; independent source/raw replay in progress",
+      "correctness": "Original19 correctness and actual Windows process/presentation observer gates independently inspected; original failed actual-exercise arm retained.",
       "large_count2": "executed but adverse; unchanged treatment retired prospectively; original FAIL retained"
     },
     "bounded_component": {
@@ -51,10 +57,9 @@
     }
   },
   "credible_avenues": [
-    "actual admitted submission transaction",
-    "explicit Water-only composition with current completed-pose/native provenance",
-    "default-off bounded Main/render0/4 after correctness qualification",
-    "default-off removal of redundant status-only worker assembly after consumed sample"
+    "qualified local atomic actual-submission transaction with bounded0/4 pending comparative decision",
+    "Water v2 independent actual physical and image authorities, initial owner seam under native test",
+    "native persistent worker task completion instead of all-worker wake acknowledgement; prospective/source review pending"
   ],
   "retired_unchanged_treatments": [
     "Separate renderer alone",
@@ -66,11 +71,14 @@
     "native zero-carry"
   ],
   "pending": [
-    "implement and execute transaction",
-    "Water first-read/framebuffer/lifecycle gates",
-    "bounded0/4/4/0 with stock Safe",
-    "worker candidate matched execution",
-    "final source-bound native Linux Windows and extracted evaluator",
+    "resulting-source native Water birth/motion/lifecycle framebuffer gates",
+    "corrected Windows engine component build02",
+    "bounded0/4/4/0 with stock Safe and full freshness/resource gates",
+    "native phase attribution and actual-task completion candidate",
+    "select architecture only after physical progression comparisons",
+    "shared-dependency accepted-main/C/D native and scoped sanitizer/platform gates",
+    "ordinary sustained authoring/persistence and extracted Windows package",
+    "successor self-contained ordinary Workbench evaluator",
     "physical owner Windows11/NVIDIA acceptance"
   ],
   "authority": {
@@ -78,5 +86,67 @@
     "ready": false,
     "default_promotion": false,
     "release": false
-  }
+  },
+  "implemented": {
+    "water": "Default-off v2 separates current actual native/physical provenance from uploaded image provenance, exact step-zero initialized authoring authority, both immutable Water/Empty image coverage and actual shader. Pure82 and graphical91 pass; native fixture exposed initial accepted sample retired before Main record, repaired6846fd659 and pending native graphical replay. Original failures retained.",
+    "worker_idle": "Executed full matched eight-arm 0/1/1/0 Wave512/2048 with identical trajectories; prospective benefit NOT_ESTABLISHED, default-off/unselected. Interval causal reduction preserved.",
+    "atomic_engine": "Corrected additive fourth patch f17555f9 / combined0f4491e7. Actual Linux development Safe0/Separate0/Separate4 each98 checks pass;403 real deferrals/max4. Runtime674a6324. New exact Windows build02 requested; build01 PASS but superseded.",
+    "actual_transaction": "Engine-owned whole-draw admission with exact queued-canvas flush marker, immutable owner/material/physical/camera/policy fence, last-submitted picking and source-aware fallback. Eight actual rejected framebuffer cases and four restart/fallback cases executed. No timing improvement claimed."
+  },
+  "campaigns": {
+    "atomic_component_01": {
+      "run": 45709374785,
+      "source": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+      "purpose": "Build and independently admit exact fourth-patch Windows engine; application/performance gates remain separate.",
+      "status": "PASS_SUPERSEDED",
+      "requested_workers": 2,
+      "reason": "New guarded metadata access and actual Main message-flush rejection require new resulting-source engine build. Original compiler/artifact evidence retained."
+    },
+    "sample_idle_local": {
+      "status": "COMPLETED_NOT_ESTABLISHED",
+      "source": "0bd275a36669a18217f7861372bbf54a837af750",
+      "arms": 8,
+      "trajectories": "MATCH",
+      "wave512_rates": [
+        22.99,
+        23.06,
+        22.55,
+        22.33
+      ],
+      "wave2048_rates": [
+        8.826,
+        8.9329,
+        8.6809,
+        7.3754
+      ],
+      "wave2048_max_gap_ms": [
+        297.245,
+        285.659,
+        387.151,
+        353.588
+      ],
+      "disposition": "Default-off; no repeatable primary benefit, some candidate tail regressions",
+      "original_infrastructure_failures": "Strict actual-owner failures retained; display-associated dbus-launch child removed through explicit matched unavailable DBUS session address. No ownership predicate changed."
+    },
+    "atomic_component_02": {
+      "status": "REGISTERED_PENDING_PUSH",
+      "purpose": "Build the corrected atomic admission component after actual Safe0/Separate0/Separate4 graphical correctness passed locally. Preserve optional-metadata guards and reject manual draw during the real Main message flush. Retain exact four-patch compiler/dependency/API/PE gates and rejected-time conservation. Supersedes build01 without replacing its original evidence; application and physical performance qualification remain separately required.",
+      "payload_sha256": "2aa47dde3576bbf9b8b19d20d9df9d838f384dfc3fee2ebcf673947934043560",
+      "local_engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+      "application_graphical_source": "f8e0fb7cd4c770a31ecb43dd0161717d21cbf17b",
+      "application_graphical": "Safe0/Separate0/Separate4 PASS98 each; development llvmpipe only"
+    }
+  },
+  "rejected_new_architectures": [
+    {
+      "architecture": "journal-only frame_pre_draw stale candidate refusal",
+      "disposition": "FALSIFIED",
+      "reason": "Actual framebuffer changed to staged camera while journal and picking remained previous mapping; whole-draw veto is required."
+    },
+    {
+      "architecture": "sample-idle worker status suppression",
+      "disposition": "NOT_ESTABLISHED_UNSELECTED",
+      "reason": "All eight matched arms executed with exact trajectory parity, but no repeatable registered progression improvement and adverse upper-tail cases."
+    }
+  ]
 }
