@@ -222,3 +222,75 @@ examples.
 
 The final handover should state how many genuine model runs occurred. Until
 such runs are actually authorized and observed, that count is **zero**.
+
+## Recovered-source follow-up at the frozen candidate
+
+The reviewer independently retrieved the recovered source at
+[`2743f89a0df6f6afcf7484e859c10790d521e74b`](https://github.com/techrote/cybersand/commit/2743f89a0df6f6afcf7484e859c10790d521e74b),
+tree `56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634`. This is a **source-level**
+follow-up. Its hosted execution campaign was just being admitted; this review
+does not assert its later outcome.
+
+The lead-owned ordinary executor and exclusive simulation-worker files are
+byte-identical to the previously reviewed `7db8d159` versions. Recovered
+coordinator changes close the reported receipt-custody paths: pending state is
+cleared before reentrant observers, failed/cancelled verification retains actual
+work once as unverified, and stale terminal work is retired before a new capture.
+That last check also covers Stop after executor completion but before the
+coordinator harvests the result. Proposal-generation fences protect approval
+against a reentrant proposal replacement.
+
+Discuss/Review now refresh the disclosed recent-message selection after a
+reply. Before Send, a changed Conversation revision refreshes disclosure and
+returns without HTTP; the owner reviews and explicitly sends again. The
+external-context digest/authorization check remains in place. Pending ordinary
+direct-run timers, capture and receipt work also fence collaborative admission.
+
+Complete context copying is present at this exact source: the UI keeps a
+bounded complete JSON inspector separately from its depth-limited readable
+summary. Copy uses the complete JSON; exceeding its bound clears both copy and
+disclosure authorization. The earlier summary-only copy finding is therefore
+closed at the source level.
+
+The recovered graphical-only session fixture selects a known native canvas
+rectangle, checks the bounded image mapping and dimensions, observes the actual
+PNG data URL in real loopback HTTP, checks the original audit image reference,
+and checks that later image-free context clears both bytes and thumbnail.
+Successful execution still needs its original displayed process log.
+
+One test limitation remains explicit: the `exchange()` helper manually
+reinspects before every request and changes endpoint. Its two-discussion wire
+check confirms the transmitted history, but cannot alone isolate automatic
+post-reply refresh from manual reinspection. An immediate snapshot assertion
+after the first reply would specifically guard the reported continuity fix.
+This is a test-isolation observation; the reviewed source contains the fix.
+
+A separate bounded context-quality follow-up investigates row-major sampling
+aliasing: ordinary power-of-two region widths can place all 32 old cell samples
+on the left edge. The full histogram and 16-by-16 occupancy summary remain
+available, and native approval is unaffected. Any stratified-sampling change is
+kept off this frozen principal source until separately incorporated and tested.
+
+### Checklist for the fresh native artifacts
+
+- Match the exact committed source/tree, pinned Godot and native/Rapier
+  fingerprints. Require exit zero, one complete terminal marker and no script or
+  resource-loading errors.
+- Require all nine named native scenarios and nine matched direct controls, with
+  all declared diagnostics, real displayed framebuffers, Setup-v2 files and
+  original receipt files.
+- Reconcile original native changed/checked totals with scenario summaries and
+  the complete predicted/observed material-plane hashes.
+- Check every protected cell unchanged and keep static Empty clearance distinct
+  from actor traversal or physical stability.
+- Keep the preview no-write observation and separate per-stage approvals and
+  readbacks. Require all nine ordinary saved-start reload hashes to match.
+- Retain all 24 copied-value outcomes, including seven refusals and the failed
+  precursor to a repaired proposal. Genuine-model calls remain zero.
+- Require fresh Stop/manual-stale/unverified-result custody and exactly-one
+  response-consumer checks at the actual source.
+- Compare only equally scoped native execution intervals; retain the broad
+  wall-time and fixed-arm-order limitations.
+- Retain the original #773 acceptance limits, the interrupted eight-of-nine
+  attempt, temporary evidence loss and any new failed hosted attempts as
+  separate outcomes.
