@@ -1,0 +1,82 @@
+{
+  "schema": "pubpres-recovery-ledger-v1",
+  "mission": "PUBPRES-PLAYABILITY-FINAL-RECOVERY-001",
+  "updated_utc": "2026-11-25T21:35:33.797322+00:00",
+  "disposition": "ENGINEERING_IN_PROGRESS_DRAFT_HOLD",
+  "principal_pr": 767,
+  "source": {
+    "intake": "f4089809c7294336db26cf576b0ac3c57fc54775",
+    "intake_tree": "2f130ccd838ebdefd9f6dfee85a421ca2b9d38e9",
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "donor_D": "c90dbc46e1f57f28e06b1f4205b83467335ff657"
+  },
+  "owners": {
+    "lead": "Water composition, integration, engine execution, final decisions",
+    "native": "sample-gated worker progression and native semantics",
+    "presentation": "prepared/actual-submitted transaction, camera and picking",
+    "qualification": "independent original failure, strict evidence, Windows campaign and package"
+  },
+  "protected_evaluator": {
+    "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "run": 45452580606,
+    "artifact": 14952245528,
+    "inner_sha256": "56a9218fe7e041abea7941b9866114b0d96514abda6e5c40b308ac00b76c3b01",
+    "mutation": "none"
+  },
+  "recovered": {
+    "progression_campaign": {
+      "run": 45477483707,
+      "application": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+      "windows": "FAIL",
+      "cause": "count2 treatment failed prospective actual-exercise gate on Wave512; first candidate had no deferred or replaced offers; no correctness crash inferred",
+      "correctness": "19 reported pass; independent source/raw replay in progress",
+      "large_count2": "executed but adverse; unchanged treatment retired prospectively; original FAIL retained"
+    },
+    "bounded_component": {
+      "run": 45483865013,
+      "source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+      "plan": "PASS",
+      "windows_build": "PASS",
+      "application_transaction": "MISSING_AT_INTAKE",
+      "playability": "UNQUALIFIED"
+    },
+    "startup_diagnostic": {
+      "pr": 782,
+      "application": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "diagnostic": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+      "run": 45550363681,
+      "first_render_seconds": 47.889,
+      "reused_profile_first_render_seconds": 0.207,
+      "scope": "hosted ANGLE first-render/profile correlation; separate from sustained native progression; no imported Art implementation"
+    }
+  },
+  "credible_avenues": [
+    "actual admitted submission transaction",
+    "explicit Water-only composition with current completed-pose/native provenance",
+    "default-off bounded Main/render0/4 after correctness qualification",
+    "default-off removal of redundant status-only worker assembly after consumed sample"
+  ],
+  "retired_unchanged_treatments": [
+    "Separate renderer alone",
+    "material30Hz deadline",
+    "count2 coalescing",
+    "three full-image slots",
+    "target publication",
+    "Combined/Early repeat",
+    "native zero-carry"
+  ],
+  "pending": [
+    "implement and execute transaction",
+    "Water first-read/framebuffer/lifecycle gates",
+    "bounded0/4/4/0 with stock Safe",
+    "worker candidate matched execution",
+    "final source-bound native Linux Windows and extracted evaluator",
+    "physical owner Windows11/NVIDIA acceptance"
+  ],
+  "authority": {
+    "merge": false,
+    "ready": false,
+    "default_promotion": false,
+    "release": false
+  }
+}
