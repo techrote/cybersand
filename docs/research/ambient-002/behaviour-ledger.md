@@ -22,6 +22,26 @@ hashes, reset-cause limitations and a bounded correction proposal. These are
 two members of the existing local 194-episode programme, not additional cases.
 No runtime source was edited to produce this negative result.
 
+The subsequent narrow candidate repairs only the alternative-heading latch.
+Its existing deadline remains fixed while the selected copied ray is currently
+available, capability appropriate, clear and not clipped by the canvas. Loss of
+that evidence, neutral motion, new blockage, expiry or World replacement releases
+the maneuver. Clear retreat alone cannot renew it; a later freshly obstructed
+requested heading may begin a separate finite maneuver. The obstruction-memory
+detector is unchanged pending the adverse physical results. Fresh Linux pure
+regressions pass 618 checks, including 51 new latch/lifecycle assertions; the
+895 predecessor checks also pass. These are copied-value tests and do not
+establish physical improvement or Windows qualification for the candidate.
+
+The lead's subsequent source-941b comparison executed nine matched existing
+physical cases. Independent readback agrees on 270 movement values, 72 table
+values and 216 active-heading values. Ground oscillation/stall reduction occurs
+with actual movement; sealed-goal memory still records eight failures and
+retreats roughly 47 cells, while both blocked-route traces remain unchanged.
+The [recovery review](recovery-negative-review.md#subsequent-matched-repair-review)
+retains the exact source, reproducible independent receipt and causal limits.
+This selected comparison does not stand in for a complete final-source campaign.
+
 ## Source and authority
 
 The lane begins at predecessor `d0af9b6015c27417fddd67f79afdcf656a609571`.

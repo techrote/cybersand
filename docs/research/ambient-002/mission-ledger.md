@@ -306,3 +306,72 @@ identities, the probe and a trace readback. No memory failure events were record
 in these episodes, so sampled wall contacts cannot be relabelled as learned
 failed approaches or successful recovery. A bounded steering-retention repair is
 being developed separately; the frozen baseline runs remain untouched.
+
+## Measured correction and third qualification freeze
+
+The bounded maneuver correction is implemented in specialist commit
+`b9bfe4969ae465b28555e1c3b77cf579a8c58a24`. The module retains its existing
+alternative heading only until the original deadline and only while a fresh
+capability-appropriate copied ray still establishes clear, non-boundary coverage.
+Unknown coverage, blockage, neutral motion and expiry release the commitment.
+Clear retreat alone cannot renew it. Memory and physical actuators are unchanged.
+Fresh original receipts retain618 living-engine and895 predecessor assertions.
+
+The lead's committed source `941b79154c890098350725f274b85f26b44f77b0` then
+executed nine matched30-second physical reruns: Runner and Monowheel seeds605
+and1701, flyer1701, and sealed-goal/blocked-route Runner cases at both seeds.
+The probe verifies original baseline report/console/execution hashes, pinned
+engine/runtime, exact initial material bytes and physical poses, profile inputs,
+and the complete855-file loaded project inventory. Only the production steering
+module and its pure regression file may differ. These reruns reuse registered
+case identities and are not nine additional independent experimental subjects.
+
+[Original probe archive](evidence/recovery-probe-941b.zip) preserves64 files,
+including the original baseline aggregate, all nine candidate and nine baseline
+shards, full custody, comparisons and original consoles.
+[Archive metadata](evidence/recovery-probe-941b.json) records SHA256
+`1f397ff5096e49824766f6c25395384a367906f01c02c2f39dc14b1510aac8eb`.
+The [independent readback](evidence/recovery-independent-941b/receipt.json) agrees
+on270 movement values,72 comparison-table values and216 heading readbacks.
+
+| Matched case | Active stall fraction before → after | Active heading reversals before → after | Horizontal range before → after |
+|---|---:|---:|---:|
+| Runner605 | 45.1% → 9.0% | 100 → 15 | 32.26 → 44.82 cells |
+| Runner1701 | 45.1% → 9.0% | 100 → 15 | 32.26 → 44.82 cells |
+| Monowheel605 | 40.1% → 8.1% | 91 → 10 | 38.16 → 49.51 cells |
+| Monowheel1701 | 40.5% → 8.5% | 92 → 12 | 34.37 → 45.03 cells |
+
+The original6.5–8.5-second diagnostic windows drop from20 to2 active heading
+reversals in both seed605 ground cases, with23.48/15.02 cells of actual horizontal
+range instead of0.088/0.090. The matched flyer and blocked-route trajectories are
+unchanged. Sealed-goal cases retain eight actual internal failure events and two
+withdrawals of46.89/46.81 cells; blocked-route cases retain five failures and9.1
+seconds of withdrawal. The latter reuse earlier obstruction memory, so this is
+not evidence of learning the wall introduced at15 seconds. Full194-case behavior
+at the corrected source remains a separate gate.
+
+The local baseline and targeted probe overlapped after approximately03:20 UTC.
+Their original elapsed timers remain retained but are not a clean causal cost
+comparison. Primary cost interpretation belongs to the isolated hosted campaign.
+The final reducer also separates initial proximity components from later exact
+membership-set arrivals; neither metric alone demonstrates human sociability.
+
+The preceding83a Windows job138945319423 completed successfully in
+[run45536810257](https://github.com/techrote/cybersand/actions/runs/45536810257):
+24 headless cases with15,268 assertions,29 actual graphical captures, portable
+construction, fresh extraction, eight extracted cases with9,219 assertions,29
+fresh extracted graphical captures and the ordinary launcher. Independent review
+verified every one of1,305 packaged payload hashes. The original
+[evidence artifact14988512726](https://github.com/techrote/cybersand/actions/runs/45536810257/artifacts/14988512726)
+and [portable artifact14987898480](https://github.com/techrote/cybersand/actions/runs/45536810257/artifacts/14987898480)
+remain unchanged. Inner ZIP SHA256 is
+`5dbd1640488bb2d23d1dd6ca1a0a048590920e4568620aeae0e3e9945ae5f3d7`.
+Its actual hosted renderer was ANGLE/Microsoft Basic Render Driver D3D11, and
+actual captures were1028×578. New-scene playback took about20–25 wall seconds
+for two simulated seconds, so this is Windows execution evidence, not acceptable
+physical NVIDIA playfeel. These passes qualify83a only, not the later repair.
+
+The next explicit request is `freeze-003-observed-recovery`. It must repeat the
+full Linux/Windows, actual graphics, extracted Windows and registered physical
+programme on the new canonical source. Draft/HOLD, eight actual logical actors,
+unchanged retained runtimes and all predecessor evidence remain in force.

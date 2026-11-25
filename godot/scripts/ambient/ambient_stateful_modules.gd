@@ -1933,12 +1933,24 @@ static func _boundary_follow(p: Dictionary, o: Dictionary, c: Dictionary) -> Dic
 
 static func _steer_obstacles(p: Dictionary, o: Dictionary, s: Dictionary, now: float, _delta: float, c: Dictionary) -> Dictionary:
 	var navigation: Dictionary = o.get("navigation",{})
-	if not bool(navigation.get("available",false)): return _inactive("copied local navigation rays unavailable")
+	if not bool(navigation.get("available",false)):
+		s.erase("direction")
+		s.erase("until")
+		return _inactive("copied local navigation rays unavailable; alternative heading released")
 	var rays: Variant = navigation.get("directions",[])
-	if not rays is Array: return _inactive("local navigation directions unavailable")
+	if not rays is Array:
+		s.erase("direction")
+		s.erase("until")
+		return _inactive("local navigation directions unavailable; alternative heading released")
 	var requested: Vector2 = _direction(c.get("last_direction",Vector2.RIGHT),c)
-	if requested == Vector2.ZERO: return _inactive("no current motion preference requires obstacle steering")
+	if requested == Vector2.ZERO:
+		s.erase("direction")
+		s.erase("until")
+		return _inactive("no current motion preference requires obstacle steering")
 	var clearance: float = clampf(float(p.clearance) * (0.65 + 0.7 * _trait(c,"caution")),1.0,31.0)
+	var retaining: bool = now < float(s.get("until",0.0))
+	var retained_direction: Vector2 = s.get("direction",Vector2.ZERO)
+	var retained_clear: bool = false
 	var blocked: bool = false
 	var best_score: float = -INF
 	var best := Vector2.ZERO
@@ -1957,16 +1969,25 @@ static func _steer_obstacles(p: Dictionary, o: Dictionary, s: Dictionary, now: f
 		var dot: float = direction.dot(requested)
 		if dot > 0.7 and bool(ray.get("hit",false)) and float(distance) < clearance: blocked = true
 		if float(distance) < clearance or bool(ray.get("boundary",false)): continue
+		if retaining and direction.dot(retained_direction) > 0.99: retained_clear = true
 		var score: float = dot * 0.5 + float(distance) / float(maximum) * 0.5 - _failure_penalty(c,o.position,direction)
-		if now < float(s.get("until",0.0)) and direction.dot(s.get("direction",Vector2.ZERO)) > 0.9: score += 0.4
 		if score > best_score:
 			best_score = score
 			best = direction
+	# A successful first steering response changes last_direction. Requiring that
+	# new direction to be blocked would drop the maneuver after one decision and
+	# let attraction alternate right/left on every tick. Retain only the existing
+	# finite deadline, and only while THIS copied observation confirms clearance.
+	if retaining and retained_clear:
+		var retained: Dictionary = _intent(retained_direction,p,"holding a finite locally observed clearer approach","steer",1.2)
+		retained.remaining_seconds = float(s.until) - now
+		return retained
+	s.erase("direction")
+	s.erase("until")
 	if not blocked: return _inactive("requested direction has no observed nearby obstruction")
 	if best == Vector2.ZERO: return _inactive("no adequately observed alternative clearance; recovery may withdraw")
-	if now >= float(s.get("until",0.0)) or best.dot(s.get("direction",Vector2.ZERO)) < 0.9:
-		s.direction = best
-		s.until = now + float(p.max_turn_seconds)
+	s.direction = best
+	s.until = now + float(p.max_turn_seconds)
 	var result: Dictionary = _intent(best,p,"steering toward a locally observed clearer approach","steer",1.2)
 	result.remaining_seconds = maxf(0.0,float(s.until) - now)
 	return result

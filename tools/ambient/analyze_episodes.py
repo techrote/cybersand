@@ -243,6 +243,7 @@ def social_metrics(campaign):
     if len(rows) < 2:
         return None
     previous, timeline = set(), []
+    initial_groups = []
     formations = dissolutions = grouped_samples = 0
     for index in range(min(len(row["trace"]) for row in rows)):
         positions = [row["trace"][index]["position"] for row in rows]
@@ -260,12 +261,16 @@ def social_metrics(campaign):
                 groups.add(tuple(sorted(rows[i]["actor_instance"] for i in component)))
         formations += len(groups-previous)
         dissolutions += len(previous-groups)
+        if index == 0:
+            initial_groups = [list(group) for group in sorted(groups)]
         previous = groups
         grouped = sum(map(len,groups))
         grouped_samples += grouped
         timeline.append({"seconds":rows[0]["trace"][index]["seconds"],"groups":[list(g) for g in sorted(groups)],"grouped_actors":grouped})
     return {"campaign_id":campaign["id"],"arm":campaign["arm"],"seed":campaign["seed"],"actual_actors":len(rows),
             "formation_events":formations,"dissolution_events":dissolutions,"grouped_actor_seconds":grouped_samples*DT,
+            "initial_proximity_components":initial_groups,
+            "formation_events_after_initial":formations-len(initial_groups),
             "mean_grouped_fraction":grouped_samples/(len(timeline)*len(rows)),"timeline":timeline}
 
 
@@ -276,7 +281,7 @@ DEFINITIONS = {
     "obstruction":"Horizontal wall-ray proxy: priorabs(move.x)>0.05, wall<=10cells, forwardprogress<0.25cells in0.1s. Entries are changes into this sampled proxy, not unique failed approach attempts. Vertical flight obstruction is unclassified.",
     "recovery":"At least8cells from a measured blocked-approach point within5s; not proof the original goal became reachable.",
     "home":"Sampled geometric departure40cells and returnwithin16cells of authored start; ground usesxonly, flight Euclidean. A zero return count is not failure when no home intention was requested, and geometric return alone does not establish intention.",
-    "social":"Connected components of actual centers at40cells. Formation/dissolution counts membership-set changes, not human sociability.",
+    "social":"Connected components of actual centers at40cells. Formation/dissolution counts exact membership-set changes, not human sociability or persistent group identity. The legacy formation_events field includes components already present at the first sample; initial_proximity_components and formation_events_after_initial separate that initial condition from later arrivals. Threshold crossings can create these events.",
     "cost":"Measured elapsed invocation time, not OS CPU utilization. Environment builds before decision timing. Sensor and decision-core/adapter costs are disjoint; both lie within production advance. Independent observer is evaluation overhead.",
     "selection":"intention_transitions counts changes of the selected module/blend label. It does not count distinct goal instances or same-module target changes; phase changes are distinct observations.",
     "materials":"Distances describe actual observed sampled material sites. Finite coarse coverage cannot prove absence of thin patches between sites; all arms share the outcome observer's declared scope.",
@@ -373,7 +378,9 @@ def plots(report, summary, output):
         if not cases: return
         subjects=[next(r for r in c["episodes"] if r["controller"]=="catalogue_subject") if catalogue else c["episodes"][0] for c in cases]
         states=sorted({s["selection"] for row in subjects for s in row["trace"]})
-        palette=plt.get_cmap("tab20"); state_colors={s:palette(i%20) for i,s in enumerate(states)}
+        palette=[plt.get_cmap(name)(i) for name in ("tab20","tab20b","tab20c") for i in range(20)]
+        require(len(states) <= len(palette), "Selected-label timeline exceeds the distinct color catalogue")
+        state_colors={s:palette[i] for i,s in enumerate(states)}
         fig,ax=plt.subplots(figsize=(15,max(5,len(cases)*.38)),constrained_layout=True)
         for line,(c,row) in enumerate(zip(cases,subjects)):
             trace=row["trace"]; start,state=trace[0]["seconds"],trace[0]["selection"]

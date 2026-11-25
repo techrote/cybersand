@@ -49,6 +49,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Physical episode reduction and custody tests failed' }
           python tools/ambient/test_independent_review.py
           if ($LASTEXITCODE -ne 0) { throw 'Independent physical readback boundary tests failed' }
+          python tools/ambient/test_recovery_probe.py
+          if ($LASTEXITCODE -ne 0) { throw 'Matched recovery comparison custody tests failed' }
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
           git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
@@ -189,6 +191,7 @@ jobs:
           python3 tools/ci/test_ambient_living_delivery.py
           python3 tools/ambient/test_episode_tools.py
           python3 tools/ambient/test_independent_review.py
+          python3 tools/ambient/test_recovery_probe.py
           git lfs install --local
           git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
       - name: Authenticate pinned official engine and graphical dependencies

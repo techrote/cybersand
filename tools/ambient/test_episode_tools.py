@@ -99,6 +99,19 @@ class ReductionTests(unittest.TestCase):
         self.assertEqual(summary["auxiliary_actor_episodes"],1)
         self.assertEqual(summary["cohorts"][0]["actor_episodes"],1)
 
+    def test_initial_proximity_is_not_formation_during_play(self):
+        case = fixture()["campaigns"][0]
+        first = case["episodes"][0]
+        second = deepcopy(first); second["actor_instance"] = 101
+        for index, sample in enumerate(second["trace"]):
+            sample["position"] = [62 if index < 5 or index >= 10 else 82, 175]
+        case["episodes"].append(second)
+        result = analysis.social_metrics(case)
+        self.assertEqual(result["initial_proximity_components"], [[100,101]])
+        self.assertEqual(result["formation_events"], 2)
+        self.assertEqual(result["formation_events_after_initial"], 1)
+        self.assertEqual(result["dissolution_events"], 1)
+
 
 class CustodyTests(unittest.TestCase):
     def write_attempt(self,folder):

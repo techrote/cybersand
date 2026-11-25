@@ -115,3 +115,42 @@ interval without treating absent contact as confirmed contact. World changes,
 unavailable coverage, target changes, neutral phases and bounded expiry require
 explicit invalidation. That is a proposal, not an implemented or qualified
 mechanism at source 83a3.
+
+## Subsequent matched repair review
+
+The bounded latch repair was independently checked in nine existing registered
+cases at candidate source `941b79154c890098350725f274b85f26b44f77b0`. Original
+baseline reports remained at source 83a3. Complete loaded-project custody
+permits exactly two changed Godot inputs: the stateful module and its pure
+regression test. Native material state, actor pose, profile, seed, geometry,
+engine and native/Rapier runtime identities match within every pair. The
+[independent receipt](evidence/recovery-independent-941b/receipt.json) and its
+reproducible post-run reader record 270 independently computed movement
+comparisons, 72 comparison-table checks and 216 heading-readback checks, all
+agreeing. The separately reviewed probe wrapper passes nine synthetic integrity
+tests. These readers execute zero additional physical episodes.
+
+In seed 605, Runner active low-progress intervals decrease from 111/246 to
+21/233 (45.1% to 9.0%); Monowheel decreases from 91/227 to 19/236 (40.1% to
+8.1%). Whole-episode active horizontal heading reversals decrease from 100 to
+15 and from 91 to 10 respectively. Both actors make two reversals in the
+original two-second negative interval instead of twenty. Their horizontal
+ranges during that interval rise to 23.48 and 15.02 cells. The same ground
+improvement is observed under seed 1701. The sampled 4LY treatment at seed 1701
+is unchanged. This establishes actual movement improvement in the selected
+cases, not universal exploration superiority.
+
+Both sealed-goal seeds retain eight actual internal failure events. The
+candidate's two selected withdrawal intervals move the Runner approximately
+46.89 and 46.81 cells to the left. Both blocked-route seeds retain five failures
+and 9.1 seconds of withdrawal; their complete movement traces remain unchanged.
+The recorded blocked-route failures predate the new wall painted at fifteen
+seconds, so this demonstrates remembered-obstruction withdrawal and continued
+activity after the intervention, without proving learning of that new wall.
+The original memory detector has therefore been preserved.
+
+The nine reruns revisit existing case identities and are not nine additional
+independent conditions. They qualify the narrowed comparison only. A complete
+candidate programme, Windows execution, presentation and owner-hardware
+playfeel remain separate evidence scopes. Concurrent local elapsed timings are
+excluded from this comparison.

@@ -239,6 +239,84 @@ func _geometry_and_obstruction() -> void:
 	check(int(memory.snapshot().failure_events) > 0,"aligned observed contact and repeated lack of progress produce bounded failure memory")
 
 
+func _obstacle_commitment() -> void:
+	var module: Dictionary = Profile.make_module("steer_obstacles")
+	var o: Dictionary = observation()
+	o.navigation.directions = [ray(Vector2.RIGHT,1.0,true),ray(Vector2.LEFT,32.0,false)]
+	var c: Dictionary = {"capabilities":GROUND.duplicate(true),"personality":Profile.personality_defaults(),
+		"memory":{"available":false},"last_direction":Vector2.RIGHT}
+	var s: Dictionary = {"rng":1}
+	var first: Dictionary = Modules.evaluate(module,o,s,0.0,0.0,c)
+	check(bool(first.active) and first.direction == Vector2.LEFT,"obstruction begins observed clear alternative")
+	var original_deadline: float = float(s.until)
+	c.last_direction = Vector2.LEFT
+	for index: int in range(1,15):
+		var now: float = float(index)*0.1
+		var held: Dictionary = Modules.evaluate(module,o,s,now,0.1,c)
+		check(bool(held.active) and held.direction == Vector2.LEFT,
+			"clear escape heading remains active after its own steering response")
+		check(float(s.until) == original_deadline and is_equal_approx(float(held.remaining_seconds),original_deadline-now),
+			"successful clear escape never renews its finite deadline")
+	check(not bool(Modules.evaluate(module,o,s,1.5,0.1,c).active) and not s.has("until"),
+		"clear-heading latch expires at its authored simulation deadline")
+	check(not bool(Modules.evaluate(module,o,s,1.6,0.1,c).active),"clear heading cannot rearm an expired latch")
+	for invalidation: String in ["unavailable","missing","clipped","malformed","neutral"]:
+		c.last_direction = Vector2.RIGHT
+		s = {"rng":1}
+		o = observation()
+		o.navigation.directions = [ray(Vector2.RIGHT,1.0,true),ray(Vector2.LEFT,32.0,false)]
+		Modules.evaluate(module,o,s,0.0,0.0,c)
+		c.last_direction = Vector2.LEFT
+		match invalidation:
+			"unavailable": o.navigation.available = false
+			"missing": o.navigation.directions = [ray(Vector2.RIGHT,1.0,true)]
+			"clipped": o.navigation.directions[1].boundary = true
+			"malformed": o.navigation.directions[1].clearance_cells = NAN
+			"neutral": c.last_direction = Vector2.ZERO
+		check(not bool(Modules.evaluate(module,o,s,0.1,0.1,c).active) and not s.has("until"),
+			"retained alternative released immediately: " + invalidation)
+		o.navigation.available = true
+		o.navigation.directions = [ray(Vector2.RIGHT,32.0,false),ray(Vector2.LEFT,32.0,false)]
+		c.last_direction = Vector2.LEFT
+		check(not bool(Modules.evaluate(module,o,s,0.2,0.1,c).active),
+			"released alternative cannot resume from old deadline: " + invalidation)
+	c.last_direction = Vector2.RIGHT
+	s = {"rng":1}
+	o = observation()
+	o.navigation.directions = [ray(Vector2.RIGHT,1.0,true),ray(Vector2.LEFT,32.0,false)]
+	Modules.evaluate(module,o,s,0.0,0.0,c)
+	c.last_direction = Vector2.LEFT
+	o.navigation.directions = [ray(Vector2.RIGHT,32.0,false),ray(Vector2.LEFT,1.0,true)]
+	var changed: Dictionary = Modules.evaluate(module,o,s,0.1,0.1,c)
+	check(bool(changed.active) and changed.direction == Vector2.RIGHT,
+		"new blockage releases old heading and permits a newly observed clear alternative")
+	check(is_equal_approx(float(s.until),1.6),"new observed blockage starts a separate bounded maneuver")
+	c.capabilities = FLIGHT.duplicate(true)
+	c.last_direction = Vector2.RIGHT
+	s = {"rng":1}
+	o.navigation.directions = [ray(Vector2.RIGHT,1.0,true),ray(Vector2.UP,32.0,false)]
+	check(Modules.evaluate(module,o,s,0.0,0.0,c).direction == Vector2.UP,"flyer selects actual clear vertical alternative")
+	c.last_direction = Vector2.UP
+	check(Modules.evaluate(module,o,s,0.1,0.1,c).direction == Vector2.UP,"flyer retains confirmed vertical alternative")
+	var e = engine(profile(["steer_obstacles"]))
+	o = observation()
+	o.navigation.directions = [ray(Vector2.RIGHT,1.0,true),ray(Vector2.LEFT,32.0,false)]
+	check(e.step(o,0.0).direction == Vector2.LEFT,"engine admits observed finite escape heading")
+	check(advance(e,o).direction == Vector2.LEFT,"engine retains escape across actual decision progression")
+	o.world_generation = 8
+	o.tick = 0
+	o.simulation_time_seconds = 0.0
+	o.navigation.directions = [ray(Vector2.RIGHT,32.0,false),ray(Vector2.LEFT,32.0,false)]
+	check(e.step(o,0.0).direction == Vector2.ZERO and not e.diagnostics().module_state.steer_obstacles.has("until"),
+		"new World cannot inherit the prior obstacle maneuver")
+	e = engine(profile(["steer_obstacles","avoid_material"]))
+	o = observation()
+	o.navigation.directions = [ray(Vector2.RIGHT,1.0,true),ray(Vector2.LEFT,32.0,false)]
+	e.step(o,0.0)
+	material(o,3,Vector2(90,100))
+	check(advance(e,o).active_override == "avoid_material","urgent material reflex still interrupts retained steering")
+
+
 func _expiry_and_sequences() -> void:
 	var p: Dictionary = profile(["revisit_interest"])
 	p.modules[0].params.minimum_age = 0.0
@@ -503,6 +581,7 @@ func run() -> void:
 	_schema()
 	_world_memory()
 	_geometry_and_obstruction()
+	_obstacle_commitment()
 	_expiry_and_sequences()
 	_traits_and_modules()
 	_affinity()

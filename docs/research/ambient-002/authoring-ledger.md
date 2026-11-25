@@ -237,3 +237,43 @@ eight living tab layouts passed. The negative tab Y positions in minimum-size
 receipts follow deliberate scrolling to the bottom and do not indicate hidden
 Apply/inspector controls. New frozen-source Windows and graphical qualification
 remain required.
+
+### Actual Windows and extracted evaluator at freeze 2
+
+Frozen source `83a3db6ffb207761df999abedac77eb1401604a8`, tree
+`9037dc374a782d60df116e1731a05abacb54a6cf`, completed the Windows job
+`138945319423` in [run 45536810257](https://github.com/techrote/cybersand/actions/runs/45536810257).
+The [independent artifact readback](evidence/windows-83a3db6f-review.json)
+records the original digests, all 58 image identities and actual draw timings.
+
+- Ordinary source: all 24 scoped cases passed, with 15,268 assertions.
+- Fresh extracted Windows project: all eight selected cases passed, with 9,219
+  assertions, including paired Save/Reopen and the corrected 96-check mounted
+  editor. Both live-audition receipts show generations 4 → 5 → 5 → 6.
+- Both graphical campaigns produced their own 29 real ANGLE images and progressed
+  all eleven examples. Every displayed actor frame matched its own uploaded
+  material World generation and revision.
+- Outer evidence artifact `14988512726` and portable artifact `14987898480` were
+  downloaded independently and matched GitHub's recorded SHA-256 digests. The
+  inner portable ZIP hash is
+  `5dbd1640488bb2d23d1dd6ca1a0a048590920e4568620aeae0e3e9945ae5f3d7`.
+  All 1,305 payload files matched the manifest, with no unexpected members. The
+  ordinary packaged launcher emitted its readiness marker without error markers.
+
+All 29 original and 29 freshly extracted PNGs were visually inspected. The six
+new native side elevations render clearly; Rain Exchange visibly drains its tank
+into the lower pool, and Common Ground's nearby runners converge. The editor's
+Apply/Revert controls and inspector remain visible; longer settings scroll.
+These are short observations, not proof of sustained social groups or universally
+successful navigation. At Overview, inhabitants are small and some actor/region
+labels overlap. Large decorative facades occupy much of the frame; following or
+zooming an actor is necessary for detailed observation.
+
+The actual hosted framebuffers are **1028 × 578**, despite the capture helper's
+initial 1600 × 1000 request. New-scene Play phases took 19.981–24.970 wall seconds
+for approximately two simulation seconds. Mean draw-completion intervals were
+167.62–207.44 ms on Microsoft's Basic Render Driver through ANGLE; extracted
+execution was similar. This is slow hosted software rendering and does not
+qualify physical NVIDIA playfeel. Source 83a remains an exact baseline: any later
+behaviour correction requires its own qualification and is not covered by this
+receipt.
