@@ -15,6 +15,10 @@ import platform
 import shutil
 import subprocess
 import time
+try:
+    from .runtime_identity import default_godot, desktop_runtime, fresh_output, materialized_hashes, verify_unchanged
+except ImportError:
+    from runtime_identity import default_godot, desktop_runtime, fresh_output, materialized_hashes, verify_unchanged
 
 ROOT = Path(__file__).resolve().parents[2]
 MATERIALS = {"Sand":2,"Water":3,"Lava":8,"Stone":13,"Dust":14,"Oil":16,
@@ -35,7 +39,7 @@ def identity(artifacts):
     return {"utc":dt.datetime.now(dt.timezone.utc).isoformat(),"head":git("rev-parse","HEAD"),
             "branch":git("branch","--show-current"),"status":git("status","--porcelain=v2"),
             "source_files":source_files,"source_sha256":hashlib.sha256(json.dumps(source_files,sort_keys=True).encode()).hexdigest(),
-            "artifacts":{str(p):sha(p) for p in artifacts if Path(p).is_file()},
+            "artifacts":materialized_hashes(artifacts),
             "platform":platform.platform(),"machine":platform.machine(),"python":platform.python_version(),
             "dependencies":{"godot":"4.7.stable.official.5b4e0cb0f","rapier":"0.35.2","godot_cpp":"101ae38034304346a46ea9ea84ae156d3e860496"}}
 
@@ -133,12 +137,12 @@ def main():
     p.add_argument("--seeds",type=int,default=5)
     p.add_argument("--ticks",type=int,default=1800)
     p.add_argument("--fallback-ticks",type=int,default=180,help="Short, separately labelled interpreted reference coverage")
-    p.add_argument("--godot",type=Path,default=Path("C:/Godot47/Godot_v4.7-stable_win64_console.exe"))
+    p.add_argument("--godot",type=Path,default=default_godot())
     p.add_argument("--cxx",default=str(ROOT.parent/".local/llvm-mingw-20260826-ucrt-x86_64/bin/clang++.exe") if os.name=="nt" else "c++")
     p.add_argument("--skip-build",action="store_true",help="Use only with a recorded source-matched native CLI")
     a=p.parse_args()
     if not 1<=a.seeds<=20 or not 1<=a.ticks<=7200:p.error("seeds 1..20; ticks 1..7200")
-    out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
+    out=fresh_output(a.output)
     exe=ROOT/"build"/("physics_characterisation.exe" if os.name=="nt" else "physics_characterisation")
     if a.engine=="native" and not a.skip_build:
         exe.parent.mkdir(exist_ok=True)
@@ -148,8 +152,10 @@ def main():
         with (out/"build.log").open("w") as log:
             log.write(json.dumps(cmd)+"\n");log.flush()
             subprocess.run(cmd,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=300)
-    artifacts=[exe] if a.engine=="native" else [a.godot,ROOT/"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",ROOT/"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"]
+    artifacts, runtime = ([exe], None) if a.engine == "native" else desktop_runtime(ROOT, a.godot)
+    if runtime is not None: a.godot = artifacts[0]
     manifest=identity(artifacts);manifest["invocation"]=vars(a)|{"output":str(out),"godot":str(a.godot)}
+    if runtime is not None: manifest["runtime_selection"] = runtime
     (out/"manifest.json").write_text(json.dumps(manifest,indent=2),encoding="utf-8")
     specs=native_cases(a.group) if a.engine=="native" else godot_cases(a.group)
     all_specs=[]
@@ -161,7 +167,9 @@ def main():
         # Runner bounds 512 cases; split batches without changing individual worlds.
         for offset in range(0,len(all_specs),100):
             batch=out/f"batch-{offset:04d}.json";batch.write_text(json.dumps(all_specs[offset:offset+100]),encoding="utf-8")
-            (out/f"batch-{offset:04d}.manifest.json").write_text(json.dumps(identity(artifacts),indent=2),encoding="utf-8")
+            verify_unchanged(manifest["artifacts"])
+            batch_manifest = identity(artifacts) | {"runtime_selection": runtime}
+            (out/f"batch-{offset:04d}.manifest.json").write_text(json.dumps(batch_manifest,indent=2),encoding="utf-8")
             cmd=[str(a.godot),"--headless","--path",str(ROOT/"godot"),"--script","res://tests/test_physics_characterisation.gd","--",str(batch),str(out)]
             started=time.monotonic()
             with (out/f"batch-{offset:04d}.log").open("w") as log:
@@ -169,6 +177,7 @@ def main():
                 result=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT,timeout=3600)
             errors=(out/f"batch-{offset:04d}.log").read_text(encoding="utf-8",errors="replace")
             if result.returncode or "SCRIPT ERROR" in errors or "ERROR:" in errors:raise RuntimeError(f"Godot batch {offset} failed; retain log")
+            verify_unchanged(manifest["artifacts"])
             print(f"Godot {offset+min(100,len(all_specs)-offset)}/{len(all_specs)} {time.monotonic()-started:.1f}s",flush=True)
     else:
         for index,spec in enumerate(all_specs):
@@ -179,6 +188,11 @@ def main():
             (out/(spec["id"]+".execution.json")).write_text(json.dumps({"command":cmd,"exit":result.returncode,"seconds":time.monotonic()-started,"stderr":result.stderr,"manifest":"manifest.json"}),encoding="utf-8")
             if result.returncode:raise RuntimeError(f"failed {spec['id']}: {result.stderr}")
             if index%25==0:print(f"Native {index+1}/{len(all_specs)}",flush=True)
+    verification = {"artifacts": verify_unchanged(manifest["artifacts"]), "scope": "unchanged configured artifact bytes after completed campaign"}
+    if runtime is not None:
+        verification["descriptors"] = verify_unchanged(runtime["descriptors"])
+        verification["engine_lock"] = verify_unchanged(runtime["engine_lock"])
+    (out/"runtime-verification.json").write_text(json.dumps(verification,indent=2),encoding="utf-8")
     print(f"Completed {len(all_specs)} cases: {out}",flush=True)
 
 if __name__=="__main__":main()

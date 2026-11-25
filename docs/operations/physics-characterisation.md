@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Opt-in physics measurement tooling, historical issue 9 baseline and current interaction regression routes
 canonical-for: [physics-measurement-tooling, physics-baseline-procedure]
 keywords: [powder, Mercury viscosity, barrel depth, masked source, contact impulse, diagnostic, fixture]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [physics-characterisation-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../audits/2026-09-09-physics-characterisation.md]
 ---
 
@@ -52,18 +52,26 @@ These execute real workloads, not a cheap documentation smoke. The native route
 builds its own CLI with `--cxx` (default `c++` on non-Windows; the configured
 companion LLVM path on Windows). Supply the actual pinned compiler when needed.
 `--skip-build` requires an identified source-matched CLI. The Godot route accepts
-an explicit executable; its default is the historical Windows Godot path.
+an explicit executable; otherwise it searches `godot`/`godot4` on `PATH`, with
+the historical companion path as a Windows fallback. Supply `--godot` when
+several engine versions are installed.
 The original Windows campaign commands are preserved in the
 [source-pinned procedure](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/physics-characterisation.md#how-do-i-reproduce-a-run).
 The companion `dev.cmd` and `C:/kybersand` layout are not source-checkout
 prerequisites.
 
-**Manifest portability boundary:** the retained Godot runner enumerates Windows
-native/Rapier library paths in its artifact list even when `--godot` points to a
-different platform. Do not treat that manifest as proof of which Linux or other
-runtime executed. Record and verify the actual platform's loaded native and
-Rapier artifacts separately using the [runtime identity procedure](current-and-historical-validation.md).
-Changing this measurement helper belongs to a separate tooling task.
+**ULTIMA candidate tooling:** the Godot measurement and capture entry points
+support Linux and Windows x86-64. They select the native and Rapier libraries
+from the actual platform's GDExtension descriptors, require matching debug and
+release paths, reject missing files or LFS pointers, and check the executable's
+version against the pinned engine lock. They hash those configured bytes before
+use and verify them again afterward. Unsupported platforms, ambiguous mappings
+or changed required artifacts fail visibly. This repairs the predecessor's
+Linux manifest, which incorrectly listed Windows DLLs. These are configured
+file identities, **not loaded-module attestation or proof that a binary was
+built from this source**; the [runtime identity procedure](current-and-historical-validation.md)
+still owns those separate provenance checks. Native-only measurements require
+their native CLI and do not require unrelated Godot libraries.
 
 [run.py](../../tools/physics/run.py) records commands, fixture JSON, actual HEAD,
 dirty status, source-file hashes, executable hashes and platform in each result
@@ -81,7 +89,9 @@ driver** still uses 180 seconds per native CLI run, 300 for its build and 3,600
 per Godot batch in `run.py`; these are not the shared CI watchdog values and this
 documentation change does not alter them. A failed or interrupted run cannot
 count as completed evidence. Keep any partial output and the applicable source
-identity; do not overwrite an older failed attempt with a retry.
+identity; do not overwrite an older failed attempt with a retry. These entry
+points refuse an existing output directory, including a partial failed run;
+choose a fresh directory for the retry.
 
 ## What are the exact fixture geometries and schedules?
 
@@ -324,8 +334,18 @@ capture a fresh manifest and pass those two paths after Godot's `--` separator.
 
 Run [verify.py](../../tools/physics/verify.py) against the complete named raw
 series before publishing reduced results. [capture.py](../../tools/physics/capture.py)
-retains source deltas, new fixture files, dependencies and artifact hashes before
-standalone/async/browser runs. The async CLI and trace allocator reject horizons
+retains source deltas, new fixture files, dependencies and configured desktop
+artifact hashes before standalone/async/browser experiments. For example:
+
+```bash
+python3 tools/physics/capture.py build/physics-example/runtime-checkpoint --godot /absolute/path/to/pinned-Godot --cxx c++
+```
+
+The capture directory must not exist. This command records metadata; it does
+not execute a fixture or identify a browser export. Missing optional native
+measurement CLIs are listed explicitly, while the selected desktop engine and
+extension libraries are required. Browser/async results need their own actual
+runtime identities. The async CLI and trace allocator reject horizons
 outside 1..7,200 ticks and the CLI rejects seed counts outside 1..20. Construct
 the output directory before invoking Godot directly. Generator/default budgets
 remain distinct from production worker, terrain and gameplay queue capacities.
@@ -335,12 +355,13 @@ remain distinct from production worker, terrain and gameplay queue capacities.
 Prepare the source-matched adapter through the [build guide](local-build-and-validation.md).
 For an authorized repeat, rebuild/run the native expanded matrix with `tools/physics/run.py native --group expanded --output <raw>/native-expanded`.
 Then run `tools/physics/issue10.py permeability --output <raw>/permeability`,
-`issue10.py pairs --output <raw>/pairs` and `issue10.py player --output <raw>/player`.
+`issue10.py pairs --output <raw>/pairs` and
+`issue10.py player --godot /absolute/path/to/pinned-Godot --output <raw>/player`.
 The first two require the identified source-matched CLI from the expanded build;
 player requires the identified rebuilt adapter. New batch manifests identify each
 input snapshot. Keep `<raw>` in a new task-owned evidence directory;
 `C:/kybersand/validation/local/` was the original campaign location. Apply the
-Godot artifact-manifest portability boundary above.
+configured-artifact provenance boundary above.
 
 `test_interaction_policy.gd` covers both adapters. `test_interaction_async.gd`
 records the production desktop player owner; passing an output filename retains
