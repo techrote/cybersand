@@ -150,6 +150,8 @@ def main() -> None:
                         and fixture.get("failures") == [] and fixture.get("native_stages_completed") == 3
                         and fixture.get("actual_http_exchanges") == 2 and fixture.get("ordinary_completions") == 0
                         and fixture.get("model_calls") == 0 and fixture.get("source_revision") == source["commit"]
+                        and fixture.get("art_overlay_source") == ART
+                        and fixture.get("architecture_application_source") == ARCHITECTURE
                         and fixture.get("provider_sha256") == source["files_sha256"][OVERLAYS[0]]
                         and fixture.get("adapter_sha256") == source["files_sha256"][OVERLAYS[-1]]
                         and not any(token in text for token in ("ERROR:", "Parse Error:", "Failed to load script")))

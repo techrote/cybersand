@@ -321,7 +321,7 @@ func run() -> void:
 func finish() -> void:
 	var result := {"format":"cybersand-art-architecture-native-handoff-v1","checks":checks,"failures":failures,
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"architecture_application_source":"17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
-		"art_overlay_source":"2743f89a0df6f6afcf7484e859c10790d521e74b","native_stages_completed":native_records.size(),
+		"art_overlay_source":"bcc92927ce3894a16d5544923cfbf7b1d0339fda","native_stages_completed":native_records.size(),
 		"actual_http_exchanges":sockets,"ordinary_completions":ordinary_completions,"model_calls":0,
 		"display":DisplayServer.get_name(),"godot":Engine.get_version_info().string,"platform":OS.get_name(),
 		"scope":"Separate combined native Workbench fixture experiment; not principal Art or Architecture evaluator qualification.",

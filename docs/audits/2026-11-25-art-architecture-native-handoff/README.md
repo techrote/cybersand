@@ -88,3 +88,12 @@ byte with its declared Art Git source before and after execution. This checkpoin
 requires its own fresh execution and makes no combined Windows or production
 host-mount claim. The previous 109-check fixture misuse and corrected 115-check
 source/result both remain retained.
+
+The first final-closure run at 826b completed 115 native checks, and its independently
+hashed Provider was exactly bcc. Receipt inspection nevertheless found the
+fixture's descriptive Art source field still said 2743; the runner had not checked
+that field. Its original result remains retained as metadata-inconsistent evidence,
+not the final accepted handoff. The corrected fixture names bcc and the runner
+now requires both Art and Architecture source fields to equal its declared pins.
+This is an apparatus correction; the provider and Architecture production bytes
+are unchanged. A fresh consistent execution is required.
