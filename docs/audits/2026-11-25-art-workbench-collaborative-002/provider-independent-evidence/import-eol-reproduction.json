@@ -1,0 +1,122 @@
+{
+  "application_source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "format": "cybersand-art-import-eol-mechanism-v1",
+  "git_version": "git version 2.56.1",
+  "rows": [
+    {
+      "diff_names": "",
+      "files": {
+        "godot/addons/godot-rapier2d/Radial2D.svg.import": {
+          "crlf": 44,
+          "lf": 44,
+          "sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d"
+        },
+        "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+          "crlf": 44,
+          "lf": 44,
+          "sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390"
+        },
+        "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+          "crlf": 43,
+          "lf": 43,
+          "sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90"
+        },
+        "godot/addons/godot-rapier2d/logo_square_2d.png.import": {
+          "crlf": 40,
+          "lf": 40,
+          "sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48"
+        }
+      },
+      "label": "autocrlf_true_fresh_checkout",
+      "porcelain": ""
+    },
+    {
+      "diff_names": "",
+      "files": {
+        "godot/addons/godot-rapier2d/Radial2D.svg.import": {
+          "crlf": 0,
+          "lf": 44,
+          "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82"
+        },
+        "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+          "crlf": 0,
+          "lf": 44,
+          "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e"
+        },
+        "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+          "crlf": 0,
+          "lf": 43,
+          "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0"
+        },
+        "godot/addons/godot-rapier2d/logo_square_2d.png.import": {
+          "crlf": 0,
+          "lf": 40,
+          "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+        }
+      },
+      "label": "Godot_style_LF_rewrite",
+      "porcelain": " M godot/addons/godot-rapier2d/Radial2D.svg.import\n M godot/addons/godot-rapier2d/icons/Fluid2D.svg.import\n M godot/addons/godot-rapier2d/icons/StateManager2D.svg.import\n M godot/addons/godot-rapier2d/logo_square_2d.png.import\n"
+    },
+    {
+      "diff_names": "",
+      "files": {
+        "godot/addons/godot-rapier2d/Radial2D.svg.import": {
+          "crlf": 0,
+          "lf": 44,
+          "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82"
+        },
+        "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+          "crlf": 0,
+          "lf": 44,
+          "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e"
+        },
+        "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+          "crlf": 0,
+          "lf": 43,
+          "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0"
+        },
+        "godot/addons/godot-rapier2d/logo_square_2d.png.import": {
+          "crlf": 0,
+          "lf": 40,
+          "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+        }
+      },
+      "label": "explicit_LF_fresh_checkout",
+      "porcelain": ""
+    },
+    {
+      "diff_names": "",
+      "files": {
+        "godot/addons/godot-rapier2d/Radial2D.svg.import": {
+          "crlf": 0,
+          "lf": 44,
+          "sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82"
+        },
+        "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": {
+          "crlf": 0,
+          "lf": 44,
+          "sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e"
+        },
+        "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": {
+          "crlf": 0,
+          "lf": 43,
+          "sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0"
+        },
+        "godot/addons/godot-rapier2d/logo_square_2d.png.import": {
+          "crlf": 0,
+          "lf": 40,
+          "sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+        }
+      },
+      "label": "explicit_LF_Godot_style_rewrite",
+      "porcelain": ""
+    }
+  ],
+  "scope": "Disposable Linux Git repository with core.autocrlf=true; Windows failure had no retained porcelain, so actual-path attribution remains inference.",
+  "source_sha256": {
+    "godot/addons/godot-rapier2d/Radial2D.svg.import": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+    "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+    "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+    "godot/addons/godot-rapier2d/logo_square_2d.png.import": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+  }
+}
