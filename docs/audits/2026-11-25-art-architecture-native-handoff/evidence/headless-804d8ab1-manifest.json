@@ -1,0 +1,81 @@
+{
+  "architecture_application": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "art_overlay_source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "files": {
+    "complete-redacted-art-audit.jsonl": {
+      "bytes": 35495,
+      "sha256": "8746f64061000660d8a0111e398ba90f7edd5122742bbd15fa9eb84fa97f8835"
+    },
+    "inputs.json": {
+      "bytes": 3395,
+      "sha256": "9132c5647ffb499e8dca31028e6b55c5760fc7fd96c8cf3914544d3089e60d4a"
+    },
+    "native-artifacts/after-material-ids.png": {
+      "bytes": 877,
+      "sha256": "66f0e177654d326b92ce336faea7519c6c31f8d385ed4aa8706bb879265786a1"
+    },
+    "native-artifacts/after.u16le": {
+      "bytes": 131072,
+      "sha256": "1b0c004d10992d0ce541e9c52d18b71e5ba84ef4048a83fec1ddbefbb5c36f11"
+    },
+    "native-artifacts/approved-proposal.json": {
+      "bytes": 4713,
+      "sha256": "99e47a5db0bc8fb1d042884606a89e0ce6424c60f865b86cdafe2669dae93105"
+    },
+    "native-artifacts/before-material-ids.png": {
+      "bytes": 773,
+      "sha256": "7ae066237f54e8216c4c592424f6d279a4a333ac17b85a712d686b8e2a9643ff"
+    },
+    "native-artifacts/before.u16le": {
+      "bytes": 131072,
+      "sha256": "fa43239bcee7b97ca62f007cc68487560a39e19f74f3dde7486db3f98df8e471"
+    },
+    "native-artifacts/bridge-history.json": {
+      "bytes": 11007,
+      "sha256": "dd3d21ecda75c9f2dc8c26a91a24de77ba1a9d174adcb43f96b14abc5035eee5"
+    },
+    "native-artifacts/construction-session.json": {
+      "bytes": 604679,
+      "sha256": "475a3a3aec70601aba0f0cf4cb7aa9055e410ac2cd9d612605c3eb6699943522"
+    },
+    "native-artifacts/editable-workbench-start.json": {
+      "bytes": 8482,
+      "sha256": "a51a49be284cd091721be78022c9bdc5c8fe4e9790dd9a1e84a6025093d0b236"
+    },
+    "native-artifacts/native-stage-records.json": {
+      "bytes": 601205,
+      "sha256": "6f5f9c7c4836ae41622bc11f013898e1f8e9e2710e083d9d1681a3d1f2ad0db5"
+    },
+    "native-artifacts/native-undo-restoration.json": {
+      "bytes": 414,
+      "sha256": "0f2f10a29d628c08099618f9d73f1ee289d611dbfc3bdad662ec8416f9b16d35"
+    },
+    "native-artifacts/probe-observations.json": {
+      "bytes": 1246,
+      "sha256": "8672af1a570f975cfc42a9f204b6a9fc7e984c0ae55360bb993fdc892f0a4d11"
+    },
+    "native-artifacts/result.json": {
+      "bytes": 932,
+      "sha256": "227346b8d5339f70e8e9084544bf1cca6d82d4412794b88faa1040fb7f711c3b"
+    },
+    "native-artifacts/stopped-native-prefix.json": {
+      "bytes": 268839,
+      "sha256": "ee2063c9dbb64fbc8b99611f4d2c40e4f5eb5872bb11f8451294739132d8a576"
+    },
+    "native-artifacts/workflow-history.json": {
+      "bytes": 9600,
+      "sha256": "c24cce25da43d17ced0d104706a656dee83c3b8d41c3436e29026154b031e1f8"
+    },
+    "process.log": {
+      "bytes": 11674,
+      "sha256": "135d51fb3bb7ab466a2e5753dbf279577cbc444ba4ca7cdb6dc0d9df5fe79806"
+    },
+    "result.json": {
+      "bytes": 5430,
+      "sha256": "3bc6dfa1ffe774929002d063da3f5fcf804d1b00561b4c819ee92f3deb5bbc43"
+    }
+  },
+  "format": "cybersand-art-architecture-native-evidence-manifest-v1",
+  "source": "804d8ab197c195ae75d1fbfd37f8ba5b95908bbe",
+  "tree": "6fab4226dd2dfb745edd990bd86fb8201f26ca0a"
+}

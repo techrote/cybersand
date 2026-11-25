@@ -1,0 +1,49 @@
+{
+  "command": [
+    "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--path",
+    "/tmp/art-architecture-native-handoff/godot",
+    "--script",
+    "/tmp/art-architecture-native-handoff/tools/fixtures/art_architecture_native_handoff.gd"
+  ],
+  "format": "cybersand-art-architecture-native-handoff-inputs-v1",
+  "fresh_profile": true,
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "graphical": false,
+  "model_calls": 0,
+  "scope": "Separate combined fixture experiment; no principal evaluator or physical owner acceptance.",
+  "source": {
+    "architecture_application": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "art_overlay_source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+    "commit": "804d8ab197c195ae75d1fbfd37f8ba5b95908bbe",
+    "files_sha256": {
+      "godot/scripts/art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+      "godot/scripts/art_batch_panel.gd": "8848f1d507a6053807075e61389d4f2057e9eefcb387a9529e20fa1667d3ffd3",
+      "godot/scripts/art_proposal_transport.gd": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "godot/scripts/art_provider.gd": "9d32d4ad89f5dd9bc330bfa3dc91a689ffc1720bf4fc31d933d4614d49638438",
+      "godot/scripts/art_redaction.gd": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "godot/scripts/art_response_preparation.gd": "4e3134fe84a6903fd9982dd64837f9a6db033e1ff81da93ffcd4445f7a33ca8e",
+      "godot/scripts/art_traffic_archive.gd": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "godot/scripts/batch_lab/architecture_campaign.gd": "0b35479ddf41b639f91a92a3b4fe43de5cbe95ecb9d66f745499b20dfa9bb256",
+      "godot/scripts/batch_lab/architecture_planning_adapter.gd": "f3f5f5b7eb15bbcf8364909cd97909907144ed2f8f0127d406ae3fbf8281be3e",
+      "godot/scripts/batch_lab/architecture_proposal_bridge.gd": "3430e24c80a81fd5672a68113acee83151d505f692bd1c976dfec4c0645c83b8",
+      "godot/scripts/batch_lab/architecture_stage_plan.gd": "4af0c7cf31e0566807348a12f90ae4374464f101185ac88c575a3198463b3795",
+      "godot/scripts/batch_lab/architecture_stage_session.gd": "464f1ae5f907b258f0779bac2099536019eeeac93aa9fa52d8cb135887f7dc3a",
+      "godot/scripts/batch_lab/architecture_workflow.gd": "6232c4ee4e4142373bd4495487eeb3c69c4bcade451a9a739bf80598341d0c31",
+      "godot/scripts/shared_workbench.gd": "2b34e93d40a180483ebab94635e72e21cf42494bf9016dec9fbceaf851e91d10",
+      "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+      "tools/ci/run_art_architecture_native_handoff.py": "c7b7d30086f077dcb25f7d1e9df8a39a5fcaab841e9e133e7c5004c242d7e72a",
+      "tools/fixtures/art_architecture_native_handoff.gd": "4d0be4f58642eb830a4490052dbd9ddc754a1c0720999c875a263f36696ef2b0"
+    },
+    "runtime_sha256": {
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "tree": "6fab4226dd2dfb745edd990bd86fb8201f26ca0a"
+  }
+}

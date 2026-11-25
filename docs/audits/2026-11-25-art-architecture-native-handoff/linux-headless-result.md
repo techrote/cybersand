@@ -4,6 +4,10 @@
 
 The source's parent is qualified Architecture application `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d`. Five exact Art provider-closure files come from principal Art `2743f89a0df6f6afcf7484e859c10790d521e74b`. The real Workbench, Art panel/executor, Architecture StageSession/Workflow/bridge/parser and native worker remained byte-identical to 17c; the runner checked this before and after execution. The fixture source and runner were remotely committed before execution.
 
+## Later qualification correction
+
+The corrected [115-check proof](linux-headless-corrected-result.md) preserves this campaign and closes a gap discovered by inspecting its complete audit. This first fixture assigned an invalid stored brush value directly; ordinary Undo admitted and retired but its actual receipt refused with `Invalid brush, material or execution radius.` No successful restoration can be inferred from these 109 checks. Source `804d8ab197c195ae75d1fbfd37f8ba5b95908bbe` fixes the fixture through the ordinary PAINT owner and adds actual receipt plus whole-plane restoration assertions. Architecture production code is unchanged.
+
 ## Observed native path
 
 The ordinary Workbench instantiated its actual panels and exactly one live Art provider. Opening and binding made no HTTP request. An explicit loopback fixture supplied a typed campaign bound to an actual 256×256 native region. Receipt of the proposal, selection of its alternative and each zero-write preview preserved the complete native material plane.
