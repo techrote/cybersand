@@ -71,6 +71,23 @@ records estimator inputs, selected counts, original results and limitations.
 The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains
 six hours; an individual case that cannot fit or an oversized matrix is rejected.
 
+The 24-shard observation was not a safety limit. The source-derived matrix may
+grow to the hosted 256-job matrix limit while retaining the 16-case shard
+capacity, expected-cost target, unchanged full watchdogs and eight concurrent
+jobs per platform. A failed execution plan must leave both required coverage
+aggregates failed with an explicit missing-plan diagnostic; it cannot become a
+successful skipped gate.
+
+**2026-11-25 Ready qualification repair (candidate, hosted validation pending):**
+the official Godot 4.7 Linux release asset is used for the GDExtension and
+Palette acquisition routes after the download redirector returned HTTP 403.
+GitHub release asset 451175419 declares 75,664,355 bytes and SHA-256
+`0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c`,
+matching the existing editor lock. The engine version, digest, ZIP verification,
+runtime custody and historical lock are unchanged. This is an acquisition
+route correction, not a new engine or permission to omit any case. Original
+failed campaigns remain failed; actual resulting-source runs are required.
+
 The six Native families retain the same 20 command obligations and scientific
 inputs; the two worldgen commands add output grouping as described below.
 [Their planner](../../tools/ci/native_execution_policy.py) derives
