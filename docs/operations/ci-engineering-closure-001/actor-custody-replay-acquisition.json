@@ -1,0 +1,83 @@
+{
+  "artifacts": [
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "f9f23fc15e94bb9433d613f9f11ed481c45802054e946a955f8f0c4d223a1b09",
+      "archive_size": 148830,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14792097545",
+      "name": "actor-sandbox-publication-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14792097545"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "1fffbe456cad79b9db2b5ada3ddc5dc6b2d56cd37f33066a67169cb2981113ad",
+      "archive_size": 6701530,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14791814169",
+      "name": "actor-windows-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791814169"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "84795b2c9911164423a9649bed3a63a229398326a6827d5ea46352ab19f6e6eb",
+      "archive_size": 5041978,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14791386230",
+      "name": "actor-linux-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791386230"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "35b5fd89968aeebcdc40c57f1317b59d95938cad768005bdf14a60fbc716c8b4",
+      "archive_size": 2165267,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14790766458",
+      "name": "actor-windows-runtime-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14790766458"
+    }
+  ],
+  "attempt": "1",
+  "authority_boundary": "GitHub authenticated API results and immutable Git commit/tree identities; this JSON is a retained acquisition record, not a signature or a new test campaign.",
+  "branch": "integration/actor-compose-final-001-20261123",
+  "jobs": [
+    {
+      "conclusion": "success",
+      "id": "137488547370",
+      "role": "linux"
+    },
+    {
+      "conclusion": "success",
+      "id": "137494640600",
+      "role": "windows-and-installed-package"
+    },
+    {
+      "conclusion": "success",
+      "id": "137502992790",
+      "role": "publication"
+    }
+  ],
+  "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45112739808/attempts/1/jobs?per_page=100",
+  "kind": "github-artifact-acquisition-record",
+  "metadata_retrieved_before_contract": true,
+  "observed_date": "2026-11-24",
+  "read_only": true,
+  "repository": "techrote/cybersand",
+  "run_id": "45112739808",
+  "run_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45112739808",
+  "schema_version": 1,
+  "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+  "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0"
+}
