@@ -29,8 +29,8 @@ class RunnerCancellationControls(unittest.TestCase):
 
         def stage(project, **options):
             project.mkdir()
-            (project / "project.godot").write_text("; synthetic, never executed\n")
-            (project / "fixture.gd").write_text("# synthetic source custody control\n")
+            (project / "project.godot").write_bytes(b"; synthetic, never executed\n")
+            (project / "fixture.gd").write_bytes(b"# synthetic source custody control\n")
             files = {p.name: runner.sha_file(p) for p in project.iterdir()}
             return {"files": files, "project_files_sha256": "a" * 64}
 

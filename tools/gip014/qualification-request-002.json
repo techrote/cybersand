@@ -1,15 +1,18 @@
 {
   "schema": "cybersand-goblin-discovery-qualification-request-v1",
   "mission": "GIP-014-goblin-002",
-  "request": 6,
+  "request": 7,
   "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
-  "previous_source": "7097b338750f06f74ae742c9bea07aa0b1949b94",
-  "previous_run": 45546330774,
+  "previous_source": "955a7fb89302d0aaa733e8868b047f3b82061e8d",
+  "previous_run": 45546944291,
   "linux_plan": "smoke",
-  "plan": "All Linux focused, regression-export, graphical and seven-episode memory gates plus two smoke episodes; all Windows source and extracted-package qualification",
-  "comparative_campaign": "Request5 retains the complete142-episode corrected-oracle Linux comparison at7097b338. All game and launcher bytes are unchanged by this test-fixture-only repair; that comparison remains attached to its exact source.",
-  "changes": "Canonicalize the synthetic runner-cancellation fixture root before relative path comparison, add a portable existing-directory/.. alias control and retain unexpected fixture diagnostics. No production runner, game, oracle, policy, launcher or runtime changes.",
+  "plan": "Windows-only: all source, extracted-package, memory, graphical, replay, sealing and fresh-final-extraction gates. Existing request5 full Linux and request6 focused/memory/smoke runs retain their exact source identities.",
+  "comparative_campaign": "Request5 retains the complete142-episode corrected-oracle Linux comparison at7097b338; request6 retains focused/memory/smoke at955a7fb8. All game and launcher bytes are unchanged by this test-fixture-only repair. A finite platform selector avoids another equivalent Linux rerun without relabeling either prior attempt.",
+  "changes": "Author the two synthetic archived-source fixture members as explicit LF bytes on every platform, retaining strict archive-byte assertions. Add finite declarative workflow platform selection; Windows still runs every original gate. No production runner, game, oracle, policy, launcher or runtime changes.",
   "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
   "evidence": "Retain every attempted process; production defects require independent reproduction and examination",
-  "memory_experiment": "One actual Control64 cultivation supplies an unchanged corpus; two matched seeds compare fresh, imported hints, and explicit four-action prefix reuse in six Coverage Hunter64 episodes. Historical observations never count as fresh coverage."
+  "memory_experiment": "One actual Control64 cultivation supplies an unchanged corpus; two matched seeds compare fresh, imported hints, and explicit four-action prefix reuse in six Coverage Hunter64 episodes. Historical observations never count as fresh coverage.",
+  "platforms": [
+    "windows"
+  ]
 }

@@ -14,7 +14,40 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  qualification-scope:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    outputs:
+      linux: ${{ steps.scope.outputs.linux }}
+      windows: ${{ steps.scope.outputs.windows }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Read the finite committed platform scope
+        id: scope
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          request = json.loads(Path('tools/gip014/qualification-request-002.json').read_text())
+          platforms = request.get('platforms', ['linux', 'windows'])
+          if (not isinstance(platforms, list) or not 1 <= len(platforms) <= 2
+                  or any(type(item) is not str or item not in ('linux', 'windows') for item in platforms)
+                  or len(set(platforms)) != len(platforms)):
+              raise ValueError('Qualification platforms must be a nonempty unique subset of linux/windows')
+          with Path(os.environ['GITHUB_OUTPUT']).open('a', encoding='utf-8') as stream:
+              for platform in ('linux', 'windows'):
+                  stream.write(platform + '=' + str(platform in platforms).lower() + '\n')
+          print(json.dumps({'source': os.environ['GITHUB_SHA'], 'requested_platforms': platforms}))
+          PY
+
   linux-discovery-campaign:
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.linux == 'true'
     runs-on: ubuntu-22.04
     # The queue remains bounded at 120 minutes. Leave separate headroom for
     # focused/graphical gates, the 15-minute memory experiment and evidence upload.
@@ -63,6 +96,8 @@ jobs:
           compression-level: 6
 
   windows-developer-evaluator:
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.windows == 'true'
     runs-on: windows-2022
     timeout-minutes: 55
     defaults:

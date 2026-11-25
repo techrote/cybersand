@@ -442,6 +442,84 @@ comparison continues independently at its exact source; it is not relabelled
 as a request-6 run. Windows repeats the complete source and extracted evaluator
 qualification. Neither attempt is a qualified successor evaluator yet.
 
+### Request 6 Windows byte-custody control and request 7
+
+[Request 6](https://github.com/techrote/cybersand/actions/runs/45546944291), source
+`955a7fb89302d0aaa733e8868b047f3b82061e8d`, passed the path-normalization boundary
+and exposed a second portability assumption in the same synthetic fixture.
+Windows translated its authored text fixture to CRLF; the strict archived-source
+assertion expected LF bytes. All 103 Python tests ran and five cancellation
+controls failed only that exact-byte assertion. Native qualification did not
+begin. The actual failed artifact is
+[14991199645](https://github.com/techrote/cybersand/actions/runs/45546944291/artifacts/14991199645),
+1,900 bytes, SHA-256
+`d1698c924af1c5d2bd0c4bd156059110199f5e6efae2ee7643870bcadbfb580e`.
+
+The fixture now writes its two synthetic source members as explicit LF bytes.
+The exact archive assertion remains unchanged. Five focused mocked controls
+passed, with independent review of the import/custody path; actual Windows
+re-execution remains required. This correction changes no game or production
+runner behavior.
+
+Request 7 selects Windows only through an explicit finite platform list in the
+committed qualification request. A small workflow planning job validates that
+list and gates the two existing jobs. Defaults still select both platforms;
+unknown, duplicate or empty platform lists fail. Every Windows gate remains
+unchanged. The request-5 full Linux and request-6 focused/memory/smoke programmes
+continue at their exact sources, avoiding another equivalent Linux campaign.
+The new job's explicit Linux skip is not a Linux qualification pass.
+
+### Completed request-3 Linux campaign audit
+
+The original full campaign is retained at exact source
+`d849be8ef99cd9226cfc3ca0925752e42b691515`, tree
+`b6da28e8df80247bbfffb968cbe66e99b386959a`. Its
+[Linux artifact 14990308987](https://github.com/techrote/cybersand/actions/runs/45538643315/artifacts/14990308987)
+contains 2,153 members, 507,414,310 uncompressed bytes, and has archive SHA-256
+`9da70daac1b69235311540debf7c42bd067dc7776cc2c680223f54b5eff1da8d`.
+The independently pinned d849 readers validated all 142 tapes and recomputed
+all 142 coverage records. The campaign itself retains 107 passes and 35 failures.
+
+| Cohort | Episodes | Budget-complete | Actual rows | Completed admitted actions | Refusals |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Matched nine-policy comparison | 108 | 92 | 6,486 | 6,483 | 3 |
+| Long-horizon probes | 8 | 1 | 733 | 733 | 0 |
+| Personality catalogue | 16 | 14 | 912 | 910 | 2 |
+| Scenario catalogue | 10 | 0 | 263 | 263 | 0 |
+| Total | 142 | 107 | 8,394 | 8,389 | 5 |
+
+Independent gameplay review passed 1,185 custody and contract checks. All 35
+failed rows are accepted, completed Monowheel placements at tick zero: authored
+origin (256,96), actual cab/part zero (256,97.5), rim (256,96), healthy native
+state and zero motion. The corrected reader finds no other independent product
+failure across these unchanged rows. The original tapes retain their failed
+assertions; this is a reviewed test-oracle correction, not an unchanged-invariant
+game fix. Four refusals have current native body-protection proof and one is
+an ordinary off-camera rectangle preflight. No production defect is established.
+
+Observed unions include 52 completed action IDs, 655 adjacent action transitions,
+4,362 state transitions, 75 sampled material-interaction keys, 57 tool/material
+pairs, 86 actor/environment keys, eight lifecycle keys, two refusal keys and
+76 outcome keys. No per-episode dimension saturated. These are finite observed
+key unions, not fractions of all possible gameplay or chemical-reaction counts.
+
+The comparison is censored by the old oracle: no matched block has all nine
+policies complete. Novelty versus Random has zero complete pairs. Coverage
+Hunter versus Random has four pairs, with median differences of +3 action IDs,
++4 action transitions and -4 material keys. Coverage Hunter versus Novelty has
+five pairs and no median action-ID advantage. These conditional subsets support
+no universal policy ranking. Of the long probes, only Coverage Hunter128
+completed; the remaining seven ended at the old position oracle, so they do
+not establish longer-horizon resource limits or completion reliability.
+
+The complete exploration analysis is preserved in immutable Git blob
+`742b95cc1ad278b96f6d739bf934e549d516b1a3` (custody envelope), with decoded report
+SHA-256 `97ecd8f957ee3294d4d2006ebb13f18f8c1cd752dac50bf2403f906895e58ad1`.
+The independent gameplay audit and auditor are preserved in blob
+`2f830bbc531b38d25cd73084c8262ba5f23834c8`, ZIP SHA-256
+`e3633f538977bfd025f5c5d238c3a1d31d71769700aec24d4e141208d478e9a4`.
+The corrected-source full comparison remains separately pending.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing
