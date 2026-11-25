@@ -1,0 +1,37 @@
+{
+  "schema": "art-final-provider-closure-source-map-v1",
+  "sources": {
+    "qualified_application": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+    "delivery_source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "native_handoff_probe": "04ca36243614e89c44aa0e673b725a30d8b8cd7b"
+  },
+  "files_sha256": {
+    "godot/scripts/art_provider.gd": {
+      "qualified_application": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+      "delivery_source": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+      "native_handoff_probe": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891"
+    },
+    "godot/scripts/art_response_preparation.gd": {
+      "qualified_application": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+      "delivery_source": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+      "native_handoff_probe": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2"
+    },
+    "godot/scripts/art_redaction.gd": {
+      "qualified_application": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "delivery_source": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+      "native_handoff_probe": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269"
+    },
+    "godot/scripts/art_traffic_archive.gd": {
+      "qualified_application": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "delivery_source": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+      "native_handoff_probe": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162"
+    },
+    "godot/scripts/art_proposal_transport.gd": {
+      "qualified_application": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "delivery_source": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+      "native_handoff_probe": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001"
+    }
+  },
+  "exact_closure_equal": true,
+  "scope": "Git object byte comparison only. The 04ca actual 115-check native result remains its original execution; no additional native run is claimed."
+}
