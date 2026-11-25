@@ -107,27 +107,51 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		return {"ok":false,"error":"The complete native material plane is required within the capture budget."}
 	var validation_usec := Time.get_ticks_usec()-started
 	var scan_started := Time.get_ticks_usec()
-	var histogram := {}
+	# The byte domain is fixed, so avoid a Variant dictionary and repeated
+	# coordinate divisions for every captured cell. These are exact counts,
+	# including Empty cells and zero-population bins in narrow regions.
+	var histogram := PackedInt32Array()
+	histogram.resize(256)
+	histogram.fill(0)
+	var x_offsets := PackedInt32Array()
+	x_offsets.resize(region.size.x)
+	var column_counts := PackedInt32Array()
+	column_counts.resize(GRID_SIDE)
+	column_counts.fill(0)
+	for x: int in region.size.x:
+		var column := mini(GRID_SIDE-1,x*GRID_SIDE/region.size.x)
+		x_offsets[x] = column*3
+		column_counts[column] += 1
+	var row_counts := PackedInt32Array()
+	row_counts.resize(GRID_SIDE)
+	row_counts.fill(0)
+	for y: int in region.size.y:
+		row_counts[mini(GRID_SIDE-1,y*GRID_SIDE/region.size.y)] += 1
 	var coarse := PackedInt32Array()
 	coarse.resize(GRID_SIDE*GRID_SIDE*3)
 	coarse.fill(0)
-	for i: int in materials.size():
-		var id: int = materials[i]
-		if id < 0 or id > 255: return {"ok":false,"error":"Native material ID lies outside the supported byte domain."}
-		histogram[id] = int(histogram.get(id,0))+1
-		var x := i%region.size.x
-		var y := i/region.size.x
-		var bucket := (mini(GRID_SIDE-1,y*GRID_SIDE/region.size.y)*GRID_SIDE \
-			+ mini(GRID_SIDE-1,x*GRID_SIDE/region.size.x))*3
-		coarse[bucket] += 1
-		if id != 0: coarse[bucket+1] += 1
-		if id in SOURCE_POLICY: coarse[bucket+2] += 1
+	for y: int in GRID_SIDE:
+		for x: int in GRID_SIDE:
+			var bucket := (y*GRID_SIDE+x)*3
+			var observed_cells := column_counts[x]*row_counts[y]
+			coarse[bucket] = observed_cells
+			coarse[bucket+2] = observed_cells
+	for y: int in region.size.y:
+		var row_base := mini(GRID_SIDE-1,y*GRID_SIDE/region.size.y)*GRID_SIDE*3
+		var start := y*region.size.x
+		for x: int in region.size.x:
+			var id: int = materials[start+x]
+			if id < 0 or id > 255: return {"ok":false,"error":"Native material ID lies outside the supported byte domain."}
+			histogram[id] += 1
+			if id == 0: continue
+			var bucket := row_base+x_offsets[x]
+			coarse[bucket+1] += 1
+			if id != 58: coarse[bucket+2] -= 1
 	var scan_usec := Time.get_ticks_usec()-scan_started
 	var material_rows: Array = []
-	var ids: Array = histogram.keys()
-	ids.sort()
 	var names: Dictionary = policy.get("material_names",{})
-	for id: int in ids:
+	for id: int in 256:
+		if histogram[id] == 0: continue
 		material_rows.append({"id":id,"name":str(names.get(id,"material "+str(id))).left(80),
 			"cells":int(histogram[id])})
 	var grid: Array = []
