@@ -398,6 +398,9 @@ func _update_conversation_guard() -> void:
 			conversation_editor.get_ok_button().disabled = true
 			conversation_editor.notice.text = "Preparing complete conversation changes… Cancel discards this preparation; no edited snapshot has been committed."
 			return
+	if is_queued_for_deletion() or not is_instance_valid(conversation_editor) \
+			or conversation_editor.is_queued_for_deletion(): return
+	if wb != null and not is_instance_valid(wb): return
 	if conversation_editor.visible:
 		var blocked := _conversation_block_reason()
 		conversation_editor.get_ok_button().disabled = not blocked.is_empty()
@@ -445,7 +448,7 @@ func conversation_apply_pending() -> bool:
 	return _conversation_apply_preparing
 
 func _conversation_editor_visibility_changed() -> void:
-	if not conversation_editor.visible:
+	if not is_instance_valid(conversation_editor) or not conversation_editor.visible:
 		_cancel_conversation_apply("Conversation closed; prepared changes were discarded.")
 
 func _conversation_world_epoch() -> int:
@@ -557,7 +560,8 @@ func _clear_conversation_apply() -> void:
 	_conversation_apply_identity = {}
 	_conversation_apply_snapshot = []
 	_conversation_apply_last_result = ""
-	conversation_editor.set_apply_pending(false)
+	if is_instance_valid(conversation_editor) and not conversation_editor.is_queued_for_deletion():
+		conversation_editor.set_apply_pending(false)
 
 func _conversation_apply_failed(message: String) -> void:
 	if not _conversation_apply_preparing: return
@@ -567,7 +571,8 @@ func _conversation_apply_failed(message: String) -> void:
 	last_conversation_apply_timing.total_usec = Time.get_ticks_usec()-_conversation_apply_started_usec
 	_conversation_apply_generation += 1
 	_clear_conversation_apply()
-	if handle >= 0: provider.cancel_conversation_edit(handle,identity,message)
+	if handle >= 0 and is_instance_valid(provider) and not provider.is_queued_for_deletion():
+		provider.cancel_conversation_edit(handle,identity,message)
 	conversation_error = message
 	input_error = message
 	_update_conversation_guard()
@@ -580,7 +585,8 @@ func _cancel_conversation_apply(reason: String) -> void:
 	last_conversation_apply_timing.total_usec = Time.get_ticks_usec()-_conversation_apply_started_usec
 	_conversation_apply_generation += 1
 	_clear_conversation_apply()
-	if handle >= 0: provider.cancel_conversation_edit(handle,identity,reason)
+	if handle >= 0 and is_instance_valid(provider) and not provider.is_queued_for_deletion():
+		provider.cancel_conversation_edit(handle,identity,reason)
 	conversation_error = reason
 	input_error = reason
 

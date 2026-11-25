@@ -7,6 +7,8 @@ on:
       - 'godot/tests/test_art_collaborat*.gd'
       - 'godot/tests/test_art_authoring_proposal.gd'
       - 'godot/tests/test_art_owned_transport.gd'
+      - 'godot/tests/test_art_conversation_preparation.gd'
+      - 'godot/tests/test_art_conversation_apply_preparation.gd'
       - 'godot/tests/test_art_creative_cohort.gd'
       - 'godot/tests/run_art_collaborative.gd'
       - 'godot/data/art_collaborative_briefs.json'

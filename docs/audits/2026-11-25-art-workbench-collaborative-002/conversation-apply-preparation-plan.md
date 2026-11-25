@@ -64,3 +64,15 @@ task lifetime, forged capability refusal and teardown. Both join the exact-sourc
 headless/displayed matrix; the predecessor near-cap test retains its full SHA,
 audit, native-history and frame assertions with separate complete-latency
 accounting. No new success or responsiveness result is asserted by this plan.
+
+## Retained first integrated test failure
+
+The first actual Workbench lifecycle attempt at isolated integration source
+`f90996287a4f2f91d1d7158c261a7a5d3f479a08` exited before initialization:
+11 parser errors resolved the fixture helper `seed()` as Godot's global
+`seed(number)`. It produced no final result marker and establishes no UI or
+native acceptance. The original log SHA-256 is
+`a448a7b12ce9067e337cdfeb8c11a5da38876f861e4409648ea6ebc37689b431`.
+The fixture helper is renamed `seed_conversation_fixture()`; production
+semantics and assertions are unchanged. The Provider lane retains the original
+log and will rerun the corrected committed integration.
