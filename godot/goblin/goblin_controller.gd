@@ -75,11 +75,10 @@ static func read_launch() -> Dictionary:
 
 
 static func same_identity(recorded: Variant, current: Variant) -> bool:
-	# JSON numbers re-enter Godot as floats; an in-memory tape normalizes whole
-	# numbers to ints. Compare every identity field in the same canonical form.
-	if not recorded is Dictionary or not current is Dictionary: return false
-	return JSON.stringify(Transcript._json_value(recorded), "", true) \
-		== JSON.stringify(Transcript._json_value(current), "", true)
+	# New portable records fence all executable inputs, source and runtime bytes.
+	# Host labels and Python versions are preserved as evidence, but do not make
+	# identical shipped code a different semantic experiment. Legacy stays strict.
+	return Transcript.same_execution_identity(recorded, current)
 
 
 static func read_replay() -> Dictionary:

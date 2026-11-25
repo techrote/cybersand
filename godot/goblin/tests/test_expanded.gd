@@ -90,6 +90,11 @@ func run() -> void:
 	await action("actor_save_spawn", {"x": 112, "y": 180})
 	await action("actor_capture_spawn")
 	await action("actor_settings", {"field": "budget", "value": 15.0})
+	for offered: Dictionary in adapter.available_actions():
+		check(offered.id != "response_mode" or offered.args.mode != "RFT", "legal menu respects RFT body budget contract")
+	await action("response_mode", {"mode": "RFT"}, "refused")
+	await action("response_mode", {"mode": "LA"})
+	await action("actor_settings", {"field": "budget", "value": 20.0})
 	await action("response_mode", {"mode": "RFT"})
 	await action("actor_control", {"actor_id": 1, "producer": "scripted", "enabled": true})
 	await action("actor_pilot", {"actor_id": 1})

@@ -77,6 +77,32 @@ candidate branches are not imported.
   metamorphic, controller, graphical and campaign qualification are pending at this
   checkpoint.
 
+### Initial native and infrastructure results
+
+`expanded-001` exercised the new operations and exposed harness assumptions about
+articulated collision proxies, empty actor sessions, the RFT budget precondition
+and additive camera observation fields. After checking the ordinary Workbench and
+native contracts, corrections stayed within goblin. `expanded-002` completed all
+29 additional operation IDs in 20.488 seconds, peak observed process-tree RSS
+583,782,400 bytes, with no diagnostics or surviving owned processes. Its source
+was local checkpoint `06893e99` plus the retained dirty source snapshot; this is
+development evidence, not qualification of the later published source.
+
+`metamorphic-001` was externally killed during import (exit -9 at 4.137 seconds,
+peak sampled RSS 665,964,544 bytes). `laboratory-001` was externally killed without
+import, before the first test output (exit -9 at 0.507 seconds, peak sampled RSS
+150,646,784 bytes). Neither reached its gameplay assertions. The configured child
+RSS ceiling did not attribute these kills, and no surviving owned process remained.
+The cause is unresolved infrastructure; further equivalent local retries were
+stopped in favor of dedicated hosted qualification. These failures are retained.
+
+The first published successor source is `c947143a7cb62bc8b56acd0b78b683a9fef749e0`,
+tree `4c234199b1db9934aa5ba40e84b96fbb57c2c844`, in
+[Draft PR #781](https://github.com/techrote/cybersand/pull/781). GitHub blob/tree
+publication reproduced the exact local committed tree after CLI authentication
+was unavailable. Local and remote commit IDs differ; their trees were explicitly
+compared before switching the local parent while preserving uncommitted work.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing

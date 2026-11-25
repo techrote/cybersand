@@ -22,8 +22,10 @@ SCHEMA = "cybersand-goblin-transcript-v1"
 MAX_BYTES = 32 * 1024 * 1024
 try:
     from .vocabulary import MAX_ACTIONS, FIXTURES, POLICIES, MATERIALS, MODELS, expanded_action_valid
+    from .replay_identity import valid as valid_replay_identity
 except ImportError:
     from vocabulary import MAX_ACTIONS, FIXTURES, POLICIES, MATERIALS, MODELS, expanded_action_valid
+    from replay_identity import valid as valid_replay_identity
 KINDS = {"unit_fixture", "headless_godot", "graphical_godot", "packaged_evaluator"}
 STATUSES = {"proposed", "accepted", "refused", "partial", "completed"}
 CLASSIFICATIONS = {"game_observation", "not_applicable", "invalid_action", "timeout", "cancelled", "native_failure", "adapter_failure"}
@@ -226,7 +228,7 @@ def independent_failures(tape: dict) -> list[dict]:
                 check(row, "native_changed_accounting", receipt.get("changed") == changed)
                 check(row, "native_applied_accounting_bounds", bounded(receipt.get("applied"), changed, len(last["materials"])), "evidence")
         elif name == "camera":
-            check(row, "camera_state", after.get("camera") == {"origin": [min(args["x"], 512 - args["width"]), min(args["y"], 512 - args["height"])], "size": [args["width"], args["height"]]})
+            check(row, "camera_state", {k: after.get("camera", {}).get(k) for k in ("origin", "size")} == {"origin": [min(args["x"], 512 - args["width"]), min(args["y"], 512 - args["height"])], "size": [args["width"], args["height"]]})
         elif name == "panel":
             check(row, "panel_state", after.get("details_open") is args["open"])
         elif name == "actor_select":
@@ -326,6 +328,8 @@ def _verify(tape: Any) -> dict:
         provenance = {}
     for key, size in (("source_commit", 40), ("source_tree", 40), ("godot_sha256", 64), ("native_sha256", 64), ("rapier_sha256", 64)):
         issue(isinstance(provenance.get(key), str) and re.fullmatch("[0-9a-f]{%d}" % size, provenance[key]) is not None, "missing exact " + key)
+    if "replay_identity" in provenance:
+        issue(valid_replay_identity(provenance), "invalid portable replay identity")
     for index, row in enumerate(steps):
         if not isinstance(row, dict):
             errors.append(f"step {index}: not an object")

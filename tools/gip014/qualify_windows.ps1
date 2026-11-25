@@ -32,15 +32,21 @@ $engine = Join-Path $engineRoot 'Godot_v4.7-stable_win64_console.exe'
 $version = ((& $engine --version) -join "`n").Trim()
 if ($LASTEXITCODE -ne 0 -or $version -ne '4.7.stable.official.5b4e0cb0f') { throw 'Pinned Godot version mismatch.' }
 
+Invoke-Python @('-m', 'pip', 'install', '-r', 'tools/gip014/requirements.txt') (Join-Path $outputPath 'process-monitor-dependency.log')
 Invoke-Python @('-m', 'unittest', 'discover', '-s', 'tools/gip014', '-p', 'test_*.py') (Join-Path $outputPath 'python-contracts.log')
-$cases = @('unit', 'adapter', 'controller', 'gameplay', 'baseline')
+$cases = @('unit', 'discovery', 'adapter', 'expanded', 'controller', 'laboratory', 'gameplay', 'metamorphic', 'baseline')
 foreach ($case in $cases) {
-    Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', $case, '--out', (Join-Path $sourceTests $case)) (Join-Path $outputPath ($case + '.log'))
+    Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', $case, '--out', (Join-Path $sourceTests $case), '--timeout-seconds', '300') (Join-Path $outputPath ($case + '.log'))
 }
 # Two distinct actual-game campaigns keep this focused lane affordable.
 Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--out', (Join-Path $sourceTests 'control-64'), '--fixture', 'actor_workshop', '--policy', 'CONTROL', '--seed', '13', '--budget', '64') (Join-Path $outputPath 'control-64.log')
 Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--out', (Join-Path $sourceTests 'builder-128'), '--fixture', 'liquid_channel', '--policy', 'BUILDER', '--seed', '605', '--budget', '128') (Join-Path $outputPath 'builder-128.log')
 Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', 'replay', '--out', (Join-Path $sourceTests 'control-64-replay'), '--replay', (Join-Path $sourceTests 'control-64/transcript.json')) (Join-Path $outputPath 'control-64-replay.log')
+
+# Successor policies exercise meaningful observed conditions before packaging.
+foreach ($policy in @('STATEFUL', 'NOVELTY', 'COVERAGE_HUNTER')) {
+    Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--out', (Join-Path $sourceTests ($policy.ToLowerInvariant() + '-64')), '--fixture', 'alchemy', '--policy', $policy, '--seed', '1701', '--budget', '64') (Join-Path $outputPath ($policy.ToLowerInvariant() + '-64.log'))
+}
 
 $notices = Join-Path $outputPath 'engine-notices'
 [IO.Directory]::CreateDirectory($notices) | Out-Null

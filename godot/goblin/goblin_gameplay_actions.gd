@@ -182,6 +182,7 @@ static func available_actions(a: Variant) -> Array[Dictionary]:
 				if Catalog.has_model(model) and model in a.bench._model_ids:
 					_offer(menu, "actor_replace", {"model": model})
 		for field: String in ["budget", "mass_multiplier", "inertia_multiplier"]:
+			if field == "budget" and a.bench.applied.response == "RFT": continue
 			if a.bench._fields.has(field) and a.bench._fields[field].editable:
 				_offer(menu, "actor_settings", {"field": field, "value": 15.0 if field == "budget" else 1.25})
 	if a.bench.pilot_id() > 0:
@@ -196,7 +197,10 @@ static func available_actions(a: Variant) -> Array[Dictionary]:
 				if Catalog.equipment_error(str(actor.model), usable).is_empty():
 					_offer(menu, "actor_equipment", {"actor_id": int(actor.id), "usable_index": usable})
 	for mode: String in Setup.RESPONSES:
-		if mode != a.bench.applied.response: _offer(menu, "response_mode", {"mode": mode})
+		if mode == a.bench.applied.response: continue
+		var candidate: Dictionary = a.bench.applied.duplicate(true)
+		candidate.response = mode
+		if Setup.validate(candidate, false).is_empty(): _offer(menu, "response_mode", {"mode": mode})
 	_offer(menu, "restore_start")
 	for fixture: String in Fixtures.IDS:
 		if fixture != a.fixture_id: _offer(menu, "replace_fixture", {"fixture": fixture})
@@ -465,7 +469,10 @@ static func execute(a: Variant, action: Dictionary, row: Dictionary, started: in
 			"physical_epoch_before": first_epoch, "physical_epoch_after": int(a.host._physical_epoch)}
 		if int(a.worker.paint_state().generation) <= first_generation:
 			return _result(a, row, started, "refused", str(a.host.microscenario_error))
-		if int(a.host._physical_epoch) <= first_epoch or not a.host._physical_terrain_ready:
+		if a.bench.applied.get("actors", []).is_empty():
+			if a.host.physical_actor_session != null:
+				return _result(a, row, started, "partial", "empty replacement retained an actor session")
+		elif int(a.host._physical_epoch) <= first_epoch or not a.host._physical_terrain_ready:
 			return _result(a, row, started, "partial", "replacement has no adopted physical graph")
 	if a.stopped: return _result(a, row, started, "partial", "Stop requested", "cancelled")
 	return _result(a, row, started, "completed")

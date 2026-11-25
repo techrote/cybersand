@@ -1,0 +1,9 @@
+{
+  "schema": "cybersand-goblin-discovery-qualification-request-v1",
+  "mission": "GIP-014-goblin-002",
+  "request": 1,
+  "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+  "plan": "108 matched episodes plus long-horizon, personality and authored-scenario cohorts",
+  "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
+  "evidence": "Retain every attempted process; production defects require independent reproduction and examination"
+}

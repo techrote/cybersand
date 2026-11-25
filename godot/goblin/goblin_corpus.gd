@@ -20,7 +20,8 @@ var _total_observed := 0
 var _evicted := 0
 var _all_completed := true
 var _record_bytes := 0
-var _hints: Dictionary = {"schema": Coverage.SCHEMA, "action": {}}
+var _last_completed_hint := ""
+var _hints: Dictionary = {"schema": Coverage.SCHEMA, "action": {}, "state_action": {}, "action_transition": {}, "variants": {}}
 
 func clear() -> void:
 	_records.clear()
@@ -32,7 +33,8 @@ func clear() -> void:
 	_evicted = 0
 	_all_completed = true
 	_record_bytes = 0
-	_hints = {"schema": Coverage.SCHEMA, "action": {}}
+	_last_completed_hint = ""
+	_hints = {"schema": Coverage.SCHEMA, "action": {}, "state_action": {}, "action_transition": {}, "variants": {}}
 
 func begin_episode(context: Dictionary) -> bool:
 	if not _context_valid(context): return false
@@ -40,6 +42,7 @@ func begin_episode(context: Dictionary) -> bool:
 	_prefix.clear()
 	_episode_index = 0
 	_all_completed = true
+	_last_completed_hint = ""
 	return true
 
 func observe(record: Dictionary, novelty: Dictionary) -> Dictionary:
@@ -59,7 +62,13 @@ func observe(record: Dictionary, novelty: Dictionary) -> Dictionary:
 		if item is Dictionary and item.get("status") == "fail": failures.append(str(item.get("id", "")).left(120))
 	if completed:
 		var id := str(action.id)
-		_hints.action[id] = mini(1000000, int(_hints.action.get(id, 0)) + 1)
+		_hint("action", id)
+		_hint("state_action", str(novelty.get("before_state", "")) + ":" + id)
+		_hint("variants", Coverage.variant_key(action))
+		if not _last_completed_hint.is_empty(): _hint("action_transition", _last_completed_hint + ">" + id)
+		_last_completed_hint = id
+	else:
+		_last_completed_hint = ""
 	var novelty_score: int = clampi(int(novelty.get("score", 0)), 0, 1024)
 	if not factual or (novelty_score <= 0 and failures.is_empty()): return {"retained": false, "reason": "no independently observed new outcome"}
 	var classification := _classification(record, failures)
@@ -88,7 +97,7 @@ func observe(record: Dictionary, novelty: Dictionary) -> Dictionary:
 		_evicted += 1
 	_records.append(entry)
 	_record_bytes += JSON.stringify(entry).to_utf8_buffer().size()
-	while _record_bytes > MAX_BYTES - 32768 and not _records.is_empty():
+	while _record_bytes > MAX_BYTES - 262144 and not _records.is_empty():
 		var retire := _retire_index()
 		_record_bytes -= JSON.stringify(_records[retire]).to_utf8_buffer().size()
 		_records.remove_at(retire)
@@ -136,6 +145,9 @@ func import_data(value: Variant, action_validator: Callable) -> Dictionary:
 	_total_observed = int(value.total_observed)
 	_evicted = int(value.evicted)
 	_hints = hints.duplicate(true)
+	for dimension: String in ["state_action", "action_transition", "variants"]:
+		if not _hints.has(dimension): _hints[dimension] = {}
+	_last_completed_hint = ""
 	_context.clear()
 	_prefix.clear()
 	_episode_index = 0
@@ -173,7 +185,9 @@ func summary() -> Dictionary:
 			"verification": entry.verification, "failed_assertions": entry.failed_assertions.duplicate()})
 	return {"schema": SCHEMA, "records": _records.size(), "capacity": MAX_RECORDS, "maximum_prefix_actions": MAX_PREFIX,
 		"total_observed": _total_observed, "evicted": _evicted, "reusable_prefixes": reusable, "imported_unverified": imported,
-		"classifications": counts, "observations": observations, "physical_checkpoint_resume": false}
+		"classifications": counts, "observations": observations, "physical_checkpoint_resume": false,
+		"prior_hint_keys": {"action": _hints.action.size(), "state_action": _hints.state_action.size(),
+			"action_transition": _hints.action_transition.size(), "variants": _hints.variants.size()}}
 
 static func compatible_context(first: Dictionary, second: Dictionary) -> bool:
 	if not _context_valid(first) or not _context_valid(second): return false
@@ -190,6 +204,8 @@ static func _context_valid(value: Dictionary) -> bool:
 
 static func _classification(record: Dictionary, failures: Array[String]) -> String:
 	if not failures.is_empty(): return "unresolved_observation"
+	if record.get("admission", {}).get("unsupported") == true: return "unsupported_action"
+	if record.get("classification") == "invalid_action": return "unresolved_observation"
 	if record.get("status") == "refused":
 		return "expected_refusal" if record.get("classification") in ["not_applicable", "cancelled"] else "unresolved_observation"
 	if record.get("classification") in ["timeout", "native_failure", "adapter_failure"]: return "unresolved_observation"
@@ -287,3 +303,9 @@ static func _canonical(value: Variant) -> Variant:
 	if value is float and is_finite(value) and value == floor(value): return int(value)
 	return value
 
+
+
+func _hint(dimension: String, key: String) -> void:
+	var values: Dictionary = _hints[dimension]
+	if not values.has(key) and values.size() >= Coverage.MAX_PRIOR_KEYS: return
+	values[key] = mini(1000000, int(values.get(key, 0)) + 1)

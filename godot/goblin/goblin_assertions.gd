@@ -331,10 +331,20 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 			hasher.start(HashingContext.HASH_SHA256)
 			hasher.update(PackedByteArray(bytes))
 			observed_hash = hasher.finish().hex_encode()
+		# The native initial packet counts collision proxies, not logical actors.
+		# Articulated actors have several parts; compound flyers may have several
+		# occupancy proxies per part. Catalogue geometry and the adopted bridge
+		# provide independent expected/admitted counts alongside the native receipt.
+		var expected_proxies := 0
+		for actor: Dictionary in after.get("actors", []):
+			expected_proxies += int(actor.get("capabilities", {}).get("proxy_count", 1))
 		_assert(rows, "actor_native_construction_receipt", valid_bytes and observed_hash == receipt.get("receipt_hash") \
 			and receipt.get("session_generation") == last_native.generation \
-			and receipt.get("initial_body_count") == after.get("actors", []).size(),
-			"source-matched canonical native construction receipt", {"hash": observed_hash, "receipt": receipt.get("receipt_hash")}, "evidence")
+			and receipt.get("initial_body_count") == expected_proxies \
+			and int(after.get("physical_proxy_count", expected_proxies)) == expected_proxies,
+			{"canonical_receipt": "source-matched", "proxy_count": expected_proxies},
+			{"hash": observed_hash, "receipt": receipt.get("receipt_hash"), "native_count": receipt.get("initial_body_count"),
+			"adopted_count": after.get("physical_proxy_count", expected_proxies)}, "evidence")
 	var interval: Dictionary = record.get("interval", {})
 	match id:
 		"pause":

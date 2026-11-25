@@ -106,6 +106,10 @@ func _coverage_tests() -> void:
 	var prior: RefCounted = Coverage.new()
 	_check(prior.load_memory(coverage.memory()), "bounded prior search hints load")
 	_check(prior.summary().completed_admitted_actions == 0 and prior.summary().unique.action == 0, "imported hints never become current evidence")
+	_check(coverage.memory().state_action.size() > 0 and coverage.memory().variants.size() > 0, "persistent hints retain actual state/action and parameter visits")
+	var excessive := {"schema":Coverage.SCHEMA, "action":{}, "variants":{}}
+	for index: int in range(Coverage.MAX_PRIOR_KEYS + 1): excessive.variants[str(index)] = 1
+	_check(not prior.load_memory(excessive), "persistent hint maps enforce their independent capacity")
 	_check(prior.score({"id":"pause", "args":{}}, _observation()) < prior.score({"id":"line", "args":{}}, _observation()), "prior observed action counts influence search only")
 	var malicious := {"schema":Coverage.SCHEMA, "action":{"pause":-1}}
 	_check(not prior.load_memory(malicious), "negative imported action count refuses")

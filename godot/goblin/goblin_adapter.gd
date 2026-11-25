@@ -233,6 +233,13 @@ func observe() -> Dictionary:
 	var actors: Array = []
 	var actor_ids: Array = []
 	var controllable_ids: Array = []
+	var physical_body_count := 0
+	var physical_proxy_count := 0
+	if host.physical_actor_session != null:
+		physical_body_count = host.physical_actor_session.bodies().size()
+		for record: Dictionary in bench.applied.get("actors", []):
+			var slot: int = host.physical_actor_session.slot_for_instance(int(record.id))
+			physical_proxy_count += int(host.physical_actor_session.bridge.actor_proxy_range(slot).get("count", 0))
 	if bench != null:
 		for record: Dictionary in bench.applied.get("actors", []):
 			var id: int = int(record.id)
@@ -287,6 +294,9 @@ func observe() -> Dictionary:
 		"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1,
 		"native_worker_request": int(host.latest_snapshot.native_worker_request) if host.latest_snapshot != null else -1,
 		"physical_epoch": int(host._physical_epoch),
+		"physical_session_active": host.physical_actor_session != null,
+		"physical_body_count": physical_body_count, "physical_proxy_count": physical_proxy_count,
+		"physical_ready": bool(host._physical_terrain_ready),
 		"step_serial": int(bench.step_serial) if bench != null else -1,
 		"step_observed_serial": int(host.tower_context.get("workbench_step_serial", -1)),
 		"message": str(bench.message) if bench != null else "", "stopped": stopped}

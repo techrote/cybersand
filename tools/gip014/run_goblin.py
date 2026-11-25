@@ -25,6 +25,7 @@ from verify_transcript import verify
 from minimize import minimize
 from vocabulary import MAX_ACTIONS, FIXTURES, POLICIES
 from owned_process import execute as execute_owned
+import replay_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 TESTS = {
@@ -33,6 +34,7 @@ TESTS = {
     "expanded": ("goblin_expanded",),
     "metamorphic": ("goblin_metamorphic",),
     "discovery": ("goblin_exploration",),
+    "laboratory": ("goblin_laboratory",),
     "controller": ("goblin_controller",),
     "gameplay": ("goblin_gameplay",),
     "graphical": ("goblin_interactive",),
@@ -41,7 +43,7 @@ TESTS = {
 PROFILE_SCHEMA = "cybersand-goblin-profile-v1"
 ERROR_MARKERS = ("SCRIPT ERROR:", "Parse Error:", "ERROR:", "Fatal signal", "Segmentation fault")
 COMPLETION_MARKERS = {"campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_expanded": "GOBLIN_EXPANDED_RESULT ",
-                      "goblin_metamorphic": "GOBLIN_METAMORPHIC_RESULT ", "goblin_exploration": "GOBLIN_EXPLORATION_UNIT ", "goblin_adapter": "GOBLIN_ADAPTER ",
+                      "goblin_metamorphic": "GOBLIN_METAMORPHIC_RESULT ", "goblin_exploration": "GOBLIN_EXPLORATION_UNIT ", "goblin_laboratory": "GOBLIN_LABORATORY ", "goblin_adapter": "GOBLIN_ADAPTER ",
                       "goblin_controller": "GOBLIN_CONTROLLER ", "test_goblin_policies": "GOBLIN_POLICY_UNIT ",
                       "goblin_interactive": "GOBLIN_INTERACTIVE_RESULT ",
                       "goblin_gameplay": "GOBLIN_GAMEPLAY_RESULT ",
@@ -115,7 +117,7 @@ def runtime_identity(godot: Path) -> dict:
     return result
 
 
-def stage_project(destination: Path) -> dict:
+def stage_project(destination: Path, reuse_import_cache: bool = False) -> dict:
     """Snapshot source once so a concurrent edit cannot change a running process."""
     source = ROOT / "godot"
     def ignored(directory: str, names: list[str]) -> list[str]:
@@ -131,6 +133,22 @@ def stage_project(destination: Path) -> dict:
         original = source / ".godot" / name
         if original.is_file():
             shutil.copy2(original, cache / name)
+    reused_cache = {}
+    if reuse_import_cache:
+        imported = source / ".godot/imported"
+        if not imported.is_dir():
+            raise ValueError("No established checkout resource-import cache to reuse")
+        candidates = [p for p in sorted(imported.rglob("*")) if p.is_file()]
+        if len(candidates) > 4096 or sum(p.stat().st_size for p in candidates) > 512 * 1024 * 1024:
+            raise ValueError("Resource-import cache exceeds its finite reuse bound")
+        for original in candidates:
+            if original.is_symlink() or original.suffix in {".gd", ".gdc", ".pck", ".exe", ".dll", ".so"}:
+                raise ValueError("Resource cache includes an inadmissible executable/link")
+            relative = original.relative_to(imported)
+            target = cache / "imported" / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(original, target)
+            reused_cache[relative.as_posix()] = sha_file(target)
     entries = {p.relative_to(destination).as_posix(): sha_file(p)
                for p in sorted(destination.rglob("*")) if p.is_file() and ".godot" not in p.parts}
     source_changed = [name for name, digest in entries.items() if not (source / name).is_file()
@@ -138,7 +156,8 @@ def stage_project(destination: Path) -> dict:
     if source_changed:
         raise ValueError("Source changed during project snapshot; retry after the checkpoint settles")
     digest = hashlib.sha256(json.dumps(entries, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    return {"project_files_sha256": digest, "files": entries}
+    return {"project_files_sha256": digest, "files": entries, "reused_resource_cache": reused_cache,
+            "cache_scope": "Explicit resource-import reuse only; no editor-import qualification claimed" if reuse_import_cache else "fresh editor import required"}
 
 
 def make_profile(path: Path, launch: dict, provenance: dict, replay: dict | None = None,
@@ -200,7 +219,7 @@ def read_transcript(profile: Path) -> tuple[dict | None, Path | None]:
 def reduce_gameplay(original: dict, *, out: Path, godot: Path, project: Path, provenance: dict,
                     timeout: int, max_attempts: int, repeats: int, graphical: bool) -> dict:
     """The reducer callback can invoke only the fixed goblin test entrypoint."""
-    if original.get("header", {}).get("provenance") != provenance:
+    if not replay_identity.same(original.get("header", {}).get("provenance"), provenance):
         raise ValueError("Reduction requires the recorded exact source snapshot and runtime identities")
     wanted_kind = "graphical_godot" if graphical else "headless_godot"
     if original["header"].get("evidence_kind") != wanted_kind:
@@ -262,6 +281,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--memory-limit-mib", type=int, default=3072)
     parser.add_argument("--corpus", type=Path, help="Optional bounded corpus, staged at a fixed isolated profile path")
     parser.add_argument("--retain-project", action="store_true", help="Keep the staged project after completion")
+    parser.add_argument("--reuse-import-cache", action="store_true", help="Local smoke only: reuse fixed checkout resource cache; does not qualify a fresh import")
     args = parser.parse_args(argv)
     if args.timeout_seconds == 0:
         args.timeout_seconds = int(min(900, max(150, args.budget * 1.2))) + 30
@@ -283,8 +303,9 @@ def main(argv: list[str] | None = None) -> int:
         godot = args.godot.resolve(strict=True)
         provenance = runtime_identity(godot)
         project = out / "project"
-        snapshot = stage_project(project)
+        snapshot = stage_project(project, reuse_import_cache=args.reuse_import_cache)
         provenance["project_files_sha256"] = snapshot["project_files_sha256"]
+        provenance["replay_identity"] = replay_identity.build(provenance, project, snapshot["files"])
         write_json(out / "source-snapshot.json", snapshot)
         write_json(out / "provenance.json", provenance)
         graphical = args.graphical or args.case in ("interactive", "graphical")
@@ -312,8 +333,13 @@ def main(argv: list[str] | None = None) -> int:
             from corpus_io import load_corpus
             corpus = load_corpus(args.corpus)
         env = make_profile(profile, launch, provenance, replay if args.case == "replay" else None, reproduction, corpus)
-        import_result = execute([str(godot), "--headless", "--path", str(project), "--editor", "--quit"],
-                                env, out / "import.log", 240, memory_limit_mib=args.memory_limit_mib)
+        if args.reuse_import_cache:
+            import_result = {"status": "pass", "operation": "explicit resource cache reuse", "fresh_import_qualified": False,
+                             "cache_files": len(snapshot["reused_resource_cache"]), "scope": snapshot["cache_scope"]}
+        else:
+            import_result = execute([str(godot), "--headless", "--path", str(project), "--editor", "--quit"],
+                                    env, out / "import.log", 240, memory_limit_mib=args.memory_limit_mib)
+            import_result["fresh_import_qualified"] = import_result["status"] == "pass"
         write_json(out / "import-result.json", import_result)
         if import_result["status"] != "pass":
             print(json.dumps({"output": str(out), "status": "import_failure", "result": import_result}))
@@ -347,7 +373,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if case == "campaign":
                     script = "res://goblin/run_campaign.gd"
-                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_exploration"):
+                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_exploration", "goblin_laboratory"):
                     script = f"res://goblin/tests/test_{case.removeprefix('goblin_')}.gd"
                 else:
                     script = f"res://tests/{case}.gd"

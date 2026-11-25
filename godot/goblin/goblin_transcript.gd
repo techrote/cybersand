@@ -28,6 +28,32 @@ static func _hex(value: Variant, count: int) -> bool:
 	return true
 
 
+static func _valid_replay_identity(provenance: Dictionary) -> bool:
+	var value: Variant = provenance.get("replay_identity")
+	if not value is Dictionary or not _keys_exact(value, ["schema", "source_commit", "source_tree", "platform",
+		"godot_sha256", "native_sha256", "rapier_sha256", "game_sources_sha256", "game_source_files", "import_normalization"]): return false
+	if value.schema != "cybersand-goblin-replay-identity-v1" or value.platform not in ["linux", "windows"] \
+		or value.import_normalization != "existing-four-rapier-import-descriptors-crlf-to-lf" \
+		or typeof(provenance.get("source_dirty")) != TYPE_BOOL or not _in_range(value.game_source_files, 1, 100000): return false
+	for key: String in ["source_commit", "source_tree", "platform", "godot_sha256", "native_sha256", "rapier_sha256"]:
+		if value[key] != provenance.get(key): return false
+	for key: String in ["source_commit", "source_tree"]:
+		if not _hex(value[key], 40): return false
+	for key: String in ["godot_sha256", "native_sha256", "rapier_sha256", "game_sources_sha256"]:
+		if not _hex(value[key], 64): return false
+	return true
+
+
+static func same_execution_identity(first: Variant, second: Variant) -> bool:
+	if not first is Dictionary or not second is Dictionary: return false
+	if first.has("replay_identity") or second.has("replay_identity"):
+		return _valid_replay_identity(first) and _valid_replay_identity(second) \
+			and first.source_dirty == second.source_dirty \
+			and JSON.stringify(_json_value(first.replay_identity), "", true) == JSON.stringify(_json_value(second.replay_identity), "", true)
+	# Legacy evidence retains its original exact-provenance contract.
+	return JSON.stringify(_json_value(first), "", true) == JSON.stringify(_json_value(second), "", true)
+
+
 static func _keys_exact(args: Dictionary, required: Array, optional: Array = []) -> bool:
 	for key: Variant in args:
 		if key not in required and key not in optional: return false
@@ -301,6 +327,7 @@ static func validate(transcript: Variant) -> Dictionary:
 		if not _hex(provenance.get(key), 40): errors.append("Missing full " + key + ".")
 	for key: String in ["godot_sha256", "native_sha256", "rapier_sha256"]:
 		if not _hex(provenance.get(key), 64): errors.append("Missing runtime " + key + ".")
+	if provenance.has("replay_identity") and not _valid_replay_identity(provenance): errors.append("Invalid portable replay identity.")
 	for index: int in range(transcript.steps.size()):
 		var row: Variant = transcript.steps[index]
 		if not row is Dictionary:
@@ -360,7 +387,7 @@ static func compare(expected: Dictionary, actual: Dictionary) -> Dictionary:
 		and expected.header.seed == actual.header.seed \
 		and expected.header.get("initial_scene_identity", "") == actual.header.get("initial_scene_identity", "") \
 		and expected.header.get("fixture_version", 1) == actual.header.get("fixture_version", 1) \
-		and JSON.stringify(_json_value(expected.header.provenance)) == JSON.stringify(_json_value(actual.header.provenance))
+		and same_execution_identity(expected.header.provenance, actual.header.provenance)
 	var same_count: bool = expected.steps.size() == actual.steps.size()
 	var semantic_match: bool = same_header and same_count
 	var exact_match: bool = semantic_match

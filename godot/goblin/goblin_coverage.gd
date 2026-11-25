@@ -7,6 +7,7 @@ const SCHEMA := "cybersand-goblin-coverage-v1"
 const DIMENSIONS := ["action", "action_transition", "state_transition", "material_interaction",
 	"tool_material", "actor_environment", "lifecycle", "boundary_refusal", "outcome"]
 const MAX_KEYS := 2048
+const MAX_PRIOR_KEYS := 256
 const MAX_RECENT := 32
 const EDIT_ACTIONS := ["brush", "erase", "rectangle", "outline", "line", "paste", "fill", "undo", "redo", "stroke", "live_stroke", "interrupt_stroke"]
 var _counts: Dictionary = {}
@@ -179,9 +180,9 @@ func score(action: Dictionary, observation: Dictionary, mode: String = "coverage
 	var id := str(action.get("id", ""))
 	var first := State.signature(observation)
 	var action_count: float = float(_counts.action.get(id, 0)) + float(_prior.get("action", {}).get(id, 0)) * 0.25
-	var transition_count: int = int(_state_actions.get(first + ":" + id, 0))
-	var pair_count: int = int(_counts.action_transition.get(_last_completed + ">" + id, 0))
-	var variants: int = int(_variants.get(variant_key(action), 0))
+	var transition_count: float = float(_state_actions.get(first + ":" + id, 0)) + float(_prior.get("state_action", {}).get(first + ":" + id, 0)) * 0.5
+	var pair_count: float = float(_counts.action_transition.get(_last_completed + ">" + id, 0)) + float(_prior.get("action_transition", {}).get(_last_completed + ">" + id, 0)) * 0.25
+	var variants: float = float(_variants.get(variant_key(action), 0)) + float(_prior.get("variants", {}).get(variant_key(action), 0)) * 0.25
 	var refusal_penalty: float = 1.0 + float(_refusal_variants.get(variant_key(action), 0)) * 1.5
 	if mode == "stateful": return 1.0 / ((1.0 + variants * 0.25) * refusal_penalty)
 	if mode == "novelty": return (2.0 / (1.0 + action_count) + 12.0 / (1.0 + transition_count) + 5.0 / (1.0 + variants)) / refusal_penalty
@@ -201,16 +202,29 @@ func summary() -> Dictionary:
 		"actor_environment_scope": "observed actor model, authored fixture, spatial zone and pilot role; no inferred route success"}
 
 func memory() -> Dictionary:
-	return {"schema": SCHEMA, "action": _counts.action.duplicate(true)}
+	return {"schema": SCHEMA, "action": _bounded_hints(_counts.action),
+		"state_action": _bounded_hints(_state_actions), "action_transition": _bounded_hints(_counts.action_transition),
+		"variants": _bounded_hints(_variants)}
 
 func load_memory(value: Dictionary) -> bool:
-	if value.get("schema") != SCHEMA or not value.get("action") is Dictionary or value.action.size() > MAX_KEYS: return false
+	if value.get("schema") != SCHEMA or not value.get("action") is Dictionary: return false
 	var copied: Dictionary = {}
-	for key: Variant in value.action:
-		if not key is String or key.length() > 80 or not State._integer(value.action[key], 0, 1000000): return false
-		copied[key] = int(value.action[key])
-	_prior = {"action": copied}
+	for dimension: String in ["action", "state_action", "action_transition", "variants"]:
+		var supplied: Variant = value.get(dimension, {})
+		if not supplied is Dictionary or supplied.size() > MAX_PRIOR_KEYS: return false
+		copied[dimension] = {}
+		for key: Variant in supplied:
+			if not key is String or key.length() > 170 or not State._integer(supplied[key], 0, 1000000): return false
+			copied[dimension][key] = int(supplied[key])
+	_prior = copied
 	return true
+
+static func _bounded_hints(values: Dictionary) -> Dictionary:
+	var result: Dictionary = {}
+	for key: String in values:
+		if result.size() >= MAX_PRIOR_KEYS: break
+		result[key] = values[key]
+	return result
 
 static func variant_key(action: Dictionary) -> String:
 	return JSON.stringify({"id": action.get("id"), "args": action.get("args", {})}, "", true).sha256_text()

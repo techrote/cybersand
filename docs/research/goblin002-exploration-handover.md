@@ -57,7 +57,10 @@ native identity, paused source stability, bounds and array shape.
 
 ## Coverage contract
 
-Current-episode coverage and historical search hints are separate.
+Current-episode coverage and historical search hints are separate. Persistent
+hints retain up to 256 action frequencies, state/action visits, adjacent action
+pairs and parameter variants per map. They affect priorities only; imported
+values never populate the current-episode evidence maps.
 
 | Dimension | Required observation and meaning |
 | --- | --- |
@@ -138,8 +141,8 @@ is classified as a CyberSand defect.
 A separate pure temporary Godot project ran the exploration tests on Linux x86_64,
 first with available Godot 4.7.2 for parser feedback, then with exact
 `4.7.stable.official.5b4e0cb0f`. The latest exact-version synthetic test run
-passes **131 checks**, including all 16 policies, distinct action-only sequences,
-source/capture admission, refusal starvation, exact-context memory reuse,
+passes **138 checks**, including all 16 policies, distinct action-only sequences,
+source/capture admission, fresh material probes, actual configuration fields, refusal starvation, exact-context memory reuse,
 transactional hostile imports and 1,024 synthetic observations with bounded
 retention. It is mechanism evidence only: no native gameplay occurred in that
 pure project and no game-engine defect was found by it.

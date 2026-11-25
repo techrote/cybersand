@@ -77,8 +77,15 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 	if id in REPLACEMENTS:
 		_check(rows, "replacement_publishes_new_native_owner", int(last.get("generation", -1)) > int(first.get("generation", -1)),
 			"new actual native generation", last.get("generation"))
-		_check(rows, "replacement_publishes_new_physical_owner", int(after.get("physical_epoch", -1)) > int(before.get("physical_epoch", -1)),
-			"new actual physical epoch", after.get("physical_epoch"))
+		if after.get("actor_ids", []).is_empty():
+			_check(rows, "empty_replacement_retires_physical_owner", after.get("physical_session_active") == false \
+				and int(after.get("physical_body_count", -1)) == 0 and int(after.get("physical_proxy_count", -1)) == 0,
+				"no actor session, bodies or proxies", {"active": after.get("physical_session_active"),
+				"bodies": after.get("physical_body_count"), "proxies": after.get("physical_proxy_count")})
+		else:
+			_check(rows, "replacement_publishes_new_physical_owner", int(after.get("physical_epoch", -1)) > int(before.get("physical_epoch", -1)) \
+				and after.get("physical_session_active") == true and after.get("physical_ready") == true,
+				"new ready actual physical epoch", after.get("physical_epoch"))
 	match id:
 		"select_tool":
 			_check(rows, "ordinary_tool_readback", after.get("tool") == args.get("tool"), args.get("tool"), after.get("tool"))

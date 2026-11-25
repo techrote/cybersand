@@ -13,8 +13,10 @@ from typing import Callable
 
 try:
     from .verify_transcript import canonical, digest, verify
+    from .replay_identity import same as same_execution_identity
 except ImportError:
     from verify_transcript import canonical, digest, verify
+    from replay_identity import same as same_execution_identity
 
 
 @dataclass(frozen=True)
@@ -74,7 +76,9 @@ def minimize(original: dict, replay: Callable[[list[dict]], dict], *, max_attemp
                 if not checked["valid"]:
                     entry.update(status="invalid_evidence", errors=checked["errors"])
                     return False
-                if identity(actual) != source_identity:
+                actual_identity = identity(actual)
+                same_metadata = all(actual_identity[k] == source_identity[k] for k in source_identity if k != "provenance")
+                if not same_metadata or not same_execution_identity(actual_identity["provenance"], source_identity["provenance"]):
                     entry["status"] = "source_fixture_runtime_mismatch"
                     return False
                 actual_actions = [row["action"] for row in actual["steps"]]

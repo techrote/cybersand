@@ -22,6 +22,7 @@ import uuid
 import psutil
 
 import campaign_evidence
+import replay_identity
 from corpus_io import load_corpus
 from run_goblin import (ROOT, COMPLETION_MARKERS, execute, git, make_profile, read_transcript,
                         runtime_identity, sha_file, stage_project, write_json)
@@ -29,8 +30,8 @@ from verify_transcript import digest, load, verify
 from vocabulary import FIXTURES, POLICIES
 
 SCHEMA = "cybersand-goblin-experiment-queue-v1"
-MODES = ("CONTROL", "RANDOM", "STATEFUL", "NOVELTY", "COVERAGE_HUNTER")
-SEEDS = (13, 605, 1701, 2309, 4093)
+MODES = ("CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM", "STATEFUL", "NOVELTY", "COVERAGE_HUNTER")
+SEEDS = (13, 605, 1701)
 MATCHED_FIXTURES = ("construction", "liquid_channel", "actor_workshop", "history_edges")
 PLAN_KINDS = ("smoke", "matched", "long", "personalities", "scenarios", "full")
 
@@ -93,7 +94,7 @@ def check_stage(project: Path, snapshot: dict) -> None:
     # Import caches and the established editor-owned import descriptors may be
     # regenerated. Executed scripts, scenes, resource data and binaries may not.
     for name, expected in snapshot["files"].items():
-        if name.endswith(".import"):
+        if name in replay_identity.IMPORT_DESCRIPTORS:
             continue
         path = project / name
         if not path.is_file() or sha_file(path) != expected:
@@ -252,6 +253,7 @@ def main(argv=None) -> int:
                 raise ValueError("Resume plan differs from the committed finite plan")
             snapshot = json.loads((out / "source-snapshot.json").read_text())
             provenance["project_files_sha256"] = snapshot["project_files_sha256"]
+            provenance["replay_identity"] = replay_identity.build(provenance, project, snapshot["files"])
             if queue["plan"]["provenance"] != provenance:
                 raise ValueError("Resume requires identical source, runtime, host identity and staged source")
             payload = {k: v for k, v in queue["plan"].items() if k != "plan_sha256"}
@@ -272,6 +274,7 @@ def main(argv=None) -> int:
         else:
             snapshot = stage_project(project)
             provenance["project_files_sha256"] = snapshot["project_files_sha256"]
+            provenance["replay_identity"] = replay_identity.build(provenance, project, snapshot["files"])
             write_json(out / "source-snapshot.json", snapshot)
             plan = {"kind": args.plan, "provenance": provenance, "episodes": episodes_for(args.plan),
                     "memory_limit_mib": args.memory_limit_mib, "seed_order": 17713, "pacing_ms": 0,
