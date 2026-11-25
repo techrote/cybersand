@@ -2033,7 +2033,7 @@ func art_take_result() -> Dictionary:
 
 const ART_PALETTE = preload("res://scripts/workbench_setup.gd").MATERIALS
 
-func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected: Array, epoch: int, allowed: Array = [0,58]) -> Dictionary:
+func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected: Array, epoch: int, allowed: Array = [0,58], approval: Dictionary = {}) -> Dictionary:
 	if points.is_empty() or points.size()%2 != 0 or points.size()/2 > MAX_BRUSH_FOOTPRINT_CELLS or material not in ART_PALETTE or material not in allowed:
 		return {"status":"refused","reason":"Invalid native chunk","requested":points.size()/2,
 			"changed":0,"unchanged":0,"checked":0,"excluded":0,"refused":points.size()/2,"confirmed":0}
@@ -2052,9 +2052,20 @@ func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected
 	elif _legacy_edits_pending_locked():
 		reason = "Wait for the previous brush command."
 		retryable = true
+	if reason.is_empty() and not approval.is_empty():
+		if not approval.get("source") is Dictionary or not approval.get("allow_destructive") is bool:
+			reason = "Invalid approved construction fence."
+		elif not _paused: reason = "Approved construction requires a paused World."
+		else:
+			var source: Dictionary = approval.source
+			for key: String in ["generation","revision","tick","authoring_generation"]:
+				var actual := _authoring_generation if key == "authoring_generation" else int(_paint_context.get(key,-1))
+				if not source.get(key) is int or int(source[key]) != actual:
+					reason = "Approved native source changed; inspect and approve a fresh preview."
+					break
 	if reason.is_empty():
 		_art_pending = {"points":points.duplicate(),"material":material,"scope":scope,"protected":protected.duplicate(),"epoch":epoch,
-			"generation":_world_generation,"settings_revision":_construction_settings_revision}
+			"generation":_world_generation,"settings_revision":_construction_settings_revision,"approval":approval.duplicate(true)}
 	_mutex.unlock()
 	return {"status":"queued"} if reason.is_empty() else {"status":"refused","reason":reason,
 		"requested":points.size()/2,"changed":0,"unchanged":0,"checked":0,"excluded":0,
@@ -2090,6 +2101,11 @@ func _consume_art() -> void:
 	# History must not infer a previous revision from the changed-cell count.
 	var before_source := {"generation":_world_generation,"revision":int(_world.revision),
 		"tick":int(_world.tick_index),"authoring_generation":_authoring_generation}
+	var approval: Dictionary = command.get("approval",{})
+	if failure.is_empty() and not approval.is_empty():
+		if not _paused: failure = "Approved construction requires a paused World."
+		elif approval.get("source",{}) != before_source:
+			failure = "Approved source changed before native execution; no stale chunk applied."
 	if failure.is_empty() and _water_lab_active: failure = "Controlled Water experiments do not admit drawing edits"
 	if failure.is_empty() and _micro_active and not _scenario_host.allows_tool("erase" if int(command.material)==0 else "paint"):
 		failure = "The installed scenario does not allow this drawing tool"
@@ -2114,6 +2130,10 @@ func _consume_art() -> void:
 			excluded += 1
 			continue
 		var before: int = _world.stored_material_at(x,y)
+		if not approval.is_empty() and not bool(approval.get("allow_destructive",false)) and before != 0 and before != int(command.material):
+			refused += 1
+			failure = "Approved construction does not permit replacing occupied material."
+			break
 		if before not in [0,58]:
 			excluded += 1
 			continue

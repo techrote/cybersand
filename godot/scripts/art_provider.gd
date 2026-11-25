@@ -21,6 +21,16 @@ const ASYNC_REQUEST_CHARACTERS := 65536
 var _redactor := Redactor.new()
 var _preparation: RefCounted
 var _dispatch_guard: Callable
+# A non-direct request owns exactly one completion callable. Its response never
+# enters the ordinary finished signal, whose panel consumer paints immediately.
+# Keep the delivered serial separately: clearing the callable must not turn a
+# duplicate owned completion into an ordinary direct-paint completion.
+var _response_owner: Dictionary = {}
+var _last_owned_outcome: Dictionary = {}
+var _finished_serial := -1
+const OWNED_MODES := ["discuss", "propose", "develop", "review", "architecture-proposal"]
+const MAX_OWNED_REQUEST_BYTES := 2 * 1024 * 1024
+const MAX_OWNED_IMAGE_BYTES := 2 * 1024 * 1024
 var _prepared_assistant: Dictionary = {}
 var response_preparation_jobs := 0
 var peak_response_preparation_jobs := 0
@@ -1019,6 +1029,11 @@ func cancel(reason: String = "Human Stop") -> void:
 	var begin_usec := Time.get_ticks_usec()
 	var was_active := active or request != null
 	var timing := last_request_timing
+	var retired := _response_owner
+	_response_owner = {}
+	if not retired.is_empty():
+		_finished_serial = int(retired.id)
+		_last_owned_outcome = _owned_projection(retired,"cancelled")
 	# A completed value task can be reaped just before a queued owner deletion.
 	# Until its owner consumes it, it is still an unpublished preparation.
 	var preparing := _preparation != null
@@ -1044,6 +1059,32 @@ func cancel(reason: String = "Human Stop") -> void:
 	if was_active and not timing.is_empty():
 		timing["status"] = "cancelled"
 		timing["cancel_usec"] = Time.get_ticks_usec() - begin_usec
+	# Retire before audit/callback reentrancy. This callback belongs to the old
+	# request even if an audit observer has already dispatched its successor.
+	if not retired.is_empty():
+		var callback: Callable = retired.completion
+		if callback.is_valid():
+			var cancelled_reason := reason if not reason.strip_edges().is_empty() else "Owned request cancelled."
+			callback.call(int(retired.id),"",_owned_projection(retired,"cancelled"),redact(cancelled_reason).left(512))
+
+func cancel_owned(provider_id: int, request_id: String, reason: String = "Owner Stop") -> bool:
+	# -1 is the Architecture bridge's synchronous-dispatch cancellation token.
+	# It still requires the exact textual identity. It is never a wildcard for
+	# cancelling an ordinary Art request or an unrelated owner's successor.
+	if _response_owner.is_empty() or _response_owner.request_id != request_id: return false
+	if provider_id != -1 and provider_id != int(_response_owner.id): return false
+	if int(_response_owner.id) != serial: return false
+	cancel(reason)
+	return true
+
+static func _owned_projection(owner: Dictionary, state: String) -> Dictionary:
+	return {"format":"cybersand-art-owned-completion-v1", "provider_id":int(owner.id),
+		"request_id":str(owner.request_id), "mode":str(owner.mode), "state":state}
+
+func owned_request() -> Dictionary:
+	# No credentials, endpoint, prompt, context, image or callable escapes here.
+	if _response_owner.is_empty(): return _last_owned_outcome.duplicate(true)
+	return _owned_projection(_response_owner,str(last_request_timing.get("status","preparing")))
 
 static func quota_reset_seconds(headers: PackedStringArray) -> float:
 	var values: Dictionary = {}
@@ -1096,7 +1137,14 @@ static func request_url(provider: String, endpoint: String) -> String:
 
 func _finish_request(id: int, text: String, data: Dictionary, error: String,
 		timing: Dictionary, callback_begin_usec: int) -> void:
-	if id != serial: return
+	if id != serial or id == _finished_serial: return
+	if not _response_owner.is_empty():
+		# Context can change while HTTP or response preparation is running too.
+		# A refusal retires the owned callback; it never falls through to paint.
+		if not _dispatch_allowed(id): return
+		if not (_response_owner.get("completion",Callable()) as Callable).is_valid():
+			cancel("The proposal response owner is no longer available")
+			return
 	var redact_begin_usec := Time.get_ticks_usec()
 	var safe_text := redact(text)
 	var safe_error := redact(error)
@@ -1108,8 +1156,22 @@ func _finish_request(id: int, text: String, data: Dictionary, error: String,
 	timing.status = "completed"
 	timing.outcome = "success" if safe_error.is_empty() else "failure"
 	active = false
+	_finished_serial = id
+	var completed_owner := _response_owner
+	_response_owner = {}
+	_dispatch_guard = Callable()
 	var signal_begin_usec := Time.get_ticks_usec()
-	finished.emit(id,safe_text,data,safe_error)
+	if completed_owner.is_empty():
+		finished.emit(id,safe_text,data,safe_error)
+	else:
+		_last_owned_outcome = _owned_projection(completed_owner,timing.outcome)
+		# The full admitted redacted envelope stays in this provider's audit.
+		# Consumers receive redacted text plus a small host-generated receipt,
+		# never raw echoed credentials or an invented native execution receipt.
+		var receipt := _last_owned_outcome.duplicate(true)
+		receipt.usage = usage.duplicate(true)
+		var callback: Callable = completed_owner.completion
+		callback.call(id,safe_text,receipt,safe_error)
 	# Only the synchronous completion/panel audit chain needs these full JSON
 	# encodings. Release them now, without clearing a successor's own cache.
 	if int(_prepared_assistant.get("serial",-1)) == id: _prepared_assistant = {}
@@ -1307,6 +1369,82 @@ static func _request_value_weight(value: Variant, depth: int = 0) -> int:
 	return -1
 
 func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "", context: Array = [], pre_dispatch_guard: Callable = Callable()) -> String:
+	return _send(provider,endpoint,model,key,prompt,instructions,tokens,seconds,png,context,pre_dispatch_guard,{})
+
+func send_owned(parameters: Dictionary, completion: Callable, pre_dispatch_guard: Callable) -> Dictionary:
+	# Only the Art owner supplies these transport settings. Model/Architecture
+	# requests go through art_proposal_transport, which obtains a fresh settings
+	# snapshot without accepting credential or endpoint overrides from the model.
+	if active: return {"ok":false,"provider_id":-1,"reason":"A model request is already active."}
+	if _preparation_active(): return {"ok":false,"provider_id":-1,"reason":"Previous provider preparation is stopping. Retry Send shortly."}
+	var problem := _owned_parameters_error(parameters)
+	if not completion.is_valid(): problem = "One live response consumer is required."
+	if not pre_dispatch_guard.is_valid(): problem = "A live owner context guard is required."
+	if not problem.is_empty(): return {"ok":false,"provider_id":-1,"reason":problem}
+	var expected_id := serial + 1
+	var owner := {"id":expected_id,"request_id":parameters.request_id,"mode":parameters.mode,"completion":completion}
+	problem = _send(parameters.provider,parameters.endpoint,parameters.model,parameters.get("key",""),
+		parameters.prompt,parameters.instructions,int(parameters.tokens),float(parameters.seconds),
+		parameters.get("png",""),parameters.get("context",[]),pre_dispatch_guard,owner)
+	# A synchronous audit/guard observer may cancel and start a newer request.
+	# Return the captured identity, never the successor's current serial.
+	if problem.is_empty() and serial != expected_id: problem = "Owned request retired during dispatch."
+	return {"ok":problem.is_empty(),"provider_id":expected_id if problem.is_empty() else -1,
+		"request_id":parameters.request_id,"mode":parameters.mode,"reason":problem}
+
+static func _owned_parameters_error(parameters: Dictionary) -> String:
+	for field: String in ["request_id","mode","provider","endpoint","model","prompt","instructions"]:
+		if not parameters.get(field) is String: return "Owned request field '%s' must be text." % field
+	if parameters.mode not in OWNED_MODES: return "Unknown owned request mode."
+	if parameters.request_id.is_empty() or parameters.request_id.length() > 256:
+		return "Owned requests need a nonempty identity of at most 256 characters."
+	if parameters.provider not in ["OpenAI","NVIDIA","LM Studio"]: return "Unknown provider protocol."
+	if parameters.endpoint.length() > 2048 or parameters.model.length() > 512:
+		return "Owned provider endpoint or model identifier exceeds its bounded setting length."
+	if not parameters.get("tokens") is int or int(parameters.tokens) < 1 or int(parameters.tokens) > 65536:
+		return "Owned requests need a finite output allowance from 1 to 65536 tokens."
+	if not (parameters.get("seconds") is int or parameters.get("seconds") is float):
+		return "Owned requests need a numeric timeout."
+	if not parameters.get("key","") is String or not parameters.get("png","") is String or not parameters.get("context",[]) is Array:
+		return "Owned request credentials, image or conversation have invalid value types."
+	if str(parameters.get("key","")).length() > 4096: return "Provider credential exceeds 4096 characters."
+	if parameters.get("context",[]).size() > 128: return "Owned context exceeds 128 admitted messages."
+	var image_text: String = parameters.get("png","")
+	if image_text.length() > MAX_OWNED_IMAGE_BYTES or image_text.to_utf8_buffer().size() > MAX_OWNED_IMAGE_BYTES:
+		return "Owned image exceeds the two MiB encoded-image budget."
+	var values := {"prompt":parameters.prompt,"instructions":parameters.instructions,"context":parameters.get("context",[])}
+	var budget := {"bytes":MAX_OWNED_REQUEST_BYTES,"items":32768}
+	if not bounded_json_values(values,budget): return "Owned context exceeds its two MiB, depth or finite-value budget."
+	return ""
+
+static func bounded_json_values(value: Variant, budget: Dictionary, depth: int = 0) -> bool:
+	# Bound traversal as well as bytes. Large hostile arrays and cyclic containers
+	# cannot keep validation busy or enter a value preparation worker unexamined.
+	if depth > 24 or int(budget.get("items",0)) <= 0: return false
+	budget.items = int(budget.items)-1
+	budget.bytes = int(budget.bytes)-1 # Separator/colon allowance per value.
+	if value is String:
+		if value.length() > int(budget.bytes): return false
+		budget.bytes = int(budget.bytes)-value.json_escape().to_utf8_buffer().size()-2
+	elif value is Dictionary:
+		if value.size() > int(budget.items): return false
+		budget.bytes = int(budget.bytes)-2
+		for field: Variant in value:
+			if not (field is String or field is int) or not bounded_json_values(str(field),budget,depth+1) or not bounded_json_values(value[field],budget,depth+1): return false
+	elif value is Array:
+		if value.size() > int(budget.items): return false
+		budget.bytes = int(budget.bytes)-2
+		for item: Variant in value:
+			if not bounded_json_values(item,budget,depth+1): return false
+	elif value is float:
+		if not is_finite(value): return false
+		budget.bytes = int(budget.bytes)-24
+	elif value == null or value is bool or value is int:
+		budget.bytes = int(budget.bytes)-24
+	else: return false
+	return int(budget.bytes) >= 0
+
+func _send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String, context: Array, pre_dispatch_guard: Callable, response_owner: Dictionary) -> String:
 	if active: return "A model request is already active."
 	if _preparation_active(): return "Previous provider preparation is stopping. Retry Send shortly."
 	if model.strip_edges().is_empty(): return "Enter a model ID (discovery is optional)."
@@ -1333,10 +1471,14 @@ func send(provider: String, endpoint: String, model: String, key: String, prompt
 	last_request_offset = -1
 	_prepared_assistant = {}
 	_dispatch_guard = pre_dispatch_guard
+	_response_owner = response_owner
 	usage = {}; returned_model = ""
 	retry_after_seconds = 0.0
 	active = true
 	if not _dispatch_allowed(id): return "Request was cancelled before preparation."
+	if not response_owner.is_empty():
+		log_event("owned_request",_owned_projection(response_owner,"preparing"))
+		if not _dispatch_allowed(id): return "Owned request was cancelled before preparation."
 	var prepared := ResponsePreparation.new()
 	prepared.direction = "request"
 	prepared.request_id = id
@@ -1366,7 +1508,8 @@ func _dispatch_allowed(id: int) -> bool:
 		if not _dispatch_guard.is_valid():
 			cancel("Request context became unavailable before dispatch")
 			return false
-		if not bool(_dispatch_guard.call()):
+		var allowed: Variant = _dispatch_guard.call()
+		if not (allowed is bool and allowed):
 			if id == serial: cancel("Request context changed before dispatch")
 			return false
 	return id == serial

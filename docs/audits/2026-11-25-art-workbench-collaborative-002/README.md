@@ -50,3 +50,27 @@ Architecture #777 has independent passing source process groups but retained pri
 The shared local execution environment became unavailable during intake. Source reads and GitHub persistence remain available. Three specialists are continuing source/design work through the GitHub interface. Local compilation, native Worlds, graphical checks and Windows execution are **pending**, not passing. No successor application or evaluator has yet been qualified.
 
 Next: implement and independently exercise the exclusive response route, then context/compiler/session/UI and creative scenarios; complete source-bound Linux and Windows campaigns and pristine extracted package checks before any evaluator claim.
+
+## Implementation checkpoint, 25 November 2026
+
+Local execution became available after intake. The lead integrates three independently owned lanes: exclusive provider dispatch and a source-pinned Architecture probe; bounded native context, typed proposal compiler/preview, nine native scenes and 24 creative briefs; a single-window collaborative workspace plus strict package gates. The predecessor direct page, complete redacted audit, session-only conversation and native history remain authoritative.
+
+The lead adds a read-only capture seam through the existing PAINT receipt owner, per-chunk native source/permission guards through the existing Art executor, a zero-write material-difference overlay and the discussion/proposal/revision/approval/readback coordinator. Native source identity includes generation, revision, tick and authoring generation. A model reply cannot acquire stage approval. Subsequent stages need separate owner action, and readback compares the complete selected native material plane with the preview prediction.
+
+Initial development checks (not a final application qualification):
+
+| Check | Actual observation |
+| --- | --- |
+| Exclusive owned transport | 155 assertions passed; actual loopback HTTP; no ordinary paint completion |
+| Existing provider lifecycle regressions in lane A | Provider 54, failure lifecycle 106, outgoing preparation 34 and incoming preparation 38 assertions passed |
+| Native capture/execution authority | 39 assertions passed in ordinary Workbench with real native writes, protected exclusion, destructive refusal and a manual edit after the first 4096-cell chunk |
+| Typed proposal contracts | 74 assertions passed after preserving and fixing an exact StringName-key diagnostic |
+| Displayed collaboration controls | 87 assertions passed using pinned Godot 4.7 and an authenticated dummy X11 display; framebuffer retained; minimum 520×320 exercised |
+| Architecture source-pinned seam | 32 assertions passed with unchanged #777 bridge/Workflow/typed parser at `17c6b5b`, three actual loopback exchanges, zero ordinary completion/native writes/model inference |
+| Package wrapper development tests | Eleven Python tests passed at the initial wrapper; strengthened custody checks still require fresh qualification |
+
+Retained unsuccessful attempts: the first copied-value proposal test rejected a legitimate newly added StringName key; the first UI fixture omitted a required text-change event; a session-test parse error required an explicit Array annotation; a creative-cohort parse error required explicit Boolean annotations. A full editor import and one full native session startup were killed with exit 137 before useful test assertions. Shared temporary/disk capacity is constrained; no product cause is inferred from the signal alone. All original logs remain separate from later results. No passing native session or creative campaign is asserted yet.
+
+New wrapper qualification requires fresh same-source headless and displayed receipts, original logs, exact pinned Godot and native/Rapier hashes, and the complete predecessor application matrix. It does not inherit a new application pass from the predecessor or substitute a live HTTP 404 for an absent listener. The original physical Windows/NVIDIA no-listener acceptance remains owner-pending.
+
+The root integration checkpoint preserves the qualified Art parents and remote specialist lane parents. Provider specialist local development identities are `bf42a29bfea32b22bf5e193d12635072a744bfb2`, `c3cdf270` and `eb1eb97ba33390e9e6d572d89efa1b3a7d60c94f`; their source is included in the integration tree. A Git transport push could not authenticate, so the authorized GitHub connector persists this checkpoint. Local development SHA values are not represented as remotely reachable qualification pins.

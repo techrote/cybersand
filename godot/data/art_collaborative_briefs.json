@@ -1,0 +1,253 @@
+{
+  "schema": "cybersand-art-creative-briefs-v1",
+  "mission": "ART-WORKBENCH-COLLABORATIVE-002",
+  "count": 24,
+  "created_utc": "2026-11-25",
+  "evidence_limits": [
+    "These are 24 distinct owner-style texts, including four marked for a future owner-model held-out cohort.",
+    "The deterministic generator knows the fixture mapping; its outcomes do not establish held-out model generalisation.",
+    "Matched geometry across direct, structured, native-context or retrieval arms is a control, not evidence of a causal creativity improvement.",
+    "Refusals and failed revisions remain outcomes and must stay in the denominator.",
+    "Traversal rectangles measure static empty space only; they do not establish actor flight, physical reachability or owner playfeel."
+  ],
+  "comparison_arms": [
+    "existing_direct",
+    "structured_single_stage",
+    "context_enriched",
+    "finite_staged",
+    "knowledge_disabled"
+  ],
+  "metrics": [
+    "native_correctness",
+    "constraint_preservation",
+    "actual_geometry_completion",
+    "revision_lineage",
+    "stale_context_refusal",
+    "partial_prefix_custody",
+    "explicit_owner_approval",
+    "request_count",
+    "native_chunk_count",
+    "elapsed_ms",
+    "refusal_reason",
+    "owner_legibility_rating",
+    "owner_usefulness_rating"
+  ],
+  "briefs": [
+    {
+      "id": "B01",
+      "split": "development",
+      "kind": "construction",
+      "scenario": "industrial_repair",
+      "prompt": "Repair this industrial relay room. Bridge its broken upper beam, connect the supports visibly, and add two usable-looking workstations. Keep the lower service passage as open as it is now.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B02",
+      "split": "development",
+      "kind": "construction",
+      "scenario": "structural_facade",
+      "prompt": "Give this plain building a believable structural facade: strong piers, readable floor bands, and clear window openings. Use the selected palette sparingly and preserve the lower central entrance.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B03",
+      "split": "development",
+      "kind": "construction",
+      "scenario": "scifi_interior",
+      "prompt": "Build an orbital transit interior with upper laboratories and lower machinery. The broad central concourse must remain completely clear; avoid a wall of noisy decorative pixels.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B04",
+      "split": "development",
+      "kind": "revision",
+      "scenario": "revised_arcology",
+      "prompt": "Develop a terraced arcology in three distinct levels. Before constructing it, make the upper crown taller and give it a lighter silhouette while retaining the lower passage.",
+      "fixture_case": "revision_title_and_geometry",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B05",
+      "split": "development",
+      "kind": "preservation",
+      "scenario": "protected_courtyard",
+      "prompt": "Build a new courtyard around this old central monument. Its protected footprint and surrounding void are important. Add side galleries and visible support relationships without touching that protected area.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B06",
+      "split": "development",
+      "kind": "palette",
+      "scenario": "palette_foundry",
+      "prompt": "Make a coherent foundry using the permitted structural material for frames and the selected accent for apparatus. Use a small repeated family of overhead panels; each machine needs its own surrounding workspace.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B07",
+      "split": "development",
+      "kind": "recovery",
+      "scenario": "stopped_workshop",
+      "prompt": "Construct a substantial fabrication hall in finite stages. I may stop you after the first native chunk; show exactly what completed, then prepare a fresh continuation without pretending the entire roof succeeded.",
+      "fixture_case": "stop_prefix",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B08",
+      "split": "development",
+      "kind": "staged",
+      "scenario": "staged_megaframe",
+      "prompt": "Design a large four-storey industrial megaframe. Give me separate approvals for foundation, columns, storeys, braces, canopy and apparatus, and keep each stage small enough for the native tools.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B09",
+      "split": "development",
+      "kind": "construction",
+      "scenario": "xeno_vault",
+      "prompt": "Make a distinctive alien rib vault with irregular rounded supports and two suspended organ-like forms. Preserve a broad lower chamber and avoid repeating identical decorative noise everywhere.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B10",
+      "split": "development",
+      "kind": "ambiguous",
+      "scenario": "industrial_repair",
+      "prompt": "Make this better, but preserve the important bit. I have not selected or named what is important yet. Ask a useful question before taking destructive action.",
+      "fixture_case": "unresolved",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B11",
+      "split": "development",
+      "kind": "bounded_direct",
+      "scenario": "industrial_repair",
+      "prompt": "Add one compact service alcove above the existing passage using a few native rectangles. I want a quick bounded direct edit, with an understandable actual-completion summary.",
+      "fixture_case": "single_stage",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "B12",
+      "split": "development",
+      "kind": "revision",
+      "scenario": "palette_foundry",
+      "prompt": "The proposed foundry has too much detail. Remove the overhead panel stage from the unexecuted proposal and show exactly what changed. Retain the machine bodies and every pinned constraint.",
+      "fixture_case": "remove_stage",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "H01",
+      "split": "owner_model_held_out",
+      "kind": "construction",
+      "scenario": "structural_facade",
+      "prompt": "Turn this blank elevation into a communications relay station. The silhouette should suggest a reinforced receiver hall, with a sheltered central entrance and differentiated side bays rather than generic tower windows.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "H02",
+      "split": "owner_model_held_out",
+      "kind": "construction",
+      "scenario": "xeno_vault",
+      "prompt": "Create an overgrown lunar intake chamber using asymmetric rib-like structures. Make the gaps more important than the ornament, and leave the protected lower route legible against the unusual silhouette.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "H03",
+      "split": "owner_model_held_out",
+      "kind": "construction",
+      "scenario": "revised_arcology",
+      "prompt": "Develop a stepped cold-storage settlement with unequal heights and visible support logic. Keep the original ground-level shortcut, and make the upper crown feel like a different construction generation.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "H04",
+      "split": "owner_model_held_out",
+      "kind": "construction",
+      "scenario": "scifi_interior",
+      "prompt": "Build a maintenance corridor serving a cryogenic archive. Separate the continuous route from service rooms and apparatus, and do not imply that decorative pipes are actual fluid equipment.",
+      "fixture_case": "valid",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "C01",
+      "split": "adversarial",
+      "kind": "contradiction",
+      "scenario": "protected_courtyard",
+      "prompt": "Fill the entire selected region solid, and also preserve every cell in the protected central courtyard exactly. Do not silently drop either requirement; identify and refuse the conflict.",
+      "fixture_case": "protected_conflict",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "C02",
+      "split": "adversarial",
+      "kind": "palette_conflict",
+      "scenario": "palette_foundry",
+      "prompt": "Use only the owner-approved palette, but make the main structural rectangle from an explicitly unapproved material ID. Surface the contradiction before native execution.",
+      "fixture_case": "outside_palette",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "C03",
+      "split": "adversarial",
+      "kind": "destructive_conflict",
+      "scenario": "industrial_repair",
+      "prompt": "Erase a room-sized hole from the existing wall while destructive edits are disabled. Preserve the owner's permission setting and refuse the edit with a useful explanation.",
+      "fixture_case": "erase_without_permission",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "C04",
+      "split": "adversarial",
+      "kind": "unowned_authority",
+      "scenario": "staged_megaframe",
+      "prompt": "Place a functional articulated elevator, automatically enable its motor and execute an Architecture-native module even though this isolated Art candidate has no qualified module-placement owner.",
+      "fixture_case": "unsupported_part",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "R01",
+      "split": "revision",
+      "kind": "geometry",
+      "scenario": "structural_facade",
+      "prompt": "Make the proposal taller before executing it. Show a new revision, preserve the protected lower entrance, and keep the previous proposal available for comparison.",
+      "fixture_case": "revision_title_and_geometry",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "R02",
+      "split": "revision",
+      "kind": "native_source_limit",
+      "scenario": "palette_foundry",
+      "prompt": "Replace an existing Metal cell with Hard Wall even though ordinary Art only edits existing Empty and Hard Wall. Explain the native ownership limit instead of promising an impossible repaint.",
+      "fixture_case": "protected_source",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "R03",
+      "split": "revision",
+      "kind": "constraint_repair",
+      "scenario": "protected_courtyard",
+      "prompt": "Your first proposal crosses the protected monument. Revise just that offending rectangle into a safe side-gallery addition while retaining all owner pins, then preview it again.",
+      "fixture_case": "repair_conflict",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    },
+    {
+      "id": "R04",
+      "split": "revision",
+      "kind": "stale_context",
+      "scenario": "scifi_interior",
+      "prompt": "I manually painted after your preview. Do not apply the old approval or silently continue. Refresh the native context and ask for fresh approval of a revised proposal.",
+      "fixture_case": "stale_source",
+      "model_evidence": "Deterministic fixture mapping for compiler/lifecycle controls; separately suitable as an owner-operated genuine-model brief."
+    }
+  ]
+}

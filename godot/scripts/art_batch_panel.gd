@@ -163,6 +163,13 @@ var selection_editor: Control
 var protected_row := HBoxContainer.new()
 var conversation_error := ""
 var model_controls: Array[Control] = []
+const CollaborationWorkspace = preload("res://scripts/art_collaboration_workspace.gd")
+const CollaborationSession = preload("res://scripts/art_collaboration_session.gd")
+var collaboration: RefCounted
+var collaboration_workspace: Control
+var collaboration_button := Button.new()
+var collaboration_page := false
+var _direct_controls: Array[Control] = []
 
 func _ready() -> void:
 	title = "Art workbench"
@@ -208,6 +215,10 @@ func _ready() -> void:
 		actions.add_child(button)
 	undo_button.tooltip_text = "Undo the latest paused Workbench edit, including agent drawing. Stop active agent runs first."
 	redo_button.tooltip_text = "Redo the latest undone Workbench edit while the native source remains unchanged."
+	collaboration_button.text = "Collaborate"
+	collaboration_button.tooltip_text = "Discuss native context, develop a proposal and approve bounded stages. Uses this same Art provider, conversation and native history."
+	collaboration_button.pressed.connect(func() -> void: show_collaboration(not collaboration_page))
+	actions.add_child(collaboration_button)
 	column.add_child(actions)
 	mount_provider_controls(column)
 	state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -253,6 +264,34 @@ func _ready() -> void:
 	add_child(conversation_editor)
 	conversation_editor.hide()
 	conversation_editor.confirmed.connect(_apply_conversation_edits)
+	for node: Node in column.get_children():
+		if node != actions and node is Control: _direct_controls.append(node)
+	collaboration_workspace = CollaborationWorkspace.new()
+	collaboration_workspace.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(collaboration_workspace)
+	collaboration_workspace.hide()
+	collaboration = CollaborationSession.new()
+	collaboration.bind(self,collaboration_workspace)
+	if collaboration_workspace.has_method("set_material_options"):
+		var choices: Array = []
+		for i: int in ArtPlan.Setup.MATERIALS.size():
+			choices.append({"id":ArtPlan.Setup.MATERIALS[i],"name":ArtPlan.Setup.MATERIAL_NAMES[i]})
+		collaboration_workspace.set_material_options(choices)
+
+func show_collaboration(on: bool = true) -> void:
+	collaboration_page = on
+	collaboration_button.text = "Direct" if on else "Collaborate"
+	for control: Control in _direct_controls: control.visible = not on
+	if not on:
+		protected_row.visible = protect.button_pressed
+		for row: Control in rows: row.visible = input_mode.selected != 0
+		for control: Control in model_controls: control.visible = input_mode.selected != 0
+	collaboration_workspace.visible = on
+	draw.visible = not on
+	input_mode.visible = not on
+	tools_button.visible = not on and input_mode.selected != 2
+	if collaboration != null and collaboration.overlay != null:
+		collaboration.overlay.visible = on
 
 func _bind_selection() -> void:
 	if wb == null or wb.paint_editor == null or selection_editor == wb.paint_editor: return
@@ -441,6 +480,9 @@ func _finish_manual_audit(on_shutdown: bool = false) -> void:
 	_manual_active_batch_sequence = -1
 
 func submit_text() -> void:
+	if collaboration != null and collaboration.busy():
+		input_error = "Finish or Stop collaborative work before direct drawing."
+		return
 	var epoch := ui_epoch
 	executor.wb = wb
 	_register_provider_keys_for_redaction()
@@ -497,6 +539,7 @@ func _process(_delta: float) -> void:
 	var native_poll_begin_usec := Time.get_ticks_usec()
 	executor.poll()
 	last_native_poll_usec = Time.get_ticks_usec() - native_poll_begin_usec
+	if collaboration != null: collaboration.poll()
 	_finish_manual_audit()
 	_update_conversation_guard()
 	if traffic_dirty and traffic_window.visible and Time.get_ticks_msec() >= traffic_refresh_after: refresh_traffic()
@@ -527,7 +570,8 @@ func _process(_delta: float) -> void:
 	draw.disabled = executor.active
 	var history_replaying: bool = wb.paint_editor != null and wb.paint_editor.history_replaying()
 	stop.disabled = not executor.active and not provider.active and not capturing \
-		and remaining_turns == 0 and not history_replaying and not provider.export_active and not provider.resume_active
+		and remaining_turns == 0 and not history_replaying and not provider.export_active and not provider.resume_active \
+		and (collaboration == null or not collaboration.busy())
 	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0 \
 		or provider.export_active or provider.resume_active or (wb.paint_editor != null and wb.paint_editor.busy())
 	export_button.disabled = not history_block_reason().is_empty()
@@ -542,6 +586,9 @@ func _process(_delta: float) -> void:
 	draw.text = "Draw" if input_mode.selected==0 else "Send"
 	for row: Control in rows: row.visible = input_mode.selected!=0
 	for control: Control in model_controls: control.visible = input_mode.selected!=0
+	if collaboration_page:
+		for control: Control in _direct_controls: control.hide()
+		tools_button.hide()
 	key_button.text = "Key ✓" if not str(keys.get(current_provider,"")).is_empty() else "Key…"
 	input_mode.tooltip_text = "Turns limits requests per Send. Image attaches a canvas crop. Select a vision model to use it." if input_mode.selected!=0 else "Ordered JSON: see enabled shapes under Tools. Use the selected material ID. 0 erases when enabled. Large drawings stream in native-sized chunks."
 	var status_text := "Idle"
@@ -961,6 +1008,7 @@ func load_profile() -> void:
 
 func stop_all(reason: String = "Human Stop") -> void:
 	var began_usec := Time.get_ticks_usec()
+	if collaboration != null: collaboration.stop(reason)
 	if provider.resume_active:
 		provider.cancel_resume()
 		history_load_error = "Conversation restoration cancelled; saved history preserved. Reopen Art or Conversation to retry."
@@ -983,6 +1031,7 @@ func stop_all(reason: String = "Human Stop") -> void:
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
 func history_block_reason() -> String:
+	if collaboration != null and collaboration.busy(): return "Stop collaborative work and wait for its native receipt before Undo or Redo."
 	if not _history_lost_receipt_error.is_empty(): return _history_lost_receipt_error
 	if not _history_persistence_error.is_empty(): return _history_persistence_error
 	if provider.resume_active: return "Finish or stop conversation restoration before changing history."
@@ -1455,6 +1504,9 @@ func persist_traffic_path() -> bool:
 	return provider.last_event_stored and not provider.log_path.is_empty()
 
 func send_prompt() -> void:
+	if collaboration != null and collaboration.busy():
+		input_error = "Finish or Stop collaborative work before direct model painting."
+		return
 	if executor.active or provider.active or capturing or remaining_turns != 0 or provider.export_active: return
 	if wb.paint_editor != null and wb.paint_editor.busy():
 		input_error = "Wait for the shared edit to finish before sending another model request."
