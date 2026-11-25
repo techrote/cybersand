@@ -1,0 +1,27 @@
+[
+  {
+    "case": "copied-historical-status",
+    "outcome": "rejected",
+    "reason": "Authority boundary: docs/systems/example.md is not a default document"
+  },
+  {
+    "case": "evidence-kind-default",
+    "outcome": "rejected",
+    "reason": "Default retrieval excludes explicit-only or navigation document: docs/systems/example.md"
+  },
+  {
+    "case": "research-kind-default",
+    "outcome": "rejected",
+    "reason": "Default retrieval excludes explicit-only or navigation document: docs/systems/example.md"
+  },
+  {
+    "case": "duplicate-status",
+    "outcome": "rejected",
+    "reason": "Duplicate frontmatter status"
+  },
+  {
+    "case": "malformed-delimiter",
+    "outcome": "rejected",
+    "reason": "Unsupported frontmatter field syntax"
+  }
+]

@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import re
 
-POLICY_VERSION = "historical-isolation-v3"
+POLICY_VERSION = "historical-isolation-v4"
 HISTORICAL_AUTHORITY = "historical-non-authoritative"
 HISTORICAL_PREFIXES = ("docs/history", "docs/audits")
 FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research", "tools"}
@@ -40,6 +40,7 @@ def retrieval_selection(metadata: dict | None = None) -> str:
 
 def default_selection_allowed(path: Path, root: Path, metadata: dict | None = None) -> bool:
     """Call after require_authority; never use selection to hide bad authority."""
+    metadata = source_frontmatter(path)
     selection = retrieval_selection(metadata)
     relative = path.resolve().relative_to(root.resolve()).as_posix()
     kind = (metadata or {}).get("document-kind")
@@ -52,7 +53,8 @@ def default_selection_allowed(path: Path, root: Path, metadata: dict | None = No
         if kind not in DOCUMENT_KINDS:
             raise ValueError("Unsupported document-kind scalar")
     return (selection != "explicit-only" and relative not in NAVIGATION
-            and kind != "navigation")
+            and scalar((metadata or {}).get("status", "Current")) != "Draft"
+            and kind not in {"navigation", "evidence", "research"})
 
 
 def frontmatter_field(line: str) -> tuple[str, str] | None:
@@ -84,6 +86,42 @@ def frontmatter_field(line: str) -> tuple[str, str] | None:
     return key, value.strip()
 
 
+def source_frontmatter(path: Path) -> dict[str, str]:
+    """Validate exact source metadata independently of a caller's parsed copy.
+
+    Legacy unlabelled documents remain readable by the frozen evaluator. The
+    supported agent adapter additionally requires complete current metadata.
+    Every declared field, however, must be unambiguous in all ingestion paths.
+    """
+    text = path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
+    if not text.startswith("---\n"):
+        return {}
+    lines = text.splitlines()
+    try:
+        end = lines.index("---", 1)
+    except ValueError as exc:
+        raise ValueError("Unterminated frontmatter") from exc
+    result = {}
+    for line in lines[1:end]:
+        field = frontmatter_field(line)
+        if field is None:
+            continue
+        key, value = field
+        if key in result:
+            raise ValueError("Duplicate frontmatter " + key)
+        result[key] = value
+    return result
+
+
+def scalar(value):
+    if not isinstance(value, str):
+        raise ValueError("Unsupported authority/status metadata scalar")
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+        value = value[1:-1]
+    return value
+
+
 def historical_path(path: Path, root: Path) -> bool:
     """Resolve aliases/symlinks before deciding which authority class applies."""
     relative = path.resolve().relative_to(root.resolve()).as_posix()
@@ -97,7 +135,14 @@ def require_authority(path: Path, root: Path, *, historical: bool,
     root, path = root.resolve(), path.resolve()
     if not path.is_relative_to(root):
         raise ValueError("Retrieval documents must stay inside the source repository")
-    declared = (metadata or {}).get("authority")
+    actual = source_frontmatter(path)
+    # A stale/forged metadata argument cannot relabel a changed source. Check
+    # the authority-bearing scalar fields; lists have different parser forms.
+    for key in ("authority", "retrieval", "document-kind", "status"):
+        supplied = (metadata or {}).get(key)
+        if supplied is not None and (key not in actual or scalar(supplied) != scalar(actual[key])):
+            raise ValueError("Source metadata mismatch: " + key)
+    declared = actual.get("authority")
     if declared is not None:
         # The repository's small frontmatter reader retains scalar quotes.
         # Recognize its supported spellings; unfamiliar syntax must not silently
@@ -110,7 +155,11 @@ def require_authority(path: Path, root: Path, *, historical: bool,
         if declared not in {HISTORICAL_AUTHORITY, "current-documentation", "owner-confirmed-intent"}:
             raise ValueError("Unsupported retrieval authority scalar")
     tagged = declared == HISTORICAL_AUTHORITY
-    is_history = historical_path(path, root) or tagged
+    status = scalar(actual["status"]) if "status" in actual else None
+    obsolete_status = status in {"Historical", "Superseded", "Obsolete", "Archived"}
+    if not historical and status is not None and status not in {"Current", "Approved", "Approved design", "Planned", "Deferred", "Rejected", "Ambiguous", "Draft"} and not obsolete_status:
+        raise ValueError("Unsupported current-document status")
+    is_history = historical_path(path, root) or tagged or obsolete_status
     if is_history != historical:
         mode = "historical" if historical else "default"
         raise ValueError(f"Authority boundary: {path.relative_to(root)} is not a {mode} document")

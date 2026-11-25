@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
 canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../reference/retrieval-index.md, ../reference/validation-evidence.md, source-checkpoint-and-recovery.md, microscenarios-programme.md]
 ---
 
@@ -22,7 +22,7 @@ names. Keep constants at their canonical configuration/API home.
 The default corpus is the explicit [retrieval manifest](../reference/retrieval-corpus.json).
 It selects contracts, design decisions, guides and references. Navigation pages
 route readers; historical records require an explicit historical question and are
-excluded from default answers. When chunking, attach title, scope, status, date,
+excluded from default answers. Evidence, research packets and Draft records also remain outside ordinary answer selection unless their material is deliberately reconciled into a canonical current contract. When chunking, attach title, scope, status, date,
 canonical topics and heading path to **every** chunk. A whole-page status alone
 does not make a mixed Current/Planned subsection safe to retrieve.
 
@@ -57,16 +57,19 @@ implementation or verified runtime behavior.
 The default [manifest](../reference/retrieval-corpus.json) is authoritative for
 selection. Its excluded focused packets also carry `retrieval: explicit-only`
 so the missing-manifest fallback preserves that boundary. The evaluator refuses
-explicit-only or navigation documents in a default manifest and in direct default
-chunking. Fallback discovers the focused architecture, systems, operations,
+explicit-only, navigation, evidence, research and Draft documents in a default
+manifest and in direct default chunking. Fallback discovers the focused architecture, systems, operations,
 reference, decisions, research and tools directories plus `MATERIAL_LAB.md`, then
-excludes navigation and explicit-only packets. It validates authority first, so
+excludes navigation, evidence, research, Draft and explicit-only packets. It validates authority first, so
 an excluded packet cannot hide malformed authority or a copied historical tag.
 
 The supported flat parser accepts quoted/padded field names and ordinary quoted
-selection values; duplicate authority, retrieval or document-kind keys and
-unsupported selection/document-kind syntax fail closed. A second document-kind
-cannot override an earlier navigation exclusion. This is not a guarantee for arbitrary YAML anchors, tags or
+selection values. All duplicate source keys, malformed frontmatter delimiters,
+unsupported selection/document-kind/status syntax and stale caller metadata fail
+closed before ingestion. A copied Historical/Superseded/Archived status retains
+historical authority even outside archive paths; it cannot become a current
+instruction by losing its authority tag. A second document-kind cannot override
+an earlier exclusion. This is not a guarantee for arbitrary YAML anchors, tags or
 complex keys. [Current-selection tests](../../tools/ci/test_current_retrieval_selection.py)
 exercise manifest, fallback and direct chunking, including real-corpus equality;
 the original [historical tests](../../tools/ci/test_historical_retrieval.py) remain
@@ -80,10 +83,65 @@ expansion imports audits into default context. Direct agent instructions must
 observe the same boundary rather than recursively loading every historical link.
 
 The local evaluator reads no persistent cache. Selection policy is now
-`historical-isolation-v3`; external indexes must rebuild with the current
+`historical-isolation-v4`; external indexes must rebuild with the current
 selection rules and per-chunk authority envelope before claiming equivalent
 containment. This repository cannot attest an unseen external cache, vector
 index or assistant prompt assembly.
+
+## Source-bound reference adapter and safe index rebuild
+
+The [local reference adapter](../../tools/docs/knowledge_retrieval.py) is a
+separate proposed retrieval method. The frozen lexical evaluator remains intact.
+The adapter applies BM25 with explicit heading/title fields, one passage per
+document and at most one additional route to an already admitted primary
+owner-intent record linked from the best document. It does not use query IDs,
+expected answers, target-path rules, embeddings or a provider model. Source routes
+do not automatically ingest linked audits or archives.
+
+```sh
+python tools/docs/knowledge_retrieval.py --query "Who owns live physics objects while native workers run?"
+python tools/docs/knowledge_retrieval.py --query "What does the owner intend for authored worlds?" --cache /tmp/cybersand-current-index.json
+python tools/docs/knowledge_retrieval.py --historical --query "What did the earlier stored Cell experiment measure?"
+```
+
+On Windows choose a temporary path such as `$env:TEMP/cybersand-current-index.json`
+in PowerShell. The optional JSON snapshot is a reproducible local context cache,
+not a production vector database or a promised speed optimization. Every use
+rehydrates selected documents from source, checks complete current metadata,
+compares manifest/helper/document and linked-code digests, and validates every
+cached chunk. Source changes, removal, renaming, a new exclusion or historical
+mode change rebuild the snapshot and remove formerly admitted text. Malformed
+current authority fails closed instead of serving an old cache. Explicit history
+uses a distinct identity and preserves its envelope. Cache files belong outside
+tracked source.
+
+The adapter is stricter than the legacy baseline about unlabelled current text:
+all required metadata and a valid review date are required. The legacy evaluator
+retains its original minimal-document fixtures; it is not an external-ingestion
+security boundary for arbitrary unlabelled content. All declared authority,
+selection, kind and status fields are checked by the shared policy in both paths.
+
+A consumer can query, inspect the supplied routes, and explicitly follow one
+linked source with `--source <exact-repository-path>` on the same `--query` call.
+The adapter rechecks source identity and refuses stale or altered contexts,
+unlinked targets, path escape, historical access without opt-in and unselected
+Markdown answer pages. It returns source bytes and digests with a separate
+inspection-only scope. Source inspection does not establish implementation
+acceptance, owner authorization or a passed runtime test. A consumer must still
+interpret source, status and unresolved decisions; this tool does not fabricate
+an answer when no owner decision exists.
+
+```sh
+python -m unittest discover -s tools/ci -p test_knowledge_retrieval.py
+python tools/docs/knowledge_retrieval.py --queries docs/reference/retrieval-questions.json --output /tmp/cybersand-reference-evaluation.json
+```
+
+Compare the proposed method and unchanged baseline separately on frozen and
+independent holdout questions. Review actual supplied contexts, source-following
+steps and safe abstentions independently; rank improvement alone is not evidence
+of generative-model or production-agent accuracy. No external deployment, paid
+provider or model execution is implied by this reference adapter.
+
 
 ## Does an old Approved instruction authorize restoring a runtime?
 
@@ -151,6 +209,7 @@ python tools/ci/check_repository.py
 python tools/ci/check_m11_consistency.py
 python -m unittest discover -s tools/ci -p test_historical_retrieval.py
 python -m unittest discover -s tools/ci -p test_current_retrieval_selection.py
+python -m unittest discover -s tools/ci -p test_knowledge_retrieval.py
 python tools/docs/retrieval_eval.py --output <local-output.json>
 git diff --check
 ```

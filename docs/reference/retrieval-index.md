@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; source-backed answers live in the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, status-and-roadmap.md]
 ---
 
@@ -117,6 +117,12 @@ For an explicit historical question, use the
 `--historical` mode. Historical chunks keep their non-authoritative envelope even
 when the original text says `Approved`, `Current` or gives an imperative. No link
 expansion or ordinary fallback imports the archive.
+
+For local agent-consumer experiments, the
+[source-bound reference adapter](../operations/documentation-maintenance.md#source-bound-reference-adapter-and-safe-index-rebuild)
+returns scoped passages and explicit source routes, validates persisted snapshots
+against current source, and keeps the original lexical evaluator separate. It
+executes no model and does not certify an external index.
 
 Corpus containment, ranking and answer correctness are measured separately.
 Read the saved contexts and check applicability against accepted source; a top-five
