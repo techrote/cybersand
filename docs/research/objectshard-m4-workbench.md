@@ -10,13 +10,43 @@ related-documents: [objectshard-001.md, objectshard-m3-preflight.md, ../operatio
 
 # ObjectShard M4 ordinary Workbench integration
 
-**Draft/HOLD candidate in PR #754.** This contract describes the opt-in ordinary
+**Engineering qualified for owner evaluation; PR #754 remains Draft/HOLD.** This contract describes the opt-in ordinary
 Workbench implementation. It does not change accepted-main defaults, grant
 merge or Ready authority, qualify retained production binaries, or record
 physical Windows/NVIDIA acceptance. Use the
 [ordinary Workbench playtest guide](../operations/objectshard-workbench-playtest.md)
 for the user-facing controls and evaluator. The separate Lab and M3 rehearsal
 remain independent facilities with their original evidence and limits.
+
+## Completion decision — 25 November 2026
+
+The qualified application/native-build/package source is
+`5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a`, tree
+`51ff1e6a0949dff3b2b17cdca7a40d4943b05f78`.
+[Campaign 45530425519](https://github.com/techrote/cybersand/actions/runs/45530425519)
+passed all four native/Linux/Windows jobs. Linux and Windows each passed 43
+primary and 32 graphical-lane cases, including 18 actual display-required
+cases. Windows passed the actual shipped CMD in four extraction roots,
+provenance/payload refusals and 17 pristine extracted-package cases.
+
+[Independent campaign 45537943367](https://github.com/techrote/cybersand/actions/runs/45537943367)
+verified all six original producer archives, complete source/runtime/payload
+custody and new Windows authored/reopen/live-Cut witnesses.
+[The final ordinary Sand witness](https://github.com/techrote/cybersand/actions/runs/45540808667)
+then established positive World-to-Cargo transfer through a mounted one-grain
+paint operation, natural Rapier rest and acknowledged native/physical mass
+63→64. These later audit sources do not modify the qualified application or ZIP.
+
+The [final decision packet](../audits/2026-11-25-objectshard-m4-final-decision.md)
+and [machine-readable record](../audits/objectshard-m4-recovery-20261125/final-decision.json)
+reconcile the original failures, admitted repairs, exact test/input identities,
+all artifacts, performance scopes and independent reviews.
+Physical Windows 11/NVIDIA performance acceptance remains **HOLD**. The retained
+production runtime checker remains **FAIL/OPEN before Ready/merge**; the exact
+candidate artifact publication contract is complete and accepted production
+provenance is unchanged. All ownership and material-law constraints below remain
+in force.
+
 
 ## Same native World, ordinary worker and existing Rapier space
 

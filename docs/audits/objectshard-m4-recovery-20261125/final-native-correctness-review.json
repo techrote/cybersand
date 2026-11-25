@@ -1,0 +1,2350 @@
+{
+  "schema": "objectshard-m4-final-native-correctness-disposition-v1",
+  "reviewer": "Specialist A / independent native correctness",
+  "status": "PASS-engineering-qualified-native-and-ordinary-correctness; DRAFT-HOLD-physical-owner-acceptance",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "principal_pr": "https://github.com/techrote/cybersand/pull/754",
+  "qualification_run": 45530425519,
+  "qualification_attempt": 1,
+  "native_algorithms_preserved": {
+    "original_source": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+    "original_tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+    "final_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "final_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "original_native_count": 117,
+    "final_native_count": 117,
+    "changed_native_inputs": [],
+    "full_tree_responses_untruncated": true,
+    "full_input_map": "native-source-preservation-117.json",
+    "full_input_map_sha256": "682564641e7e7f0de9380715ddeec413b6eea3a0a5215a9c922730084ffe56b3",
+    "path_scope": "All registered C/C++ headers, source and .inc implementation fragments under native/include, native/src and godot/native_extension; exact qualified117-path registry."
+  },
+  "gates": {
+    "native_sanitizers": {
+      "status": "passed",
+      "job": 138924057320,
+      "archive": {
+        "id": 14985522687,
+        "bytes": 135240202,
+        "sha256": "e4928403e5fd033768f50cfde4a576aef4475eae1d895d67f5156ed79e6ad7e7"
+      },
+      "independent_archive_verdict": "passed-new-hosted-independent-native-archive-reconciliation",
+      "native_checks": 96500,
+      "ordinary_world_cases": 192,
+      "registered_source_inputs": 129,
+      "evidence": "independent-hosted/delivery-audit-summary.json -> native-independent-review.json",
+      "scope": "Actual registered ASan/UBSan native suites and192ordinary World cases; fresh independent archive review verified complete129-input set, actual ELF/log/report identities and registered native suite counts. Existing sanitizer execution options remain explicit in original report; no unregistered leak-sanitizer claim."
+    },
+    "native_workload_budgets": {
+      "status": "passed",
+      "checks": 4276351,
+      "limits": 74,
+      "source_inputs": 95,
+      "ticks": 1200,
+      "repetitions": 3,
+      "benchmark_scope": "synthetic_pose_and_ACK_no_Rapier",
+      "allocation_scope": "requested_C++_new_bytes_not_RSS",
+      "hardware": "Intel(R) Xeon(R) 6975P-C",
+      "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39"
+    },
+    "native_material_compatibility": {
+      "status": "passed-independent-eight-input-source-join",
+      "historical_baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+      "required_input_paths": 8,
+      "report_member": "material-native-parity.json",
+      "physics_qualification": false,
+      "world_executed": false,
+      "godot_executed": false,
+      "evidence": "independent-hosted/delivery-audit-summary.json -> material-parity-independent-review.json",
+      "historical_baseline_scope": "Compatibility baseline identity only; never substituted for candidate native build/source."
+    },
+    "windows_native_candidate": {
+      "status": "passed-independent-static-source-and-payload-identity",
+      "build_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+      "job": 138924057296,
+      "artifact": {
+        "id": 14984556771,
+        "bytes": 2265508,
+        "sha256": "12563fa3c449963ad1adf04bc7dbb701c61777e18a823607d1e60b9815820a1c"
+      },
+      "dll": {
+        "bytes": 6196224,
+        "sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4"
+      },
+      "complete_native_inputs": 117,
+      "build_contract_inputs": 7,
+      "architecture": "AMD64 PE32+ DLL",
+      "evidence": "windows-native-5f0722ae-independent-review.json",
+      "actual_execution": "Separate source-exact Windows Workbench job; static PE review itself makes no execution claim."
+    },
+    "ordinary_linux": {
+      "job": 138924056891,
+      "status": "passed-original-reports-and-logs-independently-joined",
+      "registered_reports": {
+        "headless": 43,
+        "graphical": 32,
+        "actual_graphical_processes": 18
+      }
+    },
+    "ordinary_windows": {
+      "job": 138926161028,
+      "status": "passed-original-reports-and-logs-independently-joined",
+      "registered_reports": {
+        "headless": 43,
+        "graphical": 32,
+        "actual_graphical_processes": 18,
+        "pristine_package_replay": 17
+      },
+      "package_boundary": "Actual shipped CMD and pristine package replay remain separately joined to the principal immutable ZIP."
+    },
+    "source_review": {
+      "status": "passed",
+      "evidence": [
+        "held-pointer-fix-independent-review.json",
+        "carrier-cache-source-review.json",
+        "cloud-fallback-independent-source-review.json"
+      ]
+    },
+    "new_windows_external_owner_witnesses": {
+      "status": "passed-natural-execution-and-independent-receipt-raw-census-review",
+      "run": 45537943367,
+      "job": 138949746878,
+      "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "principal_zip": {
+        "bytes": 93388322,
+        "filename": "objectshard-workbench-evaluator.zip",
+        "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387"
+      },
+      "author_checks": 136,
+      "reopen_checks": 79,
+      "live_cut_checks": 154,
+      "platform": "WindowsServer2022 build20348 / headless actual pinned engine and Rapier",
+      "actual_processes": [
+        {
+          "phase": "author",
+          "receipt_sha256": "5a863d3efb92c0ccdcfe981cefa0f870a39e85e56eaaced9f4525f71bba6b978",
+          "original_log_sha256": "8468fdb61da94b0a8b9823560e372e1d8c891944e5e47908e3e9e45f86c476ba",
+          "natural_completion": true,
+          "returncode": 0,
+          "wrapper_runner_pid": 3060,
+          "console_wrapper_pid": 2884,
+          "actual_godot_pid": 948,
+          "started_unix": 1795576285.9303007,
+          "completed_unix": 1795576295.9865239,
+          "scope": "Independent Windows handle tracking retained wrapper and actual Godot lifetimes; no PID-number equality assumption."
+        },
+        {
+          "phase": "reopen",
+          "receipt_sha256": "b429397a282940ffc0ad09ca4e425e96571c70dab9a05a42c77342bb578dd3d7",
+          "original_log_sha256": "dbfb428804bac1010822c1aa8bfe2e62b3f548d443a9bb52b34659e9edf307ad",
+          "natural_completion": true,
+          "returncode": 0,
+          "wrapper_runner_pid": 3060,
+          "console_wrapper_pid": 7660,
+          "actual_godot_pid": 7932,
+          "started_unix": 1795576296.0334308,
+          "completed_unix": 1795576306.0709624,
+          "scope": "Independent Windows handle tracking retained wrapper and actual Godot lifetimes; no PID-number equality assumption."
+        },
+        {
+          "phase": "live-cut",
+          "receipt_sha256": "ec0340d7d380c90e8f22f5d85e07dd4d6bc555a891780142bb2a7bb7bdffe0b2",
+          "original_log_sha256": "49c4a9ca3283cdff1eb100c1d99539ed3145a3a4434e4859d8f482a85aa1d4fe",
+          "natural_completion": true,
+          "returncode": 0,
+          "wrapper_runner_pid": 3060,
+          "console_wrapper_pid": 6096,
+          "actual_godot_pid": 6124,
+          "started_unix": 1795576306.1334605,
+          "completed_unix": 1795576317.7020307,
+          "scope": "Independent Windows handle tracking retained wrapper and actual Godot lifetimes; no PID-number equality assumption."
+        }
+      ],
+      "evidence": [
+        "independent-hosted/windows-owner/summary.json",
+        "independent-hosted/windows-owner/author-receipt.json",
+        "independent-hosted/windows-owner/reopen-receipt.json",
+        "independent-hosted/windows-owner/live-cut-receipt.json"
+      ]
+    },
+    "windows_runtime_dependencies": {
+      "status": "passed-finite-direct-import-accounting",
+      "images": 5,
+      "documented_OS_modules": 26,
+      "named_API_set_contracts": 19,
+      "unaccounted_direct_dependencies": 0,
+      "packaged_vcruntime_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "evidence": "windows-runtime-dependency-review.json",
+      "scope": "No exhaustive dynamic/delay-loaded or private-export ABI promise; physical Windows11/NVIDIA remains HOLD."
+    },
+    "ordinary_positive_sand": {
+      "status": "passed",
+      "checks": 168,
+      "run": 45540808667,
+      "attempt": 1,
+      "job": 138958566611,
+      "observer_execution_source": "2b15c37e934f07117e297a38e8c3100104c9637d",
+      "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+      "observer_path": "external-sand-lodging/observe_sand_lodging.gd",
+      "observer_git_blob": "c6db706867ad09fc86cf944d177c25b33f8f4058",
+      "observer_sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d",
+      "runner_sha256": "b8fa4cd0f1a5dc2938f2a1ecb8f464a9316d9419f4567507d12783a346e80cc0",
+      "receipt_path": "independent-hosted/windows-sand/sand-receipt.json",
+      "receipt_git_blob": "a91eb816b0e6b904d892853efd8742cddc9115d8",
+      "receipt_bytes": 37543,
+      "receipt_sha256": "3f049d42e3491069bd998f3ee821b4f29f39d80d046342f0894c62a45b66acff",
+      "summary_path": "independent-hosted/windows-sand/summary.json",
+      "summary_git_blob": "31d4ec85e9d3d6a9119e547d473f0e5b40366fe0",
+      "summary_bytes": 46395,
+      "summary_sha256": "5ae0fe6fe281637b0f69b6ad0ca8bbc425bca00cfb2bcb20b351c68f92e2f7bf",
+      "artifact": {
+        "id": 14989400911,
+        "bytes": 201292,
+        "sha256": "020ff289e971e281b2bd0030c230116726df49510f77fd50fb8d8d8ab0da916b"
+      },
+      "original_process_log": {
+        "bytes": 52708,
+        "sha256": "86f6818f24f61e5e8d7d402c69338e65417098311947167242889b0fd5ea77c1"
+      },
+      "actual_runtime": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native_sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "manifest_sha256": "c541d276856534f26937430662d34bd0b08b188e0c51fd8a6249aaaa0d16d596"
+      },
+      "natural_completion": true,
+      "returncode": 0,
+      "wrapper_runner_pid": 3968,
+      "console_wrapper_pid": 6044,
+      "actual_godot_pid": 2468,
+      "nonce": "90e3a960c0c80073d9972ab0959d81bd71a1bfaba5eab0d8",
+      "elapsed_seconds": 9.291484594345093,
+      "immutable_payload_unchanged": true,
+      "actual_cargo": {
+        "owner": 1,
+        "generation": 1,
+        "body_generation": 1,
+        "rid": 18901,
+        "cell": 71,
+        "incarnation": 2,
+        "prior_empty_incarnation": 1,
+        "role": 3,
+        "material": 2
+      },
+      "native_tick_before": 79,
+      "native_tick_after": 85,
+      "actual_physical_step_before": 312,
+      "actual_physical_step_after": 336,
+      "geometry_before": 1,
+      "geometry_after": 2,
+      "earliest_intake": {
+        "native_mass": 64,
+        "geometry_pending": true,
+        "geometry_revision": 2,
+        "applied_physics_revision": 1
+      },
+      "final_mass": {
+        "native": 64,
+        "actual_Rapier": 64,
+        "geometry_pending": false,
+        "applied_physics_revision": 2
+      },
+      "independent_expected_byte_and_mass_review": "external-sand-lodging/independent-outcome-review.json",
+      "scope": "New actual Windows headless ordinary mounted Load/Erase/Play/Pause/Sand brush against byte-identical qualified package; natural fall/rest and automatic native World-to-Cargo transfer. No product/native change, no forced physics, no physical owner presentation claim."
+    }
+  },
+  "physical_lifecycle": {
+    "construction_detachment": {
+      "coverage": "native and ordinary registered",
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "m4_workbench_tower_*",
+        "m4_workbench_viaduct_*"
+      ],
+      "assertions": [
+        "Boundary-rooted supported native Wood/Brick arrangements",
+        "Coherent detachment with exclusive native material debit",
+        "Independent real Rapier bodies and preserved shared World/worker ownership"
+      ]
+    },
+    "geometry_and_mass": {
+      "coverage": "native and ordinary registered",
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "test_object_shard_m4_shared_main_rapier",
+        "test_object_shard_m4_fragment_reabsorption"
+      ],
+      "assertions": [
+        "Actual mass, centroid and cell-area inertia match owned material",
+        "Native accepted pose and actual Rapier transform agree",
+        "Fragmentation transfers ownership through staged physical acknowledgements"
+      ]
+    },
+    "moving_edits": {
+      "coverage": "registered exact source-cell actions, delayed-Main adversity and separately scoped live-motion witness",
+      "cases": [
+        "test_object_shard_m4_fragment_reabsorption",
+        "test_object_shard_m4_edit_delivery_fence",
+        "test_object_shard_m4_lifecycle_adverse"
+      ],
+      "assertions": [
+        "Applied edit transaction and actual displayed source identity are joined",
+        "Held intent waits until same-owner displayed next_transaction exceeds latest validated Applied transaction",
+        "No stale geometry resubmission caused by a child UI receipt outrunning Main publication",
+        "Generation, owner capability, port incarnation and monotonic latest transaction remain in the fence"
+      ],
+      "live_motion_evidence": "New exact5f Windows packaged witness PASS154checks: one mounted Cut during Play at native tick92 with nonzero translation/rotation; exact source cell883, native Applied transaction2, geometry1->2 at actual step364 and unchanged RID19348; survivor884 stable incarnation; continued motion to tick100; all-material census exactly oneWood debit.",
+      "live_point_velocity": {
+        "native_cell": 884,
+        "step_before": 364,
+        "step_after": 364,
+        "godot_float_vector_residual": 0.000003814697265625,
+        "independent_double_recomputed_residual": 0.0000015181563088673194,
+        "threshold": 0.001,
+        "units": "cells/s",
+        "scope": "Distinct precision representations of the same actual before/after state; neither is rounded to an exact zero claim."
+      }
+    },
+    "chemistry_and_retirement": {
+      "coverage": "native and ordinary registered",
+      "cases": [
+        "test_object_shard_m4_long_burn",
+        "test_object_shard_m4_workbench_completion"
+      ],
+      "assertions": [
+        "240 original Wood burn opportunities complete in at most480 native ticks",
+        "Native cell and native tick are read from the same immutable frame; delivered state is checked separately after physical acknowledgement",
+        "Final authored collider removal retires actual RID, native inventory and presentation resources without zero-mass ghosts"
+      ],
+      "boundary": "The terminal collider witness is explicit last-cell erasure, not a guaranteed bounded natural burnout of a whole building."
+    },
+    "explicit_settlement": {
+      "coverage": "passed-source-exact-registered-native-and-ordinary-mounted-Settle",
+      "cases": [
+        "test_object_shard_m4_fragment_reabsorption"
+      ],
+      "assertions": [
+        "Naturally quiet near-grid contact is required",
+        "Mounted Settle stages one genuine native request",
+        "Complete native material credit waits for physical RID retirement and terrain acknowledgement",
+        "No duplicated material or invisible residual collider"
+      ]
+    },
+    "conservation": {
+      "coverage": "registered native and ordinary independent raw inventory",
+      "cases": [
+        "m4_workbench_mixed_*",
+        "m4_workbench_viaduct_*",
+        "support:object_shard_m4_workbench_fixture.validate_quantity_ledger"
+      ],
+      "assertions": [
+        "All nonempty materials are counted from raw stored World and every inventory owner",
+        "Stored Water cells, visible quantity, pressure overfill, ballistic parcel quantity and rendered Water pixels remain separate",
+        "Inspection is a one-shot paused owner request and advances no chemistry or physical time"
+      ],
+      "sand_boundary": "All8original final mixed profiles retain zero Sand ingestion/owned Sand and1531relocations, with34authored Sand support-erasure debits. The separate new Windows U-pocket witness now passes168checks and proves positive automatic World-to-Cargo transfer and native/actual mass63->64 with complete raw conservation. The prior interrupted attempt remains NOTPASS.",
+      "native_intake_mass_ordering": {
+        "source": "native/src/object_shard_coordinator.cpp:Coordinator::after_owner_world_tick; godot/native_extension/cyber_object_shard_lab.cpp:snapshot carrier row",
+        "finding": "The attached exclusive-owner post-tick path runs automatic_ingress, then dirty geometry rebuild and material-point velocity preservation before returning to publish a frame. Snapshot mass comes from the rebuilt shard geometry. Native mass64 is therefore valid in the first published ingress+Cargo frame even while geometry_pending awaits physical acknowledgement; actual Rapier64 remains independently required after Pause/drain.",
+        "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+      }
+    },
+    "worker_authority": {
+      "coverage": "native and ordinary registered",
+      "cases": [
+        "test_object_shard_m4_completed_sample",
+        "test_object_shard_m4_equipment_completion",
+        "test_object_shard_m4_lifecycle_adverse",
+        "test_object_shard_m4_lifecycle_fuzz",
+        "test_object_shard_m4_same_world_physical_chain"
+      ],
+      "assertions": [
+        "Final GCR packet and actor request set are pinned",
+        "Exact native tick admission and real Rapier segment acknowledgements govern completed intervals",
+        "Deferred effects/usables apply once",
+        "Explicit user Pause cancels intent; an internal lease wait preserves valid queued intent",
+        "World replacement and stale incarnations refuse; partial physical transactions retain exclusive material in quarantine"
+      ],
+      "boundaries": [
+        "No refused motion is described as rewinding Rapier",
+        "A missing acknowledgement is not a completed successful interval",
+        "A dedicated ordinary fixture that drops exactly one segment acknowledgement is not claimed; native/source malformed-ACK and ordinary completion-gating coverage remain explicit"
+      ]
+    },
+    "publication_and_ids": {
+      "coverage": "registered native, ordinary and graphical",
+      "cases": [
+        "test_object_shard_m4_overlay_identity",
+        "test_object_shard_m4_lifecycle_adverse",
+        "m4_workbench_*"
+      ],
+      "assertions": [
+        "World texture and owned overlay share one generation/revision/render identity",
+        "A coherent retained publication may be older than the newest native frame while physical geometry acknowledgement drains",
+        "GCR shared-space IDs1–48 and mutable reservation slots49–64 remain separate"
+      ],
+      "namespace": "Native Registry owner IDs (the Tower uses1) are distinct from shared-space reservation slots."
+    },
+    "authored_persistence": {
+      "coverage": "passed-registered-ordinary-plus-new-exact-package-Windows-fresh-process-witness",
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "test_workbench_canvas"
+      ],
+      "external_positive": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 215,
+        "author_checks": 136,
+        "reopen_checks": 79,
+        "evidence": "authored-frozen/summary.json"
+      },
+      "boundaries": [
+        "Named authored arrangements and support edits reopen; evolved moving poses, live shard inventory and ongoing chemistry are not full checkpoint serialization",
+        "Local process namespace PID equality was correctly removed as a false proof constraint; distinct completed child lifetimes and nonces are retained",
+        "Earlier Linux originals that were lost remain an explicit historical custody gap. The new Windows job retains its own original process logs, receipts, named saves and raw inventory bytes; it does not relabel the earlier Linux execution."
+      ],
+      "new_windows_positive": {
+        "checks": 215,
+        "author_checks": 136,
+        "reopen_checks": 79,
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "run": 45537943367,
+        "job": 138949746878,
+        "intact": {
+          "supports": 800,
+          "bodies": 0,
+          "bytes": 949,
+          "sha256": "0b68dafb7c4761dfb14178c08465a2151b6698f1de862866bfeb07ac8da7774e"
+        },
+        "cut": {
+          "supports": 6,
+          "bodies": 1,
+          "bytes": 1621,
+          "sha256": "549c11a122e41b25b289dd51a6e97f111a69506a25cc4d7b78a637f693edee29"
+        },
+        "raw_materials": {
+          "Wood": 2184,
+          "Brick": 2232
+        },
+        "exact_originals": "independent-hosted/windows-owner/"
+      }
+    },
+    "canvas_extents": {
+      "coverage": "passed-new-exact-package-Windows-mounted-UI",
+      "assertions": [
+        "2048 attachment refusal keeps the installed World/worker/authored start unchanged",
+        "Supported1024 blank start attaches to the existing World",
+        "512 Tower supplies native moving construction"
+      ],
+      "boundary": "Ordinary2048default still refuses ObjectShard attachment without replacing World/worker/authored setup;1024witness covers blank same-World attach,512covers the moving material construction. No production default changed."
+    },
+    "sand_lodging": {
+      "coverage": "passed-native-positive-and-new-ordinary-exact-Windows-package-positive",
+      "native_cases": [
+        "real_falling_sand_ingress_aba_and_destroyed_pocket",
+        "wide_rotated_pocket_admits_real_falling_sand"
+      ],
+      "ordinary_case": "external-sand-lodging/observe_sand_lodging.gd",
+      "checks": 168,
+      "evidence": "independent-hosted/windows-sand/summary.json",
+      "assertions": [
+        "63Wood supported U-pocket; mounted precise45Wall support erasure; actual unforced fall and sleeping rest while Play.",
+        "One paused mounted radius-zero Sand brush credits exactly one empty static World cell without native or physical progression.",
+        "Immutable post-tick native sample retains exact Cargo cell71/incarnation2/role3 and ingestioncounter1.",
+        "Complete raw World Sand1->0 and owned Sand0->1; native+actual mass63->64 after actual geometry acknowledgement; same owner/incarnation/RID.",
+        "All255nonempty material totals reconcile only45authored Wall erasures and oneSand source."
+      ],
+      "independent_mass_reconstruction": {
+        "status": "passed-independent-complete-expected-byte-reconstruction-and-mass-recomputation",
+        "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "run": 45540808667,
+        "job": 138958566611,
+        "receipt_sha256": "3f049d42e3491069bd998f3ee821b4f29f39d80d046342f0894c62a45b66acff",
+        "summary_sha256": "5ae0fe6fe281637b0f69b6ad0ca8bbc425bca00cfb2bcb20b351c68f92e2f7bf",
+        "worlds": [
+          {
+            "label": "supported",
+            "bytes": 262144,
+            "sha256": "7091fa3c2ae533060b74dd6322b32c2023af97b091a5494783476e613f06e7f9",
+            "kind": "independently-reconstructed-full-raw-World"
+          },
+          {
+            "label": "before",
+            "bytes": 262144,
+            "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330",
+            "kind": "independently-reconstructed-full-raw-World"
+          },
+          {
+            "label": "painted",
+            "bytes": 262144,
+            "sha256": "8b45ddbf64f047de8f9af86c67f97d96c10189c3cb2332028821397fda444acb",
+            "kind": "independently-reconstructed-full-raw-World"
+          },
+          {
+            "label": "after",
+            "bytes": 262144,
+            "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330",
+            "kind": "independently-reconstructed-full-raw-World"
+          }
+        ],
+        "owned_before_sha256": "b0e868e95943d523d7bc84420b557f145bee1d5dd9e25f9e303fa27da5d94888",
+        "owned_after_sha256": "2aad590e84e0b8bfaf297fa1c9f3e575eb09b80d1af725950f27ea5904037a23",
+        "owned_bytes": 121,
+        "mass_before": {
+          "mass": 63,
+          "com_x": 5.5,
+          "com_y": 5.928571428571429,
+          "inertia": 973.9285714285701
+        },
+        "mass_after": {
+          "mass": 64,
+          "com_x": 5.5,
+          "com_y": 5.9375,
+          "inertia": 974.4166666666656
+        },
+        "actual_rid": 18901,
+        "cargo_cell": 71,
+        "scope": "A independently reconstructed every expected raw World byte and every source-lattice carrier byte from the reviewed recipe and exact edits, compared SHA256 to byte-preserved original receipts and the hosted independent raw-file scanner, and recomputed mass/centroid/inertia. This is not a claim that cloud A redownloaded the outer raw artifact; C's approved hosted verifier actually opened/scanned those original files."
+      }
+    }
+  },
+  "retained_negative_results": [
+    {
+      "source": "f4a2176f1f7688273956c2f25821488c227e90f3",
+      "run": 45435990124,
+      "job": 138593807280,
+      "status": "failed aggregate",
+      "reason": "native parity: --output inside the repository must be beneath build/; refusing a source overwrite",
+      "evidence": "earlier-native-job-recovery.json",
+      "underlying_native_checks": 95563,
+      "underlying_world_cases": 192,
+      "boundary": "Successful underlying suites do not change the original terminal FAIL; earliest archive not independently downloaded in that review."
+    },
+    {
+      "source": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+      "run": 45473059187,
+      "status": "failed aggregate",
+      "reason": "Windows package provenance path and Linux approved engine acquisition failures remain historical failures."
+    },
+    {
+      "source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+      "run": 45517975210,
+      "status": "failed aggregate",
+      "reason": "Windows long-burn fixture mixed native and display clocks; Linux disabled control sampled Pause before actual command acknowledgement. Neither historical failure is retroactively upgraded."
+    },
+    {
+      "source": "422d131048db573c0abd08bcca25f6b3999e8703",
+      "run": 45522534938,
+      "status": "failed aggregate",
+      "reason": "Actual held-pointer receipt/publication race plus retained disabled-Pause fixture failure."
+    },
+    {
+      "scope": "Deterministic unchanged-product delayed-Main baseline",
+      "status": "failed as intended",
+      "reason": "A genuine first Applied receipt allowed stale next held edit while old display/frame appeared mutually ready; same test passed after the full-identity transaction display fence."
+    },
+    {
+      "scope": "Interrupted local executions",
+      "status": "not qualified",
+      "reason": "SIGKILL and executor-disconnect attempts without natural terminal receipts remain unsuccessful; the interrupted Sand observer establishes no positive ordinary lodging."
+    }
+  ],
+  "retained_production_runtime_publication": {
+    "status": "OPEN-pre-Ready-production-gate",
+    "scope": "Intentionally separate from opt-in Draft evaluator candidate engineering/runtime custody. This review does not authorize replacing accepted production runtime manifests.",
+    "frozen_reference": {
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "source_tree": "81c57e073ef94522e17a09d1981e0fb2389aca6e",
+      "bytes": 5820416,
+      "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+    },
+    "package_treatment": "Retained provenance is preserved under retained-runtime-provenance.reference.json; active candidate-provenance.json identifies the actual fresh5f DLL. Their roles are distinct."
+  },
+  "physical_owner_acceptance": "HOLD: actual Windows11/NVIDIA responsiveness, physical input and monitor presentation remain owner acceptance",
+  "artifacts": [
+    {
+      "id": 14986488170,
+      "name": "objectshard-m4-workbench-evaluator-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "bytes": 93044387,
+      "sha256": "5eee64f2147efe057a0768eb39476ec8730dae7dd133480c46ed4911a09f1f2a"
+    },
+    {
+      "id": 14986462220,
+      "name": "objectshard-m4-linux-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "bytes": 14264606,
+      "sha256": "3f745a25db44992edb8f2d2d889fff77d319f2273c583663c0b5c9c4eba94743"
+    },
+    {
+      "id": 14986123965,
+      "name": "objectshard-m4-windows-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "bytes": 39179166,
+      "sha256": "e9621d53c45fb649738c6b3c8572dc76c1a90fa4f020131967ff536d86e54468"
+    },
+    {
+      "id": 14985522687,
+      "name": "objectshard-m4-native-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "bytes": 135240202,
+      "sha256": "e4928403e5fd033768f50cfde4a576aef4475eae1d895d67f5156ed79e6ad7e7"
+    },
+    {
+      "id": 14984556771,
+      "name": "objectshard-m4-dll-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "bytes": 2265508,
+      "sha256": "12563fa3c449963ad1adf04bc7dbb701c61777e18a823607d1e60b9815820a1c"
+    },
+    {
+      "id": 14984426850,
+      "name": "objectshard-m4-crossbuild-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "bytes": 8810,
+      "sha256": "b40d49dec15665919de07f8ebdf33e9cc016d02447b549754dd207080f7ae4aa"
+    }
+  ],
+  "final_admission_requirements": [
+    "No unresolved native, ordinary lifecycle, source custody, pristine package or finite direct-dependency engineering blocker was identified by this review.",
+    "Physical Windows11/NVIDIA owner acceptance remains HOLD; accepted production runtime publication remains a separate OPEN pre-Ready gate. No merge/Ready/auto-merge or production-default change is authorized."
+  ],
+  "runtime_publication_gate_does_not_block_opt_in_candidate": true,
+  "no_merge_no_ready_no_auto_merge": true,
+  "review_date": "2026-11-25",
+  "independent_requalification": {
+    "run": 45537943367,
+    "attempt": 1,
+    "audit_source": "21333f8a0eb15620ecf22ce4c1b3df09fa83fc51",
+    "linux_job": 138949086415,
+    "windows_supplement_job": 138949746878,
+    "status": "passed",
+    "delivery_summary": {
+      "path": "independent-hosted/delivery-audit-summary.json",
+      "sha256": "d77dcbc86157b4d5eea39817c2edbb4d7f5f73662becbeef5e0fca3d66d2b499"
+    },
+    "windows_owner_summary": {
+      "path": "independent-hosted/windows-owner/summary.json",
+      "sha256": "a8ed080cd637cb84754ad5f04ba3260d9ea8f29b166acf4dbf4249bb49fd038c"
+    },
+    "reviewer_inputs": {
+      "inspect_windows_evaluator.py": {
+        "bytes": 15260,
+        "git_blob": "42c6bbdf8567929204604cec51c3d9c31e75a8c4",
+        "sha256": "8f2a0b9ded7afb1c1bdd65fb87c874173bea9ca114db192fca84ba163b8852a9"
+      },
+      "review_native_candidate.py": {
+        "bytes": 20277,
+        "git_blob": "901fb005072aaf29374277c31938b851488f7c4a",
+        "sha256": "75578c66675b6ad3a60e230f0b8bbee437ee46570f162cd2d458188a3f8b4844"
+      },
+      "review_windows_native.py": {
+        "bytes": 8304,
+        "git_blob": "60bbe74a9907f96085b2d7cdb6357825b23437d4",
+        "sha256": "ac942c38d16db2b8d1cc5f3d1af4c8f66c03f5681a2a72688216f2846ea1c8a1"
+      },
+      "review_workbench_evidence.py": {
+        "bytes": 17660,
+        "git_blob": "90eba97b9b297b24f28866470cd053db9d3f9de1",
+        "sha256": "8d55b6847dc13519d77c850ef763fc281e3f11993d07d0e0ea81cf830928cfe0"
+      }
+    },
+    "reports": {
+      "linux-workbench-independent-review-inspector.log": {
+        "bytes": 98,
+        "sha256": "67de0470c888135fb471d8ccded5d5b9c697906604fcd604b70ea285ef96e423"
+      },
+      "linux-workbench-independent-review.json": {
+        "bytes": 42559,
+        "sha256": "169bc66a241f6bcf26a8afb33349111e6c99e543ad5afc9891f5018b24301df5"
+      },
+      "material-parity-independent-review.json": {
+        "bytes": 2340,
+        "sha256": "74e19c7efd64dc9c94a962212fed7f4f231c3f42e36198e822485bb267221703"
+      },
+      "mixed-overview.png": {
+        "bytes": 90618,
+        "sha256": "d94fb7eb78610b4717d9ff3ce580a8cb8e32101053b92bc26a8d8a4f97484a9b"
+      },
+      "native-independent-review-inspector.log": {
+        "bytes": 223,
+        "sha256": "a6164471de4d6ab5c1f8af4eb1ec4a7f106d3b9beac4faed5c17cb181b048fd5"
+      },
+      "native-independent-review.json": {
+        "bytes": 43509,
+        "sha256": "5dcb8f4c5a835de3b425414f752dfac6ad786163ffbdd5e2bf8599f7b0a4dd0b"
+      },
+      "package-pe-imports.json": {
+        "bytes": 11978,
+        "sha256": "1e5ab47c57d53dbf61c16e1896dc9850a0fc12453e93c4a66558b8cadf7ec172"
+      },
+      "pe-0-imports.txt": {
+        "bytes": 3537674,
+        "sha256": "2c359f0b6e56232f606d996cac719c0e9c811b7bad122c42ce6476fe9eef14e1"
+      },
+      "pe-1-imports.txt": {
+        "bytes": 10884085,
+        "sha256": "9bf4de112b9b49291a63e4ae6c1c53889b7a788527231a30efc8bb3b0062b774"
+      },
+      "pe-2-imports.txt": {
+        "bytes": 124840,
+        "sha256": "05a78ef3a155ee46a8927ab39032cad7ac73252e8824c0d24055caac1bef7362"
+      },
+      "pe-3-imports.txt": {
+        "bytes": 29155111,
+        "sha256": "fea79f94078f2aac2425f7bd911dfcf5f57b1db6a741fdfb65e4067b065fd67b"
+      },
+      "pe-4-imports.txt": {
+        "bytes": 38974,
+        "sha256": "20bee8d0644b4a3b047e73cb5469142e13c3991ae3b54f83f1781e73e6da5245"
+      },
+      "principal-evaluator-independent-review-inspector.log": {
+        "bytes": 5293,
+        "sha256": "6f86ec8e50d459d322c5970434b18b85a1de80b3b77c3cbb3b0724b4d099882d"
+      },
+      "principal-evaluator-independent-review.json": {
+        "bytes": 3483,
+        "sha256": "554840ed602f065f059514e44cf99c944cd85f54a0360a4a083dcb72cd3701a6"
+      },
+      "registered-workbench-inventory.json": {
+        "bytes": 4130,
+        "sha256": "a7ac44da9d6915574dab0900449efe88acdcd29417e68795e2bfd8dac74ad100"
+      },
+      "stress-overview.png": {
+        "bytes": 78655,
+        "sha256": "d898a9ac28dde13789d6b5948e5f430cd60abbf4d43cf99dd725496f12db8bdd"
+      },
+      "timber-overview.png": {
+        "bytes": 80047,
+        "sha256": "068abb26c67ba8cbfddee0f5f33452556d72d6131d52f72c88160fcbe3d75d5e"
+      },
+      "tower-overview.png": {
+        "bytes": 79523,
+        "sha256": "f0206c397d7474501cafa17763927685846d57b6ed194fb27bfaaa99e5c98dab"
+      },
+      "viaduct-overview.png": {
+        "bytes": 88673,
+        "sha256": "0ca6a1779c8b0466bf774568661998c64ef3ccfc6d85cf15e77a0e9189b96dc2"
+      },
+      "windows-native-independent-review-inspector.log": {
+        "bytes": 753,
+        "sha256": "6b98629a414af22829dd7380e1f307805f73c7599d2c9e1a62e4868ba27b4c9c"
+      },
+      "windows-native-independent-review.json": {
+        "bytes": 17175,
+        "sha256": "ebdc52df935d501f7392676b299af0084cc3ce7a1e54838e0c1205c696b2a802"
+      },
+      "windows-workbench-independent-review-inspector.log": {
+        "bytes": 98,
+        "sha256": "26570780907e4d269e8e0338cc57fd294b460aafae3e6822a019848770d6d20b"
+      },
+      "windows-workbench-independent-review.json": {
+        "bytes": 53189,
+        "sha256": "e8b1989d8648ff9b9c11c630828bd5999e8d8d9e7933249463c322751138cd82"
+      }
+    }
+  },
+  "profile_authority_review": {
+    "status": "passed-independent-counter-interpretation",
+    "count": 52,
+    "native_ticks_per_profile": 180,
+    "completed_physical_intervals_per_profile": 180,
+    "acknowledgements_per_body": 720,
+    "constant_body_roster_and_exact_echoes": true,
+    "rendered_profiles": 26,
+    "rendered_end": {
+      "actual_steps": 721,
+      "pending_kind": "motion",
+      "extra_step_counted_as_completed": false
+    },
+    "headless_end_counts": {
+      "actual720_ready": 18,
+      "actual721_pending_motion": 8
+    },
+    "zero_incoherent_observations": true,
+    "source_facts": [
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "20b9af6d9f159e6dbc1e7515cdc14f2fb3acb8eb7dd50d13f71c4f1d2af1ce11"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "4af3c15cf1bcc74c9920b878554140041860c30dfd1c59d99e7ae24e6546bf70"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_viaduct_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "6c2ffbdfb85f1d4598f582ac83d01037cd997da2e11ccd545f749ff1d1ab0751"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_viaduct_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "cf992c8a7b163c1adfe0d5467cbd6b6efec464375ea01165c4f3a39b1f6301fe"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_timber_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "7b3634a283244cef2b3780f4d6d22201f8d6850041ef655f3f6caa8f9f55ff1e"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_timber_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "c50ea5f016ec0bb6e24298423c00872cf9618db50a34271c13d940ea10e3639a"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "a1c35f2085d8b52b53d28f0c2de2524251a6be23efccf92f2d1a005959a25763"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "ff37c623697b8f899cf3c9a67e181bb3f12399b954d375b0dfe1acde6afd0c73"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_stress_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "5e486496b1f68cf9a9502eb59221f113edc98610884f42e52e755335df3f5771"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_stress_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "c1af9e2cea3dc4d494b679415f8b0618544d9f8a562d63f4ee669760d1c63ebb"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_overview_light_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "eb05cbcc481d9b5b0a1685a5445ecd3f062c0ccc62e43c04dfec08f252c453db"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_overview_light_recording_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "0a67295d5b0bdaa6d6f846ea0f6a9268fbc0991cc760e8323c01e61e90a412e2"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_stress_overview_light_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "d0fad2acacf13c74ea9de0b56b81d754fed94e2b4e3abdcb35171fd14e88af73"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "a3af7ce203137e6cfbb03885ede3a9eab0b06ba144aba4a3c5f6fa54e07afd28"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "68a12d8075785a2023c71e5c90ea97015efb023da25afd727f015823b52a8b47"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_viaduct_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "d57ca8cf19b07cd5fe2705c57fbf0c43f37a95365515f0fec0a6bd4dd9c59045"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_viaduct_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "085216cf97969d6b6f340b9a052705d2924c7ddd71f7147167d8753b067516cc"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_timber_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "3de508d074c0f76807273109f5710db999aef0e9c1fc9d6e8bd921a5de657745"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_timber_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "762012c4a84ccbfad87092c4c477a9812f3fd748e7e23a2d127e7e2bad42b1a5"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "d0cfb322b1c9e0f6c65e6c7da2e1ca37af0d4c176a1dc044bd19d30d5dccfa96"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "95f9abb4a33bfa14c40c5789867af86db9aae9a7750471752d9f08276b8aaaea"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_stress_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "d47853ed5064173386c9540ac8f765cf0dc11ea3d755e2e20c00f8917df8c983"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_stress_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "8b2e26f6fac1b16b12ee25c5fe6a79cddabeb5faf91857d9c13fdc9efb3f2205"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_overview_light_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "d2f19eb06dc9aaad097e4fd8dfacd489d85ab0c24be1def9509538c4bb09a69d"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_tower_overview_light_recording_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "dec29d238b92b1126d3e4f6174989225eb1d223d7daded090c99e8d91dced1d2"
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_stress_overview_light_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "9c14b56a4e9007d51b33b2b24c1557683b452c3689b0503ed1fc5f2bc1efc4d8"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "a540b459bb5ca1259ceefdcdbc634d73d6218522eae840e06a2574be42bbe2e0"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "4be1ad212f475417987c57d3840f2959c0c539f9ab7b03d2f1c6829685a784bf"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_viaduct_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "09795b68707842b11a4f749d0c76a2770eaf03d1a9d668901b7062e8c1936e8c"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_viaduct_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "0ff72d6917ab93009d8fc2553c374f69610dd4cac3a34ef7185e7bc6530285d8"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_timber_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "78376428a389262f273a2ba02e99931580008c890b5382734f3c7a1a3167c88b"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_timber_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "c80494c2f4fd25c944c0ed16cb8062a307d548a34a09122dd06efa2df98578b5"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "d70eae15c6e3f3b0763922e55cc5f096b05372334ff18095d04be059d7a66bad"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "2cdba1c8204aacc7b059198072307e8ed6d6b08f03ec5dd84d3bff4bd8c29e39"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_stress_overview_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "bad5003f6f5c20b0fac4967d61f2e37ec53b44d77d20dab6e3a69571e9123362"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_stress_zoom_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "7cc757fc3c867a63833258b6bb1eb64a3e682c6f332f0f78f5a68e5b04ef4a00"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_overview_light_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "34e90bae2fbde25050b8555fcc7d2cc6ebadb9fa5e43710c62dfadb93da95978"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_overview_light_recording_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "5850a21b7760092b779ee3da258b2309a381b0bb9fb04d1b19e902d2578688a2"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_stress_overview_light_headless",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 720,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "",
+        "phase": "Ready",
+        "rendered": false,
+        "incoherent": 0,
+        "footer_sha256": "5b553eff5ee0ae8010abaac9739028921d2294f6094871566ace34f41aeae9fd"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "c88960c66bc7ff84910f54f34878db5ff29144420bd3917f11008daa200a65ca"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "c5ece0650e1030c3e4210fbb2e28771588c5dcc8cd3d3ef33a6e64ed4bc672d2"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_viaduct_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "0f7dcb216b0eb74e416dcffa6d1322177ee5ff812311a82b5cfee12371622ca1"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_viaduct_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 3,
+        "body_max": 3,
+        "acks": 2160,
+        "echoes": 2160,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "8e47f8c77f09dbfeb9927415271ba26c0add6d59fc9a51066139a724d51ab83c"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_timber_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "27a156ee3d53239d26e81d1ca5e707e7a9a4a65847e38d11f01f65566e096422"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_timber_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "d3c21becd24a287ef76cd6e5f681d040ce3aff80e7f332d5d7b20d9359cd38e9"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "9af618bb1852e115848998145b6735bde122ff61b75ccda3817c9d198ad443a7"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "287651402955130108597fc1797fa78e212955b7f77940259c4a9cb688eeefa8"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_stress_overview_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "f08724f39e6de8d68ea74889eb26d6dcc7c5dcdc2e974b0b0fe358c10c1c8203"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_stress_zoom_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "38e9b238b7230b79ffab7c9fc0ec6d133dccf66039f6542cd1f7475906d69620"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_overview_light_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "5bfb21fa3529cb23d12b056599223146f2d58d4d6898b72d5b7aeb0ef29d5718"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_tower_overview_light_recording_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 1,
+        "body_max": 1,
+        "acks": 720,
+        "echoes": 720,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "b2dfb8ee10ae1a4d30627bd90b69d980278a9e12e0d76e771d3e7ab007c89884"
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_stress_overview_light_render",
+        "native_ticks": 180,
+        "completed_intervals": 180,
+        "actual_segments": 721,
+        "body_min": 8,
+        "body_max": 8,
+        "acks": 5760,
+        "echoes": 5760,
+        "pending_kind": "motion",
+        "phase": "RealRapierInterval",
+        "rendered": true,
+        "incoherent": 0,
+        "footer_sha256": "47cb0721f841c6f2d3b582dcd3f0626f0a8dd678307b6d942df70b07e0bbd609"
+      }
+    ],
+    "scope": "Physics/counter review of exact original footer text. Renderer submissions remain distinct from physical presentation and semantic progression; native/worker/Main timing counters overlap and must not be summed."
+  },
+  "sand_original_mixed_scope": {
+    "status": "retained-zero-ingress-results",
+    "original_job_logs": {
+      "linux": {
+        "job": 138924056891,
+        "connector_decoded_utf8_bytes": 2778292,
+        "connector_decoded_utf8_sha256": "2bccaf639ea94167a37aacb7707ddfa5cf3dbf6c4f80c35d71ca2616d9540658"
+      },
+      "windows": {
+        "job": 138926161028,
+        "connector_decoded_utf8_bytes": 3453079,
+        "connector_decoded_utf8_sha256": "757f32f8a9e4a57105488a4e7947505e3d3fa6246d904fbb766ccf390fd72a08"
+      }
+    },
+    "profiles": [
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_overview_headless",
+        "timestamp": "2026-11-25T02:19:32.6181155Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 152,
+        "failures": [],
+        "render_submissions": 0,
+        "footer_utf8_sha256": "a1c35f2085d8b52b53d28f0c2de2524251a6be23efccf92f2d1a005959a25763",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 206,
+              "world_generation": 3,
+              "world_revision": 736,
+              "publication_sequence": 976
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "f53c0430a2fb0703f563f713b58c875027f4ea74381ab44eddb7171482b61685",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_zoom_headless",
+        "timestamp": "2026-11-25T02:19:44.2865994Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 152,
+        "failures": [],
+        "render_submissions": 0,
+        "footer_utf8_sha256": "ff37c623697b8f899cf3c9a67e181bb3f12399b954d375b0dfe1acde6afd0c73",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 206,
+              "world_generation": 3,
+              "world_revision": 736,
+              "publication_sequence": 976
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "f53c0430a2fb0703f563f713b58c875027f4ea74381ab44eddb7171482b61685",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_overview_render",
+        "timestamp": "2026-11-25T02:36:47.0898792Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 155,
+        "failures": [],
+        "render_submissions": 552,
+        "footer_utf8_sha256": "d0cfb322b1c9e0f6c65e6c7da2e1ca37af0d4c176a1dc044bd19d30d5dccfa96",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 207,
+              "world_generation": 3,
+              "world_revision": 739,
+              "publication_sequence": 982
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "7fc21e57acaaef2d55e6783a3adf89218a1aae13b1ee1014cf0dd0d6ef324aa5",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "linux",
+        "case": "m4_workbench_mixed_zoom_render",
+        "timestamp": "2026-11-25T02:38:31.8725252Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 155,
+        "failures": [],
+        "render_submissions": 541,
+        "footer_utf8_sha256": "95f9abb4a33bfa14c40c5789867af86db9aae9a7750471752d9f08276b8aaaea",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 207,
+              "world_generation": 3,
+              "world_revision": 739,
+              "publication_sequence": 982
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "7fc21e57acaaef2d55e6783a3adf89218a1aae13b1ee1014cf0dd0d6ef324aa5",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_overview_headless",
+        "timestamp": "2026-11-25T02:17:45.1981940Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 152,
+        "failures": [],
+        "render_submissions": 0,
+        "footer_utf8_sha256": "d70eae15c6e3f3b0763922e55cc5f096b05372334ff18095d04be059d7a66bad",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 207,
+              "world_generation": 3,
+              "world_revision": 739,
+              "publication_sequence": 981
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "7fc21e57acaaef2d55e6783a3adf89218a1aae13b1ee1014cf0dd0d6ef324aa5",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_zoom_headless",
+        "timestamp": "2026-11-25T02:17:56.5625350Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 152,
+        "failures": [],
+        "render_submissions": 0,
+        "footer_utf8_sha256": "2cdba1c8204aacc7b059198072307e8ed6d6b08f03ec5dd84d3bff4bd8c29e39",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 206,
+              "world_generation": 3,
+              "world_revision": 736,
+              "publication_sequence": 976
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "f53c0430a2fb0703f563f713b58c875027f4ea74381ab44eddb7171482b61685",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_overview_render",
+        "timestamp": "2026-11-25T02:34:06.4697215Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 155,
+        "failures": [],
+        "render_submissions": 574,
+        "footer_utf8_sha256": "9af618bb1852e115848998145b6735bde122ff61b75ccda3817c9d198ad443a7",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 207,
+              "world_generation": 3,
+              "world_revision": 739,
+              "publication_sequence": 982
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "7fc21e57acaaef2d55e6783a3adf89218a1aae13b1ee1014cf0dd0d6ef324aa5",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "case": "m4_workbench_mixed_zoom_render",
+        "timestamp": "2026-11-25T02:35:27.0116826Z",
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "checks": 155,
+        "failures": [],
+        "render_submissions": 625,
+        "footer_utf8_sha256": "287651402955130108597fc1797fa78e212955b7f77940259c4a9cb688eeefa8",
+        "native_sand_ingested_before": 0,
+        "native_sand_ingested_after": 0,
+        "sand_ingested_delta": 0,
+        "sand_relocated": 1531,
+        "raw_inventories": [
+          {
+            "source": {
+              "tick": 1,
+              "world_generation": 3,
+              "world_revision": 4,
+              "publication_sequence": 1
+            },
+            "raw_grid_sand": 1632,
+            "all_owners_plus_world_sand": 1632,
+            "owned_sand": 0,
+            "raw_grid_sha256": "0a73dc2c09acd7830c5267a6c9b2d14a906d3c3a012a37ee42fb317a287f54ac",
+            "owner_material_sha256": []
+          },
+          {
+            "source": {
+              "tick": 207,
+              "world_generation": 3,
+              "world_revision": 739,
+              "publication_sequence": 982
+            },
+            "raw_grid_sand": 1598,
+            "all_owners_plus_world_sand": 1598,
+            "owned_sand": 0,
+            "raw_grid_sha256": "7fc21e57acaaef2d55e6783a3adf89218a1aae13b1ee1014cf0dd0d6ef324aa5",
+            "owner_material_sha256": [
+              {
+                "id": 1,
+                "generation": 1,
+                "sha256": "0586fd1adf2dcd4afdaeb41d51e0909de7f03b22ad0b9137450fdd641c5bc39a"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "authored_debit_reconstruction": {
+      "method": "Independently enumerate radius3 integer-disc Erase stamps from the registered fixture and scene cut rectangles, intersect the authored Sand rectangle excluding restored four-cell-wide support posts. No native execution or evolved position reconstruction.",
+      "material": 2,
+      "exact_authored_sand_cells_erased": 34,
+      "centers": [
+        [
+          140,
+          369
+        ],
+        [
+          140,
+          373
+        ],
+        [
+          140,
+          377
+        ],
+        [
+          140,
+          381
+        ],
+        [
+          140,
+          385
+        ],
+        [
+          140,
+          389
+        ],
+        [
+          140,
+          393
+        ],
+        [
+          140,
+          397
+        ],
+        [
+          140,
+          401
+        ],
+        [
+          140,
+          405
+        ],
+        [
+          140,
+          409
+        ],
+        [
+          140,
+          413
+        ],
+        [
+          140,
+          417
+        ],
+        [
+          140,
+          421
+        ],
+        [
+          140,
+          425
+        ],
+        [
+          140,
+          429
+        ],
+        [
+          140,
+          433
+        ],
+        [
+          140,
+          437
+        ],
+        [
+          140,
+          441
+        ],
+        [
+          140,
+          445
+        ],
+        [
+          140,
+          449
+        ],
+        [
+          140,
+          453
+        ],
+        [
+          140,
+          457
+        ],
+        [
+          140,
+          460
+        ],
+        [
+          196,
+          369
+        ],
+        [
+          196,
+          373
+        ],
+        [
+          196,
+          377
+        ],
+        [
+          196,
+          381
+        ],
+        [
+          196,
+          385
+        ],
+        [
+          196,
+          389
+        ],
+        [
+          196,
+          393
+        ],
+        [
+          196,
+          397
+        ],
+        [
+          196,
+          401
+        ],
+        [
+          196,
+          405
+        ],
+        [
+          196,
+          409
+        ],
+        [
+          196,
+          413
+        ],
+        [
+          196,
+          417
+        ],
+        [
+          196,
+          421
+        ],
+        [
+          196,
+          425
+        ],
+        [
+          196,
+          429
+        ],
+        [
+          196,
+          433
+        ],
+        [
+          196,
+          437
+        ],
+        [
+          196,
+          441
+        ],
+        [
+          196,
+          445
+        ],
+        [
+          196,
+          449
+        ],
+        [
+          196,
+          453
+        ],
+        [
+          196,
+          457
+        ],
+        [
+          196,
+          460
+        ]
+      ],
+      "removed_cells": [
+        [
+          142,
+          452
+        ],
+        [
+          137,
+          453
+        ],
+        [
+          142,
+          453
+        ],
+        [
+          143,
+          453
+        ],
+        [
+          142,
+          454
+        ],
+        [
+          142,
+          455
+        ],
+        [
+          142,
+          456
+        ],
+        [
+          137,
+          457
+        ],
+        [
+          142,
+          457
+        ],
+        [
+          143,
+          457
+        ],
+        [
+          142,
+          458
+        ],
+        [
+          142,
+          459
+        ],
+        [
+          137,
+          460
+        ],
+        [
+          142,
+          460
+        ],
+        [
+          143,
+          460
+        ],
+        [
+          142,
+          461
+        ],
+        [
+          142,
+          462
+        ],
+        [
+          198,
+          452
+        ],
+        [
+          193,
+          453
+        ],
+        [
+          198,
+          453
+        ],
+        [
+          199,
+          453
+        ],
+        [
+          198,
+          454
+        ],
+        [
+          198,
+          455
+        ],
+        [
+          198,
+          456
+        ],
+        [
+          193,
+          457
+        ],
+        [
+          198,
+          457
+        ],
+        [
+          199,
+          457
+        ],
+        [
+          198,
+          458
+        ],
+        [
+          198,
+          459
+        ],
+        [
+          193,
+          460
+        ],
+        [
+          198,
+          460
+        ],
+        [
+          199,
+          460
+        ],
+        [
+          198,
+          461
+        ],
+        [
+          198,
+          462
+        ]
+      ],
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "limitations": "This is the paused authored-stamp debit. Later chemistry/material progression has its own native/raw ledger."
+    },
+    "native_positive_cases": [
+      "real_falling_sand_ingress_aba_and_destroyed_pocket",
+      "wide_rotated_pocket_admits_real_falling_sand"
+    ],
+    "prior_interrupted_exploration": "NOT PASS; no natural terminal receipt was retained and no result is reconstructed."
+  },
+  "principal_evaluator": {
+    "bytes": 93388322,
+    "filename": "objectshard-workbench-evaluator.zip",
+    "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387"
+  },
+  "independent_review_scope": "Actual source/case inspection; local and hosted original native archive/source/binary reviews; independently source-reviewed hosted byte scans and original-report joins; exact cloud raw-report bytes and reconstructed expected Sand grid/carrier hashes. Cloud review does not claim a second raw archive download when execution storage was unavailable."
+}

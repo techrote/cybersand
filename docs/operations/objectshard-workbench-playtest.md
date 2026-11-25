@@ -10,10 +10,33 @@ related-documents: [objectshard-m3-preflight-playtest.md, ../research/objectshar
 
 # Destructible structures in the ordinary Workbench
 
-This is the **Draft/HOLD ObjectShard M4 candidate**. It uses the ordinary
+This is the **engineering-qualified ObjectShard M4 evaluator for owner testing**.
+PR #754 remains **Draft/HOLD** pending physical Windows 11/NVIDIA performance
+acceptance. It uses the ordinary
 Workbench canvas, painting, Water controls, actors and Rapier space. The
 independent ObjectShard Lab and M3 rehearsal remain available as historical
 test facilities. Their results do not qualify this integration.
+
+## Qualified download and evidence
+
+The [principal Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170)
+contains **objectshard-workbench-evaluator.zip**, **93,388,322 bytes**, SHA-256
+**1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387**.
+The GitHub download is an outer archive; extract its inner ZIP, then extract the
+complete evaluator before launching.
+
+The tested application, native build and package source is
+`5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a`, tree
+`51ff1e6a0949dff3b2b17cdca7a40d4943b05f78`.
+The full native/Linux/Windows campaign, actual shipped CMD, pristine replay and
+independent archive review passed. Additional unchanged-package Windows
+witnesses passed authored save/reopen, live moving-cell Cut and positive Sand
+cargo transfer. See the
+[final engineering decision](../audits/2026-11-25-objectshard-m4-final-decision.md)
+and [complete performance analysis](../audits/objectshard-m4-recovery-20261125/final-performance-5f.md).
+These results do not establish physical NVIDIA presentation speed.
+The packaged guide remains its exact qualified source version; this repository
+page adds the terminal delivery record.
 
 ## Open the evaluator
 
@@ -169,7 +192,12 @@ recording off, then compare with recording on; recording changes only
 observation and must not change the body population or simulation settings.
 
 Water contact can extinguish moving Wood; Sand can lodge in supported pockets
-and contribute to mass. This candidate does not add buoyancy, fluid drag or
+and contribute to mass. The existing lodging law uses upward-open pockets one
+to three cells wide. The independent ordinary Windows witness verified a real
+63-Wood pocket carrying one painted grain, with native and actual Rapier mass
+increasing to 64 after geometry acknowledgement. The wider architectural gaps
+in the Mixed demonstration show conservative Sand displacement; they are not
+the narrow-pocket ingestion witness. This candidate does not add buoyancy, fluid drag or
 native Sand impact impulses to mutable structures. Dense fluid with no nearby
 empty relocation cells can stop the candidate with a refusal. The attached
 search is bounded to 64 cells and 1,048,576 destination probes per composition;

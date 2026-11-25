@@ -10,10 +10,52 @@ related-documents: [2026-11-24-objectshard-m4-source-recovery.md, 2026-11-24-obj
 
 # ObjectShard M4 completion recovery ledger
 
-**Recovery in progress; qualification incomplete; Draft/HOLD.** This ledger
+**Recovery closed: engineering complete and qualified for owner evaluation; Draft/HOLD for physical acceptance.** This ledger
 records OBJECTSHARD-M4-COMPLETION-RECOVERY-001. Physical Windows 11/NVIDIA
 performance acceptance remains HOLD. It grants no merge, Ready, auto-merge,
 production-default activation or unqualified runtime-publication authority.
+
+## Terminal recovery disposition — 25 November 2026
+
+The definitive [Markdown decision](2026-11-25-objectshard-m4-final-decision.md)
+and [JSON record](objectshard-m4-recovery-20261125/final-decision.json) supersede
+earlier in-progress checkpoint status. The chronological entries below retain
+their original scope and failures; their temporary running/pending statements
+describe the time of those checkpoints.
+
+- Application/native-build/package source:
+  `5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a`; tree
+  `51ff1e6a0949dff3b2b17cdca7a40d4943b05f78`.
+- Main campaign **45530425519 / attempt 1: PASS**, all four original jobs.
+  Linux 43 primary + 32 graphical-lane; Windows 43 + 32 + 17 pristine replay;
+  actual CMD, negative controls and principal ZIP upload passed.
+- Independent archive/Windows owner campaign **45537943367: PASS**, audit
+  source `21333f8a0eb15620ecf22ce4c1b3df09fa83fc51`. All six original
+  archives were independently rehashed; authored/reopen 136 + 79 and actual
+  live moving Cut 154 checks passed against the unchanged package.
+- Focused ordinary Sand campaign **45540808667: PASS**, audit source
+  `2b15c37e934f07117e297a38e8c3100104c9637d`. All 168 checks passed:
+  mounted ordinary erasure/paint, unforced fall/rest, exact World-to-Cargo
+  credit, mass/centre/inertia and actual geometry acknowledgement.
+- Principal [evaluator artifact 14986488170](https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170):
+  inner ZIP **93,388,322 bytes**, SHA-256
+  **1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387**.
+- All three specialist lanes and lead review approve engineering-qualified
+  owner evaluation. Exact original 64-bit JSON identities and PNG bytes are
+  retained. The full 52-profile performance analysis preserves instrumentation
+  differences, standing software-renderer cost and real coordination cost.
+- Physical Windows 11/NVIDIA acceptance remains **HOLD**. Retained production
+  provenance still has **16 stale-input errors / FAIL-OPEN before Ready/merge**.
+  No merge, Ready, auto-merge, production-default activation or accepted
+  production runtime overwrite occurred.
+
+Two local executor outages interrupted earlier supplemental attempts. The
+hosted recovery supplied new exact-source evidence; it did not relabel the
+interrupted old work as passing. A final restored executor independently
+downloaded and rehashed the original principal artifact and inner ZIP for
+direct owner delivery. No application change or additional qualification
+campaign followed the successful Sand witness.
+
 
 ## Recovery checkpoint after executor replacement
 

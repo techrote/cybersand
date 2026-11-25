@@ -56,6 +56,12 @@
         "executed_tree_equivalent_source": "b9bbf27465b79739abfd85f4c886e95a9a403523",
         "published_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
         "scope": "one mounted press/release during Play, exact source cell, same-step geometry and material-point velocity, complete raw debit"
+      },
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/live-cut-receipt.json"
       }
     },
     {
@@ -72,7 +78,13 @@
       "claim": "Fragmentation, geometry revision and surviving material-point velocity",
       "coverage": "registered-native-and-ordinary",
       "id": "fragmentation",
-      "qualification_limit": ""
+      "qualification_limit": "",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/live-cut-receipt.json"
+      }
     },
     {
       "assertions": [
@@ -89,7 +101,13 @@
       "claim": "Ignition, supported chemistry and finite original-cell burn lifetime",
       "coverage": "registered-ordinary-with-test-clock-correction",
       "id": "ignition",
-      "qualification_limit": "Recovery Windows source51903088 long_burn is FAIL and remains so. Corrected assertion-equivalent external Linux replay passed233checks through SpecialistB; successor hosted source still requires qualification. No bounded whole-building burnout claim."
+      "qualification_limit": "Recovery Windows source51903088 long_burn is FAIL and remains so. Corrected assertion-equivalent external Linux replay passed233checks through SpecialistB; successor hosted source still requires qualification. No bounded whole-building burnout claim.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/delivery-audit-summary.json"
+      }
     },
     {
       "assertions": [
@@ -103,7 +121,13 @@
       "claim": "Final collider, native inventory and physical owner retirement",
       "coverage": "registered-ordinary",
       "id": "terminal_retirement",
-      "qualification_limit": "This terminal witness is authored last-cell erasure, not natural exhaustion of a whole wooden building."
+      "qualification_limit": "This terminal witness is authored last-cell erasure, not natural exhaustion of a whole wooden building.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/delivery-audit-summary.json"
+      }
     },
     {
       "assertions": [
@@ -134,12 +158,18 @@
         "product_and_executed_fixture_equivalent": true,
         "source_commit": "7095a2358e3db51e9b175f44c3686bfef4d60909",
         "source_registration_preserved": true
+      },
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/delivery-audit-summary.json"
       }
     },
     {
       "assertions": [
         "Native relocation counters positive on ordinary mixed/viaduct motion; no owned Water or illegal overlap.",
-        "Paused one-shot inspection copies all512\u00b2stored materials and every bounded parcel; independent material census and parcel quantities match native ledger.",
+        "Paused one-shot inspection copies all512²stored materials and every bounded parcel; independent material census and parcel quantities match native ledger.",
         "Stored visible Water, pressure overfill, ballistic parcel quantity and rendered parcel pixels are recorded separately.",
         "Raw grid, owner material, float64 parcel rows and rendered bytes retain hashes; inspection advances no chemistry or physical time."
       ],
@@ -167,7 +197,13 @@
       "claim": "Sand displacement and native lodging",
       "coverage": "registered-native-plus-ordinary-displacement",
       "id": "sand_lodging",
-      "qualification_limit": "Ordinary mixed profile records sand_ingested but does not require a positive lodging count; positive lodging is a native fixture assertion, not a demonstrated ordinary-profile event."
+      "qualification_limit": "Ordinary mixed profile records sand_ingested but does not require a positive lodging count; positive lodging is a native fixture assertion, not a demonstrated ordinary-profile event.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-sand/summary.json"
+      }
     },
     {
       "assertions": [
@@ -245,7 +281,7 @@
     },
     {
       "assertions": [
-        "GCR IDs1\u201348 and mutable IDs49\u201364 remain separate; overlap, duplicate IDs and stale composition receipts refuse."
+        "GCR IDs1–48 and mutable IDs49–64 remain separate; overlap, duplicate IDs and stale composition receipts refuse."
       ],
       "cases": [
         "native:m4_composed_transient_collision_is_atomic"
@@ -293,6 +329,12 @@
         "prior_lost_local_supplement_reused": false,
         "raw_receipts_retained": true,
         "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+      },
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/summary.json"
       }
     },
     {
@@ -309,7 +351,13 @@
       "claim": "Convenient512/1024starts and explicit ordinary2048refusal",
       "coverage": "source-plus-actual-frozen-linux-mounted-ui",
       "id": "canvas_extents",
-      "qualification_limit": "The obsolete scene_refusal seam fixture is not counted. New positive512/1024/2048 evidence is external Linux headless, not physical display acceptance;1024 witness is blank attachment and512 supplies the moving construction."
+      "qualification_limit": "The obsolete scene_refusal seam fixture is not counted. New positive512/1024/2048 evidence is external Linux headless, not physical display acceptance;1024 witness is blank attachment and512 supplies the moving construction.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/summary.json"
+      }
     },
     {
       "assertions": [
@@ -324,7 +372,7 @@
   ],
   "fixture_successor": {
     "commit": "1d494c36b119219db3cd812e7bff45358a3a6c87",
-    "new_hosted_result": "pending",
+    "new_hosted_result": "Final5fregistered long-burn PASS, with exact corrected fixture SHA787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad; original519failure remains retained.",
     "only_changed_case": "test_object_shard_m4_long_burn",
     "purpose": "native/display clock correction without lifetime bound change"
   },
@@ -374,8 +422,8 @@
       "package_replay_cases": 17,
       "qualification_attempt": 1,
       "qualification_run": 45530425519,
-      "qualification_status": "in-progress-at-supplement-capture",
-      "scope": "Source assertion coverage plus explicitly joined local supplemental witnesses; no aggregate PASS inferred.",
+      "qualification_status": "passed-original-report-log-and-source-independent-join",
+      "scope": "Full registered final5fmatrix PASS plus separately identified Windows fresh-process/live-Cut/Sand originals; physical monitor acceptance HOLD.",
       "source_file_sha256": {
         "godot/native_extension/cyber_native_cell_world.cpp": "37929c261dccfd79e24589bec99b4cbd3767c4ad269b48e5f15602f502ec7051",
         "godot/scripts/object_shard_m4_runtime.gd": "8d6da4727a85f6b52f619e349882ffa5f31bea34c2d92e97a2900f569a588918",
@@ -402,5 +450,25 @@
       },
       "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78"
     }
-  ]
+  ],
+  "final_adjudication": {
+    "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "status": "passed-native-and-ordinary-current-source; physical-owner-HOLD",
+    "primary_run": 45530425519,
+    "independent_audit_run": 45537943367,
+    "sand_run": 45540808667,
+    "canonical_final_review": "final-native-correctness-review.json",
+    "current_results": {
+      "headless_per_platform": 43,
+      "graphical_report_per_platform": 32,
+      "actual_graphical_processes_per_platform": 18,
+      "windows_package_replay": 17,
+      "windows_author": 136,
+      "windows_reopen": 79,
+      "windows_live_cut": 154,
+      "windows_sand": 168
+    },
+    "scope": "This final result supersedes readiness for the separately qualified5finputs. Original519source rows, original failures and source hashes remain historical; they are not retrospectively promoted."
+  }
 }
