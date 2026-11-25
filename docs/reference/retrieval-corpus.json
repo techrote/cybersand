@@ -170,7 +170,7 @@
   "excluded": [
     {
       "path": "research/gip014-goblin-gameplay-qa.md",
-      "reason": "Branch-scoped GIP-014 developer-only in-game QA candidate, Draft/HOLD. Read explicitly for goblin implementation, qualification and unsupported-action boundaries; it is not ordinary accepted Workbench behavior."
+      "reason": "Explicit-only research and dated evidence for the accepted optional GIP-014 foundation at c8421a81. Current accepted availability is summarized in status-and-roadmap; retained campaigns/evaluator bytes do not qualify new source or unmerged GOBLIN002, and this mixed packet is not a current answer source."
     },
     {
       "path": "research/gentek-classic-001.md",
