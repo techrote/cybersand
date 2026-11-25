@@ -261,13 +261,12 @@ The native query check and the focused generated-C++ regression require a C++20
 compiler; JSON generation and strict validation use Python's standard library.
 CI reuses the existing hosted
 Documentation workflow and execution watchdog. These focused commands do not
-run World scenarios or require a Godot download; expensive draft lanes stay
-suppressed. Under the existing ready-state path classifiers, this tools/data
-implementation also triggers the full Native and Windows/Linux GDExtension/Godot
-gates when #371 becomes ready. Those configured integration checks remain
-required; a draft skip or metadata readback is not a substitute. Freeze and
-independently review the candidate before that transition to avoid redundant
-matrices. Record actual jobs and any skips in the PR ledger.
+run World scenarios or require a Godot download. For a new change, inspect its
+actual path classification and the current task's Draft/Ready boundary. The
+original #371 integration is already merged; its former Ready transition is not
+a new task. Applicable Native and Windows/Linux GDExtension/Godot gates retain
+their separate requirements; a Draft skip or metadata readback is not a
+substitute. Record actual jobs and skips against the source being reviewed.
 
 For optional actual Godot metadata readback, use a complete editor archive and
 executable matching `third_party/godot-runtime.lock.json`. Produce a native
@@ -316,10 +315,13 @@ requiring its own parity/identity review and applicable integration gates.
 
 ## Production cutover, rollback and remaining decisions
 
-#353-A adds tooling and unused candidate data only. Reverting its tools,
-candidate directory, documentation routes and CI step restores the previous
-development workflow; no save or World conversion is needed. Existing kernels
-and policy artifacts remain the production authority throughout.
+The original #353-A introduced tooling and unused candidate data. Its historical
+tools-only rollback predates the accepted #563 capability consumer and #562 Lab.
+Current rollback planning must account for those dependent consumers: revert a
+switched consumer and its generated route together, with the applicable source,
+identity and runtime checks. Do not remove shared tooling while an accepted
+consumer still requires it. No general save or World migration is introduced by
+the original shadow metadata.
 
 #353-B requires a separate review of each proposed consumer switch. Preserve
 the exact header bytes and parser-compatible form where they bind identities,
@@ -327,8 +329,10 @@ or design an explicitly versioned identity transition before changing them.
 Revert a switched consumer and its generated route as one unit. A stale-policy
 failure is evidence to resolve, not permission to update the oracle.
 
-#354 still requires reproduced liveness cases; #355 still owns new endpoint
-effects and their state/quantity contracts. Serialize overlapping World and
+#354's Phase A has reproduced and independently qualified its liveness cases;
+the bounded H1 production correction remains a separate pending decision, as
+the [liveness guide](material-liveness-investigation.md) explains. #355 still owns
+new endpoint effects and their state/quantity contracts. Serialize overlapping World and
 quantity writes under one integration owner. #356 may inspect accepted
 metadata, but a slider requires an actual consumer and applied readback.
 Source fields whose native path ignores them remain read-only/unused.
