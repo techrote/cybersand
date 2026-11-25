@@ -41,7 +41,7 @@ The [Architecture request](https://github.com/techrote/cybersand/pull/773#issuec
 
 ## Retained negative findings
 
-The physical owner case remains LM Studio absent/no listener → Send → ordinary X/Hide. No live HTTP404 fixture substitutes for it. Existing cold-start, large-response, conversation-Apply, no-header teardown and historical package failures remain preserved in #773. No physical Windows/NVIDIA acceptance is inferred.
+The physical owner case remains LM Studio absent/no listener → Send → ordinary X/Hide. No live HTTP 404 fixture substitutes for it. Existing cold-start, large-response, conversation-Apply, no-header teardown and historical package failures remain preserved in #773. No physical Windows/NVIDIA acceptance is inferred.
 
 Architecture #777 has independent passing source process groups but retained pristine-launch failures at earlier sources. Its current candidate is not silently imported or declared accepted. No changes are made to Architecture, Docs, PUBPRES, AMBIENT, ObjectShard or other active branches.
 
@@ -210,3 +210,58 @@ are not a controlled causal comparison. A separate phase probe localizes most
 Apply time to full redaction and audit preparation. Any background preparation
 change will be developed and qualified separately from this baseline, retaining
 complete durable audit and explicit owner commit semantics.
+
+## Qualified baseline and reviewed responsiveness successor
+
+Baseline source e536d128f85e948223b25e13931a7a801faf956d, tree
+61d38ec119665270a9fb4eea9ae78836348d7092, completed
+[campaign 45541065622](https://github.com/techrote/cybersand/actions/runs/45541065622).
+Both platforms passed the retained 23 core cases, retained provider/lifecycle/
+displayed/large-value groups, and all seven new groups headless and displayed.
+Windows also ran the actual launcher from a pristine extracted installation.
+[The exact baseline custody](experience-evidence/e536-qualified-baseline.md)
+retains artifacts, original log review and scope. The baseline evaluator is
+preserved independently; later source does not inherit its verdict.
+
+The responsiveness successor combines the [engineering decisions](ENGINEERING-DECISIONS.md)
+with [independent native/creative evidence](NATIVE-CREATIVE-EVIDENCE-SYNTHESIS.md).
+The packed scan passed 168 exact paired checks; independent numeric/source review
+passed 238. Integrated proposal contracts pass 107, including synthetic thin,
+uneven and dense cases. The forty counterbalanced pairs preserved exact model
+content/digests; the maximum-size completed-plane median is 32.593 ms with a 35.451 ms
+observed tail. This is pure-value construction, not a frame-latency guarantee.
+
+Large Conversation Apply uses a finite value worker and the existing durable
+audit owner. Independent review closed refused-draft publication to live Traffic
+and ready-job publication to queued owners. Provider mechanisms pass 66 checks.
+Actual ordinary-Workbench source 8a015efbeb7926a3c835303d3b163c01d353aca3 passed 154
+checks covering full replay, Cancel/Stop/Hide, World replacement, newer turns,
+credentials, real append failure, reentrant adoption, queued deletion and
+pending-Apply exclusion from collaborative Send/Inspect/Approve. Its original log
+SHA-256 is 79efe35050fe215372ceadcf9c319705a8ce2e0c4d1e94a103a3d57e649c34ec.
+The complete original successful/failed records are durable at
+[provider evidence 807250](https://github.com/techrote/cybersand/tree/807250dc0a1fbcfb5a6ee85747b523aa5a46ffca/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence).
+This 1 MiB lifecycle pass does not establish near-cap responsiveness.
+
+Failures remain explicit: the first fixture collided with Godot's global seed
+function and did not initialize. Its corrected successor reported 154 checks with
+11 failures because an offline proposal had legitimately made the already-open
+Conversation editor stale; reopening the current revision fixed the fixture
+without weakening guards. Two local near-cap baseline processes were killed
+with signal 9 under shared memory pressure and produced no Apply result. A separate
+LFS index-stat admission refusal was normalized through the ordinary clean filter
+with exact bytes and empty cached diff; no source-clean gate was bypassed.
+
+At approximately 04:18 UTC the temporary executor restarted again. All production
+lanes, native observations, paired reports and A's original mechanism/lifecycle/
+failure records were already durable. The local integration and authored design
+notes were rebuilt from those exact commits. The merged Context blob
+fe04e1b10f05ad0fcb436311d6b31b2439997f59 is identical to the pre-reset merge.
+Unarchived local console outputs are not presented as recovered original logs.
+Fresh execution after recovery will have its own source and artifact identities.
+
+The successor matrix requires nine collaborative groups, retaining the previous
+seven and adding provider and actual editor preparation lifecycle. All 21 package
+unit tests and the repository's GitHub-hosted CI policy check passed during
+integration. The complete successor platform/package campaign remains required.
+No counterpart branch, independent evaluator or readiness state was changed.

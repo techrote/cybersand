@@ -294,3 +294,61 @@ kept off this frozen principal source until separately incorporated and tested.
 - Retain the original #773 acceptance limits, the interrupted eight-of-nine
   attempt, temporary evidence loss and any new failed hosted attempts as
   separate outcomes.
+
+## Completed original-native evidence review at source 2743
+
+The source-bound displayed campaign and full original archive are now durable.
+The native specialist's independent derived-index reduction completed 813 checks
+without failure. A separate independently authored Python verifier then ran
+verbatim under the lead's executor: exit zero, nine scenes, 25 stages, 377,234
+exact before/after readback rows and 73 original file identities verified.
+The original material PNG bytes and int32-plane hashes reconstructed every
+stage and both final native arms exactly. The index preserved all non-readback
+receipt fields and matched the canonical exact-row hashes.
+
+The specialist independently fetched the published raw stdout/execution record
+at `e536d128f85e948223b25e13931a7a801faf956d`, verified both stdout and script
+SHA-256 values and reconciled every scene against the original summary in 73
+additional checks with no failures. The [separate evidence review](independent-native-2743/README.md)
+retains the methods, outputs, exact identities and interpretation limits.
+
+This closes the original-array custody question for the frozen **2743** native
+campaign. It does not automatically qualify later source or a Windows package.
+The two arms each acknowledge **184,396 cell changes**, summed over native
+receipts; this does not mean that many distinct final occupied coordinates.
+The examples remain deterministic host-authored fixtures, genuine model calls
+remain zero, and physical actor traversal and causal retrieval benefit are not
+claimed. The earlier exit-137 campaign and temporary evidence loss remain
+retained separate outcomes.
+
+## Final native and creative evidence synthesis
+
+The [native/creative decision synthesis](NATIVE-CREATIVE-EVIDENCE-SYNTHESIS.md)
+now reconciles the nine actual-native scenes, 25 finite guarded stages, nine
+matched direct controls and the saved/reopened native atlas against the inspected
+original summary and raw replay. It separates intended architectural character
+from observed material correctness, static Empty clearance and owner aesthetics.
+It explicitly distinguishes this lane's authored modules/tests from cross-lane
+source review and independently written evidence-replay methods.
+
+The specialist independently fetched the original 24-brief cohort receipt at
+`53bba66ddeb5d5a549f14a39c6dccbb416297d61`, verified SHA-256
+`bb1893157dbc520cb936b76d7d87872a18ef83ba74002d55d2cf2697eb083a99`
+and completed 166 additional checks with no failures. All 24 final outcomes
+remain: 17 ready, six refusals and one stale refusal, plus R03's retained failed
+precursor. [The reduction report](creative-cohort-independent-review.json)
+preserves the denominator, exact refusal reasons and frozen-proposal ablations.
+
+Two semantic limitations remain explicit. The native arcology scene constructs
+its base composition; actual Develop is a separate session control. The copied
+B04/R01 revision changes a title and the first rectangle by two cells, so its
+lineage pass does not prove understanding of a taller upper crown. Neither the
+fixture cohort nor identical ablation geometry supports a genuine-model
+creativity or causal retrieval claim.
+
+The [paired Context scan evidence](CONTEXT-SCAN-PERFORMANCE.md) is a separate
+computation experiment at source 3f56020b: 168 exact-output checks and 107 proposal
+checks passed under the lead's executor, followed by 238 independent source/data
+identity and arithmetic checks. Maximum-size packed build medians remain
+27.551–32.593 ms, with a 35.451 ms observed sample tail; no GUI frame guarantee or
+automatic later-source qualification is asserted.

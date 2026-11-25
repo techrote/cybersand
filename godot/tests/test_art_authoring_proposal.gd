@@ -50,6 +50,51 @@ func refuses(raw: Variant, context: Dictionary, rules: Dictionary, label: String
 	var compiled := Proposal.compile(raw,context,rules)
 	check(not compiled.ok,label)
 
+func check_context_scan_equivalence() -> void:
+	# A deliberately simple scalar reference uses the public occupancy definition.
+	# The optimized context path may precompute counts, but must preserve every
+	# material and bucket even for sparse, dense, thin and uneven dimensions.
+	var cases: Array = [
+		[Vector2i(1,1),0], [Vector2i(1,65),-1], [Vector2i(65,1),58],
+		[Vector2i(3,2),-1], [Vector2i(15,17),-1], [Vector2i(17,15),0],
+		[Vector2i(31,47),58], [Vector2i(63,65),-1], [Vector2i(512,512),-1]]
+	for item: Array in cases:
+		var size: Vector2i = item[0]
+		var region := Rect2i(Vector2i(7,11),size)
+		var rules := policy()
+		rules.extent = size+Vector2i(32,32)
+		rules.region = region
+		var receipt := capture()
+		receipt.region = region
+		receipt.materials = PackedInt32Array()
+		receipt.materials.resize(size.x*size.y)
+		var expected_histogram := {}
+		var expected_grid: Array = []
+		for y: int in 16:
+			var row: Array = []
+			for x: int in 16: row.append([0,0,0])
+			expected_grid.append(row)
+		for i: int in receipt.materials.size():
+			var id := int(item[1]) if int(item[1]) >= 0 else (i*29+(i/size.x)*7)%256
+			receipt.materials[i] = id
+			expected_histogram[id] = int(expected_histogram.get(id,0))+1
+			var x := i%size.x
+			var y := i/size.x
+			var observed_bin: Array = expected_grid[mini(15,y*16/size.y)][mini(15,x*16/size.x)]
+			observed_bin[0] += 1
+			if id != 0: observed_bin[1] += 1
+			if id == 0 or id == 58: observed_bin[2] += 1
+		var result := Context.build(receipt,rules)
+		var label := "%dx%d fill=%d" % [size.x,size.y,int(item[1])]
+		check(result.get("ok",false),"bounded exact-context scan admits "+label)
+		if not result.get("ok",false): continue
+		var actual_histogram := {}
+		for row: Dictionary in result.model.material_distribution:
+			actual_histogram[int(row.id)] = int(row.cells)
+		check(actual_histogram==expected_histogram,"packed scan preserves all observed material counts "+label)
+		check(result.model.coarse_occupancy.grid==expected_grid,
+			"packed scan preserves exact observed/nonempty/source0-58 buckets "+label)
+
 func run() -> void:
 	var rules := policy()
 	var observed := capture()
@@ -276,6 +321,7 @@ func run() -> void:
 	print("ART_AMBIGUITY_DIAGNOSTIC ",JSON.stringify(ambiguous_result))
 	check(not ambiguous_result.ok and ambiguous_result.error.contains("questions"),"unresolved creative ambiguity cannot receive execution approval")
 
+	check_context_scan_equivalence()
 	print("ART_PROPOSAL_RESULT ",JSON.stringify({"checks":checks,"failures":failures,
 		"evidence_kind":"synthetic copied-value contracts; no model or native writes"}))
 	quit(1 if failures else 0)

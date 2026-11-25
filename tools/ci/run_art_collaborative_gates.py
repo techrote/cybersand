@@ -22,6 +22,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "art-collaborative-gates-v1"
 TESTS = {
     "test_art_owned_transport": "ART_OWNED_TRANSPORT_RESULT",
+    "test_art_conversation_preparation": "ART_CONVERSATION_PREPARATION_RESULT",
+    "test_art_conversation_apply_preparation": "ART_CONVERSATION_APPLY_RESULT",
     "test_art_authoring_proposal": "ART_PROPOSAL_RESULT",
     "test_art_creative_cohort": "ART_CREATIVE_COHORT_RESULT",
     "test_art_collaborative_native": "ART_COLLABORATIVE_NATIVE_RESULT",
