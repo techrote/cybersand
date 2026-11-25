@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "e9e0e0da3a370c98ea4be04ede82fd9812cf1f7e",
+  "source_tree": "f26c85af14ca9a3557128e4b7b80198c0a382ac5",
+  "dirty_paths": [],
+  "current_fingerprint": "5edbf1ae25424b90f1c77dec336fb6ff469389a79833fc080c5b411eee37f694",
+  "queries": 268,
+  "public_adapter_vs_predeclared_experiment": {
+    "canonical_ranks_equal": true,
+    "top5_ids_equal": true,
+    "scores_equal": true,
+    "context_sha256_equal": true
+  },
+  "frozen_inputs": [
+    {
+      "path": "tools/docs/retrieval_eval.py",
+      "sha256": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5",
+      "equal_to_predecessor": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions.json",
+      "sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+      "equal_to_predecessor": true
+    },
+    {
+      "path": "docs/reference/retrieval-challenges.json",
+      "sha256": "6378394461af47b73711954dd6d3dcf3097a836035669b51f2a18b9dae8f64d4",
+      "equal_to_predecessor": true
+    },
+    {
+      "path": "docs/reference/retrieval-questions-docs-renaissance-v1.json",
+      "sha256": "cc3d38409ea132abc1e695830c5a9289badb5cc140fc423a144da53ffaaf084f",
+      "equal_to_predecessor": true
+    },
+    {
+      "path": "docs/reference/owner-intent-retrieval-questions.json",
+      "sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "equal_to_predecessor": true
+    },
+    {
+      "path": "docs/history/engineering/retrieval-questions.json",
+      "sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "equal_to_predecessor": true
+    }
+  ],
+  "tests": {
+    "historical_isolation": 16,
+    "retrieval_selection": 15,
+    "knowledge_adapter": 36,
+    "total": 67,
+    "result": "PASS"
+  },
+  "independent_review": {
+    "lane": "A",
+    "verdict": "APPROVE",
+    "receipt_path": "a-results/ranking-v2-independent.json",
+    "receipt_sha256": "3e0fb430a77e801589c9b73abae52747e8ef3d0aa2164eab1396a21e4ad436b1"
+  },
+  "scope": "Public actual v2 execution on clean 162b+004e projection; predates independent later sanitizer guide correction. No heldout material used by C or this verification; no model answers."
+}

@@ -69,20 +69,41 @@ from local object availability.
 
 ## Reproduce the unchanged lexical baselines
 
-The original evaluator and five fixtures remain unchanged. The predecessor's
+The original evaluator and five frozen fixture payloads remain unchanged. The
+original 32-question payload now has the explicit `retrieval-questions-frozen32.json`
+path. Accepted main subsequently added a 33rd CI question to the ordinary fixture;
+that accepted 33-question file is retained byte-exact and reported separately.
+Its dated packet target is not promoted into current retrieval. A separately
+reviewed current CI case supplies an additive comparison. The predecessor's
 projection runner can be recovered exactly without keeping its bulky outputs in
 the current tree:
 
 ```sh
 git show 20170bd6259498c3d2774ab274567febb043fc1d:docs/audits/2026-11-24-docs-renaissance/closure/retrieval/reproduce.py > /tmp/cybersand-reproduce-closure.py
-python /tmp/cybersand-reproduce-closure.py --root . --output /tmp/cybersand-retrieval-reproduction --stage all
+GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach /tmp/cybersand-predecessor-20170 20170bd6259498c3d2774ab274567febb043fc1d
+python /tmp/cybersand-reproduce-closure.py --root /tmp/cybersand-predecessor-20170 --output /tmp/cybersand-retrieval-reproduction --stage all
 ```
 
-This reproduces accepted `00cdb02f`, original recovery `ddd7c88f`, and the current
-working corpus. To reproduce delivered #774 itself after Ultima corrections,
-run the same command against a detached disposable #774 worktree. The original
+Use fresh output/worktree paths. This reproduces accepted `00cdb02f`, original
+recovery `ddd7c88f`, and delivered #774 with the original fixtures and helpers.
+The original
 runner reports real contexts and missing-manifest comparisons. Those are lexical
 retrieval measurements; canonical recall is not answer correctness.
+
+On a source-matched Ultima checkout, the paired current-corpus comparison is:
+
+```sh
+python tools/docs/evaluate_knowledge.py --root . --output /tmp/cybersand-ultima-paired --contexts
+```
+
+The command selects the explicit frozen 32, challenge 164, additive 36,
+owner-intent six and historical ten suites. It writes both original lexical and
+reference-adapter contexts. [Analysis and chronology](retrieval-analysis.md)
+separate original historical results, the rejected v1 regression, the general v2
+correction and the qualified source checkpoints. Compressed derived reports are
+ordinary gzip JSON; [the record manifest](retrieval-record-manifest.json) binds
+stored and expanded digests. Their full contexts reproduce from the recorded
+source, corpus and helper identities.
 
 ## Independent execution and review records
 
@@ -93,16 +114,26 @@ retrieval measurements; canonical recall is not answer correctness.
 | [Cache destination negative](cache-path-negative-before.json) | Disposable reproduction of source clobber before the destination guard; final source includes refusal tests and independent reviewer checks. |
 | [Consumer scope](consumer-scope.json) | Actual local adapter/index investigation and the absence of executed generative inference; this reference harness is not represented as a deployed RAG service. |
 | [Semantic coverage](coverage-c.json) | C's 53 full-body reads: 46 current-corpus documents and seven navigation/explicit-history records, with individual source/authority review depth and limits. |
+| [Accepted-main coverage additions](coverage-c-new-main.json) | Four further full reads after main advanced: two current CI runbooks, the dated packet and explicit owner guide. C's total is 57 full-body records, including 48 canonical current documents. |
 | [Operations checks](operations-validation.json) | Copied quick commands passed 20 tests; deterministic Stage3b planning produced 168 fixtures/6,488 planned runs. The scientific campaign was not executed by these checks. |
 | [Persistence review](review-persistence-by-c.json) | C independently inspected A's mechanism and executed the Linux public-save/fault matrix, including actual old/new payload values. |
 | [Capture review](review-capture-by-c.json) | Independent execution of six real Linux controller/CLI cases: replacement, buffered write refusal, permission refusal, retry and truthful acknowledgements. |
+| [Profile review](review-profile-by-c.json) | Independent source review and 16 real Linux public-caller cases across Worldgen, Material Lab, Transport and Water profile saves. |
+| [Art storage review](review-art-storage-by-c.json) | Six independent actual Linux storage cases and 278 focused checks; export, new segment and append acknowledgements remain distinct. |
+| [Storage originals](storage-cross-review-originals.zip) | Digest-indexed original C reports and logs from those disposable executions; no owner data or provider calls. |
+| [Package guard review](review-package-by-c.json) | Synthetic contradictory profile receipt admitted before the review correction, refused afterward; 60 independent admission tests passed. |
 | [Physics provenance correction](physics-provenance.json) | Before/after actual Linux measurement exposed Windows DLL pointer attribution; the fix selects materialized platform libraries, checks pinned version and detects drift. Ten focused tests and five one-tick cases passed; no new physics acceptance is inferred. |
 | [Original physics evidence](physics-provenance-originals.zip) | Digest-indexed original manifests, inputs, outputs and logs for that bounded reproduction and metadata capture. |
 | [Cross-reviews](cross-review-c.json) | C's source-grounded challenges of A/B/lead changes, separating source inspection, executed tests and outstanding graphical/physical acceptance. |
 | [Candidate route readback](candidate-route-readback.json) | Actual GitHub lifecycle/head/base readbacks for #778–781 and #783; reported feature qualification is attributed, not promoted into accepted main. |
+| [Accepted CI authority correction](accepted-ci-closure-correction.json) / [actual boundary probes](accepted-ci-closure-authority-probe.json) | The newly accepted dated packet's 12 current chunks were excluded; live-instance and persistent-cache controls removed stale authority while preserving its immutable original. |
+| [C findings](findings-c.json) | Stable source/authority/provenance findings and named independent reviews; additional runtime implementations remain attributed to their implementing lanes. |
 
-The proposed retrieval method was frozen before the lead's sealed holdout was
-exposed to its evaluator. C has not read that holdout. Integrated five-suite
-comparisons and final actual-context reviews are published against the final
-source checkpoint separately; these interim coverage receipts do not attach an
-earlier score or GUI observation to a changed source.
+The lead sealed its holdout before method tuning. C has never read the questions,
+expected facts or results. The lead had already executed the v1 holdout when an
+independently visible frozen-suite Q01 failure led to the disclosed v2 correction.
+That later evaluation is therefore a second treatment, not a fresh completely
+blind experiment. Original treatment outputs and judgments remain retained.
+Final accepted-main integration and any subsequent source-matched evaluations
+are separate checkpoints; these records never attach an earlier score or GUI
+observation to a changed source.

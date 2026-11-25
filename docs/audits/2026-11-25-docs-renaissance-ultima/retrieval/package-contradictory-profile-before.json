@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "scope": "Synthetic contradictory profile receipt only; no real qualification or execution fabricated",
+  "package_sha256": "ff076e1cc27ae671cc1d35cfea901b9c2c23e072e3517c38e5fb7dcdc384a553",
+  "contradictory_profile_row": {
+    "kind": "worldgen",
+    "fault": "locked-target",
+    "evidence_class": "real-os-failure",
+    "before": {
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "acknowledged": true,
+      "format_loadable": true,
+      "loaded_value": 7,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "refusal": {
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "acknowledged": true,
+      "format_loadable": false,
+      "loaded_value": null,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "retry": {
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "acknowledged": false,
+      "format_loadable": false,
+      "loaded_value": null,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  },
+  "accepted": true
+}

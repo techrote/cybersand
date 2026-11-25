@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "accepted_main_before": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "accepted_main_after": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "incoming_first_parent_merges": [
+    "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef PR736 palette CI parallelism",
+    "be87b18b30506ccead610c7035ae1ffa8e65a347 PR758 source-exact Windows acceptance tooling"
+  ],
+  "declared_current_document_list_unchanged": true,
+  "new_guide": {
+    "path": "docs/operations/gentek80-physical-owner-acceptance.md",
+    "sha256": "d5cabbf8b5f3e0625c555815e4750e085e9ad0f19795eb360f357e3ca6715b5b",
+    "bytes": 12712,
+    "status": "Draft",
+    "selection": "Excluded by manifest; Draft also refused by shared direct and fallback policy",
+    "full_body_review": true,
+    "source_checks": [
+      "tools/acceptance/gentek80_owner.ps1 Verify/Zip-Checked/Collect/Extract/Launch",
+      "tools/acceptance/stage_gentek80_examples.py stage"
+    ],
+    "conclusion": "Accepted tooling is available; this does not make historical #684 ZIP current-source or establish physical Windows11/NVIDIA acceptance. Guide remains an explicit manual route."
+  },
+  "executed_policy_controls": [
+    {
+      "mode": "direct_without_manifest",
+      "result": "refused",
+      "reason": "Default retrieval excludes explicit-only or navigation document: docs/operations/gentek80-physical-owner-acceptance.md"
+    },
+    {
+      "mode": "fallback",
+      "selected_documents": 0
+    },
+    {
+      "mode": "direct_with_manifest",
+      "result": "refused",
+      "reason": "Default retrieval excludes explicit-only or navigation document: docs/operations/gentek80-physical-owner-acceptance.md"
+    }
+  ],
+  "reconciliation": "Merge the new excluded entry, keep the new guide scoped and separately readable, retain all ULTIMA shared-policy guards. Recompute final snapshot after source-link changes; do not reuse the former fingerprint as final integration.",
+  "execution_limits": "No new PowerShell/Windows/physical acceptance executed by C in this intake; source-contract review and disposable ingestion controls only.",
+  "post_integration_metadata_review": {
+    "reviewer": "C",
+    "exact_root_working_guide_sha256": "2c7347c6dc11dc688d0d564f471845bc9537f4572ad6336a818e0fbdeeff6dc3",
+    "change": "One retrieval: explicit-only field added by lead to accepted Draft guide",
+    "verdict": "APPROVE",
+    "controls": [
+      {
+        "case": "explicit_link_is_discoverable_but_not_ingested",
+        "result": "route present; automatic ingestion false; read_source refused",
+        "reason": "Linked Markdown is not an admitted answer document; use navigation manually"
+      },
+      {
+        "case": "Draft-manifest-and-direct",
+        "result": "excluded/refused"
+      },
+      {
+        "case": "Draft-fallback-and-direct",
+        "result": "excluded/refused"
+      },
+      {
+        "case": "Current-manifest-and-direct",
+        "result": "excluded/refused"
+      },
+      {
+        "case": "Current-fallback-and-direct",
+        "result": "excluded/refused"
+      }
+    ],
+    "scope": "Disposable copied source and reference adapter; manual source page remains readable, explicit-only content is not promoted to current answers. No Windows or physical acceptance claim."
+  }
+}

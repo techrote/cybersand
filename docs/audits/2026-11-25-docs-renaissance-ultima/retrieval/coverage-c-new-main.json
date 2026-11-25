@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "prior_receipt": "coverage-c.json",
+  "prior_full_body_documents": 53,
+  "prior_canonical_current_documents": 46,
+  "additional_full_body_documents": 4,
+  "additional_canonical_current_documents": 2,
+  "current_total_full_body_documents": 57,
+  "current_total_canonical_current_documents": 48,
+  "scope": "Additional accepted-main reconciliation after prior full corpus review. No new historical campaign or Windows/physical execution claimed. Final source equivalence remains a separate receipt.",
+  "documents": [
+    {
+      "path": "docs/operations/ci-campaign-coordination.md",
+      "canonical_current_corpus": true,
+      "reviewer": "Specialist C",
+      "depth": "full-body semantic read and targeted source-contract/authority review",
+      "observed_source": "c2656453",
+      "observed_document_sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+      "finding_or_scope": "Read complete body and complete collector/summarizer; accepted-tooling status corrected and old ledger isolated as dated evidence. Official GitHub capacity values checked; account entitlement remains unverified.",
+      "source_references": [
+        {
+          "path": "tools/ci/ci_campaign_status.py",
+          "sha256": "fc88a08b5c74dacf4bf105776ed47891e63b6366e36c405c7e56dcabe50779c6"
+        },
+        {
+          "path": "tools/ci/ci_run_metrics.py",
+          "sha256": "2bd1523b35e43ffb94fc0d5efbdd4c42abd852bb770ebe296a9e7f34141af706"
+        }
+      ],
+      "independent_review": "B approved revised prose and corrected CI facts before scoring; lead adjudicated immutable packet wrapper"
+    },
+    {
+      "path": "docs/operations/publication-custody.md",
+      "canonical_current_corpus": true,
+      "reviewer": "Specialist C",
+      "depth": "full-body semantic read and targeted source-contract/authority review",
+      "observed_source": "c3da716523d535f654eeb786397dd4496e4b0c84",
+      "observed_document_sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+      "finding_or_scope": "Read complete original and concise revised operational contract; source-check trusted contract, input/report/archive verification, remote leases and no-publication output. Historical receipts stay immutable at5e29.",
+      "source_references": [
+        {
+          "path": "tools/ci/publication_custody.py",
+          "sha256": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873"
+        }
+      ],
+      "independent_review": "B approved revised prose and corrected CI facts before scoring; lead adjudicated immutable packet wrapper; B caught and corrected successful-result versus rejection output schema wording before commit"
+    },
+    {
+      "path": "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+      "canonical_current_corpus": false,
+      "reviewer": "Specialist C",
+      "depth": "full-body semantic read and targeted source-contract/authority review",
+      "observed_source": "c2656453",
+      "observed_document_sha256": "49e859534019e04f969f7f6ffc6507a80f66abdcbab027a7a5fe835e7b627167",
+      "finding_or_scope": "Read full367-line original and current custody wrapper;12 oldCurrent chunks including obsolete selection/accepted-main claims excluded. Full/body digests and11anchors preserved.",
+      "source_references": [
+        {
+          "path": "docs/reference/retrieval-corpus.json",
+          "sha256": "bd9550f24fe1bd623034e5a241a8c35c5c8739216762b06a28b093945ab70ce5"
+        }
+      ],
+      "independent_review": "B approved revised prose and corrected CI facts before scoring; lead adjudicated immutable packet wrapper"
+    },
+    {
+      "path": "docs/operations/gentek80-physical-owner-acceptance.md",
+      "canonical_current_corpus": false,
+      "reviewer": "Specialist C",
+      "depth": "full-body read plus source checks of archive/extract/verify/collect/launch and example staging",
+      "observed_source": "292d5248a58235c4cab0b4504c3999f83ecf4a71",
+      "observed_document_sha256": "2c7347c6dc11dc688d0d564f471845bc9537f4572ad6336a818e0fbdeeff6dc3",
+      "finding_or_scope": "Accepted standalone Windows tooling is separate from original ZIP/source trust and physical owner acceptance. Explicit-only metadata preserves manual route and excludes current adapter/default ingestion.",
+      "source_references": [
+        {
+          "path": "tools/acceptance/gentek80_owner.ps1",
+          "sha256": "35f7e4946e15dd55de920539b2b8b34dc6b43e385595c923b2c786bf085f05bd"
+        },
+        {
+          "path": "tools/acceptance/stage_gentek80_examples.py",
+          "sha256": "2e3a45e40fe54f7cf344ec6ecdf8340b2f67e6e5067db383df1ccfb84ab2d0f3"
+        }
+      ],
+      "independent_review": "B also read full guide; C independently tested metadata/direct/fallback/cache boundary."
+    }
+  ]
+}

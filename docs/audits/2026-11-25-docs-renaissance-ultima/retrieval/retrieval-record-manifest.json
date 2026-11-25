@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "Exact original small inputs and compact deterministic derived reports; full contexts reproduce from recorded immutable source and corpus/helper identities",
+  "files": [
+    {
+      "path": "ranking-correction-preregistration.json",
+      "stored_bytes": 1921,
+      "stored_sha256": "82b2954d17891b02d0396f42e699ba6eeecf290a88427736daf61489610defcf",
+      "original_local_bytes": 1921,
+      "original_local_sha256": "82b2954d17891b02d0396f42e699ba6eeecf290a88427736daf61489610defcf",
+      "serialization": "byte-exact"
+    },
+    {
+      "path": "ranking-development-v1.json",
+      "stored_bytes": 8247,
+      "stored_sha256": "c3cbbdee8ee16be8afc7a5b2bc75fa03f6d9efef6975e3549b1510a0fc2c3cbd",
+      "original_local_bytes": 8247,
+      "original_local_sha256": "c3cbbdee8ee16be8afc7a5b2bc75fa03f6d9efef6975e3549b1510a0fc2c3cbd",
+      "serialization": "byte-exact"
+    },
+    {
+      "path": "ranking-correction-experiment.py",
+      "stored_bytes": 5018,
+      "stored_sha256": "61604eec8fab224d918e69e0709a5acc1b71bc0ff4541e5f73a9d23ab9380637",
+      "original_local_bytes": 5018,
+      "original_local_sha256": "61604eec8fab224d918e69e0709a5acc1b71bc0ff4541e5f73a9d23ab9380637",
+      "serialization": "byte-exact"
+    },
+    {
+      "path": "ranking-correction-results.json.gz",
+      "stored_bytes": 214254,
+      "stored_sha256": "39fdd0613c03791cf6b834c1e78bd4012319fb7117e3050f7a5b94b2d839a234",
+      "original_local_bytes": 2031336,
+      "original_local_sha256": "084d99026c42e13c10cc52e45256c0c4fc703f804eda124dd56e24b1c5acdcb0",
+      "serialization": "Deterministic gzip of whitespace-compacted JSON; expanded semantic equality to original verified",
+      "expanded_bytes": 1398405,
+      "expanded_sha256": "2d1e43a458134176964a8dfb17c65bf3f071644eb7042456c603a4d899f2fe42"
+    },
+    {
+      "path": "ranking-q01-counterexample.json",
+      "stored_bytes": 7977,
+      "stored_sha256": "2ed125aebb9e0f7beb7b59327493c1101aa3218194776ad66ace99ddea683f1f",
+      "original_local_bytes": 7977,
+      "original_local_sha256": "2ed125aebb9e0f7beb7b59327493c1101aa3218194776ad66ace99ddea683f1f",
+      "serialization": "byte-exact"
+    },
+    {
+      "path": "retrieval-v1-162b8097.json.gz",
+      "stored_bytes": 174174,
+      "stored_sha256": "97a9bb62960c5d224c78a5ba32483e5005cead82a63f0bb5ac8d38c748900e31",
+      "original_local_bytes": 1457894,
+      "original_local_sha256": "c20b926e3e472ec820ce437e0108ec48c2415380fe6439d73e4e92ec820585a7",
+      "serialization": "Deterministic gzip of whitespace-compacted JSON; expanded semantic equality to original verified",
+      "expanded_bytes": 1022278,
+      "expanded_sha256": "bfb8cb5ff8610f02e0f013d489968bfd830169bbff0716676aea4a56985054e0"
+    },
+    {
+      "path": "retrieval-v2-public-verification.json",
+      "stored_bytes": 2255,
+      "stored_sha256": "d85d9150d6d767f55c050c35b4191789aa63ed7d9166fff1116aec3f988d2591",
+      "original_local_bytes": 2255,
+      "original_local_sha256": "d85d9150d6d767f55c050c35b4191789aa63ed7d9166fff1116aec3f988d2591",
+      "serialization": "byte-exact"
+    },
+    {
+      "path": "retrieval-v2-67245ba5.json.gz",
+      "stored_bytes": 171725,
+      "stored_sha256": "9287f5c1e55832004163810f3b6b9b886bc3968303ffed2ec4e05f1e618541a6",
+      "original_local_bytes": 1457031,
+      "original_local_sha256": "fe02f7c29c8e0850666b4250a9f2e636565805fe982390b74d66d1ce692c9bc9",
+      "serialization": "Deterministic gzip of whitespace-compacted JSON; expanded semantic equality to original verified",
+      "expanded_bytes": 1021379,
+      "expanded_sha256": "8a49b397507403fb955f1905193bcf759185b49b75a96e78e401876a0b36bd67"
+    },
+    {
+      "path": "accepted-main-retrieval-review.json",
+      "stored_bytes": 3312,
+      "stored_sha256": "54761b7427ae298efcde744e1caa7298d3b4f474477f866a0c6638d9f0d168b7",
+      "original_local_bytes": 3312,
+      "original_local_sha256": "54761b7427ae298efcde744e1caa7298d3b4f474477f866a0c6638d9f0d168b7",
+      "serialization": "byte-exact"
+    }
+  ]
+}

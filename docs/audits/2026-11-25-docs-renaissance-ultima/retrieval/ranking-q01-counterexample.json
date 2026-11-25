@@ -1,0 +1,280 @@
+{
+  "source": "aa477cac4664bd7ff9f9c9311a5ef0dd15e21b41dfa69c313b40bbeef6ea8c12",
+  "query": "Which exact local version do we have, and can I recover its uncommitted changes?",
+  "method": "source-bound-field-bm25-v1",
+  "terms": [
+    "changes",
+    "exact",
+    "local",
+    "recover",
+    "uncommitted",
+    "version"
+  ],
+  "rows": [
+    {
+      "path": "systems/granular-interaction-policy.md",
+      "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover? > REM-003 sampled-player landing response",
+      "part": 1,
+      "score": 11.656259971710066,
+      "parts": [
+        {
+          "term": "changes",
+          "count": 1,
+          "idf": 1.66249695183605,
+          "bm25": 1.5134562134176137,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "recover",
+          "count": 1,
+          "idf": 4.6866105179282656,
+          "bm25": 4.266461842467402,
+          "heading": 3.2806273625497857,
+          "title": 0.0
+        },
+        {
+          "term": "version",
+          "count": 2,
+          "idf": 2.0156015885064047,
+          "bm25": 2.595714553275264,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "a2909281b2801d172fbaa2e29cd1e3837e5a0c975e6ca8f884b869157ea5dff2"
+    },
+    {
+      "path": "systems/granular-interaction-policy.md",
+      "heading": "Granular interaction and sampled player policy > How does the sampled character move and recover?",
+      "part": 1,
+      "score": 9.468344187267835,
+      "parts": [
+        {
+          "term": "recover",
+          "count": 1,
+          "idf": 4.6866105179282656,
+          "bm25": 4.326842882940618,
+          "heading": 3.2806273625497857,
+          "title": 0.0
+        },
+        {
+          "term": "version",
+          "count": 1,
+          "idf": 2.0156015885064047,
+          "bm25": 1.8608739417774316,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "e32b0c9c1985871d9916b3267d6b3600b8ee61cf638281f062901ec040d19c00"
+    },
+    {
+      "path": "operations/lcb-manual-comparison-ux.md",
+      "heading": "LCB manual liquid comparison > Read the result and recover from refusal",
+      "part": 1,
+      "score": 8.472952008256726,
+      "parts": [
+        {
+          "term": "recover",
+          "count": 1,
+          "idf": 4.6866105179282656,
+          "bm25": 5.192324645706941,
+          "heading": 3.2806273625497857,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "0cd602f6fad16632dc5663b9f29a0845bd3a459cbe5f3d425a133ed45814e3c0"
+    },
+    {
+      "path": "operations/source-checkpoint-and-recovery.md",
+      "heading": "Source checkpoint and recovery > Source, runtime and package custody",
+      "part": 1,
+      "score": 7.94409889594429,
+      "parts": [
+        {
+          "term": "changes",
+          "count": 2,
+          "idf": 1.66249695183605,
+          "bm25": 2.40175644504943,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "exact",
+          "count": 2,
+          "idf": 0.9339030222803569,
+          "bm25": 1.3491799791487296,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "local",
+          "count": 2,
+          "idf": 1.4020604534585663,
+          "bm25": 2.025512123029216,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "version",
+          "count": 1,
+          "idf": 2.0156015885064047,
+          "bm25": 2.1676503487169145,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "29b553009b2ec5ee8d4d3e3a2bbeac0885312d3da70a736e5980ac6866f5cbac"
+    },
+    {
+      "path": "operations/source-checkpoint-and-recovery.md",
+      "heading": "Source checkpoint and recovery > Which version is the working source?",
+      "part": 1,
+      "score": 7.068060579396368,
+      "parts": [
+        {
+          "term": "exact",
+          "count": 1,
+          "idf": 0.9339030222803569,
+          "bm25": 1.0505361311038088,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "local",
+          "count": 3,
+          "idf": 1.4020604534585663,
+          "bm25": 2.3392776674844753,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "version",
+          "count": 1,
+          "idf": 2.0156015885064047,
+          "bm25": 2.2673256688536014,
+          "heading": 1.410921111954483,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "91b4637199991c79b47101672509d6d27bae625673f835df8e564f3d08c6cf9d"
+    },
+    {
+      "path": "operations/source-checkpoint-and-recovery.md",
+      "heading": "Source checkpoint and recovery > Which earlier identity statements are historical?",
+      "part": 1,
+      "score": 7.0517347577980285,
+      "parts": [
+        {
+          "term": "local",
+          "count": 1,
+          "idf": 1.4020604534585663,
+          "bm25": 1.6238286612383424,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "recover",
+          "count": 1,
+          "idf": 4.6866105179282656,
+          "bm25": 5.427906096559686,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "3e582de7030be58fc958d42f5ac43b4761ae3277f959b8fe1321c17533c98eff"
+    },
+    {
+      "path": "systems/granular-interaction-policy.md",
+      "heading": "Granular interaction and sampled player policy > PENV-001 player-side tuning input",
+      "part": 1,
+      "score": 5.405474877165053,
+      "parts": [
+        {
+          "term": "changes",
+          "count": 1,
+          "idf": 1.66249695183605,
+          "bm25": 1.9485217826775068,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "exact",
+          "count": 1,
+          "idf": 0.9339030222803569,
+          "bm25": 1.094576672644082,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "version",
+          "count": 1,
+          "idf": 2.0156015885064047,
+          "bm25": 2.3623764218434644,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "93e954e9bee4eaa7a6eec46e13b589841be1cc9cba871afa3bcde586786e02fb"
+    },
+    {
+      "path": "operations/source-checkpoint-and-recovery.md",
+      "heading": "Source checkpoint and recovery > How should the next checkpoint be verified?",
+      "part": 1,
+      "score": 5.3072735747943325,
+      "parts": [
+        {
+          "term": "changes",
+          "count": 1,
+          "idf": 1.66249695183605,
+          "bm25": 1.8918710979124465,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "exact",
+          "count": 1,
+          "idf": 0.9339030222803569,
+          "bm25": 1.0627533086024745,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "local",
+          "count": 3,
+          "idf": 1.4020604534585663,
+          "bm25": 2.3526491682794113,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "277302edd0620e826ccb9ee60f59143e21218e35d35b5c7be901c5a3af0c3a94"
+    },
+    {
+      "path": "systems/granular-interaction-policy.md",
+      "heading": "Granular interaction and sampled player policy > Why these versioned settings?",
+      "part": 1,
+      "score": 4.8854153694341385,
+      "parts": [
+        {
+          "term": "changes",
+          "count": 1,
+          "idf": 1.66249695183605,
+          "bm25": 1.8773163032579352,
+          "heading": 0.0,
+          "title": 0.0
+        },
+        {
+          "term": "version",
+          "count": 2,
+          "idf": 2.0156015885064047,
+          "bm25": 3.0080990661762033,
+          "heading": 0.0,
+          "title": 0.0
+        }
+      ],
+      "context_sha256": "b77a7f7e7e22667668a1fd600ea5200ad69c6bdd03572b2e29662be99d34332d"
+    }
+  ]
+}

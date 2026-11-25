@@ -1,0 +1,429 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "New C findings and explicit source/tests/review; original LIMIT dispositions belong to the lead unified register. Final integrated source equivalence is separately verified.",
+  "findings": [
+    {
+      "id": "C-ULT-01",
+      "priority": "P1",
+      "root_id": "ULT-AUTH-01",
+      "title": "Ambiguous or missing authority metadata entered current answer sources",
+      "affected": "Shared manifest, fallback and direct ingestion; future documentation consumers",
+      "source": [
+        "tools/docs/retrieval_policy.py",
+        "tools/ci/test_current_retrieval_selection.py",
+        "tools/ci/test_historical_retrieval.py"
+      ],
+      "reproduction": "Original negative controls admitted contradictory metadata; independent A found scalar authority/status/kind followed by indented list items silently treated as scalar. Missing authority fields were also tested.",
+      "expected": "Unsupported, duplicate, missing or contradictory authority must refuse current ingestion consistently.",
+      "fix": "Strict flat metadata grammar and required current admission metadata; explicit historical routing retained. Unit-fixture metadata migrated while existing assertions and frozen retrieval fixtures/scoring remain intact.",
+      "commit": [
+        "0e83b3b4",
+        "9d5493f6"
+      ],
+      "tests": [
+        "16 historical tests",
+        "15 shared selection tests",
+        "35 adapter/cache tests"
+      ],
+      "reviewer": [
+        "A",
+        "Lead"
+      ],
+      "evidence": [
+        "authority-negative-before.json",
+        "authority-negative-after.json",
+        "cross-review-c.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-02",
+      "priority": "P1",
+      "title": "An existing retriever object could serve authority-downgraded or removed text",
+      "affected": "Reference Retriever API and source/cache authority propagation",
+      "source": [
+        "tools/docs/knowledge_retrieval.py",
+        "tools/ci/test_knowledge_retrieval.py"
+      ],
+      "reproduction": "A constructed Retriever, queried a current document, changed it to Historical or removed it, then queried the same instance; stale Current chunks were returned before the fix.",
+      "expected": "Every supported query must bind current source/authority or refuse stale state.",
+      "fix": "Query-time source identity validation fails closed for changes; source-follow validates source bytes and eligibility. New constructor/cache rebuild remains separately supported.",
+      "commit": [
+        "9d5493f6"
+      ],
+      "tests": [
+        "Live-instance authority downgrade/removal/current-source change controls",
+        "35 adapter/cache tests"
+      ],
+      "reviewer": [
+        "A",
+        "Lead"
+      ],
+      "evidence": [
+        "../technical/retrieval-independent-review.json",
+        "../technical/retrieval-live-stale-before.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-03",
+      "priority": "P1",
+      "title": "User-selected cache path could overwrite repository source",
+      "affected": "Reference adapter persistent cache destination",
+      "source": [
+        "tools/docs/knowledge_retrieval.py",
+        "tools/ci/test_knowledge_retrieval.py"
+      ],
+      "reproduction": "Lead used a disposable source/manifest as cache destination; cache os.replace could clobber it.",
+      "expected": "Cache rebuild must never replace tracked/project source or Git metadata.",
+      "fix": "Refuse project/Git/worktree paths and resolved symlink aliases before writing; explicitly corrupt external cache still rebuilds.",
+      "commit": [
+        "d2f612d0"
+      ],
+      "tests": [
+        "Source/manifest/helper destinations",
+        "Symlink aliases and sibling worktree/Git metadata negatives",
+        "Valid external corrupt cache rebuild"
+      ],
+      "reviewer": [
+        "A",
+        "Lead"
+      ],
+      "evidence": [
+        "cache-path-negative-before.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-04",
+      "priority": "P1",
+      "title": "Maintained research/programme metadata failed to scope old instructions in every chunk",
+      "affected": "Three current research references and dated physics/soliding/MicroScenario programme readers",
+      "source": [
+        "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+        "docs/research/bounded-decompression-impulse-events.md",
+        "docs/research/sandspiel-performance-and-material-port.md",
+        "docs/operations/soliding-stage3-freeze.md",
+        "docs/operations/physics-characterisation-plan.md",
+        "docs/operations/microscenarios-programme.md"
+      ],
+      "reproduction": "Old branch/no-implementation instructions and historical campaign requirements remained in maintained Current pages; a first-section notice did not accompany later retrieved sections.",
+      "expected": "Every chunk must preserve historical/non-authorizing scope and distinguish maintained reference from a current execution instruction.",
+      "fix": "Precise source/dated scope envelopes accompany every chunk; accepted WEX NARROW-USE/10-cell/12-step bounds stated, historical bodies preserved. Removed ungrounded current-host LFS availability claim.",
+      "commit": [
+        "5188e531",
+        "2289b21b"
+      ],
+      "tests": [
+        "A inspected actual chunks containing old directives",
+        "Shared authority/chunk tests"
+      ],
+      "reviewer": [
+        "A"
+      ],
+      "evidence": [
+        "coverage-c.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-05A",
+      "priority": "P1",
+      "title": "Current reference contracts understated physical-state versions and accepted water implementations",
+      "affected": "Developer source/continuation/configuration decisions",
+      "source": [
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "native/include/cybersand/world.hpp"
+      ],
+      "reproduction": "Reference tables described only earlier 2/3 hash/formats or isolated Water IN despite actual accepted getters and source.",
+      "expected": "Distinguish hash2\u20136, CYPS2\u20135 and Wave unsupported0, admitted Water/Brine INradius3, base/admitted pressure capacity and actual source status.",
+      "fix": "Source-grounded tables/routes corrected without changing binary formats or claiming owner/platform acceptance.",
+      "commit": [
+        "22affdbb"
+      ],
+      "tests": [
+        "Direct getter/configuration/accepted-source review"
+      ],
+      "reviewer": [
+        "A"
+      ],
+      "evidence": [
+        "coverage-c.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-05B",
+      "priority": "P1",
+      "title": "Reference ownership and emission admission claims contradicted live source",
+      "affected": "Agent/developer command safety and observer ownership",
+      "source": [
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "native/src/world.cpp",
+        "godot/scripts/simulation_worker.gd"
+      ],
+      "reproduction": "World discovery was described as unconnected and generic emission as unbounded despite disabled-default observer integration and two eight-command queues.",
+      "expected": "Distinguish diagnostic observer from lifecycle/material owner; accepted queue admission/coalescing from native ACK.",
+      "fix": "Correct source ownership and capacities; A independently fixed matching architecture page.",
+      "commit": [
+        "22affdbb"
+      ],
+      "tests": [
+        "World initialization/producer and emit function source review"
+      ],
+      "reviewer": [
+        "A"
+      ],
+      "evidence": [
+        "cross-review-c.json",
+        "coverage-c.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-05C",
+      "priority": "P2",
+      "title": "Reference tuning and presentation projection facts were stale",
+      "affected": "Flight/material/interest readers",
+      "source": [
+        "docs/reference/invariants.md",
+        "docs/reference/material-effects-register.md",
+        "godot/scripts/physical_flight_profile.gd",
+        "native/include/cybersand/material_appearance.hpp"
+      ],
+      "reproduction": "Actual four distinct flight profiles, interest re-entry wake and Lava versus MoltenGlass appearance carriers differed from reference wording.",
+      "expected": "Describe actual profile IDs, wake without catch-up, and presentation carrier selection.",
+      "fix": "Narrow source-backed facts corrected; normalized flight controller hash additionally verified.",
+      "commit": [
+        "22affdbb"
+      ],
+      "tests": [
+        "A direct source review; C normalized controller hash equality"
+      ],
+      "reviewer": [
+        "A"
+      ],
+      "evidence": [
+        "coverage-c.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-06",
+      "priority": "P1",
+      "title": "Historical Web gates contradicted explicit owner scope",
+      "affected": "Current programme/build qualification and owner authority",
+      "source": [
+        "docs/reference/product-intent-and-priorities.md",
+        "docs/reference/validation-evidence.md",
+        "docs/operations/soliding-programme.md",
+        "docs/operations/soliding-macro-fracture-fixture.md",
+        "docs/operations/physics-characterisation-plan.md"
+      ],
+      "reproduction": "Current prose treated maintained Web CI/reproducible releases as standing work although owner issue3comment5593128559 closes it not_planned.",
+      "expected": "Disposable occasional Web experiments have scoped evidence; no standing Web obligation or desktop blocker.",
+      "fix": "C added sourced primary policy home and corrected relevant programme gates; lead corrected operational guides. Existing native provenance remains required.",
+      "commit": [
+        "5188e531",
+        "2289b21b"
+      ],
+      "tests": [
+        "B/A independently read owner primary comment and diffs"
+      ],
+      "reviewer": [
+        "B",
+        "A",
+        "Lead"
+      ],
+      "evidence": [
+        "coverage-c.json"
+      ],
+      "source_url": "https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559",
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-07",
+      "priority": "P2",
+      "title": "Canonical status routes missed live unmerged successors",
+      "affected": "Owner/developer navigation and feature acceptance boundaries",
+      "source": [
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "reproduction": "Active table stopped at older Art/goblin/AMBIENT candidates and omitted CI recovery and ULTIMA succession.",
+      "expected": "Route to actual current principal records without silently importing or endorsing unmerged behavior.",
+      "fix": "Freshly read #778\u2013781/#783 lifecycle and heads, update routes, distinguish #779 unmerged base, #780 fixture inference limits and #781 timeouts/replay, preserve donor adoption versus merge.",
+      "commit": [
+        "root f7b4fbcb"
+      ],
+      "tests": [
+        "Actual GitHub metadata/body readback and B independent review"
+      ],
+      "reviewer": [
+        "B"
+      ],
+      "evidence": [
+        "candidate-route-readback.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-08",
+      "priority": "P2",
+      "title": "PENV refusal named nonexistent selector and PLAY-WAIT was falsely unmerged",
+      "affected": "Player control setup and accepted-state navigation",
+      "source": [
+        "godot/scripts/main.gd",
+        "godot/scripts/actor_prototype_panel.gd",
+        "docs/systems/player-environment-profiles-and-traversal.md",
+        "docs/systems/player-control-playground.md"
+      ],
+      "reproduction": "Actual picker says Sampled baseline runtime surfacing; refusal instructed Current sampled character. PLAY-WAIT merge3312f68b is accepted ancestry while guide called it unmerged.",
+      "expected": "Use real UI labels and actual merge ancestry while preserving dated audit scope.",
+      "fix": "One runtime refusal string and matching guides corrected; no movement/physics law change.",
+      "commit": [
+        "b5427a16"
+      ],
+      "tests": [
+        "B source label review and independent accepted ancestry check"
+      ],
+      "reviewer": [
+        "B"
+      ],
+      "evidence": [
+        "coverage-c.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-09",
+      "priority": "P1",
+      "title": "Linux physics evidence attributed Windows pointer files and silently missing artifacts",
+      "affected": "Physics measurement provenance and safe evidence reuse",
+      "source": [
+        "tools/physics/run.py",
+        "tools/physics/capture.py",
+        "tools/physics/issue10.py",
+        "tools/physics/runtime_identity.py"
+      ],
+      "reproduction": "Actual Linux five-case one-tick execution completed; original manifest omitted loaded-platform libraries and hashed Windows LFS pointer files.",
+      "expected": "Require materialized configured platform artifact bytes, actual pinned engine version and unchanged identity; preserve failed evidence on retry.",
+      "fix": "Shared narrow Linux/Windows x86-64 artifact selector, strict missing/pointer/version/drift refusal, fresh output rule, portable engine/compiler arguments and accurate guide.",
+      "commit": [
+        "d85eb9d0"
+      ],
+      "tests": [
+        "10 regressions, independently rerun by A/lead",
+        "Actual before/after Linux five one-tick cases and metadata capture"
+      ],
+      "reviewer": [
+        "A",
+        "B",
+        "Lead"
+      ],
+      "evidence": [
+        "physics-provenance.json",
+        "physics-provenance-originals.zip"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-10",
+      "priority": "P2",
+      "title": "Unbounded extra field bonuses displaced a broad source-custody answer",
+      "affected": "Reference retrieval final v1 on unchanged frozen32 Q01",
+      "source": [
+        "tools/docs/knowledge_retrieval.py"
+      ],
+      "reproduction": "At162b the single-word recover heading received the full extra field bonus and pushed the canonical source-custody document to rank6. Actual v1 failure and per-term contributions are retained.",
+      "expected": "Useful heading evidence should not dominate more complete query coverage merely by repeating one ambiguous term.",
+      "fix": "Coverage-scale only the existing additive field bonus, with no new tuned constant, query/path alias or fixture change. Full rollback control and all lost ranks retained.",
+      "commit": [
+        "004e5cba"
+      ],
+      "tests": [
+        "All268 public/development outputs matched predeclared v2 experiment in independent A execution",
+        "Method revision invalidates cached snapshot and live instance;36adapter tests"
+      ],
+      "reviewer": [
+        "A",
+        "B",
+        "Lead"
+      ],
+      "evidence": [
+        "ranking-q01-counterexample.json",
+        "ranking-correction-preregistration.json",
+        "ranking-correction-results.json.gz",
+        "retrieval-v2-public-verification.json",
+        "../technical/retrieval-v2-independent-review.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-11",
+      "priority": "P1",
+      "title": "Newly accepted dated CI audit packet entered current answer authority",
+      "affected": "Default retrieval and maintenance after accepted5e29 drift",
+      "source": [
+        "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+        "docs/reference/retrieval-corpus.json"
+      ],
+      "reproduction": "Actual incoming metadata admitted12Current chunks, including now-obsolete production-main/cap-selection claims. Original datedpacket also became canonical target of the accepted additive33rd fixture.",
+      "expected": "Dated audit results remain accessible through explicit immutable history routes and never become current operating instructions; preserve frozen/accepted fixture bytes.",
+      "fix": "Small Current/navigation/explicit-only wrapper, immutable full/body identity and11anchors, corpus exclusion; original32bytes separately retained, accepted33 untouched, corrected current CI case separate and reviewed before scoring.",
+      "commit": [
+        "c2656453",
+        "1965e8c0"
+      ],
+      "tests": [
+        "Old live adapter refuses changed source; external cache rebuild removes allpacket chunks",
+        "Manifest/fallback/direct navigation exclusion",
+        "A independently executed17 current-selection tests; both mandatory fixtures still reject missing/excluded canonical routes. Original32 and accepted33 byte identities independently verified."
+      ],
+      "reviewer": [
+        "B",
+        "Lead",
+        "A"
+      ],
+      "evidence": [
+        "accepted-ci-closure-authority-probe.json",
+        "accepted-ci-closure-correction.json",
+        "coverage-c-new-main.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-12",
+      "priority": "P1",
+      "title": "Incoming CI guides retained stale Draft-only and live-ledger authority claims",
+      "affected": "Current CI coordination and publisher migration decisions",
+      "source": [
+        "docs/operations/ci-campaign-coordination.md",
+        "docs/operations/publication-custody.md"
+      ],
+      "reproduction": "After5e29 accepted merge, guides still described helper availability only on Draft and the dated24November requestledger as the lead current ledger; offline scope obscured stage-mode remote lease reads. Historical process/test recaps remained in current answer corpus.",
+      "expected": "State accepted tool availability separately from publisher adoption/current campaigns; current requests need fresh ownership and their own ledger; disclose actual remote reads.",
+      "fix": "Bounded source-status and current-ledger corrections; concise operational custody guide with immutable original recovery/qualification routes; full historical bytes retained in accepted Git.",
+      "commit": [
+        "c2656453",
+        "c3da7165"
+      ],
+      "tests": [
+        "Full document/source reading of collector/summarizer and custody verify/report/archive/input code",
+        "CLI help executed; official capacity reference verified without inferring account entitlement"
+      ],
+      "reviewer": [
+        "B",
+        "Lead"
+      ],
+      "evidence": [
+        "coverage-c-new-main.json",
+        "accepted-ci-closure-correction.json"
+      ],
+      "status": "fixed-and-independently-verified"
+    }
+  ]
+}
