@@ -658,3 +658,50 @@ passed 47 tests in 0.403 monitored seconds, sampled 22,650,880 bytes peak RSS,
 and left no owned process. These controls ran no Godot or gameplay. Actual
 corrected-source GDScript parsing, native behavior, long-horizon campaigns and
 extracted Windows execution remain request-9 qualification obligations.
+
+## Request-9/10 native gate defects and preserved after observations
+
+Request 9 at `6afae9c149b48e6bbcd4a92a50c98d057c0e8067` passed the preceding
+source groups but the new standalone gate failed to parse before dispatching an
+action. Its local `all_cases` declaration attempted inferred typing from an
+untyped Dictionary property. The narrow correction declared that Boolean
+explicitly; no runtime adapter/oracle changed. Windows retained the actual
+0.313-second failure, 108,281,856-byte sampled peak RSS, no surviving process and
+no report/completion marker. B's strict read-only source audit passed 837 custody
+checks and retained four unsuccessful completion obligations; compressed review
+blob `be3d33ec8e029a52a03f991f6d78b7a49d7b5deb`. An earlier source-only review had
+missed this GDScript inference restriction. It was not native qualification.
+
+Request 10 at `4050bc31526558cb99024251d29ec1183c086d6a` executed all four
+cases and all 20 ordinary actions on Windows. Every tape ended `budget_complete`
+with no runtime assertion failure. The gate nevertheless failed its four
+test-local `exact_source` checks: `Transcript.create` canonicalizes finite
+integral JSON floats to integers, while the launch Dictionary retains its parsed
+float types. The raw report proves precisely three representation differences:
+native input count `105`/`105.0`, Rapier count `4`/`4.0`, and nested game-source
+count `956`/`956.0`. All other fields, values and types match. Direct GDScript
+Dictionary equality was therefore the wrong test comparator.
+
+The actual request-10 Windows process completed in 38.141 seconds, sampled
+553,431,040 bytes peak owned-tree RSS, and left no owned process. Raw report
+SHA256: `c2809f0f01269f54c60164095340de302a461bbebb2d74df546be70a96af1cb6`.
+B's independently implemented auditor checked 1,094 source, capture, receipt,
+lineage and terminal obligations. Its 1,087 passing checks establish all four
+material relationships, actual canonical replacement receipts, latest observed
+progress witnesses, full-plane capture custody and immutable Save proof. The
+seven failing obligations preserve the original process/report/four-case
+failure statuses and diagnostic-error log. They are not silently converted to
+a qualified run. Fresh and Restore captures equal the independently rendered
+authored `acea5f8e…` plane; both retained captures differ and Reopen reconstructs
+that authored plane. Selected actor Reset and removal preserve exposure.
+
+The further test-only correction compares every provenance field through the
+existing full sorted transcript JSON normalization. It does not use the smaller
+portable replay identity subset. Fourteen separately recorded artificial
+controls preserve rejection of changed source/runtime/project hashes,
+incidental fields, fractional/nested counts, Boolean substitution and missing or
+extra fields. Those controls add no gameplay-action credit. Gate blob
+`4bdd1f625d84dc6a0095b76768cfe861ef07014c` is reviewed for the next qualification;
+the request-9 and request-10 original failures remain intact. The production
+game, lineage tracker, runtime assertions and independent Python reader have no
+further changes from the request-9 correction.

@@ -336,3 +336,25 @@ packaging were not reached. Both raw platform artifacts and the exact failure
 remain retained. Request10 changes only that declaration to an explicit Boolean
 and repeats the same qualification scope. No gameplay, oracle, package acceptance
 or policy behavior is changed by this test-script repair.
+
+Request10 at `4050bc31526558cb99024251d29ec1183c086d6a` also remains failed.
+It executed all four cases and all20actions on each platform, with every tape
+budget-complete and no runtime assertion failure. Its four test-local source
+checks compared Dictionaries before and after the transcript's documented
+integral-number normalization. The only differences were105/105.0,4/4.0 and
+the nested956/956.0 input counts; every other provenance field matched. The
+independent material-capture and lineage checks passed. This is a test-fixture
+comparison defect, not a gameplay defect or a qualified package.
+
+Request11 repairs only that full-field comparator and adds14 artificial
+representation/mutation controls, recorded separately from native actions.
+It preserves source, runtime, incidental metadata, missing/extra-field and
+Boolean distinctions; it does not substitute the smaller replay identity.
+The original failed reports remain intact. A and C independently reviewed the
+exact gate, and gameplay/oracle/package acceptance stay unchanged. The same
+both-platform long8/memory7 scope must now execute successfully before delivery.
+
+The separate5ee full142campaign finished with all142attempts retained. Its
+runner reports139budget completions and three failures. These are preliminary
+runner totals while independent tape, coverage, memory and failure reviews are
+in progress; they are not a claim that the Linux qualification passed.

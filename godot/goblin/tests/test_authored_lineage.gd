@@ -124,6 +124,48 @@ func _assertion_status(row: Dictionary, id: String, expected: String) -> bool:
 	return false
 
 
+static func _same_full_provenance(first: Variant, second: Variant) -> bool:
+	if not first is Dictionary or not second is Dictionary: return false
+	# Transcript.create canonicalizes integral JSON floats to integers. Compare
+	# every field under that same published representation, without reducing to
+	# the portable replay identity subset or dropping incidental source fields.
+	return JSON.stringify(Transcript._json_value(first), "", true) == JSON.stringify(Transcript._json_value(second), "", true)
+
+
+static func provenance_comparison_controls() -> Dictionary:
+	var original: Dictionary = {"source_commit": "a".repeat(40), "source_tree": "b".repeat(40),
+		"godot_sha256": "c".repeat(64), "native_sha256": "d".repeat(64), "rapier_sha256": "e".repeat(64),
+		"project_files_sha256": "f".repeat(64), "source_dirty": false, "python": "control-version",
+		"native_source_input_count": 105.0, "rapier_source_input_count": 4.0,
+		"replay_identity": {"game_source_files": 956.0}}
+	var normalized: Dictionary = original.duplicate(true)
+	normalized.native_source_input_count = 105
+	normalized.rapier_source_input_count = 4
+	normalized.replay_identity.game_source_files = 956
+	var results: Dictionary = {"integral_json_number_representation": _same_full_provenance(original, normalized),
+		"nondictionary_rejected": not _same_full_provenance(original, [])}
+	for key: String in ["source_commit", "source_tree", "godot_sha256", "native_sha256", "rapier_sha256", "project_files_sha256", "python"]:
+		var changed: Dictionary = normalized.duplicate(true)
+		changed[key] = str(changed[key]) + "changed"
+		results["changed_" + key + "_rejected"] = not _same_full_provenance(original, changed)
+	var fractional: Dictionary = normalized.duplicate(true)
+	fractional.native_source_input_count = 105.5
+	results["fractional_count_rejected"] = not _same_full_provenance(original, fractional)
+	var nested: Dictionary = normalized.duplicate(true)
+	nested.replay_identity.game_source_files = 957
+	results["changed_nested_count_rejected"] = not _same_full_provenance(original, nested)
+	var boolean: Dictionary = normalized.duplicate(true)
+	boolean.source_dirty = 0
+	results["boolean_numeric_substitution_rejected"] = not _same_full_provenance(original, boolean)
+	var missing: Dictionary = normalized.duplicate(true)
+	missing.erase("native_source_input_count")
+	results["missing_field_rejected"] = not _same_full_provenance(original, missing)
+	var additional: Dictionary = normalized.duplicate(true)
+	additional["unrecorded_extra"] = true
+	results["extra_field_rejected"] = not _same_full_provenance(original, additional)
+	return results
+
+
 func _case(definition: Dictionary, header: Dictionary, provenance: Dictionary, evidence_kind: String) -> Dictionary:
 	var actions: Array = definition.actions
 	var item := {"id": definition.id, "status": "in_progress", "checks": {},
@@ -137,7 +179,7 @@ func _case(definition: Dictionary, header: Dictionary, provenance: Dictionary, e
 	item.transcript = tape.duplicate(true)
 	var valid_tape: bool = Transcript.validate(tape).get("ok", false)
 	_check(item, "valid_native_tape", valid_tape)
-	_check(item, "exact_source", tape.get("header", {}).get("provenance") == provenance)
+	_check(item, "exact_source", _same_full_provenance(tape.get("header", {}).get("provenance"), provenance))
 	_check(item, "budget_complete", tape.get("summary", {}).get("termination") == "budget_complete")
 	var rows: Array = tape.get("steps", [])
 	_check(item, "exact_action_count", rows.size() == actions.size())
@@ -216,7 +258,9 @@ func _finish() -> void:
 			if row.get("status") == "completed" and row.get("admission", {}).get("accepted") == true: completed += 1
 	report["actual_actions"] = {"attempted": attempted, "completed": completed}
 	report["checks"] = {"four_native_cases_pass": all_cases, "exact_twenty_actions": attempted == 20 and completed == 20,
-		"bounded_completion": not _timed_out, "no_failed_checks": report.failures.is_empty()}
+		"bounded_completion": not _timed_out, "no_failed_checks": report.failures.is_empty(),
+		"provenance_comparison_controls": not report.get("provenance_comparison_controls", {}).is_empty() \
+			and report.provenance_comparison_controls.values().all(func(value: Variant) -> bool: return value == true)}
 	report["check_count"] = _checks
 	report["status"] = "pass" if report.checks.values().all(func(value: Variant) -> bool: return value == true) else "fail"
 	if not _write():
@@ -233,6 +277,11 @@ func run() -> void:
 	report = {"schema": "cybersand-goblin-authored-lineage-test-v1", "status": "initializing", "checks": {},
 		"failures": [], "native_cases": [], "provenance": launch.get("provenance", {}),
 		"classification": "actual_authored_persistence_oracle_regression", "production_gameplay_defect_confirmed": false}
+	report["provenance_comparison_controls"] = provenance_comparison_controls()
+	if not report.provenance_comparison_controls.values().all(func(value: Variant) -> bool: return value == true):
+		report.failures.append("provenance_comparison_controls")
+		await _finish()
+		return
 	if not launch.get("ok", false):
 		report.failures.append("isolated_launch_required")
 		await _finish()
