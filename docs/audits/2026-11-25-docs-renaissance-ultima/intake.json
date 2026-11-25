@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "observed_utc": "2026-11-25T20:21:46.121739+00:00",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "accepted_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+  "predecessor_tree": "e25e36b3c34017ceead7d0eab265c5f823102b00",
+  "predecessor_pr": 774,
+  "predecessor_state": {
+    "open": true,
+    "draft": true,
+    "merged": false
+  },
+  "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "main_protection_observed": {
+    "protected": false,
+    "required_status_checks": [],
+    "scope": "public branches/main API readback; no controls changed"
+  },
+  "permission_boundary": "one Draft/HOLD successor; no merge, Ready, release, billing, credential, archive rewrite or principal issue closure",
+  "topology": {
+    "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "branch": "docs/docs-renaissance-ultima-001",
+    "projection_commit": "db1aa29c",
+    "reason": "167919138 raw predecessor-evidence bytes omitted from ordinary checkout; full original lineage remains immutable, all82 original documents retained",
+    "custody_manifest": "retrieval/predecessor-custody.json",
+    "ancestor_not_imported": "20170bd6259498c3d2774ab274567febb043fc1d"
+  },
+  "lanes": {
+    "A": "runtime persistence/source contracts; isolated ultima-a",
+    "B": "product docs and actual Linux desktop; isolated ultima-b",
+    "C": "retrieval authority/scoring and evidence custody; isolated ultima-c",
+    "lead": "CI/source provenance, sealed60 holdout, topology, high-risk review and integration"
+  },
+  "concurrent_prs": [
+    {
+      "number": 778,
+      "title": "[Draft/HOLD] CI-READY-RECOVERY-001 \u2014 exact Godot asset and scalable regression planning",
+      "head": "ci/ready-foundation-repair-20261125",
+      "head_sha": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 780,
+      "title": "[Draft/HOLD] ART-WORKBENCH-COLLABORATIVE-002 \u2014 Conversational native world authoring",
+      "head": "art/collaborative-002",
+      "head_sha": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 781,
+      "title": "Draft/HOLD: GIP-014 goblin 002 persistent gameplay discovery laboratory",
+      "head": "experiment/gip014-goblin-002-20261125",
+      "head_sha": "36d82cae75e5fd8dad11646663248de8003f5bf9",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 777,
+      "title": "[Draft/HOLD] WORLD-STEER M6\u2013M7 \u2014 Collaborative native architecture, rich parts and bounded delegation",
+      "head": "feat/world-steer-collaborative-architecture-20261124",
+      "head_sha": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 776,
+      "title": "STRATA-THEATRE-002: layered native authoring and environmental atmosphere \u2014 Draft/HOLD",
+      "head": "feat/strata-theatre-002-20261124",
+      "head_sha": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 762,
+      "title": "[Draft/HOLD] ACTOR-COMPOSE-FINAL-001: integrated pilot, stack and Windows acceptance",
+      "head": "integration/actor-compose-final-001-20261123",
+      "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 771,
+      "title": "[CI-ENGINEERING-CLOSURE-001] Recovered evidence, coordination and publication custody \u2014 Draft/HOLD",
+      "head": "codex/ci-engineering-closure-001",
+      "head_sha": "911a3448e8e331cb097f1654bf861e20d77f57ca",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 754,
+      "title": "ObjectShard M4: qualified ordinary Workbench and Windows evaluator (Draft / owner hold)",
+      "head": "integration/objectshard-m4-mainline-20261122",
+      "head_sha": "75865127fee19c56dacb0ae80307f438dd866cd1",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "number": 767,
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification",
+      "head": "codex/pubpres-playability-final-001-20261124",
+      "head_sha": "f4089809c7294336db26cf576b0ac3c57fc54775",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    }
+  ],
+  "runtime_materialization": {
+    "required_objects": 18,
+    "actual_objects": 18,
+    "check_repository_require_materialized": "passed at predecessor source before any runtime edits",
+    "receipt": "lead/materialized-intake.json",
+    "execution_not_inferred": true
+  },
+  "companion": {
+    "commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "provided_paths": [
+      "SOURCE-PROVENANCE.json",
+      "docs/WEB_THREADING.md",
+      "tools/dev.py",
+      "docs/LOCAL_DEVELOPMENT.md",
+      "validation/browser-results.json"
+    ],
+    "method": "exact git archive of only needed original files into parent fixture location; no original fixture edits"
+  },
+  "holdout_seal": {
+    "questions": 60,
+    "sha256": "845a0978f50f22a279b8d772cd464e3adee86144e1fbde85e64ec14330497a27",
+    "bytes": 38904,
+    "author": "lead, not retrieval implementer",
+    "unseen_by_retrieval_implementer": true
+  }
+}

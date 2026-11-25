@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "disposition": "HOLD \u2014 INCOMPLETE",
+  "findings": [
+    {
+      "id": "LIMIT-01",
+      "priority": "P2",
+      "owner": "C",
+      "title": "Primary-record recall and ranking",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-02",
+      "priority": "P2",
+      "owner": "C/B/A",
+      "title": "Actual-context sufficiency",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-03",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Failure-safe ordinary/generated/project save",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-04",
+      "priority": "P2",
+      "owner": "B",
+      "title": "Fresh graphical and physical qualification",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-05",
+      "priority": "P2",
+      "owner": "C",
+      "title": "Reference adapter/index and model applicability",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-06",
+      "priority": "P1",
+      "owner": "lead",
+      "title": "Ancillary Godot acquisition and source authority",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-07",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Materialized/runtime qualification while Draft",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "LIMIT-08",
+      "priority": "P3",
+      "owner": "lead",
+      "title": "Missing original conversation and decision",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Original predecessor limitation; final disposition pending executed corrective work."
+    },
+    {
+      "id": "ULT-PERSIST-01",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Buffered write failure silently replaces valid ordinary save with truncated JSON",
+      "status": "unresolved",
+      "evidence": [
+        "technical/before-buffered-flush.json"
+      ],
+      "reviewer": null,
+      "scope": "Actual Linux RLIMIT_FSIZE=128 reproduction with SIGXFSZ ignored on pinned Godot; disposable fixture only."
+    },
+    {
+      "id": "ULT-AUTH-01",
+      "priority": "P1",
+      "owner": "C",
+      "title": "Malformed/contradictory metadata admits historical/evidence chunks as current",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Fresh negative controls; guard corrections in progress."
+    },
+    {
+      "id": "ULT-UX-01",
+      "priority": "P2",
+      "owner": "B",
+      "title": "First-session material label differs from native palette; camera reset hides restored work",
+      "status": "unresolved",
+      "evidence": [],
+      "reviewer": null,
+      "scope": "Fresh actual Linux GUI observation; source/guide correction in progress."
+    }
+  ]
+}
