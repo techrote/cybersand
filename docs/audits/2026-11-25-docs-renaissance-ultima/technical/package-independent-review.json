@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "implementer": "Lead",
+  "scope": "Prepublication source admission and payload integrity; tests use disposable synthetic fixtures, not real Windows execution",
+  "before": {
+    "tests": 21,
+    "failures": 12,
+    "failing_controls": [
+      "test_case_aliases_refuse_for_windows_package (__main__.ManifestIntegrity.test_case_aliases_refuse_for_windows_package)",
+      "test_duplicate_manifest_keys_fail_closed (__main__.ManifestIntegrity.test_duplicate_manifest_keys_fail_closed)",
+      "test_windows_drive_or_stream_name_fails (__main__.ManifestIntegrity.test_windows_drive_or_stream_name_fails)",
+      "test_duplicate_case_does_not_replace_required_reopen (__main__.QualificationAdmission.test_duplicate_case_does_not_replace_required_reopen)",
+      "test_empty_claimed_pass_has_no_executed_cases (__main__.QualificationAdmission.test_empty_claimed_pass_has_no_executed_cases)",
+      "test_error_list_refuses_despite_passed_label (__main__.QualificationAdmission.test_error_list_refuses_despite_passed_label)",
+      "test_existing_manifest_is_not_overwritten (__main__.QualificationAdmission.test_existing_manifest_is_not_overwritten)",
+      "test_failed_fault_matrix_refuses (__main__.QualificationAdmission.test_failed_fault_matrix_refuses)",
+      "test_forced_termination_is_not_natural_completion (__main__.QualificationAdmission.test_forced_termination_is_not_natural_completion)",
+      "test_missing_fault_matrix_refuses (__main__.QualificationAdmission.test_missing_fault_matrix_refuses)",
+      "test_nonzero_exit_cannot_be_overridden_by_passed_label (__main__.QualificationAdmission.test_nonzero_exit_cannot_be_overridden_by_passed_label)",
+      "test_skipped_workflow_cannot_be_passed (__main__.QualificationAdmission.test_skipped_workflow_cannot_be_passed)"
+    ],
+    "log_sha256": "57527a69c46db4c05d6a7ce5d8b720a37f854cb5567fe184b3f39049b71791d9"
+  },
+  "after": {
+    "tests": 30,
+    "failures": 0,
+    "skipped": 0,
+    "log_sha256": "fbf6fa25ae712ee7a444caf8f37ecfaa71c54eff5d6344892cfb2b668162b459",
+    "output": "test_absolute_path_fails (__main__.ManifestIntegrity.test_absolute_path_fails) ... ok\ntest_case_aliases_refuse_for_windows_package (__main__.ManifestIntegrity.test_case_aliases_refuse_for_windows_package) ... ok\ntest_changed_payload_fails (__main__.ManifestIntegrity.test_changed_payload_fails) ... ok\ntest_complete_positive_integrity_fixture (__main__.ManifestIntegrity.test_complete_positive_integrity_fixture) ... ok\ntest_duplicate_manifest_keys_fail_closed (__main__.ManifestIntegrity.test_duplicate_manifest_keys_fail_closed) ... ok\ntest_manifest_rewrite_cannot_replace_trusted_digest (__main__.ManifestIntegrity.test_manifest_rewrite_cannot_replace_trusted_digest) ... ok\ntest_missing_tree_is_not_a_source_identity (__main__.ManifestIntegrity.test_missing_tree_is_not_a_source_identity) ... ok\ntest_parent_traversal_fails (__main__.ManifestIntegrity.test_parent_traversal_fails) ... ok\ntest_subset_manifest_refuses_even_with_matching_digest (__main__.ManifestIntegrity.test_subset_manifest_refuses_even_with_matching_digest) ... ok\ntest_symlink_file_fails_even_when_target_is_inside_package (__main__.ManifestIntegrity.test_symlink_file_fails_even_when_target_is_inside_package) ... ok\ntest_windows_drive_or_stream_name_fails (__main__.ManifestIntegrity.test_windows_drive_or_stream_name_fails) ... ok\ntest_changed_input_bytes_refuse_without_git_delta (__main__.QualificationAdmission.test_changed_input_bytes_refuse_without_git_delta) ... ok\ntest_complete_positive_receipt_reaches_runtime_identity_gate (__main__.QualificationAdmission.test_complete_positive_receipt_reaches_runtime_identity_gate) ... ok\ntest_different_source_receipt_refuses (__main__.QualificationAdmission.test_different_source_receipt_refuses) ... ok\ntest_duplicate_case_does_not_replace_required_reopen (__main__.QualificationAdmission.test_duplicate_case_does_not_replace_required_reopen) ... ok\ntest_empty_claimed_pass_has_no_executed_cases (__main__.QualificationAdmission.test_empty_claimed_pass_has_no_executed_cases) ... ok\ntest_error_list_refuses_despite_passed_label (__main__.QualificationAdmission.test_error_list_refuses_despite_passed_label) ... ok\ntest_existing_manifest_is_not_overwritten (__main__.QualificationAdmission.test_existing_manifest_is_not_overwritten) ... ok\ntest_failed_fault_matrix_refuses (__main__.QualificationAdmission.test_failed_fault_matrix_refuses) ... ok\ntest_failed_helper_assertions_refuse (__main__.QualificationAdmission.test_failed_helper_assertions_refuse) ... ok\ntest_fault_engine_differs_from_normal_execution (__main__.QualificationAdmission.test_fault_engine_differs_from_normal_execution) ... ok\ntest_forced_termination_is_not_natural_completion (__main__.QualificationAdmission.test_forced_termination_is_not_natural_completion) ... ok\ntest_linux_receipt_is_not_windows_qualification (__main__.QualificationAdmission.test_linux_receipt_is_not_windows_qualification) ... ok\ntest_map_file_tamper_refuses (__main__.QualificationAdmission.test_map_file_tamper_refuses) ... ok\ntest_missing_fault_matrix_refuses (__main__.QualificationAdmission.test_missing_fault_matrix_refuses) ... ok\ntest_missing_lock_case_refuses_even_with_ten_rows (__main__.QualificationAdmission.test_missing_lock_case_refuses_even_with_ten_rows) ... ok\ntest_no_helper_assertions_is_not_qualification (__main__.QualificationAdmission.test_no_helper_assertions_is_not_qualification) ... ok\ntest_nonzero_exit_cannot_be_overridden_by_passed_label (__main__.QualificationAdmission.test_nonzero_exit_cannot_be_overridden_by_passed_label) ... ok\ntest_self_consistent_but_incomplete_map_refuses (__main__.QualificationAdmission.test_self_consistent_but_incomplete_map_refuses) ... ok\ntest_skipped_workflow_cannot_be_passed (__main__.QualificationAdmission.test_skipped_workflow_cannot_be_passed) ... ok\n\n----------------------------------------------------------------------\nRan 30 tests in 0.038s\n\nOK\n"
+  },
+  "source_files_sha256": {
+    "tools/ci/package_ultima_evaluator.py": "26a278d939ef04ed8779174c3c8583a579a97ff74e620e0868c263a118e8d0d0",
+    "tools/ci/test_package_ultima_evaluator.py": "20dd4ee8219e2907415b41d22fa432d1808293dd56dfcd449f5762aab2de205a",
+    ".github/workflows/ultima-qualification.yml": "b4e77b4a8d704962ff9800808c1be5ddc53e9ddec901bc38b7ea1991a7247d33"
+  },
+  "independent_positive_controls": [
+    "Complete synthetic Windows qualification reaches the runtime identity gate",
+    "Complete payload manifest verifies against independently supplied manifest digest",
+    "Actual hosted Windows qualification at bfa40c84964b10b8bc15b2d836ce93d389f20836 is admitted"
+  ],
+  "resolved_review_findings": [
+    "Empty/incomplete/forced/skipped/failed receipt could be labelled passed; explicit required normal/fault case matrices and natural-exit/error checks now required",
+    "Subset or rewritten manifest could verify after losing required payload; expected manifest digest and required file set now enforced",
+    "Windows path aliases/alternate streams and duplicate JSON keys could hide identity ambiguity; strict intake and path constraints now enforced",
+    "Existing retained manifest destination could be overwritten; new-output preflight now refuses"
+  ],
+  "verdict": "APPROVE for source-matched test-only packaging after these controls. Actual copied Windows import/module execution remains separate hosted qualification; no production release or physical-owner acceptance."
+}

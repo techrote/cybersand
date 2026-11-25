@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
@@ -286,7 +286,10 @@ throws through the same parcel pool, so it needs `ballistic_water_v1` enabled;
 the Workbench sets `launch_budget` to 0 when Ballistic Water is on without
 Ballistic release, so spill then drains faces through the grid only. The
 per-cell WCX-FR face scan is admitted under Wave only while spill is off, because
-spill owns exposed faces. With spill on, parcels pass through falling Wave Water. They may not
+spill owns exposed faces. With spill on, parcels pass through falling Wave Water
+while their age is at most the four-tick self-contact grace, or whenever
+`catch_falling` is off. With the default `catch_falling` on, older parcels instead
+merge into that falling Water. They may not
 land beyond a wall one cell thick, including a diagonal one, and they may not
 step diagonally through such a wall even when the diagonal destination already
 contains Water. Connected Water neighbours retain the existing merge priority.
@@ -332,7 +335,8 @@ save remains refused for every Wave World.
 
 **Limits.** Spill is an approximation: grid-only spill drops straight down, and
 only ballistic release throws Water outward. Parcels are one cell each, at most
-`launch_budget` per tick and at most the pool capacity (4096) live. A face
+`launch_budget` per tick and at most the configured pool capacity live (default
+4,096; native maximum 65,536). A face
 beyond those limits keeps spilling through the grid. Sealed reservoirs, narrow
 slots, sub-threshold films and contained pools are unchanged in kind, although
 pool feed makes bulk levelling faster.

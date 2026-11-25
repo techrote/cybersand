@@ -1,0 +1,52 @@
+{
+  "reviewer": "Specialist A",
+  "authority": "historical-non-authoritative",
+  "scope": "Independent runner smoke/seal controls; public invented development questions only, no sealed holdout content exposed",
+  "runner_sha256": "158a0c4dbca971e6f0b58baa437feba16eefebb04b885a438005f3f3020cd320",
+  "fixture_sha256": "0d3279ac1e68bff4b137b039285e68e5378b3355e7e9032814e91fe6f7a3b48e",
+  "checks": [
+    {
+      "case": "lexical",
+      "returncode": 0,
+      "stdout": "{\"method\": \"lexical\", \"metrics\": {\"questions\": 2, \"top1\": 0, \"top3\": 1, \"top5\": 1, \"mrr_at_5\": 0.25}, \"authority_errors\": []}\n",
+      "stderr": ""
+    },
+    {
+      "case": "lexical-hash",
+      "returncode": 1,
+      "stderr_last": "ValueError: Sealed fixture bytes differ from the independently supplied hash"
+    },
+    {
+      "case": "lexical-duplicate",
+      "returncode": 1,
+      "stderr_last": "ValueError: Holdout questions must be nonempty and uniquely identified"
+    },
+    {
+      "case": "lexical-historytype",
+      "returncode": 1,
+      "stderr_last": "ValueError: Every question requires an explicit historical scope"
+    },
+    {
+      "case": "reference",
+      "returncode": 0,
+      "stdout": "{\"method\": \"reference\", \"metrics\": {\"questions\": 2, \"top1\": 0, \"top3\": 1, \"top5\": 1, \"mrr_at_5\": 0.25}, \"authority_errors\": []}\n",
+      "stderr": ""
+    },
+    {
+      "case": "reference-hash",
+      "returncode": 1,
+      "stderr_last": "ValueError: Sealed fixture bytes differ from the independently supplied hash"
+    },
+    {
+      "case": "reference-duplicate",
+      "returncode": 1,
+      "stderr_last": "ValueError: Holdout questions must be nonempty and uniquely identified"
+    },
+    {
+      "case": "reference-historytype",
+      "returncode": 1,
+      "stderr_last": "ValueError: Every question requires an explicit historical scope"
+    }
+  ],
+  "verdict": "APPROVE. Original evaluator and reference adapter remain separately called with unchanged scoring. Explicit history routing, current/owner intent authority whitelist and unsupported authority refusal retained. Actual answer applicability remains separate."
+}
