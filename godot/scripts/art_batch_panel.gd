@@ -705,7 +705,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	turn_limit.prefix = "Turns"
 	turn_limit.min_value = 0
 	turn_limit.value = 1
-	turn_limit.tooltip_text = "Maximum requests per Send. Zero continues until Stop, model completion or another limit."
+	turn_limit.tooltip_text = "Maximum requests per Send. Zero requires a positive Run s limit; Stop remains available."
 	turn_limit.max_value = 1000
 	row.add_child(turn_limit)
 	minimum_interval.prefix = "Gap s"
@@ -716,7 +716,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	run_seconds.prefix = "Run s"
 	run_seconds.custom_minimum_size.x = 100
 	run_seconds.max_value = 86400
-	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
+	run_seconds.tooltip_text = "Maximum seconds for this run. Zero requires a positive Turns limit."
 	var spending := Window.new()
 	spending.title = "Run limits and estimated spending"
 	add_child(spending)
@@ -1513,6 +1513,11 @@ func send_prompt() -> void:
 		return
 	if wb.busy() or wb.applied.is_empty():
 		input_error = "Canvas is not ready."
+		return
+	# A spending estimate alone cannot bound requests or elapsed time.
+	# Keep direct authoring convenient while refusing indefinite automatic turns.
+	if turn_limit.value <= 0 and run_seconds.value <= 0:
+		input_error = "Set Turns or Run s above zero so this run has a finite limit."
 		return
 	sent_turns = 0
 	run_spend = 0.0

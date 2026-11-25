@@ -54,6 +54,10 @@ Send is one explicit request. Preparing a request, waiting for a response,
 preparing its result and executing an approved stage have visible states. Stop
 is explicit cancellation; ordinary Art X continues to mean Hide.
 
+The direct model route also requires a finite run: set **Turns** above zero or
+set **Run s** above zero before Send. One request remains the default. A spending
+ceiling alone does not bound request count or elapsed time; Stop remains available.
+
 The Conversation page searches complete admitted message text in small slices.
 It shows at most the newest 128 matches and states when the list is bounded.
 Selecting a message shows its complete text in 4,096-character parts. The original

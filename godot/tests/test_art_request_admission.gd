@@ -66,6 +66,58 @@ func configure(prompt: String, large: bool = true) -> void:
 	panel.provider_wait_ms = 0
 	panel.show()
 
+func finite_run_checks() -> void:
+	configure("unbounded direct run must not prepare")
+	panel.turn_limit.value = 0
+	panel.run_seconds.value = 0
+	var serial_before: int = panel.provider.serial
+	var starts_before := starts.size()
+	var requests_before := event_count("request")
+	panel.send_prompt()
+	check(panel.provider.serial == serial_before and starts.size() == starts_before
+		and event_count("request") == requests_before and not panel.provider.active
+		and not panel.provider.request_preparation_active(),
+		"zero turn and duration limits refuse before provider identity, preparation or HTTP admission")
+	check(panel._pending_provider_send.is_empty() and panel.remaining_turns == 0
+		and panel.input_error.contains("finite") and prompt_count("unbounded direct run must not prepare") == 0,
+		"unbounded refusal explains the finite limit without inventing an admitted user turn")
+	var old_input_price: float = panel.input_price.value
+	var old_output_price: float = panel.output_price.value
+	panel.spend_limit.value = 1
+	panel.input_price.value = 1
+	panel.output_price.value = 1
+	panel.send_prompt()
+	check(panel.provider.serial == serial_before and starts.size() == starts_before
+		and event_count("request") == requests_before and panel.input_error.contains("finite"),
+		"a positive spending ceiling alone cannot admit an indefinite direct run")
+	panel.input_price.value = old_input_price
+	panel.output_price.value = old_output_price
+
+	configure("finite direct request count",false)
+	panel.turn_limit.value = 2
+	starts_before = starts.size()
+	panel.send_prompt()
+	check(starts.size() == starts_before+1 and panel.remaining_turns == 1
+		and panel.run_deadline_ms == 0 and prompt_count("finite direct request count") == 1,
+		"positive Turns preserves direct admission when the duration limit is disabled")
+	panel.stop_all("Fixture Stop after finite turn admission")
+	await until(settled,"finite turn request cancellation drains")
+	check(panel.remaining_turns == 0 and not panel.provider.active,
+		"Stop retires a finite turn run without an automatic continuation")
+
+	configure("finite direct duration",false)
+	panel.turn_limit.value = 0
+	panel.run_seconds.value = 2
+	starts_before = starts.size()
+	panel.send_prompt()
+	check(starts.size() == starts_before+1 and panel.remaining_turns == -1
+		and panel.run_deadline_ms > Time.get_ticks_msec() and prompt_count("finite direct duration") == 1,
+		"positive Run s preserves direct admission with a finite deadline when Turns is zero")
+	panel.stop_all("Fixture Stop after finite duration admission")
+	await until(settled,"finite duration request cancellation drains")
+	check(panel.remaining_turns == 0 and panel.run_deadline_ms == 0 and not panel.provider.active,
+		"Stop clears the bounded duration run and its remaining requests")
+
 func admission_checks() -> void:
 	configure("small captured prompt",false)
 	var starts_before := starts.size()
@@ -196,6 +248,7 @@ func run() -> void:
 	panel.provider.request_started.connect(func(id: int, offset: int) -> void: starts.append({"id":id,"offset":offset}))
 	var native_before: Dictionary = host.simulation_worker.paint_state()
 	var authored_before: Array = bench.applied.edits.duplicate(true)
+	await finite_run_checks()
 	await admission_checks()
 	await png_offset_checks()
 	check(host.simulation_worker.paint_state().revision == native_before.revision and bench.applied.edits == authored_before,
