@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Native-independent PUBPRES renderer diagnosis
+
+For the finite Linux/Windows font, Separate startup and queued material controls,
+source/engine/PID custody, first-read pixel oracle and acceptance limits, retrieve
+[isolated render diagnostics](../operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
+The [focused questions](retrieval-questions-pubpres-render-probes.json) are additive;
+the general frozen evaluation set and earlier mission questions remain unchanged.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |
@@ -298,6 +306,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why can the sampled player rapidly surface through enclosing material, and how does the barrel-player experiment differ? | [Granular policy](../systems/granular-interaction-policy.md), [rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md), [PCHAR-001 evidence](../audits/2026-09-25-pchar001-player-representation-experiment.md) |
 | Historical powder measurements, barrel sinking and reversible soliding | [Baseline tooling](../operations/physics-characterisation.md), [issue #9 results](../audits/2026-09-09-physics-characterisation.md), [future soliding plan](../operations/physics-characterisation-plan.md) |
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
+| Workbench sparse publication, physical progression and timed presentation evaluation | [PUBPRES-INTEGRATION-001](../operations/pubpres-integration-evaluation.md) |
+| Playability successor, reachable staging, native probes, default-off same-frame continuation, v3 M/I/C measurements and Windows reopen | [PUBPRES-PLAYABILITY-001 and pending acceptance](../operations/pubpres-playability-evaluation.md), [additive retrieval questions](retrieval-questions-pubpres-playability.json) |
+| Current-main PUBPRES recovery, bounded physical/renderer repairs, exact-source Windows delivery and unresolved completion gates | [PUBPRES-COMPLETION-001 handover](../operations/pubpres-completion-001.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Desktop gameplay-state recording, frame format, bounded drops and evidence limits | [Gameplay recording](../operations/gameplay-recording.md), [ownership](../architecture/data-ownership-and-lifetimes.md) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |

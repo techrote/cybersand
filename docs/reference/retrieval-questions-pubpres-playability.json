@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-21",
+  "scope": "Additive PUBPRES-PLAYABILITY-001 source, protocol and evidence-boundary questions. The frozen general questions, other mission questions and historical corpora are unchanged. These questions were authored with the new canonical page and are a development set, not held-out evaluation.",
+  "questions": [
+    {
+      "id": "PUBPRESPLAY-01",
+      "query": "Has PUBPRES-PLAYABILITY-001 established a playable progression improvement, and can Draft PR 719 or the older 682 be promoted?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "The successor is issue 717 and Draft PR 719; prior Draft PR 682 and original negative evidence remain preserved.",
+        "No new graphical playability improvement is established: exact-source a707 Windows Wave512 Follow progression is negative, Linux process qualification failed, queued GPU pixels and Separate renderer crashes remain open; final qualification and physical NVIDIA acceptance are pending.",
+        "Source-reviewed process/package fixture repairs require new execution and do not requalify original failures; Ready, merge and default promotion remain unauthorized."
+      ],
+      "sources": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESPLAY-02",
+      "query": "What does reachable staging allocation change, how much does it save on the original square and landscape cases, and is that measured GPU memory or RSS?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "Only CYBERSAND_DIAG_MATERIAL_POOL_POLICY=reachable enables the default-off option; ordinary eager allocation remains the default and primary candidate campaign setting.",
+        "Setup omits provably unreachable atlas classes while retaining the exact full-image alias, slots, immutable queued inputs, both histories and ACK ownership.",
+        "At RG8/three slots, savings are zero for 2048x2048 and 2048x1024, and 25,165,824 logical texture bytes for 2048x1536.",
+        "Logical allocation arithmetic is not measured GPU residency, RSS or a playability improvement."
+      ],
+      "sources": [
+        "../godot/scripts/blit_material_publisher.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESPLAY-03",
+      "query": "Is the four-column Wave native optimization enabled, and what does the optional Wave column probe actually do?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "The four-column prototype had inconsistent complete-tick ABBA results and a small-fixture regression, was explicitly reverted, and the delivered native tree equals frozen main846f.",
+        "The default-off adapter probe only exposes existing cumulative stage counters and storage, with experimental_column_tiles=false and column_slots=1; it adds no simulation authority.",
+        "Retired-selector On or malformed non-boolean selectors refuse initialization; missing-World status and reset publication defects were fixed at 573be351.",
+        "Primary candidate timing keeps the probe OFF; OFF/ON/ON/OFF is a separate overhead diagnostic."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESPLAY-04",
+      "query": "Which exact sources and Water workloads does the new M I C playability campaign compare, and why is old integration absent from current gameplay Wave timing?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "M is frozen 846fe0533b3170e7b01f690518da49fc40cc24d1; I is 8503ec19e4d620e125dc6df2c5c6571b1256cb92; C is the exact clean freeze SHA, with a separately built and verified native runtime for every arm.",
+        "Ten historical cases use M-I-C-C-I-M; historical Wave has one round and no spill or ballistic transport, with other Water families and a neutral input control.",
+        "The current main846f gameplay Wave case uses M-C-C-M with two rounds, spill and ballistics. I lacks the API and seven required fields and receives an untimed compatibility refusal.",
+        "The apparatus requires actual native World/Needle/Rapier work, at least ten seconds and 144 completed physical steps, with a 90-second capture cap; requested four workers are not proof of actual participation."
+      ],
+      "sources": [
+        "../tools/pubpres_playability/campaign.json",
+        "../tools/pubpres_playability/run_campaign.py"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESPLAY-05",
+      "query": "How are input admissions, observer overhead and Safe versus Separate rendering controlled, and does frame_post_draw prove GPU completion or explain the old WARP delay?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "Primary input retains repeated callbacks, records every attempt and admission, and compares equal-step first-144 body and admitted-move outcomes for same-source pairs; different source cadence can produce different command counts.",
+        "V3 retains repeated/once/once/repeated, full/reduced/reduced/full and native-probe OFF/ON/ON/OFF; adds same-frame continuation OFF/ON/ON/OFF in Safe. Original v2 Separate controls are retained as revealed negative evidence and explicitly retired from the prospective v3 campaign.",
+        "Next delivered frame_post_draw callback is not upload-specific GPU completion or scanout; wall clocks cannot distinguish CPU execution, driver waiting and descheduling.",
+        "The original 1f04 WARP raw traces establish delayed delivery after a healthy mailbox, not a unique GPU cause; missing original 8503 NVIDIA raw evidence leaves that report at report-level scope."
+      ],
+      "sources": [
+        "../godot/tests/pubpres_same_frame_gameplay.gd",
+        "../tools/pubpres_playability/results_same_frame.py",
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESPLAY-06",
+      "query": "How do I verify the new PUBPRES Windows artifact, open an isolated Workbench run and reopen the same saved profile, and what does startup verification certify?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "Use the source-bound PUBPRES-PLAYABILITY-001 archive and full expected candidate SHA; the launcher handles one matching inner ZIP plus checksum inside a GitHub wrapper and verifies every payload file, source/runtime custody and dependencies.",
+        "Pristine Payload is separate from run copies and profiles; ReopenRun preserves the same profile and re-verifies sources against the original payload with matching selectors.",
+        "Readiness/PID/memory records establish installed-World startup, not gameplay, saved native material-plane equality or physical NVIDIA acceptance.",
+        "New experimental runtime receipts do not waive the stale retained production-runtime provenance gap or authorize promotion."
+      ],
+      "sources": [
+        "../tools/pubpres_playability_windows/README.md",
+        "../tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESPLAY-07",
+      "query": "Does the new same-frame continuation create extra physics time or bypass native authority, how is it measured, and how do I enable it in the owner evaluator?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "The experiment is OFF by default; CYBERSAND_DIAG_SAME_FRAME_CONTINUATION=1 or Candidate/Safe owner switch SameFrameContinuation On explicitly selects it.",
+        "Only the latest genuine callback withheld for its awaited native body sample can authorize one nonblocking mailbox observation within the same original process frame. Another callback replaces it and frame expiry spends it without carried time credit.",
+        "It uses the same inactive Rapier space and unchanged physical transaction, with World/session/epoch, body sample, terrain, actor/input and pause/cancellation/replacement fences; no new Main input refresh, callback, terrain allowance or waiting is introduced.",
+        "V3 observer/reducer prove unique actual callback credit; same-source OFF/ON/ON/OFF and equal-step body/move parity are required. Physical completion timestamp is separate from completed or censored attempt observation. Original v2 files and campaign-development-01-v2 registration stay preserved.",
+        "Versioned owner manifest/run/startup formats verify exact source/runtime, selector bounds and reopen policy. Startup readback is configuration evidence, not performance or physical NVIDIA acceptance; Draft/HOLD remains."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/workbench_same_frame_continuation.gd",
+        "../tools/pubpres_playability/run_campaign.py",
+        "../tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}
