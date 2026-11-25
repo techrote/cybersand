@@ -2,7 +2,7 @@
 """Adverse reader controls; synthetic counters never establish actual rendering."""
 import copy
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -97,8 +97,16 @@ class OpticalEvidenceReader(unittest.TestCase):
             with self.subTest(result=result),self.assertRaises(RuntimeError):q.validate_motion(result)
 
     def test_evidence_paths_remain_relative_and_platform_independent(self):
-        for value in ['', '../outside.png', '/outside.png', 'C:/outside.png', 'scene\\result.json']:
-            with self.subTest(value=value),self.assertRaises(RuntimeError):q.safe_relative(value)
+        for host in (PurePosixPath, PureWindowsPath):
+            with patch.object(q, 'Path', host):
+                for value in ['', '../outside.png', '/outside.png', 'C:/outside.png',
+                              'scene\\result.json', '//server/share.png', './result.json',
+                              'scene//result.json', 'scene/./result.json', 'scene/../result.json',
+                              'scene/\x00result.json']:
+                    with self.subTest(host=host.__name__,value=value),self.assertRaises(RuntimeError):
+                        q.safe_relative(value)
+                self.assertEqual(q.safe_relative('scene/install/result.json').as_posix(),
+                                 'scene/install/result.json')
         self.assertEqual(q.safe_relative('scene/install/result.json'),Path('scene/install/result.json'))
 
     def test_legacy_process_watchdog_remains600_unless_explicit(self):

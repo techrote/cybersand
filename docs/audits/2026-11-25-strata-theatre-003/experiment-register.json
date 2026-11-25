@@ -20,8 +20,8 @@
     "godot/scripts/actor_presentation_bounds.gd": "928f511488669d9cc623004cd72f7cb082ac85ac94d5766e5247edfbc164c0c0",
     "godot/scripts/depth/strata_atmosphere.gd": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f",
     "godot/tools/qualify_workbench_strata3.gd": "294b57d418e7f0a763823f05fec80248a355ab16e149a4fcc3812eb54655c195",
-    "tools/ci/qualify_strata3_workbench.py": "0c77238e1d69f311783cd5ceaf4008a683ef699a21e874caf34c592d832318b5",
-    "tools/ci/strata3_predecessor_compare.py": "6686663cefe0a12d4ad57b7a731d543eb3ff323dcd952773565894a051786ce2",
+    "tools/ci/qualify_strata3_workbench.py": "968b541967b9942dc74efcad136af7a7f23785f9601b469046e7c2e7ffde806e",
+    "tools/ci/strata3_predecessor_compare.py": "86456a23090632c9dd0ffba5deb511ec33270a713ee2826f59cf3450424d908e",
     "tools/build_strata3_gallery.py": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b",
     "tools/package_strata3_workbench.py": "2ef3d9cd6f529b6a5af7a6f506371012cd61fe99b405ddfade4f514a5b51f1df"
   },
@@ -163,5 +163,24 @@
     "Pristine extracted Windows commands and payload",
     "Physical Windows11/NVIDIA owner and artistic acceptance"
   ],
-  "notes": "Implementation file digests identify the integrated source before publication. Final qualification and evaluator manifests bind exact published application commit/tree. Local specialist commit annotations are research checkpoints; they are not substituted for executed published source identities."
+  "notes": "Implementation file digests identify the integrated source before publication. Final qualification and evaluator manifests bind exact published application commit/tree. Local specialist commit annotations are research checkpoints; they are not substituted for executed published source identities.",
+  "failed_campaigns": [
+    {
+      "source": "88d6a7c5194876c998ded0b6061429a11f3ac118",
+      "tree": "4dd90196509fad85c94ffda9ac49a0a340c4ed01",
+      "run": 45718951534,
+      "request_sequence": 3,
+      "stage": "pre-graphics setup/adverse reader controls",
+      "linux": {
+        "job": 139572093344,
+        "result": "All reader adverse controls passed; Git LFS batch request timed out before runtime download"
+      },
+      "windows": {
+        "job": 139572093672,
+        "result": "Gallery45controls passed; evidence-path adverse control correctly exposed Windows rooted-without-drive path accepted by host Path.is_absolute check"
+      },
+      "graphical_cases_executed": 0,
+      "remedy": "Validate canonical relative components before platform Path normalization; repair same predecessor reader seam; preserve failing controls and retry unchanged LFS downloads at most3times. Sequence4 repeats full campaign."
+    }
+  ]
 }

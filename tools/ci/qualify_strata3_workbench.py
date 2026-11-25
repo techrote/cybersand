@@ -236,12 +236,16 @@ def identity(allow_delta: bool = False) -> dict:
 
 
 def safe_relative(value: str) -> Path:
-    require(isinstance(value, str) and value and "\\" not in value,
+    require(isinstance(value, str) and value and "\\" not in value
+            and not any(ord(character) < 32 for character in value),
             "Empty or platform-dependent evidence path")
-    path = Path(value)
-    require(not path.is_absolute() and ".." not in path.parts and ":" not in value,
+    # Evidence uses one canonical POSIX-relative spelling on both hosts. A
+    # Windows Path('/outside') is rooted but is_absolute() is false without a
+    # drive; validate the original components before host Path normalization.
+    parts = value.split("/")
+    require(all(part not in ("", ".", "..") for part in parts) and ":" not in value,
             "Unsafe evidence path")
-    return path
+    return Path(*parts)
 
 
 def evidence_files(folder: Path) -> dict:

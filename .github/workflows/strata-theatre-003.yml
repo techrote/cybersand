@@ -59,7 +59,15 @@ jobs:
           python3 tools/ci/test_strata3_predecessor_compare.py
           python3 tools/ci/test_strata3_package.py
           git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          downloaded=false
+          for attempt in 1 2 3; do
+            if git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''; then
+              downloaded=true
+              break
+            fi
+            if (( attempt < 3 )); then sleep "$((attempt * 5))"; fi
+          done
+          [[ $downloaded == true ]]
       - name: Prepare official pinned Godot and graphical display
         run: |
           set -euo pipefail
@@ -142,8 +150,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Portable source custody controls failed' }
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
-          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+          for ($attempt = 1; $attempt -le 3; $attempt++) {
+            git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+            if ($LASTEXITCODE -eq 0) { break }
+            if ($attempt -eq 3) { throw 'Retained runtime download failed after three attempts' }
+            Start-Sleep -Seconds (5 * $attempt)
+          }
       - name: Authenticate pinned Godot and complete portable dependencies
         shell: pwsh
         run: |
@@ -253,8 +265,12 @@ jobs:
         run: |
           git lfs install --local
           if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
-          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+          for ($attempt = 1; $attempt -le 3; $attempt++) {
+            git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+            if ($LASTEXITCODE -eq 0) { break }
+            if ($attempt -eq 3) { throw 'Retained runtime download failed after three attempts' }
+            Start-Sleep -Seconds (5 * $attempt)
+          }
           $archive = "build/CyberSand-Strata3-Workbench-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
           python tools/package_strata3_workbench.py build --dependencies dependencies --linux evidence/linux --windows evidence/windows --compatibility-linux controls/linux/strata3-compatibility-linux --compatibility-windows controls/windows/strata3-compatibility-windows --predecessor-linux controls/linux/strata3-predecessor-linux --predecessor-windows controls/windows/strata3-predecessor-windows --output build/evaluation --archive $archive
           if ($LASTEXITCODE -ne 0) { throw 'Source-bound portable package refused' }

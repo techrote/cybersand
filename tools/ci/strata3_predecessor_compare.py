@@ -289,7 +289,7 @@ def compare(results: list[dict]) -> dict:
 
 
 def safe_relative(folder: Path, name: str) -> Path:
-    require(isinstance(name, str) and name and "\\" not in name
+    require(isinstance(name, str) and name and "\\" not in name and ":" not in name and not name.startswith("/")
             and not Path(name).is_absolute() and ".." not in Path(name).parts, "Unsafe evidence path")
     path = folder / name
     require(path.is_file() and not path.is_symlink(), "Missing original evidence: " + name)

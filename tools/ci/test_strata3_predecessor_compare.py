@@ -1,6 +1,8 @@
 """Adversarial readers for raw native progression and paired source witnesses."""
 import hashlib
 import struct
+from pathlib import Path
+import tempfile
 import unittest
 import zlib
 
@@ -167,6 +169,15 @@ def test_png(raw, channels=4, width=2, height=2, depth=8, interlace=0):
 
 
 class OriginalPixelReader(unittest.TestCase):
+    def test_portable_paths_reject_drive_relative_and_rooted_paths_on_every_host(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "ordinary.png").write_bytes(b"test")
+            self.assertEqual(comparison.safe_relative(root, "ordinary.png"), root / "ordinary.png")
+            for name in ("/outside.png", "C:/outside.png", "C:outside.png", "../outside.png", "foo\\outside.png", "//server/outside.png"):
+                with self.subTest(name=name), self.assertRaisesRegex(RuntimeError, "Unsafe evidence path"):
+                    comparison.safe_relative(root, name)
+
     def test_known_all_five_filters_preserve_every_alpha_byte(self):
         # Two pixels per row, repeated across five independently known filter
         # encodings: None, Sub, Up, Average and Paeth. Alpha is intentionally
