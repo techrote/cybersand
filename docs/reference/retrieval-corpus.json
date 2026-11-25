@@ -161,6 +161,10 @@
   ],
   "excluded": [
     {
+      "path": "operations/gip013-gremlin-protocol.md",
+      "reason": "Experimental GIP-013 Draft/HOLD reference contract-model prototype. No accepted native/Rapier or Workbench evidence; read explicitly for GIP-013, not as current gameplay authority."
+    },
+    {
       "path": "research/gentek-classic-001.md",
       "reason": "Branch-scoped Draft/HOLD PR #624 sampler catalogue and qualification scope. Read directly for explicit CLASSIC research reviews; the Architectural Generator contract remains the canonical home for accepted controls and runtime publication requirements."
     },

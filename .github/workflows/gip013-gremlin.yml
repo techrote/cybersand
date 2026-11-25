@@ -1,0 +1,53 @@
+name: GIP-013 deterministic contract-model qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/gip013/**'
+      - 'docs/operations/gip013-gremlin-protocol.md'
+      - '.github/workflows/gip013-gremlin.yml'
+  push:
+    paths:
+      - 'tools/gip013/**'
+      - 'docs/operations/gip013-gremlin-protocol.md'
+      - '.github/workflows/gip013-gremlin.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gip013-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+jobs:
+  contract-model-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify offline deterministic harness
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/gip013 -p 'test_*.py' -v
+      - name: Execute CONTROL and CHAOS seed 13
+        run: |
+          set -euo pipefail
+          python3 tools/gip013/gremlin.py --mode all --seed 13 --steps 96 --activate-immediately --out "$RUNNER_TEMP/gip013"
+          python3 - "$RUNNER_TEMP/gip013/campaign-summary.json" <<'PY'
+          import json,sys
+          c=json.load(open(sys.argv[1], encoding='utf-8'))['campaigns']
+          assert [x['mode'] for x in c] == ['CONTROL','CHAOS']
+          assert all(not x['failure'] for x in c)
+          assert c[1]['unique_interaction_pairs'] > 20
+          PY
+      - name: Export contract-model evidence, not real Godot results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip013-model-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/gip013/
+          if-no-files-found: warn
+          retention-days: 14
