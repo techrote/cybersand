@@ -5,6 +5,8 @@ External importers must use the same selection and chunk envelopes and rebuild
 older caches. Source prose, including an old 'Approved' status, is never authority.
 """
 import json
+from datetime import date
+from functools import lru_cache
 from pathlib import Path
 import re
 
@@ -12,6 +14,7 @@ POLICY_VERSION = "historical-isolation-v4"
 HISTORICAL_AUTHORITY = "historical-non-authoritative"
 HISTORICAL_PREFIXES = ("docs/history", "docs/audits")
 FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research", "tools"}
+CURRENT_REQUIRED = {"title", "status", "document-kind", "scope", "canonical-for", "last-reviewed", "related-documents"}
 DOCUMENT_KINDS = {"contract", "design", "decision", "guide", "runbook", "reference", "evidence", "navigation", "research"}
 NAVIGATION = (
     "docs/README.md", "docs/reference/retrieval-index.md", "README.md", "AGENTS.md",
@@ -89,9 +92,9 @@ def frontmatter_field(line: str) -> tuple[str, str] | None:
 def source_frontmatter(path: Path) -> dict[str, str]:
     """Validate exact source metadata independently of a caller's parsed copy.
 
-    Legacy unlabelled documents remain readable by the frozen evaluator. The
-    supported agent adapter additionally requires complete current metadata.
-    Every declared field, however, must be unambiguous in all ingestion paths.
+    Every current answer needs complete metadata; legacy unlabelled archive
+    text remains available only through explicit historical scope. Every declared
+    field must be unambiguous in all ingestion paths.
     """
     text = path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
     if not text.startswith("---\n"):
@@ -102,7 +105,12 @@ def source_frontmatter(path: Path) -> dict[str, str]:
     except ValueError as exc:
         raise ValueError("Unterminated frontmatter") from exc
     result = {}
+    previous = None
     for line in lines[1:end]:
+        if line[:1].isspace() and line.strip().startswith("- "):
+            if previous not in {"canonical-for", "related-documents"} or result.get(previous) != "":
+                raise ValueError("Unsupported list continuation after scalar frontmatter")
+            continue
         field = frontmatter_field(line)
         if field is None:
             continue
@@ -110,6 +118,7 @@ def source_frontmatter(path: Path) -> dict[str, str]:
         if key in result:
             raise ValueError("Duplicate frontmatter " + key)
         result[key] = value
+        previous = key
     return result
 
 
@@ -129,10 +138,41 @@ def historical_path(path: Path, root: Path) -> bool:
                for prefix in HISTORICAL_PREFIXES)
 
 
+def _unique_json_pairs(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("Duplicate corpus manifest key: " + key)
+        result[key] = value
+    return result
+
+
+@lru_cache(maxsize=4)
+def _validate_manifest_text(text: str) -> None:
+    # Cache only validation of these exact bytes, never file selection or text.
+    manifest = json.loads(text, object_pairs_hook=_unique_json_pairs)
+    if not isinstance(manifest, dict) or not isinstance(manifest.get("documents"), list):
+        raise ValueError("Corpus manifest requires a documents array")
+    for entry in manifest["documents"]:
+        if isinstance(entry, dict):
+            if set(entry) != {"path"}:
+                raise ValueError("Unsupported corpus entry fields")
+            entry = entry["path"]
+        if not isinstance(entry, str) or not entry.strip():
+            raise ValueError("Corpus entries require nonempty path strings")
+
+
+def validate_manifest(root: Path, historical: bool) -> None:
+    manifest = root / "docs" / ("history/engineering/retrieval-corpus.json" if historical else "reference/retrieval-corpus.json")
+    if manifest.is_file():
+        _validate_manifest_text(manifest.read_text(encoding="utf-8-sig"))
+
+
 def require_authority(path: Path, root: Path, *, historical: bool,
                       metadata: dict | None = None) -> str:
     """Reject crossing between default answers and the opt-in archive."""
     root, path = root.resolve(), path.resolve()
+    validate_manifest(root, historical)
     if not path.is_relative_to(root):
         raise ValueError("Retrieval documents must stay inside the source repository")
     actual = source_frontmatter(path)
@@ -163,6 +203,14 @@ def require_authority(path: Path, root: Path, *, historical: bool,
     if is_history != historical:
         mode = "historical" if historical else "default"
         raise ValueError(f"Authority boundary: {path.relative_to(root)} is not a {mode} document")
+    if not historical and default_selection_allowed(path, root, actual):
+        missing = CURRENT_REQUIRED - set(actual)
+        if missing:
+            raise ValueError("Incomplete current-source metadata: " + ", ".join(sorted(missing)))
+        for key in ("title", "status", "document-kind", "scope"):
+            if not scalar(actual[key]):
+                raise ValueError("Empty current-source metadata: " + key)
+        date.fromisoformat(scalar(actual["last-reviewed"]))
     # Intent remains an admitted current source, but its chunk envelope must not
     # silently relabel approved direction as implementation documentation.
     return HISTORICAL_AUTHORITY if is_history else (declared or "current-documentation")

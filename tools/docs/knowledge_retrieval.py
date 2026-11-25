@@ -81,7 +81,7 @@ def validate_current_metadata(path: Path) -> dict:
     return metadata
 
 
-def source_snapshot(root: Path, historical: bool, max_words: int) -> tuple[dict, list[dict]]:
+def source_snapshot(root: Path, historical: bool, max_words: int, *, include_chunks=True) -> tuple[dict, list[dict]]:
     root = root.resolve()
     manifest = root/'docs'/('history/engineering/retrieval-corpus.json' if historical else 'reference/retrieval-corpus.json')
     if manifest.is_file():
@@ -99,13 +99,14 @@ def source_snapshot(root: Path, historical: bool, max_words: int) -> tuple[dict,
                           'authority': authority, 'status': scalar(metadata.get('status','unlabelled')),
                           'document_kind': scalar(metadata.get('document-kind','unlabelled')),
                           'links': local_links(path, root)})
-        for chunk in baseline.chunk_document(path, root, max_words, historical=historical):
-            chunk = {**chunk, 'source_sha256': doc_sha, 'context_sha256': digest(chunk['text'].encode()),
-                     'status': scalar(metadata.get('status','unlabelled')),
-                     'document_kind': scalar(metadata.get('document-kind','unlabelled'))}
-            chunk['id'] = digest(canonical_json([chunk['path'],chunk['heading'],chunk['part'],chunk['context_sha256']]))
-            chunks.append(chunk)
-    if not chunks:
+        if include_chunks:
+            for chunk in baseline.chunk_document(path, root, max_words, historical=historical):
+                chunk = {**chunk, 'source_sha256': doc_sha, 'context_sha256': digest(chunk['text'].encode()),
+                         'status': scalar(metadata.get('status','unlabelled')),
+                         'document_kind': scalar(metadata.get('document-kind','unlabelled'))}
+                chunk['id'] = digest(canonical_json([chunk['path'],chunk['heading'],chunk['part'],chunk['context_sha256']]))
+                chunks.append(chunk)
+    if not documents or (include_chunks and not chunks):
         raise ValueError('No permitted source contexts')
     helpers = {p.name:digest(p.read_bytes()) for p in (Path(__file__), Path(baseline.__file__), Path(baseline.__file__).with_name('retrieval_policy.py'))}
     # Track linked executable/configuration source independently of prose. A
@@ -181,6 +182,9 @@ class Retriever:
         if k < 1:
             raise ValueError('k must be positive')
         started = time.perf_counter()
+        current,_=source_snapshot(self.root,self.identity['historical'],self.identity['max_words'],include_chunks=False)
+        if current != self.identity:
+            raise ValueError('Stale retriever instance: source changed; rebuild before querying')
         words = sorted(set(baseline.tokens(query)))
         scores=[]
         n=len(self.chunks)
@@ -234,7 +238,7 @@ class Retriever:
         executed. The caller receives source identity and must interpret it.
         """
         # Refresh current selection and bytes before accepting a cached result.
-        current,_=source_snapshot(self.root,self.identity['historical'],self.identity['max_words'])
+        current,_=source_snapshot(self.root,self.identity['historical'],self.identity['max_words'],include_chunks=False)
         if current['source_fingerprint'] != self.identity['source_fingerprint'] or result.get('source_fingerprint') != self.identity['source_fingerprint']:
             raise ValueError('Stale context: rebuild and retrieve again before following source')
         allowed={route['target']:route for route in result.get('source_routes',[])}

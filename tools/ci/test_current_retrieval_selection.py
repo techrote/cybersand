@@ -18,12 +18,23 @@ from retrieval_policy import FOCUSED, HISTORICAL_AUTHORITY
 import check_docs
 
 
+def current_document(text):
+    fields = {"title":"Test current source", "status":"Current", "document-kind":"contract", "scope":"Unit fixture", "canonical-for":"[]", "last-reviewed":"2026-11-25", "related-documents":"[]"}
+    if text.startswith("---\n"):
+        header, body = text[4:].split("\n---", 1)
+        existing = {retrieval.frontmatter_field(line)[0] for line in header.splitlines() if retrieval.frontmatter_field(line) is not None}
+        extra = "\n".join(key+": "+value for key,value in fields.items() if key not in existing)
+        return "---\n"+header+"\n"+extra+"\n---"+body
+    return "---\n"+"\n".join(key+": "+value for key,value in fields.items())+"\n---\n"+text
+
+
+
 class CurrentRetrievalSelectionTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
-        self.current = self.write("docs/systems/current.md", "# Current\nCurrent answer.\n")
+        self.current = self.write("docs/systems/current.md", current_document("# Current\nCurrent answer.\n"))
         self.packet = self.write("docs/operations/packet.md", "---\nretrieval: explicit-only\n---\n# Prior packet\nAn old execution instruction.\n")
         self.manifest = self.write("docs/reference/retrieval-corpus.json", json.dumps({"documents": ["systems/current.md"]}))
 
@@ -59,8 +70,8 @@ class CurrentRetrievalSelectionTests(unittest.TestCase):
             retrieval.chunk_document(nav, self.root, 20)
 
     def test_fallback_includes_current_tools_and_material_lab(self):
-        viewer = self.write("docs/tools/viewer.md", "# Viewer\nCurrent viewer procedure.\n")
-        lab = self.write("docs/MATERIAL_LAB.md", "# Materials\nCurrent material entry.\n")
+        viewer = self.write("docs/tools/viewer.md", current_document("# Viewer\nCurrent viewer procedure.\n"))
+        lab = self.write("docs/MATERIAL_LAB.md", current_document("# Materials\nCurrent material entry.\n"))
         self.manifest.unlink()
         self.assertEqual(set(retrieval.selected_paths(self.root)), {self.current, viewer, lab})
 
@@ -101,13 +112,13 @@ class CurrentRetrievalSelectionTests(unittest.TestCase):
                     parser(text)
 
     def test_explicit_default_retains_current_content(self):
-        self.current.write_text("---\nretrieval: default\n---\n# Current\nAnswer.\n")
+        self.current.write_text(current_document("---\nretrieval: default\n---\n# Current\nAnswer.\n"))
         self.assertEqual(retrieval.selected_paths(self.root), [self.current])
         self.manifest.unlink()
         self.assertEqual(retrieval.selected_paths(self.root), [self.current])
 
     def test_owner_intent_authority_survives_every_chunk(self):
-        self.current.write_text("---\nauthority: 'owner-confirmed-intent'\nstatus: Approved design\n---\n# Owner direction\n" + "Desired behavior is not implemented permission. " * 40)
+        self.current.write_text(current_document("---\nauthority: 'owner-confirmed-intent'\nstatus: Approved design\n---\n# Owner direction\n" + "Desired behavior is not implemented permission. " * 40))
         self.assertEqual(retrieval.selected_paths(self.root), [self.current])
         chunks = retrieval.chunk_document(self.current, self.root, 20)
         self.assertGreater(len(chunks), 1)

@@ -52,6 +52,42 @@ class KnowledgeRetrievalTests(unittest.TestCase):
     def test_copied_historical_status_is_never_current(self):
         self.check_all_default_entries_reject(document(status='Historical'))
 
+    def test_missing_metadata_fails_closed_in_shared_direct_manifest_and_fallback(self):
+        self.check_all_default_entries_reject('# Untyped record\nAn ambiguous instruction.\n')
+
+    def test_scalar_list_continuations_are_rejected_in_all_ingestion_paths(self):
+        for key,value in [('status','Current'),('document-kind','contract'),('authority','current-documentation')]:
+            with self.subTest(key=key):
+                text=document(authority='current-documentation').replace(key+': '+value+'\n',key+': '+value+'\n  - historical-non-authoritative\n')
+                self.manifest.write_text(json.dumps({'documents':['systems/current.md']}))
+                self.check_all_default_entries_reject(text)
+
+    def test_live_instance_refuses_authority_downgrade_and_removal(self):
+        original=document()
+        for replacement in [document(status='Historical'),document(retrieval='explicit-only'),None]:
+            with self.subTest(replacement=replacement):
+                self.current.write_text(original)
+                retriever=knowledge.Retriever(self.root,cache=self.cache)
+                self.assertTrue(retriever.query('quarantine')['hits'])
+                if replacement is None:self.current.unlink()
+                else:self.current.write_text(replacement)
+                with self.assertRaises(ValueError):retriever.query('quarantine')
+
+    def test_live_instance_refuses_content_and_linked_source_drift(self):
+        source=self.write('native/current.hpp','// one\n')
+        self.current.write_text(document('# Contract\nQuarantine. [Source](../../native/current.hpp)\n'))
+        retriever=knowledge.Retriever(self.root)
+        source.write_text('// two\n')
+        with self.assertRaisesRegex(ValueError,'Stale retriever instance'):retriever.query('quarantine')
+        retriever=knowledge.Retriever(self.root)
+        self.current.write_text(document('# Contract\nDifferent behavior. [Source](../../native/current.hpp)\n'))
+        with self.assertRaisesRegex(ValueError,'Stale retriever instance'):retriever.query('quarantine')
+
+    def test_live_fallback_instance_refuses_newly_admitted_document(self):
+        self.manifest.unlink();retriever=knowledge.Retriever(self.root)
+        self.write('docs/systems/new.md',document('# Another\nA new current source.\n'))
+        with self.assertRaisesRegex(ValueError,'Stale retriever instance'):retriever.query('quarantine')
+
     def test_evidence_and_research_are_excluded_every_default_path(self):
         for kind in ['evidence','research','navigation']:
             with self.subTest(kind=kind):
@@ -83,6 +119,8 @@ class KnowledgeRetrievalTests(unittest.TestCase):
     def test_duplicate_manifest_key_fails_closed(self):
         self.manifest.write_text('{"documents":[],"documents":["systems/current.md"]}')
         with self.assertRaisesRegex(ValueError,'Duplicate JSON key'):knowledge.Retriever(self.root)
+        with self.assertRaisesRegex(ValueError,'Duplicate corpus manifest key'):baseline.selected_paths(self.root)
+        with self.assertRaisesRegex(ValueError,'Duplicate corpus manifest key'):baseline.chunk_document(self.current,self.root,30)
 
     def test_snapshot_creation_then_validated_reuse(self):
         first=knowledge.Retriever(self.root,cache=self.cache)

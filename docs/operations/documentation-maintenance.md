@@ -115,15 +115,19 @@ current authority fails closed instead of serving an old cache. Explicit history
 uses a distinct identity and preserves its envelope. Cache files belong outside
 tracked source.
 
-The adapter is stricter than the legacy baseline about unlabelled current text:
-all required metadata and a valid review date are required. The legacy evaluator
-retains its original minimal-document fixtures; it is not an external-ingestion
-security boundary for arbitrary unlabelled content. All declared authority,
-selection, kind and status fields are checked by the shared policy in both paths.
+All current answer paths—manifest, fallback, direct chunking and the adapter—
+require complete metadata and a valid review date. Navigation and explicitly
+excluded packets cannot become answers through missing fields; explicit archive
+retrieval retains its non-authoritative envelope even for unlabelled originals.
+The unit fixtures now declare valid current metadata; the five frozen query sets
+and lexical scoring code remain unchanged. All scalar/list ambiguity, authority,
+selection, kind and status fields are checked by the shared policy.
 
 A consumer can query, inspect the supplied routes, and explicitly follow one
 linked source with `--source <exact-repository-path>` on the same `--query` call.
-The adapter rechecks source identity and refuses stale or altered contexts,
+Every query also rechecks source identity on an already-live adapter instance.
+A changed or removed source invalidates that instance before any passage is
+returned; create a fresh instance to rebuild. Source-following refuses stale or altered contexts,
 unlinked targets, path escape, historical access without opt-in and unselected
 Markdown answer pages. It returns source bytes and digests with a separate
 inspection-only scope. Source inspection does not establish implementation

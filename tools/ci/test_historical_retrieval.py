@@ -11,12 +11,23 @@ from retrieval_policy import HISTORICAL_AUTHORITY, require_authority
 import check_docs
 
 
+def current_document(text):
+    fields = {"title":"Test current source", "status":"Current", "document-kind":"contract", "scope":"Unit fixture", "canonical-for":"[]", "last-reviewed":"2026-11-25", "related-documents":"[]"}
+    if text.startswith("---\n"):
+        header, body = text[4:].split("\n---", 1)
+        existing = {retrieval.frontmatter_field(line)[0] for line in header.splitlines() if retrieval.frontmatter_field(line) is not None}
+        extra = "\n".join(key+": "+value for key,value in fields.items() if key not in existing)
+        return "---\n"+header+"\n"+extra+"\n---"+body
+    return "---\n"+"\n".join(key+": "+value for key,value in fields.items())+"\n---\n"+text
+
+
+
 class HistoricalRetrievalTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name).resolve()
-        self.current = self.write("docs/systems/current.md", "# Current contract\nA present contract.\n")
+        self.current = self.write("docs/systems/current.md", current_document("# Current contract\nA present contract.\n"))
         self.old = self.write("docs/history/engineering/old.md", "---\nstatus: Approved\n---\n# Old rule\n" + "must never use this old implementation " * 80)
         self.manifest = self.write("docs/reference/retrieval-corpus.json", json.dumps({"documents": ["systems/current.md"]}))
         self.history_manifest = self.write("docs/history/engineering/retrieval-corpus.json", json.dumps({"documents": ["history/engineering/old.md"]}))
@@ -28,7 +39,7 @@ class HistoricalRetrievalTests(unittest.TestCase):
         return path
 
     def test_default_selection_excludes_archive_and_does_not_expand_links(self):
-        self.current.write_text("# Current\n[History](../history/engineering/old.md)\n", encoding="utf-8")
+        self.current.write_text(current_document("# Current\n[History](../history/engineering/old.md)\n"), encoding="utf-8")
         self.assertEqual(retrieval.selected_paths(self.root), [self.current])
         chunks = retrieval.chunk_document(self.current, self.root, 20)
         self.assertTrue(all("must never" not in c["text"] for c in chunks))
