@@ -160,8 +160,16 @@ class Runner:
         recovered = self.run(kind, "attempt", label=f"{kind}-{fault}-retry")
         require(not recovered["error"] and recovered["readable"], f"{kind}/{fault}: normal retry failed")
         require(recovered["after_sha256"] != prepared["after_sha256"], f"{kind}/{fault}: retry did not commit new document")
+        self.payload_value(kind, recovered, initial=False)
         self.rows.append({"kind":kind, "fault":fault, "evidence_class":"real-os-failure",
                           "before":prepared, "refusal":refused, "retry":recovered})
+
+    @staticmethod
+    def payload_value(kind, result, *, initial):
+        field = "seed" if kind == "project" else "value" if kind == "helper" else "material"
+        expected = (123 if initial else 456) if kind == "project" else (
+            ("old" if initial else "new") if kind == "helper" else (2 if initial else 14))
+        require(result.get(field) == expected, f"{kind}: reloaded {field} differs from intended {expected!r}")
 
     def qualify(self):
         command = self.command[:-1] + ["res://tests/test_workbench_file_transaction.gd"]
@@ -176,9 +184,11 @@ class Runner:
         for kind in ("ordinary", "generated", "project"):
             prepared = self.run(kind, "prepare")
             require(not prepared["error"] and prepared["readable"], f"{kind}: initial save/reload failed")
+            self.payload_value(kind, prepared, initial=True)
             replaced = self.run(kind, "attempt")
             require(not replaced["error"] and replaced["readable"], f"{kind}: replacement/reload failed")
             require(prepared["after_sha256"] != replaced["after_sha256"], f"{kind}: new bytes not published")
+            self.payload_value(kind, replaced, initial=False)
             self.rows.append({"kind":kind, "evidence_class":"real-writer-fresh-process-reload",
                               "before":prepared, "replacement":replaced})
             prepared = self.run(kind, "prepare")
