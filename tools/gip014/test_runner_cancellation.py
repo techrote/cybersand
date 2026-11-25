@@ -15,6 +15,9 @@ from test_evidence import ACTIONS, tape
 
 class RunnerCancellationControls(unittest.TestCase):
     def invoke(self, root, *, interrupt=None, fail_first=False, reduction=False):
+        # The runner resolves --out. Match that boundary before a mocked log
+        # path is made relative, including Windows temporary-directory aliases.
+        root = root.resolve()
         engine = root / "synthetic-engine"
         engine.write_bytes(b"not an executable; all dispatch is mocked")
         original = tape(ACTIONS)
@@ -74,7 +77,12 @@ class RunnerCancellationControls(unittest.TestCase):
                 patch.object(runner.replay_identity, "same", return_value=True), \
                 patch.object(runner, "execute", side_effect=execute), contextlib.redirect_stdout(io.StringIO()):
             code = runner.main(argv)
-        return code, calls, json.loads((root / "output/qualification.json").read_text())
+        qualification = root / "output/qualification.json"
+        if not qualification.is_file():
+            error = root / "output/qualification-error.json"
+            raise AssertionError("Synthetic runner failed before its expected terminal report: " +
+                                 (error.read_text() if error.is_file() else str(code)))
+        return code, calls, json.loads(qualification.read_text())
 
     def assert_source_retained(self, output):
         self.assertFalse((output / "project").exists())
@@ -92,6 +100,19 @@ class RunnerCancellationControls(unittest.TestCase):
             self.assertEqual(report["tests"], [])
             self.assertTrue(json.loads((root / "output/import-result.json").read_text())["interrupted"])
             self.assert_source_retained(root / "output")
+
+    def test_resolved_output_alias_keeps_mock_log_paths_in_the_same_root(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "existing").mkdir()
+            resolved = root / "actual"
+            resolved.mkdir()
+            alias = root / "existing" / ".." / "actual"
+            self.assertNotEqual(alias, alias.resolve())
+            code, calls, report = self.invoke(alias, interrupt=1)
+            self.assertEqual((code, calls), (130, ["import.log"]))
+            self.assertTrue(report["operator_cancelled"])
+            self.assert_source_retained(resolved / "output")
 
     def test_test_interrupt_stops_before_next_child_despite_partial_tape(self):
         with tempfile.TemporaryDirectory() as folder:

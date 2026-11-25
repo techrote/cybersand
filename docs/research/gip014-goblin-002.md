@@ -411,6 +411,37 @@ programme before another child process or campaign starts, with exit code 130
 and durable cancellation receipts. The same stop rule applies to fixed source
 tests, reducer probes and extracted-package PowerShell preflight.
 
+### Request 5 Windows control failure and request 6
+
+[Request 5](https://github.com/techrote/cybersand/actions/runs/45546330774) runs at
+`7097b338750f06f74ae742c9bea07aa0b1949b94`, tree
+`1f03f596daba13b01c31addd31f506b07a03de42`. Its Windows Python gate ran 102 tests
+in 2.636 seconds and reported four errors in the new mocked cancellation controls,
+before native qualification began. The failed control used Windows' short
+temporary-directory alias (`RUNNER~1`) while the ordinary runner canonicalized
+its output path. The mock's relative-path conversion therefore failed before
+its expected terminal receipt existed. This is a test-harness defect, not a
+gameplay or cancellation failure observed in Godot.
+
+The exact Windows attempt remains in
+[artifact 14991218704](https://github.com/techrote/cybersand/actions/runs/45546330774/artifacts/14991218704),
+2,117 bytes, SHA-256
+`dfa6d942cd3651e973a6f7c50cc4fdc5e8a002b959065883c00029d8780146ce`.
+An ordinary existing-directory/`..` alias reproduced the mismatch in the pure
+fixture. Canonicalizing the fixture root repairs it; a fifth mocked control
+preserves that portable regression without requiring symlink privileges.
+Independent review passed all five controls. Actual Windows re-execution is
+still required.
+
+Request 6 changes only that Python test fixture, this ledger and the finite
+qualification request. All game scripts, gameplay adapters, policy generators,
+oracles, runtimes and owner launchers remain byte-identical to request 5.
+Its Linux scope repeats focused, graphical, regression-export and seven-episode
+memory gates plus a two-episode smoke. The full 142-episode request-5 Linux
+comparison continues independently at its exact source; it is not relabelled
+as a request-6 run. Windows repeats the complete source and extracted evaluator
+qualification. Neither attempt is a qualified successor evaluator yet.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing
