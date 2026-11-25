@@ -249,7 +249,7 @@
         "job_log_blob": "608d9fddd736ae39914ebe374be73f5cba197be2"
       }
     ],
-    "corrective_candidate_status": "prepared_for_request9_not_yet_executed",
+    "corrective_candidate_status": "prepared_for_request10_after_zero_action_test_parse_failure",
     "original_tape": "cases/retained-clock-070-original.json.gz",
     "original_tape_sha256": "d2e84a85941484e5090d27c56ea5c723722fae10bc4625f3463c67afcb02c914",
     "automatic_reduction_claim": false
@@ -285,7 +285,7 @@
     "ready_promotion_authorized": false
   },
   "corrective_qualification_request": {
-    "request": 9,
+    "request": 10,
     "platforms": [
       "linux",
       "windows"
@@ -319,6 +319,46 @@
     "b_source_manifest_blob": "21f1f27c18bdc00a8eaec2f6afc215b6d3a9d002",
     "a_final_source_review_blob": "0ff72f4834260f9df808c8632183a6da24320aff",
     "c_final_package_review_blob": "b12d16e31995781c153b9aa9f2d72db71a540634",
-    "legacy_reader_equivalence_blob": "89beb59370de2f73ed3deb8f693287f5d6ea9581"
-  }
+    "legacy_reader_equivalence_blob": "89beb59370de2f73ed3deb8f693287f5d6ea9581",
+    "previous_source": "6afae9c149b48e6bbcd4a92a50c98d057c0e8067",
+    "previous_run": 45561928752,
+    "gameplay_oracle_package_acceptance_changed_since_request9": false,
+    "gate_repair_blob": "3cd7be4fde44514532dc961f78358edffa6cb6a0"
+  },
+  "corrective_qualification_attempts": [
+    {
+      "request": 9,
+      "source": "6afae9c149b48e6bbcd4a92a50c98d057c0e8067",
+      "tree": "8da586b7f06430de95dc38bbe7193927db8174c5",
+      "run_id": 45561928752,
+      "classification": "test_fixture_parse_defect",
+      "production_defect": false,
+      "status": "failed_before_authored_lineage_actions",
+      "lineage_actions": 0,
+      "long_episodes": 0,
+      "memory_episodes": 0,
+      "failed_script_blob": "1d28b1fa0130f1d52ebe48e3575bde3d43ec62c8",
+      "repair_script_blob": "3cd7be4fde44514532dc961f78358edffa6cb6a0",
+      "repair": "Explicit Boolean type for all_cases only",
+      "linux": {
+        "job": 139027538131,
+        "artifact": 14998227645,
+        "artifact_bytes": 28974336,
+        "artifact_sha256": "1222f5a348b111bac784b3c22b957c5571cdf0ad5371ef6906363ba4a02cdfa9",
+        "gate_seconds": 0.312,
+        "gate_peak_tree_rss_bytes": 133971968,
+        "log_blob": "adebbeb1ad751be82b241cd02179b78ad7dc6b21"
+      },
+      "windows": {
+        "job": 139027538341,
+        "artifact": 14997564894,
+        "artifact_bytes": 55513000,
+        "artifact_sha256": "2248d88bb5bfa92b56b72000c45eb1f4594deaa073f58e1ac219d13499b3cc6f",
+        "gate_seconds": 0.313,
+        "log_blob": "68a894a5250a9c88d8575513de88f604fee2e452"
+      },
+      "a_review_blob": "9712a4734a48de3cd2d41fb66940e57332811dad",
+      "static_source_checks_blob": "5d3f3fa43b7e4c75d92a15088b85aa397f817bc2"
+    }
+  ]
 }

@@ -208,7 +208,7 @@ func _finish() -> void:
 		controller.queue_free()
 	var attempted := 0
 	var completed := 0
-	var all_cases := report.native_cases.size() == 4
+	var all_cases: bool = report.native_cases.size() == 4
 	for item: Dictionary in report.native_cases:
 		all_cases = all_cases and item.get("status") == "pass"
 		for row: Dictionary in item.get("transcript", {}).get("steps", []):

@@ -198,7 +198,7 @@ started with fresh memory and corpus_reuse=false. These observations establish
 useful diversity, not a universally best policy or a causal persistent-learning
 advantage.
 
-The corrected source's complete matrix and registered seven-episode memory
+The5ee source's complete matrix and registered seven-episode memory
 experiment are still being qualified at this checkpoint. Until their raw
 artifacts are independently examined, no corrected-source 256/512/1024 completion
 rate, persistent-memory advantage or new comparative total is claimed. The old
@@ -327,3 +327,12 @@ Godot/native and extracted results remain required. The machine index retains
 review and process identities. The final sealed package's OPEN-ME.md and delivery
 record, generated from actual extracted observations, supersede a committed
 pre-execution status checkpoint without changing its historical evidence.
+
+
+Request9 at6af did not qualify: the standalone lineage test failed to parse an
+inferred Boolean local, before any of its20actions could run. Other focused
+native groups and hosted parity passed; Linux memory/long and final Windows
+packaging were not reached. Both raw platform artifacts and the exact failure
+remain retained. Request10 changes only that declaration to an explicit Boolean
+and repeats the same qualification scope. No gameplay, oracle, package acceptance
+or policy behavior is changed by this test-script repair.
