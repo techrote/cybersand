@@ -240,6 +240,46 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
                 with self.subTest(mutation=mutation), self.assertRaises(ValueError):
                     package.stage_example_artifacts(output, path, value)
 
+    def test_standalone_example_verifier_requires_explicit_complete_hashes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path, value = self._creative_artifacts(root)
+            output = root / "package"
+            output.mkdir()
+            examples = package.stage_example_artifacts(output, path, value)
+            identity = {"creative_examples": examples, "files_sha256": copy.deepcopy(examples["original_files_sha256"])}
+            package.validate_packaged_examples(identity, value)
+            name = "00-industrial_repair-after-native.png"
+            relative = package.EXAMPLE_DIRECTORY + "/" + name
+            for mutation in ("missing", "invalid", "manifest_missing", "coherent_missing"):
+                changed_value, changed_identity = copy.deepcopy(value), copy.deepcopy(identity)
+                native = next(case for case in changed_value["cases"] if case["name"] == "test_art_collaborative_native")
+                if mutation in ("missing", "coherent_missing"):
+                    native["artifacts_sha256"].pop(name)
+                elif mutation == "invalid":
+                    native["artifacts_sha256"][name] = None
+                if mutation in ("manifest_missing", "coherent_missing"):
+                    changed_identity["files_sha256"].pop(relative)
+                if mutation == "coherent_missing":
+                    changed_identity["creative_examples"]["original_files_sha256"][relative] = None
+                with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                    package.validate_packaged_examples(changed_identity, changed_value)
+
+    def test_standalone_example_verifier_requires_exact_named_start_mapping(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path, value = self._creative_artifacts(root)
+            output = root / "package"
+            output.mkdir()
+            examples = package.stage_example_artifacts(output, path, value)
+            identity = {"creative_examples": examples, "files_sha256": copy.deepcopy(examples["original_files_sha256"])}
+            for field, bad in (("setup_labels", {}), ("setup_labels", {"art02-renamed": "foreign.json"}),
+                               ("source_receipt", "qualification/unrelated.json"), ("model_calls", False)):
+                changed = copy.deepcopy(identity)
+                changed["creative_examples"][field] = bad
+                with self.subTest(field=field, bad=bad), self.assertRaises(ValueError):
+                    package.validate_packaged_examples(changed, value)
+
     def test_graphical_receipt_requires_actual_ui_backend_field(self):
         value = fixture(True)
         ui = next(case for case in value["cases"] if case["name"] == "test_art_collaboration_workspace")

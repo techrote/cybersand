@@ -126,7 +126,10 @@ func run() -> void:
 			"budget":{"cells_upper_bound":512},"protected_conflicts":[]},
 			{"id":"detail","title":"Surface detail","depends_on":["roof"],"budget":{"cells_upper_bound":256}}],
 		"budget":{"cells_upper_bound":768},"warnings":["Existing material overwrite is subject to native authority."]}
-	view.set_proposal(proposal,[{"label":"Revision 1","snapshot":proposal}])
+	var earlier := proposal.duplicate(true)
+	earlier.proposal.title = "Earlier room proposal"
+	view.set_proposal(proposal,[{"label":"Revision 1","snapshot":earlier}])
+	check(JSON.parse_string(view._proposal_json) == proposal.proposal, "Copy contains only the reusable typed proposal payload")
 	check(view.stages.item_count == 2, "proposal displays finite stages")
 	check(not view.approve_button.disabled, "fresh applicable approval control is offered")
 	check(approvals == 0, "proposal display is zero-write")
@@ -134,12 +137,14 @@ func run() -> void:
 	check(previews == 1 and approvals == 0, "preview action is distinct from approval")
 	view.revision_history.select(1)
 	view.revision_history.item_selected.emit(1)
+	check(JSON.parse_string(view._proposal_json) == earlier.proposal, "Copy follows the displayed historical revision")
 	view.set_request_state({"message":"Idle","busy":false})
 	check(view.approve_button.disabled, "historical revision remains unapprovable after status refresh")
 	view.approve_button.pressed.emit()
 	check(approvals == 0, "historical approval handler is fenced")
 	view.revision_history.select(0)
 	view.revision_history.item_selected.emit(0)
+	check(JSON.parse_string(view._proposal_json) == proposal.proposal, "returning to current revision restores its typed Copy payload")
 	view.approve_button.pressed.emit()
 	check(approvals == 1, "current stage approval is explicit")
 	view.revise_button.pressed.emit()

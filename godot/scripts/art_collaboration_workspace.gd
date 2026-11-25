@@ -593,6 +593,11 @@ func set_proposal(value: Dictionary, lineage: Array = []) -> void:
 
 func _show_proposal(value: Dictionary) -> void:
 	var actual: Dictionary = value.get("proposal", value)
+	# Copy follows the displayed revision and contains its reusable typed payload.
+	# Host budgets, preview estimates and receipts remain inspection data.
+	_proposal_json = JSON.stringify(actual, "\t")
+	if _proposal_json.length() > MAX_PROPOSAL_CHARACTERS: _proposal_json = ""
+	proposal_copy.disabled = _proposal_json.is_empty()
 	proposal_title.text = str(actual.get("title", "Authoring proposal")).left(256)
 	proposal_title.tooltip_text = str(actual.get("title", "Authoring proposal"))
 	stages.clear()
