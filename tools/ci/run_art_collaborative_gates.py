@@ -153,6 +153,7 @@ def main() -> int:
                    LOCALAPPDATA=str(profile / "local"),
                    WB_ART_COLLAB_UI_EVIDENCE=str(case_dir),
                    WB_ART_COLLAB_EVIDENCE=str(case_dir),
+                   CYBERSAND_TEST_ARTIFACT_DIR=str(case_dir),
                    CYBERSAND_SOURCE_REVISION=source["commit"])
         command = [str(godot), "--path", str(project), "--audio-driver", "Dummy"]
         if not args.graphical:
@@ -191,6 +192,8 @@ def main() -> int:
                 "exit_code": exit_code, "timed_out": timed_out, "timeout_seconds": args.timeout,
                 "elapsed_seconds": round(time.monotonic() - began, 6),
                 "log_sha256": digest(log), "result": result,
+                "artifacts_sha256": {path.name: digest(path) for path in sorted(case_dir.iterdir())
+                                    if path.is_file() and path.suffix in (".json", ".png")},
                 "status": "failed" if error else "passed", "error": error}
         receipt["cases"].append(case)
         save()

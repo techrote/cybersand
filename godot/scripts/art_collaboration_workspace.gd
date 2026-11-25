@@ -226,11 +226,14 @@ func _build_conversation() -> void:
 	box.add_child(search)
 	search_notice.clip_text = true
 	box.add_child(search_notice)
-	messages.custom_minimum_size.y = 44
+	var body := _scroll(box)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	messages.custom_minimum_size.y = 64
 	messages.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	messages.item_selected.connect(_message_selected)
-	box.add_child(messages)
-	_reader(box, message_text)
+	body.add_child(messages)
+	message_text.custom_minimum_size.y = 64
+	_reader(body, message_text)
 	_pages(box, message_previous, message_page, message_next, _message_change_page)
 
 func _build_brief() -> void:
@@ -308,16 +311,19 @@ func _build_proposal() -> void:
 	proposal_title.text = "No proposal yet"
 	proposal_title.clip_text = true
 	box.add_child(proposal_title)
+	var body := _scroll(box)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	revision_history.fit_to_longest_item = false
 	revision_history.clip_text = true
 	revision_history.item_selected.connect(_show_revision)
-	box.add_child(revision_history)
+	body.add_child(revision_history)
 	stages.custom_minimum_size.y = 40
 	stages.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stages.item_selected.connect(_show_stage)
-	box.add_child(stages)
-	_reader(box, proposal_summary)
-	_pages(box, proposal_previous, proposal_page, proposal_next, _proposal_change_page)
+	body.add_child(stages)
+	proposal_summary.custom_minimum_size.y = 96
+	_reader(body, proposal_summary)
+	_pages(body, proposal_previous, proposal_page, proposal_next, _proposal_change_page)
 	var row := HBoxContainer.new()
 	preview_button.text = "Refresh preview"
 	preview_button.pressed.connect(func() -> void: preview_requested.emit())
@@ -347,6 +353,8 @@ func _build_proposal() -> void:
 
 func _build_context() -> void:
 	var box := _tab("Context")
+	var body := _scroll(box)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var options := HFlowContainer.new()
 	native_context.text = "Native cells"
 	native_context.button_pressed = true
@@ -364,9 +372,7 @@ func _build_context() -> void:
 	for toggle: CheckBox in [native_context, knowledge_context, recent_context, image_context]:
 		toggle.toggled.connect(func(_on: bool) -> void: _invalidate_disclosure())
 	image_scope.item_selected.connect(func(_index: int) -> void: _invalidate_disclosure())
-	box.add_child(options)
-	var body := _scroll(box)
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	body.add_child(options)
 	visual_context.custom_minimum_size.y = 128
 	visual_context.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	visual_context.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -379,7 +385,7 @@ func _build_context() -> void:
 	body.add_child(visual_caption)
 	context_text.custom_minimum_size.y = 64
 	_reader(body, context_text)
-	_pages(box, context_previous, context_page, context_next, _context_change_page)
+	_pages(body, context_previous, context_page, context_next, _context_change_page)
 	authorize.text = "I reviewed this context and allow it to be sent"
 	authorize.tooltip_text = "Applies to the next explicit Send only. Native observations and rendered appearance are identified separately."
 	box.add_child(authorize)

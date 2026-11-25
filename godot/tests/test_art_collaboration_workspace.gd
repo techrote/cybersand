@@ -181,7 +181,7 @@ func run() -> void:
 	check(view._turns.size() == 300 and view.search_notice.text.contains("newest 128"),
 		"list capacity is disclosed without dropping transcript")
 
-	for size: Vector2i in [Vector2i(560,400),Vector2i(820,620)]:
+	for size: Vector2i in [Vector2i(520,320),Vector2i(560,400),Vector2i(820,620)]:
 		window.size = size
 		for tab: int in 4:
 			view.tabs.current_tab = tab
