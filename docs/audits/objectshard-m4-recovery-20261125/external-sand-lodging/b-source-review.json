@@ -1,0 +1,77 @@
+{
+  "schema": "objectshard-m4-sand-observer-b-source-review-v1",
+  "disposition": "APPROVE_FOR_BOUNDED_EXTERNAL_EXECUTION",
+  "runtime_outcome": "PENDING_NOT_PASS",
+  "reviewer": "Specialist B — ordinary Workbench, presentation and performance",
+  "application": {
+    "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "mutation": "none"
+  },
+  "observer": {
+    "path": "docs/audits/objectshard-m4-recovery-20261125/external-sand-lodging/observe_sand_lodging.gd",
+    "git_blob": "c6db706867ad09fc86cf944d177c25b33f8f4058",
+    "bytes": 22240,
+    "sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d"
+  },
+  "independent_checks": [
+    {
+      "claim": "Exact observer bytes",
+      "evidence": "Re-fetched Git blob and independently computed UTF-8 length and SHA-256."
+    },
+    {
+      "claim": "Supported ordinary precise brush",
+      "evidence": "Frozen shared_workbench.gd d0a0490fbc22eea6e9fb58b081c100f3fae9e904 sets _brush.min_value=0; actual mounted picker, brush and world_view.gui_input routes retain radius-zero semantics."
+    },
+    {
+      "claim": "Authored fixture enters through ordinary ownership",
+      "evidence": "The validated named starting recipe is loaded using the actual mounted Load start button; the observer waits for a new World generation and compares the applied setup to the canonical named-file readback."
+    },
+    {
+      "claim": "Bounded recognisable ingress geometry",
+      "evidence": "The authored U contains 63 Wood cells, a three-cell cavity and a 45-Wall pedestal. Erasing precisely those pedestal cells is accounted separately from native detachment."
+    },
+    {
+      "claim": "Real physical progression",
+      "evidence": "After mounted Play, the observer requires one real RID, at least eight native ticks, positive downward displacement, actual sleeping readback and bounded real velocities/angle. It performs no velocity, pose, sleeping or physics-state writes."
+    },
+    {
+      "claim": "Paint delivery and census authority",
+      "evidence": "Each of the four quantity ledgers uses the frozen fixture's paused exclusive-owner inspection, joins the returned source to current displayed publication, preserves native/physical time during inspection and consumes the receipt once."
+    },
+    {
+      "claim": "Immutable ingress sample",
+      "evidence": "The native tick, cumulative sand_ingested and owned cell state come from one retained frame dictionary. Published native grain state is not mixed with an independently sampled tick."
+    },
+    {
+      "claim": "Positive physical and native credit",
+      "evidence": "Assertions require one native Cargo-role Sand cell, an increment of one in sand_ingested, World Sand debit, same native owner/generation/body_generation and physical RID, completed geometry acknowledgement, and mass64 in both native and actual Rapier readback."
+    },
+    {
+      "claim": "Complete conservation",
+      "evidence": "All 255 nonempty material totals reconcile only45 authored Wall erasures and one Sand addition across supported, detached, painted and ingested stages; raw grid/carrier/Water-parcel witnesses are retained."
+    }
+  ],
+  "invocation_constraint": "Pass --objectshard-m4-workbench but omit --object-shard-scene=...: Main otherwise schedules the named startup recipe and can replace this custom authored input.",
+  "scope_limits": [
+    "This is source review, with no parse or runtime PASS asserted.",
+    "The external fixture is a new input applied to the unchanged qualified portable package; it does not replace the registered43/32/17 matrix.",
+    "Headless mounted event injection can establish ordinary routing and native/physical correctness, not physical monitor presentation or owner NVIDIA performance acceptance."
+  ],
+  "wrapper": {
+    "path": "docs/audits/objectshard-m4-recovery-20261125/run_windows_sand_witness.py",
+    "git_blob": "4f9d2e74ccba56722d66191cfc1714b3e6bacb48",
+    "bytes": 25417,
+    "sha256": "b8fa4cd0f1a5dc2938f2a1ecb8f464a9316d9419f4567507d12783a346e80cc0",
+    "disposition": "APPROVE_FOR_BOUNDED_EXTERNAL_EXECUTION",
+    "scope": "Independent source review only; runtime remains pending.",
+    "checks": [
+      "Exact previously reviewed helpers are pinned by Git blob hash; the original source5f audit summary and terminal audit run are explicitly bound before exact principal ZIP reuse.",
+      "Fresh user data, actual Windows process identities and natural-exit handling reuse the unchanged reviewed process helper. No startup-scene flag or application edit is present.",
+      "The validator reconstructs every authored static cell, precisely45 erased Wall cells and the63-cell Wood detachment debit, then reads all four actual raw grid/carrier inventories.",
+      "It recomputes the three-cell aperture and actual pose-derived drop, joins exact mounted radius-zero paint points/receipts and requires no native or physical clock progression during the paused edit.",
+      "It requires one new Cargo cell inside the observed pocket, unchanged source lattice/owner incarnation/RID, real unpaused fall/sleep, increased native/physical clocks during ingress, completed native and actual Rapier geometry mass64 and all255 material totals.",
+      "Immutable package inputs are rechecked in finally; original receipt/raw files/authored save/logs and exact receipt-byte bridges are retained."
+    ]
+  }
+}

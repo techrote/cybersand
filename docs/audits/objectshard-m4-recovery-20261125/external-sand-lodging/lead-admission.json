@@ -1,0 +1,62 @@
+{
+  "schema": "objectshard-m4-ordinary-sand-hosted-admission-v1",
+  "status": "source-reviewed-admitted-execution-pending",
+  "prepared_utc": "2026-11-25 03:33:12 UTC",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "principal_evaluator": {
+    "bytes": 93388322,
+    "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387",
+    "original_artifact": 14986488170
+  },
+  "reason": "Native positive lodging is qualified but the eight final ordinary mixed profiles show zero ingestion. Existing contact law requires a narrow upward-open pocket. One source-exact ordinary integration-positive witness resolves this concrete remaining coverage gap.",
+  "unchanged": {
+    "application": true,
+    "native": true,
+    "package": true,
+    "prior_main_qualification": 45530425519,
+    "prior_independent_archive_and_owner_run": 45537943367,
+    "old_workflow_characters": 22686,
+    "prior_workflow_is_exact_prefix": true,
+    "full_build_and_matrix_repeated": false
+  },
+  "inputs": {
+    "observer_blob": "c6db706867ad09fc86cf944d177c25b33f8f4058",
+    "observer_sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d",
+    "runner_blob": "4f9d2e74ccba56722d66191cfc1714b3e6bacb48",
+    "runner_sha256": "b8fa4cd0f1a5dc2938f2a1ecb8f464a9316d9419f4567507d12783a346e80cc0",
+    "workflow_blob": "bfb56c889fbfbcd91b1955294caf49324533f45f",
+    "prior_archive_helper": "3cc6a1ba9b6fcd78b65a8ba1ed031d5907ee1299",
+    "prior_process_inventory_helper": "6731c1b513481ae94c77e7453c586b36bb004ea4",
+    "prior_exact_summary_sha256": "d77dcbc86157b4d5eea39817c2edbb4d7f5f73662becbeef5e0fca3d66d2b499"
+  },
+  "required_evidence": [
+    "mounted ordinary authored Load with exact complete starting grid",
+    "exact45-cell Wall support Eraser stroke and63-Wood native detachment debit",
+    "actual unforced Rapier fall and natural upright sleep",
+    "one radius-zero Sand click into observed empty World above actual three-cell pocket",
+    "no semantic/actual physics advancement during paused edit",
+    "real resumed native progression and one role3Cargo material credit",
+    "same native incarnation and actual RID",
+    "complete storedWorld-to-owned carrier debit/credit with all255materials reconciled across4rawcensuses",
+    "native+actual mass63to64 with finalgeometryacknowledgement",
+    "natural actual engine/wrapper lifecycle, untouched full package, original retained bytes"
+  ],
+  "reviewers": [
+    {
+      "name": "specialistA",
+      "verdict": "APPROVE source; runtime pending"
+    },
+    {
+      "name": "specialistB",
+      "verdict": "APPROVE source; runtime pending"
+    },
+    {
+      "name": "technical lead",
+      "verdict": "APPROVE full observer/runner/unchanged workflow prefix; runtime pending"
+    }
+  ],
+  "marker": "[objectshard-m4-sand-witness-45530425519]",
+  "physical_owner_acceptance": "HOLD",
+  "promotion_authorized": false
+}

@@ -359,3 +359,45 @@ jobs:
           path: windows-owner-witnesses/
           if-no-files-found: error
           retention-days: 60
+
+  recovery-windows-sand-witness:
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[objectshard-m4-sand-witness-45530425519]') }}
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Preserve exact external observer source bytes
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Separately identified Sand witness checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: auditor
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Witness-only provider policy and source syntax
+        working-directory: auditor
+        shell: pwsh
+        run: |
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python -m py_compile docs/audits/objectshard-m4-recovery-20261125/run_windows_sand_witness.py
+          if ($LASTEXITCODE -ne 0) { throw 'Sand witness wrapper syntax failed' }
+      - name: One ordinary Sand-positive witness against the identical qualified evaluator
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python auditor/docs/audits/objectshard-m4-recovery-20261125/run_windows_sand_witness.py --audit-summary auditor/docs/audits/objectshard-m4-recovery-20261125/independent-hosted/delivery-audit-summary.json --observer-sha256 8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d --output windows-sand-witness --work (Join-Path $env:RUNNER_TEMP 'objectshard-sand-witness-45530425519')
+          if ($LASTEXITCODE -ne 0) { throw 'New ordinary Windows Sand witness failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-windows-sand-witness-45530425519-${{ github.run_id }}
+          path: windows-sand-witness/
+          if-no-files-found: error
+          retention-days: 60

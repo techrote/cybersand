@@ -1,0 +1,48 @@
+{
+  "schema": "objectshard-m4-external-sand-witness-source-review-v1",
+  "status": "approved-for-bounded-execution; no-outcome-claim",
+  "review_date": "2026-11-25",
+  "reviewer": "Specialist A / native correctness",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "observer": {
+    "path": "docs/audits/objectshard-m4-recovery-20261125/external-sand-lodging/observe_sand_lodging.gd",
+    "git_blob": "c6db706867ad09fc86cf944d177c25b33f8f4058",
+    "sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d",
+    "bytes": 22240,
+    "independent_source_reviewers": [
+      "Specialist B",
+      "Technical lead"
+    ]
+  },
+  "runner": {
+    "path": "docs/audits/objectshard-m4-recovery-20261125/run_windows_sand_witness.py",
+    "git_blob": "4f9d2e74ccba56722d66191cfc1714b3e6bacb48",
+    "sha256": "b8fa4cd0f1a5dc2938f2a1ecb8f464a9316d9419f4567507d12783a346e80cc0",
+    "independent_source_reviewer": "Specialist A"
+  },
+  "existing_helper_git_blobs": {
+    "review_delivery_45530425519.py": "3cc6a1ba9b6fcd78b65a8ba1ed031d5907ee1299",
+    "run_windows_owner_witnesses.py": "6731c1b513481ae94c77e7453c586b36bb004ea4"
+  },
+  "admitted_scope": [
+    "Fresh pristine extraction of byte-identical already-qualified5f principal ZIP, exact packaged engine/native/Rapier and fresh Windows user data.",
+    "One external authored63Wood U-pocket; mounted ordinary Load, radius-zero45Wall support Erase, unforced actual Rapier fall/sleep, one mounted Sand grain, native automatic ingress.",
+    "Four complete stored-World/owned-carrier raw inventories, all255nonempty-material joins, exact native/actual mass63->64 after geometry acknowledgement.",
+    "Independent full authored raw-grid reconstruction and complete raw carrier delta; no reported count alone substitutes for original bytes.",
+    "Exact native incarnation and actual RID across native-frame/census/physics samples; paused paint advances neither native nor physical clock.",
+    "Actual console-wrapper/Godot handle lifetimes, nonce, sole matching original footer, natural zero exits and immutable payload before/after."
+  ],
+  "required_invocation_constraints": [
+    "Pin observerSHA2568f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d.",
+    "Use M4 opt-in only; omit --object-shard-scene startup argument.",
+    "One300second bounded external actual Windows witness after import; no native/application rebuild and no full qualification-matrix replay."
+  ],
+  "retained_boundaries": [
+    "Source review is not an executed positive Sand result.",
+    "All8primary mixed profiles retain ingestion0; prior interrupted local Sand attempt remains NOTPASS.",
+    "Native Registry owner IDs are distinct from reserved shared-space slots49–64; exact real positive owner IDs are joined.",
+    "No new buoyancy/drag/material law, no forced body transforms/velocities/sleep, no app/runtime source edits.",
+    "Physical Windows11/NVIDIA presentation and responsiveness remain HOLD."
+  ]
+}
