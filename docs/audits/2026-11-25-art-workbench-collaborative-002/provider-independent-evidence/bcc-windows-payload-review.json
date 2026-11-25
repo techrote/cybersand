@@ -1,0 +1,46 @@
+{
+  "application_scope_copy": {
+    "only_difference": "LF to CRLF",
+    "original_sha256": "c4d23ad364f14585d16afa69ef011cf7433ce256e100b9181f7a566fb2bb1056",
+    "package_sha256": "658450e67fb02b03098d260d587667fa55f5db7f164742b7751acaf688fa3319",
+    "parsed_values_identical": true
+  },
+  "canonical_source_files_verified": 1092,
+  "crc_verified": true,
+  "excluded_private_payloads_found": [],
+  "immutable_files_verified": 1200,
+  "inner_zip_bytes": 95598830,
+  "inner_zip_sha256": "de46eaa1fa6ce3f75cea4a29286bbefa43cc257028e912b54b2265060731d95a",
+  "manifest_sha256": "55de7a0e79af94be513e31a22c8d0ba5ec1322be1aa2e9af5bacf455940fb95b",
+  "materialized_lfs_pointers_verified": 2,
+  "native_example_original_bytes": 18939337,
+  "native_example_original_files_verified": 73,
+  "outer_evaluator_sha256": "5bf19d36afab227bbe489f9404530f24694e5f1e03d464e1613b0529f23d3699",
+  "outer_evidence_sha256": "45df2fecb95f21fe769f15202d15411156b658d7670e249f76e4b6877f9b3f47",
+  "package_members": 1201,
+  "passed": true,
+  "payload_bytes": 224670932,
+  "runtimes": {
+    "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "vcruntime140.dll": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+  },
+  "scope": "Independent read-only original Windows artifact and receipt review; no local Windows execution.",
+  "setup_labels": {
+    "art02-industrial_repair": "00-industrial_repair-editable-setup.json",
+    "art02-palette_foundry": "05-palette_foundry-editable-setup.json",
+    "art02-protected_courtyard": "04-protected_courtyard-editable-setup.json",
+    "art02-revised_arcology": "03-revised_arcology-editable-setup.json",
+    "art02-scifi_interior": "02-scifi_interior-editable-setup.json",
+    "art02-staged_megaframe": "07-staged_megaframe-editable-setup.json",
+    "art02-stopped_workshop": "06-stopped_workshop-editable-setup.json",
+    "art02-structural_facade": "01-structural_facade-editable-setup.json",
+    "art02-xeno_vault": "08-xeno_vault-editable-setup.json"
+  },
+  "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "source_matched_native_inputs": 105,
+  "source_matched_rapier_inputs": 4,
+  "source_tree": "517164084860a19f18b36cb94f77597eb3220578"
+}

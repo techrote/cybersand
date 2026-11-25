@@ -1,0 +1,171 @@
+{
+  "cases": [
+    {
+      "artifacts_verified": 0,
+      "checks": 155,
+      "log_sha256": "80385e378f856087ff36987c4828c8b56cd3e65a092188d7341b71d368d64040",
+      "name": "test_art_owned_transport",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 66,
+      "log_sha256": "1e6607d9b1a64a6441e1bd242769767087da432016d5902c2c134098209092d9",
+      "name": "test_art_conversation_preparation",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 154,
+      "log_sha256": "09b18f614be85e0ddb4018e4353bd40e559b682364ce8a8afad5d26782087fc8",
+      "name": "test_art_conversation_apply_preparation",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 107,
+      "log_sha256": "4a18479799ec22d6176fb0fa754baa8f2db4123ba2fe302e8736d2f40746a44f",
+      "name": "test_art_authoring_proposal",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 1,
+      "checks": 251,
+      "log_sha256": "34fbb31283ba954469263aa9ca3b60041e38a4bcdf1e1d0fcc7fbda3986a5728",
+      "name": "test_art_creative_cohort",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 55,
+      "checks": 739,
+      "log_sha256": "5dd1a102f31e4f388e330a05552e0a089491c20adb96a4e6028227fe6ae4ce65",
+      "name": "test_art_collaborative_native",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 39,
+      "log_sha256": "84d73afc50eb365714d6773841ca785d404e2be186699ebab20c349cbce10319",
+      "name": "test_art_collaboration_authority",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 182,
+      "log_sha256": "189a4b47e62e6f33931d02b26d12bc398a51595218efc12af63826af0f715f88",
+      "name": "test_art_collaboration_session",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 93,
+      "log_sha256": "7f8cc849c8e0698319eccef70596bbb5ecf357e58f2946191891bd484741b0cc",
+      "name": "test_art_collaboration_workspace",
+      "scope": "headless"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 155,
+      "log_sha256": "3b65b215cf8cd21994b5421fda3f4235441bbc4f0769e81fdffb941d05519470",
+      "name": "test_art_owned_transport",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 66,
+      "log_sha256": "4b5067d084570860f9a1e3b2e0d337f3cf2185ead5949ac4bcbc1611a56ddf98",
+      "name": "test_art_conversation_preparation",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 154,
+      "log_sha256": "6f1ea8a1e5587d15d44f2741a85a847ce3b843b2eadf53e3b07bd34560d544a9",
+      "name": "test_art_conversation_apply_preparation",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 107,
+      "log_sha256": "e8c780e0d26404c7c4ff76f4db5db1d2595f8f590bc349d383036beded26e266",
+      "name": "test_art_authoring_proposal",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 1,
+      "checks": 251,
+      "log_sha256": "3c182037d581c1dbe953715622db71c99a44af0d1bbd569c916b8710f240656a",
+      "name": "test_art_creative_cohort",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 73,
+      "checks": 764,
+      "log_sha256": "915cab45df6c12963ede0adc66866534b38f301cbb527f4fbee04cc52c1b7a29",
+      "name": "test_art_collaborative_native",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 0,
+      "checks": 39,
+      "log_sha256": "38db2dcf6a358bf0c5e27b16446348848d9c13b2dfe4452e6913314419c02140",
+      "name": "test_art_collaboration_authority",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 4,
+      "checks": 202,
+      "log_sha256": "20e2fe098d042749445d2d31b754c4aa535af434e3f3e3dd8d62fa16ac3a595a",
+      "name": "test_art_collaboration_session",
+      "scope": "displayed"
+    },
+    {
+      "artifacts_verified": 1,
+      "checks": 94,
+      "log_sha256": "9a55cbc2fa03613a688900e5abad52d1accc37cdb279910c031b6e6e1291881c",
+      "name": "test_art_collaboration_workspace",
+      "scope": "displayed"
+    }
+  ],
+  "host": {
+    "logical_cpus": 4,
+    "machine": "AMD64",
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "processor": "AMD64 Family 25 Model 17 Stepping 1, AuthenticAMD"
+  },
+  "installed_execution": {
+    "exit_code": 0,
+    "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+    "timed_out": false,
+    "watchdog_seconds": 240
+  },
+  "installed_launch": {
+    "actual_launcher": true,
+    "automatic_model_requests": false,
+    "display": "Windows",
+    "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+    "status": "passed"
+  },
+  "installed_setup_sha256": {
+    "art02-industrial_repair": "4f38c11092c96e411471bf73fb7ea33521e66c7123b409b442a99d8eb26e233f",
+    "art02-palette_foundry": "b51168d3502362c77f40a163ecac8c112c240a3cc1fc13c2590af90b8f4df872",
+    "art02-protected_courtyard": "5fdebd90c0a448b5feeca47e227e4947c4ebba523e43ecdc220beb2a5e0bd38a",
+    "art02-revised_arcology": "8dacf18ac98884a7a8ee8f9f9fc1cdc641bace499e8aae840e4162b31f3ad78e",
+    "art02-scifi_interior": "b7187a6ca557d7f72a2653a0e75b541a5a46e95b63c6a54f56be773ff3ae8407",
+    "art02-staged_megaframe": "63a3b7ca12d3058e2a4798ab9cc36d06d0dbf7ce6f4ad37e6e916d07ac1618e3",
+    "art02-stopped_workshop": "5166033ed25e5a4086b3cf316a3c17953d5a6c9c18f6b0992f4c8dda76c756fa",
+    "art02-structural_facade": "21928086340be2defcf0d4fda7ce8b6b131c5d9ee4e7960a70a6b5cdda274be6",
+    "art02-xeno_vault": "548cb4b4ae1c4960ca01b32a8462474acc07d4062ac1d2a0ad1b25cd5bcbc7e7"
+  },
+  "module_probe_cleanup": {
+    "environment_restored": true,
+    "error": null,
+    "exit_code": -1,
+    "terminated_owned_process": true
+  },
+  "module_verification_status": "passed",
+  "passed": true,
+  "physical_owner_acceptance": "pending",
+  "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "source_tree": "517164084860a19f18b36cb94f77597eb3220578"
+}
