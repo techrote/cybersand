@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const CaptureFileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const WAVE_TUNING := [
 	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
@@ -1115,18 +1116,15 @@ func microscenario_capture() -> void:
 
 func _write_microscenario_capture(report: Dictionary) -> void:
 	var target: String = "user://microscenario-observation.json"
-	var file := FileAccess.open(target + ".tmp", FileAccess.WRITE)
-	if file == null:
-		microscenario_error = "Could not write MicroScenario capture"
-		return
 	var text: String = JSON.stringify(report, "  ")
-	file.store_string(text + "\n")
-	file.flush()
-	var error: Error = file.get_error()
-	file.close()
-	if error != OK or DirAccess.rename_absolute(ProjectSettings.globalize_path(target + ".tmp"), ProjectSettings.globalize_path(target)) != OK:
-		microscenario_error = "Could not complete MicroScenario capture write"
+	var encoded := text + "\n"
+	# Preserve the report's existing format and size policy; the helper verifies
+	# exactly these closed bytes before the native same-directory replacement.
+	var saved := CaptureFileTransaction.write_text(target, encoded, encoded.to_utf8_buffer().size())
+	if not saved.get("ok", false):
+		microscenario_error = "MicroScenario capture: " + str(saved.error)
 		return
+	if microscenario_error.begins_with("MicroScenario capture: "): microscenario_error = ""
 	if microscenario_panel != null: microscenario_panel.workbench.accept_capture(report)
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(text)
 

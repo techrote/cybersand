@@ -1,6 +1,6 @@
 extends RefCounted
 
-# Small, already-validated authored JSON documents only. Keep validation and
+# Already-validated authored/capture JSON documents only. Keep validation and
 # directory/naming policy in each owning format. This helper establishes one
 # complete closed staging file, then reuses the accepted native sibling-file
 # replacement primitive. It does not serialize live simulation state or promise
@@ -62,7 +62,7 @@ static func _refused(io: FileOperations, phase: String, reason: String,
 	var cleanup := ""
 	if not staging.is_empty() and io.exists(staging):
 		if io.remove(staging) != OK:
-			cleanup = " Temporary file remains at " + staging + "; it is not a saved start."
+			cleanup = " Temporary file remains at " + staging + "; it is not a committed file."
 	return {"ok":false, "committed":false, "phase":phase,
 		"error":"Save refused; this save did not replace the previous file. " + reason + cleanup,
 		"staging_retained":staging if not cleanup.is_empty() else ""}
