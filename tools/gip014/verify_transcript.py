@@ -20,9 +20,10 @@ from typing import Any
 
 SCHEMA = "cybersand-goblin-transcript-v1"
 MAX_BYTES = 32 * 1024 * 1024
-MAX_ACTIONS = 256
-FIXTURES = {"material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen"}
-POLICIES = {"CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM"}
+try:
+    from .vocabulary import MAX_ACTIONS, FIXTURES, POLICIES, MATERIALS, MODELS, expanded_action_valid
+except ImportError:
+    from vocabulary import MAX_ACTIONS, FIXTURES, POLICIES, MATERIALS, MODELS, expanded_action_valid
 KINDS = {"unit_fixture", "headless_godot", "graphical_godot", "packaged_evaluator"}
 STATUSES = {"proposed", "accepted", "refused", "partial", "completed"}
 CLASSIFICATIONS = {"game_observation", "not_applicable", "invalid_action", "timeout", "cancelled", "native_failure", "adapter_failure"}
@@ -68,7 +69,7 @@ def action_error(action: Any) -> str | None:
     elif name == "wait_ticks":
         valid = keys(args, {"ticks"}) and bounded(args.get("ticks"), 1, 32)
     elif name == "select_material":
-        valid = keys(args, {"material"}) and integer(args.get("material")) and args["material"] in (0, 2, 3, 7, 58)
+        valid = keys(args, {"material"}) and integer(args.get("material")) and args["material"] in MATERIALS
     elif name in ("brush", "erase"):
         valid = keys(args, {"x", "y", "radius"}) and bounded(args.get("x"), 8, 503) and bounded(args.get("y"), 8, 503) and bounded(args.get("radius"), 0, 4)
     elif name in SHAPES:
@@ -79,13 +80,15 @@ def action_error(action: Any) -> str | None:
     elif name == "camera":
         valid = keys(args, {"x", "y", "width", "height"}) and bounded(args.get("x"), 0, 256) and bounded(args.get("y"), 0, 256) and integer(args.get("width")) and integer(args.get("height")) and args["width"] in (240, 480) and args["height"] in (135, 270)
     elif name in ("actor_select", "actor_pilot"):
-        valid = keys(args, {"actor_id"}) and bounded(args.get("actor_id"), 1, 8)
+        valid = keys(args, {"actor_id"}) and bounded(args.get("actor_id"), 1, 64)
     elif name == "actor_place":
-        valid = keys(args, {"model", "x", "y"}) and args.get("model") in ("kestrel", "reference_barrel") and bounded(args.get("x"), 32, 448) and bounded(args.get("y"), 32, 224)
+        valid = keys(args, {"model", "x", "y"}) and args.get("model") in MODELS and bounded(args.get("x"), 32, 448) and bounded(args.get("y"), 32, 224)
     elif name == "actor_drive":
         valid = keys(args, {"direction", "ticks"}) and args.get("direction") in ("left", "right", "up", "down") and bounded(args.get("ticks"), 1, 16)
     elif name == "panel":
         valid = keys(args, {"panel", "open"}) and args.get("panel") == "details" and type(args.get("open")) is bool
+    else:
+        valid = expanded_action_valid(name, args)
     return None if valid else "unknown action or out-of-range arguments"
 
 
@@ -312,7 +315,7 @@ def _verify(tape: Any) -> dict:
     issue(header.get("fixture_id") in FIXTURES, "unknown fixture")
     no_installed_scene = header.get("fixture_state") == "not_installed" and not steps and summary.get("termination") in {"stopped", "initialization_failure", "fixture_failure"}
     issue(no_installed_scene or (isinstance(header.get("initial_scene_identity"), str) and bool(header.get("initial_scene_identity"))), "missing initial scene identity")
-    issue(header.get("fixture_version") == 1, "unknown fixture version")
+    issue(integer(header.get("fixture_version")) and header.get("fixture_version") in (1, 2), "unknown fixture version")
     issue(header.get("policy") in POLICIES, "unknown policy")
     issue(bounded(header.get("seed"), -(2**31), 2**31 - 1), "seed outside signed int32")
     issue(bounded(header.get("budget"), 1, MAX_ACTIONS), "invalid action budget")

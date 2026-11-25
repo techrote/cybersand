@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+GIP-014-goblin-002 Draft/HOLD: [persistent experimental playtester](research/gip014-goblin-002.md) extends the [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Its source capabilities, campaign evidence and defect adjudication remain separately scoped.
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).

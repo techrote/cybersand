@@ -4,9 +4,10 @@ extends RefCounted
 # ordinary Setup-v2 starts, not observations or a replacement material model.
 # The adapter supplies the actual application's liquid-policy envelope.
 const Setup = preload("res://scripts/workbench_setup.gd")
-const IDS := ["material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen"]
+const IDS := ["material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen",
+	"history_edges", "boundary_lab", "alchemy", "mixed_stress", "conservation_cell"]
 const EXTENT := Vector2i(512, 512)
-const VERSION := 1
+const VERSION := 2
 
 
 static func ids() -> Array[String]:
@@ -23,6 +24,11 @@ static func describe(fixture_id: String) -> Dictionary:
 		"construction": ["Construction table", "A small Wood frame and open room for painting, selection, copying and authoring history."],
 		"liquid_channel": ["Liquid channel", "A bounded Water reservoir and a low channel beside an editable Wood gate."],
 		"save_reopen": ["Save and reopen", "An asymmetric authored material pattern and a barrel for exact authored-layout comparisons."],
+		"history_edges": ["History and editing", "Repeated reversible edits over asymmetric Wood and Metal tiles, with an empty adjacent translation control."],
+		"boundary_lab": ["World boundary laboratory", "Hard boundary markers and narrow passages for clipped camera views, replacement and explicit edit refusals."],
+		"alchemy": ["Material alchemy", "Separate bounded pockets of Oil, Water, Ice and Wood for observed interactions; no assumed chemistry or conservation law."],
+		"mixed_stress": ["Mixed interaction yard", "A physical runner, Kestrel and barrel beside a reservoir, loose Sand and an editable wall."],
+		"conservation_cell": ["Closed Sand cell", "A hard enclosure containing exactly 64 Sand cells; isolated nonreactive conservation and translated-edit controls."],
 	}
 	if not descriptions.has(fixture_id):
 		return {}
@@ -84,6 +90,45 @@ static func build(fixture_id: String, policy: PackedInt32Array) -> Dictionary:
 			_box(edits, 324, 176, 28, 8, Setup.WATER)
 			data.actors = [Setup.instance(Setup.BARREL, 1, Vector2(420, 200))]
 			data.next_id = 2
+		"history_edges":
+			_box(edits, 48, 72, 8, 8, Setup.WOOD)
+			_box(edits, 56, 76, 8, 4, Setup.METAL)
+			_box(edits, 72, 96, 32, 4, Setup.WALL)
+			_box(edits, 104, 72, 4, 28, Setup.WALL)
+		"boundary_lab":
+			_box(edits, 0, 0, 512, 4, Setup.WALL)
+			_box(edits, 0, 4, 4, 508, Setup.WALL)
+			_box(edits, 508, 4, 4, 508, Setup.WALL)
+			_box(edits, 4, 508, 504, 4, Setup.WALL)
+			_box(edits, 12, 232, 4, 14, Setup.WOOD)
+			_box(edits, 492, 220, 4, 26, Setup.WOOD)
+			_box(edits, 240, 240, 16, 6, Setup.SAND)
+		"alchemy":
+			for x: int in [32, 96, 160, 224]:
+				_box(edits, x, 144, 2, 60, Setup.WALL)
+				_box(edits, x + 46, 144, 2, 60, Setup.WALL)
+				_box(edits, x + 2, 202, 44, 2, Setup.WALL)
+			_box(edits, 34, 178, 44, 24, Setup.OIL)
+			_box(edits, 98, 178, 44, 24, Setup.WATER)
+			_box(edits, 162, 178, 44, 24, Setup.ICE)
+			_box(edits, 226, 178, 44, 24, Setup.WOOD)
+		"mixed_stress":
+			_box(edits, 300, 170, 4, 76, Setup.WALL)
+			_box(edits, 348, 170, 4, 76, Setup.WOOD)
+			_box(edits, 304, 220, 44, 26, Setup.WATER)
+			_box(edits, 180, 120, 24, 12, Setup.SAND)
+			_box(edits, 160, 220, 24, 26, Setup.WOOD)
+			data.actors = [Setup.instance("runner", 1, Vector2(72, 200)),
+				Setup.instance("kestrel", 2, Vector2(200, 96)),
+				Setup.instance(Setup.BARREL, 3, Vector2(400, 200))]
+			data.next_id = 4
+			data.selected = 1
+		"conservation_cell":
+			_box(edits, 48, 48, 48, 2, Setup.WALL)
+			_box(edits, 48, 94, 48, 2, Setup.WALL)
+			_box(edits, 48, 50, 2, 44, Setup.WALL)
+			_box(edits, 94, 50, 2, 44, Setup.WALL)
+			_box(edits, 64, 56, 8, 8, Setup.SAND)
 	return data
 
 

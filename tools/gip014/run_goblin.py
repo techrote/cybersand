@@ -23,13 +23,16 @@ import zipfile
 
 from verify_transcript import verify
 from minimize import minimize
+from vocabulary import MAX_ACTIONS, FIXTURES, POLICIES
+from owned_process import execute as execute_owned
 
 ROOT = Path(__file__).resolve().parents[2]
-FIXTURES = ("material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen")
-POLICIES = ("CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM")
 TESTS = {
     "unit": ("test_goblin_policies", "test_goblin_contract"),
     "adapter": ("goblin_adapter",),
+    "expanded": ("goblin_expanded",),
+    "metamorphic": ("goblin_metamorphic",),
+    "discovery": ("goblin_exploration",),
     "controller": ("goblin_controller",),
     "gameplay": ("goblin_gameplay",),
     "graphical": ("goblin_interactive",),
@@ -37,7 +40,8 @@ TESTS = {
 }
 PROFILE_SCHEMA = "cybersand-goblin-profile-v1"
 ERROR_MARKERS = ("SCRIPT ERROR:", "Parse Error:", "ERROR:", "Fatal signal", "Segmentation fault")
-COMPLETION_MARKERS = {"campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_adapter": "GOBLIN_ADAPTER ",
+COMPLETION_MARKERS = {"campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_expanded": "GOBLIN_EXPANDED_RESULT ",
+                      "goblin_metamorphic": "GOBLIN_METAMORPHIC_RESULT ", "goblin_exploration": "GOBLIN_EXPLORATION_UNIT ", "goblin_adapter": "GOBLIN_ADAPTER ",
                       "goblin_controller": "GOBLIN_CONTROLLER ", "test_goblin_policies": "GOBLIN_POLICY_UNIT ",
                       "goblin_interactive": "GOBLIN_INTERACTIVE_RESULT ",
                       "goblin_gameplay": "GOBLIN_GAMEPLAY_RESULT ",
@@ -138,7 +142,7 @@ def stage_project(destination: Path) -> dict:
 
 
 def make_profile(path: Path, launch: dict, provenance: dict, replay: dict | None = None,
-                 reproduction: dict | None = None) -> dict:
+                 reproduction: dict | None = None, corpus: dict | None = None) -> dict:
     path.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ)
     for variable, folder in (("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"),
@@ -159,6 +163,10 @@ def make_profile(path: Path, launch: dict, provenance: dict, replay: dict | None
         write_json(path / "goblin-replay.json", replay)
     if reproduction is not None:
         write_json(path / "goblin-reproduction.json", reproduction)
+    if corpus is not None:
+        from corpus_io import validate_corpus
+        validate_corpus(corpus)
+        write_json(path / "goblin-corpus.json", corpus)
     return env
 
 
@@ -173,25 +181,10 @@ def retain_source_and_remove_project(out: Path, project: Path) -> None:
     shutil.rmtree(project)
 
 
-def execute(command: list[str], env: dict, log: Path, timeout: int | None) -> dict:
-    started = time.monotonic()
-    status, code = "crash", None
-    with log.open("w", encoding="utf-8") as output:
-        try:
-            process = subprocess.run(command, cwd=ROOT, env=env, stdout=output,
-                                     stderr=subprocess.STDOUT, timeout=timeout)
-            code = process.returncode
-            status = "pass" if code == 0 else ("crash" if code < 0 else "test_failure")
-        except subprocess.TimeoutExpired:
-            status = "timeout"
-            output.write("\nGOBLIN_PROCESS_TIMEOUT\n")
-    text = log.read_text(encoding="utf-8", errors="replace")
-    errors = [line for line in text.splitlines() if any(marker in line for marker in ERROR_MARKERS)]
-    if errors and status == "pass":
-        status = "diagnostic_failure"
-    return {"status": status, "exit_code": code, "elapsed_seconds": round(time.monotonic() - started, 3),
-            "timeout_seconds": timeout, "command": command, "log_sha256": sha_file(log),
-            "diagnostic_errors": errors[:40]}
+def execute(command: list[str], env: dict, log: Path, timeout: int | None, *, memory_limit_mib: int = 3072,
+            cancel_path: Path | None = None) -> dict:
+    return execute_owned(command, env, log, timeout, cwd=ROOT,
+                         memory_limit_mib=memory_limit_mib, cancel_path=cancel_path)
 
 
 def read_transcript(profile: Path) -> tuple[dict | None, Path | None]:
@@ -265,13 +258,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fixture-file", type=Path, help="A previously reduced bounded action fixture")
     parser.add_argument("--max-probes", type=int, default=24)
     parser.add_argument("--confirmations", type=int, default=2)
-    parser.add_argument("--timeout-seconds", type=int, default=180)
+    parser.add_argument("--timeout-seconds", type=int, default=0, help="0 derives a bounded deadline from the action budget")
+    parser.add_argument("--memory-limit-mib", type=int, default=3072)
+    parser.add_argument("--corpus", type=Path, help="Optional bounded corpus, staged at a fixed isolated profile path")
     parser.add_argument("--retain-project", action="store_true", help="Keep the staged project after completion")
     args = parser.parse_args(argv)
-    if not 1 <= args.budget <= 256 or not -(2**31) <= args.seed < 2**31:
-        parser.error("budget must be 1..256; seed must be signed int32")
-    if not 0 <= args.pacing_ms <= 3000 or not 30 <= args.timeout_seconds <= 240:
-        parser.error("pacing must be 0..3000 ms; process timeout must be 30..240 seconds")
+    if args.timeout_seconds == 0:
+        args.timeout_seconds = int(min(900, max(150, args.budget * 1.2))) + 30
+    if not 256 <= args.memory_limit_mib <= 8192:
+        parser.error("memory limit must be256..8192MiB")
+    if not 1 <= args.budget <= MAX_ACTIONS or not -(2**31) <= args.seed < 2**31:
+        parser.error("budget must be 1..1024; seed must be signed int32")
+    if not 0 <= args.pacing_ms <= 3000 or not 30 <= args.timeout_seconds <= 1200:
+        parser.error("pacing must be 0..3000 ms; process timeout must be 30..1200 seconds")
     if (args.case in ("replay", "reduce")) != (args.replay is not None):
         parser.error("--case replay/reduce requires --replay; other modes do not accept it")
     if (args.case == "reproduce") != (args.fixture_file is not None):
@@ -308,9 +307,13 @@ def main(argv: list[str] | None = None) -> int:
                 raise ValueError("Reproduction fixture exceeds 32 MiB")
             reproduction = json.loads(args.fixture_file.read_text(encoding="utf-8"))
         profile = out / "profile"
-        env = make_profile(profile, launch, provenance, replay if args.case == "replay" else None, reproduction)
+        corpus = None
+        if args.corpus is not None:
+            from corpus_io import load_corpus
+            corpus = load_corpus(args.corpus)
+        env = make_profile(profile, launch, provenance, replay if args.case == "replay" else None, reproduction, corpus)
         import_result = execute([str(godot), "--headless", "--path", str(project), "--editor", "--quit"],
-                                env, out / "import.log", 240)
+                                env, out / "import.log", 240, memory_limit_mib=args.memory_limit_mib)
         write_json(out / "import-result.json", import_result)
         if import_result["status"] != "pass":
             print(json.dumps({"output": str(out), "status": "import_failure", "result": import_result}))
@@ -344,13 +347,13 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if case == "campaign":
                     script = "res://goblin/run_campaign.gd"
-                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay"):
+                elif case in ("goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_exploration"):
                     script = f"res://goblin/tests/test_{case.removeprefix('goblin_')}.gd"
                 else:
                     script = f"res://tests/{case}.gd"
                 command += ["--script", script]
             process_limit = None if args.case == "interactive" else args.timeout_seconds + (args.budget * args.pacing_ms // 1000)
-            result = execute(command, active_env, out / f"{case}.log", process_limit)
+            result = execute(command, active_env, out / f"{case}.log", process_limit, memory_limit_mib=args.memory_limit_mib)
             result["case"] = case
             log_text = (out / f"{case}.log").read_text(encoding="utf-8", errors="replace")
             if args.case != "interactive":

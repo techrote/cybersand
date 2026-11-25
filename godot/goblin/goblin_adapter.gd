@@ -8,14 +8,17 @@ signal action_admitted(action: Dictionary, admission: Dictionary, observation: D
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+const Gameplay = preload("res://goblin/goblin_gameplay_actions.gd")
+const Capabilities = preload("res://goblin/goblin_capabilities.gd")
+const Fixtures = preload("res://goblin/goblin_fixtures.gd")
 const SAVE_NAME := "goblin-layout"
 const PROFILE_SCHEMA := "cybersand-goblin-profile-v1"
 const BODY_CAPTURE_REFUSAL := "Move or remove the body before editing or copying its covered cells."
-const MATERIALS := [0, 2, 3, 7, 58]
+const MATERIALS := Gameplay.MATERIALS
 const ACTION_IDS := ["pause", "play", "wait_ticks", "select_material", "brush", "erase",
 	"rectangle", "outline", "line", "select_region", "copy", "paste", "undo", "redo",
 	"fill", "camera", "actor_select", "actor_drive", "panel", "save_layout",
-	"reopen_layout", "reset_fixture", "actor_place", "actor_pilot", "actor_reset", "single_step"]
+	"reopen_layout", "reset_fixture", "actor_place", "actor_pilot", "actor_reset", "single_step"] + Gameplay.IDS
 const EDIT_IDS := ["brush", "erase", "rectangle", "outline", "line", "paste", "fill", "undo", "redo"]
 const ARGUMENTS := {
 	"pause": [], "play": ["ticks"], "wait_ticks": ["ticks"], "select_material": ["material"],
@@ -58,6 +61,9 @@ var _saved_material_digest := ""
 var _saved_native_tick := -1
 var _saved_capture: Dictionary = {}
 var _last_edit_region := Rect2i(32, 32, 64, 64)
+var _probe_key := ""
+var _probe_counts: Dictionary = {}
+var _model_capabilities: Dictionary = {}
 
 static func _integer(value: Variant, low: int, high: int) -> bool:
 	return typeof(value) in [TYPE_INT, TYPE_FLOAT] and is_finite(float(value)) \
@@ -72,6 +78,7 @@ static func validate_action(action: Variant) -> Dictionary:
 	if not action.get("args") is Dictionary: return {"ok": false, "error": "args must be an explicit object"}
 	if action.has("goal") and (not action.goal is String or action.goal.length() > 240):
 		return {"ok": false, "error": "goal must be a bounded string"}
+	if str(action.id) in Gameplay.IDS: return Gameplay.validate_action(action)
 	var id: String = action.id
 	var args: Dictionary = action.get("args", {})
 	for key: Variant in args:
@@ -101,9 +108,9 @@ static func validate_action(action: Variant) -> Dictionary:
 				or int(args.width) not in [240, 480] or int(args.height) not in [135, 270]:
 				return {"ok": false, "error": "camera outside bounded views"}
 		"actor_select", "actor_pilot":
-			if not _integer(args.actor_id, 1, 8): return {"ok": false, "error": "actor id outside 1..8"}
+			if not _integer(args.actor_id, 1, Gameplay.MAX_ACTOR_ID): return {"ok": false, "error": "actor id outside bounded identity budget"}
 		"actor_place":
-			if args.model not in ["kestrel", "reference_barrel"] or not _integer(args.x, 32, 448) or not _integer(args.y, 32, 224):
+			if args.model not in Gameplay.MODELS or not _integer(args.x, 32, 448) or not _integer(args.y, 32, 224):
 				return {"ok": false, "error": "actor placement outside the admitted fixture models and spawn region"}
 		"actor_drive":
 			if args.direction not in ["left", "right", "up", "down"] or not _integer(args.ticks, 1, 16):
@@ -186,7 +193,7 @@ func initialize(id: String, data: Dictionary) -> Dictionary:
 
 func install_fixture(id: String, data: Dictionary, admission_row: Dictionary = {}) -> Dictionary:
 	if not mounted: return {"ok": false, "error": "adapter is not mounted"}
-	if id not in ["material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen"]:
+	if id not in Fixtures.IDS:
 		return {"ok": false, "error": "unknown committed fixture"}
 	if Setup.extent_of(data) != Vector2i(512, 512) or not Setup.validate(data).is_empty():
 		return {"ok": false, "error": "fixture must be a valid 512 by 512 authored setup"}
@@ -235,12 +242,24 @@ func observe() -> Dictionary:
 			actors.append({"id": id, "model": str(record.model), "state": json_value(actual),
 				"authored_spawn": json_value(record.get("spawn", [])),
 				"control_observation": json_value(bench.actor_observation(id, false)),
+				"authored_control": json_value(Setup.ActorCatalog.control_for(record)),
+				"options": json_value(record.get("options", {})),
+				"capabilities": json_value(_capabilities_for(str(record.model))),
 				"position": json_value(actual.get("position")),
 				"rotation": actual.get("rotation"), "linear_velocity": json_value(actual.get("linear_velocity")),
 				"controller": json_value(actual.get("controller", {})), "observed": not actual.is_empty()})
 	var undo: bool = editor != null and editor.history_available("undo")
 	var redo: bool = editor != null and editor.history_available("redo")
 	return {"mounted": mounted, "fixture_id": fixture_id, "scene_identity": fixture_digest,
+		"world_size": json_value(Setup.extent_of(bench.applied)),
+		"adapter_version": 2, "feature_capabilities": Capabilities.negotiate(host, bench),
+		"configuration": {"response": str(bench.applied.get("response", "")), "thruster_fire": bool(bench.applied.get("fire", false))},
+		"source": {"authored": json_value(bench.applied.get("source", [])),
+			"receipt": json_value(host.latest_snapshot.lab_context.get("workbench_source", {})) if host.latest_snapshot != null else {},
+			"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1},
+		"paint_preview": {"dragging": bool(editor.dragging), "samples": editor.stroke.size(),
+			"anchor": json_value(editor.anchor), "cursor": json_value(editor.cursor)},
+		"material_probe": _material_probe(source),
 		"native": {"generation": int(source.get("generation", -1)), "revision": int(source.get("revision", -1)),
 			"tick": int(source.get("tick", -1)), "paused": bool(source.get("paused", false)),
 			"busy": bool(source.get("busy", true)), "failed": worker.has_failed()},
@@ -258,7 +277,8 @@ func observe() -> Dictionary:
 		"controllable_actor_ids": controllable_ids,
 		"next_actor_id": int(bench.applied.get("next_id", -1)) if bench != null else -1,
 		"actor_tick": int(host.physical_actor_session.tick) if host.physical_actor_session != null else -1,
-		"camera": {"origin": json_value(host.camera_origin), "size": json_value(host.current_view_size)},
+		"camera": {"origin": json_value(host.camera_origin), "size": json_value(host.current_view_size),
+			"mode": int(bench._camera.selected), "zoom_index": int(bench._zoom)},
 		"panels": {"details": bench._details.visible if bench != null else false},
 		"details_open": bench._details.visible if bench != null else false,
 		"authored_digest": digest(bench.applied) if bench != null else "",
@@ -280,6 +300,7 @@ func available_actions() -> Array[Dictionary]:
 		if bench.pilot_id() > 0:
 			for direction: String in ["left", "right", "up", "down"]:
 				menu.append({"id": "actor_drive", "args": {"direction": direction, "ticks": 8}})
+		menu.append_array(Gameplay.available_actions(self))
 		return menu
 	menu.append({"id": "play", "args": {"ticks": 4}})
 	menu.append({"id": "pause", "args": {}})
@@ -309,13 +330,15 @@ func available_actions() -> Array[Dictionary]:
 	for actor_id: int in observe().controllable_actor_ids:
 		menu.append({"id": "actor_pilot", "args": {"actor_id": actor_id}})
 	if bench.selected_id() > 0: menu.append({"id": "actor_reset", "args": {}})
-	if bench.applied.actors.size() < 8 and int(bench.applied.next_id) <= 8:
-		menu.append({"id": "actor_place", "args": {"model": "kestrel", "x": 256, "y": 96}})
-		menu.append({"id": "actor_place", "args": {"model": "reference_barrel", "x": 288, "y": 128}})
+	if bench.applied.actors.size() < 8 and int(bench.applied.next_id) <= Gameplay.MAX_ACTOR_ID:
+		for model: String in Gameplay.MODELS:
+			if Setup.ActorCatalog.has_model(model):
+				menu.append({"id": "actor_place", "args": {"model": model, "x": 256, "y": 96}})
 	menu.append({"id": "panel", "args": {"panel": "details", "open": not bench._details.visible}})
 	menu.append({"id": "save_layout", "args": {}})
 	if not _saved_authored_digest.is_empty(): menu.append({"id": "reopen_layout", "args": {}})
 	menu.append({"id": "reset_fixture", "args": {}})
+	menu.append_array(Gameplay.available_actions(self))
 	return menu
 
 func execute(action: Dictionary) -> Dictionary:
@@ -333,6 +356,7 @@ func execute(action: Dictionary) -> Dictionary:
 	row._owns_execution = true
 	var id: String = action.id
 	var args: Dictionary = action.get("args", {})
+	if id in Gameplay.IDS: return await Gameplay.execute(self, action, row, started)
 	if id in EDIT_IDS + ["select_region", "copy", "save_layout", "reopen_layout", "reset_fixture",
 		"actor_place", "actor_pilot", "actor_reset", "single_step"] and not host.paused:
 		return _finish(row, started, "refused", "not_applicable", "this goblin action requires paused authoring")
@@ -471,8 +495,8 @@ func execute(action: Dictionary) -> Dictionary:
 				"control": json_value(host.physical_actor_session.workbench_control(int(args.actor_id))),
 				"body": json_value(bench.body_state(int(args.actor_id)))}
 		"actor_place", "actor_reset":
-			if id == "actor_place" and (bench.applied.actors.size() >= 8 or int(bench.applied.next_id) > 8):
-				return _finish(row, started, "refused", "not_applicable", "fixture's eight-actor identity budget is full")
+			if id == "actor_place" and (bench.applied.actors.size() >= 8 or int(bench.applied.next_id) > Gameplay.MAX_ACTOR_ID):
+				return _finish(row, started, "refused", "not_applicable", "fixture's eight live actors or 64 identities budget is full")
 			if id == "actor_reset" and bench.selected_id() <= 0:
 				return _finish(row, started, "refused", "not_applicable", "select an actual actor first")
 			var instance_id: int = int(bench.applied.next_id) if id == "actor_place" else bench.selected_id()
@@ -829,3 +853,25 @@ func close() -> void:
 	worker = null
 	mounted = false
 	if get_tree().get_meta("cybersand_feature", "") == "shared_workbench": get_tree().remove_meta("cybersand_feature")
+
+# The probe is a retained native observation, explicitly marked stale after any
+# source change. It is never reconstructed from authored edits or palette choice.
+func _material_probe(source: Dictionary) -> Dictionary:
+	if last_capture.is_empty() or last_capture.has("error") or not last_capture.get("materials") is Array:
+		return {}
+	var receipt: Dictionary = last_capture.get("native_receipt", {})
+	var observed_key: String = "%s:%s" % [receipt.get("generation", -1), receipt.get("operation_id", -1)]
+	if observed_key != _probe_key:
+		_probe_key = observed_key
+		_probe_counts.clear()
+		for material: Variant in last_capture.materials:
+			var key: String = str(int(material))
+			_probe_counts[key] = int(_probe_counts.get(key, 0)) + 1
+	return {"region": last_capture.get("region", []).duplicate(), "counts": _probe_counts.duplicate(),
+		"generation": receipt.get("generation", -1), "revision": receipt.get("revision", -1), "tick": receipt.get("tick", -1),
+		"current": receipt.get("generation") == source.get("generation") and receipt.get("revision") == source.get("revision") and receipt.get("tick") == source.get("tick"),
+		"evidence_kind": "actual_native_material_capture"}
+
+func _capabilities_for(model: String) -> Dictionary:
+	if not _model_capabilities.has(model): _model_capabilities[model] = Setup.ActorCatalog.entry(model)
+	return _model_capabilities[model]

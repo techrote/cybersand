@@ -3,7 +3,8 @@ extends RefCounted
 ## Independent observers for the opt-in goblin application test scene.
 ## Policies never call these checks and never supply expected native outcomes.
 ## Deliberately inconsistent dictionaries belong only in the contract unit test.
-const EDITS := ["brush", "erase", "rectangle", "outline", "line", "fill", "paste"]
+const Expanded = preload("res://goblin/goblin_gameplay_oracles.gd")
+const EDITS := ["brush", "erase", "rectangle", "outline", "line", "fill", "paste", "stroke"]
 var _undo: Array[Dictionary] = []
 var _redo: Array[Dictionary] = []
 var _clipboard: Dictionary = {}
@@ -138,7 +139,7 @@ static func _shape_points(id: String, args: Dictionary) -> Dictionary:
 			for x: int in range(left, right + 1):
 				if id == "rectangle" or x in [left, right] or y in [top, bottom]:
 					points[_point_key(x, y)] = true
-	elif id == "line":
+	elif id in ["line", "stroke"]:
 		# Independent direct integer interpolation, not the editor's incremental
 		# Bresenham state machine. Canonical orientation defines half-cell ties.
 		var start := Vector2i(int(args.x0), int(args.y0))
@@ -160,7 +161,14 @@ static func _shape_points(id: String, args: Dictionary) -> Dictionary:
 			elif span > 0:
 				x += int((2 * step * dx + dy) / (2 * dy))
 				y += direction * step
-			points[_point_key(x, y)] = true
+			if id == "stroke":
+				var radius: int = int(args.get("radius", 0))
+				for oy: int in range(-radius, radius + 1):
+					for ox: int in range(-radius, radius + 1):
+						if ox * ox + oy * oy <= radius * radius:
+							points[_point_key(x + ox, y + oy)] = true
+			else:
+				points[_point_key(x, y)] = true
 	return points
 
 
@@ -271,7 +279,7 @@ func _history_checks(rows: Array[Dictionary], record: Dictionary, id: String) ->
 
 
 func evaluate(record: Dictionary) -> Array[Dictionary]:
-	var rows: Array[Dictionary] = []
+	var rows: Array[Dictionary] = Expanded.evaluate(record)
 	var action: Dictionary = record.get("action", {})
 	var id: String = str(action.get("id", ""))
 	var args: Dictionary = action.get("args", {})
@@ -347,7 +355,7 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 					"at least " + str(args.get("ticks", 4)), advance)
 		"select_material":
 			_assert(rows, "selected_material", after.get("material") == args.get("material"), args.get("material"), after.get("material"))
-		"brush", "erase", "rectangle", "outline", "line", "fill", "paste":
+		"brush", "erase", "rectangle", "outline", "line", "fill", "paste", "stroke":
 			_material_checks(rows, record, id, args, before)
 		"undo", "redo":
 			_history_checks(rows, record, id)
@@ -368,7 +376,9 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 		"camera":
 			var expected := {"origin": [mini(int(args.x), 512 - int(args.width)), mini(int(args.y), 512 - int(args.height))],
 				"size": [args.width, args.height]}
-			_assert(rows, "camera_state", _same(after.get("camera"), expected), expected, after.get("camera"))
+			var camera: Dictionary = after.get("camera", {})
+			var actual := {"origin": camera.get("origin"), "size": camera.get("size")}
+			_assert(rows, "camera_state", _same(actual, expected), expected, actual)
 		"panel":
 			_assert(rows, "panel_state", after.get("details_open") == args.get("open"), args.get("open"), after.get("details_open"))
 		"actor_select":
