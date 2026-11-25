@@ -1,0 +1,113 @@
+{
+  "api_decoded_job_log": {
+    "bytes": 330204,
+    "sha256": "343fd284ccb76ea28c0912b97b95e1836603ba42581e2d03ff6dbb6790b84ed7"
+  },
+  "campaign_outcome": {
+    "failure_step": "Import and execute fresh user-data Workbench tests",
+    "linux": "passed",
+    "new_evaluator_exists": false,
+    "new_nine_case_windows_suite": "skipped",
+    "package": "skipped",
+    "pristine_extracted_launch": "skipped",
+    "source_decision": "passed",
+    "windows": "failed"
+  },
+  "interpretation": "A retained actual displayed performance failure. Separate hosted prior passes do not establish a cause, a correction, or a reproducibility rate. No predicate, timeout, test, application or native implementation was changed or waived by this review.",
+  "observations": [
+    {
+      "active_at_combined_assertion_separately_recorded": false,
+      "early_native_receipt_observed": true,
+      "first_displayed_native_pixel_observed": true,
+      "first_progress_ms": 1693,
+      "label": "e536_prior",
+      "result": {
+        "base": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+        "checks": 151,
+        "failures": 0,
+        "last_chunk_changed": 3216,
+        "last_native_backend": "CyberNativeCellWorld",
+        "stop_prefix": 2304
+      },
+      "source_commit": "e536d128f85e948223b25e13931a7a801faf956d",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 7678,
+      "stdout_sha256": "857ea475786f99cd589c5557052622e399245691676f0e2b25dc122db644948c"
+    },
+    {
+      "active_at_combined_assertion_separately_recorded": false,
+      "early_native_receipt_observed": true,
+      "first_displayed_native_pixel_observed": true,
+      "first_progress_ms": 1363,
+      "label": "bcc_prior",
+      "result": {
+        "base": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+        "checks": 151,
+        "failures": 0,
+        "last_chunk_changed": 2256,
+        "last_native_backend": "CyberNativeCellWorld",
+        "stop_prefix": 3520
+      },
+      "source_commit": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 7678,
+      "stdout_sha256": "45394d29b8fe284bd5118bb5a802128dd9fb73310684828fc66152350cbdc785"
+    },
+    {
+      "active_at_combined_assertion_separately_recorded": false,
+      "early_native_receipt_observed": true,
+      "first_displayed_native_pixel_observed": true,
+      "first_progress_ms": 2187,
+      "label": "3a_attempt1",
+      "result": {
+        "base": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+        "checks": 151,
+        "failures": 1,
+        "last_chunk_changed": 3152,
+        "last_native_backend": "CyberNativeCellWorld",
+        "stop_prefix": 2816
+      },
+      "source_commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+      "stderr_bytes": 357,
+      "stderr_sha256": "e1a1b666c3696e58abfdb7aaaf105827d335243ab758f4d00a3f6e9df8edbc16",
+      "stdout_bytes": 7679,
+      "stdout_sha256": "6bc12fa1a4630bdcd610211a7288f587b8ce5a279577e4cd57b5723ba56df4a0"
+    }
+  ],
+  "observed_failure": "First progress 2187 ms independently violates the strict 2000 ms bound. The active boolean at the combined assertion was not separately printed.",
+  "original_evidence": {
+    "artifact_id": 14995049040,
+    "bytes": 4393990,
+    "crc_passed": true,
+    "sha256": "195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040"
+  },
+  "predicate": "art.active and first_progress_ms < 2000",
+  "publication_scope": "Derived identities, counters and conclusions only. Raw downloads and decoded logs remain local; the original Actions artifact is the linked source of truth.",
+  "run_id": 45553413100,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/45553413100",
+  "runtime_test_workflow_byte_identity_bcc_to_3a": {
+    ".github/workflows/art-session-logging.yml": {
+      "3a": "337feea46b17fa5d51b4e1b7dae9f270f5dbe55ed9d1d485638bf7c9a21daa67",
+      "bcc": "337feea46b17fa5d51b4e1b7dae9f270f5dbe55ed9d1d485638bf7c9a21daa67"
+    },
+    "godot/scripts/art_batch_executor.gd": {
+      "3a": "ad0126c5fe8211c8051329895b9cbd4942c72867413bd1e863cca3eb909f401a",
+      "bcc": "ad0126c5fe8211c8051329895b9cbd4942c72867413bd1e863cca3eb909f401a"
+    },
+    "godot/scripts/art_batch_plan.gd": {
+      "3a": "b9b011c8d38470ff7dab46e741e5d610addcda7ae9adbd79adcc3ef2b7d76df2",
+      "bcc": "b9b011c8d38470ff7dab46e741e5d610addcda7ae9adbd79adcc3ef2b7d76df2"
+    },
+    "godot/tests/test_art_batch_native.gd": {
+      "3a": "299fe1851c695ea8ed14775d89e6ef270fb02a4c8c2623284b00340646af8403",
+      "bcc": "299fe1851c695ea8ed14775d89e6ef270fb02a4c8c2623284b00340646af8403"
+    }
+  },
+  "schema": "art-independent-retained-native-progress-failure-v1",
+  "source_commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "source_tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+  "windows_job_id": 138999860117
+}
