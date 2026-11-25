@@ -61,6 +61,57 @@ func run() -> void:
 	check(context.inspector.captured_cells==4096,"exact captured-cell count")
 	check(context.model.material_distribution[0].cells==4096,"histogram describes actual copied values")
 	check(context.model.native_samples.size()==32,"sample count is bounded")
+	var sample_quadrants := {}
+	var sample_columns := {}
+	var sample_rows := {}
+	var sample_truth := true
+	for cell: Array in context.model.native_samples:
+		sample_quadrants[Vector2i(int(cell[0])/32,int(cell[1])/32)] = true
+		sample_columns[int(cell[0])] = true
+		sample_rows[int(cell[1])] = true
+		sample_truth = sample_truth and int(cell[2])==int(observed.materials[int(cell[1])*64+int(cell[0])])
+	check(sample_quadrants.size()==4 and sample_columns.size()>1 and sample_rows.size()>1,
+		"power-of-two region samples cover all quadrants instead of aliasing to one edge")
+	check(sample_truth and context.model.native_sampling.method=="stratified-bin-centers-v1",
+		"spatial samples retain actual observed values and deterministic provenance")
+	var thin_rules := rules.duplicate(true)
+	thin_rules.extent = Vector2i(128,128)
+	thin_rules.region = Rect2i(17,21,1,64)
+	var thin_capture := observed.duplicate(true)
+	thin_capture.region = thin_rules.region
+	thin_capture.materials.resize(64)
+	for index: int in 64: thin_capture.materials[index] = 58 if index%3==0 else 0
+	var thin_context := Context.build(thin_capture,thin_rules)
+	var thin_points := {}
+	var thin_truth := true
+	for cell: Array in thin_context.model.native_samples:
+		var point := Vector2i(int(cell[0]),int(cell[1]))
+		thin_points[point] = true
+		thin_truth = thin_truth and thin_rules.region.has_point(point) \
+			and int(cell[2])==int(thin_capture.materials[point.y-thin_rules.region.position.y])
+	check(thin_context.ok and thin_points.size()==32 and thin_truth,
+		"translated one-cell-wide region has bounded distinct truthful spatial samples")
+	var small_rules := rules.duplicate(true)
+	small_rules.region = Rect2i(10,11,3,2)
+	var small_capture := observed.duplicate(true)
+	small_capture.region = small_rules.region
+	small_capture.materials = PackedInt32Array([0,58,28,0,28,58])
+	var small_context := Context.build(small_capture,small_rules)
+	var small_points := {}
+	var small_truth := true
+	for cell: Array in small_context.model.native_samples:
+		var point := Vector2i(int(cell[0]),int(cell[1]))
+		small_points[point] = true
+		var at := (point.y-11)*3+point.x-10
+		small_truth = small_truth and small_rules.region.has_point(point) and at>=0 and at<6 \
+			and int(cell[2])==int(small_capture.materials[at])
+	check(small_context.ok and small_points.size()==6 and small_truth,
+		"small selected regions expose every actual cell exactly once within the sample budget")
+	var no_samples_rules := rules.duplicate(true)
+	no_samples_rules.include_native_summary = false
+	var no_samples_context := Context.build(observed,no_samples_rules)
+	check(not no_samples_context.model.has("native_samples") and not no_samples_context.model.has("native_sampling"),
+		"owner-disabled native samples omit coordinates and sampling metadata from model context")
 	check(context.model.coarse_occupancy.grid.size()==16,"coarse occupancy has bounded rows")
 	check(context.model.recent_acknowledged_decisions.size()==8,"session decision summary is bounded")
 	check(context.model.recent_acknowledged_decisions[0]=="Acknowledged decision 12","recent admitted decisions retained")

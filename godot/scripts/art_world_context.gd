@@ -134,11 +134,21 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 			var at := (y*GRID_SIDE+x)*3
 			row.append([coarse[at],coarse[at+1],coarse[at+2]])
 		grid.append(row)
+	# Stratify in both dimensions. A flat row-major stride aliases to x=0
+	# for ordinary power-of-two widths, missing the interior entirely.
 	var samples: Array = []
-	var sample_count := mini(32,count)
-	for n: int in sample_count:
-		var at := mini(count-1,n*count/maxi(1,sample_count))
-		samples.append([region.position.x+at%region.size.x,region.position.y+at/region.size.x,materials[at]])
+	var sample_columns := mini(8,region.size.x)
+	var sample_rows := mini(region.size.y,maxi(1,32/sample_columns))
+	if sample_rows == region.size.y:
+		sample_columns = mini(region.size.x,maxi(1,32/sample_rows))
+	for row: int in sample_rows:
+		var y := mini(region.size.y-1,(2*row+1)*region.size.y/(2*sample_rows))
+		for column: int in sample_columns:
+			var x := mini(region.size.x-1,(2*column+1)*region.size.x/(2*sample_columns))
+			var at := y*region.size.x+x
+			samples.append([region.position.x+x,region.position.y+y,materials[at]])
+	var sampling := {"method":"stratified-bin-centers-v1","columns":sample_columns,"rows":sample_rows,
+		"maximum_samples":32,"coverage":"Only these observed cells are sampled; no unsampled cell identity is inferred."}
 	var memory: Array = []
 	for i: int in range(maxi(0,decisions.size()-MAX_DECISIONS),decisions.size()):
 		if decisions[i] is String: memory.append(str(decisions[i]).left(256))
@@ -150,7 +160,7 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		"material_distribution":material_rows,
 		"coarse_occupancy":{"columns":GRID_SIDE,"rows":GRID_SIDE,
 			"cell_fields":["observed","nonempty","source_policy_eligible"],"grid":grid},
-		"native_samples":samples,"constraints":envelope,"recent_acknowledged_decisions":memory,
+		"native_samples":samples,"native_sampling":sampling,"constraints":envelope,"recent_acknowledged_decisions":memory,
 		"native_capabilities":{"source_materials":SOURCE_POLICY.duplicate(),
 			"shapes":["rectangle","outline","disc","line","pixels","polyline","polygon","airbrush","repeat"],
 			"native_chunk_cells":4096,"proposal_stages":8,"operations":64,
@@ -165,6 +175,7 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		model.erase("material_distribution")
 		model.erase("coarse_occupancy")
 		model.erase("native_samples")
+		model.erase("native_sampling")
 	model.knowledge = Knowledge.select(str(policy.get("objective",""))+" "+str(policy.get("style","")),bool(policy.get("include_knowledge",true)))
 	model.tool_state = {"tool":str(policy.get("tool","Unspecified by host")).left(64)}
 	if policy.get("tool_material") is int and int(policy.tool_material) >= 0 and int(policy.tool_material) <= 255:
@@ -189,7 +200,7 @@ static func build(capture: Dictionary, policy: Dictionary, decisions: Array = []
 		"inspector":{"included":included,
 			"omitted":omitted,"bytes":bytes,"budget_bytes":MAX_CONTEXT_BYTES,"captured_cells":count,
 			"source":source,"materials_sha256":materials_sha,"context_sha256":digest,
-			"knowledge":model.knowledge.duplicate(true),
+			"knowledge":model.knowledge.duplicate(true),"native_sampling":sampling.duplicate(true),
 			"provenance":"workbench_paint_editor_executor.gd native capture; no image-to-material inference",
 			"elapsed_usec":Time.get_ticks_usec()-started},
 		"_capture":{"region":region,"materials":materials.duplicate(),"source":source.duplicate(),

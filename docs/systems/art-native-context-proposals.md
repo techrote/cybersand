@@ -40,7 +40,7 @@ credential, filesystem, audit or SceneTree access.
 | Selected capture | At most 262,144 native cells, wholly inside the installed World |
 | Model context | At most 24,576 UTF-8 JSON bytes; excess refuses with an explanation |
 | Occupancy | A 16 by 16 grid: observed, nonempty and source-policy-eligible counts |
-| Exact transmitted samples | At most 32 deterministic samples, each with world x/y and native ID |
+| Exact transmitted samples | At most 32 deterministic spatial-bin-center samples, each with world x/y and native ID |
 | Material distribution | Exact histogram of the selected captured region, not the entire World |
 | Creative objective | 4,096 characters |
 | Style | 128 characters |
@@ -48,6 +48,12 @@ credential, filesystem, audit or SceneTree access.
 | Current-session decisions | Last eight admitted string entries, each at most 256 characters |
 | Protected regions | At most 32 finite native rectangles |
 | Destination palette | Between one and 32 distinct native byte IDs |
+
+Cell samples are stratified across both selected dimensions; short or narrow
+regions adapt the grid, and selections of at most 32 cells expose every cell.
+The `native_sampling` metadata records the deterministic method and grid shape.
+A sample states only its actual captured cell value, without inferring unsampled
+identities. Disabling native summaries also omits this sample metadata.
 
 The inspector explains included and omitted information, context bytes, source,
 material-plane SHA-256, selected knowledge provenance and the context digest.
