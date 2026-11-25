@@ -384,8 +384,10 @@ promotion are implied by this implementation.
 ## Collaboration, scanline and pacing preview
 
 Model prompt and Scanline keep a conversation for the mounted workbench. Turns
-limits requests per Send, including refusals and rate retries. Zero continues
-until Stop, completion or another limit. Run s adds an
+limits requests per Send, including refusals and rate retries. Zero requires a
+positive Run s limit. Send refuses when both are zero, even if an estimated
+spending ceiling is set. A positive Turns limit still permits Run s to be zero;
+Stop remains available in either finite mode. Run s adds an
 optional elapsed-time ceiling. After native completion, the next request can
 use the actual changed count and world epoch. An empty array ends the run.
 Stop cancels pending inference, pacing and queued native work. Clear starts

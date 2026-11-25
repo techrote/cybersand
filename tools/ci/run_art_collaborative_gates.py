@@ -65,15 +65,51 @@ def untracked_source_rows(status: str) -> list[str]:
     return rejected
 
 
-def source_identity() -> dict:
+def source_rejection_details(tracked: str, status: str) -> dict:
+    """Keep path/status/hash evidence without copying changed source contents."""
+    result = {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
+              "tracked_porcelain": tracked, "all_porcelain_nul": status,
+              "unstaged_paths": git("diff", "--name-only").splitlines(),
+              "staged_paths": git("diff", "--cached", "--name-only").splitlines(),
+              "import_descriptors": {}}
+    for kind, arguments in (("unstaged", ["diff"]), ("staged", ["diff", "--cached"])):
+        data = subprocess.check_output(["git", *arguments, "--no-ext-diff", "--binary"], cwd=ROOT, timeout=60)
+        result[kind + "_diff_sha256"] = hashlib.sha256(data).hexdigest()
+    imports = [path for path in git("ls-files", "-z", "--", "*.import").split("\0") if path]
+    for relative in imports[:64]:
+        path = ROOT / relative
+        if path.is_file() and not path.is_symlink():
+            current = path.read_bytes()
+            lookup = subprocess.run(["git", "show", "HEAD:" + relative], cwd=ROOT, timeout=60,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+            original = lookup.stdout if lookup.returncode == 0 else None
+            result["import_descriptors"][relative] = {
+                "worktree_sha256": hashlib.sha256(current).hexdigest(),
+                "head_present": original is not None,
+                "head_sha256": hashlib.sha256(original).hexdigest() if original is not None else None,
+                "head_lookup_exit_code": lookup.returncode,
+                "worktree_bytes": len(current), "head_bytes": len(original) if original is not None else None,
+                "worktree_crlf": current.count(b"\r\n"), "worktree_lf": current.count(b"\n"),
+                "head_crlf": original.count(b"\r\n") if original is not None else None,
+                "head_lf": original.count(b"\n") if original is not None else None}
+    result["omitted_import_descriptors"] = max(0, len(imports) - 64)
+    return result
+
+
+def source_identity(diagnostic_path: Path | None = None) -> dict:
     tracked = git("status", "--porcelain=v1", "--untracked-files=no")
-    if tracked:
-        raise ValueError("Commit tracked source changes before this qualification campaign")
     status = subprocess.check_output(
         ["git", "status", "--porcelain=v1", "-z", "--untracked-files=all"],
         cwd=ROOT, text=True, timeout=60)
-    if untracked_source_rows(status):
-        raise ValueError("Commit or remove untracked source before qualification; only evidence/ and generated Godot UID sidecars are excluded")
+    untracked = untracked_source_rows(status)
+    if tracked or untracked:
+        if diagnostic_path is not None:
+            diagnostic_path.write_text(
+                json.dumps(source_rejection_details(tracked, status), indent=2, sort_keys=True) + "\n",
+                encoding="utf-8")
+        if tracked:
+            raise ValueError("Commit tracked source changes before this qualification campaign; rejected status rows:\n" + tracked)
+        raise ValueError("Commit or remove untracked source before qualification; only evidence/ and generated Godot UID sidecars are excluded:\n" + "\n".join(untracked))
     return {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
             "tracked_source_clean": True}
 
@@ -152,7 +188,7 @@ def main() -> int:
         raise ValueError("Use a new output directory to retain prior attempts")
     output.mkdir(parents=True)
     platform_name = "windows" if os.name == "nt" else "linux"
-    source = source_identity()
+    source = source_identity(output / "source-admission-failure.json")
     godot = args.godot.resolve()
     project = args.project.resolve()
     if project != (ROOT / "godot").resolve():
@@ -230,7 +266,7 @@ def main() -> int:
     receipt["status"] = "passed" if all(case["status"] == "passed" for case in receipt["cases"]) else "failed"
     # Detect any tracked mutation by the application before accepting source custody.
     try:
-        if source_identity() != source:
+        if source_identity(output / "source-completion-failure.json") != source:
             receipt["status"] = "failed"
             receipt["source_changed_during_run"] = True
     except ValueError as error:

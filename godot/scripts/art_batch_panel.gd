@@ -169,6 +169,7 @@ var collaboration: RefCounted
 var collaboration_workspace: Control
 var collaboration_button := Button.new()
 var collaboration_page := false
+var _collaboration_opened := false
 var _direct_controls: Array[Control] = []
 
 func _ready() -> void:
@@ -279,6 +280,7 @@ func _ready() -> void:
 		collaboration_workspace.set_material_options(choices)
 
 func show_collaboration(on: bool = true) -> void:
+	if on: _size_collaboration_first_open()
 	collaboration_page = on
 	collaboration_button.text = "Direct" if on else "Collaborate"
 	for control: Control in _direct_controls: control.visible = not on
@@ -292,6 +294,31 @@ func show_collaboration(on: bool = true) -> void:
 	tools_button.visible = not on and input_mode.selected != 2
 	if collaboration != null and collaboration.overlay != null:
 		collaboration.overlay.visible = on
+
+func _size_collaboration_first_open() -> void:
+	if _collaboration_opened: return
+	_collaboration_opened = true
+	# Direct keeps its compact default. The first explicit Collaborate action
+	# needs enough space for an inspectable context/proposal and its footer.
+	# Preserve an existing larger layout and all later owner resizing. An
+	# ordinary popup may have clamped the compact default to its minimum.
+	var compact := Vector2i((Vector2(640,400)*content_scale_factor).ceil())
+	if size.x > compact.x or size.y > compact.y: return
+	var bounds := Rect2i()
+	var ancestor := get_parent()
+	while ancestor != null:
+		if ancestor is Viewport and ancestor.gui_embed_subwindows:
+			bounds = Rect2i(Vector2i.ZERO,Vector2i(ancestor.get_visible_rect().size))
+			break
+		ancestor = ancestor.get_parent()
+	if not bounds.has_area():
+		bounds = DisplayServer.screen_get_usable_rect(current_screen)
+	var preferred := Vector2i((Vector2(820,620)*content_scale_factor).ceil())
+	if bounds.has_area():
+		preferred = preferred.min(Vector2i((Vector2(bounds.size)*0.9).floor()))
+	size = preferred.max(min_size)
+	if bounds.has_area():
+		position = bounds.position+(bounds.size-size)/2
 
 func _bind_selection() -> void:
 	if wb == null or wb.paint_editor == null or selection_editor == wb.paint_editor: return
@@ -705,7 +732,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	turn_limit.prefix = "Turns"
 	turn_limit.min_value = 0
 	turn_limit.value = 1
-	turn_limit.tooltip_text = "Maximum requests per Send. Zero continues until Stop, model completion or another limit."
+	turn_limit.tooltip_text = "Maximum requests per Send. Zero requires a positive Run s limit; Stop remains available."
 	turn_limit.max_value = 1000
 	row.add_child(turn_limit)
 	minimum_interval.prefix = "Gap s"
@@ -716,7 +743,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	run_seconds.prefix = "Run s"
 	run_seconds.custom_minimum_size.x = 100
 	run_seconds.max_value = 86400
-	run_seconds.tooltip_text = "Maximum seconds for this run. Zero disables the limit."
+	run_seconds.tooltip_text = "Maximum seconds for this run. Zero requires a positive Turns limit."
 	var spending := Window.new()
 	spending.title = "Run limits and estimated spending"
 	add_child(spending)
@@ -1513,6 +1540,11 @@ func send_prompt() -> void:
 		return
 	if wb.busy() or wb.applied.is_empty():
 		input_error = "Canvas is not ready."
+		return
+	# A spending estimate alone cannot bound requests or elapsed time.
+	# Keep direct authoring convenient while refusing indefinite automatic turns.
+	if turn_limit.value <= 0 and run_seconds.value <= 0:
+		input_error = "Set Turns or Run s above zero so this run has a finite limit."
 		return
 	sent_turns = 0
 	run_spend = 0.0

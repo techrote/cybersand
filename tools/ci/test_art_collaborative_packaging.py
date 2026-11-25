@@ -9,8 +9,10 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
@@ -162,6 +164,57 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
         self.assertEqual(gates.untracked_source_rows(status), [
             "?? godot/scripts/foreign.gd", "?? tools/ci/foreign.py", "?? foreign_root.py",
             "?? build/foreign.py", "?? docs/unchecked-guide.md"])
+
+    def test_dirty_source_keeps_exact_status_and_hashed_failure_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def run_git(*args):
+                return subprocess.check_output(["git", *args], cwd=root, stderr=subprocess.STDOUT)
+            run_git("init", "-q")
+            source = root / "ordinary.gd"
+            source.write_bytes(b"original complete source\n")
+            run_git("add", ".")
+            run_git("-c", "user.name=Art qualification fixture", "-c", "user.email=art-fixture@example.invalid",
+                    "commit", "-qm", "isolated source fixture")
+            with patch.object(gates, "ROOT", root):
+                self.assertTrue(gates.source_identity()["tracked_source_clean"])
+                source.write_bytes(b"uncommitted changed source\n")
+                (root / "new.import").write_bytes(b"staged import fixture\n")
+                run_git("add", "new.import")
+                diagnostic = root / "failure.json"
+                with self.assertRaisesRegex(ValueError, "ordinary.gd"):
+                    gates.source_identity(diagnostic)
+                proof = json.loads(diagnostic.read_text())
+                self.assertIn("ordinary.gd", proof["tracked_porcelain"])
+                self.assertEqual(proof["unstaged_paths"], ["ordinary.gd"])
+                self.assertEqual(proof["staged_paths"], ["new.import"])
+                self.assertFalse(proof["import_descriptors"]["new.import"]["head_present"])
+                self.assertIsNone(proof["import_descriptors"]["new.import"]["head_sha256"])
+                self.assertRegex(proof["unstaged_diff_sha256"], r"^[0-9a-f]{64}$")
+                self.assertNotIn("uncommitted changed source", diagnostic.read_text())
+
+    def test_tracked_import_lf_rule_survives_windows_checkout_and_godot_rewrite(self):
+        source_bytes = (ROOT / "godot/addons/godot-rapier2d/Radial2D.svg.import").read_bytes()
+        attributes = (ROOT / ".gitattributes").read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            def run_git(*args):
+                return subprocess.check_output(["git", *args], cwd=root, stderr=subprocess.STDOUT)
+            run_git("init", "-q")
+            run_git("config", "core.autocrlf", "true")
+            descriptor = root / "Radial2D.svg.import"
+            descriptor.write_bytes(source_bytes.replace(b"\r\n", b"\n"))
+            (root / ".gitattributes").write_bytes(attributes)
+            run_git("add", ".")
+            run_git("-c", "user.name=Art qualification fixture", "-c", "user.email=art-fixture@example.invalid",
+                    "commit", "-qm", "isolated import source fixture")
+            descriptor.unlink()
+            run_git("checkout", "--", "Radial2D.svg.import")
+            self.assertNotIn(b"\r\n", descriptor.read_bytes())
+            descriptor.write_bytes(descriptor.read_bytes().replace(b"\r\n", b"\n"))
+            self.assertEqual(run_git("status", "--porcelain=v1", "--untracked-files=no"), b"")
+            with patch.object(gates, "ROOT", root):
+                self.assertTrue(gates.source_identity()["tracked_source_clean"])
 
     def test_packager_requires_complete_original_logs(self):
         value = fixture()

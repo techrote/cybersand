@@ -1,0 +1,21 @@
+{
+  "schema": "art-independent-raw-review-execution-v1",
+  "reviewer": "Native specialist B authored the independent read-only verifier; lead executed the published script without edits.",
+  "script_source": "ff35151ba763d2f7ff715224b067a7a4ccaf7d1f",
+  "script_sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9",
+  "stdout_sha256": "85ed955bccb8b04aa4c517fc4bb8c0b8a640075b424049703b6367549872b2de",
+  "command": [
+    "python3",
+    "tools/ci/verify_art_creative_native_evidence.py",
+    "/tmp/art-collaborative-002-evidence/full-displayed-2743-original-evidence.tar.gz",
+    "--expected-source",
+    "2743f89a0df6f6afcf7484e859c10790d521e74b",
+    "--archive-sha256",
+    "18941756cc3073aa317ea7c99dc7986ead497488d0e949c978289ff1eb0f90a1",
+    "--review-index",
+    "/tmp/art-collaborative-002-evidence/full-displayed-2743-receipt-review-index.json"
+  ],
+  "exit_code": 0,
+  "status": "passed",
+  "scope": "Independent algorithmic evidence replay, not another native construction or a genuine-model result."
+}

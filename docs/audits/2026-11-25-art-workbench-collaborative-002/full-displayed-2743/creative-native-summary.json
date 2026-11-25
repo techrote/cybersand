@@ -1,0 +1,3338 @@
+{
+	"checks": 770,
+	"claims": "Compiler/context/lifecycle/native geometry evidence; no LLM creativity or retrieval causality claim.",
+	"failures": 0,
+	"fixture_label": "Deterministic host-authored proposals, real ordinary Workbench native operations.",
+	"model_requests": 0,
+	"outcomes": [
+		{
+			"after_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+			"before_materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 256110,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+					"native_changed": 5739,
+					"native_checked": 5762,
+					"native_chunks": 2,
+					"native_execution_usec": 256110,
+					"region": [
+						32,
+						1056,
+						256,
+						192
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6118,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 8277,
+				"captured_cells": 49152,
+				"context_sha256": "844654682a85b0ccb9cf4cb5f463e9824ab9085c4d716ec271197243f0c2981c",
+				"elapsed_usec": 21237,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 2151,
+					"cards": [
+						{
+							"authority": "source-pinned evaluation rubric; not owner adoption",
+							"executable": false,
+							"guidance": "Treat useful negative space and preservation of original spatial logic as explicit design goals. Protect named passages geometrically. A static clear opening is not proof of actor reachability or playfeel; evaluate the intended actor and route separately. Loss of a protected route or void is a regression even if detail increases.",
+							"id": "gold-negative-space",
+							"matched_terms": [
+								"passage"
+							],
+							"path": "docs/corpus/goldmaps-finalisation-001/science/rubric.v1.json",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "256b609b1f5c18cfee0f2f5f7b0435c517b52681",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "source-pinned evaluation rubric; not owner adoption",
+							"executable": false,
+							"guidance": "Preserve distinctive and damaged features when they carry the scene's identity. Compare silhouette, material hierarchy and relational specificity rather than treating more filled cells as better art. A justified no-change proposal can preserve a successful composition. Remaining subjective disagreement must be exposed to the owner.",
+							"id": "gold-restraint-and-identity",
+							"matched_terms": [
+								"damag"
+							],
+							"path": "docs/corpus/goldmaps-finalisation-001/science/rubric.v1.json",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "256b609b1f5c18cfee0f2f5f7b0435c517b52681",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						}
+					],
+					"omitted": [
+						"native-authority: card or byte budget"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 3891,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1265492,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "industrial_repair",
+			"native_changed": 5739,
+			"native_checked": 5762,
+			"native_chunks": 2,
+			"native_execution_usec": 329363,
+			"preview": {
+				"configure_usec": 1012,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "844654682a85b0ccb9cf4cb5f463e9824ab9085c4d716ec271197243f0c2981c",
+				"elapsed_usec": 127493,
+				"error": "",
+				"maximum_poll_usec": 8727,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "f7eaf7aa50af8459acc4ecbc4a6c8f3db20a84fe459b2a79f7073fee84a3d651",
+				"predicted_changed": 5739,
+				"predicted_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+				"predicted_unchanged": 23,
+				"proposal_digest": "01fb6024f3ac84244d2eaaa6ef452db1cf3b5092c8382d127550fbfd8e1074ee",
+				"requested": 5762,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 3891,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "c364995eaf5cb4a06ae99539c93250ecc2268213236b2a3f2705b0c1e6164b76",
+						"before_materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+						"conflicts": 0,
+						"id": "repair",
+						"introduced": {
+							"58": 3421
+						},
+						"predicted_changed": 3421,
+						"predicted_unchanged": 23,
+						"removed": {
+							"0": 3421
+						},
+						"requested": 3444,
+						"title": "Bridge the missing beam and add supports"
+					},
+					{
+						"after_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+						"before_materials_sha256": "c364995eaf5cb4a06ae99539c93250ecc2268213236b2a3f2705b0c1e6164b76",
+						"conflicts": 0,
+						"id": "apparatus",
+						"introduced": {
+							"28": 2318
+						},
+						"predicted_changed": 2318,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 2318
+						},
+						"requested": 2318,
+						"title": "Add bounded upper workshop fixtures"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 5739,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					32,
+					32,
+					256,
+					192
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "repair",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 108,
+								"x1": 210,
+								"y0": 151,
+								"y1": 157
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 52,
+								"x1": 266,
+								"y0": 78,
+								"y1": 84
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 88,
+								"x1": 95,
+								"y0": 85,
+								"y1": 150
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 224,
+								"x1": 230,
+								"y0": 85,
+								"y1": 150
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 62,
+								"x1": 88,
+								"y0": 108,
+								"y1": 85
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 231,
+								"x1": 257,
+								"y0": 85,
+								"y1": 108
+							}
+						],
+						"title": "Bridge the missing beam and add supports"
+					},
+					{
+						"depends_on": [
+							"repair"
+						],
+						"id": "apparatus",
+						"operations": [
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 108,
+								"x1": 143,
+								"y0": 120,
+								"y1": 138
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 160,
+								"x1": 205,
+								"y0": 112,
+								"y1": 138
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 108,
+								"x1": 205,
+								"y0": 97,
+								"y1": 100
+							}
+						],
+						"title": "Add bounded upper workshop fixtures"
+					}
+				],
+				"summary": "Extend a damaged industrial room while preserving its lower service passage.",
+				"title": "Repair the relay hall",
+				"unresolved": []
+			},
+			"region": [
+				32,
+				32,
+				256,
+				192
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 9630,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 3891,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 162819,
+					"stage": "repair",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 166544,
+					"stage": "apparatus",
+					"terminal": "completed"
+				}
+			],
+			"stages": 2,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Repair the relay hall"
+		},
+		{
+			"after_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+			"before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 425293,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+					"native_changed": 11585,
+					"native_checked": 11937,
+					"native_chunks": 4,
+					"native_execution_usec": 425293,
+					"region": [
+						320,
+						1056,
+						256,
+						192
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6118,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7517,
+				"captured_cells": 49152,
+				"context_sha256": "9815fff3a94b34f4400b628e1211d9c485de219b302f28c6e28af94045303385",
+				"elapsed_usec": 19989,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 1320,
+					"cards": [
+						{
+							"authority": "accepted native authoring contract",
+							"executable": false,
+							"guidance": "Use integer material geometry and the existing native authoring owner. Rectangle endpoints are inclusive. Ordinary Art may change stored Empty (0) or Hard Wall (58), subject to its area, palette and protected regions; it cannot overwrite other stored materials. A preview or queued request is not a completed edit.",
+							"id": "native-authority",
+							"matched_terms": [
+								"material",
+								"build"
+							],
+							"path": "docs/systems/workbench-direct-art-batches.md",
+							"repository": "techrote/cybersand",
+							"source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+						},
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						}
+					],
+					"omitted": [
+						"gold-negative-space: no matching brief/style term",
+						"gold-restraint-and-identity: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 21043,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1735315,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "structural_facade",
+			"native_changed": 11585,
+			"native_checked": 11937,
+			"native_chunks": 5,
+			"native_execution_usec": 580983,
+			"preview": {
+				"configure_usec": 943,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "9815fff3a94b34f4400b628e1211d9c485de219b302f28c6e28af94045303385",
+				"elapsed_usec": 307095,
+				"error": "",
+				"maximum_poll_usec": 8613,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "7dc07444ae23c7bc5865efaa03860a01b7c8c26dd66789c8a1cdb4df3b948ac4",
+				"predicted_changed": 11585,
+				"predicted_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+				"predicted_unchanged": 352,
+				"proposal_digest": "a8c455d60da1adcffc25059ce7f8832dbe2da2242d8697f98a1c64d5ba69d796",
+				"requested": 11937,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 21043,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "c44261ae4df7fe37e814579d9197d5f3e1e66b231b09d5d996458833e10d4f65",
+						"before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+						"conflicts": 0,
+						"id": "frame",
+						"introduced": {
+							"58": 10341
+						},
+						"predicted_changed": 10341,
+						"predicted_unchanged": 352,
+						"removed": {
+							"0": 10341
+						},
+						"requested": 10693,
+						"title": "Build legible piers and floor bands"
+					},
+					{
+						"after_materials_sha256": "55882ac70288519a0621881bff6006eed7267040f4510258a508707fb822bda8",
+						"before_materials_sha256": "c44261ae4df7fe37e814579d9197d5f3e1e66b231b09d5d996458833e10d4f65",
+						"conflicts": 0,
+						"id": "bracing",
+						"introduced": {
+							"58": 632
+						},
+						"predicted_changed": 632,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 632
+						},
+						"requested": 632,
+						"title": "Brace the outer bays"
+					},
+					{
+						"after_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+						"before_materials_sha256": "55882ac70288519a0621881bff6006eed7267040f4510258a508707fb822bda8",
+						"conflicts": 0,
+						"id": "accents",
+						"introduced": {
+							"28": 612
+						},
+						"predicted_changed": 612,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 612
+						},
+						"requested": 612,
+						"title": "Differentiate upper windows and lintels"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 11585,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					320,
+					32,
+					256,
+					192
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "frame",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 340,
+								"x1": 349,
+								"y0": 47,
+								"y1": 199
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 545,
+								"x1": 554,
+								"y0": 47,
+								"y1": 199
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 340,
+								"x1": 554,
+								"y0": 47,
+								"y1": 54
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 350,
+								"x1": 544,
+								"y0": 93,
+								"y1": 98
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 350,
+								"x1": 544,
+								"y0": 143,
+								"y1": 148
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 350,
+								"x1": 544,
+								"y0": 193,
+								"y1": 199
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 396,
+								"x1": 403,
+								"y0": 55,
+								"y1": 192
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 491,
+								"x1": 498,
+								"y0": 55,
+								"y1": 192
+							}
+						],
+						"title": "Build legible piers and floor bands"
+					},
+					{
+						"depends_on": [
+							"frame"
+						],
+						"id": "bracing",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 353,
+								"x1": 391,
+								"y0": 58,
+								"y1": 89
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 504,
+								"x1": 540,
+								"y0": 89,
+								"y1": 58
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 353,
+								"x1": 391,
+								"y0": 104,
+								"y1": 139
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 504,
+								"x1": 540,
+								"y0": 139,
+								"y1": 104
+							}
+						],
+						"title": "Brace the outer bays"
+					},
+					{
+						"depends_on": [
+							"bracing"
+						],
+						"id": "accents",
+						"operations": [
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 417,
+								"x1": 472,
+								"y0": 66,
+								"y1": 69
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 417,
+								"x1": 472,
+								"y0": 112,
+								"y1": 115
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 363,
+								"x1": 383,
+								"y0": 166,
+								"y1": 169
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 512,
+								"x1": 531,
+								"y0": 166,
+								"y1": 169
+							}
+						],
+						"title": "Differentiate upper windows and lintels"
+					}
+				],
+				"summary": "Build piers, floor bands and separate material accents around open windows.",
+				"title": "A braced civic facade",
+				"unresolved": []
+			},
+			"region": [
+				320,
+				32,
+				256,
+				192
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 32628,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 21043,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 374685,
+					"stage": "frame",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 107030,
+					"stage": "bracing",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 99268,
+					"stage": "accents",
+					"terminal": "completed"
+				}
+			],
+			"stages": 3,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "A braced civic facade"
+		},
+		{
+			"after_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+			"before_materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 317659,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+					"native_changed": 7952,
+					"native_checked": 7952,
+					"native_chunks": 3,
+					"native_execution_usec": 317659,
+					"region": [
+						608,
+						1056,
+						256,
+						192
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6203,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7065,
+				"captured_cells": 49152,
+				"context_sha256": "13df5d18697115577fc71a182e90bbf30839f7df1b0a2634ae45fc9ea6aa7253",
+				"elapsed_usec": 20449,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 736,
+					"cards": [
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial",
+								"machine",
+								"workshop"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						}
+					],
+					"omitted": [
+						"native-authority: no matching brief/style term",
+						"gold-negative-space: no matching brief/style term",
+						"gold-restraint-and-identity: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 51503,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1232533,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "scifi_interior",
+			"native_changed": 7952,
+			"native_checked": 7952,
+			"native_chunks": 3,
+			"native_execution_usec": 367568,
+			"preview": {
+				"configure_usec": 894,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "13df5d18697115577fc71a182e90bbf30839f7df1b0a2634ae45fc9ea6aa7253",
+				"elapsed_usec": 165021,
+				"error": "",
+				"maximum_poll_usec": 8239,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "993b275c2a1ebef1e97fa323887d646285f8647d564db30f9734b736cfdc92e2",
+				"predicted_changed": 7952,
+				"predicted_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+				"predicted_unchanged": 0,
+				"proposal_digest": "c648657963dbb32b77fded00491361d2dc0560bd1d3e26faf89e90bdce5c5318",
+				"requested": 7952,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 51503,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "ff65a02be7a28753ee64a6c05bf2d3261f91db067b2222f35aa6bbb9295239c6",
+						"before_materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+						"conflicts": 0,
+						"id": "decks",
+						"introduced": {
+							"58": 4705
+						},
+						"predicted_changed": 4705,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 4705
+						},
+						"requested": 4705,
+						"title": "Frame upper labs and lower plant"
+					},
+					{
+						"after_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+						"before_materials_sha256": "ff65a02be7a28753ee64a6c05bf2d3261f91db067b2222f35aa6bbb9295239c6",
+						"conflicts": 0,
+						"id": "services",
+						"introduced": {
+							"28": 3247
+						},
+						"predicted_changed": 3247,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 3247
+						},
+						"requested": 3247,
+						"title": "Add machinery with a readable hierarchy"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 7952,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					608,
+					32,
+					256,
+					192
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "decks",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 633,
+								"x1": 837,
+								"y0": 104,
+								"y1": 111
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 633,
+								"x1": 837,
+								"y0": 158,
+								"y1": 165
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 679,
+								"x1": 686,
+								"y0": 51,
+								"y1": 103
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 782,
+								"x1": 788,
+								"y0": 51,
+								"y1": 103
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 679,
+								"x1": 686,
+								"y0": 166,
+								"y1": 207
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 782,
+								"x1": 788,
+								"y0": 166,
+								"y1": 207
+							}
+						],
+						"title": "Frame upper labs and lower plant"
+					},
+					{
+						"depends_on": [
+							"decks"
+						],
+						"id": "services",
+						"operations": [
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 638,
+								"x1": 663,
+								"y0": 66,
+								"y1": 88
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 700,
+								"x1": 758,
+								"y0": 74,
+								"y1": 88
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 802,
+								"x1": 827,
+								"y0": 62,
+								"y1": 88
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 700,
+								"x1": 758,
+								"y0": 181,
+								"y1": 198
+							}
+						],
+						"title": "Add machinery with a readable hierarchy"
+					}
+				],
+				"summary": "Upper workshops and lower machinery flank a protected clear concourse.",
+				"title": "Orbital transit interior",
+				"unresolved": []
+			},
+			"region": [
+				608,
+				32,
+				256,
+				192
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 59455,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 51503,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 217501,
+					"stage": "decks",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 150067,
+					"stage": "services",
+					"terminal": "completed"
+				}
+			],
+			"stages": 2,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Orbital transit interior"
+		},
+		{
+			"after_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+			"before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 297620,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+					"native_changed": 6229,
+					"native_checked": 6259,
+					"native_chunks": 3,
+					"native_execution_usec": 297620,
+					"region": [
+						32,
+						1280,
+						256,
+						192
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6118,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7509,
+				"captured_cells": 49152,
+				"context_sha256": "0985cf8f87c25a1b2ef51e9473efb8d799046d4de57d20a0efdcd93541775d6b",
+				"elapsed_usec": 20179,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 1312,
+					"cards": [
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "accepted native authoring contract",
+							"executable": false,
+							"guidance": "Use integer material geometry and the existing native authoring owner. Rectangle endpoints are inclusive. Ordinary Art may change stored Empty (0) or Hard Wall (58), subject to its area, palette and protected regions; it cannot overwrite other stored materials. A preview or queued request is not a completed edit.",
+							"id": "native-authority",
+							"matched_terms": [
+								"material"
+							],
+							"path": "docs/systems/workbench-direct-art-batches.md",
+							"repository": "techrote/cybersand",
+							"source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+						}
+					],
+					"omitted": [
+						"gold-negative-space: no matching brief/style term",
+						"gold-restraint-and-identity: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 74697,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1603501,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "revised_arcology",
+			"native_changed": 6229,
+			"native_checked": 6259,
+			"native_chunks": 4,
+			"native_execution_usec": 453054,
+			"preview": {
+				"configure_usec": 879,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "0985cf8f87c25a1b2ef51e9473efb8d799046d4de57d20a0efdcd93541775d6b",
+				"elapsed_usec": 206691,
+				"error": "",
+				"maximum_poll_usec": 8566,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "43375926572afc2dcc921f16149c56b59545077ddbd5eda04aaaa5ec4b968957",
+				"predicted_changed": 6229,
+				"predicted_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+				"predicted_unchanged": 30,
+				"proposal_digest": "4ffd627d31a2e1d3f4eb3f6c5349c55f2719fea86121b072623916a775c91fa9",
+				"requested": 6259,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 74697,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "c6a7d7eea4e365eaf4c7b8133f94d4f5d68649e63bdcd62583cc0ab524ac5c85",
+						"before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+						"conflicts": 0,
+						"id": "terraces",
+						"introduced": {
+							"58": 3409
+						},
+						"predicted_changed": 3409,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 3409
+						},
+						"requested": 3409,
+						"title": "Build three receding terraces"
+					},
+					{
+						"after_materials_sha256": "b2017b377b86497e354fdb3113988c6cdf16301fbb663e2576d674ca772cc155",
+						"before_materials_sha256": "c6a7d7eea4e365eaf4c7b8133f94d4f5d68649e63bdcd62583cc0ab524ac5c85",
+						"conflicts": 0,
+						"id": "supports",
+						"introduced": {
+							"58": 1873
+						},
+						"predicted_changed": 1873,
+						"predicted_unchanged": 12,
+						"removed": {
+							"0": 1873
+						},
+						"requested": 1885,
+						"title": "Connect terraces with visible supports"
+					},
+					{
+						"after_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+						"before_materials_sha256": "b2017b377b86497e354fdb3113988c6cdf16301fbb663e2576d674ca772cc155",
+						"conflicts": 0,
+						"id": "crown",
+						"introduced": {
+							"28": 123,
+							"58": 824
+						},
+						"predicted_changed": 947,
+						"predicted_unchanged": 18,
+						"removed": {
+							"0": 947
+						},
+						"requested": 965,
+						"title": "Give the upper tier a distinct profile"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 6229,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					32,
+					256,
+					256,
+					192
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "terraces",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 52,
+								"x1": 266,
+								"y0": 419,
+								"y1": 425
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 83,
+								"x1": 246,
+								"y0": 371,
+								"y1": 377
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 121,
+								"x1": 228,
+								"y0": 323,
+								"y1": 329
+							}
+						],
+						"title": "Build three receding terraces"
+					},
+					{
+						"depends_on": [
+							"terraces"
+						],
+						"id": "supports",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 67,
+								"x1": 77,
+								"y0": 378,
+								"y1": 418
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 231,
+								"x1": 240,
+								"y0": 378,
+								"y1": 418
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 101,
+								"x1": 110,
+								"y0": 330,
+								"y1": 370
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 211,
+								"x1": 220,
+								"y0": 330,
+								"y1": 370
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 78,
+								"x1": 96,
+								"y0": 409,
+								"y1": 382
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 221,
+								"x1": 231,
+								"y0": 382,
+								"y1": 409
+							}
+						],
+						"title": "Connect terraces with visible supports"
+					},
+					{
+						"depends_on": [
+							"supports"
+						],
+						"id": "crown",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 131,
+								"x1": 138,
+								"y0": 290,
+								"y1": 322
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 208,
+								"x1": 215,
+								"y0": 280,
+								"y1": 322
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 136,
+								"x1": 211,
+								"y0": 290,
+								"y1": 280
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 149,
+								"x1": 189,
+								"y0": 302,
+								"y1": 304
+							}
+						],
+						"title": "Give the upper tier a distinct profile"
+					}
+				],
+				"summary": "A staged composition ready for taller, leaner or material-focused revisions.",
+				"title": "Terraced arcology study",
+				"unresolved": []
+			},
+			"region": [
+				32,
+				256,
+				256,
+				192
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 80926,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 74697,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 151111,
+					"stage": "terraces",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 147559,
+					"stage": "supports",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 154384,
+					"stage": "crown",
+					"terminal": "completed"
+				}
+			],
+			"stages": 3,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Terraced arcology study"
+		},
+		{
+			"after_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+			"before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 254835,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+					"native_changed": 5910,
+					"native_checked": 5910,
+					"native_chunks": 3,
+					"native_execution_usec": 254835,
+					"region": [
+						320,
+						1280,
+						256,
+						192
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6193,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7712,
+				"captured_cells": 49152,
+				"context_sha256": "ae232642173370cddb7d2b75738631dd1be26384282129b28154f61d8b6db16d",
+				"elapsed_usec": 20322,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 1443,
+					"cards": [
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial",
+								"structure"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "source-pinned evaluation rubric; not owner adoption",
+							"executable": false,
+							"guidance": "Treat useful negative space and preservation of original spatial logic as explicit design goals. Protect named passages geometrically. A static clear opening is not proof of actor reachability or playfeel; evaluate the intended actor and route separately. Loss of a protected route or void is a regression even if detail increases.",
+							"id": "gold-negative-space",
+							"matched_terms": [
+								"courtyard"
+							],
+							"path": "docs/corpus/goldmaps-finalisation-001/science/rubric.v1.json",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "256b609b1f5c18cfee0f2f5f7b0435c517b52681",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						}
+					],
+					"omitted": [
+						"native-authority: no matching brief/style term",
+						"gold-restraint-and-identity: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 92523,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1194459,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "protected_courtyard",
+			"native_changed": 5910,
+			"native_checked": 5910,
+			"native_chunks": 4,
+			"native_execution_usec": 350242,
+			"preview": {
+				"configure_usec": 925,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "ae232642173370cddb7d2b75738631dd1be26384282129b28154f61d8b6db16d",
+				"elapsed_usec": 160975,
+				"error": "",
+				"maximum_poll_usec": 8785,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "145d04a7288b12c08ef08520d8049307487703a3a155487701695b52579178a3",
+				"predicted_changed": 5910,
+				"predicted_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+				"predicted_unchanged": 0,
+				"proposal_digest": "7156f47daa179c41f101f0a2fb215a0acc4eb4c532b3c8b9b5e391debd7b544c",
+				"requested": 5910,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 92523,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "8f5b016b6b5371e162ad7802706a1f7cffa7da824ddb698128d06ca9278889a8",
+						"before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+						"conflicts": 0,
+						"id": "enclosure",
+						"introduced": {
+							"58": 4668
+						},
+						"predicted_changed": 4668,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 4668
+						},
+						"requested": 4668,
+						"title": "Frame the preserved central monument"
+					},
+					{
+						"after_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+						"before_materials_sha256": "8f5b016b6b5371e162ad7802706a1f7cffa7da824ddb698128d06ca9278889a8",
+						"conflicts": 0,
+						"id": "galleries",
+						"introduced": {
+							"28": 966,
+							"58": 276
+						},
+						"predicted_changed": 1242,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 1242
+						},
+						"requested": 1242,
+						"title": "Add side galleries without crossing the protected volume"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 5910,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					320,
+					256,
+					256,
+					192
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "enclosure",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 350,
+								"x1": 544,
+								"y0": 290,
+								"y1": 297
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 350,
+								"x1": 359,
+								"y0": 298,
+								"y1": 423
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 535,
+								"x1": 544,
+								"y0": 298,
+								"y1": 423
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 360,
+								"x1": 408,
+								"y0": 344,
+								"y1": 349
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 486,
+								"x1": 534,
+								"y0": 344,
+								"y1": 349
+							}
+						],
+						"title": "Frame the preserved central monument"
+					},
+					{
+						"depends_on": [
+							"enclosure"
+						],
+						"id": "galleries",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 366,
+								"x1": 396,
+								"y0": 305,
+								"y1": 336
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 3,
+								"x0": 499,
+								"x1": 529,
+								"y0": 336,
+								"y1": 305
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 371,
+								"x1": 393,
+								"y0": 369,
+								"y1": 389
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 501,
+								"x1": 523,
+								"y0": 369,
+								"y1": 389
+							}
+						],
+						"title": "Add side galleries without crossing the protected volume"
+					}
+				],
+				"summary": "A protected central structure remains untouched inside a new courtyard frame.",
+				"title": "Build around the old monument",
+				"unresolved": []
+			},
+			"region": [
+				320,
+				256,
+				256,
+				192
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 98433,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 92523,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 201338,
+					"stage": "enclosure",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 148904,
+					"stage": "galleries",
+					"terminal": "completed"
+				}
+			],
+			"stages": 2,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Build around the old monument"
+		},
+		{
+			"after_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+			"before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 421359,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+					"native_changed": 10456,
+					"native_checked": 10456,
+					"native_chunks": 3,
+					"native_execution_usec": 421359,
+					"region": [
+						608,
+						1280,
+						256,
+						192
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6171,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7688,
+				"captured_cells": 49152,
+				"context_sha256": "e6927744b09ab5c35fc07210758b9f7ffce354520f9ff0ae6b7a20a26b51ee71",
+				"elapsed_usec": 20640,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 1449,
+					"cards": [
+						{
+							"authority": "source-pinned evaluation rubric; not owner adoption",
+							"executable": false,
+							"guidance": "Preserve distinctive and damaged features when they carry the scene's identity. Compare silhouette, material hierarchy and relational specificity rather than treating more filled cells as better art. A justified no-change proposal can preserve a successful composition. Remaining subjective disagreement must be exposed to the owner.",
+							"id": "gold-restraint-and-identity",
+							"matched_terms": [
+								"distinct",
+								"detail"
+							],
+							"path": "docs/corpus/goldmaps-finalisation-001/science/rubric.v1.json",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "256b609b1f5c18cfee0f2f5f7b0435c517b52681",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						}
+					],
+					"omitted": [
+						"native-authority: no matching brief/style term",
+						"gold-negative-space: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 109711,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1650721,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "palette_foundry",
+			"native_changed": 10456,
+			"native_checked": 10456,
+			"native_chunks": 4,
+			"native_execution_usec": 514663,
+			"preview": {
+				"configure_usec": 1029,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "e6927744b09ab5c35fc07210758b9f7ffce354520f9ff0ae6b7a20a26b51ee71",
+				"elapsed_usec": 270348,
+				"error": "",
+				"maximum_poll_usec": 8578,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "0b2e40f4ba79ef6ba59d6f963d315651a7ae81cf16bfe3e08a99dd17d5f60f49",
+				"predicted_changed": 10456,
+				"predicted_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+				"predicted_unchanged": 0,
+				"proposal_digest": "1dd1e3a579e3fdedb22f0be4145b4ea08f5ed6faa3ad5a7ea178dbc83e5fa26c",
+				"requested": 10456,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 109711,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "b14ff70e3b51260d45d1b93656772051709ff83ca7c2aa92056c3833271f760e",
+						"before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+						"conflicts": 0,
+						"id": "structure",
+						"introduced": {
+							"58": 7287
+						},
+						"predicted_changed": 7287,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 7287
+						},
+						"requested": 7287,
+						"title": "Lay out the foundry frame"
+					},
+					{
+						"after_materials_sha256": "33b5e33110e1a1866cd809689b84129a2a10bba8a3c031bbd569aa34090e5240",
+						"before_materials_sha256": "b14ff70e3b51260d45d1b93656772051709ff83ca7c2aa92056c3833271f760e",
+						"conflicts": 0,
+						"id": "machines",
+						"introduced": {
+							"28": 2641
+						},
+						"predicted_changed": 2641,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 2641
+						},
+						"requested": 2641,
+						"title": "Place differentiated apparatus bodies"
+					},
+					{
+						"after_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+						"before_materials_sha256": "33b5e33110e1a1866cd809689b84129a2a10bba8a3c031bbd569aa34090e5240",
+						"conflicts": 0,
+						"id": "details",
+						"introduced": {
+							"28": 528
+						},
+						"predicted_changed": 528,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 528
+						},
+						"requested": 528,
+						"title": "Repeat finite suspended panels"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 10456,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					608,
+					256,
+					256,
+					192
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "structure",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 623,
+								"x1": 847,
+								"y0": 275,
+								"y1": 281
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 623,
+								"x1": 632,
+								"y0": 282,
+								"y1": 431
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 838,
+								"x1": 847,
+								"y0": 282,
+								"y1": 431
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 633,
+								"x1": 837,
+								"y0": 390,
+								"y1": 397
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 674,
+								"x1": 681,
+								"y0": 323,
+								"y1": 389
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 789,
+								"x1": 796,
+								"y0": 323,
+								"y1": 389
+							}
+						],
+						"title": "Lay out the foundry frame"
+					},
+					{
+						"depends_on": [
+							"structure"
+						],
+						"id": "machines",
+						"operations": [
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 643,
+								"x1": 663,
+								"y0": 340,
+								"y1": 370
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 700,
+								"x1": 755,
+								"y0": 348,
+								"y1": 370
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 810,
+								"x1": 827,
+								"y0": 332,
+								"y1": 370
+							}
+						],
+						"title": "Place differentiated apparatus bodies"
+					},
+					{
+						"depends_on": [
+							"machines"
+						],
+						"id": "details",
+						"operations": [
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 651,
+								"x1": 658,
+								"y0": 300,
+								"y1": 310
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 676,
+								"x1": 683,
+								"y0": 300,
+								"y1": 310
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 701,
+								"x1": 708,
+								"y0": 300,
+								"y1": 310
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 726,
+								"x1": 733,
+								"y0": 300,
+								"y1": 310
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 751,
+								"x1": 758,
+								"y0": 300,
+								"y1": 310
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 776,
+								"x1": 783,
+								"y0": 300,
+								"y1": 310
+							}
+						],
+						"title": "Repeat finite suspended panels"
+					}
+				],
+				"summary": "Structural frames, apparatus bodies and bounded repeated details have distinct roles.",
+				"title": "Palette-led foundry",
+				"unresolved": []
+			},
+			"region": [
+				608,
+				256,
+				256,
+				192
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 120167,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 109711,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 265991,
+					"stage": "structure",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 149873,
+					"stage": "machines",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 98799,
+					"stage": "details",
+					"terminal": "completed"
+				}
+			],
+			"stages": 3,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Palette-led foundry"
+		},
+		{
+			"after_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+			"before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 2137393,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+					"native_changed": 31284,
+					"native_checked": 31284,
+					"native_chunks": 11,
+					"native_execution_usec": 2137393,
+					"region": [
+						32,
+						1536,
+						384,
+						256
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6176,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7027,
+				"captured_cells": 98304,
+				"context_sha256": "0918220e0e84d59dba610cda7e8150a8c6c6cb6ab4cb17ef2e8c4e766d7c6c4e",
+				"elapsed_usec": 38967,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 725,
+					"cards": [
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial",
+								"support"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						}
+					],
+					"omitted": [
+						"native-authority: no matching brief/style term",
+						"gold-negative-space: no matching brief/style term",
+						"gold-restraint-and-identity: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 136238,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 4370499,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "stopped_workshop",
+			"native_changed": 31284,
+			"native_checked": 31284,
+			"native_chunks": 11,
+			"native_execution_usec": 2473128,
+			"preview": {
+				"configure_usec": 1772,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "0918220e0e84d59dba610cda7e8150a8c6c6cb6ab4cb17ef2e8c4e766d7c6c4e",
+				"elapsed_usec": 1159895,
+				"error": "",
+				"maximum_poll_usec": 12334,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "e9597ea2891c7ff71b526b4fd8f95fba168aaf054c4d4438407e6e8eff6750c5",
+				"predicted_changed": 31284,
+				"predicted_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+				"predicted_unchanged": 0,
+				"proposal_digest": "657409c7fef3c39556f3b2943e3670f69409fd4179aea16b411ba7c8dbda6579",
+				"requested": 31284,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 136238,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "e61322f10c027a2d29d20e5e6e3210e869cc97d191662e5f70019f48b84bae78",
+						"before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+						"conflicts": 0,
+						"id": "roof",
+						"introduced": {
+							"58": 27385
+						},
+						"predicted_changed": 27385,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 27385
+						},
+						"requested": 27385,
+						"title": "Construct the substantial roof in native chunks"
+					},
+					{
+						"after_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+						"before_materials_sha256": "e61322f10c027a2d29d20e5e6e3210e869cc97d191662e5f70019f48b84bae78",
+						"conflicts": 0,
+						"id": "workbays",
+						"introduced": {
+							"28": 1829,
+							"58": 2070
+						},
+						"predicted_changed": 3899,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 3899
+						},
+						"requested": 3899,
+						"title": "Add separated work bays after the roof"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 31284,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					32,
+					512,
+					384,
+					256
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "roof",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 47,
+								"x1": 399,
+								"y0": 532,
+								"y1": 592
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 47,
+								"x1": 65,
+								"y0": 593,
+								"y1": 746
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 381,
+								"x1": 399,
+								"y0": 593,
+								"y1": 746
+							}
+						],
+						"title": "Construct the substantial roof in native chunks"
+					},
+					{
+						"depends_on": [
+							"roof"
+						],
+						"id": "workbays",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 89,
+								"x1": 157,
+								"y0": 660,
+								"y1": 669
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 189,
+								"x1": 257,
+								"y0": 660,
+								"y1": 669
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 289,
+								"x1": 357,
+								"y0": 660,
+								"y1": 669
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 108,
+								"x1": 138,
+								"y0": 624,
+								"y1": 641
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 208,
+								"x1": 238,
+								"y0": 614,
+								"y1": 641
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 308,
+								"x1": 338,
+								"y0": 629,
+								"y1": 641
+							}
+						],
+						"title": "Add separated work bays after the roof"
+					}
+				],
+				"summary": "A substantial roof and finite fixtures support Stop, acknowledged-prefix review and replan.",
+				"title": "Interrupted fabrication hall",
+				"unresolved": []
+			},
+			"region": [
+				32,
+				512,
+				384,
+				256
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 167522,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 136238,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 1960870,
+					"stage": "roof",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 512258,
+					"stage": "workbays",
+					"terminal": "completed"
+				}
+			],
+			"stages": 2,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Interrupted fabrication hall"
+		},
+		{
+			"after_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+			"before_materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 3104569,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+					"native_changed": 96737,
+					"native_checked": 100397,
+					"native_chunks": 27,
+					"native_execution_usec": 3104569,
+					"region": [
+						960,
+						1056,
+						512,
+						512
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6662,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 8051,
+				"captured_cells": 262144,
+				"context_sha256": "87f050a760f0b01be4ecda80226b6d78e054d54ecdb90e67ed377e6728e0f2f4",
+				"elapsed_usec": 107814,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 1310,
+					"cards": [
+						{
+							"authority": "source-pinned research interpretation; owner aesthetic acceptance pending",
+							"executable": false,
+							"guidance": "Make support relationships and the connection between apparatus and its workspace legible. An entered receiver gallery, differentiated machine surfaces and visible supporting members can express architectural intent. Material geometry that resembles machinery does not establish functional simulation.",
+							"id": "gold-support-and-workspace",
+							"matched_terms": [
+								"industrial"
+							],
+							"path": "docs/corpus/goldmaps-recovery-001/D1-D2-REFERENCE-REVIEW.md",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "3c8e134b52e2bc46f399ee3173f15d9472c8957b",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "accepted native authoring contract",
+							"executable": false,
+							"guidance": "Use integer material geometry and the existing native authoring owner. Rectangle endpoints are inclusive. Ordinary Art may change stored Empty (0) or Hard Wall (58), subject to its area, palette and protected regions; it cannot overwrite other stored materials. A preview or queued request is not a completed edit.",
+							"id": "native-authority",
+							"matched_terms": [
+								"native"
+							],
+							"path": "docs/systems/workbench-direct-art-batches.md",
+							"repository": "techrote/cybersand",
+							"source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+						}
+					],
+					"omitted": [
+						"gold-negative-space: no matching brief/style term",
+						"gold-restraint-and-identity: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 212856,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 10768299,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "staged_megaframe",
+			"native_changed": 96737,
+			"native_checked": 100397,
+			"native_chunks": 29,
+			"native_execution_usec": 3482666,
+			"preview": {
+				"configure_usec": 4339,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "87f050a760f0b01be4ecda80226b6d78e054d54ecdb90e67ed377e6728e0f2f4",
+				"elapsed_usec": 2918999,
+				"error": "",
+				"maximum_poll_usec": 16456,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "45a8ff747a3bc0be878b2275a9c80d4a98c3895414488a61875d8268c816cc75",
+				"predicted_changed": 96737,
+				"predicted_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+				"predicted_unchanged": 3660,
+				"proposal_digest": "1939bc2fb43f8f1eb3aa341deab10ffd597fcace10d9525c8b8215c39360a905",
+				"requested": 100397,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 212856,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "0d0d5c6a216e4501ee547f9f8ffd728d74a4a15f1fcf809f37226bb42c9aab61",
+						"before_materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+						"conflicts": 0,
+						"id": "foundation",
+						"introduced": {
+							"58": 29446
+						},
+						"predicted_changed": 29446,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 29446
+						},
+						"requested": 29446,
+						"title": "Install the foundation and outer piers"
+					},
+					{
+						"after_materials_sha256": "52880cb363f6d913da510774958a457cbf9528ca9d04f2c6ffe9afa7bde74208",
+						"before_materials_sha256": "0d0d5c6a216e4501ee547f9f8ffd728d74a4a15f1fcf809f37226bb42c9aab61",
+						"conflicts": 0,
+						"id": "columns",
+						"introduced": {
+							"58": 23940
+						},
+						"predicted_changed": 23940,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 23940
+						},
+						"requested": 23940,
+						"title": "Raise internal structural columns"
+					},
+					{
+						"after_materials_sha256": "9970ed47ac24f6d5c579f6ecf219fe8543cc53ce40f92f774036544a2a697206",
+						"before_materials_sha256": "52880cb363f6d913da510774958a457cbf9528ca9d04f2c6ffe9afa7bde74208",
+						"conflicts": 0,
+						"id": "storeys",
+						"introduced": {
+							"58": 22631
+						},
+						"predicted_changed": 22631,
+						"predicted_unchanged": 3660,
+						"removed": {
+							"0": 22631
+						},
+						"requested": 26291,
+						"title": "Connect the four storeys"
+					},
+					{
+						"after_materials_sha256": "bcba0adc507e77d36538cef9f19424523969c8d25cdacf28536b4f53800db244",
+						"before_materials_sha256": "9970ed47ac24f6d5c579f6ecf219fe8543cc53ce40f92f774036544a2a697206",
+						"conflicts": 0,
+						"id": "braces",
+						"introduced": {
+							"58": 3264
+						},
+						"predicted_changed": 3264,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 3264
+						},
+						"requested": 3264,
+						"title": "Brace alternating perimeter bays"
+					},
+					{
+						"after_materials_sha256": "98cfa6f9eb189cac78939118d9248d3b96fc56f59c9977e0dd9334ae7e22bfb2",
+						"before_materials_sha256": "bcba0adc507e77d36538cef9f19424523969c8d25cdacf28536b4f53800db244",
+						"conflicts": 0,
+						"id": "canopy",
+						"introduced": {
+							"58": 7980
+						},
+						"predicted_changed": 7980,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 7980
+						},
+						"requested": 7980,
+						"title": "Add a stepped canopy and short upper rails"
+					},
+					{
+						"after_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+						"before_materials_sha256": "98cfa6f9eb189cac78939118d9248d3b96fc56f59c9977e0dd9334ae7e22bfb2",
+						"conflicts": 0,
+						"id": "apparatus",
+						"introduced": {
+							"28": 9476
+						},
+						"predicted_changed": 9476,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 9476
+						},
+						"requested": 9476,
+						"title": "Differentiate six bounded machines and control strips"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 96737,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					960,
+					32,
+					512,
+					512
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "foundation",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 980,
+								"x1": 1450,
+								"y0": 492,
+								"y1": 517
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 980,
+								"x1": 999,
+								"y0": 62,
+								"y1": 491
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1431,
+								"x1": 1450,
+								"y0": 62,
+								"y1": 491
+							}
+						],
+						"title": "Install the foundation and outer piers"
+					},
+					{
+						"depends_on": [
+							"foundation"
+						],
+						"id": "columns",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1052,
+								"x1": 1066,
+								"y0": 93,
+								"y1": 491
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1154,
+								"x1": 1168,
+								"y0": 93,
+								"y1": 491
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1256,
+								"x1": 1270,
+								"y0": 93,
+								"y1": 491
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1358,
+								"x1": 1372,
+								"y0": 93,
+								"y1": 491
+							}
+						],
+						"title": "Raise internal structural columns"
+					},
+					{
+						"depends_on": [
+							"columns"
+						],
+						"id": "storeys",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1000,
+								"x1": 1430,
+								"y0": 93,
+								"y1": 107
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1000,
+								"x1": 1430,
+								"y0": 200,
+								"y1": 215
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1000,
+								"x1": 1430,
+								"y0": 308,
+								"y1": 322
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1000,
+								"x1": 1430,
+								"y0": 416,
+								"y1": 430
+							}
+						],
+						"title": "Connect the four storeys"
+					},
+					{
+						"depends_on": [
+							"storeys"
+						],
+						"id": "braces",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 10,
+								"x0": 1006,
+								"x1": 1041,
+								"y0": 119,
+								"y1": 185
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 10,
+								"x0": 1390,
+								"x1": 1420,
+								"y0": 185,
+								"y1": 119
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 10,
+								"x0": 1006,
+								"x1": 1041,
+								"y0": 334,
+								"y1": 400
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 10,
+								"x0": 1390,
+								"x1": 1420,
+								"y0": 400,
+								"y1": 334
+							}
+						],
+						"title": "Brace alternating perimeter bays"
+					},
+					{
+						"depends_on": [
+							"braces"
+						],
+						"id": "canopy",
+						"operations": [
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1026,
+								"x1": 1404,
+								"y0": 57,
+								"y1": 66
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1093,
+								"x1": 1337,
+								"y0": 42,
+								"y1": 56
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1082,
+								"x1": 1133,
+								"y0": 124,
+								"y1": 128
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 1287,
+								"x1": 1337,
+								"y0": 339,
+								"y1": 343
+							}
+						],
+						"title": "Add a stepped canopy and short upper rails"
+					},
+					{
+						"depends_on": [
+							"canopy"
+						],
+						"id": "apparatus",
+						"operations": [
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 1088,
+								"x1": 1133,
+								"y0": 144,
+								"y1": 179
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 1190,
+								"x1": 1235,
+								"y0": 241,
+								"y1": 281
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 1292,
+								"x1": 1337,
+								"y0": 144,
+								"y1": 179
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 1088,
+								"x1": 1133,
+								"y0": 359,
+								"y1": 394
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 1190,
+								"x1": 1235,
+								"y0": 456,
+								"y1": 476
+							},
+							{
+								"material": 28,
+								"shape": "rectangle",
+								"x0": 1292,
+								"x1": 1337,
+								"y0": 359,
+								"y1": 394
+							}
+						],
+						"title": "Differentiate six bounded machines and control strips"
+					}
+				],
+				"summary": "Six separately approved native stages form a large industrial environment.",
+				"title": "Four-storey megaframe",
+				"unresolved": []
+			},
+			"region": [
+				960,
+				32,
+				512,
+				512
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 309593,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 212856,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 945325,
+					"stage": "foundation",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 740654,
+					"stage": "columns",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 856048,
+					"stage": "storeys",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 248595,
+					"stage": "braces",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 315045,
+					"stage": "canopy",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 376999,
+					"stage": "apparatus",
+					"terminal": "completed"
+				}
+			],
+			"stages": 6,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Four-storey megaframe"
+		},
+		{
+			"after_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+			"before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+			"comparisons": [
+				{
+					"arm": "existing_direct_matched_geometry",
+					"complete_material_plane_matches": true,
+					"elapsed_usec": 442354,
+					"interpretation": "Same deterministic geometry and same protected areas; this measures execution compatibility/cost, not model creativity.",
+					"material_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+					"native_changed": 8504,
+					"native_checked": 8660,
+					"native_chunks": 4,
+					"native_execution_usec": 442354,
+					"region": [
+						480,
+						1536,
+						384,
+						256
+					],
+					"timing_scope": "Single ordinary executor submit through executor terminal; excludes baseline setup, native readback and artifacts."
+				},
+				{
+					"arm": "knowledge_disabled_fixed_proposal",
+					"context_bytes": 6176,
+					"interpretation": "Frozen identical packets; no causal retrieval or creative improvement can be inferred.",
+					"model_calls": 0,
+					"same_predicted_material_plane": true
+				}
+			],
+			"constraint_preservation": true,
+			"context_inspector": {
+				"budget_bytes": 24576,
+				"bytes": 7593,
+				"captured_cells": 98304,
+				"context_sha256": "bcfcaf8c489565abe12c042284599826d2bc5d51b4f1b14ee1595f7a4f7d4cda",
+				"elapsed_usec": 47325,
+				"included": [
+					"Native source identity and selected rectangle",
+					"Owner palette/protection/destructive permission",
+					"Bounded pinned brief and acknowledged current-session decisions",
+					"Exact native material histogram",
+					"16 by 16 occupancy summary and at most 32 observed cells",
+					"Source-pinned bounded knowledge selected by brief/style terms"
+				],
+				"knowledge": {
+					"authority": "Untrusted reference data; never execution instructions or approval.",
+					"budget_bytes": 4096,
+					"bytes": 1339,
+					"cards": [
+						{
+							"authority": "source-pinned evaluation rubric; not owner adoption",
+							"executable": false,
+							"guidance": "Preserve distinctive and damaged features when they carry the scene's identity. Compare silhouette, material hierarchy and relational specificity rather than treating more filled cells as better art. A justified no-change proposal can preserve a successful composition. Remaining subjective disagreement must be exposed to the owner.",
+							"id": "gold-restraint-and-identity",
+							"matched_terms": [
+								"irregular",
+								"alien",
+								"organic"
+							],
+							"path": "docs/corpus/goldmaps-finalisation-001/science/rubric.v1.json",
+							"repository": "techrote/sandmapsreference",
+							"source_blob": "256b609b1f5c18cfee0f2f5f7b0435c517b52681",
+							"source_commit": "b9535405853a5cd16e4bba968ec7167222861c42"
+						},
+						{
+							"authority": "accepted native authoring contract",
+							"executable": false,
+							"guidance": "Use integer material geometry and the existing native authoring owner. Rectangle endpoints are inclusive. Ordinary Art may change stored Empty (0) or Hard Wall (58), subject to its area, palette and protected regions; it cannot overwrite other stored materials. A preview or queued request is not a completed edit.",
+							"id": "native-authority",
+							"matched_terms": [
+								"native"
+							],
+							"path": "docs/systems/workbench-direct-art-batches.md",
+							"repository": "techrote/cybersand",
+							"source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+						}
+					],
+					"omitted": [
+						"gold-support-and-workspace: no matching brief/style term",
+						"gold-negative-space: no matching brief/style term"
+					],
+					"schema": "cybersand-art-knowledge-v1",
+					"selection": "bounded deterministic keyword relevance; no claim of improved model creativity"
+				},
+				"materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+				"omitted": [
+					"Full desktop and unrelated windows",
+					"Provider credentials and private files",
+					"Historical audit contents",
+					"Unselected World regions",
+					"Full native material plane",
+					"Automatic cross-session conversation restoration",
+					"Actor/physics inferences not observed by the capture"
+				],
+				"provenance": "workbench_paint_editor_executor.gd native capture; no image-to-material inference",
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 420380,
+					"tick": 0
+				}
+			},
+			"elapsed_usec": 1890754,
+			"evidence_kind": "deterministic host-authored fixture; zero model inference",
+			"id": "xeno_vault",
+			"native_changed": 8504,
+			"native_checked": 8660,
+			"native_chunks": 4,
+			"native_execution_usec": 548516,
+			"preview": {
+				"configure_usec": 1880,
+				"conflict_count": 0,
+				"conflicts": [],
+				"conflicts_omitted": 0,
+				"context_digest": "bcfcaf8c489565abe12c042284599826d2bc5d51b4f1b14ee1595f7a4f7d4cda",
+				"elapsed_usec": 315928,
+				"error": "",
+				"maximum_poll_usec": 10414,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": true,
+				"policy_digest": "04904bdb276157aa712b0475276215b6940162acdeea4bc13c84bf709eb6d758",
+				"predicted_changed": 8504,
+				"predicted_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+				"predicted_unchanged": 156,
+				"proposal_digest": "5cc9ac938f2e31c0515e54186278127238c0a65c91e73fc9be6ed89342593b21",
+				"requested": 8660,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 420380,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "858466d9c6a5a5f126cf114f706a3052068ef41e405f30024566001a424f2953",
+						"before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+						"conflicts": 0,
+						"id": "ribs",
+						"introduced": {
+							"58": 6538
+						},
+						"predicted_changed": 6538,
+						"predicted_unchanged": 156,
+						"removed": {
+							"0": 6538
+						},
+						"requested": 6694,
+						"title": "Sweep irregular native ribs around an open chamber"
+					},
+					{
+						"after_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+						"before_materials_sha256": "858466d9c6a5a5f126cf114f706a3052068ef41e405f30024566001a424f2953",
+						"conflicts": 0,
+						"id": "organs",
+						"introduced": {
+							"28": 1966
+						},
+						"predicted_changed": 1966,
+						"predicted_unchanged": 0,
+						"removed": {
+							"0": 1966
+						},
+						"requested": 1966,
+						"title": "Suspend finite distinct organic forms"
+					}
+				],
+				"status": "ready",
+				"zero_native_writes": true
+			},
+			"preview_changed": 8504,
+			"proposal": {
+				"assumptions": [
+					"Decorative apparatus is native material geometry, not a functional machine."
+				],
+				"region": [
+					480,
+					512,
+					384,
+					256
+				],
+				"schema": "cybersand-art-proposal-v1",
+				"stages": [
+					{
+						"depends_on": [],
+						"id": "ribs",
+						"operations": [
+							{
+								"material": 58,
+								"points": [
+									[
+										526,
+										742
+									],
+									[
+										549,
+										634
+									],
+									[
+										614,
+										558
+									],
+									[
+										702,
+										542
+									],
+									[
+										787,
+										599
+									],
+									[
+										825,
+										742
+									]
+								],
+								"shape": "polyline",
+								"width": 7
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 5,
+								"x0": 568,
+								"x1": 625,
+								"y0": 619,
+								"y1": 586
+							},
+							{
+								"material": 58,
+								"shape": "line",
+								"width": 5,
+								"x0": 733,
+								"x1": 787,
+								"y0": 578,
+								"y1": 632
+							},
+							{
+								"material": 58,
+								"shape": "rectangle",
+								"x0": 556,
+								"x1": 793,
+								"y0": 729,
+								"y1": 736
+							}
+						],
+						"title": "Sweep irregular native ribs around an open chamber"
+					},
+					{
+						"depends_on": [
+							"ribs"
+						],
+						"id": "organs",
+						"operations": [
+							{
+								"material": 28,
+								"radius": 15,
+								"shape": "disc",
+								"x": 645,
+								"y": 624
+							},
+							{
+								"material": 28,
+								"radius": 20,
+								"shape": "disc",
+								"x": 733,
+								"y": 657
+							}
+						],
+						"title": "Suspend finite distinct organic forms"
+					}
+				],
+				"summary": "Irregular rounded ribs and suspended forms use the same finite native authorities.",
+				"title": "Alien rib vault",
+				"unresolved": []
+			},
+			"region": [
+				480,
+				512,
+				384,
+				256
+			],
+			"route_claim": "Exact empty-rectangle diagnostic only; not actor reachability, flight or playfeel.",
+			"source_after": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 428884,
+				"tick": 0
+			},
+			"source_before": {
+				"authoring_generation": 1,
+				"generation": 2,
+				"revision": 420380,
+				"tick": 0
+			},
+			"stage_timings": [
+				{
+					"admission": "queued",
+					"native_execution_usec": 386902,
+					"stage": "ribs",
+					"terminal": "completed"
+				},
+				{
+					"admission": "queued",
+					"native_execution_usec": 161614,
+					"stage": "organs",
+					"terminal": "completed"
+				}
+			],
+			"stages": 2,
+			"static_clearance": true,
+			"timing_caveat": "Compare only equally scoped native_execution_usec as observed fixture costs. Fixed arm order and different stage boundaries are not a randomized performance experiment; broad elapsed_usec is not comparable with the direct-arm elapsed_usec.",
+			"timing_scope": "elapsed_usec includes all stage execution, verification captures, constraint checks and after-image artifacts. native_execution_usec sums only each guarded submit through executor terminal.",
+			"title": "Alien rib vault"
+		}
+	],
+	"scenarios": 9,
+	"source_policy": [
+		0,
+		58
+	]
+}

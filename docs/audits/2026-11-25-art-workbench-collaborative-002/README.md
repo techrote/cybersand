@@ -105,3 +105,108 @@ Retained unsuccessful attempts: the first copied-value proposal test rejected a 
 New wrapper qualification requires fresh same-source headless and displayed receipts, original logs, exact pinned Godot and native/Rapier hashes, and the complete predecessor application matrix. It does not inherit a new application pass from the predecessor or substitute a live HTTP 404 for an absent listener. The original physical Windows/NVIDIA no-listener acceptance remains owner-pending.
 
 The root integration checkpoint preserves the qualified Art parents and remote specialist lane parents. Provider specialist local development identities are `bf42a29bfea32b22bf5e193d12635072a744bfb2`, `c3cdf270` and `eb1eb97ba33390e9e6d572d89efa1b3a7d60c94f`; their source is included in the integration tree. A Git transport push could not authenticate, so the authorized GitHub connector persists this checkpoint. Local development SHA values are not represented as remotely reachable qualification pins.
+
+## Fresh recovered qualification and review follow-up
+
+Frozen application source `2743f89a0df6f6afcf7484e859c10790d521e74b`, tree
+`56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634`, has a complete fresh local Linux
+displayed campaign. Its seven groups passed: owned transport 155, proposal 75,
+creative cohort 251, actual native campaign 771, native authority 39,
+collaborative session 184 and UI 94 checks. Counts that inspect each native
+chunk can vary with finite chunk scheduling; whole-plane and receipt totals
+remain the correctness requirements. Original receipts, screenshots, editable
+starts and complete redacted audits are retained in
+[the lossless original evidence archive](full-displayed-2743/full-displayed-2743-original-evidence.tar.gz),
+with [source/runtime custody](full-displayed-2743/full-displayed-2743-custody.json),
+[the original runner receipt](full-displayed-2743/summary.json) and
+[native outcomes](full-displayed-2743/creative-native-summary.json).
+Evidence commit `39a7a1fb72b9c694f442963ca6852499e2f56eee` is separate from
+the executed application source.
+
+The local nine-scene campaign constructed 25 separately admitted stages,
+184,396 acknowledged cell changes and 188,617 checked cells. A cell address can
+change in multiple stages; this is not a distinct occupied-cell count. All nine paired direct controls
+matched the complete final material planes; all nine ordinary saved starts
+reopened with the expected native hashes. The context/retrieval ablation uses
+identical fixed proposals and proves no causal creative improvement. There
+were zero genuine model calls. Specialist B independently checked 813
+metadata/source/counter relationships using the explicitly derived
+[receipt review index](full-displayed-2743/full-displayed-2743-receipt-review-index.json);
+raw cell-array replay is a separate review, not implied by that index check.
+
+Hosted campaign [45534980763](https://github.com/techrote/cybersand/actions/runs/45534980763)
+is `full_required`, not predecessor application reuse. Its Linux job completed
+successfully at 02:54:56 UTC on 25 November, preserving the 23 original core
+groups and the distinct provider/lifecycle/displayed matrix, then all seven
+new groups headless and displayed. Linux artifact `14987258051` has outer
+SHA-256 `39dcf6eca2975da895c4feff929b1cd1d6aec6fd6b9c4cb50427dcc11fae6b73`.
+Windows application and pristine package qualification were still running
+when this entry was written. The historical local files lost during the
+executor reset have not been reconstructed or relabelled as original logs.
+
+Independent follow-up found two concrete improvements for the next source:
+the inherited direct route allowed an indefinite run when both Turns and Run s
+were zero, and flat native sample strides collapsed onto the left edge for
+ordinary power-of-two selections. The follow-up requires a finite positive
+turn count or duration before provider admission and uses disclosed spatial
+bin centres for at most 32 actual material samples. A spending estimate alone
+does not establish a finite run. The source changes preserve native geometry,
+ordinary bounded direct runs and all existing scope/protection authorities.
+Development checks after integration pass 80 proposal assertions and 30
+request-admission assertions. The session regression additionally checks
+immediate Discuss memory refresh before any new capture and records genuine
+ordinary-Workbench collaboration frames. This follow-up needs its own fresh
+application/package campaign; the 2743 evidence is not silently transferred.
+
+The separately identified Architecture-native probe retains qualified
+Architecture source `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d` and overlays
+only the Art provider closure. Its first execution established real staged
+construction and exclusive proposal transport, but audit review showed its
+Undo assertion only checked admission/retirement after an invalid test-only
+brush assignment. That original attempt is retained, and exact post-Undo
+native readback is being added. It is neither an imported World Steer branch
+nor a combined Windows evaluator acceptance.
+
+Disposition remains **Draft/HOLD**. No merge, Ready promotion, production
+activation, paid inference, real-model creativity or physical owner-hardware
+acceptance is asserted.
+
+### Follow-up admission, 25 November 2026
+
+The 2743 Windows campaign subsequently failed at the new collaborative
+source-custody admission, before any of its seven new cases ran. Its retained
+23 core cases and prior displayed/provider/lifecycle/Apply groups passed.
+[The precise negative record](windows-source-admission.md) preserves artifact
+`14988050882` and distinguishes a reproduced Git autocrlf/import-descriptor
+mechanism from the unavailable original porcelain rows. The follow-up pins
+the four tracked `.import` descriptors to LF and adds complete refusal
+diagnostics; the clean-source gate is unchanged.
+
+Actual integrated layout inspection also found the Context reading area
+collapsed at the inherited compact size. The first explicit Collaborate action
+now expands an initial compact window to 820 by 620 logical pixels, bounded by
+the host viewport. Larger initial layouts and all subsequent owner resizing
+remain in control. The real integrated regression observes 186.67 visible
+reader pixels under its two-thirds display transform, and also verifies a
+nonzero Context scroll area and reachable approval/brief controls at the
+520 by 320 minimum. All 307 headless panel checks pass after retaining the
+first unsuccessful sizing attempt. The displayed session now invokes the
+ordinary Send and Approve controls and passes 202 checks with seven actual
+loopback requests and zero ordinary auto-paint completions. A display-server
+startup failure was retained separately; it reached no native scenario.
+
+The independently authored raw verifier was executed without modification
+against the original 2743 archive. It checked all 377,234 exact native readback
+rows, replayed all 25 stage planes and both nine-scene arms, and verified all
+73 original file identities. [Original verifier stdout](independent-native-2743/raw-review-stdout.json)
+and [execution/source custody](independent-native-2743/raw-review-execution.json)
+record this read-only evidence review; it is not another World execution.
+
+Large-value responsiveness remains an explicit boundary. The retained 2743
+Windows near-cap transfer improved from 48.129 to 13.530 seconds, while its
+maximum frame remained about 796 ms. Complete 16.8 MB Conversation Apply took
+619 ms in that hosted observation, versus the earlier 414 ms; differing runs
+are not a controlled causal comparison. A separate phase probe localizes most
+Apply time to full redaction and audit preparation. Any background preparation
+change will be developed and qualified separately from this baseline, retaining
+complete durable audit and explicit owner commit semantics.

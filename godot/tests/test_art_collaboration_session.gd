@@ -49,6 +49,12 @@ func observe(region: Rect2i) -> Dictionary:
 	return box[0]
 
 func inspect() -> bool:
+	var workspace: Control=panel.collaboration_workspace
+	workspace.native_context.button_pressed=bool(options.native)
+	workspace.knowledge_context.button_pressed=bool(options.knowledge)
+	workspace.recent_context.button_pressed=bool(options.recent)
+	workspace.image_context.button_pressed=bool(options.image)
+	workspace.image_scope.select(1 if options.image_scope=="viewport" else 0)
 	session.inspect_context(options)
 	if not await until(func() -> bool: return not session.busy(),"context observation finishes"): return false
 	return check(not session.context.is_empty() and session.context.has("disclosure_digest") \
@@ -107,7 +113,13 @@ func exchange(mode: String, reply: String, prompt: String) -> Dictionary:
 	var result := {"finished":false}
 	serve.call_deferred(server,reply,result)
 	var before := source()
-	session.request(mode,prompt,session.brief.duplicate(true),options)
+	var workspace: Control=panel.collaboration_workspace
+	var mode_index: int=workspace.MODES.find(mode)
+	workspace.mode.select(mode_index)
+	workspace.mode.item_selected.emit(mode_index)
+	workspace.prompt.text=prompt
+	check(not workspace.send_button.disabled,"explicit "+mode+" request is available in the ordinary Art workspace")
+	workspace.send_button.pressed.emit()
 	await until(func() -> bool: return result.finished and not session.busy() and not panel.provider.active,mode+" one complete transport/preview lifecycle",20000)
 	check(ordinary_completions==0,mode+" never enters legacy completion-to-paint")
 	check(source()==before,mode+" reply and preview have zero native writes")
@@ -119,7 +131,9 @@ func wait_preview() -> bool:
 
 func approve() -> bool:
 	var before: int = session.receipts.size()
-	session.approve_next()
+	panel.collaboration_workspace.tabs.current_tab=2
+	check(not panel.collaboration_workspace.approve_button.disabled,"the applicable next-stage approval is available in the ordinary Art workspace")
+	panel.collaboration_workspace.approve_button.pressed.emit()
 	if not check(session.running_batch>=0,"explicit owner approval queues exactly one finite stage"): return false
 	if not await until(settled,"approved stage and native readback retire"): return false
 	return check(session.receipts.size()==before+1 and session.receipts.back().get("verified",false),"actual receipt and complete native plane match prediction")
@@ -128,6 +142,16 @@ func native_receipt(_receipt: Dictionary) -> void:
 	if stop_after_receipt:
 		stop_after_receipt=false
 		panel.stop_all("Owner Stop after acknowledged native prefix")
+
+func save_workbench_frame(name: String, tab: int) -> void:
+	var directory := OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
+	if directory.is_empty() or DisplayServer.get_name()=="headless": return
+	panel.show_collaboration(true)
+	panel.collaboration_workspace.tabs.current_tab=tab
+	panel.show()
+	for frame: int in 3: await process_frame
+	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png(directory+"/"+name)==OK,"actual ordinary Workbench collaboration framebuffer "+name)
 
 func run() -> void:
 	root.size=Vector2i(1280,800)
@@ -146,8 +170,8 @@ func run() -> void:
 		if stop_before_readback and not session.pending_stage_receipt.is_empty() and session.running_batch<0:
 			stop_before_readback=false
 			panel.stop_all("Owner Stop before native verification capture"))
+	wb.open_art_batches()
 	panel.show_collaboration(true)
-	panel.show()
 	panel.focus_selection(Rect2i(0,0,256,192))
 	var brief: Dictionary=session.brief.duplicate(true)
 	brief.palette=[58,28]
@@ -158,6 +182,7 @@ func run() -> void:
 	var original:=source()
 	if not await inspect(): finish(); return
 	check(source()==original and session.context.inspector.captured_cells==49152,"native inspection is bounded and read-only")
+	await save_workbench_frame("00-art-ordinary-context.png",3)
 	var direct_serial: int=panel.provider.serial
 	panel.remaining_turns=1
 	panel.waiting_until_ms=Time.get_ticks_msec()+60000
@@ -175,6 +200,11 @@ func run() -> void:
 	var discussion: Dictionary=await exchange("discuss","Preserve the lower passage and strengthen the frame. No construction has occurred.","What could make this room more legible?")
 	check(not discussion.is_empty() and session.compiled.is_empty(),"discussion remains ordinary prose and has no executable proposal")
 	check(panel.conversation.size()>=2,"admitted discussion retains complete user and assistant messages")
+	var already_disclosed_reply:=false
+	for turn: Dictionary in session._wire_context:
+		if turn.get("role","")=="assistant" and str(turn.get("content","")).contains("Preserve the lower passage and strengthen the frame."): already_disclosed_reply=true
+	check(already_disclosed_reply,"completed discussion refreshes disclosed memory before any new capture or request")
+	check(int(session.context.conversation_revision)==int(panel.conversation_revision),"completed discussion disclosure owns the current Conversation revision")
 	var followup: Dictionary=await exchange("discuss","Yes, a taller frame can keep that lower passage unchanged.","Can it be taller while retaining that passage?")
 	var includes_first_reply:=false
 	for turn: Dictionary in followup.get("request",{}).get("messages",[]):
@@ -185,6 +215,7 @@ func run() -> void:
 	await exchange("propose",JSON.stringify(raw),"Propose two bounded stages, preserving my passage.")
 	if not check(not session.compiled.is_empty() and session.preview_result.get("ok",false),"provider proposal produces one zero-write preview"): finish(); return
 	check(session.compiled.stages.size()==2 and session.stage_index==0,"stage count is host compiled; no automatic execution")
+	await save_workbench_frame("01-art-ordinary-proposal.png",2)
 	panel.remaining_turns=1
 	panel.waiting_until_ms=Time.get_ticks_msec()+60000
 	session.approve_next()
@@ -200,6 +231,7 @@ func run() -> void:
 	check(session.stage_index==2 and session.stage_status.detail=="verified","second independent approval completes native composition")
 	check(session.receipts[0].changed==48 and session.receipts[1].changed==24,"execution reports actual completed geometry")
 	outcomes.append({"kind":"two-stage construction","receipts":session.receipts.duplicate(true)})
+	await save_workbench_frame("02-art-ordinary-completed.png",0)
 	await exchange("review","The verified frame and upper accent are present; the lower passage remains unchanged.","Review the completed room.")
 	check(session.context.disclosure.acknowledged_results_for_review.size()==2,"review context contains actual acknowledged native receipts")
 	if DisplayServer.get_name()!="headless":
@@ -255,6 +287,7 @@ func run() -> void:
 	session.approve_next()
 	await until(settled,"Stop retains and retires acknowledged native prefix")
 	check(session.receipts.back().changed>0 and session.receipts.back().changed<20000 and not session.receipts.back().get("verified",true),"Stop reports partial actual work without claiming whole stage")
+	await save_workbench_frame("03-art-ordinary-stopped-prefix.png",2)
 	outcomes.append({"kind":"stopped prefix","receipt":session.receipts.back().duplicate(true)})
 	await inspect()
 	check(session.admit_proposal(packet([block(20,30,200,100)]),"owner-approved continuation from new context").ok,"continuation recompiles against fresh complete native plane")

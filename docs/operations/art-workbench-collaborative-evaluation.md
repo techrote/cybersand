@@ -27,7 +27,11 @@ libraries, source, dependencies and notices together. Ordinary evaluation needs
 no compiler, Git, Python or model server.
 
 Wait for first import and World initialization to finish. Open Art and select the
-collaborative page. The existing direct drawing route remains available. The
+collaborative page. Its first opening expands a compact Art window (up to 640×400) to
+an 820×620 workspace when the host has room. Larger existing layouts and all later
+manual resizing are preserved; the minimum remains 520×320 with shared actions
+reachable.
+The existing direct drawing route remains available. The
 evaluator creates its own local profile, and opening the application or a panel
 sends no model request.
 
@@ -53,6 +57,10 @@ Write in the shared prompt and press the mode's Send button. Each collaborative
 Send is one explicit request. Preparing a request, waiting for a response,
 preparing its result and executing an approved stage have visible states. Stop
 is explicit cancellation; ordinary Art X continues to mean Hide.
+
+The direct model route also requires a finite run: set **Turns** above zero or
+set **Run s** above zero before Send. One request remains the default. A spending
+ceiling alone does not bound request count or elapsed time; Stop remains available.
 
 The Conversation page searches complete admitted message text in small slices.
 It shows at most the newest 128 matches and states when the list is bounded.
