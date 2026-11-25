@@ -69,3 +69,35 @@ a new pass. Failed attempts and source identities must remain recorded.
 Implementation is in progress. No successor tests, episode results, Windows
 package, extracted launch or gameplay acceptance are claimed at this checkpoint.
 The predecessor results qualify only their recorded original inputs.
+
+## Recovery and integration checkpoint
+
+The scoped hosted Linux recovery campaign at source
+`adbf5e3ce320b00cdce44348b15370aaffe704d7` passed in
+[run 45524938102](https://github.com/techrote/cybersand/actions/runs/45524938102).
+It executed 877 engine, 214 independent and 130 perception assertions (1,221
+total) with the authenticated official engine and unchanged retained runtimes.
+[Original artifact 14981763720](https://github.com/techrote/cybersand/actions/runs/45524938102/artifacts/14981763720)
+retains the receipts. This qualifies the recovery route and original cases only.
+
+The local executor subsequently returned. The owned partial checkout was moved
+to a bounded temporary workspace, repaired from committed source, and historical
+audit/history directories excluded from local checkouts. No unrelated workspace
+files or predecessor records were deleted. Full documentation validation remains
+a hosted/full-checkout gate because sparse local checkout omits historical links.
+
+Initial source lanes are committed: lead `b97f9c05`, perception `9ca91db4`,
+authoring `33537b2c`, followed by measured perception repair `4cceebb7`. The lead
+adds two-phase group handoff, a shared per-tick copied peer roster, unconditional
+valid World identity observation, and authored library persistence.
+
+The independent lead test `test_ambient_group_transaction.gd` passed 35 checks
+using two actual Rapier actor families and eight completed physical steps. It
+checks refusal before mutation, all-member commit visibility, authority revocation
+and body RID preservation. World-generation edge probes in that test are
+explicitly synthetic copied envelopes, not a native-material World experiment.
+The companion integration receipt records exact tested source and runtime hashes.
+
+The first documentation job failed because this new ledger lacked a corpus
+exclusion entry. The repair adds explicit evidence routing and a separate
+canonical successor contract; it does not weaken the documentation checker.

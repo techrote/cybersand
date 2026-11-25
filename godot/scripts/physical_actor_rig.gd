@@ -1539,6 +1539,81 @@ func ambient_ledge_observation(lookahead_cells: float, max_drop_cells: float,
 	return result
 
 
+
+# AMBIENT-002 optional local route evidence. This is a finite terrain fan at a
+# policy decision, separate from the motor's ray allowance. It copies only
+# numbers/vectors; no RID, body or live physics-space reference leaves the rig.
+# A ray establishes clearance along a center line, not complete hull sweep or
+# global reachability. Ground only receives horizontal alternatives.
+func ambient_navigation_observation(distance_cells: float = 32.0,
+		canvas_extent: Vector2i = Vector2i.ZERO, vertical: bool = false) -> Dictionary:
+	var result := {"available":false, "directions":[], "ray_queries":0,
+		"maximum_distance_cells":distance_cells, "ray_budget":8 if vertical else 2,
+		"source":"owner-issued actual terrain rays; conservative attached-hull surface distance",
+		"semantics":"center-line clearance is local evidence, not a swept-volume path"}
+	if not configured or not fault.is_empty() or _parts.is_empty() \
+		or not is_finite(distance_cells) or distance_cells < 1.0 or distance_cells > 32.0:
+		return result
+	var origin := centre()
+	if not origin.is_finite(): return result
+	var axes: Array[Vector2] = [Vector2.LEFT, Vector2.RIGHT]
+	if vertical:
+		axes = [Vector2.RIGHT, Vector2(1,1).normalized(), Vector2.DOWN,
+			Vector2(-1,1).normalized(), Vector2.LEFT, Vector2(-1,-1).normalized(),
+			Vector2.UP, Vector2(1,-1).normalized()]
+	for direction: Vector2 in axes:
+		var hull_extent := 0.0
+		for index: int in range(_parts.size()):
+			if _detached.has(index): continue
+			var pose: Transform2D = _transforms[index]
+			var half: Vector2 = _sizes[index] * 0.5
+			var angle := pose.get_rotation()
+			var half_x := absf(cos(angle)) * half.x + absf(sin(angle)) * half.y
+			var half_y := absf(sin(angle)) * half.x + absf(cos(angle)) * half.y
+			if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+				half_x = half.x
+				half_y = half.x
+			hull_extent = maxf(hull_extent, direction.dot(pose.origin - origin) \
+				+ absf(direction.x) * half_x + absf(direction.y) * half_y)
+		var length := hull_extent + distance_cells
+		var admitted_length := length
+		var boundary := false
+		var outside := canvas_extent != Vector2i.ZERO and not Rect2(Vector2.ZERO, Vector2(canvas_extent)).has_point(origin)
+		if outside:
+			result.directions.append({"available":false, "direction":direction, "boundary":true,
+				"reason":"actor center outside authored canvas", "maximum_distance_cells":distance_cells})
+			continue
+		if canvas_extent != Vector2i.ZERO:
+			if direction.x > 0.000001: admitted_length = minf(admitted_length, (float(canvas_extent.x) - 0.001 - origin.x) / direction.x)
+			elif direction.x < -0.000001: admitted_length = minf(admitted_length, (0.001 - origin.x) / direction.x)
+			if direction.y > 0.000001: admitted_length = minf(admitted_length, (float(canvas_extent.y) - 0.001 - origin.y) / direction.y)
+			elif direction.y < -0.000001: admitted_length = minf(admitted_length, (0.001 - origin.y) / direction.y)
+			boundary = admitted_length + 0.000001 < length
+		if admitted_length <= 0.0:
+			result.directions.append({"available":false, "direction":direction, "boundary":true,
+				"reason":"no admitted ray remains inside canvas", "maximum_distance_cells":distance_cells})
+			continue
+		var target := origin + direction * admitted_length
+		var query := PhysicsRayQueryParameters2D.create(origin, target, TERRAIN_MASK, _exclusions)
+		query.hit_from_inside = true
+		var hit: Dictionary = get_world_2d().direct_space_state.intersect_ray(query)
+		result.ray_queries += 1
+		var observed_hit := not hit.is_empty()
+		var available := observed_hit or not boundary
+		var clearance := maxf(0.0, origin.distance_to(Vector2(hit.position)) - hull_extent) \
+			if observed_hit else maxf(0.0, admitted_length - hull_extent)
+		var sample := {"available":available, "direction":direction, "hit":observed_hit,
+			"clearance_cells":minf(clearance, distance_cells), "maximum_distance_cells":distance_cells,
+			"boundary":boundary and not observed_hit, "origin":origin, "target":target,
+			"position":hit.get("position", target), "normal":hit.get("normal", Vector2.ZERO),
+			"reason":"ray clipped by canvas without observed terrain" if not available else "",
+			"hull_extent_cells":hull_extent, "searched_clearance_cells":maxf(0.0, admitted_length - hull_extent)}
+		if not available: sample.erase("clearance_cells")
+		result.directions.append(sample)
+		result.available = bool(result.available) or available
+	return result
+
+
 func refresh_observation() -> void:
 	if not configured:
 		return

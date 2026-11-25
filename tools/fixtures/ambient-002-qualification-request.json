@@ -1,0 +1,6 @@
+{
+  "request": "prepared-001",
+  "disposition": "Draft/HOLD",
+  "execute": false,
+  "purpose": "Prepared source-bound final qualification; execution requires an explicit [ambient-002-qualify] commit."
+}

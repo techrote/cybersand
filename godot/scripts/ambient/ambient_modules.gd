@@ -2,7 +2,8 @@ extends RefCounted
 
 # AMBIENT-001: bounded, pure value rules. Schema, editor and runtime share this
 # explicit vocabulary. No live World, scene node or physics object is accepted.
-const VERSION := 1
+const Stateful = preload("res://scripts/ambient/ambient_stateful_modules.gd")
+const VERSION := 2
 const MAX_SENSOR_RADIUS := 96
 
 
@@ -74,7 +75,7 @@ static func module_specs() -> Dictionary:
 	var altitude := _motion(0.4,0.7)
 	altitude.merge({"offset":_number(0.0,-1024.0,1024.0,"cells","Desired y relative to home; negative is upward."),
 		"tolerance":_number(5.0,0.1,128.0,"cells","No vertical correction inside this altitude band.")})
-	return {
+	var catalogue: Dictionary = {
 		"wander":_spec("Wander","Seeded heading choices, gradual turns and intentional idle.",10,0.6,["pose"],["horizontal"],wander),
 		"seek_material":_spec("Seek material","Approach observed native material with standoff and finite dwell.",30,1.0,["materials"],["horizontal"],seek),
 		"avoid_material":_spec("Avoid material","Hysteretic urgent retreat; no physical immunity.",80,1.0,["materials"],["horizontal"],avoid),
@@ -87,6 +88,8 @@ static func module_specs() -> Dictionary:
 		"avoid_crowding":_spec("Avoid crowding","Gentle separation from copied compatible neighbors.",35,1.0,["neighbors"],["horizontal"],crowd),
 		"maintain_altitude":_spec("Maintain altitude","Home-relative correction for legitimate two-axis rigs.",25,0.8,["pose","home"],["vertical"],altitude),
 	}
+	catalogue.merge(Stateful.module_specs())
+	return catalogue
 
 
 static func random_unit(state: Dictionary) -> float:
@@ -164,7 +167,7 @@ static func evaluate(module: Dictionary, observation: Dictionary, state: Diction
 		"follow_actor": return _follow(parameters,observation,context)
 		"avoid_crowding": return _crowding(parameters,observation,context)
 		"maintain_altitude": return _altitude(parameters,observation,context)
-	return _inactive("unknown module type")
+	return Stateful.evaluate(module,observation,state,now,delta,context)
 
 
 static func _wander(p: Dictionary, _o: Dictionary, s: Dictionary, now: float, delta: float, c: Dictionary) -> Dictionary:

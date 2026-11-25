@@ -1,6 +1,6 @@
 {
-  "request": "baseline-hosted-recovery-01",
-  "purpose": "Verify hosted executor and preserved predecessor before successor implementation",
+  "request": "integrated-living-001",
+  "purpose": "Combined engine, actual atomic controls, copied perception and authored persistence; full final qualification remains separate",
   "cases": [
     {
       "script": "test_ambient_engine",
@@ -14,6 +14,23 @@
       "script": "test_ambient_perception",
       "terminal": "AMBIENT_PERCEPTION",
       "report_env": "CYBERSAND_AMBIENT_PERCEPTION_REPORT"
+    },
+    {
+      "script": "test_ambient2_spatial",
+      "terminal": "AMBIENT2_SPATIAL",
+      "report_env": "CYBERSAND_AMBIENT2_SPATIAL_REPORT"
+    },
+    {
+      "script": "test_ambient_group_transaction",
+      "terminal": "AMBIENT_GROUP"
+    },
+    {
+      "script": "test_ambient_clock",
+      "terminal": "AMBIENT_CLOCK"
+    },
+    {
+      "script": "test_ambient_living_authoring",
+      "terminal": "AMBIENT_LIVING_AUTHORING"
     }
   ]
 }

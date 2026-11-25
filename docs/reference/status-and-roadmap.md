@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## AMBIENT-002 living inhabitants — 25 November 2026
+
+**Successor implementation in progress, Draft/HOLD:** [the living-inhabitant
+contract](../systems/ambient-living-inhabitants.md) extends the retained version-1
+foundation with version-2 stateful profiles, bounded memory and social perception,
+staged profile libraries, atomic group assignment and six native authored scenes.
+The accepted limit remains eight actual logical actors; #762 remains unaccepted.
+No production default, native law, motor or model-service change is introduced.
+The [successor ledger](../research/ambient-002/mission-ledger.md) distinguishes
+source implementation, actual hosted/local tests, physical experiments and final
+portable Windows delivery. Predecessor passes retain their original source scope.
+
 ## AMBIENT-001 modular procedural actors — 24 November 2026
 
 **Opt-in implementation candidate, Draft/HOLD:** the

@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**AMBIENT-002, opt-in Draft/HOLD:** [living inhabitants, bounded memory, copied peers and group authoring](systems/ambient-living-inhabitants.md); [living Workbench owner guide](operations/ambient-living-workbench.md); [source-bound successor mission ledger](research/ambient-002/mission-ledger.md). The original AMBIENT-001 evaluator remains frozen and separate.
+
 **AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
 [Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),
 and [exact-source qualification and remaining acceptance](research/ambient-001/mission-ledger.md).

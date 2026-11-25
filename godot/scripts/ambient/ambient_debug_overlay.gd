@@ -31,7 +31,14 @@ func _draw() -> void:
 	var environment: Dictionary = _diagnostics.get("environment", {})
 	if not environment.get("position") is Vector2: return
 	var centre: Vector2 = environment.position
-	var intent: Dictionary = _diagnostics.get("ambient", {}).get("intent", {})
+	var ambient: Dictionary = _diagnostics.get("ambient", {})
+	var intent: Dictionary = ambient.get("intent", {})
+	_draw_places(ambient.get("authored_regions", environment.get("regions", [])))
+	_draw_memory(ambient.get("memory", {}))
+	if intent.get("goal_target") is Vector2 and not str(intent.get("selected_goal", "")).is_empty():
+		var goal: Vector2 = intent.goal_target
+		draw_line(_point(centre), _point(goal), Color(0.9, 0.65, 1.0, 0.7), 1.5, true)
+		draw_circle(_point(goal), 6.0, Color("dbacff"), false, 1.5, true)
 	for target: Dictionary in environment.get("materials", {}).get("targets", {}).values():
 		var radius := float(target.get("radius_cells", 0.0))
 		var ring := PackedVector2Array()
@@ -67,3 +74,45 @@ func _draw() -> void:
 	var remaining := float(intent.get("remaining_seconds", 0.0))
 	if remaining > 0.0: label += " · %.1f s" % remaining
 	draw_string(ThemeDB.fallback_font, _point(centre) + Vector2(10, -18), label, HORIZONTAL_ALIGNMENT_LEFT, 460, 14, Color("e7f0ff"))
+
+
+func _draw_places(value: Variant) -> void:
+	if not value is Array: return
+	for index: int in mini(value.size(), 12):
+		var region: Dictionary = value[index]
+		var top_left := Vector2(float(region.get("x", 0.0)), float(region.get("y", 0.0)))
+		var bottom_right := top_left + Vector2(float(region.get("width", 1.0)), float(region.get("height", 1.0)))
+		var kind := str(region.get("kind", "interest"))
+		var color := Color("9bc8ff") if kind == "home" else (Color("f58c85") if kind == "avoid" else Color("f6d48c"))
+		var box := Rect2(_point(top_left), _point(bottom_right) - _point(top_left))
+		draw_rect(box, Color(color, 0.06), true)
+		draw_rect(box, Color(color, 0.7), false, 1.0)
+		draw_string(ThemeDB.fallback_font, box.position + Vector2(4, 15),
+			(kind + " · " + str(region.get("name", region.get("id", "")))).left(48),
+			HORIZONTAL_ALIGNMENT_LEFT, 300, 12, color)
+
+
+func _draw_memory(memory: Dictionary) -> void:
+	if not bool(memory.get("enabled", false)) or not bool(memory.get("available", true)): return
+	var tile_size := float(memory.get("cell_size", 24.0))
+	var visited: Array = memory.get("visited", [])
+	for index: int in mini(visited.size(), 128):
+		var entry: Dictionary = visited[index]
+		if not entry.get("position") is Vector2: continue
+		var point: Vector2 = entry.position
+		var box := Rect2(_point(point - Vector2.ONE * tile_size * 0.5),
+			_point(point + Vector2.ONE * tile_size * 0.5) - _point(point - Vector2.ONE * tile_size * 0.5))
+		draw_rect(box, Color(0.45, 0.75, 1.0, 0.09), true)
+		draw_rect(box, Color(0.45, 0.75, 1.0, 0.3), false, 1.0)
+	var interests: Array = memory.get("interests", [])
+	for index: int in mini(interests.size(), 32):
+		var entry: Dictionary = interests[index]
+		if not entry.get("position") is Vector2: continue
+		draw_circle(_point(entry.position), 3.0, Color("f6d48c"), true)
+	var obstructions: Array = memory.get("obstructions", [])
+	for index: int in mini(obstructions.size(), 32):
+		var entry: Dictionary = obstructions[index]
+		if not entry.get("position") is Vector2: continue
+		var point := _point(entry.position)
+		draw_line(point - Vector2(4, 4), point + Vector2(4, 4), Color("f58c85"), 1.5, true)
+		draw_line(point - Vector2(4, -4), point + Vector2(4, -4), Color("f58c85"), 1.5, true)
