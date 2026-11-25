@@ -2,15 +2,18 @@
 """Synthetic authority/custody adversaries, not native outcome evidence."""
 from __future__ import annotations
 import json
+import os
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import qualify
 from bundle_architecture_evidence import bundle
 from verify_collaborative_evidence import Custody, FLAGSHIP_EXTENTS, NATIVE_TICK_SOURCE, sha, verify, comparison_canonical_bytes
-from verify_windows_launcher import audit_payload, owned
+from verify_windows_launcher import audit_payload, owned, process_inventory, query_self_test
 
 SOURCE = "1" * 40
 NATIVE = "2" * 64
@@ -212,6 +215,42 @@ class OrchestrationTests(unittest.TestCase):
 
 
 class LauncherTests(unittest.TestCase):
+    def query_fixture(self):
+        executable = str(Path(sys.executable).resolve()).lower()
+        paths = [executable, executable + ".nonexistent-query-control"]
+        row = {"ProcessId":os.getpid(), "ParentProcessId":123, "ExecutablePath":executable,
+               "CreationDate":"2026-11-25T00:00:00.0000000Z", "MainWindowHandle":0}
+        return {"powershell_version":"5.1.20348.2227", "paths":paths, "processes":[row]}
+
+    def test_two_scalar_query_paths_and_exact_self_identity(self):
+        value = self.query_fixture()
+        with patch("verify_windows_launcher.powershell", return_value=json.dumps(value)):
+            result = query_self_test({})
+        self.assertTrue(result["passed"])
+        self.assertEqual(result["observed_self"]["ProcessId"], os.getpid())
+        self.assertEqual(len(result["paths"]), 2)
+
+    def test_nested_powershell_path_array_is_not_accepted(self):
+        value = self.query_fixture()
+        env = {"CYBERSAND_LAUNCHER_PATHS":json.dumps(value["paths"])}
+        value["paths"] = [value["paths"]]
+        with patch("verify_windows_launcher.powershell", return_value=json.dumps(value)):
+            with self.assertRaisesRegex(ValueError, "two scalar path filters"):
+                process_inventory(env)
+
+    def test_empty_query_cannot_masquerade_as_a_pristine_process_inventory(self):
+        value = self.query_fixture(); value["processes"] = []
+        with patch("verify_windows_launcher.powershell", return_value=json.dumps(value)):
+            with self.assertRaisesRegex(RuntimeError, "exact caller"):
+                query_self_test({})
+
+    def test_query_self_identity_requires_pid_image_and_creation(self):
+        for field, changed in (("ProcessId",os.getpid()+1),("ExecutablePath","different.exe"),("CreationDate","")):
+            value = self.query_fixture(); value["processes"][0][field] = changed
+            with self.subTest(field=field), patch("verify_windows_launcher.powershell", return_value=json.dumps(value)):
+                with self.assertRaisesRegex(RuntimeError, "exact caller"):
+                    query_self_test({})
+
     def test_pristine_and_generated_import_boundary(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

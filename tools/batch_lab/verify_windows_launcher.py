@@ -70,19 +70,54 @@ def powershell(script: str, env: dict, timeout: int = 20) -> str:
 
 
 QUERY = r'''$ErrorActionPreference='Stop'
-$paths=@($env:CYBERSAND_LAUNCHER_PATHS | ConvertFrom-Json)
-$rows=@(Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -and $paths -contains $_.ExecutablePath.ToLowerInvariant() } | ForEach-Object {
+# Windows PowerShell 5.1 emits a JSON array as ONE pipeline object. Wrapping
+# ConvertFrom-Json in @() nests it, causing every string membership check to fail.
+# Assign first, then explicitly enumerate scalar strings into a typed list.
+$parsed=ConvertFrom-Json -InputObject $env:CYBERSAND_LAUNCHER_PATHS
+$paths=New-Object 'System.Collections.Generic.List[string]'
+foreach($item in $parsed){
+ if(-not ($item -is [string]) -or -not [System.IO.Path]::IsPathRooted($item)){throw 'Expected absolute scalar executable paths'}
+ $paths.Add($item.ToLowerInvariant())
+}
+if($paths.Count -ne 2){throw 'Expected exactly two executable paths'}
+$rows=@(Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -and $paths.Contains($_.ExecutablePath.ToLowerInvariant()) } | ForEach-Object {
  $p=Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue
  [pscustomobject]@{ProcessId=[int]$_.ProcessId;ParentProcessId=[int]$_.ParentProcessId;ExecutablePath=$_.ExecutablePath;
  CreationDate=$_.CreationDate.ToUniversalTime().ToString('o');CommandLine=$_.CommandLine;MainWindowHandle=if($p){$p.MainWindowHandle.ToInt64()}else{0}}
 })
-ConvertTo-Json -InputObject $rows -Compress
+[pscustomobject]@{powershell_version=$PSVersionTable.PSVersion.ToString();paths=$paths.ToArray();processes=$rows} | ConvertTo-Json -Depth 4 -Compress
 '''
 
 
+def process_inventory(env: dict) -> dict:
+    value = json.loads(powershell(QUERY, env) or "null")
+    expected = json.loads(env["CYBERSAND_LAUNCHER_PATHS"])
+    if (not isinstance(value, dict) or value.get("paths") != expected
+            or not isinstance(value.get("processes"), list)
+            or not isinstance(value.get("powershell_version"), str)
+            or any(not isinstance(row, dict) for row in value["processes"])):
+        raise ValueError("Windows process query did not retain two scalar path filters and typed process rows")
+    return value
+
+
 def processes(env: dict) -> list[dict]:
-    value = json.loads(powershell(QUERY, env) or "[]")
-    return value if isinstance(value, list) else [value]
+    return process_inventory(env)["processes"]
+
+
+def query_self_test(env: dict | None = None) -> dict:
+    """A real Windows query must find this caller before trusting an empty list."""
+    executable = str(Path(sys.executable).resolve()).lower()
+    paths = [executable, executable + ".nonexistent-query-control"]
+    effective = dict(os.environ if env is None else env, CYBERSAND_LAUNCHER_PATHS=json.dumps(paths))
+    inventory = process_inventory(effective)
+    matches = [row for row in inventory["processes"]
+               if row.get("ProcessId") == os.getpid()
+               and str(row.get("ExecutablePath", "")).lower() == executable
+               and isinstance(row.get("CreationDate"), str) and row["CreationDate"]]
+    if len(matches) != 1:
+        raise RuntimeError("Windows process query failed to observe its exact caller PID/executable/creation identity")
+    return {"passed": True, "checks": 3, "failures": [], "powershell_version": inventory["powershell_version"],
+            "paths": inventory["paths"], "observed_self": matches[0]}
 
 
 def close_owned(row: dict, env: dict) -> None:
@@ -121,18 +156,25 @@ def run(package: Path, evidence: Path, source: str) -> dict:
     if profile.exists(): raise ValueError("Launcher profile must be fresh")
     profile.mkdir()
     env = dict(os.environ, APPDATA=str(profile), XDG_DATA_HOME=str(profile), CYBERSAND_LAUNCHER_PATHS=json.dumps(sorted(paths)))
-    if processes(env): raise ValueError("Packaged engine is already running; pristine launch cannot be isolated")
     report = {"format": "cybersand-extracted-windows-launcher-v1", "source_revision": source,
               "launcher_sha256": digest(launcher), "gui_sha256": digest(gui), "console_sha256": digest(console),
               "native_binary_sha256": manifest["native_sha256"], "pristine_payload_verified": True, "manifest_sha256":digest(package / "candidate-manifest.json"),
               "checks": 1, "failures": [], "physical_owner_acceptance": "pending",
               "scope": "Actual unchanged delivered CMD, visible child process and accepted Workbench route. Native functionality is qualified separately."}
     process = None; seen = {}; error = None; begun = time.monotonic()
+    report["monitor_samples"] = []
     try:
+        report["query_self_test"] = query_self_test(env)
+        before = processes(env)
+        report["preexisting_processes"] = before
+        if before: raise ValueError("Packaged engine is already running; pristine launch cannot be isolated")
         with (evidence / "launcher-process.log").open("w", encoding="utf-8") as output:
             process = subprocess.Popen([os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", str(launcher)],
                                        cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT)
-            while time.monotonic() - begun < 150:
+            report["launcher_pid"] = process.pid
+            report["launcher_command"] = process.args
+            launch_begun = time.monotonic()
+            while time.monotonic() - launch_begun < 150:
                 rows = processes(env)
                 for row in rows:
                     if owned(row, process.pid, paths): seen[(row["ProcessId"], row["CreationDate"])] = row
@@ -143,13 +185,21 @@ def run(package: Path, evidence: Path, source: str) -> dict:
                 logs = sorted(profile.rglob("godot.log"))
                 ready = [(path, path.read_text(encoding="utf-8", errors="replace")) for path in logs]
                 routed = [(path, text) for path, text in ready if "SHARED_WORKBENCH_LAUNCH_READY" in text]
-                if visible and routed and process.poll() == 0 and time.monotonic() - begun >= 5:
+                sample = {"elapsed_seconds": round(time.monotonic() - launch_begun, 3),
+                          "cmd_exit_code": process.poll(), "matching_processes": rows[:16],
+                          "owned_processes": [row for row in rows if owned(row, process.pid, paths)][:16],
+                          "visible_owned_gui": visible[:16],
+                          "route_logs": [{"path": path.relative_to(evidence).as_posix(), "sha256": digest(path),
+                                          "ready": "SHARED_WORKBENCH_LAUNCH_READY" in text} for path, text in ready[:4]]}
+                report["monitor_samples"].append(sample)
+                if len(report["monitor_samples"]) > 160: report["monitor_samples"].pop(0)
+                if visible and routed and process.poll() == 0 and time.monotonic() - launch_begun >= 5:
                     path, text = routed[-1]
                     if any(token in text for token in ("SCRIPT ERROR:", "Parse Error:", "Failed to load script")):
                         raise RuntimeError("Actual launcher route produced script errors")
                     report.update(observed_process=visible[0], launcher_exit_code=0,
                                   route_log=path.relative_to(evidence).as_posix(), route_log_sha256=digest(path),
-                                  accepted_route_marker="SHARED_WORKBENCH_LAUNCH_READY", checks=5)
+                                  accepted_route_marker="SHARED_WORKBENCH_LAUNCH_READY", checks=8)
                     break
                 if process.poll() not in (None, 0): raise RuntimeError("Delivered CMD failed: " + str(process.returncode))
                 time.sleep(1)
@@ -171,6 +221,7 @@ def run(package: Path, evidence: Path, source: str) -> dict:
                 raise ValueError("Package manifest changed during delivered launcher execution")
             report["checks"] += 2
         except Exception as caught:
+            report.setdefault("cleanup_failures", []).append(str(caught))
             error = error or caught
         report["elapsed_seconds"] = round(time.monotonic() - begun, 3)
         report["passed"] = error is None
@@ -182,10 +233,16 @@ def run(package: Path, evidence: Path, source: str) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--package", required=True, type=Path)
-    parser.add_argument("--evidence", required=True, type=Path)
-    parser.add_argument("--source", required=True)
+    parser.add_argument("--query-self-test", action="store_true", help="Read-only Windows query probe; no package or app launch")
+    parser.add_argument("--package", type=Path)
+    parser.add_argument("--evidence", type=Path)
+    parser.add_argument("--source")
     args = parser.parse_args()
+    if args.query_self_test:
+        print("WINDOWS_PROCESS_QUERY_SELF_TEST " + json.dumps(query_self_test()))
+        return
+    if args.package is None or args.evidence is None or args.source is None:
+        parser.error("--package, --evidence and --source are required for actual delivered CMD qualification")
     result = run(args.package, args.evidence, args.source)
     print("WINDOWS_EVALUATOR_LAUNCHER_RESULT " + json.dumps({"checks": result["checks"], "failures": [], "passed": True}))
 

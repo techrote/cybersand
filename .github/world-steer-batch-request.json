@@ -2,9 +2,9 @@
   "schema": "world-steer-batch-request-v1",
   "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
   "scope": "Preserved M0-M5 regression gates;40 native parts/v2 contacts; bounded detail, hierarchy, full-size native Worlds and actual extracted Windows evaluator",
-  "request_id": "2026-11-24-collaborative-qualification-2",
+  "request_id": "2026-11-25-collaborative-qualification-3",
   "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-  "review_checkpoint_parent": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+  "review_checkpoint_parent": "d948deab5d280adfe1e890bddf85725b2efd59bc",
   "platforms": [
     "linux",
     "windows"
@@ -18,6 +18,7 @@
   "foundation_qualification_run": 45454711939,
   "original_evidence_preserved": true,
   "native_inputs_changed": false,
-  "source_specific_reason": "Correct the full-World gameplay witness to sample the worker immutable completion publication used by the accepted physics path, retaining render-cache counters as diagnostics. First run45506178712 passed Linux89/89; Windows completed four routes but failed one cached native-versus-actor counter assertion. Original failure retained. No production physics, route, controller, native input, material or bound change. The existing complete Linux/Windows/extracted campaign requalifies the exact successor; clarified owner loading instructions and reviewed model-trial handoff included.",
-  "art_boundary": "Qualified fa22 Art successor identified; no proposal-only owner route/handoff exists. This campaign qualifies the independent Architecture workflow against accepted provider contracts without importing the separate branch."
+  "source_specific_reason": "Correct the pristine Windows CMD launch witness: Windows PowerShell 5.1 ConvertFrom-Json array output was nested by the query, excluding all expected executable paths. Preserve exact parent/image/creation identity, visible-window, Workbench route, CMD exit, timeout and payload-integrity gates; add real Windows process-query self-test before expensive application execution and bounded predicate diagnostics. Second run45512988153 passed Linux89/89 and source Windows89/89 but failed this launcher witness before extracted cases; original failure retained. No product, CMD, geometry, physics, native input, material or acceptance-bound change. Existing four-job source-matched campaign requalifies the narrow successor.",
+  "art_boundary": "Qualified fa22 Art successor identified; no proposal-only owner route/handoff exists. This campaign qualifies the independent Architecture workflow against accepted provider contracts without importing the separate branch.",
+  "inference_scope": "This hosted campaign dispatches no model calls. Standing conditional owner authorization for an available approved local model is separate; no paid/cloud inference or training is authorized."
 }

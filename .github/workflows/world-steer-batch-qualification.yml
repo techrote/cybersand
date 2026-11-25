@@ -190,6 +190,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
+          python tools/batch_lab/verify_windows_launcher.py --query-self-test > evidence/windows-launcher-query-self-test.log
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows PowerShell process-query preflight failed' }
           python tools/ci/native_candidate_identity.py build/batch-lab-windows
           if ($LASTEXITCODE -ne 0) { throw 'Native source/runtime custody failed' }
           Copy-Item build/batch-lab-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/ -Force
