@@ -4,7 +4,7 @@ extends SceneTree
 ## The fixture profile and every endpoint are created by the Python loopback runner.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const CANARY := "art-fixture-private-key::2026-QA"
-const RESPONSE_CHUNK_BYTES := 64*1024
+const RESPONSE_CHUNK_BYTES := 256*1024
 const MIB_RESPONSE_MODELS := ["fixture-large","fixture-large-error","fixture-large-envelope-error","fixture-malicious-usage"]
 const PAYLOAD_MIB_TRANSPORT_SECONDS := 10.0
 const PAYLOAD_NEAR_LIMIT_TRANSPORT_SECONDS := 90.0
