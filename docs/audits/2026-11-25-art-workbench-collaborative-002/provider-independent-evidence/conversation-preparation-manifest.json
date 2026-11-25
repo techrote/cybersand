@@ -1,0 +1,347 @@
+{
+  "schema": "cybersand-art-conversation-preparation-independent-evidence-v1",
+  "current_combined_source": "8a015efbeb7926a3c835303d3b163c01d353aca3",
+  "current_tree": "ad991f1fe8e2c8945120526377d85392d0a3212a",
+  "source_sha256": {
+    "godot/scripts/art_provider.gd": "c9c24d8aac45e09f5ee291699d09ed34eadc5945b28545c098eb30b500821891",
+    "godot/scripts/art_response_preparation.gd": "5e86e35a9b8d273ac0c4617d32d29aed320e86c22339fa6daa40732c251064b2",
+    "godot/scripts/art_batch_panel.gd": "f8950f3f3be81fcf8da1285980f8b8a2d3088380e7cd44dbee19a301f84ba557",
+    "godot/scripts/art_conversation_editor.gd": "1305858a301fac41bd5e6355c0e9821730683ff289b35b83bfd5c4f064811e24",
+    "godot/scripts/art_collaboration_session.gd": "57ef5761f5160752348c65b4eaf6e8f429e0fe4c35587024cb7b89fe9b9cd13c",
+    "godot/tests/test_art_conversation_preparation.gd": "09d16bb492f7018c3f6b24b1e7bac0cc9bf096b93c38dfbec862ad84dd9069ad",
+    "godot/tests/test_art_conversation_apply_preparation.gd": "ce896063700b2ff8f73e5549609eee19768656d8797ccfd6e42f792df08f59fe"
+  },
+  "scope": "Actual finite value workers, complete native audit and ordinary headless Workbench lifecycle. Retains parse/fixture-order failures and two near-cap baseline exit -9 attempts. No completed near-cap pair, Windows async-Apply qualification or speedup claim.",
+  "entries": [
+    {
+      "path": "provider-1ac/results-wrapper-rejected.json",
+      "bytes": 2156,
+      "sha256": "0376ec6fc003b8b84238bf2a8af59b68e07148539c4fceddb82afd465a2d49e6"
+    },
+    {
+      "path": "provider-1ac/results.json",
+      "bytes": 4797,
+      "sha256": "04a126d1806da3f706a26f886e5171e43d14dd63bb3bf2e6684a4039b98e769e"
+    },
+    {
+      "path": "provider-1ac/test_art_conversation_preparation/process.log",
+      "bytes": 5420,
+      "sha256": "d7d0783bf525526b751362e5c020af5008257bada8c7c30504a04baf840ba4ac"
+    },
+    {
+      "path": "provider-1ac/test_art_conversation_preparation/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/b90d7c258e4b3d573d5fe4e59a3b3250.jsonl",
+      "bytes": 1049503,
+      "sha256": "993b4b853541bbcd0b783c6494b4f624d4827602ffd964d3657293fed3b0290e"
+    },
+    {
+      "path": "provider-1ac/test_art_conversation_preparation/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/fa06e4648fffd3278863b8934539b94d.jsonl",
+      "bytes": 330,
+      "sha256": "e6ffa116866bdb28b5ab04d7bc1caf4952e006e1e3712acbf5039ab4ec89ce75"
+    },
+    {
+      "path": "provider-1ac/test_art_conversation_preparation/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 5306,
+      "sha256": "bdf7de27caf23f349bad14f8583b35ff9eed6b76986e66aa0509f96ba1e5aebd"
+    },
+    {
+      "path": "provider-1ac/test_art_owned_transport/process.log",
+      "bytes": 13227,
+      "sha256": "0a8527066a528f1151c65c02ead0f4c246381dfec41e77c22b8dc6fb79212b34"
+    },
+    {
+      "path": "provider-1ac/test_art_owned_transport/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/1878833a305c687e39e78440a67c93c1.jsonl",
+      "bytes": 948164,
+      "sha256": "fa4159687bbadb8c1baff8b44357efe99847450aee1e818ef3ae90465e6d4fe3"
+    },
+    {
+      "path": "provider-1ac/test_art_owned_transport/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 13113,
+      "sha256": "7fe973a724bcd902d66fb75889bf6bd015e971ae664e40ccdcbd51566e273b85"
+    },
+    {
+      "path": "provider-1ac/test_art_request_preparation/process.log",
+      "bytes": 3668,
+      "sha256": "5458c80d7226ca4a03fd966adb1b8d43ad83225c1e60878b543e5e2186eb7a59"
+    },
+    {
+      "path": "provider-1ac/test_art_request_preparation/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 3554,
+      "sha256": "2777288b585479ffa53e7675d5a34590c7a2c5f55b3500634de9cb1e56399422"
+    },
+    {
+      "path": "provider-1ac/test_art_response_preparation/process.log",
+      "bytes": 3484,
+      "sha256": "be3f81ef2dd136734d40b2a6ddd109ddeaa655adac1112c3f7c60447b8fbee4d"
+    },
+    {
+      "path": "provider-1ac/test_art_response_preparation/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 3370,
+      "sha256": "279aa28effc5c435e79344e20f4941edca9a68036c8f969506b566ed9a3f9429"
+    },
+    {
+      "path": "staged-traffic-05c/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/6eb852563392f6df6b0fd9f6aa4c65ce.jsonl",
+      "bytes": 330,
+      "sha256": "20645c5595651a3e97a1ecc359ed9d7e4d29446359daeb300d66512c18850d7a"
+    },
+    {
+      "path": "staged-traffic-05c/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/f4739ed32fbffcb61b82d2ccc9eddfd0.jsonl",
+      "bytes": 1049503,
+      "sha256": "2049c9a7fd1e30e7f78d36d4a484c256fc40eb27a221efbe04d3edaab9a097da"
+    },
+    {
+      "path": "staged-traffic-05c/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 5836,
+      "sha256": "943b0e96173c6cbaa5ee13803df0d7a569553fa34cd96441dd115658e0f547aa"
+    },
+    {
+      "path": "staged-traffic-05c/test_art_conversation_preparation/output.log",
+      "bytes": 5950,
+      "sha256": "0d8b823526aa707209bd88e0820125f85aafd46a5bd55442f87156804f4c83fe"
+    },
+    {
+      "path": "staged-traffic-05c/test_art_conversation_preparation/result.json",
+      "bytes": 950,
+      "sha256": "aa5741d67d5b97204079672a320a7abd391c28e6b18fd4b54d5307a7cedfdb17"
+    },
+    {
+      "path": "provider-teardown-7e0/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/06fb0c428fe45bf41344022db7132fe1.jsonl",
+      "bytes": 1049503,
+      "sha256": "155186548315baf8ff740adc6c9d194b1ce2b4517de552208bf88134418b0df2"
+    },
+    {
+      "path": "provider-teardown-7e0/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/3b78e0d42bbf96d410f941e691ff8f04.jsonl",
+      "bytes": 330,
+      "sha256": "d920bfe10867449903956d89475033ba8a2916b654ab0fb37032aa7eb4f60f32"
+    },
+    {
+      "path": "provider-teardown-7e0/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/79cce1c8ceaf47decfdaeb62f7919810.jsonl",
+      "bytes": 330,
+      "sha256": "b1098f34cb9873d754aaaf786fe2b70f5df8e11d19ab2443112eb34ced40c8bb"
+    },
+    {
+      "path": "provider-teardown-7e0/test_art_conversation_preparation/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 6530,
+      "sha256": "1acd814056cd17608bb53d71a7b8069c367586e3cda1519aa3667a2d8bb9262e"
+    },
+    {
+      "path": "provider-teardown-7e0/test_art_conversation_preparation/output.log",
+      "bytes": 6644,
+      "sha256": "5ac16c8da282c3511990573337b3e83eb0f7622c0281e6323707fcc1e418ab66"
+    },
+    {
+      "path": "provider-teardown-7e0/test_art_conversation_preparation/result.json",
+      "bytes": 949,
+      "sha256": "f5fb02a653cce15e8de78e27c2231d9739db94790e746bf626a13c9fba4aa426"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/execution.json",
+      "bytes": 160,
+      "sha256": "0187c249c3de423e2fdb64832ded28a3da0f2a422b2df550ea3cb9888448c5d9"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/fixture-post-arrivals.json",
+      "bytes": 139,
+      "sha256": "8f1addfca3ebb259a802a5f1e97ea3b4a741bc57e5354cab31f1eb2fc4b2529c"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/fixture-receipts.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/fixture-spec.json",
+      "bytes": 1035,
+      "sha256": "12e0dda2eaaf1cde8fcf51e8a48b8fac75941a7e236b65b7cf4b7dc29038f4b8"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/godot.log",
+      "bytes": 221,
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/hashes.json",
+      "bytes": 637,
+      "sha256": "fd41efa5a34afff36a6195b86bd4463a6f66e264e4f9413999c5ca3084758368"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/isolated-profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 107,
+      "sha256": "0704af3bd7170d415d3c694c1942394f00370015218778adba607eb75763efef"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/provenance.json",
+      "bytes": 1822,
+      "sha256": "83a3dc7ef85459ea2ee6c12ed32e2c284c8d62de3af6b3a63b588e20e140d4f9"
+    },
+    {
+      "path": "baseline-e536-first-incomplete/resources.json",
+      "bytes": 1097,
+      "sha256": "3f493da1d7115f1c51b79d412f890013d6b30e6c255227ceee6ae142b420803f"
+    },
+    {
+      "path": "native-f909-parse-failure/admission.json",
+      "bytes": 673,
+      "sha256": "5a6dea3e47aed2c564d0f344cb9347c4b15262b6360507e46e737afe4b9715a4"
+    },
+    {
+      "path": "native-f909-parse-failure/output.log",
+      "bytes": 2507,
+      "sha256": "a448a7b12ce9067e337cdfeb8c11a5da38876f861e4409648ea6ebc37689b431"
+    },
+    {
+      "path": "native-f909-parse-failure/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 2316,
+      "sha256": "6fd0f43eef37763510a326128d70d2ff17135ef99923180d3b8b390df92c954d"
+    },
+    {
+      "path": "native-f909-parse-failure/result.json",
+      "bytes": 2545,
+      "sha256": "cc55b2278ce3a6beffae22a01e6001489cbb70b4c844825bd921c509e974ef1e"
+    },
+    {
+      "path": "native-f605-fixture-order-failure/admission.json",
+      "bytes": 1211,
+      "sha256": "e8a5874e7d90165fdcf4478b5ea79b0b4145b822e75ce4e59ed9b6beb6a5273b"
+    },
+    {
+      "path": "native-f605-fixture-order-failure/output.log",
+      "bytes": 21041,
+      "sha256": "b7db38ec25195b1091be5af4ce1e0afe28355625ef6198868120e7ae67ff6171"
+    },
+    {
+      "path": "native-f605-fixture-order-failure/post-source-identity.json",
+      "bytes": 215,
+      "sha256": "9d001730dd00471a6f6a3b35426f032b4f1dd0879dfd2c7ce247c33d86352c70"
+    },
+    {
+      "path": "native-f605-fixture-order-failure/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/ad3ac0b214521a364cadba4510610e51.jsonl",
+      "bytes": 13641111,
+      "sha256": "d060d8eb2f2699eea1e5635ce282a288158dfa39c56302f3cfac6c5f7e328b37"
+    },
+    {
+      "path": "native-f605-fixture-order-failure/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 20927,
+      "sha256": "59f5f8e7cd0a554669d5d2c13dfec0f5bdc542fa3031b912b2883dfea5d446d3"
+    },
+    {
+      "path": "native-f605-fixture-order-failure/result.json",
+      "bytes": 2625,
+      "sha256": "9778797e145a15d9766014f43c6c11dfae11c927663fa121f9acc51c984e1ef7"
+    },
+    {
+      "path": "native-8a0-passed/admission.json",
+      "bytes": 1211,
+      "sha256": "28a3b192d78e1176d530a8880aeda8a1d84464708199aa8181ec632558f6360e"
+    },
+    {
+      "path": "native-8a0-passed/output.log",
+      "bytes": 15082,
+      "sha256": "79efe35050fe215372ceadcf9c319705a8ce2e0c4d1e94a103a3d57e649c34ec"
+    },
+    {
+      "path": "native-8a0-passed/profile/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/2a30166b80f59aed956449dadc561573.jsonl",
+      "bytes": 13641575,
+      "sha256": "54ba85bee5ae30e844132a2ae93857e90d1ebf096d80582adcb65dcaa9689798"
+    },
+    {
+      "path": "native-8a0-passed/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 14968,
+      "sha256": "15253b7e052768bf70a4a876e682adf6f48601edcf240f2f65aff5c45a75b941"
+    },
+    {
+      "path": "native-8a0-passed/result.json",
+      "bytes": 2707,
+      "sha256": "bc802c890ea49a3967791461068028ca73c2ee12c1db9e1175ac24b25d8a9aa2"
+    },
+    {
+      "path": "pair-preprocess-admission/admission-failure.json",
+      "bytes": 652,
+      "sha256": "cee77f4d95d60e650c6e07757e041c8a94713c1c550883edb62f3f8c61708ebe"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/execution.json",
+      "bytes": 159,
+      "sha256": "a8a7dd7dedf80961aa3b3c68d949f885460b754b93aceb6d017aa85fd6852b42"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/fixture-post-arrivals.json",
+      "bytes": 139,
+      "sha256": "8f1addfca3ebb259a802a5f1e97ea3b4a741bc57e5354cab31f1eb2fc4b2529c"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/fixture-receipts.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/fixture-spec.json",
+      "bytes": 1056,
+      "sha256": "3be1bd01913d5254e3df9c990c27641c6754d96c02c642e52e83017c3c8daf2c"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/godot.log",
+      "bytes": 937,
+      "sha256": "8204f5a39ba71478e92bd1675866f10ac853e31f931821fd9fa5b37dec1f5c97"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/hashes.json",
+      "bytes": 931,
+      "sha256": "238a82b30de7e8286ebe414c4674a785eedb7c1c1e97fe0a3fb67625cff4104c"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/isolated-profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 823,
+      "sha256": "808d7e6e3feaa821c6638df4de8bb550385f50ea8271adf92ace4454f9cfd504"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/partial-audit-verification.json",
+      "bytes": 209,
+      "sha256": "ff2d0dc81125d024969f59cef67a54cf7ff1834a177d3be173ad5a223447cd91"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/partial-report.json",
+      "bytes": 1229,
+      "sha256": "bc53cb550a6d329e512b522ea5eccb4a7a5f24f461e17cd087bb5b8938ac5359"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/provenance.json",
+      "bytes": 1862,
+      "sha256": "e079dc464da40af5b2d48889b09747fad3866be3a1783e8cc24a411ef3e5716d"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/report-checkpoint.json",
+      "bytes": 961,
+      "sha256": "2fc2eb867e4a14b32414e0381b28f6bbe5b03e465c4b2c7c760b09fa4f499c48"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536/resources.json",
+      "bytes": 1097,
+      "sha256": "2cc0c0ed62c6748e9e9b57e475ad4f8025c60bf0482790e93cf59b4ad9c63a03"
+    },
+    {
+      "path": "pair-second-incomplete/baseline-e536-runner.log",
+      "bytes": 529,
+      "sha256": "c281ea2f1914aee488159d3e70ba9cb5b5432cf498435b632f155dba4c2fbff1"
+    },
+    {
+      "path": "pair-second-incomplete/comparison.json",
+      "bytes": 2027,
+      "sha256": "03573d1e8df94851bedaa8436b58205913d5140b9808797955c0bcc92cbd0f00"
+    },
+    {
+      "path": "apparatus/art-conversation-probe-case.py",
+      "bytes": 3875,
+      "sha256": "df0dce9bd05b2738e4881e214493391ae1574b2e8662bbbfb221c195f1e07dff"
+    }
+  ],
+  "host": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpu_count": 9,
+    "memory": [
+      "MemTotal:       10206468 kB",
+      "MemAvailable:    1825124 kB",
+      "SwapTotal:             0 kB",
+      "Shmem:           7283596 kB"
+    ]
+  }
+}
