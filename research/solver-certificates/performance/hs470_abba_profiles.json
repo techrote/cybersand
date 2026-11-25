@@ -1,0 +1,795 @@
+{
+  "schema": "b4-hs470-verbatim-profiles-v1",
+  "provenance": {
+    "repo": "techrote/cybersand",
+    "run_id": 42302283599,
+    "job_id": 128182806453,
+    "job_url": "https://github.com/techrote/cybersand/actions/runs/42302283599/job/128182806453",
+    "source": "HARD_SURFACE_PROFILE JSON log records; ordered Control/Candidate/Candidate/Control with 3 canvas profiles per arm",
+    "captured_at_utc": "2026-11-09",
+    "historical_execution_date_utc": "2026-11-06",
+    "qualified_scope": "existing published benchmark; no new native run"
+  },
+  "records": [
+    {
+      "arm": "control",
+      "run_index": 1,
+      "profile": {
+        "canvas": "my-canvas",
+        "extent": [
+          512,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0,
+          "mean_ms": 0,
+          "p50_ms": 0,
+          "p95_ms": 0,
+          "samples": 0
+        },
+        "observed_snapshots": 256,
+        "publication_build": {
+          "max_ms": 0.808,
+          "mean_ms": 0.14161328125,
+          "p50_ms": 0.129,
+          "p95_ms": 0.198,
+          "samples": 256
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.345,
+          "mean_ms": 0.104961240310078,
+          "p50_ms": 0.094,
+          "p95_ms": 0.161,
+          "samples": 129
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 9.542899,
+          "mean_ms": 4.71133189453125,
+          "p50_ms": 4.465918,
+          "p95_ms": 5.509954,
+          "samples": 256
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.348,
+          "mean_ms": 0.0555703125000001,
+          "p50_ms": 0.086,
+          "p95_ms": 0.117,
+          "samples": 256
+        },
+        "source_sha": "4a80af2a891332176a3912a235582d77d076a185",
+        "wall_ms": 3519.413,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "control",
+      "run_index": 1,
+      "profile": {
+        "canvas": "bench-canvas",
+        "extent": [
+          1024,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0.663,
+          "mean_ms": 0.381475409836065,
+          "p50_ms": 0.376,
+          "p95_ms": 0.413,
+          "samples": 122
+        },
+        "observed_snapshots": 259,
+        "publication_build": {
+          "max_ms": 0.335,
+          "mean_ms": 0.147301158301158,
+          "p50_ms": 0.144,
+          "p95_ms": 0.197,
+          "samples": 259
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.525,
+          "mean_ms": 0.311315789473684,
+          "p50_ms": 0.314,
+          "p95_ms": 0.383,
+          "samples": 114
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 14.873912,
+          "mean_ms": 8.88398431274131,
+          "p50_ms": 8.300441,
+          "p95_ms": 11.464171,
+          "samples": 259
+        },
+        "snapshot_copy_total": {
+          "max_ms": 1.192,
+          "mean_ms": 0.3193861003861,
+          "p50_ms": 0.354,
+          "p95_ms": 0.725,
+          "samples": 259
+        },
+        "source_sha": "4a80af2a891332176a3912a235582d77d076a185",
+        "wall_ms": 3875.906,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "control",
+      "run_index": 1,
+      "profile": {
+        "canvas": "stress-canvas",
+        "extent": [
+          2048,
+          1024
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 1.627,
+          "mean_ms": 1.59725,
+          "p50_ms": 1.598,
+          "p95_ms": 1.627,
+          "samples": 4
+        },
+        "observed_snapshots": 232,
+        "publication_build": {
+          "max_ms": 0.414,
+          "mean_ms": 0.227556034482759,
+          "p50_ms": 0.213,
+          "p95_ms": 0.315,
+          "samples": 232
+        },
+        "render_exchange_executed": {
+          "max_ms": 2.512,
+          "mean_ms": 2.37975,
+          "p50_ms": 2.365,
+          "p95_ms": 2.512,
+          "samples": 4
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 36.037602,
+          "mean_ms": 31.5839965775862,
+          "p50_ms": 31.457738,
+          "p95_ms": 34.066325,
+          "samples": 232
+        },
+        "snapshot_copy_total": {
+          "max_ms": 4.114,
+          "mean_ms": 0.0703189655172414,
+          "p50_ms": 0.002,
+          "p95_ms": 0.003,
+          "samples": 232
+        },
+        "source_sha": "4a80af2a891332176a3912a235582d77d076a185",
+        "wall_ms": 10517.936,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "candidate",
+      "run_index": 2,
+      "profile": {
+        "canvas": "my-canvas",
+        "extent": [
+          512,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0,
+          "mean_ms": 0,
+          "p50_ms": 0,
+          "p95_ms": 0,
+          "samples": 0
+        },
+        "observed_snapshots": 256,
+        "publication_build": {
+          "max_ms": 0.158,
+          "mean_ms": 0.1243125,
+          "p50_ms": 0.124,
+          "p95_ms": 0.143,
+          "samples": 256
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.117,
+          "mean_ms": 0.0920859375,
+          "p50_ms": 0.089,
+          "p95_ms": 0.105,
+          "samples": 128
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 4.982097,
+          "mean_ms": 4.29474675,
+          "p50_ms": 4.257882,
+          "p95_ms": 4.738468,
+          "samples": 256
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.121,
+          "mean_ms": 0.0484687500000001,
+          "p50_ms": 0.084,
+          "p95_ms": 0.106,
+          "samples": 256
+        },
+        "source_sha": "6aa03fe21dbe88b308793f377e4d223a90e4da8f",
+        "wall_ms": 3512.359,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "candidate",
+      "run_index": 2,
+      "profile": {
+        "canvas": "bench-canvas",
+        "extent": [
+          1024,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0.081,
+          "mean_ms": 0.0229295774647887,
+          "p50_ms": 0.021,
+          "p95_ms": 0.043,
+          "samples": 142
+        },
+        "observed_snapshots": 255,
+        "publication_build": {
+          "max_ms": 0.317,
+          "mean_ms": 0.146392156862745,
+          "p50_ms": 0.142,
+          "p95_ms": 0.204,
+          "samples": 255
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.622,
+          "mean_ms": 0.304102362204724,
+          "p50_ms": 0.306,
+          "p95_ms": 0.371,
+          "samples": 127
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 11.906016,
+          "mean_ms": 8.16022425098039,
+          "p50_ms": 8.094058,
+          "p95_ms": 8.703217,
+          "samples": 255
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.624,
+          "mean_ms": 0.166874509803922,
+          "p50_ms": 0.084,
+          "p95_ms": 0.365,
+          "samples": 255
+        },
+        "source_sha": "6aa03fe21dbe88b308793f377e4d223a90e4da8f",
+        "wall_ms": 3540.1,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "candidate",
+      "run_index": 2,
+      "profile": {
+        "canvas": "stress-canvas",
+        "extent": [
+          2048,
+          1024
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0.093,
+          "mean_ms": 0.093,
+          "p50_ms": 0.093,
+          "p95_ms": 0.093,
+          "samples": 1
+        },
+        "observed_snapshots": 232,
+        "publication_build": {
+          "max_ms": 0.551,
+          "mean_ms": 0.251112068965517,
+          "p50_ms": 0.225,
+          "p95_ms": 0.412,
+          "samples": 232
+        },
+        "render_exchange_executed": {
+          "max_ms": 3.032,
+          "mean_ms": 3.032,
+          "p50_ms": 3.032,
+          "p95_ms": 3.032,
+          "samples": 1
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 37.504719,
+          "mean_ms": 32.2594779137931,
+          "p50_ms": 31.676703,
+          "p95_ms": 36.072285,
+          "samples": 232
+        },
+        "snapshot_copy_total": {
+          "max_ms": 3.132,
+          "mean_ms": 0.0154137931034482,
+          "p50_ms": 0.002,
+          "p95_ms": 0.005,
+          "samples": 232
+        },
+        "source_sha": "6aa03fe21dbe88b308793f377e4d223a90e4da8f",
+        "wall_ms": 10527.374,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "candidate",
+      "run_index": 3,
+      "profile": {
+        "canvas": "my-canvas",
+        "extent": [
+          512,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0,
+          "mean_ms": 0,
+          "p50_ms": 0,
+          "p95_ms": 0,
+          "samples": 0
+        },
+        "observed_snapshots": 256,
+        "publication_build": {
+          "max_ms": 0.245,
+          "mean_ms": 0.127796875,
+          "p50_ms": 0.121,
+          "p95_ms": 0.178,
+          "samples": 256
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.136,
+          "mean_ms": 0.092671875,
+          "p50_ms": 0.089,
+          "p95_ms": 0.114,
+          "samples": 128
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 4.879872,
+          "mean_ms": 4.29477663671875,
+          "p50_ms": 4.30227,
+          "p95_ms": 4.561682,
+          "samples": 256
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.14,
+          "mean_ms": 0.04878515625,
+          "p50_ms": 0.082,
+          "p95_ms": 0.111,
+          "samples": 256
+        },
+        "source_sha": "6aa03fe21dbe88b308793f377e4d223a90e4da8f",
+        "wall_ms": 3519.586,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "candidate",
+      "run_index": 3,
+      "profile": {
+        "canvas": "bench-canvas",
+        "extent": [
+          1024,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0.136,
+          "mean_ms": 0.0246783216783217,
+          "p50_ms": 0.022,
+          "p95_ms": 0.043,
+          "samples": 143
+        },
+        "observed_snapshots": 256,
+        "publication_build": {
+          "max_ms": 0.363,
+          "mean_ms": 0.1528046875,
+          "p50_ms": 0.144,
+          "p95_ms": 0.24,
+          "samples": 256
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.415,
+          "mean_ms": 0.3106640625,
+          "p50_ms": 0.312,
+          "p95_ms": 0.386,
+          "samples": 128
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 9.483406,
+          "mean_ms": 8.22133567578125,
+          "p50_ms": 8.198525,
+          "p95_ms": 8.779403,
+          "samples": 256
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.443,
+          "mean_ms": 0.17190625,
+          "p50_ms": 0.229,
+          "p95_ms": 0.39,
+          "samples": 256
+        },
+        "source_sha": "6aa03fe21dbe88b308793f377e4d223a90e4da8f",
+        "wall_ms": 3559.511,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "candidate",
+      "run_index": 3,
+      "profile": {
+        "canvas": "stress-canvas",
+        "extent": [
+          2048,
+          1024
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0.165,
+          "mean_ms": 0.15475,
+          "p50_ms": 0.159,
+          "p95_ms": 0.165,
+          "samples": 4
+        },
+        "observed_snapshots": 235,
+        "publication_build": {
+          "max_ms": 0.382,
+          "mean_ms": 0.227923404255319,
+          "p50_ms": 0.215,
+          "p95_ms": 0.3,
+          "samples": 235
+        },
+        "render_exchange_executed": {
+          "max_ms": 2.639,
+          "mean_ms": 2.52525,
+          "p50_ms": 2.527,
+          "p95_ms": 2.639,
+          "samples": 4
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "1409f2799da6335892a414ba2e87770549081602e5fb8528cdb2905af1ac30ea",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 37.086482,
+          "mean_ms": 31.3492094425532,
+          "p50_ms": 31.236851,
+          "p95_ms": 35.745602,
+          "samples": 235
+        },
+        "snapshot_copy_total": {
+          "max_ms": 2.783,
+          "mean_ms": 0.0472808510638297,
+          "p50_ms": 0.001,
+          "p95_ms": 0.003,
+          "samples": 235
+        },
+        "source_sha": "6aa03fe21dbe88b308793f377e4d223a90e4da8f",
+        "wall_ms": 10442.951,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "control",
+      "run_index": 4,
+      "profile": {
+        "canvas": "my-canvas",
+        "extent": [
+          512,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0,
+          "mean_ms": 0,
+          "p50_ms": 0,
+          "p95_ms": 0,
+          "samples": 0
+        },
+        "observed_snapshots": 255,
+        "publication_build": {
+          "max_ms": 0.207,
+          "mean_ms": 0.11921568627451,
+          "p50_ms": 0.117,
+          "p95_ms": 0.145,
+          "samples": 255
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.121,
+          "mean_ms": 0.092984251968504,
+          "p50_ms": 0.09,
+          "p95_ms": 0.108,
+          "samples": 127
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 7.27423,
+          "mean_ms": 4.41714650980392,
+          "p50_ms": 4.370392,
+          "p95_ms": 4.678347,
+          "samples": 255
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.124,
+          "mean_ms": 0.048486274509804,
+          "p50_ms": 0.011,
+          "p95_ms": 0.106,
+          "samples": 255
+        },
+        "source_sha": "4a80af2a891332176a3912a235582d77d076a185",
+        "wall_ms": 3512.05,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "control",
+      "run_index": 4,
+      "profile": {
+        "canvas": "bench-canvas",
+        "extent": [
+          1024,
+          512
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 0.656,
+          "mean_ms": 0.374657342657342,
+          "p50_ms": 0.371,
+          "p95_ms": 0.407,
+          "samples": 143
+        },
+        "observed_snapshots": 255,
+        "publication_build": {
+          "max_ms": 0.317,
+          "mean_ms": 0.142890196078431,
+          "p50_ms": 0.141,
+          "p95_ms": 0.182,
+          "samples": 255
+        },
+        "render_exchange_executed": {
+          "max_ms": 0.395,
+          "mean_ms": 0.313889763779528,
+          "p50_ms": 0.316,
+          "p95_ms": 0.378,
+          "samples": 127
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 10.632684,
+          "mean_ms": 8.32151918823529,
+          "p50_ms": 8.284812,
+          "p95_ms": 8.974398,
+          "samples": 255
+        },
+        "snapshot_copy_total": {
+          "max_ms": 0.772,
+          "mean_ms": 0.369152941176471,
+          "p50_ms": 0.369,
+          "p95_ms": 0.717,
+          "samples": 255
+        },
+        "source_sha": "4a80af2a891332176a3912a235582d77d076a185",
+        "wall_ms": 3537.851,
+        "warmup_ticks": 30
+      }
+    },
+    {
+      "arm": "control",
+      "run_index": 4,
+      "profile": {
+        "canvas": "stress-canvas",
+        "extent": [
+          2048,
+          1024
+        ],
+        "hard_surface_packet_executed": {
+          "max_ms": 1.824,
+          "mean_ms": 1.745,
+          "p50_ms": 1.784,
+          "p95_ms": 1.824,
+          "samples": 3
+        },
+        "observed_snapshots": 236,
+        "publication_build": {
+          "max_ms": 0.455,
+          "mean_ms": 0.23639406779661,
+          "p50_ms": 0.217,
+          "p95_ms": 0.344,
+          "samples": 236
+        },
+        "render_exchange_executed": {
+          "max_ms": 2.889,
+          "mean_ms": 2.66166666666667,
+          "p50_ms": 2.642,
+          "p95_ms": 2.889,
+          "samples": 3
+        },
+        "requested_sample_ticks": 180,
+        "runtime": {
+          "godot": "4.7-stable (official)",
+          "headless": true,
+          "logical_cpus": 4,
+          "native_binary": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "native_sha256": "f47c0d6313bd6aa79767d2683c9273172822e6a04220a7a609f4c6d85dfb96a4",
+          "os": "Linux",
+          "processor": "AMD EPYC 9V45 96-Core Processor",
+          "window": [
+            1920,
+            1080
+          ]
+        },
+        "schema": "cybersand-hard-surface-profile-v1",
+        "simulation": {
+          "max_ms": 38.950928,
+          "mean_ms": 32.3644494025424,
+          "p50_ms": 32.001618,
+          "p95_ms": 36.150813,
+          "samples": 236
+        },
+        "snapshot_copy_total": {
+          "max_ms": 4.72,
+          "mean_ms": 0.0579576271186441,
+          "p50_ms": 0.002,
+          "p95_ms": 0.004,
+          "samples": 236
+        },
+        "source_sha": "4a80af2a891332176a3912a235582d77d076a185",
+        "wall_ms": 10570.955,
+        "warmup_ticks": 30
+      }
+    }
+  ]
+}
