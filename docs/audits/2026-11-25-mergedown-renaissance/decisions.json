@@ -2,7 +2,25 @@
   "schema": 1,
   "mission": "MERGEDOWN-RENAISSANCE-001",
   "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-  "merges": [],
+  "merges": [
+    {
+      "pr": 736,
+      "programme": "Palette CI parallelism",
+      "candidate_sha": "3c9900ef426c7b50d682c569e06363e821aa31df",
+      "previous_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "merge_commit": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "resulting_main": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "method": "merge",
+      "qualification_runs": [
+        44978447427,
+        44978447442,
+        44978447468
+      ],
+      "independent_review": "Specialist C APPROVE; lead concurred",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/736#issuecomment-7175345538",
+      "post_merge": "in progress"
+    }
+  ],
   "decisions": [
     {
       "id": "AUTH-001",
