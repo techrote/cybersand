@@ -1,10 +1,10 @@
 # ART-WORKBENCH-COLLABORATIVE-002 — engineering and creative decision
 
-**Draft/HOLD. Working collaborative authoring is application-qualified; the final
-documentation-corrected delivery is awaiting its own qualification receipt.**
-This working decision packet will be sealed only after that successor's complete
+**Draft/HOLD. The working application has a qualified baseline. Final delivery
+qualification is repeating after a retained Windows native-progress failure.**
+This working packet will be sealed only after the exact successor's complete
 source, application and pristine-package checks finish. The already qualified
-bcc application and its original Windows ZIP remain preserved.
+bcc application, its original Windows ZIP and the failed 3a attempt remain preserved.
 
 The mission delivers a coherent Art workspace in the ordinary CyberSand
 Workbench: discussion, the retained direct-paint route, typed proposals,
@@ -34,10 +34,10 @@ Ready promotion, production-default activation or paid inference has occurred.
 
 | Identity | Value |
 | --- | --- |
-| Final delivery source | `3a0ec3659f23d8e997e6721aa754d5a8ebe48512` |
-| Final delivery tree | `99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf` |
-| Full application/package campaign | [45553413100](https://github.com/techrote/cybersand/actions/runs/45553413100) |
-| Principal Windows evaluator | [Artifact {{FINAL_ARTIFACT}}](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/{{FINAL_ARTIFACT}}) |
+| Final delivery source | `d503d824aac4128968f7dfba5dccd540c3c07b59` |
+| Final delivery tree | `464c60288d5461d61578b000ae68ac029cffb5bd` |
+| Full application/package campaign | [45556633896](https://github.com/techrote/cybersand/actions/runs/45556633896) |
+| Principal Windows evaluator | [Artifact {{FINAL_ARTIFACT}}](https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/{{FINAL_ARTIFACT}}) |
 | Portable ZIP | `art-workbench-collaborative-002-windows.zip` |
 | Inner ZIP size / SHA-256 | {{FINAL_INNER_BYTES}} bytes / `{{FINAL_INNER_SHA}}` |
 | Outer GitHub artifact size / SHA-256 | {{FINAL_OUTER_BYTES}} bytes / `{{FINAL_OUTER_SHA}}` |
@@ -73,8 +73,18 @@ artifact [14992534811](https://github.com/techrote/cybersand/actions/runs/455468
 inner ZIP 95,598,830 bytes, SHA-256
 `de46eaa1fa6ce3f75cea4a29286bbefa43cc257028e912b54b2265060731d95a`.
 The final delivery follow-up corrects an identified offline guide/link defect;
-its application behavior is unchanged. Each artifact retains its own manifest
-and source receipt, rather than being repacked under an old identity.
+its application behavior is unchanged. The first corrected candidate, `3a0ec365`,
+passed Linux but failed a retained Windows displayed-progress gate before the
+new Windows suite or packaging. The current `d503d824` adds only the original
+negative to the mission ledger and runs one fresh full campaign with every
+application, native, test, workflow, guide and packaging byte unchanged from 3a.
+Each artifact retains its own manifest and source receipt.
+
+A precise documentation correction accompanies the retained ledger: its statement
+that 3a's “tests” were unchanged from bcc means the application/Godot test fixtures.
+The packaging unit tests were intentionally extended in 3a. No test of any kind
+changes between 3a and d503. This clarification is in the evidence record; it is
+not a qualification waiver or an application change.
 
 The original predecessor remains at [#773](https://github.com/techrote/cybersand/pull/773).
 Its actual GitHub flag was refreshed as **open, unmerged, draft=false**, head
@@ -397,7 +407,7 @@ large native captures remain known boundaries.
 
 ## Qualification and independent review
 
-The final delivery's complete campaign is `45553413100`; its exact platform
+The final delivery's complete campaign is `45556633896`; its exact platform
 and package receipts are linked in the identity table. The bcc application
 baseline independently passed the retained 23 core groups, the predecessor's
 distinct network/preparation/lifecycle/large-value/displayed cases, all nine
@@ -472,6 +482,16 @@ Original negative findings and failed experiments remain in the mission ledger:
 - Two temporary environment resets removed unpublished local work/logs. Exact
   losses are recorded; reconstructed work was freshly qualified and was not
   relabelled as recovered original evidence.
+- The first corrected delivery 3a failed the unchanged retained displayed sparse-
+  polygon progress predicate: 151 checks, one failure and first visible progress
+  at 2,187 ms against a less-than-2,000 ms requirement. Early native receipt and
+  displayed pixel checks passed; the additional `art.active` operand was not
+  separately printed. All nine new Windows groups and packaging were correctly
+  skipped. Original [artifact 14995049040](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040)
+  and the [independent negative review](https://github.com/techrote/cybersand/blob/9bbe820b041d3324f1ae2cb36bec24e49364b1bc/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/3a-first-attempt-independent-review.md)
+  remain preserved. Earlier bcc/e536 observations of 1,363/1,693 ms passed, but
+  these distinct hosted runs do not prove the cause. A later pass cannot erase
+  this responsiveness failure or establish a universal two-second guarantee.
 - The qualified bcc ZIP's guide contained three relative links to unbundled
   appendices. The final documentation successor corrects this concrete delivery
   defect and strengthens the packaging boundary; the original ZIP stays intact.
@@ -517,12 +537,17 @@ contracts and explicit approved reference cards; it does not take ownership of
 the broader documentation corpus or import unfinished documentation wholesale.
 
 PUBPRES #767 remained at `f4089809c7294336db26cf576b0ac3c57fc54775`. The startup
-finding is handed over as a separate stock-engine diagnostic, not as adoption of
+finding was [handed over](https://github.com/techrote/cybersand/pull/767#issuecomment-7153864857)
+as a separate stock-engine diagnostic, not as adoption of
 unfinished scheduler changes. AMBIENT #779 was refreshed at
 `a26cb9ca0521198c8ed1bb4c374be7523c021ce5`; ObjectShard #754 at documentation/evidence
 head `75865127fee19c56dacb0ae80307f438dd866cd1`, preserving qualified application
 `5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a`. Their ownership and evaluators remain
-independent. No inference about unsupported body/actor layers enters Art context.
+independent. The [Docs coordination](https://github.com/techrote/cybersand/pull/774#issuecomment-7149638550),
+[AMBIENT boundary](https://github.com/techrote/cybersand/pull/779#issuecomment-7150673057)
+and [ObjectShard boundary](https://github.com/techrote/cybersand/pull/754#issuecomment-7150673413)
+were delivered directly to their programme discussions. No inference about
+unsupported body/actor layers enters Art context.
 
 ## Owner real-model procedure
 

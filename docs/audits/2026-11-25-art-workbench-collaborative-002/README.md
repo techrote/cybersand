@@ -308,3 +308,70 @@ original receipts and immutable archive pass independent review. This evidence
 branch incorporates the final delivery source and root review records without
 changing the principal candidate or any other programme. Draft/HOLD and the
 physical Windows/NVIDIA/no-listener and real-model owner acceptance remain.
+
+
+## Corrected delivery: retained Windows negative and strict repeat
+
+The bcc application source `bcc92927ce3894a16d5544923cfbf7b1d0339fda` completed
+its full campaign [45546845554](https://github.com/techrote/cybersand/actions/runs/45546845554),
+including the actual pristine extracted Windows launcher. Its evaluator
+[14992534811](https://github.com/techrote/cybersand/actions/runs/45546845554/artifacts/14992534811)
+remains intact. The delivery-only successor `3a0ec3659f23d8e997e6721aa754d5a8ebe48512`,
+tree `99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf`, corrected the offline guide and
+added immutable local-link closure validation; all 25 packaging unit checks passed.
+Its application, native, tests and workflow bytes are identical to bcc.
+
+The fresh full-required campaign
+[45553413100](https://github.com/techrote/cybersand/actions/runs/45553413100) passed
+Linux, documentation/provenance, source-scope advisory and the Architecture guard.
+Windows job `138999860117` failed the retained displayed
+`test_art_batch_native.gd`: **151 checks, one failure**,
+`sparse polygon makes visible progress before raster completes`.
+`ART_FIRST_PROGRESS_MS` was **2187**, exceeding the unchanged **less-than-2000 ms**
+requirement. Both the early native receipt and first displayed sparse-pixel
+checks passed. The predicate also requires `art.active`, whose value was not
+separately printed; no value is inferred for that operand. The following
+retained displayed groups continued with zero failures, and aggregate failure
+correctly prevented all nine new Windows groups, packaging and the actual
+extracted-launcher gate. **No corrected evaluator was produced.**
+
+The original failed evidence is
+[artifact 14995049040](https://github.com/techrote/cybersand/actions/runs/45553413100/artifacts/14995049040),
+4,393,990 bytes, SHA-256
+`195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94`.
+The unchanged test, raster plan, executor and workflow were independently
+compared between bcc and 3a. Earlier displayed observations were 1363 ms at bcc
+and 1693 ms at e536; these different hosted runs do not prove a cause for the
+2187 ms result. The original failure remains a performance negative.
+
+This one-file ledger descendant starts **one fresh full qualification campaign**
+with identical application, native, test, workflow, guide and packaging code.
+The two-second requirement and all other gates remain unchanged. The new source
+identity prevents artifact-name collisions with the preserved failed run. A
+subsequent pass may qualify that exact delivery attempt; it cannot erase this
+negative or establish a universal latency guarantee. No cause is attributed,
+no failed artifact is overwritten, and no prior application receipt is silently
+reused. Draft/HOLD and physical Windows/NVIDIA owner acceptance remain in force.
+
+
+### Strict-repeat evidence checkpoint and documentary qualifier
+
+The current principal candidate is d503d824aac4128968f7dfba5dccd540c3c07b59,
+tree 464c60288d5461d61578b000ae68ac029cffb5bd, direct parent 3a. Its only change
+is the 2,822-byte append-only negative entry above. Fresh full campaign
+45556633896 is pending. The original failed Windows attempt remains distinct
+from the separately passed 3a Linux campaign and qualified bcc evaluator.
+
+A and B independently verified every other Git entry is unchanged. A also
+independently checked the original failed artifact and the earlier hosted
+1,363/1,693 ms progress observations, without attributing the 2,187 ms cause.
+The historical sentence above saying 3a's “tests” equal bcc refers specifically
+to the application/Godot fixtures; the packaging unit tests were intentionally
+extended in 3a. This precise correction is recorded without modifying or relaxing
+a test. No test of any kind changes between 3a and d503.
+
+The final decision and machine-readable identity now preserve that negative and
+name the strict-repeat source. The lead directly reviewed the original final-3a
+Linux Context/Proposal frames and retained their exact hashes in a derived
+visual record. The new Windows evaluator and final independent review fields
+remain pending. No new application execution is claimed by this evidence commit.

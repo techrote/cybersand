@@ -1,0 +1,38 @@
+{
+  "classification": "lead direct visual review of original final-source Linux screenshots; no new execution",
+  "source": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+  "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+  "run_id": 45553413100,
+  "artifact_id": 14995036920,
+  "observed_at_utc": "2026-11-25T05:46:15.747150+00:00",
+  "originals": [
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/00-art-ordinary-context.png",
+      "bytes": 139323,
+      "sha256": "5e6babc3be7f57c23a1cab0e88a061db50cad8efceef22754a27be0b39901c81",
+      "pixels": [
+        1280,
+        720
+      ]
+    },
+    {
+      "path": "art-collaborative-displayed/test_art_collaboration_session/01-art-ordinary-proposal.png",
+      "bytes": 105651,
+      "sha256": "b3faae09e1826ebbcb1da127278f9c98c81088117b6724d889f00702a58999b9",
+      "pixels": [
+        1280,
+        720
+      ]
+    }
+  ],
+  "observations": [
+    "The ordinary Context page shows current mode, native source readiness, native/knowledge/session/image selection, a bounded readable included/omitted summary, six-part navigation, explicit authorization, inspect and copy controls, prompt, Send and Stop.",
+    "The ordinary Proposal page shows two named stages, 72 host-computed candidate cells, preview-only status, one-stage approval, revise/skip/cancel controls, a complete proposal-copy action and the requested preservation prompt.",
+    "The underlying Workbench toolbar, canvas and bounded cyan preview remain visible; this is an actual ordinary Workbench framebuffer, not a layout mockup."
+  ],
+  "limits": [
+    "Only these two final-source screenshots were directly reviewed in this record. The prior nine-scene Windows visual review retains its own e536 source identity.",
+    "Visual review does not replace the original native-cell verifier, timing logs or interactive lifecycle tests.",
+    "These fixture screenshots do not establish real-model creativity, physical GPU behavior or owner aesthetic acceptance."
+  ]
+}

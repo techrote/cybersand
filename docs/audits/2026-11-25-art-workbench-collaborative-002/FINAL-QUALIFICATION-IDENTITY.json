@@ -2,12 +2,12 @@
   "schema": "cybersand.art-collaborative-002.decision.v1",
   "mission": "ART-WORKBENCH-COLLABORATIVE-002",
   "disposition": "Draft/HOLD",
-  "record_status": "final delivery qualification pending",
-  "observed_at_utc": "2026-11-25T05:43:52Z",
+  "record_status": "strict final delivery repeat pending after preserved first-candidate Windows failure",
+  "observed_at_utc": "2026-11-25T05:57:26.947740+00:00",
   "qualified_source": null,
   "candidate": {
-    "commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
-    "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+    "commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
     "pr": 780,
     "draft": true,
     "merged": false,
@@ -15,22 +15,32 @@
     "delivery_delta_files": [
       "docs/operations/art-workbench-collaborative-evaluation.md",
       "tools/package_art_collaborative.py",
-      "tools/ci/test_art_collaborative_packaging.py"
-    ]
+      "tools/ci/test_art_collaborative_packaging.py",
+      "docs/audits/2026-11-25-art-workbench-collaborative-002/README.md"
+    ],
+    "parent": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "delta_from_parent": {
+      "paths": [
+        "docs/audits/2026-11-25-art-workbench-collaborative-002/README.md"
+      ],
+      "append_only": true,
+      "bytes_appended": 2822,
+      "application_native_tests_workflow_guide_packager_unchanged": true
+    }
   },
   "qualification": {
-    "run_id": 45553413100,
+    "run_id": 45556633896,
     "mode": "full_required",
     "reuse": false,
-    "source_decision": "passed",
-    "linux": "passed",
+    "source_decision": "pending",
+    "linux": "pending",
     "windows": "pending",
     "pristine_windows_launcher": "pending",
     "package": "pending",
     "auxiliary_runs": {
-      "documentation": 45553413154,
-      "source_scope_advisory": 45553413084,
-      "architecture_guard_only": 45553413075
+      "documentation": 45556633508,
+      "source_scope_advisory": 45556633537,
+      "architecture_guard_only": 45556633909
     },
     "draft_skipped_jobs": [
       "Native C++ validation",
@@ -143,7 +153,8 @@
     "native_baseline": "b817670a66c7b114900a6510b73787785ab444c6",
     "experience_baseline": "6fc1702e0a6f41e93dc2287f76006e7ff7a51531",
     "guide_and_startup": "d8c627d584f30c8393af5956ef1c19e8bba17ce5",
-    "final_delivery": null
+    "final_delivery": null,
+    "partial_3a_linux": "eff36fdc783056731e19129e830e8090b6db07a1"
   },
   "owner_pending_acceptance": [
     "physical Windows/NVIDIA absent LM Studio listener -> Send -> ordinary Art X/Hide",
@@ -165,5 +176,36 @@
     "one_duplicate_raw_archive_upload_rejected_by_automatic_review": true,
     "rejected_payload_rerouted": false,
     "safe_alternative": "derived source/hash/status records and original Actions artifact links"
+  },
+  "preserved_failed_delivery": {
+    "commit": "3a0ec3659f23d8e997e6721aa754d5a8ebe48512",
+    "tree": "99394ad1133b4796efa0b95eb31dfa5c7bdbbaaf",
+    "run_id": 45553413100,
+    "linux": "passed",
+    "windows": "failed retained native progress gate",
+    "windows_job_id": 138999860117,
+    "artifact_id": 14995049040,
+    "artifact_bytes": 4393990,
+    "artifact_sha256": "195829a172f0fb91f7b92cad1efe6618e33daf397c2df52b7d9cbdd23d4a1f94",
+    "archive_members_crc_verified": 530,
+    "displayed_native_checks": 151,
+    "displayed_native_failures": 1,
+    "observed_first_progress_ms": 2187,
+    "gate_requires_less_than_ms": 2000,
+    "early_native_receipt_passed": true,
+    "first_displayed_pixel_passed": true,
+    "art_active_operand_printed": false,
+    "new_windows_groups_executed": false,
+    "package_built": false,
+    "independent_review_commit": "9bbe820b041d3324f1ae2cb36bec24e49364b1bc",
+    "cause_proven": false,
+    "threshold_relaxed": false
+  },
+  "cross_programme_comments": {
+    "architecture": 7153373778,
+    "docs": 7149638550,
+    "pubpres_startup": 7153864857,
+    "ambient": 7150673057,
+    "objectshard": 7150673413
   }
 }
