@@ -58,3 +58,49 @@ Use ancestry-preserving merges. Each new source checkpoint receives appropriate 
 - [Initial independent tooling review](independent-review.md) and [CI-wave independent review](ci-wave-independent-review.md) retain their source and actual evidence scopes.
 
 No current-main Windows evaluator is yet claimed. The existing #758 package remains labeled by its original `da83f83` source.
+
+
+## Resulting-source engineering checkpoint
+
+The mainline opt-in AMBIENT candidate now includes a narrowly reviewed LFS
+acquisition repair at `120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6`. Repeated
+original service timeouts occurred before Godot on both the candidate and the
+separate Goblin post-merge campaign. The exact prior pre-merge product proofs
+remain valid, but incomplete post-merge campaigns are explicitly failures.
+The [independent triage](lfs-acquisition-independent-triage.md) retains the
+original attempts. The new complete Ready campaign is a separate source gate.
+
+Substantial prepared successor implementation is now retained:
+
+- Art and Architecture have a real ordinary-Workbench mount with explicit
+  context disclosure, one Art request owner, native staged approval and exact
+  Undo. The foundation-combined source passed15 cases/1104 assertions. Original
+  fixture, malformed-URL and truncated-PNG failures and their repairs are
+  retained. [Current evidence](art-current-evidence-manifest.json) is headless
+  and deterministic; full Windows, graphical, genuine-model and owner gates
+  remain. ULTIMA's newly reported Art export fault is an additional open gate;
+  its active repair is coordinated, not duplicated.
+- Goblin002 passed its bounded successor checks and a new447-check actual
+  AMBIENT pilot/drive/hand-back/Save/Reopen integration. The independent reviewer
+  reproduced it. One inner material-reopen comparison is explicitly not
+  applicable because native bodies protect that capture; authored actor/profile
+  persistence is checked. [Original evidence](goblin-successor-evidence-manifest.json)
+  includes the two test-development failures and corrected owner observations.
+  Historical512/1024-action timeouts remain unresolved.
+- AMBIENT002 retains eight actors and independently proves that explicit living
+  group application preserves unselected human/external ownership. Its combined
+  local campaign passed11 cases/4505 assertions. [Prepared successor](ambient002-integration.md)
+  awaits final main reconciliation/retargeting and owner acceptance.
+- Material Audition's new61-check native cross-feature exercise, independently
+  reproduced, preserves one World, worker and Rapier owner through live Apply,
+  Revert, actor handoff and authored persistence. Its own108-input runtime is
+  retained. [Evidence](material-ambient-evidence-manifest.json) includes the
+  original actor-free demo fixture mistake and the corrected acknowledgment.
+- SWARM has a bounded source reconciliation with the accepted CI guards and
+  exact independent binary custody. Actor Compose's maintainer workflow
+  approval, ObjectShard's stale retained117-input publication gap and Strata's
+  failed45-second extracted-package admission target remain explicit blockers.
+
+[Exact local source histories](integration-source-history.json) preserve the
+qualified commit objects in incremental Git bundles. Remote publication uses
+explicit exact-tree joins; no established evidence history is rewritten.

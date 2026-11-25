@@ -106,3 +106,30 @@ Every case passed the unchanged strict diagnostics. Source and actual native/Rap
 inputs were unchanged before/after. **Approve the source integration and focused
 Linux result.** Full resulting-source platform/graphical qualification and the
 existing creative/physical owner gates remain; no Art mainline merge is implied.
+# Current foundation reconciliation
+
+C independently approves the prepared source at
+`97585a0af02f1534eb254adf2d2fbe9036a281b2`, tree
+`4a47ab348e85941349cfdf64222181ef8298d57f`, joining the reviewed Art/Architecture
+implementation with AMBIENT foundation `0c1152c21427125066df931cf06a53b7dda0075d`.
+Art/Architecture production guards, native inputs, runtime manifests and bytes,
+the PNG repair, provider admission/redaction, and bridge fixture are unchanged
+from the independently reviewed `9d1b1f4b` implementation below. The Main and
+Workbench additions are the existing AMBIENT foundation hooks; no second
+authoring or actor owner is introduced. Both provisional scheduling hints
+remain, with original watchdogs unchanged.
+
+C verified every retained log SHA-256, strict diagnostic verdict, zero exit,
+natural completion, and before/after source/runtime/engine/project custody in
+the lead's current fifteen-case campaign. It passed **1,104 assertions** in
+81.676 seconds: thirteen distinct fixtures plus actual author/reopen phases.
+The 68-check ordinary default-OFF case passes with the Art/Architecture source
+present. A separate two-phase persistence campaign also passed, scoped as a
+separate repetition rather than additional feature coverage.
+
+The earlier current-source local-close failure remains preserved: the temporary
+lead wrapper reused one profile after an earlier case created a legitimate Art
+session log. Restoring the original per-case profile isolation resolves that
+harness error without changing application code, assertions or the fresh-profile
+fixture contract. No current Windows, real-model creative, physical owner or
+historical performance acceptance is implied by these headless loopback passes.

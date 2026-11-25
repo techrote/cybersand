@@ -409,5 +409,168 @@
     }
   },
   "reviewer": "Specialist C / adversarial_qa",
-  "schema": "cybersand-art-architecture-independent-review-v1"
+  "schema": "cybersand-art-architecture-independent-review-v1",
+  "current_foundation_reconciliation": {
+    "reviewer": "Specialist C",
+    "source_commit": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+    "source_tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+    "foundation": "0c1152c21427125066df931cf06a53b7dda0075d",
+    "disposition": "APPROVE PREPARED SOURCE; HEADLESS LOOPBACK SCOPE ONLY",
+    "art_architecture_production_inputs_unchanged_from": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a",
+    "independent_execution": false,
+    "review_kind": "Independent resulting-source delta and complete lead campaign log/hash/custody readback",
+    "campaigns": [
+      {
+        "campaign": "art-current-97585-qualified",
+        "case_count": 15,
+        "source_commit": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "source_tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+        "source_inputs_count": 1287,
+        "local_delta": [],
+        "source_runtime_engine_project_unchanged": true,
+        "cases": [
+          {
+            "case": "test_ambient_default_off_integration",
+            "status": "passed",
+            "seconds": 7.642,
+            "log_sha256": "d40651eaafc2907c808db4adff177048bfe9031afece5f8c53c898d0cf771edb",
+            "log_relative": "art-current-97585-qualified/test_ambient_default_off_integration/test_ambient_default_off_integration.log"
+          },
+          {
+            "case": "test_art_architecture_workbench",
+            "status": "passed",
+            "seconds": 7.564,
+            "log_sha256": "03702012a4a525d7118621835dd3ac35785f46e31ea8b7ed0053028866913bf2",
+            "log_relative": "art-current-97585-qualified/test_art_architecture_workbench/test_art_architecture_workbench.log"
+          },
+          {
+            "case": "test_art_request_preparation",
+            "status": "passed",
+            "seconds": 1.404,
+            "log_sha256": "8ca9331ff5f4621b6eac67d596e68500fb9427cb75d8a3bcda66206346ff8314",
+            "log_relative": "art-current-97585-qualified/test_art_request_preparation/test_art_request_preparation.log"
+          },
+          {
+            "case": "test_art_request_admission",
+            "status": "passed",
+            "seconds": 6.252,
+            "log_sha256": "40c098bf6ea900ade9886d9e085bb67ac7f82eb641ea3a4ebdc0df5af1704c91",
+            "log_relative": "art-current-97585-qualified/test_art_request_admission/test_art_request_admission.log"
+          },
+          {
+            "case": "test_art_owned_transport",
+            "status": "passed",
+            "seconds": 1.577,
+            "log_sha256": "4f824b83c4f64b0a9166c7cfeb742397c4bfe2f551039ade2635268294555e2b",
+            "log_relative": "art-current-97585-qualified/test_art_owned_transport/test_art_owned_transport.log"
+          },
+          {
+            "case": "test_art_provider_failure_lifecycle",
+            "status": "passed",
+            "seconds": 2.135,
+            "log_sha256": "2007147f0133cc4b3ad5a7781536e4b6583190c4d445ff060d546d8f50aa3aa3",
+            "log_relative": "art-current-97585-qualified/test_art_provider_failure_lifecycle/test_art_provider_failure_lifecycle.log"
+          },
+          {
+            "case": "test_art_response_preparation",
+            "status": "passed",
+            "seconds": 2.621,
+            "log_sha256": "ef07b96d664dfaef067da6edda079e9dfb457688091cd05a4c8f97e6af51ab1a",
+            "log_relative": "art-current-97585-qualified/test_art_response_preparation/test_art_response_preparation.log"
+          },
+          {
+            "case": "test_art_session_log",
+            "status": "passed",
+            "seconds": 6.427,
+            "log_sha256": "a845713d8b5b06c6cd1abea9398cbced70e8c5d0a254eeea507c4c58e9dafe1e",
+            "log_relative": "art-current-97585-qualified/test_art_session_log/test_art_session_log.log"
+          },
+          {
+            "case": "test_art_local_close",
+            "status": "passed",
+            "seconds": 7.384,
+            "log_sha256": "d253a057dbec38688e63dd5b3415c0d61ae2edaa89d4e23ae74d0b4193e79d2c",
+            "log_relative": "art-current-97585-qualified/test_art_local_close/test_art_local_close.log"
+          },
+          {
+            "case": "test_batch_lab_namespace",
+            "status": "passed",
+            "seconds": 0.577,
+            "log_sha256": "ecb32abdec9d3cebe850918c22191750b01d353c4efc4a720cf9e654352bf962",
+            "log_relative": "art-current-97585-qualified/test_batch_lab_namespace/test_batch_lab_namespace.log"
+          },
+          {
+            "case": "test_batch_lab_security",
+            "status": "passed",
+            "seconds": 3.806,
+            "log_sha256": "43070d1ddfd3ac2009a905a6ae8b5b5b85d73a5c7821220a8cee6e0cb7b302bf",
+            "log_relative": "art-current-97585-qualified/test_batch_lab_security/test_batch_lab_security.log"
+          },
+          {
+            "case": "test_architecture_proposal_bridge",
+            "status": "passed",
+            "seconds": 3.547,
+            "log_sha256": "a73644ffa407bde927369798c6df8f2f6497eda4b3e00d2b9f2b23d648c8241b",
+            "log_relative": "art-current-97585-qualified/test_architecture_proposal_bridge/test_architecture_proposal_bridge.log"
+          },
+          {
+            "case": "test_architecture_workflow_controls",
+            "status": "passed",
+            "seconds": 3.816,
+            "log_sha256": "8779f5287be860cab2c12ebf276a4ff90566fe88af6c5ae98ec06e0f685f6794",
+            "log_relative": "art-current-97585-qualified/test_architecture_workflow_controls/test_architecture_workflow_controls.log"
+          },
+          {
+            "case": "combined-author",
+            "status": "passed",
+            "seconds": 16.393,
+            "log_sha256": "caa1b1a66db3e19492dc856863b685db9c23215e31fd324cdbe3c82444f06bb3",
+            "log_relative": "art-current-97585-qualified/combined-author/test_workbench_combined_authoring.log"
+          },
+          {
+            "case": "combined-reopen",
+            "status": "passed",
+            "seconds": 10.531,
+            "log_sha256": "8e7f534a304ce788a64f8f23bce06706317783842d30f099d43e65e9fa28c0f2",
+            "log_relative": "art-current-97585-qualified/combined-reopen/test_workbench_combined_authoring.log"
+          }
+        ]
+      },
+      {
+        "campaign": "art-current-97585-persistence",
+        "case_count": 2,
+        "source_commit": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "source_tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+        "source_inputs_count": 1287,
+        "local_delta": [],
+        "source_runtime_engine_project_unchanged": true,
+        "cases": [
+          {
+            "case": "combined-author",
+            "status": "passed",
+            "seconds": 16.599,
+            "log_sha256": "3eaa572fec89fd704d6fe64bf4c9606f74d462ea8d815c6008544f7d9858d734",
+            "log_relative": "art-current-97585-persistence/combined-author/test_workbench_combined_authoring.log"
+          },
+          {
+            "case": "combined-reopen",
+            "status": "passed",
+            "seconds": 10.444,
+            "log_sha256": "b96ac479b0727d77b9ed60f0c7494b5a86016c6bf22ab6652f6e701883ac7f51",
+            "log_relative": "art-current-97585-persistence/combined-reopen/test_workbench_combined_authoring.log"
+          }
+        ]
+      }
+    ],
+    "main_campaign_assertions": 1104,
+    "main_campaign_seconds": 81.676,
+    "original_failed_harness": "art-current-97585-cases: shared profile violated local-close fresh-profile fixture; original failure retained",
+    "harness_repair": "Restore original per-case profile isolation; no application, oracle or watchdog change",
+    "remaining_gates": [
+      "Current Windows and broader resulting-source qualification",
+      "Original displayed Windows performance evidence remains scoped",
+      "Genuine-model creative evaluation",
+      "Physical owner acceptance"
+    ]
+  }
 }

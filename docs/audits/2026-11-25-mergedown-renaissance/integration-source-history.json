@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "purpose": "Preserve exact locally qualified commit objects and incremental source history alongside remote API commits joined by exact tree equality. Original published predecessor ancestry remains intact; no evidence branches were rewritten. Fetch listed public prerequisites, then git bundle verify/unbundle to recover original local source identities.",
+  "bundles": [
+    {
+      "path": "material-integration-local-history.bundle",
+      "bytes": 17412,
+      "sha256": "55e7313777bb29718391cfd0e9ec4c8f3117e0798cf0aa566fe965790b14db18",
+      "verification": "The bundle contains this ref:\n2e0233f808e6e9c76aac897593bc88d6ca357b95 refs/heads/integration/mergedown-material-audition\nThe bundle requires these 3 refs:\n950bff73404f2fdaeb09362ec1bba408888a4ba9 \nd0af9b6015c27417fddd67f79afdcf656a609571 \n858ef9e7285fcaa22c9cc1381d0cb0082057a456 \nThe bundle uses this hash algorithm: sha1\n/workspace/scratch/2e90cf7b4aa3/cybersand/docs/audits/2026-11-25-mergedown-renaissance/material-integration-local-history.bundle is okay\n"
+    },
+    {
+      "path": "art-integration-local-history.bundle",
+      "bytes": 879631,
+      "sha256": "2a3d316ae2a92edf0ca46cd60338754a675e5e35d68b9503bbbfb8bc40f69326",
+      "verification": "The bundle contains this ref:\n97585a0af02f1534eb254adf2d2fbe9036a281b2 refs/heads/integration/mergedown-art-current\nThe bundle requires these 3 refs:\n4cc400cea6be7cb338f15bc6a6a2b28b44143b71 \nd503d824aac4128968f7dfba5dccd540c3c07b59 \n0c1152c21427125066df931cf06a53b7dda0075d \nThe bundle uses this hash algorithm: sha1\n/workspace/scratch/2e90cf7b4aa3/cybersand/docs/audits/2026-11-25-mergedown-renaissance/art-integration-local-history.bundle is okay\n"
+    },
+    {
+      "path": "goblin-integration-local-history.bundle",
+      "bytes": 7927,
+      "sha256": "3eb44705db8a508bfd4c0168a4261856a2b9819e89b65eefd6168a1f4cbbd33e",
+      "verification": "The bundle contains this ref:\n21c9a6670e05cfb8b8eeb76d02b03fb75019468f refs/heads/integration/mergedown-goblin-successor\nThe bundle requires these 3 refs:\n950bff73404f2fdaeb09362ec1bba408888a4ba9 \n36d82cae75e5fd8dad11646663248de8003f5bf9 \n0c1152c21427125066df931cf06a53b7dda0075d \nThe bundle uses this hash algorithm: sha1\n/workspace/scratch/2e90cf7b4aa3/cybersand/docs/audits/2026-11-25-mergedown-renaissance/goblin-integration-local-history.bundle is okay\n"
+    }
+  ]
+}

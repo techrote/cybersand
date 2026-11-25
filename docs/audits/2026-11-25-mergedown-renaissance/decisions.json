@@ -147,7 +147,28 @@
       "owner_physical_acceptance": "outstanding",
       "default_enabled": false,
       "post_merge": {
-        "status": "pending readback"
+        "documentation": {
+          "run": 45714897809,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45714897818,
+          "status": "success"
+        },
+        "architecture": {
+          "run": 45714897795,
+          "status": "success"
+        },
+        "native": {
+          "run": 45714897803,
+          "status": "pending final readback"
+        },
+        "gde": {
+          "run": 45714897904,
+          "attempt": 1,
+          "status": "failure",
+          "classification": "Two Windows shards failed Git LFS acquisition before Godot; reducer correctly refused21/23 reports. Exact premerge source/tree qualification remains preserved."
+        }
       }
     }
   ],
@@ -247,8 +268,89 @@
         45715343581,
         45715343561
       ],
-      "status": "Ready qualification in progress; original Palette failure45715343561 under investigation before any retry or merge"
+      "status": "Original source terminal: Native/Docs/Art/Architecture/advisoryPASS, Palette attempt2PASS with attempt1FAIL retained; GDE attempt1FAIL due5 pre-Godot Windows LFS service failures and19/24 reducer coverage. Repaired candidate registered separately.",
+      "original_failures_record": "lfs-acquisition-independent-triage.json"
+    },
+    {
+      "id": "AMBIENT001-LFS-RECOVERY",
+      "source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+      "tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+      "parent": "0c1152c21427125066df931cf06a53b7dda0075d",
+      "local_exact_tree_source": "886a149b7f38f9d04bc74da8b2fedb566ce89c62",
+      "decision": "New complete Ready campaign after narrowly classified bounded LFS acquisition repair. Existing allowances, raw failure logs, source pins and exact pointer/size/hash verification remain mandatory.",
+      "review": "Specialist A and lead independently source-approved and executed14 adversarial tests; hosted final C review remains required.",
+      "registration": "https://github.com/techrote/cybersand/pull/775#issuecomment-7177279478",
+      "runs": [
+        45719650370,
+        45719650368,
+        45719650512,
+        45719650703,
+        45719650447,
+        45719650698,
+        45719650316
+      ],
+      "status": "in progress; source frozen; no main merge approval yet"
     }
   ],
-  "current_accepted_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65"
+  "current_accepted_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+  "preparations": [
+    {
+      "pr": 781,
+      "programme": "Goblin002",
+      "source": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
+      "tree": "72447242d2088d66c2f7f10ed5fead66a7c15ae0",
+      "qualified_scope": "Linux native combined foundation handoff/persistence447 checks,11 operations; independent reproduction. Earlier5e7d targeted9 cases3696 checks and bounded sampled resources retained.",
+      "next": "Reconcile final accepted main; publish ancestry-preserving prepared successor; full resulting-source/platform and owner gates remain. Original512/1024 long-horizon timeouts unchanged.",
+      "record": "goblin-successor-evidence-manifest.json"
+    },
+    {
+      "pr": 779,
+      "programme": "AMBIENT002",
+      "source": "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+      "tree": "5cad334ccbf53278cd67f77e0173e242ba059e5f",
+      "qualified_scope": "Linux11 cases4505 assertions; independent actual mixed-group31 checks; defaultOFF68 checks.",
+      "next": "Retarget main after775 lands; preserve exact predecessor ancestry; retain eight actors and physical owner gate.",
+      "record": "ambient002-integration.json"
+    },
+    {
+      "pr": 780,
+      "constituent_prs": [
+        777
+      ],
+      "programme": "Art and Architecture production integration",
+      "source": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+      "tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+      "qualified_scope": "Linux15 cases1104 assertions; actual loopback HTTP/native staged edits/Undo plus author/reopen; independent exact-source review.",
+      "next": "Reconcile final accepted main and publish authoritative780; adopt exact reviewed ULTIMA export donor when available; full platform/graphical/model/physical gates remain.",
+      "record": "art-current-evidence-manifest.json"
+    },
+    {
+      "pr": 768,
+      "programme": "Live Material Audition",
+      "source": "2e0233f808e6e9c76aac897593bc88d6ca357b95",
+      "tree": "0473c322acd96f18eeb557ec4ba027fb7242595e",
+      "qualified_scope": "Actual108-input native runtime; new61-check cross-feature test independently reproduced; retained core/authoring/actor/pressure/Wave targeted casesPASS.",
+      "next": "Reconcile final accepted main; publish prepared source preserving108-input runtime; qualify actual resulting Windows/full-source and physical owner gate.",
+      "record": "material-ambient-evidence-manifest.json"
+    },
+    {
+      "pr": 729,
+      "programme": "Consolidated SWARM",
+      "source": "89d52f467168c2647614ff3f9b871179c5729f6c",
+      "qualified_scope": "Local source reconciliation and12 planner tests; exact original106-input native and52-input CLI runtime bytes verified. No combined application qualification yet.",
+      "next": "Qualify reconciled actual application; preserve populated-map physical owner gate.",
+      "record": "advanced-native-custody.json"
+    }
+  ],
+  "active_coordination": [
+    {
+      "pr": 767,
+      "status": "protected; no source or campaign mutation"
+    },
+    {
+      "pr": 783,
+      "status": "protected; exact778 donor accepted unchanged; active Art export fault repair owned by ULTIMA",
+      "coordination": "https://github.com/techrote/cybersand/pull/783#issuecomment-7177081321"
+    }
+  ]
 }

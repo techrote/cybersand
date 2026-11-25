@@ -1,0 +1,121 @@
+{
+  "schema": "cybersand-mergedown-independent-failure-triage-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-25T23:04:20.337390+00:00",
+  "disposition": "SOURCE-BOUND INFRASTRUCTURE FAILURE; GDE RECOVERY PENDING",
+  "accepted_main": {
+    "source": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+    "workflow_run": 45714897904,
+    "event": "push",
+    "attempt": 1,
+    "status": "failure",
+    "failed_shard_jobs": [
+      139560378897,
+      139560379052
+    ],
+    "reducer_job": 139565758264,
+    "reducer_reason": "expected23 original Windows shard reports, found21",
+    "reducer_artifact": 15069788557,
+    "classification": "Git LFS batch service timeout before Godot; reducer correctly fails missing shards"
+  },
+  "ambient_candidate": {
+    "source": "0c1152c21427125066df931cf06a53b7dda0075d",
+    "tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+    "workflow_run": 45715343854,
+    "event": "pull_request",
+    "attempt": 1,
+    "observed_failed_windows_shards": {
+      "0": 139563141658,
+      "8": 139563141675,
+      "10": 139563141620,
+      "11": 139563141698,
+      "22": 139563143540
+    },
+    "classification": "Git LFS batch service timeout while materializing pinned Windows Rapier, before Godot"
+  },
+  "palette": {
+    "run": 45715343561,
+    "source": "0c1152c21427125066df931cf06a53b7dda0075d",
+    "attempt1": {
+      "status": "failure",
+      "failed_job": 139560080793,
+      "seconds_before_dependency_failure": 11.494962498,
+      "classification": "Git LFS batch service timeout before Godot"
+    },
+    "attempt2": {
+      "status": "success",
+      "successful_jobs": 8,
+      "cohorts": 6,
+      "process_cases": 19,
+      "reducer_job": 139565783138,
+      "reducer_artifact": 15070122562,
+      "rerun_scope": "plan and all dependents; same-attempt complete original artifacts",
+      "acceptance_contract": "palette-shader-suite-v3 bounded semantics passed; retained v2 finished-image diagnostic remains failed and is not the v3 predicate"
+    }
+  },
+  "preserved_decoded_logs": [
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141620.log",
+      "sha256": "e779f8b9ec1fa32da731b3d8a644b26b902cc4d1fcccdbf91ccb052bd591135a",
+      "bytes": 131351,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141658.log",
+      "sha256": "59a8dbf907f85e6110a7fd5cb1be0a198bc24197957dbdc4f29bf1e0462297be",
+      "bytes": 131411,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141675.log",
+      "sha256": "6f01b87bb8aabef602ba8433b99767c20d0b4e46d3ebd2d5ac25023cc4794e37",
+      "bytes": 131473,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141698.log",
+      "sha256": "f2e509c95d3c5f1e2fcfaa765b1413a99f4a8d45ba598e856cfe7887ef31921e",
+      "bytes": 131415,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563143540.log",
+      "sha256": "49361243246b4b32ad0292b40c3bceab36f094d688f3b8641b5cdbf180922f76",
+      "bytes": 131972,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-palette-attempt1-139560080793.log",
+      "sha256": "1825085b5e62e66333bfac182019cc50ce4a1358bd7fb210f258058255194ad4",
+      "bytes": 137771,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-palette-attempt2-readback-139565783138.log",
+      "sha256": "56156cbaf7b880eb449db1e46a20d90092f47165c6f37338370442b0c08a6a26",
+      "bytes": 151629,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/goblin001-postmerge-gde-attempt1-139560378897.log",
+      "sha256": "dba9e6aa65396cdaf9d460ba4efd49d87a30167cab586da8d7c5c57cd564db27",
+      "bytes": 131014,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/goblin001-postmerge-gde-attempt1-139560379052.log",
+      "sha256": "0daa8fe4da221a4c2c3783853db32c19d9300f990307da40adda38f80392d28b",
+      "bytes": 131014,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/goblin001-postmerge-gde-attempt1-139565758264.log",
+      "sha256": "0db8395c5f562eee2f91bde6ff47be7d69534b0d2bab93c5a7eab4c83a4a2aca",
+      "bytes": 44637,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    }
+  ],
+  "no_application_failure_observed_in_these_jobs": true,
+  "mandatory_checks_weakened": false,
+  "retry_or_source_mutation_by_reviewer": false
+}
