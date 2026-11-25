@@ -1,0 +1,809 @@
+{
+	"checks": 251,
+	"failures": 0,
+	"limits": [
+		"These are 24 distinct owner-style texts, including four marked for a future owner-model held-out cohort.",
+		"The deterministic generator knows the fixture mapping; its outcomes do not establish held-out model generalisation.",
+		"Matched geometry across direct, structured, native-context or retrieval arms is a control, not evidence of a causal creativity improvement.",
+		"Refusals and failed revisions remain outcomes and must stay in the denominator.",
+		"Traversal rectangles measure static empty space only; they do not establish actor flight, physical reachability or owner playfeel."
+	],
+	"outcomes": [
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B01",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4518,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8239,
+				"without_knowledge_bytes": 6170
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "industrial_repair",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B02",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4528,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8213,
+				"without_knowledge_bytes": 6142
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "structural_facade",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B03",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4506,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8275,
+				"without_knowledge_bytes": 6213
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "scifi_interior",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "revision_title_and_geometry",
+			"id": "B04",
+			"intermediate_refusal": {},
+			"kind": "revision",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4616,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8301,
+				"without_knowledge_bytes": 6139
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "revised_arcology",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B05",
+			"intermediate_refusal": {},
+			"kind": "preservation",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4568,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8275,
+				"without_knowledge_bytes": 6212
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "protected_courtyard",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B06",
+			"intermediate_refusal": {},
+			"kind": "palette",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3912,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7597,
+				"without_knowledge_bytes": 6186
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "palette_foundry",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "stop_prefix",
+			"id": "B07",
+			"intermediate_refusal": {},
+			"kind": "recovery",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3937,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7622,
+				"without_knowledge_bytes": 6221
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "stopped_workshop",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B08",
+			"intermediate_refusal": {},
+			"kind": "staged",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3876,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7561,
+				"without_knowledge_bytes": 6165
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "staged_megaframe",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "B09",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4689,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8374,
+				"without_knowledge_bytes": 6175
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "xeno_vault",
+			"split": "development"
+		},
+		{
+			"actual": "refused",
+			"error": "Resolve the proposal's outstanding questions before native approval.",
+			"expected": "refused",
+			"fixture_case": "unresolved",
+			"id": "B10",
+			"intermediate_refusal": {},
+			"kind": "ambiguous",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "industrial_repair",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "single_stage",
+			"id": "B11",
+			"intermediate_refusal": {},
+			"kind": "bounded_direct",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4487,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8208,
+				"without_knowledge_bytes": 6156
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "industrial_repair",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "remove_stage",
+			"id": "B12",
+			"intermediate_refusal": {},
+			"kind": "revision",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4004,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7689,
+				"without_knowledge_bytes": 6163
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "palette_foundry",
+			"split": "development"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "H01",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3321,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7006,
+				"without_knowledge_bytes": 6165
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "structural_facade",
+			"split": "owner_model_held_out"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "H02",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4685,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8370,
+				"without_knowledge_bytes": 6185
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "xeno_vault",
+			"split": "owner_model_held_out"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "H03",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3885,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7570,
+				"without_knowledge_bytes": 6168
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "revised_arcology",
+			"split": "owner_model_held_out"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "valid",
+			"id": "H04",
+			"intermediate_refusal": {},
+			"kind": "construction",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 4522,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 8291,
+				"without_knowledge_bytes": 6224
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "scifi_interior",
+			"split": "owner_model_held_out"
+		},
+		{
+			"actual": "refused",
+			"error": "Proposal has 3927 requested cells conflicting with owner/native policy. Revise it before approval.",
+			"expected": "refused",
+			"fixture_case": "protected_conflict",
+			"id": "C01",
+			"intermediate_refusal": {},
+			"kind": "contradiction",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "protected_courtyard",
+			"split": "adversarial"
+		},
+		{
+			"actual": "refused",
+			"error": "Proposal requests material 29 outside the owner palette.",
+			"expected": "refused",
+			"fixture_case": "outside_palette",
+			"id": "C02",
+			"intermediate_refusal": {},
+			"kind": "palette_conflict",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "palette_foundry",
+			"split": "adversarial"
+		},
+		{
+			"actual": "refused",
+			"error": "Erase requires the owner's explicit destructive permission.",
+			"expected": "refused",
+			"fixture_case": "erase_without_permission",
+			"id": "C03",
+			"intermediate_refusal": {},
+			"kind": "destructive_conflict",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "industrial_repair",
+			"split": "adversarial"
+		},
+		{
+			"actual": "refused",
+			"error": "Unsupported operation 'place_module'. Native part placement requires its Architecture owner.",
+			"expected": "refused",
+			"fixture_case": "unsupported_part",
+			"id": "C04",
+			"intermediate_refusal": {},
+			"kind": "unowned_authority",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "staged_megaframe",
+			"split": "adversarial"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "revision_title_and_geometry",
+			"id": "R01",
+			"intermediate_refusal": {},
+			"kind": "geometry",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3930,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7615,
+				"without_knowledge_bytes": 6109
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "structural_facade",
+			"split": "revision"
+		},
+		{
+			"actual": "refused",
+			"error": "Proposal has 1 requested cells conflicting with owner/native policy. Revise it before approval.",
+			"expected": "refused",
+			"fixture_case": "protected_source",
+			"id": "R02",
+			"intermediate_refusal": {},
+			"kind": "native_source_limit",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "palette_foundry",
+			"split": "revision"
+		},
+		{
+			"actual": "ready",
+			"error": "",
+			"expected": "ready",
+			"fixture_case": "repair_conflict",
+			"id": "R03",
+			"intermediate_refusal": {
+				"configure_usec": 818,
+				"conflict_count": 3927,
+				"conflicts": [
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 102,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 103,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 104,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 105,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 106,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 107,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 108,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 109,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 110,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 111,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 112,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 113,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 114,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 115,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 116,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 117,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 118,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 119,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 120,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 121,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 122,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 123,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 124,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 125,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 126,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 127,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 128,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 129,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 130,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 131,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 132,
+						"y": 67
+					},
+					{
+						"before": 0,
+						"desired": 58,
+						"reason": "Owner-protected region",
+						"stage": "change",
+						"x": 133,
+						"y": 67
+					}
+				],
+				"conflicts_omitted": 3895,
+				"context_digest": "e680af55865b640e3aa18732e257171a9fa9b7a3e905e8590d1ddabd42dba38d",
+				"elapsed_usec": 266149,
+				"error": "Proposal has 3927 requested cells conflicting with owner/native policy. Revise it before approval.",
+				"maximum_poll_usec": 8656,
+				"notice": "Predictions from copied stored materials, not execution receipts or actor/body-mask predictions. Native body exclusions, fresh source validation and explicit approval still apply.",
+				"ok": false,
+				"policy_digest": "3d2a5bbb78cbc695f8009decda230f13f3ee6f1b22853bac66f850c046b90ba4",
+				"predicted_changed": 43440,
+				"predicted_materials_sha256": "0fadc98b550ff4752c9ec8ef8626a8619cd392f11aba7a5dff24feed754d9cfa",
+				"predicted_unchanged": 1785,
+				"proposal_digest": "9f029c37472f1e718e27c6634810a914b4e7459a27d629081f9e0248bcf927de",
+				"requested": 49152,
+				"source": {
+					"authoring_generation": 1,
+					"generation": 2,
+					"revision": 10,
+					"tick": 0
+				},
+				"stages": [
+					{
+						"after_materials_sha256": "0fadc98b550ff4752c9ec8ef8626a8619cd392f11aba7a5dff24feed754d9cfa",
+						"before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+						"conflicts": 3927,
+						"id": "change",
+						"introduced": {
+							"58": 43440
+						},
+						"predicted_changed": 43440,
+						"predicted_unchanged": 1785,
+						"removed": {
+							"0": 43440
+						},
+						"requested": 49152,
+						"title": "Change"
+					}
+				],
+				"status": "refused",
+				"zero_native_writes": true
+			},
+			"kind": "constraint_repair",
+			"knowledge_ablation": {
+				"causal_creativity_claim": false,
+				"native_summary_disabled_bytes": 3317,
+				"native_summary_disabled_same_geometry": true,
+				"same_geometry": true,
+				"single_stage_same_geometry": true,
+				"with_knowledge_bytes": 7024,
+				"without_knowledge_bytes": 6183
+			},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "protected_courtyard",
+			"split": "revision"
+		},
+		{
+			"actual": "stale_refused",
+			"error": "Preview requires the exact captured source and owner constraints.",
+			"expected": "stale_refused",
+			"fixture_case": "stale_source",
+			"id": "R04",
+			"intermediate_refusal": {},
+			"kind": "stale_context",
+			"knowledge_ablation": {},
+			"model_calls": 0,
+			"native_calls": 0,
+			"provenance": "Known deterministic fixture mapping; copied native-value-shaped arrays, no World mutation.",
+			"scenario": "scifi_interior",
+			"split": "revision"
+		}
+	]
+}
