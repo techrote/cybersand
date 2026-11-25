@@ -60,3 +60,19 @@ and Rapier libraries. It records original process output, source/engine/runtime
 hashes and every native artifact hash. A failed, interrupted or error-emitting
 attempt remains an adverse observation. Only a complete error-free process with
 three verified native stages and every negative control can pass the runner.
+
+## Preserved first-probe correction
+
+The original source `5dcda41c` completed 109 checks, but a subsequent independent
+audit read found that its ordinary Undo was admitted then refused by the setup
+planner. The fixture had directly assigned `wb.applied.brush=0`, bypassing the
+normal UI invariant that keeps the stored Setup brush at least two while the
+PAINT editor may use a zero-radius stroke. This was fixture misuse, not evidence
+that the native history authority restored the prefix or a reason to change
+Architecture production code. Its complete original source, log, audit and
+artifacts remain on the separate native-handoff-evidence branch.
+
+This revised fixture submits its one-cell manual edit through the ordinary PAINT
+owner, verifies Setup validity, checks the actual Undo terminal receipt and
+compares the complete native region before the stopped construction with the
+complete region after Undo. The revised source requires its own fresh execution.

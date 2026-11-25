@@ -28,6 +28,7 @@ var extra_context: Array = []
 var evidence := ""
 var phases: Array = []
 var native_records: Array = []
+var undo_evidence: Dictionary = {}
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
@@ -156,6 +157,14 @@ func clearances_empty(cells: PackedByteArray, clearances: Array) -> bool:
 				if cells.decode_u16(((y-REGION.position.y)*REGION.size.x+x-REGION.position.x)*2)!=0: return false
 	return true
 
+func last_undo_receipt() -> Dictionary:
+	var answer: Dictionary = {}
+	for line: String in FileAccess.get_file_as_string(art.provider.log_path).split("\n",false):
+		var row: Variant = JSON.parse_string(line)
+		if row is Dictionary and row.get("kind")=="native_history_action" and row.get("data") is Dictionary and row.data.get("action")=="undo":
+			answer=row.data
+	return answer
+
 func run() -> void:
 	evidence=OS.get_environment("ART_ARCHITECTURE_NATIVE_EVIDENCE")
 	if evidence.is_empty(): evidence=ProjectSettings.globalize_path("user://native-handoff-evidence")
@@ -239,8 +248,10 @@ func run() -> void:
 	# Actual manual edit invalidates a fresh native preview before its approval.
 	var control := simple("stale-source",Rect2i(320,16,64,64))
 	check(workflow.load_plan(control).ok and (await workflow.preview_selected()).get("ok",false),"negative-control plan receives real native preview")
-	wb.applied.brush=0
-	check(wb.paint(Vector2i(324,56),58),"ordinary manual cell edit is admitted while Art remains open")
+	# Keep the ordinary Setup document valid: UI radius zero preserves its
+	# stored brush>=2. A previous probe directly assigned brush=0 and correctly
+	# caused later Setup validation/Undo to refuse; that failed fixture is retained.
+	check(wb.paint_editor.commit_cells(PackedInt32Array([324,56,58]),"Owner fixture manual edit"),"ordinary PAINT owner admits a manual cell edit while Art remains open")
 	await until(func()->bool:return not wb.paint_editor.busy() and not main.simulation_worker.paint_state().get("legacy_busy",false) and main.image.get_pixel(324,56).r8==58,"manual edit is acknowledged by native authority")
 	var records_before: int = session.records.size()
 	check(not (await workflow.approve()).get("ok",true) and session.records.size()==records_before and not session.busy(),"stale preview approval refuses without native stage work")
@@ -248,6 +259,8 @@ func run() -> void:
 	var partial := simple("stopped-prefix",Rect2i(16,320,480,160))
 	partial.stages[0].operations=[{"shape":"rectangle","x0":16,"y0":320,"x1":495,"y1":479,"material":58}]
 	partial.stages[0].budget.max_checked_cells=262144
+	var prefix_before: Dictionary = await capture(Rect2i(16,320,480,160))
+	check(Setup.validate(wb.applied).is_empty(),"manual fixture preserves the ordinary valid Setup invariant")
 	if check(workflow.load_plan(partial).ok and (await workflow.preview_selected()).get("ok",false) and (await workflow.approve()).get("ok",false),"large real native stage is separately previewed and approved"):
 		await until(func()->bool:return not session._receipts.is_empty() or not session.busy(),"actual native prefix acknowledgement arrives")
 		workflow.cancel()
@@ -257,6 +270,14 @@ func run() -> void:
 		write_json("stopped-native-prefix.json",stopped)
 		check(wb.paint_editor.undo(),"ordinary native Undo admits recovery of the stopped prefix")
 		await until(func()->bool:return not wb.paint_editor.busy(),"ordinary prefix Undo retires")
+		var restored: Dictionary = await capture(Rect2i(16,320,480,160))
+		var undo_receipt := last_undo_receipt()
+		check(undo_receipt.get("status")=="completed" and int(undo_receipt.get("applied",-1))==int(stopped.changed_cells),"actual ordinary Undo receipt confirms every acknowledged prefix cell was applied")
+		check(restored.config.source_cells==prefix_before.config.source_cells,"whole native material plane is exactly restored after stopped-prefix Undo")
+		undo_evidence={"before_sha256":Compiler.digest(prefix_before.config.source_cells),
+			"after_sha256":Compiler.digest(restored.config.source_cells),"native_receipt":undo_receipt,
+			"restored_cells":stopped.changed_cells,"full_plane_bytes":restored.config.source_cells.size()}
+		write_json("native-undo-restoration.json",undo_evidence)
 	# Preparation cancellation goes through the actual existing Art owner.
 	check((await session.inspect_region(REGION)).get("ok",false),"fresh native context is captured for cancellation probes")
 	extra_context=[{"role":"user","content":"Explicitly admitted synthetic preparation context. ".repeat(7000)}]
@@ -291,6 +312,7 @@ func run() -> void:
 	check(not FileAccess.get_file_as_string(art.provider.log_path).contains(FIXTURE_KEY),"complete shared Art audit excludes its credential")
 	write_json("bridge-history.json",bridge.export_history())
 	write_json("probe-observations.json",{"phases":phases,"owner_stop_ms":owner_stop_ms,
+		"native_undo_restoration":undo_evidence,
 		"actual_http_exchanges":sockets,"ordinary_completions":ordinary_completions,
 		"provider_audit_sha256":FileAccess.get_sha256(art.provider.log_path),
 		"provider_audit_path":ProjectSettings.globalize_path(art.provider.log_path)})
