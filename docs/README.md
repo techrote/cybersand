@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Audience-oriented routes to current user guides, canonical technical contracts, development procedures and explicitly historical evidence
 canonical-for: []
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [reference/status-and-roadmap.md, reference/retrieval-index.md, operations/local-build-and-validation.md, operations/documentation-maintenance.md]
 ---
 
@@ -99,6 +99,11 @@ matter throughout these references.
 
 The [CI execution guide](operations/ci-execution-and-performance.md) owns accepted
 scheduling policy. Active CI experiments are not production policy until accepted.
+Use [CI campaign coordination](operations/ci-campaign-coordination.md) for
+read-only run observations and [publication custody](operations/publication-custody.md)
+for artifact and input verification. The
+[24 November CI closure packet](operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md)
+retains its dated evidence and decision boundaries.
 The [current/historical validation guide](operations/current-and-historical-validation.md)
 explains why a current build must not rewrite retained M11 evidence.
 

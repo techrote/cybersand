@@ -72,6 +72,9 @@ unmerged candidates and dated test evidence are different claims.
 
 | Question | Authoritative route |
 |---|---|
+| How can concurrent qualification campaigns be inspected without cancelling work or accepting metadata as evidence? | [Read-only CI coordination](../operations/ci-campaign-coordination.md); bounded repository observations preserve partial/racing inventories and require each programme verifier. |
+| Can unchanged native LFS pointers satisfy source-exact publication custody? | [Publication custody migration contract](../operations/publication-custody.md); provenance changes and actual-byte, input, report, LFS and lease checks remain mandatory. |
+| Which CI experiments were retained, and what capacity evidence exists? | [Current CI execution](../operations/ci-execution-and-performance.md) and the [dated 24 November decision packet](../operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md); historical cohorts and old HOLD dispositions do not qualify later source or override the [current-state register](status-and-roadmap.md). |
 | Is a named capability accepted, an unmerged candidate, or approved future design? | [Current-state register](status-and-roadmap.md); follow its principal live record before acting |
 | Are PUBPRES, ObjectShard, RAMCACHE, SWARM, Batch, Gremlin, live material audition or integrated Strata available on main? | [Current-state register](status-and-roadmap.md), not an old PR title or copied HOLD banner |
 | What does the owner intend for structural parts, authoring, persistence and layered presentation? | [Product intent](product-intent-and-priorities.md), [14 November decision](../decisions/2026-11-14-owner-authoring-intent.md) |
