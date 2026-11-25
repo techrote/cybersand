@@ -27,7 +27,7 @@ except ImportError:
     import retrieval_eval as baseline
     from retrieval_policy import POLICY_VERSION, HISTORICAL_AUTHORITY, source_frontmatter, scalar
 
-METHOD = 'source-bound-field-bm25-v1'
+METHOD = 'source-bound-field-bm25-v2'
 REQUIRED = {'title', 'status', 'document-kind', 'scope', 'canonical-for', 'last-reviewed', 'related-documents'}
 LINKS = re.compile(r'\[[^\]]+\]\(([^\s)]+)(?:\s+[^)]*)?\)')
 
@@ -202,13 +202,20 @@ class Retriever:
         n=len(self.chunks)
         for index,count in enumerate(self.counts):
             score=0.0
+            field_bonus=0.0
+            matched=0
             for word in words:
                 if not count[word]:
                     continue
+                matched+=1
                 idf=math.log(1+(n-self.df[word]+.5)/(self.df[word]+.5))
                 freq=count[word]
                 score += idf*freq*2.2/(freq+1.2*(.25+.75*self.lengths[index]/self.mean))
-                score += idf*(.7*(word in self.heading_terms[index])+.2*(word in self.title_terms[index]))
+                field_bonus += idf*(.7*(word in self.heading_terms[index])+.2*(word in self.title_terms[index]))
+            # The BM25 text already contains these fields. Bound their extra
+            # influence by query coverage: one ambiguous heading word must not
+            # receive the full bonus for a longer, more specific question.
+            score += field_bonus*matched/max(1,len(words))
             scores.append(score)
         ordered=sorted(range(n),key=lambda i:(-scores[i],self.chunks[i]['path'],self.chunks[i]['heading'],self.chunks[i]['part']))
         chosen=[]

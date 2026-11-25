@@ -7,6 +7,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'docs'))
 import retrieval_eval as baseline
@@ -146,6 +147,17 @@ class KnowledgeRetrievalTests(unittest.TestCase):
         second=knowledge.Retriever(self.root,cache=self.cache)
         self.assertEqual(first.cache_state,'created');self.assertEqual(second.cache_state,'validated-current')
         self.assertEqual(first.query('quarantine')['hits'],second.query('quarantine')['hits'])
+
+    def test_method_revision_invalidates_old_snapshot_and_live_instance(self):
+        old=knowledge.Retriever(self.root,cache=self.cache)
+        old_result=old.query('quarantine')
+        with patch.object(knowledge,'METHOD',knowledge.METHOD+'-revised'):
+            with self.assertRaisesRegex(ValueError,'Stale retriever instance'):
+                old.query('quarantine')
+            fresh=knowledge.Retriever(self.root,cache=self.cache)
+            self.assertEqual(fresh.cache_state,'rebuilt-stale-or-corrupt')
+            self.assertNotEqual(old_result['source_fingerprint'],fresh.identity['source_fingerprint'])
+            self.assertTrue(fresh.query('quarantine')['hits'])
 
     def test_changed_document_rebuilds_snapshot(self):
         old=knowledge.Retriever(self.root,cache=self.cache)
