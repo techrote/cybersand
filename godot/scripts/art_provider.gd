@@ -1,15 +1,44 @@
 extends Node
 ## One cancellable inference request; native drawing remains the existing executor.
 signal finished(id: int, text: String, response: Dictionary, error: String)
+signal request_started(id: int, request_offset: int)
 signal traffic_changed
 var active := false
 var serial := 0
 var request: HTTPRequest
+# Constant-size, credential-free timing of the last request only. Never audit raw
+# timing into Art JSONL: a diagnostic probe must not add more disk traffic.
+var last_request_timing: Dictionary = {}
+# One bounded receipt for the most recent synchronous audit append. No content,
+# URL or credential enters diagnostics, and timing never creates another log.
+var last_audit_timing: Dictionary = {}
+var _audit_sequence := 0
 var secrets: Array[String] = []
+const Redactor = preload("res://scripts/art_redaction.gd")
+const ResponsePreparation = preload("res://scripts/art_response_preparation.gd")
+const ASYNC_RESPONSE_BYTES := 262144
+const ASYNC_REQUEST_CHARACTERS := 65536
+var _redactor := Redactor.new()
+var _preparation: RefCounted
+var _dispatch_guard: Callable
+# A non-direct request owns exactly one completion callable. Its response never
+# enters the ordinary finished signal, whose panel consumer paints immediately.
+# Keep the delivered serial separately: clearing the callable must not turn a
+# duplicate owned completion into an ordinary direct-paint completion.
+var _response_owner: Dictionary = {}
+var _last_owned_outcome: Dictionary = {}
+var _finished_serial := -1
+const OWNED_MODES := ["discuss", "propose", "develop", "review", "architecture-proposal"]
+const MAX_OWNED_REQUEST_BYTES := 2 * 1024 * 1024
+const MAX_OWNED_IMAGE_BYTES := 2 * 1024 * 1024
+var _prepared_assistant: Dictionary = {}
+var response_preparation_jobs := 0
+var peak_response_preparation_jobs := 0
+var request_preparation_jobs := 0
+var peak_request_preparation_jobs := 0
 var traffic := ""
 var readable := ""
 var log_path := ""
-var traffic_directory := "user://art-traffic"
 var parent_log_path := "" # Previous immutable JSONL segment; never copied on reopen.
 var log_warning := ""
 var last_event_stored := false
@@ -79,33 +108,7 @@ static func payload(provider: String, model: String, prompt: String, instruction
 	return packet
 
 static func decode(provider: String, data: Dictionary) -> Dictionary:
-	if data.has("error") and data.error != null: return {"text":"","error":JSON.stringify(data.error)}
-	var text := ""
-	var error := ""
-	if provider == "OpenAI":
-		var output: Variant = data.get("output",[])
-		if not output is Array: return {"text":"","error":"Malformed Responses output; inspect Traffic."}
-		for item: Variant in output:
-			if not item is Dictionary or not item.get("content",[]) is Array: continue
-			for block: Variant in item.get("content",[]):
-				if not block is Dictionary: continue
-				if block.get("type")=="output_text": text += str(block.get("text",""))
-				elif block.get("type")=="refusal": error = str(block.get("refusal","Provider refused."))
-		if data.get("status")=="incomplete": error = "Response incomplete: "+JSON.stringify(data.get("incomplete_details",{}))+". Increase Toks if output was truncated; nothing drawn."
-	else:
-		var choices: Variant = data.get("choices",[])
-		if not choices is Array: return {"text":"","error":"Malformed Chat Completions choices; inspect Traffic."}
-		if not choices.is_empty() and choices[0] is Dictionary:
-			var message: Variant = choices[0].get("message",{})
-			if not message is Dictionary: return {"text":"","error":"Malformed assistant message; inspect Traffic."}
-			var content: Variant = message.get("content","")
-			if content is String: text = content
-			elif content is Array:
-				for block: Variant in content:
-					if block is Dictionary: text += str(block.get("text",""))
-			if choices[0].get("finish_reason")=="length": error = "Response reached Toks limit; nothing drawn. Increase Toks and retry."
-	if text.is_empty() and error.is_empty(): error = "Provider returned no text. Inspect Traffic for refusal, reasoning usage or provider details."
-	return {"text":text,"error":error}
+	return ResponsePreparation.decode(provider,data)
 
 static func operations(text: String, default_material: int = 58) -> Variant:
 	var clean := text.strip_edges()
@@ -131,69 +134,20 @@ static func operations(text: String, default_material: int = 58) -> Variant:
 	return value
 
 func redact(value: String) -> String:
-	# Provider and panel both redact. Preserve existing markers on subsequent calls.
-	var pieces := value.split("[redacted]")
-	for index: int in range(pieces.size()):
-		if not pieces[index].is_empty(): pieces[index] = _redact_unmarked(pieces[index])
-	return "[redacted]".join(pieces)
-
-func _redact_unmarked(value: String) -> String:
-	var clean := value
-	for secret: String in secrets:
-		if not secret.is_empty():
-			clean = clean.replace(secret, "[redacted]")
-			if secret.uri_encode() != secret: clean = clean.replace(secret.uri_encode(), "[redacted]")
-			var quoted := JSON.stringify(secret)
-			var json_spelling := quoted.substr(1,quoted.length()-2)
-			if json_spelling!=secret: clean = clean.replace(json_spelling,"[redacted]")
-	for pattern: String in ['(?i)Bearer[ \t]+[A-Za-z0-9._~+/-]+=*','sk-[A-Za-z0-9_-]{12,}','nvapi-[A-Za-z0-9_-]+']:
-		var regex := RegEx.new()
-		regex.compile(pattern)
-		clean = regex.sub(clean,"[redacted]",true)
-	var fields := RegEx.new()
-	fields.compile('(?i)(["?&](?:api[_-]?key|access_token|token|authorization|password)[" ]*[:=][ "]*)[^"&,}\n ]+')
-	clean = fields.sub(clean,'$1[redacted]',true)
-	var userinfo := RegEx.new()
-	userinfo.compile('(https?://)[^/@\\s]+:[^/@\\s]+@')
-	return userinfo.sub(clean,'$1[redacted]@',true)
+	if _matches_prepared_assistant(value): return value
+	_redactor.secrets = secrets
+	return _redactor.redact(value)
 
 func _redacted_value(value: Variant, redact_keys: bool = true) -> Variant:
-	if value is String: return redact(value)
-	if value is Dictionary:
-		var clean := {}
-		for key: Variant in value:
-			var item: Variant = value[key]
-			var credential: bool = str(key).to_lower() in ["api_key", "apikey", "api-key", "access_token", "token", "authorization", "password"]
-			# User-controlled JSON dictionaries can echo a secret in a PROPERTY
-			# NAME, not only its value. Preserve non-string typed native keys.
-			var safe_key: Variant = redact(key) if redact_keys and key is String else key
-			clean[safe_key] = "[redacted]" if credential and item is String else _redacted_value(item, redact_keys)
-		return clean
-	if value is Array or value is PackedStringArray:
-		var clean: Array = []
-		for item: Variant in value: clean.append(_redacted_value(item, redact_keys))
-
-		return clean
-	return value
+	_redactor.secrets = secrets
+	return _redactor.redacted_value(value,redact_keys)
 
 func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	# Envelope IDs, roles, offsets and segment paths are structural, not free text.
-	if kind == "response" and data is Dictionary:
-		var clean: Dictionary = _redacted_value(data,false)
-		if data.get("body") is String:
-			# The HTTP body is already JSON-escaped text. Redact its decoded values
-			# and untrusted keys so quotes/backslashes cannot hide a request secret.
-			# Keep original wire spelling when no structured redaction is needed.
-			var parser := JSON.new()
-			if parser.parse(data.body)==OK:
-				var body: Variant = _redacted_value(parser.data)
-				if body!=parser.data: clean.body = JSON.stringify(body)
-		return clean
 	if kind == "history_result" and data is Dictionary:
 		# Native history receipt keys are trusted protocol identifiers. Their
 		# names must survive even if a user deliberately chooses a short key.
 		var clean: Dictionary = _redacted_value(data, false)
-
 		for field: String in ["_history_receipt_id","_history_world_epoch","_history_turn_sha256"]:
 			if data.has(field): clean[field] = data[field]
 		return clean
@@ -210,8 +164,7 @@ func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	return _redacted_value(data)
 
 func new_log_path() -> String:
-	var folder := traffic_directory
-	if not traffic_namespace_valid(): return ""
+	var folder := "user://art-traffic"
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
 	for _attempt in range(16):
 		var candidate := folder + "/" + Crypto.new().generate_random_bytes(16).hex_encode() + ".jsonl"
@@ -219,14 +172,7 @@ func new_log_path() -> String:
 	return ""
 
 static func valid_traffic_path(path: String) -> bool:
-	# Ordinary Art profiles/receipts must never bind a Batch Lab transport trace.
-	return Archive.valid_path(path) and path.get_base_dir()=="user://art-traffic"
-
-func _valid_writer_path(path: String) -> bool:
-	return Archive.bound_path(path) and path.get_base_dir()==traffic_directory
-
-func traffic_namespace_valid() -> bool:
-	return Archive.valid_directory(traffic_directory)
+	return Archive.valid_path(path)
 
 static func valid_history_receipt_id(identity: Variant) -> bool:
 	return identity is String and _history_id_pattern.search(identity) != null
@@ -352,10 +298,6 @@ func _active_history_segments() -> Array[Dictionary]:
 
 func prepare_resume(previous: String) -> void:
 	# No existence check, open, scan or write at startup. Keep unavailable pointers.
-	if not previous.is_empty() and not _valid_writer_path(previous):
-		resume_error = "Saved conversation belongs to another traffic namespace."
-		log_warning = resume_error; resume_ok = false
-		return
 	if not _pending_history_segment.is_empty() and previous != parent_log_path:
 		resume_error = "Cannot rebind a conversation while its native history checkpoint is pending."
 		resume_ok = false
@@ -373,9 +315,6 @@ func prepare_resume(previous: String) -> void:
 func traffic_chain(latest: String) -> Array[String]:
 	var archive := Archive.new()
 	var chain: Array[String] = []
-	if not _valid_writer_path(latest):
-		log_warning = "Saved conversation belongs to another traffic namespace."
-		return chain
 	if not archive.resolve(latest):
 		log_warning = archive.error
 		return chain
@@ -402,10 +341,6 @@ func begin_export(destination: String) -> Error:
 	if export_active or resume_active: return ERR_BUSY
 	export_message = ""; export_error = OK; _export_bytes = 0
 	var latest := log_path if not log_path.is_empty() else parent_log_path
-	if not _valid_writer_path(latest):
-		export_message = "Saved conversation belongs to another traffic namespace."
-		export_error = ERR_FILE_CORRUPT
-		return export_error
 	var archive := Archive.new()
 	if not archive.resolve(latest):
 		export_message = archive.error
@@ -565,10 +500,6 @@ func _validate_conversation_event(event: Dictionary, source: String, offset: int
 
 func begin_resume(previous: String) -> Error:
 	if resume_active or export_active: return ERR_BUSY
-	if not previous.is_empty() and not _valid_writer_path(previous):
-		resume_error = "Saved conversation belongs to another traffic namespace."
-		log_warning = resume_error; resume_ok = false
-		return ERR_FILE_CORRUPT
 	if not _pending_history_segment.is_empty() and previous != parent_log_path:
 		resume_error = "Cannot restore another conversation while its native history checkpoint is pending."
 		log_warning = resume_error
@@ -691,7 +622,6 @@ func _poll_images(budget: int) -> String:
 		# Defend the queued reader too: a negative seek must never fall back to0.
 		if int(item.offset) < 0 or int(item.limit) <= 0 or int(item.offset) >= int(item.limit): return problem
 		if _image_file == null:
-			if not _valid_writer_path(str(item.path)): return problem
 			_image_file = FileAccess.open(item.path, FileAccess.READ)
 			if _image_file == null or int(item.offset) >= mini(int(item.limit), _image_file.get_length()): return problem
 			if int(item.offset) > 0:
@@ -720,7 +650,7 @@ func _poll_images(budget: int) -> String:
 	return ""
 
 func _read_historical_image(offset: int, path: String, limit: int) -> String:
-	if offset < 0 or not _valid_writer_path(path): return ""
+	if offset < 0 or not valid_traffic_path(path): return ""
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null or offset >= mini(limit, file.get_length()): return ""
 	if offset > 0:
@@ -763,7 +693,34 @@ func historical_image(offset: int, source_path: String = "") -> String:
 	if segment.is_empty(): return ""
 	return _read_historical_image(offset, path, int(segment.limit))
 
-func log_event(kind: String, data: Variant) -> bool:
+func log_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null) -> bool:
+	# These are exact pre-encoded values from the current response job, not a
+	# general journal bypass. Native admission and durable append stay here.
+	if kind in ["assistant","message"] and data is String and _matches_prepared_assistant(data):
+		return _record_event(kind,data,sanitized_projection,audit_projection,_prepared_assistant.encoded_text,_prepared_assistant.encoded_text_bytes)
+	if kind == "conversation" and data is Dictionary and data.size() == 2 and data.get("role") == "assistant" and data.get("content") is String and _matches_prepared_assistant(data.content):
+		return _record_event(kind,data,sanitized_projection,audit_projection,_prepared_assistant.encoded_conversation,_prepared_assistant.encoded_conversation_bytes)
+	return _record_event(kind,data,sanitized_projection,audit_projection)
+
+func _matches_prepared_assistant(value: String) -> bool:
+	return not _prepared_assistant.is_empty() and int(_prepared_assistant.serial) == serial \
+		and _prepared_assistant.secrets == secrets and value == _prepared_assistant.text
+
+func _record_event(kind: String, data: Variant, sanitized_projection: Variant = null, audit_projection: Variant = null, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
+	var began_usec := Time.get_ticks_usec()
+	_audit_sequence += 1
+	var timing := {"schema":1,"sequence":_audit_sequence,"kind":kind,
+		"sanitize_usec":0,"format_usec":0,"write_usec":0,"signal_usec":0,
+		"total_usec":0,"stored":false}
+	var stored := _append_event(kind,data,timing,sanitized_projection,prepared_encoding,prepared_bytes)
+	timing.total_usec = Time.get_ticks_usec() - began_usec
+	timing.stored = stored
+	# Signal observers may append another event. Do not replace the newer receipt.
+	if int(timing.sequence) == _audit_sequence: last_audit_timing = timing
+	if audit_projection is Dictionary: audit_projection.merge(timing,true)
+	return stored
+
+func _append_event(kind: String, data: Variant, timing: Dictionary, sanitized_projection: Variant, prepared_encoding: String = "", prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
 	last_event_stored = false
 	if kind == "request": last_request_offset = -1
 	if export_active or resume_active:
@@ -784,7 +741,16 @@ func log_event(kind: String, data: Variant) -> bool:
 		and int(_history_receipts[history_identity].schema) == 2
 	# Exact digest checks below authenticate this registered, previously sanitized
 	# projection before it reaches either live traffic or the archive writer.
-	var sanitized: Variant = data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data)
+	var sanitize_begin_usec := Time.get_ticks_usec()
+	# Only the private response-preparation path supplies this encoding, after
+	# its immutable secret snapshot was checked against the owner on this thread.
+	var prepared_response := kind in ["request","response","assistant","message","conversation"] and not prepared_encoding.is_empty()
+	var sanitized: Variant = data if prepared_response else (data.duplicate(true) if frozen_history else _sanitized_event_data(kind,data))
+	timing.sanitize_usec = Time.get_ticks_usec() - sanitize_begin_usec
+	# A response caller can reuse its already-redacted body for a short error
+	# preview. This is not retained globally and never skips sanitization.
+	if sanitized_projection is Dictionary and sanitized is Dictionary:
+		sanitized_projection.merge(sanitized,true)
 	var admission := _admit_conversation_event(kind, sanitized)
 	if not admission.ok:
 		log_warning = admission.error; traffic_changed.emit()
@@ -794,10 +760,27 @@ func log_event(kind: String, data: Variant) -> bool:
 	if not str(observed.error).is_empty():
 		log_warning = str(observed.error); traffic_changed.emit()
 		return false
-	var line := JSON.stringify({"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":sanitized})
-	traffic += line + "\n"
+	var format_begin_usec := Time.get_ticks_usec()
+	# Encode the (potentially multi-megabyte) payload exactly once. Envelope
+	# metadata is small; the same complete payload reaches the live and disk
+	# forms without serializing it independently three times on the UI thread.
+	var encoded_data := prepared_encoding if prepared_response else JSON.stringify(sanitized)
+	var live_metadata := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind}
+	if encoded_data.length() > 2000000:
+		# The live tail was already bounded; do not first allocate a full giant
+		# envelope and append it to the previous buffer merely to discard it.
+		# Keep the complete small suffix, including kind/request/time identity.
+		var suffix := ","+JSON.stringify(live_metadata).trim_prefix("{")+"\n"
+		traffic = "[Earlier traffic retained on disk]\n"+encoded_data.right(1500000-suffix.length())+suffix
+	else:
+		var line := _encoded_event(live_metadata,encoded_data)
+		traffic += line + "\n"
 	readable += "\n" + Time.get_datetime_string_from_system(true) + " #" + str(serial) + " " + kind + "\n"
-	if kind == "request" and sanitized is Dictionary and sanitized.get("body") is Dictionary:
+	if encoded_data.length() > 262144:
+		# A readable preview is not a second giant pretty-printed archive. The
+		# session log/export retain the complete payload; Raw JSONL is a tail.
+		readable += "[Large event; full redacted content in session log/export. Last 65536 characters:]\n"+encoded_data.right(65536)+"\n"
+	elif kind == "request" and sanitized is Dictionary and sanitized.get("body") is Dictionary:
 		var body: Dictionary = sanitized.body
 		readable += "Model: " + str(body.get("model", "")) + "\n"
 		if body.has("instructions"): readable += "Instructions:\n" + str(body.instructions) + "\n"
@@ -813,7 +796,10 @@ func log_event(kind: String, data: Variant) -> bool:
 	else: readable += JSON.stringify(sanitized, "  ") + "\n"
 	if readable.length() > 2000000: readable = "[Earlier traffic retained on disk]\n" + readable.right(1500000)
 	if traffic.length() > 2000000: traffic = "[Earlier traffic retained on disk]\n" + traffic.right(1500000)
-	var stored := _store_event(kind, sanitized, admission)
+	timing.format_usec = Time.get_ticks_usec() - format_begin_usec
+	var write_begin_usec := Time.get_ticks_usec()
+	var stored := _store_event(kind, sanitized, admission, encoded_data, prepared_bytes)
+	timing.write_usec = Time.get_ticks_usec() - write_begin_usec
 	if stored:
 		observed = _observe_history_event(kind,sanitized,log_path,_active_history_segments(),_history_receipts,true,true)
 		if not str(observed.error).is_empty():
@@ -821,8 +807,33 @@ func log_event(kind: String, data: Variant) -> bool:
 			log_warning = str(observed.error)+" Restart Workbench to validate the committed archive."
 			stored = false
 	last_event_stored = stored
+	var signal_begin_usec := Time.get_ticks_usec()
 	traffic_changed.emit()
+	timing.signal_usec = Time.get_ticks_usec() - signal_begin_usec
 	return stored
+
+func _encoded_event(metadata: Dictionary, encoded_data: String) -> String:
+	# data is encoded by JSON.stringify above, never interpolated unescaped.
+	# This preserves the ordinary sorted JSON object shape without reparsing it.
+	return "".join(['{"data":',encoded_data,',',JSON.stringify(metadata).trim_prefix('{')])
+
+static func usage_projection(reported: Variant) -> Dictionary:
+	# Provider counters are untrusted JSON. The status/spend projection accepts
+	# finite nonnegative integer counts only; the complete envelope remains in
+	# the redacted response archive, including malformed or extra usage fields.
+	var projected := {}
+	if not reported is Dictionary: return projected
+	for field: String in ["input_tokens","prompt_tokens","output_tokens","completion_tokens","total_tokens"]:
+		var count: Variant = reported.get(field)
+		if Archive.integer(count) and count >= 0: projected[field] = count
+	return projected
+
+func _model_projection(reported: Variant) -> String:
+	# Metadata is not a second unbounded provider body. Preserve its complete
+	# original in the response receipt, but expose only a short redacted ID.
+	if not reported is String or reported.is_empty(): return "unknown (invalid model metadata; see response)"
+	if reported.length() > 512: return "unknown (oversized model metadata; see response)"
+	return redact(reported)
 
 func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
 	var result := {"ok":true,"turns":_conversation_turns,"bytes":_conversation_bytes,"error":""}
@@ -866,9 +877,6 @@ func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: D
 		log_warning = "Pending history segment's validated parent changed; original archive and receipt preserved."
 		return false
 	var destination: String = pending.destination
-	if not _valid_writer_path(destination):
-		log_warning = "Pending traffic checkpoint belongs to another namespace."
-		return false
 	var directory := DirAccess.open(destination.get_base_dir())
 	if directory == null or directory.is_link(destination.get_file()) \
 			or str(pending.canonical).is_empty() or Archive.canonical_path(destination) != str(pending.canonical):
@@ -894,14 +902,7 @@ func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: D
 	log_warning = resume_warning
 	return true
 
-func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
-	if not traffic_namespace_valid() or (not parent_log_path.is_empty() and not _valid_writer_path(parent_log_path)):
-		log_warning = "Traffic namespace is invalid or differs from its parent."
-		return false
-	for ancestor: Dictionary in _validated_segments:
-		if not _valid_writer_path(str(ancestor.path)):
-			log_warning = "Traffic namespace differs from its validated ancestor."
-			return false
+func _store_event(kind: String, data: Variant, admission: Dictionary, encoded_data: String, prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
 	if kind in ["session_start", "session_parent"]:
 		log_warning = "Segment metadata cannot be appended as a conversation event."
 		return false
@@ -920,7 +921,7 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 		log_warning = "Conversation reached the 4096-segment limit; prior history preserved and nothing written."
 		return false
 	var destination := new_log_path() if new_segment else log_path
-	if destination.is_empty() or not _valid_writer_path(destination):
+	if destination.is_empty() or not valid_traffic_path(destination):
 		log_warning = "Cannot create traffic archive; live traffic remains available."
 		return false
 	var id := Crypto.new().generate_random_bytes(16).hex_encode() if new_segment else _segment_id
@@ -928,8 +929,14 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 		log_warning = "Refusing to append to an archive not created by this provider."
 		return false
 	var index := 1 if new_segment else _event_index + 1
-	var event := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":data,"segment_id":id,"event_index":index,"event_id":id + ":" + str(index)}
-	var encoded := (JSON.stringify(event) + "\n").to_utf8_buffer()
+	var event := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"segment_id":id,"event_index":index,"event_id":id + ":" + str(index)}
+	# Build the identical JSONL envelope in bytes. Avoid allocating two full
+	# UTF32 envelopes around a giant value only to convert them back to UTF8.
+	# Prepared jobs can also reuse their owned UTF8 value; the final ordered
+	# append remains one buffer with the existing flush/error/receipt protocol.
+	var encoded := '{"data":'.to_utf8_buffer()
+	encoded.append_array(prepared_bytes if not prepared_bytes.is_empty() else encoded_data.to_utf8_buffer())
+	encoded.append_array((","+JSON.stringify(event).trim_prefix("{")+"\n").to_utf8_buffer())
 	if encoded.size() > Archive.MAX_RECORD_BYTES:
 		log_warning = "Traffic event exceeds the 32 MiB record limit; nothing written."
 		return false
@@ -1003,15 +1010,81 @@ func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
 	return true
 
 func _exit_tree() -> void:
+	# The panel normally stops first, but provider ownership must also be safe
+	# when removed directly or when scene teardown has no next process tick.
+	if active or request != null: cancel("Workbench closed")
 	cancel_export()
 	cancel_resume()
 
+func response_preparation_active() -> bool:
+	return _preparation != null and _preparation.direction == "response" and not _preparation.reaped
+
+func request_preparation_active() -> bool:
+	return _preparation != null and _preparation.direction == "request" and not _preparation.reaped
+
+func _preparation_active() -> bool:
+	return _preparation != null and not _preparation.reaped
+
 func cancel(reason: String = "Human Stop") -> void:
+	var begin_usec := Time.get_ticks_usec()
+	var was_active := active or request != null
+	var timing := last_request_timing
+	var retired := _response_owner
+	_response_owner = {}
+	if not retired.is_empty():
+		_finished_serial = int(retired.id)
+		_last_owned_outcome = _owned_projection(retired,"cancelled")
+	# A completed value task can be reaped just before a queued owner deletion.
+	# Until its owner consumes it, it is still an unpublished preparation.
+	var preparing := _preparation != null
 	serial += 1
+	active = false
+	_prepared_assistant = {}
+	_dispatch_guard = Callable()
+	if preparing: _preparation.cancel()
 	if request != null:
 		request.cancel_request(); request.queue_free(); request = null
-	if active: log_event("cancelled",reason)
-	active = false
+	if was_active:
+		if preparing:
+			# A complete transport body may have arrived, but no response receipt
+			# was committed. Cancellation discards this unpublished value job.
+			var receipt := {"reason":reason,"phase":_preparation.direction+"_preparation",
+				"request_id":int(_preparation.request_id)}
+			if _preparation.direction == "response":
+				receipt.response_bytes = int(timing.get("response_bytes",0))
+				receipt.response_receipt_committed = false
+			else: receipt.request_receipt_committed = false
+			log_event("cancelled",receipt)
+		else: log_event("cancelled",reason)
+	if was_active and not timing.is_empty():
+		timing["status"] = "cancelled"
+		timing["cancel_usec"] = Time.get_ticks_usec() - begin_usec
+	# Retire before audit/callback reentrancy. This callback belongs to the old
+	# request even if an audit observer has already dispatched its successor.
+	if not retired.is_empty():
+		var callback: Callable = retired.completion
+		if callback.is_valid():
+			var cancelled_reason := reason if not reason.strip_edges().is_empty() else "Owned request cancelled."
+			callback.call(int(retired.id),"",_owned_projection(retired,"cancelled"),redact(cancelled_reason).left(512))
+
+func cancel_owned(provider_id: int, request_id: String, reason: String = "Owner Stop") -> bool:
+	# -1 is the Architecture bridge's synchronous-dispatch cancellation token.
+	# It still requires the exact textual identity. It is never a wildcard for
+	# cancelling an ordinary Art request or an unrelated owner's successor.
+	if _response_owner.is_empty() or _response_owner.request_id != request_id: return false
+	if provider_id != -1 and provider_id != int(_response_owner.id): return false
+	if int(_response_owner.id) != serial: return false
+	cancel(reason)
+	return true
+
+static func _owned_projection(owner: Dictionary, state: String) -> Dictionary:
+	return {"format":"cybersand-art-owned-completion-v1", "provider_id":int(owner.id),
+		"request_id":str(owner.request_id), "mode":str(owner.mode), "state":state}
+
+func owned_request() -> Dictionary:
+	# No credentials, endpoint, prompt, context, image or callable escapes here.
+	if _response_owner.is_empty(): return _last_owned_outcome.duplicate(true)
+	return _owned_projection(_response_owner,str(last_request_timing.get("status","preparing")))
 
 static func quota_reset_seconds(headers: PackedStringArray) -> float:
 	var values: Dictionary = {}
@@ -1035,62 +1108,459 @@ static func quota_reset_seconds(headers: PackedStringArray) -> float:
 		if end == reset.length() and is_finite(seconds): wait = maxf(wait,seconds)
 	return wait
 
-func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "", context: Array = []) -> String:
+static func transport_error(result: int) -> String:
+	match result:
+		HTTPRequest.RESULT_CANT_CONNECT:
+			return "Connection failed: no reachable server at the configured endpoint. Start the local server or check its address and port; inspect Traffic."
+		HTTPRequest.RESULT_CANT_RESOLVE:
+			return "Connection failed: endpoint hostname could not be resolved. Check its address; inspect Traffic."
+		HTTPRequest.RESULT_TIMEOUT:
+			return "Connection timeout: the server did not finish within Secs. Check the endpoint/server or increase Secs; inspect Traffic."
+		HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED:
+			return "Provider response exceeded the 16 MiB transport limit. Nothing drawn; inspect Traffic for the transport receipt."
+		HTTPRequest.RESULT_TLS_HANDSHAKE_ERROR:
+			return "Connection failed: TLS handshake was not accepted. Check the endpoint and its certificate; inspect Traffic."
+	return "Connection/timeout failure (%d). Check endpoint/server; inspect Traffic." % result
+
+static func request_url(provider: String, endpoint: String) -> String:
+	var url := endpoint.trim_suffix("/")+("/responses" if provider=="OpenAI" else "/chat/completions")
+	# Godot 4.7 HTTPClientTCP rejects the valid three-character IPv6 literal
+	# ::1 through HOST_MIN_LEN. Expand only that exact loopback authority; its
+	# destination is identical and saved/custom configuration is not rewritten.
+	for scheme: String in ["http://","https://"]:
+		var short := scheme+"[::1]"
+		if url.begins_with(short):
+			var suffix := url.substr(short.length())
+			if suffix.begins_with(":") or suffix.begins_with("/"):
+				return scheme+"[0:0:0:0:0:0:0:1]"+suffix
+	return url
+
+func _finish_request(id: int, text: String, data: Dictionary, error: String,
+		timing: Dictionary, callback_begin_usec: int) -> void:
+	if id != serial or id == _finished_serial: return
+	if not _response_owner.is_empty():
+		# Context can change while HTTP or response preparation is running too.
+		# A refusal retires the owned callback; it never falls through to paint.
+		if not _dispatch_allowed(id): return
+		if not (_response_owner.get("completion",Callable()) as Callable).is_valid():
+			cancel("The proposal response owner is no longer available")
+			return
+	var redact_begin_usec := Time.get_ticks_usec()
+	var safe_text := redact(text)
+	var safe_error := redact(error)
+	# HTTP200 error/refusal envelopes may be just as large as HTTP failures.
+	# Keep the complete response in the audit; bound every UI/context error.
+	if safe_error.length() > 512:
+		safe_error = safe_error.left(512)+" … (full response in Traffic)"
+	timing.projection_redact_usec = Time.get_ticks_usec() - redact_begin_usec
+	timing.status = "completed"
+	timing.outcome = "success" if safe_error.is_empty() else "failure"
+	active = false
+	_finished_serial = id
+	var completed_owner := _response_owner
+	_response_owner = {}
+	_dispatch_guard = Callable()
+	var signal_begin_usec := Time.get_ticks_usec()
+	if completed_owner.is_empty():
+		finished.emit(id,safe_text,data,safe_error)
+	else:
+		_last_owned_outcome = _owned_projection(completed_owner,timing.outcome)
+		# The full admitted redacted envelope stays in this provider's audit.
+		# Consumers receive redacted text plus a small host-generated receipt,
+		# never raw echoed credentials or an invented native execution receipt.
+		var receipt := _last_owned_outcome.duplicate(true)
+		receipt.usage = usage.duplicate(true)
+		var callback: Callable = completed_owner.completion
+		callback.call(id,safe_text,receipt,safe_error)
+	# Only the synchronous completion/panel audit chain needs these full JSON
+	# encodings. Release them now, without clearing a successor's own cache.
+	if int(_prepared_assistant.get("serial",-1)) == id: _prepared_assistant = {}
+	# finished can synchronously call the panel's JSON/native/UI path, cancel,
+	# or even start a successor. Keep the old receipt separate from its successor.
+	timing.signal_usec = Time.get_ticks_usec() - signal_begin_usec
+	timing.callback_usec = Time.get_ticks_usec() - callback_begin_usec
+
+func _request_completed(result: int, code: int, headers: PackedStringArray, bytes: PackedByteArray,
+		id: int, provider: String, began_usec: int, timing: Dictionary, current: HTTPRequest) -> void:
+	var callback_begin_usec := Time.get_ticks_usec()
+	current.queue_free()
+	if id != serial: return
+	request = null
+	timing.status = "completing"
+	timing.http_code = code
+	timing.transport_result = result
+	timing.response_bytes = bytes.size()
+	timing.response_wait_usec = callback_begin_usec - began_usec
+	timing.transport_wait_usec = callback_begin_usec - int(timing.dispatch_completed_usec)
+	var prepared := ResponsePreparation.new()
+	prepared.request_id = id
+	prepared.provider_name = provider
+	prepared.transport_result = result
+	prepared.http_code = code
+	prepared.headers = headers.duplicate()
+	# Packed arrays alias when assigned; later signal observers must not mutate
+	# the body snapshot while a worker reads it. Copy exactly once at handoff.
+	prepared.bytes = bytes.duplicate() if bytes.size() >= ASYNC_RESPONSE_BYTES else bytes
+	prepared.secrets_snapshot = secrets.duplicate()
+	prepared.timing = timing
+	prepared.received_usec = callback_begin_usec
+	if bytes.size() >= ASYNC_RESPONSE_BYTES:
+		_preparation = prepared
+		response_preparation_jobs = 1
+		peak_response_preparation_jobs = maxi(peak_response_preparation_jobs,1)
+		timing.status = "preparing_response"
+		timing.response_preparation_async = true
+		prepared.start(self)
+		timing.callback_setup_usec = Time.get_ticks_usec()-callback_begin_usec
+		return
+	prepared.prepare_inline()
+	_publish_response(prepared,callback_begin_usec)
+
+func _preparation_finished(prepared: RefCounted) -> void:
+	if _preparation != prepared: return
+	_preparation = null
+	if prepared.direction == "request": request_preparation_jobs = 0
+	else: response_preparation_jobs = 0
+	var timing: Dictionary = prepared.timing
+	var prefix: String = prepared.direction+"_preparation_"
+	timing[prefix+"reaped"] = true
+	timing[prefix+"cancelled"] = prepared.is_cancelled()
+	timing[prefix+"usec"] = int(timing.get(prefix+"usec",0))+int(prepared.metrics.get("total_usec",0))
+	timing[prefix+"wait_usec"] = Time.get_ticks_usec()-prepared.received_usec
+	if prepared.request_id != serial or prepared.is_cancelled(): return
+	# Key changes are possible while a worker runs. Repeat from the SAME owned
+	# values with a fresh credential snapshot; there is no additional HTTP call
+	# and no overlapping task/body copy.
+	if secrets != prepared.secrets_snapshot:
+		_restart_preparation(prepared)
+		return
+	if prepared.direction == "request": _dispatch_prepared_request(prepared,true)
+	else: _publish_response(prepared,Time.get_ticks_usec())
+
+func _restart_preparation(prepared: RefCounted) -> void:
+	var replacement := ResponsePreparation.new()
+	replacement.request_id = prepared.request_id
+	replacement.direction = prepared.direction
+	replacement.provider_name = prepared.provider_name
+	replacement.transport_result = prepared.transport_result
+	replacement.http_code = prepared.http_code
+	replacement.headers = prepared.headers
+	replacement.bytes = prepared.bytes
+	replacement.request_body = prepared.request_body
+	replacement.request_url = prepared.request_url
+	replacement.request_key = prepared.request_key
+	replacement.request_seconds = prepared.request_seconds
+	replacement.secrets_snapshot = secrets.duplicate()
+	replacement.timing = prepared.timing
+	replacement.received_usec = prepared.received_usec
+	_preparation = replacement
+	if replacement.direction == "request": request_preparation_jobs = 1
+	else: response_preparation_jobs = 1
+	var prefix: String = replacement.direction+"_preparation_"
+	replacement.timing[prefix+"restarts"] = int(replacement.timing.get(prefix+"restarts",0))+1
+	replacement.timing[prefix+"reaped"] = false
+	replacement.start(self)
+
+func _publish_response(prepared: RefCounted, callback_begin_usec: int) -> void:
+	var id: int = prepared.request_id
+	if id != serial: return
+	var result: int = prepared.transport_result
+	var code: int = prepared.http_code
+	var headers: PackedStringArray = prepared.headers
+	var provider: String = prepared.provider_name
+	var timing: Dictionary = prepared.timing
+	timing.status = "completing"
+	for stage: String in ["utf8_decode_usec","json_parse_usec"]:
+		timing[stage] = int(prepared.metrics.get(stage,0))
+	timing.response_sanitize_usec = int(prepared.metrics.get("sanitize_usec",0))
+	timing.response_encode_usec = int(prepared.metrics.get("encode_usec",0))
+	timing.response_utf8_encode_usec = int(prepared.metrics.get("utf8_encode_usec",0))
+	if code == 429:
+		for header: String in headers:
+			if header.get_slice(":",0).to_lower() == "retry-after":
+				var value := header.substr(header.find(":")+1).strip_edges()
+				if value.is_valid_float() and is_finite(value.to_float()):
+					retry_after_seconds = maxf(0.0,value.to_float())
+	# Durable append and signal/native ordering stay on the main thread. This
+	# is one prepared response receipt, not a general asynchronous journal.
+	var response_log_begin_usec := Time.get_ticks_usec()
+	var response_audit := {}
+	_record_event("response",prepared.sanitized,null,response_audit,prepared.encoded_data,prepared.encoded_data_bytes)
+	timing.response_log_usec = Time.get_ticks_usec() - response_log_begin_usec
+	for stage: String in ["format_usec","write_usec"]:
+		timing["response_"+stage] = int(response_audit.get(stage,0))
+	# Each audit append emits traffic_changed synchronously. A Stop/teardown
+	# observer must fence this callback before any subsequent assistant work.
+	if id != serial: return
+	if result != HTTPRequest.RESULT_SUCCESS:
+		_finish_request(id,"",{},transport_error(result),timing,callback_begin_usec)
+		return
+	if code < 200 or code >= 300:
+		# Keep the existing OpenAI quota refusal/pacing contract. This bounded
+		# parser is not used for a refused connection with no HTTP response.
+		if provider == "OpenAI" and code == 429:
+			var failure_data: Dictionary = prepared.data
+			var detail: Variant = failure_data.get("error",{})
+			var kind := str(detail.get("code","")) if detail is Dictionary else ""
+			if kind in ["insufficient_quota","credit_balance_exhausted","organization_spend_limit_exceeded","project_spend_limit_exceeded"]:
+				retry_after_seconds = 0.0
+			else:
+				retry_after_seconds = maxf(retry_after_seconds,quota_reset_seconds(headers))
+		# Redact BEFORE shortening: cutting through an echoed credential first
+		# leaves a non-matching partial key that cannot subsequently be redacted.
+		var safe_raw: String = prepared.sanitized_body
+		var excerpt := safe_raw.left(512).replace("\r"," ").replace("\n"," ")
+		var suffix := " … (full response in Traffic)" if safe_raw.length() > 512 else ""
+		_finish_request(id,"",{},"HTTP %d: %s%s" % [code,excerpt,suffix],timing,callback_begin_usec)
+		return
+	if not prepared.valid_object:
+		_finish_request(id,"",{},"Malformed JSON response: expected a provider response object. Nothing drawn; inspect Traffic.",timing,callback_begin_usec)
+		return
+	var data: Dictionary = prepared.data
+	if provider == "OpenAI":
+		var details: Variant = data.get("error",{})
+		var error_code := str(details.get("code","")) if details is Dictionary else ""
+		if error_code in ["insufficient_quota","credit_balance_exhausted","organization_spend_limit_exceeded","project_spend_limit_exceeded"]:
+			retry_after_seconds = 0
+		else:
+			retry_after_seconds = maxf(retry_after_seconds,quota_reset_seconds(headers))
+	var decoded: Dictionary = prepared.decoded
+	timing.envelope_decode_usec = int(prepared.metrics.get("envelope_decode_usec",0))
+	timing.assistant_redact_usec = int(prepared.metrics.get("assistant_redact_usec",0))
+	timing.assistant_encode_usec = int(prepared.metrics.get("assistant_encode_usec",0))
+	timing.assistant_utf8_encode_usec = int(prepared.metrics.get("assistant_utf8_encode_usec",0))
+	_prepared_assistant = {"serial":id,"secrets":prepared.secrets_snapshot,
+		"text":str(decoded.text),"encoded_text":prepared.encoded_assistant,
+		"encoded_conversation":prepared.encoded_conversation,
+		"encoded_text_bytes":prepared.encoded_assistant_bytes,
+		"encoded_conversation_bytes":prepared.encoded_conversation_bytes}
+	usage = usage_projection(data.get("usage"))
+	returned_model = _model_projection(data.get("model","unknown"))
+	var other_log_begin_usec := Time.get_ticks_usec()
+	# A syntactically valid error/refusal envelope can contain real reported
+	# usage. Retain it, while avoiding invented usage or empty assistant replies.
+	if not str(decoded.text).is_empty() or not usage.is_empty():
+		log_event("usage",{"requested_model":requested_model,"returned_model":returned_model,"usage":usage,"cost":null})
+	if id != serial: return
+	if not str(decoded.text).is_empty(): log_event("assistant",decoded.text)
+	timing.other_log_usec = Time.get_ticks_usec() - other_log_begin_usec
+	_finish_request(id,str(decoded.text),data,str(decoded.error),timing,callback_begin_usec)
+
+static func _request_value_weight(value: Variant, depth: int = 0) -> int:
+	# Only immutable JSON values enter a worker. Reject cycles/objects before
+	# handing off a deep container snapshot; strings remain reference-counted.
+	if depth > 32: return -1
+	if value is String: return mini(value.length(),ASYNC_REQUEST_CHARACTERS)
+	if value == null or value is bool or value is int or value is float: return 0
+	var weight := 0
+	if value is Dictionary:
+		for key: Variant in value:
+			if not key is String: return -1
+			var item := _request_value_weight(value[key],depth+1)
+			if item < 0: return -1
+			weight = mini(ASYNC_REQUEST_CHARACTERS,weight+item+key.length())
+		return weight
+	if value is Array or value is PackedStringArray:
+		for entry: Variant in value:
+			var item := _request_value_weight(entry,depth+1)
+			if item < 0: return -1
+			weight = mini(ASYNC_REQUEST_CHARACTERS,weight+item)
+		return weight
+	return -1
+
+func send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String = "", context: Array = [], pre_dispatch_guard: Callable = Callable()) -> String:
+	return _send(provider,endpoint,model,key,prompt,instructions,tokens,seconds,png,context,pre_dispatch_guard,{})
+
+func send_owned(parameters: Dictionary, completion: Callable, pre_dispatch_guard: Callable) -> Dictionary:
+	# Only the Art owner supplies these transport settings. Model/Architecture
+	# requests go through art_proposal_transport, which obtains a fresh settings
+	# snapshot without accepting credential or endpoint overrides from the model.
+	if active: return {"ok":false,"provider_id":-1,"reason":"A model request is already active."}
+	if _preparation_active(): return {"ok":false,"provider_id":-1,"reason":"Previous provider preparation is stopping. Retry Send shortly."}
+	var problem := _owned_parameters_error(parameters)
+	if not completion.is_valid(): problem = "One live response consumer is required."
+	if not pre_dispatch_guard.is_valid(): problem = "A live owner context guard is required."
+	if not problem.is_empty(): return {"ok":false,"provider_id":-1,"reason":problem}
+	var expected_id := serial + 1
+	var owner := {"id":expected_id,"request_id":parameters.request_id,"mode":parameters.mode,"completion":completion}
+	problem = _send(parameters.provider,parameters.endpoint,parameters.model,parameters.get("key",""),
+		parameters.prompt,parameters.instructions,int(parameters.tokens),float(parameters.seconds),
+		parameters.get("png",""),parameters.get("context",[]),pre_dispatch_guard,owner)
+	# A synchronous audit/guard observer may cancel and start a newer request.
+	# Return the captured identity, never the successor's current serial.
+	if problem.is_empty() and serial != expected_id: problem = "Owned request retired during dispatch."
+	return {"ok":problem.is_empty(),"provider_id":expected_id if problem.is_empty() else -1,
+		"request_id":parameters.request_id,"mode":parameters.mode,"reason":problem}
+
+static func _owned_parameters_error(parameters: Dictionary) -> String:
+	for field: String in ["request_id","mode","provider","endpoint","model","prompt","instructions"]:
+		if not parameters.get(field) is String: return "Owned request field '%s' must be text." % field
+	if parameters.mode not in OWNED_MODES: return "Unknown owned request mode."
+	if parameters.request_id.is_empty() or parameters.request_id.length() > 256:
+		return "Owned requests need a nonempty identity of at most 256 characters."
+	if parameters.provider not in ["OpenAI","NVIDIA","LM Studio"]: return "Unknown provider protocol."
+	if parameters.endpoint.length() > 2048 or parameters.model.length() > 512:
+		return "Owned provider endpoint or model identifier exceeds its bounded setting length."
+	if not parameters.get("tokens") is int or int(parameters.tokens) < 1 or int(parameters.tokens) > 65536:
+		return "Owned requests need a finite output allowance from 1 to 65536 tokens."
+	if not (parameters.get("seconds") is int or parameters.get("seconds") is float):
+		return "Owned requests need a numeric timeout."
+	if not parameters.get("key","") is String or not parameters.get("png","") is String or not parameters.get("context",[]) is Array:
+		return "Owned request credentials, image or conversation have invalid value types."
+	if str(parameters.get("key","")).length() > 4096: return "Provider credential exceeds 4096 characters."
+	if parameters.get("context",[]).size() > 128: return "Owned context exceeds 128 admitted messages."
+	var image_text: String = parameters.get("png","")
+	if image_text.length() > MAX_OWNED_IMAGE_BYTES or image_text.to_utf8_buffer().size() > MAX_OWNED_IMAGE_BYTES:
+		return "Owned image exceeds the two MiB encoded-image budget."
+	var values := {"prompt":parameters.prompt,"instructions":parameters.instructions,"context":parameters.get("context",[])}
+	var budget := {"bytes":MAX_OWNED_REQUEST_BYTES,"items":32768}
+	if not bounded_json_values(values,budget): return "Owned context exceeds its two MiB, depth or finite-value budget."
+	return ""
+
+static func bounded_json_values(value: Variant, budget: Dictionary, depth: int = 0) -> bool:
+	# Bound traversal as well as bytes. Large hostile arrays and cyclic containers
+	# cannot keep validation busy or enter a value preparation worker unexamined.
+	if depth > 24 or int(budget.get("items",0)) <= 0: return false
+	budget.items = int(budget.items)-1
+	budget.bytes = int(budget.bytes)-1 # Separator/colon allowance per value.
+	if value is String:
+		if value.length() > int(budget.bytes): return false
+		budget.bytes = int(budget.bytes)-value.json_escape().to_utf8_buffer().size()-2
+	elif value is Dictionary:
+		if value.size() > int(budget.items): return false
+		budget.bytes = int(budget.bytes)-2
+		for field: Variant in value:
+			if not (field is String or field is int) or not bounded_json_values(str(field),budget,depth+1) or not bounded_json_values(value[field],budget,depth+1): return false
+	elif value is Array:
+		if value.size() > int(budget.items): return false
+		budget.bytes = int(budget.bytes)-2
+		for item: Variant in value:
+			if not bounded_json_values(item,budget,depth+1): return false
+	elif value is float:
+		if not is_finite(value): return false
+		budget.bytes = int(budget.bytes)-24
+	elif value == null or value is bool or value is int:
+		budget.bytes = int(budget.bytes)-24
+	else: return false
+	return int(budget.bytes) >= 0
+
+func _send(provider: String, endpoint: String, model: String, key: String, prompt: String, instructions: String, tokens: int, seconds: float, png: String, context: Array, pre_dispatch_guard: Callable, response_owner: Dictionary) -> String:
 	if active: return "A model request is already active."
+	if _preparation_active(): return "Previous provider preparation is stopping. Retry Send shortly."
 	if model.strip_edges().is_empty(): return "Enter a model ID (discovery is optional)."
+	if not is_finite(seconds) or seconds <= 0.0 or seconds > 3600.0:
+		return "Set a finite request timeout above zero and at most 3600 seconds."
 	if not key.is_empty() and not secrets.has(key): secrets.append(key)
 	if provider != "LM Studio" and key.is_empty(): return "Enter your "+provider+" key in Key."
+	var snapshot_began_usec := Time.get_ticks_usec()
+	var body := payload(provider,model,prompt,instructions,tokens,png,context)
+	var weight := _request_value_weight(body)
+	if weight < 0: return "Request context contains unsupported or excessively nested values."
 	serial += 1
 	var id := serial
+	var began_usec := Time.get_ticks_usec()
+	var timing := {"schema":2,"serial":id,"provider":provider,
+		"status":"preparing","response_bytes":0,"http_code":0,
+		"request_log_usec":0,"dispatch_usec":0,"response_wait_usec":0,
+		"transport_wait_usec":0,"dispatch_completed_usec":0,"payload_encode_usec":0,
+		"request_call_usec":0,"utf8_decode_usec":0,"response_log_usec":0,
+		"json_parse_usec":0,"envelope_decode_usec":0,"other_log_usec":0,
+		"projection_redact_usec":0,"signal_usec":0,"callback_usec":0,"cancel_usec":0}
+	last_request_timing = timing
 	requested_model = model
+	last_request_offset = -1
+	_prepared_assistant = {}
+	_dispatch_guard = pre_dispatch_guard
+	_response_owner = response_owner
 	usage = {}; returned_model = ""
 	retry_after_seconds = 0.0
-	var url := endpoint.trim_suffix("/")+ ("/responses" if provider=="OpenAI" else "/chat/completions")
-	var body := payload(provider,model,prompt,instructions,tokens,png,context)
-	log_event("request",{"url":url,"provider":provider,"body":body})
+	active = true
+	if not _dispatch_allowed(id): return "Request was cancelled before preparation."
+	if not response_owner.is_empty():
+		log_event("owned_request",_owned_projection(response_owner,"preparing"))
+		if not _dispatch_allowed(id): return "Owned request was cancelled before preparation."
+	var prepared := ResponsePreparation.new()
+	prepared.direction = "request"
+	prepared.request_id = id
+	prepared.provider_name = provider
+	prepared.request_url = request_url(provider,endpoint)
+	prepared.request_key = key
+	prepared.request_seconds = seconds
+	prepared.request_body = body.duplicate(true) if weight >= ASYNC_REQUEST_CHARACTERS else body
+	prepared.secrets_snapshot = secrets.duplicate()
+	prepared.timing = timing
+	prepared.received_usec = began_usec
+	timing.request_snapshot_usec = Time.get_ticks_usec()-snapshot_began_usec
+	if weight >= ASYNC_REQUEST_CHARACTERS:
+		_preparation = prepared
+		request_preparation_jobs = 1
+		peak_request_preparation_jobs = maxi(peak_request_preparation_jobs,1)
+		timing.status = "preparing_request"
+		timing.request_preparation_async = true
+		prepared.start(self)
+		return ""
+	prepared.prepare_inline()
+	return _dispatch_prepared_request(prepared,false)
+
+func _dispatch_allowed(id: int) -> bool:
+	if id != serial: return false
+	if not _dispatch_guard.is_null():
+		if not _dispatch_guard.is_valid():
+			cancel("Request context became unavailable before dispatch")
+			return false
+		var allowed: Variant = _dispatch_guard.call()
+		if not (allowed is bool and allowed):
+			if id == serial: cancel("Request context changed before dispatch")
+			return false
+	return id == serial
+
+func _dispatch_prepared_request(prepared: RefCounted, asynchronous: bool) -> String:
+	var id: int = prepared.request_id
+	var timing: Dictionary = prepared.timing
+	if not _dispatch_allowed(id): return "Request was cancelled before dispatch."
+	if secrets != prepared.secrets_snapshot:
+		_restart_preparation(prepared)
+		return ""
+	timing.payload_encode_usec = int(prepared.metrics.get("payload_encode_usec",0))
+	timing.request_sanitize_usec = int(prepared.metrics.get("sanitize_usec",0))
+	timing.request_encode_usec = int(prepared.metrics.get("encode_usec",0))
+	timing.request_utf8_encode_usec = int(prepared.metrics.get("utf8_encode_usec",0))
+	timing.payload_utf8_encode_usec = int(prepared.metrics.get("payload_utf8_encode_usec",0))
+	var request_log_begin_usec := Time.get_ticks_usec()
+	_record_event("request",prepared.sanitized,null,null,prepared.encoded_data,prepared.encoded_data_bytes)
+	timing.request_log_usec = Time.get_ticks_usec()-request_log_begin_usec
+	if not _dispatch_allowed(id): return "Request was cancelled before dispatch."
 	request = HTTPRequest.new()
-	request.use_threads = true
-	request.timeout = seconds
+	# Godot4.7's threaded client joins a blocking read before closing its socket.
+	# The bounded, nonblocking poll path keeps Stop/timeout/teardown responsive.
+	request.use_threads = false
+	request.download_chunk_size = 256*1024
+	request.timeout = prepared.request_seconds
 	request.body_size_limit = 16*1024*1024
 	request.max_redirects = 0
 	add_child(request)
-	var current := request
-	request.request_completed.connect(func(result: int, code: int, headers: PackedStringArray, bytes: PackedByteArray) -> void:
-		current.queue_free()
-		if id != serial: return
-		request = null; active = false
-		if code == 429:
-			for header: String in headers:
-				if header.get_slice(":",0).to_lower() == "retry-after":
-					var value := header.substr(header.find(":")+1).strip_edges()
-					if value.is_valid_float() and is_finite(value.to_float()):
-						retry_after_seconds = maxf(0.0,value.to_float())
-		var raw := bytes.get_string_from_utf8()
-		log_event("response",{"transport":result,"http":code,"headers":headers,"body":raw})
-		var parser := JSON.new()
-		var valid_json := parser.parse(raw)==OK
-		var data: Dictionary = parser.data if valid_json and parser.data is Dictionary else {}
-		if provider == "OpenAI" and (code == 429 or (code >= 200 and code < 300)):
-			var details: Variant = data.get("error",{})
-			var error_code := str(details.get("code","")) if details is Dictionary else ""
-			if error_code in ["insufficient_quota","credit_balance_exhausted","organization_spend_limit_exceeded","project_spend_limit_exceeded"]:
-				retry_after_seconds = 0
-			else:
-				retry_after_seconds = maxf(retry_after_seconds,quota_reset_seconds(headers))
-		usage = data.get("usage",{}) if data.get("usage") is Dictionary else {}
-		returned_model = str(data.get("model","unknown"))
-		log_event("usage",{"requested_model":requested_model,"returned_model":returned_model,"usage":usage,"cost":null})
-		var decoded := decode(provider,data)
-		log_event("assistant",decoded.text)
-		var error: String = decoded.error
-		if result != HTTPRequest.RESULT_SUCCESS: error = "Connection/timeout failure (%d). Check endpoint/server; inspect Traffic." % result
-		elif code < 200 or code >= 300: error = "HTTP %d: %s" % [code,raw]
-		finished.emit(id,redact(decoded.text),data,redact(error)))
+	request.request_completed.connect(_request_completed.bind(id,prepared.provider_name,prepared.received_usec,timing,request))
 	var headers := PackedStringArray(["Content-Type: application/json"])
-	if not key.is_empty(): headers.append("Authorization: Bearer "+key)
-	var err := request.request(url,headers,HTTPClient.METHOD_POST,JSON.stringify(body))
+	if not prepared.request_key.is_empty(): headers.append("Authorization: Bearer "+prepared.request_key)
+	var request_begin_usec := Time.get_ticks_usec()
+	var err: Error
+	if not prepared.encoded_payload_bytes.is_empty():
+		err = request.request_raw(prepared.request_url,headers,HTTPClient.METHOD_POST,prepared.encoded_payload_bytes)
+	else:
+		err = request.request(prepared.request_url,headers,HTTPClient.METHOD_POST,prepared.encoded_payload)
+	timing.request_call_usec = Time.get_ticks_usec()-request_begin_usec
+	timing.dispatch_completed_usec = Time.get_ticks_usec()
+	timing.dispatch_usec = int(timing.dispatch_completed_usec)-prepared.received_usec
 	if err != OK:
-		cancel("Request start failed")
-		return "Could not start HTTP request (%d). Check the endpoint URL." % err
+		var problem := "Could not start HTTP request (%d). Check the endpoint URL." % err
+		if asynchronous:
+			request.queue_free(); request = null
+			log_event("request_start_failed",{"request_id":id,"error_code":err})
+			_finish_request(id,"",{},problem,timing,Time.get_ticks_usec())
+		else: cancel("Request start failed")
+		timing.status = "start_failed"
+		return problem
 	active = true
+	timing.status = "in_flight"
+	request_started.emit(id,last_request_offset)
 	return ""

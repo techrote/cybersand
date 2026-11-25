@@ -6,7 +6,6 @@ const MAX_RECORD_BYTES := 32 * 1024 * 1024
 const MAX_SEGMENTS := 4096
 const MAX_HEADER_BYTES := 2 * 1024 * 1024
 const MAX_CHAIN_HEADER_BYTES := 64 * 1024 * 1024
-const TRAFFIC_DIRECTORIES := ["user://art-traffic","user://batch-lab-traffic"]
 static var _high_bytes := RegEx.create_from_string("[\\x{0080}-\\x{00ff}]")
 var error := ""
 var warning := ""
@@ -25,27 +24,7 @@ var _hash: HashingContext
 var _legacy_ids := {}
 
 static func valid_path(path: String) -> bool:
-	return path.get_base_dir() in TRAFFIC_DIRECTORIES and path.get_file() not in ["", ".", ".."] and path.get_file().ends_with(".jsonl") and not path.contains("\\") and not path.contains("/./") and not path.contains("/../")
-
-static func valid_directory(directory: String) -> bool:
-	if directory not in TRAFFIC_DIRECTORIES: return false
-	var actual := canonical_path(directory)
-	var expected := canonical_path("user://").path_join("batch-lab-traffic")
-	if directory=="user://art-traffic":
-		return not actual.is_empty() and actual!=expected and not actual.begins_with(expected+"/")
-	var ordinary := canonical_path("user://art-traffic")
-	return not actual.is_empty() and not ordinary.is_empty() and actual==expected \
-		and actual!=ordinary and not actual.begins_with(ordinary+"/")
-
-static func bound_path(path: String) -> bool:
-	if not valid_path(path) or not valid_directory(path.get_base_dir()): return false
-	var directory := canonical_path(path.get_base_dir())
-	var actual := canonical_path(path)
-	if actual.is_empty() or actual.get_base_dir()!=directory: return false
-	# Batch transport files belong to individual attempts. They cannot alias
-	# another leaf even within the Batch directory. Ordinary same-root reader
-	# aliases retain their established canonical-chain checks.
-	return path.get_base_dir()!="user://batch-lab-traffic" or actual==directory.path_join(path.get_file())
+	return path.begins_with("user://art-traffic/") and path.get_base_dir() == "user://art-traffic" and path.get_file() not in ["", ".", ".."] and path.get_file().ends_with(".jsonl") and not path.contains("\\") and not path.contains("/./") and not path.contains("/../")
 
 static func integer(value: Variant, minimum: int = 0) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and value >= minimum and float(value) == floor(float(value)) and float(value) < 9007199254740992.0
@@ -185,8 +164,6 @@ func resolve(latest: String) -> bool:
 	error = ""; warning = ""; segments.clear(); done = false; paused = false; bytes_read = 0; total_bytes = 0
 	_index = -1; _input = null; _parts.clear(); _record_size = 0; _legacy_ids.clear()
 	var current := latest
-	var directory := latest.get_base_dir()
-	if not valid_directory(directory): return fail("Invalid or aliased traffic namespace.")
 	var expected_id := ""
 	var expected_hash := ""
 	var committed_bytes := -1
@@ -196,7 +173,7 @@ func resolve(latest: String) -> bool:
 	var sealed_chain := false
 	var header_bytes := 0
 	for _depth in range(MAX_SEGMENTS):
-		if not bound_path(current) or current.get_base_dir()!=directory: return fail("Invalid or cross-namespace saved traffic path: " + current)
+		if not valid_path(current): return fail("Invalid saved traffic path: " + current)
 		if ancestor_seals.has(current):
 			var seal: Dictionary = ancestor_seals[current]
 			if (not expected_id.is_empty() and expected_id != seal.id) or (not expected_hash.is_empty() and expected_hash != seal.sha256) or (committed_bytes >= 0 and committed_bytes != int(seal.bytes)):
@@ -247,7 +224,7 @@ func resolve(latest: String) -> bool:
 			if not seals is Array or seals.size() > MAX_SEGMENTS: return fail("Malformed legacy ancestor seals: " + current)
 			var local_seals := {}
 			for seal: Variant in seals:
-				if not seal is Dictionary or not seal.get("path") is String or not bound_path(seal.path) or seal.path.get_base_dir()!=directory or not seal.get("id") is String or seal.id.is_empty() or not integer(seal.get("bytes"), 1) or not seal.get("sha256") is String or seal.sha256.length() != 64 or not seal.sha256.is_valid_hex_number(false):
+				if not seal is Dictionary or not seal.get("path") is String or not valid_path(seal.path) or not seal.get("id") is String or seal.id.is_empty() or not integer(seal.get("bytes"), 1) or not seal.get("sha256") is String or seal.sha256.length() != 64 or not seal.sha256.is_valid_hex_number(false):
 					return fail("Malformed legacy ancestor identity: " + current)
 				if local_seals.has(seal.path) or visited.has(canonical_path(seal.path)): return fail("Duplicate or cyclic legacy ancestor seal: " + current)
 				local_seals[seal.path] = true
@@ -266,7 +243,6 @@ func _open_next() -> bool:
 		done = true
 		return true
 	var segment := segments[_index]
-	if not bound_path(str(segment.path)): return fail("Conversation source crossed its traffic namespace during reading.")
 	_input = FileAccess.open(segment.path, FileAccess.READ)
 	if _input == null or _input.get_length() != int(segment.file_bytes) or FileAccess.get_modified_time(segment.path) != int(segment.mtime):
 		return fail("Conversation changed or disappeared during reading: " + str(segment.path))
