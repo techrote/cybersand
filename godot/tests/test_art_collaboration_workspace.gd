@@ -118,7 +118,12 @@ func run() -> void:
 	check(not view.visual_context.visible, "removed image leaves no stale preview")
 	var nested_context := {"level_one":{"level_two":{"level_three":{"level_four":{"level_five":{"native_cell":[17,31,58],"sentinel":"complete-admitted-context"}}}}}}
 	view.set_context_inspection({"digest":"nested-context","inspector":nested_context})
-	check(JSON.parse_string(view._context_json) == nested_context, "Copy context preserves every nested admitted value without readable-summary truncation")
+	# JSON numbers decode as floats; compare complete JSON-domain values, not GDScript integer Variant types.
+	var copied_context: Variant = JSON.parse_string(view._context_json)
+	var expected_context: Variant = JSON.parse_string(JSON.stringify(nested_context))
+	check(copied_context == expected_context, "Copy context preserves every nested admitted value without readable-summary truncation")
+	var copied_cells: Array = copied_context.level_one.level_two.level_three.level_four.level_five.native_cell if copied_context == expected_context else []
+	check(copied_cells == [17.0,31.0,58.0], "complete context copy retains exact native cell coordinates and material values")
 	check(view._context_full_text.contains("Copy context") and not view._context_full_text.contains("complete-admitted-context"), "bounded readable summary accurately discloses omitted nested detail")
 	var full_context := "native-context ".repeat(1000)
 	view.set_context_inspection({"digest":"fixture-context-b","inspector":{"detail":full_context}})
