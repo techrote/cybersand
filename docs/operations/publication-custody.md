@@ -19,7 +19,7 @@ archives. Stage inspection additionally reads the configured remote branch to
 check its lease; immutable replay needs the original Git, LFS and artifact inputs
 available. It does not stage, commit, upload, push, cancel, dispatch, promote or
 merge anything. Its success means **custody verified within the supplied trusted
-contract**. It always emits `publication_authorized: false`,
+contract**. A successful custody result still emits `publication_authorized: false`,
 `qualification_semantics_verified: false` and
 `remote_lfs_storage_verified: false`.
 
