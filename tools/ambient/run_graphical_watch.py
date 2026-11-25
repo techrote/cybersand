@@ -31,6 +31,20 @@ def require(condition, message: str) -> None:
         raise RuntimeError(message)
 
 
+def full_application_revision(value: str) -> str:
+    """Accept only an explicit immutable lower-case Git SHA, never a branch name."""
+    if type(value) is not str or len(value) != 40 or any(c not in "0123456789abcdef" for c in value):
+        raise argparse.ArgumentTypeError("Application revision must be a full 40-character lower-case Git SHA")
+    return value
+
+
+def admit_application_revision(identity: dict, expected: str) -> str:
+    revision = full_application_revision(expected)
+    require(identity.get("source_commit") == revision,
+            "Application checkout must match explicitly pinned revision " + revision)
+    return revision
+
+
 def digest(path: Path) -> str:
     with path.open("rb") as stream:
         return hashlib.file_digest(stream, "sha256").hexdigest()
@@ -191,6 +205,8 @@ def make_media(ffmpeg: Path, folder: Path, scene: str, seconds: int) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--application", type=Path, required=True)
+    parser.add_argument("--application-revision", type=full_application_revision, default=FROZEN_APPLICATION,
+                        help="Exact immutable application commit; defaults to the retained a725 baseline")
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--scene", action="append", choices=list(SCENES), dest="scenes")
@@ -211,11 +227,12 @@ def main() -> int:
     require(not script.is_relative_to(application / "godot"), "Observer must remain outside the frozen Godot project")
     report = {"schema": "ambient-living-sustained-watch-campaign/v1", "status": "running",
               "compile_only": args.check_only, "graphical_observation": False, "cases": [],
-              "input_custody": "pending", "platform": sys.platform, "owner_playfeel_accepted": False}
+              "input_custody": "pending", "platform": sys.platform, "owner_playfeel_accepted": False,
+              "requested_application_revision": args.application_revision}
     started = time.monotonic()
     try:
         identity = q.source_identity()
-        require(identity["source_commit"] == FROZEN_APPLICATION, "Application checkout must be exact frozen a7250e15")
+        application_revision = admit_application_revision(identity, args.application_revision)
         runtime = q.verify_runtime_identity()
         project = application / "godot"
         project_inputs = q.project_identity(project, identity, runtime)
@@ -223,7 +240,8 @@ def main() -> int:
         version = subprocess.check_output([str(binary), "--version"], text=True, timeout=30).strip()
         require(version == q.GODOT_VERSION, "Official engine version mismatch")
         observer = observer_identity(allow_delta=args.check_only)
-        report.update({"application": identity, "project_inputs_sha256": project_inputs,
+        report.update({"application": identity, "admitted_application_revision": application_revision,
+                       "project_inputs_sha256": project_inputs,
                        "project_input_count": len(project_inputs), "runtime": runtime, "engine": engine,
                        "godot_version": version, "observer": observer})
         q.write_json(output / "watch-campaign.json", report)
@@ -249,7 +267,7 @@ def main() -> int:
                 destination.mkdir()
                 frames = destination / "frames"
                 environment = q.case_environment(output / "userdata" / scene)
-                environment.update({"CYBERSAND_SOURCE_REVISION": FROZEN_APPLICATION,
+                environment.update({"CYBERSAND_SOURCE_REVISION": application_revision,
                                     "CYBERSAND_AMBIENT_LIVING_WATCH": str(frames),
                                     "CYBERSAND_AMBIENT_WATCH_SCENE": scene,
                                     "CYBERSAND_AMBIENT_WATCH_SECONDS": str(args.seconds)})
@@ -267,7 +285,7 @@ def main() -> int:
                     require(len(terminal) == 1 and json.loads(terminal[0]).get("failures") == [], "Missing or failing sustained terminal")
                     detail = frames / "watch-report.json"
                     row["observation"] = validate_watch(frames, json.loads(detail.read_text()), scene, args.seconds,
-                        FROZEN_APPLICATION, digest(script), q.GODOT_WINDOWS_GUI_SHA256 if sys.platform == "win32" else q.GODOT_LINUX_SHA256,
+                        application_revision, digest(script), q.GODOT_WINDOWS_GUI_SHA256 if sys.platform == "win32" else q.GODOT_LINUX_SHA256,
                         "opengl3_angle" if sys.platform == "win32" else "opengl3")
                     row["report_sha256"] = digest(detail)
                     if ffmpeg:
@@ -300,3 +318,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

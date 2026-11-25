@@ -219,3 +219,89 @@ recorded phase changes, preserves unknown goal-instance counts, and explains
 why zero home returns need the profile's homeward eligibility and a qualifying
 departure before they can be treated as failures. No runtime source changed
 for this analysis.
+
+## Closing independent mechanism and evidence review
+
+The closing packet was checked against frozen application
+`a7250e15495667b2fcf564cbed1eaa8dea217c45`, the actual profile catalogue and the
+registered experiment construction. The broad legacy/new comparison changes a
+bundle of authored profile, architecture and requested sensing. Exact ablations
+preserve the other authored fields, but disabling a module can alter its sensor
+requests, and physical divergence alters later observations. Matched initial
+materials/poses and the common independent outcome observer do not imply that
+every controller receives identical effective observations throughout a run.
+
+A separate [37-check readback](evidence/native-thin-independent/independent-readback.json)
+verified the retained one-step native thin-patch original: report/console/process
+hashes and unchanged recorded custody, all 131,072 publication bytes, exact sole
+Oil/Water cell locations, complete-cell versus copied-hull separation, and the
+independently enumerated coarse/dense/refinement sample sets. The counts reproduce
+489 coarse reads, 194 dense near-disk reads and 677 unique adaptive reads including
+four new refinement sites. Near Oil is observed while the far Water cell remains
+explicitly unknown in incomplete coverage. This is readback of an existing probe,
+not another native execution or behavioral episode.
+
+A separate [23-check timing readback](evidence/blocked-route-timing/independent-readback.json)
+verified both final-source blocked-route stateful shards, their original
+terminal/report/process/full-custody hashes and their 300-sample traces. Each
+retains five failure events with last observation at 12.6 seconds; the new wall
+is painted at tick 900, or fifteen seconds. Later withdrawal reuses that earlier
+record. Both select withdrawal for 9.1 sampled seconds. The memory ablation
+therefore establishes useful memory in this changing fixture, without showing
+that those actors learned the newly painted wall. The reproducible reader and
+receipt retain exact half-open withdrawal windows and original hashes.
+
+These reviews add no application changes, new physical episodes or hardware
+playfeel acceptance. Longer ordinary Workbench graphical observation is a
+separate evidence lane, with actual rendered samples and copied diagnostic times
+kept distinct.
+
+## Sustained home-rest mismatch and bounded correction — 2026-11-25
+
+The completed ordinary Workbench observation at application `a7250e1…`, external
+observer `2eea3dbb…`, run `45544614719`, exposed a compositional defect. Foundry
+Row's actual Cautious Flyer selects homeward approach at sampled seconds 44–47
+and `home_rest` at 48–51. Its configured arrival radius is twenty cells. The
+body coasts from 18.367 cells to 16.490 cells from authored home `(365,355)` and
+settles, while exploration drive decreases from 0.313915 to 0.298981. The shared
+drive rule still required sixteen-cell containment, so this legitimate selected
+rest could not replenish drive. Original reports, frames and identity receipts
+remain unchanged. This is a finite visible homeward/rest sequence, not a
+successful recharge or a sixteen-cell geometric-return measurement.
+
+The proposed correction changes only the shared engine's recharge geometry.
+During the completed interval of an actually selected `seek_home_drive`
+`home_rest`, the exact enabled positive-weight module instance supplies its
+already-validated arrival radius. The current copied position must lie inside
+that radius using the same supported axes as arrival. Other neutral behavior
+keeps its sixteen-cell radius. Unselected modules cannot lend a larger radius;
+overrides, profile/World reset and out-of-radius drift cannot retain that
+eligibility. Actual energy, physics, profiles, scene geometry, phase duration,
+cooldowns and the independent geometric-return metric are unchanged.
+
+The focused copied-value regression covers the observed eighteen-cell arrival
+inside a twenty-cell home, exact boundary and outside drift, differently named
+fourteen/sixty-cell instances, disabled/zero-weight candidates, interruption by
+an actual-resource neutral override, unchanged ordinary sixteen-cell rest,
+ground/flight axes, bounded and disabled drives, repeated inspection and reset.
+Independent source review found no blocker. Actual execution and new-source
+Linux/Windows/extracted qualification remain required; preparing this candidate
+does not turn the a725 observation into a pass for the new rule.
+
+Drive integration retains its existing elapsed-time semantics: it uses prior
+admitted intent and current containment, including across observation gaps.
+These bounded procedural preferences do not prove uninterrupted physical
+occupancy. Selected phase dwell separately excludes unsupported continuity
+intervals; accumulated selected dwell can resume before its finite deadline.
+
+Actual focused Linux execution then passed strict editor import with no warning
+or error markers, **648 living-engine checks** (thirty new checks) and **895
+predecessor checks**, using the pinned official Godot 4.7 executable and verified
+native/Rapier libraries. The same new living suite, run against the exact old
+a725 engine, failed the five expected recharge assertions. Its original negative
+console/report/process receipt is retained, and the candidate engine was restored
+afterward. The [focused receipt](evidence/home-recharge/receipt.json) and complete
+original archive distinguish that exact two-file local delta from the still
+pending published-source physical, Windows and extracted qualification. These
+pure checks add zero physical actor episodes; no performance benefit is inferred
+from their informational timing.

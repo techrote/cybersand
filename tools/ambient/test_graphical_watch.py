@@ -2,6 +2,7 @@
 """Synthetic custody/refusal tests only; no Godot, World or graphical evidence."""
 from __future__ import annotations
 
+import argparse
 import base64
 import copy
 from pathlib import Path
@@ -45,6 +46,27 @@ class SustainedReceiptTests(unittest.TestCase):
     def validate(self, report=None):
         return watch.validate_watch(self.folder, report or self.report, "ambient2-courtyard", 10,
                                     "fixture-source", "fixture-observer", "fixture-engine", "opengl3")
+
+    def test_application_revision_rejects_short_alias_and_malformed_values(self):
+        for value in ("main", "a7250e15", "A" * 40, "g" * 40, "a" * 39, "a" * 41, " " + "a" * 40, None):
+            with self.subTest(value=value), self.assertRaises(argparse.ArgumentTypeError):
+                watch.full_application_revision(value)
+
+    def test_wrong_full_application_revision_is_refused(self):
+        with self.assertRaisesRegex(RuntimeError, "explicitly pinned revision"):
+            watch.admit_application_revision({"source_commit": "a" * 40}, "b" * 40)
+
+    def test_explicit_successor_and_retained_default_are_source_bound(self):
+        self.assertEqual(watch.FROZEN_APPLICATION, "a7250e15495667b2fcf564cbed1eaa8dea217c45")
+        revision = watch.admit_application_revision({"source_commit": "b" * 40}, "b" * 40)
+        self.assertEqual(revision, "b" * 40)
+        changed = copy.deepcopy(self.report)
+        changed["source_revision"] = revision
+        verified = watch.validate_watch(self.folder, changed, "ambient2-courtyard", 10,
+                                       revision, "fixture-observer", "fixture-engine", "opengl3")
+        self.assertEqual(verified["samples"], 11)
+        with self.assertRaisesRegex(RuntimeError, "identity mismatch"):
+            self.validate(changed)
 
     def test_complete_synthetic_custody_fixture(self):
         result = self.validate()
@@ -120,3 +142,4 @@ class SustainedReceiptTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

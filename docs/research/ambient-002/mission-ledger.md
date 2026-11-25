@@ -555,3 +555,58 @@ The separate sustained observation run45544614719 completed successfully.
 Original frame/decision custody and qualitative independent review are still
 being assembled at this checkpoint. The frozen application and shipped ZIP
 remain unchanged. The successor continues Draft/HOLD at eight logical actors.
+
+## Sustained native observation exposed a drive inconsistency
+
+The three ordinary native Workbench observations completed successfully at
+application `a7250e15495667b2fcf564cbed1eaa8dea217c45`, observer
+`2eea3dbb921058db418fbb243b4abc493cddbdb9`, in
+[run45544614719](https://github.com/techrote/cybersand/actions/runs/45544614719).
+[Artifact14992866806](https://github.com/techrote/cybersand/actions/runs/45544614719/artifacts/14992866806)
+is exactly 66,483,275 bytes, SHA256
+`907f8bcdd11ef4c7150dc252844ec8545a0a7a46e66abf41ff10e889ad868cef`.
+All 435 archive members, 183 original frames, three process/report/media chains
+and source/runtime custody were independently verified. Each scene ran
+60.0166667 simulated seconds and 3,601 native/physical ticks. Actual captures
+are 1920 by 1080; hosted process wall times were 673.720, 662.036 and 677.494
+seconds. The complete archive, original selected frames, contact sheets and
+labelled sampled timelapses are retained under
+[sustained-2eea3dbb](evidence/sustained-2eea3dbb/README.md).
+
+The Social Drifter makes visible local social excursions and approaches,
+watches, regroups and disperses from copied compatible peers. The refinery
+scavenger repeatedly investigates, revisits and withdraws, recording fourteen
+failure events while also inspecting a separate accessible Oil patch. Its
+local repetition is a real limitation, not a successful route into the sealed
+cabinet. The flyer explores and performs a finite homeward/rest/resume sequence.
+The [original qualitative review](graphical-watch-review.md) retains actual
+graphics and clearly distinguishes 1 Hz sampled observations from full decision
+traces or continuous video. These observations do not add duplicates to the
+primary 194 registry or establish physical NVIDIA playfeel.
+
+The longer flyer trace exposed a concrete compositional inconsistency:
+the authored home module accepts arrival within 20 cells, but core exploration
+recharge required 16. The actor selected home_rest during samples 48–51 seconds
+and settled 16.4895 cells from home; its exploration drive fell from 0.313915
+to 0.298981 during that sampled rest. No successful recharge or strict 16-cell
+geometric return is claimed for this sequence. A and B independently checked
+the actual copied positions, selected phases and authored radius.
+
+The team prepares a minimal shared-rule correction, preserving this complete
+negative baseline. Only the exact enabled, positive-weight, actually selected
+seek_home_drive instance may supply its already-validated arrival radius to the
+recharge containment check. Current copied geometry must still lie within that
+radius; ordinary opportunistic rest retains the existing 16-cell radius.
+No scene, preset, drive rate, physics law, material, memory or actuator change is
+proposed. A one-word editor help correction names the actual exploration and
+social drives.
+
+Actual local official-4.7 execution of the exact engine/test candidate passed
+648 living checks and 895 predecessor checks. The old a725 engine with the new
+tests failed exactly five expected recharge assertions, and the candidate was
+restored. [Original focused receipts](evidence/home-recharge/receipt.json)
+retain commands, logs, file hashes and the honest uncommitted local candidate
+scope. A new full source-bound Linux/Windows/extracted/194 programme and a
+separately identified Foundry-only observation are required before the corrected
+candidate becomes the recommended evaluator. The existing a725 and AMBIENT-001
+evaluators remain preserved and qualified only for their recorded inputs.
