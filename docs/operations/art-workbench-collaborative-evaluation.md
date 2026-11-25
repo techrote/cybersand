@@ -247,4 +247,4 @@ Until those actual results are recorded, this guide describes the evaluation
 procedure and must not be read as a completed qualification claim.
 
 Exact predecessor sources, software-rendered hosted hardware scope and recorded
-measurements are preserved in the [provider performance evidence](../audits/2026-11-25-art-workbench-collaborative-002/provider-performance.md).
+measurements are preserved in the [provider performance evidence](../audits/2026-11-25-art-workbench-collaborative-002/provider-recovery.md).
