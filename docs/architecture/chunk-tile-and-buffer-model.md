@@ -6,7 +6,7 @@ status: Current
 scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
 keywords: [128x128 chunk, 32x32 activity, 64x64 core, radius two, four phases, Buffered]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, ../systems/activity-dirty-regions-and-waking.md]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-11-24
 ---
 
 # Chunk, tile, and buffer model
@@ -24,11 +24,14 @@ parallel work use independent units. Sources:
 | Storage chunk | 128×128 cells | Cell allocation, optional temperature, metadata and render dirty bounds |
 | Activity block | 32×32 cells | Local wake, quiet tracking and eligibility; 16 blocks per default chunk |
 | Scheduling core | 64×64 cells | Spatial job membership and one of four parity phases |
-| Write domain | Core expanded by maximum rule radius | All cells a job may mutate; current catalogue requires at most radius two |
+| Write domain | Core expanded by maximum rule radius | Default kernels use radius two; an admitted IN policy explicitly requires radius three |
 | Hard-terrain packet | 64×64 cells in the Godot demo | Rapier collider rebuild unit; separate from native scheduling |
 
-Native coordinates are signed and sparse. The Godot adapter's 1024×1024 world
-is a finite demo choice, not a limit inherent in native ChunkCoord. The desktop
+Native coordinates are signed and sparse. The ordinary Godot demo's 1024×1024 backing
+is a finite host choice, not a limit inherent in native ChunkCoord. Shared
+Workbench separately admits 512–2048 cells per axis in multiples of 64, including
+non-square canvases; its fresh setup defaults to 2048×2048. These bounds come from
+[`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd), not native chunk geometry. The desktop
 GDScript fallback has its own finite arrays and **16×16** activity blocks.
 That fallback geometry does not describe either native Web profile.
 
@@ -93,18 +96,37 @@ introduce unintended seams; intended scan/phase order can still affect results.
 
 ## What is stored per cell and per chunk?
 
-**Current source at `de332ea`, checked 2026-09-19:** `World::Chunk::Cell` aliases
+**Current source at `00cdb02f`, checked 2026-11-24:** `World::Chunk::Cell` aliases
 [`detail::PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp),
 whose enforced physical size/alignment is **8/8 bytes**. It retains material identity,
-material-local state and epoch through explicit masks/accessors. Default Water still
-uses mass8/coherence12. Earlier four-byte prose and the stale World source comment
+material-local state and epoch through explicit masks/accessors: 16 material
+bits, 16 `state_a` bits, 8 `state_b` bits and 8 epoch bits within a 64-bit word.
+Unmodified FreeMass uses 255 units per full cell; Wave can retain greater mass in
+`state_a` and stores face flux separately. Earlier four-byte prose and the stale World source comment
 refer to a prior baseline; do not apply those storage costs to this source. This
-source-scoped correction does not select a final production layout or reinterpret
+source-scoped correction does not select a future production layout or reinterpret
 #16/#17/#26 experimental controls. The [ordinary-sleep measurement](../operations/soliding-measurement.md)
 records the actual carrier in its frozen artifact. Temperature is a
 separate optional signed-16-bit array, allocated for a chunk only when needed.
 Temperature storage exists; conduction is not implemented. Rule descriptors
 declare bounded behavior in [material definitions](../../native/include/cybersand/material.hpp).
+
+### Is the old four-byte, sidecar-only rule current?
+
+No. The accepted Cell is the eight-byte `PrecisionStorage` above. The historical
+four-byte representation experiments and their sidecar controls measured a
+different source baseline. They do not prohibit richer inline state or choose
+all future storage. Current temperature, IN, pressure and Wave extensions have
+their own explicit storage and ownership contracts. A future change still needs
+its actual source, compatibility, ownership and qualification review; the
+four-byte experiment is not a permanent production constraint.
+
+For storage facts, inspect
+[`precision_storage.hpp`](../../native/include/cybersand/precision_storage.hpp)
+and the `World::Chunk::Cell` alias in
+[`world.cpp`](../../native/src/world.cpp). For authoring direction, consult the
+[owner-intent register](../reference/product-intent-and-priorities.md); an
+approved direction and an implemented carrier answer different questions.
 
 Activity and render dirtiness are distinct. Sleeping blocks eliminate rule
 scans; dirty chunk bounds track needed visual publication and remain until

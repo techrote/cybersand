@@ -3,46 +3,60 @@ title: 1024² material lab
 document-kind: runbook
 canonical-for: [material-lab-controls, manual-material-recipes]
 status: Current
-scope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits
-last-reviewed: 2026-11-11
+scope: Ordinary Main materials sandbox and Web manual controls, repeatable interaction observations and construction recipes; distinct from Shared Workbench and Materials Lab v1
+last-reviewed: 2026-11-24
 related-documents: [systems/materials-and-rule-kernels.md, systems/themed-construction-materials.md, systems/water-design.md, reference/configuration-reference.md, reference/level-saves-and-replay.md, operations/microscenarios-programme.md]
 ---
 
 # 1024² material lab
 
-The separate **Materials Lab v1** desktop review candidate adds native browsing,
-effective-property inspection, structured source candidates, compiled candidate
-versus untouched-reference Worlds, explicit isolated endpoint effects, source-bound
-World recipes and bounded existing-material native experiments.
-See its [launch and authoring guide](operations/materials-lab-authoring.md)
-and [dated qualification](audits/2026-11-11-materials-lab-v1.md). It opens from the
-feature launcher or Shared Workbench; it does not make shadow definitions active
-in production or replace this historical manual-observation route.
+This page covers the **Materials sandbox / Experiment Tower** route and the
+Web material demos. The ordinary sandbox uses a finite **1024 × 1024** native
+world. Its material picker exposes **130 paintable materials**; the Web
+controller inherits the same picker catalogue. Other hosts have their own scene
+sizes, controls and capabilities.
 
-**Current:** CyberSand exposes 79 paintable materials in a finite 1024×1024 native
-world. Desktop and Web have different controllers and controls. This page is a
-manual observation runbook, not proof that every pairing or visual has passed
-acceptance. Source/runtime identity and dated checks are in the
-[checkpoint](operations/source-checkpoint-and-recovery.md) and
-[evidence ledger](reference/validation-evidence.md).
+| What you want to do | Current entry point |
+|---|---|
+| Paint materials, inspect interactions and run the manual recipes below | Desktop feature launcher → **Materials sandbox / Experiment Tower — F9**. F9 opens the Tower after entering that sandbox. |
+| Author a scene with Paint history, generation, actors and explicit saves | **Development workbench**, then the [first-session guide](operations/workbench-first-session.md). Its fresh blank canvas and shortcuts are separate from this 1024² sandbox. |
+| Browse effective native properties and compare isolated material candidates | **Materials Lab** in the feature launcher, or **Materials Lab** in Shared Workbench. Follow the [Lab authoring guide](operations/materials-lab-authoring.md). |
 
-Open the desktop project through the [local workflow](operations/local-build-and-validation.md).
-For Web, use the built HTTP preview described in the
-[Web guide](operations/web-threading.md). Native C++ supplies current cellular
-behavior; the desktop fallback is a narrower, different implementation.
+**Materials Lab v1 is available in accepted source.** It supplies native browsing,
+structured source candidates, compiled candidate versus untouched-reference
+Worlds, isolated endpoint effects, source-bound World recipes and bounded
+existing-material experiments. Its [dated qualification](audits/2026-11-11-materials-lab-v1.md)
+retains the original tested source and platform scope. This does not make shadow
+definitions active in production or provide the separate, unmerged live
+current-scene audition feature.
+
+Open the desktop project through the [first-run guide](operations/getting-started.md)
+and choose the named feature. For Web, use the built HTTP preview described in
+the [Web guide](operations/web-threading.md). Native C++ supplies the material
+behavior; the desktop fallback has a narrower, different implementation.
 Physics Pit requires the [Rapier capability checks](operations/rapier-2d-migration-runbook.md).
+
+This is a manual observation runbook, not evidence that every pairing, platform
+or visual has passed acceptance. Bind a report to the actual source/runtime
+identity using the [checkpoint guide](operations/source-checkpoint-and-recovery.md)
+and [evidence ledger](reference/validation-evidence.md).
 
 ## Desktop controls
 
-The detailed [Neon Reliquary demo](operations/neon-reliquary-demo.md) is available
-through **F11** or its launcher. It opens a paused machine-cathedral scene with
-five viewpoints; **F8** supplies a clean view and **P** resumes its materials.
+These are ordinary Main-scene controls. They do not apply to Shared Workbench,
+which handles keys before these legacy bindings. A selected F5 physical actor
+can also reserve movement/tool keys; use its displayed control instructions.
+
+Choose **Neon Reliquary** in the feature launcher, or press **F11** from the
+ordinary sandbox. The [demo guide](operations/neon-reliquary-demo.md) covers
+a paused machine-cathedral scene with five viewpoints; **F8** supplies a clean view and **P** resumes its materials.
 **Below / Above** and the district selector navigate its four-tile descent:
 Neon Reliquary, Middle Cyberberbia, Sewertech Alley and Industrial Underswamp.
 Changing district loads that tile's original paused layout; changing its camera
 view preserves edits.
 
-**Shift+F11** or **Blacksite Nine** opens the separate
+Choose **Blacksite Nine** in the feature launcher, or press **Shift+F11** from
+the ordinary sandbox, to open the separate
 [connected 3×3 complex](operations/blacksite-nine-demo.md). Use its **3×3 tile
 map** to frame any district, **Whole complex** for the overview, and **F** to
 follow the player. A/D and held Space move through the twelve connecting
@@ -66,7 +80,9 @@ Source: [main.gd::_unhandled_key_input, update_camera, update_worker_frame_state
 | K | Toggle render smoothing; also forwards fallback sparse-flight sampling option |
 | H | Cycle render publication target through 30/45/60 Hz |
 | G | Toggle glow overlay and glow SubViewport updates (desktop and Web) |
-| F3 | Toggle statistics and periodic status-string construction |
+| F3 / Shift+F3 | Expand/collapse the desktop statistics; show/hide them entirely |
+| J; − / =; comma / period; O | Cycle brush shape; change brush size; change rectangle ratio; rotate the rectangle |
+| F2 | Close this session and return to the feature launcher |
 | P / R | Pause / reset |
 
 Paint slots map to stable material IDs; slot 5 is Paste ID 20 and slot 6 is
@@ -76,7 +92,10 @@ The 1920×1080 window aspect-fits the logical view, and mouse mapping uses the
 same fitted rectangle.
 
 Changing H or K does not change native fixed-tick semantics or enable a strict
-simulation mode. Target cadence is not guaranteed wall-clock progress.
+simulation mode. Target cadence is not guaranteed wall-clock progress. A locked
+MicroScenario or controlled Water run can refuse a setting change; inspect the
+active state instead of assuming a key press applied it. F2 closes the session;
+these standalone controls do not provide Workbench Save start or its Undo history.
 
 ## Web controls and menu
 
@@ -90,7 +109,9 @@ and the [Blacksite Nine 3×3 complex](operations/blacksite-nine-demo.md).
 Escape opens/closes the menu; during a reference benchmark it requests cancel.
 Gameplay shortcuts are ignored while the menu is open. Shared shortcuts are
 mouse paint/erase, A/D, Space, 1–6, Q/E, P, R, F, C, T, G, F3, F8, F11 and
-Shift+F11. X requests
+Shift+F11. Web F3 toggles statistics visibility directly; it does not use the
+desktop expand/hide pair. Web also supports J, − / =, comma / period and O for
+the brush shape, size, rectangle ratio and orientation. X requests
 a bounded radius-20 explosion at the valid world pointer. Desktop's V/B/L/K/H,
 Page keys, and other Shift-group shortcuts are not a Web shortcut contract.
 
@@ -107,7 +128,10 @@ tick. This matters when interpreting slow controls or frame timing.
 ## Repeatable interaction observations
 
 Reset, select a known view and margin, note native/fallback and worker profile,
-then create one pairing at a time. Hold inputs across actual physics callbacks.
+then create one pairing at a time. Record the effective Water law and its actual
+options: a visible legacy C/T control does not establish that every Water law
+supports coherence or adhesion. Use the [Water Lab](operations/workbench-water-lab.md)
+for explicit solver comparisons. Hold inputs across actual physics callbacks.
 Capture material IDs, geometry, relevant toggles, tick interval, and observed
 outcome. Secondary reactions are sampled on
 [kernel-specific lanes](systems/materials-and-rule-kernels.md#kernel-execution-and-cadence);
@@ -116,7 +140,7 @@ one brief contact with no reaction is not sufficient evidence of a defect.
 | Setup | What to inspect |
 |---|---|
 | Water above Oil; Smoke trapped under Water/Sand | Directional density separation and target exchange permission |
-| Water, Slush, Paste on matching stepped slopes | Free mass versus heap-capable yield; C/T Water comparisons |
+| Water, Slush, Paste on matching stepped slopes | Selected Water law versus heap-capable yield; compare C/T only when that law admits those options |
 | Fire beside Wood/Oil/Dust/plants, then Water | Ignition, burn progression, sampled extinguishing behavior |
 | Lava against Water/Ice; Lava against Glass | Phase/reaction outcomes; compare quenching Molten Glass |
 | Salt or Sodium in Water | Brine formation versus energetic Fire/Steam reaction |
@@ -166,10 +190,12 @@ when evaluating GPU finish, glow, and temporal motion.
 - Native phased camera re-entry [resumes paused work](systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry)
   without catch-up; newly included blocks wake once. A stopped failed world still
   requires restart or valid level replacement before it can resume.
-- The desktop Rapier collider consumer processes at most 32 queued chunks per
+- The ordinary Main sandbox Rapier collider consumer processes at most 32 queued chunks per
   rendered frame, with a 750 µs check between chunks. One chunk can exceed that
   time. Native geometry extraction, packed validation/copy, and queueing are
-  outside this consumer budget; it is not a total physics-frame guarantee.
+  outside this consumer budget; it is not a total physics-frame guarantee. Shared
+  Workbench has separate consumer defaults of 128 chunks / 4,000 µs; neither
+  profile is a universal per-frame bound.
 - Current dirty CPU patches still cause full RG8 GPU updates on changed
   publications. Patch KiB is not GPU transfer KiB.
 - Manual scenes are finite fixtures, not streaming worlds, production physics
@@ -178,7 +204,9 @@ when evaluating GPU finish, glow, and temporal motion.
 ## Recovering from a simulation fault
 
 **Current:** a native tick fault stops that world and preserves the last valid
-display. Desktop shows the error even with F3 statistics hidden; press R to reset.
+display. The ordinary desktop Main host shows the error even with statistics
+hidden; press R to reset. Workbench recovery follows its separate
+[saved-start and fault guidance](operations/workbench-saving.md).
 Web opens the menu and offers Restart world or loading a valid saved level.
 Pause/unpause does not retry. Recovery discards the failed attempt and pending
 events; no rollback or exact continuation is promised.
@@ -186,7 +214,9 @@ events; no rollback or exact continuation is promised.
 
 ## Issue #13 experiment checkpoint
 
-Open the [Experiment Tower](operations/experiment-tower.md) with desktop F9 or its native Web demo menu entry. Its five floors start paused; the lab panel supplies floor selection, plugs, single-step and fresh resets.
+Enter **Materials sandbox / Experiment Tower — F9** from the desktop feature
+launcher, then press **F9**; alternatively choose Experiment Tower in the native
+Web demo menu. The [Tower guide](operations/experiment-tower.md) explains the controls. Its five floors start paused; the lab panel supplies floor selection, plugs, single-step and fresh resets.
 
 
 The [transport profile editor](systems/flow-transport-and-profiles.md) shows effective
@@ -195,16 +225,19 @@ settings/origins, saves editable user copies and applies through an explicit res
 
 ## Planned MicroScenario Materials Laboratory
 
-The current 1024² lab remains the manual Current runbook. The planned
-[MicroScenarios programme](operations/microscenarios-programme.md) does not
-replace its evidence.
+This heading retains the original programme name. The reusable MicroScenario
+host, exploratory reference pack and INT-000 infrastructure are already in the
+accepted source; they are not waiting for a new #27/#28 implementation. Use the
+[current host guide](operations/microscenarios.md) and
+[reference pack](operations/microscenario-reference-pack.md) for existing
+Materials Laboratory, Flood-Control and Stress Test definitions.
 
-Issue #28 may build an **exploratory/provisional Materials Laboratory** once
-#27 provides a stable-enough common host; it does not have to wait for
-#14/G-final. A readiness checkpoint inside #28 requires one generic generated
-interaction definition to run both headlessly and interactively with the same
-setup/identity/observation contract. That checkpoint, not completion of Flood
-Control or Simulation Stress Test, unblocks #29/INT-000 implementation.
+The [canonical programme](operations/microscenarios-programme.md) retains the
+original dependency graph and scientific limits. Its Materials Laboratory
+readiness checkpoint admitted INT-000 independently of completion of Flood
+Control, Stress Test or G-final. It does not turn an exploratory pairing into
+accepted physics or grant a new tuning task. The manual observations above
+remain useful for discovery and reduced reproducible reports.
 
 INT-000 covers non-kinetic intermaterial interactions rather than chemistry
 alone. Its accepted passes preserve versioned baseline/evidence, source/sink or

@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Four authored district tiles, vertical ordering, desktop and Web selection, viewpoints, presentation and reproducible capture; no physics qualification
 canonical-for: [neon-reliquary-demo, showcase-scene-authoring, showcase-presentation, showcase-district-stack]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-24
 related-documents: [microscenarios.md, ../MATERIAL_LAB.md, ../systems/material-appearance-and-rendering.md, ../reference/configuration-reference.md, ../audits/2026-10-18-neon-reliquary-descent.md]
 ---
 
@@ -46,7 +46,9 @@ the palette; magenta signs and small amber lights separate the side quarters.
 
 ![The complete Neon Reliquary scene](../images/neon-reliquary/overview.png)
 
-Actual Godot 4.7 Compatibility rendering. Detail captures:
+Retained Godot 4.7 Compatibility rendering from the
+[original standalone-scene evidence](../audits/2026-10-18-neon-reliquary-demo.md).
+It does not depict Shared Workbench integration. Detail captures:
 [suspended heart](../images/neon-reliquary/heart.png),
 [drowned nave](../images/neon-reliquary/nave.png),
 [west quarter](../images/neon-reliquary/west.png),
@@ -100,10 +102,19 @@ Detail captures: [leaning still](../images/neon-reliquary-descent/industrial_und
 
 ## Open and explore the level
 
-**Desktop:** launch the normal project and press **F11**, or click
-**Neon Reliquary / F11** above the world, then use **Below** or the district
-selector to visit the lower tiles. A command-line launch can pass
-`-- --showcase` to Godot. **Web:** all four district names appear in the demo menu.
+**Desktop:** start the project with the [pinned runtime](getting-started.md) and
+choose **Neon Reliquary — four showcase districts** in the feature launcher.
+From the ordinary materials sandbox, **F11** or the **Neon Reliquary / F11**
+button also installs it. Use **Below** or the district selector to visit the
+lower tiles. For a direct launch from the repository root:
+
+```sh
+godot --path godot -- --showcase
+```
+
+Here `godot` means the pinned executable described in the first-run guide.
+Shared Workbench has separate key handling; F11 there is not this route.
+**Web:** all four district names appear in the demo menu.
 Both controllers install the same selected `showcase/...` definition through
 the existing native MicroScenario host.
 
@@ -122,12 +133,17 @@ shows the selector, neighboring-tile controls and independent viewpoint row.
 | F8 | Hide/restore controls and the brush outline for a clean scene view |
 | Distant city | Toggle the decorative skyline, haze and dust backdrop |
 | G | Toggle the existing material glow |
-| Mouse paint/erase, A/D, Space | Existing material tools, player movement and jetpack |
+| Mouse paint/erase, A/D, Space | Existing material tools, sampled-player movement and jetpack |
+| F2 (desktop) | Close this standalone session and return to the feature launcher |
 
 Each tile starts paused at tick zero. The player starts in an open west landing;
 the tiles have no objectives, scheduled destruction or automatically refilled
 emitters. Water in the cistern and inspection vessels is ordinary native Water.
-Reset restores the authored material layout after exploration or edits.
+Reset restores the authored material layout after exploration or edits. These
+standalone scenes do not expose Shared Workbench Save start or its Paint history.
+F2 closes the session; reopening starts from the original scene. If an F5 physical
+actor is selected, use that actor's displayed movement/tool controls instead of
+assuming the sampled player's jetpack bindings.
 
 | Viewpoint | Origin | Logical view |
 |---|---|---|

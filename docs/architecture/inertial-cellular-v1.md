@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current-main Water and Brine inertial reference, retained integer momentum, whole-cell admission, carrier ownership, radius and state costs; source-bound native/application evidence remains distinct from scientific comparison and human acceptance
 canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-24
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
@@ -12,44 +12,51 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 
 ## Current-main availability and physical limits — 2026-11-03
 
-At main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, Water3 and Brine24 can select
-`inertial_cellular_v1/reference`: Brine landed through #250, Water through #254.
-The normal liquid comparison panel and shared PLAY session select explicit
-radius3 and rebuild the World transactionally. The
-[#359 reassessment](../audits/2026-11-03-lcb-reassessment.md) records merged
-application paths, actual worker evidence and bounded successor handovers.
-The dated branch/publication sections below retain their original evidence;
-their former pending-merge statements do not describe current availability.
+**Current accepted source, 24 November 2026 (`00cdb02f`).** Water3 and
+Brine24 can select `inertial_cellular_v1/reference`. Brine landed through #250
+and Water through #254. IN remains optional and requires explicit rule radius3.
+The new player-session Wave profile does not select IN. The heading retains the
+original 3 November anchor; the [dated reassessment](../audits/2026-11-03-lcb-reassessment.md)
+and branch sections below preserve their original source/runtime evidence.
 
-The reference law in [`inertial_cellular.hpp`](../../native/include/cybersand/inertial_cellular.hpp)
-and [`world_inertial.inc`](../../native/src/world_inertial.inc) uses signed
-horizontal velocity but **downward-positive vertical velocity restricted to
-0..32 q16**, with gravity4 q16. Negative vertical velocity is refused by the
-setter and restore validation. Persistent velocity/remainders support gravity,
-lateral travel, contact deflection and draining. There is no IN gas-compartment
-pressure or buoyancy operator. Apparent bubbles can be vacant cells and material
-displacement; their appearance alone establishes neither real gas pressure nor
-upward ballistic liquid momentum.
+The native source now contains two explicitly selected vertical laws:
 
-Rapier overlap repair in [`world.cpp`](../../native/src/world.cpp) relocates the
-existing liquid payload through `relocate_stored_cell` / `move_cell`, carrying
-its IN state. It does not inject body impact velocity into that state. Fresh
-painting/emission starts with zero IN motion; a projectile's velocity is not
-the velocity of its deposited material. A velocity inlet or negative-vy spray
-law therefore needs a separate, bounded design and qualification in #361/#362.
+| Law | Vertical velocity | Gravity per tick | Selection |
+|---|---|---|---|
+| Reference v1 | 0…32 q16, positive downward | 4 q16 | Native default when IN is selected |
+| Signed IN-B1 | −32…32 q16 | 2 q16 | `WorldConfig::inertial_signed_vertical`; experimental option in accepted source |
+
+[`InertialParameters`](../../native/include/cybersand/inertial_cellular.hpp)
+and [`world_inertial.inc`](../../native/src/world_inertial.inc) govern these
+ranges. The signed law admits upward impulses and a bounded ceiling rebound;
+`World::impart_inertial_velocity` refuses negative vertical input under v1 and
+clamps admitted changes to the selected law's range. This is native capability,
+not a claim that an ordinary projectile automatically deposits its velocity
+into liquid. Default gameplay Water instead uses the separate
+[Wave and ballistic owners](ballistic-water-v1.md).
+
+Persistent velocity and remainders support gravity, lateral travel, contact
+deflection and draining. IN has no gas-compartment pressure or buoyancy operator.
+Apparent bubbles alone do not prove either effect. Rapier overlap repair carries
+the existing cell payload and IN slot when it relocates liquid; displacement and
+an explicit momentum injection remain different operations.
 
 One shared dense six-byte IN array covers every resident cell whenever any
 material selects IN, including Empty cells. Water and Brine share it. A 1024²
 resident World uses 6,291,456 array bytes, before owner/World/job-ledger storage,
 base cells, other sidecars or host memory. IN needs read3/write2 and explicit
-radius3. Hash3/CYPS3 retain authoritative IN motion; non-IN Worlds remain2.
+radius3. Ordinary IN uses hash3/CYPS3; signed IN or ballistic Water selects4,
+and the admitted larger gas capacity can select5. Wave has hash6 and refuses
+exact physical continuation. Read the actual World version and the
+[complete version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions).
+
 CYPS also persists the IN and pressure diagnostic ledgers, which are not part of
-the physical hash; compare them independently when checking continuation/parity.
-Current native Brine tests explicitly prove four task claimants for the large
-boundary fixture; Water tests prove more than one in their own fixtures.
-Configured four workers alone is not four actual participants or a gameplay
-frame-rate measurement. No fresh runtime or human acceptance follows from this
-source reassessment.
+the physical hash; compare them independently for continuation/parity. Existing
+native Brine tests establish four task claimants for their large boundary
+fixture; Water tests establish more than one in their own fixtures. Configured
+workers alone are not observed participants or a gameplay frame-rate result.
+This documentation review adds source inspection, not a fresh runtime or owner
+acceptance claim.
 
 ## Water IN native successor — 2026-10-25
 
@@ -187,9 +194,9 @@ plus full application/host qualification, remain separate.
 
 ## Which fields, parameters and law are authoritative?
 
-The optional slot has signed16 `vx/vy` and signed8 `ax/ay`. Velocity/accumulators use16 quanta per cell. Admitted ranges are vx −32…32, vy0…32 and each accumulator −15…15. New products, paint and reconstruction default to zero. The actual stored slot is six bytes/alignment2 on the measured Windows LLVM ABI; this is not a production Cell ABI change or a portable raw-struct save format.
+The optional slot has signed16 `vx/vy` and signed8 `ax/ay`. Velocity/accumulators use16 quanta per cell. Admitted v1 ranges are vx −32…32, vy0…32 and each accumulator −15…15. The separately selected signed law admits vy −32…32 as described above. New products, paint and reconstruction default to zero. The actual stored slot is six bytes/alignment2 on the measured Windows LLVM ABI; this is not a production Cell ABI change or a portable raw-struct save format.
 
-The reference law retains q16, gravity4, vmax32, turn1/8, deflect3/4, density-swap drag1/4 and rest threshold1. Damping defaults to1/16; the optional native family block(owner4, version2) contains exactly one signed int32 `damping_numerator` in0..16, over the fixed denominator16. Omission applies1; all seventeen values execute in the same Brine/reference law. This is not the historical illustrative IN blockv1(`damping_q16`, `speed_cap_q8`), which remains refused by the running native schema. Unsupported versions, lengths, ranges or blocks on an unused family refuse before candidate installation. The existing `inertial-update-v1` order is U1 support; U2 one gravity application; U3 diagonal re-aim or support cancellation and carried-velocity deflection; U4 saturation; U5 signed truncating damping; U6 accumulator travel with every target rechecked; U7 rest/sleep eligibility. First contact ends travel. Wall, body mask and same-material contact are inelastic; only Empty is horizontally enterable. A lighter foreign material is exchangeable only downward under the existing density/exchange gate. The immutable `physics_diagnostics.disable_powder_exchange_targets` causal control denies every Powder target before U1 support, U3 diagonal re-aim and every U6 travel recheck, including when telemetry is disabled; it does not change default eligibility. See the existing [diagnostic-control contract](../operations/physics-characterisation.md#which-variants-are-isolated-from-production-defaults).
+The reference v1 law retains q16, gravity4, vmax32, turn1/8, deflect3/4, density-swap drag1/4 and rest threshold1. Damping defaults to1/16; the optional native family block(owner4, version2) contains exactly one signed int32 `damping_numerator` in0..16, over the fixed denominator16. Omission applies1; all seventeen values execute in the same Brine/reference law. This is not the historical illustrative IN blockv1(`damping_q16`, `speed_cap_q8`), which remains refused by the running native schema. Unsupported versions, lengths, ranges or blocks on an unused family refuse before candidate installation. The existing `inertial-update-v1` order is U1 support; U2 one gravity application; U3 diagonal re-aim or support cancellation and carried-velocity deflection; U4 saturation; U5 signed truncating damping; U6 accumulator travel with every target rechecked; U7 rest/sleep eligibility. First contact ends travel. Wall, body mask and same-material contact are inelastic; only Empty is horizontally enterable. A lighter foreign material is exchangeable only downward under the existing density/exchange gate. The immutable `physics_diagnostics.disable_powder_exchange_targets` causal control denies every Powder target before U1 support, U3 diagonal re-aim and every U6 travel recheck, including when telemetry is disabled; it does not change default eligibility. See the existing [diagnostic-control contract](../operations/physics-characterisation.md#which-variants-are-isolated-from-production-defaults).
 
 `World::inertial_parameters()` returns the actual immutable applied damping numerator. The complete parameter/state/update identity is canonical little-endian data hashed by `inertial_extension_identity(actual)`. Default1 retains the earlier identity bytes exactly. An explicit1 block has the same effective-law identity as omission but a distinct policy hash because the requested/applied block is retained. Other numerators change both effective identity and policy hash; native capture never substitutes a host-supplied parameter claim. The [native parameter vectors](../reference/inertial-parameter-vectors.json) independently bind accepted/refused policy envelopes, policy hashes and actual identity digests through `tools/lcb/inertial_parameter_contract.py`; historical illustrative vectors remain unchanged.
 
@@ -215,7 +222,7 @@ Signed per-component impulse, gravity, speed loss, support loss, truncation rema
 
 ## Which hash, capture and receipt versions apply?
 
-Non-IN Worlds keep physical hash2 and CYPS2 field emission. IN Worlds use instance `physical_state_hash_version()==3` and `physical_state_format_version()==3`, with explicit actual parameter identity, slot fields and ledger. CYPS3 uses validated field encodings, not C++ padding. Restore accepts current CYPS2 for non-IN and CYPS3 for IN, derives effective parameters from the validated saved policy, compares their identity before constructing the unexposed candidate, validates all current quantity/gas/scheduler obligations and rejects inconsistent required sidecars, unknown identity, invalid ranges and motion on another family. The old saved candidate's incompatible format2 is not reinterpreted as current CYPS2.
+Without newer extensions, non-IN Worlds use physical hash2/CYPS2 and ordinary IN Worlds use hash3/CYPS3, with explicit actual parameter identity, slot fields and ledger. Signed IN and ballistic Water select4; the admitted larger gas capacity selects5; Wave selects hash6 but has no CYPS format. These are actual-instance queries, not versions inferred solely from the material family. The [persistence table](../reference/level-saves-and-replay.md#current-native-physical-state-versions) owns the complete precedence. CYPS3 uses validated field encodings, not C++ padding. Restore accepts current CYPS2 for non-IN and CYPS3 for IN, derives effective parameters from the validated saved policy, compares their identity before constructing the unexposed candidate, validates all current quantity/gas/scheduler obligations and rejects inconsistent required sidecars, unknown identity, invalid ranges and motion on another family. The old saved candidate's incompatible format2 is not reinterpreted as current CYPS2.
 
 `capture_native_facts` remains the exclusive native boundary. It adds family4/state-contract1/extension-identity1 with the complete actual parameter identity digest through the existing outer receipt-v1 extension field. Its physical hash version comes from the actual instance. Host source/runtime claims remain explicitly unverified. Exact continuation retains clocks, actual epochs, activity/deadlines, interest and pending work; content plus completed tick does not reconstruct those obligations. Host-owned masks/actors and settled discovery retain their existing persistence refusals/ownership limits. This does not implement GEN-006 streaming.
 
@@ -246,7 +253,7 @@ copies, with no native pool worker calling Godot:
 
 | Read | Meaning |
 |---|---|
-| `get_physical_state_hash_version()` / `get_physical_state_format_version()` | Actual World instance: non-IN2, IN3, unavailable World0. |
+| `get_physical_state_hash_version()` / `get_physical_state_format_version()` | Actual World instance, including newer signed/ballistic/capacity/Wave extensions; see the current persistence table. An unavailable World returns0. |
 | `get_liquid_solver_policy()` | Actual applied policy/envelope/hash, actual execution radius, hash/save versions and IN family parameters: numerator0..16 over16, block2, family1, minimum radius3 and effective extension digest. `readback_source` is `applied_world`. |
 | `CyberDemoBridge.validate_liquid_policy()` | Prediction from admitted policy; `readback_source` is `validated_policy` and actual radius is absent. Validation does not install a World. |
 | `inspect_inertial_cell(point)` | Owned dictionary with material/family/availability and signed vx/vy/ax/ay. Out-of-domain or failed World refuses; modifying a returned dictionary cannot mutate the slot. |

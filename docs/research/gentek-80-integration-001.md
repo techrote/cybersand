@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: GENTEK-80-INTEGRATION-001 source reconciliation and qualification
 status: Draft
 document-kind: research

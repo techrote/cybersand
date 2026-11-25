@@ -6,12 +6,35 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 ---
 
 # Data ownership and lifetimes
 
-The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
+## Current owner map
+
+Source inspection at accepted main `00cdb02f` distinguishes five kinds of
+ownership that are easy to conflate:
+
+| Owner | Mutable resources | Boundary rule |
+|---|---|---|
+| Native `World` | Cells, activity/deadlines, selected liquid state, native edit buffers | One serialized caller; its pool jobs mutate only admitted work domains |
+| `CyberSimulationWorker` | Installed native adapter, queued edits, reset state and copied publication | Adapter calls stay on this exclusive desktop owner |
+| Main-thread physical session | Rapier bodies/joints, controls and issued policy observations | Send copied samples/actions; accept only matching responses |
+| Workbench authoring controller | Applied starting document, confirmed edit ordering, Undo/Redo and material baseline | Update authored state at the operation's acknowledgement/adoption boundary |
+| Render consumer | CPU images, textures and presentation history | Consume immutable copied packets; rendering owns no mutable cells |
+
+Sources: [worker](../../godot/scripts/simulation_worker.gd),
+[Workbench](../../godot/scripts/shared_workbench.gd),
+[physical session](../../godot/scripts/physical_actor_session.gd),
+[native World](../../native/include/cybersand/world.hpp).
+A prepared candidate may exist privately while the installed owner remains
+valid. Only the explicit commit changes the active owner; a queued proposal,
+preview, provider answer or copied observation cannot perform that commit.
+
+## Accepted Workbench actors
+
+The accepted [Workbench actor-composition implementation](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
 keeps the existing native worker and main-thread Rapier owner. Each multipart
 actor has stable authored identity and distinct per-part native response owners;
 compound proxies share only their actual body owner. The copied body/equipment
@@ -47,7 +70,7 @@ physics rebind or Godot API crosses a native worker boundary.
 
 ## Explicit imported-level ownership
 
-The unmerged #202 synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+The current synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 keeps the running World/player/receipt/record until native preparation, private
 sampled-player configuration, qualified observation and final serial guard all
 pass. Native exclusively owns the pending World; the private level session owns
@@ -72,7 +95,7 @@ owns coherence/cadence, future work and remaining qualification.
 
 ## Pressure gas labels beneath host body masks
 
-**Current repair branch, acceptance pending:** native World owns retained gas
+**Current accepted source:** native World owns retained gas
 labels, live compartments and retirement ledgers. A host-owned transient mask
 excludes an Empty pixel from topology volume and overlap without replacing the
 stored cell. Serial final relabelling removes labels whose compartment retired,
@@ -529,7 +552,7 @@ on identity changes. This is authoring isolation, not world mutation rebasing.
 
 ## Prepared native-default owner transaction
 
-On unmerged66bf30f8 the exclusive desktop worker owns the native default candidate
+In accepted source the exclusive desktop worker owns the native default candidate
 and private sampled owner; Main owns the frozen permanent body graph and live
 Rapier objects. Copied native origin/session identity authorizes this constructor;
 Main reads immutable published host records rather than the live World. Final
@@ -539,5 +562,7 @@ capacity refusal precedes capture/token/swap; retained World/graph/receipt/recor
 remain usable. Construction-only capacity vectors never enter tick execution.
 The [canonical prepared boundary](liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
 and [dated proof](../audits/2026-10-25-lcb003-desktop-native-default-host.md) keep
-local Windows qualification, test-resource lifetime remediation and final
-combined/platform/full-host gaps separate.
+the original `66bf30f8` local Windows qualification, test-resource lifetime
+remediation and that checkpoint's combined/platform/full-host gaps separate.
+Those historical merge prerequisites do not make the accepted constructor
+unavailable or qualify a new runtime.

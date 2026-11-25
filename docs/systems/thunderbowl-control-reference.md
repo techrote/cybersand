@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Thunderbowl actuation, decision and perception distinctions; prototype control schemas and bounded battle/training experiments, with explicit limits on neural, swarm and model-link claims
 canonical-for: [thunderbowl-control-reference, thunderbowl-control-topologies, thunderbowl-training-design]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-11-24
 related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/validation-evidence.md, ../audits/2026-10-18-act003-thunderbowl-control-lab.md]
 ---
 
@@ -14,6 +14,15 @@ ACT-004 adds a separate [physical Thunderbowl v2](#physical-thunderbowl-v2).
 The ACT-003 contracts below retain sampled Thunderbowl v1's tag combat, control
 examples and observation privileges. The two environments publish their own
 version and schedule rather than silently sharing an acceptance result.
+
+Choose **Thunderbowl — actor control arena** in the feature launcher for sampled
+v1, **Physical Thunderbowl — articulated actors, tools and scripted pilots** for
+physical v2, or **Physical usable course — 32 tools, payloads and processors** for
+v2's equipment layout. **F2** closes the current standalone scene and returns to
+the launcher. Ordinary Shared Workbench has its own
+[Actor Composition](../operations/workbench-actor-composition.md) and painting
+controls; it does not acquire sampled tag combat or privileged oracle inputs
+from these demonstrations.
 
 ## What is Thunderbowl for?
 
@@ -55,14 +64,19 @@ mounts; the original ACT-005 41-rig tool loadouts remain defined. Their separate
 fields that are not physical Thunderbowl actors. Earlier dated lab results retain
 their original roster and source scope.
 
-Run the physical scene from the launcher or directly:
+Run the physical scene from the launcher or directly. In these examples,
+`godot` means the [repository-pinned executable](../operations/getting-started.md),
+with the matching native and Rapier libraries:
 
 ```text
 godot --path godot res://examples/thunderbowl/physical_thunderbowl.tscn
 godot --headless --path godot --script res://examples/thunderbowl/run_physical_thunderbowl.gd -- --rig=ripper --actors=4 --ticks=600 --seed=0 --output=physical-result.json
 ```
 
-The UI selects any catalogue rig and one through eight actors. Actor zero may be
+The UI picker selects the 46 `RIG_IDS` and one through eight actors. Its retained
+small header still says 41; the catalogue and picker include the five SetP rigs.
+This picker is distinct from F5's additional 4LY group and Workbench's mixed
+catalogue. Actor zero may be
 human, demo or policy; companion actors use the local scripted examples. Whole
 arena/follow cameras and collider outlines show the actual parts. Click the
 arena to arm human control. WASD, mouse, Space/Shift/C, Q/E, Z/X and brackets
@@ -122,8 +136,8 @@ this lab. Dated source/platform evidence is in the
 ### Physical usable course
 
 The launcher entry **Physical usable course — 32 tools, payloads and processors**
-opens the same physical scene in its **Usable course** mode. The scene's
-**Manoeuvre / Usable course** selector resets the environment into the selected
+opens the same physical scene in its **Usable integration course** mode. The scene's
+**Manoeuvre lab / Usable integration course** selector resets the environment into the selected
 authored layout. All 46 rigs retain their catalogue loadout and the same
 human/demo/policy admission path; the course does not provide a separate actor
 controller with direct material access.
@@ -147,7 +161,7 @@ sections expose different interactions:
 | Release / Grip | Same-body release, retained momentum and nearby physical reattachment |
 | Place / Jam | A service pad for dropping, settling, fixing and operating processors |
 
-For a deployed processor belonging to the selected follow actor, **Feed**, **Jam**
+For a deployed processor belonging to the selected follow actor, **Feed processor**, **Jam output**
 and **Clear output** perform explicit bounded fixture edits at the current
 physical ports. Feed uses that device's real material recipe; Jam/Clear expose
 the existing rule that blocked outputs prevent input consumption. These are

@@ -2,28 +2,63 @@
 title: Native liquid prepared setup, receipts and quantity accounting
 status: Current
 document-kind: design
-scope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open
+scope: Current native prepared construction, typed outcomes, exact quantity accounting and bounded application-owner integration; original October qualification checkpoints retain their source scope and do not claim complete host/scientific acceptance
 canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, shared-workbench-authoring-data.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+## Current contract and how to read the checkpoints
+
+At accepted source `00cdb02f` (24 November 2026), native prepared construction,
+explicit setup-only Water normalization, immutable native receipts and bounded
+application-owner preparation are implemented. Current source includes the
+default-demo, MicroScenario, imported-level and prepared-body paths described
+below. Their presence does not establish every constructor, full executed-host
+identity, scientific comparison or physical owner acceptance.
+
+| Boundary | Current authority and limit |
+|---|---|
+| Candidate construction | `PreparedWorldBuilder` owns a fresh unexposed native World. Normalization acts on the final setup, never on an arbitrary running World. |
+| Host preparation and commit | `CyberDemoBridge` issues a one-use token and copied `lifecycle = prepared` capture. The actual owner stages its body/session graph and checks the final fence before adoption; a prepared receipt alone is not applied. |
+| Large Workbench observation | Accepted #680 projects only oversized unverified host claims. Complete validated geometry still reaches native preparation; projection does not expand native capacity or grant full-host eligibility. |
+| Physical identity and continuation | The actual World selects hash2–6 and CYPS2–5; Wave selects hash6/format0 and refuses exact continuation. Native checkpoint bytes exclude host masks and Rapier state. |
+
+Source owners are [`prepared_world.hpp`](../../native/include/cybersand/prepared_world.hpp),
+[`cyber_prepared_liquid_world.hpp`](../../godot/native_extension/cyber_prepared_liquid_world.hpp),
+[`CyberDemoBridge`](../../godot/native_extension/cyber_demo_bridge.hpp),
+[`microscenario_host.gd`](../../godot/scripts/microscenario_host.gd) and
+[`World` version getters](../../native/include/cybersand/world.hpp).
+The [current save/version contract](../reference/level-saves-and-replay.md#current-native-physical-state-versions)
+owns persistence applicability; the [family policy](liquid-solver-family-policy.md)
+owns accepted Water/Brine IN and pressure variants.
+
+The source-specific checkpoint sections retain their original test identities,
+refusals and remaining work. Their old branch, Draft/Ready, Web deferral and
+publication-gate statements are historical task instructions. They neither
+make accepted implementation unavailable nor authorize a new publication or
+merge. Use [current validation](../operations/current-and-historical-validation.md)
+and the [development handover](../operations/cybersand-codex-development-handover.md)
+for a new task. Full native/host matched-evidence eligibility remains bounded
+by the actual receipt qualifiers, not a later merge title.
+
 ## Combined Trial successor scope
 
-The [corrected-App Trial integration](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+**Historical 25 October integration checkpoint.** The [corrected-App Trial integration](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
 consumes dc2eee94 into fdb12069 without changing ten Trial source files or the
 two incoming identity tests. The App-only test-correction records below keep
 their ea96-overlay scope. Combined Trial Native80/compiled139 remain exact,
 while historical build535 has six changed entries and six new Trial paths give
 current541. Old ad3 117/86 and corrected App38/29 engine results are not relabelled
-as a test of this merge. Root's #256 is ready for fresh gates/review; #257 stays
-draft, with no runtime/manifest/profile/request rewrite or Web work here.
+as a test of this merge. At that checkpoint #256 awaited fresh gates/review and
+#257 remained Draft, with no runtime/manifest/profile/request rewrite or Web work.
 
 ## Current publication-file equality and identity-test correction
 
-After source5f02's actual003 publication, the API-reported path file can correctly
+**Historical source5f02/ea96 publication checkpoint.** After the actual003
+publication, the API-reported path file could correctly
 match its manifest. The bounded [post-publication test correction](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
 compares independently read actual manifest/path SHA values and separately tests
 match, mismatch and unavailable copied observations. Either real equality state
@@ -35,8 +70,9 @@ The later test-only overlay at ea96 changes two historical build535 entries;
 Native80 and compiled139 stay exact. Root's two actual Windows artifact cohorts
 pass host38/owner29 plus import, while the original Linux mismatch-assumption
 failures and old72-process publication proof keep their own source scope.
-Fresh corrected-head Linux/full CI remains required, without Native rebuild or
-manifest rewrite. Additional Web work is owner-deferred.
+Fresh corrected-head Linux/full CI was still required for that overlay, without
+Native rebuild or manifest rewrite. The recorded Web deferral belonged to that
+task; it is not a new publication lease or repository-wide prohibition.
 
 The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 qualifies source5f02d089/bot0c9b1977 with import plus35 strict cases on each OS,
@@ -51,7 +87,7 @@ content-identical mergea704ce50; its own final exact-head acceptance stays
 separate from Water native acceptance.
 ## Desktop single-trial-body preparation
 
-This unmerged Trial successor now consumes corrected App checkpoint
+At the **historical unmerged Trial preparation checkpoint**, the successor consumed corrected App checkpoint
 `dc2eee9408b959956153608a7ee6d212a5d21672`, including the actual source5f02/
 bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
 exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
@@ -65,7 +101,7 @@ The [dated Trial integration record](../audits/2026-10-25-lcb003-trial-body-cons
 owns the exact drift and remaining fresh acceptance. No new engine test, request,
 profile, runtime publication or Web work occurs in this merge.
 
-**Current unmerged Trial successor, exact sourcef65f3de9 after App integration:** desktop Exploratory
+**Historical Trial sourcef65f3de9 checkpoint after App integration:** desktop Exploratory
 Liquids Apply stages the existing barrel8×14 or Ripper18×8 in the native-origin
 default demo and allowlisted exploratory MicroScenario maps. The default path
 still calls the shared native recipe, not GDScript geometry. Other actor/default
@@ -153,7 +189,7 @@ family/variant/identity and Water IN motion accompany successful process exit.
 This is functional application evidence, not Gate D or a scientific score.
 Native receipt-v1 qualifications/false full-match eligibility remain unchanged.
 
-**Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. The [integrated application slice](#inertial-application-readback-and-explicit-geometry) qualifies its stated local host scope separately.
+**Accepted native #212/#250 extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. The original extension exposed hash3/CYPS3 and family4/state1/identity1 while its non-IN control retained version2. Later ballistic, signed IN, gas-capacity and Wave extensions select the actual instance versions described above. Capability admission changes legitimately update embedded policy identities. The [integrated application slice](#inertial-application-readback-and-explicit-geometry) qualifies its stated local host scope separately.
 
 **Water IN native successor, now accepted main06451f8a:** the same builder already classifies
 Water CY or IN as WholeCell. New Water admission executes that existing
@@ -169,13 +205,14 @@ open; additional Web work is owner-deferred until after the epic.
 
 ## Source and completion boundary
 
-**Current on main, accepted through [PR #246](https://github.com/techrote/cybersand/pull/246)**
+**Original accepted native checkpoint, [PR #246](https://github.com/techrote/cybersand/pull/246)**
 at merge `ec58d919b3d904fbd338eaccc25de35782c41a24` on 2026-10-25.
 Its final tested head `560f9a4143852c5a508b5f33a4a7f2059edbcbdc` and the merge
 share tree `e8e999899bd35bf20df4b03cf9c0620d86089ff1`. The native prepared setup,
 normalization receipt, typed run receipt, construction-attempt receipt and
 quantity ledger use their explicit schema/version **1** contracts below. The
-complete physical-state hash version and CYPS persistence format are **2**.
+complete physical-state hash and CYPS persistence format at that checkpoint
+were **2**; the current instance-dependent versions are summarized above.
 The [accepted checkpoint](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
 records source-matched Windows/Linux runtime publication and the final required
 matrix. [#200](https://github.com/techrote/cybersand/issues/200) remains open
@@ -187,9 +224,9 @@ storage. Preparation acts on an unexposed new candidate. It accepts no live
 World to normalize or replace. The owner still performs the eventual session
 installation and publication transaction.
 
-**Residual #200 boundary:** that native checkpoint supplies no Godot typed-v1
+**Original #200 boundary:** that native checkpoint supplied no Godot typed-v1
 normalization opt-in route. The subsequent [bounded #202 host slice](#controlled-application-host-preparation-slice)
-adds one on `codex/lcb003-application-host`. The
+added the route now present in accepted source. The
 existing `CyberNativeCellWorld.get_liquid_run_receipt(Dictionary)` in
 [`cyber_native_cell_world.cpp`](../../godot/native_extension/cyber_native_cell_world.cpp)
 remains an experimental dictionary/string assembly from the pressure reference.
@@ -279,14 +316,14 @@ records deterministic preparation/commit barriers, masked-Water refusal,
 normalization totals, actual normal-app routes and retained legacy regressions.
 The synchronous `web_main.tscn` check executes in Windows Godot; it is not a
 browser/Wasm result. Subsequent bounded UI and sampled/exploratory source are
-Current on this same branch as described below. Physical-body staging, remaining
+available on that preparation branch as described below. Physical-body staging, remaining
 constructor routing, full exhibition, complete definition/actor/loadout and
 provenance verification, browser runs and hosted source-matched runtime
 publication remain #202 work.
 
 ### Staged sampled actors and exploratory owners
 
-**Current experimental source `da800552` on the same pre-quantity-fix `9e91a9f7`
+**Historical experimental source `da800552` on the pre-quantity-fix `9e91a9f7`
 base:** `microscenario_apply_exploratory_liquid` is an explicit additional route
 for body-free schema-2 definitions. It retains ordinary manual tools and owner
 execution/interest, and stages sampled characters or the existing allowlisted
@@ -337,7 +374,7 @@ matrix; they do not qualify that newer native source.
 
 ### Staged articulated physical owners
 
-**Current on the unmerged #202 branch, locally qualified Windows native source:**
+**Historical #202 preparation checkpoint, locally qualified Windows native source:**
 the explicit Exploratory route additionally supports the existing allowlisted
 schema-2 play maps with an articulated Rapier actor and its existing loadout.
 Controlled fixed fixtures remain actor-free. Barrel/reference bodies, Water Feel,
@@ -392,7 +429,7 @@ host-evidence schema or native codec version at that physical checkpoint.
 
 ### Qualified host observation foundation
 
-**Current source `4b05a15e` on the unmerged #202 branch:**
+**Historical #202 source `4b05a15e` qualification checkpoint:**
 `CyberDemoBridge.loaded_native_runtime_values()` uses Godot's own library-path
 API and reads the current file at that path. Its version1 value labels these
 facts `godot_library_path_current_file_v1`, `api_reported_library_path`,
@@ -428,7 +465,7 @@ local DLL to a release runtime.
 
 ### Owner-bound construction observation
 
-**Current source `e1262efc` on the same branch:**
+**Historical owner-observation checkpoint `e1262efc`:**
 `prepared_liquid_run_capture(world, token)` returns only copied native encoding
 inside a `lifecycle = prepared` wrapper. Its opaque token must still name the
 exclusive pending candidate; stale tokens refuse. This read does not install a
@@ -460,7 +497,7 @@ refusal, physical graph/record preservation and remaining constructor/platform g
 
 ### Workbench observation geometry capacity
 
-**WORKBENCH-HOST-CLAIMS-001 candidate, 20 November 2026; Draft/HOLD:** the
+**Accepted WORKBENCH-HOST-CLAIMS-001 (#680); original qualification 20 November 2026:** the
 [large-start authoring contract](shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
 defines a bounded observation projection. The validated complete Workbench
 definition and all ordered rectangles still reach native preparation. Only an
@@ -482,12 +519,14 @@ are unchanged. Platform execution and saved-start reconstruction belong to the
 
 ## Inertial application readback and explicit geometry
 
-The integrated #202 branch exposes actual immutable IN parameters through
+The accepted application adapter exposes actual immutable IN parameters through
 `get_liquid_solver_policy().family_parameters.inertial_cellular_v1`, including
 the applied numerator, denominator16, block version2 and native effective-law
 identity. `readback_source` distinguishes `applied_world` from `validated_policy`.
-The physical hash and CYPS format getters query the actual World instance:
-IN uses version3; non-IN keeps version2. Copied construction readback includes
+The physical hash and CYPS format getters query the actual World instance.
+At the original IN integration checkpoint, IN used version3 and non-IN used
+version2; current additional features select later versions as described above.
+Copied construction readback includes
 the native-captured family4/state1/identity1 extension and actual rule radius.
 The canonical outer native receipt-v1 bytes, qualifications and false full-match
 eligibility remain unchanged.
@@ -550,7 +589,7 @@ final source/runtime/platform qualification remain separate.
 
 ## Ordinary Water Feel preparation
 
-**Current source `bf33c0e5` on the unmerged #202 branch:** the actual Water Feel
+**Historical #202 source `bf33c0e5` qualification checkpoint:** the actual Water Feel
 dispatcher additionally accepts explicit solver/normalization/geometry rebuilds
 for an unblinded body-free sampled owner. Its copied schema2 preparation view
 retains the original schema1 recipe, semantic policy, sampled player, camera and
@@ -578,8 +617,10 @@ routes remain available through their existing constructors. For whole-cell CY
 Water, recipes with fractional scheduled fill sources refuse before commit:
 initial `water-normalize-v1` does not normalize future events. Current and
 pressure Water keep those actions unchanged, with actual source-ledger proof.
-When Water-IN is separately admitted, its whole-cell source compatibility must
-join this check; Brine IN does not admit Water-IN.
+That checkpoint required a separate future Water-IN admission. Accepted source
+now classifies both Water CY and Water IN in
+`MicroScenarioCatalogue.whole_cell_water_family`; the whole-cell future-source
+refusal applies to both. Brine IN alone still does not imply Water IN admission.
 
 The [Water Feel checkpoint](../audits/2026-10-25-lcb003-water-feel-constructor.md)
 records actual desktop/synchronous routes, deterministic refusals/fences, exact
@@ -596,8 +637,8 @@ qualified host full matched eligibility remain false.
 
 ## Prepared Water Feel reference bodies
 
-**Current on the unmerged #202 branch, with the narrow native moving-mask gas
-repair:** explicit unblinded Exploratory Water Feel now stages the existing
+**Historical #202 preparation checkpoint, with the narrow native moving-mask gas
+repair:** explicit unblinded Exploratory Water Feel stages the existing
 three reference rectangles in a permanent private Rapier space. The sampled
 player, original recipe and authored 8×14 bodies at (160,176), (212,176) and
 (264,176) remain unchanged. This is a separate reference-body owner with epoch0,
@@ -844,12 +885,14 @@ memory or a performance qualification.
 
 Checked counters reject external/generated overflow before authority or a new
 chunk changes. Worker/reduction overflow quarantines the partially advanced
-World and prevents a completed accounting read. CYPS2 retains exact accounting
+World and prevents a completed accounting read. The original CYPS2 contract retains exact accounting
 and construction bindings, validates source roles and aggregates, and scans
 restored stored authority before returning a new World. Unknown quantity schema
-and historical CYPS1 are explicitly refused. Complete physical hash v2 includes
-the ledger and continuation state. Historical content/state definitions are
-preserved; cross-tick rest is not equality of a tick-inclusive continuation hash.
+and historical CYPS1 are explicitly refused. Physical hash v2 includes
+the ledger and continuation state; later native physical versions preserve the
+accounting contract while extending their declared state. Wave has a physical
+hash but no continuation codec. Historical content/state definitions remain
+separate; cross-tick rest is not equality of a tick-inclusive continuation hash.
 
 The accepted pressure continuation also retains ordinary pending-event ingress
 bounds on restore and a non-wrapping gas-ID allocator for creation and split.
@@ -937,7 +980,7 @@ source changes again require fresh source-matched publication and applicable gat
 
 ## Imported CYSD payload preparation
 
-**Current on the unmerged #202 thermal-import slice:**
+**Historical #202 thermal-import qualification checkpoint:**
 `CyberDemoBridge::prepare_liquid_level(world, payload, profile, water_policy,
 liquid_policy, options)` accepts the existing decoded CYSD1 finite cell payload.
 The [dated local proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
@@ -978,7 +1021,7 @@ a #202/#203 requirement.
 
 ## Explicit ordinary level import and retained restart
 
-**Current bounded unmerged #202 source:** the synchronous normal application
+**Historical #202 owner-integration checkpoint:** the synchronous normal application
 [`web_demo_controller.gd`](../../godot/scripts/web_demo_controller.gd) routes
 the existing Save/Load Import button through `prepare_liquid_level` only after
 the user selects **Exploratory** and **Use selection for next level import**
@@ -1030,7 +1073,7 @@ Wasm execution and source-matched publication remain open.
 
 ## Explicit ordinary synchronous demo rebuilding
 
-**Current bounded unmerged #202 source:** the four curated synchronous demos
+**Historical #202 owner-integration checkpoint:** the four curated synchronous demos
 Material Lab, Waterworks, Foundry and Neon Works accept **Apply & rebuild active**
 in explicit Exploratory mode. [`prepared_ordinary_demo`](../../godot/scripts/microscenario_catalogue.gd)
 copies their exact ordered `CyberDemoWorlds` rectangle recipes into schema2,
@@ -1076,7 +1119,7 @@ not qualify final Wasm/visual flow, released platforms or Brine IN rest contacts
 
 ## Synchronous Physics Pit reference bodies
 
-**Current bounded unmerged #202 source:**5d5c75ed adds explicit Exploratory
+**Historical #202 source5d5c75ed checkpoint:** explicit Exploratory
 **Apply & rebuild active** for the actual authored Physics Pit constructor. It
 uses the exact existing ordered rectangle recipe, sampled player(24,222) and
 three original8×14 scene templates at(124,90),(244,90),(384,90), all initially
@@ -1124,7 +1167,7 @@ Water Feel and IN motion/rest-contact qualifications remain separately scoped.
 
 ## Synchronous supported-body Water Feel
 
-**Current bounded unmerged source45b6ed9d:** explicit unblinded Exploratory
+**Historical source45b6ed9d qualification checkpoint:** explicit unblinded Exploratory
 Water Feel can stage its original supported-body recipe through the same private
 synchronous continuation. It retains the exact fractional Water/actions/seed,
 sampled player(24,222), camera and fixed480×270 Water view, plus actual selected
@@ -1174,24 +1217,30 @@ contacts, actual Wasm/visual execution, performance or full #202/#203 acceptance
 
 ## Downstream ownership
 
-**Planned #201:** a rest certificate must preserve stationary body-contact
+**Current disposition:** cached/dormant pressure variants and Water/Brine IN
+are implemented; the [pressure optimization contract](pressure-optimization.md)
+and [IN contract](inertial-cellular-v1.md) own their actual scope. Bounded host
+constructors and observations are also implemented. Complete scientific and
+executed-host qualification is separate; this page grants no campaign closure.
+
+**Original native-checkpoint requirement for #201:** a rest certificate must preserve stationary body-contact
 probes, material stages 1/2 and other materials' execution, as well as cadence
 and stochastic future work. It cannot remove tick/scheduler state from the
-complete physical hash or infer rest solely from unchanged positions. No cached
-or dormant implementation is supplied by this checkpoint.
+complete physical hash or infer rest solely from unchanged positions. That
+checkpoint did not yet supply the later cached/dormant implementation.
 
-**Planned #202:** normal application constructors, UX, Web integration, the
+**Original native-checkpoint handoff to #202:** normal application constructors, UX, Web integration, the
 registered-definition compiler, actual input/session fences and source/runtime
-provenance verification remain application-host work. A definition digest is
+provenance verification were application-host work. A definition digest is
 not a substitute for compiler proof. **#212** inertial qualification and **#203**
-packaged comparison coverage remain pending. Existing family and campaign gates
+packaged comparison coverage were pending at that point. Existing family and campaign gates
 continue to own acceptance; this native checkpoint supplies no completion claim
 for those streams.
 
 
 ## Native desktop default-demo preparation
 
-**Current unmerged native API, `afe19c2d`:** the authoritative native default-demo
+**Historical native API checkpoint `afe19c2d`:** the authoritative native default-demo
 recipe is shared by ordinary reset and `prepare_liquid_default_demo(world,
 liquid_policy, options)`. Final tuples are compiled natively; no GDScript copy of
 the sinusoidal floor or sparse materials defines this constructor. Inherited
@@ -1213,7 +1262,7 @@ integration, complete host and final platform publication remain open.
 
 ## Desktop native-default owner and initial pressure capacity
 
-**Current unmerged source705a2e2d/66bf30f8:** explicit Exploratory active Apply
+**Historical source705a2e2d/66bf30f8 qualification checkpoint:** explicit Exploratory active Apply
 uses copied native constructor origin and the authoritative shared default
 recipe. The exclusive worker prepares native tuples, sampled player/profile,
 actual final settings and initial body masks; Main stages the original three

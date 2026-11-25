@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture experiment: isolate Cell layout, packing, sidecar and epoch costs
 status: Planned
 document-kind: runbook

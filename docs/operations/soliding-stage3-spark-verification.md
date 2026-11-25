@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Issue 12 Stage 3 Spark packet C - independent adversarial verification
 status: Planned
 document-kind: runbook

@@ -8,9 +8,51 @@ import json
 from pathlib import Path
 import re
 
-POLICY_VERSION = "historical-isolation-v1"
+POLICY_VERSION = "historical-isolation-v3"
 HISTORICAL_AUTHORITY = "historical-non-authoritative"
 HISTORICAL_PREFIXES = ("docs/history", "docs/audits")
+FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research", "tools"}
+DOCUMENT_KINDS = {"contract", "design", "decision", "guide", "runbook", "reference", "evidence", "navigation", "research"}
+NAVIGATION = (
+    "docs/README.md", "docs/reference/retrieval-index.md", "README.md", "AGENTS.md",
+    "CONTRIBUTING.md", "third_party/README.md", "godot/native_extension/README.md",
+    ".github/pull_request_template.md",
+)
+
+
+def retrieval_selection(metadata: dict | None = None) -> str:
+    """Read selection separately from authority using the flat metadata grammar.
+
+    ``explicit-only`` preserves deliberately excluded execution/research packets
+    when the main manifest is unavailable. It grants no authority and does not
+    turn a current-path document into a historical one.
+    """
+    declared = (metadata or {}).get("retrieval", "default")
+    if not isinstance(declared, str):
+        raise ValueError("Unsupported retrieval selection scalar")
+    declared = declared.strip()
+    if len(declared) >= 2 and declared[0] == declared[-1] and declared[0] in "\"'":
+        declared = declared[1:-1]
+    if declared not in {"default", "explicit-only"}:
+        raise ValueError("Unsupported retrieval selection scalar")
+    return declared
+
+
+def default_selection_allowed(path: Path, root: Path, metadata: dict | None = None) -> bool:
+    """Call after require_authority; never use selection to hide bad authority."""
+    selection = retrieval_selection(metadata)
+    relative = path.resolve().relative_to(root.resolve()).as_posix()
+    kind = (metadata or {}).get("document-kind")
+    if kind is not None:
+        if not isinstance(kind, str):
+            raise ValueError("Unsupported document-kind scalar")
+        kind = kind.strip()
+        if len(kind) >= 2 and kind[0] == kind[-1] and kind[0] in "\"'":
+            kind = kind[1:-1]
+        if kind not in DOCUMENT_KINDS:
+            raise ValueError("Unsupported document-kind scalar")
+    return (selection != "explicit-only" and relative not in NAVIGATION
+            and kind != "navigation")
 
 
 def frontmatter_field(line: str) -> tuple[str, str] | None:
@@ -72,4 +114,6 @@ def require_authority(path: Path, root: Path, *, historical: bool,
     if is_history != historical:
         mode = "historical" if historical else "default"
         raise ValueError(f"Authority boundary: {path.relative_to(root)} is not a {mode} document")
-    return HISTORICAL_AUTHORITY if is_history else "current-documentation"
+    # Intent remains an admitted current source, but its chunk envelope must not
+    # silently relabel approved direction as implementation documentation.
+    return HISTORICAL_AUTHORITY if is_history else (declared or "current-documentation")

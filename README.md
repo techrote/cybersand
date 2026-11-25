@@ -1,229 +1,139 @@
-
 # CyberSand
 
-<img width="1196" height="2644" alt="cybersand_material_tiles_preview" src="https://github.com/user-attachments/assets/f49ebc85-d2bc-4404-96f2-a4eac07b6deb" />
+**Build a world from materials. Set it in motion. Keep experimenting.**
 
-Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, the Deepworks exhibition, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.
+CyberSand is a native C++20 cellular simulation hosted by Godot: an interactive
+Workbench for painting, generating and exploring material worlds, with physical
+actors, configurable Water solvers and tools for authoring playable scenes.
+It is also a growing foundation for cyberpunk exploration and RPG gameplay.
 
-CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
-lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
-is a reusable foundation for cyberpunk RPG and exploration games.
+![Eight architectural Genteks rendered as native material maps: trusses, cathedral frames, megablocks, spines, arches, rosework, cantilevers and suspended rooms](docs/images/gentek80-integration/eight-showcases.png)
 
-F5 selects from **46 articulated Rapier actors** in the sandbox, Blacksite and all
-four showcase districts, with keyboard, scripted-demo or external-policy control.
-Applying restores the selected map and starts paused; R retains the actor.
-WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the selected
-rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
-item. Sampled rigs and the original physical hull trials remain reference choices.
+*Eight of the 80 Genteks available in the Architectural Generator. These are
+native material maps. The [gallery](docs/images/gentek80-integration/README.md)
+retains its original render source and runtime identity.*
 
-New sandbox and Shared Workbench sessions start with Wave Flow, waterfall spill and ballistic release. Open **Water Lab** to tune the flat-ground surge or select an earlier Water law. [Water controls](docs/operations/workbench-water-lab.md)
+[Get started](docs/operations/getting-started.md) ·
+[First Workbench session](docs/operations/workbench-first-session.md) ·
+[Documentation](docs/README.md) ·
+[Current state and roadmap](docs/reference/status-and-roadmap.md)
 
-## Player playground
+## Make, play and inspect
 
-Choose **Player playground** in the launcher or pass **`--player-playground`**
-for seven human movement presets: a loose-jointed stunt buggy, trials bike,
-momentum acrobat, arcade lander, real Sand cloud, real Water blob and jetpack
-barrel. The shared course has a ramp, low tunnel, air slalom, landing decks and
-material sieve. **1–7** selects, **Tab** cycles, **R** restarts, **P** pauses and
-**F** switches overview/follow. A standard gamepad can supply movement and actions.
+| Start with… | What you can do |
+| --- | --- |
+| **Shared Workbench** | Paint a blank canvas or install a generated map, place independent actors, switch the pilot, run the simulation and save an authored starting scene. |
+| **Painting and history** | Brush, erase, draw lines and shapes, select, fill, copy and paste materials. Paused edits share native-confirmed Undo/Redo with Art drawing. |
+| **Architectural Generator** | Combine up to five style slots, choose Genteks and presets, adjust geometry, materials and apertures, inspect a native preview, then explicitly install it. |
+| **Water Lab** | Compare Wave Flow, FreeMass, PressureFlow and Inertial; inspect applied settings, tune Wave motion, and experiment with Water transport and equipment. |
+| **Actors and equipment** | Compose flyers, articulated machines and reference bodies; try human, scripted and admitted external-policy control in the same material scene. |
+| **Materials Lab** | Inspect declared and effective material properties, edit candidate copies, and compare them in isolated native tests without changing production material definitions. |
+| **Art Workbench** | Draw structured JSON or connect a configured local/cloud model provider. Work areas, protection, Stop and native result receipts keep drawing explicit. |
 
-The acrobat chains slides, rolls, bullet jumps, double jumps, jump cancels and a
-finite airglide. The material presets steer native cells through a bounded local
-field; normal material simulation continues. The five mechanical presets also
-appear in **F5 → SetP**. See the [player control guide](docs/systems/player-control-playground.md)
-for every preset's controls, gamepad mapping, focus/reset behavior and current
-qualification. `--player=acrobat` selects a preset at launch. These are experimental
-controls; headless regressions do not establish target-PC human feel acceptance.
+These are accepted-source capabilities. Their limits matter: saved starts
+reconstruct authored scenes; they do not resume every temperature, velocity or
+simulation tick. Materials Lab candidates stay isolated. Hosted tests and
+screenshots do not establish physical GPU performance or human playfeel.
 
-**Manual PLAY continuation, 31 October 2026:** the owner now prioritizes
-qualification and integration of Claude's #326 shader improvement and replaces
-historical short CI deadlines with generous shared watchdogs. The
-[execution and performance contract](docs/operations/ci-execution-and-performance.md)
-separates correctness, complete execution and advisory timing history. Accepted
-main `adaaa37` has complete original post-merge gates; the active successors
-require their own source-matched review and full Windows/Linux and Native gates.
-Physical displays, controller devices and human feel remain unqualified. The
-[development handover](docs/operations/cybersand-codex-development-handover.md)
-and [#305 ledger](https://github.com/techrote/cybersand/issues/305) record active
-ownership. Scheduswarm remains paused.
+## A few places to explore
 
-## Deepworks — the exhibition below
+![Neon Reliquary: a cyan engine suspended inside a machine cathedral above a flooded nave](docs/images/neon-reliquary/overview.png)
 
-Choose **Deepworks** in the launcher or pass **`--deepworks`** to open a
-**1024 × 1024 total map** of sixteen themed districts. Thirty-two native
-exhibits pair foreground apparatus with independent rear reactions: grain
-classifiers, charged Metal rails, salt thawing, corrosion, glass furnaces,
-thermite, lime casting, timber burning, purification and living crypts. All four
-material planes cover the full map, with local atmosphere, distant machinery
-and the complete 51-material building catalogue worked into the architecture.
+*Neon Reliquary is an existing standalone showcase, with three individually
+loaded district tiles below it. This retained application capture illustrates
+that showcase; it is not a screenshot of the current Workbench interface.*
 
-The exhibition starts paused. Choose a district, inspect either setup and press
-**P** to run. **R** restores the entire exhibition while keeping the current
-camera, then **P** replays the specimens. Pan, zoom, switch depth modes, hide
-layers or paint the foreground and rear worlds. **T** takes a guided camera
-tour; reactions keep running in every district, so reset before replaying a
-late exhibit. This is a free-camera material viewer. See the
-[Deepworks guide](docs/operations/deepworks-exhibition.md) for all districts,
-controls, source schedules and reproducible captures.
+![Materials Lab showing native Water properties and the distinction between declared and effective values](docs/images/materials-lab-v1/01-inspector-water.png)
 
-![Deepworks rendered from its four full-size material planes](docs/images/deepworks/deepworks-atlas.png)
+*Materials Lab's retained inspection capture. The [Lab guide](docs/operations/materials-lab-authoring.md)
+explains which properties are effective, which candidates can be tested and
+which changes are not applied to the running Workbench.*
 
-## Blacksite Nine
+For more, visit [Deepworks](docs/operations/deepworks-exhibition.md),
+[Blacksite Nine](docs/operations/blacksite-nine-demo.md),
+[the Gentek catalogue](docs/images/gentek80-integration/README.md),
+[Player playground](docs/systems/player-control-playground.md), or the
+[showcase guide](docs/operations/showcase-guide.md). Standalone Strata Theatre,
+Semantic depth and World Art have their own workflows; their presence does not
+imply four-plane authoring in the ordinary Workbench.
 
-Press **Shift+F11** or click **Blacksite Nine** to open a continuous 3 × 3
-industrial complex. A fortified research laboratory sits between two ruined
-wastelands, above six dense underground districts: worker warrens, containment
-galleries, condensate machinery, crushing works, an instrument vault and a flooded
-pump terminus. All nine share one native world, with twelve connected passages.
+## Start on desktop
 
-Use the **3×3 tile map** to inspect a district, **Whole complex** for the atlas,
-or **F** to follow the player through the narrow routes. The scene starts paused;
-**P** runs it, **A/D** move, and holding **Space** rises through shafts. Camera
-changes preserve the entire complex and its edits; **R** restores all nine
-districts together. It is also available in the Web demo menu. See the
-[Blacksite Nine guide](docs/operations/blacksite-nine-demo.md) for the route,
-controls, construction and reproducible captures.
+Use a complete source checkout with Git LFS and the exact pinned
+**Godot 4.7.stable.official.5b4e0cb0f**. Retained native libraries must match the
+checkout's recorded native inputs. A complete, source-identified evaluator is
+another route; keep its bundled files together and use its supplied launcher.
 
-![Blacksite Nine rendered in CyberSand](docs/images/blacksite-nine/blacksite-nine.png)
-
-## Neon Reliquary and the city below
-
-Press **F11** or click **Neon Reliquary** in the desktop sandbox to open an
-elaborate machine cathedral: a suspended cyan engine, stained glass, stacked
-service buildings, cable runs and a flooded nave. It is also available in the Web
-demo menu. From there, use **Below** to descend through **Middle Cyberberbia**,
-**Sewertech Alley**, and **Industrial Underswamp**: stacked homes and a garden
-bridge, a dense technological sewer ravine, then drowned and overgrown machinery.
-Each tile opens in its original paused layout with five camera views. Press
-**F8** for a clean view and **P** to animate the materials.
-See the [four-tile scene guide](docs/operations/neon-reliquary-demo.md) for controls,
-construction details and reproducible captures.
-
-![Neon Reliquary rendered in CyberSand](docs/images/neon-reliquary/overview.png)
-
-## World Art viewer and capture
-
-The [unified World Art pipeline](docs/tools/art-pipeline-unification.md) provides
-one standalone Godot 4.7 viewer and unattended capture path for fifteen original
-collections and 120 reusable features. Open the
-[portable Windows evaluator](docs/tools/world-art-evaluation.md) for its bundled
-runtime, interactive viewer and offline gallery, or use the
-[one-checkout launch instructions](docs/tools/world-art-preview.md).
-Large/asymmetric art dimensions are independent of native playable World limits.
-This integration remains Draft/HOLD pending explicit owner acceptance.
-
-## Development
-
-**Current source, reviewed 2026-09-08:** this checkout preserves the acquired
-`web-demo-m11` history plus existing local work, checkpointed before the RAG
-rewrite as `126175c`. Inspect current HEAD/status; historical M11 `BUILD_ID` and
-Web export base fields are different identities. See
-[source checkpoint](docs/operations/source-checkpoint-and-recovery.md).
-
-Start with [AGENTS.md](AGENTS.md), the [handover](docs/operations/cybersand-codex-development-handover.md)
-and [focused documentation](docs/README.md). Use the
-[roadmap](docs/reference/status-and-roadmap.md) before foundational physics work:
-failed ticks now quarantine the affected world, and phased interest re-entry
-resumes retained activity. Their separate acceptance and remaining gaps are recorded.
-The accepted main LCB-001 checkpoint's [native setup and receipt contract](docs/architecture/liquid-prepared-setup-and-receipts.md)
-and [final acceptance evidence](docs/audits/2026-10-25-lcb001-shared-contract-acceptance.md)
-record whole-cell Water, explicit normalization, exact accounting and physical
-hash/CYPS2 with source-matched Windows/Linux acceptance. Full application-host
-constructors, typed host evidence, UX and Web remain #202 work.
-For current MicroScenarios/intermaterial-interaction sequencing, do **not**
-infer order from GitHub issue numbers; use the
-[canonical programme graph](docs/operations/microscenarios-programme.md).
-
-[Current validation and retained M11 integrity](docs/operations/current-and-historical-validation.md)
-explain the independent source/runtime and historical checks.
-
-The active Windows workspace is `C:/kybersand`; from there:
-
-```text
-dev.cmd doctor
-dev.cmd native-test
-dev.cmd godot-test
-dev.cmd web
-0Preview.cmd
+```sh
+git clone https://github.com/techrote/cybersand.git
+cd cybersand
+git lfs install
+git lfs pull
 ```
 
-A source-only checkout also has a repository-contained Windows desktop path:
-`launch-desktop.cmd`. It validates the pinned Godot/runtime inputs, prints the
-checkout/runtime identity and launches `godot/project.godot` without rebuilding
-the retained DLL; see the build guide for overrides and identity-only use.
+On Windows, run the repository launcher with your pinned Godot executable:
 
-[Build instructions](docs/operations/local-build-and-validation.md) distinguish
-native DLL compilation, tests, Web exports and browser execution. Godot uses the
-exact 4.7 pin. Desktop has an asynchronous simulation owner; Web ticks are
-synchronous even with internal pthreads. Rapier objects stay on the main thread.
-The GDScript fallback has different material semantics.
+```powershell
+.\launch-desktop.cmd -Godot "C:\Tools\Godot\Godot_v4.7-stable_win64.exe"
+```
 
-The desktop sandbox includes 46 experimental
-[articulated actors](docs/systems/physical-actor-rigs.md) in eight sets: the original **SetA**
-Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
- descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
-**SetV** fictional interface personas, plus twelve **SetX** machines including
-multirotors, a suspended payload, a rocket blade and a concertina crawler, and
-the five human movement presets in **SetP**.
-Actual collider parts, joints and copied transforms define their appearance and
-motion. Bounded gyro assistance and controlled joint play serve plausible game
-behaviour; finite gyro momentum accounting is not required. Open **F5** to choose a rig and a keyboard,
-scripted-demo or external-policy pilot, adjust power and compare the other rigs
-in its set, up to eight actors. All physical producers share the version-2 leased
-input/observation boundary and deterministic local feedback examples. Neural
-inference is a future consumer. The [sampled rig](docs/systems/actor-rigs.md) and
-[SetA contracts](docs/systems/actor-control-prototypes.md) retain their original
-motor and policy compatibility details.
+Choose **Development workbench** in the feature launcher. The
+[getting-started guide](docs/operations/getting-started.md) covers Linux,
+runtime checks, evaluator packages and first-launch problems. The
+[build guide](docs/operations/local-build-and-validation.md) covers compiling
+the native engine and GDExtension. The companion workspace's `dev.cmd` is not a
+command supplied by this source repository.
 
-The internal [4LY free-flight family](docs/systems/physical-free-flight.md)
-adds a single-chassis training plant with two desired-velocity outputs and
-bounded physical assistance. Trainer has initial conformance tuning; Hauler,
-Drifter and Dart are uncalibrated placeholders. Their ordinary-game selection
-and measured handling differences are follow-up work, so the F5 roster remains
-46 actors.
+Desktop is the primary authoring path. Web execution and the GDScript fallback
+have distinct ownership, tooling and material limits; do not assume desktop
+parity. **F2 returns to the launcher and closes the current session**—save an
+authored start before leaving work you want to keep.
 
-The [32-item usable catalogue](docs/systems/actor-usables.md) supplies material
-tools, ballistic payloads and processors for the physical roster. Actors carry a
-jointed chassis with bounded aim, recoil, release and nearby pickup. Processors
-are placed as physical world objects with explicit blocked-output results. Every
-rig has a default loadout and equipment policy; SetP starts with an empty mount.
-Keyboard, scripts
-and future policies share the same observed-identity action path. The
-[ACT-005 checkpoint](docs/audits/2026-10-19-act005-physical-usables.md) records
-integration progress and acceptance separately from the source feature list.
+## Learn by doing
 
-The standalone [Thunderbowl control reference](docs/systems/thunderbowl-control-reference.md)
-adds a native battle/training test area, runnable controller scripts and eight
-versioned JSON schemas. Compare assisted controls, direct actuator profiles,
-oracle teams, independent and coordinating swarms, an untrained NCA-inspired
-controller and an external smart-link adapter. The first arena uses explicit
-virtual tag combat, with at most eight rigs and bounded local observations.
-Run its separate scene or headless examples using the reference commands.
+| Goal | Guide |
+| --- | --- |
+| Build a small material experiment and reopen it | [First Workbench session](docs/operations/workbench-first-session.md) |
+| Use shapes, Fill, Copy/Paste and shared history | [Painting and history](docs/operations/workbench-painting-and-history.md) |
+| Generate architecture and vary its construction | [Architectural Generator](docs/operations/architectural-generator-playtest.md) |
+| Understand Save, Restore and Flatten | [Saving authored worlds](docs/operations/workbench-saving.md) |
+| Use local-model or direct drawing | [Art Workbench](docs/operations/workbench-art.md) |
+| Compose actors and switch control | [Mixed Actor Workshop](docs/operations/workbench-actor-composition.md) |
+| Compare Water laws in one window | [Water Lab](docs/operations/workbench-water-lab.md) |
 
-The separate [physical Thunderbowl v2](docs/systems/thunderbowl-control-reference.md#physical-thunderbowl-v2)
-uses the same articulated rigs and producer contract as F5, with its own native
-material world, Rapier space and bounded local observations. It is a manoeuvre
-and usable test lab; virtual tag rewards, metal profiles, swarm experiments and
-the sampled arena's model-link examples retain their version-1 scope.
+## Inside the engine
 
-[Dated validation](docs/reference/validation-evidence.md) records what actually
-ran and which artifacts/platforms it covers. CYSD1 restores levels, not exact
-replay continuation. Review [license status](LICENSE_STATUS.md) and
-[third-party notices](THIRD_PARTY_NOTICES.md) before distribution.
+C++ owns authoritative cells, material rules and native simulation work. Godot
+owns presentation, input and application interfaces; Rapier supplies physical
+body simulation behind the engine's integration boundary. The desktop simulation
+owner and main-thread scene/physics objects exchange bounded requests and copied
+results. Rendered colours are not a substitute for native stored material IDs.
 
-## Semantic depth examples
+Start with the [architecture overview](docs/architecture/overview.md),
+[ownership and lifetimes](docs/architecture/data-ownership-and-lifetimes.md),
+[material rules](docs/systems/materials-and-rule-kernels.md) and
+[authoring contract](docs/architecture/shared-workbench-authoring-data.md).
+Developers should read [AGENTS.md](AGENTS.md), the
+[current handover](docs/operations/cybersand-codex-development-handover.md),
+[build and validation](docs/operations/local-build-and-validation.md), and
+[contribution guidance](CONTRIBUTING.md).
 
-The Semantic depth launcher entry / `--semantic-depth` opens two generated places: refinery service galleries and a flooded cavern. A single semantic hierarchy owns matching play, rear, atmosphere and frozen far projections, finite native-material fixtures and play-only actor placements. See the [authoring and controls guide](docs/operations/semantic-depth-authoring.md), [native contract](docs/systems/procedural-semantic-planes.md) and [dated validation ledger](docs/audits/2026-10-21-gen005-semantic-planes.md).
+## Where the project is heading
 
-## Generation Workbench 2
+The direction is a reusable authoring and simulation foundation for expressive,
+playable cyberpunk worlds. Work on presentation responsiveness, destructible
+structures, persistent areas, richer actor control, staged agent construction
+and integrated layered scenes continues in separate candidates. The
+[roadmap](docs/reference/status-and-roadmap.md) distinguishes accepted behavior,
+approved intent and unmerged work. CyberSand is not a finished RPG.
 
-The opt-in generation workbench adds a native **Why is this here?** inspector,
-actual generation stages, typed graph and semantic hierarchy editing, four-plane
-views and bounded seed/recipe comparison. Invalid changes preserve the accepted
-preview; undo/redo restores recipe content with fresh request identities. See the
-[workbench contract](docs/systems/generation-workbench-2.md) and
-[procedural qualification guide](docs/operations/procedural-qualification.md).
-The 61,845-byte qualification recipe generates four regions and eight galleries
-across a 1024 × 1024 map. Retained captures, native reaction observations and the
-candid Deepworks comparison are linked from the guide. Final acceptance is tracked in
-[PR #198](https://github.com/techrote/cybersand/pull/198).
+Historical experiments remain available through the deliberately separate
+[engineering history](docs/history/engineering/README.md). Their original
+findings and restrictions retain their dated scope.
+
+## License and acknowledgements
+
+No public license has been selected for original CyberSand source, assets or
+documentation. See [license status](LICENSE_STATUS.md) before redistribution.
+[Third-party notices](THIRD_PARTY_NOTICES.md) preserve the terms and provenance
+of Godot, Rapier and other dependencies and references.

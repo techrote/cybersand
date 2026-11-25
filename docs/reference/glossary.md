@@ -6,7 +6,7 @@ status: Current
 scope: Short definitions and canonical routes; implemented types, planned concepts and evidence terms are distinguished
 keywords: [glossary, authority, chunk, tile, hash, replay, snapshot, capacity]
 related-documents: [../README.md, retrieval-index.md, ../architecture/module-boundaries.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-24
 ---
 
 # Glossary
@@ -39,7 +39,7 @@ separate classes. Follow the owning page for exact limits and evidence.
 | PhasedInPlace | Current four-phase direct mutation backend |
 | Buffered output / halo / transfer | Planned isolated next state, read neighborhood and cross-output record; Buffered cannot run. [Geometry](../architecture/chunk-tile-and-buffer-model.md) |
 | Loaded / stored / rendered / interest region | Resident chunks / future persistent extent / visible area / eligible simulation bounds; these differ. [Interest contract](../systems/world-storage-and-interest-region.md) |
-| Active / sleeping / wake | Eligible metadata / retained quiet state / making work eligible after change; region return currently has a native wake defect. [Activity](../systems/activity-dirty-regions-and-waking.md) |
+| Active / sleeping / wake | Eligible metadata / retained quiet state / making work eligible after change; phased re-entry wakes newly included activity once at tick entry; it does not replay elapsed offscreen time. [Activity](../systems/activity-dirty-regions-and-waking.md) |
 
 ## Publication and physics
 
@@ -61,7 +61,7 @@ separate classes. Follow the owning page for exact limits and evidence.
 | Fixed tick / barrier | Whole simulation step / all phase jobs finish before the next; fixed time does not imply transactional failure |
 | Worker parity | Exact declared native fixture comparison across worker counts, not all-backend equivalence |
 | `state_hash` / `content_hash` | Partial future-state fixture hash / time-independent committed-content hash. [Coverage](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage) |
-| CYSD1 / exact replay | Current finite level reconstruction / Planned complete continuation capture. [Saves/replay](level-saves-and-replay.md) |
+| CYSD1 / CYPS / full replay | Finite level exchange / supported native-only continuation / Planned complete application continuation with host/input state. Wave refuses CYPS. [Saves/replay](level-saves-and-replay.md) |
 | Fidelity tier / strict policy | Approved approximation scope / Planned selectable fixed validation mode; current lanes are compiled. [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) |
 | Capacity / high-water / safe reconfiguration | Explicit limit / observed peak / Planned drained growth transition. [Budgets](../operations/configuration-and-capacity-budgets.md) |
 | Historical validation / current evidence | Result scoped to its original revision/artifact/platform / separately dated inspection or execution. [Ledger](validation-evidence.md) |
@@ -70,9 +70,26 @@ separate classes. Follow the owning page for exact limits and evidence.
 
 | Term | Meaning and canonical route |
 |---|---|
-| Liquid mass | Native Water's conserved byte quantity, capacity 255 |
+| Water mass | 255 units is one full cell in FreeMass-derived accounting; Wave may retain uint16 overfill, while CY/IN use whole-cell admission. [Water families](../systems/water-design.md) |
 | Viscosity index / yield / adhesion | Dimensionless mobility tuning / resting-slope behavior / surface retention; distinct policies |
 | Render-only dither | Stable display coverage/variation without changing mass or activity. [Water](../systems/water-design.md) |
 | Density exchange | Opted-in directional vertical swap, not unrestricted swapping |
 | ExplosionCommand / granular Stone | Bounded queued blast / Stone tagged `state_b=1` for falling behavior. [Rules](../systems/materials-and-rule-kernels.md) |
 | Item material program | Planned bounded compiler/registry/recipe system; arbitrary per-cell scripts are Rejected. [Proposal](../architecture/item-authored-material-programs.md) |
+
+
+## Authoring and acceptance
+
+| Term | Meaning and canonical route |
+|---|---|
+| Gentek | An architectural generator family; an accepted catalogue entry is distinct from an experimental assembly solver. [Architectural generator](../systems/architectural-generator.md) |
+| Variant | An admitted variation of a Gentek's geometry, material or aperture parameters; it need not be a different serialized native module version and does not itself establish acceptance |
+| Preset | Saved geometry, material and modifier choices; inspect its schema and the receiving build's admission |
+| Composition | Multiple Genteks combined; negotiated SWARM assembly is a separate candidate scope |
+| Authored start | Reconstruction baseline plus supported ordered edits/spawns/options; not the entire evolving World. [Shared data](../architecture/shared-workbench-authoring-data.md) |
+| Flatten / Bake History | Capture native stored material IDs into a two-byte-per-cell authored baseline; discard earlier construction/Undo history, leave the live World unchanged, then Save explicitly |
+| Native receipt | An owner-produced result for an identified operation; queue acceptance and model output are not application receipts |
+| Source-qualified candidate | Evidence applies to an identified source/artifact/platform; the work may remain unmerged |
+| Accepted main | Repository implementation available at a stated main commit; does not make all historical validation current |
+| Physical owner acceptance | A stated human evaluation on its actual platform; headless or hosted software-rendered execution does not substitute for it |
+| Strata Theatre | The existing four-layer depth feature and its named integration programme; not a name for storage or unrelated archaeology |

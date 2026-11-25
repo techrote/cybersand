@@ -16,19 +16,13 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
-from retrieval_policy import require_authority, frontmatter_field
+from retrieval_policy import require_authority, frontmatter_field, FOCUSED, NAVIGATION, DOCUMENT_KINDS, default_selection_allowed, retrieval_selection
 from engineering_history import check as check_history
 
 ROOT = Path(__file__).resolve().parents[2]
 STATUSES = {"Current", "Approved", "Approved design", "Planned", "Deferred", "Rejected", "Ambiguous"}
-KINDS = {"contract", "design", "decision", "guide", "runbook", "reference", "evidence", "navigation", "research"}
+KINDS = DOCUMENT_KINDS
 REQUIRED = {"title", "status", "scope", "last-reviewed", "document-kind", "canonical-for", "related-documents"}
-FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research"}
-NAVIGATION = (
-    "docs/README.md", "docs/reference/retrieval-index.md", "README.md", "AGENTS.md",
-    "CONTRIBUTING.md", "third_party/README.md", "godot/native_extension/README.md",
-    ".github/pull_request_template.md",
-)
 
 def metadata(text: str) -> dict:
     """Read the deliberately restricted scalar/inline-list metadata convention."""
@@ -42,8 +36,8 @@ def metadata(text: str) -> dict:
         field = frontmatter_field(line)
         if field is not None:
             key, value = field
-            if key == "authority" and key in result:
-                raise ValueError("Duplicate frontmatter authority")
+            if key in {"authority", "retrieval", "document-kind"} and key in result:
+                raise ValueError("Duplicate frontmatter " + key)
             if value.startswith("[") and value.endswith("]"):
                 result[key] = [v.strip().strip("\"'") for v in value[1:-1].split(",") if v.strip()]
             elif value:
@@ -113,6 +107,8 @@ def check(root: Path) -> dict:
         try:
             meta = metadata(text)
             require_authority(path, root, historical=False, metadata=meta)
+            if not default_selection_allowed(path, root, meta):
+                errors.append(f"{relative}: default corpus cannot select explicit-only or navigation documents")
         except ValueError as exc:
             errors.append(f"{relative}: {exc}")
             continue
@@ -146,6 +142,14 @@ def check(root: Path) -> dict:
         relative = path.relative_to(docs).as_posix()
         if relative.split("/")[0] in FOCUSED and relative not in selected and relative not in excluded and relative not in navigation and relative not in known_navigation:
             errors.append(f"Focused document has no corpus or explicit excluded entry: {relative}")
+        if relative.split("/")[0] in FOCUSED and relative in excluded and relative not in selected:
+            try:
+                meta = metadata(path.read_text(encoding="utf-8-sig"))
+                require_authority(path, root, historical=False, metadata=meta)
+                if meta.get("document-kind") != "navigation" and retrieval_selection(meta) != "explicit-only":
+                    errors.append(f"{relative}: excluded focused document needs retrieval: explicit-only for fallback containment")
+            except ValueError as exc:
+                errors.append(f"{relative}: {exc}")
     # Navigation is checked for links without becoming default answer material.
     link_paths = list(paths)
     for relative in navigation:

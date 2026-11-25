@@ -122,18 +122,25 @@ jobs:
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
       - name: Test coupled-lockstep evidence reducer contracts
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lockstep -p test_reduce_coupling_lockstep.py
+      - name: Test retrieval selection and authority boundaries
+        run: |
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_historical_retrieval.py
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_current_retrieval_selection.py
       - name: Evaluate current retrieval routes
         id: retrieval
         run: |
           mkdir -p build/retrieval
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-docs-renaissance-v1.json --output build/retrieval/renaissance.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --queries docs/reference/owner-intent-retrieval-questions.json --output build/retrieval/owner-intent.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --historical --queries docs/history/engineering/retrieval-questions.json --output build/retrieval/historical.json
       - name: Validate Git LFS objects and whitespace
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" git lfs fsck
           git diff --check HEAD
       - name: Retain retrieval evidence
-        if: always() && steps.retrieval.outcome == 'success'
+        if: always() && steps.retrieval.outcome != 'skipped'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: retrieval-${{ github.run_id }}

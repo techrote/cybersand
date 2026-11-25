@@ -4,11 +4,25 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-24
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
 # Player control playground
+
+Choose the host that matches the experiment:
+
+| Feature launcher entry | Current use |
+|---|---|
+| **Player playground** | The dedicated seven-preset movement course described [below](#open-the-seven-preset-movement-course), including the Sand and Water material fields. |
+| **Play session** | The shared desktop course with five mechanical SetP rigs, lap/free-play and construction-time solver choices. |
+| **Development workbench** | Ordinary material authoring and a mixed cast of independent actors. Start with the [first session](../operations/workbench-first-session.md) or [Mixed Actor Workshop](../operations/workbench-actor-composition.md). |
+
+These entry points are implemented in accepted source. The dated qualification
+sections retain their original source, apparatus and acceptance limits; an old
+open-issue list is a snapshot, not today's work queue. The
+[current-state register](../reference/status-and-roadmap.md) routes active work.
+This documentation review did not rerun PLAY's runtime or physical-device gates.
 
 ## Current PLAY acceptance boundary — 2026-10-30
 
@@ -36,7 +50,7 @@ dependency without broadening their original evidence claims.
 
 Live state checked on 2026-10-30: #266, #267 and #273 are completed/closed;
 #265 remains closed Not Planned; #271 is deferred; #272 remains conditional
-fallback architecture. The active path is **#268 → #269 → #270 → #263**.
+fallback architecture. The recorded active path was **#268 → #269 → #270 → #263**.
 The [concrete #270 human checklist](https://github.com/techrote/cybersand/issues/270#issuecomment-6485284121)
 remains unexecuted. Neither this checkpoint nor automated counters establish
 PLAY promotion, physical-controller compatibility or human responsiveness.
@@ -679,7 +693,7 @@ records the gap, test boundaries and integration obligations.
 |---|---|
 | 1–7 or preset buttons | Select a preset and construct a fresh course/session |
 | Tab / Shift+Tab | Select next / previous preset |
-| R or Restart | Reset the selected preset and course; keep this scene's best times |
+| R or **Reset · R** | Reset the selected preset and course; keep this scene's best times |
 | P, Escape or gamepad Start | Pause/resume; pause revokes current input |
 | F or camera button | Toggle course overview and player-follow view |
 | F2 or Menu | Close the current owner and return to the feature launcher |
@@ -774,22 +788,80 @@ retain their existing programme owners.
 
 ## Development workbench on desktop
 
-On the #391 development branch, choose **Development workbench** from F2 or launch Godot with `-- --workbench`. The application opens a paused, empty 2048 × 2048 canvas. Details contains the construction size for the next blank canvas. The two sides are independent multiples of 64 between 512 and 2048. The full finite domain owns simulation interest across the session. Camera pan, overview, follow and zoom only change presentation.
+Choose **Development workbench** from the feature launcher, or launch the
+[pinned Godot executable](../operations/getting-started.md) with
+`--path godot -- --workbench`. This is an accepted main entry point. A fresh
+session opens a paused, empty 2048 × 2048 canvas. **Details** sets the next blank
+canvas's width and height independently, in multiples of 64 from 512 through
+2048. The full finite domain owns simulation interest; camera pan, overview,
+follow and zoom change presentation.
 
-1. Choose a craft in **Pilot** (or press 1–8) to fly it immediately. If it already exists, the workbench selects it. Otherwise the workbench replaces the selected flyer at its saved spawn, retaining its six applied tuning values (budget, mass, inertia, thrust, torque and Shift multiplier), or places the new flyer at X/Y if no flyer is selected. Selecting an existing instance keeps that instance's own tuning; newly placed instances use their model defaults. **Place model** and **Place at X/Y** let you add another independent instance, including a duplicate model or passive barrel. Cursor placement uses **Place body**. Select an instance through the list or **Select body**. Up to eight physical bodies fit. Scooper has five rectangle proxies on one Rapier body. Instance IDs survive setup reconstruction.
-2. Paint in the viewport, erase with the right button, pan with the middle button and zoom with the wheel. The powder palette, Water, hard wall and erase use radius 2–24. **Place source** uses the selected powder. **B** queues one 4 × 24 burst. Stream inserts at most four cells per tick for 600 ticks. Read the inserted/blocked counters. The source and actor dispensers add material only at admitted empty locations.
-3. **P** toggles play and **.** advances one acknowledged step while paused. Cockpit controls come from the flyer's JSON and controller. Shift boosts, Ctrl brakes and Kestrel S dispenses Gunpowder. Scooper uses W/S for height, A/D for strafe, Space for lift and Q/E for tilt. In Details, stage the selected instance's mass, inertia, thrust and torque limits, Shift multiplier and response budget. **Apply settings** prepares the replacement. **Defaults** restores LA-SA and the selected body defaults. Setting/capturing a reset spawn leaves the live body where it is.
-4. The World response selector offers selective arrivals (LA-SA), LA, events off and RFT. RFT requires a budget of 20 for each instance. Use Details to select a liquid material, admitted family/variant, IN damping, execution radius and explicit Water normalization. **Apply liquid selection** requests a prepared World and permits conversion of incompatible live solver state. A whole-cell Water target rounds fractional cells using the native normalization rule. A fractional target preserves the visible amounts unless normalization is explicitly selected. The completed conversion reports discarded pressure overfill and trapped gas, plus Water added or removed by normalization. Water and powder that move outside the editable canvas are transferred into the replacement World wherever its reserved chunks can store them. The receipt reports what stayed outside the canvas and what was lost beyond reserved storage. Switching live solvers uses the evolved native cells even when the paint history exceeds the limits for a saved starting setup. The status shows the installed Water family and variant. Historical creep, burial, sealing and late-rebound results are still qualified. A liquid choice supplies its existing cellular behavior.
-5. **R** resets the selected body to its saved spawn with neutral motion, including while flying. **Restore start** reconstructs the whole starting recipe, and **New blank** clears the canvas. If an experiment fails, Reset can retire the failed worker and rebuild the authored start. Actor changes transfer the current cells, compatible pressure inventory and unaffected bodies through the exclusive owner. For contact experiments you can place bodies together, or reset into painted hard terrain. Starting-setup saves retain the authored brush history (on the #406 branch, when its 4,096 records fill, the history is compacted into box stamps of its merged rectangles: the same cells, without erased or overpainted strokes; painting stops only when the final terrain itself needs more than 4,096 construction rectangles), actor definitions by stable name and content hash, spawns, options, selection, response, policy, source and tool state. They omit evolved cell motion, transient impulses, held commands and stream progress. The named JSON files under `user://workbench` have an explicit version, 1 MiB file budget, 2048-stamp and 4096-run reconstruction limits. Load verifies the currently installed authored definitions and the complete candidate before adoption. While no saved `my-canvas` file exists, loading that default name opens a built-in 512 × 512 water evaluation start (`Setup.water_evaluation`). It holds a free-standing dam-break column, a sand ramp, a pool under two staggered barrels and an unequal U-tube, all inside the default 480 × 270 view. Equal final U-tube levels are the vented/shared-pressure control. Saving `my-canvas` replaces it for that user. The Water family and the experimental spray controls keep whatever the panels select. `test_workbench_canvas.gd` covers its admission, load, painted cells and barrels. Loading `bench-canvas` the same way opens a built-in 1024 × 512 whole-engine benchmark (`Setup.engine_benchmark`) with eight barrels. Its zones are:
+1. Open **Actor Composition…** to place or inspect the current mixed catalogue,
+   or press **Mixed Actor Workshop** for the supplied six-actor example. Inspection
+   and piloting are separate. **Pilot inspected** hands human control to an actor;
+   **Hand back** restores its previous admitted source. The ordinary session admits
+   at most eight actors, eight parts per actor and 64 physical bodies/native proxies
+   in total, including applicable equipment. It is no longer limited to eight
+   single-body flyers. See the [actor guide](../operations/workbench-actor-composition.md)
+   for models, control sources, equipment, refused combinations and exact capacity.
+2. Use **Brush** and **Eraser** for live painting, or pause for shapes, selection,
+   Fill, copy/paste and shared native-confirmed Undo/Redo. Right-button erasing,
+   middle-button panning and wheel zoom retain their canvas roles. The paint
+   catalogue comes from the native material interface; the older compact list in
+   the source toolbar does not define the complete editor palette. The separate
+   powder source still emits only its nine admitted powders. **Burst [B]** requests
+   a 4 × 24 burst; **Stream ≤600 ticks** inserts at most four admitted cells per
+   tick. Follow [painting and history](../operations/workbench-painting-and-history.md)
+   for work-area, protection, Stop and partial-operation boundaries.
+3. **Play / Pause [P]** runs or pauses the shared session; **Step [.]** advances
+   one acknowledged step while paused. **Reset selected [R]** restores the selected
+   actor's authored spawn. **Restore start** reconstructs the authored starting
+   recipe, and **New blank** prepares another canvas. Held input must rearm after
+   focus or control changes. Per-model controls, equipment and per-instance tuning
+   belong to the actor guide; the World response algorithm remains shared.
+4. **Water Lab…** owns the applied/staged solver and Water controls. Select an
+   admitted family/variant and submit the explicit prepared change. Read its
+   matching native receipt before treating the change as applied; normalization,
+   retained/outside storage and discarded inventory are separately reported.
+   Current gameplay Wave defaults and the native baseline are distinct. Use the
+   [Water Lab guide](../operations/workbench-water-lab.md), rather than the former
+   liquid selector in Details, for the current controls and conversion limits.
+5. Give the start a name and wait for native edits and their receipts to settle,
+   then use **Save start [Ctrl+S]** and **Load start**. Save reconstructs accepted
+   authored terrain, cast, spawns and settings. It does not preserve evolved
+   cellular state, physical momentum, command leases or private policy memory.
+   Ordinary/generated JSON manifests have a 1 MiB limit; current Workbench
+   authoring allows 32,768 stamps and 32,768 reconstruction rectangles, subject
+   to the installed native capability. Flatten has a separate bounded material
+   payload and clears prior edit history; it does not perform Save. Follow
+   [saving and reconstruction](../operations/workbench-saving.md) for that
+   boundary and safe failure recovery.
+
+Named built-in starts remain available through **Load start** while no saved
+user file of that name exists. Saving a user start under the same name takes
+precedence over the built-in fixture:
+
+| Name | Authored starting scene |
+|---|---|
+| `my-canvas` | 512 × 512 Water evaluation: free-standing dam-break column, Sand ramp, pool under two staggered barrels and unequal U-tube, arranged in the default 480 × 270 view. Equal final U-tube levels are the vented/shared-pressure control. Water family and spray controls retain the selected settings. |
+| `bench-canvas` | 1024 × 512 whole-engine benchmark with eight barrels and the four reacting zones below. |
+| `stress-canvas` | 2048 × 1024 heavy-activity start with two tiers of eight zones, authored material pairs, thermal/combustion sources, pour gaps and eight barrels. |
+
+The benchmark zones are:
 
 - a Water dam against a sand dune under a falling sand curtain;
 - a lava basin fed by a Water shelf and hanging ice;
 - an oil-on-Water tank under a wood deck carrying gunpowder and coal, with a lava drip above;
 - an acid bath taking falling metal, beside a Water pool with salt and sodium.
 
-The workbench palette also paints Lava, Oil, Acid, Wood, Ice and Metal; the powder source still emits only the first nine powders.
-
-**stress-canvas** (#406, built in the same way) is a 2048 × 1024 heavy-activity start: two tiers of eight zones with 55 materials staged against their pair partners, heat or fire, pour gaps between the tiers and eight barrels. Starting-setup stamps may be brush discs `[x, y, radius, material]` or axis-aligned boxes `[x, y, width, height, material]` (built-in starts only; the brush paints discs), and may use the staged material list; identical runs on consecutive rows merge into one construction rectangle. See the [stress-canvas record](../audits/2026-11-06-stress-canvas.md).
+[Workbench setup](../../godot/scripts/workbench_setup.gd) owns these recipes
+and serialization limits;
+[`shared_workbench.gd::load_setup`](../../godot/scripts/shared_workbench.gd)
+owns saved-file precedence over built-in names. The
+[stress-canvas record](../audits/2026-11-06-stress-canvas.md) retains its original
+material-count and qualification observations. The
+[baseline version of this section](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/player-control-playground.md#development-workbench-on-desktop)
+preserves the earlier #391/#406 controls and capacities as historical context.
 
 Open **Details** during play to see the native pool size, the peak number of workers claiming jobs in a sampled solver phase, the jobs by phase and the native tick time. These values describe one completed tick. The OS CPU meter also includes time between ticks. Native and Rapier can advance while the renderer holds its previous frame. The [edge conversion and parallelism measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) include a fixed-work comparison and the graphical pacing control.
 

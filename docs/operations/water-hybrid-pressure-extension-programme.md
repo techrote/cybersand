@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md, ../audits/2026-09-24-wex004-decompression-disposition.md, ../audits/2026-10-23-wex005-water-evidence-synthesis.md, ../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md]
 ---
 
@@ -644,6 +644,14 @@ stays downstream of #18.
 
 ## LCB experimental pressure lane reconciliation (2026-10-23)
 
+**Current applicability, 24 November:** this section records the October
+admission constraints. Pressure reference/cached/dormant, W-CY and Water/Brine IN
+are now implemented; use the [family policy](../architecture/liquid-solver-family-policy.md),
+[pressure contract](../architecture/pressure-flow-v1.md) and
+[IN contract](../architecture/inertial-cellular-v1.md). The old admission did not
+select the later player Wave profile or grant unrelated WEX/Stage-4 work.
+Source availability and a completed comparative campaign remain different claims.
+
 The owner-approved opt-in Liquid Comparison Build
 ([#200](https://github.com/techrote/cybersand/issues/200), LCB-000 gate
 [#213](https://github.com/techrote/cybersand/issues/213)) is a **separate
@@ -664,10 +672,10 @@ records the accepted lane constraints:
 - LCB results can reach #45 only through the registered apparatus with source
   identity. #45 does not start a competing pressure port while LCB-001 owns one.
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start was admitted at that gate. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; Brine IN and Water IN subsequently entered accepted main through #250 and #254. Those admissions do not grant production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
-That branch implementation is the LCB-001 pressure port this section
-anticipates. It is not #45 implementation or selection: its characterization
+That admitted implementation is the LCB-001 pressure port anticipated by this
+section. It is not #45 implementation or selection: its characterization
 screens reach #45 only through the registered apparatus with source identity,
 and they do not freeze #45 thresholds.
 

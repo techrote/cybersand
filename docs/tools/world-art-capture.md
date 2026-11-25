@@ -4,20 +4,23 @@ status: Current
 document-kind: guide
 scope: Production Godot framebuffer capture, streamed PNG transport, provenance and publication safety
 canonical-for: [world-art-unattended-capture]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [art-pipeline-unification.md, world-art-preview.md, world-art-evaluation.md]
 ---
 
 # World Art unattended capture — real Godot PNGs and manifests
 
-**Experimental, independent presentation tooling (MAP-AUTO-01 / [#498](https://github.com/techrote/cybersand/issues/498)).** One command renders provisional world-design packs through the **production RG8 material palette, appearance LUT, emission and glow shaders in a real Godot 4.7 renderer** and writes PNG images plus a hash-bound JSON manifest. There is no mouse, keyboard or UI interaction, no SVG/Python rasterisation and no second renderer: it drives the same `world_art_render_rig.gd` and tiled full-export code as the interactive [World Art Preview](world-art-preview.md).
+**Experimental, standalone presentation tooling accepted through [#685](https://github.com/techrote/cybersand/pull/685)
+(MAP-AUTO-01 / [#498](https://github.com/techrote/cybersand/issues/498)).** One command renders provisional world-design packs through the **production RG8 material palette, appearance LUT, emission and glow shaders in a real Godot 4.7 renderer** and writes PNG images plus a hash-bound JSON manifest. There is no mouse, keyboard or UI interaction, no SVG/Python rasterisation and no second renderer: it drives the same `world_art_render_rig.gd` and tiled full-export code as the interactive [World Art Preview](world-art-preview.md).
 
 Downstream pipeline this enables: `Atlas source → unattended capture → PNG + manifest → visual critique → source edit → unattended recapture`. The API runner (#499), agent scheduling (#500) and four-native-plane rendering (#501) are separate work and are **not** part of this tool.
 
 ## Quick start (copy-paste)
 
-Prerequisites for a source checkout: Python 3.10+, Godot 4.7 desktop and a
-graphical display. The integrated repository already includes the read-only
+Prerequisites for a source checkout: Python 3.10+, the pinned Godot
+`4.7.stable.official.5b4e0cb0f` desktop executable and a graphical display.
+In the commands below, `godot` denotes that verified executable; supply an
+absolute path when PATH resolves a different version. The integrated repository already includes the read-only
 `docs/world-design` atlas; no second checkout is required. The
 [Windows evaluation package](world-art-evaluation.md) includes both runtimes,
 source and gallery. Windows captures use the console executable to retain
@@ -59,9 +62,9 @@ An external worker only needs the **exit code**, the last-line `WORLD_ART_CAPTUR
 
 ## Integrated source, aspect-fit and capture custody
 
-In the unified branch, use `--art-root=docs/world-design` (or an absolute equivalent) to capture the 15 included original collections, without a second checkout. The source still receives byte-level identity guards. The user interface and this unattended graphical runner share the same `world_art_render_rig.gd` shader path. `--framing=width` or `--framing=height` selects a purposeful crop of the opposite axis, while `--framing=fit` preserves all authored geometry with aspect-correct letterboxing.
+In the accepted integrated repository, use `--art-root=docs/world-design` (or an absolute equivalent) to capture the 15 included original collections, without a second checkout. The source still receives byte-level identity guards. The user interface and this unattended graphical runner share the same `world_art_render_rig.gd` shader path. `--framing=width` or `--framing=height` selects a purposeful crop of the opposite axis, while `--framing=fit` preserves all authored geometry with aspect-correct letterboxing.
 
-The new `art_size_policy` manifest records which source sizes are presentation-previewable versus full-PNG-exportable at the selected scale; **`native_playable` is explicitly unqualified**. Up to 16,777,216 source cells are accepted at most 16,384 cells per side. The full-PNG renderer retains its 50-million-output-pixel cap and rejects overbudget requests without truncation or automatic size change. Bounded crops or a lower scale remain usable.
+The `art_size_policy` manifest records which source sizes are presentation-previewable versus full-PNG-exportable at the selected scale; **`native_playable` is explicitly unqualified**. Up to 16,777,216 source cells are accepted at most 16,384 cells per side. The full-PNG renderer retains its 50-million-output-pixel cap and rejects overbudget requests without truncation or automatic size change. Bounded crops or a lower scale remain usable.
 
 Every capture destination has an exclusive per-output claim acquired before writing. Its contents are checked again under that claim to reject delayed competing publishers. The final manifest is exclusively created and flushed before releasing the claim; verification refuses active or retained claims. Previous nonempty destinations, overlapping source directories and still-claimed directories are rejected. A failed/interrupted job never silently takes over another owner's output. For all details, safety boundaries and the 10-size regression matrix, see [ART-PIPELINE-UNIFICATION-001](art-pipeline-unification.md).
 
@@ -172,6 +175,11 @@ Failures print `WORLD_ART_ERROR <actionable message>` on stderr. When the output
 - Detail/viewport shots render the combined composition; feature shots are tiled exports of the feature alone.
 
 ## Qualification
+
+The source below defines the available tests. Original #685 results retain their
+recorded source and renderer; this guide does not claim a fresh graphical run at
+every later commit. Python-only checks are distinct from real framebuffer and
+physical owner evidence.
 
 [`tools/test_world_art_capture.py`](../../tools/test_world_art_capture.py) drives the real CLI and Godot renderer; with `WORLD_ART_REQUIRE_GRAPHICAL=1` a missing display/engine is a failure, not a skip. It covers: unattended flagship render with nonblank full+detail PNGs; a 15-collection batch; the 120-feature inventory and authored variants; wide-map framing and right-edge export; source/hash/dimension consistency; unchanged art checkout; fixed-time repeatability; before/after at equivalent framing; invalid pack, blank render, unknown feature, out-of-range crop, headless display, a corrupted production shader and tampered evidence; and the preserved interactive launcher.
 

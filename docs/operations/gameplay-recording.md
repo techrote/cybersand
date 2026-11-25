@@ -6,7 +6,7 @@ status: Current
 scope: REC-001 desktop material-state recording, ownership, bounded pressure, evidence format, controls and validation limits
 keywords: [recording, gameplay review, material state, immutable snapshot, bounded queue, dropped frames, REC-001]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, microscenarios.md, testing-validation-and-replay.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-24
 ---
 
 # Desktop gameplay state recording
@@ -35,7 +35,14 @@ allowed to block or skip authoritative simulation work.
 
 ## Starting and stopping a recording
 
-Desktop builds expose a **Start Recording / F10** control. Starting a session:
+The ordinary desktop Main sandbox/showcase host exposes **Start Recording /
+F10**. This is not a general Workbench shortcut: Shared Workbench hides the old
+Main controls and returns from its own key handler before the F10 recorder
+branch. Separate hosts such as Deepworks and Strata Theatre do not acquire this
+recorder merely by using native materials. Source: [Main input](../../godot/scripts/main.gd)
+and [Workbench setup](../../godot/scripts/shared_workbench.gd).
+
+Starting a supported session:
 
 1. freezes the current camera ROI for that session;
 2. records runtime/source/configuration identity;
@@ -58,6 +65,12 @@ The following user arguments override the defaults for a run:
 
 The output root is `user://recordings/`. The control tooltip and stdout identify
 the session directory.
+
+**Current capture extent:** `gameplay_recorder.gd::start_recording` clamps the
+requested ROI to the legacy `CyberCellWorld.WORLD_WIDTH/HEIGHT` bounds, currently
+1024×1024. This is a source limit, not a dynamic promise to capture a larger
+Workbench canvas. Inspect the retained manifest ROI before interpreting an
+image as a complete scene; the bytes remain a cropped material-ID view.
 
 ## Retained frame format
 
@@ -137,6 +150,10 @@ while the session's desktop configuration records the profile active at recordin
 start. These are tuning/provenance inputs, not evidence that a candidate is
 physically calibrated or owner-accepted.
 
+The `.ids` byte format is the current render projection, not the authoritative
+eight-byte Cell carrier or the two-byte-per-cell Flatten baseline. It cannot
+substitute for either persistence format.
+
 REC-001 v2 retains the serialized material-ID channel only. The render
 visual-condition channel is explicitly omitted. Temperature is not present in
 the immutable desktop render publication and is therefore recorded as
@@ -209,8 +226,10 @@ include at least one active/falling-material case, such as the collapse region
 in that fixture or `fixtures/sand-release`. Preserve negative and ambiguous
 results. Do not convert owner taste into an automated acceptance score.
 
-#135 is the finite first implementation child. Parent #130 remains open for
-future recording, comparison, export and review ergonomics.
+#135 is the finite first implementation child and remains open at the
+24 November status check. Parent #130 tracks future recording, comparison,
+export and review ergonomics; implementation presence does not close the owner
+and performance evidence gates.
 
 
 ## REC-001 integration correction

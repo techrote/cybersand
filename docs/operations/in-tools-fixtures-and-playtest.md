@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: IN-TOOLS successor fixtures and playtest
 status: Planned
 scope: Issue 361 current-main successor fixture definitions and acceptance intent; all successor fixtures NOT_RUN until implemented and executed

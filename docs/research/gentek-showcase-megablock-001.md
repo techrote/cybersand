@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Seeded Typology Megablock classic Gentek showcase
 status: Current
 document-kind: research

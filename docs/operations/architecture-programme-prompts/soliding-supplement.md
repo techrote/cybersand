@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Physics: design and prototype reversible soliding for Rapier aggregates
 status: Planned
 document-kind: runbook

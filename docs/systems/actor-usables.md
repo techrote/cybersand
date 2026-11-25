@@ -2,9 +2,9 @@
 title: Actor usables — 32-item catalogue and physical equipment
 status: Current
 document-kind: contract
-scope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority
+scope: Accepted experimental U01-U32 catalogue and physical equipment; ordinary sandbox versus Shared Workbench controls, copied admission and native material authority
 canonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 related-documents: [physical-actor-rigs.md, actor-rigs.md, actor-control-prototypes.md, materials-and-rule-kernels.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -20,6 +20,13 @@ power can differ from locomotion aim and effort, so firing a nozzle does not
 silently retarget a thruster, rope or charged leap. The
 [dated ACT-005 checkpoint](../audits/2026-10-19-act005-physical-usables.md) owns
 implementation progress, actual validation and merge status.
+
+The catalogue is present in accepted main. Accepted Shared Workbench actor
+composition (#683) also exposes equipment for actor definitions with a usable
+mount; its passive barrel and 4LY drones do not gain a mount through the picker.
+The later Equipment and Actor Compose repair candidates (#724 and #762) remain
+separate from this accepted behavior. The
+[current-state register](../reference/status-and-roadmap.md) owns their live status.
 
 The executable catalogue is
 [`usable_catalog.gd`](../../godot/scripts/usable_catalog.gd), bounded gameplay is
@@ -39,6 +46,11 @@ spatial or ownership assumptions. Neither route exposes a Rapier RID or live bod
 reference to a producer.
 
 ## Desktop controls
+
+### Ordinary sandbox and standalone actor scenes
+
+The following F5 and pointer controls belong to the ordinary sandbox and
+standalone scenes that use its actor picker.
 
 Open **F5**, select the actor rig as usual, then choose equipment. **Equip only**
 changes the current human actor through its admitted equipment action. A physical
@@ -65,6 +77,24 @@ on a fresh actor/World reset. Cancelled physical input retires pending requests
 and late receipts without teleporting a released body or erasing actor momentum.
 Changing equipment while a trigger is held requires release before rearming.
 
+### Shared Workbench
+
+Open **Actor Composition…**, select an actor, choose **Mounted equipment**, then
+use **Apply equipment / restart**. The definition must support equipment; the
+picker cannot turn a passive barrel or 4LY drone into an equipped actor. This
+prepared rebuild retains live terrain and body poses while restarting controller
+and resource state. It differs from ordinary F5 **Equip only**, which changes a
+held chassis through the live equipment action.
+
+While piloting in the Workbench, pointer position supplies aim, **M** activates
+primary, **Alt** activates alternate, **N** drops and **U** requests attachment.
+The paint pointer stays with PAINT. Use the
+[actor composition walkthrough](../operations/workbench-actor-composition.md)
+for placement and pilot selection. Exact UI and state transitions are in
+[`workbench_actor_panel.gd`](../../godot/scripts/workbench_actor_panel.gd),
+[`shared_workbench.gd::apply_actor_equipment`](../../godot/scripts/shared_workbench.gd)
+and [`main.gd::_publish_workbench_keyboard`](../../godot/scripts/main.gd).
+
 ## U01–U12: material deposition and destruction tools
 
 | Ref / ID | Usable | Primary behaviour |
@@ -82,7 +112,8 @@ Changing equipment while a trigger is held requires release before rearming.
 | U11 `glass_scorer` | Glass Scorer | Thin cut restricted to supported glass IDs. |
 | U12 `acid_wash` | Acid Wash | Deposits Acid into reachable empty slots; later corrosion is native material behaviour. |
 
-Right click gives a single tool pulse at 35% selected power. It does not reduce
+Alternate activation (right click in the ordinary sandbox; Alt in Workbench)
+gives a single tool pulse at 35% selected power. It does not reduce
 the fixed stamp/bead pattern itself. Direct edits refuse Wall/composed body
 occupancy; the sampled route additionally protects its sampled actor hulls.
 Physical source and target checks use individual body IDs, including detached
@@ -103,10 +134,10 @@ pixel-material `Rocket`.
 | U13 `impact_slug` | Impact Slug | First editable contact chips a small footprint. |
 | U14 `borer_round` | Borer Round | Up to three editable penetrations, losing speed after each. |
 | U15 `ricochet_pellet` | Ricochet Pellet | Up to two damped terrain bounces. |
-| U16 `sticky_delay_charge` | Sticky Delay Charge | First contact sticks; 0.55 s simulation-time fuse excavates locally. Right click activates the oldest eligible owned charge early. |
-| U17 `timer_airburst` | Timer Airburst | 0.45 s flight fuse splits into five bounded child chip shots. Right click bursts the oldest live owned canister early. |
+| U16 `sticky_delay_charge` | Sticky Delay Charge | First contact sticks; 0.55 s simulation-time fuse excavates locally. Alternate activation fires the oldest eligible owned charge early. |
+| U17 `timer_airburst` | Timer Airburst | 0.45 s flight fuse splits into five bounded child chip shots. Alternate activation bursts the oldest live owned canister early. |
 | U18 `water_capsule` | Water Capsule | Contact releases Water into nearby available cells. |
-| U19 `oil_igniter` | Oil Igniter | Contact deposits Oil; 0.35 s later it attempts one Fire pulse. Right click activates the oldest primed owned payload early. |
+| U19 `oil_igniter` | Oil Igniter | Contact deposits Oil; 0.35 s later it attempts one Fire pulse. Alternate activation fires the oldest primed owned payload early. |
 | U20 `seed_pod` | Seed Pod | Contact disperses Seed locally. |
 | U21 `cement_blob` | Cement Blob | Heavy short-range Cement payload. |
 | U22 `water_contact_charge` | Water Contact Charge | Contact arms the carrier; nearby Water or Brine triggers one Fire pulse. |
@@ -196,10 +227,20 @@ var command = CyberPhysicalActorSession.make_command(view, sequence, {
 Only the physical owner supplies source positions, mount/body IDs, material
 effect requests and lifecycle changes. The helper fills missing equipment
 identity from the copied view; raw external packets must carry it. The worker
-validates the copied physical frame and request together. One pending request
-per actor prevents repeated receipt consumption from applying recoil twice.
+validates the copied physical frame and request together. At most eight requests
+are admitted globally, with one unconsumed request per actor, including a request
+already extracted for the owner to process. Queue admission and the later effect
+result are distinct; repeated receipt consumption cannot apply recoil twice.
 Selection/lifecycle transitions advance equipment epochs; cancellation advances
 the actor control generation. Old observations cannot restore a retired state.
+
+Cancellation and finite material-effect consumption share the worker mutex.
+After cancellation returns, an old pending request cannot commit a later cell
+edit. This does not roll back already committed projectiles or deployed devices.
+The exact owners are
+[`simulation_worker.gd::_set_physical_usable_state_locked/_consume_physical_usables`](../../godot/scripts/simulation_worker.gd),
+[`physical_usable_runtime.gd::request_error`](../../godot/scripts/physical_usable_runtime.gd)
+and [`physical_actor_session.gd::submit`](../../godot/scripts/physical_actor_session.gd).
 
 Copied `observation.equipment` includes identity/usable, owning part and held-body
 pose, actual and requested aim, joint limits, clearance, release/pickup readiness,
@@ -243,6 +284,7 @@ Earlier publications do not alias mutable runtime dictionaries.
 | Limit | Current value |
 |---|---:|
 | Actor equipment slots | 8 |
+| Physical requests pending or in flight | 8 globally; 1 per actor |
 | Committed projectiles | 64 |
 | Deployed devices | 16 globally |
 | Deployed devices per actor | 4 |
@@ -271,7 +313,10 @@ mass, heat, momentum or chemical stoichiometry. Native ID emission initializes
 the native compact state for that material; later phase/reaction behaviour remains
 owned by the material engine.
 
-CYSD1 saves do not resume committed equipment state. Learned inference, general
+CYSD1 saves do not resume committed equipment state. Workbench authored saves
+retain the starting actor/equipment configuration, not live charge, cooldown,
+projectiles, processor stock or a released body's physical continuation.
+Learned inference, general
 inventory/economy, actor health/damage, programmable material-graph items,
 exact thermodynamics/chemistry and target-PC feel acceptance remain outside this
 increment. The physical chassis is a bounded equipment demonstration, not a
@@ -289,8 +334,10 @@ godot --headless --path godot -s res://tests/test_actor_usables_integration.gd
 
 The [build guide](../operations/local-build-and-validation.md#physical-usable-validation)
 adds physical equipment, lifecycle, native effects/admission and usable-course
-fixtures. The current PR must also pass the existing actor-rig regressions and repository
-documentation/provenance gates before merge. The earlier pre-publication local
+fixtures. Equipment implementation changes also need the applicable actor-rig
+regressions and repository documentation/provenance gates; the original ACT-005
+assignment is not a current branch instruction. These are validation entry
+points, not newly executed results. The earlier pre-publication local
 USABLE-001 run was source-matched to the ACT-002-era tree and is retained only as
 historical development evidence; it is not exact-head acceptance for the current
 reconstruction.

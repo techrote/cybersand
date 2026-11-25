@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Shared five-floor recipe, exclusive owner controls, issue 13 transport evidence and current issue 19 Water Feel Lab annex
 canonical-for: [experiment-tower, transport-comparison-procedure]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-24
 related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, microscenarios-programme.md, ../systems/granular-interaction-policy.md, ../audits/2026-09-09-issue-13-transport.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -12,12 +12,34 @@ related-documents: [physics-characterisation.md, water-feel-lab-experiment.md, a
 
 ## How do I open and reset the experiments?
 
-**Current:** desktop has an Experiment Tower button and F9.
-The native Web menu includes Experiment Tower. Both consume the same
+On desktop, choose **Materials sandbox / Experiment Tower — F9** in the feature
+launcher, then press **F9** or **Experiment Tower / F9** in the ordinary Main
+scene. Shared Workbench has its own input path; F9 there does not open this
+apparatus. Return to the feature launcher with **F2** first if needed. The native
+Web menu includes Experiment Tower. Both hosts consume the same
 [recipe](../../godot/scripts/experiment_tower.gd) through `CyberDemoWorlds` and
 `CyberDemoBridge`. Existing demos retain their recipes. The lab starts paused;
 floor selection places the player on a safe shaft landing and pans the camera.
 Arrows pan horizontally to the remaining bays; A/D and Space provide normal movement.
+
+For a first controlled release:
+
+1. Select a floor and a tube. Tube selection pauses the run and focuses its bay.
+2. Use **Open plug** for that tube, **Open neighbours** for it and its next
+   neighbour, or **Sequence +30 / +90 ticks** for the two scheduled releases.
+3. Press **Pause / resume** to run, or **Single step** to advance one paused tick.
+   Watch the copied status; a queued command is not an applied native receipt.
+4. Use **Export observation** to retain the bounded control/context record and
+   **Fresh tower** to rebuild. Save the source/runtime identity with observations.
+
+The Tower's **Water Feel** controls belong to the retained #19 experiment
+apparatus. They are separate from the current Shared Workbench
+[Water Lab](workbench-water-lab.md). The dated measurements below describe their
+original fixtures and settings; this documentation review did not repeat those
+campaigns or qualify a new Water default. Current controls are defined by the
+[Tower panel](../../godot/scripts/tower_panel.gd),
+[desktop host](../../godot/scripts/main.gd) and
+[Web host](../../godot/scripts/web_demo_controller.gd).
 
 Floors contain flowing powders; Water/Sand slopes and settling; eleven liquids;
 packed, poured and excavated Mercury references; and separated chemistry.
@@ -62,9 +84,16 @@ seams; each runs one/four workers for 1800 ticks. Every 60 ticks records exact
 content identity, species counts and Water mass. Seed is a translation, not a
 new random stream. Input timing is independent of wall clock and workers.
 
-Run `tools/physics/issue13.py --output <raw>` to rebuild before executing. Pass
-`--reference <baseline/references.json>` to reject any Baseline content drift.
-Raw results belong under `C:/kybersand/validation/local`; the
+The retained runner is `python tools/physics/issue13.py --output <raw>`. Its current
+source expects the original Windows workspace compiler at
+`../.local/llvm-mingw-20260826-ucrt-x86_64/bin/clang++.exe` and writes
+`build/transport_sampling.exe`; it is not a portable Linux build command. Inspect
+`--help` and the [local build guide](local-build-and-validation.md) before selecting
+an appropriate source-matched apparatus. The default runner rebuilds before
+executing; `--skip-build` does not establish that an existing binary matches source.
+Pass `--reference <baseline/references.json>` to reject Baseline content drift.
+Choose an output directory outside tracked source; `C:/kybersand/validation/local`
+was the original workspace location, not a required path on a new machine. The
 [dated audit](../audits/2026-09-09-issue-13-transport.md) owns acceptance and gaps.
 Native counters do not constitute visual approval of the poured Mercury feel.
 
@@ -183,23 +212,27 @@ retains the post-merge Windows failure and subsequent validation scope.
 
 ## Planned MicroScenarios extraction
 
-Issue #27/MS-000 will generalize this Tower and the Water Feel Lab into the
-[MicroScenarios framework](microscenarios-programme.md). The extraction is an
-apparatus refactor: existing Tower recipes, ownership, reset behavior, profile
+Issue #27/MS-000's extraction is already implemented by the
+[shared MicroScenario host](#shared-microscenario-host-ms-000) below. This retained
+heading records its original admission context, not future implementation work.
+The [MicroScenarios programme](microscenarios-programme.md) owns the dependency
+graph. The extraction was an apparatus refactor: existing Tower recipes, ownership, reset behavior, profile
 application, Water blind/export controls and chemistry-is-unchanged historical
 boundaries remain authoritative controls.
 
-#27 no longer waits for #18 or #14/G-final. The practical prerequisite is that the
-#24 root Tower Space/focus defect is resolved in the working base (or taken as an
-isolated prerequisite immediately before the extraction) so the common launcher
-does not inherit a known movement/reset conflict. #18/#20 architecture gates
+The original admission removed #18 or #14/G-final as prerequisites and required
+the #24 root Tower Space/focus correction. Current Tower controls use
+`Control.FOCUS_NONE`, preserving movement input after ordinary button use.
+#18/#20 architecture gates
 remain independent and cannot be satisfied by scenario refactoring.
 
 The common host is intentionally useful while physics remains imperfect. Larger
 exploratory scenarios may expose unknown edge cases; capture/reduce them to
 versioned fixtures, triage them to kinetic/contact, intermaterial, state/phase or
-cross-system ownership, then retain regressions after bounded fixes. #27 itself
-must still demonstrate observer-off neutrality and source-matched behavior.
+cross-system ownership, then retain regressions after bounded fixes. The
+[original MS-000 evidence](../audits/2026-09-19-issue-27-microscenarios.md) retains
+the observer-off and source-matched comparisons; its historical qualification is
+not replaced by this editorial correction.
 
 ## Shared MicroScenario host, MS-000
 

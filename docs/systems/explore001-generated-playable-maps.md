@@ -1,29 +1,29 @@
 ---
-title: EXPLORE-001 generated playable starting maps (source candidate)
-status: Planned
+title: EXPLORE-001 generated playable starting maps
+status: Current
 document-kind: contract
 scope: GEN-007 final play plane to existing prepared finite shared-workbench World
 keywords: [EXPLORE-001, GEN-007, playable, workbench, native, map, save, reopen]
 canonical-for: [generated-playable-map-admission, generated-playable-map-persistence]
-last-reviewed: 2026-11-08
+last-reviewed: 2026-11-24
 related-documents: [generation-workbench-2.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/github-development-and-release.md]
 ---
 
 # EXPLORE-001 — GEN-007 → Playable Workbench
 
-This branch introduces a **candidate implementation**. Code presence is not
-evidence of a rebuilt runtime, tested player movement, or integration
-authorization. Rebuild and execute its tests before using it with valued maps.
+**Current accepted implementation:** #542 merged on 9 November 2026 at
+`d4b18e7f06839b35c8f6a66195206da0f33c5fa3`. Native generated play planes can be
+previewed, explicitly installed, painted, saved as authored starts and reopened
+in the ordinary Shared Workbench. The [desktop walkthrough](../operations/explore001-desktop-playtest.md)
+owns the practical sequence; [saving](../operations/workbench-saving.md) separates
+authored reconstruction from exact evolved state.
 
 The [8 November integration QA](../audits/2026-11-08-explore001-integration-qa.md)
-records independent native/persistence reviews, a reproduced repeated-preview
-cursor defect and its correction. Every preview now retires its chunk cursor
-with its copied buffers. Complete repeated previews, partial cancellation,
-larger/smaller canvases and saved-source corruption have explicit regressions.
-The [Windows candidate guide](../operations/explore001-desktop-playtest.md) owns
-launch and human playtest instructions. This remains a Draft source candidate;
-candidate runtime qualification and published retained-runtime provenance are
-separate gates.
+retains its original candidate source/runtime and independent-review evidence.
+Its repeated-preview cursor correction is in accepted source. Later catalogue,
+painting and Flatten integrations do not inherit that old package's validation,
+and a current source checkout still needs its matching native runtime. Merged
+implementation does not prove physical owner playfeel or every export platform.
 
 ## Architectural project extension — 2026-11-14
 
@@ -40,7 +40,7 @@ provides toggle, three-style and fresh-process paint/reopen checks.
 
 ### Standalone profile discovery repair — 2026-11-11
 
-The WB-ART repair candidate packages every canonical top-level JSON recipe from
+Current accepted packaging copies every canonical top-level JSON recipe from
 `examples/worldgen` inside `godot/authoring/worldgen` as well. The existing dialog
 prefers `res://authoring/worldgen`, then the checkout's sibling directory, and
 deduplicates filenames. Launch working directory and Git metadata are irrelevant.
@@ -53,14 +53,15 @@ identifies the searched paths, complete-package reinstall and **Choose profile
 file…** recovery. Missing or invalid selected files report their actual paths.
 The chooser and saved embedded-recipe reconstruction remain available.
 
-The owner's original Stage-2 Windows installation is not accessible from this
-repair environment, so its missing-directory cause cannot be asserted from a
-folder inspection. The known failing configuration is retained as a fresh
+The original Stage-2 Windows incident was not diagnosed by inspecting the
+owner's inaccessible installation; its historical cause remains limited to the
+recorded evidence. The known failing configuration is retained as a fresh
 non-Git fixture with both recipe directories absent. Actual discovery is tested
 against the package inventory; a separate full-Workbench regression selects a
 discovered Deepworks recipe, generates native terrain, paints two materials,
 saves and reopens in another process. Windows graphical and source-built results
-belong to the candidate's qualification ledger, not a dialog-instantiation pass.
+retain their original qualification scope; a dialog-instantiation pass alone
+does not establish those outcomes.
 
 Tests: `test_workbench_generator_discovery.gd`,
 `test_workbench_generator_installed.gd` (`WB_GENERATOR_REOPEN=1` for the second
@@ -68,7 +69,7 @@ process), and `python3 tools/ci/test_workbench_profile_packaging.py`.
 
 ### Authoring and reopen
 
-1. Launch the existing desktop feature launcher and choose **Shared Workbench**
+1. Launch the desktop feature launcher and choose **Development workbench**
    (or use the launcher's `--workbench` argument). There is no new game scene.
 2. Click **New from generator…**. Choose the native GEN-007 JSON profile
    (`gen007-deepworks` is initially selected), deterministic integer seed,
@@ -90,15 +91,18 @@ process), and `python3 tools/ci/test_workbench_profile_packaging.py`.
    Pause**, **Step**, free/follow/overview camera, **Brush**, and left/right
    painting/erasure. A saved start records actor spawn and the authored ordered
    brush marks, not the live evolved native state.
-6. Expand **Details**; enter a valid name and click **Save named start**.
-   The existing `user://workbench/setup-<name>.json` is atomically replaced with
-   the versioned generated-map manifest, only after the complete bounded JSON
-   and material source have been checked.
+6. In the painting row, enter a valid name and click **Save start [Ctrl+S]**.
+   After the complete bounded JSON and material source have been checked, the
+   versioned generated-map manifest is written to a temporary file and renamed
+   to `user://workbench/setup-<name>.json`. This Godot rename path does not provide
+   the material-baseline writer's stronger failed-replacement preservation
+   guarantee. Use a new name to retain an earlier generated start.
 7. Close Godot. Start it in a **new process**, select Shared Workbench, enter
    that name and click **Load start**. The same dialog re-generates the original
-   native play-plane with the saved exact recipe, verifies all source identities
-   and material SHA-256 before installing the stored actors, liquid settings,
-   ordered manual erasures and overpainting. It refuses incompatible revisions
+   native play-plane with the saved exact recipe and verifies all source identities
+   and material SHA-256. Confirm **Install into workbench** after that preview is
+   ready to install the stored actors, liquid settings, ordered manual erasures
+   and overpainting. It refuses incompatible revisions
    or different generated bytes **without altering the old World**.
 
 ### Coordinate/authority contract
@@ -120,8 +124,10 @@ map before existing host/worker acknowledgment and Rapier adoption. Original
 World, physics owner and actor graph are not swapped on a native refusal.
 
 A dense generated map is **never** converted into the legacy 4096 construction
-rectangles. The version-2 Setup dictionary is unchanged and is nested into an
-independent generated-start v1 manifest. The generated baseline is immutable
+rectangles. The version-2 Setup is nested into an independent generated-start v1 manifest.
+Its accepted optional actor/equipment and authoring extensions are defined by
+the [shared authoring contract](../architecture/shared-workbench-authoring-data.md);
+the manifest does not silently migrate to a separate setup-v3/v4 format. The generated baseline is immutable
 on save; manual edits are an additional sequential authoring layer. A generated
 map's **initial** material map and edits are reproducible; an evolved simulation
 mid-tick is deliberately not serialized.
@@ -130,17 +136,24 @@ mid-tick is deliberately not serialized.
 
 - Finite dimension 512, 1024 or 2048 on each side (square maps in the dialog);
   nonnegative destination coordinates, bounded global source range.
-- Up to 4096 ordered manual starting marks, matching v2's stamp budget. Generated
-  baseline detail is **not** subject to that bound. A dense edit-overlay
-  compaction format is not yet provided; the UI refuses rather than silently
-  losing erasures after stamp exhaustion.
+- Current Workbench setup allows up to **32,768** ordered starting stamps or
+  construction rectangles, subject to the 1 MiB envelope and native capability
+  readback. The ordinary non-Workbench MicroScenario bound remains 4096.
+  Generated baseline detail is **not** converted into those records. Native
+  replay work is separately bounded to the smaller of 64×canvas cells and
+  32,000,000 attempted cells. Refusal preserves the prior document.
+  [Flatten / Bake History](../operations/workbench-saving.md) can explicitly
+  replace construction history with a stored material baseline; it is not
+  automatic compaction or exact physical-state capture.
 - Source recipe document ≤1 MiB; saved manifest ≤1 MiB. Neither manifest
   includes the original million-cell material array.
 - Native semantic planes other than `play` do not become physical materials.
   Routine generator creation requires no editing JSON; custom files can be
   selected with **Choose profile file…**.
 - Setup-v2 names without generated manifest `format` retain their old reader.
-  #402/#409's Draft setup-v3/v4 formats are not independently changed here.
+  Material-baseline-v1 has its own reader. Old #402/#409 branch-format proposals
+  are not additional current readers merely because the issue numbers appear
+  in earlier integration notes.
 - A 2048² chunk profile requires up to 1024 receipts at aligned 64-cell chunks;
   region/profile capacity still applies. Deepworks' declared semantic plan is
   1024², so a 2048² request is refused while preserving the installed map.
@@ -155,12 +168,17 @@ mid-tick is deliberately not serialized.
   is four bytes per cell (16 MiB); prepared/old Worlds and other staging memory
   coexist. Those buffer bounds are not a total-memory or responsiveness claim.
 
-## Qualification commands (run against a **source-matched rebuilt** native runtime)
+<a id="qualification-commands-run-against-a-source-matched-rebuilt-native-runtime"></a>
 
-Run from a clone of the **exact** EXPLORE-001 branch, using the repository's
-pinned Godot 4.7, godot-cpp and Rapier addon and a locally rebuilt native
-extension matching the branch source. Do **not** use an old checked-in binary
-as evidence for the new native grid interface.
+## Qualification commands (run against a **source-matched** native runtime)
+
+Run from the selected current source with the exact pinned Godot, godot-cpp
+and Rapier identities and a source-matched materialized or rebuilt native
+extension. Follow [local validation](../operations/local-build-and-validation.md)
+for isolated profiles, import and provenance checks. An old candidate branch is
+not required to use the accepted feature. A library whose source-input hashes
+do not match cannot qualify these native interfaces. Use the same disposable
+profile for both processes of a save/reopen pair, separate from valued saves.
 
 Linux (in a suitable graphical environment):
 
@@ -208,14 +226,15 @@ physical monitor. These are geometry tests, not human camera/traversal acceptanc
 ## Protected-source integration
 
 The owner-approved [shared authoring data and convergence contract](../architecture/shared-workbench-authoring-data.md)
-defines the common foundation and planned generated-map/agent/save join gate.
-Ready qualification of #542 is now explicitly authorized; merging and #548
-implementation are not. Existing formats and runtime behavior remain unchanged.
+owns the common boundary. #542 is merged; its old one-task Ready authorization,
+merge hold and lists of then-active branches are preserved in the
+[source-pinned previous contract](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/explore001-generated-playable-maps.md).
+They do not authorize today's PR or keep this accepted feature permanently Draft.
 
-This feature changes the existing prepared native constructor and main
-workbench host explicitly, **not** the #525 signed-frame adapter, #529/#530
-agent source, MAT-AUTH catalogue, #402 flyer options or #409 setup schema.
-Those draft PRs overlap the legacy shared-workbench UI and main controller;
-a guarded reconciliation and the appropriate active owner approvals are
-required before promotion/merge. Draft CI skipping native/Godot tests is a
-**qualification hold**, not success.
+Generated-map admission uses the prepared native constructor and shared host.
+It does not grant a separate signed-frame adapter, live agent access to World,
+arbitrary new material schema or import of an unmerged candidate. Consult the
+[current register](../reference/status-and-roadmap.md) for active ownership and
+[source leases/release procedure](../operations/github-development-and-release.md)
+before publishing a later change. Skipped native/Godot jobs remain a qualification
+limit, never a passing result.

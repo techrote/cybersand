@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 ---
 
 # Rendering and gameplay bridges
@@ -50,14 +50,15 @@ before clearing dirty metadata.
 
 ## How are RG8 regions copied?
 
-**Current candidate:** `World::copy_render_cells` resolves one chunk per
+**Current accepted implementation:** `World::copy_render_cells` resolves one chunk per
 contiguous row run and projects each stored material/state pair through the
 unchanged `project_visual_state`. Absent chunks remain Empty. Signed regions,
 stride padding and inclusive `INT64_MAX` endpoints retain their defined
 semantics; an unrepresentable final coordinate is refused before any write.
 The World remains unbounded and sparse: native extraction introduces no clipping.
-The finite desktop full snapshot explicitly selects the 1024-square window;
-Main rejects patches crossing its image bounds. The handoff regression accepts
+The ordinary demo uses its 1024-square backing, while Workbench publishes its
+accepted finite canvas extent. Main rejects patches crossing the active image
+bounds; native sparse coordinates do not enlarge that host image. The handoff regression accepts
 the final RG8 pixel and verifies that refused edge crossings leave the image
 unchanged.
 
@@ -74,7 +75,9 @@ No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
 `upload_texture_patches` then calls `ImageTexture.update` on the **full** backing
-image. A 1024×1024 RG8 upload is 2,097,152 bytes regardless of a tiny edit.
+image. A 1024×1024 RG8 backing contains 2,097,152 bytes; 2048×2048 contains
+8,388,608 bytes. A tiny CPU patch does not reduce the dimensions passed to the
+full-image update. These are payload sizes, not measured transfer times.
 
 Desktop acknowledges a render serial only after successful consumption.
 Malformed/empty/stale or unacceptable full-refresh data is rejected and requests
@@ -112,6 +115,23 @@ publication cadence. Neither is a strict simulation-accuracy switch.
 **Planned:** true GPU subregion submission, palette-change records, measured
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
+
+## What does a receipt acknowledge?
+
+Authoring and rendering use different acknowledgements. Workbench's bounded
+paint/direct-Art paths publish operation outcomes from the exclusive native
+owner, then reconcile confirmed authored history. Render consumption separately
+acknowledges a matching render serial. Provider completion, queue admission,
+native mutation, authored recording and display are different stages; do not
+report **applied** from a request ID alone.
+
+The relevant source paths are
+[`workbench_paint_editor_executor.gd`](../../godot/scripts/workbench_paint_editor_executor.gd),
+[`workbench_paint_editor_history.gd`](../../godot/scripts/workbench_paint_editor_history.gd),
+[`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) and
+[`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd).
+The [shared authoring contract](shared-workbench-authoring-data.md) owns the
+Save/history boundary; this render contract does not grant authoring authority.
 
 ## Which gameplay command path exists today?
 

@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Cathedral Megaframe classic Gentek showcase
 status: Current
 document-kind: research

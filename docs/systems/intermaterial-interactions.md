@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics
 canonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 related-documents: [../operations/microscenarios-programme.md, materials-and-rule-kernels.md, ../operations/microscenario-reference-pack.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -42,12 +42,19 @@ Current schema/profile:
   int.pass.current-oracle.
 
 The source is sparse constexpr data plus a deterministic resolver. It is
-human-reviewable and diffable. **Current since MAT-002:** the production resolver
-first consults a derived 256-bit partner set per material, rebuilt at compile time
-from `kPairInteractionRules` (`InteractionRules::build_partner_sets`/`may_pair`),
-so non-reacting neighbours are rejected without scanning every rule. It is a
-derived cache, never authored, and a native regression proves it agrees with the
-authored linear scan for every material pair.
+human-reviewable and diffable. Production
+[`MaterialRules::pair_reaction`](../../native/src/material_rules.cpp) first
+consults a derived 256-bit partner set per material. Namespace-scope partner
+and participant tables come from `InteractionRules::build_partner_sets` and
+`build_participants`. A second 65,536-entry byte table is prepared once at load
+using `InteractionRules::match_pair_from`; it maps each ordered pair to the first
+authored rule's index plus one, or zero for no match. Successful partner queries therefore also
+avoid rescanning the sparse rule list. Probability and role-specific product
+selection still use the selected authored rule.
+
+These are derived caches, never a second authored rule source. The versioned
+resolver and retained oracle regressions provide the semantic comparison;
+changing this lookup implementation does not declare a new tuning pass.
 
 Stable independent channel IDs are thermal_phase, dissolution_corrosion,
 chemical_conversion_products, combustion, electrical,
@@ -108,7 +115,8 @@ the versioned resolver and public `MaterialRules::pair_reaction` API against a
 literal pre-migration oracle over every pair of IDs 0–80, both orientations and
 twelve probability-boundary samples. MAT-002's additional rules are checked
 separately in both orientations across all 256 roll values. The public
-MaterialRules API remains available to World and delegates to the versioned resolver.
+MaterialRules API remains available to World and preserves the versioned
+resolver's semantics through the derived production lookup described above.
 
 The four-tick contact cadence, neighbour order/random salts, Water-state
 initialization, worker ownership and writes remain World-owned; the resolver

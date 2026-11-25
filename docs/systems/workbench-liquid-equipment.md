@@ -2,9 +2,9 @@
 title: Workbench liquid equipment — valves, drain, nozzle and pump
 status: Current
 document-kind: contract
-scope: IN-TOOLS #361 shared-workbench liquid equipment (accepted through #553); authored geometry, worker-owned device owner, native quantity accounting, controls, built-in liquid-lab and reservoir-lab starts, lifecycle and limits
+scope: Accepted shared-workbench liquid equipment, current Water Lab controls, authored geometry, worker-owned device state, native quantity accounting, built-in starts and persistence limits; pending Equipment recovery remains separate
 canonical-for: [workbench-liquid-equipment, liquid-lab-apparatus, reservoir-lab-apparatus]
-last-reviewed: 2026-11-12
+last-reviewed: 2026-11-24
 related-documents: [../architecture/in-tools-gameplay-admission.md, ../architecture/inertial-cellular-v1.md, ../architecture/ballistic-water-v1.md, actor-usables.md, ../audits/2026-11-09-in-tools-361-workbench-equipment.md]
 ---
 
@@ -12,15 +12,16 @@ related-documents: [../architecture/in-tools-gameplay-admission.md, ../architect
 
 ## Status and boundary
 
-**Accepted through #553 at `d8588716` and preserved in the integrated PAINT and
-agent candidate.** The equipment is opt-in: a starting setup
-without an `equipment` block, every Current default, the U10 `liquid_drain`
-usable, the Water family selection and all native laws are unchanged. No
-native C++ or GDExtension source changed for #553 itself. The separate
-[integrated candidate](../operations/wb-art-paint-integrated-candidate.md) adds
-stored-material readback and retains PAINT capacity changes, so it requires its
-new source-built runtime; the old committed libraries do not qualify that
-integrated source. Dated equipment evidence lives in the
+**Current at accepted source `00cdb02f`, including the #553 equipment foundation
+and accepted #572/#672 Workbench integration.** Equipment is opt-in through a
+starting setup's `equipment` block. The devices add no new Water family or
+global solver default, and remain distinct from the U10 actor `liquid_drain`
+usable. Use a [source-matched native runtime](../operations/local-build-and-validation.md);
+the old integrated-candidate warning is historical, not a requirement to rebuild
+an already matching materialized library. The separate
+[Equipment recovery programme](https://github.com/techrote/cybersand/pull/724)
+remains unmerged in the current source snapshot; its proposed repairs are not
+described as available here. Dated equipment evidence lives in the
 [2026-11-09 audit](../audits/2026-11-09-in-tools-361-workbench-equipment.md).
 
 The equipment adds **no solver, law, velocity edit or second equipment
@@ -49,7 +50,7 @@ three distinct mechanisms; the receipt states the nozzle mode explicitly.
   and [`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd). Unknown
   keys, fractional or out-of-canvas geometry and unbounded rates refuse; nothing
   is clipped. A setup without the key keeps exactly its Setup-v2 bytes; an older
-  build refuses (never silently drops) a file that has it. Save named start keeps
+  build refuses (never silently drops) a file that has it. **Save start [Ctrl+S]** keeps
   the block, including live aim/speed/rate tuning.
 - **Transient (never saved):** open/closed state, pipe stock, ledgers and
   observations.
@@ -79,7 +80,8 @@ three distinct mechanisms; the receipt states the nozzle mode explicitly.
 
 ## Desktop controls
 
-Shared workbench, **Liquid equipment** rows: **Valve n/N [V]** toggles the
+Open **Water Lab… → Equipment** in Shared Workbench. Its **Liquid equipment**
+rows provide **Valve n/N [V]** to toggle the
 selected valve, **◀ [** / **▶ ]** choose the valve, **All valves**, **Drain [G]**,
 **Nozzle [H]**, **Aim − [J]** / **Aim + [K]** (10° steps), **Speed**, **Rate**,
 **Stop all**, **Load liquid-lab**, **Load reservoir-lab**, **Valve/Drain/Nozzle at
@@ -93,7 +95,7 @@ on it also shows the loop total. Overlay markers: valves orange (shut) / green
 Typing `liquid-lab` or `reservoir-lab` in the setup name and **Load start**
 also opens the built-in start while no user file of that name exists.
 
-In the integrated PAINT/agent candidate, paused **Paint** mode keeps PAINT's
+In current paused **Paint** mode, PAINT keeps its
 existing shortcut priority: **G** selects Fill, **V** selects Paste, and
 **[** / **]** change brush radius. Select the main **Select body** tool to use
 the equipment shortcuts. The equipment buttons remain available in Paint mode.
@@ -136,17 +138,27 @@ added or removed with the ordinary X/Y authoring controls and saved with the sta
 
 ## Limits and known gaps
 
-- Measured leak rate through the liquid-lab's 8-cell bottom valve is about
+- In the original dated equipment evaluation, the measured leak rate through the liquid-lab's 8-cell bottom valve was about
   3 cells per tick under inertial Water (law unchanged); FreeMass, whole-cell and
   pressure Water drain it noticeably faster (see the dated evidence).
 - The underwater inlet adds volume, not pressure: there is no public native call
   that adds PressureFlow overfill at depth, so a true pressure point/jet needs a
   separate native API.
-- At rate 2 the spray registers native body contacts on the barrel but pushes it
-  only ~0.5–0.7 cell in 240 ticks; raise **Rate** for a visible shove.
-- Equipment is a shared-workbench feature. No physical-actor usable, generated
-  (#542) map placement or agent (#531) integration exists yet; the authored block
-  and command/receipt interface are the intended join points.
-- The pre-implementation #361 source-admission lock (`in_tools_current_main_admission.py`)
-  pins `simulation_worker.gd`; this implementation changes that one authority
-  additively, so the lock reports drift by design. It was not repinned or weakened.
+- The original rate-2 spray evaluation registered native body contacts on the
+  barrel but moved it only ~0.5–0.7 cell in 240 ticks. Those measurements retain
+  their original source/runtime scope; they were not re-executed for this guide.
+- Equipment is a shared-workbench apparatus. The same X/Y placement controls
+  can author its validated block on a generated start, and generated-start Save
+  retains that Setup block. The generator does not automatically place apparatus.
+  Source owners are [`workbench_liquid_equipment_panel.gd::place/_edit`](../../godot/scripts/workbench_liquid_equipment_panel.gd),
+  [`workbench_generated_map.gd::write_named`](../../godot/scripts/workbench_generated_map.gd)
+  and [`shared_workbench.gd::save_setup`](../../godot/scripts/shared_workbench.gd).
+- Actor usables are a separate accepted system with their own command and
+  receipt lifetimes; this apparatus is not an additional actor loadout item.
+  A future agent client still needs its own integration. The authored block and
+  copied command/receipt interface supply the current join points.
+- At the original #553 checkpoint, the pre-implementation #361 source-admission
+  lock (`in_tools_current_main_admission.py`) reported the additive
+  `simulation_worker.gd` change. That is a historical comparison, not a claim
+  that the worker is the only changed authority at today's source. This
+  documentation does not repin or weaken the retained admission lock.

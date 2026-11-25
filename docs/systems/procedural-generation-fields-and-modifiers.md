@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-002 deterministic scalar sidechains, finite curve tiles, immutable proposal context, masked guidance, aggregate realization and copied diagnostics
 canonical-for: [generation-field-graph, generation-masked-modifiers, generation-aggregate-materials, generation-context-and-diagnostics]
 keywords: [world generation, Hilbert, Morton, structured noise, masks, sidechains, modifiers, sculpting, aggregates, context, diagnostic]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-11-24
 related-documents: [procedural-world-generation.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 
@@ -28,7 +28,7 @@ module application/exclusion, aggregate variation and parameter mappings may
 also name a normalized typed output as `spatial:<id>`; unconverted general
 scalars, vectors, categories and booleans reject at that consumer boundary.
 
-**Current candidate source, GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
+**Current accepted source, GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
 the three [procedural generators](procedural-world-generation.md) now accept a
 named scalar field graph, masked guidance/material modifiers, aggregate material
 recipes and masked feature instances. These controls use absolute coordinates and
@@ -201,7 +201,11 @@ Each modifier may contain theme weights/exclusions, direct parameter edits,
 `parameter`, source `field` and valid `low`/`high` target values. Descending maps
 are valid. A parameter may occur once within the modifier's direct edits and
 mappings combined. `district_size` remains global-only and cannot be spatially
-mapped or edited.
+mapped or edited. In explicit architectural schema 4, `room_size` and
+`wall_thickness` are also fixed global integer geometry: themes, brushes, hard
+parameter overrides and modifier edits/mappings cannot vary them. Use bounded
+module instances for different room geometry; retained schemas 1–3 keep their
+original parameter rules.
 
 | Stage | Evaluation and authority |
 |---|---|
@@ -262,15 +266,20 @@ predict whether a mixture will settle, dissolve, flow or retain structural suppo
 ## How are diagnostics, budgets and lifetimes bounded?
 
 `Generator::begin(chunk, diagnostic)` and synchronous `generate` accept an empty
-channel or exactly one of `field:<id>`, `modifier:<id>` and `module:<id>`. These
-report the scalar output, effective modifier influence or bounded module mask.
-Unknown channels reject before job preparation. A requested diagnostic allocates
-one float per cell beside the private material array and is filled during normal
-paced generation, not a second generation pass.
+channel or one requested diagnostic. The retained normalized channels
+`field:<id>`, `modifier:<id>` and `module:<id>` report a scalar output, effective
+modifier influence or bounded module mask. Each allocates one float per cell
+beside the private material array and is filled during normal paced generation.
+The current API also accepts `spatial:<id>` for a copied typed output and
+`stage:<name>` for a separate intermediate material array; these use the
+[typed-field](procedural-typed-spatial-fields.md) and
+[generation-stage](procedural-world-generation.md) contracts. Unknown channels
+reject before job preparation. A diagnostic does not replace the final material
+payload or authorize installation into a live World.
 
-Ready `ChunkResult` values contain the channel name and optional normalized
-`float` diagnostics. The material content hash is unchanged by inspection; the
-receipt binds channel name, shape and float bit patterns as well as material,
+For the retained scalar channels, Ready `ChunkResult` values contain the channel
+name and normalized `float` diagnostics. The material content hash is unchanged
+by inspection; the receipt binds channel name, shape and float bit patterns as well as material,
 coordinate and recipe identity. `accepts` rejects altered, missing, nonfinite or
 out-of-range diagnostic data. Failure and cancellation discard both material and
 diagnostic payloads and their hashes. Pending prefixes remain private.
@@ -283,8 +292,8 @@ diagnostic payloads and their hashes. Pending prefixes remain private.
 | Aggregate definitions | 32, each with 1..16 components |
 | Modifiers | 64; existing point and geometry bounds also apply |
 | Material chunk | Side 8..256; at most 65,536 material bytes |
-| Requested diagnostic | At most 65,536 float values / 262,144 payload bytes |
-| Chunk logical work | Default 64,000,000; diagnostic adds four operations per cell |
+| Requested normalized diagnostic | At most 65,536 float values / 262,144 payload bytes |
+| Chunk logical work | Default 64,000,000; normalized or stage diagnostic adds four operations per cell; typed diagnostic adds sixteen |
 
 All field nodes, configured modifier work, aggregate components and declared
 module costs count toward logical work even when an application mask is zero.
@@ -307,8 +316,9 @@ and receipts intentionally change with the new implementation version.
 
 ## How can the controls be authored and inspected?
 
-The opt-in [workbench](../../godot/scripts/worldgen_workbench.gd) has named field
-editing from the native kind catalogue, aggregate component controls, modifier
+The standalone **World generation workbench — terrain authoring preview**
+launcher entry opens the [generation editor](../../godot/scripts/worldgen_workbench.gd).
+It has named field editing from the native kind catalogue, aggregate component controls, modifier
 editing, application/exclusion selectors, context filters and field-to-parameter
 mapping. Canvas tools carve, paint materials/aggregates or add masked parameter
 and theme guidance. Bounded modifiers can be translated/scaled; complete JSON

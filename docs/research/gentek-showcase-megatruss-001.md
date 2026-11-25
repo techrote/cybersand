@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Megatruss Station — CLASSIC multi-bay superstructure showcase
 status: Draft
 document-kind: research

@@ -6,7 +6,7 @@ status: Current
 scope: Accepted independent body representation and value-data coupling; rectangle proof is not generalized physics
 keywords: [ADR, body mask, remove restore pixels, two-way coupling, overlap, rigid body]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ADR-003-godot-bridge-and-immutable-snapshots.md, ADR-009-rapier-2d-rigid-body-backend.md]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-11-24
 ---
 
 # ADR-007: Separate rigid-body occupancy coupling
@@ -24,7 +24,9 @@ Current implementation sources are
 [Rapier bridge](../../godot/scripts/rapier_physics_bridge.gd). Exact geometry,
 sweep/impulse bounds and numerical limits belong in the
 [coupling contract](../architecture/rigid-body-and-cellular-coupling.md).
-**Planned:** generalized shapes, torque, fracture membership and particle fallback.
+**Planned at the cellular coupling boundary:** generalized shape/torque feedback,
+fracture membership and particle fallback. Existing Rapier actor joints and
+actuator torque do not provide generalized cellular torque feedback.
 
 ## Why not remove and restore body pixels?
 
@@ -68,13 +70,17 @@ Broader acceptance requires more than passing the existing three-body scene.
 
 ## 2026-09-09 diagnostic checkpoint
 
-**Current:** [issue #9 measurements](../audits/2026-09-09-physics-characterisation.md)
-add bounded observation and isolated parameter fixtures without changing this
+**Historical checkpoint:** [issue #9 measurements](../audits/2026-09-09-physics-characterisation.md)
+added bounded observation and isolated parameter fixtures without changing this
 ownership decision. Repeated masked-source contacts, per-add saturation and
-missing persistent bearing must be considered before selecting a support model.
-**Current:** #10's [granular policy](../systems/granular-interaction-policy.md)
-changes player and pair rules. **Planned:** #11 owns barrel changes; dynamic aggregates still need
-the explicit exclusive-ownership ADR described by the characterisation plan.
+missing persistent bearing were identified before selecting a support model.
+#10's [granular policy](../systems/granular-interaction-policy.md) changed player
+and pair rules; #11 barrel work was still Planned at that checkpoint. Accepted
+REM-002 now includes the bounded ordinary-rectangle bearing and displacement
+behavior described in the [current coupling contract](../architecture/rigid-body-and-cellular-coupling.md#what-does-rem-002-establish-on-current-source).
+The original findings remain evidence for their original source. They do not
+make accepted #11 work unavailable, admit dynamic aggregates or establish
+generalized physical acceptance.
 
 ## Issue #10 sampled support decision
 

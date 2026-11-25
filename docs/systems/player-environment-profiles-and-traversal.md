@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: PENV-001 sampled-player mass, gravity, terminal/jetpack tuning, material-response identity and step/knee/clamber traversal; excludes Water semantic changes and generic-body physics
 canonical-for: [player-environment-tuning, sampled-character-traversal-bands]
-last-reviewed: 2026-09-25
+last-reviewed: 2026-11-24
 related-documents: [granular-interaction-policy.md, ../operations/gameplay-recording.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
 ---
 
@@ -18,18 +18,24 @@ consumes one validated profile under the simulation-worker owner. The desktop
 panel in `player_environment_panel.gd` edits a value copy and submits it through
 `CyberSimulationWorker.queue_player_environment_profile()`.
 
-A profile change does not mutate an executing run. The worker pauses, accepts the
-validated value profile, and the presentation owner then invokes the appropriate
-fresh-reset path for the ordinary demo world, Experiment Tower, Water Feel Lab or
-the current MicroScenario. Native cell authority, Rapier ownership and material
-descriptors are unchanged.
+The panel's **Apply + fresh reset** requests a validated profile through the
+appropriate fresh-reset owner. The ordinary route queues a copied value, pauses
+the worker and asks Main to reset the demo, Tower, Water Feel or current
+MicroScenario. The accepted prepared-liquid default route instead stages the
+profile inside its private candidate before replacement. A queued request is
+not an applied profile: the active label follows the profile hash published by
+the worker. Native cell authority, Rapier ownership and material descriptors are
+unchanged. See [`main.gd::apply_player_environment_profile`](../../godot/scripts/main.gd)
+and [`simulation_worker.gd::queue_player_environment_profile`](../../godot/scripts/simulation_worker.gd).
 
 PCHAR-001's player representation/recovery layer is orthogonal to this profile.
 Ordinary sandbox use may select the sampled character or the barrel/Rapier
 experiment and may choose sampled-baseline or burial-safe runtime recovery. PENV
-does not overwrite those choices. Registered Tower/Water/MicroScenario runs keep
-PCHAR's forced sampled-baseline representation while still receiving the active
-player/environment profile.
+does not overwrite those choices. The registered sampled Tower/Water and default
+MicroScenario paths keep their sampled-baseline configuration. Later physical
+trial, actor and Workbench configurations have their own explicit representation
+owners; this profile does not turn them into sampled characters or tune their
+Rapier actuators.
 
 The profile hash is SHA-256 over the resolved profile fields. It identifies the
 player/environment tuning inputs; it is not a state hash or exact-replay identity.
@@ -110,17 +116,27 @@ stamina, arbitrary collision-shape climbing or a generic Rapier-body semantic.
 
 ## Desktop visibility and recording provenance
 
-The desktop exposes a compact **Player / Environment Tuning** panel with the
-active profile ID/hash and core values. Applying any accepted edit performs the
-fresh reset described above.
+In the ordinary Main **Materials sandbox / Experiment Tower** entry, open
+**Player / Environment Tuning** to inspect the active profile ID/hash and core
+values. The current Shared Workbench hides this legacy panel. **Apply + fresh
+reset** uses the route described above. Main refuses tuning while an actor
+prototype owns movement and directs the reader to **Current sampled character**
+in F5; an active blind Water set must be finished/revealed first. These refusals
+preserve the existing run rather than silently applying unrelated actor tuning.
 
-REC-001 recording binds the full resolved player/environment profile to the exact
-render generation represented by each retained material frame. It appears in
-both the frame's player metadata and scenario identity, while recording-session
-desktop configuration retains only the profile already published as active at
-session start. A later consumer snapshot therefore cannot relabel older material
-bytes with newer tuning. MicroScenario capture identity also includes that
-published active profile.
+REC-001 v2 separates the frozen **material generation** from the later **actor
+sample**. Current [`gameplay_recorder.gd::_frame_metadata`](../../godot/scripts/gameplay_recorder.gd)
+reads the player/environment profile from the current snapshot's `lab_context`
+(with render context as a fallback), and stores that value in both
+`player.environment_profile` and `scenario.player_environment_profile`.
+Those fields describe the actor sample; they are not proof that the same profile
+produced older reused material bytes. The material generation keeps its own
+serial/tick/time identity. `environment_profile_applied` distinguishes a sampled
+player from prototype/body owners, and session desktop configuration retains
+the profile active at recording start. The
+[recording contract](../operations/gameplay-recording.md#retained-frame-format)
+and `test_gameplay_recorder.gd` preserve this two-clock boundary. MicroScenario
+capture identity separately includes the published active profile.
 
 This provenance is evidence identity, not proof that a candidate feels correct.
 Final Earth/Mars/starship values remain owner-tuning outcomes under parent #133.

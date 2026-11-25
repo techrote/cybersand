@@ -2,18 +2,29 @@
 title: Completed liquid characterization and evidence coverage
 status: Current
 document-kind: guide
-scope: Reviewed Issue 15 specialization, sleep attribution and bounded research admissions; no production changes
+scope: Interpretation of retained Issue 15 specialization and sleep evidence, with September research admissions separated from later accepted liquid implementations
 canonical-for: [liquid-characterization-experiment]
-last-reviewed: 2026-09-11
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, ../audits/2026-09-11-issue-15-coverage.md, ../systems/materials-and-rule-kernels.md]
 ---
 
 # Liquid characterization
 
+This page explains the **September #15 experiment**, not the current solver
+catalogue or today's implementation permission. Its measurements and negative
+results retain their original source and fixtures. Current Water/Brine policy,
+Wave, ballistic transport and storage are described by the
+[solver-family contract](../architecture/liquid-solver-family-policy.md),
+[Wave reference](../architecture/wave-flow-v1.md),
+[ballistic Water contract](../architecture/ballistic-water-v1.md) and
+[chunk/storage contract](../architecture/chunk-tile-and-buffer-model.md).
+Later accepted work must not be rejected by treating a September admission hold
+as a permanent restriction.
+
 ## What does completed G-C establish?
 
-**G-C: COMPLETE / evidence reviewed.** Retain distinct native liquids and current
-production defaults. The [coverage matrix](../audits/2026-09-11-issue-15-coverage.md)
+**G-C: COMPLETE / evidence reviewed at its original checkpoint.** That decision
+retained distinct native liquids and the then-current production defaults. The [coverage matrix](../audits/2026-09-11-issue-15-coverage.md)
 reviews all eleven liquids and every required dimension against retained
 #9/#10/#13/Water and completed #15 evidence at `cdb4c2a`. No new measurements were
 needed. [Original registration](https://github.com/techrote/cybersand/blob/cdb4c2a6df0248c76e7957fd09cae77655ec974f/docs/operations/liquid-characterization.md),
@@ -41,24 +52,30 @@ Mercury's period30 powder-exchange deadline is a separate mechanism; the support
 fixture has no powder. Oil/Acid/Lava bypass generic mobility, while Cement/Molten
 Glass lifecycle writes can affect activity. Their unmeasured details stay qualified.
 
-## What research does C now permit?
+<a id="what-research-does-c-now-permit"></a>
+## What did C permit at its September checkpoint?
 
 The [staged G-C programme decision](architecture-programme.md#g-c-staged-decision-2026-09-11)
-admits #17/P's bounded normalized mass4/6/8/10 and separate delay4/8 diagnostic
-on one controlled carrier now that G-L is complete. Preserve current solver and
+admitted #17/P's bounded normalized mass4/6/8/10 and separate delay4/8 diagnostic
+on one controlled carrier after G-L completed. The experiment had to preserve its solver and
 exact per-precision accounting; initial quantization and threshold policy remain
-separate. A negative result is valid. No P implementation occurred here.
+separate. A negative result was valid. No P implementation occurred in #15.
 
-#19/V remains justified as an independent frozen-authority presentation experiment:
+#19/V was justified as an independent frozen-authority presentation experiment:
 stable film/basin inputs let it investigate local coverage/orientation under its
 existing visual/cost contract. C proves neither a visual deficit nor a renderer
 benefit and authorizes no render migration. V does not require production layout
-selection. #18/M has no admitted measured jet/spray target; implementation remains
-held for a concrete target/no-go review; [completed G-P](architecture-programme.md#g-p-staged-decision-2026-09-11)
-now satisfies its precision prerequisite. #20/B still requires #18/G-M
-and its separate admission/transfer gate. General liquid unification, universal
-FreeMass, new yield solvers, production velocity/history and Cell widening remain
-non-admitted. G-final stays open.
+selection. At that checkpoint #18/M had no admitted measured jet/spray target;
+implementation was held for a concrete target/no-go review, with
+[completed G-P](architecture-programme.md#g-p-staged-decision-2026-09-11)
+satisfying its precision prerequisite. #20/B still required #18/G-M and its
+separate admission/transfer gate. The recorded non-admissions for general liquid
+unification, universal FreeMass, new yield solvers, production velocity/history
+and Cell widening describe that research stage. They do not negate the later
+accepted CY/PF/IN families, Wave retained flux, ballistic transport or eight-byte
+Cell representation. The [current-state register](../reference/status-and-roadmap.md)
+owns present programme status; this page does not close G-final or authorize a
+new liquid model.
 
 ## Evidence and limits
 

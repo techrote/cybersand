@@ -1,10 +1,10 @@
 ---
-title: Direct art batches, WB-ART-002 Stage 1
+title: Direct Art batches and native completion
 status: Current
 document-kind: contract
-scope: Unmerged desktop direct drawing candidate, stored-native completion, Stop, shared PAINT ordering and Undo/Redo, authored-start persistence
+scope: Accepted desktop drawing, native completion, Stop, shared PAINT ordering, Undo/Redo and authored persistence
 canonical-for: [workbench-direct-art-batches]
-last-reviewed: 2026-11-12
+last-reviewed: 2026-11-24
 related-documents: [../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md, ../operations/cybersand-codex-development-handover.md]
 ---
 
@@ -12,65 +12,25 @@ related-documents: [../architecture/shared-workbench-authoring-data.md, ../refer
 
 ## Candidate and purpose
 
-**Current candidate, unmerged:** issue #559 Stage 1 on
-`codex/agent-art-workbench-v2`, based on main
-`d4b18e7f06839b35c8f6a66195206da0f33c5fa3` (includes #542).
-#531 is read-only reference; none of its controller/configuration modules is
-imported. Physics/material defaults are unchanged. This is a
-small direct-drawing interface in the ordinary desktop Shared Workbench, not
-another World. The [provider candidate](workbench-art-providers.md) implements
-context, conversation, scanlines and multiple turns. The
-[integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md)
-preserves these features beside the complete PAINT editor, with a source-built
-native readback binding and shared mutation/receipt ordering.
-Its current shared Undo/Redo implementation is newer than the qualified
-`d33c10e4` package. Earlier direct-drawing and integration passes do not qualify
-this new history behavior.
+This is the accepted direct-drawing path in the ordinary Shared Workbench.
+It shares the same World, native mutation boundary and chronological history as
+human PAINT. The [provider contract](workbench-art-providers.md) adds model
+requests, context, Scanline and session traffic; it grants no wider material
+permissions. The [practical guide](../operations/workbench-art.md) introduces
+model-free drawing and configured providers.
 
 ### Repair checkpoint — 2026-11-11
 
-The owner-directed repair branch `codex/wb-art-repair-20261111` preserves #560
-head `e5bf2916` and its implemented context, scanline, multiple-turn, provider and
-diagnostic features. The repair adds one native read-only binding,
-`stored_material_at`, backed by `World::stored_material`; physics, `World::get`,
-material IDs and defaults remain unchanged. It requires a rebuilt source-matched
-GDExtension and refuses before writing if that API is missing.
+The original repair established native `stored_material_at` readback and explicit
+body-mask exclusion. Native masked Wall is ID 1; UI Hard Wall is 58. Current
+receipts use stored IDs rather than rendered masks, colours or requested values.
+The original false-success diagnosis was not claimed reproduced at every old
+head; its negative evidence is preserved in the
+[baseline repair record](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/workbench-direct-art-batches.md#repair-checkpoint--2026-11-11).
+An API missing from a stale library still refuses before writing. The accepted
+matching library already contains it; no old candidate branch is required.
 
-The exclusive worker explicitly excludes transient body masks before both paint
-and erase, checks source eligibility against stored IDs, and confirms the actual
-stored ID after each write. Receipts distinguish requested, checked, changed,
-unchanged, excluded, refused and confirmed counts, plus before/after rows and
-generation/revision/tick. Failed writes retain the actual prefix and any unexpected
-actual material change; no requested-material success is inferred from an overlay.
-
-Diagnosis correction: native masked `Wall` is ID 1, whereas UI Hard Wall is 58.
-At the inspected #560 head the existing `[0,58]` source restriction already
-excluded a masked cell indirectly. The review's exact false-success example is
-not claimed reproduced. The repaired API and explicit mask test remove that
-semantic dependency while preserving the human-selected destination palette.
-
-Deferred human strokes are removed only after the replay call returns. A failed
-admission or World replacement produces explicit refusal feedback and a durable
-traffic event, with pending/admitted/refused human counts. `admitted` means queued,
-not native-applied; the original legacy brush admission remains distinct from the
-later PAINT integration's confirmed completion path. The original brush radius
-and ordering are preserved.
-
-In the integrated branch, accepted deferred gestures use PAINT's existing
-planner, native executor and history recorder. The callback runs after recording;
-success, partial writes, planner cancellation, stale source, refusal and World
-replacement each complete the token explicitly. The next agent chunk waits for
-that result. The current integrated history seam records native-confirmed agent
-changes in the same chronological timeline as manual gestures; it advances the
-shared source fence instead of discarding valid manual history. A PAINT recovery
-hold still blocks agent drawing.
-
-Focused repair tests: `test_art_stored_material.gd` covers actual native workers
-1/4 and body masks over stored Empty/Wall/Hard Wall, with separately labelled
-synthetic rejection fixtures; `test_art_deferred_manual.gd` reproduces refused
-replay and replacement; the original mounted art/provider suites remain required.
-
-Open **Shared Workbench → Art batches**. The floating, hideable test input
+Open **Development workbench** from the launcher, then **Art batches**. The floating, hideable test input
 preserves the canvas layout. Draw/Stop sit beside its title, with shared Undo and
 Redo controls labelled **Shared edit history · manual and agent edits**. Enter ordered JSON,
 select an XYWH work area, optional protected rectangle and enabled materials.
@@ -141,8 +101,10 @@ No-change agent receipts preserve the existing Redo branch. Simulation, World
 replacement or another mutation outside the recorded timeline still invalidate
 history through its generation/revision/tick fence. History is session-local.
 
-Confirmed history results append a human canvas-result turn and durable
-`history_result` event, with applied counts and continuation/refusal status.
+When the Art panel exists, confirmed history results append a human
+canvas-result turn and `native_history_action` event to its current session,
+with applied counts and continuation/refusal status. Native history does not
+require cross-session Art replay or a durable receipt journal.
 They do not rewrite earlier model receipts or automatically request another
 model turn. The chosen conversation/context mode still governs future requests.
 
@@ -176,7 +138,7 @@ the existing workbench.
 
 ## Save semantics and existing format boundary
 
-The final integrated candidate fences Save on the common native mutation slot,
+The accepted integration fences Save on the common native mutation slot,
 including ordinary brush queues and unconsumed receipts. It refuses without
 altering an existing named file or consuming an unowned agent result. A requested
 replacement stops old work but keeps its authored recording reference until the
@@ -190,25 +152,27 @@ horizontal/vertical rectangles. Save while art remains queued/executing asks the
 user to Stop or wait; it cannot serialize unseen pending work as applied. After
 Stop, Save/reopen includes the confirmed prefix and excludes the cancelled tail.
 The shared Setup-v2/generated-start format and byte limit remain unchanged.
-The integrated candidate retains PAINT's current `MAX_STAMPS`/`MAX_RUNS`
+The integration retains PAINT's current `MAX_STAMPS`/`MAX_RUNS`
 capacity corrections. An excessively fragmented authored start can
 therefore draw successfully but fail Save with the existing explicit format
-error. No silent truncation, second save schema or material Flatten is introduced;
-#548 separately owns that successor. Save reconstructs authored start, not evolved
-physics state. The integrated manual editor uses PAINT's native-confirmed
+error. There is no silent truncation. Accepted GEN-008 provides a separate explicit
+[material Flatten operation](../operations/workbench-saving.md#capture-a-changed-material-layout-with-flatten);
+Art does not invoke it automatically. Save reconstructs authored start, not
+evolved physics state. The integrated manual editor uses PAINT's native-confirmed
 recording and recovery rules.
 
 ## Qualification and launch
 
-Run from the candidate checkout with its pinned Godot 4.7/native runtimes:
+Run from the checked source with its exact pinned Godot/native runtimes.
+These are reproduction commands, not claims of new execution:
 
 ```powershell
-C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script res://tests/test_art_batch_native.gd
-C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script res://tests/test_workbench_input.gd
-C:/Godot47/Godot_v4.7-stable_win64_console.exe --path godot -- --workbench
+& "C:/Godot47/Godot_v4.7-stable_win64_console.exe" --headless --path godot --script res://tests/test_art_batch_native.gd
+& "C:/Godot47/Godot_v4.7-stable_win64_console.exe" --headless --path godot --script res://tests/test_workbench_input.gd
+& "C:/Godot47/Godot_v4.7-stable_win64_console.exe" --path godot -- --workbench
 ```
 
-Linux graphical case: `xvfb-run -a GODOT --path godot --audio-driver Dummy
+Linux graphical case: `xvfb-run -a "$GODOT" --path godot --audio-driver Dummy
 --rendering-method gl_compatibility --script
 res://tests/test_art_batch_native_render.gd`. Set `WB_ART_EVIDENCE_DIR` to an
 existing/creatable directory to retain the original post-draw PNG. CI's normal
@@ -222,4 +186,5 @@ from human Windows graphical acceptance and from later genuine model inference.
 The test explicitly uses two native workers, without changing production defaults.
 The shared apply seam publishes current frame settings before preparation captures
 its revision, fixing first-render construction retirement reproduced in Xvfb.
-No merge or Ready promotion is authorized.
+Use the current release policy for a new candidate; this historical procedure
+does not require returning accepted implementation to Draft or reopening old PRs.

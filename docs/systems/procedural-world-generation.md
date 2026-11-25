@@ -2,10 +2,10 @@
 title: Procedural world generation candidates
 status: Current
 document-kind: contract
-scope: GEN-001/GEN-002 native procedural proposals, theme and field guidance, trusted feature modules, bounded jobs, fresh chunk admission and isolated Godot preview
+scope: Accepted native procedural proposals, schemas 1–4, theme and field guidance, trusted feature modules, bounded jobs, fresh chunk admission and isolated Godot preview
 canonical-for: [procedural-chunk-generation, generation-theme-authoring, generation-module-contract]
 keywords: [world generation, procgen, chunks, strata, flow network, district grammar, themes, blends, brushstroke, overrides, arcology, vault, aqueduct]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-11-24
 related-documents: [procedural-generation-fields-and-modifiers.md, world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen001-procedural-generation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 
@@ -13,7 +13,7 @@ related-documents: [procedural-generation-fields-and-modifiers.md, world-storage
 
 ## What is implemented?
 
-**Current candidate source, GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163)
+**Current accepted source, beginning with GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163)
 and GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
 three CPU procedural generators share one immutable recipe, theme hierarchy,
 spatial control stack and extensible native feature registry. They produce actual
@@ -69,6 +69,10 @@ equilibrium; the existing material and actor owners retain those semantics.
 pixels and performs bounded demand generation while panning. It does not run the
 ordinary sandbox simulation. Existing `main.gd`, authored demo worlds, actor
 prototypes, material rules and Rapier behavior remain separate.
+For an authored playable scene, use the accepted
+[Shared Workbench Architectural Generator](../operations/architectural-generator-playtest.md).
+That host adopts generated material into its prepared scene; the standalone
+Generation Workbench remains a recipe and output inspection surface.
 
 ![Rendered native world generation workbench with its generator controls and Flow example](../figures/worldgen-workbench.png)
 
@@ -331,7 +335,7 @@ working values, not per-cell container growth. Diagnostic `sample` and
 | Optional diagnostic payload | One normalized float per cell; at most 262,144 bytes |
 | Registry entries | 128 |
 | Parameters per instance | 32 numeric named values |
-| Logical charge per chunk | Default 64,000,000; native configurable through 1,000,000,000; Godot may only tighten its default |
+| Logical charge per chunk | Default 64,000,000; native configurable through 1,000,000,000; Godot schemas 1–3 allow up to 64,000,000 and explicit schema 4 up to 160,000,000 |
 
 That diagnostic row describes retained scalar channels. Schema-2
 `spatial:<id>` channels instead own one typed value per cell plus metadata;
@@ -339,6 +343,14 @@ signed doubles, vector pairs and exact category tuples retain their meaning.
 Typed graph/preparation/cache capacities and conservative recursive sampling
 costs are specified by the [typed contract](procedural-typed-spatial-fields.md)
 and [operator inventory](../reference/procedural-spatial-operators.md).
+
+GEN-007 `stage:<name>` diagnostics instead retain an additional material array
+for one actual sampler stage alongside the final cells. Scalar, typed and stage
+payloads are distinct receipt-checked forms, not extra simulation layers.
+The schema-4 logical-work allowance is an explicit recipe limit in
+[`cyber_world_generator.cpp::parse_recipe`](../../godot/native_extension/cyber_world_generator.cpp);
+omitting it retains the 64,000,000 default. It does not raise the native hard
+ceiling or change schemas 1–3.
 
 The logical charge is a conservative accounting bound derived from the configured
 controls and each factory's declared per-cell cost. All declared fields, modifier
