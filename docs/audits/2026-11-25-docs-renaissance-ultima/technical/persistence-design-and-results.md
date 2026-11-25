@@ -283,3 +283,44 @@ python docs/audits/2026-11-25-docs-renaissance-ultima/technical/verify_hosted_ar
 Independent B/C review and final integrated hosted results belong to the final
 mission review ledger. This implementation report does not grant merge, Ready,
 runtime release or physical owner acceptance.
+
+## Technical review coverage and additional corrections
+
+The [coverage receipt](technical-review-coverage.json) records 24 complete
+canonical-document reads, 9,136 lines and 37 selected source files. Each document
+has its exact digest, review depth and a consequential contract summary. All 24
+document bytes matched the integrated candidate when the receipt was written.
+This count describes complete semantic reads and targeted source checks; it is
+not a count of individually executed claims or rerun historical physics studies.
+
+| Finding | Corrected contract | Independent reviewer |
+|---|---|---|
+| A-ULT-05 | Workbench torque, current-centre-of-mass correction and main-thread Rapier ownership differ from the ordinary torque-free body packet. | B inspected native wrench creation and bridge application. |
+| A-ULT-06 | Accepted native World can run the optional settled-discovery observer; actual soliding body handoff remains separately gated. | C inspected World initialization and completed-tick integration. |
+| A-ULT-07 | Both ordinary brush queues independently cap admission at eight commands; coalescence or admission is not application. | C read both queue implementations. |
+| A-ULT-08 | Falling Wave water passes a ballistic parcel only with catch disabled or during its four-tick grace; older caught parcels can merge. | B checked the exact cell-classification branch. |
+| A-ULT-09 | Accepted pressure/IN integration, bounded capacities and actual physical hash/export versions replace stale candidate and fixed-version prose. | C reviewed source and preserved numerical-recipe scope. |
+| A-ULT-10 | Ballistic quantity uses schema 2; Workbench preparation derives bounds from its canvas; accepted normalization and pressure-cache behavior are distinguished from old work orders. | C checked codecs, limits, current cache calls and accepted merge ancestry. |
+| A-ULT-11 | Main and CLI MicroScenario captures no longer acknowledge buffered short writes or replace a valid capture with truncated JSON. | C independently ran all six real Linux cases. |
+
+B's separately implemented gameplay-recorder correction received
+[independent A source review and execution](recorder-independent-review.json):
+94 unit assertions, normal recording and real Linux file-size refusal passed.
+The refused frame remained partial and was not counted complete; the original
+valid recording manifest remained intact. This is per-file verification and
+manifest replacement, with no claim of a whole-recording transaction.
+[Additional cross-review receipts](additional-cross-review-receipts.json)
+cover C's actual-platform physics provenance repair and bounded source/status
+corrections in the other lanes. The
+[package review](package-independent-review.json) includes all 40 executed
+admission/integrity tests after the recorder and capture requirements were added.
+
+The [final DR13–24 applicability review](context-applicability-final.json)
+assesses all 60 actual supplied passages at source `162b8097`, whose complete
+retrieval identity equals functional checkpoint `dd5fdd9d`. Eleven questions are
+sufficient in the first five passages. DR20 remains partial there because the
+pending Equipment recovery record is missing; an actually executed, explicit
+source-follow to the linked status register supplies it. That second step is
+reported separately. Four intermediate contexts contained a stale save-writer
+paragraph; the corrected final contexts were read and verified. No generative
+model answer score or autonomous source-following result is claimed.

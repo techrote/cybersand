@@ -58,5 +58,22 @@
       "tools/ci/test_package_ultima_evaluator.py": "ba0dcfba2d83d36ed50789bbc739e36de47ee6914db907ebf88520a4f9ed4645",
       ".github/workflows/ultima-qualification.yml": "7401b0c8b784c0c36a474af9b6f129158c29eef8a58032ae4e0b02bd348b6bc2"
     }
+  },
+  "recorder_integration_review": {
+    "reviewer": "Specialist A",
+    "verdict": "APPROVE",
+    "source_sha256": {
+      "tools/ci/run_ultima_qualification.py": "2b0a6c1d36cfc374bad79f11a3fba8aa7f19249c0010a01226fe6072b6a3bc3a",
+      "tools/ci/package_ultima_evaluator.py": "1d2ad8f34c95d7ebcdeb8178f12907448684cad6bcf1202ddcb8b8d62b200ad0",
+      "tools/ci/test_package_ultima_evaluator.py": "0357b80db2bdd37711f66a952753d6e3c90345aee2112ddd8837d5e1207ad5af",
+      ".github/workflows/ultima-qualification.yml": "65e0bccda13f9d95fe2cf2d47ace6702056c2427d7fd94c21e6db3e9abdabb84"
+    },
+    "tests": {
+      "command": "python3 -m unittest discover -s tools/ci -p test_package_ultima_evaluator.py -v",
+      "executed": 40,
+      "passed": 40,
+      "exit_code": 0
+    },
+    "scope": "Exact eleven normal case names including gameplay recorder; Windows recorder receipt must include none and locked-manifest with source/engine equality, natural exit and no engine errors. Old pre-recorder receipts are insufficient. Hosted Windows execution/package proof remains separate."
   }
 }

@@ -1,0 +1,488 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "lane": "Specialist A",
+  "reviewed_lane_head": "5c0fcdc8385f16a2ad254842fb5d7903172e4872",
+  "accepted_native_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "integrated_head_at_recording": "162b80977f3ce615ec5f31237d3b9ac1c4548eab",
+  "scope": "These 24 complete document reads are separate from cross-review of other lanes. Source checks select consequential contracts; this does not count every composite claim as individually executed, re-run historical physics campaigns, or certify every platform. Changed bodies were reread after correction.",
+  "document_count": 24,
+  "documents": [
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "bytes": 10175,
+      "lines": 166,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Spatial units and accepted 8-byte/8-aligned PrecisionStorage are distinct from a two-byte material-only baseline; IN needs radius three.",
+      "source_paths": [
+        "native/include/cybersand/precision_storage.hpp",
+        "native/include/cybersand/scheduler_geometry.hpp",
+        "native/src/world.cpp",
+        "godot/scripts/workbench_setup.gd"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "c382c04501c3e728ddd4563eeec840a616503e6719cdd497300f482d999c87f3",
+      "bytes": 41985,
+      "lines": 579,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Native pool, pacing thread, main-thread Rapier and immutable publications have separate owners; each generic brush queue is bounded at eight and admission is not application.",
+      "source_paths": [
+        "godot/scripts/simulation_worker.gd",
+        "native/src/world.cpp",
+        "native/include/cybersand/render_snapshot.hpp"
+      ],
+      "finding_ids": [
+        "A-ULT-07"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a",
+      "bytes": 12992,
+      "lines": 197,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Cell hash, physical hash/checkpoint and complete application replay are different contracts; ordinary bodies do not acquire exact continuation from an authored save.",
+      "source_paths": [
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "godot/scripts/simulation_worker.gd"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "bytes": 6455,
+      "lines": 112,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "General item-authored bounded programs remain design; existing material descriptors/kernels and IN write-domain admission are current substrate.",
+      "source_paths": [
+        "native/include/cybersand/material.hpp",
+        "native/src/material_rules.cpp",
+        "native/src/world.cpp"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "b5ec9e133f8eafef523a27b29da2c50adcbe3de42f10eeffbfe344f6f63f3bdb",
+      "bytes": 11067,
+      "lines": 162,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Responsibility names do not assert standalone classes; accepted Workbench wrench path differs from ordinary rectangle coupling.",
+      "source_paths": [
+        "native/include/cybersand/world.hpp",
+        "godot/native_extension/workbench_granular_coupling.inc",
+        "godot/scripts/workbench_physics_bridge.gd"
+      ],
+      "finding_ids": [
+        "A-ULT-05"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "bytes": 9128,
+      "lines": 152,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Native cellular authority, fallback capability limitations, default World versus applied Wave gameplay, and main-thread physics are distinct.",
+      "source_paths": [
+        "godot/scripts/simulation_worker.gd",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/scripts/workbench_physics_bridge.gd"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc",
+      "bytes": 7404,
+      "lines": 120,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Approved architecture is separated from current exceptions, planned material-program compilation and bounded current brush queues.",
+      "source_paths": [
+        "native/src/world.cpp",
+        "godot/scripts/simulation_worker.gd",
+        "godot/scripts/cell_world.gd"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "bytes": 10171,
+      "lines": 173,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Copied native RG8 publication is not a GPU subregion upload; Workbench torque and COM correction are explicit and separate from ordinary body packets.",
+      "source_paths": [
+        "native/include/cybersand/render_snapshot.hpp",
+        "godot/scripts/main.gd",
+        "godot/native_extension/workbench_granular_coupling.inc",
+        "godot/scripts/workbench_physics_bridge.gd"
+      ],
+      "finding_ids": [
+        "A-ULT-05"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "2024bd87238db198680e64e8b6777e9532589f42b33033fb063e60dced64e928",
+      "bytes": 17557,
+      "lines": 273,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Ordinary nine-float packets omit torque; Workbench includes torque, validates complete receipts and applies main-thread current-COM/age-corrected impulses; generalized contour and lifecycle claims remain bounded.",
+      "source_paths": [
+        "godot/native_extension/workbench_granular_coupling.inc",
+        "godot/scripts/workbench_physics_bridge.gd",
+        "godot/scripts/rapier_physics_bridge.gd"
+      ],
+      "finding_ids": [
+        "A-ULT-05"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "bytes": 27268,
+      "lines": 387,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Exclusive pacing owner serializes World calls; pool workers own bounded native jobs; pause/failure and Web synchronous ownership are not permission for concurrent World mutation.",
+      "source_paths": [
+        "godot/scripts/simulation_worker.gd",
+        "native/src/world.cpp",
+        "godot/scripts/web_demo_controller.gd"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "c29922e5faf37b41cecc6383ac62d666679a056af5c3182ef21ec8c79bd90017",
+      "bytes": 48842,
+      "lines": 631,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Wave, Wave MT and ballistic spill are distinct; falling Wave water passes a parcel only while catch_falling is off or age is at most four; capacity default and maximum differ.",
+      "source_paths": [
+        "native/src/world_wave.inc",
+        "native/src/world_ballistic.inc",
+        "native/include/cybersand/ballistic_water.hpp"
+      ],
+      "finding_ids": [
+        "A-ULT-08"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "bytes": 17327,
+      "lines": 276,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Ballistic parcels use bounded separate storage and explicit land/merge/return paths; falling-water admission depends on catch flag and age; no generalized particle actor claim.",
+      "source_paths": [
+        "native/include/cybersand/ballistic_water.hpp",
+        "native/src/world_ballistic.inc",
+        "native/src/world_quantity.inc"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "bytes": 20144,
+      "lines": 291,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Opt-in settled discovery is an integrated observer; material-to-rigidbody lifecycle adoption remains separately gated, with dated measurements not fresh qualification.",
+      "source_paths": [
+        "native/src/world.cpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/settled_world_discovery.cpp"
+      ],
+      "finding_ids": [
+        "A-ULT-06"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "3ce104b7fe9e0b537f6805ba862517ac02836b64eac359cf042b3f40e82bab5f",
+      "bytes": 24464,
+      "lines": 350,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Disabled-by-default World observer, bounded tile/tick budget and explicit manual advance exist; discovery does not establish complete body handoff.",
+      "source_paths": [
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "native/src/settled_world_discovery.cpp"
+      ],
+      "finding_ids": [
+        "A-ULT-06"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "4e38574f0079d4029a2f49b50632cd63a96d4b0f66e413469c0d89ee8b96b45c",
+      "bytes": 31334,
+      "lines": 323,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Accepted IN applies to admitted Water/Brine with radius-three construction guard; actual physical hash/export versions supersede stale candidate-only and fixed-version claims.",
+      "source_paths": [
+        "native/include/cybersand/inertial_cellular.hpp",
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "native/src/world_inertial.inc"
+      ],
+      "finding_ids": [
+        "A-ULT-09"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "18e325b6c36f15d00879c37e70c1b01079666302f7341b0bf4d2f1be47d876bd",
+      "bytes": 33313,
+      "lines": 459,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "PF2 contains accepted pooled columns/guarded rows/gas reduction and masked retirement; configured capacities and current physical-version getters differ from historical candidate baselines.",
+      "source_paths": [
+        "native/include/cybersand/pressure_flow.hpp",
+        "native/src/world_pressure.inc",
+        "native/src/world_pressure_state.inc",
+        "native/src/world_pressure_gas_cache.inc",
+        "native/include/cybersand/world.hpp"
+      ],
+      "finding_ids": [
+        "A-ULT-09"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "883f61c74979f243f10cbe2e7f409af569b6eff8175dee9476e0367906d30c07",
+      "bytes": 89861,
+      "lines": 1305,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Preparation default is 1024 but Workbench derives 2048-side/4194304-record limit from canvas; quantity schema is 1 without ballistic accounting, 2 with it, and in-flight mass closes the ledger.",
+      "source_paths": [
+        "native/include/cybersand/prepared_world.hpp",
+        "native/include/cybersand/prepared_setup_identity.hpp",
+        "native/include/cybersand/quantity_ledger.hpp",
+        "native/src/world_quantity.inc",
+        "godot/native_extension/cyber_native_cell_world.cpp"
+      ],
+      "finding_ids": [
+        "A-ULT-10"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "1cdfbe3b0fdc3934a06d323e5d3c7a9f12640f8e3100805c71efc550328671c8",
+      "bytes": 23292,
+      "lines": 373,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Water IN and normal Workbench prepared/normalization routes are accepted source; broader paired campaign and future recipes remain distinct, not inferred complete.",
+      "source_paths": [
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/src/world.cpp",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/scripts/simulation_worker.gd"
+      ],
+      "finding_ids": [
+        "A-ULT-10"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "749a4098434ac43b77bc428625f90d87287ed107647604cbf0f2f576ceec0487",
+      "bytes": 29066,
+      "lines": 311,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Normal prepared comparison route has explicit opt-in normalization receipt, not an unresolved integration gap; existing direct constructor bounds remain.",
+      "source_paths": [
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "native/include/cybersand/prepared_world.hpp",
+        "native/include/cybersand/liquid_construction_refusal.hpp"
+      ],
+      "finding_ids": [
+        "A-ULT-10"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "bytes": 9004,
+      "lines": 145,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Transport profiles are bounded immutable per-World configuration; schema-one material-domain fallback is not a general new material law.",
+      "source_paths": [
+        "native/include/cybersand/transport_policy.hpp",
+        "native/src/world.cpp"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "bytes": 6783,
+      "lines": 113,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Temperature storage and existing reactions do not imply accepted general conduction, fluid gas pressure, or a merged thermal successor; planned scope remains explicit.",
+      "source_paths": [
+        "native/include/cybersand/precision_storage.hpp",
+        "native/include/cybersand/material.hpp",
+        "native/src/world.cpp"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "eb3515d1a77f3d6c1def6badfe1fc8c692df0782f05a6a8ba3f77676a91338a8",
+      "bytes": 70428,
+      "lines": 1055,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Effective law selection, constructor guards, physical hash2\u20136 and CYPS2\u20135 versus Wave0 use current source; scientific recipes retain their dated scope.",
+      "source_paths": [
+        "native/include/cybersand/liquid_solver_policy.hpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp"
+      ],
+      "finding_ids": [
+        "A-ULT-10"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "3502e02dac7d99cb6e01dca8b0b5aeb4d8ae8996565193b7c68abe9b33cb3a28",
+      "bytes": 20935,
+      "lines": 321,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Current execution mode4/wake summaries and camera-only region-cache retention are accepted; cold invalidation remains on actual authoritative mutations.",
+      "source_paths": [
+        "native/include/cybersand/pressure_optimization.hpp",
+        "native/src/world_pressure_cache.inc",
+        "native/src/world_pressure_cache_state.inc",
+        "native/src/world.cpp"
+      ],
+      "finding_ids": [
+        "A-ULT-10"
+      ],
+      "integrated_bytes_equal_at_recording": true
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "bytes": 69643,
+      "lines": 862,
+      "reviewer": "Specialist A",
+      "depth": "complete-body semantic read plus targeted consequential source inspection",
+      "claim_review": "Current reader wrapper identifies accepted generated hard/granular predicates; old numerical inventories/work orders remain dated; general program/thermal consumers are not inferred accepted.",
+      "source_paths": [
+        "native/include/cybersand/material.hpp",
+        "native/include/cybersand/material_capabilities.hpp",
+        "native/src/material_rules.cpp",
+        "native/include/cybersand/transport_policy.hpp"
+      ],
+      "finding_ids": [],
+      "integrated_bytes_equal_at_recording": true
+    }
+  ],
+  "source_sha256": {
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+    "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+    "godot/scripts/workbench_setup.gd": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0",
+    "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+    "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+    "godot/scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+    "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+    "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+    "godot/scripts/main.gd": "86a5c935e73ac2b480328bc6b9c7f5ac9eb1aab2e9fe7a404286dab8ec0d9b01",
+    "godot/scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+    "godot/scripts/web_demo_controller.gd": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb",
+    "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+    "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+    "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+    "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+    "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+    "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+    "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+    "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+    "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+    "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+    "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+    "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+    "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+    "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+    "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+    "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+    "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+    "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+    "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8"
+  },
+  "runtime_evidence": [
+    "persistence-design-and-results.md",
+    "persistence-linux-final.json",
+    "hosted-independent-review.json",
+    "microscenario-capture-linux.json",
+    "microscenario-capture-regressions.json"
+  ],
+  "independent_review": {
+    "A-ULT-05": "B full diff and native wrench/bridge source approved",
+    "A-ULT-06": "C full diff and World observer integration source approved",
+    "A-ULT-07": "C both queue implementations independently approved",
+    "A-ULT-08": "B classify_ballistic_cell branch independently approved",
+    "A-ULT-09": "C full diff and pressure/IN sources approved; no new physics campaign",
+    "A-ULT-10": "C full five-file diff, codecs/capacity/version/cache source and accepted ancestry independently approved"
+  }
+}
