@@ -1,0 +1,456 @@
+{
+	"checks": 86,
+	"failures": [],
+	"godot": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"limits": [
+		"Input conversion/validation is outside measured Context.build intervals.",
+		"These phases do not measure PAINT capture, interactive publication or ordinary Workbench frame latency.",
+		"No behavioral optimization or async preparation is enabled by this benchmark."
+	],
+	"model_calls": 0,
+	"native_calls": 0,
+	"original_native_source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+	"outcomes": [
+		{
+			"captured_cells": 49152,
+			"context_bytes": 8342,
+			"id": "industrial_repair",
+			"median_usec": {
+				"assembly_and_copy": 298,
+				"callsite": 20912,
+				"json_encoding": 265,
+				"knowledge": 154,
+				"material_hash": 841,
+				"native_scan": 19154,
+				"reported_total": 20866,
+				"total": 20866,
+				"validation": 27
+			},
+			"model_context_digest": "8f452da6b1956a363d023a97e41f5c26073220402290587c5e419af746c05619",
+			"original_native_plane_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+			"repetitions": 7,
+			"samples_usec": [
+				{
+					"assembly_and_copy": 445,
+					"callsite": 20867,
+					"json_encoding": 265,
+					"knowledge": 223,
+					"material_hash": 748,
+					"native_scan": 19154,
+					"reported_total": 20860,
+					"total": 20860,
+					"validation": 25
+				},
+				{
+					"assembly_and_copy": 337,
+					"callsite": 24214,
+					"json_encoding": 376,
+					"knowledge": 131,
+					"material_hash": 841,
+					"native_scan": 22451,
+					"reported_total": 24167,
+					"total": 24167,
+					"validation": 31
+				},
+				{
+					"assembly_and_copy": 300,
+					"callsite": 21077,
+					"json_encoding": 346,
+					"knowledge": 128,
+					"material_hash": 775,
+					"native_scan": 19385,
+					"reported_total": 21029,
+					"total": 21029,
+					"validation": 95
+				},
+				{
+					"assembly_and_copy": 298,
+					"callsite": 20872,
+					"json_encoding": 259,
+					"knowledge": 154,
+					"material_hash": 1206,
+					"native_scan": 18883,
+					"reported_total": 20827,
+					"total": 20827,
+					"validation": 27
+				},
+				{
+					"assembly_and_copy": 294,
+					"callsite": 20912,
+					"json_encoding": 262,
+					"knowledge": 303,
+					"material_hash": 854,
+					"native_scan": 19126,
+					"reported_total": 20866,
+					"total": 20866,
+					"validation": 27
+				},
+				{
+					"assembly_and_copy": 293,
+					"callsite": 21200,
+					"json_encoding": 265,
+					"knowledge": 154,
+					"material_hash": 908,
+					"native_scan": 19505,
+					"reported_total": 21154,
+					"total": 21154,
+					"validation": 29
+				},
+				{
+					"assembly_and_copy": 288,
+					"callsite": 19838,
+					"json_encoding": 305,
+					"knowledge": 126,
+					"material_hash": 765,
+					"native_scan": 18281,
+					"reported_total": 19792,
+					"total": 19792,
+					"validation": 27
+				}
+			],
+			"warmup_timings_usec": {
+				"assembly_and_copy": 338,
+				"json_encoding": 466,
+				"knowledge": 191,
+				"material_hash": 762,
+				"native_scan": 18978,
+				"total": 20771,
+				"validation": 36
+			}
+		},
+		{
+			"captured_cells": 98304,
+			"context_bytes": 7090,
+			"id": "stopped_workshop",
+			"median_usec": {
+				"assembly_and_copy": 322,
+				"callsite": 41376,
+				"json_encoding": 307,
+				"knowledge": 77,
+				"material_hash": 1653,
+				"native_scan": 38822,
+				"reported_total": 41328,
+				"total": 41328,
+				"validation": 30
+			},
+			"model_context_digest": "be8b9880794b7f2defc7a5b5f9bb611b19d8b557289e9eacdbdb366bf0aab0c1",
+			"original_native_plane_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+			"repetitions": 7,
+			"samples_usec": [
+				{
+					"assembly_and_copy": 297,
+					"callsite": 40489,
+					"json_encoding": 267,
+					"knowledge": 75,
+					"material_hash": 1595,
+					"native_scan": 38215,
+					"reported_total": 40480,
+					"total": 40480,
+					"validation": 31
+				},
+				{
+					"assembly_and_copy": 322,
+					"callsite": 47534,
+					"json_encoding": 381,
+					"knowledge": 78,
+					"material_hash": 1814,
+					"native_scan": 44863,
+					"reported_total": 47488,
+					"total": 47488,
+					"validation": 30
+				},
+				{
+					"assembly_and_copy": 337,
+					"callsite": 44745,
+					"json_encoding": 307,
+					"knowledge": 153,
+					"material_hash": 1622,
+					"native_scan": 42238,
+					"reported_total": 44686,
+					"total": 44686,
+					"validation": 29
+				},
+				{
+					"assembly_and_copy": 308,
+					"callsite": 41113,
+					"json_encoding": 313,
+					"knowledge": 77,
+					"material_hash": 1653,
+					"native_scan": 38663,
+					"reported_total": 41044,
+					"total": 41044,
+					"validation": 30
+				},
+				{
+					"assembly_and_copy": 297,
+					"callsite": 41506,
+					"json_encoding": 261,
+					"knowledge": 76,
+					"material_hash": 1530,
+					"native_scan": 39244,
+					"reported_total": 41439,
+					"total": 41439,
+					"validation": 31
+				},
+				{
+					"assembly_and_copy": 349,
+					"callsite": 41376,
+					"json_encoding": 353,
+					"knowledge": 77,
+					"material_hash": 1697,
+					"native_scan": 38822,
+					"reported_total": 41328,
+					"total": 41328,
+					"validation": 30
+				},
+				{
+					"assembly_and_copy": 328,
+					"callsite": 40740,
+					"json_encoding": 241,
+					"knowledge": 73,
+					"material_hash": 1800,
+					"native_scan": 38218,
+					"reported_total": 40696,
+					"total": 40696,
+					"validation": 36
+				}
+			],
+			"warmup_timings_usec": {
+				"assembly_and_copy": 456,
+				"json_encoding": 271,
+				"knowledge": 75,
+				"material_hash": 1633,
+				"native_scan": 37904,
+				"total": 40362,
+				"validation": 23
+			}
+		},
+		{
+			"captured_cells": 262144,
+			"context_bytes": 8111,
+			"id": "staged_megaframe",
+			"median_usec": {
+				"assembly_and_copy": 453,
+				"callsite": 111365,
+				"json_encoding": 325,
+				"knowledge": 123,
+				"material_hash": 4580,
+				"native_scan": 105213,
+				"reported_total": 111292,
+				"total": 111292,
+				"validation": 31
+			},
+			"model_context_digest": "bfdd467b6d21bce43a11a1288bb8da2d52fdcb12fdd992edf2ca7412b2a50a27",
+			"original_native_plane_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+			"repetitions": 7,
+			"samples_usec": [
+				{
+					"assembly_and_copy": 374,
+					"callsite": 110807,
+					"json_encoding": 454,
+					"knowledge": 148,
+					"material_hash": 4580,
+					"native_scan": 105213,
+					"reported_total": 110800,
+					"total": 110800,
+					"validation": 31
+				},
+				{
+					"assembly_and_copy": 450,
+					"callsite": 109221,
+					"json_encoding": 326,
+					"knowledge": 118,
+					"material_hash": 4138,
+					"native_scan": 104081,
+					"reported_total": 109144,
+					"total": 109144,
+					"validation": 31
+				},
+				{
+					"assembly_and_copy": 4565,
+					"callsite": 124025,
+					"json_encoding": 1247,
+					"knowledge": 1259,
+					"material_hash": 5987,
+					"native_scan": 110747,
+					"reported_total": 123836,
+					"total": 123836,
+					"validation": 31
+				},
+				{
+					"assembly_and_copy": 466,
+					"callsite": 111497,
+					"json_encoding": 304,
+					"knowledge": 126,
+					"material_hash": 4617,
+					"native_scan": 105679,
+					"reported_total": 111378,
+					"total": 111378,
+					"validation": 186
+				},
+				{
+					"assembly_and_copy": 453,
+					"callsite": 109151,
+					"json_encoding": 325,
+					"knowledge": 123,
+					"material_hash": 4419,
+					"native_scan": 103725,
+					"reported_total": 109077,
+					"total": 109077,
+					"validation": 32
+				},
+				{
+					"assembly_and_copy": 391,
+					"callsite": 111748,
+					"json_encoding": 307,
+					"knowledge": 120,
+					"material_hash": 4393,
+					"native_scan": 106433,
+					"reported_total": 111677,
+					"total": 111677,
+					"validation": 33
+				},
+				{
+					"assembly_and_copy": 469,
+					"callsite": 111365,
+					"json_encoding": 319,
+					"knowledge": 121,
+					"material_hash": 5870,
+					"native_scan": 104482,
+					"reported_total": 111292,
+					"total": 111292,
+					"validation": 31
+				}
+			],
+			"warmup_timings_usec": {
+				"assembly_and_copy": 384,
+				"json_encoding": 323,
+				"knowledge": 104,
+				"material_hash": 4759,
+				"native_scan": 106265,
+				"total": 111862,
+				"validation": 27
+			}
+		},
+		{
+			"captured_cells": 98304,
+			"context_bytes": 7628,
+			"id": "xeno_vault",
+			"median_usec": {
+				"assembly_and_copy": 515,
+				"callsite": 44520,
+				"json_encoding": 457,
+				"knowledge": 107,
+				"material_hash": 1935,
+				"native_scan": 41613,
+				"reported_total": 44511,
+				"total": 44511,
+				"validation": 34
+			},
+			"model_context_digest": "d860d42c74209efa0d47ab5214d70899325911b42ec650554c283d71272f170c",
+			"original_native_plane_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+			"repetitions": 7,
+			"samples_usec": [
+				{
+					"assembly_and_copy": 458,
+					"callsite": 44520,
+					"json_encoding": 367,
+					"knowledge": 104,
+					"material_hash": 1935,
+					"native_scan": 41613,
+					"reported_total": 44511,
+					"total": 44511,
+					"validation": 34
+				},
+				{
+					"assembly_and_copy": 515,
+					"callsite": 44029,
+					"json_encoding": 678,
+					"knowledge": 107,
+					"material_hash": 1753,
+					"native_scan": 40882,
+					"reported_total": 43969,
+					"total": 43969,
+					"validation": 34
+				},
+				{
+					"assembly_and_copy": 387,
+					"callsite": 43218,
+					"json_encoding": 262,
+					"knowledge": 99,
+					"material_hash": 1640,
+					"native_scan": 40726,
+					"reported_total": 43148,
+					"total": 43148,
+					"validation": 34
+				},
+				{
+					"assembly_and_copy": 348,
+					"callsite": 41526,
+					"json_encoding": 262,
+					"knowledge": 100,
+					"material_hash": 1550,
+					"native_scan": 39105,
+					"reported_total": 41398,
+					"total": 41398,
+					"validation": 33
+				},
+				{
+					"assembly_and_copy": 515,
+					"callsite": 59732,
+					"json_encoding": 539,
+					"knowledge": 139,
+					"material_hash": 6822,
+					"native_scan": 51581,
+					"reported_total": 59629,
+					"total": 59629,
+					"validation": 33
+				},
+				{
+					"assembly_and_copy": 528,
+					"callsite": 75474,
+					"json_encoding": 457,
+					"knowledge": 321,
+					"material_hash": 3190,
+					"native_scan": 70804,
+					"reported_total": 75346,
+					"total": 75346,
+					"validation": 46
+				},
+				{
+					"assembly_and_copy": 1723,
+					"callsite": 106683,
+					"json_encoding": 1128,
+					"knowledge": 166,
+					"material_hash": 4540,
+					"native_scan": 98928,
+					"reported_total": 106552,
+					"total": 106552,
+					"validation": 67
+				}
+			],
+			"warmup_timings_usec": {
+				"assembly_and_copy": 376,
+				"json_encoding": 303,
+				"knowledge": 146,
+				"material_hash": 1738,
+				"native_scan": 39335,
+				"total": 41984,
+				"validation": 86
+			}
+		}
+	],
+	"schema": "art-context-phase-benchmark-v1",
+	"scope": "Pure-value timing over original native PNG/int32-hash observations from source2743; no live World, new native receipt or model call.",
+	"source": "0e93cc9093aee4ddf7429c7b008a48ec87c06fd5"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "art-context-phase-execution-v1",
+  "source": "0e93cc9093aee4ddf7429c7b008a48ec87c06fd5",
+  "tree": "a71b686bee6e2fdea9c9e10fb4c05ddba78cb913",
+  "tracked_source_clean": true,
+  "report_sha256": "d4a2df89783f6dffd250419d1a929b404fbdb72a2152e1c6973c153e54ce3bef",
+  "process_log_sha256": "9793448aad8f37eb633897ffd7b3e1ed5db1fc2817c3ef9ac8231ba4699338db",
+  "exit_code": 0,
+  "native_calls": 0,
+  "model_calls": 0,
+  "host": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "machine": "x86_64",
+    "logical_cpus": 9,
+    "godot_version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "scope": "Full original numeric benchmark report retained. Copied native-plane values; no new native execution, graphical frame or real-model result."
+}
