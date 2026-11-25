@@ -141,7 +141,8 @@ identity comparisons and review of changed content.
 
 ## Authority, cache and accepted-main reconciliation
 
-The shared selection policy now rejects missing or ambiguous authority metadata,
+The shared selection policy now rejects missing required source metadata,
+ambiguous or unsupported authority declarations,
 duplicate/malformed keys, scalar/list ambiguity, unsupported kinds and explicit
 navigation-only sources. Current/fallback/direct paths share the same admission
 boundary. A long-lived adapter refuses queries after source status, content,

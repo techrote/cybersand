@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "verdict": "APPROVE independently executed extended12-case Linux storage matrix",
+  "source_head": "2f977fa0a818d03d571df21f3f86e0e10408bdcc",
+  "source_state": "exact root pending runner/child hashes bound",
+  "input_sha256": {
+    "godot/scripts/physics_characterisation.gd": "e57fabab6ff5f53ac26e67517569c0a1d09df3f72efd29ff0068e2701065afd5",
+    "godot/tests/test_physics_characterisation.gd": "d5a93b5cb4b9eef772380ad954bd7ab7b0229bd1f88f12ed7cf52b83e5839d30",
+    "godot/examples/thunderbowl/thunderbowl_driver.gd": "b5b6b8237c48a5c377a2448a1cb35d1431f543e211744548bc5eccae91af93a4",
+    "godot/examples/thunderbowl/run_thunderbowl.gd": "f0d83cca8d03699ca272c72a91a64c96e1da9cb5bd0d147c783d27dd4c9f4f8c",
+    "godot/examples/thunderbowl/run_physical_thunderbowl.gd": "09d0289aaa38182cd28b995834a3e63804ecf84ed2f5e6da3f70714b2def580f",
+    "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "tools/ci/run_diagnostic_storage_qualification.py": "f586a2ee1a1883e2986219a4f5358d5c967cdbc88ed8b25ef92c29ee5c338fc5",
+    "tools/ci/run_workbench_save_qualification.py": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117",
+    "godot/examples/thunderbowl/matches/mixed.json": "ad6a679921844345f95b5d3a446ca66c4a00bd4e0bcd459a188b0785d95627ba",
+    "godot/goblin/goblin_controller.gd": "6d539462faa10e70e66dc111fc015c57b24b26d728aa7691f08a8f3557261a17",
+    "godot/goblin/goblin_adapter.gd": "4c49800b3448180f1d6bfe96aecc51ce52bdbfee48cc559edfb8945e9b761c36",
+    "godot/tests/goblin_storage_fault_child.gd": "a3a5fc4926c85ede36cafdddd443fc11080ea496f2210a12e0874c034376efc2"
+  },
+  "inputs_unchanged": true,
+  "report_sha256": "d5a19410a05bac1cd0e4d3e9126c80a5e14eb9aea2d245bf77f0b39b8648c3a6",
+  "cases": 12,
+  "goblin_cases": [
+    {
+      "kind": "goblin",
+      "fault": "none",
+      "evidence_class": "guarded-audit-writer"
+    },
+    {
+      "kind": "goblin",
+      "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure"
+    },
+    {
+      "kind": "goblin",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure"
+    }
+  ],
+  "goblin_guard_observations": "Actual profile marker/containment guard passed; wrong fixed path and wrong profile refused without modifying target; no _run_archive or transcript identity override.",
+  "storage_observations": "Complete old fixed file preserved on real buffered RLIMIT and denied-directory refusal; new seed8 loaded on success and retry; unrelated legacy staging preserved.",
+  "limits": [
+    "Three one-tick actual CLIs and one guarded fixed-audit-writer probe; no physics/controller or Goblin campaign acceptance",
+    "No browser/graphical/physical-owner or power-loss qualification",
+    "Shared deterministic I/O-boundary tests are qualified separately",
+    "Private fixed-writer fixture is not a Goblin campaign or agent/model execution.",
+    "Original e6799-case record remains independent and unchanged."
+  ]
+}

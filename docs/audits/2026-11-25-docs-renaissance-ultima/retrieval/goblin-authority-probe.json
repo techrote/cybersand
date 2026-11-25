@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "5b13750df715bff7ea424cc05df7c85827e7f041 plus exact two-file correction",
+  "source_doc_sha256": "2972e8ed91f302aa9aec6515bd639ab09f3f6c2f9a9fbcc18bca8193a2366828",
+  "corpus_sha256": "3a6977b4449b6d37b71dcaf5f3871edd1573b0e93c6e880679abce8148a06092",
+  "manifest_documents": 153,
+  "fallback_documents": 153,
+  "manifest_fallback_equal": true,
+  "packet_selected": false,
+  "direct_refused": true,
+  "direct_reason": "Default retrieval excludes explicit-only or navigation document: docs/research/gip014-goblin-gameplay-qa.md",
+  "adapter_chunks_for_packet": 0,
+  "explicit_manual_route": "docs/research/gip014-goblin-gameplay-qa.md",
+  "history_preserved": "Full original at immutablec8421a81; existing numerical/recovered campaign records retained in explicitly selected page",
+  "limits": [
+    "Source and authority check only; no historical campaign, new model, physical host or Windows test executed by this probe."
+  ],
+  "original_custody": {
+    "source": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+    "path": "docs/research/gip014-goblin-gameplay-qa.md",
+    "git_blob": "f388b20bc78f600cd3d2b6159f7719fe7b75e5dc",
+    "bytes": 32120,
+    "sha256": "a703dcaeb73dfd7f1b5e712fb3380007263269402203b944d0850ebfb3f5e613",
+    "url": "https://github.com/techrote/cybersand/blob/c8421a81b8f7f61516ed055f3200b49aee57bd65/docs/research/gip014-goblin-gameplay-qa.md"
+  },
+  "fix_commit": "3cfaaa5b",
+  "reviewer": "B independently approved source/lifecycle/editorial boundary; lead owns fresh runtime qualification"
+}

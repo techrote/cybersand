@@ -137,6 +137,60 @@
       "reviewed_source": "f7b4fbcb plus two-line documentation.yml diff",
       "verdict": "APPROVE",
       "scope": "Runs python3 -m unittest tools.physics.test_runtime_identity under unchanged shared operation_seconds timeout; synthetic mapping/file/version negative controls only, no engine or scientific campaign implied. C and A independently passed10tests."
+    },
+    {
+      "subject": "A four profile-save writers and caller feedback",
+      "implementer": "Specialist A",
+      "reviewed_source": "b698a2b2447ece2076bfa83ac56093f34487450f",
+      "verdict": "APPROVE",
+      "evidence": "review-profile-by-c.json",
+      "scope": "Full source/test review plus16 actual Linux cases; old payload/format preserved on failures, new payload loaded on success/retry. No Windows/GPU/power-loss inference."
+    },
+    {
+      "subject": "Lead Art export/new-segment/append integrity",
+      "implementer": "Lead",
+      "reviewed_source": "Exact inputs bound in review; subsequent three-line cleanup/message delta separately reviewed",
+      "verdict": "APPROVE",
+      "evidence": "review-art-storage-by-c.json",
+      "scope": "Six actual Linux cases and278 focused checks; export/newsegment publication and append-prefix recovery remain distinct."
+    },
+    {
+      "subject": "Lead source-qualified owner evaluator extension",
+      "implementer": "Lead",
+      "reviewed_source": "Exact qualifier/package/test hashes in receipt",
+      "verdict": "APPROVE after demonstrated contradictory-receipt consistency correction",
+      "evidence": "review-package-by-c.json",
+      "scope": "Schema-v2 and20 normal/12 Windows-profile/5 Windows-Art gates reviewed;60 synthetic admission tests passed. Does not constitute Windows execution."
+    },
+    {
+      "subject": "A diagnostic result writers",
+      "implementer": "Specialist A",
+      "reviewed_source": "e6796b8e226d061b415195a1993737832e7c38c6",
+      "verdict": "APPROVE",
+      "evidence": "review-diagnostic-storage-by-c.json",
+      "scope": "Three real one-tick CLIs,9 Linux replacement/refusal/retry cases; source formats/simulation unchanged. Goblin later fourth-kind extension separate."
+    },
+    {
+      "subject": "Lead accepted CI/status reconciliation at5e29",
+      "implementer": "Lead",
+      "reviewed_source": "Accepted5e29 versus00c and root doc diff reviewed before c842 drift",
+      "verdict": "APPROVE source/authority scope",
+      "scope": "Only new optional Gentek Godot tool within runtime-tree path; native/ordinary runtime/dependencies unchanged. Official asset/lock/version and GDE8/8 preserved; helper availability separate from publisher adoption and ULTIMA candidate."
+    },
+    {
+      "subject": "Lead optional Goblin fixed-writer correction and A extended probe",
+      "implementer": "Lead controller34ae4faa; A probe/runner",
+      "reviewed_source": "Root2f977fa0 plus exact test hashes",
+      "verdict": "APPROVE",
+      "evidence": "review-diagnostic-goblin-by-c.json",
+      "scope": "Independent12 actual Linux storage cases, including real profile containment/wrong-path/wrong-profile refusal. A private fixed-writer probe, not campaign, model or physical acceptance."
+    },
+    {
+      "subject": "Lead accepted c842 Goblin status reconciliation",
+      "implementer": "Lead",
+      "reviewed_source": "Root c842 status diff; accepted merge/source and optional launcher independently inspected",
+      "verdict": "APPROVE",
+      "scope": "Accepted foundation actions/seeded policies/transcript/replay separated from unmerged#781 persistent memory. Original ordinary launcher unchanged and old artifacts not requalified."
     }
   ],
   "review_limit": "Source review and actual execution are explicitly distinguished. Final integrated input equivalence/revalidation is owned by the lead qualification matrix."

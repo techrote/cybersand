@@ -424,6 +424,37 @@
         "accepted-ci-closure-correction.json"
       ],
       "status": "fixed-and-independently-verified"
+    },
+    {
+      "id": "C-ULT-14",
+      "priority": "P2",
+      "title": "Newly accepted optional Goblin foundation retained stale Draft instructions and incomplete exclusion metadata",
+      "affected": "Developer availability guidance and source/provenance documentation gate after acceptedc842 drift",
+      "source": [
+        "docs/research/gip014-goblin-gameplay-qa.md",
+        "docs/reference/retrieval-corpus.json"
+      ],
+      "reproduction": "Accepted#772439-line mixed research/evidence packet still called itself Planned/Draft/HOLD and forbade merge; existing corpus exclusion lacked the explicit-only metadata required for safe fallback agreement. Integrated structural provenance refused before runtime execution.",
+      "expected": "Accurate accepted optional foundation boundary, explicit exclusion of dated campaign packet, separate unmerged#781 scope and source-matched historical artifact identity.",
+      "fix": "Retain mixed packet as explicit-only research, correct accepted#772 and dated evidence roles, preserve originalc842 bytes by immutable route and prior heading anchor, remove unqualified atomic-write inference and update existing exclusion reason.",
+      "commit": [
+        "3cfaaa5b"
+      ],
+      "tests": [
+        "Current manifest=fallback153 documents",
+        "Direct current chunking refuses and adapter supplies0packet chunks",
+        "check_docs153documents282claims3593links510anchorsPASS"
+      ],
+      "reviewer": [
+        "B",
+        "Lead"
+      ],
+      "evidence": [
+        "goblin-authority-probe.json",
+        "goblin-authority-check-docs.json",
+        "coverage-c-new-main.json"
+      ],
+      "status": "fixed-and-independently-verified"
     }
   ]
 }

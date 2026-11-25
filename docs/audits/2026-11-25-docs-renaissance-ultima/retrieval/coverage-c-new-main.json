@@ -4,9 +4,9 @@
   "prior_receipt": "coverage-c.json",
   "prior_full_body_documents": 53,
   "prior_canonical_current_documents": 46,
-  "additional_full_body_documents": 4,
+  "additional_full_body_documents": 5,
   "additional_canonical_current_documents": 2,
-  "current_total_full_body_documents": 57,
+  "current_total_full_body_documents": 58,
   "current_total_canonical_current_documents": 48,
   "scope": "Additional accepted-main reconciliation after prior full corpus review. No new historical campaign or Windows/physical execution claimed. Final source equivalence remains a separate receipt.",
   "documents": [
@@ -81,6 +81,38 @@
         }
       ],
       "independent_review": "B also read full guide; C independently tested metadata/direct/fallback/cache boundary."
+    },
+    {
+      "path": "docs/research/gip014-goblin-gameplay-qa.md",
+      "canonical_current_corpus": false,
+      "reviewer": "Specialist C",
+      "depth": "full439-line original and corrected page read; targeted source validation of guarded profile/26-action bounds, replay identity, controller persistence boundaries and launcher scope",
+      "observed_source": "3cfaaa5b",
+      "observed_document_sha256": "2972e8ed91f302aa9aec6515bd639ab09f3f6c2f9a9fbcc18bca8193a2366828",
+      "finding_or_scope": "Accepted#772 foundation and unmerged#781 successor distinguished; original numeric campaigns/artifacts and team roles explicitly dated; research packet stays explicit-only, with immutable full original and preserved heading route. Structural failure before correction retained by lead.",
+      "source_references": [
+        {
+          "path": "godot/goblin/goblin_adapter.gd",
+          "sha256": "4c49800b3448180f1d6bfe96aecc51ce52bdbfee48cc559edfb8945e9b761c36"
+        },
+        {
+          "path": "godot/goblin/goblin_controller.gd",
+          "sha256": "2b080ba1d4418e2a789f6ad4254457bd877edbb8cd450aa75ef7f8ed11629f4d"
+        },
+        {
+          "path": "tools/gip014/run_goblin.py",
+          "sha256": "b9703b4174bd7d3eb2d24180088f2b0e0021f6c9e429d811ca0d864331af68a8"
+        },
+        {
+          "path": "godot/project.godot",
+          "sha256": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+        },
+        {
+          "path": ".github/workflows/gip014-goblin.yml",
+          "sha256": "cf2a35ad1ecc7ee27f7e2bec67890e7f25f68a50c876b854d25bd8adbfcb1505"
+        }
+      ],
+      "independent_review": "B independently verified c842 accepted ancestry and unchanged ordinary launcher; approves editorial and selection boundary. No fresh historic campaign or physical acceptance inferred."
     }
   ]
 }
