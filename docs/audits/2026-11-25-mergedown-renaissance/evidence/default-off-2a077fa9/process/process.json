@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+    "--script",
+    "/workspace/scratch/2e90cf7b4aa3/cybersand-product/docs/audits/2026-11-25-mergedown-renaissance/probes/default_off.gd",
+    "--",
+    "--ci"
+  ],
+  "exit_code": 0,
+  "log_sha256": "0931f8fe7309103fc497dee3d090d02be316e62a61f275d0031ae086c7a85856",
+  "pid": 23,
+  "seconds": 6.331,
+  "status": "passed",
+  "timeout_seconds": 3940.0
+}

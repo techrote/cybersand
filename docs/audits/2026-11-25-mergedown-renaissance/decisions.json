@@ -18,7 +18,21 @@
       ],
       "independent_review": "Specialist C APPROVE; lead concurred",
       "decision_comment": "https://github.com/techrote/cybersand/pull/736#issuecomment-7175345538",
-      "post_merge": "in progress"
+      "post_merge": {
+        "documentation": {
+          "run": 45706206573,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45706206575,
+          "status": "success"
+        },
+        "palette": {
+          "run": 45706206607,
+          "status": "failure",
+          "classification": "Inherited Linux Godot dependency HTTP403; repaired by #778/#771"
+        }
+      }
     },
     {
       "pr": 758,
@@ -36,7 +50,58 @@
       ],
       "independent_review": "Specialist C APPROVE and B independent binary/package readback",
       "decision_comment": "https://github.com/techrote/cybersand/pull/758#issuecomment-7175373448",
-      "post_merge": "in progress"
+      "post_merge": {
+        "documentation": {
+          "run": 45706427157,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45706427228,
+          "status": "success"
+        },
+        "architecture": {
+          "run": 45706428091,
+          "status": "success"
+        },
+        "native": {
+          "run": 45706427271,
+          "status": "refresh_required"
+        },
+        "gde": {
+          "run": 45706427647,
+          "status": "failure",
+          "classification": "Inherited Linux Godot HTTP403 and one transient Windows LFS acquisition timeout"
+        }
+      }
+    },
+    {
+      "pr": 771,
+      "constituent_prs": [
+        778
+      ],
+      "programme": "CI Engineering Closure plus exact CI Ready Recovery",
+      "candidate_sha": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "candidate_tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+      "previous_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "merge_commit": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "resulting_main": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "method": "merge",
+      "qualification_runs": [
+        45706972873,
+        45706973071,
+        45706972995,
+        45706973052,
+        45706972977
+      ],
+      "qualification_attempt": 1,
+      "independent_review": "Specialist B exact source/runtime/campaign review and C final APPROVE MERGE with both coverage reducers independently read; lead concurs",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/771#issuecomment-7176007075",
+      "post_merge": "pending",
+      "incorporated_repair": {
+        "pr": 778,
+        "source": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+        "github_state": "merged through preserved ancestry; no separate mainline merge operation"
+      }
     }
   ],
   "decisions": [
@@ -90,7 +155,12 @@
       ],
       "registration": "https://github.com/techrote/cybersand/pull/771#issuecomment-7175458828",
       "ready_at": "2026-11-25T21:43:37Z",
-      "status": "Ready qualification in progress; no merge approval yet"
+      "status": "All current-source Ready gates passed; independently approved; merged as5e29b111."
+    },
+    {
+      "id": "CONSOLIDATE-001",
+      "decision": "Closed exact-ancestor historical PRs720/770 in favor of777 and769 in favor of776 after independent review and all276 open PR targets checked. Branches/evaluators/evidence retained; owner gates remain.",
+      "record": "superseded-closures.json"
     }
   ]
 }

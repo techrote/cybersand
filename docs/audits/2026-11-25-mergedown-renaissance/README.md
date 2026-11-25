@@ -45,7 +45,10 @@ Use ancestry-preserving merges. Each new source checkpoint receives appropriate 
 
 - #736 merged as `dacd5976b9d62e8332bc8d64ab5e3921a88c8cef`.
 - #758 merged as `be87b18b30506ccead610c7035ae1ffa8e65a347`.
-- #771 plus exact #778 donor are undergoing one full Ready qualification at `0da970283d076ae4660a9d93efd0e5180d313247`; original ancestry is preserved.
+- #771 plus exact #778 donor passed full Ready qualification at `0da970283d076ae4660a9d93efd0e5180d313247` and merged as `5e29b111be6202a76c0042976f74de98bd8ead78`; original ancestry is preserved. The actual main tree equals the qualified candidate tree. Post-merge checks are tracked separately.
+- Original older-main dependency acquisition failures remain recorded in [recovered failures](recovered-failures.json); they are not relabeled successful.
+- Superseded exact-ancestor PRs #720/#770 and #769 are closed in favor of #777 and #776, with branches and original evidence retained.
+- #762 ordinary PR qualification is awaiting a maintainer workflow approval; the existing feature evaluator is not substituted for those unexecuted checks.
 - Goblin001/AMBIENT001 combined local default-OFF, actor control, native painting/history and persistence checks pass; final resulting-source hosted gates remain separate.
 - [Initial independent tooling review](independent-review.md) and [CI-wave independent review](ci-wave-independent-review.md) retain their source and actual evidence scopes.
 

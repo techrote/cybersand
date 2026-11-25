@@ -1,0 +1,490 @@
+{
+  "schema": "cybersand-mergedown-conflicts/v1",
+  "created_at_utc": "2026-11-25T21:44:31.779994+00:00",
+  "diagnostic_base": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+  "base_constituents": {
+    "accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+    "unmerged_infrastructure_candidate": "e85b1f73d5649158bc628834d169917d5d60ff16",
+    "goblin001": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+    "ambient001": "d0af9b6015c27417fddd67f79afdcf656a609571"
+  },
+  "dry_runs": [
+    {
+      "pr": 781,
+      "head_sha": "36d82cae75e5fd8dad11646663248de8003f5bf9",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+      "synthetic_result_tree": "323f1de91b6d12d8a5d58ef046fc67d5ecee868b",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/README.md"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "CONFLICT (content): Merge conflict in docs/README.md",
+        "Auto-merging docs/reference/retrieval-corpus.json"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 779,
+      "head_sha": "957190050ea6b32b47523234e508c7690a2abba9",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "d0af9b6015c27417fddd67f79afdcf656a609571",
+      "synthetic_result_tree": "a9b846c60a2cb1faea2c792e9165aeb110b78385",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/reference/retrieval-corpus.json"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 777,
+      "head_sha": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "synthetic_result_tree": "26581e38e4d000a2034622db5f3ad7e43e33daf3",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/README.md",
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "CONFLICT (content): Merge conflict in docs/README.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+        "Auto-merging godot/scripts/shared_workbench.gd"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 780,
+      "head_sha": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+      "synthetic_result_tree": "566e14dc7d5e72d6c1b740c26acd3b73dfa53a94",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/reference/status-and-roadmap.md"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 776,
+      "head_sha": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "synthetic_result_tree": "0e3ee13338c77b01c755999ad731bb64eb12a2b0",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/README.md",
+        "docs/reference/retrieval-corpus.json"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "CONFLICT (content): Merge conflict in docs/README.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "Auto-merging godot/scripts/shared_workbench.gd"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 754,
+      "head_sha": "75865127fee19c56dacb0ae80307f438dd866cd1",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "synthetic_result_tree": "907433ccd520188607bad76ad9ee39dd0af341b5",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/status-and-roadmap.md",
+        "godot/scripts/main.gd",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "Auto-merging docs/architecture/data-ownership-and-lifetimes.md",
+        "CONFLICT (content): Merge conflict in docs/architecture/data-ownership-and-lifetimes.md",
+        "Auto-merging docs/operations/local-build-and-validation.md",
+        "CONFLICT (content): Merge conflict in docs/operations/local-build-and-validation.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+        "Auto-merging godot/scripts/main.gd",
+        "CONFLICT (content): Merge conflict in godot/scripts/main.gd",
+        "Auto-merging godot/scripts/shared_workbench.gd",
+        "CONFLICT (content): Merge conflict in godot/scripts/shared_workbench.gd"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 762,
+      "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "synthetic_result_tree": "83ed00f8280b03c60665b471ce0892e25c4d43c9",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "godot/scripts/physical_actor_session.gd",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/workbench_actor_panel.gd"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "Auto-merging docs/architecture/data-ownership-and-lifetimes.md",
+        "Auto-merging docs/reference/interfaces-and-message-contracts.md",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "Auto-merging docs/systems/workbench-actor-composition.md",
+        "Auto-merging godot/scripts/main.gd",
+        "Auto-merging godot/scripts/physical_actor_rig.gd",
+        "Auto-merging godot/scripts/physical_actor_session.gd",
+        "CONFLICT (content): Merge conflict in godot/scripts/physical_actor_session.gd",
+        "Auto-merging godot/scripts/shared_workbench.gd",
+        "CONFLICT (content): Merge conflict in godot/scripts/shared_workbench.gd",
+        "Auto-merging godot/scripts/workbench_actor_catalog.gd",
+        "Auto-merging godot/scripts/workbench_actor_panel.gd",
+        "CONFLICT (content): Merge conflict in godot/scripts/workbench_actor_panel.gd",
+        "Auto-merging godot/scripts/workbench_setup.gd",
+        "Auto-merging tools/package_explore001_candidate.py"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 729,
+      "head_sha": "acc5dc1ca1a4ce0a3b1579d555102f797b2c55cc",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "synthetic_result_tree": "5a2abd8665ea8c47fb1e863cf2484aabba4377bd",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        ".github/workflows/gdextension.yml",
+        "docs/README.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/status-and-roadmap.md",
+        "tools/ci/test_godot_job_plan.py"
+      ],
+      "diagnostics": [
+        "Auto-merging .github/workflows/gdextension.yml",
+        "CONFLICT (content): Merge conflict in .github/workflows/gdextension.yml",
+        "Auto-merging docs/README.md",
+        "CONFLICT (content): Merge conflict in docs/README.md",
+        "Auto-merging docs/operations/local-build-and-validation.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+        "Auto-merging godot/scripts/main.gd",
+        "Auto-merging godot/scripts/shared_workbench.gd",
+        "Auto-merging tools/ci/test_godot_job_plan.py",
+        "CONFLICT (content): Merge conflict in tools/ci/test_godot_job_plan.py",
+        "Auto-merging tools/package_explore001_candidate.py"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    },
+    {
+      "pr": 768,
+      "head_sha": "858ef9e7285fcaa22c9cc1381d0cb0082057a456",
+      "base_sha": "2a077fa9861b6be53ad41d85a350fe2f94b2b83d",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "synthetic_result_tree": "a25b69ba18c8cbafcda7c6a1ad5ecbb03de9cca1",
+      "text_merge": "conflict",
+      "conflict_paths": [
+        "docs/README.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "diagnostics": [
+        "Auto-merging docs/README.md",
+        "CONFLICT (content): Merge conflict in docs/README.md",
+        "Auto-merging docs/reference/retrieval-corpus.json",
+        "Auto-merging docs/reference/retrieval-index.md",
+        "Auto-merging docs/reference/status-and-roadmap.md",
+        "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+        "Auto-merging godot/scripts/shared_workbench.gd",
+        "CONFLICT (content): Merge conflict in godot/scripts/shared_workbench.gd"
+      ],
+      "status": "read-only object-level diagnostic; not application qualification or merge approval"
+    }
+  ],
+  "shared_production_paths": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "programmes": [
+        762,
+        729,
+        768
+      ]
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "programmes": [
+        762,
+        729,
+        768
+      ]
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "programmes": [
+        762,
+        729,
+        768
+      ]
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "programmes": [
+        762,
+        729,
+        768
+      ]
+    },
+    {
+      "path": "godot/native_extension/cyber_demo_bridge.hpp",
+      "programmes": [
+        754,
+        762
+      ]
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "programmes": [
+        754,
+        762,
+        768
+      ]
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.hpp",
+      "programmes": [
+        754,
+        762,
+        768
+      ]
+    },
+    {
+      "path": "godot/native_extension/cyber_prepared_liquid_world.hpp",
+      "programmes": [
+        754,
+        762,
+        729
+      ]
+    },
+    {
+      "path": "godot/native_extension/workbench_granular_coupling.inc",
+      "programmes": [
+        754,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_actuator.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_debug_overlay.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_engine.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_examples.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_modules.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_perception.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_profile.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/ambient/ambient_profile_editor.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/art_provider.gd",
+      "programmes": [
+        777,
+        780
+      ]
+    },
+    {
+      "path": "godot/scripts/feature_launcher.gd",
+      "programmes": [
+        776,
+        754
+      ]
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "programmes": [
+        775,
+        779,
+        754,
+        762,
+        729
+      ]
+    },
+    {
+      "path": "godot/scripts/physical_actor_rig.gd",
+      "programmes": [
+        775,
+        779,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "programmes": [
+        775,
+        779,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "programmes": [
+        775,
+        779,
+        777,
+        776,
+        754,
+        762,
+        729,
+        768
+      ]
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "programmes": [
+        780,
+        754,
+        762,
+        768
+      ]
+    },
+    {
+      "path": "godot/scripts/workbench_actor_catalog.gd",
+      "programmes": [
+        775,
+        779,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/workbench_actor_control.gd",
+      "programmes": [
+        775,
+        779
+      ]
+    },
+    {
+      "path": "godot/scripts/workbench_actor_panel.gd",
+      "programmes": [
+        775,
+        779,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_controller.gd",
+      "programmes": [
+        780,
+        776,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/workbench_physics_bridge.gd",
+      "programmes": [
+        754,
+        762
+      ]
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "programmes": [
+        775,
+        779,
+        762
+      ]
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "programmes": [
+        754,
+        762,
+        768
+      ]
+    },
+    {
+      "path": "native/src/world.cpp",
+      "programmes": [
+        754,
+        762,
+        768
+      ]
+    }
+  ],
+  "limitations": [
+    "Candidates tested separately against this diagnostic base, not combined with each other.",
+    "A clean Git merge does not establish semantic, runtime, graphical, native, package or owner acceptance.",
+    "No existing remote feature branch was changed."
+  ]
+}

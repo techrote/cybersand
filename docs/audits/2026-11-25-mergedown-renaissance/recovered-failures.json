@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "observed_at": "2026-11-25T22:11:09.172692+00:00",
+  "disposition": "Original failed runs retained; repaired resulting-source Ready campaign passed. Main post-merge status must be checked separately.",
+  "failures": [
+    {
+      "source": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "run_id": 45706206607,
+      "attempt": 1,
+      "workflow": "Palette shader actual backend qualification",
+      "classification": "dependency acquisition",
+      "cause": "Inherited Linux Godot redirector returned HTTP 403 before any Linux cases. Missing manifest is a downstream consequence; Windows cohorts passed.",
+      "repair_source": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "repair_run": 45706972995,
+      "repair_status": "passed"
+    },
+    {
+      "source": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "run_id": 45706427647,
+      "attempt": 1,
+      "workflow": "GDExtension build and current Godot regression",
+      "classification": "dependency acquisition and transient LFS infrastructure",
+      "cause": "All Linux shards and Art graphical failed at old Godot redirector HTTP403. Windows shard18 failed LFS batch request before Godot/tests; other Windows shards passed. Coverage reducers correctly rejected incomplete evidence.",
+      "repair_source": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "repair_run": 45706973071,
+      "repair_status": "passed"
+    }
+  ],
+  "evidence": [
+    {
+      "job_id": 139529031667,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45706206607/job/139529031667",
+      "retrieved_log_sha256": "4df1fa2af3759f3711d8758804a2d3dc0f6919eb4b7af6f137c1b2da3425bc32",
+      "log_bytes": 137996,
+      "exact_excerpts": [
+        "2026-11-25T21:39:53.7645400Z curl: (22) The requested URL returned error: 403",
+        "2026-11-25T21:39:53.8021845Z {\"commands\": [{\"allowance_seconds\": 299.998347502, \"command\": [\"git\", \"lfs\", \"install\", \"--local\"], \"label\": \"lfs-setup\", \"seconds\": 0.031754647999996166, \"status\": \"passed\"}, {\"allowance_seconds\": 299.966330593, \"command\": [\"dpkg-query\", \"-W\", \"xvfb\", \"xauth\", \"libgl1-mesa-dri\", \"libglx-mesa0\"], \"label\": \"actual-graphical-packages\", \"seconds\": 0.016111858999998674, \"status\": \"passed\"}, {\"allowance_seconds\": 1200.0, \"command\": [\"git\", \"lfs\", \"pull\", \"--include=godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\", \"--exclude=\"], \"label\": \"lfs-materialization\", \"seconds\": 12.397260359, \"status\": \"passed\"}, {\"allowance_seconds\": 1210.0, \"command\": [\"curl\", \"--fail\", \"--location\", \"--connect-timeout\", \"60\", \"--max-time\", \"1200.0\", \"--output\", \"/home/runner/work/_temp/palette-godot.zip\", \"https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7\"], \"label\": \"official-engine-download\", \"seconds\": 0.11463460499999911, \"status\": \"failed\"}], \"error\": \"CalledProcessError: Command '['curl', '--fail', '--location', '--connect-timeout', '60', '--max-time', '1200.0', '--output', '/home/runner/work/_temp/palette-godot.zip', 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7']' returned non-zero exit status 22.\", \"execution_policy\": {\"advisories\": {\"drift_ratio\": 1.2, \"drift_window\": 5, \"minimum_baseline_samples\": 3, \"prominent_ratio\": 2.0, \"rolling_window\": 10, \"warning_ratio\": 1.5}, \"path\": \"godot/tests/support/ci_execution_policy.json\", \"policy_id\": \"github-hosted-complete-execution-v1\", \"scale\": 1.0, \"schema_version\": 1, \"sha256\": \"9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc\", \"watchdogs\": {\"aggregate_headroom_seconds\": 600.0, \"complex_fixture_seconds\": 3600.0, \"dependency_prepare_seconds\": 1200.0, \"diagnostic_capture_seconds\": 30.0, \"godot_import_seconds\": 1200.0, \"godot_job_minutes\": 360.0, \"godot_metadata_seconds\": 900.0, \"godot_setup_seconds\": 4200.0, \"graphical_case_seconds\": 1200.0, \"hosted_job_minutes\": 180.0, \"main_ack_seconds\": 600.0, \"native_case_seconds\": 3600.0, \"native_compile_seconds\": 3600.0, \"native_suite_seconds\": 7200.0, \"operation_seconds\": 300.0, \"ordinary_case_seconds\": 1200.0, \"terminate_grace_seconds\": 10.0}}, \"observed_source\": \"dacd5976b9d62e8332bc8d64ab5e3921a88c8cef\", \"schema\": \"palette-dependency-preparation-v1\", \"source_commit\": \"dacd5976b9d62e8332bc8d64ab5e3921a88c8cef\", \"status\": \"failed\"}",
+        "2026-11-25T21:39:53.8161351Z ##[error]Process completed with exit code 1.",
+        "2026-11-25T21:39:53.9067370Z     require(path.is_file() and path.resolve().is_relative_to(directory.resolve()), 'Missing shader artifact: ' + name)",
+        "2026-11-25T21:39:53.9069461Z ValueError: Missing shader artifact: manifest.json",
+        "2026-11-25T21:39:53.9077293Z     with metadata_budget('complete retained cohort readback', c.policy.watchdog_seconds('godot_metadata_seconds')):",
+        "2026-11-25T21:39:53.9081048Z RuntimeError: complete retained cohort readback: Missing shader artifact: manifest.json",
+        "2026-11-25T21:39:53.9193776Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "job_id": 139533186849,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45706427647/job/139533186849",
+      "retrieved_log_sha256": "0127db70bf4c95ae3a42a0dfdac5a52cca2fbe50ad252961ac030c6a9247832a",
+      "log_bytes": 133703,
+      "exact_excerpts": [
+        "2026-11-25T21:47:28.1628534Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:47:46.4379352Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:47:47.7085773Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:47:48.1429342Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:47:48.2706166Z curl: (22) The requested URL returned error: 403",
+        "2026-11-25T21:47:50.2774426Z curl: (22) The requested URL returned error: 403",
+        "2026-11-25T21:47:52.2868245Z curl: (22) The requested URL returned error: 403",
+        "2026-11-25T21:47:54.2940555Z curl: (22) The requested URL returned error: 403",
+        "2026-11-25T21:47:54.2968089Z ##[error]Process completed with exit code 22.",
+        "2026-11-25T21:47:54.3065680Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7"
+      ]
+    },
+    {
+      "job_id": 139531504031,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45706427647/job/139531504031",
+      "retrieved_log_sha256": "9a31627cb34a16f11ba80c31a3a023ba4b28225dfaf900b9f96489f666298236",
+      "log_bytes": 132972,
+      "exact_excerpts": [
+        "2026-11-25T21:51:46.1771589Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:52:13.9065721Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:52:14.1157245Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7",
+        "2026-11-25T21:52:26.2356554Z batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.",
+        "2026-11-25T21:52:26.3029890Z Failed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'",
+        "2026-11-25T21:52:26.3141461Z ##[error]Process completed with exit code 2.",
+        "2026-11-25T21:52:26.3371880Z   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7"
+      ]
+    }
+  ],
+  "local_resource_incident": {
+    "status": "INCOMPLETE; no test verdict",
+    "time_utc_approx": "2026-11-25T21:58:00Z",
+    "cause": "Shared workspace disk filled while staging reconstructable Godot copies and archives. Interrupted fetch/cherry-pick/test preparation did not change accepted main.",
+    "recovery": "Removed only this mission's reconstructable staged copies and one unused clean worktree; retained original downloaded archives, source history, measured logs and receipts. Re-executed interrupted local repository operations successfully.",
+    "unrelated_files_removed": false
+  },
+  "actor_admission": {
+    "pr": 762,
+    "source": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+    "status": "action_required",
+    "run_count": 11,
+    "sample_run": 45117402531,
+    "observed_ui": "This workflow is awaiting approval from a maintainer in #762",
+    "qualification": "No current ordinary PR jobs executed; not an application failure. Earlier feature-specific campaign45112739808 remains separate.",
+    "next_action": "Maintainer approves the existing GitHub Actions workflow requests; then inspect actual source-bound results.",
+    "record": "https://github.com/techrote/cybersand/pull/762#issuecomment-7175767936"
+  }
+}
