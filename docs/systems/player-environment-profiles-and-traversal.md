@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: PENV-001 sampled-player mass, gravity, terminal/jetpack tuning, material-response identity and step/knee/clamber traversal; excludes Water semantic changes and generic-body physics
 canonical-for: [player-environment-tuning, sampled-character-traversal-bands]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [granular-interaction-policy.md, ../operations/gameplay-recording.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
 ---
 
@@ -120,8 +120,8 @@ In the ordinary Main **Materials sandbox / Experiment Tower** entry, open
 **Player / Environment Tuning** to inspect the active profile ID/hash and core
 values. The current Shared Workbench hides this legacy panel. **Apply + fresh
 reset** uses the route described above. Main refuses tuning while an actor
-prototype owns movement and directs the reader to **Current sampled character**
-in F5; an active blind Water set must be finished/revealed first. These refusals
+prototype owns movement and directs the reader to **Sampled — baseline character
+(runtime surfacing)** in F5; an active blind Water set must be finished/revealed first. These refusals
 preserve the existing run rather than silently applying unrelated actor tuning.
 
 REC-001 v2 separates the frozen **material generation** from the later **actor

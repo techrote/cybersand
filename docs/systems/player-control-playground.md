@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -566,7 +566,7 @@ leak/race freedom, gameplay performance, physical devices and human feel.
 
 ### Executed normal-load snapshot-handoff lock wait baseline (PLAY-WAIT-001)
 
-The **unmerged, source-qualified** five-rig [test-only probe](../audits/2026-10-29-play-wait001-main-snapshot-mutex.md) uses actual Main/CyberSimulationWorker/main-thread-Rapier course execution with an instrumented, semantically equivalent `take_latest_snapshot` mutex acquisition. Windows/Linux [Godot run 40899843252](https://github.com/techrote/cybersand/actions/runs/40899843252) passes 16 assertions per rig, with 120 real native and Rapier ticks per rig, 290 Main callbacks and 289 complete callback intervals. Normal-load mutex-acquire p95 was 1 microsecond per rig. The same-source [Native run 40899843210](https://github.com/techrote/cybersand/actions/runs/40899843210) failed its first TSan 15-minute timeout but passed on explicitly diagnosed attempt 2; both attempts remain evidence. This measures only that handoff lock, **not** other Main waits, sustained rendered FPS, native jobs actually held, physical device/focus or human feel. No production, native runtime or solver default is altered. #268/#269/#270 remain open.
+The **accepted, source-qualified** five-rig [test-only probe](../audits/2026-10-29-play-wait001-main-snapshot-mutex.md) entered through [PR #297](https://github.com/techrote/cybersand/pull/297), merge `3312f68b`. Its original audit retains the pre-merge disposition as dated evidence. The probe uses actual Main/CyberSimulationWorker/main-thread-Rapier course execution with an instrumented, semantically equivalent `take_latest_snapshot` mutex acquisition. Windows/Linux [Godot run 40899843252](https://github.com/techrote/cybersand/actions/runs/40899843252) passed 16 assertions per rig, with 120 real native and Rapier ticks per rig, 290 Main callbacks and 289 complete callback intervals. Normal-load mutex-acquire p95 was 1 microsecond per rig. The same-source [Native run 40899843210](https://github.com/techrote/cybersand/actions/runs/40899843210) failed its first TSan 15-minute timeout but passed on explicitly diagnosed attempt 2; both attempts remain evidence. This measures only that handoff lock, **not** other Main waits, sustained rendered FPS, native jobs actually held, physical device/focus or human feel. No production, native runtime or solver default was altered by that probe. Its result does not close #268/#269/#270 or constitute a current-source rerun.
 
 ## Open the seven-preset movement course
 

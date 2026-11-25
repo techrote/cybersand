@@ -1797,7 +1797,7 @@ func toggle_player_environment_tuning() -> void:
 func apply_player_environment_profile(candidate: Dictionary) -> void:
 	if actor_model_selection != &"":
 		player_environment_panel.set_error(
-			"Actor prototypes own their movement settings. Select Current sampled character in F5 to tune PENV."
+			"Actor prototypes own their movement settings. Select Sampled — baseline character (runtime surfacing) in F5 to tune PENV."
 		)
 		return
 	if (
