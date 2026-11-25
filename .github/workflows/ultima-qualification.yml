@@ -7,9 +7,14 @@ on:
       - '.github/workflows/ultima-qualification.yml'
       - 'godot/scripts/workbench*.gd'
       - 'godot/scripts/architectural_generator_dialog.gd'
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/gameplay_recorder.gd'
+      - 'godot/tests/run_microscenario.gd'
+      - 'godot/tests/microscenario_capture_fault_child.gd'
       - 'godot/tests/test_workbench*.gd'
       - 'godot/tests/workbench_save_fault_child.gd'
       - 'tools/ci/run_workbench_save_qualification.py'
+      - 'tools/ci/run_microscenario_capture_qualification.py'
       - 'tools/ci/run_ultima_qualification.py'
       - 'tools/ci/package_ultima_evaluator.py'
       - 'tools/ci/test_package_ultima_evaluator.py'
@@ -82,6 +87,8 @@ jobs:
             workspace/source/build/ultima/*.log
             workspace/source/build/ultima/persistence/*.json
             workspace/source/build/ultima/persistence/*.log
+            workspace/source/build/ultima/microscenario-capture/*.json
+            workspace/source/build/ultima/microscenario-capture/*.log
           if-no-files-found: error
           retention-days: 90
 
@@ -192,5 +199,7 @@ jobs:
             workspace/source/build/ultima/*.log
             workspace/source/build/ultima/persistence/*.json
             workspace/source/build/ultima/persistence/*.log
+            workspace/source/build/ultima/microscenario-capture/*.json
+            workspace/source/build/ultima/microscenario-capture/*.log
           if-no-files-found: error
           retention-days: 90

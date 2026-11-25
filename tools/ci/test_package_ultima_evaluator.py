@@ -62,6 +62,13 @@ def valid_qualification():
     q['persistence'] = {'schema': 'workbench-save-qualification-v1', 'status': 'passed',
                         'completed': True, 'source_head': HEAD, 'platform': 'win32', 'cases': cases,
                         'engine_version': q['engine']['version'], 'engine_sha256': q['engine']['console_sha256']}
+    q['microscenario_capture'] = {
+        'schema': 'microscenario-capture-qualification-v1', 'status': 'passed',
+        'completed': True, 'source_head': HEAD, 'platform': 'win32',
+        'engine_version': q['engine']['version'], 'engine_sha256': q['engine']['console_sha256'],
+        'cases': [{'kind': kind, 'evidence_class': evidence, **({'fault': fault} if fault else {})}
+                  for kind, fault, evidence in sorted(package.WINDOWS_CAPTURE_CASES, key=str)],
+    }
     return q
 
 
@@ -122,6 +129,26 @@ class QualificationAdmission(unittest.TestCase):
 
     def test_fault_engine_differs_from_normal_execution(self):
         self.q['persistence']['engine_sha256'] = 'f' * 64
+        self.require_refusal()
+
+    def test_capture_missing_refuses(self):
+        del self.q['microscenario_capture']
+        self.require_refusal()
+
+    def test_capture_wrong_source_refuses(self):
+        self.q['microscenario_capture']['source_head'] = 'f' * 40
+        self.require_refusal()
+
+    def test_capture_wrong_engine_refuses(self):
+        self.q['microscenario_capture']['engine_sha256'] = 'f' * 64
+        self.require_refusal()
+
+    def test_capture_missing_lock_refuses_even_with_four_rows(self):
+        self.q['microscenario_capture']['cases'][-1] = copy.deepcopy(self.q['microscenario_capture']['cases'][0])
+        self.require_refusal()
+
+    def test_capture_failure_refuses(self):
+        self.q['microscenario_capture']['status'] = 'failed'
         self.require_refusal()
 
     def test_missing_lock_case_refuses_even_with_ten_rows(self):

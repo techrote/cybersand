@@ -113,6 +113,12 @@ def main():
                                timeout=execution_policy.watchdog_seconds("complex_fixture_seconds"))
         require(fault.returncode == 0, "Persistence fault matrix failed")
         report["persistence"] = json.loads((output / "persistence/report.json").read_text())
+        capture = subprocess.run([sys.executable, str(ROOT / "tools/ci/run_microscenario_capture_qualification.py"),
+                                  "--godot", str(engine), "--project", str(ROOT / "godot"),
+                                  "--evidence", str(output / "microscenario-capture")], env=env, cwd=ROOT,
+                                 timeout=execution_policy.watchdog_seconds("complex_fixture_seconds"))
+        require(capture.returncode == 0, "MicroScenario capture fault matrix failed")
+        report["microscenario_capture"] = json.loads((output / "microscenario-capture/report.json").read_text())
         available = {case.name:case for case in regression.discover_cases()}
         plan = [
             ("test_workbench_material_baseline", {}),

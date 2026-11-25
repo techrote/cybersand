@@ -69,6 +69,10 @@ WINDOWS_FAULT_CASES = {
     ("helper", "process-termination-before-commit", "real-process-termination"),
     ("helper", None, "real-concurrent-processes"),
 }
+WINDOWS_CAPTURE_CASES = {
+    *((kind, None, "real-public-caller") for kind in ("controller", "cli")),
+    *((kind, "locked-target", "real-os-failure") for kind in ("controller", "cli")),
+}
 
 
 def validate_qualification(qualification, head, tree):
@@ -104,6 +108,17 @@ def validate_qualification(qualification, head, tree):
             and engine.get("console_sha256") == DEPENDENCIES["Godot_v4.7-stable_win64_console.exe"]
             and fault.get("engine_version") == engine["version"]
             and fault.get("engine_sha256") == engine["console_sha256"], "Mismatched qualified Windows engine")
+    capture = qualification.get("microscenario_capture", {})
+    require(capture.get("schema") == "microscenario-capture-qualification-v1"
+            and capture.get("status") == "passed" and capture.get("completed") is True
+            and capture.get("platform") == "win32" and capture.get("source_head") == head
+            and capture.get("engine_version") == engine["version"]
+            and capture.get("engine_sha256") == engine["console_sha256"],
+            "Incomplete or mismatched MicroScenario capture qualification")
+    capture_cases = capture.get("cases", [])
+    require(len(capture_cases) == len(WINDOWS_CAPTURE_CASES)
+            and {(c.get("kind"), c.get("fault"), c.get("evidence_class")) for c in capture_cases}
+            == WINDOWS_CAPTURE_CASES, "Incomplete or duplicate Windows capture fault matrix")
 
 
 def verify(folder, expected_manifest_sha256):
