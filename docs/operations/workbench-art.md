@@ -144,6 +144,24 @@ copy and **Save full JSONL…** export. Old archives are preserved on disk but a
 not attached to a new session. Logs are evidence for manual diagnosis, not exact
 replay of an evolving World.
 
+In the **ULTIMA candidate**, desktop **Save full JSONL…** writes a separate
+staging file and verifies its closed length and digest before native replacement
+of the destination. The progress label changes to **Verifying closed export**;
+**Cancel export** or **Stop** can interrupt before that replacement. A refusal
+or cancellation leaves the destination unreplaced by this export. If cleanup
+cannot remove its own staging file, the message identifies that uncommitted
+file. Wait for the completed result before treating the export as saved.
+
+An append to an existing traffic log is acknowledged only after the closed new
+bytes are verified. A failed append can leave an incomplete final record; the
+previous complete events remain, and the log becomes read-only for that session.
+Retain the original. Export can recover complete events before an interrupted
+final record and displays the recovery warning; it does not silently repair the
+source archive or reconstruct a discarded conversation. These checks establish
+the tested desktop file outcomes, not fsync/power-loss durability or a browser
+storage guarantee. The [archive reader](../../godot/scripts/art_traffic_archive.gd)
+and [provider](../../godot/scripts/art_provider.gd) define those boundaries.
+
 The logger redacts known key/bearer patterns and configured credentials, but
 prompts, model replies, canvas images and other private content remain sensitive.
 Inspect and redact a diagnostic extract before sharing it. An endpoint is the
