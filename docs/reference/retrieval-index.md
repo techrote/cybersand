@@ -28,7 +28,7 @@ unmerged candidates and dated test evidence are different claims.
 | Can a Draft skip, a cross-build or an old-head check authorize merge? | [Draft and qualification rules](../operations/github-development-and-release.md#current-ci-provider-and-draft-gating) |
 | Who may publish a runtime, and which source/lease/artifact identities must agree? | [Runtime publication custody](../operations/github-development-and-release.md#source-matched-runtime-publication) |
 | Should today's source match the historical M11 binary hashes? | [Current versus historical validation](../operations/current-and-historical-validation.md) |
-| What are the actual Web build/release gaps? | [Unresolved Web configuration](../operations/github-development-and-release.md#unresolved-ci-contradictions), [Web threading](../operations/web-threading.md) |
+| Which Web experiments are in scope, and what must their evidence identify? | [Owner Web policy](product-intent-and-priorities.md#disposable-web-experiments), [experiment prerequisites](../operations/github-development-and-release.md#unresolved-ci-contradictions), [Web threading](../operations/web-threading.md) |
 
 ## Author scenes and use tools
 

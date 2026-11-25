@@ -72,8 +72,10 @@ instruction by losing its authority tag. A second document-kind cannot override
 an earlier exclusion. This is not a guarantee for arbitrary YAML anchors, tags or
 complex keys. [Current-selection tests](../../tools/ci/test_current_retrieval_selection.py)
 exercise manifest, fallback and direct chunking, including real-corpus equality;
-the original [historical tests](../../tools/ci/test_historical_retrieval.py) remain
-separate and unchanged.
+the [historical tests](../../tools/ci/test_historical_retrieval.py) retain their
+separate assertions. Unit source fixtures now supply the complete metadata
+required by the stricter current policy; the original pinned suite remains in
+the predecessor lineage.
 
 Explicit `--historical` retrieval still requires the isolated historical manifest
 and puts `historical-non-authoritative` plus a non-current instruction warning on
@@ -134,6 +136,13 @@ inspection-only scope. Source inspection does not establish implementation
 acceptance, owner authorization or a passed runtime test. A consumer must still
 interpret source, status and unresolved decisions; this tool does not fabricate
 an answer when no owner decision exists.
+
+A high-scoring context is not necessarily the primary decision or a complete
+procedure. If an intent question does not return its primary record, follow the
+[owner-intent navigation route](../reference/product-intent-and-priorities.md)
+and inspect the linked decision before attributing a policy to the owner.
+If essential facts are absent, report the gap and the source to inspect instead
+of completing the answer from an old audit or an inferred decision.
 
 ```sh
 python -m unittest discover -s tools/ci -p test_knowledge_retrieval.py
