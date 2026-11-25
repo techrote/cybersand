@@ -191,3 +191,13 @@ Closeout evidence is assembled separately on `docs/m67-final-delivery`, based on
 the tested-candidate source. It will identify itself as a documentation/evidence
 child, preserve each application's original reports and wait for actual final
 artifact review before claiming a qualified owner evaluator.
+
+
+## Final independent qualification and delivery — 25 November 2026
+
+- Tested application `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d`, tree `ea59a4a95d647c58820c943d37dd14e3d760b2f8`, campaign `45520561849`: all four jobs passed; Linux89, Windows source89, fresh extracted Windows72 process groups.
+- A independently audited the original owner ZIP,2139 manifest files,299 executed identities,105 native inputs and exact Windows text exports. C independently audited1493 outcome/custody assertions, the real PowerShell self-query, owned visible CMD launch and source/extracted pairing. B bound final studies/flagship planes to all three exact environments. Root independently verified final Linux source/custody and original UI/PNG comparisons.
+- Retained M7 Stop prefixes differ:4096 source versus3136 extracted,49898 versus47978 changed rows. Both recover exactly to the same native plane; no identical intermediate timing claim.
+- Original failed campaigns45506178712 and45512988153 remain archived; final owner artifact14983516321 is112390612-byte inner ZIP SHA256 `202b5852d31a54f30b9fd0e825d8e9123edddad05f3d09469ceaec671249eea4`.
+- Final documentation/evidence-only archive preserves application source. Main00cdb02f and original#720/#770 unchanged. Art latest1c2d084c is CI-only; qualifiedfa22 package remains separate and no exclusive proposal route was delivered.
+- Qualified scope is the independent native/offline Architecture product and executable owner seam. Actual model calls0; paid inference0; training0. Physical owner and full Art integration gates remain. Draft/HOLD, no merge/Ready/release.

@@ -1,9 +1,29 @@
 {
   "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "archival_delivery": {
+    "application_source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "application_tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+    "classification": "Documentation/evidence-only descendants of the exact tested application; no application or runtime publication child. The containing Git commit identifies this packet.",
+    "first_remote_evidence_checkpoint": "ef7a6e1484f3fb7c12294449fc22b73d6f07e335",
+    "package_repacked_after_qualification": false,
+    "physical_owner_accepted": false
+  },
   "art_gate": {
     "adapter_scope": "Independent explicit owner seam; controlled fixtures are not inference or completed Art integration.",
     "application_run": 45482969231,
     "current_boundary": "Stable Art source is identified, but no exclusively owned proposal-only request route or ownership handoff is supplied. Independent accepted-interface seam remains the delivery boundary.",
+    "latest_refresh": {
+      "classification": "CI-only successor: four workflow/test/documentation paths; no Provider/conversation/Workbench/proposal route changes.",
+      "exclusive_proposal_route_delivered": false,
+      "github_draft": false,
+      "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "merged": false,
+      "observed_utc": "2026-11-25T02:00:44.060547+00:00",
+      "our_action": "Read-only refresh; no source import or ownership change.",
+      "owner_comment": 7149057968,
+      "qualified_application_remains": "981a740828decbeac04d5a14511d0222095de0a9",
+      "qualified_package_remains": "fa22d386b802b686c371bb6e12996c7a93c18588"
+    },
     "owner_acknowledgment": {
       "broader_ready_validation": "separate failures reported by owner; isolated qualified Art application/package preserved",
       "comment_id": 7148153448,
@@ -302,6 +322,14 @@
   "disposition": "DRAFT_HOLD",
   "documentation_checks": {
     "docs": "passed",
+    "final_docs": {
+      "canonical_claims": 293,
+      "documents": 157,
+      "errors": 0,
+      "local_links": 4162,
+      "scope": "Current documentation structure/links only; not runtime acceptance.",
+      "status": "passed"
+    },
     "historical_m11": "passed:18 records/28 historical hashes; not current acceptance",
     "repository_identity": "passed; local Linux materializations only",
     "retrieval_evaluation": {
@@ -320,20 +348,135 @@
     "development_archive_sha256": "52302bcdb03a2f4d631b8a171c5c69df7adb49ba1bd0420586d1bbd5e1171849",
     "development_restoration": {
       "archived_files_restored": 113,
-      "qualification": "Five additional entries from the earlier local directory count were excluded from the preserved archive or created afterward. Their identities are not established; no full restoration claim is made for them. All retained core source-bound construction records and final hosted artifacts remain independently available.",
+      "qualification": "Five additional entries from the earlier directory count were not recovered from the preserved archive. Their identities and whether they were excluded or created afterward are not established; no full restoration or disposability claim is made. All retained core construction records and final hosted artifacts remain independently available.",
       "scope": "Selected native planes, starts, recipes, sessions, receipt records and diagnostics in three previously staged directories. No execution repeated or result regenerated.",
-      "unarchived_temporary_bytes": 831920,
-      "unarchived_temporary_files": 5
+      "unrecovered_unidentified_bytes": 831920,
+      "unrecovered_unidentified_files": 5
     },
     "local_docs_checkpoint_preserved": "69f3fa802aaac47fecc0ed9cac2209aa69137bf5",
-    "original_hosted_archives": "Four first/second campaign archives downloaded again from original immutable artifact IDs; size, SHA-256 and ZIP CRC agree with pre-interruption observations. Final Linux archive separately verified.",
+    "original_hosted_archives": "All six first/second/final application outcome archives downloaded from original immutable artifact IDs, with byte size/SHA-256 and ZIP integrity checked. Both retained failures and final source/extracted results are preserved without rerunning or rewriting outcomes.",
     "published_application_preserved": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "remote_docs_checkpoint_preserved": "ef7a6e1484f3fb7c12294449fc22b73d6f07e335",
     "second_recovery_observed_utc": "2026-11-25T01:24:47Z",
     "temporary_memory_files_cleared": true
   },
-  "final_campaign": null,
-  "final_source_tree": null,
-  "final_tested_application": null,
+  "evidence_preservation": {
+    "development_evidence": {
+      "bytes": 12784467,
+      "file": "CyberSand-M6-M7-Development-Evidence-20261124.zip",
+      "raw_files": 901,
+      "scope": "Original retained development observations with manifest. Not a replacement for exact-source hosted qualification.",
+      "sha256": "52302bcdb03a2f4d631b8a171c5c69df7adb49ba1bd0420586d1bbd5e1171849"
+    },
+    "immutable_owner_zip": "CyberSand-Architecture-Workbench-Windows-17c6b5b35049.zip",
+    "library_upload": "succeeded:13 original deliverables; per-file delivery receipts retained separately in the owner handoff",
+    "qualification_history": {
+      "bytes": 177055307,
+      "created_utc": "2026-11-25T02:08:49.434361+00:00",
+      "file": "CyberSand-M6-M7-Qualification-History-20261125.zip",
+      "files": 67,
+      "independent_review": "qualification-history-independent-review-a.json",
+      "independent_review_sha256": "720258acaa0ab4feb5fc16a33c3b4971bd4545b6c76caa43d181c1935a691fbb",
+      "manifest_sha256": "f04872b24c75cfc834ec487439dfd2287e354fdaaeeecb196fb29366ac008546",
+      "original_artifact_bytes": 176578745,
+      "original_artifacts": 8,
+      "schema": "cybersand-qualification-history-archive-v1",
+      "sha256": "0b83d4e29fe3c952233362923cdaaab321272d74306fa6014664b0b7f656cbaf"
+    },
+    "repository_source_bundle": {
+      "bundle_verify": "passed",
+      "bytes": 534031,
+      "file": "CyberSand-M6-M7-Development-Source-Checkpoints.bundle",
+      "git_foundation_prerequisite": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "independent_review_sha256": "b0dee053afca4e3ebd9adc2b7238a31537a2f03b71c884d269d0e0ac999729ab",
+      "scope": "Incremental selected development source only, delivered separately; canonical application source is the published continuation commit. No runtime or reference-art payload. Requires the preserved #770 foundation in a local clone.",
+      "selected_refs": 12,
+      "sha256": "0ea233e985399fc043416ac6560e8192fc05746ca8b5706393c0fa240c1cf2f7"
+    }
+  },
+  "final_campaign": 45520561849,
+  "final_graphical_evidence": {
+    "cross_platform_pixel_identity_claimed": false,
+    "four_native_flagship_planes_equal_across_all_three_phases": true,
+    "root_direct_final_ui_review": "final-ui-visual-review-root.json",
+    "root_direct_final_ui_review_sha256": "bc7dee60f8e92b97a6f31ce8a4b8f1c265c3c15e8aadd8223a68058c0a3ea19b",
+    "scope": "Original Godot captures; source/extracted UI live identities, gameplay frames and actual stopped prefix need not have identical pixels. Informed specialist review, not blind human preference.",
+    "windows_byte_identical_png_pairs": 144,
+    "windows_identical_whole_and_district_flagship_pairs": 12,
+    "windows_nonidentical_png_pairs": 10,
+    "windows_paired_collaborative_pngs": 154,
+    "windows_whole_and_district_flagship_png_pairs": 12
+  },
+  "final_native_catalogue": {
+    "builds_per_phase": 40,
+    "explicit_excluded_cells_per_source_phase": 517,
+    "identity_replays_per_phase": 40,
+    "linux_windows_source_scalar_planes_identical": true,
+    "native_observations_per_phase": 100,
+    "native_receipt_chunks_per_source_phase": 964,
+    "original_parts_preserved": 8,
+    "parts": 40,
+    "scope": "Actual independent recipe and native-plane reconstruction; four selected asymmetric parts have five additional poses. Pure contract coverage is broader; no exhaustive all-part/pose native claim.",
+    "variant_parts": [
+      "diagonal-transfer-spine",
+      "offset-buttress",
+      "offset-manifold",
+      "pump-on-plinth"
+    ],
+    "variant_replays_per_phase": 20
+  },
+  "final_native_hierarchy": {
+    "explanation": "Each acknowledged Stop prefix is exactly cleared before fresh approved recovery. Original intermediate planes and changed counts differ and remain retained. Harness decisions are not physical owner preference.",
+    "final_plane_identical_across_phases": true,
+    "final_plane_sha256": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe",
+    "fresh_extracted_windows": {
+      "changed_rows": 47978,
+      "native_stages": 10,
+      "receipt_chunks": 20,
+      "stopped_prefix_cells": 3136
+    },
+    "source_phases": {
+      "changed_rows": 49898,
+      "native_stages": 10,
+      "receipt_chunks": 20,
+      "stopped_prefix_cells": 4096
+    }
+  },
+  "final_runtime": {
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "linux_godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "linux_native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "linux_rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "windows_payload": [
+      {
+        "bytes": 178485256,
+        "path": "Godot_v4.7-stable_win64.exe",
+        "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+      },
+      {
+        "bytes": 198152,
+        "path": "Godot_v4.7-stable_win64_console.exe",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+      },
+      {
+        "bytes": 5820416,
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d"
+      },
+      {
+        "bytes": 9987072,
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      {
+        "bytes": 124544,
+        "path": "vcruntime140.dll",
+        "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+      }
+    ]
+  },
+  "final_source_tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "final_tested_application": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
   "first_published_checkpoint": {
     "local_equivalent": "b8d12ad69885e5ab3d066af9857a74aa8f270934",
     "source": "001ead437297d71238f59c7becb3f93c8bf02b24",
@@ -411,9 +554,26 @@
     "owner_workshop_recovery": "fresh zero-write proposal with original-Empty/current-plan/generation/stopped-result guards"
   },
   "independent_reviews": {
+    "audit_readers_preserved": [
+      "review_owner_package_a.py",
+      "review_catalogue_archive_a.py",
+      "review_source_extracted_pairing_a.py",
+      "review_windows_outcomes_c.py",
+      "review_qualification_history_a.py"
+    ],
     "comparison": "B audited all60 outcomes; C independently diagnosed the frozen contradictory brief.",
     "corrected_source_science": "B independently rehashed198 comparison and96 detail referenced files per platform at d948, preserving60 proposals/23 completed/37 refused and24 complete detail cases. All four native planes and frozen outcomes match the earlier source. Extracted launcher failed; no extracted science result inferred. Review corrected-hosted-science-review-b.json.",
     "detail": "A and B replayed 24 full material planes and receipts; negatives retained.",
+    "final_graphical": "Root compared154 paired Windows collaborative PNGs,144 identical. C separately audits manifest-linked images and inspects actual differing frames. No universal pixel identity or owner preference claim.",
+    "final_hierarchy": "Source and fresh-extracted acknowledged Stop prefixes4096/3136 remain distinct; exact recovery final plane agrees, with49898/47978 changed rows respectively.",
+    "final_linux": "Root rehashed499 custody files and matched297 regular Git source blobs at17c6;89/89 source process groups. Final four whole-scene renders bound bytewise to earlier direct review; changed UI originals inspected afresh.",
+    "final_owner_package": "A independently verified2139 manifest files,299 executed identities,1174 committed source/assets including110 exactly reproduced CRLF exports,105 native inputs and owner/source/extracted pairing.",
+    "final_science": "B rehashed198 comparison and96 detail referenced files in each final environment. All60 comparison outcomes,24 detail metric rows and four flagship planes match preserved source findings. Twelve Linux/Windows original flagship frames bind to prior direct reviews; no model or physical acceptance inferred.",
+    "final_science_review": "final-hosted-science-review-b.json",
+    "final_science_review_sha256": "7722ae920dcc59a8d9cfe970a5a4d4e2c3b0040005d68a1cca9ecfee1dff08eb",
+    "final_windows": "C independently verified1493 custody assertions, source89 and extracted72 process groups, all paired completed native cohorts, real self-query and exact owned visible launcher. Raw review SHA 5477d5c9d85d97445add0007ed5a03f2c3b501166a41529ad1809da71af40c9a.",
+    "final_windows_review": "final-windows-review-c.json",
+    "final_windows_review_sha256": "5f8af33e23f8c454aac955e18b58c4a79055019b363c44c5a9c3d849583bddab",
     "first_hosted_visual": "B inspected24 original Linux/Windows whole+district Godot PNGs, hashed all images and checked four byte-identical native planes across platforms; PNG and RGBA differences retained. Informed specialist review, not blind human preference. See first-hosted-visual-review-b.json.",
     "first_linux_custody": "Root independently verified89/89 process groups and499 collaborative file hashes; inspected4 UI images,40-part gallery and4 whole-scene original Godot frames. Review53e7e7e1194670ce68f0d94197a84d5216c9c7ac0d5c5b55cc1a1181352844b2. First-source scope only.",
     "gameplay_publication_correction": "A independently reviewed c5c9fd5 five-file test/custody diff, original failed Windows raw publications and root focused32+18 native reports. Production/controller/route/bound unchanged. Second exact-source campaign remains separate.",
@@ -552,7 +712,7 @@
       "windows_extracted": {
         "attempted_process_groups": 1,
         "failed": 1,
-        "failure": "Pristine delivered CMD watcher timed out before correlating a visible owned child. The fresh profile reached the Workbench route marker; the defective PowerShell 5.1 path filter excluded observed processes. No full launch or extracted native PASS is inferred.",
+        "failure": "Pristine delivered CMD watcher timed out before correlating a visible owned child. The fresh profile reached the Workbench route marker; the defective PowerShell5.1 query could not match scalar executable paths. Original per-poll predicates were not retained. No full launch or extracted native PASS is inferred.",
         "later_job_cleanup_observed_gui": true,
         "launcher_sha256": "fb5dcdd9099d1bb438ff4ec22ef9fe4db65dfd66441f6f3582772993a41d2ef5",
         "observed_route_marker": true,
@@ -581,8 +741,17 @@
       }
     },
     {
+      "completed_utc": "2026-11-25T01:42:50Z",
       "guard": "passed",
       "independent_correction_review_sha256": "0100aedb42a8350bebf4523f803c16fc5e510d9d41a5aebd98d1ceb6ed9a14ac",
+      "independent_final_checks": {
+        "catalogue_native_records_per_environment": 100,
+        "identical_executed_source_runtime_files": 299,
+        "native_source_inputs": 105,
+        "source_catalogue_receipt_chunks": 964,
+        "windows_outcome_checks": 1493,
+        "windows_outcome_failures": []
+      },
       "linux": {
         "artifact": 14981408538,
         "artifact_bytes": 26226147,
@@ -609,31 +778,107 @@
         "windows_bytes": 5820416,
         "windows_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d"
       },
+      "retained_as_failed": false,
       "run": 45520561849,
       "source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
       "source_specific_reason": "Five-file PowerShell query correction, real Windows self-query preflight, bounded diagnostics and request/evidence update; application/CMD/native/geometry/physics/materials unchanged.",
       "started_utc": "2026-11-25T00:45:29Z",
-      "state": "pending",
+      "state": "passed",
       "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+      "windows_extracted": {
+        "cmd_exit_code": 0,
+        "collaborative_custody_checks": 4388,
+        "cropped_routes": false,
+        "fresh_gameplay_reopen_checks": 66,
+        "gameplay_checks": 126,
+        "launcher_checks": 10,
+        "launcher_sha256": "48922d7ebdb52818b0aef968844f404b5eea6689699cb5c3066ef4dc965f9232",
+        "native_active_core_capacity": 1024,
+        "observed_ready_seconds": 15.063,
+        "outcome": "passed",
+        "passed": 72,
+        "process_groups": 72,
+        "qualification_sha256": "5b86b258ac78532a603809dd56268507582ec8c8e0b68a50759263e4ced7212d",
+        "real_windows_query_preflight": "passed3/3; same command repeated inside launcher witness",
+        "remaining_owned_processes": 0,
+        "route_log_full_final_file_match": true,
+        "route_log_sha256": "a98167365468a0e10a4b9a52238ae13fc644fe87205bc258c028544d6106b6d4",
+        "visible_owned_window": true
+      },
+      "windows_package": {
+        "artifact": 14983516321,
+        "manifest_files_verified": 2139,
+        "published": true,
+        "qualified": true
+      },
       "windows_runtime_build": "passed",
       "windows_source": {
+        "artifact": 14983835743,
+        "artifact_bytes": 48540546,
+        "artifact_sha256": "6117b1cce68461c267b0df1f11c98d9efa4e557abac2acafa505fab1dd043ea0",
+        "collaborative_custody_checks": 4388,
+        "cropped_routes": false,
+        "fresh_gameplay_reopen_checks": 66,
+        "gameplay_checks": 126,
+        "native_active_core_capacity": 1024,
         "outcome": "passed",
-        "scope": "Completed hosted job step observed; raw final report audit pending artifact upload."
+        "passed": 89,
+        "process_groups": 89,
+        "qualification_sha256": "acc1abfa05f6c0a5f6808c1a76a90ebd0f44645f3987354d988f63f57cd7abf1"
       }
     }
+  ],
+  "qualification_scope_limits": [
+    "Final source qualification does not import or qualify the separate Art successor.",
+    "No genuine application model inference, paid request or training occurred.",
+    "Final extracted process qualification and owned visible launch are hosted Windows evidence, not physical owner NVIDIA/playfeel acceptance.",
+    "Four frozen task briefs are not an unseen artwork-family cohort; repeated seeds and platform executions do not increase independent sample counts.",
+    "Every-room actor reachability, general physical stability and functional pipe/machine simulation are not established."
   ],
   "repository": "techrote/cybersand",
   "schema": "cybersand-collaborative-architecture-decision-packet-v1",
   "source_freeze": {
     "application": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "completed_utc": "2026-11-25T01:42:50Z",
     "local_tree_equivalent": "a6d762be24c2985d7281b5ad9fd6ac703151412c",
     "run": 45520561849,
     "started_utc": "2026-11-25T00:45:29Z",
-    "state": "third_campaign_in_progress_after_two_retained_witness_failures",
+    "state": "all_four_jobs_passed_original_artifacts_independently_verified",
     "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8"
   },
-  "state": "implementation_checkpoint_final_qualification_pending",
+  "state": "source_qualified_independent_architecture_draft_hold",
   "training": false,
-  "updated_utc": "2026-11-25T01:39:00.902823+00:00",
-  "windows_evaluator": null
+  "updated_utc": "2026-11-25T02:15:06.058097+00:00",
+  "windows_evaluator": {
+    "actual_delivered_cmd_verified": true,
+    "actual_extracted_process_groups": 72,
+    "architecture_evidence_files": 954,
+    "artifact": 14983516321,
+    "bytes": 112390612,
+    "committed_source_assets": 1174,
+    "file": "CyberSand-Architecture-Workbench-Windows-17c6b5b35049.zip",
+    "git_export_binding": {
+      "classification": "Every converted file independently reproduced with git core.autocrlf=true archive; exact raw payload hashes retained.",
+      "crlf_only_exact_windows_git_archive": 110,
+      "materialized_lfs": 1,
+      "raw_git_equal": 1063
+    },
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "manifest_files": 2139,
+    "manifest_sha256": "728150baaa29662bad1393278fa655835828b5af2196a0393231170ab297de90",
+    "native_dll_bytes": 5820416,
+    "native_dll_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+    "outer_bytes": 108606093,
+    "outer_sha256": "0280a9f596fad0f1e0b17b3cb567d6cef1649d56c7053e09ed3b13b4a22349c7",
+    "package_custody_review": "owner-evaluator-custody-a.json",
+    "package_custody_review_sha256": "dee0c05bc91edea3e65f16c642a6f0e831aa0ae9806f8f01695aea5c7edfab42",
+    "physical_owner_acceptance": "pending",
+    "qualification": "hosted_graphical_and_pristine_extracted_package",
+    "regular_files_including_manifest": 2140,
+    "sha256": "202b5852d31a54f30b9fd0e825d8e9123edddad05f3d09469ceaec671249eea4",
+    "source_extracted_pairing_review": "source-extracted-owner-pairing-a.json",
+    "source_extracted_pairing_review_sha256": "d80c36f10747ba31cc41a001cf9ef3fcbe3efb76c014c536adf6f5ab92c85fea",
+    "source_runtime_identities": 299,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45520561849/artifacts/14983516321"
+  }
 }

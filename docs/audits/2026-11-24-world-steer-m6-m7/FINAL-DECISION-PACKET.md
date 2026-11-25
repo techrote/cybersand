@@ -1,316 +1,387 @@
-# Collaborative architectural construction — decision packet
+# Collaborative architectural construction — final decision packet
 
-**Draft / HOLD. Final source qualification pending.**
+**Source-qualified independent Architecture workflow. Draft / HOLD.**
 
-The continuation is [PR #777](https://github.com/techrote/cybersand/pull/777).
-It extends the actual #770 Workbench implementation with forty structural parts,
-connection authoring, compact contextual planning, eight bounded detail workers,
-a finite construction hierarchy and four large native construction recipes.
-Opening Architecture remains an optional ordinary Workbench action. It dispatches
-no model request and applies no geometry.
+[PR #777](https://github.com/techrote/cybersand/pull/777) extends the preserved
+#770 Workbench with **40 native structural parts, attachment-line authoring and
+snap proposals, eight bounded detail workers, a finite construction hierarchy,
+and four large native environments**. The ordinary Workbench remains the product.
+Opening Architecture dispatches no model request and applies no geometry.
 
-This packet separates implemented behavior and witnessed development results
-from the final source-exact campaign. The final tested application, tree, run and
-Windows archive fields in [the JSON packet](FINAL-DECISION-PACKET.json) remain
-empty until witnessed. Earlier successful ancestry does not supply those results.
+The exact tested application is **`17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d`**,
+tree **`ea59a4a95d647c58820c943d37dd14e3d760b2f8`**. All four jobs in
+[campaign 45520561849](https://github.com/techrote/cybersand/actions/runs/45520561849)
+passed. Independent reviewers downloaded the original artifacts, verified their
+bytes, checked native receipts/readback and audited the actual extracted Windows
+launcher. This packet is a documentation/evidence descendant of that application;
+its containing commit is not a newly tested application or a repacked runtime.
 
-## Source and runtime custody
+The working planning UI is deterministic and offline. The conversation adapter
+is executable and tested against the accepted and separately qualified Art
+interfaces, but an exclusively owned production proposal route is still absent.
+**Integrated Art conversation behavior and genuine model-directed architectural
+quality are not qualified. Actual application model calls: zero.** Physical owner
+Windows/NVIDIA acceptance and architectural preference remain separate gates.
 
-The first published successor checkpoint is
-`001ead437297d71238f59c7becb3f93c8bf02b24`, tree
-`a6df187b3287f04e29fb8da417664d0e2f41d7e4`, identical to preserved local
-`b8d12ad69885e5ab3d066af9857a74aa8f270934`. Original development observations
-remain bound to their actual process source, even when an identical tree is
-subsequently published under another commit.
+## Qualified evaluator and source custody
 
-The first qualification application is `fc8194c00294d54a0e148aa933ccfb57ce194c6e`,
-tree `d632b6b77f7829c1e61d035844b52060c972e908`, exactly equal to the reviewed
-local integration `a8dbe1142707f0f7520fd8c6e720d5ecb7ba804b`. Its dedicated
-[campaign45506178712](https://github.com/techrote/cybersand/actions/runs/45506178712)
-started at 23:00 UTC. Its guard, Linux application and Windows runtime build
-passed. Linux completed 89/89 process groups; independent inspection verified
-all 499 collaborative custody files. Windows completed the catalogue, detail,
-comparison and four native flagship construction/render gates, then failed one
-of 126 full-World gameplay assertions. All four routes reached their waypoint
-and recorded 12 successive grounded observations at the landing, with no native/actor fault or
-refused command. The vault's render-cached native counter reported 1,130 ticks
-against 1,133 actor ticks; its contemporaneous worker publication was 1,133.
-This is retained as a failed qualification attempt;
-packaging and extracted execution did not run.
+| Execution at the exact application | Passing process groups | Scope |
+| --- | ---: | --- |
+| Linux source, Godot 4.7 | 89 / 89 | Actual native construction, displayed rendering/UI, full-World actor routes and fresh reopen |
+| Windows source, Godot 4.7 | 89 / 89 | Same source contracts and native cohorts, displayed UI and full-World routes |
+| Freshly extracted Windows evaluator | 72 / 72 | Actual delivered CMD, pristine payload, native construction, rendered UI, history, routes and fresh reopen |
 
-The gameplay witness sampled `host.latest_snapshot`, a render-cached value,
-while the accepted physics path consumes the worker's immutable completion
-publication before a later render callback. The source-specific correction reads
-that publication while retaining the render-cache and acknowledged-Pause counters
-separately. Production physics, actor control, route geometry and the accepted
-advancement bound did not change.
+These counts are process groups, not independent scientific samples. The final
+Windows independent reader passed 1,493 custody assertions. Each source/extracted
+application retains 4,388 collaborative evidence checks, 126 full-World gameplay
+checks and 66 fresh-process gameplay-reopen checks. The native active-core
+capacity remained the normal 1,024; final actor routes were not cropped.
 
-The corrected application `d948deab5d280adfe1e890bddf85725b2efd59bc`, tree
-`1d8fec406a53a21e3321d1619e56da01520e5501`, passed all 89 source process
-groups on both Linux and Windows in
-[run 45512988153](https://github.com/techrote/cybersand/actions/runs/45512988153).
-This includes 126 full-World gameplay checks and 66 fresh-process gameplay
-reopen checks on each platform. Its packaging step then failed the pristine
-delivered-CMD launch witness before the other 71 extracted process groups ran.
-No owner ZIP was published. The original source passes and failed launcher
-remain separate, immutable outcomes.
+**Download:** [qualified Windows artifact 14983516321](https://github.com/techrote/cybersand/actions/runs/45520561849/artifacts/14983516321).
+The GitHub artifact is an outer ZIP containing the portable evaluator and checksum.
 
-The fresh-profile log reached the Workbench route marker, but Windows PowerShell
-5.1 nested the verifier's JSON executable-path array and excluded allowed
-processes. Startup alone is not a full visible-launch pass. The
-[narrow query correction](windows-launcher-query-correction.md) explicitly
-enumerates scalar paths, requires a real Windows self-query before expensive
-application tests and retains bounded poll diagnostics. It preserves the
-parent/image/creation, visible-window, route, CMD-exit, timeout and payload gates.
+| Identity | Exact value |
+| --- | --- |
+| Inner evaluator | `CyberSand-Architecture-Workbench-Windows-17c6b5b35049.zip` |
+| Inner bytes | 112,390,612 |
+| Inner SHA-256 | `202b5852d31a54f30b9fd0e825d8e9123edddad05f3d09469ceaec671249eea4` |
+| Outer artifact bytes | 108,606,093 |
+| Outer artifact SHA-256 | `0280a9f596fad0f1e0b17b3cb567d6cef1649d56c7053e09ed3b13b4a22349c7` |
+| Payload manifest SHA-256 | `728150baaa29662bad1393278fa655835828b5af2196a0393231170ab297de90` |
+| Windows native DLL SHA-256 | `dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d` |
+| Godot | `4.7.stable.official.5b4e0cb0f` |
 
-The third candidate is `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d`, tree
-`ea59a4a95d647c58820c943d37dd14e3d760b2f8`, exactly equal to local
-`a6d762be24c2985d7281b5ad9fd6ac703151412c`.
-[Run 45520561849](https://github.com/techrote/cybersand/actions/runs/45520561849)
-started at the API-recorded `2026-11-25T00:45:29Z`. Its Linux source application
-has passed all 89 process groups; root independently compared all 297 listed
-regular source files with exact Git blobs and rehashed all 499 collaborative
-custody files. The Windows source application step also passed; actual final
-extracted outcomes and package custody remain pending. The five changed files contain only the verifier/tests, early
-preflight, request and correction record; application and native inputs are
-unchanged. Earlier source passes do not certify the new package.
+All **2,139 manifest-listed files** were verified; the manifest itself makes 2,140
+regular payload files. The archive includes 954 architecture evidence files and
+299 qualified application/runtime identities. All 1,174 committed source/assets
+bind to the exact source: 1,063 match raw Git bytes, one is its materialized LFS
+payload, and 110 have CRLF-only exports independently reproduced with Windows
+Git archive settings. Raw packaged hashes remain exact. This is a documented
+platform export, not an unexplained source discrepancy.
 
-#770 archival `f5f6e9f35727d81868bcced4da8b913b470ea635` is preserved. Its tested
-application remains `fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52`, qualified by
-[45454711939](https://github.com/techrote/cybersand/actions/runs/45454711939).
-The earlier Windows archive remains 97,970,858 bytes, SHA-256
-`d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da`.
-It is an independent earlier owner evaluator, not the successor package.
+The actual `Open Workbench.cmd` produced an owned visible Godot child with the
+expected executable, parent, creation identity and `--workbench` route. The
+watcher observed the ready state at 15.063 seconds, the CMD exited successfully,
+and only the exact observed processes were closed. The complete retained
+925-byte route log matches its live digest. The real PowerShell 5.1 self-query
+passed both before application testing and inside the launcher witness. The
+strict pristine manifest remained mandatory; 688 generated import changes were
+classified separately afterward. These are hosted Windows observations, not
+physical owner playfeel or a GPU performance claim.
 
-#720 remains `76fcf209e0cda5820aa64e104bfae732075ae7c3`, with its original
-successful campaign44962406023,75 attempts and72 evaluable material planes.
-Its negative inference-quality conclusions and the previous30-case architectural
-comparison remain unchanged.
+See [the machine-readable packet](FINAL-DECISION-PACKET.json),
+[original campaign status](final-campaign-api-status.json),
+[complete owner custody review](owner-evaluator-custody-a.json),
+[source/extracted/package pairing](source-extracted-owner-pairing-a.json), and
+[final Linux custody](final-linux-custody-review-root.json),
+[final Windows review](final-windows-review-c.md), and
+[final scientific review](final-hosted-science-review-b.md).
 
-Accepted main was refreshed as `00cdb02f103265b6dc5224c68283e9a0c8cb449f`.
-All105 normalized native inputs remain unchanged. Local development reused the
-documented compatible Linux native/Rapier payloads. The final candidate still
-uses the existing source-exact platform build and qualification gates.
+Accepted main remains `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. All 105
+normalized native inputs are unchanged from the original Batch/foundation
+sources. The existing campaign still built and qualified matching platform
+runtimes; unchanged inputs were not used to inherit application qualification.
+The three source-specific Windows builds have distinct binary hashes.
 
-The shared executor became unavailable after publication, then recovered at
-approximately22:24UTC. Source survived both remotely and in the original
-worktrees. An interrupted fresh-reopen log ends at startup; no terminal outcome
-is inferred. Work prepared during the outage was independently reviewed and
-then subjected to local tests after recovery. Final hosted outcomes remain
-separate from those development checks.
+#770 remains intact at archival `f5f6e9f35727d81868bcced4da8b913b470ea635`, with
+its separately tested application `fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52` and
+[original evaluator campaign](https://github.com/techrote/cybersand/actions/runs/45454711939).
+#720 remains `76fcf209e0cda5820aa64e104bfae732075ae7c3`, with
+[campaign 44962406023](https://github.com/techrote/cybersand/actions/runs/44962406023),
+75 attempts and 72 evaluable native planes. Neither predecessor PR or owner
+package was replaced. No unrelated development branch was absorbed.
 
 ## Implemented creative workflow
 
 | Facility | Concrete behavior | Authority boundary |
 | --- | --- | --- |
-| Curated library | Forty distinct structural parts, original eight unchanged; browser, search, thumbnails, name/tag, transform, palette and export/import controls | Templates and imported historical observations cannot self-certify current native geometry |
-| Connection authoring | Version2 occupied integer line spans, facing, full/overlap contact, named compatibility, finite capacity, alias rejection and bounded snap proposals | Fresh final compilation rechecks source, contacts, occupancy, guards and reservations |
-| Semantic editor | Anchors, permitted transforms, roles, connector fields, protected/clearance and fixed/variable regions | Edited metadata changes the content identity and retires old current-session qualification |
-| Planning | Small GOLDMAPS context packs plus compatible module summaries, finite offline alternatives, typed proposal admission and an owner-controlled Art seam | Default planning is deterministic; fixtures are not inference; a model cannot approve or mutate |
-| Local work | Ribs, trim, anchored clutter, service panels, infill, short pipes, frames and noncritical wear | Code-owned parameters, bounded source inspection, no arbitrary generated code or permission expansion |
-| Hierarchy | Bounded dependency graph, task identities, serialized mutation, finite revisions and retained prior campaign history | Skip does not complete a dependency; restored history grants no approval or live instance authority |
-| Owner decisions | Prepare, inspect, approve, revise, skip and stop; separate source/projection/actual-result views | Queue admission is not completion; only verified terminal receipts/readback report built geometry |
-| Recovery | Dedicated gallery repair and stopped-workshop recovery proposals | Same live plan/generation, originally Empty trial and unchanged stopped-result hash are required; later edits refuse |
+| Curated parts | 40 distinct parts, original eight unchanged; search, thumbnails, names/tags, export/import, palettes and permitted transforms | Imported historical observations do not certify a current World |
+| Connections | Version 2 occupied integer line spans, facing, full/overlap contact, named compatibility, finite capacity and alias rejection | Fresh compilation rechecks source, occupancy, clearance, guards and reservations |
+| Snap proposals | Deterministic bounded fitting offers compatible positions/orientations without applying them | Proposal exhaustion differs from a refused selected placement; owner approves the exact preview |
+| Metadata editor | Anchors, roles, connector fields, permitted transforms, protection, clearance and fixed/variable regions | A metadata edit changes content identity and retires old current-session qualification |
+| Planning | Compact GOLDMAPS knowledge plus compatible parts, finite offline alternatives and typed proposal admission | Models cannot approve, alter permissions or mutate the World |
+| Detail work | Ribs, trim, anchored clutter, service panels, infill, short pipes, frames and noncritical wear | Code-owned parameters and validated bounded operations; no generated executable code |
+| Hierarchy | Dependency graph, task identities, serialized mutation, finite revisions and bounded history | Skip does not satisfy a dependency; historical decisions restore no approval |
+| Decisions | Prepare, inspect, approve, revise, skip and stop; separate source, projection and actual-result views | Queue admission is not completion; terminal receipts/readback establish built geometry |
+| Recovery | Gallery repair and fresh stopped-workshop recovery proposals | Exact live plan/generation and unchanged stopped-result guards; later edits refuse |
 
-The [owner walkthrough](../../operations/world-steer-collaborative-architecture.md)
-describes the actual controls. Contracts are documented in
-[curated parts](../../systems/native-curated-parts.md),
-[detail jobs](../../systems/native-detail-jobs.md),
-[planning and composition](../../systems/architecture-planning-and-composition.md)
-and [the proposal-only seam](../../systems/architecture-proposal-owner-seam.md).
+The construction kit spans foundations, supports, trusses, arches, cantilevers,
+floors, façades, access assemblies, transitions, pipework and machinery housings.
+Parts retain real local material IDs and native-scale geometry. Six declared
+poses are supported: identity, mirrors on X or Y, and quarter turns of 90, 180
+or 270 degrees. Arbitrary scaling/angles and composed diagonal reflections are
+not supplied. Version 1 meaning is preserved; required attachment lines remain
+refused until an explicit version 2 upgrade. Contact semantics do not infer
+load-bearing behavior from a shape.
 
-The implementation retains the existing native World, Art executor and ordinary
-PAINT/Undo/Redo authority. Save start preserves authored World geometry; module
-libraries, stage sessions and decision histories remain separate documents.
-Reopen does not revive provider requests, queued work or earlier owner approvals.
+Each detail job is bounded to at most 128×128 cells inside an inspected region
+of at most 512×512. The short-pipe worker accepts two to eight explicit orthogonal
+waypoints and widths one to four; it is not a general path solver. Module
+variation performs seeded thinning only in declared noncritical detail. Broader
+worker controls remain independently bounded. Clearances, structural fixed
+geometry and permissions cannot be expanded by a palette or model response.
 
-## Development evidence and limits
+The high-level wrapper permits at most 64 nodes, depth four and 32 native leaves,
+with bounded retries, resource accounting and history. Existing stage ceilings
+remain: 512×512 region, 64 modules, 2,048 operations, 262,144 checked native cells
+and 1,048,576 raster candidates. Aggregate limits are explicit. The implementation
+is a finite coordinator with deterministic workers; it does not introduce
+parallel native mutation, distributed model orchestration or SWARM negotiation.
 
-These rows are separate source-bound observations, not replications of one final
-build. Assertion counts are not independent experimental sample sizes.
+The ordinary intent planner offers six deterministic families and up to three
+authored alternatives. Compositional retrieval can select a compatible interior
+part and a separate typed API can resolve up to eight explicit spatial slots.
+Current-World model context includes region, generation/revision, digest,
+occupancy and material counts. It is not a full occupancy map or scene graph.
+This is useful independent authoring infrastructure, not an established
+arbitrary-prose-to-city planner.
 
-| Observation | Source | Witnessed result | Limit |
-| --- | --- | --- | --- |
-| Native catalogue | `43ea4dd05f0786b2c174386860f95d6b804f1c59` | 801 checks;40 builds,40 identity replays and20 variant placements across four asymmetric parts | Explicit development capacity128; pure transform coverage is broader than these selected native poses |
-| Detail comparison | `aa2dee5d444fdf2d9ac4461c4726655e0eebfe14` | 202 checks,24 native cases | Eight workers × three controls; zero model calls |
-| Composition comparison | `2861317ebe279dca8c2d000c48a6933221507aac` | 412 checks,23 completed placements,37 pre-native refusals | All60 proposals retained; deterministic selection/tool comparison |
-| First flagship recipes | `ecc76ad4aa9a6dcd6e2543489875e8e22a3e297b` | 54 stages,34 module placements,306 receipt chunks,1,036,823 changed material rows | Console439 checks; report438 before its final write assertion; later recipes changed |
-| Collaborative UI behavior | `512f0359b357fe96698c7566b3be4127cd9b6639` | 50 checks with native material results | Headless behavior, not new displayed-GUI qualification |
-| Initial delegated workshop | `de5c5e273d1b9fcbaa5ca438c020660ba22150ff` | Report80 / console81 checks; workers changed144,64 and8 cells; stopped prefix4096 cells | Final evidence-write assertion explains count difference; capacity16; later attachment repair separate |
-| Retained stopped/final planes | `b8d12ad69885e5ab3d066af9857a74aa8f270934` | 82 native checks | Fresh reopen interrupted before an observed terminal |
+The host retains the existing World, Art executor and ordinary PAINT/Undo/Redo
+history. Save start preserves authored World geometry; module libraries,
+construction sessions and decision histories remain separate. Fresh reopen
+restores no provider request, queued application, stale approval or historical
+live connector authority. Reservations remain conservative within the live
+session rather than a persistent topology timeline.
 
-After environment recovery, the combined workflow passed60 actual Godot fixture
-checks, including fresh recovery, later-edit preservation, changed plan or World,
-Stop during inspection and zero-write adoption of three recovery stages. These
-copied lifecycle fixtures do not replace actual native execution of that route.
+## Native construction and gameplay evidence
 
-Independent review found two recovered workshop bays and six fins lacking full
-attachment. The correction is a separate1,024-cell stage with128 explicit face
-contacts. Only two exact8×16 Empty-only hangers may change outside the original
-stopped rectangle;768 cells attach the fins inside it. The native witness and
-independent reducer check that precise exception, preserving every other outside
-cell and the central passage. The normal-capacity checkpoint below verifies its
-actual final plane; the final displayed cross-platform campaign remains separate.
-
-## Large constructions and gameplay scope
-
-| Flagship | Actual required World extent | Composition |
+| Flagship | Actual World extent | Architectural emphasis |
 | --- | --- | --- |
-| Orbital fabrication hall | 1024×1024 | Open working floor, roof trusses/hangers, galleries and equipment bays |
-| Terraced service arcology | 1024×1024 | Uneven occupied masses, continuous support, linked decks and a clear shaft |
-| Monumental transfer viaduct | 1536×768 | Multiple arches, unlike ends, underworks and irregular approaches |
+| Orbital fabrication hall | 1024×1024 | Large open working floor, varied roof trusses/hangers, galleries and unequal equipment bays |
+| Terraced service arcology | 1024×1024 | Uneven masses, repeated supports/windows, linked decks and a clear shaft |
+| Monumental transfer viaduct | 1536×768 | Four arches, unlike ends, service underworks and irregular approaches |
 | Biomechanical excavated vault | 1024×768 | Irregular enclosing skeleton, rooted supports, services and deliberate voids |
 
-All are original orthographic side elevations composed through finite stages no
-larger than512×512. The product is native material geometry. Iteration used both
-zero-write projected material maps and diagnostic plots of actual native
-readback. Those two evidence classes are labelled separately; neither is a Godot
-framebuffer capture. Only actual Godot captures qualify as rendered native
-evidence. Later visual repairs are not certified by earlier recipe results.
+These are original orthographic side elevations in actual native Worlds, built
+through individually bounded stages. Across the four recipes, independent replay
+verifies **55 stages, 337 receipt chunks and 1,160,376 changed material rows**.
+The row count sums actual writes across stages; it is not the count of unique
+occupied cells. All declared macro and intended-route clearances remain Empty. The four final native
+planes agree across Linux, source Windows and extracted Windows.
 
-Actual accepted Midge movement/contact, ordinary painting/history and separate
-fresh-process reopen were exercised on512×512 route crops from all four initial
-constructions. The original arcology crop-bound mismatch was retained and fixed
-at a new source. Crop observations do not establish whole-World playability.
+Each qualification environment (Linux source, Windows source and extracted
+Windows) separately executes the forty-part catalogue campaign: 40 source builds,
+40 exact identity replays and 20 transformed native replays across four named
+asymmetric parts. The independent catalogue reconstruction covers 964 receipt
+chunks and preserves 517 explicit excluded cells. Pure transform contract tests
+cover further adversaries; an exhaustive native test of every part/pose is not
+claimed. The original nine native examples remain controls.
 
-Full-World Play at development capacity128 failed scheduling-core capacity on
-its first tick. Another refined flagship attempt was OS-killed before construction.
-Neither outcome establishes a route defect, normal-default pass or physical
-owner acceptance. Final qualification requires the unchanged capacity1024,
-displayed Linux/Windows execution and fresh extracted-Windows tests.
+The delegated workshop demonstrates a refused gallery proposal, revision,
+optional Skip, three different native workers, Stop, fresh recovery and a separate
+attachment repair. Its source executions retain a 4,096-cell stopped prefix and
+49,898 total changed rows. The fresh extracted execution stopped after 3,136 cells
+and totals 47,978 rows. Both have ten native stages and twenty chunks. Each exact
+prefix is cleared once, explaining the 1,920-row difference, and both reach final
+plane `bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe`.
+The repair has 1,024 attachment writes, 128 required face contacts and only 256
+explicitly approved exterior cells; all other exterior geometry is preserved.
+These recorded owner choices are qualification-harness actions, not physical
+owner acceptance. Independent fresh-process reopen is a separate gate.
 
-## Normal-capacity native checkpoint after recovery
+Actual accepted Midge movement/contact was exercised on a representative route
+in each full World, with twelve successive grounded landing observations, no
+refused control command and no actor/native fault. Ordinary painting, Undo/Redo,
+authored Save start and fresh reopen were also exercised. Static clearance and
+these selected actor witnesses do not establish every room's accessibility,
+general structural stability, functional machinery or pipe flow.
 
-The corrected workflow now passes60 fixtures on pinned Godot4.7. Source
-`ff5d2bdb25b34fd0aa05fb23abae1e3660e87e32` passes89 actual native workshop
-checks at the unchanged capacity1024, followed by12 checks in a fresh process.
-Independent reduction verifies10 native stages,20 chunks and49,898 changed
-rows. The final plane is
-`bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe`.
-The earlier startup-only reopen remains interrupted, not retrospectively passed.
+Reviewers inspected actual Godot whole-scene, district, parts and UI captures.
+All twelve Windows source/extracted whole-and-district flagship PNG pairs agree
+byte for byte. Across all 154 paired collaborative PNGs, 144 agree; ten differ.
+Five UI differences are confined to displayed content/stage identity bands. The
+stopped-prefix image correctly records different acknowledged prefixes. Live
+actor frames differ and are not claimed to have identical trajectories or pixels.
+Cross-platform pixel identity is not claimed.
 
-All four refined flagship Worlds pass446 native checks at
-`5e6ef0d1fe412e369b0550ca2d9502087cd21e3a`, pinned Godot4.7/default1024.
-Independent replay covers55 stages,337 chunks and1,160,376 changed material rows, with
-exact full-plane equality and all declared clearances Empty. Diagnostic native
-material maps agree with reviewed geometry. Their residual face-component
-counts are6/35/14/2 for hangar/arcology/viaduct/vault; windows, detail, tread and
-one pipe-stub residuals remain explicit. Neither a completely connected material
-mask nor general traversability is claimed. Actual Godot frame review is separate.
-Changed rows count actual writes across stages; they are not a count of distinct
-occupied cells in the final World.
+The viaduct has the strongest architectural rhythm and legible underworks. The
+hangar preserves its working void. The arcology still has repetitive windows
+and sparse interiors; the vault is a constructed cavern scaffold, not an
+established ecosystem. Residual disconnected detail/tread/window components
+remain explicit. These are informed specialist judgments, not a blinded human
+study or owner aesthetic preference. See the
+[lead's final UI review](final-ui-visual-review-root.json).
 
-## What the comparisons establish
+## Comparative findings and limits
 
-The earlier30-case comparison did not identify a causal retrieval or prompt
-advantage: its four context-aware arms produced identical matched geometry.
-That uninformative contrast does not prove there can be no effect. Native
-success did not establish a retrieval, language-model or prompt advantage.
+The previous thirty-attempt comparison remains frozen. Its four context-aware
+arms produced identical matched geometry, so it did not identify a causal
+retrieval or prompt advantage. That uninformative contrast does not establish
+that no effect is possible.
 
-In the new60-proposal study, retrieval completed10/12 native placements, compared with3/12
-random-valid,4/12 hand-typed,4/12 reference-guided and2/12 procedural cases.
-An independently held-out pressure-dock brief has128 cells simultaneously
-required to be immutable Hardwall and Empty. All ten corresponding proposals
-correctly refused. They remain in the original denominator; the revealed brief
-was not repaired to improve the outcome. The held-out portion contains four
-independently frozen briefs, of which three are feasible. Its two seeds per brief
-are repeated conditions, not independent new architectural tasks. These are
-held-out task briefs within the available vocabulary, not an unseen source-artwork
-visual-family cohort. This compares specific deterministic selection/tool policies, not prompts, learned
-intelligence or aesthetics.
+The new study retains every one of its sixty proposals:
 
-The24-case detail study retains full native planes and independently replayed
-receipts. Six additive random-valid controls leave20–240 unattached cells where
-the contextual procedures leave none. That supports the tested anchoring rule.
-Framed-opening geometry is byte-identical across all three arms because the
-shared clearance leaves only one feasible frame. Some panel/pipe seeds are
-invariant. Random wear retains the same global component count; component count
-alone cannot establish context-sensitive wear quality.
+| Deterministic arm | Native completions / proposals |
+| --- | ---: |
+| Hand-authored typed baseline | 4 / 12 |
+| Procedural baseline | 2 / 12 |
+| Random-valid control | 3 / 12 |
+| Reference-guided selection | 4 / 12 |
+| Retrieval-guided selection | 10 / 12 |
+| Total | 23 / 60 |
 
-[Composition review](comparison-review-b.md) and
-[detail review](detail-review-b.md) retain source identities, frozen inputs and
-negative findings. Reviews are informed specialist assessments, not blind human
-preference. Genuine model calls, paid calls and training all remain zero.
+The remaining 37 proposals refused before native application. The frozen
+pressure-dock brief requires the same 128 cells to remain immutable Hardwall
+and be Empty: all ten proposals for that contradictory brief correctly refused.
+They remain in the denominator. Four held-out briefs, of which three are feasible,
+are independent task assignments; their two seeds and the three qualification
+phases are replications, not additional independent tasks. This is not an
+unseen source-artwork visual-family cohort.
 
-## GOLDMAPS and Art integration boundaries
+The comparison establishes different outcomes for these specific deterministic
+selection policies and available tools. It does not establish general expert
+quality, a pure prompt/retrieval causal effect, learned intelligence or aesthetic
+superiority. Source, seeds, constraints and all refusals remain inspectable.
+
+All 24 detail cases complete natively. Six additive random controls leave
+20–240 unattached cells where the contextual procedures leave none, supporting
+the tested anchoring rule. Framed openings are identical across all three arms
+because shared clearance leaves one feasible frame. Some panel/pipe seeds do
+not vary; random wear retains the same global component count. Those negatives
+show why connectivity or painted-cell counts alone are inadequate quality tests.
+
+The final scientific review rehashes 198 comparison and 96 detail referenced
+files per environment and binds every outcome to the exact source/runtime.
+Platform replication preserves the original sample counts. Genuine application
+inference, paid calls and training all remain zero. The
+[comparison review](comparison-review-b.md), [detail review](detail-review-b.md)
+and [capability limits](capability-limits-review-b.md) define the interpretation.
+
+## GOLDMAPS, Art and local-model boundaries
 
 GOLDMAPS evidence authority remains
 `40f196f792e4d9e19bbd57fdafd6a90420fadf32`, archival closure
-`b9535405853a5cd16e4bba968ec7167222861c42`:70 recovered maps, a distinct67-map
-primary policy/schema population,25 nominees,27 protected features,76 immutable
-states,12 families, five retained negative interventions and eight GOLD-ASTRA
-intervention arms. Owner acceptance at that authority is zero.
-Original155 and183 native refusals remain explicit.
+`b9535405853a5cd16e4bba968ec7167222861c42`: 70 recovered maps, a distinct
+67-map primary policy/schema population, 25 nominees, 27 protected features,
+76 immutable states, twelve comparative families, five retained negative
+interventions and eight GOLD-ASTRA arms. Owner acceptance at that authority is
+zero. Original #155 and #183 native refusals remain explicit.
 
-Runtime retrieval keeps the existing25 compact cards. A separate versioned
-read-only consumer validates the identified70-map export without replacing
-those cards or admitting any map as native geometry. Upstream #217 identifies
-actual `corpus-export/knowledge.v1.json`,
-1,640,704 bytes, SHA-256
-`711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557`.
-The actual archive, inner ZIP and knowledge file were hash-verified, and the
-new consumer passed31 checks on those exact bytes at
-`b49a0947e614e09a7807dd35043f20f88e31381b`. Its first actual intake correctly
-exposed a reader bound that rejected legitimate longer tags; the source was
-preserved and a bounded512-character tag reader was tested. See
-[the actual intake review](goldmaps-consumer-review-b.md). No artwork is retained
-as executable geometry or transmitted to a provider.
+Runtime retrieval preserves the 25 compact cards and the usual three-reference,
+maximum-five, 12,000-character bound. A separate versioned read-only consumer
+validates the identified seventy-map export without replacing those cards or
+admitting artwork as native geometry. The actual knowledge file is 1,640,704
+bytes, SHA-256 `711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557`.
+The actual consumer passed 31 checks after retaining and repairing a legitimate
+long-tag refusal with a bounded 512-character reader. Upstream #217's later
+archive `0634a8eee4b172c28a6936b957dbe2998b664ddb` retains the same knowledge
+bytes; its newer delivery overlay was not silently applied to the frozen
+67-map science population. No reference artwork was retained as a new corpus or transmitted to a
+provider. See [actual intake](goldmaps-consumer-review-b.md) and
+[successor export review](goldmaps-successor-consumer-review-b.md).
 
-Art #773 is independently owned. Its current
-`fa22d386b802b686c371bb6e12996c7a93c18588` package passed actual extracted
-launcher, immutable-file and loaded-module gates in run45497650568, using the
-qualified application matrix at `981a740828decbeac04d5a14511d0222095de0a9`.
-The earlier2eedd8f3 packaging failure remains historical evidence. The current
-block is an exclusively owned proposal-only request route and explicit handoff,
-which the Art PR still identifies as separate future coordination. The stable
-Art source is not mislabelled as failed and is not silently imported.
+Art #773's qualified application remains
+`981a740828decbeac04d5a14511d0222095de0a9`, run 45482969231, with qualified
+package `fa22d386b802b686c371bb6e12996c7a93c18588`, run 45497650568. Its latest
+head is `1c2d084cba2e44e455f6ffe7d269007519829102`: a four-file CI/test/docs
+successor that changes no Provider, conversation, Workbench or proposal route.
+The [owner's CI-only clarification](https://github.com/techrote/cybersand/pull/773#issuecomment-7149057968)
+preserves those feature/evaluator identities. The earlier
+[no-proposal-route acknowledgment](https://github.com/techrote/cybersand/pull/773#issuecomment-7148153448)
+remains applicable. That PR is open, non-Draft and unmerged; we changed neither
+its source nor its state. This continuation remains Draft/HOLD and imports none
+of those separately owned changes.
 
-At the 00:16 UTC refresh on 25 November, the Art owner's
-[readback](https://github.com/techrote/cybersand/pull/773#issuecomment-7148153448)
-explicitly acknowledged this adapter and confirmed that no exclusive production
-proposal route is delivered. Its source remains unchanged. GitHub now reports
-that upstream PR as non-Draft while its declared disposition remains HOLD;
-the actor or intent of that state change is not established here. Our #777 remains
-Draft and unmerged. We did not change either upstream state or source, and the
-upstream broader Ready validation issues remain separate from its qualified
-isolated Art application/package.
+The bridge receives owner-injected dispatch, scoped cancellation and live-context
+validation. It creates no Provider, stores no credentials, attaches no competing
+ordinary completion listener and grants no native approval. Controlled probes
+pass 41 accepted-boundary cases and 43 cases against the separately qualified
+Art source. The actual Provider rejects a failed pre-dispatch guard. Source review
+also confirms a second guard after asynchronous preparation; that later race was
+not independently exercised as a runtime event. The owner must forward the live
+guard as `Provider.send` argument eleven and supply exclusive result ownership.
+See the [exact interface review](qualified-art-bridge-review-b.md) and
+[proposal-owner seam](../../systems/architecture-proposal-owner-seam.md).
+Fixtures establish adapter behavior, not integrated conversation UI or inference.
 
-The executable bridge receives owner-injected dispatch, scoped cancellation
-and live-context validation. It creates no Provider, stores no credentials,
-attaches no competing ordinary completion listener and grants no native approval.
-Independent review closed teardown and nested-request reentrancy races. An
-isolated probe against the qualified Art source passes 43 compatibility fixtures,
-including actual Provider refusal when its pre-dispatch guard fails. Source
-review confirms the guard is checked again after asynchronous preparation.
-The owner must forward that guard as the
-eleventh `Provider.send` argument; a caller-only check cannot cover later
-asynchronous preparation. See [the exact-source interface review](qualified-art-bridge-review-b.md).
-These fixtures remain distinct from integrated conversation UI, real transport
-or inference qualification.
+The [local-model walkthrough](../../operations/world-steer-first-model-trial.md)
+provides runnable offline preflight and an inert three-brief trial protocol:
+one request per brief, 4,096 response tokens, 120 seconds, no automatic retries,
+at most three stages and 24,576 native cells per brief. The mission already
+conditionally authorizes an available approved local model; no redundant owner
+permission is imposed. This executor had no serving model at the checked localhost
+Ollama/LM Studio defaults and no corresponding server executable. That is not a
+claim about other endpoints or the owner's computer. An identified available
+approved local model, truthful transport UI and the exclusive qualified proposal
+route are still missing. Paid providers are outside the supplied authorization.
 
-The [optional local-model trial](../../operations/world-steer-first-model-trial.md)
-supplies runnable offline preflight commands and an inert three-brief protocol.
-It retains one original response per brief, no automatic retries and explicit
-request/native ceilings. It has not run. The missing exclusive proposal route,
-truthful transport UI mode and identified authorized local serving model remain
-prerequisites. The mission already authorizes bounded trials on an available
-approved local model; no redundant permission gate is imposed. No approved
-reachable model or exclusive live route was established here, so actual calls
-remain zero. No paid or cloud provider is authorized by that protocol.
+## Retained failed attempts and recovery
 
-## Final qualification and owner gates
+Two original hosted failures remain preserved alongside the final pass:
 
-The existing WORLD-STEER workflow retains original regressions and adds the new
-catalogue, contact/capacity, worker, hierarchy, stale-source, UI, full-World actor,
-fresh-reopen and independent raw-evidence checks. Pristine Windows payload bytes
-must pass their manifest before invoking the actual delivered launcher. Only
-canonical generated import-sidecar changes may be classified afterward;
-executable application and runtime identities remain strict.
+| Campaign and source | Witnessed outcome | Source-specific correction |
+| --- | --- | --- |
+| [45506178712](https://github.com/techrote/cybersand/actions/runs/45506178712), `fc8194c00294d54a0e148aa933ccfb57ce194c6e` | Linux 89/89; Windows one of 126 gameplay assertions failed; package/extracted not run | The witness read a render-cached native counter, lagging the contemporaneous worker publication by three ticks. It now samples the same immutable publication consumed by accepted physics, retaining render/Pause diagnostics. No physics, route or bound changed. |
+| [45512988153](https://github.com/techrote/cybersand/actions/runs/45512988153), `d948deab5d280adfe1e890bddf85725b2efd59bc` | Both source applications 89/89; pristine delivered-CMD witness failed; later 71 extracted groups not run; no owner ZIP published | Windows PowerShell 5.1 nested the JSON executable-path array, preventing process matches. Scalar enumeration, an actual early self-query and bounded poll diagnostics repaired the verifier; visible-window, ownership, timeout and immutable-payload requirements remain. |
+| [45520561849](https://github.com/techrote/cybersand/actions/runs/45520561849), `17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d` | All four jobs; Linux 89/89, Windows 89/89, extracted 72/72; actual owner ZIP audited | Final source-specific qualification, with both prior failures retained. |
 
-Until final outcomes are observed, this packet does not present a new qualified
-Windows evaluator. Failed, skipped, interrupted and pending groups stay distinct
-from PASS. Physical owner Windows/NVIDIA acceptance, architectural preference,
-the exclusive qualified Art proposal route and an actual bounded approved-local
-model trial remain separate
-gates. Merge, Ready, release, production activation, paid inference and training
-are outside this mission's authority.
+The existing native-candidate contract required a matching same-run runtime and
+had no qualified extracted-only reuse interface. The failed second inner ZIP was
+not published. A third existing campaign was therefore required; no competing
+CI system or relaxed launch predicate was introduced. See the
+[launcher correction record](windows-launcher-query-correction.md).
+
+Development failures also remain in the JSON packet: reduced-capacity full-World
+scheduling failure, OS-killed attempts before construction, a corrected crop-bound
+mismatch, an interrupted startup-only reopen, a pinned-engine correction and an
+explicit GDScript type annotation fix. They were not relabelled as final passes.
+Original report/console assertion-count differences are preserved.
+
+The shared executor recovered twice. Remote source, committed review checkpoints
+and the development evidence archive survived; temporary memory was cleared on
+the second interruption. All six original first/second/final application artifact
+ZIPs were downloaded again and verified against original identities. In three
+development directories 113 archived records were restored byte-for-byte. Five
+additional earlier directory entries totalling 831,920 bytes have no established
+identities in the preserved inventory; no complete-restoration claim is made for
+them. Final hosted native evidence is independently available and unaffected.
+
+
+The companion qualification-history archive preserves eight original Actions ZIPs
+and independent reports (67 payload files), SHA-256
+`0b83d4e29fe3c952233362923cdaaab321272d74306fa6014664b0b7f656cbaf`.
+The separate development archive retains 901 raw observations, SHA-256
+`52302bcdb03a2f4d631b8a171c5c69df7adb49ba1bd0420586d1bbd5e1171849`.
+They are provided in the owner handoff with checksums; the
+[history archive audit](qualification-history-independent-review-a.json) verifies
+every member and all eight original artifact identities. Executable independent
+readers are preserved in this audit directory: [owner package](review_owner_package_a.py),
+[catalogue](review_catalogue_archive_a.py),
+[source/extracted pairing](review_source_extracted_pairing_a.py), and
+[Windows outcomes](review_windows_outcomes_c.py), and
+[archive preservation](review_qualification_history_a.py). They use the exact source,
+artifact and runtime identities above; `--help` documents their arguments.
+The package reader additionally requires a Git clone with the frozen commits.
+
+## Owner workflow and remaining gates
+
+Use the [source-bound walkthrough](../../operations/world-steer-collaborative-architecture.md)
+for the exact UI controls and named-start loader. Extract the complete inner ZIP,
+run `Open Workbench.cmd`, pause, then open **Architecture**. The package's selected
+self-contained walkthrough is also `READ-ME.md`; optional background contracts
+are repository links and are not all bundled locally. Later wording corrections
+in this archive do not modify the immutable tested ZIP.
+
+To inspect a supplied environment, copy its `*-workbench-start.json` from
+`architecture-evidence/collaborative/flagships/` into
+`%APPDATA%\Godot\app_userdata\Cyber Sand Reference Sandbox\workbench\` with a
+`setup-<name>.json` filename. Enter `<name>` beside ordinary **Load start**.
+These starts are actor-free; add an existing actor and choose its control/pilot
+through ordinary Workbench controls when desired.
+
+For creative authoring, import the curated library or add templates, inspect a
+part's roles and contacts, choose transform/palette/detail controls, and propose
+placement. Scroll the Modules tab for lower contact/snap controls on smaller
+windows. **Inspect + zero-write preview** reports the exact host projection;
+**Approve stage** queues only that still-current stage. A changed World or plan
+invalidates approval. Use Intent and tasks for finite offline alternatives,
+Detail jobs for bounded work, and the delegated workshop to exercise revision,
+Skip, Stop and fresh recovery. Save World geometry with ordinary **Save start**;
+save libraries and decision history separately.
+
+The remaining gates are physical Windows/NVIDIA acceptance, subjective design
+preference, the exclusively owned Art proposal route and combined lifecycle,
+and a genuine bounded trial on an identified available approved local model.
+Broader physical stability and general traversal remain unqualified. No merge,
+Ready promotion, release, production-default activation, paid inference,
+training or unapproved reference-art transmission was performed.
