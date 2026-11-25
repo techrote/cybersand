@@ -82,11 +82,17 @@ and does not acquire paused Undo/Redo merely because its queue accepts a sample.
 **ULTIMA candidate, 25 November 2026; not yet accepted main.** The ordinary
 Setup-v2, generated-start-v1 and architectural project writers share
 [`workbench_file_transaction.gd`](../../godot/scripts/workbench_file_transaction.gd).
-Their file formats, names, size bounds and readers are unchanged. Each logical
-save is one complete file; generated recipes are embedded rather than committed
-through a separate companion-file transaction.
+The same per-file mechanism covers desktop/CLI MicroScenario capture, the
+disk recorder's `recording.json` manifest, generation accepted-recipe exports,
+Materials Lab experiment envelopes, Transport user copies, and Tower Water
+policy and observation exports. Each caller keeps its own format, name, size
+policy and reader. Ordinary, generated and architectural saves each commit one
+complete file; generated recipes are embedded rather than committed through a
+separate companion-file transaction. A [recording session](../operations/gameplay-recording.md)
+still has multiple frame/metadata files: replacing its manifest does not make
+the whole recording a single atomic transaction.
 
-The caller validates the complete payload before writing. The helper creates a
+The owning caller constructs or validates the complete payload before writing. The helper creates a
 uniquely named sibling staging file, writes and closes it, then reopens it and
 compares its length and every byte with the intended UTF-8 payload. It calls the
 existing native same-directory replacement primitive only after that check.

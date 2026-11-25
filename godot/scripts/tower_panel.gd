@@ -10,6 +10,8 @@ var label_points: Array[Vector2] = []
 var shown_floor: int = -1
 var water_save_button: Button
 var water_save_status: Label
+var observation_export_button: Button
+var observation_export_status: Label
 var release_buttons: Array[Button] = []
 var blind_button: Button
 var water_policy_button: Button
@@ -50,7 +52,7 @@ func setup(controller: Control) -> void:
 	release_buttons.append(button(release,"Sequence +30 / +90 ticks",func() -> void: host.tower_command({"schedule":tube_picker.selected})))
 	blind_button=button(release,"Blind A/B/C",func() -> void: host.water_lab_prepare_blind())
 	button(release,"Next blind",func() -> void: host.water_lab_apply_blind())
-	button(release,"Export observation",func() -> void: host.tower_observation())
+	observation_export_button=button(release,"Export observation",_export_observation)
 	info = Label.new()
 	info.add_theme_font_size_override("font_size",14)
 	add_child(info)
@@ -58,12 +60,21 @@ func setup(controller: Control) -> void:
 	water_save_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	water_save_status.visible=false
 	add_child(water_save_status)
+	observation_export_status=Label.new()
+	observation_export_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	observation_export_status.visible=false
+	add_child(observation_export_status)
 	visible = false
 
 func _save_water_policy() -> void:
 	host.water_lab_save_profile()
 	water_save_status.text=host.water_policy_save_status
 	water_save_status.visible=true
+
+func _export_observation() -> void:
+	host.tower_observation()
+	observation_export_status.text=host.tower_observation_status
+	observation_export_status.visible=true
 
 func refresh(active: bool, floor_index: int, context: Dictionary) -> void:
 	visible = active

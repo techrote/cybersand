@@ -47,8 +47,17 @@ observation. The button is disabled during a blind run. In the **ULTIMA
 candidate**, the desktop control shows its result beneath the Tower controls
 and uses the [shared verified file replacement](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling).
 A refusal retains the previous policy file; correct the reported problem and
-retry. This policy-save correction does not change **Export observation** or
-establish formal blind-study capture readiness.
+retry.
+
+**Export observation** writes `user://tower-observation.json`. The **ULTIMA
+candidate** also verifies that complete staged report before replacement and
+shows a separate result beneath the controls. On refusal, the old report and
+clipboard remain unchanged by the export. On success, the report replaces the
+previous file; a clipboard copy is attempted only after that commit, and the
+result says whether copying was confirmed or unavailable. Retain separate copies
+if you need multiple observations. The report format, including any revealed
+Water/blind candidate mapping, is unchanged. Neither file correction establishes
+formal blind-study capture readiness, browser persistence or power-loss durability.
 
 Floors contain flowing powders; Water/Sand slopes and settling; eleven liquids;
 packed, poured and excavated Mercury references; and separated chemistry.

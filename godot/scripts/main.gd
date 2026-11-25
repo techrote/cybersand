@@ -309,6 +309,7 @@ var pending_water_exit: Dictionary = {}
 var _water_exit_request_serial: int = 0
 var water_policy_available: bool = true
 var water_policy_save_status: String = ""
+var tower_observation_status: String = ""
 
 var brush_shape: String = "circle"
 var brush_size_px: int = 9
@@ -1444,7 +1445,7 @@ func tower_apply_profile(resolved: Dictionary) -> void:
 	tower_command({"reset":true,"floor":tower_floor,"profile":resolved,
 		"water_exit_request_serial":_water_exit_request_serial})
 
-func tower_observation() -> void:
+func tower_observation() -> bool:
 	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
 	if tower_context.get("water_active",false):
 		report["runtime_identity"]=water_runtime_identity()
@@ -1469,9 +1470,22 @@ func tower_observation() -> void:
 					"worker_count":report.worker_count,"action_history":report.action_history})
 			if blind_export.get("ok",false):
 				report["blind"]=blind_export.metadata
-	var file: FileAccess = FileAccess.open("user://tower-observation.json",FileAccess.WRITE)
-	if file != null: file.store_string(JSON.stringify(report,"  "))
-	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(JSON.stringify(report,"  "))
+	var text := JSON.stringify(report,"  ")
+	var saved := CaptureFileTransaction.write_text(
+		"user://tower-observation.json", text, text.to_utf8_buffer().size())
+	if not saved.get("ok", false):
+		tower_observation_status = "Observation export refused · " + str(saved.error)
+		return false
+	tower_observation_status = "Observation exported to user://tower-observation.json."
+	# A failed file export must not replace an unrelated clipboard or appear
+	# successful merely because the report could be copied there.
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+		DisplayServer.clipboard_set(text)
+		tower_observation_status += " Copied to clipboard." if DisplayServer.clipboard_get() == text \
+			else " Clipboard copy could not be confirmed; the file was saved."
+	else:
+		tower_observation_status += " Clipboard unavailable on this host."
+	return true
 
 func _water_end_blind_session() -> void:
 	if not water_active_blind_label.is_empty() and water_blind_base.get("ok",false):
