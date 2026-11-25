@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Thunderbowl actuation, decision and perception distinctions; prototype control schemas and bounded battle/training experiments, with explicit limits on neural, swarm and model-link claims
 canonical-for: [thunderbowl-control-reference, thunderbowl-control-topologies, thunderbowl-training-design]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/validation-evidence.md, ../audits/2026-10-18-act003-thunderbowl-control-lab.md]
 ---
 
@@ -73,9 +73,8 @@ godot --path godot res://examples/thunderbowl/physical_thunderbowl.tscn
 godot --headless --path godot --script res://examples/thunderbowl/run_physical_thunderbowl.gd -- --rig=ripper --actors=4 --ticks=600 --seed=0 --output=physical-result.json
 ```
 
-The UI picker selects the 46 `RIG_IDS` and one through eight actors. Its retained
-small header still says 41; the catalogue and picker include the five SetP rigs.
-This picker is distinct from F5's additional 4LY group and Workbench's mixed
+The UI picker selects the 46 `RIG_IDS`, including the five SetP rigs, and one
+through eight actors. This picker is distinct from F5's additional 4LY group and Workbench's mixed
 catalogue. Actor zero may be
 human, demo or policy; companion actors use the local scripted examples. Whole
 arena/follow cameras and collider outlines show the actual parts. Click the
