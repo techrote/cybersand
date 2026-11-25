@@ -31,7 +31,7 @@ collaborative page. Its first opening expands a compact Art window (up to 640×4
 an 820×620 workspace when the host has room. Larger existing layouts and all later
 manual resizing are preserved; the minimum remains 520×320 with shared actions
 reachable.
-The existing direct drawing route remains available.
+The existing direct drawing route remains available. Pause simulation with **Play / Pause [P]** before native context inspection, preview or stage approval; those operations require the current paused native source.
 Conversation messages still use 4096-character parts. Applying a large edited
 conversation shows a preparation state while its complete value is redacted and
 encoded. The draft remains readable and Cancel stays available; editing resumes
@@ -66,8 +66,12 @@ preparing its result and executing an approved stage have visible states. Stop
 is explicit cancellation; ordinary Art X continues to mean Hide.
 
 The direct model route also requires a finite run: set **Turns** above zero or
-set **Run s** above zero before Send. One request remains the default. A spending
-ceiling alone does not bound request count or elapsed time; Stop remains available.
+set **Run s** above zero before Send. Its default is **Turns 1** and **Run s 0**.
+Zero in one field requires a positive bound in the other; both zero refuse before
+request preparation or HTTP. A spending ceiling alone does not bound the run.
+Direct runs may pace or retry requests within their finite controls. Each
+collaborative Send remains exactly one request, without automatic model retry.
+Stop remains available in both routes.
 
 The Conversation page searches complete admitted message text in small slices.
 It shows at most the newest 128 matches and states when the list is bounded.
@@ -97,12 +101,20 @@ admission.
 Destructive permission is off initially. Enabling it does not create a new
 material overwrite authority: the existing native owner still decides what can
 be written, carved or preserved. Unsupported geometry or material changes refuse
-with a visible explanation. The current Art native route can replace Empty and
-Hard Wall cells; occupied Metal, Stone and other materials remain protected,
+with a visible explanation. The current Art native route can replace Empty (0) and
+Hard Wall (58) cells; occupied Metal, Stone and other materials remain protected,
 even when destructive edits are permitted. Revising a proposal before execution
 can change its material choices; replacing already installed protected material
-requires its owning ordinary editor. The [native context/proposal contract](../systems/art-native-context-proposals.md)
-records the exact capacities and supported authority.
+requires its owning ordinary editor. The [native context/proposal contract](https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/systems/art-native-context-proposals.md)
+records the exact capacities and supported authority. Its optional online appendix
+is not needed to operate the evaluator: the principal bounds are a selected native
+capture of at most **262,144 cells**, **one to eight finite stages**, at most
+**64 expanded primitive operations**, at most **262,144 conservative raster
+candidates per stage** and **1,048,576 overall**. These are host limits, not a
+model's context window or a promise that every candidate changes a cell. Body
+and actor state is not inferred from the material plane. Native modules,
+articulated machines and Architecture-specific plans require their separate
+owning authority and are not executable through this primitive proposal schema.
 
 A brief belongs to the current game session. Hiding Art preserves the session;
 a new Workbench game session starts a new conversation. No historical World
@@ -139,8 +151,11 @@ appear only in confirmed native receipts.
 **Refresh preview** performs no native write. **Approve next stage** authorizes
 the current applicable stage. It does not approve every later stage. **Revise**
 switches the shared prompt to Develop without sending it automatically. **Skip**
-uses the current session's supported finite-stage policy. **Copy** copies the
-complete structured proposal for inspection without executing it.
+retires the residual proposal and preview. It does not carry later stages
+forward or treat a skipped dependency as completed. Continuing the remaining
+idea requires fresh planning, validation and approval. Already acknowledged
+native work remains in native history. **Copy** copies the complete structured
+proposal for inspection without executing it.
 
 Historical revisions remain reviewable and do not retain execution approval.
 A relevant manual edit, World replacement or changed source invalidates stale
@@ -167,8 +182,30 @@ enter a listed name such as **art02-industrial_repair** or
 **art02-xeno_vault** in the setup-name field, and click **Load start**.
 The installer copies only the nine declared starts into the package's own
 profile and preserves existing saved files. The last example contains the
-complete constructed atlas and paired direct controls. Its result file
-identifies the focus region. No provider is needed.
+complete constructed atlas and paired direct controls. No provider is needed.
+These Setup files store authored starts, not camera state or live runtime
+continuations. Choose **Overview** to locate the atlas, then use **Free camera**,
+middle-button pan and mouse-wheel zoom to inspect a scene. **Move to X/Y** controls
+actor placement and is not a camera shortcut.
+
+The coordinates below are native **x, y, width, height**; each later saved start
+also contains the earlier constructions. The nine paired direct controls occupy
+the corresponding rectangles 1,024 cells farther down the native y axis.
+
+| Saved start | Native focus region | What to inspect |
+|---|---|---|
+| art02-industrial_repair | 32, 32, 256, 192 | Repaired industrial room |
+| art02-structural_facade | 320, 32, 256, 192 | Structural façade |
+| art02-scifi_interior | 608, 32, 256, 192 | Interior and preserved clear passage |
+| art02-revised_arcology | 32, 256, 256, 192 | Arcology composition |
+| art02-protected_courtyard | 320, 256, 256, 192 | Protected courtyard |
+| art02-palette_foundry | 608, 256, 256, 192 | Coherent palette |
+| art02-stopped_workshop | 32, 512, 384, 256 | Completed fabrication hall with substantial bounded geometry |
+| art02-staged_megaframe | 960, 32, 512, 512 | Large finite composition |
+| art02-xeno_vault | 480, 512, 384, 256 | Organic-looking material geometry |
+
+The displayed material planes are editable native results. A saved composition
+alone does not demonstrate that a model understood a requested revision.
 
 The examples folder contains original before/after native observations,
 displayed Workbench screenshots, editable Setup-v2 starts and acknowledged
@@ -199,7 +236,11 @@ in process memory and are not saved in provider profiles or copied to context.
 A short owner-operated local protocol is:
 
 1. Start an already installed local model in LM Studio, enable its API server,
-   and enter the exact served identifier. Keep image input off initially.
+   use the configured numeric **127.0.0.1** endpoint and enter the exact served
+   identifier. Keep image input off initially. The hostname **localhost** is
+   deliberately classified as unverified; review and authorize its disclosed
+   external/custom context when requested. No endpoint is probed merely by
+   opening the panel.
 2. Inspect a small native region and use Discuss to ask which material structures
    are actually visible in the admitted context. Verify that no native cell
    changes.
@@ -212,9 +253,83 @@ A short owner-operated local protocol is:
 
 This procedure is explicit, finite and owner-operated. It does not enable paid
 inference, download a model or automatically retry failed requests. For a complete
-24-brief matched evaluation, retained refusals, true future held-out procedure,
-context ablations and qualitative scoring, use the [independent native review and
-owner-model protocol](../audits/2026-11-25-art-workbench-collaborative-002/NATIVE-INDEPENDENT-REVIEW.md).
+24-brief evaluation, use the self-contained protocol below. The optional
+[independent native review and owner-model protocol](https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/audits/2026-11-25-art-workbench-collaborative-002/NATIVE-INDEPENDENT-REVIEW.md)
+provides source-pinned background when online.
+
+## Run a complete 24-brief owner-model evaluation
+
+The exact prompt texts are already bundled in
+`godot/data/art_collaborative_briefs.json`. The offline proposal generator knows
+the fixture mappings; do not present those mappings to a real model as its
+answers. A fixture pass proves compiler, context, lifecycle and native behavior,
+and does not count as a real-model result.
+
+| Briefs | Role | Scope |
+|---|---|---|
+| B01–B12 | Development | Industrial repair, façade, concourse, arcology revision, courtyard preservation, foundry palette, Stop/continuation, six-stage megaframe, alien vault, unresolved ambiguity, bounded direct alcove and reduced detail |
+| H01–H04 | Reserved owner-model round | Relay elevation, lunar intake, cold-storage settlement and cryogenic corridor |
+| C01–C04 | Contradictions and unsupported requests | Protected-region conflict, unapproved palette, destructive permission off and a functional elevator |
+| R01–R04 | Revision and recovery | Taller unexecuted proposal, source-Metal overwrite refusal, repair of a protected-region conflict and stale manual-change refusal |
+
+Before the first real-model run, save a starting Setup and freeze the 24 prompt
+texts, selected region, palette, protected rectangles, destructive setting,
+request budget and scoring rubric. Record the actual served model identifier
+and build if exposed, provider, source/runtime manifest, hardware and supported
+generation settings. Unknown model details or costs stay unknown. Begin with
+text and native context; inspect and authorize an image separately.
+
+Start a fresh game session for each comparison arm, then reload the same initial
+native geometry and pause the World. This prevents prior conversation, proposal
+and accepted-decision memory from contaminating another arm. Keep the same session
+within a brief's intentional revision loop. The fresh native source identity may
+legitimately differ after a reload. Compare
+existing direct painting, a structured single-stage proposal, a context-enriched
+proposal and finite staged construction under the same brief and constraints.
+Record the approval and correction effort each workflow actually needs. Do not
+force an unsupported arm to pass or silently relax a protection.
+
+For each brief, keep the exact prompt and clarifications, disclosed context and
+provenance, initial and final native material hashes, complete redacted reply,
+compile/preview/refusal, every stage approval and actual receipt, Stop prefix,
+manual corrections, request count, known usage, timing and owner rating. The
+current-session audit preserves complete admitted redacted records; it is not
+automatically restored as a future conversation. A saved Setup is editable
+authored geometry, not a whole simulation replay or a restored execution approval.
+
+For a native-context or knowledge ablation, vary only that admitted information.
+Keep the prompt, model, supported settings and output contract fixed.
+Counterbalance the arm order and repeat stochastic trials where practical.
+Keep all refused, malformed and incomplete attempts in the denominator; do not
+retry until a preferred answer appears outside the agreed request budget.
+Identical fixture proposals or geometry cannot establish a causal retrieval
+benefit.
+
+Keep H01–H04 unused until development decisions are frozen. If a held-out prompt
+has influenced tuning, relabel it as development and choose a fresh held-out
+text. This is a within-study holdout, not proof that a pretrained model never saw
+the wording. The deterministic fixture already knows every mapping and provides
+no held-out generalization evidence.
+
+Unauthorized or stale writes, changed protected cells, or invented successful
+native receipts fail native correctness regardless of appearance. A truthful
+refusal of an impossible request is a useful control outcome and remains a
+refusal in the completion count. For other outcomes, rate each of these criteria
+from 0 to 3 and keep a short reason: structural legibility; coherent composition
+and identity; preservation and requested revision; usefulness of alternatives
+and explanations; finite feasible scope and recovery.
+
+| Score | Shared anchor |
+|---|---|
+| 0 | Fails the intent or misleads the owner |
+| 1 | Partly useful but needs substantial repair |
+| 2 | Useful and coherent, with constraints retained |
+| 3 | Deliberate, economical result that materially helps the owner decide |
+
+Static Empty rectangles establish material clearance, not actor traversal or
+physical structural stability. Record any supported actor trial separately or
+mark it untested. Keep unsuccessful and disputed judgments. Genuine-model
+evaluation remains unqualified until the owner actually performs and records it.
 
 ## Retain the original responsiveness acceptance
 
@@ -234,6 +349,32 @@ The predecessor recorded a hosted startup gap around 49 seconds, a near-cap
 successful response around 48 seconds and an 824 ms maximum frame in that case.
 Those results belong to their original source and software-rendered hardware;
 they do not certify a physical NVIDIA result or a successor improvement.
+
+Use the immutable manifest to identify the evaluator actually being run. For
+orientation, the preserved **bcc92927** hosted Windows campaign recorded the
+following separate observations; this table is not a timing guarantee for a
+later source or for the owner's machine.
+
+| Observed boundary | Preserved bcc hosted Windows value |
+|---|---|
+| Pristine Workbench ready / maximum adjacent startup gap | 38.498 s / 34.967 s |
+| Edited 16,769,024-byte conversation: Apply click return / observed completion | 13.972 ms / 622.689 ms |
+| Maximum frame during that displayed Apply case | 214.778 ms |
+| Successful 16,773,391-byte response: transport / complete measured case | 11.332 s / 15.332 s |
+| Maximum frame during that displayed response case | 465.486 ms |
+
+The Apply timings distinguish returning control to the owner from finishing all
+redaction, encoding and durable journal work. Owner-side adoption in that case
+recorded 607.413 ms; the test driver observed completion at 622.689 ms after its
+next polling frame. These are different observation boundaries. In a separately controlled single
+headless pair on the same host, asynchronous preparation reduced click return
+620.436→43.440 ms and maximum frame 639.012→73.356 ms, while total completion
+became slightly slower, 620.436→644.979 ms. This demonstrates a responsiveness
+tradeoff in that pair, not a total-work speedup or a paired Windows result.
+Cold startup and remaining large frame gaps are retained limits. The
+[original bcc campaign](https://github.com/techrote/cybersand/actions/runs/45546845554)
+and [source-pinned independent package review](https://github.com/techrote/cybersand/blob/c888fcf6b0da41d760a50837034328501e766f25/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-independent-evidence/bcc-windows-independent-review.md)
+retain the concrete hosted source, runtime and launcher records.
 
 ## Engineering replay and evidence
 
@@ -262,4 +403,4 @@ Until those actual results are recorded, this guide describes the evaluation
 procedure and must not be read as a completed qualification claim.
 
 Exact predecessor sources, software-rendered hosted hardware scope and recorded
-measurements are preserved in the [provider performance evidence](../audits/2026-11-25-art-workbench-collaborative-002/provider-recovery.md).
+measurements are preserved in the [provider performance evidence](https://github.com/techrote/cybersand/blob/bcc92927ce3894a16d5544923cfbf7b1d0339fda/docs/audits/2026-11-25-art-workbench-collaborative-002/provider-recovery.md).

@@ -12,10 +12,12 @@ import hashlib
 import json
 import re
 from pathlib import Path
+import posixpath
 import sys
 import zipfile
 import shutil
 import subprocess
+from urllib.parse import unquote, urlsplit
 
 import package_art_workbench_final as retained
 
@@ -183,6 +185,54 @@ def validate_pair(headless: dict, displayed: dict) -> None:
         raise ValueError("Headless and displayed qualification used different runtime payloads")
 
 
+def validate_packaged_guide(output: Path, identity: dict) -> None:
+    """Keep the shipped guide's Markdown file references inside its immutable payload.
+
+    This checks ordinary inline links and reference definitions without fetching
+    online references. Fragment-only links refer to the guide itself. The check
+    is deliberately a delivery boundary, not a general Markdown renderer.
+    """
+    manifest = identity.get("files_sha256", {})
+    if identity.get("principal_guide") != GUIDE or GUIDE not in manifest:
+        raise ValueError("The immutable collaborative owner guide is absent")
+    guide = output / GUIDE
+    if guide.is_symlink() or not guide.is_file() or retained.sha(guide) != manifest[GUIDE]:
+        raise ValueError("The collaborative owner guide differs from its manifest")
+    text = guide.read_text(encoding="utf-8")
+    # Examples inside fenced/inline code are not navigation destinations.
+    text = re.sub(r"(?ms)^(`{3,}|~{3,})[^\n]*\n.*?^\1[ \t]*(?:\n|$)", "", text)
+    text = re.sub(r"`+[^`]*`+", "", text)
+    inline = re.findall(r"!?\[[^\]]*\]\(\s*(?:<([^>\n]+)>|([^\s)]+))(?:\s+[\"'][^\n]*?[\"'])?\s*\)", text)
+    definitions = re.findall(r"(?m)^ {0,3}\[([^\]\n]+)\]:\s*(?:<([^>\n]+)>|(\S+))", text)
+    defined = {label.strip().casefold() for label, _, _ in definitions}
+    for label, reference in re.findall(r"!?\[([^\]\n]+)\]\[([^\]\n]*)\]", text):
+        if (reference or label).strip().casefold() not in defined:
+            raise ValueError("The owner guide has an undefined Markdown reference: " + (reference or label))
+    destinations = [angle or bare for angle, bare in inline]
+    destinations += [angle or bare for _, angle, bare in definitions]
+    for destination in destinations:
+        parsed = urlsplit(destination)
+        if parsed.scheme:
+            if parsed.scheme != "https" or not parsed.netloc:
+                raise ValueError("The owner guide has an unsupported online reference: " + destination)
+            continue
+        if parsed.netloc or "\\" in destination:
+            raise ValueError("The owner guide has an unsafe file reference: " + destination)
+        if not parsed.path:
+            continue
+        path = unquote(parsed.path)
+        if "\\" in path:
+            raise ValueError("The owner guide has an unsafe file reference: " + destination)
+        relative = posixpath.normpath(posixpath.join(posixpath.dirname(GUIDE), path))
+        if path.startswith("/") or relative == ".." or relative.startswith("../"):
+            raise ValueError("The owner guide references a file outside the package: " + destination)
+        target = output / relative
+        if (relative not in manifest or not target.resolve().is_relative_to(output.resolve())
+                or target.is_symlink() or not target.is_file()
+                or retained.sha(target) != manifest[relative]):
+            raise ValueError("The owner guide references an absent immutable payload: " + destination)
+
+
 def build(args: argparse.Namespace) -> dict:
     source, tree = retained.git("rev-parse", "HEAD"), retained.git("rev-parse", "HEAD^{tree}")
     if args.qualification_source is None:
@@ -246,6 +296,7 @@ def verify(output: Path) -> dict:
     identity = retained.verify(output)
     if identity.get("programme") != PROGRAMME or identity.get("status") != "Draft/HOLD":
         raise ValueError("This is not the collaborative Draft/HOLD evaluator")
+    validate_packaged_guide(output, identity)
     scope = identity.get("collaborative_qualification", {})
     if scope.get("source_commit") != identity["source_commit"] or scope.get("source_tree") != identity["source_tree"]:
         raise ValueError("Collaborative qualification is not source-bound")

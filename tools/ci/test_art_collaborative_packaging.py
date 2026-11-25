@@ -136,6 +136,72 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
         with self.assertRaises(ValueError):
             package.validate_pair(headless, displayed)
 
+    def _guide_fixture(self, root: Path, text: str, files: dict | None = None) -> dict:
+        payloads = {package.GUIDE: text.encode(), **(files or {})}
+        for name, content in payloads.items():
+            target = root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(content)
+        return {"principal_guide": package.GUIDE, "files_sha256": {
+            name: hashlib.sha256(content).hexdigest() for name, content in payloads.items()}}
+
+    def test_packaged_guide_accepts_owned_files_and_pinned_online_references(self):
+        text = (
+            "[Saved starts](../../examples/readme.md#loading)\n"
+            "[Schema][schema]\n[schema]: <../systems/native%20schema.md>\n"
+            "[Source](https://github.com/techrote/cybersand/blob/" + COMMIT + "/docs/guide.md)\n"
+            "[This page](#evaluation)\n`[not navigation](missing-inline.md)`\n"
+            "~~~text\n[not navigation](missing-fenced.md)\n~~~\n")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            identity = self._guide_fixture(root, text, {
+                "examples/readme.md": b"# Loading\n", "docs/systems/native schema.md": b"# Native schema\n"})
+            package.validate_packaged_guide(root, identity)
+
+    def test_packaged_guide_refuses_the_three_unbundled_predecessor_appendices(self):
+        for destination in ("../systems/art-native-context-proposals.md",
+                            "../audits/2026-11-25-art-workbench-collaborative-002/NATIVE-INDEPENDENT-REVIEW.md",
+                            "../audits/2026-11-25-art-workbench-collaborative-002/provider-recovery.md"):
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                identity = self._guide_fixture(root, "[Required appendix](" + destination + ")\n")
+                with self.subTest(destination=destination), self.assertRaisesRegex(ValueError, "absent immutable payload"):
+                    package.validate_packaged_guide(root, identity)
+
+    def test_packaged_guide_rejects_changed_unmanifested_and_escaping_targets(self):
+        for mutation in ("missing", "unmanifested", "changed"):
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                identity = self._guide_fixture(root, "[Notes][notes]\n[notes]: ./notes.md\n", {
+                    "docs/operations/notes.md": b"original notes"})
+                target = root / "docs/operations/notes.md"
+                if mutation == "missing":
+                    target.unlink()
+                elif mutation == "unmanifested":
+                    del identity["files_sha256"]["docs/operations/notes.md"]
+                else:
+                    target.write_bytes(b"changed notes")
+                with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                    package.validate_packaged_guide(root, identity)
+        for destination in ("../../../outside.md", "%2foutside.md", "file:///private.md", "//external.test/notes.md"):
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                identity = self._guide_fixture(root, "[Notes](" + destination + ")\n")
+                with self.subTest(destination=destination), self.assertRaises(ValueError):
+                    package.validate_packaged_guide(root, identity)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            identity = self._guide_fixture(root, "[Missing][definition]\n")
+            with self.assertRaisesRegex(ValueError, "undefined Markdown reference"):
+                package.validate_packaged_guide(root, identity)
+
+    def test_committed_owner_guide_is_self_contained_without_other_docs(self):
+        text = (ROOT / package.GUIDE).read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            identity = self._guide_fixture(root, text)
+            package.validate_packaged_guide(root, identity)
+
     def test_marker_parser_requires_one_complete_success(self):
         marker = "FIXTURE_RESULT"
         valid = '{"checks":2,"failures":[],"model_calls":0}'
