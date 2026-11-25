@@ -46,6 +46,7 @@ var variation := SpinBox.new()
 var destructive := CheckBox.new()
 var pinned := BoundedEdit.new()
 var palette := LineEdit.new()
+var palette_picker := OptionButton.new()
 var preserve := ItemList.new()
 var brief_notice := Label.new()
 var brief_apply := Button.new()
@@ -63,6 +64,8 @@ var preview_button := Button.new()
 var proposal_copy := Button.new()
 var revision_history := OptionButton.new()
 var context_text := TextEdit.new()
+var visual_context := TextureRect.new()
+var visual_caption := Label.new()
 var context_page := Label.new()
 var context_previous := Button.new()
 var context_next := Button.new()
@@ -264,6 +267,17 @@ func _build_brief() -> void:
 	palette.max_length = 256
 	palette.placeholder_text = "58, 59"
 	body.add_child(palette)
+	var palette_row := HBoxContainer.new()
+	palette_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	palette_picker.fit_to_longest_item = false
+	palette_picker.clip_text = true
+	palette_picker.add_item("Choose a material…")
+	palette_row.add_child(palette_picker)
+	_button(palette_row, "Add material", func() -> void:
+		if palette_picker.selected > 0:
+			var id := str(palette_picker.get_item_id(palette_picker.selected))
+			palette.text = id if palette.text.strip_edges().is_empty() else palette.text + ", " + id)
+	body.add_child(palette_row)
 	_label(body, "Pinned constraints · one per line, up to 16; preserved across proposal revisions.")
 	pinned.custom_minimum_size.y = 64
 	pinned.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
@@ -351,7 +365,20 @@ func _build_context() -> void:
 		toggle.toggled.connect(func(_on: bool) -> void: _invalidate_disclosure())
 	image_scope.item_selected.connect(func(_index: int) -> void: _invalidate_disclosure())
 	box.add_child(options)
-	_reader(box, context_text)
+	var body := _scroll(box)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	visual_context.custom_minimum_size.y = 128
+	visual_context.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	visual_context.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	visual_context.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	visual_context.hide()
+	body.add_child(visual_context)
+	visual_caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	visual_caption.max_lines_visible = 3
+	visual_caption.hide()
+	body.add_child(visual_caption)
+	context_text.custom_minimum_size.y = 64
+	_reader(body, context_text)
 	_pages(box, context_previous, context_page, context_next, _context_change_page)
 	authorize.text = "I reviewed this context and allow it to be sent"
 	authorize.tooltip_text = "Applies to the next explicit Send only. Native observations and rendered appearance are identified separately."
@@ -527,7 +554,7 @@ func set_context_inspection(value: Dictionary) -> void:
 	_context = value.duplicate(true)
 	authorize.button_pressed = false
 	var inspector: Variant = value.get("inspector", value)
-	_context_full_text = JSON.stringify(inspector, "\t")
+	_context_full_text = _readable(inspector)
 	if _context_full_text.length() > MAX_CONTEXT_CHARACTERS:
 		_context_full_text = "Context inspector exceeded its display contract. No disclosure authorization is available."
 		_context = {}
@@ -565,11 +592,17 @@ func _show_proposal(value: Dictionary) -> void:
 	for stage: Dictionary in list:
 		stages.add_item("%s · %s" % [str(stage.get("id", "")), str(stage.get("title", "Stage")).left(100)])
 		stages.set_item_metadata(stages.item_count - 1, stage)
-	var view := {"summary": actual.get("summary", ""), "budget": value.get("budget", {}),
-		"diff": value.get("diff", {}), "warnings": value.get("warnings", []),
-		"error": value.get("error", ""), "source": value.get("source", {}),
-		"status": value.get("status", "proposal"), "stages": list.size()}
-	_proposal_text = JSON.stringify(view, "\t")
+	_proposal_text = str(actual.get("summary", "Review the proposed native changes."))
+	_proposal_text += "\n\n%d finite stage%s · %s" % [list.size(), "" if list.size() == 1 else "s", str(value.get("status", "awaiting review"))]
+	_proposal_text += "\n\nHost-computed scope\n" + _readable(value.get("budget", {}))
+	if not value.get("diff", {}).is_empty():
+		_proposal_text += "\n\nChanges from the previous proposal\n" + _readable(value.get("diff", {}))
+	if not value.get("warnings", []).is_empty():
+		_proposal_text += "\n\nReview before approval\n" + _readable(value.get("warnings", []))
+	if not str(value.get("error", "")).is_empty():
+		_proposal_text += "\n\nRefused\n" + str(value.error)
+	_proposal_text += "\n\nPreview estimates are not completed work. Each stage needs fresh approval; confirmed native receipts report what actually changed."
+	if value.has("preview"): _proposal_text += "\n\nNative preview\n" + _readable(value.preview)
 	_proposal_page_index = 0
 	_render_page(_proposal_text, 0, proposal_summary, proposal_page, proposal_previous, proposal_next)
 
@@ -587,7 +620,21 @@ func _show_revision(index: int) -> void:
 
 func _show_stage(index: int) -> void:
 	if index < 0 or index >= stages.item_count: return
-	_proposal_text = JSON.stringify(stages.get_item_metadata(index), "\t")
+	var stage: Dictionary = stages.get_item_metadata(index)
+	_proposal_text = str(stage.get("title", "Construction stage")) + "\n"
+	_proposal_text += "Stage " + str(stage.get("id", "")) + "\n"
+	if not stage.get("depends_on", []).is_empty():
+		_proposal_text += "After: " + _readable(stage.depends_on) + "\n"
+	_proposal_text += "\nHost budget\n" + _readable(stage.get("budget", {}))
+	for key: String in ["scope", "bounds", "materials", "protected_conflicts", "requested", "predicted_changed", "predicted_unchanged", "conflicts", "introduced", "removed"]:
+		if stage.has(key): _proposal_text += "\n\n" + key.replace("_", " ").capitalize() + "\n" + _readable(stage[key])
+	var geometry: Array = stage.get("operations", [])
+	if not geometry.is_empty():
+		_proposal_text += "\n\n%d native geometry operation%s" % [geometry.size(), "" if geometry.size() == 1 else "s"]
+		for operation: Dictionary in geometry.slice(0, 16):
+			_proposal_text += "\n• " + str(operation.get("shape", "operation")).capitalize() + " · material " + str(operation.get("material", "?"))
+		if geometry.size() > 16: _proposal_text += "\nAdditional operations remain in the complete copied proposal."
+	_proposal_text += "\n\nThese are proposed changes. Only the native owner can confirm completion."
 	_proposal_page_index = 0
 	_render_page(_proposal_text, 0, proposal_summary, proposal_page, proposal_previous, proposal_next)
 
@@ -696,3 +743,40 @@ func _render_page(text: String, index: int, editor: TextEdit, label: Label, prev
 func _set_notice(value: String) -> void:
 	notice.text = value.left(512)
 	notice.tooltip_text = value
+
+func set_material_options(values: Array) -> void:
+	palette_picker.clear()
+	palette_picker.add_item("Choose a material…", -1)
+	for value: Dictionary in values:
+		var id := int(value.get("id", -1))
+		if id >= 0: palette_picker.add_item("%s (%d)" % [str(value.get("name", "Material")), id], id)
+	palette_picker.select(0)
+
+func _readable(value: Variant, depth: int = 0) -> String:
+	if depth >= 5: return "More detail is retained in the complete structured copy."
+	if value is Dictionary:
+		var lines: Array[String] = []
+		for key: Variant in value:
+			lines.append(str(key).replace("_", " ").capitalize() + ": " + _readable(value[key], depth + 1))
+		return "\n".join(lines) if not lines.is_empty() else "None"
+	if value is Array or value is PackedStringArray:
+		var lines: Array[String] = []
+		for item: Variant in value: lines.append("• " + _readable(item, depth + 1))
+		return "\n".join(lines) if not lines.is_empty() else "None"
+	if value is bool: return "Yes" if value else "No"
+	return str(value)
+
+func set_visual_context(capture: Image, caption: String) -> void:
+	authorize.button_pressed = false
+	visual_context.texture = null
+	visual_context.hide()
+	visual_caption.hide()
+	if capture == null or capture.is_empty(): return
+	if capture.get_width() > 1024 or capture.get_height() > 1024:
+		_set_notice("Visual context exceeds the bounded preview contract.")
+		return
+	visual_context.texture = ImageTexture.create_from_image(capture)
+	visual_context.show()
+	visual_caption.text = caption.left(256) + "\nRendered appearance; native material observations remain separate."
+	visual_caption.tooltip_text = caption
+	visual_caption.show()

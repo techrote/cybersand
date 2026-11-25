@@ -104,6 +104,14 @@ func run() -> void:
 	view.image_context.button_pressed = true
 	check(not view.authorize.button_pressed, "changing image inclusion invalidates old disclosure")
 	check(requests.size() == 1, "changing context controls is inert")
+	var visual := Image.create(4,4,false,Image.FORMAT_RGBA8)
+	visual.fill(Color(0.2,0.4,0.6))
+	view.authorize.button_pressed = true
+	view.set_visual_context(visual,"UI-only synthetic preview · selected native region")
+	check(view.visual_context.visible and not view.authorize.button_pressed, "new visual preview requires fresh disclosure")
+	check(requests.size() == 1, "visual preview never dispatches")
+	view.set_visual_context(null,"")
+	check(not view.visual_context.visible, "removed image leaves no stale preview")
 	var full_context := "native-context ".repeat(1000)
 	view.set_context_inspection({"digest":"fixture-context-b","inspector":{"detail":full_context}})
 	check(view.context_text.text.length() <= 4096, "context view shapes at most 4096 characters")
@@ -148,6 +156,7 @@ func run() -> void:
 	await until(func() -> bool: return not view._search_loading, "initial bounded transcript population finishes")
 	check(view.messages.item_count == 3, "all three complete turns are retained")
 	view.search.text = "bridge-boundary-marker"
+	view.search.text_changed.emit(view.search.text)
 	await until(func() -> bool: return not view._search_loading, "complete-message search finishes")
 	check(view.messages.item_count == 1 and view._message_indices[0] == 1,
 		"search matches text across the 4096-character boundary")
@@ -157,12 +166,15 @@ func run() -> void:
 		"next message part preserves exact content")
 	check(view._turns[1].content == long_text, "view paging never changes complete message")
 	view.search.text = "not found"
+	view.search.text_changed.emit(view.search.text)
 	view.search.text = "upper floor"
+	view.search.text_changed.emit(view.search.text)
 	await until(func() -> bool: return not view._search_loading, "superseded search is cancelled")
 	check(view.messages.item_count == 1 and view._message_indices[0] == 2, "only latest search publishes")
 	var many: Array = []
 	for index: int in 300: many.append({"role":"user","content":"Message %d" % index})
 	view.search.text = ""
+	view.search.text_changed.emit(view.search.text)
 	view.set_conversation(many,2)
 	await until(func() -> bool: return not view._search_loading, "large list remains bounded")
 	check(view.messages.item_count == 128, "live transcript list caps to newest 128 matches")
