@@ -1,14 +1,15 @@
 {
   "schema": "cybersand-goblin-discovery-qualification-request-v1",
   "mission": "GIP-014-goblin-002",
-  "request": 4,
+  "request": 5,
   "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
-  "previous_source": "d849be8ef99cd9226cfc3ca0925752e42b691515",
-  "previous_run": 45538643315,
-  "linux_plan": "smoke",
-  "plan": "All Linux focused, regression-export and graphical gates plus the two-episode smoke; full Windows source and extracted-package qualification",
-  "comparative_campaign": "The separate request3 run45538643315 retains its142episode full programme at exact d849be8 source. Do not relabel it as a later-commit pass.",
-  "changes": "Repair Python-to-Windows-PowerShell module-path inheritance in the extracted qualifier. Preserve every Godot gameplay, native, launcher and policy byte. Record explicit qualification plan scope.",
+  "previous_source": "a6abb07aa8374dc2a870c2a6c9d0aca4f1981402",
+  "previous_run": 45541023949,
+  "linux_plan": "full",
+  "plan": "All Linux focused, regression-export and graphical gates, the fixed seven-episode memory experiment, and a fresh full 142-episode comparison; all Windows source and extracted-package qualification",
+  "comparative_campaign": "Retain request3 d849 full attempts and request4 a6 smoke separately. Oracle-induced early termination can bias comparisons; the corrected candidate receives a new complete matched-budget programme.",
+  "changes": "Correct goblin actor placement, Move, Reset and Replace position expectations for supported articulated-model part offsets, with separately checked authored origins and live physical parts. Preserve production game, engine, launcher and policy behavior. Add the finite memory comparison and propagate explicit interruption through qualification, fixed tests, reducer probes and extracted preflight. Retain the actual extracted test-oracle failure and strict generic regression acceptance.",
   "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
-  "evidence": "Retain every attempted process; production defects require independent reproduction and examination"
+  "evidence": "Retain every attempted process; production defects require independent reproduction and examination",
+  "memory_experiment": "One actual Control64 cultivation supplies an unchanged corpus; two matched seeds compare fresh, imported hints, and explicit four-action prefix reuse in six Coverage Hunter64 episodes. Historical observations never count as fresh coverage."
 }

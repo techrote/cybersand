@@ -52,6 +52,11 @@ def probe_powershell(root: Path, log: Path, environment: dict[str, str]) -> dict
                                       ("clean", windows_powershell_environment(environment))):
         child_log = log.with_suffix(".powershell-" + label + ".log")
         process = execute(command, child_environment, child_log, 30, cwd=root, memory_limit_mib=512)
+        if process.get("interrupted"):
+            report["attempts"].append({"environment": label, "process": process,
+                                       "get_file_hash_available": False, "observed_command": None})
+            report.update(status="cancelled", operator_cancelled=True)
+            break
         markers = [line for line in read_log_prefix(child_log).splitlines()
                    if line.startswith("GOBLIN_POWERSHELL_PROBE_PASS ")]
         fields = markers[0].split() if len(markers) == 1 else []
@@ -61,16 +66,17 @@ def probe_powershell(root: Path, log: Path, environment: dict[str, str]) -> dict
         observed = {"version": fields[1], "module": fields[2], "command_type": fields[3]} if available else None
         report["attempts"].append({"environment": label, "process": process,
                                    "get_file_hash_available": available, "observed_command": observed})
-    report["status"] = "pass" if report["attempts"][-1]["get_file_hash_available"] else "powershell_environment_failure"
+    if not report.get("operator_cancelled"):
+        report["status"] = "pass" if report["attempts"][-1]["get_file_hash_available"] else "powershell_environment_failure"
     log.with_suffix(".powershell-environment.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return report
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--package", type=Path, required=True)
     parser.add_argument("--log", type=Path, required=True)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     root = args.package.resolve(strict=True)
     if os.name != "nt" or not (root / "Open goblin.ps1").is_file():
         parser.error("Extracted qualification requires the actual Windows package")
@@ -78,11 +84,14 @@ def main():
     preflight = probe_powershell(root, args.log, environment)
     if preflight["status"] != "pass":
         print(json.dumps({"status": preflight["status"], "retained_log": str(args.log.with_suffix(".powershell-environment.json"))}))
-        return 2
+        return 130 if preflight.get("operator_cancelled") else 2
     command = ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(root / "Open goblin.ps1"),
                "-Mode", "SelfTest", "-GraphicalSmoke"]
     result = execute(command, windows_powershell_environment(environment), args.log, 1200, cwd=root, memory_limit_mib=3072)
     args.log.with_suffix(".process.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    if result.get("interrupted"):
+        print(json.dumps({"status": "cancelled", "operator_cancelled": True, "retained_log": str(args.log)}))
+        return 130
     markers = [line for line in read_log_prefix(args.log).splitlines()
                if line.startswith("GOBLIN_PACKAGE_SELFTEST_PASS ")]
     if result["status"] != "pass" or len(markers) != 1:

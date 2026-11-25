@@ -432,7 +432,21 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 			for actor: Dictionary in after.get("actors", []):
 				if actor.get("id") in added: placed = actor
 			_assert(rows, "actor_place_model", placed.get("model") == args.get("model"), args.get("model"), placed.get("model"))
-			_assert(rows, "actor_place_position", _same(placed.get("position"), [args.x, args.y]), [args.x, args.y], placed.get("position"))
+			var spawn := [args.x, args.y]
+			var authoring: Dictionary = record.get("actor_authoring", {})
+			var root := Expanded.actor_origin_root(str(args.model), spawn)
+			var origin_strict: bool = int(after.get("adapter_version", 1)) >= 2
+			if origin_strict:
+				_assert(rows, "actor_place_authored_spawn", _same(placed.get("authored_spawn"), spawn) \
+					and _same(authoring.get("spawn"), spawn) and _same(authoring.get("authored_after", {}).get("spawn"), spawn),
+					spawn, {"observed": placed.get("authored_spawn"), "authored": authoring.get("spawn")})
+				_assert(rows, "actor_place_part_origins", Expanded.actor_origin_parts(placed, str(args.model), spawn),
+					"fresh physical parts at requested authored origin plus fixed model offsets", placed.get("state"))
+			else:
+				_unavailable(rows, "actor_place_authored_spawn", "authored/part proof requires adapter v2 observations")
+				_unavailable(rows, "actor_place_part_origins", "authored/part proof requires adapter v2 observations")
+			_assert(rows, "actor_place_position", not root.is_empty() and _same(placed.get("position"), root) \
+				and (not origin_strict or _same(authoring.get("body", {}).get("position"), root)), root, placed.get("position"))
 			_assert(rows, "actor_place_native_publication", int(last_native.generation) > int(first_native.generation),
 				"new native generation", last_native.generation)
 		"actor_reset":
@@ -441,11 +455,25 @@ func evaluate(record: Dictionary) -> Array[Dictionary]:
 				"new native generation", last_native.generation)
 			var authoring: Dictionary = record.get("actor_authoring", {})
 			var original_spawn: Variant = null
+			var reset_model := ""
 			for prior: Dictionary in before.get("actors", []):
-				if prior.get("id") == before.get("selected_actor"): original_spawn = prior.get("authored_spawn")
+				if prior.get("id") == before.get("selected_actor"):
+					original_spawn = prior.get("authored_spawn")
+					reset_model = str(prior.get("model", ""))
+			var reset_actor := Expanded._actor(after, int(before.get("selected_actor", 0)))
+			var root := Expanded.actor_origin_root(reset_model, original_spawn)
+			var origin_strict: bool = int(after.get("adapter_version", 1)) >= 2
 			_assert(rows, "actor_reset_authored_position", original_spawn is Array and original_spawn.size() == 2 \
-				and _same(original_spawn, authoring.get("spawn")) and _same(original_spawn, authoring.get("body", {}).get("position")),
-				original_spawn, {"authored": authoring.get("spawn"), "actual": authoring.get("body", {}).get("position")})
+				and not root.is_empty() and _same(original_spawn, authoring.get("spawn")) \
+				and _same(root, authoring.get("body", {}).get("position")) \
+				and (not origin_strict or (_same(original_spawn, reset_actor.get("authored_spawn")) and _same(root, reset_actor.get("position")))),
+				{"authored": original_spawn, "physical_root": root},
+				{"authored": authoring.get("spawn"), "actual": authoring.get("body", {}).get("position")})
+			if origin_strict:
+				_assert(rows, "actor_reset_part_origins", Expanded.actor_origin_parts(reset_actor, reset_model, original_spawn),
+					"fresh physical parts at saved authored origin plus fixed model offsets", reset_actor.get("state"))
+			else:
+				_unavailable(rows, "actor_reset_part_origins", "part proof requires adapter v2 observations")
 			_assert(rows, "actor_reset_physical_publication", int(authoring.get("physical_epoch_after", -1)) > int(authoring.get("physical_epoch_before", -1)),
 				"new physical session epoch", authoring.get("physical_epoch_after"))
 		"actor_drive":

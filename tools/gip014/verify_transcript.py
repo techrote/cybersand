@@ -16,6 +16,7 @@ import json
 import math
 from pathlib import Path
 import re
+import struct
 from typing import Any
 
 SCHEMA = "cybersand-goblin-transcript-v1"
@@ -32,6 +33,64 @@ CLASSIFICATIONS = {"game_observation", "not_applicable", "invalid_action", "time
 EMPTY_ACTIONS = {"pause", "copy", "undo", "redo", "save_layout", "reopen_layout", "reset_fixture", "actor_reset", "single_step"}
 SHAPES = {"rectangle", "outline", "line", "select_region"}
 EDITS = {"brush", "erase", "rectangle", "outline", "line", "fill", "paste"}
+# Independent finite expectation from authored product data, not the constructor:
+# physical_actor_catalog._biped/_crawl and reference_barrel, player_actor_catalog
+# _vehicle, and retained Kestrel have zero root offset; monowheel's weighted_cab
+# is (0,1.5), with its tumbling_rim at (0,0). Rig.configure adds these offsets to
+# the authored origin, while workbench_actor_state reports the first body.
+ACTOR_ROOT_OFFSETS = {"kestrel": (0.0, 0.0), "reference_barrel": (0.0, 0.0),
+                      "runner": (0.0, 0.0), "crawler": (0.0, 0.0),
+                      "monowheel": (0.0, 1.5), "stuntbuggy": (0.0, 0.0)}
+
+
+def actor_origin_root(model: str, spawn: Any) -> list:
+    if not isinstance(model, str) or model not in ACTOR_ROOT_OFFSETS or not isinstance(spawn, list) or len(spawn) != 2:
+        return []
+    if not all(type(v) in (int, float) for v in spawn):
+        return []
+    def real(value):
+        return struct.unpack('<f', struct.pack('<f', value))[0]
+    try:
+        if not all(math.isfinite(v) for v in spawn):
+            return []
+        root = [real(real(value) + offset) for value, offset in zip(spawn, ACTOR_ROOT_OFFSETS[model])]
+    except (OverflowError, struct.error):
+        return []
+    return root if all(math.isfinite(v) for v in root) else []
+
+
+def actor_point_matches(actual: Any, expected: Any) -> bool:
+    """Exact pinned Vector2 encodings, including Godot's rounded JSON spelling.
+
+    JSON.stringify's default decimal output can spell one native float32 as a
+    nearby Python float64. Decode both to the actual native representation; do
+    not admit a geometric tolerance or a neighbouring representable position.
+    """
+    if not all(isinstance(v, list) and len(v) == 2 for v in (actual, expected)):
+        return False
+    if not all(type(v) in (int, float) for v in [*actual, *expected]):
+        return False
+    try:
+        return all(math.isfinite(v) for v in [*actual, *expected]) and struct.pack('<2f', *actual) == struct.pack('<2f', *expected)
+    except (OverflowError, struct.error):
+        return False
+
+
+def actor_origin_parts(actor: dict, model: str, spawn: Any) -> bool:
+    expected = actor_origin_root(model, spawn)
+    if not expected or actor.get('model') != model or actor.get('observed') is not True:
+        return False
+    body = actor.get('state')
+    if not isinstance(body, dict) or not actor_point_matches(body.get('position'), expected):
+        return False
+    parts = body.get('retained_parts')
+    if not isinstance(parts, list) or not parts or not isinstance(parts[0], dict) or not actor_point_matches(parts[0].get('position'), expected):
+        return False
+    if model == 'monowheel':
+        origin = actor_origin_root('runner', spawn)
+        if len(parts) < 2 or not isinstance(parts[1], dict) or not actor_point_matches(parts[1].get('position'), origin):
+            return False
+    return True
 
 
 def integer(value: Any) -> bool:
@@ -260,11 +319,45 @@ def independent_failures(tape: dict) -> list[dict]:
             check(row, "actor_place_roster", len(added) == 1 and len(new_ids) == len(old_ids) + 1 and all(value in new_ids for value in old_ids))
             placed = next((actor for actor in after.get("actors", []) if actor.get("id") in added), {})
             check(row, "actor_place_model", placed.get("model") == args["model"])
-            check(row, "actor_place_position", placed.get("position") == [args["x"], args["y"]])
+            spawn = [args["x"], args["y"]]
+            root = actor_origin_root(args["model"], spawn)
+            strict = bounded(after.get("adapter_version", 1), 2, 2**31 - 1) or tape.get("header", {}).get("fixture_version", 1) >= 2
+            authoring = row.get("actor_authoring", {})
+            check(row, "actor_place_position", bool(root) and actor_point_matches(placed.get("position"), root)
+                  and (not strict or actor_point_matches(authoring.get("body", {}).get("position"), root)))
+            if strict:
+                check(row, "actor_place_authored_spawn", placed.get("authored_spawn") == spawn
+                      and authoring.get("spawn") == spawn and authoring.get("authored_after", {}).get("spawn") == spawn)
+                check(row, "actor_place_part_origins", actor_origin_parts(placed, args["model"], spawn))
             check(row, "actor_place_native_publication", end["generation"] > start["generation"])
         elif name == "actor_reset":
             check(row, "actor_reset_roster", before.get("actor_ids") == after.get("actor_ids"))
             check(row, "actor_reset_native_publication", end["generation"] > start["generation"])
+            if bounded(after.get("adapter_version", 1), 2, 2**31 - 1) or tape.get("header", {}).get("fixture_version", 1) >= 2:
+                prior = next((a for a in before.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+                actor = next((a for a in after.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+                spawn, model = prior.get("authored_spawn"), prior.get("model", "")
+                root, authoring = actor_origin_root(model, spawn), row.get("actor_authoring", {})
+                check(row, "actor_reset_authored_position", bool(root) and authoring.get("spawn") == spawn
+                      and actor.get("authored_spawn") == spawn and actor_point_matches(actor.get("position"), root)
+                      and actor_point_matches(authoring.get("body", {}).get("position"), root))
+                check(row, "actor_reset_part_origins", actor_origin_parts(actor, model, spawn))
+        elif name == "actor_move":
+            prior = next((a for a in before.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+            actor = next((a for a in after.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+            spawn, model = [args["x"], args["y"]], prior.get("model", "")
+            root = actor_origin_root(model, spawn)
+            check(row, "authored_reset_spawn_readback", actor.get("authored_spawn") == spawn)
+            check(row, "actor_move_actual_position", bool(root) and actor_point_matches(actor.get("position"), root))
+            check(row, "actor_move_part_origins", actor_origin_parts(actor, model, spawn))
+        elif name == "actor_replace":
+            prior = next((a for a in before.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+            actor = next((a for a in after.get("actors", []) if a.get("id") == before.get("next_actor_id")), {})
+            spawn, model = prior.get("authored_spawn"), args["model"]
+            root = actor_origin_root(model, spawn)
+            check(row, "actor_replacement_authored_spawn", bool(root) and actor.get("authored_spawn") == spawn)
+            check(row, "actor_replacement_position", bool(root) and actor_point_matches(actor.get("position"), root))
+            check(row, "actor_replacement_part_origins", actor_origin_parts(actor, model, spawn))
         elif name == "save_layout":
             saved = row.get("persistence", {}).get("read_authored_digest")
             check(row, "authored_save_readback", bool(saved) and saved == after.get("authored_digest"))

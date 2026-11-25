@@ -448,3 +448,82 @@ Replay/delivery owns strict tape/schema/Python validation, campaigns and package
 custody. Gameplay owns the adapter, actions/oracles/capability helpers, fixtures,
 expanded native test and metamorphic test. All source changes are additive to the
 opt-in developer laboratory; no default activation or Ready/merge promotion.
+# Request-4 monowheel finding: confirmed test-oracle defect
+
+The extracted Windows `COVERAGE_HUNTER` / initial `alchemy` / seed 13 / budget 64
+campaign on clean `a6abb07aa8374dc2a870c2a6c9d0aca4f1981402` stopped after 61
+completed actions because action index 60 failed `actor_place_position`. The
+ordinary operation itself was accepted and completed. Its authored spawn was
+`[256,96]`; its physical root was `[256,97.5]`, its rim was `[256,96]`, and its
+equipment part was `[260.5,97.5]`. Native tick and physical tick were both zero,
+and velocities were zero. Original tape: 817,872 bytes, SHA256
+`9476a8bcf39c188a811eed6f9dc05dc8056515362af27a4bf473cf5905a0e302` in request-4
+Windows artifact `14989104342`. The original failed assertion and automatic
+candidate remain intact; this is **not a production gameplay defect**.
+
+Independent product authority, pinned to that source:
+
+- `physical_actor_catalog.gd:498–504` authors monowheel's first `weighted_cab`
+  part at `(0,1.5)` and its `tumbling_rim` at `(0,0)`.
+- `physical_actor_rig.gd:408` constructs each body at authored origin plus its
+  part offset. `physical_actor_session.gd:389–404` exposes the position of body
+  zero as `workbench_actor_state.position`.
+- `shared_workbench.gd:1045,1067,1119,1127` routes placement, Move and Reset
+  through ordinary owner transactions. `apply:735–744` excludes the selected
+  reset identity from retained transforms, so Move and Reset reconstruct that
+  assembly at the authored origin. Replacement likewise uses the preceding
+  actor's saved authored spawn.
+- `physical_usable_equipment.gd:53–87` appends equipment geometry without
+  replacing the first two monowheel parts. B independently matched these five
+  product files in the actual packaged ZIP to pinned Git source, accounting for
+  Windows CRLF serialization only.
+
+The inherited oracle incorrectly treated assembly origin and first-body origin
+as interchangeable. The narrow correction uses an independently transcribed
+finite six-model root-offset map: monowheel `(0,1.5)`, the other five admitted
+models `(0,0)`. It preserves separate authored-spawn, live-root and retained
+part-zero checks, and also checks monowheel's rim at the assembly origin. It
+covers placement, Move, Reset and replacement. Unknown models fail closed.
+Legacy v1 observations do not acquire invented authored/part evidence; current
+v2 observations require those fields. Existing Capture/Save Spawn semantics are
+unchanged. Capture reads the physical root; a later Reset interprets that saved
+coordinate as an authored assembly origin. No multipart capture/reset
+idempotence contract or associated production defect is claimed.
+
+C's independent review caught a Python serialization pitfall in the proposed
+repair before qualification: default Godot JSON spelling can round a float64
+representation of a native float32 coordinate. The Python reader therefore
+compares exact finite float32 encodings for physical points. The retained actual
+Capture spelling `[95.8000030517578,224.130004882813]` and the immediately adjacent
+representable float32 negative control are covered. This is a representation
+comparison, not a geometric tolerance. Root's malformed huge-integer concern is
+also rejected by the pure helper.
+
+The exact a6 Python reader independently reproduced the retained Windows tape's
+single wrong position failure; the corrected product-contract reader finds no
+physical violation in that unchanged tape. This is a new interpretation of old
+observations, **not new gameplay and not a pass under an unchanged invariant**.
+The original expected value remains preserved, and the generic regression reader
+continues to reject a purported corrective case that changes its acceptance
+rule. Independent review report SHA256:
+`b67b47d5c7de807a8a825e7b532f9fd2f5fe772fc70e90e79fbb5df7b4de9467`.
+
+A separately authorized Linux before diagnostic was attempted once with exact
+a6 plus one explicitly hashed test script, a fresh marked profile, no importer,
+90-second wall bound and 3072 MiB owned-tree bound. It was killed with exit `-9`
+after 4.224 seconds, sampled peak 328,073,216 bytes, no surviving owned process,
+no diagnostics and **no gameplay report or candidate**. Its 252-byte startup log
+does not establish a reproduction or reduction. This remains unattributed
+infrastructure, with no OOM or game-failure inference. Raw ZIP: 61,060 bytes,
+SHA256 `459aa8b6a9a84cc9b59a42be5848f9a10e022ff20f87928b3be2f2f4ef231eb0`,
+immutable blob `40a9d807947753a9653bd143cb718cadb02ea8eb`. No equivalent local
+native retry was launched.
+
+Validation before the next hosted candidate: exact Godot 4.7 isolated pure
+oracle controls **218/218 passed** in 0.606 seconds, sampled peak 113,963,008
+bytes, with no World, native extension or import; Python **6/6** focused origin
+controls passed. These are artificial hostile oracle controls, not gameplay
+coverage. The committed expanded native gate adds six-model placement → Move →
+Reset → replacement coverage, plus one ordinary paused monowheel Capture/Reset
+observation. **Native corrected-source qualification is pending hosted request
+5**; the earlier interrupted local process does not supply it.

@@ -327,6 +327,134 @@ The generated unittest process exited0 in0.208 seconds with no owned survivors.
 Final extracted Windows delivery still requires a passing later exact-source
 qualification.
 
+## Windows qualifications 3 and 4: separate harness findings
+
+Request 3, Actions
+[45538643315](https://github.com/techrote/cybersand/actions/runs/45538643315),
+ran source `d849be8ef99cd9226cfc3ca0925752e42b691515`, tree
+`b6da28e8df80247bbfffb968cbe66e99b386959a`. Its Windows source groups and
+six campaign/replay executions passed. Those six executions contain 448 completed
+actions; one is an explicit replay, not an independent exploratory episode.
+The extracted evaluator failed before any Godot child started because Windows
+PowerShell could not resolve `Get-FileHash`. Artifact 14988048860 retains that
+failure (archive SHA256
+`60c0e25fbec428bb767eb2c2a923a0e39566579327d08653d78b8cab1e6f3922`).
+
+The narrow qualifier repair removes only the case-insensitive `PSMODULEPATH`
+entry from the Windows PowerShell child's copied environment. Other environment
+entries, the game and both launchers are unchanged. Microsoft documents this
+[PowerShell 7 through Python inheritance boundary](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath#starting-windows-powershell-from-powershell-7).
+Four added synthetic controls cover preservation, mixed-case names, the fixed
+bounded probe, process failure and module/digest/marker rejection. The complete
+local Python/pure suite passed 67/67 with exact Godot4.7 parity in 3.422 monitored
+seconds, peak 168,722,432 bytes, six observed owned processes and no survivors.
+Its 60-second/3,072-MiB bound and raw before/control evidence are retained in
+blob `08a232bd8272e9d5e820c2ade97040e8d406724d`.
+
+Request 4, Actions
+[45541023949](https://github.com/techrote/cybersand/actions/runs/45541023949),
+ran source `a6abb07aa8374dc2a870c2a6c9d0aca4f1981402`, tree
+`1dac01a01e4f8947a2e7d80f3ace34b9de6dd5ea`. The actual inherited child failed
+with `CommandNotFoundException`; the clean child passed in 0.735 seconds using
+Windows PowerShell 5.1.20348.5773 and `Microsoft.PowerShell.Utility`. It hashed
+the exact fixed probe bytes. Each probe had a 30-second/512-MiB process bound.
+The unchanged launcher then imported the actual game and completed both
+CONTROL 64 extracted cases, actor_workshop and save_reopen.
+
+The next extracted case, COVERAGE_HUNTER/alchemy/seed 13, stopped after 61 completed
+actions at `actor_place_position`. The authored Monowheel spawn was `[256,96]`,
+its weighted cab was `[256,97.5]`, and its rim was `[256,96]`, at physical tick 0 with
+neutral motion. Independent inspection of the existing physical catalogue and
+constructor confirms that the cab's authored offset is `[0,1.5]`. The inherited
+oracle incorrectly required the first physical part to equal the assembly
+origin. This is a **test-oracle defect**, separate from the repaired PowerShell
+boundary and from a production gameplay defect. Placement, reset and related
+origin checks require a narrowly justified correction and fresh qualification.
+
+The game automatically retained `candidate-001.json` before exit: 830,575 bytes,
+SHA256 `37e6811604896d24f8f0c4b2341c08c977f0302bc3815916a26ea88d0e13f41a`.
+Its historical classification remains `unresolved_observation`, with no
+independent reproductions and no confirmed production defect. A data-only
+regression export of that retained 61-row tape passes reproduction acceptance and
+correctly refuses regression acceptance. It executes no new gameplay. Changing
+the wrong expected value is not an unchanged-invariant production regression
+pass. The raw candidate, transcript, Findings, corpus, profile, package failure
+and actual module-probe evidence are durable in blob
+`50516f7e83a8e24f8da5f0b2333016e4e3ee4ee0`, a data-only gzip/base64 envelope
+with exact per-file hashes. Windows artifact 14989104342 has archive SHA256
+`807742a6941a411b498bb28181cb0d64cb89085723254708847d652152893de1`.
+Portable replay, extracted memory roundtrip, graphical execution and final
+sealing were not reached in this attempt; the evaluator remains unqualified.
+
+An adjacent read-only hypothesis concerns **Use body position** followed by
+Reset on Monowheel. Source copies the first body's location into authored X/Y;
+reconstruction adds the cab offset again. The existing
+[Workbench contract](../systems/player-control-playground.md#development-workbench-on-desktop)
+promises that capturing a reset spawn does not immediately move the live body,
+while the newer [composition contract](../systems/workbench-actor-composition.md)
+reconstructs authored spawns and the
+[rig contract](../systems/physical-actor-rigs.md) assigns parts their own offsets.
+The reviewed text does not explicitly settle positional idempotence for capture
+of a multi-part actor versus literal selection of a new assembly-origin
+coordinate. A native drift observation alone must therefore remain an unresolved
+contract observation until that intended relationship is established. No
+production change or issue is justified by this hypothesis alone.
+
+The request3 base ZIP also passed an independent check of all 1,224 tracked
+payload hashes, exact member closure and absence of mutable default memory.
+Its eight portable raw tapes represent four distinct parsed transcripts,
+including an explicit source replay; they must not inflate independent episode
+or personality counts. That data-custody review is retained in blob
+`56ed2e07df3dbd931c7593c2a62d835dd2aca937`. It does not establish extracted
+Windows execution. After the oracle repair, a fresh full matched matrix is
+needed: merely relabeling an old oracle failure cannot recover actions that
+the historical controller never executed.
+
+## Origin, memory and cancellation review before request 5
+
+The independent Python origin reader now compares the exact finite float32
+encodings used by the pinned engine. This preserves the distinction between
+assembly origin and first physical part while accepting Godot's rounded JSON
+spelling. The actual captured spawn `[95.8000030517578,224.130004882813]`
+exercised this serialization boundary. Twenty-two independent read-only controls
+passed against the retained Monowheel observation and explicitly synthetic
+neighboring float32, part-position and malformed-input mutations. Both adjacent
+representable positions are rejected; no general position epsilon is used.
+The historical wrong assertion remains intact. This review is durable in blob
+`2eaecfefd87d5bfb0113d477d24fc10ddc2b2595` and does not replace fresh native
+qualification of the corrected oracle.
+
+The seven-episode memory experiment received a separate source review of fresh
+profile and source/runtime identity, whole-corpus input custody, actual admitted
+prefix and material-plane proof, fixed treatment order, retained incomplete
+process cost, missing-arm accounting and archived source membership. The final
+module distinguishes source/custody failure from ordinary retained episode
+failure and exposes explicit operator cancellation. Cultivation remains a
+separate cost; imported hints earn no current-episode coverage. Its source
+review passed, while its actual gameplay execution remains a request-5 gate.
+
+Cancellation review established a narrow orchestration defect: an interrupted
+test, reducer probe or extracted PowerShell preflight could otherwise be
+followed by another fixed child process. The runner now checks the explicit
+owned-process interruption before parsing a possibly incomplete tape, retains
+current and earlier raw evidence, archives the source and returns exit 130.
+Reduction interruption escapes the ordinary failed-probe retry path. The
+extracted qualifier likewise retains the interrupted probe or self-test receipt
+and stops before another child. Ordinary test failures retain their existing
+continuation and exit-2 behavior. No game, launcher or fixed PowerShell probe
+bytes changed for this repair.
+
+The integrated pure/synthetic Python gate passed **99/99 with no skips**,
+including exact Godot 4.7 state/coverage/corpus parity. It took 3.230 seconds of
+unittest time and 3.542 seconds under the process monitor, with a sampled peak
+tree RSS of 168,804,352 bytes, six observed owned processes and no survivors.
+The outer limits were 60 seconds, 3,072 MiB and a 16-MiB diagnostic log. All Python
+source hashes were unchanged during the run. These are harness controls, not
+native gameplay episodes. Raw logs, process receipts, input hashes and the
+independent review are retained in blob
+`efd2e5ba6081b4d346c6559aa66fc10a98e0a299`; the evidence-envelope SHA256 is
+`ee322c437916b4012d45b31878c4ec80094552a6b57eb4e05840ab2b498829a1`.
+
 ## Remaining decision authority
 
 The lead owns final source freeze, independent review disposition, hosted run

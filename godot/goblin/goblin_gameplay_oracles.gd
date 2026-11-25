@@ -9,6 +9,41 @@ const NO_NATIVE_MUTATION := ["select_tool", "brush_radius", "preview_begin", "pr
 	"camera_pan", "camera_zoom", "camera_focus", "camera_mode", "actor_save_spawn",
 	"actor_capture_spawn", "actor_release", "actor_hand_back", "actor_control"]
 const FINITE_CANVAS_REFUSAL := "A body reached the finite canvas edge. Move, reset or remove it while paused."
+## Independent finite contract, not a call back into the rig constructor.
+## physical_actor_catalog: _biped/_crawl root zero; monowheel weighted_cab
+## (0,1.5), tumbling_rim zero. player_actor_catalog._vehicle, retained Kestrel
+## and reference_barrel also place their first body at zero offset.
+## physical_actor_rig.configure adds each part offset to the authored origin;
+## physical_actor_session.workbench_actor_state reports bodies()[0], not origin.
+const ACTOR_ROOT_OFFSETS := {"kestrel": Vector2.ZERO, "reference_barrel": Vector2.ZERO,
+	"runner": Vector2.ZERO, "crawler": Vector2.ZERO, "monowheel": Vector2(0, 1.5),
+	"stuntbuggy": Vector2.ZERO}
+
+
+static func actor_origin_root(model: String, spawn: Variant) -> Array:
+	if model not in ACTOR_ROOT_OFFSETS or not spawn is Array or spawn.size() != 2: return []
+	for value: Variant in spawn:
+		if typeof(value) not in [TYPE_INT, TYPE_FLOAT] or not is_finite(float(value)): return []
+	# The authored position enters Vector2 before part offsets are added.
+	# Preserve that exact float boundary; do not add a blanket position tolerance.
+	var root := Vector2(float(spawn[0]), float(spawn[1])) + Vector2(ACTOR_ROOT_OFFSETS[model])
+	if not root.is_finite(): return []
+	return [root.x, root.y]
+
+
+static func actor_origin_parts(actor: Dictionary, model: String, spawn: Variant) -> bool:
+	var expected := actor_origin_root(model, spawn)
+	if expected.is_empty() or actor.get("model") != model or actor.get("observed") != true: return false
+	var body: Variant = actor.get("state")
+	if not body is Dictionary or not _same(body.get("position"), expected): return false
+	var parts: Variant = body.get("retained_parts")
+	if not parts is Array or parts.is_empty() or not parts[0] is Dictionary \
+		or not _same(parts[0].get("position"), expected): return false
+	if model == "monowheel":
+		var origin := Vector2(float(spawn[0]), float(spawn[1]))
+		if parts.size() < 2 or not parts[1] is Dictionary \
+			or not _same(parts[1].get("position"), [origin.x, origin.y]): return false
+	return true
 
 
 static func _check(rows: Array[Dictionary], id: String, ok: bool, expected: Variant, actual: Variant, kind: String = "gameplay") -> void:
@@ -242,7 +277,10 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 				expected = [entered.x, entered.y]
 			_check(rows, "authored_reset_spawn_readback", _same(new_actor.get("authored_spawn"), expected), expected, new_actor.get("authored_spawn"))
 			if id == "actor_move":
-				_check(rows, "actor_move_actual_position", _same(new_actor.get("position"), expected), expected, new_actor.get("position"))
+				var root := actor_origin_root(str(old_actor.get("model", "")), expected)
+				_check(rows, "actor_move_actual_position", not root.is_empty() and _same(new_actor.get("position"), root), root, new_actor.get("position"))
+				_check(rows, "actor_move_part_origins", actor_origin_parts(new_actor, str(old_actor.get("model", "")), expected),
+					"fresh physical parts at authored origin plus fixed model offsets", new_actor.get("state"))
 			else:
 				_check(rows, "spawn_edit_keeps_live_poses", _same_poses(before, after), "unchanged physical poses", new_actor.get("position"))
 		"actor_replace":
@@ -254,6 +292,12 @@ static func evaluate(record: Dictionary) -> Array[Dictionary]:
 			var replacement := _actor(after, added)
 			_check(rows, "actor_replacement_roster", slot >= 0 and _same(expected, after.get("actor_ids")), expected, after.get("actor_ids"))
 			_check(rows, "actor_replacement_model", replacement.get("model") == args.get("model"), args.get("model"), replacement.get("model"))
+			var spawn: Variant = _actor(before, removed).get("authored_spawn")
+			var root := actor_origin_root(str(args.get("model", "")), spawn)
+			_check(rows, "actor_replacement_authored_spawn", not root.is_empty() and _same(replacement.get("authored_spawn"), spawn), spawn, replacement.get("authored_spawn"))
+			_check(rows, "actor_replacement_position", not root.is_empty() and _same(replacement.get("position"), root), root, replacement.get("position"))
+			_check(rows, "actor_replacement_part_origins", actor_origin_parts(replacement, str(args.get("model", "")), spawn),
+				"fresh physical parts at retained authored origin plus fixed model offsets", replacement.get("state"))
 		"actor_release":
 			_check(rows, "pilot_released", after.get("pilot_actor") == 0, 0, after.get("pilot_actor"))
 			_check(rows, "pilot_release_keeps_pose", _same_poses(before, after), "unchanged physical poses", after.get("actor_ids"))

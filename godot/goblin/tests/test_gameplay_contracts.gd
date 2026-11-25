@@ -70,7 +70,87 @@ func input_record() -> Dictionary:
 	return row
 
 
+func origin_record(id: String, model: String = "monowheel") -> Dictionary:
+	# Artificial observations of the published model contract, not game coverage.
+	var root_position := [120.0, 97.5] if model == "monowheel" else [120.0, 96.0]
+	var body := {"position": root_position.duplicate(), "retained_parts": [{"position": root_position.duplicate()}]}
+	if model == "monowheel": body.retained_parts.append({"position": [120.0, 96.0]})
+	var value := actor()
+	value.model = model
+	value.position = root_position.duplicate()
+	value["state"] = body.duplicate(true)
+	var args: Dictionary = {"model": model, "x": 120, "y": 96} if id == "actor_place" else ({"x": 120, "y": 96} if id == "actor_move" else {})
+	var row := record(id, args)
+	row.before["adapter_version"] = 2
+	row.after["adapter_version"] = 2
+	row.before.actors = [value.duplicate(true)]
+	row.after.actors = [value.duplicate(true)]
+	row.after.native = native(2)
+	row.after.physical_epoch = 6
+	row["actor_authoring"] = {"spawn": [120.0, 96.0], "authored_after": {"spawn": [120.0, 96.0]},
+		"body": body.duplicate(true), "physical_epoch_before": 5, "physical_epoch_after": 6}
+	if id == "actor_place":
+		row.before.actors = []
+		row.before.actor_ids = []
+		row.before.next_actor_id = 1
+	if id == "actor_replace":
+		row.action.args = {"model": model}
+		row.before.actors[0].model = "runner"
+		row.after.actors[0].id = 2
+		row.after.actor_ids = [2]
+	return row
+
+
+func origin_controls() -> void:
+	for model: String in ["kestrel", "reference_barrel", "runner", "crawler", "monowheel", "stuntbuggy"]:
+		var row := origin_record("actor_place", model)
+		var oracle := Assertions.new()
+		for id: String in ["actor_place_position", "actor_place_authored_spawn", "actor_place_part_origins"]:
+			outcome(oracle.evaluate(row), id, "pass", "exact authored and physical origin / " + model + " / " + id)
+		var changed := row.duplicate(true)
+		changed.after.actors[0].position[1] += 0.25
+		outcome(Assertions.new().evaluate(changed), "actor_place_position", "fail", "shifted actual root rejected / " + model)
+		changed = row.duplicate(true)
+		changed.after.actors[0].authored_spawn[1] += 0.25
+		outcome(Assertions.new().evaluate(changed), "actor_place_authored_spawn", "fail", "shifted authored origin rejected / " + model)
+		changed = row.duplicate(true)
+		changed.after.actors[0].state.retained_parts[0].position[1] += 0.25
+		outcome(Assertions.new().evaluate(changed), "actor_place_part_origins", "fail", "shifted retained root rejected / " + model)
+	var row := origin_record("actor_place")
+	row.after.actors[0].state.retained_parts[1].position[1] += 0.25
+	outcome(Assertions.new().evaluate(row), "actor_place_part_origins", "fail", "shifted monowheel rim rejected")
+	row = origin_record("actor_place")
+	row.after.actors[0].state.erase("retained_parts")
+	outcome(Assertions.new().evaluate(row), "actor_place_part_origins", "fail", "missing current part proof rejected")
+	check(Expanded.actor_origin_root("invented_model", [120, 96]).is_empty(), "unknown model has no invented root contract")
+	for point: Variant in [[true, 96], [120, NAN], [120, INF], [120], "120,96"]:
+		check(Expanded.actor_origin_root("monowheel", point).is_empty(), "malformed authored point rejected " + str(point))
+	for id: String in ["actor_reset", "actor_move", "actor_replace"]:
+		row = origin_record(id)
+		var root_id: String = {"actor_reset": "actor_reset_authored_position", "actor_move": "actor_move_actual_position",
+			"actor_replace": "actor_replacement_position"}[id]
+		var part_id: String = {"actor_reset": "actor_reset_part_origins", "actor_move": "actor_move_part_origins",
+			"actor_replace": "actor_replacement_part_origins"}[id]
+		outcome(Assertions.new().evaluate(row), root_id, "pass", id + " reconstructs root from assembly origin")
+		outcome(Assertions.new().evaluate(row), part_id, "pass", id + " publishes actual expected part origins")
+		row.after.actors[0].position[1] = 96.0
+		outcome(Assertions.new().evaluate(row), root_id, "fail", id + " rejects wrongly unshifted physical root")
+	row = origin_record("actor_place", "runner")
+	row.before.adapter_version = 1
+	row.after.adapter_version = 1
+	row.after.actors[0].erase("state")
+	row.after.actors[0].erase("authored_spawn")
+	row.erase("actor_authoring")
+	outcome(Assertions.new().evaluate(row), "actor_place_position", "pass", "legacy zero-offset root remains checked")
+	outcome(Assertions.new().evaluate(row), "actor_place_part_origins", "not_applicable", "legacy absent part proof is explicit N/A")
+	row = origin_record("actor_capture_spawn")
+	row.after.actors[0].authored_spawn = [120.0, 97.5]
+	outcome(Expanded.evaluate(row), "authored_reset_spawn_readback", "pass", "Capture keeps its existing physical-root coordinate semantics")
+	outcome(Expanded.evaluate(row), "spawn_edit_keeps_live_poses", "pass", "Capture does not move an eccentric assembly")
+
+
 func run() -> void:
+	origin_controls()
 	var row := record("actor_remove")
 	row.after.native = native(2)
 	row.after.actors = []

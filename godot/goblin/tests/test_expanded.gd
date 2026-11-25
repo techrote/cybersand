@@ -13,6 +13,7 @@ var checks := 0
 var failures: Array[String] = []
 var records: Array[Dictionary] = []
 var observed := {}
+var actor_origin_experiments: Array[Dictionary] = []
 
 
 func _initialize() -> void:
@@ -37,6 +38,59 @@ func action(id: String, args: Dictionary = {}, expected: String = "completed") -
 	if row.status == "completed" and row.admission.get("accepted", false): observed[id] = true
 	print("GOBLIN_EXPANDED_OBSERVED ", JSON.stringify({"id": id, "status": row.status, "classification": row.classification}))
 	return row
+
+
+func check_origin(row: Dictionary, model: String, spawn: Array) -> void:
+	# Independent native gate expectation, deliberately not the oracle helper.
+	# The finite supported catalogue has one eccentric root: monowheel's cab.
+	var expected: Array = [float(spawn[0]), float(spawn[1]) + (1.5 if model == "monowheel" else 0.0)]
+	var selected: Dictionary = {}
+	for actor: Dictionary in row.get("after", {}).get("actors", []):
+		if actor.get("id") == row.after.get("selected_actor"): selected = actor
+	var parts: Array = selected.get("state", {}).get("retained_parts", [])
+	check(selected.get("model") == model and selected.get("authored_spawn") == spawn,
+		"actual authored assembly origin / " + model + " / " + str(row.action.id))
+	check(selected.get("position") == expected and selected.get("state", {}).get("position") == expected,
+		"actual first body matches independently expected root offset / " + model)
+	check(not parts.is_empty() and parts[0].get("position") == expected,
+		"actual retained first part matches root / " + model)
+	if model == "monowheel":
+		check(parts.size() >= 2 and parts[1].get("position") == spawn, "actual monowheel rim remains at assembly origin")
+	check(row.after.get("actor_tick") == 0 and row.after.get("native", {}).get("tick") == 0 \
+		and row.after.get("paused") == true, "origin relation observed before physical progression")
+	actor_origin_experiments.append({"action_record": records.size() - 1, "action": row.action.duplicate(true),
+		"model": model, "expected_authored_origin": spawn.duplicate(), "expected_physical_root": expected,
+		"observed_physical_root": selected.get("position"), "observed_parts": parts.duplicate(true),
+		"classification": "legal_unusual_gameplay", "gameplay_defect_confirmed": false})
+
+
+func actor_origin_gate() -> void:
+	var installed: Dictionary = await adapter.install_fixture("history_edges", Fixtures.build("history_edges", adapter.policy()))
+	check(installed.get("ok", false), "actor-origin gate installs an actual paused disposable fixture")
+	if not installed.get("ok", false): return
+	for model: String in ["kestrel", "reference_barrel", "runner", "crawler", "monowheel", "stuntbuggy"]:
+		var placed := await action("actor_place", {"model": model, "x": 256, "y": 96})
+		check_origin(placed, model, [256, 96])
+		var moved := await action("actor_move", {"x": 264, "y": 112})
+		check_origin(moved, model, [264, 112])
+		var reset := await action("actor_reset")
+		check_origin(reset, model, [264, 112])
+		var spawn: Array = [264, 112]
+		if model == "monowheel":
+			var capture := await action("actor_capture_spawn")
+			check(capture.before.actors[0].position == capture.after.actors[0].position,
+				"ordinary Capture changes only saved reset coordinates")
+			spawn = [264.0, 113.5]
+			var captured_reset := await action("actor_reset")
+			check_origin(captured_reset, model, spawn)
+			actor_origin_experiments.back()["capture_reset_observation"] = {
+				"authored_origin_before_capture": [264, 112], "captured_physical_root": [264.0, 113.5],
+				"reset_physical_root": [264.0, 115.0], "idempotence_contract_established": false,
+				"scope": "existing Capture reads the first body; Reset interprets that saved value as assembly origin"}
+		var replacement_model := "runner" if model == "monowheel" else "monowheel"
+		var replaced := await action("actor_replace", {"model": replacement_model})
+		check_origin(replaced, replacement_model, spawn)
+		await action("actor_remove")
 
 
 func run() -> void:
@@ -133,6 +187,7 @@ func run() -> void:
 	await action("actor_remove")
 	await action("restore_start")
 	await action("replace_fixture", {"fixture": "conservation_cell"})
+	await actor_origin_gate()
 	for id: String in Gameplay.IDS:
 		check(observed.has(id), "actual completed action observed: " + id)
 	await finish()
@@ -141,6 +196,7 @@ func run() -> void:
 func finish() -> void:
 	var report := {"evidence_kind": "actual_headless_godot", "checks": checks, "failures": failures,
 		"records": records, "completed_actions": observed.keys(), "godot": Engine.get_version_info(),
+		"actor_origin_experiments": actor_origin_experiments,
 		"profile": Adapter.verify_profile(), "classification": "positive integration qualification"}
 	if Adapter.verify_profile().get("ok", false):
 		DirAccess.make_dir_recursive_absolute("user://goblin")

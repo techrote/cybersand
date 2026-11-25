@@ -251,6 +251,13 @@ def reduce_gameplay(original: dict, *, out: Path, godot: Path, project: Path, pr
         process = execute(command, env, target / "replay.log", min(timeout, max(1, int(remaining))))
         attempts.append(process)
         write_json(target / "process.json", process)
+        if process.get("interrupted"):
+            write_json(out / "reduction-cancelled.json", {"status": "cancelled", "operator_cancelled": True,
+                       "probe": index, "attempts": attempts,
+                       "scope": "Original tape, current fixture, raw profile and process receipt retained; no next probe dispatched"})
+            # The reducer catches ordinary failed probes. An explicit operator
+            # interruption must escape that retry path and stop the runner.
+            raise KeyboardInterrupt
         tape, _ = read_transcript(profile)
         if tape is None:
             raise ValueError(f"No observed reproduction transcript ({process['status']})")
@@ -327,6 +334,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("reduction wall-clock limit must be 1..7200 seconds")
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=False)
+    provenance, launch, records = {}, {}, []
+    project, import_result, phase = None, None, "setup"
     try:
         godot = args.godot.resolve(strict=True)
         provenance = runtime_identity(godot)
@@ -361,6 +370,7 @@ def main(argv: list[str] | None = None) -> int:
             from corpus_io import load_corpus
             corpus = load_corpus(args.corpus)
         env = make_profile(profile, launch, provenance, replay if args.case == "replay" else None, reproduction, corpus)
+        phase = "import"
         if args.reuse_import_cache:
             import_result = {"status": "pass", "operation": "explicit resource cache reuse", "fresh_import_qualified": False,
                              "cache_files": len(snapshot["reused_resource_cache"]), "scope": snapshot["cache_scope"]}
@@ -369,12 +379,15 @@ def main(argv: list[str] | None = None) -> int:
                                     env, out / "import.log", 240, memory_limit_mib=args.memory_limit_mib)
             import_result["fresh_import_qualified"] = import_result["status"] == "pass"
         write_json(out / "import-result.json", import_result)
+        if import_result.get("interrupted"):
+            raise KeyboardInterrupt
         if import_result["status"] != "pass":
             print(json.dumps({"output": str(out), "status": "import_failure", "result": import_result}))
             if not args.retain_project:
                 retain_source_and_remove_project(out, project)
             return 2
         if args.case == "reduce":
+            phase = "reduction"
             result = reduce_gameplay(replay, out=out, godot=godot, project=project, provenance=provenance,
                                      timeout=args.timeout_seconds, max_attempts=args.max_probes,
                                      repeats=args.confirmations, graphical=graphical,
@@ -385,8 +398,8 @@ def main(argv: list[str] | None = None) -> int:
                               "reduced_actions": len(result["actions"]), "probes": len(result["attempts"])}))
             return 0 if result["status"] in ("reduced", "not_applicable") else 2
         cases = TESTS.get(args.case, ("campaign",))
-        records = []
         for index, case in enumerate(cases):
+            phase = case
             active_profile, active_env = profile, env
             if args.case in TESTS:
                 active_profile = out / f"profile-{index:02d}-{case}"
@@ -410,6 +423,11 @@ def main(argv: list[str] | None = None) -> int:
             process_limit = None if args.case == "interactive" else args.timeout_seconds + (args.budget * args.pacing_ms // 1000)
             result = execute(command, active_env, out / f"{case}.log", process_limit, memory_limit_mib=args.memory_limit_mib)
             result["case"] = case
+            if result.get("interrupted"):
+                # Keep the complete process receipt and raw profile even if
+                # its last tape is partial. Never dispatch the next fixed test.
+                records.append(result)
+                raise KeyboardInterrupt
             log_text = read_log_prefix(out / f"{case}.log")
             if args.case != "interactive":
                 result["completion_marker"] = COMPLETION_MARKERS[case]
@@ -441,6 +459,21 @@ def main(argv: list[str] | None = None) -> int:
         if not args.retain_project:
             retain_source_and_remove_project(out, project)
         return 0 if passed else 2
+    except KeyboardInterrupt:
+        report = {"status": "cancelled", "operator_cancelled": True, "phase": phase,
+                  "provenance": provenance, "tests": records,
+                  "evidence_kind": launch.get("evidence_kind", "unavailable"),
+                  "import_result": import_result,
+                  "scope": "Retained completed/current evidence; no subsequent fixed test or reduction probe dispatched"}
+        write_json(out / "qualification.json", report)
+        if project is not None and not args.retain_project:
+            try:
+                retain_source_and_remove_project(out, project)
+            except (OSError, ValueError, zipfile.BadZipFile) as error:
+                report["source_retention_error"] = str(error)
+                write_json(out / "qualification.json", report)
+        print(json.dumps({"output": str(out), **report}))
+        return 130
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         write_json(out / "qualification-error.json", {"status": "qualification_error", "error": str(error)})
         print(json.dumps({"output": str(out), "status": "qualification_error", "error": str(error)}))

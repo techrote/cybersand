@@ -16,7 +16,9 @@ concurrency:
 jobs:
   linux-discovery-campaign:
     runs-on: ubuntu-22.04
-    timeout-minutes: 150
+    # The queue remains bounded at 120 minutes. Leave separate headroom for
+    # focused/graphical gates, the 15-minute memory experiment and evidence upload.
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:

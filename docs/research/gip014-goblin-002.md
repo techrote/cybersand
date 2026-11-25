@@ -291,6 +291,126 @@ the authored-fixture identity fence before dispatching any actions. Both attempt
 are retained in the gameplay handover. No oracle relaxation or game-code change
 followed the negative result.
 
+### Fourth hosted qualification and articulated-origin oracle finding
+
+[Run 45541023949](https://github.com/techrote/cybersand/actions/runs/45541023949)
+tested clean source `a6abb07aa8374dc2a870c2a6c9d0aca4f1981402`, tree
+`1dac01a01e4f8947a2e7d80f3ace34b9de6dd5ea`. Its explicitly scoped Linux
+qualification passed all thirteen stages: Python controls, nine focused source
+groups, actual native regression export, graphical laboratory and the two-episode
+smoke. Both smoke episodes completed all sixteen actions.
+
+The Linux [evidence artifact 14990021487](https://github.com/techrote/cybersand/actions/runs/45541023949/artifacts/14990021487)
+is 29,358,298 bytes, SHA-256
+`d5f2c27509392a88a2faededbcd8d70072b50a57e90d7b12b3513545c8d914e1`.
+The lead independently checked 813 executed source files and passed 839 source,
+graphical and regression-custody checks. All three actual 1600x900 captures were
+visually inspected. The graphical script passed 36 controls and retained a
+24-action Builder campaign plus its separate 24-action semantic replay. Every
+semantic fingerprint matched; exact observation fingerprints differed. These
+fingerprints also contain receipt/timing information, so their differences alone
+do not isolate physical-trajectory differences. Rendering used Mesa llvmpipe
+under X11, with no physical NVIDIA acceptance. The inner graphical process took
+213.757 seconds and peaked at 1,371,246,592 sampled process-tree RSS bytes.
+
+The gameplay specialist separately passed 117 native evidence checks. Expanded
+gameplay retained 54 attempts, 51 completions and all 29 additional action IDs;
+the metamorphic suite retained 36 attempts and 33 completions. The noncomplete
+rows were explicit negative controls, an actual RFT budget refusal, an unavailable
+runner actuator, an already-active source refusal and independently justified
+finite-edge outcomes. The actor recovered through ordinary Reset and Play.
+The native laboratory again reduced four actual Pause actions to one through
+six fresh probes of lengths 4, 4, 2, 2, 1, 1. The fixed exported unittest passed;
+this remains legal semantic-outcome reduction.
+
+Windows established the module-boundary repair with actual child processes:
+the inherited environment could not discover `Get-FileHash`; the corrected
+environment resolved `Microsoft.PowerShell.Utility` under Windows PowerShell
+5.1.20348.5773 and hashed the exact probe script in 0.735 seconds. The unchanged
+launcher then ran real extracted gameplay. Both 64-action Control cases passed.
+The Coverage Hunter case, initially Alchemy/seed 13, stopped after 61 completed
+actions at step 60's `actor_place_position` assertion.
+
+That retained row exposes a **test-oracle defect**. Ordinary Monowheel placement
+stored authored origin (256,96), placed its weighted cab at (256,97.5), and placed
+its rim at (256,96), all at tick zero with neutral motion. The product catalogue
+defines the cab's local offset as (0,1.5); the physical constructor adds each part's
+offset to the assembly origin, and the body-state API reports part zero. Goblin
+incorrectly required that body position equal the authored origin. The related
+Move, Reset and Replace expectations require the same distinction. The production
+constructor was behaving according to its contract.
+
+The game automatically retained the failed tape and `candidate-001.json`, with
+an unresolved classification and zero defect confirmations. Independent review
+classifies the finding as a test-oracle defect without rewriting that historical
+candidate. The exact tape is 817,872 bytes, SHA-256
+`9476a8bcf39c188a811eed6f9dc05dc8056515362af27a4bf473cf5905a0e302`.
+The generic regression checker continues to require the original expected value;
+an oracle correction cannot masquerade as a successful unchanged-invariant
+production fix.
+
+The Windows [attempt artifact 14989104342](https://github.com/techrote/cybersand/actions/runs/45541023949/artifacts/14989104342)
+has SHA-256 `807742a6941a411b498bb28181cb0d64cb89085723254708847d652152893de1`.
+Its failed extracted process remained bounded at 87.843 seconds, with seventeen
+observed owned processes and no survivors. No successor evaluator was sealed.
+
+The next candidate receives a fresh full 142-episode Linux programme. The old
+oracle can end actor-rich policies earlier than the baselines; reclassifying those
+failures cannot recover their missing action suffixes. All request-3 attempts
+remain retained at their exact source, while the corrected-source matched-budget
+comparison is separately identified. This is a justified repeated experiment,
+not a transfer of the prior candidate's qualification.
+
+### Corrected candidate and registered memory experiment
+
+The correction independently distinguishes authored assembly origins from
+physical part positions for all six supported actor models. Only Monowheel has
+a nonzero part-zero offset, (0,1.5), in the pinned catalogue. Placement, Move,
+Reset and Replace now check the authored origin and observed parts separately.
+Capture retains its ordinary product meaning; no unestablished capture/reset
+idempotence requirement is introduced. The expanded native gate will exercise
+every supported model through those ordinary lifecycle operations.
+
+Pure local verification passed 218 Godot contract checks, six focused Python
+origin controls and an independent 22-check review of retained native evidence.
+The complete Python/pure suite passed 99 tests before the lead added three
+top-level orchestration tests; those three tests passed separately, including
+four explicit interruption boundaries. A subsequent integrated attempt was
+externally killed with exit -9 after 0.905 seconds, at 140,304,384 bytes sampled
+RSS, with no owned survivors and no test failure reported. The captured process
+result and exact 37-byte log are retained; this is an unattributed infrastructure
+interruption, not a successful integrated run. The workspace was subsequently
+replaced. Specialist inputs were restored from verified immutable Git blobs;
+the lead's small integration changes were reconstructed and rechecked. Hosted
+qualification must run the final suite.
+
+The next Linux qualification includes a separate seven-episode persistent-memory
+experiment before its fresh-memory 142-episode queue. One actual Control64
+construction campaign supplies its complete unchanged corpus. Two matched seeds
+then run Coverage Hunter64 with fresh memory, imported hints, and explicit
+retained-prefix reuse. The second seed reverses treatment order. The two seeds
+are chosen from the actual retained prefix's bounded selection rank before any
+measured outcome; this is a registered adaptive selection rule, not an outcome
+search. Measured outputs never feed later treatments.
+
+Explicit reuse requires the actual four admitted actions and source-matched
+native captures showing a 64-cell empty region becoming material 58. Imported
+hints receive credit only through observed choices; imported coverage is never
+counted as current-episode coverage. The report separates paired observed
+coverage, newly observed keys beyond cultivation, actual choice divergence and
+training/attempt costs. Seven episodes cannot establish a general learning or
+performance advantage.
+
+The memory worker has a 900-second whole-process-tree bound, 3072 MiB sampled
+RSS bound, 1 GiB sampled aggregate output bound and 16 MiB log bounds. Each game
+process has 180 seconds and the one shared import has 240 seconds. Attempts are
+registered before dispatch and missing results remain missing. Source or evidence
+custody failure stops qualification. An ordinary retained episode failure permits
+the independent full queue to run. Explicit interruption stops the entire
+programme before another child process or campaign starts, with exit code 130
+and durable cancellation receipts. The same stop rule applies to fixed source
+tests, reducer probes and extracted-package PowerShell preflight.
+
 ## Experimental contract
 
 `godot/goblin/goblin_state.gd` abstracts admitted observations. Monotonically growing
@@ -347,6 +467,64 @@ and clear use fixed files below the marked test profile. Clearing experimental
 memory preserves existing campaign evidence. No gameplay action accepts an arbitrary
 file path, network destination, shell command or external desktop operation.
 
+### Choosing a personality
+
+All policies use the same finite gameplay adapter and observation contracts.
+The first six retain their predecessor decision rules and do not dispatch retained
+prefixes. Persistent hints affect the successor search mechanisms; explicit prefix
+reuse is a separate choice. A named personality is a strategy configuration,
+not proof of a particular outcome or discovered defect.
+
+| Personality | What to watch |
+| --- | --- |
+| Control | Repeatable tour through paint, copy, history, persistence and real Play |
+| Wanderer | Waypoints, material trails and control of an actually observed actor |
+| Builder | Small cups, material placement and removal of supporting ledges |
+| Tinkerer | Editing, copying, authoring history and reopening starts |
+| Curiosity | The predecessor's least-exercised-control search |
+| Seeded random | Selection from the adapter's currently applicable legal menu |
+| Stateful explorer | Finite construction, editing and actor intentions chosen from observations |
+| Novelty seeker | Under-observed state/action combinations and parameter variants |
+| Coverage hunter | Admitted action, transition and parameter coverage |
+| Disaster artist | Reservoir construction, material insertion and bounded wall breaches |
+| Boundary goblin | World-edge geometry, view limits and actual refusals |
+| History goblin | Reversible edits, copy/paste and authored persistence |
+| Material alchemist | Admitted material combinations and their observed development |
+| Actor enthusiast | Actual actor capabilities, controls and supported equipment |
+| Impatient switcher | Rapid alternation between action families and simulation/UI states |
+| Obsessive reproducer | Repeated small edit relationships and optional matching-prefix reuse |
+
+### Choosing a scenario
+
+Each scenario is an ordinary authored 512x512 Setup-v2 recipe installed in a
+fresh disposable World. These are authored starts, not evolved physics checkpoints.
+The complete source catalogue is `godot/goblin/goblin_fixtures.gd`.
+
+| Scenario | Authored conditions and useful question |
+| --- | --- |
+| Material playground | Sand, Water and Wood above a hard floor; observe bounded edits and mixed material arrangements |
+| Actor workshop | Kestrel, passive barrel and a stepped route; investigate control, actor lifetime and obstacles |
+| Construction table | Wood frame and open space; build, erase, select, copy and revisit history |
+| Liquid channel | Water reservoir and editable Wood gate; compare release, containment and repair |
+| Save and reopen | Asymmetric material pattern and a barrel; compare authored persistence under its tick-zero preconditions |
+| History and editing | Asymmetric Wood/Metal tiles and an empty translation control; check reversible operations |
+| World boundary laboratory | Hard boundary markers and narrow passages; exercise view clipping, replacement and refusals |
+| Material alchemy | Separate Oil, Water, Ice and Wood pockets; observe combinations without inventing a chemistry law |
+| Mixed interaction yard | Runner, Kestrel, barrel, Water, Sand and an editable wall; combine ordinary gameplay families |
+| Closed Sand cell | Exactly 64 Sand cells in a hard enclosure; apply the separately justified nonreactive conservation experiment |
+
+For a first visible session, select Construction table and Builder with a budget
+of 64 and pacing around 150 ms. Use Discovery to inspect measured coverage and
+the observation queue, then Memory to export the bounded corpus. A later fresh
+session can import that corpus and select a successor personality. Explicitly
+enable matching-prefix reuse when the intention is to revisit a construction.
+The UI shows proposed reused actions separately from actual observed outcomes.
+
+The ordinary source launcher accepts `--corpus` for supported historical search
+hints. Explicit retained-prefix reuse is currently exposed by the laboratory
+control and typed Controller launch contract; `--corpus` alone does not request
+prefix dispatch. Clearing memory leaves raw campaign archives available for review.
+
 ## Replay, reduction and regression export
 
 Semantic replay compares documented game outcomes. Exact asynchronous observation
@@ -368,11 +546,13 @@ use the separately bounded Python reducer.
 
 ## Qualification and decision status
 
-**Pending for the next candidate:** comparative campaigns, long-horizon completion,
-graphical laboratory and extracted package qualification, plus fresh source-matched
-focused gates for the repairs above. Prior focused native passes remain attached
-to their exact published source. No successor Windows evaluator is yet qualified.
-The predecessor evaluator remains independently valid at its original source.
+**Pending for the corrected candidate:** a fresh matched-budget comparative
+programme, long-horizon completion and extracted package qualification, together
+with source-matched focused and graphical gates. Request 4 passed its complete
+declared Linux scope but failed the separate Windows extracted campaign because
+of the articulated-origin oracle defect. Prior passes remain attached to their
+exact published source. No successor Windows evaluator is yet qualified. The
+predecessor evaluator remains independently valid at its original source.
 
 Qualification will retain every process, exit code, watchdog/cancellation result,
 source snapshot, native/runtime identity and raw terminal or incomplete tape. No

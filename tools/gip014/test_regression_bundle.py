@@ -90,6 +90,18 @@ class RegressionBundleControls(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "fixture or pacing"):
                 bundle.assert_case(self.case, allow_unit=True)
 
+    def test_reviewed_oracle_change_is_not_an_unchanged_invariant_fix(self):
+        self.export()
+        actual = fixture(injected=False)
+        actual["header"]["provenance"]["source_commit"] = "7" * 40
+        actual["steps"][-1]["assertions"][0]["expected"] = False
+        actual["summary"] = evidence.summarize(actual)
+        self.actual(actual)
+        write(self.case / "candidate-provenance.json", actual["header"]["provenance"])
+        self.assertTrue(evidence.verify(actual)["valid"])
+        with self.assertRaisesRegex(AssertionError, "acceptance contract"):
+            bundle.assert_case(self.case, allow_unit=True)
+
     def test_literal_action_sequence_and_fixed_plan_are_required(self):
         self.export()
         actual = fixture(injected=False)

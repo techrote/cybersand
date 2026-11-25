@@ -1,8 +1,11 @@
 """Synthetic Windows child-environment controls; no Windows gameplay claim."""
+import contextlib
 import hashlib
+import io
 import json
 from pathlib import Path
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -73,6 +76,55 @@ class WindowsPowerShellEnvironmentControls(unittest.TestCase):
             for options in ({"clean_module": "SyntheticWrongModule"}, {"clean_digest": "a" * 64}, {"duplicate": True}):
                 report, _, _ = self.run_probe(Path(name), **options)
                 self.assertEqual(report["status"], "powershell_environment_failure", options)
+
+
+class WindowsCancellationControls(unittest.TestCase):
+    def invoke(self, root, interrupt):
+        (root / "Open goblin.ps1").write_text("# synthetic; never executed\n")
+        digest = hashlib.sha256(qualification.MODULE_PROBE.encode("utf-8")).hexdigest()
+        calls = []
+
+        def execute(command, env, log, timeout, **options):
+            calls.append(list(command))
+            stopped = len(calls) == interrupt
+            log.write_text("interrupted partial output" if stopped else
+                           "GOBLIN_POWERSHELL_PROBE_PASS 5.1.0.0 Microsoft.PowerShell.Utility Function " + digest + "\n")
+            return {"status": "cancelled" if stopped else "pass", "interrupted": stopped,
+                    "exit_code": 130 if stopped else 0, "surviving_owned_pids": []}
+
+        fake_os = SimpleNamespace(name="nt", environ={"PSMODULEPATH": "synthetic", "Path": "synthetic"})
+        with patch.object(qualification, "os", fake_os), \
+                patch.object(qualification, "execute", side_effect=execute), contextlib.redirect_stdout(io.StringIO()):
+            code = qualification.main(["--package", str(root), "--log", str(root / "extracted.log")])
+        return code, calls
+
+    def test_interrupting_either_probe_never_launches_next_probe_or_selftest(self):
+        for stop in (1, 2):
+            with self.subTest(probe=stop), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                code, calls = self.invoke(root, stop)
+                self.assertEqual(code, 130)
+                self.assertEqual(len(calls), stop)
+                self.assertTrue(all("SelfTest" not in command for command in calls))
+                report = json.loads((root / "extracted.powershell-environment.json").read_text())
+                self.assertEqual(report["status"], "cancelled")
+                self.assertTrue(report["operator_cancelled"])
+                self.assertEqual(len(report["attempts"]), stop)
+                self.assertTrue(report["attempts"][-1]["process"]["interrupted"])
+                self.assertFalse((root / "extracted.process.json").exists())
+
+    def test_selftest_interrupt_retains_process_before_marker_parsing(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            code, calls = self.invoke(root, 3)
+            self.assertEqual(code, 130)
+            self.assertEqual(len(calls), 3)
+            self.assertIn("SelfTest", calls[-1])
+            self.assertEqual((root / "extracted.log").read_text(), "interrupted partial output")
+            process = json.loads((root / "extracted.process.json").read_text())
+            self.assertTrue(process["interrupted"])
+            preflight = json.loads((root / "extracted.powershell-environment.json").read_text())
+            self.assertEqual(preflight["status"], "pass")
 
 
 if __name__ == "__main__":
