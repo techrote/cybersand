@@ -314,8 +314,13 @@ reused. Lazy coordinator preparation may allocate chunks during a tick;
 preallocation prevents the tracked chunk/temperature allocation classes for
 covered regions. This is not proof that every adapter allocation is absent.
 
-Desktop frame inputs and body arrays are replaced under a mutex. Emissions use
-a dynamic `Array[Vector4i]` with no production capacity/full-queue result.
+Desktop frame inputs and body arrays are replaced under a mutex. Disc emissions
+use a dynamic `Array[Vector4i]`, but admission is bounded at eight pending
+commands; the explicit-footprint queue has its own eight-command bound.
+`queue_emit_disc` and `queue_emit_cells` return false on capacity or ownership
+refusal. A true result admits or coalesces a command; it does not acknowledge
+native application. The legacy `queue_paint` wrapper returns void and discards
+that admission result.
 Pending render arrays also grow dynamically, then switch to a finite full
 refresh when byte or patch thresholds are exceeded. This recovery bounds the
 retained display representation; it does not implement generalized bounded
@@ -327,8 +332,8 @@ The ACT-004 physical effect queue and ACT-005 physical usable queue each admit a
 whole incoming batch within eight pending requests or publish an explicit refusal.
 ACT-005 also counts extracted in-flight requests against its one-per-actor and
 global capacity until consumption or retirement; its copied physical frame and
-body sample are latched at the same mutex boundary. These queues do not bound the
-older generic emission queue described above. The occupancy field belongs
+body sample are latched at the same mutex boundary. Their capacities are
+independent of the generic emission queues described above. The occupancy field belongs
 to World; it is separate from material identity. See
 [coupling](rigid-body-and-cellular-coupling.md) for displacement and overflow.
 
