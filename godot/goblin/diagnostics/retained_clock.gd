@@ -31,7 +31,6 @@ var report: Dictionary = {}
 var _deadline_msec := 0
 var _case_finished := false
 var _case_tape: Dictionary = {}
-var _case_source_evidence: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -102,73 +101,45 @@ func _valid_capture(captured: Dictionary) -> bool:
 	return hash.finish().hex_encode() == captured.get("material_sha256")
 
 
-func _disarmed_receipt(receipt: Dictionary) -> bool:
+func _disarmed_receipt(receipt: Variant) -> bool:
+	if not receipt is Dictionary: return false
 	if receipt.get("armed") != false or receipt.get("burst_queued") != false \
 		or receipt.get("stream_enabled") != false or not _same_numbers(receipt.get("origin"), [0, 0]): return false
 	for key: String in ["material", "attempted", "inserted", "blocked", "stream_ticks"]:
-		if receipt.get(key) != 0: return false
+		if not receipt.get(key) is int or receipt[key] != 0: return false
 	return true
 
 
-func _source_queue_proof(phase: String, index: int) -> Dictionary:
-	# Diagnostic observation only. This is the same mutex used by the adapter's
-	# queue-count observation and by source-command consumption. No nested call
-	# to paint_state/observe, native mutation, or command submission occurs here.
-	var before: Dictionary = controller.adapter.observe()
-	var worker: Variant = controller.adapter.worker
-	worker._mutex.lock()
-	var count: int = worker._workbench_source_commands.size()
-	var commands: Array = []
-	if count <= 16: commands = worker._workbench_source_commands.duplicate(true)
-	var receipt: Dictionary = worker._workbench_source.receipt().duplicate(true)
-	var generation: int = worker._world_generation
-	worker._mutex.unlock()
-	var after: Dictionary = controller.adapter.observe()
-	return {"phase": phase, "index": index, "before": before, "after": after,
-		"owner_generation": generation, "command_count": count, "bounded_copy_complete": count <= 16,
-		"commands": Adapter.json_value(commands), "current_source_receipt": Adapter.json_value(receipt),
-		"scope": "read-only owner-mutex queue/source snapshot fenced by actual observations"}
-
-
-func _before_action(_action: Dictionary) -> void:
-	var index: int = controller.attempted
-	_case_source_evidence["before-" + str(index)] = _source_queue_proof("before_action", index)
-
-
-func _after_action(row: Dictionary) -> void:
-	var index: int = int(row.get("index", -1))
-	_case_source_evidence["after-" + str(index)] = _source_queue_proof("after_action", index)
-
-
-func _actor_free(observation: Dictionary, queue_proof: Dictionary, phase: String, index: int) -> bool:
-	var source: Dictionary = observation.get("source", {})
-	if not observation.get("actor_ids", [1]).is_empty() or not observation.get("actors", [1]).is_empty() \
-		or not source.get("authored", [1]).is_empty() or not _disarmed_receipt(source.get("receipt", {})): return false
+func _actor_free(observation: Dictionary) -> bool:
+	# The queue proof is part of this exact observation. Its count, copied
+	# commands, owner generation/paused state and current receipt are produced
+	# inside one existing adapter owner-mutex interval. Never substitute a
+	# later callback's empty queue for a command missing from the action row.
+	var source: Variant = observation.get("source")
+	var native: Variant = observation.get("native")
+	if not source is Dictionary or not native is Dictionary: return false
+	if observation.get("actor_ids") != [] or observation.get("actors") != [] \
+		or source.get("authored") != [] or not _disarmed_receipt(source.get("receipt", {})): return false
 	var count: Variant = source.get("pending_commands")
-	if not count is int or count < 0 or count > 16 or queue_proof.get("bounded_copy_complete") != true \
-		or queue_proof.get("phase") != phase or queue_proof.get("index") != index \
-		or queue_proof.get("command_count") != count or not _disarmed_receipt(queue_proof.get("current_source_receipt", {})): return false
-	# A pending count alone never proves an inert operation. The exact bounded
-	# copied queue must contain only the ordinary cancellation Stop, including
-	# its fixed arguments, at this row's unchanged native source. Configure,
-	# Burst and Stream are never admitted by this diagnostic exception.
-	var native: Dictionary = observation.get("native", {})
-	if queue_proof.get("owner_generation") != native.get("generation") or native.get("failed") != false: return false
-	if count > 0 and (observation.get("paused") != true or native.get("paused") != true): return false
-	for boundary: String in ["before", "after"]:
-		var observed: Dictionary = queue_proof.get(boundary, {})
-		if observed.get("native", {}).get("generation") != native.get("generation") \
-			or observed.get("native", {}).get("failed") != false \
-			or observed.get("source", {}).get("pending_commands") != count \
-			or not _disarmed_receipt(observed.get("source", {}).get("receipt", {})): return false
-		# Zero-queue observations while running may advance tick/revision.
-		# A positive Stop exception requires the exact paused native source.
-		if count > 0 and (observed.get("native") != native or observed.get("paused") != true): return false
-	var commands: Variant = queue_proof.get("commands")
+	var proof: Variant = source.get("queue_evidence")
+	if not count is int or count < 0 or count > 16 or not proof is Dictionary: return false
+	if proof.get("schema") != "cybersand-goblin-source-queue-v1" or proof.get("copy_complete") != true \
+		or not proof.get("command_count") is int or proof.command_count != count \
+		or not proof.get("owner_generation") is int or not native.get("generation") is int \
+		or proof.owner_generation != native.generation or native.generation < 0 \
+		or native.get("failed") != false or not proof.get("owner_paused") is bool \
+		or not _disarmed_receipt(proof.get("current_source_receipt", {})): return false
+	# Running empty-queue observations may advance the local clock. A positive
+	# queue is accepted only as the actual fully observed inert cancellation
+	# Stop while both owner and published action observation are paused.
+	if count > 0 and (observation.get("paused") != true or native.get("paused") != true \
+		or proof.owner_paused != true): return false
+	var commands: Variant = proof.get("commands")
 	if not commands is Array or commands.size() != count: return false
 	for command: Variant in commands:
 		if not command is Dictionary or command.size() != 3 or command.get("command") != "stop" \
-			or command.get("material") != 0 or not _same_numbers(command.get("origin"), [0, 0]): return false
+			or not command.get("material") is int or command.material != 0 \
+			or not _same_numbers(command.get("origin"), [0, 0]): return false
 	return true
 
 
@@ -241,10 +212,8 @@ func _case(name: String, actions: Array, header: Dictionary, provenance: Diction
 	var plan := {"schema": "cybersand-goblin-action-fixture-v1", "header": header.duplicate(true), "actions": actions.duplicate(true)}
 	_case_finished = false
 	_case_tape = {}
-	_case_source_evidence = {}
-	result["source_queue_evidence"] = _case_source_evidence
+	result["source_evidence_kind"] = "actual_observation_embedded_owner_mutex_snapshot"
 	report["pending_case"] = name
-	report["pending_source_evidence"] = _case_source_evidence
 	report["pending_prescribed_actions"] = actions.duplicate(true)
 	_write_checkpoint()
 	_campaign_async.call_deferred(configuration, provenance, plan)
@@ -256,16 +225,14 @@ func _case(name: String, actions: Array, header: Dictionary, provenance: Diction
 		result.status = "setup_refused"
 		result["transcript"] = _case_tape.duplicate(true)
 		return result
-	var initial_proof := _source_queue_proof("initial", -1)
-	_case_source_evidence["initial"] = initial_proof
-	var initial: Dictionary = initial_proof.before
+	var initial: Dictionary = controller.adapter.observe()
 	result["initial_observation"] = initial.duplicate(true)
 	var mode_offered := false
 	for offered: Dictionary in controller.adapter.available_actions():
 		if offered.get("id") == "response_mode" and offered.get("args", {}).get("mode") == VARIANT_MODE:
 			mode_offered = true
 	result["variant_response_actually_offered"] = mode_offered
-	var initial_ok: bool = _actor_free(initial, initial_proof, "initial", -1) and initial.get("paused") == true \
+	var initial_ok: bool = _actor_free(initial) and initial.get("paused") == true \
 		and initial.get("native", {}).get("tick") == 0 and initial.get("native", {}).get("failed") == false
 	var initial_capture: Dictionary = await _capture("authored_start", result.captures)
 	if not initial_ok or not _authored_plane(initial_capture) or (name == "retained_zero_tick_variant" and not mode_offered):
@@ -309,8 +276,7 @@ func _case(name: String, actions: Array, header: Dictionary, provenance: Diction
 		var row: Dictionary = rows[index]
 		if row.action.id != actions[index].id or row.action.args != actions[index].args \
 			or row.get("status") != "completed" or row.get("admission", {}).get("accepted") != true: all_completed = false
-		if not _actor_free(row.get("before", {}), _case_source_evidence.get("before-" + str(index), {}), "before_action", index) \
-			or not _actor_free(row.get("after", {}), _case_source_evidence.get("after-" + str(index), {}), "after_action", index): actor_free = false
+		if not _actor_free(row.get("before", {})) or not _actor_free(row.get("after", {})): actor_free = false
 		for assertion: Dictionary in row.get("assertions", []):
 			if assertion.get("status") == "fail": failures.append({"step": index, "assertion": assertion.duplicate(true)})
 	result["recorded_failed_assertions"] = failures
@@ -397,8 +363,9 @@ func run() -> void:
 	var launch: Dictionary = Controller.read_launch()
 	report = {"schema": "goblin-retained-clock-diagnostic-v1", "status": "initializing", "started_msec": start,
 		"base_game_source": BASE_GAME_SOURCE, "instrumentation_sha256": FileAccess.get_sha256(ENTRYPOINT),
+		"adapter_instrumentation_sha256": FileAccess.get_sha256("res://goblin/goblin_adapter.gd"),
 		"actual_source_provenance": launch.get("provenance", {}), "evidence_kind": "headless_godot_diagnostic",
-		"instrumentation_scope": "Fixed diagnostic entrypoint; launcher must retain exact executed source and any overlay separately from base game identity",
+		"instrumentation_scope": "Fixed diagnostic plus exact read-only adapter queue-evidence delta; launcher retains both changed sources and all unchanged game inputs",
 		"prescribed_action_limit": 9, "internal_wall_msec": 75000, "cases": [],
 		"gameplay_defect_confirmed": false, "production_defect_claim": false}
 	if not launch.get("ok", false):
@@ -435,8 +402,6 @@ func run() -> void:
 	_write_checkpoint()
 	controller = Controller.new()
 	root.add_child(controller)
-	controller.action_started.connect(_before_action)
-	controller.action_observed.connect(_after_action)
 	var control: Dictionary = await _case("positive_tick_control", CONTROL_ACTIONS, header, launch.provenance)
 	report.cases.append(control)
 	_write_checkpoint()
@@ -451,5 +416,4 @@ func run() -> void:
 	report.erase("pending_case")
 	report.erase("pending_captures")
 	report.erase("pending_prescribed_actions")
-	report.erase("pending_source_evidence")
 	await _finish(0 if variant.status in ["hypothesis_reproduced", "not_reproduced"] else 2)

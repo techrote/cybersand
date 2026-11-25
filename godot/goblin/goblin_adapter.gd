@@ -235,6 +235,15 @@ func observe() -> Dictionary:
 	# it. An unchanged configure still needs observed command consumption.
 	worker._mutex.lock()
 	var pending_source_commands: int = worker._workbench_source_commands.size()
+	# Keep command identity and current source state with this exact count.
+	# A later callback can see a drained queue at the same native tick. Copy
+	# only bounded data here; conversion and all other observations stay
+	# outside the owner's critical section.
+	var source_queue_evidence := {"schema": "cybersand-goblin-source-queue-v1",
+		"command_count": pending_source_commands, "copy_complete": pending_source_commands <= 16,
+		"commands": worker._workbench_source_commands.duplicate(true) if pending_source_commands <= 16 else [],
+		"owner_generation": worker._world_generation, "owner_paused": worker._paused,
+		"current_source_receipt": worker._workbench_source.receipt().duplicate(true)}
 	worker._mutex.unlock()
 	var actors: Array = []
 	var actor_ids: Array = []
@@ -270,6 +279,7 @@ func observe() -> Dictionary:
 		"configuration": {"response": str(bench.applied.get("response", "")), "thruster_fire": bool(bench.applied.get("fire", false))},
 		"source": {"authored": json_value(bench.applied.get("source", [])),
 			"pending_commands": pending_source_commands,
+			"queue_evidence": json_value(source_queue_evidence),
 			"snapshot_serial": int(host.latest_snapshot.serial) if host.latest_snapshot != null else -1,
 			"receipt": json_value(host.latest_snapshot.lab_context.get("workbench_source", {})) if host.latest_snapshot != null else {},
 			"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1},

@@ -28,7 +28,7 @@ qualify a different game source.
 ## Owner evaluator and first session
 
 Download the qualified [Windows evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/14994660661),
-extract its inner `CyberSand-goblin-5ee5dffc78d5.zip` to a writable folder, then run
+extract its inner `CyberSand-goblin.zip` to a writable folder, then run
 **Open goblin.cmd**. The package contains the actual ordinary Workbench, Godot,
 native libraries, Rapier and required runtime files. A separate engine, compiler
 or Python installation is unnecessary for the evaluator. The artifact wrapper
@@ -62,7 +62,7 @@ Optional overlays show actually observed trajectories and edit regions.
 | Qualified Windows game/source | `5ee5dffc78d59a721f62be49fd51d24b870556c7` |
 | Qualified source tree | `287795a8534c5622ede5d71710714ea467197e79` |
 | Focused qualification | [Run 45550152509](https://github.com/techrote/cybersand/actions/runs/45550152509), Windows job `138989207208` |
-| Inner evaluator | `CyberSand-goblin-5ee5dffc78d5.zip`, **95,549,310 bytes** |
+| Inner evaluator | `CyberSand-goblin.zip`, **95,549,310 bytes** |
 | Inner evaluator SHA-256 | `513cba95be9465540dca46975a48a77f89b241daea0db7859839acb0f6ec69ee` |
 | Artifact wrapper | `14994660661`, **95,057,461 bytes**, SHA-256 `9207c151eda60115527753a91bec0fa5266d6d27a770c9a5efe66d2ac1709d1e` |
 | Windows evidence artifact | [14994755244](https://github.com/techrote/cybersand/actions/runs/45550152509/artifacts/14994755244), SHA-256 `2168527b5359f4bcdd09b62526c1aa203be5c38e9f07c5d3a9287f6b9329867b` |
@@ -177,7 +177,7 @@ IDs, actor_actuate, actor_trigger and preview_cancel, were exercised separately
 by the focused native group; those checks are not silently inserted into matrix
 metrics.
 
-Comparisons use only genuinely completed matched 64-action episodes. The
+Pairwise comparisons use only budget-complete matched episodes at 64 attempted slots; refusals consume slots and remain separately counted. The
 historical attrition makes some pairings small or unavailable. Coverage Hunter
 versus Random has four eligible blocks and median differences of plus three
 action IDs, plus four adjacent transitions and minus four material keys.
@@ -185,9 +185,16 @@ Coverage Hunter versus Novelty has five blocks with median differences of zero
 action IDs, minus three transitions, minus three material keys and minus two
 tool/material keys. Novelty versus Random has no eligible complete pair.
 Curiosity's median vocabulary count was 35, compared with 27 for Coverage Hunter
-and 26.5 for Novelty; Coverage Hunter's pooled vocabulary union was larger.
-These observations establish useful diversity, not a universally best policy or
-a causal persistent-learning advantage.
+and 26.5 for Novelty; those medians use 11, nine and eight budget-complete
+episodes, respectively. Coverage Hunter's pooled vocabulary union was 48 versus
+Curiosity's 45 across all twelve valid observed tapes per policy, including
+incomplete episodes. The pooled union and completed-episode medians therefore
+have different inclusion rules.
+Matched fixtures are the initial authored starts; later fixture replacement is
+part of the policy behaviour and can change exposure. All 142 historical profiles
+started with fresh memory and corpus_reuse=false. These observations establish
+useful diversity, not a universally best policy or a causal persistent-learning
+advantage.
 
 The corrected source's complete matrix and registered seven-episode memory
 experiment are still being qualified at this checkpoint. Until their raw
@@ -246,17 +253,27 @@ occurrence-bound regression acceptance, platform path/newline test-fixture
 assumptions and native expanded-test numeric/picker assumptions. The earlier
 Step/Save hypothesis did not reproduce. Capture/Reset placement differences
 lacked an authoritative idempotence contract and were not reported as a bug.
-The retained-clock Save/Reopen hypothesis remains a separate diagnostic:
-request1 stopped before any action because its source-absence precondition
-rejected an unclassified pending command. It supplied no hypothesis result.
+The retained-clock Save/Reopen hypothesis remains a separate diagnostic.
+Request1 stopped before any action because its source-absence precondition
+rejected an unclassified pending command. Request2 completed all nine actions:
+the control passed, and the variant produced the expected material relation and
+failed equality assertion, but one queued command drained before the later
+proof callback. Its strict source-absence predicate therefore failed. Both
+attempts remain unresolved; the recorded vanished command is not inferred to be
+Stop. A narrowly pinned, read-only addition to the adapter will place actual
+queue contents and owner state in the same observation as their count before a
+fresh experiment. Its source is separate from qualified5ee.
 
 ## Boundaries, remaining work and decision
 
 The laboratory remains opt-in and confined to disposable local sessions. Tapes
 are capped at 1,024 actions and 32 MiB; coverage maps at 2,048 keys each; a profile
-at 64 archived campaigns and 512 MiB; interactive reduction at 128 input actions,
-twelve probes and 240 seconds overall. Python reduction has its separately
-documented finite probe and wall bounds. Hosted owned processes use PID plus
+at 64 archived campaigns and 512 MiB; interactive reduction at 128 input actions and twelve probes. Its 240-second
+aggregate threshold stops new deletion-loop iterations; it is not a strict total
+wall deadline. An already admitted probe/confirmation pair may finish later,
+with each trial retaining 30 seconds active and 60 seconds absolute limits plus
+bounded setup/cleanup. Python reduction has its separately documented finite
+probe and wall bounds. Hosted owned processes use PID plus
 creation time, sampled process-tree RSS, deadlines, bounded logs and cancellation
 receipts. No-survivor evidence applies to the owned observed trees, not a global
 machine process audit.

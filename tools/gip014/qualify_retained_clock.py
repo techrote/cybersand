@@ -8,6 +8,7 @@ production defect claim. Only the committed fixed entrypoint may be executed.
 from __future__ import annotations
 
 import argparse
+import difflib
 import hashlib
 import json
 from pathlib import Path
@@ -22,6 +23,11 @@ from verify_transcript import verify
 
 BASE_GAME_SOURCE = "5ee5dffc78d59a721f62be49fd51d24b870556c7"
 GAME_SCRIPT = "godot/goblin/diagnostics/retained_clock.gd"
+ADAPTER_SCRIPT = "godot/goblin/goblin_adapter.gd"
+ADAPTER_BASE_BLOB = "aef80d5878ce80d298c029cae76a9fb16624fdf4"
+ADAPTER_OBSERVATION_BLOB = "7f0fa3fbcab7de85350d0ca99154adc615d75cbf"
+ADAPTER_BASE_SHA256 = "36681265aa48a647f0cc6dfc1d31977604bc9a59cf74b082a7f3beb336bfd64d"
+ADAPTER_OBSERVATION_SHA256 = "70fe8fe199e123f1ed28fdf9a4539194c4b08c6f595b052097a74c0de5300cfb"
 ENTRYPOINT = "res://goblin/diagnostics/retained_clock.gd"
 GODOT_SHA256 = "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
 MARKER = "GOBLIN_RETAINED_CLOCK_COMPLETE "
@@ -31,23 +37,47 @@ CONTROL = [{"id": "play", "args": {"ticks": 16}}, {"id": "pause", "args": {}},
 VARIANT = CONTROL[:2] + [{"id": "response_mode", "args": {"mode": "LA-EVENT-OFF"}}] + CONTROL[2:]
 
 
+def adapter_delta(base: bytes, current: bytes) -> dict:
+    """Admit only the independently reviewed exact read-only observation delta."""
+    first, last = hashlib.sha256(base).hexdigest(), hashlib.sha256(current).hexdigest()
+    if first != ADAPTER_BASE_SHA256 or last != ADAPTER_OBSERVATION_SHA256:
+        raise ValueError("Adapter bytes differ from the pinned base or exact reviewed observation change")
+    difference = "".join(difflib.unified_diff(base.decode("utf-8").splitlines(keepends=True),
+                                           current.decode("utf-8").splitlines(keepends=True),
+                                           fromfile="base5ee/" + ADAPTER_SCRIPT, tofile=ADAPTER_SCRIPT))
+    return {"path": ADAPTER_SCRIPT, "base_sha256": first, "new_sha256": last,
+            "base_git_blob": ADAPTER_BASE_BLOB, "new_git_blob": ADAPTER_OBSERVATION_BLOB,
+            "diff": difference, "diff_sha256": hashlib.sha256(difference.encode("utf-8")).hexdigest(),
+            "scope": "Bounded read-only queue/count/current-owner evidence inside the existing observation mutex"}
+
+
 def clean_source() -> dict:
     if runner.git("status", "--porcelain", "--untracked-files=all"):
         raise ValueError("Diagnostic execution requires clean committed source")
     changes = runner.git("diff", "--name-only", BASE_GAME_SOURCE, "HEAD", "--", "godot").splitlines()
-    if changes != [GAME_SCRIPT]:
-        raise ValueError("Only the committed diagnostic entrypoint may differ from the pinned base game")
+    if changes != sorted([GAME_SCRIPT, ADAPTER_SCRIPT]):
+        raise ValueError("Only the fixed diagnostic and exact reviewed adapter observation delta may differ")
     if runner.git("cat-file", "-t", BASE_GAME_SOURCE) != "commit":
         raise ValueError("Pinned game source is not available")
     path = runner.ROOT / GAME_SCRIPT
     if path.is_symlink() or not path.is_file():
         raise ValueError("Fixed diagnostic source is absent or linked")
+    adapter = runner.ROOT / ADAPTER_SCRIPT
+    if adapter.is_symlink() or not adapter.is_file():
+        raise ValueError("Fixed adapter source is absent or linked")
+    if (runner.git("rev-parse", BASE_GAME_SOURCE + ":" + ADAPTER_SCRIPT) != ADAPTER_BASE_BLOB
+            or runner.git("rev-parse", "HEAD:" + ADAPTER_SCRIPT) != ADAPTER_OBSERVATION_BLOB):
+        raise ValueError("Committed adapter objects do not match the reviewed observation change")
+    base_bytes = subprocess.run(["git", "show", BASE_GAME_SOURCE + ":" + ADAPTER_SCRIPT], cwd=runner.ROOT,
+                                check=True, capture_output=True, timeout=15).stdout
+    observation_delta = adapter_delta(base_bytes, adapter.read_bytes())
     return {"source_commit": runner.git("rev-parse", "HEAD"),
             "source_tree": runner.git("rev-parse", "HEAD^{tree}"), "source_dirty": False,
             "base_game_source": BASE_GAME_SOURCE, "base_game_tree": runner.git("rev-parse", BASE_GAME_SOURCE + "^{tree}"),
             "game_changes": changes, "diagnostic_sha256": runner.sha_file(path),
-            "base_game_files_unchanged": True,
-            "comparison": "Exact tracked Git object comparison for every godot input; only the new fixed diagnostic script differs"}
+            "base_game_files_unchanged": False, "other_base_game_files_unchanged": True,
+            "product_and_oracle_logic_unchanged": True, "adapter_observation_delta": observation_delta,
+            "comparison": "Exact tracked Git comparison; only the added fixed diagnostic and hash-pinned read-only adapter observation delta differ"}
 
 
 def bounded_json(path: Path, limit: int = MAX_REPORT_BYTES) -> dict:
@@ -120,30 +150,30 @@ def disarmed_receipt(receipt) -> bool:
                     for key in ("material", "attempted", "inserted", "blocked", "stream_ticks")))
 
 
-def actor_free(observation: dict, proof: dict, phase: str, index: int) -> bool:
+def actor_free(observation: dict) -> bool:
+    if not isinstance(observation, dict):
+        return False
     source, native = observation.get("source", {}), observation.get("native", {})
+    if not isinstance(source, dict) or not isinstance(native, dict):
+        return False
     if (observation.get("actor_ids") != [] or observation.get("actors") != [] or source.get("authored") != []
             or not disarmed_receipt(source.get("receipt"))):
         return False
     count = source.get("pending_commands")
     if type(count) is not int or not 0 <= count <= 16:
         return False
-    if (proof.get("phase") != phase or proof.get("index") != index or proof.get("bounded_copy_complete") is not True
-            or proof.get("command_count") != count or proof.get("owner_generation") != native.get("generation")
+    proof = source.get("queue_evidence")
+    if (not isinstance(proof, dict) or proof.get("schema") != "cybersand-goblin-source-queue-v1"
+            or proof.get("copy_complete") is not True or type(proof.get("command_count")) is not int
+            or proof["command_count"] != count or type(proof.get("owner_generation")) is not int
+            or type(native.get("generation")) is not int or native["generation"] < 0
+            or proof["owner_generation"] != native["generation"] or type(proof.get("owner_paused")) is not bool
             or native.get("failed") is not False
             or not disarmed_receipt(proof.get("current_source_receipt"))):
         return False
-    if count > 0 and (observation.get("paused") is not True or native.get("paused") is not True):
+    if count > 0 and (observation.get("paused") is not True or native.get("paused") is not True
+                      or proof["owner_paused"] is not True):
         return False
-    for side in ("before", "after"):
-        boundary = proof.get(side, {})
-        if (boundary.get("native", {}).get("generation") != native.get("generation")
-                or boundary.get("native", {}).get("failed") is not False
-                or boundary.get("source", {}).get("pending_commands") != count
-                or not disarmed_receipt(boundary.get("source", {}).get("receipt"))):
-            return False
-        if count > 0 and (boundary.get("native") != native or boundary.get("paused") is not True):
-            return False
     commands = proof.get("commands")
     return (isinstance(commands, list) and len(commands) == count
             and all(isinstance(command, dict) and set(command) == {"command", "material", "origin"}
@@ -159,6 +189,7 @@ def adjudicate(raw: dict, provenance: dict, custody: dict) -> dict:
             or raw.get("base_game_source") != BASE_GAME_SOURCE
             or raw.get("actual_source_provenance") != provenance
             or raw.get("instrumentation_sha256") != custody["diagnostic_sha256"]
+            or raw.get("adapter_instrumentation_sha256") != custody["adapter_observation_delta"]["new_sha256"]
             or raw.get("prescribed_action_limit") != 9 or raw.get("production_defect_claim") is not False
             or raw.get("gameplay_defect_confirmed") is not False):
         raise ValueError("Diagnostic identity or bounded scope differs")
@@ -179,13 +210,14 @@ def adjudicate(raw: dict, provenance: dict, custody: dict) -> dict:
         checked = verify(tape)
         if not checked["valid"] or checked.get("unreported_failures"):
             raise ValueError("The actual tape fails independent structural/evidence validation")
-        source_evidence = case.get("source_queue_evidence", {})
-        if not actor_free(case.get("initial_observation", {}), source_evidence.get("initial", {}), "initial", -1):
+        if case.get("source_evidence_kind") != "actual_observation_embedded_owner_mutex_snapshot":
+            raise ValueError("The diagnostic does not identify its observation-owned source proof")
+        if not actor_free(case.get("initial_observation", {})):
             raise ValueError("Initial absence of an emitting source lacks its actual queue/owner proof")
-        for action_index, row in enumerate(rows):
+        for row in rows:
             for side in ("before", "after"):
-                if not actor_free(row[side], source_evidence.get(side + "-" + str(action_index), {}), side + "_action", action_index):
-                    raise ValueError("A pending source operation is not a proven inert Stop at its actual action boundary")
+                if not actor_free(row[side]):
+                    raise ValueError("An actual action observation lacks its atomic absent/inert source proof")
         captures = case.get("captures", {})
         initial = capture_cells(captures.get("authored_start", {}), case.get("initial_observation", {}))
         evolved = capture_cells(captures.get("paused_after_play", {}), rows[1]["after"])
