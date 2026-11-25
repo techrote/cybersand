@@ -219,6 +219,7 @@ func run() -> void:
 	var ambiguous := raw.duplicate(true)
 	ambiguous.unresolved = ["Which passage must remain open?"]
 	var ambiguous_result: Dictionary = await preview(Proposal.compile(ambiguous,context,rules),context)
+	print("ART_AMBIGUITY_DIAGNOSTIC ",JSON.stringify(ambiguous_result))
 	check(not ambiguous_result.ok and ambiguous_result.error.contains("questions"),"unresolved creative ambiguity cannot receive execution approval")
 
 	print("ART_PROPOSAL_RESULT ",JSON.stringify({"checks":checks,"failures":failures,

@@ -122,7 +122,7 @@ func poll() -> Dictionary:
 		if _index >= _compiled.stages.size():
 			if _conflict_count > 0:
 				_finish("refused","Proposal has "+str(_conflict_count)+" requested cells conflicting with owner/native policy. Revise it before approval.")
-			elif bool(_compiled.get("requires_resolution",false)):
+			elif not _compiled.proposal.get("unresolved",[]).is_empty():
 				_finish("refused","Resolve the proposal's outstanding questions before native approval.")
 			else:
 				_finish("ready","")
