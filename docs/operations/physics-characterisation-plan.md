@@ -2,10 +2,10 @@
 title: Physics characterisation and soliding plan
 status: Planned
 document-kind: runbook
-scope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance
+scope: Maintained reference to September proposed experiments and provisional thresholds; historical directions are not current assignments or runtime acceptance
 canonical-for: [physics-characterisation-plan, soliding-investigation]
 keywords: [powder, mercury, barrels, sinking, soliding, permeability, granular support]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../systems/materials-and-rule-kernels.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -24,6 +24,12 @@ not implement production soliding or transfer material to Rapier. The
 [current-state register](../reference/status-and-roadmap.md) retain the separate
 production and active-candidate gates. Do not infer a new threshold or handoff
 permission from the proposed numbers below.
+
+The retained Web rows describe that experiment design. Under the
+[owner's current Web policy](../reference/product-intent-and-priorities.md#disposable-web-experiments),
+browser work is an occasional, separately commissioned experiment; maintained
+Web CI or reproducible Web releases are not standing desktop prerequisites.
+Any claimed Web result still needs its actual source, artifact and execution scope.
 
 **Recorded owner direction for the 2026-09-08 investigation:** investigate solids passing through one
 another, powders failing to support the player, dense liquids rapidly crossing
@@ -275,8 +281,9 @@ Start with one small coherent material island and one barrel, then scale.
 For a newly authorized implementation, use the current
 [source build/test guide](local-build-and-validation.md) and source-matched
 focused runners. The original `dev.cmd native-test`/`dev.cmd godot-test` recipe
-belongs to the configured companion workspace. Affected Web qualifications
-require actual compatibility/threaded artifacts and browser execution; the
+belongs to the configured companion workspace. A separately commissioned Web
+experiment requires actual compatibility/threaded artifacts and browser execution
+for the behavior it claims; the
 [current Web prerequisites](web-threading.md#build-and-preview) must be resolved
 before promising a fresh export.
 Keep desktop async results distinct from headless Web-controller invocation and

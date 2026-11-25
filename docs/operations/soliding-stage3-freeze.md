@@ -2,9 +2,9 @@
 title: Issue 12 Stage 3 execution freeze
 status: Approved design
 document-kind: runbook
-scope: Frozen execution contract for completing scalable settled-region discovery after PR #43; read-only discovery only, no acceleration or material ownership transfer
+scope: Maintained September 19 Stage-3 correctness and evidence reference; dated implementation and dispatch instructions are historical, not current execution authority
 canonical-for: [soliding-stage3-execution-freeze]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [soliding-programme.md, soliding-measurement.md, ../systems/settled-region-discovery.md, ../architecture/soliding-lifecycle.md, ../audits/issue-12-2026-09-19/producer-hook-review.md]
 ---
 

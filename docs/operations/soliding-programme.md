@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission
 canonical-for: [scalable-soliding-programme]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
@@ -106,13 +106,17 @@ separately authorized finite Track A proof.
 | 3B. Discovery locality/scalability | Replace whole-capacity/global scans and fixed-maximum storage where evidence requires; preserve 3A invariants | Change-proportional producer and lookup costs, capacity-sized memory, bounded split reconstruction and an explicit local/subregion consumer contract |
 | 4. Stationary bake-off | Compare Current sleep, summary/skip, derived proxy and justified compact/boundary representations | Reproducible saving and break-even curves, or explicit evidence-backed rejection of that tier |
 | 5. Eligibility | Use material/state authority, preserve support loss/avalanche and wake paths | Useful Sand/Stone stationary behavior without invented rigidity |
-| 6. Production dynamics | Admitted coherence plus registry/queue/shape/body/destination capacity and worker/main-thread protocol | Multiple translating/rotating aggregates, exact payload ownership, declared mass/inertia/units, real desktop/Web evidence |
+| 6. Production dynamics | Admitted coherence plus registry/queue/shape/body/destination capacity and worker/main-thread protocol | Multiple translating/rotating aggregates, exact payload ownership, declared mass/inertia/units and real desktop evidence; Web only within a separately commissioned experiment |
 | 7. Geometry/fracture | Measured shape ladder and bounded partition/capacity rules | Coherent children inherit useful parent motion; only loose material reactivates; bounded local rebuilding |
 | 8. Persistence | Versioned payload/identity/representation schema and safe pending-state handling | Truthful restore/refusal with source/config identities; no implied exact replay |
 | 9. Campaign | Source-matched representation arms and representative worlds | Retained wins/losses, break-even, conservation, behavior and all applicable platform evidence |
 
 Stages are not collapsed to maximize apparent progress. A standalone transition
 model tests a contract; it is not a production worker/Rapier ownership kernel.
+The [owner's Web policy](../reference/product-intent-and-priorities.md#disposable-web-experiments)
+does not require maintained Web CI or reproducible Web releases for desktop work.
+Retained Web experiment requirements describe the coverage needed for a claimed
+Web result, rather than an additional desktop admission gate.
 The first discovery increment may publish complete block summaries while leaving
 cross-block connected-region discovery open. The integrated reference now covers
 connected regions, but its negative scaling evidence keeps Stage 3B open. Neither

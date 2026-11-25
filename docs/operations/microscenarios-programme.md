@@ -2,9 +2,9 @@
 title: CyberSand MicroScenarios and intermaterial-interactions programme
 status: Planned
 document-kind: design
-scope: Canonical development-order graph for reusable exploratory MicroScenarios, anomaly triage, non-kinetic intermaterial-interaction authoring/tuning, and staged showcase work
+scope: Maintained MicroScenarios and non-kinetic interaction programme reference; September dependencies and checkpoints are historical, completed foundations and current status govern new work
 canonical-for: [microscenarios-programme, microscenarios-development-order, intermaterial-interaction-programme]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [experiment-tower.md, architecture-programme.md, ../reference/status-and-roadmap.md, ../reference/product-intent-and-priorities.md, ../MATERIAL_LAB.md, ../systems/flow-transport-and-profiles.md]
 ---
 

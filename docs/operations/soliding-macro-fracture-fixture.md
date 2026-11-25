@@ -4,7 +4,7 @@ status: Planned
 document-kind: runbook
 scope: Blocked Stage 6 and 7 fixture specification for real Rapier rotation and coherent-child motion inheritance; no implementation or acceptance claim
 canonical-for: [soliding-macro-fracture-fixture]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-11-25
 related-documents: [soliding-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
@@ -110,8 +110,11 @@ separation/filtering policy before accepting collision results; do not hide ener
 injection with a larger motion tolerance. Keep geometry complexity, queue high-water,
 partition/build time and native/main-thread budgets alongside mechanics results.
 
-Run real desktop asynchronous and supported native Web sequencing after native
-contract acceptance. A pure model, native CLI, compile, or scripted quarter-turn
+Run real desktop asynchronous qualification after native contract acceptance.
+A separately commissioned Web experiment must qualify the actual Web sequencing
+it claims; [owner policy](../reference/product-intent-and-priorities.md#disposable-web-experiments)
+does not require maintained Web CI or Web releases for desktop admission.
+A pure model, native CLI, compile, or scripted quarter-turn
 is not equivalent to actual Rapier rotation/fracture execution. Save/export must
 explicitly refuse/drain unsupported aggregate or pending states. Exact replay is
 not implied by a capture. Preserve every failed, ambiguous and negative arm and
