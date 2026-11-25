@@ -66,3 +66,38 @@ Source admission errors and original failed processes are not replaced with
 successful synthetic timings. The diagnostic does not package a Windows
 evaluator, authorize a new production default or supersede the principal
 Art campaign. Results must name their source and cache arm when cited.
+
+## Follow-up after the first four observations
+
+The first diagnostic source `8ce9bbd780df7ac1a82caf1ae1598fed27371138` completed
+all four original arms with 27 checks each in
+[campaign 45549435385](https://github.com/techrote/cybersand/actions/runs/45549435385).
+Artifact `14993266843` is 4,981,131 bytes with SHA-256
+`c79ffd7960cb02c66d66e1e09d3c6fc167aa288d101b748771b5af2def7ffe1f`.
+The actual host reports Windows Server 2022 image `20261116.370.1`, AMD EPYC 9V74,
+two exposed physical cores/four logical processors, 16,771,836 KiB visible memory,
+and a Microsoft software-rendering adapter. Source loading was about 1.5 seconds
+in all four arms. Graphical readiness was 42.631, 38.979 and 40.161 seconds, versus
+3.511 seconds headless. Graphical maximum gaps were 39.130, 35.501 and 36.697
+seconds. Opening Art itself took 115–122 ms graphically. These original timings
+remain retained and do not establish a native worker cause.
+
+Every original graphical arm had a fresh user profile. The artifact shows that
+Godot's shader cache lives in that profile, outside the project's `.godot`
+directory. Consequently the original project-cache repeat and editor-import
+arms did not test a warmed runtime shader cache.
+
+The follow-up adds bounded `frame_pre_draw`/`frame_post_draw` timestamps and
+read-only startup-frame observations. Its three arms are a fresh graphical
+profile, a second process explicitly reusing only the preceding passed arm's
+owned profile, and a fresh headless control. Profile reuse refuses a failed,
+different-source or non-sibling arm. Shader-cache file hashes are recorded before
+and after each arm. No user profile, private provider configuration, production
+shader or World scheduling policy is modified by this apparatus.
+
+The draw interval includes the work between the engine's two render signals;
+it is not a GPU-only measurement and cannot by itself name a shader compiler
+or driver function. The fixed-order profile comparison can test whether this
+observed cost persists with that owned cache, while OS cache and host contention
+remain uncontrolled. These diagnostic arms neither change nor qualify the
+principal evaluator.

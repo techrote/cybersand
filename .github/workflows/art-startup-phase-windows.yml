@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   windows-phases:
-    name: Four source-pinned Windows startup observations
+    name: Three source-pinned render and profile-cache observations
     runs-on: windows-2022
     timeout-minutes: 25
     steps:
@@ -40,15 +40,14 @@ jobs:
           if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot checksum mismatch' }
           Expand-Archive -Path $zip -DestinationPath (Join-Path $env:RUNNER_TEMP 'godot-win47-startup')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot-win47-startup/Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
-      - name: Observe fresh checkout, repeat, explicit import and headless control
+      - name: Observe render intervals with fresh and reused profiles and headless control
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
           $failedArms = [System.Collections.Generic.List[string]]::new()
           $arms = @(
             @{ label='graphical-first'; options=@('--graphical') },
-            @{ label='graphical-repeat'; options=@('--graphical') },
-            @{ label='graphical-after-import'; options=@('--graphical','--import-before') },
+            @{ label='graphical-reused-profile'; options=@('--graphical','--profile-from','evidence/graphical-first') },
             @{ label='headless-after-graphical'; options=@() }
           )
           foreach ($arm in $arms) {

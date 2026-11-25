@@ -14,12 +14,20 @@ var max_gap_usec := 0
 var previous_usec := 0
 var output := ""
 var context_script: GDScript
+var render_started_usec := 0
+var render_intervals: Array = []
+var render_count := 0
+var maximum_render_interval: Dictionary = {}
+var startup_frames: Array = []
 
 func _initialize() -> void:
 	began_usec=Time.get_ticks_usec()
 	previous_usec=began_usec
 	output=OS.get_environment("ART_STARTUP_PHASE_OUTPUT")
 	set_meta("cybersand_feature","shared_workbench")
+	if DisplayServer.get_name() != "headless":
+		RenderingServer.frame_pre_draw.connect(before_draw)
+		RenderingServer.frame_post_draw.connect(after_draw)
 	run.call_deferred()
 
 func _process(_delta: float) -> bool:
@@ -27,7 +35,28 @@ func _process(_delta: float) -> bool:
 	max_gap_usec=maxi(max_gap_usec,now-previous_usec)
 	previous_usec=now
 	frames+=1
+	if startup_frames.size()<64:
+		var row := {"elapsed_usec":now-began_usec,"frame":frames}
+		if is_instance_valid(host):
+			row.pending_world=not host.pending_microscenario_apply.is_empty()
+			row.consumed_snapshot_serial=host.consumed_snapshot_serial
+			row.native_snapshot_published_usec=host.latest_snapshot.published_usec if host.latest_snapshot!=null else -1
+		startup_frames.append(row)
 	return false
+
+func before_draw() -> void:
+	render_started_usec=Time.get_ticks_usec()
+
+func after_draw() -> void:
+	if render_started_usec<=0: return
+	var ended := Time.get_ticks_usec()
+	var row := {"index":render_count,"start_elapsed_usec":render_started_usec-began_usec,
+		"end_elapsed_usec":ended-began_usec,"wall_usec":ended-render_started_usec}
+	render_count+=1
+	if render_intervals.size()<128: render_intervals.append(row)
+	if row.wall_usec>int(maximum_render_interval.get("wall_usec",-1)):
+		maximum_render_interval=row
+	render_started_usec=0
 
 func check(value: bool, label: String) -> bool:
 	checks+=1
@@ -128,6 +157,8 @@ func finish() -> void:
 		"processor_name":OS.get_processor_name(),"logical_processors":OS.get_processor_count(),
 		"video_adapter":RenderingServer.get_video_adapter_name(),"renderer_method":RenderingServer.get_current_rendering_method(),
 		"model_calls":0,"provider_requests":0,"phases":phases,"captures":captures,
+		"render_intervals":render_intervals,"render_count":render_count,"maximum_render_interval":maximum_render_interval,
+		"startup_frames":startup_frames,
 		"elapsed_usec":Time.get_ticks_usec()-began_usec,"frames":frames,"maximum_observed_frame_gap_usec":max_gap_usec,
 		"scope":"External read-only phase observation; no production scheduling change or physical Windows acceptance."}
 	if not output.is_empty():

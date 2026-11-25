@@ -78,6 +78,11 @@ def cache() -> dict:
             for p in sorted(base.rglob("*")) if p.is_file()}
 
 
+def profile_cache(profile: Path) -> dict:
+    return {p.relative_to(profile).as_posix(): {"bytes": p.stat().st_size, "sha256": sha(p)}
+            for p in sorted(profile.rglob("*")) if p.is_file() and "shader_cache" in p.parts}
+
+
 def host() -> dict:
     value = {"platform": platform.platform(), "logical_cpus": os.cpu_count(),
              "processor_identifier": os.environ.get("PROCESSOR_IDENTIFIER", "unavailable"),
@@ -121,6 +126,8 @@ def main() -> int:
     parser.add_argument("--label", required=True)
     parser.add_argument("--import-before", action="store_true")
     parser.add_argument("--graphical", action="store_true")
+    parser.add_argument("--profile-from", type=Path,
+                        help="Reuse only a passed sibling arm's owned diagnostic profile")
     args = parser.parse_args()
     if os.name != "nt":
         parser.error("This apparatus requires actual Windows execution")
@@ -132,13 +139,23 @@ def main() -> int:
             parser.error("Pinned Godot payload differs: " + name)
     output.mkdir(parents=True)
     source = identity(output / "source-admission-failure.json")
-    profile = output / "profile"
-    profile.mkdir()
+    if args.profile_from:
+        previous = args.profile_from.resolve()
+        prior = json.loads((previous / "result.json").read_text(encoding="utf-8"))
+        if previous.parent != output.parent or not prior.get("passed") or prior.get("source") != source:
+            raise ValueError("Profile reuse requires a passed same-source sibling diagnostic arm")
+        profile = previous / "profile"
+        if not profile.is_dir() or profile.is_symlink():
+            raise ValueError("Owned prior profile is unavailable")
+    else:
+        profile = output / "profile"
+        profile.mkdir()
     env = dict(os.environ, XDG_DATA_HOME=str(profile), XDG_CONFIG_HOME=str(profile),
                APPDATA=str(profile), LOCALAPPDATA=str(profile / "local"),
                CYBERSAND_SOURCE_REVISION=source["commit"], ART_STARTUP_PHASE_OUTPUT=str(output / "phases.json"))
     inputs = {"schema": "art-windows-startup-inputs-v1", "source": source, "label": args.label,
-              "fresh_profile": True, "explicit_import_before": args.import_before,
+              "fresh_profile": not bool(args.profile_from), "profile_from": str(args.profile_from or ""),
+              "profile_shader_cache_before": profile_cache(profile), "explicit_import_before": args.import_before,
               "graphical": args.graphical, "cache_before": cache(), "host_before": host(),
               "engine_payloads": ENGINES,
               "os_page_cache": "Not cleared or controlled; this is not an OS-cold claim."}
@@ -175,7 +192,7 @@ def main() -> int:
                             and not any(token in log for token in ("ERROR:", "Parse Error:", "Failed to load script")))
     except (ValueError, OSError, subprocess.SubprocessError) as error:
         result["error"] = str(error)
-    result.update(cache_after=cache(), host_after=host())
+    result.update(cache_after=cache(), profile_shader_cache_after=profile_cache(profile), host_after=host())
     result["source_after"] = identity(output / "source-after-failure.json")
     result["source_unchanged"] = result["source_after"] == source
     result["passed"] = result["passed"] and result["source_unchanged"]
