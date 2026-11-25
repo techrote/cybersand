@@ -241,16 +241,32 @@ func collaboration_fence_checks() -> void:
 	var session: RefCounted = panel.collaboration
 	panel.focus_selection(Rect2i(0,0,256,192))
 	session.load_example("industrial_repair")
-	if not await until(func() -> bool: return not session.busy(),"real offline proposal capture and preview finish"): return
-	if not check(not session.compiled.is_empty() and session.preview_result.get("ok",false) \
+	var preview_finished: bool = await until(func() -> bool: return not session.busy(),"real offline proposal capture and preview finish")
+	var preview_valid := check(preview_finished and not session.compiled.is_empty() and session.preview_result.get("ok",false) \
 		and not session.compiled.get("requires_resolution",true) and not session.stale,
-		"pending-Apply collaboration check starts with an actually approvable native preview"): return
+		"pending-Apply collaboration check starts with an actually approvable native preview")
+	if not preview_valid:
+		panel.stop_all("Retire failed pending-Apply collaboration fixture")
+		await until(func() -> bool: return not session.busy(),"failed collaboration fixture retires")
+		panel.conversation_editor.hide()
+		return
+	# Loading an example admits an acknowledged proposal turn. Reopen against
+	# that new live revision before editing; an older draft is correctly stale.
+	panel._open_conversation()
+	for frame: int in 2: await process_frame
+	panel.conversation_editor.content.text = "Z"+panel.conversation_editor.content.text.substr(1)
+	panel.conversation_editor.content.text_changed.emit()
 	var workspace: Control = panel.collaboration_workspace
 	var request_serial: int = panel.provider.serial
 	var generation: int = session.generation
 	var proposal_digest: String = session.compiled.proposal_digest
 	var disclosure_digest: String = session.context.disclosure_digest
 	var before := apply()
+	if not panel.conversation_apply_pending():
+		panel.stop_all("Retire collaboration fixture after refused Apply admission")
+		await until(func() -> bool: return not session.busy(),"refused Apply fixture retires")
+		panel.conversation_editor.hide()
+		return
 	workspace.mode.select(0)
 	workspace.prompt.text = "Discuss this inspected industrial room."
 	workspace.send_button.pressed.emit()

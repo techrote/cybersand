@@ -76,3 +76,16 @@ native acceptance. The original log SHA-256 is
 The fixture helper is renamed `seed_conversation_fixture()`; production
 semantics and assertions are unchanged. The Provider lane retains the original
 log and will rerun the corrected committed integration.
+
+The corrected parser source `f6054aaf4a66d22135b7f673437970d3e8c61a73`
+then executed the actual native lifecycle: 154 checks with 11 failures in
+13.0 seconds. The first failing fixture opened the editor before loading an
+offline example; the example correctly admitted a newer acknowledged proposal
+turn, making that draft stale. Apply correctly refused it. Later fixture actions
+then attempted inspection without a pending Apply and caused dependent failures.
+The original log SHA-256 is
+`b7db38ec25195b1091be5af4ce1e0afe28355625ef6198868120e7ae67ff6171`.
+The test now explicitly reopens the editor against the acknowledged revision
+after the preview finishes, edits that current draft, and retires any failed
+fixture capture before continuing. Its production stale-context refusal is
+preserved; these failures are not presented as an acceptance result.
