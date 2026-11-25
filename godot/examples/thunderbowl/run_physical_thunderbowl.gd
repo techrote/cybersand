@@ -6,6 +6,7 @@ extends SceneTree
 const Arena = preload("res://scripts/physical_actor_arena.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const MAX_INPUT_BYTES: int = 4194304
 var _error: String = ""
 
@@ -93,12 +94,15 @@ func _schedule(value: Variant, config: Dictionary) -> Dictionary:
 func _finish(result: Dictionary, output: String, code: int) -> void:
 	var serialized: String = JSON.stringify(Arena.json_value(result))
 	if not output.is_empty():
-		var file := FileAccess.open(output, FileAccess.WRITE)
-		if file == null:
-			push_error("Cannot write physical lab result: " + output)
+		var destination := ProjectSettings.globalize_path(output)
+		if not destination.is_absolute_path():
+			destination = ProjectSettings.globalize_path("res://").path_join(destination)
+		var encoded := serialized + "\n"
+		var saved := FileTransaction.write_text(destination,encoded,encoded.to_utf8_buffer().size())
+		if not saved.ok:
+			printerr("PHYSICAL_THUNDERBOWL_ERROR: " + str(saved.error))
 			quit(2)
 			return
-		file.store_string(serialized + "\n")
 	print(serialized)
 	quit(code)
 
