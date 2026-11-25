@@ -173,6 +173,24 @@ func run() -> void:
 	provider.queue_free();await process_frame
 	check(await until(func()->bool:return Preparation.pending_count()==0),"orphaned edit value job is reaped after provider destruction")
 	check(FileAccess.get_sha256(audit_path)==before_hash and callbacks.size()==callback_count,"owner destruction permits no late append or owner callback")
+	# Queued teardown is already stale, before the SceneTree delete flush runs.
+	provider=P.new()
+	check(not begin(original,identity(90)).ok and provider.log_path.is_empty(),"detached provider cannot admit a conversation value worker")
+	root.add_child(provider)
+	id=identity(91);answer=begin(original,id);handle=answer.handle
+	check(await wait_ready(handle) and callbacks.back().error.is_empty(),"provider teardown fixture has an actual ready immutable job")
+	audit_path=provider.log_path
+	before_hash=FileAccess.get_sha256(audit_path)
+	var queued_traffic: String = provider.traffic
+	var queued_readable: String = provider.readable
+	provider.queue_free()
+	check(not begin(original,identity(92)).ok,"queued provider refuses fresh admission before delete flush")
+	check(provider.prepared_conversation_edit_turns(handle,id)==null,"queued provider refuses ready-value access before delete flush")
+	check(not provider.commit_conversation_edit(handle,id,adopt,guard).ok,"queued provider refuses ready commit before delete flush")
+	check(FileAccess.get_sha256(audit_path)==before_hash and provider.traffic==queued_traffic and provider.readable==queued_readable,
+		"queued provider publishes no edited archive or live projections")
+	await process_frame
+	check(await until(func()->bool:return Preparation.pending_count()==0),"queued ready provider leaves no unreaped value work")
 	# First-journal adoption is completed before worker start, including reentrancy.
 	provider=P.new();root.add_child(provider)
 	provider.commit_segment=func(_path:String)->bool:
