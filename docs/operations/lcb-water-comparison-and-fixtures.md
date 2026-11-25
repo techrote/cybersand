@@ -115,9 +115,12 @@ Rules:
   Nothing rounds or deletes partial mass silently.
   Native preparation resolves immutable final tuples, preserves thermal/foreign
   state, checks actual installed payload and binds the one-shot tick-zero ledger
-  seed to the receipt. The explicit Godot constructor refuses partial final
-  Water; its normalization opt-in and full normal-application routing remain
-  integration gaps. See the [native setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md)
+  seed to the receipt. The ordinary prepared comparison route now carries the
+  panel's explicit normalization opt-in through native preparation and installs
+  the resolved payload and ledger together. Without that opt-in it refuses
+  incompatible partial final Water. This bounded prepared route does not make
+  every legacy direct-construction path normalize partial Water. See the
+  [native setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md)
   and [accepted evidence](../audits/2026-10-25-lcb001-shared-contract-acceptance.md).
 - **Reverse direction.** A whole-cell or inertial Water cell entering a
   FreeMass-valued observation counts as `maximum()`.
@@ -189,11 +192,12 @@ unmodified oracle and is never tuned to favour a candidate.
 All companions use the same full-cell start, so no normalization delta
 applies.
 
-**Depth ladder** (proposed, for #45 and LCB): `lcb.dam.water.freemass.depth-{48,96,160}.v1`.
+**Registered depth ladder:** `lcb.dam.water.freemass.depth-{48,96,160}.v1`.
 These keep the same geometry with reservoir heights 48, 96 and 160, so release
 behaviour can be compared against depth. They are separate from the #49 vented
-communicating-head controls and from sealed-headspace stations. Not registered
-until LCB-003 builds them.
+communicating-head controls and from sealed-headspace stations. All three are
+registered in the [scenario catalogue](lcb-scenario-catalogue.md); its accepted
+default-law tick-30 prefix is separate from a complete family-comparison campaign.
 
 **Manual variant.** `…reference.v1/manual` reuses the same definition with
 `tools:["paint","erase","player"]`. Any human input, body or tool use marks

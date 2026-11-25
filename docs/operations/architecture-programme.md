@@ -2,13 +2,23 @@
 title: CyberSand architecture synthesis and experimental programme
 status: Planned
 document-kind: design
-scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+scope: Retained September-October experimental gates and decisions for Cell, Water and presentation; historical holds and work orders do not override later accepted source or current owner priorities
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
 # CyberSand architecture experimental programme
+
+This is the retained September–October programme. Its dated “current” states,
+holds and execution ordering belong to those checkpoints. Later accepted
+[Water families](../architecture/liquid-solver-family-policy.md),
+[Wave](../architecture/wave-flow-v1.md),
+[ballistic Water](../architecture/ballistic-water-v1.md) and Workbench authoring
+have their own source contracts. The [current state register](../reference/status-and-roadmap.md)
+and [later owner intent](../reference/product-intent-and-priorities.md) route
+today's work; this programme does not reopen closed #14/#18/#20 or assign an old
+implementation branch. Its frozen scientific controls remain unchanged.
 
 **Planned programme, not an adopted replacement architecture.** Establish what
 useful state costs, what behavior it enables, and where that state should live.
@@ -484,9 +494,11 @@ conservation. These are conditional extensions, not uncreated mandatory backlog.
 
 Changing Current policy requires a separate reviewed decision with scenario-based
 benefit, honest negative evidence, representational total cost, supported target
-hardware and preserved invariants. Required affected-platform coverage is native
-core, desktop asynchronous owner and real Web compatibility/threaded profiles;
-document fallback scope deliberately. Check snapshot lifetime and bounded queues
+hardware and preserved invariants. The original registration requested native,
+desktop and Web comparisons. Current platform policy requires the affected native
+and desktop checks; Web remains an optional disposable experiment under the
+[owner's later scope decision](../reference/product-intent-and-priorities.md#disposable-web-experiments).
+Declare fallback scope deliberately. Check snapshot lifetime and bounded queues
 where interfaces change. No visual-only win can waive conservation or ownership.
 No raw timing result revises ADRs. Missing target-device/performance evidence
 means experimental status, even if native correctness passes.

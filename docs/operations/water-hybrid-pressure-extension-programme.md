@@ -2,15 +2,25 @@
 title: Water hybrid, saturated-head and compartment-pressure extension programme
 status: Planned
 document-kind: design
-scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
+scope: Retained September owner clarification and October WEX dispositions; historical priorities and holds are not current work orders or prohibitions on later accepted Water families, Wave, ballistic transport or authoring
 canonical-for: [water-hybrid-pressure-extension-programme]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md, ../audits/2026-09-24-wex004-decompression-disposition.md, ../audits/2026-10-23-wex005-water-evidence-synthesis.md, ../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md]
 ---
 
 # Water hybrid, saturated-head and compartment-pressure extension programme
 
 ## Status and authority
+
+This page preserves the **20 September owner clarification** and later dated
+WEX dispositions. “Current” in those historical sections refers to that source
+and decision context. The owner's [14 November authoring direction](../decisions/2026-11-14-owner-authoring-intent.md)
+and [current priorities](../reference/product-intent-and-priorities.md) supersede
+the earlier near-term emphasis on backend work over player-facing authoring.
+Accepted [Water families](../architecture/liquid-solver-family-policy.md),
+[Wave](../architecture/wave-flow-v1.md) and
+[ballistic Water](../architecture/ballistic-water-v1.md) are available within
+their own contracts; this old research programme does not forbid them.
 
 This is a **Planned extension/parallel investigation**, not an adopted Water solver,
 not a production migration and not permission to weaken existing ownership,
@@ -613,7 +623,8 @@ authority. WEX-005 itself does not smuggle experimental code into Current.
 ### WEX-005 disposition (2026-10-23)
 
 The [WEX-005 evidence synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
-answers the eight questions separately. It becomes canonical when its PR lands.
+answers the eight questions separately. This is the accepted dated synthesis;
+later accepted LCB implementations are reconciled in the next section.
 
 1. **Deep-release surge:** an unresolved deficit that no WEX lane improved.
    Water sheets never ran. On current `main` (#49 v2 rerun 39739371203) deep and

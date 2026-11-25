@@ -359,15 +359,19 @@ classifications or close those programmes.
    `cached_dormant` variants exist. Their native equivalence and invalidation
    evidence does not execute or promote this registry's retained NC-4 arm.
 4. **#202:**
-   - remaining full-application constructor routing, typed receipt/provenance
-     collection and explicit Godot normalization integration;
+   - remaining complete constructor routing and typed receipt/provenance
+     collection beyond the accepted bounded routes; explicit initial Godot
+     normalization is already available in those prepared hosts;
    - registry consumption in the launcher, Tower and comparison panel;
    - exploratory marking (NC-9) and presentation-only overlays (NC-8);
    - live player, Rapier body and render stations, which the native-only
      runner refuses;
    - per-family observation fields such as overfill, velocity and gas.
-5. **#203:** sequential isolated timing, Linux/Windows packaged execution and
-   Web profiles. The Windows-local timings here are characterization only.
+5. **#203:** sequential isolated timing and source-matched packaged execution.
+   Further Web/browser work was deferred for this LCB epic; a future Web
+   experiment follows the [owner's Web scope](web-threading.md), without creating
+   a maintained Web release obligation. The Windows-local timings here remain
+   characterization only.
 6. **Optional runner extension:** a schema-2 observation metric for front
    position and occupied extent. Bands are used today because the contract
    admits only `water_integer`, `material_cells`, `tick` and `cell_state`.
