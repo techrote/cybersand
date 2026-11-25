@@ -1,0 +1,13 @@
+{
+  "schema": "cybersand-goblin-fixed-retained-clock-request-v1",
+  "mission": "GIP-014-goblin-002",
+  "request": 1,
+  "base_game_source": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+  "base_game_tree": "287795a8534c5622ede5d71710714ea467197e79",
+  "hypothesis": "A legal retaining World replacement can reset the native tick to zero while preserving evolved material; tick zero alone may not justify Save/Reopen native material equality.",
+  "programme": "Actor-free conservation_cell: Control Play16, Pause, Save, Reopen; fresh Variant Play16, Pause, offered LA-EVENT-OFF response change, Save, Reopen. Nine prescribed ordinary actions; source-fenced native captures and independently transcribed authored geometry.",
+  "source_guard": "Every tracked godot input must match the pinned game, except the one added fixed diagnostic entrypoint. Actual executed source/archive identity is recorded separately from the base game.",
+  "bounds": "120-second fresh import, one90-second game process,3072MiB sampled RSS,16MiB bounded log/report and12-minute hosted job.",
+  "classification": "Unresolved hypothesis until actual native control/variant evidence and independent examination. A diagnostic success is neither production-defect confirmation nor general successor qualification.",
+  "disposition": "Draft/HOLD; no production gameplay or oracle changes in this diagnostic request"
+}
