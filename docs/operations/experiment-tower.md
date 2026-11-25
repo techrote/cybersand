@@ -154,8 +154,14 @@ The #19 extension is specified by
 [`fractional-presentation.md`](architecture-programme-prompts/fractional-presentation.md)
 and the dated
 [Water-feel programme addendum](architecture-programme-water-feel-addendum.md).
-The implementation and evidence leave the Tower **H-ready**; they do not select a
-preferred Water model.
+The 12 September implementation was described as **H-ready** for its recorded
+simulation/presentation apparatus. The later [closure audit](../audits/2026-09-20-development-claims-closure-audit.md#findings-f01-f19)
+withdrew formal blind-capture readiness: the ordinary export can reveal the
+candidate mapping and overwrite its previous observation file. [REM-005 #84](https://github.com/techrote/cybersand/issues/84)
+was closed **not planned** on 15 November; that disposition does not establish a
+repair or an executed human study. Use these controls for engineering inspection,
+not as an independently qualified formal blind-study recorder. No preferred
+Water model is selected by this apparatus.
 
 The lab adds 35 deterministic Water scenarios covering broad/deep/shallow
 pools, connected levels, tiny-drip accumulation, channels/steps/U-vessels,

@@ -54,6 +54,14 @@ owns source/artifact identity, platform results, failures, independent review an
 the later-human-evaluation boundary. The frozen sections remain here so current
 behavior can be checked against the pre-code contract.
 
+That dated label does not qualify today's ordinary export as a formal blinded
+study record. The [September closure audit](../audits/2026-09-20-development-claims-closure-audit.md)
+identified operator-visible candidate identity and overwriteable observations.
+Its corrective [REM-005 #84](https://github.com/techrote/cybersand/issues/84) was
+closed **not planned** on 15 November, with no completion record in that issue.
+Treat the legacy export as revealed engineering metadata; a future formal human
+study requires its own admitted capture mechanism and platform qualification.
+
 ## Frozen normalized policy
 
 **Historical LCB-003 extension checkpoint, 2026-10-25:** the normal liquid panel
