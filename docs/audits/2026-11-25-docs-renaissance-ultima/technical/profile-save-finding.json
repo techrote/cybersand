@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "id": "A-ULT-12",
+  "priority": "P1",
+  "affected_readers_features": [
+    "Generation accepted recipes",
+    "Materials Lab reproducible experiments",
+    "Transport user copies",
+    "Tower Water policy"
+  ],
+  "observed_failure": "All4 actual old public writers reported success after a real buffered-tail RLIMIT_FSIZE failure truncated the previous valid file; each result failed its native or schema reader.",
+  "expected_contract": "A failed save must retain the previous valid single-file document and refuse success; successful replacement must reload the selected value, without applying or advancing a running owner.",
+  "implementing_lane": "A",
+  "fix_commit": "b698a2b2447ece2076bfa83ac56093f34487450f",
+  "source_paths": [
+    "godot/scripts/worldgen_workbench.gd::save_profile",
+    "godot/scripts/material_lab_panel.gd::_file_selected(export_test)",
+    "godot/scripts/transport_profile_panel.gd::save_copy",
+    "godot/scripts/main.gd::water_lab_save_profile",
+    "godot/scripts/tower_panel.gd::_save_water_policy"
+  ],
+  "fix": "Reuse unchanged native-backed verified staging transaction, preserve existing schema/name/admission/budget, defer success/draft adoption until commit, expose Water result in dedicated label.",
+  "before_receipt": "profile-save-before.json",
+  "linux_after_receipt": "profile-save-linux.json",
+  "normal_regressions": "profile-save-regressions.json",
+  "raw_custody": "profile-save-raw.json.gz",
+  "independent_reviews": [
+    {
+      "lane": "B",
+      "verdict": "APPROVE source and actual Linux16",
+      "report_sha256": "15b93cf34e6688b3c45a52fdb4a9cbc650b1c709133410c0bde09d4acc2f10af",
+      "all14_inputs_match_fix_commit": true
+    },
+    {
+      "lane": "C",
+      "verdict": "APPROVE source and actual Linux16",
+      "report_sha256": "8a36686267d8d69f1666acc02ff4631dcd29ea54361c91e427994f1078786306",
+      "all14_inputs_match_fix_commit": true
+    }
+  ],
+  "status": "unresolved",
+  "status_reason": "Implementation and independent Linux qualification complete; pending exact integrated Windows12 caller cases and final owner-delivery qualification. This is not an unimplemented recommendation.",
+  "limits": [
+    "Headless caller/reader execution here; actual graphical readback is B-owned separate evidence.",
+    "No fsync/power-loss, malicious filesystem tampering or multi-file transaction promise.",
+    "No browser storage qualification or claim about separate observation/Art export paths."
+  ]
+}

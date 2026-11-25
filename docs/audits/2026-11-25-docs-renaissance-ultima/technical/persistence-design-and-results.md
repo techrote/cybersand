@@ -196,6 +196,84 @@ Materialized native SHA-256:
 `a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7`.
 Native source and the material-baseline writer have not changed in this fix.
 
+## Additional authored-profile defect: A-ULT-12
+
+The final writer-perimeter audit found four more user-facing paths that opened
+their final destination directly and acknowledged unchecked buffered writes.
+The [before receipt](profile-save-before.json) uses the actual public methods,
+native configuration and format readers on unchanged source. Every tested method
+body is byte-identical to its predecessor `20170bd6` body. All four real Linux
+resource-limit failures reported success and destroyed a valid earlier file:
+
+| Public writer | Previous valid bytes | Actual resource limit / resulting bytes | Old acknowledgement after corruption |
+|---|---:|---:|---|
+| Generation Workbench `save_profile` | 3,152 | 128 | `Saved accepted revision 1` and `true` |
+| Materials Lab `export_test` | 4,570 | 4,224 | `Saved reproducible test case` |
+| Transport `save_copy` | 373 | 128 | `User copy saved` |
+| Tower controller `water_lab_save_profile` | 176 | 128 | `true`; its button discarded the result |
+
+These are fresh P1 authored-data-loss reproductions, with isolated disposable
+profiles and `SIGXFSZ` ignored. The larger Materials Lab case deliberately places
+the failure in its final buffered segment. Each truncated result fails its
+actual format reader; this is more than a generic JSON or source-pattern check.
+
+Correction `b698a2b2447ece2076bfa83ac56093f34487450f` routes the four writers
+through the unchanged shared transaction. It preserves their existing paths,
+JSON fields, naming, native configuration and Save-versus-Apply contracts:
+
+| Contract | Admission and complete-file budget | State and acknowledgement |
+|---|---|---|
+| Accepted generation recipe | Existing accepted revision; complete encoded JSON at most 1 MiB | Failure reaches both status labels and leaves the accepted recipe/preview unchanged. A successful retry clears this save's previous error. |
+| Materials Lab experiment envelope | Existing active, source-bound native experiment; complete encoded envelope at most 1 MiB, matching its reader | Reproducible experiment success appears only after commit. The native experiment does not advance. Candidate presets and compiled bundles retain their separate Python backend. |
+| Transport user copy | Existing schema/range validation; at most 64 KiB | Failure retains editor and draft. Success adopts the saved user copy. Neither outcome invokes Apply or changes the running owner. |
+| Tower Water policy | Existing available, validated, unblinded policy; canonical JSON revalidated and at most 64 KiB | The existing **Save Water policy** button shows a dedicated result label. Save does not write to the unrelated MicroScenario error field or change blind-study admission. |
+
+Each is one complete JSON document, with no companion-file commit. The helper's
+native requirement fails closed before creating staging; no unsafe fallback was
+added for an old/missing runtime. The desktop Web-controller class was exercised
+on native Linux by an existing regression, which does not establish a browser
+filesystem guarantee. Tower observation export and Art traffic/history remain
+distinct owning paths; this correction makes no claim about their storage.
+
+The [Linux caller matrix](profile-save-linux.json) passes **16 cases**: normal
+replacement, invalid admission, actual buffered-tail resource failure and real
+directory-permission denial for each writer. All refusals preserve the old
+digest, length and loaded seed/mixing value `7`; successful retries load `8`.
+The Tower case emits the real button signal and checks its label. Stale unrelated
+`.tmp` files remain unchanged. B and C separately executed the same 16-case
+matrix; both independently approved the complete source and caller harness.
+
+The [existing normal regressions](profile-save-regressions.json) pass with
+natural zero exits: Generation Workbench **226 assertions**, Materials Lab
+**141 assertions**, the complete Transport preset/roundtrip/inheritance suite,
+and the Water controller's **10 deterministic exit-receipt cases** plus its
+desktop/Web-controller blind lifecycle. The local test process began on an
+earlier evidence commit with the implementation present; every one of its
+14 recorded qualification inputs was subsequently checked byte-for-byte against
+`b698a2b2`. The receipts distinguish that input equality from the earlier HEAD.
+
+```bash
+python tools/ci/run_profile_save_qualification.py \
+  --godot /absolute/path/to/pinned-godot \
+  --project godot \
+  --evidence /absolute/path/to/new-profile-evidence
+```
+
+On Windows this runner selects **12 cases**, using actual destination sharing
+locks in place of the two Linux-only OS faults. Those new caller cases require
+their own integrated hosted receipt; earlier authored-save Windows results do
+not qualify these later changes. The unchanged shared helper retains its
+separate deterministic I/O-boundary matrix. No power-loss, hostile filesystem
+tampering, physical-owner or whole-project transaction guarantee is inferred.
+
+The [compressed raw bundle](profile-save-raw.json.gz) preserves the actual
+children, command scripts, logs, initial discovery and four-writer reproduction
+without multiplying text in the current corpus. It is gzip-compressed JSON;
+each `files` entry contains the original UTF-8 `text` and its SHA-256. Decoding
+and re-encoding each entry reproduces the recorded bytes. The original bundle
+is 168,233 uncompressed bytes / 20,312 compressed bytes and is non-authoritative
+audit evidence.
+
 ## Additional capture defect: A-ULT-11
 
 Fresh review found the same buffered-write weakness in

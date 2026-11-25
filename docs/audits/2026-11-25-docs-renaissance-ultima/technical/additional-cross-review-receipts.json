@@ -76,5 +76,50 @@
       "Main tower capture writes fixed user://tower-observation.json; reviewed instruction preserves each observation explicitly rather than claiming automatic unique paths."
     ],
     "scope": "Source/diff review; interactive owner perception study not executed."
+  },
+  "C_accepted_main_fixture_migration": {
+    "verdict": "APPROVE code and custody; corrected semantic facts independently assigned to B",
+    "review_depth": "Read complete three-file diff and fixture inputs; independently executed all17 current-selection cases and checked immutable predecessor/main bytes",
+    "source_sha256": {
+      "tools/ci/check_docs.py": "6f113786f9864fb1cf0e7cbafe8c6d8f0a695aa09d8e1ea97da9071042d88974",
+      "tools/ci/test_current_retrieval_selection.py": "756a9be309988fa3b8ca8ed5c8145320c9b7c404cfcb30a5d87e0ea8e58c7b95",
+      "tools/docs/evaluate_knowledge.py": "77503fe3599845f8418abf149a5d3c1948b8393d8d9dac31a61bbe01d23f9f22"
+    },
+    "frozen32_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+    "accepted33_sha256": "e056df8e611a01efa341835d5d958391fd64b0295e17bbd7b221b7a5f783dae7",
+    "corrected_case_sha256": "d42fe626f0cba5e308b23fc02f5417543ee4cbf370ba71e22093efe8f8c74c17",
+    "original32_equal_to_predecessor_bytes": true,
+    "accepted33_equal_to_main_5e29_bytes": true,
+    "accepted_first32_objects_equal_original": true,
+    "tests": {
+      "command": "python tools/ci/test_current_retrieval_selection.py",
+      "passed": 17,
+      "exit_code": 0
+    },
+    "harness_attempt": "Initial module-style unittest invocation failed because check_docs was not on the import path; the supported script entry point passed. No product-code workaround.",
+    "checked": [
+      "Both structurally checked fixture families still require an admitted current canonical route; excluded routes refuse.",
+      "Missing corrected input fails validation.",
+      "Accepted33 retained untouched as dated input; frozen evaluator uses byte-exact original32 copy.",
+      "No scorer, rank method, holdout or query-specific treatment changed."
+    ]
+  },
+  "B_authored_profile_manuals": {
+    "verdict": "APPROVE",
+    "source_commit": "8c08e006",
+    "paths_sha256": {
+      "docs/systems/generation-workbench-2.md": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2",
+      "docs/operations/materials-lab-authoring.md": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d",
+      "docs/systems/flow-transport-and-profiles.md": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3",
+      "docs/operations/experiment-tower.md": "b1457feb637e10d2fc29e19601ea130f35fa55b3213a2342f8d96205878ea695"
+    },
+    "checked": [
+      "Complete four-file diff read against five production caller/UI changes.",
+      "Generation saves accepted recipe, not arbitrary unaccepted editor text; refusal appears in existing dialog and outer status.",
+      "Materials envelope differs from candidate/backend exports and live continuation.",
+      "Transport Save versus Apply and draft/editor retention match actual call order.",
+      "Tower existing Save Water policy, blind refusal and dedicated status are distinct from observation export.",
+      "Candidate-only native/platform caveats retain absence of browser or power-loss qualification."
+    ]
   }
 }
