@@ -1,0 +1,19 @@
+{
+  "request": "baseline-hosted-recovery-01",
+  "purpose": "Verify hosted executor and preserved predecessor before successor implementation",
+  "cases": [
+    {
+      "script": "test_ambient_engine",
+      "terminal": "AMBIENT_ENGINE_RESULT"
+    },
+    {
+      "script": "test_ambient_independent",
+      "terminal": "AMBIENT_INDEPENDENT"
+    },
+    {
+      "script": "test_ambient_perception",
+      "terminal": "AMBIENT_PERCEPTION",
+      "report_env": "CYBERSAND_AMBIENT_PERCEPTION_REPORT"
+    }
+  ]
+}
