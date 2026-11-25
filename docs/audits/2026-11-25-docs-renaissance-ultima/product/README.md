@@ -19,8 +19,8 @@ for the Draft/HOLD candidate, not owner acceptance or merge authority.
 
 ## Evidence index and coverage
 
-- [Document coverage](coverage.json): **49 distinct documents**, comprising
-  **43 full-text semantic reviews** and **6 selected-section reviews**. Each row
+- [Document coverage](coverage.json): **51 distinct documents**, comprising
+  **44 full-text semantic reviews** and **7 selected-section reviews**. Each row
   identifies actual depth, reviewed bytes, source locators and execution limits.
   A full-text read is not a claim that every numerical sentence was experimentally
   reproduced. Other lanes own the remaining canonical corpus.
@@ -37,6 +37,11 @@ for the Draft/HOLD candidate, not owner acceptance or merge authority.
 - [Source 162b8097 method-v1 context audit](context-applicability-162b8097.json):
   separate final-checkpoint passage identities, changed-body review and
   explicit source-follow results; the earlier receipt remains intact.
+- [Source 67245ba5 method-v2 context audit](context-applicability-67245ba5.json):
+  independently re-adjudicated changed context sets before the later
+  accepted-main tooling integration.
+- [Independent capture source review and execution](capture-review/review.json)
+  and [raw six-case Linux report](capture-review/report.json), with refusal logs.
 - Recorder [before](recorder/before.json), [unit result](recorder/unit-after.json)
   and [OS result](recorder/os-after.json), plus retained original reproduction
   inputs and child logs. The [first harness result](recorder/rejected-first-harness-report.json)
@@ -108,7 +113,7 @@ export CYBERSAND_SOURCE_REVISION="$(git rev-parse HEAD)"
 | B-ULT-05 | P2 | Physical Thunderbowl header derives 46 from its actual picker catalogue instead of stale 41. Commit 14c0b26d; A independently checked the catalogue owner, and integrated GUI confirms 46. |
 | B-ULT-06 | P2 | Combined authoring guide's stale palette/save/UI limitations corrected; legacy Water export clearly marked revealed engineering metadata that can expose hidden mapping and overwrite its fixed file. Owner-not-planned formal-study work was not reopened. Commit 12936181, A source review approved. |
 | B-ULT-07 | P1 | Gameplay recorder could report success for 128 bytes of an intended 1024-byte frame and invalid truncated JSON. Candidate 56117d19 verifies complete closed frame bytes, refuses existing/unsafe session names, preflights native capability and transactionally replaces only the manifest. Local 94-check suite and real Linux fault/normal cases pass. A independently approved the state transitions, executed all 94 checks and both real Linux cases, and inspected retained frame bytes and the unchanged initial manifest; its receipt is in technical commit c0a1c6be. |
-| Cross-lane capture defect | P1 | Full manual/source reading exposed the same unchecked capture writer in Main and native MicroScenario CLI. A reproduced both, implemented the shared transaction and owns the cross-platform caller matrix. B corrected the two canonical capture descriptions. |
+| Cross-lane capture defect | P1 | Full manual/source reading exposed the same unchecked capture writer in Main and native MicroScenario CLI. A reproduced both and implemented the shared transaction. B corrected the two canonical capture descriptions, independently reviewed acknowledgement/commit order and executed all six real Linux caller cases at 63e8f753. Prior valid bytes and retained results survived both faults; normal retry succeeded. Windows remains separately qualified. |
 
 B also independently reproduced A's ordinary-save defect with real
 `RLIMIT_FSIZE=128`: before, success after 475→128 byte corruption and invalid JSON;
@@ -138,6 +143,7 @@ the local Linux result does not establish them.
 | Physical catalogue | 6267 checks, 0 failures | 46 definitions and scoped source invariants; distinct from the limited manual GUI sample. |
 | Recorder unit regression | 94 checks, 0 failures; natural exit 0 | Missing capability, in-memory mode, unsafe names, existing sessions, partial frame, final-manifest refusal and existing timing/queue behavior. |
 | Recorder real Linux OS matrix | 2 cases passed | Normal frame 1024 bytes/complete; actual 128 byte file-size limit produces failed status/written 0/unchanged valid initial manifest. |
+| Independent MicroScenario capture matrix | 6 cases passed; natural exit 0 | Controller and native CLI normal replacement, real buffered-tail file-size limit and directory-permission refusal. Exact prior digests/decoded values retained, no false acknowledgement, retry and relative path with spaces passed. |
 | Documentation checker in B worktree |Failed on one cross-lane link | A's technical report was absent in the isolated B branch; root integration owns the complete final documentation gate. No new local route error was reported. |
 
 The OS recorder runner also implements a Windows target-sharing-lock case:
@@ -169,6 +175,14 @@ recipe contradiction, reported to lead and corrected after this checkpoint.
 Neither that later correction nor a later retrieval method inherits this
 receipt without an input comparison or rerun.
 
+The **67245ba5 method-v2** audit also retains **22 sufficient / 2 partial**.
+Nine exact ordered context sets are unchanged; fifteen changed sets were
+re-adjudicated and all eight newly supplied passages read. Explicit source-follow
+costs 93031 + 48842 bytes and supplies both missing contracts. The layout query
+retains the same five passages and canonical rank 3. All three source-bound
+receipts remain visible; none claims a generative answer or automatic source
+selection.
+
 DR02's supplied passages contain exact dependency pins. DR36 appropriately
 abstains from an absent owner decision and supplies an authority route. The
 Explore layout primary document moved in rank, but the inspected practical
@@ -183,6 +197,13 @@ readiness boundary were checked separately. Approvals concern the reviewed
 source/diff; they do not requalify another programme's runtime or historical
 campaign. B also reviewed 26 sealed holdout expectations without exposing them to
 C; one ambiguous premise was reported for a separately versioned fact correction.
+
+Late accepted-main drift introduced #758's Windows owner-acceptance tooling at
+be87b18b. B fully read its new guide, checked selected verifier/launcher routes,
+and corrected the catalogue guide's stale unmerged status in 5f5e9193; C
+independently approved that correction. Accepted tooling, a qualified exact ZIP,
+and physical owner acceptance remain distinct. This review did not execute the
+new Windows harness or reopen a physical gate as passed.
 
 ## Exact external boundaries and owner continuation
 

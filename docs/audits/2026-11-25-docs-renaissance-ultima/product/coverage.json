@@ -5,9 +5,9 @@
   "reviewed_branch_head": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
   "scope": "Product/user route and assigned product-heavy system semantic review. This inventory distinguishes full-text reading from selected source checks, actual execution and inherited evidence. It is not a claim that every numerical sentence or every platform was independently executed. Source locators identify reviewed files, not exhaustive per-line verification. Earlier hashes remain where subsequent cross-lane changes did not receive a fresh full-body reread.",
   "summary": {
-    "documents": 49,
-    "full_text": 43,
-    "selected_sections": 6
+    "documents": 51,
+    "full_text": 44,
+    "selected_sections": 7
   },
   "documents": [
     {
@@ -1222,6 +1222,51 @@
       ],
       "qualification_limit": "Selected consequential sections/diff review; full body owned by another lane.",
       "reviewed_source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab"
+    },
+    {
+      "path": "docs/operations/gentek80-physical-owner-acceptance.md",
+      "document_sha256": "2c7347c6dc11dc688d0d564f471845bc9537f4572ad6336a818e0fbdeeff6dc3",
+      "review_depth": "full-text reader workflow; selected verifier/launcher source cross-check",
+      "consequential_claims_reviewed": "Independently pinned archive and manifest, new-directory extraction, isolated source/runtime-keyed profile, two projects/two named starts, fresh-process owner replay, explicit PASS/FAIL/SKIP, manual frame CSV, local-only collection and physical Windows11/NVIDIA boundary. Accepted tooling does not qualify a later package.",
+      "source_locators": [
+        {
+          "path": "tools/acceptance/gentek80_owner.ps1",
+          "sha256": "35f7e4946e15dd55de920539b2b8b34dc6b43e385595c923b2c786bf085f05bd"
+        },
+        {
+          "path": "tools/acceptance/stage_gentek80_examples.py",
+          "sha256": "2e3a45e40fe54f7cf344ec6ecdf8340b2f67e6e5067db383df1ccfb84ab2d0f3"
+        },
+        {
+          "path": "tools/package_explore001_candidate.py",
+          "sha256": "d42531fbb399334b5b6d87eb1dd0ab9e9114ef2211dff7729ddee52a15e12d6d"
+        },
+        {
+          "path": "tools/architecture/gentek80_workbench.py",
+          "sha256": "d047efd23cb14b3eeebf52fab3b14ffafa76851d0ea7931ee01e3b98a907d34b"
+        }
+      ],
+      "qualification_limit": "Source/readability review only. New accepted main tooling mergebe87b18b; guide remains Draft/explicit-only. No new Windows/physical run or historical ZIP availability inferred.",
+      "source_review_identity": "be87b18b30506ccead610c7035ae1ffa8e65a347 accepted tooling; C explicit-only metadata correction independently reviewed"
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "document_sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9",
+      "review_depth": "selected accepted-tooling status and launch/source-route correction",
+      "consequential_claims_reviewed": "#758 tooling was accepted at be87b18b; each package and physical owner acceptance keep independent exact-source qualification. The current guide routes readers to the new explicit owner procedure without promoting old ZIP evidence.",
+      "source_locators": [
+        {
+          "path": "tools/acceptance/gentek80_owner.ps1",
+          "sha256": "35f7e4946e15dd55de920539b2b8b34dc6b43e385595c923b2c786bf085f05bd"
+        },
+        {
+          "path": "docs/operations/gentek80-physical-owner-acceptance.md",
+          "sha256": "2c7347c6dc11dc688d0d564f471845bc9537f4572ad6336a818e0fbdeeff6dc3"
+        }
+      ],
+      "qualification_limit": "Status/source-route delta only; lead independently owns full catalogue-table review. No package execution or physical acceptance inferred.",
+      "reviewed_source": "5f5e919306e7653a2be8cac5f39ac97502cd1950",
+      "independent_reviewer": "Specialist C approved against accepted merge and source."
     }
   ],
   "cross_lane_reviews": [
@@ -1241,5 +1286,6 @@
     "docs/operations/semantic-depth-authoring.md",
     "docs/operations/experiment-tower.md"
   ],
-  "remaining_execution": "Rendered documentation and final integrated GUI source binding are separate follow-up receipts."
+  "remaining_execution": "Rendered documentation remains blocked by the recorded browser access policy. Actual final integrated native GUI evidence is completed separately in final-gui-receipt.json at source a83c6988; it is not physical Windows/NVIDIA acceptance.",
+  "additional_review_identity": "Accepted-main tooling driftbe87b18b reviewed after frozen retrieval67245ba5; earlier per-document identities retained where no body reread occurred."
 }

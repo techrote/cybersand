@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+MICROSCENARIO_CAPTURE_RESULT {"acknowledged_value":"previously acknowledged","acknowledgements":0,"error":"MicroScenario capture: Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.","path":"/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json"}

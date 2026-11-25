@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B, non-author of capture/helper implementation",
+  "authority": "historical-non-authoritative",
+  "source_head": "63e8f753ecce5d2f19c54808a4bfbd8da406ab23",
+  "source_tree": "d753f7d92f51717d7ab5af3318e0de104e7bc3bb",
+  "review_date": "2026-11-25",
+  "verdict": "APPROVE within declared Linux headless and verified per-file failure scope",
+  "source_review": [
+    "Main._write_microscenario_capture updates retained result and clipboard only after helper commit; refusal returns first and successful retry clears only its own previous error.",
+    "run_microscenario.gd converts existing relative outputs against the project directory, emits success only after commit and routes refusal through nonzero _finish.",
+    "The shared helper verifies complete closed staging bytes before the existing native replacement, checks result and leaves unrelated stale fixed-name files untouched. It does not provide fsync, hostile-directory conflict isolation or power-loss durability.",
+    "The recorder source, unit fixture, fault child and runner in the integrated tree remain byte-identical to reviewed56117d19. Final-manifest refusal keeps a valid previous record; no false complete disposition is emitted."
+  ],
+  "independent_execution": {
+    "command": [
+      "python3",
+      "tools/ci/run_microscenario_capture_qualification.py",
+      "--godot",
+      "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+      "--project",
+      "godot",
+      "--evidence",
+      "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces"
+    ],
+    "cases": 6,
+    "natural_exit_code": 0,
+    "reported_status": "passed",
+    "completed": true,
+    "report_path": "report.json",
+    "report_sha256": "ff5868913663f7c633d2df1b05964b8af2033fe42c6167e1f99992c52bda9a50",
+    "refusal_logs": [
+      {
+        "path": "4-controller-new.log",
+        "sha256": "5fa4872fb6815d531a7a2ac9840355921b4794f7912df6946723ae924ac86274"
+      },
+      {
+        "path": "7-controller-new.log",
+        "sha256": "fbff578e2e213b88b89c49b28c0499d308388ca41a59e70d2faec4817a5d6db9"
+      },
+      {
+        "path": "12-cli-new.log",
+        "sha256": "9bb54ebbacbe15a8bed8ab4a069d28530514a6d04c5ab249d71d35bfd0fcbb69"
+      },
+      {
+        "path": "15-cli-new.log",
+        "sha256": "76ed721a113dfc9e9bc51fba75bea695b050926f842deff39e9e1483d53d1014"
+      }
+    ],
+    "observations": [
+      "Controller preserved851valid JSON bytes under real128byte RLIMIT and permission refusal; ACK remained0 and retained result unchanged.",
+      "CLI preserved14205valid JSON bytes under real12416byte buffered-tail RLIMIT and permission refusal; nonzero error exit and no success marker.",
+      "Normal replacement and post-failure retry stored intended new decoded value for both callers. Relative CLI path containing spaces passed.",
+      "Each failure compared exact prior length and SHA256; unrelated fixed-name .tmp remained unchanged. Child logs rejected engine/script/native-load errors."
+    ]
+  },
+  "limits": [
+    "Not fresh graphical capture observation or a browser run.",
+    "No Windows execution in this independent receipt.",
+    "No physical acceptance, scientific result or crash/power-loss durability.",
+    "Current source checkout had only unrelated documentation/evidence changes; exact executable input hashes are retained in the raw report."
+  ]
+}
