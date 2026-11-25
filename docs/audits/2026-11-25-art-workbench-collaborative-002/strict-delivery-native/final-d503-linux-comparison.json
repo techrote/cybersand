@@ -1,0 +1,592 @@
+{
+  "schema": "art-strict-repeat-native-independent-comparison-v1",
+  "passed": true,
+  "checks": 445,
+  "checks_by_category": {
+    "artifact": 3,
+    "source": 8,
+    "execution": 8,
+    "runtime": 6,
+    "raw_replay": 4,
+    "geometry": 416
+  },
+  "failures": [],
+  "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "baseline_source": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+  "baseline_tree": "517164084860a19f18b36cb94f77597eb3220578",
+  "platform": "linux",
+  "campaign": 45556633896,
+  "original_artifact": {
+    "id": 14996501724,
+    "name": "art-workbench-linux-d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "bytes": 17155267,
+    "sha256": "7bec2f9d085041466eb1edf7dd6d9d4f6369b9069939ea071eff22a45f2009af",
+    "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+    "actions_url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14996501724"
+  },
+  "original_archive_members_crc_checked": 928,
+  "raw_verifier_sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9",
+  "comparison_script_sha256": "35caf4d5b0988abac74ebdb73ca1c76ea8e4ec6035f47804d2df80e52ef19a19",
+  "native_fixture_sha256": "88b83bc86b320b10a844a957eaa078b3bea94382b30f1104ca8ba38358a74814",
+  "exact_delta": [
+    "docs/audits/2026-11-25-art-workbench-collaborative-002/README.md",
+    "docs/operations/art-workbench-collaborative-evaluation.md",
+    "tools/ci/test_art_collaborative_packaging.py",
+    "tools/package_art_collaborative.py"
+  ],
+  "outcomes": [
+    {
+      "mode": "headless",
+      "original_terminal_checks": 739,
+      "verified_original_files": 55,
+      "verified_readback_rows": 377234,
+      "counts": {
+        "changed": 184396,
+        "checked": 188617,
+        "stages": 25,
+        "staged_chunks": 61,
+        "direct_chunks": 56
+      },
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "payloads": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+        },
+        "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      },
+      "runtime_matches_bcc": true,
+      "raw_review_sha256": "8d3a0dd76006397a76f6a9774098f7428604d33cb1d3329b3ba6ec60d52e271f",
+      "native_summary_sha256": "39d4c8c72bc5ac6f2aded58c567f0509810eb9edfa40d34a61e07694196955d9",
+      "process_log_sha256": "af35e8ec5ab4019ecb7664ce230aea05d7cd7bc5860c587583731d4351d1ab4e",
+      "scenes": [
+        {
+          "id": "industrial_repair",
+          "stages": 2,
+          "region": [
+            32,
+            32,
+            256,
+            192
+          ],
+          "before_materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+          "after_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+          "changed_per_arm": 5739,
+          "checked_per_arm": 5762,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 3891,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 9630,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "structural_facade",
+          "stages": 3,
+          "region": [
+            320,
+            32,
+            256,
+            192
+          ],
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "after_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+          "changed_per_arm": 11585,
+          "checked_per_arm": 11937,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 21043,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 32628,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "scifi_interior",
+          "stages": 2,
+          "region": [
+            608,
+            32,
+            256,
+            192
+          ],
+          "before_materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+          "after_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+          "changed_per_arm": 7952,
+          "checked_per_arm": 7952,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 51503,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 59455,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "revised_arcology",
+          "stages": 3,
+          "region": [
+            32,
+            256,
+            256,
+            192
+          ],
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "after_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+          "changed_per_arm": 6229,
+          "checked_per_arm": 6259,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 74697,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 80926,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "protected_courtyard",
+          "stages": 2,
+          "region": [
+            320,
+            256,
+            256,
+            192
+          ],
+          "before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+          "after_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+          "changed_per_arm": 5910,
+          "checked_per_arm": 5910,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 92523,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 98433,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "palette_foundry",
+          "stages": 3,
+          "region": [
+            608,
+            256,
+            256,
+            192
+          ],
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "after_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+          "changed_per_arm": 10456,
+          "checked_per_arm": 10456,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 109711,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 120167,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "stopped_workshop",
+          "stages": 2,
+          "region": [
+            32,
+            512,
+            384,
+            256
+          ],
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "after_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+          "changed_per_arm": 31284,
+          "checked_per_arm": 31284,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 136238,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 167522,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "staged_megaframe",
+          "stages": 6,
+          "region": [
+            960,
+            32,
+            512,
+            512
+          ],
+          "before_materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+          "after_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+          "changed_per_arm": 96737,
+          "checked_per_arm": 100397,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 212856,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 309593,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "xeno_vault",
+          "stages": 2,
+          "region": [
+            480,
+            512,
+            384,
+            256
+          ],
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "after_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+          "changed_per_arm": 8504,
+          "checked_per_arm": 8660,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 420380,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 428884,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        }
+      ]
+    },
+    {
+      "mode": "displayed",
+      "original_terminal_checks": 762,
+      "verified_original_files": 73,
+      "verified_readback_rows": 377234,
+      "counts": {
+        "changed": 184396,
+        "checked": 188617,
+        "stages": 25,
+        "staged_chunks": 63,
+        "direct_chunks": 57
+      },
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "payloads": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+        },
+        "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      },
+      "runtime_matches_bcc": true,
+      "raw_review_sha256": "37a4193e8a88caad832197dc1da0fbd876c8a05db3dfac03dbd51ade630cecdd",
+      "native_summary_sha256": "4eab4fd502d2a8a626c943d5f5a2a95f8ab67f7c7933a9da5fd62b72a3c84007",
+      "process_log_sha256": "2324a6d023a1fb76f1038ee8d7112fce170c039d527b243f80919ac6429bc716",
+      "scenes": [
+        {
+          "id": "industrial_repair",
+          "stages": 2,
+          "region": [
+            32,
+            32,
+            256,
+            192
+          ],
+          "before_materials_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+          "after_materials_sha256": "746931ccf260d47f14d1685c9d9533033b28bea24ee344bf216a0a69763d5601",
+          "changed_per_arm": 5739,
+          "checked_per_arm": 5762,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 3891,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 9630,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "structural_facade",
+          "stages": 3,
+          "region": [
+            320,
+            32,
+            256,
+            192
+          ],
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "after_materials_sha256": "a04501e4371dfd857ba31dd0230af590d3b0a95064d1cd5fe0aa0c894bf1be2d",
+          "changed_per_arm": 11585,
+          "checked_per_arm": 11937,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 21043,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 32628,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "scifi_interior",
+          "stages": 2,
+          "region": [
+            608,
+            32,
+            256,
+            192
+          ],
+          "before_materials_sha256": "7af06cf3c7268188a5cb262632ea88b82d24c956e48997db935391a73cb79454",
+          "after_materials_sha256": "535ef274e5ebf9eb7007069da07552028aa4d3324ec06c236dea3238abb8c429",
+          "changed_per_arm": 7952,
+          "checked_per_arm": 7952,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 51503,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 59455,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "revised_arcology",
+          "stages": 3,
+          "region": [
+            32,
+            256,
+            256,
+            192
+          ],
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "after_materials_sha256": "6f9b61bd2e0cedfa2b6c5c8ff9dbd4902271c5cf1786813aa8c6eb7e93601e1b",
+          "changed_per_arm": 6229,
+          "checked_per_arm": 6259,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 74697,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 80926,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "protected_courtyard",
+          "stages": 2,
+          "region": [
+            320,
+            256,
+            256,
+            192
+          ],
+          "before_materials_sha256": "35630d20605063b0e11e55e3ac3d100080624c265d8f2adc549a645e47b0f759",
+          "after_materials_sha256": "b0afa5185d768a658ad47b3fbeac1ee439e946547a900d7db91616d712ec0f0b",
+          "changed_per_arm": 5910,
+          "checked_per_arm": 5910,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 92523,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 98433,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "palette_foundry",
+          "stages": 3,
+          "region": [
+            608,
+            256,
+            256,
+            192
+          ],
+          "before_materials_sha256": "68319286894691390c24df6eb73b87e7c2165f22c29854f4cb78869d3e428825",
+          "after_materials_sha256": "9701e121dc61ec980be350e71890196c5ba5654082439ea672427e5efe9af12c",
+          "changed_per_arm": 10456,
+          "checked_per_arm": 10456,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 109711,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 120167,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "stopped_workshop",
+          "stages": 2,
+          "region": [
+            32,
+            512,
+            384,
+            256
+          ],
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "after_materials_sha256": "c621f000dfeffc3fe1770a2f966dee063f5c662f4d02d78920ed7d660f988978",
+          "changed_per_arm": 31284,
+          "checked_per_arm": 31284,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 136238,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 167522,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "staged_megaframe",
+          "stages": 6,
+          "region": [
+            960,
+            32,
+            512,
+            512
+          ],
+          "before_materials_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+          "after_materials_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+          "changed_per_arm": 96737,
+          "checked_per_arm": 100397,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 212856,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 309593,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        },
+        {
+          "id": "xeno_vault",
+          "stages": 2,
+          "region": [
+            480,
+            512,
+            384,
+            256
+          ],
+          "before_materials_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+          "after_materials_sha256": "8ce27beea0b58d301ac9dc7c51d2999735812f26a9ac7724364767529f905f77",
+          "changed_per_arm": 8504,
+          "checked_per_arm": 8660,
+          "native_source_before": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 420380,
+            "tick": 0
+          },
+          "native_source_after": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 428884,
+            "tick": 0
+          },
+          "same_bcc_geometry_and_native_source_endpoints": true
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Read-only original-byte and Git-object review; no application/native/model rerun.",
+    "Recorded engine/native/Rapier identities match bcc; original measurement archives do not contain standalone executable binaries.",
+    "This comparison reuses unchanged independently authored material/receipt replay, not a mock World mutation.",
+    "Nine distinct scenes are repeated across modes/platforms; observations are not new creative briefs.",
+    "Static clear cells and stored material do not prove actor traversal, structural stability or LLM creativity.",
+    "Scenario boundary native source identities also match bcc; intermediate chunk revisions are validated within each campaign and are not asserted equal across different chunk groupings.",
+    "Geometry matches; differing host timing is not a causal performance comparison.",
+    "Portable package launch and physical owner acceptance are separately qualified."
+  ]
+}

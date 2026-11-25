@@ -1,0 +1,78 @@
+{
+  "schema": "art-strict-repeat-native-independent-execution-v1",
+  "operator": "Specialist B direct executor",
+  "recorded_at_utc": "2026-11-25T06:16:01.779240+00:00",
+  "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "campaign": 45556633896,
+  "method": "Read-only original-byte native replay and Git/source/runtime comparison. No application/model run or raw archive reupload.",
+  "raw_verifier_sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9",
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+        "/tmp/art-d503-linux-custody/extracted/art-collaborative-headless",
+        "--expected-source",
+        "d503d824aac4128968f7dfba5dccd540c3c07b59"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-d503-linux-headless-raw-review.json"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/verify_art_creative_native_evidence.py",
+        "/tmp/art-d503-linux-custody/extracted/art-collaborative-displayed",
+        "--expected-source",
+        "d503d824aac4128968f7dfba5dccd540c3c07b59"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-d503-linux-displayed-raw-review.json"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/75c442a4089a/art-native-independent/reconcile_strict_repeat_native.py",
+        "--review-dir",
+        "/workspace/scratch/75c442a4089a/art-native-independent",
+        "--candidate-root",
+        "/tmp/art-d503-linux-custody",
+        "--baseline-extraction",
+        "/tmp/art-bcc-linux-custody/extracted",
+        "--source-repo",
+        "/tmp/art-c-delivery-doc",
+        "--platform",
+        "linux"
+      ],
+      "exit_code": 0,
+      "stdout_file": "final-d503-linux-comparison.json",
+      "checks": 445,
+      "failures": 0
+    }
+  ],
+  "files": {
+    "reconcile_strict_repeat_native.py": {
+      "bytes": 11044,
+      "sha256": "35caf4d5b0988abac74ebdb73ca1c76ea8e4ec6035f47804d2df80e52ef19a19"
+    },
+    "repeat-artifact-metadata.json": {
+      "bytes": 1125,
+      "sha256": "773649cf89a0d6913159edbddf3a50426f7ff7995b2ef6aa9f0ba65b32480855"
+    },
+    "final-d503-linux-headless-raw-review.json": {
+      "bytes": 14586,
+      "sha256": "8d3a0dd76006397a76f6a9774098f7428604d33cb1d3329b3ba6ec60d52e271f"
+    },
+    "final-d503-linux-displayed-raw-review.json": {
+      "bytes": 16656,
+      "sha256": "37a4193e8a88caad832197dc1da0fbd876c8a05db3dfac03dbd51ade630cecdd"
+    },
+    "final-d503-linux-comparison.json": {
+      "bytes": 20638,
+      "sha256": "ca9ee466269d1270522772c8d829b4418c144dd3107c9a001b5a85d36a1393b6"
+    }
+  },
+  "application_files_modified": false,
+  "windows_review": "pending"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "art-strict-repeat-independent-artifact-metadata-v1",
+  "campaign": 45556633896,
+  "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "tree": "464c60288d5461d61578b000ae68ac029cffb5bd",
+  "github_api": "https://api.github.com/repos/techrote/cybersand/actions/runs/45556633896/artifacts",
+  "artifacts": [
+    {
+      "id": 14996501724,
+      "name": "art-workbench-linux-d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "bytes": 17155267,
+      "sha256": "7bec2f9d085041466eb1edf7dd6d9d4f6369b9069939ea071eff22a45f2009af",
+      "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "actions_url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14996501724"
+    },
+    {
+      "id": 14995418392,
+      "name": "art-workbench-qualification-scope-d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "bytes": 2738,
+      "sha256": "39078a548ef62d546eb1a3babc32ab35abfe12d167c76baba18a85ae1fb0d57e",
+      "source": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "actions_url": "https://github.com/techrote/cybersand/actions/runs/45556633896/artifacts/14995418392"
+    }
+  ]
+}
