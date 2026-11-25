@@ -1,0 +1,3006 @@
+{
+  "active_body_cohorts": {
+    "1": {
+      "actual_physics_steps": 720,
+      "native_pose_acknowledgements": 720,
+      "process_callbacks": 851,
+      "render_submissions": 0,
+      "semantic_ticks": 180,
+      "wall_usec": 6679308
+    }
+  },
+  "active_body_count_max": 1,
+  "actual_physics_steps": 720,
+  "before_cut_supports": {
+    "authored_material_populations": {
+      "1": 28600,
+      "7": 5472
+    },
+    "material_bodies_before_cut": 0,
+    "missing_support_cells": 0,
+    "native_tick": 1,
+    "scope": "actual coherent native material image before ordinary support cuts; authored recipe populations are reported separately",
+    "support_cells": 808
+  },
+  "body_count_max": 1,
+  "body_count_min": 1,
+  "camera": "overview",
+  "checks": 164,
+  "cohort_scope": "intervals classified by observed real Rapier awake body count at callback end; transition intervals are not exact GPU samples",
+  "completed_physical_intervals": 180,
+  "completed_semantic_ticks": 180,
+  "diagnostics": {
+    "attached": true,
+    "body_count": 1,
+    "controls_completed": 1034,
+    "deferred_world_uploads": 566,
+    "enabled": true,
+    "has_live_inventory": true,
+    "held_reason": "",
+    "last_motion_permit": {
+      "lease": 206,
+      "ok": true,
+      "outcome": "MotionReserved"
+    },
+    "main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+    "main_costs": {
+      "owner_control_admission": {
+        "calls": 1034,
+        "max_usec": 526,
+        "usec": 42875
+      },
+      "pose_packet_capture": {
+        "calls": 824,
+        "max_usec": 688,
+        "usec": 61253
+      },
+      "rapier_segment": {
+        "calls": 824,
+        "max_usec": 2397,
+        "usec": 137691
+      }
+    },
+    "motion_lease": 0,
+    "motion_permits_refused": 88,
+    "native_instance_id": -9223371955099400592,
+    "native_pose_acknowledgements": 720,
+    "native_pose_echo_checks": 720,
+    "native_tick": 207,
+    "owner_replacements": 1,
+    "pending_kind": "",
+    "pending_serial": 0,
+    "phase": "Ready",
+    "physical_intervals": 206,
+    "physical_steps": 824,
+    "physics": {
+      "awaiting_native": false,
+      "bodies": [
+        {
+          "active": true,
+          "angular_velocity": 0.338764101266861,
+          "backend_rotation": -0.120119705796242,
+          "body_generation": 1,
+          "com_x": 48.7202415466309,
+          "com_y": 60.3547515869141,
+          "generation": 1,
+          "geometry_digest": "2465895762769556143",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 12370949.0,
+          "last_geometry_step": 104,
+          "last_geometry_usec": 0,
+          "mass": 5494.0,
+          "nominal_rotation_headroom": 0.194353931645552,
+          "nominal_translation_headroom": 3.57225958506266,
+          "reported_contacts": 12,
+          "rotation": -0.120119705796242,
+          "shape_count": 25,
+          "sleeping": false,
+          "vx": 24.7022876739502,
+          "vy": 6.96129512786865,
+          "x": 104.614593505859,
+          "y": 342.0751953125
+        }
+      ],
+      "events": [
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 1,
+          "kind": "BodyActivated",
+          "physics_step": 104
+        }
+      ],
+      "last_completed_semantic_tick": -1,
+      "last_error": "",
+      "last_physics_session": 1,
+      "last_sampled_pose_serial": 824,
+      "motion": {},
+      "motion_phase": "Idle",
+      "motion_refused": false,
+      "operation_sequence": 0,
+      "physics_steps": 824,
+      "segment_sequence": 0,
+      "session": 1
+    },
+    "physics_ready": true,
+    "publication_sequence": 981,
+    "pump_usec_max": 11388,
+    "pump_usec_total": 4922237,
+    "reabsorption_receipt": {},
+    "receipt": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 206,
+      "native_tick_before_prepare": 206,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 1035
+    },
+    "redundant_readiness_receipts_suppressed": 257,
+    "save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+    "shared_main_space_id": 18563,
+    "worker_profile": {
+      "actor_work": {
+        "due_effects": 0,
+        "due_usables": 0,
+        "pending_effects": 0,
+        "pending_usables": 0
+      },
+      "counter_scope": "cumulative ordinary worker lifetime",
+      "frame_copy_calls": 258,
+      "frame_copy_max_usec": 492,
+      "frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+      "frame_copy_usec": 47796,
+      "motion_fence": {
+        "completed_sample": 1035,
+        "current_sample": 1035,
+        "due_sample": -1,
+        "lease": 0,
+        "ordinary_refusal": "",
+        "owner_busy": false,
+        "prepared_sample": 1035,
+        "reused_prepared_samples": 206,
+        "tick_due": false
+      },
+      "snapshot_calls": 1292,
+      "snapshot_max_usec": 5402,
+      "snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+      "snapshot_usec": 1246808
+    },
+    "world_generation": 3
+  },
+  "display_coherence": {
+    "between_callback_observations": 1095,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "display_driver": "headless",
+  "elapsed_usec": 6679406,
+  "failures": [],
+  "final_boundary": {
+    "displayed_native_tick": 207,
+    "displayed_poses": [
+      {
+        "id": 1,
+        "pose_serial": 824,
+        "position_x": 104.614593505859,
+        "position_y": 342.0751953125,
+        "rotation": -0.120119705796242
+      }
+    ],
+    "displayed_publication_sequence": 981,
+    "displayed_world_revision": 235,
+    "image_format": 3,
+    "latest_native_tick": 207,
+    "latest_publication_sequence": 981,
+    "physics": [
+      {
+        "active": true,
+        "angular_velocity": 0.338764101266861,
+        "backend_rotation": -0.120119705796242,
+        "body_generation": 1,
+        "com_x": 48.7202415466309,
+        "com_y": 60.3547515869141,
+        "generation": 1,
+        "geometry_digest": "2465895762769556143",
+        "geometry_revision": 1,
+        "id": 1,
+        "inertia": 12370949.0,
+        "last_geometry_step": 104,
+        "last_geometry_usec": 0,
+        "mass": 5494.0,
+        "nominal_rotation_headroom": 0.194353931645552,
+        "nominal_translation_headroom": 3.57225958506266,
+        "reported_contacts": 12,
+        "rotation": -0.120119705796242,
+        "shape_count": 25,
+        "sleeping": false,
+        "vx": 24.7022876739502,
+        "vy": 6.96129512786865,
+        "x": 104.614593505859,
+        "y": 342.0751953125
+      }
+    ],
+    "rendered_water_pixels": 0,
+    "uploaded_world_revision": 235,
+    "world_water_ledger": 0
+  },
+  "ignition_witnesses": [
+    {
+      "after": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 150
+      },
+      "before": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 240
+      },
+      "receipt": {
+        "action_id": 1,
+        "native_receipt": {
+          "accepted": true,
+          "action_id": 1,
+          "applied_physics_revision": 1,
+          "body_generation": 1,
+          "cell": 99,
+          "detail": "exact native Wood ignition applied; inventory unchanged",
+          "generation": 1,
+          "geometry_revision": 1,
+          "id": 1,
+          "incarnation": 2,
+          "material_revision": 5496,
+          "native_instance_id": -9223371955099400592,
+          "ok": true,
+          "operation": "ignite",
+          "outcome": "Accepted",
+          "owner": 1,
+          "owner_epoch": 2,
+          "phase": "Active",
+          "port_generation": 3,
+          "pose_serial": 0,
+          "position": "(120, 244)",
+          "same_world": true,
+          "session": 1,
+          "shard_session": 1,
+          "source_target": {
+            "applied_physics_revision": 1,
+            "body_generation": 1,
+            "cell": 99,
+            "expected": {
+              "material": 7,
+              "state_a": 0,
+              "state_b": 0,
+              "temperature": 200
+            },
+            "generation": 1,
+            "geometry_revision": 1,
+            "incarnation": 2,
+            "material_revision": 5495,
+            "owner": 1,
+            "owner_epoch": 2,
+            "pose_serial": 0,
+            "position": "(120, 244)",
+            "publication_sequence": 77,
+            "session": 1,
+            "shard_session": 1,
+            "transport_generation": 2,
+            "world_incarnation": 1
+          },
+          "transaction": 2,
+          "transaction_id": 2,
+          "transport_generation": 2,
+          "world_generation": 3,
+          "world_incarnation": 1
+        },
+        "ok": true,
+        "outcome": "Applied",
+        "port_generation": 3
+      },
+      "source": {
+        "applied_physics_revision": 1,
+        "body_generation": 1,
+        "cell": 99,
+        "expected": {
+          "material": 7,
+          "state_a": 0,
+          "state_b": 0,
+          "temperature": 200
+        },
+        "generation": 1,
+        "geometry_revision": 1,
+        "incarnation": 2,
+        "material_revision": 5495,
+        "owner": 1,
+        "owner_epoch": 2,
+        "pose_serial": 0,
+        "position": "(120, 244)",
+        "publication_sequence": 77,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_incarnation": 1
+      }
+    },
+    {
+      "after": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 150
+      },
+      "before": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 240
+      },
+      "receipt": {
+        "action_id": 2,
+        "native_receipt": {
+          "accepted": true,
+          "action_id": 2,
+          "applied_physics_revision": 1,
+          "body_generation": 1,
+          "cell": 100,
+          "detail": "exact native Wood ignition applied; inventory unchanged",
+          "generation": 1,
+          "geometry_revision": 1,
+          "id": 1,
+          "incarnation": 2,
+          "material_revision": 5497,
+          "native_instance_id": -9223371955099400592,
+          "ok": true,
+          "operation": "ignite",
+          "outcome": "Accepted",
+          "owner": 1,
+          "owner_epoch": 2,
+          "phase": "Active",
+          "port_generation": 3,
+          "pose_serial": 0,
+          "position": "(121, 244)",
+          "same_world": true,
+          "session": 1,
+          "shard_session": 1,
+          "source_target": {
+            "applied_physics_revision": 1,
+            "body_generation": 1,
+            "cell": 100,
+            "expected": {
+              "material": 7,
+              "state_a": 0,
+              "state_b": 0,
+              "temperature": 200
+            },
+            "generation": 1,
+            "geometry_revision": 1,
+            "incarnation": 2,
+            "material_revision": 5496,
+            "owner": 1,
+            "owner_epoch": 2,
+            "pose_serial": 0,
+            "position": "(121, 244)",
+            "publication_sequence": 78,
+            "session": 1,
+            "shard_session": 1,
+            "transport_generation": 2,
+            "world_incarnation": 1
+          },
+          "transaction": 3,
+          "transaction_id": 3,
+          "transport_generation": 2,
+          "world_generation": 3,
+          "world_incarnation": 1
+        },
+        "ok": true,
+        "outcome": "Applied",
+        "port_generation": 3
+      },
+      "source": {
+        "applied_physics_revision": 1,
+        "body_generation": 1,
+        "cell": 100,
+        "expected": {
+          "material": 7,
+          "state_a": 0,
+          "state_b": 0,
+          "temperature": 200
+        },
+        "generation": 1,
+        "geometry_revision": 1,
+        "incarnation": 2,
+        "material_revision": 5496,
+        "owner": 1,
+        "owner_epoch": 2,
+        "pose_serial": 0,
+        "position": "(121, 244)",
+        "publication_sequence": 78,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_incarnation": 1
+      }
+    },
+    {
+      "after": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 150
+      },
+      "before": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 240
+      },
+      "receipt": {
+        "action_id": 3,
+        "native_receipt": {
+          "accepted": true,
+          "action_id": 3,
+          "applied_physics_revision": 1,
+          "body_generation": 1,
+          "cell": 101,
+          "detail": "exact native Wood ignition applied; inventory unchanged",
+          "generation": 1,
+          "geometry_revision": 1,
+          "id": 1,
+          "incarnation": 2,
+          "material_revision": 5498,
+          "native_instance_id": -9223371955099400592,
+          "ok": true,
+          "operation": "ignite",
+          "outcome": "Accepted",
+          "owner": 1,
+          "owner_epoch": 2,
+          "phase": "Active",
+          "port_generation": 3,
+          "pose_serial": 0,
+          "position": "(122, 244)",
+          "same_world": true,
+          "session": 1,
+          "shard_session": 1,
+          "source_target": {
+            "applied_physics_revision": 1,
+            "body_generation": 1,
+            "cell": 101,
+            "expected": {
+              "material": 7,
+              "state_a": 0,
+              "state_b": 0,
+              "temperature": 200
+            },
+            "generation": 1,
+            "geometry_revision": 1,
+            "incarnation": 2,
+            "material_revision": 5497,
+            "owner": 1,
+            "owner_epoch": 2,
+            "pose_serial": 0,
+            "position": "(122, 244)",
+            "publication_sequence": 79,
+            "session": 1,
+            "shard_session": 1,
+            "transport_generation": 2,
+            "world_incarnation": 1
+          },
+          "transaction": 4,
+          "transaction_id": 4,
+          "transport_generation": 2,
+          "world_generation": 3,
+          "world_incarnation": 1
+        },
+        "ok": true,
+        "outcome": "Applied",
+        "port_generation": 3
+      },
+      "source": {
+        "applied_physics_revision": 1,
+        "body_generation": 1,
+        "cell": 101,
+        "expected": {
+          "material": 7,
+          "state_a": 0,
+          "state_b": 0,
+          "temperature": 200
+        },
+        "generation": 1,
+        "geometry_revision": 1,
+        "incarnation": 2,
+        "material_revision": 5497,
+        "owner": 1,
+        "owner_epoch": 2,
+        "pose_serial": 0,
+        "position": "(122, 244)",
+        "publication_sequence": 79,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_incarnation": 1
+      }
+    },
+    {
+      "after": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 150
+      },
+      "before": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 240
+      },
+      "receipt": {
+        "action_id": 4,
+        "native_receipt": {
+          "accepted": true,
+          "action_id": 4,
+          "applied_physics_revision": 1,
+          "body_generation": 1,
+          "cell": 102,
+          "detail": "exact native Wood ignition applied; inventory unchanged",
+          "generation": 1,
+          "geometry_revision": 1,
+          "id": 1,
+          "incarnation": 2,
+          "material_revision": 5499,
+          "native_instance_id": -9223371955099400592,
+          "ok": true,
+          "operation": "ignite",
+          "outcome": "Accepted",
+          "owner": 1,
+          "owner_epoch": 2,
+          "phase": "Active",
+          "port_generation": 3,
+          "pose_serial": 0,
+          "position": "(123, 244)",
+          "same_world": true,
+          "session": 1,
+          "shard_session": 1,
+          "source_target": {
+            "applied_physics_revision": 1,
+            "body_generation": 1,
+            "cell": 102,
+            "expected": {
+              "material": 7,
+              "state_a": 0,
+              "state_b": 0,
+              "temperature": 200
+            },
+            "generation": 1,
+            "geometry_revision": 1,
+            "incarnation": 2,
+            "material_revision": 5498,
+            "owner": 1,
+            "owner_epoch": 2,
+            "pose_serial": 0,
+            "position": "(123, 244)",
+            "publication_sequence": 80,
+            "session": 1,
+            "shard_session": 1,
+            "transport_generation": 2,
+            "world_incarnation": 1
+          },
+          "transaction": 5,
+          "transaction_id": 5,
+          "transport_generation": 2,
+          "world_generation": 3,
+          "world_incarnation": 1
+        },
+        "ok": true,
+        "outcome": "Applied",
+        "port_generation": 3
+      },
+      "source": {
+        "applied_physics_revision": 1,
+        "body_generation": 1,
+        "cell": 102,
+        "expected": {
+          "material": 7,
+          "state_a": 0,
+          "state_b": 0,
+          "temperature": 200
+        },
+        "generation": 1,
+        "geometry_revision": 1,
+        "incarnation": 2,
+        "material_revision": 5498,
+        "owner": 1,
+        "owner_epoch": 2,
+        "pose_serial": 0,
+        "position": "(123, 244)",
+        "publication_sequence": 80,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_incarnation": 1
+      }
+    }
+  ],
+  "instrumentation_scope": "one diagnostic state readback per callback; ordinary latency probe enabled",
+  "inventory_after": {
+    "brick": 0,
+    "wood": 5472
+  },
+  "inventory_before": {
+    "brick": 0,
+    "wood": 5472
+  },
+  "inventory_witnesses": [
+    {
+      "owned_inventory": [],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        228072,
+        28600,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5472,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 1,
+        "owner_epoch": 2,
+        "publication_sequence": 1,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 3
+      },
+      "total_material_counts": [
+        0,
+        28600,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5472,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 0,
+        "independent_total_quantity": 0,
+        "native_ledger": {
+          "ballistic": 0,
+          "expected": 0,
+          "overfill": 0,
+          "total": 0,
+          "visible": 0
+        },
+        "parcel_count": 0,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 0,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "2f783dd47a44cae7",
+          "state_hash": "cbab674f0d46403d",
+          "tick": 1,
+          "water_cells": 0,
+          "water_integer": 0,
+          "water_overfill": 0,
+          "water_visible": 0
+        }
+      }
+    },
+    {
+      "owned_inventory": [
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 1,
+          "materials": {
+            "bytes": 12250,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        }
+      ],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        234323,
+        27806,
+        0,
+        0,
+        11,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 21,
+        "owner_epoch": 2,
+        "publication_sequence": 981,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 207,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 235
+      },
+      "total_material_counts": [
+        0,
+        27828,
+        0,
+        0,
+        11,
+        0,
+        4,
+        5472,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 0,
+        "independent_total_quantity": 0,
+        "native_ledger": {
+          "ballistic": 0,
+          "expected": 0,
+          "overfill": 0,
+          "total": 0,
+          "visible": 0
+        },
+        "parcel_count": 0,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 0,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "7548187170166da5",
+          "state_hash": "8dd456b7e3b52a10",
+          "tick": 207,
+          "water_cells": 0,
+          "water_integer": 0,
+          "water_overfill": 0,
+          "water_visible": 0
+        }
+      }
+    }
+  ],
+  "latency": {
+    "cadence": {
+      "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+      "capacity_dropped_intervals": 0,
+      "cohort_capacity": 64,
+      "display_backend": "headless",
+      "hardware_present_verified": false,
+      "native_progress_delivery": [
+        {
+          "elapsed_usec": 440358,
+          "interval_count": 24,
+          "maximum_interval_usec": 36758,
+          "observed_units_per_second": 54.5011104601256,
+          "recent_interval_samples": 24,
+          "recent_p50_interval_usec": 17293,
+          "recent_p95_interval_usec": 19851,
+          "units": "native_semantic_ticks",
+          "units_observed": 24,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 0,
+            "paused": false
+          }
+        },
+        {
+          "elapsed_usec": 5964171,
+          "interval_count": 178,
+          "maximum_interval_usec": 50385,
+          "observed_units_per_second": 29.8448853998318,
+          "recent_interval_samples": 178,
+          "recent_p50_interval_usec": 32678,
+          "recent_p95_interval_usec": 41252,
+          "units": "native_semantic_ticks",
+          "units_observed": 178,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 1,
+            "paused": false
+          }
+        }
+      ],
+      "percentile_scope": "most_recent_bounded_intervals_per_workload",
+      "post_draw_intervals": [],
+      "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+      "render_scope": "headless_callback_only"
+    },
+    "enabled": true,
+    "epoch": 2,
+    "events_retained": 512,
+    "frame_serial_coherence_proven": false,
+    "input_to_post_draw_causally_proven": false,
+    "no_additive_stage_total": true,
+    "post_draw_callbacks_after_upload": 0,
+    "proven_presented_uploads": 0,
+    "schema": "objectshard-m4-workbench-latency-v1",
+    "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+    "stages": {
+      "physics_work": {
+        "count": 256,
+        "maximum_usec": 380,
+        "p50_usec": 127,
+        "p95_usec": 202
+      },
+      "publication_prepare": {
+        "count": 256,
+        "maximum_usec": 481,
+        "p50_usec": 67,
+        "p95_usec": 111
+      },
+      "queue_admission": {
+        "count": 256,
+        "maximum_usec": 285,
+        "p50_usec": 31,
+        "p95_usec": 72
+      },
+      "receipt_delivery": {
+        "count": 256,
+        "maximum_usec": 10364,
+        "p50_usec": 1447,
+        "p95_usec": 9364
+      },
+      "scene_callback": {
+        "count": 256,
+        "maximum_usec": 10027,
+        "p50_usec": 8547,
+        "p95_usec": 9440
+      },
+      "texture_upload_submission": {
+        "count": 122,
+        "maximum_usec": 446,
+        "p50_usec": 37,
+        "p95_usec": 90
+      }
+    },
+    "worker_metrics": {
+      "hard_surface_packet_time_ms": 0.0,
+      "render_exchange_time_ms": 0.0,
+      "scope": "worker_reported_potentially_nested_not_a_sum",
+      "snapshot_copy_time_ms": 0.003,
+      "snapshot_publication_time_ms": 0.401,
+      "snapshot_serial": 5803,
+      "tick": 206,
+      "worker_step_time_ms": 2.952,
+      "world_generation": 3,
+      "world_revision": 234
+    }
+  },
+  "main_stage_deltas": {
+    "owner_control_admission": {
+      "calls": 900,
+      "cumulative_max_usec": 526,
+      "usec": 36000
+    },
+    "pose_packet_capture": {
+      "calls": 720,
+      "cumulative_max_usec": 688,
+      "usec": 54989
+    },
+    "rapier_segment": {
+      "calls": 720,
+      "cumulative_max_usec": 2397,
+      "usec": 121260
+    }
+  },
+  "material_contact_deltas": {
+    "accepted_exposures": 0,
+    "consumed_exposures": 0,
+    "external_ignitions": 0,
+    "extinguished": 0,
+    "output_blocked": 41,
+    "products_created": 15,
+    "relocated_cells": 3,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "sand_ingested": 0
+  },
+  "material_interaction_scope": "committed native carrier relocation, source-bound chemistry/exposure and optional Sand custody; no cellular fluid force or buoyancy transfer to Rapier is implemented",
+  "material_population_scope": "displayed material pixels plus owned material; Water pixels may include ballistic projection; raw grid census and exact quantity are in inventory_witnesses",
+  "material_populations_before": {
+    "brick": 0,
+    "fire": 0,
+    "sand": 0,
+    "water": 0,
+    "wood": 5472
+  },
+  "native_cost_deltas": {
+    "chemistry_cells": 5893,
+    "chemistry_ns": 13314334,
+    "composed_reuses": 894,
+    "contact_ns": 188536887,
+    "discovery_ns": 639533,
+    "exchange_ns": 8242143,
+    "geometry_ns": 0,
+    "mask_cells": 5625289,
+    "occupancy_ns": 1400751654,
+    "relocation_ns": 859919549,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 3,
+    "snapshot_ns": 5241531,
+    "sweep_samples": 1403,
+    "terrain_ns": 0,
+    "world_ns": 0
+  },
+  "native_metrics_after": {
+    "chemistry_cells": 5893,
+    "chemistry_ns": 13322347,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 1040,
+    "contact_ns": 188753659,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 33300,
+    "discovery_ns": 6181256,
+    "exchange_ns": 8245273,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66152062,
+    "mask_cells": 5630783,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 13051397,
+    "maximum_product_age": 23,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 1406027155,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 41,
+    "paused_calls": 0,
+    "peak_bytes": 66159854,
+    "products_created": 15,
+    "promotions": 1,
+    "reabsorptions": 0,
+    "refusals": 0,
+    "relocated_cells": 3,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 864540199,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 3,
+    "retained_bytes": 66159854,
+    "sand_ingested": 0,
+    "snapshot_ns": 141013296,
+    "stale_messages": 0,
+    "steps": 206,
+    "sweep_samples": 1403,
+    "terrain_ns": 138834246,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_metrics_before": {
+    "chemistry_cells": 0,
+    "chemistry_ns": 8013,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 146,
+    "contact_ns": 216772,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 33300,
+    "discovery_ns": 5541723,
+    "exchange_ns": 3130,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66152062,
+    "mask_cells": 5494,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 13051397,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 5275501,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66159854,
+    "products_created": 0,
+    "promotions": 1,
+    "reabsorptions": 0,
+    "refusals": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 4620650,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "retained_bytes": 66159854,
+    "sand_ingested": 0,
+    "snapshot_ns": 135771765,
+    "stale_messages": 0,
+    "steps": 26,
+    "sweep_samples": 0,
+    "terrain_ns": 138834246,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_pose_acknowledgements": 720,
+  "native_pose_echo_checks": 720,
+  "native_progress_observations": [
+    {
+      "bodies": 1,
+      "tick": 27,
+      "usec": 8580825
+    },
+    {
+      "bodies": 1,
+      "tick": 28,
+      "usec": 9261381
+    },
+    {
+      "bodies": 1,
+      "tick": 29,
+      "usec": 9298608
+    },
+    {
+      "bodies": 1,
+      "tick": 30,
+      "usec": 9328325
+    },
+    {
+      "bodies": 1,
+      "tick": 31,
+      "usec": 9366594
+    },
+    {
+      "bodies": 1,
+      "tick": 32,
+      "usec": 9395886
+    },
+    {
+      "bodies": 1,
+      "tick": 33,
+      "usec": 9433161
+    },
+    {
+      "bodies": 1,
+      "tick": 34,
+      "usec": 9462218
+    },
+    {
+      "bodies": 1,
+      "tick": 35,
+      "usec": 9493263
+    },
+    {
+      "bodies": 1,
+      "tick": 36,
+      "usec": 9527946
+    },
+    {
+      "bodies": 1,
+      "tick": 37,
+      "usec": 9577213
+    },
+    {
+      "bodies": 1,
+      "tick": 38,
+      "usec": 9613041
+    },
+    {
+      "bodies": 1,
+      "tick": 39,
+      "usec": 9640006
+    },
+    {
+      "bodies": 1,
+      "tick": 40,
+      "usec": 9675686
+    },
+    {
+      "bodies": 1,
+      "tick": 41,
+      "usec": 9703948
+    },
+    {
+      "bodies": 1,
+      "tick": 42,
+      "usec": 9739753
+    },
+    {
+      "bodies": 1,
+      "tick": 43,
+      "usec": 9770391
+    },
+    {
+      "bodies": 1,
+      "tick": 44,
+      "usec": 9801857
+    },
+    {
+      "bodies": 1,
+      "tick": 45,
+      "usec": 9837355
+    },
+    {
+      "bodies": 1,
+      "tick": 46,
+      "usec": 9868919
+    },
+    {
+      "bodies": 1,
+      "tick": 47,
+      "usec": 9900417
+    },
+    {
+      "bodies": 1,
+      "tick": 48,
+      "usec": 9935099
+    },
+    {
+      "bodies": 1,
+      "tick": 49,
+      "usec": 9965337
+    },
+    {
+      "bodies": 1,
+      "tick": 50,
+      "usec": 9995911
+    },
+    {
+      "bodies": 1,
+      "tick": 51,
+      "usec": 10023584
+    },
+    {
+      "bodies": 1,
+      "tick": 52,
+      "usec": 10054242
+    },
+    {
+      "bodies": 1,
+      "tick": 53,
+      "usec": 10085125
+    },
+    {
+      "bodies": 1,
+      "tick": 54,
+      "usec": 10118745
+    },
+    {
+      "bodies": 1,
+      "tick": 55,
+      "usec": 10153073
+    },
+    {
+      "bodies": 1,
+      "tick": 56,
+      "usec": 10181196
+    },
+    {
+      "bodies": 1,
+      "tick": 57,
+      "usec": 10215041
+    },
+    {
+      "bodies": 1,
+      "tick": 58,
+      "usec": 10245138
+    },
+    {
+      "bodies": 1,
+      "tick": 59,
+      "usec": 10281316
+    },
+    {
+      "bodies": 1,
+      "tick": 60,
+      "usec": 10312497
+    },
+    {
+      "bodies": 1,
+      "tick": 61,
+      "usec": 10362050
+    },
+    {
+      "bodies": 1,
+      "tick": 62,
+      "usec": 10395801
+    },
+    {
+      "bodies": 1,
+      "tick": 63,
+      "usec": 10430353
+    },
+    {
+      "bodies": 1,
+      "tick": 64,
+      "usec": 10466832
+    },
+    {
+      "bodies": 1,
+      "tick": 65,
+      "usec": 10507204
+    },
+    {
+      "bodies": 1,
+      "tick": 66,
+      "usec": 10541345
+    },
+    {
+      "bodies": 1,
+      "tick": 67,
+      "usec": 10577368
+    },
+    {
+      "bodies": 1,
+      "tick": 68,
+      "usec": 10605607
+    },
+    {
+      "bodies": 1,
+      "tick": 69,
+      "usec": 10632519
+    },
+    {
+      "bodies": 1,
+      "tick": 70,
+      "usec": 10665380
+    },
+    {
+      "bodies": 1,
+      "tick": 71,
+      "usec": 10695868
+    },
+    {
+      "bodies": 1,
+      "tick": 72,
+      "usec": 10735682
+    },
+    {
+      "bodies": 1,
+      "tick": 73,
+      "usec": 10764540
+    },
+    {
+      "bodies": 1,
+      "tick": 74,
+      "usec": 10791951
+    },
+    {
+      "bodies": 1,
+      "tick": 75,
+      "usec": 10821784
+    },
+    {
+      "bodies": 1,
+      "tick": 76,
+      "usec": 10848580
+    },
+    {
+      "bodies": 1,
+      "tick": 77,
+      "usec": 10880590
+    },
+    {
+      "bodies": 1,
+      "tick": 78,
+      "usec": 10914034
+    },
+    {
+      "bodies": 1,
+      "tick": 79,
+      "usec": 10942772
+    },
+    {
+      "bodies": 1,
+      "tick": 80,
+      "usec": 10978212
+    },
+    {
+      "bodies": 1,
+      "tick": 81,
+      "usec": 11014032
+    },
+    {
+      "bodies": 1,
+      "tick": 82,
+      "usec": 11046208
+    },
+    {
+      "bodies": 1,
+      "tick": 83,
+      "usec": 11075016
+    },
+    {
+      "bodies": 1,
+      "tick": 84,
+      "usec": 11107248
+    },
+    {
+      "bodies": 1,
+      "tick": 85,
+      "usec": 11140701
+    },
+    {
+      "bodies": 1,
+      "tick": 86,
+      "usec": 11175105
+    },
+    {
+      "bodies": 1,
+      "tick": 87,
+      "usec": 11203954
+    },
+    {
+      "bodies": 1,
+      "tick": 88,
+      "usec": 11233037
+    },
+    {
+      "bodies": 1,
+      "tick": 89,
+      "usec": 11264187
+    },
+    {
+      "bodies": 1,
+      "tick": 90,
+      "usec": 11295504
+    },
+    {
+      "bodies": 1,
+      "tick": 91,
+      "usec": 11330070
+    },
+    {
+      "bodies": 1,
+      "tick": 92,
+      "usec": 11380440
+    },
+    {
+      "bodies": 1,
+      "tick": 93,
+      "usec": 11418613
+    },
+    {
+      "bodies": 1,
+      "tick": 94,
+      "usec": 11447248
+    },
+    {
+      "bodies": 1,
+      "tick": 95,
+      "usec": 11479707
+    },
+    {
+      "bodies": 1,
+      "tick": 96,
+      "usec": 11516288
+    },
+    {
+      "bodies": 1,
+      "tick": 97,
+      "usec": 11542825
+    },
+    {
+      "bodies": 1,
+      "tick": 98,
+      "usec": 11579374
+    },
+    {
+      "bodies": 1,
+      "tick": 99,
+      "usec": 11607260
+    },
+    {
+      "bodies": 1,
+      "tick": 100,
+      "usec": 11640203
+    },
+    {
+      "bodies": 1,
+      "tick": 101,
+      "usec": 11673912
+    },
+    {
+      "bodies": 1,
+      "tick": 102,
+      "usec": 11711921
+    },
+    {
+      "bodies": 1,
+      "tick": 103,
+      "usec": 11746414
+    },
+    {
+      "bodies": 1,
+      "tick": 104,
+      "usec": 11780142
+    },
+    {
+      "bodies": 1,
+      "tick": 105,
+      "usec": 11809500
+    },
+    {
+      "bodies": 1,
+      "tick": 106,
+      "usec": 11844249
+    },
+    {
+      "bodies": 1,
+      "tick": 107,
+      "usec": 11876200
+    },
+    {
+      "bodies": 1,
+      "tick": 108,
+      "usec": 11908878
+    },
+    {
+      "bodies": 1,
+      "tick": 109,
+      "usec": 11941520
+    },
+    {
+      "bodies": 1,
+      "tick": 110,
+      "usec": 11973076
+    },
+    {
+      "bodies": 1,
+      "tick": 111,
+      "usec": 12012954
+    },
+    {
+      "bodies": 1,
+      "tick": 112,
+      "usec": 12047443
+    },
+    {
+      "bodies": 1,
+      "tick": 113,
+      "usec": 12080541
+    },
+    {
+      "bodies": 1,
+      "tick": 114,
+      "usec": 12106384
+    },
+    {
+      "bodies": 1,
+      "tick": 115,
+      "usec": 12136278
+    },
+    {
+      "bodies": 1,
+      "tick": 116,
+      "usec": 12184616
+    },
+    {
+      "bodies": 1,
+      "tick": 117,
+      "usec": 12217779
+    },
+    {
+      "bodies": 1,
+      "tick": 118,
+      "usec": 12253436
+    },
+    {
+      "bodies": 1,
+      "tick": 119,
+      "usec": 12288976
+    },
+    {
+      "bodies": 1,
+      "tick": 120,
+      "usec": 12322124
+    },
+    {
+      "bodies": 1,
+      "tick": 121,
+      "usec": 12355978
+    },
+    {
+      "bodies": 1,
+      "tick": 122,
+      "usec": 12385319
+    },
+    {
+      "bodies": 1,
+      "tick": 123,
+      "usec": 12416017
+    },
+    {
+      "bodies": 1,
+      "tick": 124,
+      "usec": 12443373
+    },
+    {
+      "bodies": 1,
+      "tick": 125,
+      "usec": 12478678
+    },
+    {
+      "bodies": 1,
+      "tick": 126,
+      "usec": 12513062
+    },
+    {
+      "bodies": 1,
+      "tick": 127,
+      "usec": 12546758
+    },
+    {
+      "bodies": 1,
+      "tick": 128,
+      "usec": 12579411
+    },
+    {
+      "bodies": 1,
+      "tick": 129,
+      "usec": 12611988
+    },
+    {
+      "bodies": 1,
+      "tick": 130,
+      "usec": 12645607
+    },
+    {
+      "bodies": 1,
+      "tick": 131,
+      "usec": 12681419
+    },
+    {
+      "bodies": 1,
+      "tick": 132,
+      "usec": 12715359
+    },
+    {
+      "bodies": 1,
+      "tick": 133,
+      "usec": 12757383
+    },
+    {
+      "bodies": 1,
+      "tick": 134,
+      "usec": 12794322
+    },
+    {
+      "bodies": 1,
+      "tick": 135,
+      "usec": 12827981
+    },
+    {
+      "bodies": 1,
+      "tick": 136,
+      "usec": 12860386
+    },
+    {
+      "bodies": 1,
+      "tick": 137,
+      "usec": 12903989
+    },
+    {
+      "bodies": 1,
+      "tick": 138,
+      "usec": 12932273
+    },
+    {
+      "bodies": 1,
+      "tick": 139,
+      "usec": 12966288
+    },
+    {
+      "bodies": 1,
+      "tick": 140,
+      "usec": 13003024
+    },
+    {
+      "bodies": 1,
+      "tick": 141,
+      "usec": 13035186
+    },
+    {
+      "bodies": 1,
+      "tick": 142,
+      "usec": 13072666
+    },
+    {
+      "bodies": 1,
+      "tick": 143,
+      "usec": 13106213
+    },
+    {
+      "bodies": 1,
+      "tick": 144,
+      "usec": 13144589
+    },
+    {
+      "bodies": 1,
+      "tick": 145,
+      "usec": 13176347
+    },
+    {
+      "bodies": 1,
+      "tick": 146,
+      "usec": 13208729
+    },
+    {
+      "bodies": 1,
+      "tick": 147,
+      "usec": 13241798
+    },
+    {
+      "bodies": 1,
+      "tick": 148,
+      "usec": 13276216
+    },
+    {
+      "bodies": 1,
+      "tick": 149,
+      "usec": 13309848
+    },
+    {
+      "bodies": 1,
+      "tick": 150,
+      "usec": 13342154
+    },
+    {
+      "bodies": 1,
+      "tick": 151,
+      "usec": 13374810
+    },
+    {
+      "bodies": 1,
+      "tick": 152,
+      "usec": 13407187
+    },
+    {
+      "bodies": 1,
+      "tick": 153,
+      "usec": 13445872
+    },
+    {
+      "bodies": 1,
+      "tick": 154,
+      "usec": 13478714
+    },
+    {
+      "bodies": 1,
+      "tick": 155,
+      "usec": 13512241
+    },
+    {
+      "bodies": 1,
+      "tick": 156,
+      "usec": 13540912
+    },
+    {
+      "bodies": 1,
+      "tick": 157,
+      "usec": 13577633
+    },
+    {
+      "bodies": 1,
+      "tick": 158,
+      "usec": 13614996
+    },
+    {
+      "bodies": 1,
+      "tick": 159,
+      "usec": 13641951
+    },
+    {
+      "bodies": 1,
+      "tick": 160,
+      "usec": 13672113
+    },
+    {
+      "bodies": 1,
+      "tick": 161,
+      "usec": 13711711
+    },
+    {
+      "bodies": 1,
+      "tick": 162,
+      "usec": 13740610
+    },
+    {
+      "bodies": 1,
+      "tick": 163,
+      "usec": 13772321
+    },
+    {
+      "bodies": 1,
+      "tick": 164,
+      "usec": 13808158
+    },
+    {
+      "bodies": 1,
+      "tick": 165,
+      "usec": 13841692
+    },
+    {
+      "bodies": 1,
+      "tick": 166,
+      "usec": 13873568
+    },
+    {
+      "bodies": 1,
+      "tick": 167,
+      "usec": 13911947
+    },
+    {
+      "bodies": 1,
+      "tick": 168,
+      "usec": 13939788
+    },
+    {
+      "bodies": 1,
+      "tick": 169,
+      "usec": 13974686
+    },
+    {
+      "bodies": 1,
+      "tick": 170,
+      "usec": 14006453
+    },
+    {
+      "bodies": 1,
+      "tick": 171,
+      "usec": 14044681
+    },
+    {
+      "bodies": 1,
+      "tick": 172,
+      "usec": 14079990
+    },
+    {
+      "bodies": 1,
+      "tick": 173,
+      "usec": 14106429
+    },
+    {
+      "bodies": 1,
+      "tick": 174,
+      "usec": 14141322
+    },
+    {
+      "bodies": 1,
+      "tick": 175,
+      "usec": 14170432
+    },
+    {
+      "bodies": 1,
+      "tick": 176,
+      "usec": 14211621
+    },
+    {
+      "bodies": 1,
+      "tick": 177,
+      "usec": 14243783
+    },
+    {
+      "bodies": 1,
+      "tick": 178,
+      "usec": 14277139
+    },
+    {
+      "bodies": 1,
+      "tick": 179,
+      "usec": 14309475
+    },
+    {
+      "bodies": 1,
+      "tick": 180,
+      "usec": 14341756
+    },
+    {
+      "bodies": 1,
+      "tick": 181,
+      "usec": 14375742
+    },
+    {
+      "bodies": 1,
+      "tick": 182,
+      "usec": 14404849
+    },
+    {
+      "bodies": 1,
+      "tick": 183,
+      "usec": 14441212
+    },
+    {
+      "bodies": 1,
+      "tick": 184,
+      "usec": 14476920
+    },
+    {
+      "bodies": 1,
+      "tick": 185,
+      "usec": 14509828
+    },
+    {
+      "bodies": 1,
+      "tick": 186,
+      "usec": 14542598
+    },
+    {
+      "bodies": 1,
+      "tick": 187,
+      "usec": 14576571
+    },
+    {
+      "bodies": 1,
+      "tick": 188,
+      "usec": 14608872
+    },
+    {
+      "bodies": 1,
+      "tick": 189,
+      "usec": 14641417
+    },
+    {
+      "bodies": 1,
+      "tick": 190,
+      "usec": 14669449
+    },
+    {
+      "bodies": 1,
+      "tick": 191,
+      "usec": 14708989
+    },
+    {
+      "bodies": 1,
+      "tick": 192,
+      "usec": 14737493
+    },
+    {
+      "bodies": 1,
+      "tick": 193,
+      "usec": 14770885
+    },
+    {
+      "bodies": 1,
+      "tick": 194,
+      "usec": 14808601
+    },
+    {
+      "bodies": 1,
+      "tick": 195,
+      "usec": 14842964
+    },
+    {
+      "bodies": 1,
+      "tick": 196,
+      "usec": 14875310
+    },
+    {
+      "bodies": 1,
+      "tick": 197,
+      "usec": 14907152
+    },
+    {
+      "bodies": 1,
+      "tick": 198,
+      "usec": 14940558
+    },
+    {
+      "bodies": 1,
+      "tick": 199,
+      "usec": 14976213
+    },
+    {
+      "bodies": 1,
+      "tick": 200,
+      "usec": 15004361
+    },
+    {
+      "bodies": 1,
+      "tick": 201,
+      "usec": 15041398
+    },
+    {
+      "bodies": 1,
+      "tick": 202,
+      "usec": 15090378
+    },
+    {
+      "bodies": 1,
+      "tick": 203,
+      "usec": 15122052
+    },
+    {
+      "bodies": 1,
+      "tick": 204,
+      "usec": 15156417
+    },
+    {
+      "bodies": 1,
+      "tick": 205,
+      "usec": 15188061
+    },
+    {
+      "bodies": 1,
+      "tick": 206,
+      "usec": 15225551
+    },
+    {
+      "bodies": 1,
+      "tick": 207,
+      "usec": 15253390
+    }
+  ],
+  "performance_scope": "process callbacks and actual renderer frame_post_draw submissions; physical GPU presentation OWNER-PENDING",
+  "physical_progress_scope": "completed actual 1/60-second Main intervals; partial in-flight segments excluded",
+  "platform": "Linux",
+  "process_callbacks_per_wall_second": 127.406538844921,
+  "process_intervals": {
+    "count": 850,
+    "maximum_usec": 16163,
+    "p50_usec": 9299,
+    "p95_usec": 10743
+  },
+  "products_before": 0,
+  "receipt_pump_usec_delta": 4514630,
+  "recording_enabled": true,
+  "render_submission_intervals": {
+    "count": 0,
+    "maximum_usec": 0,
+    "p50_usec": 0,
+    "p95_usec": 0
+  },
+  "render_submissions": 0,
+  "render_submissions_per_wall_second": 0.0,
+  "rendering_method": "gl_compatibility",
+  "sampling": "cohorts",
+  "scene": "timber",
+  "schema": "objectshard-m4-workbench-profile-v1",
+  "semantic_ticks_per_wall_second": 26.9485041035086,
+  "shard_dimensions": [
+    {
+      "height": 125,
+      "width": 98
+    }
+  ],
+  "simulated_physical_seconds": 3.0,
+  "simulated_physical_seconds_per_wall_second": 0.449141735058477,
+  "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "stage_scope": "window deltas; native occupancy includes relocation, and Main receipt pump includes waits and its nested stages; these counters must not be summed as independent wall time",
+  "worker_stage_deltas": {
+    "frame_copy_calls": 180,
+    "frame_copy_usec": 33985,
+    "snapshot_calls": 1080,
+    "snapshot_usec": 1037131
+  }
+}

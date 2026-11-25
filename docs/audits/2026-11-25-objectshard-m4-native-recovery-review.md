@@ -14,6 +14,38 @@ requiring an implementation change was established in this review. This is a
 scoped conclusion about the existing source and the witnesses below. It is not
 an overall M4 qualification result or physical Windows/NVIDIA acceptance.
 
+## Recovery campaign long-burn observation correction
+
+The Windows Workbench job in recovery run **45517975210 attempt 1** failed its
+long-burn case. That failure remains a failure. The
+[clock review](objectshard-m4-recovery-20261125/long-burn-clock-review.json)
+preserves the exact raw-log hash and original terminal observations.
+
+The test read semantic time and geometry from the current copied native frame,
+but read the burning cell from the earlier displayed publication. Native tick
+514 already showed eight remaining structural cells and geometry revision 2;
+the displayed cell still showed the preceding Wood state until the real Rapier
+geometry acknowledgement. At tick 515 the displayed cell became Air. The
+native deletion was therefore witnessed at 480 elapsed ticks, while the test
+incorrectly labelled the retained display using a later native clock. All
+2,084 observed display identities remained coherent.
+
+The correction is confined to the long-burn fixture. One immutable native
+frame supplies both the chemistry cell and its tick. A separate display sample
+retains its own cell, tick and publication sequence. The strict **240 native
+opportunities / at most 480 native ticks** assertion is unchanged. New checks
+join native and displayed ignition state, then require delivered Air with the
+same native cell and publication sequence after the ordinary Pause barrier.
+Native chemistry, physical stepping, publication policy and displayed tool
+targeting are unchanged. Specialist B independently approved this distinction.
+
+The corrected script parsed during two local Linux attempts, but neither
+attempt completed: both ended with SIGKILL around 60 seconds during authored
+World installation or replacement, without a completion footer. One omitted
+the registered explicit M4 opt-in; the second used the correct flags. Their
+commands and log hashes are retained as unsuccessful local attempts, not
+qualification. Corrected hosted execution is still required.
+
 The original aggregate campaign
 [45473059187](https://github.com/techrote/cybersand/actions/runs/45473059187)
 remains **failed**. Its native sanitizer and Windows build jobs passed; its
@@ -213,3 +245,106 @@ publication coherence every callback and draw, while the disabled fixture
 does not install those observers. That difference must remain visible when
 interpreting product overhead. Matched light recording on/off profiles share
 the same coherence observer policy.
+
+### Extended receipt-schema review
+
+Two further negative controls exposed narrower gaps in that first correction:
+the graphical overlay case could omit its receipt, and a profile could present
+a synchronized but unregistered receipt schema. The reviewer now derives
+literal case/schema pairs from the frozen qualifier's AST, including overlay,
+render controls, disabled controls and the retained laboratory. It also derives
+the unique Workbench profile schema instead of accepting an arbitrary successful
+JSON footer.
+
+The [extended fifteen-case report](objectshard-m4-recovery-20261125/evidence-reviewer-schema-adversity.json)
+preserves both intermediate false passes and the corrected result: **zero
+accepted negative fixtures**. The real predecessor archive still has integrity
+PASS and application failed/incomplete. This is a review-tool correction only;
+it changes no application execution input.
+
+An independent reconstruction of the frozen successor inventory finds an exact
+ordered match: **42 headless, 31 graphical-report and 16 extracted-package
+processes**. The graphical report includes both display-required processes and
+repeated headless cases; its process count must not be reported as 31 graphical
+tests. The registration is bound to published source
+`51903088118d2a04f2dc79dd6fff7c25b226970c`, exact local equivalent
+`537ddef6e88eca2a59b8a02816a149601504dc7e`, tree
+`a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919`.
+
+### Repeatable Windows native inspection
+
+The [Windows native artifact reviewer](objectshard-m4-recovery-20261125/review_windows_native.py)
+is prepared for successor custody checks. It independently verifies the
+externally pinned archive, the complete Git-derived native input set, exact
+candidate provenance, actual AMD64 PE32+ DLL header, native initialization
+export and declared system dependencies. It separately records build-contract
+inputs and can compare native input bytes against a predecessor without
+claiming that equal native inputs qualify changed application execution.
+
+Its [replay on the recovered original candidate](objectshard-m4-recovery-20261125/original-windows-native-repeatable-review.json)
+passes with the same 117 inputs and DLL SHA-256 recorded above. This is static
+inspection, not Windows runtime execution. Successor archive bytes and actual
+Windows execution remain independently required.
+
+## Frozen recovery source: native DLL, lifecycle coverage and fresh reopening
+
+The new Windows native artifact **14978991924** from run **45517975210 attempt 1**
+was independently inspected as actual PE bytes. Its
+[static native review](objectshard-m4-recovery-20261125/windows-native-51903088-review.json)
+joins the external ZIP digest, candidate provenance, all 117 frozen native
+inputs, PE AMD64/PE32+ identity, entrypoint export and system-only import list.
+The actual DLL is **6,196,224 bytes**, SHA-256
+`d2028642909c1cfda2eb26e6257f8dbeb42689330f77872beaaf3ecc8f6d6d11`.
+This hash is the independent native-runtime binding for the eventual evaluator;
+it is not interchangeable with the predecessor DLL hash. The build and
+application source are `51903088118d2a04f2dc79dd6fff7c25b226970c`, tree
+`a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919`. The Windows native job passed; static
+review alone is not Workbench execution.
+
+The [physical lifecycle claim map](objectshard-m4-recovery-20261125/physical-lifecycle-claim-map.json)
+records 19 claim groups, their exact registered source assertions, 22 source
+file hashes and the material limits of each witness. It distinguishes source
+coverage from a passing source-exact runtime result. In particular:
+
+| Requirement | Independently verified assertion scope |
+| --- | --- |
+| Final collider and ownership retirement | Actual Rapier point query sees the last one-cell body before explicit Cut; afterwards its RID and native owning inventory both disappear. This is not a natural whole-building burnout claim. |
+| Final GCR and actor request pinning | Completed-sample case holds a newer Main packet until the captured interval; equipment case holds a late second actor request for the next admitted interval. |
+| Pause versus internal wait | Explicit user Pause cancels pending usable intent; internal lease wait preserves it while all simulation clocks remain stopped. |
+| Water conservation | Complete raw stored-cell census, pressure overfill and independent parcel quantity are distinguished from the material pixels drawn for parcels. |
+| Settlement | Native credit, RID retirement and terrain acknowledgement are exercised through the runtime entrypoint used by ordinary tool 7; a separate mounted Settle mouse gesture is not counted. |
+| Moving-cell editing | Real mounted Cut input and exact displayed-cell targeting are covered after genuine motion; most precise assertions pause first. Continuous held input during Play is source reviewed rather than a separate registered positive event. |
+
+The fresh-process branch of the existing ordinary `test_workbench_canvas` was
+also executed explicitly against an isolated copy of the frozen application.
+The [process result](objectshard-m4-recovery-20261125/ordinary-authored-fresh-process.json)
+records a natural successful author process with **199 checks** followed by a
+separate natural successful reopen process with **23 checks**. Saved JSON bytes
+were unchanged across processes. Both used independent user data, the pinned
+Godot 4.7 engine, approved Rapier bytes and a sealed Linux native runtime whose
+117 inputs match the frozen source. This is **local Linux headless authored
+persistence**, not Windows execution or serialization of evolved physical state.
+
+The [compact runtime custody](objectshard-m4-recovery-20261125/local-frozen-runtime-custody-summary.json)
+identifies the complete 997-file frozen application map and exact Git archive,
+engine/runtime hashes, the older native build source and its legitimate
+input-equivalence relation. The
+[retained runner](objectshard-m4-recovery-20261125/run_fresh_process_reopen.py)
+is unchanged from execution and can be placed beside the described isolated
+application and full custody map. Raw process logs and complete file maps remain
+in the mission evidence directory with their hashes recorded. The M4-specific
+named recipe fresh-process extension, ordinary 1024 start and visible 2048
+refusal are separate bounded external observations still pending at this
+checkpoint; the claim map does not count the obsolete unregistered scene-refusal
+fixture as execution coverage.
+
+Specialist B subsequently replayed the corrected long-burn fixture against its
+established frozen-equivalent local Linux application: **233 checks, zero
+failures, natural exit 0 in 32.275 seconds**. Native lifetime was exactly
+**514 − 34 = 480 ticks**; the final Pause/display handoff completed one additional
+already admitted interval, making the total 481. Actual terminal collider and
+native inventory retirement also passed. The tested fixture hash is retained in
+the clock review. Its successor changes only two derived receipt fields to name
+lifetime and post-exhaustion ticks separately. The two earlier SIGKILL attempts
+remain unsuccessful observations; this independent positive does not overwrite
+them or qualify the forthcoming Windows execution.

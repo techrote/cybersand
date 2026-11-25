@@ -13,9 +13,17 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 func _shard(owner: int) -> Dictionary:
-	for row: Dictionary in f.frame().get("shards",[]):
+	return _shard_in(f.frame(),owner)
+
+func _shard_in(sample: Dictionary, owner: int) -> Dictionary:
+	for row: Dictionary in sample.get("shards",[]):
 		if int(row.id)==owner: return row
 	return {}
+
+func _cell_in(row: Dictionary, cell: int) -> Dictionary:
+	if not row.get("owns_inventory",false) or cell<0 or cell>=row.get("materials",PackedByteArray()).size(): return {}
+	return {"material":int(row.materials[cell]),"state_a":int(row.states_a[cell]),
+		"state_b":int(row.states_b[cell]),"incarnation":int(row.incarnations[cell])}
 
 func _count(name: String, material: int = 7) -> int:
 	var counts: PackedInt64Array = f.frame().get("accounting",{}).get(name,PackedInt64Array())
@@ -105,6 +113,8 @@ func _natural_combustion() -> bool:
 	var state: Dictionary = f.owned_cell_state(owner,cell)
 	if not f.expect(ignition.get("outcome")=="Applied" and state.get("material")==7 and state.get("state_b")==240,
 		"native source starts the unchanged 240-opportunity Wood lifetime"): return false
+	f.expect(_cell_in(_shard(owner),cell)==state and int(f.runtime().publication.get("tick",-1))==f.tick(),
+		"paused ignition joins the native cell and displayed cell at one exact source tick")
 	var before_tick: int = f.tick()
 	var before_intervals: int = int(f.runtime().physical_intervals)
 	var before_steps: int = int(f.runtime().physical_steps)
@@ -124,20 +134,30 @@ func _natural_combustion() -> bool:
 	while f.tick()-before_tick<=MAX_BURN_TICKS and Time.get_ticks_msec()<deadline \
 		and str(f.runtime().held_reason).is_empty():
 		await process_frame
-		if f.tick()==previous_tick: continue
-		previous_tick = f.tick()
-		state = f.owned_cell_state(owner,cell)
-		var row: Dictionary = _shard(owner)
+		# Semantic chemistry time and cell state must come from the same
+		# immutable native frame. A geometry change deliberately retains the
+		# earlier coherent display until Rapier installation is acknowledged;
+		# labelling that old displayed cell with a newer native tick is false.
+		var native_sample: Dictionary = f.frame()
+		var native_tick: int = int(native_sample.get("tick",-1))
+		if native_tick==previous_tick: continue
+		previous_tick = native_tick
+		var row: Dictionary = _shard_in(native_sample,owner)
+		state = _cell_in(row,cell)
+		var displayed_sample: Dictionary = f.runtime().publication
+		var displayed_cell: Dictionary = _cell_in(_shard_in(displayed_sample,owner),cell)
 		if state.get("material")==7:
 			monotone = monotone and int(state.state_b)>0 and int(state.state_b)<=previous_burn
 			same_incarnation = same_incarnation and int(state.incarnation)==incarnation
 			previous_burn = int(state.state_b)
 		elif state.get("material")==0 and exhaustion_tick<0:
-			exhaustion_tick = f.tick()
-		trace.append({"tick":f.tick(),"cell":state,"geometry_revision":row.get("geometry_revision"),
+			exhaustion_tick = native_tick
+		trace.append({"tick":native_tick,"native_cell":state,"native_publication_sequence":native_sample.get("publication_sequence"),
+			"displayed_tick":displayed_sample.get("tick"),"displayed_cell":displayed_cell,
+			"displayed_publication_sequence":displayed_sample.get("publication_sequence"),"geometry_revision":row.get("geometry_revision"),
 			"applied_physics_revision":row.get("applied_physics_revision"),"structural":row.get("structural"),
 			"has_body":row.get("has_body")})
-		if (f.tick()-before_tick)%60==0:
+		if (native_tick-before_tick)%60==0:
 			print("M4_LONG_BURN_PROGRESS ",JSON.stringify(trace.back()))
 		if exhaustion_tick>=0: break
 	if not f.expect(exhaustion_tick>before_tick and exhaustion_tick-before_tick<=480,
@@ -146,6 +166,10 @@ func _natural_combustion() -> bool:
 		return false
 	if not await f.pause(): return false
 	var final: Dictionary = _shard(owner).duplicate(true)
+	var delivered_cell: Dictionary = f.owned_cell_state(owner,cell)
+	f.expect(delivered_cell.get("material")==0 and delivered_cell==_cell_in(final,cell) \
+		and int(f.runtime().publication.get("publication_sequence",-1))==int(f.frame().get("publication_sequence",-2)),
+		"naturally exhausted cell is independently delivered after exact physical and display acknowledgement")
 	f.expect(monotone and same_incarnation,"burn countdown belongs continuously to the original native cell incarnation")
 	f.expect(int(final.structural)==8 and final.has_body and int(final.geometry_revision)>int(initial.geometry_revision) \
 		and final.applied_physics_revision==final.geometry_revision,
@@ -167,7 +191,10 @@ func _natural_combustion() -> bool:
 	await f.validate_quantity_ledger()
 	evidence.natural_combustion = {"source":target,"ignition":ignition,"initial":initial,"final":final,"brick_neighbours":brick_neighbours,
 		"native_ticks":ticks,"physical_intervals":intervals,"physical_segments":steps,
-		"simulated_physical_seconds":intervals/60.0,"exhaustion_tick":exhaustion_tick,
+		"simulated_physical_seconds":intervals/60.0,"before_tick":before_tick,"exhaustion_tick":exhaustion_tick,
+		"lifetime_native_ticks":exhaustion_tick-before_tick,"post_exhaustion_native_ticks":f.tick()-exhaustion_tick,
+		"delivered_cell":delivered_cell,"displayed_after_pause_tick":f.runtime().publication.get("tick"),
+		"displayed_after_pause_publication_sequence":f.runtime().publication.get("publication_sequence"),
 		"maximum_native_ticks":MAX_BURN_TICKS,"trace":trace,
 		"scope":"natural lifetime exhaustion of the original moving Wood cell inside an inert closed Brick neighbourhood; no claim of bounded whole-building burnout"}
 	return f.failures.is_empty()

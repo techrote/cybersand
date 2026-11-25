@@ -1,0 +1,2771 @@
+{
+  "active_body_cohorts": {
+    "3": {
+      "actual_physics_steps": 720,
+      "native_pose_acknowledgements": 2160,
+      "process_callbacks": 991,
+      "render_submissions": 0,
+      "semantic_ticks": 180,
+      "wall_usec": 7547317
+    }
+  },
+  "active_body_count_max": 3,
+  "actual_physics_steps": 720,
+  "before_cut_supports": {
+    "authored_material_populations": {
+      "1": 28896,
+      "3": 5120,
+      "43": 1728,
+      "7": 2400
+    },
+    "material_bodies_before_cut": 0,
+    "missing_support_cells": 0,
+    "native_tick": 1,
+    "scope": "actual coherent native material image before ordinary support cuts; authored recipe populations are reported separately",
+    "support_cells": 1548
+  },
+  "body_count_max": 3,
+  "body_count_min": 3,
+  "camera": "overview",
+  "checks": 218,
+  "cohort_scope": "intervals classified by observed real Rapier awake body count at callback end; transition intervals are not exact GPU samples",
+  "completed_physical_intervals": 180,
+  "completed_semantic_ticks": 180,
+  "diagnostics": {
+    "attached": true,
+    "body_count": 3,
+    "controls_completed": 1045,
+    "deferred_world_uploads": 894,
+    "enabled": true,
+    "has_live_inventory": true,
+    "held_reason": "",
+    "last_motion_permit": {
+      "lease": 207,
+      "ok": true,
+      "outcome": "MotionReserved"
+    },
+    "main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+    "main_costs": {
+      "owner_control_admission": {
+        "calls": 1045,
+        "max_usec": 607,
+        "usec": 46817
+      },
+      "pose_packet_capture": {
+        "calls": 828,
+        "max_usec": 494,
+        "usec": 80372
+      },
+      "rapier_segment": {
+        "calls": 828,
+        "max_usec": 6587,
+        "usec": 247959
+      }
+    },
+    "motion_lease": 0,
+    "motion_permits_refused": 185,
+    "native_instance_id": -9223371955099400592,
+    "native_pose_acknowledgements": 2172,
+    "native_pose_echo_checks": 2172,
+    "native_tick": 208,
+    "owner_replacements": 1,
+    "pending_kind": "",
+    "pending_serial": 0,
+    "phase": "Ready",
+    "physical_intervals": 207,
+    "physical_steps": 828,
+    "physics": {
+      "awaiting_native": false,
+      "bodies": [
+        {
+          "active": true,
+          "angular_velocity": 0.134726971387863,
+          "backend_rotation": -0.0393098182976246,
+          "body_generation": 1,
+          "com_x": 48.9996376037598,
+          "com_y": 14.4242973327637,
+          "generation": 1,
+          "geometry_digest": "12681377532451347399",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 1191597.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 1387.0,
+          "nominal_rotation_headroom": 0.197754550476869,
+          "nominal_translation_headroom": 3.94199159940084,
+          "reported_contacts": 15,
+          "rotation": -0.0393098182976246,
+          "shape_count": 16,
+          "sleeping": false,
+          "vx": 3.46998333930969,
+          "vy": 0.270413637161255,
+          "x": 51.4516868591309,
+          "y": 424.888702392578
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.132666736841202,
+          "backend_rotation": -0.0415644273161888,
+          "body_generation": 1,
+          "com_x": 48.9996376037598,
+          "com_y": 14.4242973327637,
+          "generation": 1,
+          "geometry_digest": "12681377532451347399",
+          "geometry_revision": 1,
+          "id": 2,
+          "inertia": 1191597.0,
+          "last_geometry_step": 104,
+          "last_geometry_usec": 0,
+          "mass": 1387.0,
+          "nominal_rotation_headroom": 0.197788887719313,
+          "nominal_translation_headroom": 3.94287805159887,
+          "reported_contacts": 17,
+          "rotation": -0.0415644273161888,
+          "shape_count": 16,
+          "sleeping": false,
+          "vx": 3.41695737838745,
+          "vy": 0.266278475522995,
+          "x": 163.366073608398,
+          "y": 424.998474121094
+        },
+        {
+          "active": true,
+          "angular_velocity": -0.0407243520021439,
+          "backend_rotation": 0.0145050287246704,
+          "body_generation": 1,
+          "com_x": 48.9996376037598,
+          "com_y": 14.4242973327637,
+          "generation": 1,
+          "geometry_digest": "12681377532451347399",
+          "geometry_revision": 1,
+          "id": 3,
+          "inertia": 1191597.0,
+          "last_geometry_step": 108,
+          "last_geometry_usec": 0,
+          "mass": 1387.0,
+          "nominal_rotation_headroom": 0.199321260799964,
+          "nominal_translation_headroom": 3.98246520558993,
+          "reported_contacts": 16,
+          "rotation": 0.0145050287246704,
+          "shape_count": 16,
+          "sleeping": false,
+          "vx": -1.04890537261963,
+          "vy": 0.081768736243248,
+          "x": 277.583435058594,
+          "y": 422.266448974609
+        }
+      ],
+      "events": [
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 1,
+          "kind": "BodyActivated",
+          "physics_step": 100
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 2,
+          "kind": "BodyActivated",
+          "physics_step": 104
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 3,
+          "kind": "BodyActivated",
+          "physics_step": 108
+        }
+      ],
+      "last_completed_semantic_tick": -1,
+      "last_error": "",
+      "last_physics_session": 1,
+      "last_sampled_pose_serial": 828,
+      "motion": {},
+      "motion_phase": "Idle",
+      "motion_refused": false,
+      "operation_sequence": 0,
+      "physics_steps": 828,
+      "segment_sequence": 0,
+      "session": 1
+    },
+    "physics_ready": true,
+    "publication_sequence": 1057,
+    "pump_usec_max": 29366,
+    "pump_usec_total": 4978100,
+    "reabsorption_receipt": {},
+    "receipt": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 207,
+      "native_tick_before_prepare": 207,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 1040
+    },
+    "redundant_readiness_receipts_suppressed": 295,
+    "save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+    "shared_main_space_id": 18571,
+    "worker_profile": {
+      "actor_work": {
+        "due_effects": 0,
+        "due_usables": 0,
+        "pending_effects": 0,
+        "pending_usables": 0
+      },
+      "counter_scope": "cumulative ordinary worker lifetime",
+      "frame_copy_calls": 296,
+      "frame_copy_max_usec": 22698,
+      "frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+      "frame_copy_usec": 84385,
+      "motion_fence": {
+        "completed_sample": 1040,
+        "current_sample": 1040,
+        "due_sample": -1,
+        "lease": 0,
+        "ordinary_refusal": "",
+        "owner_busy": false,
+        "prepared_sample": 1040,
+        "reused_prepared_samples": 207,
+        "tick_due": false
+      },
+      "snapshot_calls": 1346,
+      "snapshot_max_usec": 7357,
+      "snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+      "snapshot_usec": 1408719
+    },
+    "world_generation": 3
+  },
+  "display_coherence": {
+    "between_callback_observations": 1423,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "display_driver": "headless",
+  "elapsed_usec": 7547438,
+  "failures": [],
+  "final_boundary": {
+    "displayed_native_tick": 208,
+    "displayed_poses": [
+      {
+        "id": 1,
+        "pose_serial": 828,
+        "position_x": 51.4516868591309,
+        "position_y": 424.888702392578,
+        "rotation": -0.0393098182976246
+      },
+      {
+        "id": 2,
+        "pose_serial": 828,
+        "position_x": 163.366073608398,
+        "position_y": 424.998474121094,
+        "rotation": -0.0415644273161888
+      },
+      {
+        "id": 3,
+        "pose_serial": 828,
+        "position_x": 277.583435058594,
+        "position_y": 422.266448974609,
+        "rotation": 0.0145050287246704
+      }
+    ],
+    "displayed_publication_sequence": 1057,
+    "displayed_world_revision": 541,
+    "image_format": 3,
+    "latest_native_tick": 208,
+    "latest_publication_sequence": 1057,
+    "physics": [
+      {
+        "active": true,
+        "angular_velocity": 0.134726971387863,
+        "backend_rotation": -0.0393098182976246,
+        "body_generation": 1,
+        "com_x": 48.9996376037598,
+        "com_y": 14.4242973327637,
+        "generation": 1,
+        "geometry_digest": "12681377532451347399",
+        "geometry_revision": 1,
+        "id": 1,
+        "inertia": 1191597.0,
+        "last_geometry_step": 100,
+        "last_geometry_usec": 0,
+        "mass": 1387.0,
+        "nominal_rotation_headroom": 0.197754550476869,
+        "nominal_translation_headroom": 3.94199159940084,
+        "reported_contacts": 15,
+        "rotation": -0.0393098182976246,
+        "shape_count": 16,
+        "sleeping": false,
+        "vx": 3.46998333930969,
+        "vy": 0.270413637161255,
+        "x": 51.4516868591309,
+        "y": 424.888702392578
+      },
+      {
+        "active": true,
+        "angular_velocity": 0.132666736841202,
+        "backend_rotation": -0.0415644273161888,
+        "body_generation": 1,
+        "com_x": 48.9996376037598,
+        "com_y": 14.4242973327637,
+        "generation": 1,
+        "geometry_digest": "12681377532451347399",
+        "geometry_revision": 1,
+        "id": 2,
+        "inertia": 1191597.0,
+        "last_geometry_step": 104,
+        "last_geometry_usec": 0,
+        "mass": 1387.0,
+        "nominal_rotation_headroom": 0.197788887719313,
+        "nominal_translation_headroom": 3.94287805159887,
+        "reported_contacts": 17,
+        "rotation": -0.0415644273161888,
+        "shape_count": 16,
+        "sleeping": false,
+        "vx": 3.41695737838745,
+        "vy": 0.266278475522995,
+        "x": 163.366073608398,
+        "y": 424.998474121094
+      },
+      {
+        "active": true,
+        "angular_velocity": -0.0407243520021439,
+        "backend_rotation": 0.0145050287246704,
+        "body_generation": 1,
+        "com_x": 48.9996376037598,
+        "com_y": 14.4242973327637,
+        "generation": 1,
+        "geometry_digest": "12681377532451347399",
+        "geometry_revision": 1,
+        "id": 3,
+        "inertia": 1191597.0,
+        "last_geometry_step": 108,
+        "last_geometry_usec": 0,
+        "mass": 1387.0,
+        "nominal_rotation_headroom": 0.199321260799964,
+        "nominal_translation_headroom": 3.98246520558993,
+        "reported_contacts": 16,
+        "rotation": 0.0145050287246704,
+        "shape_count": 16,
+        "sleeping": false,
+        "vx": -1.04890537261963,
+        "vy": 0.081768736243248,
+        "x": 277.583435058594,
+        "y": 422.266448974609
+      }
+    ],
+    "rendered_water_pixels": 5360,
+    "uploaded_world_revision": 541,
+    "world_water_ledger": 5341
+  },
+  "instrumentation_scope": "one diagnostic state readback per callback; ordinary latency probe enabled",
+  "inventory_after": {
+    "brick": 1728,
+    "wood": 2400
+  },
+  "inventory_before": {
+    "brick": 1728,
+    "wood": 2400
+  },
+  "inventory_witnesses": [
+    {
+      "owned_inventory": [],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        223970,
+        28896,
+        0,
+        5150,
+        0,
+        0,
+        0,
+        2400,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1728,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 1,
+        "owner_epoch": 2,
+        "publication_sequence": 1,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 4
+      },
+      "total_material_counts": [
+        0,
+        28896,
+        0,
+        5150,
+        0,
+        0,
+        0,
+        2400,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1728,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 2678,
+        "independent_total_quantity": 1305600,
+        "native_ledger": {
+          "ballistic": 2678,
+          "expected": 1305600,
+          "overfill": 0,
+          "total": 1305600,
+          "visible": 1302922
+        },
+        "parcel_count": 28,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 1120,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "8fb6ab2a8e0dea1b",
+          "state_hash": "1d2cded3989208f4",
+          "tick": 1,
+          "water_cells": 5150,
+          "water_integer": 1302922,
+          "water_overfill": 0,
+          "water_visible": 1302922
+        }
+      }
+    },
+    {
+      "owned_inventory": [
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 1,
+          "materials": {
+            "bytes": 4018,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 2,
+          "materials": {
+            "bytes": 4018,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 3,
+          "materials": {
+            "bytes": 4018,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        }
+      ],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        229434,
+        27369,
+        0,
+        5341,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 4,
+        "owner_epoch": 2,
+        "publication_sequence": 1057,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 208,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 541
+      },
+      "total_material_counts": [
+        0,
+        27402,
+        0,
+        5341,
+        0,
+        0,
+        0,
+        2400,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1728,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 1093,
+        "independent_total_quantity": 1288005,
+        "native_ledger": {
+          "ballistic": 1093,
+          "expected": 1288005,
+          "overfill": 0,
+          "total": 1288005,
+          "visible": 1286912
+        },
+        "parcel_count": 21,
+        "parcel_material_pixels": 19,
+        "raw_parcels_float64": {
+          "bytes": 840,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "4324afa7a33be82f",
+          "state_hash": "4ed8a82db9f84698",
+          "tick": 208,
+          "water_cells": 5341,
+          "water_integer": 1286912,
+          "water_overfill": 0,
+          "water_visible": 1286912
+        }
+      }
+    }
+  ],
+  "latency": {
+    "cadence": {
+      "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+      "capacity_dropped_intervals": 0,
+      "cohort_capacity": 64,
+      "display_backend": "headless",
+      "hardware_present_verified": false,
+      "native_progress_delivery": [
+        {
+          "elapsed_usec": 543276,
+          "interval_count": 24,
+          "maximum_interval_usec": 35744,
+          "observed_units_per_second": 44.1764407041725,
+          "recent_interval_samples": 24,
+          "recent_p50_interval_usec": 20859,
+          "recent_p95_interval_usec": 33564,
+          "units": "native_semantic_ticks",
+          "units_observed": 24,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 0,
+            "paused": false
+          }
+        },
+        {
+          "elapsed_usec": 6187155,
+          "interval_count": 178,
+          "maximum_interval_usec": 71479,
+          "observed_units_per_second": 28.7692808730345,
+          "recent_interval_samples": 178,
+          "recent_p50_interval_usec": 33832,
+          "recent_p95_interval_usec": 48361,
+          "units": "native_semantic_ticks",
+          "units_observed": 178,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 3,
+            "paused": false
+          }
+        }
+      ],
+      "percentile_scope": "most_recent_bounded_intervals_per_workload",
+      "post_draw_intervals": [],
+      "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+      "render_scope": "headless_callback_only"
+    },
+    "enabled": true,
+    "epoch": 2,
+    "events_retained": 512,
+    "frame_serial_coherence_proven": false,
+    "input_to_post_draw_causally_proven": false,
+    "no_additive_stage_total": true,
+    "post_draw_callbacks_after_upload": 0,
+    "proven_presented_uploads": 0,
+    "schema": "objectshard-m4-workbench-latency-v1",
+    "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+    "stages": {
+      "physics_work": {
+        "count": 256,
+        "maximum_usec": 1385,
+        "p50_usec": 266,
+        "p95_usec": 558
+      },
+      "publication_prepare": {
+        "count": 256,
+        "maximum_usec": 494,
+        "p50_usec": 91,
+        "p95_usec": 135
+      },
+      "queue_admission": {
+        "count": 256,
+        "maximum_usec": 202,
+        "p50_usec": 38,
+        "p95_usec": 72
+      },
+      "receipt_delivery": {
+        "count": 256,
+        "maximum_usec": 10393,
+        "p50_usec": 1888,
+        "p95_usec": 6369
+      },
+      "scene_callback": {
+        "count": 256,
+        "maximum_usec": 10559,
+        "p50_usec": 8312,
+        "p95_usec": 9465
+      },
+      "texture_upload_submission": {
+        "count": 133,
+        "maximum_usec": 3021,
+        "p50_usec": 63,
+        "p95_usec": 161
+      }
+    },
+    "worker_metrics": {
+      "hard_surface_packet_time_ms": 0.0,
+      "render_exchange_time_ms": 0.0,
+      "scope": "worker_reported_potentially_nested_not_a_sum",
+      "snapshot_copy_time_ms": 0.003,
+      "snapshot_publication_time_ms": 0.455,
+      "snapshot_serial": 8950,
+      "tick": 207,
+      "worker_step_time_ms": 2.709,
+      "world_generation": 3,
+      "world_revision": 539
+    }
+  },
+  "main_stage_deltas": {
+    "owner_control_admission": {
+      "calls": 900,
+      "cumulative_max_usec": 607,
+      "usec": 38929
+    },
+    "pose_packet_capture": {
+      "calls": 720,
+      "cumulative_max_usec": 494,
+      "usec": 74204
+    },
+    "rapier_segment": {
+      "calls": 720,
+      "cumulative_max_usec": 6587,
+      "usec": 210464
+    }
+  },
+  "material_contact_deltas": {
+    "accepted_exposures": 0,
+    "consumed_exposures": 0,
+    "external_ignitions": 0,
+    "extinguished": 0,
+    "output_blocked": 0,
+    "products_created": 0,
+    "relocated_cells": 1523,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 1523,
+    "sand_ingested": 0
+  },
+  "material_interaction_scope": "committed native carrier relocation, source-bound chemistry/exposure and optional Sand custody; no cellular fluid force or buoyancy transfer to Rapier is implemented",
+  "material_population_scope": "displayed material pixels plus owned material; Water pixels may include ballistic projection; raw grid census and exact quantity are in inventory_witnesses",
+  "material_populations_before": {
+    "brick": 1728,
+    "fire": 0,
+    "sand": 0,
+    "water": 5150,
+    "wood": 2400
+  },
+  "native_cost_deltas": {
+    "chemistry_cells": 1387,
+    "chemistry_ns": 11410438,
+    "composed_reuses": 623,
+    "contact_ns": 83869097,
+    "discovery_ns": 253674,
+    "exchange_ns": 7904484,
+    "geometry_ns": 0,
+    "mask_cells": 5689548,
+    "occupancy_ns": 1371604917,
+    "relocation_ns": 948135797,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 526469,
+    "snapshot_ns": 5369374,
+    "sweep_samples": 0,
+    "terrain_ns": 0,
+    "world_ns": 0
+  },
+  "native_metrics_after": {
+    "chemistry_cells": 4161,
+    "chemistry_ns": 11618658,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 774,
+    "contact_ns": 84730374,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 31530,
+    "discovery_ns": 6921902,
+    "exchange_ns": 7954211,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66145242,
+    "mask_cells": 5722327,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 16401477,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 1387277750,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66161114,
+    "products_created": 0,
+    "promotions": 3,
+    "reabsorptions": 0,
+    "refusals": 1,
+    "relocated_cells": 1523,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 1523,
+    "relocation_ns": 960399387,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 526469,
+    "retained_bytes": 66161114,
+    "sand_ingested": 0,
+    "snapshot_ns": 368493393,
+    "stale_messages": 0,
+    "steps": 207,
+    "sweep_samples": 0,
+    "terrain_ns": 376243444,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_metrics_before": {
+    "chemistry_cells": 2774,
+    "chemistry_ns": 208220,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 151,
+    "contact_ns": 861277,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 31530,
+    "discovery_ns": 6668228,
+    "exchange_ns": 49727,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66145242,
+    "mask_cells": 32779,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 16401477,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 15672833,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66161114,
+    "products_created": 0,
+    "promotions": 3,
+    "reabsorptions": 0,
+    "refusals": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 12263590,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "retained_bytes": 66161114,
+    "sand_ingested": 0,
+    "snapshot_ns": 363124019,
+    "stale_messages": 0,
+    "steps": 27,
+    "sweep_samples": 0,
+    "terrain_ns": 376243444,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_pose_acknowledgements": 2160,
+  "native_pose_echo_checks": 2160,
+  "native_progress_observations": [
+    {
+      "bodies": 3,
+      "tick": 28,
+      "usec": 10757258
+    },
+    {
+      "bodies": 3,
+      "tick": 29,
+      "usec": 12079222
+    },
+    {
+      "bodies": 3,
+      "tick": 30,
+      "usec": 12115485
+    },
+    {
+      "bodies": 3,
+      "tick": 31,
+      "usec": 12151592
+    },
+    {
+      "bodies": 3,
+      "tick": 32,
+      "usec": 12200852
+    },
+    {
+      "bodies": 3,
+      "tick": 33,
+      "usec": 12236516
+    },
+    {
+      "bodies": 3,
+      "tick": 34,
+      "usec": 12271099
+    },
+    {
+      "bodies": 3,
+      "tick": 35,
+      "usec": 12305702
+    },
+    {
+      "bodies": 3,
+      "tick": 36,
+      "usec": 12343247
+    },
+    {
+      "bodies": 3,
+      "tick": 37,
+      "usec": 12377770
+    },
+    {
+      "bodies": 3,
+      "tick": 38,
+      "usec": 12417764
+    },
+    {
+      "bodies": 3,
+      "tick": 39,
+      "usec": 12455935
+    },
+    {
+      "bodies": 3,
+      "tick": 40,
+      "usec": 12489239
+    },
+    {
+      "bodies": 3,
+      "tick": 41,
+      "usec": 12522271
+    },
+    {
+      "bodies": 3,
+      "tick": 42,
+      "usec": 12557826
+    },
+    {
+      "bodies": 3,
+      "tick": 43,
+      "usec": 12594908
+    },
+    {
+      "bodies": 3,
+      "tick": 44,
+      "usec": 12627923
+    },
+    {
+      "bodies": 3,
+      "tick": 45,
+      "usec": 12669917
+    },
+    {
+      "bodies": 3,
+      "tick": 46,
+      "usec": 12701865
+    },
+    {
+      "bodies": 3,
+      "tick": 47,
+      "usec": 12735543
+    },
+    {
+      "bodies": 3,
+      "tick": 48,
+      "usec": 12769042
+    },
+    {
+      "bodies": 3,
+      "tick": 49,
+      "usec": 12803019
+    },
+    {
+      "bodies": 3,
+      "tick": 50,
+      "usec": 12833695
+    },
+    {
+      "bodies": 3,
+      "tick": 51,
+      "usec": 12861354
+    },
+    {
+      "bodies": 3,
+      "tick": 52,
+      "usec": 12888772
+    },
+    {
+      "bodies": 3,
+      "tick": 53,
+      "usec": 12919471
+    },
+    {
+      "bodies": 3,
+      "tick": 54,
+      "usec": 12950354
+    },
+    {
+      "bodies": 3,
+      "tick": 55,
+      "usec": 13013803
+    },
+    {
+      "bodies": 3,
+      "tick": 56,
+      "usec": 13042074
+    },
+    {
+      "bodies": 3,
+      "tick": 57,
+      "usec": 13072395
+    },
+    {
+      "bodies": 3,
+      "tick": 58,
+      "usec": 13106235
+    },
+    {
+      "bodies": 3,
+      "tick": 59,
+      "usec": 13149914
+    },
+    {
+      "bodies": 3,
+      "tick": 60,
+      "usec": 13184807
+    },
+    {
+      "bodies": 3,
+      "tick": 61,
+      "usec": 13212899
+    },
+    {
+      "bodies": 3,
+      "tick": 62,
+      "usec": 13249896
+    },
+    {
+      "bodies": 3,
+      "tick": 63,
+      "usec": 13286336
+    },
+    {
+      "bodies": 3,
+      "tick": 64,
+      "usec": 13319472
+    },
+    {
+      "bodies": 3,
+      "tick": 65,
+      "usec": 13348547
+    },
+    {
+      "bodies": 3,
+      "tick": 66,
+      "usec": 13390477
+    },
+    {
+      "bodies": 3,
+      "tick": 67,
+      "usec": 13423836
+    },
+    {
+      "bodies": 3,
+      "tick": 68,
+      "usec": 13456784
+    },
+    {
+      "bodies": 3,
+      "tick": 69,
+      "usec": 13491350
+    },
+    {
+      "bodies": 3,
+      "tick": 70,
+      "usec": 13520124
+    },
+    {
+      "bodies": 3,
+      "tick": 71,
+      "usec": 13551436
+    },
+    {
+      "bodies": 3,
+      "tick": 72,
+      "usec": 13589446
+    },
+    {
+      "bodies": 3,
+      "tick": 73,
+      "usec": 13623832
+    },
+    {
+      "bodies": 3,
+      "tick": 74,
+      "usec": 13656738
+    },
+    {
+      "bodies": 3,
+      "tick": 75,
+      "usec": 13689550
+    },
+    {
+      "bodies": 3,
+      "tick": 76,
+      "usec": 13718298
+    },
+    {
+      "bodies": 3,
+      "tick": 77,
+      "usec": 13759736
+    },
+    {
+      "bodies": 3,
+      "tick": 78,
+      "usec": 13795770
+    },
+    {
+      "bodies": 3,
+      "tick": 79,
+      "usec": 13824398
+    },
+    {
+      "bodies": 3,
+      "tick": 80,
+      "usec": 13859867
+    },
+    {
+      "bodies": 3,
+      "tick": 81,
+      "usec": 13888049
+    },
+    {
+      "bodies": 3,
+      "tick": 82,
+      "usec": 13931374
+    },
+    {
+      "bodies": 3,
+      "tick": 83,
+      "usec": 13965100
+    },
+    {
+      "bodies": 3,
+      "tick": 84,
+      "usec": 14003391
+    },
+    {
+      "bodies": 3,
+      "tick": 85,
+      "usec": 14036053
+    },
+    {
+      "bodies": 3,
+      "tick": 86,
+      "usec": 14070820
+    },
+    {
+      "bodies": 3,
+      "tick": 87,
+      "usec": 14104655
+    },
+    {
+      "bodies": 3,
+      "tick": 88,
+      "usec": 14132864
+    },
+    {
+      "bodies": 3,
+      "tick": 89,
+      "usec": 14169146
+    },
+    {
+      "bodies": 3,
+      "tick": 90,
+      "usec": 14201806
+    },
+    {
+      "bodies": 3,
+      "tick": 91,
+      "usec": 14235022
+    },
+    {
+      "bodies": 3,
+      "tick": 92,
+      "usec": 14263524
+    },
+    {
+      "bodies": 3,
+      "tick": 93,
+      "usec": 14294728
+    },
+    {
+      "bodies": 3,
+      "tick": 94,
+      "usec": 14323520
+    },
+    {
+      "bodies": 3,
+      "tick": 95,
+      "usec": 14364154
+    },
+    {
+      "bodies": 3,
+      "tick": 96,
+      "usec": 14397414
+    },
+    {
+      "bodies": 3,
+      "tick": 97,
+      "usec": 14428254
+    },
+    {
+      "bodies": 3,
+      "tick": 98,
+      "usec": 14465491
+    },
+    {
+      "bodies": 3,
+      "tick": 99,
+      "usec": 14496365
+    },
+    {
+      "bodies": 3,
+      "tick": 100,
+      "usec": 14529114
+    },
+    {
+      "bodies": 3,
+      "tick": 101,
+      "usec": 14563825
+    },
+    {
+      "bodies": 3,
+      "tick": 102,
+      "usec": 14595717
+    },
+    {
+      "bodies": 3,
+      "tick": 103,
+      "usec": 14632792
+    },
+    {
+      "bodies": 3,
+      "tick": 104,
+      "usec": 14664881
+    },
+    {
+      "bodies": 3,
+      "tick": 105,
+      "usec": 14700874
+    },
+    {
+      "bodies": 3,
+      "tick": 106,
+      "usec": 14731537
+    },
+    {
+      "bodies": 3,
+      "tick": 107,
+      "usec": 14761593
+    },
+    {
+      "bodies": 3,
+      "tick": 108,
+      "usec": 14808924
+    },
+    {
+      "bodies": 3,
+      "tick": 109,
+      "usec": 14836394
+    },
+    {
+      "bodies": 3,
+      "tick": 110,
+      "usec": 14875239
+    },
+    {
+      "bodies": 3,
+      "tick": 111,
+      "usec": 14903059
+    },
+    {
+      "bodies": 3,
+      "tick": 112,
+      "usec": 14956806
+    },
+    {
+      "bodies": 3,
+      "tick": 113,
+      "usec": 14992798
+    },
+    {
+      "bodies": 3,
+      "tick": 114,
+      "usec": 15064242
+    },
+    {
+      "bodies": 3,
+      "tick": 115,
+      "usec": 15089534
+    },
+    {
+      "bodies": 3,
+      "tick": 116,
+      "usec": 15123935
+    },
+    {
+      "bodies": 3,
+      "tick": 117,
+      "usec": 15167386
+    },
+    {
+      "bodies": 3,
+      "tick": 118,
+      "usec": 15195584
+    },
+    {
+      "bodies": 3,
+      "tick": 119,
+      "usec": 15219382
+    },
+    {
+      "bodies": 3,
+      "tick": 120,
+      "usec": 15254528
+    },
+    {
+      "bodies": 3,
+      "tick": 121,
+      "usec": 15284333
+    },
+    {
+      "bodies": 3,
+      "tick": 122,
+      "usec": 15318428
+    },
+    {
+      "bodies": 3,
+      "tick": 123,
+      "usec": 15352687
+    },
+    {
+      "bodies": 3,
+      "tick": 124,
+      "usec": 15384227
+    },
+    {
+      "bodies": 3,
+      "tick": 125,
+      "usec": 15432590
+    },
+    {
+      "bodies": 3,
+      "tick": 126,
+      "usec": 15471911
+    },
+    {
+      "bodies": 3,
+      "tick": 127,
+      "usec": 15499302
+    },
+    {
+      "bodies": 3,
+      "tick": 128,
+      "usec": 15533268
+    },
+    {
+      "bodies": 3,
+      "tick": 129,
+      "usec": 15560707
+    },
+    {
+      "bodies": 3,
+      "tick": 130,
+      "usec": 15595367
+    },
+    {
+      "bodies": 3,
+      "tick": 131,
+      "usec": 15633137
+    },
+    {
+      "bodies": 3,
+      "tick": 132,
+      "usec": 15662382
+    },
+    {
+      "bodies": 3,
+      "tick": 133,
+      "usec": 15697706
+    },
+    {
+      "bodies": 3,
+      "tick": 134,
+      "usec": 15720398
+    },
+    {
+      "bodies": 3,
+      "tick": 135,
+      "usec": 15750162
+    },
+    {
+      "bodies": 3,
+      "tick": 136,
+      "usec": 15791720
+    },
+    {
+      "bodies": 3,
+      "tick": 137,
+      "usec": 15818388
+    },
+    {
+      "bodies": 3,
+      "tick": 138,
+      "usec": 15853986
+    },
+    {
+      "bodies": 3,
+      "tick": 139,
+      "usec": 15887396
+    },
+    {
+      "bodies": 3,
+      "tick": 140,
+      "usec": 15926399
+    },
+    {
+      "bodies": 3,
+      "tick": 141,
+      "usec": 15956136
+    },
+    {
+      "bodies": 3,
+      "tick": 142,
+      "usec": 15988249
+    },
+    {
+      "bodies": 3,
+      "tick": 143,
+      "usec": 16020649
+    },
+    {
+      "bodies": 3,
+      "tick": 144,
+      "usec": 16052219
+    },
+    {
+      "bodies": 3,
+      "tick": 145,
+      "usec": 16081116
+    },
+    {
+      "bodies": 3,
+      "tick": 146,
+      "usec": 16129080
+    },
+    {
+      "bodies": 3,
+      "tick": 147,
+      "usec": 16165100
+    },
+    {
+      "bodies": 3,
+      "tick": 148,
+      "usec": 16200218
+    },
+    {
+      "bodies": 3,
+      "tick": 149,
+      "usec": 16234712
+    },
+    {
+      "bodies": 3,
+      "tick": 150,
+      "usec": 16268689
+    },
+    {
+      "bodies": 3,
+      "tick": 151,
+      "usec": 16306107
+    },
+    {
+      "bodies": 3,
+      "tick": 152,
+      "usec": 16331515
+    },
+    {
+      "bodies": 3,
+      "tick": 153,
+      "usec": 16364776
+    },
+    {
+      "bodies": 3,
+      "tick": 154,
+      "usec": 16393253
+    },
+    {
+      "bodies": 3,
+      "tick": 155,
+      "usec": 16433477
+    },
+    {
+      "bodies": 3,
+      "tick": 156,
+      "usec": 16462855
+    },
+    {
+      "bodies": 3,
+      "tick": 157,
+      "usec": 16515459
+    },
+    {
+      "bodies": 3,
+      "tick": 158,
+      "usec": 16547713
+    },
+    {
+      "bodies": 3,
+      "tick": 159,
+      "usec": 16580743
+    },
+    {
+      "bodies": 3,
+      "tick": 160,
+      "usec": 16612908
+    },
+    {
+      "bodies": 3,
+      "tick": 161,
+      "usec": 16642417
+    },
+    {
+      "bodies": 3,
+      "tick": 162,
+      "usec": 16676990
+    },
+    {
+      "bodies": 3,
+      "tick": 163,
+      "usec": 16706522
+    },
+    {
+      "bodies": 3,
+      "tick": 164,
+      "usec": 16730883
+    },
+    {
+      "bodies": 3,
+      "tick": 165,
+      "usec": 16759718
+    },
+    {
+      "bodies": 3,
+      "tick": 166,
+      "usec": 16806072
+    },
+    {
+      "bodies": 3,
+      "tick": 167,
+      "usec": 16841442
+    },
+    {
+      "bodies": 3,
+      "tick": 168,
+      "usec": 16881077
+    },
+    {
+      "bodies": 3,
+      "tick": 169,
+      "usec": 16914993
+    },
+    {
+      "bodies": 3,
+      "tick": 170,
+      "usec": 16951418
+    },
+    {
+      "bodies": 3,
+      "tick": 171,
+      "usec": 16985992
+    },
+    {
+      "bodies": 3,
+      "tick": 172,
+      "usec": 17019066
+    },
+    {
+      "bodies": 3,
+      "tick": 173,
+      "usec": 17050276
+    },
+    {
+      "bodies": 3,
+      "tick": 174,
+      "usec": 17098768
+    },
+    {
+      "bodies": 3,
+      "tick": 175,
+      "usec": 17130581
+    },
+    {
+      "bodies": 3,
+      "tick": 176,
+      "usec": 17157234
+    },
+    {
+      "bodies": 3,
+      "tick": 177,
+      "usec": 17198238
+    },
+    {
+      "bodies": 3,
+      "tick": 178,
+      "usec": 17226548
+    },
+    {
+      "bodies": 3,
+      "tick": 179,
+      "usec": 17261018
+    },
+    {
+      "bodies": 3,
+      "tick": 180,
+      "usec": 17296690
+    },
+    {
+      "bodies": 3,
+      "tick": 181,
+      "usec": 17332067
+    },
+    {
+      "bodies": 3,
+      "tick": 182,
+      "usec": 17369429
+    },
+    {
+      "bodies": 3,
+      "tick": 183,
+      "usec": 17411009
+    },
+    {
+      "bodies": 3,
+      "tick": 184,
+      "usec": 17450218
+    },
+    {
+      "bodies": 3,
+      "tick": 185,
+      "usec": 17485311
+    },
+    {
+      "bodies": 3,
+      "tick": 186,
+      "usec": 17509424
+    },
+    {
+      "bodies": 3,
+      "tick": 187,
+      "usec": 17565977
+    },
+    {
+      "bodies": 3,
+      "tick": 188,
+      "usec": 17591488
+    },
+    {
+      "bodies": 3,
+      "tick": 189,
+      "usec": 17640149
+    },
+    {
+      "bodies": 3,
+      "tick": 190,
+      "usec": 17681301
+    },
+    {
+      "bodies": 3,
+      "tick": 191,
+      "usec": 17711972
+    },
+    {
+      "bodies": 3,
+      "tick": 192,
+      "usec": 17749192
+    },
+    {
+      "bodies": 3,
+      "tick": 193,
+      "usec": 17787293
+    },
+    {
+      "bodies": 3,
+      "tick": 194,
+      "usec": 17816731
+    },
+    {
+      "bodies": 3,
+      "tick": 195,
+      "usec": 17848478
+    },
+    {
+      "bodies": 3,
+      "tick": 196,
+      "usec": 17883346
+    },
+    {
+      "bodies": 3,
+      "tick": 197,
+      "usec": 17917827
+    },
+    {
+      "bodies": 3,
+      "tick": 198,
+      "usec": 17952703
+    },
+    {
+      "bodies": 3,
+      "tick": 199,
+      "usec": 17991435
+    },
+    {
+      "bodies": 3,
+      "tick": 200,
+      "usec": 18034874
+    },
+    {
+      "bodies": 3,
+      "tick": 201,
+      "usec": 18069552
+    },
+    {
+      "bodies": 3,
+      "tick": 202,
+      "usec": 18102023
+    },
+    {
+      "bodies": 3,
+      "tick": 203,
+      "usec": 18134953
+    },
+    {
+      "bodies": 3,
+      "tick": 204,
+      "usec": 18168822
+    },
+    {
+      "bodies": 3,
+      "tick": 205,
+      "usec": 18200838
+    },
+    {
+      "bodies": 3,
+      "tick": 206,
+      "usec": 18233833
+    },
+    {
+      "bodies": 3,
+      "tick": 207,
+      "usec": 18266397
+    },
+    {
+      "bodies": 3,
+      "tick": 208,
+      "usec": 18301052
+    }
+  ],
+  "performance_scope": "process callbacks and actual renderer frame_post_draw submissions; physical GPU presentation OWNER-PENDING",
+  "physical_progress_scope": "completed actual 1/60-second Main intervals; partial in-flight segments excluded",
+  "platform": "Linux",
+  "process_callbacks_per_wall_second": 131.302834153788,
+  "process_intervals": {
+    "count": 990,
+    "maximum_usec": 39928,
+    "p50_usec": 7997,
+    "p95_usec": 10729
+  },
+  "receipt_pump_usec_delta": 4387534,
+  "recording_enabled": true,
+  "render_submission_intervals": {
+    "count": 0,
+    "maximum_usec": 0,
+    "p50_usec": 0,
+    "p95_usec": 0
+  },
+  "render_submissions": 0,
+  "render_submissions_per_wall_second": 0.0,
+  "rendering_method": "gl_compatibility",
+  "sampling": "cohorts",
+  "scene": "viaduct",
+  "schema": "objectshard-m4-workbench-profile-v1",
+  "semantic_ticks_per_wall_second": 23.8491525203652,
+  "shard_dimensions": [
+    {
+      "height": 41,
+      "width": 98
+    },
+    {
+      "height": 41,
+      "width": 98
+    },
+    {
+      "height": 41,
+      "width": 98
+    }
+  ],
+  "simulated_physical_seconds": 3.0,
+  "simulated_physical_seconds_per_wall_second": 0.39748587533942,
+  "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "stage_scope": "window deltas; native occupancy includes relocation, and Main receipt pump includes waits and its nested stages; these counters must not be summed as independent wall time",
+  "worker_stage_deltas": {
+    "frame_copy_calls": 180,
+    "frame_copy_usec": 64646,
+    "snapshot_calls": 1080,
+    "snapshot_usec": 935209
+  }
+}

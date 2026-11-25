@@ -1,0 +1,124 @@
+{
+  "application_source": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "assertion_checks": 233,
+  "case_seconds": 32.275,
+  "files": {
+    "fixture-tested.gd": {
+      "bytes": 18260,
+      "sha256": "3c8ce13a53f99a753b3e43bceddf8afa6eff9e06ba443d8af8327c07356dc70f"
+    },
+    "receipt.json": {
+      "bytes": 360403,
+      "sha256": "60fae74b102756089aee4f9987787e4eee7ca2a4b3b8236d48a3b3bd6ece4ec5"
+    },
+    "replay.json": {
+      "bytes": 132740,
+      "sha256": "27dfd3e13da97470420dd93b523ade4c43a270c347022bb64cacdfaa3c2a16d6"
+    },
+    "report-only-successor.diff": {
+      "bytes": 782,
+      "sha256": "fab53f2935fd178fc35a34934ff675bb657c9b133c5bcc6acbc94300ba529240"
+    },
+    "resource-samples.jsonl": {
+      "bytes": 9144,
+      "sha256": "c7d4d22b4374c0ba58623afe2008e199e8d479810cd3e68c9bf49fd85575d419"
+    }
+  },
+  "natural_exit_code": 0,
+  "observed_wrapper_seconds": 36.33551354699739,
+  "original_failed_campaign": {
+    "archive_bytes": 5242715,
+    "archive_sha256": "9e65cbe3bf9e8b84fe6906b04d39639920ff83d3334cc2e3610a94f774d7b5f6",
+    "artifact": 14980020675,
+    "attempt": 1,
+    "boundary_finding": "At native tick514 structural8/geometry2 was present with applied physics1 and displayed Wood/state_b1. At515 displayedEmpty and appliedphysics2. Old test joined latest native tick to older displayed cell, incorrectly adding publication delay to480tick chemistry lifetime.",
+    "failed_log_sha256": "e9ca4a6d5fad4865daf5d2313b9f21d9ae41b73fcfa09041b93a212119800314",
+    "result": "Windows41of42headless PASS; long_burn natural exit1; aggregate remains FAILED",
+    "run": 45517975210,
+    "source": "51903088118d2a04f2dc79dd6fff7c25b226970c"
+  },
+  "original_receipt_paths_scope": "Copied replay.json preserves original build-relative paths. resource-samples.jsonl is the committed copy of corrected_long_burn-resources.jsonl; fixture-tested.gd is the copied external fixture.",
+  "post_exhaustion_native_ticks": 1,
+  "probe_review": "Optional recording changes observation work and callback subscription, not chemistry or interval/ack gates. Its cost can alter which phase is observed around8ms/48operation pump. No claim of proven toggle causality.",
+  "raw_inventory_scope": "Binary diagnostic planes remain in original local build evidence; receipt retains full independent scans, census, quantity and hash witnesses. Final hosted archive is the principal delivery evidence.",
+  "raw_local_inventory_files": {
+    "corrected_long_burn-artifacts/inventory-000-owner-1-materials.bin": {
+      "bytes": 25,
+      "sha256": "20ffd886cfdceef002235cb6ec011b7b573d378e89e020564c74ddd291c7f799"
+    },
+    "corrected_long_burn-artifacts/inventory-000-parcels-float64.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "corrected_long_burn-artifacts/inventory-000-rendered-rg8.bin": {
+      "bytes": 524288,
+      "sha256": "62fd217829d05151eee8bf5c658ded38ae5deda49a29242de01d91cdf33e75b4"
+    },
+    "corrected_long_burn-artifacts/inventory-000-stored-materials.bin": {
+      "bytes": 262144,
+      "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330"
+    },
+    "corrected_long_burn-artifacts/inventory-001-owner-1-materials.bin": {
+      "bytes": 25,
+      "sha256": "eb60346b178adb2a947cf82df8660fb3781097852f8b48d7d5d04cbd25fa15d7"
+    },
+    "corrected_long_burn-artifacts/inventory-001-parcels-float64.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "corrected_long_burn-artifacts/inventory-001-rendered-rg8.bin": {
+      "bytes": 524288,
+      "sha256": "62fd217829d05151eee8bf5c658ded38ae5deda49a29242de01d91cdf33e75b4"
+    },
+    "corrected_long_burn-artifacts/inventory-001-stored-materials.bin": {
+      "bytes": 262144,
+      "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330"
+    },
+    "corrected_long_burn-artifacts/inventory-002-owner-1-materials.bin": {
+      "bytes": 16,
+      "sha256": "d8a351cf3ff6406a33aaaa3b30a1d0a1897a36e63b50364e0cad2a66af0dc8cb"
+    },
+    "corrected_long_burn-artifacts/inventory-002-parcels-float64.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "corrected_long_burn-artifacts/inventory-002-rendered-rg8.bin": {
+      "bytes": 524288,
+      "sha256": "62fd217829d05151eee8bf5c658ded38ae5deda49a29242de01d91cdf33e75b4"
+    },
+    "corrected_long_burn-artifacts/inventory-002-stored-materials.bin": {
+      "bytes": 262144,
+      "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330"
+    },
+    "corrected_long_burn-artifacts/inventory-003-parcels-float64.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "corrected_long_burn-artifacts/inventory-003-rendered-rg8.bin": {
+      "bytes": 524288,
+      "sha256": "62fd217829d05151eee8bf5c658ded38ae5deda49a29242de01d91cdf33e75b4"
+    },
+    "corrected_long_burn-artifacts/inventory-003-stored-materials.bin": {
+      "bytes": 262144,
+      "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330"
+    }
+  },
+  "raw_logs": {
+    "execution": {
+      "bytes": 212308,
+      "original_path": "build/recovery-performance/long-burn-correction/corrected_long_burn.log",
+      "sha256": "8cf2340668d6abd18fa8996c1ec1597ec577a50c3dae55e71057ce4e9a7c64a2"
+    },
+    "retention_scope": "Original log retained in local build evidence and hashed here; repository AGENTS.md excludes raw logs from commits. Complete parsed receipt and external resource samples are committed."
+  },
+  "runtime_input_custody_committed": "../performance-local-61213289c/campaign.json",
+  "schema": "objectshard-m4-long-burn-recovery-review-v1",
+  "source_changes": "Test-local native-frame cell/time join and independent delivery assertions; no native/material law/Main/Rapier changes",
+  "status": "focused local correction passed; hosted corrected source qualification required",
+  "strict_lifetime_native_ticks": 480,
+  "successor_commit": "1d494c36b119219db3cd812e7bff45358a3a6c87",
+  "successor_diff_sha256": "fab53f2935fd178fc35a34934ff675bb657c9b133c5bcc6acbc94300ba529240",
+  "successor_fixture_sha256": "787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad",
+  "successor_scope": "Only two derived receipt fields added after the executed fixture bytes were frozen. Not relabelled as local execution of successor. Hosted final-source campaign executes successor.",
+  "tested_fixture_sha256": "3c8ce13a53f99a753b3e43bceddf8afa6eff9e06ba443d8af8327c07356dc70f"
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "objectshard-m4-lead-original-visual-review-v1",
+  "reviewer": "technical lead",
+  "source_commit": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+  "source_tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+  "artifact_id": 14961723648,
+  "artifact_sha256": "3f35d18a7e54ce8327d0b6f63dc57cf3e035380e7b87714c612dd0370f3650d7",
+  "observed_images": [
+    {
+      "member": "graphical/m4_workbench_tower_overview_light_render-artifacts/tower-overview.png",
+      "bytes": 83314,
+      "sha256": "8ce91fa8af89571e58116f6ee1b455cee4824e58cfac0ac7c3234dbb804fd773",
+      "visual_observation": "Visible tilted multi-storey body resting against native terrain; one active-owned body shown."
+    },
+    {
+      "member": "graphical/m4_workbench_viaduct_overview_render-artifacts/viaduct-overview.png",
+      "bytes": 92260,
+      "sha256": "c3cf446b6df09b4c291865414229947d0918110bce7e39daa534b1056995ea6f",
+      "visual_observation": "Three recognizable detached span sections over visible Water and native floor."
+    },
+    {
+      "member": "graphical/m4_workbench_mixed_overview_render-artifacts/mixed-overview.png",
+      "bytes": 94254,
+      "sha256": "0890c940e6e779a96f1b7a811c6ea9c08ca1ad766356b92728569ccace66f81c",
+      "visual_observation": "Coherent wood/brick frame with Sand and Water visible in and around its lower cells."
+    },
+    {
+      "member": "graphical/m4_workbench_stress_overview_light_render-artifacts/stress-overview.png",
+      "bytes": 82264,
+      "sha256": "ea71989a7a196bec49fa83cad9151092833c01d6a5eabe79261b5721f83c1cf6",
+      "visual_observation": "Eight separate frames visible, including tilted bodies; status shows eight of sixteen owner slots."
+    },
+    {
+      "member": "graphical/m4_workbench_timber_overview_render-artifacts/timber-overview.png",
+      "bytes": 79895,
+      "sha256": "80e9244857a18838aeea142f817d4808a2912ba0101b7e1da4d73e4070ced362",
+      "visual_observation": "Combustible frame with edited gaps and sparse visible products; still image alone cannot establish continued combustion."
+    }
+  ],
+  "assessment": "Five recognisable native material scenes and ordinary tools are visible. Overview framing has substantial empty space; ordinary wheel zoom and middle-button pan are relevant owner instructions. No capture shows a disconnected laboratory entry.",
+  "limits": [
+    "Original predecessor stills, not new frozen-source graphical qualification.",
+    "Stills cannot establish velocity, continuity, collision correctness, input latency, physical monitor FPS, material conservation or owner playfeel.",
+    "Final delivery requires actual successor graphical and shipped-launcher evidence."
+  ]
+}

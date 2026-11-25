@@ -1,0 +1,2604 @@
+{
+  "active_body_cohorts": {
+    "-1": {
+      "render_submissions": 0,
+      "scope": "unclassified awake state; no per-callback physics readback"
+    }
+  },
+  "active_body_count_max": 1,
+  "actual_physics_steps": 720,
+  "before_cut_supports": {
+    "authored_material_populations": {
+      "1": 28600,
+      "43": 2232,
+      "7": 2184
+    },
+    "material_bodies_before_cut": 0,
+    "missing_support_cells": 0,
+    "native_tick": 1,
+    "scope": "actual coherent native material image before ordinary support cuts; authored recipe populations are reported separately",
+    "support_cells": 808
+  },
+  "body_count_max": 1,
+  "body_count_min": 1,
+  "camera": "overview",
+  "checks": 143,
+  "cohort_scope": "intervals classified by observed real Rapier awake body count at callback end; transition intervals are not exact GPU samples",
+  "completed_physical_intervals": 180,
+  "completed_semantic_ticks": 180,
+  "diagnostics": {
+    "attached": true,
+    "body_count": 1,
+    "controls_completed": 1029,
+    "deferred_world_uploads": 13,
+    "enabled": true,
+    "has_live_inventory": true,
+    "held_reason": "",
+    "last_motion_permit": {
+      "lease": 205,
+      "ok": true,
+      "outcome": "MotionReserved"
+    },
+    "main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+    "main_costs": {
+      "owner_control_admission": {
+        "calls": 1029,
+        "max_usec": 1076,
+        "usec": 48878
+      },
+      "pose_packet_capture": {
+        "calls": 820,
+        "max_usec": 4258,
+        "usec": 71203
+      },
+      "rapier_segment": {
+        "calls": 820,
+        "max_usec": 3640,
+        "usec": 170773
+      }
+    },
+    "motion_lease": 0,
+    "motion_permits_refused": 47,
+    "native_instance_id": -9223371955099400592,
+    "native_pose_acknowledgements": 720,
+    "native_pose_echo_checks": 720,
+    "native_tick": 206,
+    "owner_replacements": 1,
+    "pending_kind": "",
+    "pending_serial": 0,
+    "phase": "Ready",
+    "physical_intervals": 205,
+    "physical_steps": 820,
+    "physics": {
+      "awaiting_native": false,
+      "bodies": [
+        {
+          "active": true,
+          "angular_velocity": 0.30336132645607,
+          "backend_rotation": -0.117743171751499,
+          "body_generation": 1,
+          "com_x": 48.869987487793,
+          "com_y": 58.9033355712891,
+          "generation": 1,
+          "geometry_digest": "10373625284739529515",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11497506.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4438.0,
+          "nominal_rotation_headroom": 0.194943977892399,
+          "nominal_translation_headroom": 3.62148590087891,
+          "reported_contacts": 13,
+          "rotation": -0.117743171751499,
+          "shape_count": 23,
+          "sleeping": false,
+          "vx": 22.2845458984375,
+          "vy": 4.37967729568481,
+          "x": 105.005081176758,
+          "y": 342.003234863281
+        }
+      ],
+      "events": [
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 1,
+          "kind": "BodyActivated",
+          "physics_step": 100
+        }
+      ],
+      "last_completed_semantic_tick": -1,
+      "last_error": "",
+      "last_physics_session": 1,
+      "last_sampled_pose_serial": 820,
+      "motion": {},
+      "motion_phase": "Idle",
+      "motion_refused": false,
+      "operation_sequence": 0,
+      "physics_steps": 820,
+      "segment_sequence": 0,
+      "session": 1
+    },
+    "physics_ready": true,
+    "publication_sequence": 977,
+    "pump_usec_max": 11299,
+    "pump_usec_total": 4440808,
+    "reabsorption_receipt": {},
+    "receipt": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 205,
+      "native_tick_before_prepare": 205,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 1030
+    },
+    "redundant_readiness_receipts_suppressed": 251,
+    "save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+    "shared_main_space_id": 18565,
+    "worker_profile": {
+      "actor_work": {
+        "due_effects": 0,
+        "due_usables": 0,
+        "pending_effects": 0,
+        "pending_usables": 0
+      },
+      "counter_scope": "cumulative ordinary worker lifetime",
+      "frame_copy_calls": 252,
+      "frame_copy_max_usec": 796,
+      "frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+      "frame_copy_usec": 51728,
+      "motion_fence": {
+        "completed_sample": 1030,
+        "current_sample": 1030,
+        "due_sample": -1,
+        "lease": 0,
+        "ordinary_refusal": "",
+        "owner_busy": false,
+        "prepared_sample": 1030,
+        "reused_prepared_samples": 205,
+        "tick_due": false
+      },
+      "snapshot_calls": 1283,
+      "snapshot_max_usec": 5387,
+      "snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+      "snapshot_usec": 1129068
+    },
+    "world_generation": 3
+  },
+  "display_coherence": {
+    "between_callback_observations": 1105,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "display_driver": "headless",
+  "elapsed_usec": 6358793,
+  "failures": [],
+  "final_boundary": {
+    "displayed_native_tick": 206,
+    "displayed_poses": [
+      {
+        "id": 1,
+        "pose_serial": 820,
+        "position_x": 105.005081176758,
+        "position_y": 342.003234863281,
+        "rotation": -0.117743171751499
+      }
+    ],
+    "displayed_publication_sequence": 977,
+    "displayed_world_revision": 52,
+    "image_format": 3,
+    "latest_native_tick": 206,
+    "latest_publication_sequence": 977,
+    "physics": [
+      {
+        "active": true,
+        "angular_velocity": 0.30336132645607,
+        "backend_rotation": -0.117743171751499,
+        "body_generation": 1,
+        "com_x": 48.869987487793,
+        "com_y": 58.9033355712891,
+        "generation": 1,
+        "geometry_digest": "10373625284739529515",
+        "geometry_revision": 1,
+        "id": 1,
+        "inertia": 11497506.0,
+        "last_geometry_step": 100,
+        "last_geometry_usec": 0,
+        "mass": 4438.0,
+        "nominal_rotation_headroom": 0.194943977892399,
+        "nominal_translation_headroom": 3.62148590087891,
+        "reported_contacts": 13,
+        "rotation": -0.117743171751499,
+        "shape_count": 23,
+        "sleeping": false,
+        "vx": 22.2845458984375,
+        "vy": 4.37967729568481,
+        "x": 105.005081176758,
+        "y": 342.003234863281
+      }
+    ],
+    "rendered_water_pixels": 0,
+    "uploaded_world_revision": 52,
+    "world_water_ledger": 0
+  },
+  "instrumentation_scope": "no per-callback physics readback; callback timestamps retained; ordinary latency probe enabled",
+  "inventory_after": {
+    "brick": 2232,
+    "wood": 2184
+  },
+  "inventory_before": {
+    "brick": 2232,
+    "wood": 2184
+  },
+  "inventory_witnesses": [
+    {
+      "owned_inventory": [],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        229128,
+        28600,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2184,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2232,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 1,
+        "owner_epoch": 2,
+        "publication_sequence": 1,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 3
+      },
+      "total_material_counts": [
+        0,
+        28600,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2184,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2232,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 0,
+        "independent_total_quantity": 0,
+        "native_ledger": {
+          "ballistic": 0,
+          "expected": 0,
+          "overfill": 0,
+          "total": 0,
+          "visible": 0
+        },
+        "parcel_count": 0,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 0,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "d598a68e54b8de8f",
+          "state_hash": "963dde12fb6d3539",
+          "tick": 1,
+          "water_cells": 0,
+          "water_integer": 0,
+          "water_overfill": 0,
+          "water_visible": 0
+        }
+      }
+    },
+    {
+      "owned_inventory": [
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 1,
+          "materials": {
+            "bytes": 12250,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        }
+      ],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        234338,
+        27806,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 2,
+        "owner_epoch": 2,
+        "publication_sequence": 977,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 206,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "total_material_counts": [
+        0,
+        27828,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2184,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2232,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 0,
+        "independent_total_quantity": 0,
+        "native_ledger": {
+          "ballistic": 0,
+          "expected": 0,
+          "overfill": 0,
+          "total": 0,
+          "visible": 0
+        },
+        "parcel_count": 0,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 0,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "682acb612d2e410d",
+          "state_hash": "d72d59834a05f7dd",
+          "tick": 206,
+          "water_cells": 0,
+          "water_integer": 0,
+          "water_overfill": 0,
+          "water_visible": 0
+        }
+      }
+    }
+  ],
+  "latency": {
+    "cadence": {
+      "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+      "capacity_dropped_intervals": 0,
+      "cohort_capacity": 64,
+      "display_backend": "headless",
+      "hardware_present_verified": false,
+      "native_progress_delivery": [
+        {
+          "elapsed_usec": 439203,
+          "interval_count": 23,
+          "maximum_interval_usec": 37549,
+          "observed_units_per_second": 52.3675840101274,
+          "recent_interval_samples": 23,
+          "recent_p50_interval_usec": 16818,
+          "recent_p95_interval_usec": 30378,
+          "units": "native_semantic_ticks",
+          "units_observed": 23,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 0,
+            "paused": false
+          }
+        },
+        {
+          "elapsed_usec": 5772624,
+          "interval_count": 178,
+          "maximum_interval_usec": 66923,
+          "observed_units_per_second": 30.8351973036872,
+          "recent_interval_samples": 178,
+          "recent_p50_interval_usec": 31569,
+          "recent_p95_interval_usec": 46369,
+          "units": "native_semantic_ticks",
+          "units_observed": 178,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 1,
+            "paused": false
+          }
+        }
+      ],
+      "percentile_scope": "most_recent_bounded_intervals_per_workload",
+      "post_draw_intervals": [],
+      "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+      "render_scope": "headless_callback_only"
+    },
+    "enabled": true,
+    "epoch": 2,
+    "events_retained": 512,
+    "frame_serial_coherence_proven": false,
+    "input_to_post_draw_causally_proven": false,
+    "no_additive_stage_total": true,
+    "post_draw_callbacks_after_upload": 0,
+    "proven_presented_uploads": 0,
+    "schema": "objectshard-m4-workbench-latency-v1",
+    "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+    "stages": {
+      "physics_work": {
+        "count": 256,
+        "maximum_usec": 3640,
+        "p50_usec": 147,
+        "p95_usec": 348
+      },
+      "publication_prepare": {
+        "count": 256,
+        "maximum_usec": 1005,
+        "p50_usec": 67,
+        "p95_usec": 182
+      },
+      "queue_admission": {
+        "count": 256,
+        "maximum_usec": 438,
+        "p50_usec": 30,
+        "p95_usec": 158
+      },
+      "receipt_delivery": {
+        "count": 256,
+        "maximum_usec": 9545,
+        "p50_usec": 2053,
+        "p95_usec": 5295
+      },
+      "scene_callback": {
+        "count": 256,
+        "maximum_usec": 23300,
+        "p50_usec": 7484,
+        "p95_usec": 8915
+      },
+      "texture_upload_submission": {
+        "count": 20,
+        "maximum_usec": 181,
+        "p50_usec": 34,
+        "p95_usec": 90
+      }
+    },
+    "worker_metrics": {
+      "hard_surface_packet_time_ms": 0.0,
+      "render_exchange_time_ms": 0.0,
+      "scope": "worker_reported_potentially_nested_not_a_sum",
+      "snapshot_copy_time_ms": 0.004,
+      "snapshot_publication_time_ms": 0.364,
+      "snapshot_serial": 5251,
+      "tick": 205,
+      "worker_step_time_ms": 0.087,
+      "world_generation": 3,
+      "world_revision": 52
+    }
+  },
+  "main_stage_deltas": {
+    "owner_control_admission": {
+      "calls": 900,
+      "cumulative_max_usec": 1076,
+      "usec": 42039
+    },
+    "pose_packet_capture": {
+      "calls": 720,
+      "cumulative_max_usec": 4258,
+      "usec": 66121
+    },
+    "rapier_segment": {
+      "calls": 720,
+      "cumulative_max_usec": 3640,
+      "usec": 154126
+    }
+  },
+  "material_contact_deltas": {
+    "accepted_exposures": 0,
+    "consumed_exposures": 0,
+    "external_ignitions": 0,
+    "extinguished": 0,
+    "output_blocked": 0,
+    "products_created": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "sand_ingested": 0
+  },
+  "material_interaction_scope": "committed native carrier relocation, source-bound chemistry/exposure and optional Sand custody; no cellular fluid force or buoyancy transfer to Rapier is implemented",
+  "material_population_scope": "displayed material pixels plus owned material; Water pixels may include ballistic projection; raw grid census and exact quantity are in inventory_witnesses",
+  "material_populations_before": {
+    "brick": 2232,
+    "fire": 0,
+    "sand": 0,
+    "water": 0,
+    "wood": 2184
+  },
+  "native_cost_deltas": {
+    "chemistry_cells": 4438,
+    "chemistry_ns": 11903171,
+    "composed_reuses": 893,
+    "contact_ns": 52184404,
+    "discovery_ns": 488576,
+    "exchange_ns": 7808702,
+    "geometry_ns": 0,
+    "mask_cells": 4740159,
+    "occupancy_ns": 1120348729,
+    "relocation_ns": 768709761,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "snapshot_ns": 5344092,
+    "sweep_samples": 0,
+    "terrain_ns": 0,
+    "world_ns": 0
+  },
+  "native_metrics_after": {
+    "chemistry_cells": 4438,
+    "chemistry_ns": 11910468,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 1034,
+    "contact_ns": 52434069,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 32244,
+    "discovery_ns": 6605016,
+    "exchange_ns": 7811938,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66152030,
+    "mask_cells": 4744597,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 12647801,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 1126371848,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66159854,
+    "products_created": 0,
+    "promotions": 1,
+    "reabsorptions": 0,
+    "refusals": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 774185775,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "retained_bytes": 66159854,
+    "sand_ingested": 0,
+    "snapshot_ns": 147766002,
+    "stale_messages": 0,
+    "steps": 205,
+    "sweep_samples": 0,
+    "terrain_ns": 145458427,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_metrics_before": {
+    "chemistry_cells": 0,
+    "chemistry_ns": 7297,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 141,
+    "contact_ns": 249665,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 32244,
+    "discovery_ns": 6116440,
+    "exchange_ns": 3236,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66152030,
+    "mask_cells": 4438,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 12647801,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 6023119,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66159854,
+    "products_created": 0,
+    "promotions": 1,
+    "reabsorptions": 0,
+    "refusals": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 5476014,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "retained_bytes": 66159854,
+    "sand_ingested": 0,
+    "snapshot_ns": 142421910,
+    "stale_messages": 0,
+    "steps": 25,
+    "sweep_samples": 0,
+    "terrain_ns": 145458427,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_pose_acknowledgements": 720,
+  "native_pose_echo_checks": 720,
+  "native_progress_observations": [
+    {
+      "bodies": 1,
+      "tick": 26,
+      "usec": 8975070
+    },
+    {
+      "bodies": 1,
+      "tick": 27,
+      "usec": 9473369
+    },
+    {
+      "bodies": 1,
+      "tick": 28,
+      "usec": 9508732
+    },
+    {
+      "bodies": 1,
+      "tick": 29,
+      "usec": 9543228
+    },
+    {
+      "bodies": 1,
+      "tick": 30,
+      "usec": 9573108
+    },
+    {
+      "bodies": 1,
+      "tick": 31,
+      "usec": 9598781
+    },
+    {
+      "bodies": 1,
+      "tick": 32,
+      "usec": 9631923
+    },
+    {
+      "bodies": 1,
+      "tick": 33,
+      "usec": 9659278
+    },
+    {
+      "bodies": 1,
+      "tick": 34,
+      "usec": 9693134
+    },
+    {
+      "bodies": 1,
+      "tick": 35,
+      "usec": 9723799
+    },
+    {
+      "bodies": 1,
+      "tick": 36,
+      "usec": 9773868
+    },
+    {
+      "bodies": 1,
+      "tick": 37,
+      "usec": 9814037
+    },
+    {
+      "bodies": 1,
+      "tick": 38,
+      "usec": 9841150
+    },
+    {
+      "bodies": 1,
+      "tick": 39,
+      "usec": 9889833
+    },
+    {
+      "bodies": 1,
+      "tick": 40,
+      "usec": 9927022
+    },
+    {
+      "bodies": 1,
+      "tick": 41,
+      "usec": 9956328
+    },
+    {
+      "bodies": 1,
+      "tick": 42,
+      "usec": 9989472
+    },
+    {
+      "bodies": 1,
+      "tick": 43,
+      "usec": 10017592
+    },
+    {
+      "bodies": 1,
+      "tick": 44,
+      "usec": 10052271
+    },
+    {
+      "bodies": 1,
+      "tick": 45,
+      "usec": 10080607
+    },
+    {
+      "bodies": 1,
+      "tick": 46,
+      "usec": 10106239
+    },
+    {
+      "bodies": 1,
+      "tick": 47,
+      "usec": 10132970
+    },
+    {
+      "bodies": 1,
+      "tick": 48,
+      "usec": 10166924
+    },
+    {
+      "bodies": 1,
+      "tick": 49,
+      "usec": 10195740
+    },
+    {
+      "bodies": 1,
+      "tick": 50,
+      "usec": 10222528
+    },
+    {
+      "bodies": 1,
+      "tick": 51,
+      "usec": 10248518
+    },
+    {
+      "bodies": 1,
+      "tick": 52,
+      "usec": 10285675
+    },
+    {
+      "bodies": 1,
+      "tick": 53,
+      "usec": 10314177
+    },
+    {
+      "bodies": 1,
+      "tick": 54,
+      "usec": 10340139
+    },
+    {
+      "bodies": 1,
+      "tick": 55,
+      "usec": 10368120
+    },
+    {
+      "bodies": 1,
+      "tick": 56,
+      "usec": 10399769
+    },
+    {
+      "bodies": 1,
+      "tick": 57,
+      "usec": 10431338
+    },
+    {
+      "bodies": 1,
+      "tick": 58,
+      "usec": 10457977
+    },
+    {
+      "bodies": 1,
+      "tick": 59,
+      "usec": 10486653
+    },
+    {
+      "bodies": 1,
+      "tick": 60,
+      "usec": 10539556
+    },
+    {
+      "bodies": 1,
+      "tick": 61,
+      "usec": 10573044
+    },
+    {
+      "bodies": 1,
+      "tick": 62,
+      "usec": 10600198
+    },
+    {
+      "bodies": 1,
+      "tick": 63,
+      "usec": 10636526
+    },
+    {
+      "bodies": 1,
+      "tick": 64,
+      "usec": 10666604
+    },
+    {
+      "bodies": 1,
+      "tick": 65,
+      "usec": 10693786
+    },
+    {
+      "bodies": 1,
+      "tick": 66,
+      "usec": 10722235
+    },
+    {
+      "bodies": 1,
+      "tick": 67,
+      "usec": 10755762
+    },
+    {
+      "bodies": 1,
+      "tick": 68,
+      "usec": 10786444
+    },
+    {
+      "bodies": 1,
+      "tick": 69,
+      "usec": 10822498
+    },
+    {
+      "bodies": 1,
+      "tick": 70,
+      "usec": 10850189
+    },
+    {
+      "bodies": 1,
+      "tick": 71,
+      "usec": 10883056
+    },
+    {
+      "bodies": 1,
+      "tick": 72,
+      "usec": 10912474
+    },
+    {
+      "bodies": 1,
+      "tick": 73,
+      "usec": 10939227
+    },
+    {
+      "bodies": 1,
+      "tick": 74,
+      "usec": 10967387
+    },
+    {
+      "bodies": 1,
+      "tick": 75,
+      "usec": 11000784
+    },
+    {
+      "bodies": 1,
+      "tick": 76,
+      "usec": 11035703
+    },
+    {
+      "bodies": 1,
+      "tick": 77,
+      "usec": 11067644
+    },
+    {
+      "bodies": 1,
+      "tick": 78,
+      "usec": 11101319
+    },
+    {
+      "bodies": 1,
+      "tick": 79,
+      "usec": 11130883
+    },
+    {
+      "bodies": 1,
+      "tick": 80,
+      "usec": 11156855
+    },
+    {
+      "bodies": 1,
+      "tick": 81,
+      "usec": 11189931
+    },
+    {
+      "bodies": 1,
+      "tick": 82,
+      "usec": 11244171
+    },
+    {
+      "bodies": 1,
+      "tick": 83,
+      "usec": 11283784
+    },
+    {
+      "bodies": 1,
+      "tick": 84,
+      "usec": 11310696
+    },
+    {
+      "bodies": 1,
+      "tick": 85,
+      "usec": 11339251
+    },
+    {
+      "bodies": 1,
+      "tick": 86,
+      "usec": 11366446
+    },
+    {
+      "bodies": 1,
+      "tick": 87,
+      "usec": 11393430
+    },
+    {
+      "bodies": 1,
+      "tick": 88,
+      "usec": 11429329
+    },
+    {
+      "bodies": 1,
+      "tick": 89,
+      "usec": 11465147
+    },
+    {
+      "bodies": 1,
+      "tick": 90,
+      "usec": 11497929
+    },
+    {
+      "bodies": 1,
+      "tick": 91,
+      "usec": 11533118
+    },
+    {
+      "bodies": 1,
+      "tick": 92,
+      "usec": 11574269
+    },
+    {
+      "bodies": 1,
+      "tick": 93,
+      "usec": 11601375
+    },
+    {
+      "bodies": 1,
+      "tick": 94,
+      "usec": 11625453
+    },
+    {
+      "bodies": 1,
+      "tick": 95,
+      "usec": 11663335
+    },
+    {
+      "bodies": 1,
+      "tick": 96,
+      "usec": 11699129
+    },
+    {
+      "bodies": 1,
+      "tick": 97,
+      "usec": 11728448
+    },
+    {
+      "bodies": 1,
+      "tick": 98,
+      "usec": 11753974
+    },
+    {
+      "bodies": 1,
+      "tick": 99,
+      "usec": 11788386
+    },
+    {
+      "bodies": 1,
+      "tick": 100,
+      "usec": 11816214
+    },
+    {
+      "bodies": 1,
+      "tick": 101,
+      "usec": 11845565
+    },
+    {
+      "bodies": 1,
+      "tick": 102,
+      "usec": 11870639
+    },
+    {
+      "bodies": 1,
+      "tick": 103,
+      "usec": 11898334
+    },
+    {
+      "bodies": 1,
+      "tick": 104,
+      "usec": 11944470
+    },
+    {
+      "bodies": 1,
+      "tick": 105,
+      "usec": 11979167
+    },
+    {
+      "bodies": 1,
+      "tick": 106,
+      "usec": 12015299
+    },
+    {
+      "bodies": 1,
+      "tick": 107,
+      "usec": 12045473
+    },
+    {
+      "bodies": 1,
+      "tick": 108,
+      "usec": 12078547
+    },
+    {
+      "bodies": 1,
+      "tick": 109,
+      "usec": 12111667
+    },
+    {
+      "bodies": 1,
+      "tick": 110,
+      "usec": 12143574
+    },
+    {
+      "bodies": 1,
+      "tick": 111,
+      "usec": 12171837
+    },
+    {
+      "bodies": 1,
+      "tick": 112,
+      "usec": 12206631
+    },
+    {
+      "bodies": 1,
+      "tick": 113,
+      "usec": 12234497
+    },
+    {
+      "bodies": 1,
+      "tick": 114,
+      "usec": 12287388
+    },
+    {
+      "bodies": 1,
+      "tick": 115,
+      "usec": 12326245
+    },
+    {
+      "bodies": 1,
+      "tick": 116,
+      "usec": 12351458
+    },
+    {
+      "bodies": 1,
+      "tick": 117,
+      "usec": 12385194
+    },
+    {
+      "bodies": 1,
+      "tick": 118,
+      "usec": 12413524
+    },
+    {
+      "bodies": 1,
+      "tick": 119,
+      "usec": 12440492
+    },
+    {
+      "bodies": 1,
+      "tick": 120,
+      "usec": 12468990
+    },
+    {
+      "bodies": 1,
+      "tick": 121,
+      "usec": 12503324
+    },
+    {
+      "bodies": 1,
+      "tick": 122,
+      "usec": 12537132
+    },
+    {
+      "bodies": 1,
+      "tick": 123,
+      "usec": 12563012
+    },
+    {
+      "bodies": 1,
+      "tick": 124,
+      "usec": 12590735
+    },
+    {
+      "bodies": 1,
+      "tick": 125,
+      "usec": 12639728
+    },
+    {
+      "bodies": 1,
+      "tick": 126,
+      "usec": 12674390
+    },
+    {
+      "bodies": 1,
+      "tick": 127,
+      "usec": 12700514
+    },
+    {
+      "bodies": 1,
+      "tick": 128,
+      "usec": 12735978
+    },
+    {
+      "bodies": 1,
+      "tick": 129,
+      "usec": 12762957
+    },
+    {
+      "bodies": 1,
+      "tick": 130,
+      "usec": 12794353
+    },
+    {
+      "bodies": 1,
+      "tick": 131,
+      "usec": 12828247
+    },
+    {
+      "bodies": 1,
+      "tick": 132,
+      "usec": 12861168
+    },
+    {
+      "bodies": 1,
+      "tick": 133,
+      "usec": 12887538
+    },
+    {
+      "bodies": 1,
+      "tick": 134,
+      "usec": 12923299
+    },
+    {
+      "bodies": 1,
+      "tick": 135,
+      "usec": 12950598
+    },
+    {
+      "bodies": 1,
+      "tick": 136,
+      "usec": 12985656
+    },
+    {
+      "bodies": 1,
+      "tick": 137,
+      "usec": 13052569
+    },
+    {
+      "bodies": 1,
+      "tick": 138,
+      "usec": 13089015
+    },
+    {
+      "bodies": 1,
+      "tick": 139,
+      "usec": 13118123
+    },
+    {
+      "bodies": 1,
+      "tick": 140,
+      "usec": 13143856
+    },
+    {
+      "bodies": 1,
+      "tick": 141,
+      "usec": 13178518
+    },
+    {
+      "bodies": 1,
+      "tick": 142,
+      "usec": 13212619
+    },
+    {
+      "bodies": 1,
+      "tick": 143,
+      "usec": 13266463
+    },
+    {
+      "bodies": 1,
+      "tick": 144,
+      "usec": 13308290
+    },
+    {
+      "bodies": 1,
+      "tick": 145,
+      "usec": 13346562
+    },
+    {
+      "bodies": 1,
+      "tick": 146,
+      "usec": 13374978
+    },
+    {
+      "bodies": 1,
+      "tick": 147,
+      "usec": 13401390
+    },
+    {
+      "bodies": 1,
+      "tick": 148,
+      "usec": 13428247
+    },
+    {
+      "bodies": 1,
+      "tick": 149,
+      "usec": 13462505
+    },
+    {
+      "bodies": 1,
+      "tick": 150,
+      "usec": 13497356
+    },
+    {
+      "bodies": 1,
+      "tick": 151,
+      "usec": 13543405
+    },
+    {
+      "bodies": 1,
+      "tick": 152,
+      "usec": 13570592
+    },
+    {
+      "bodies": 1,
+      "tick": 153,
+      "usec": 13595446
+    },
+    {
+      "bodies": 1,
+      "tick": 154,
+      "usec": 13627928
+    },
+    {
+      "bodies": 1,
+      "tick": 155,
+      "usec": 13656181
+    },
+    {
+      "bodies": 1,
+      "tick": 156,
+      "usec": 13691194
+    },
+    {
+      "bodies": 1,
+      "tick": 157,
+      "usec": 13718850
+    },
+    {
+      "bodies": 1,
+      "tick": 158,
+      "usec": 13752742
+    },
+    {
+      "bodies": 1,
+      "tick": 159,
+      "usec": 13785584
+    },
+    {
+      "bodies": 1,
+      "tick": 160,
+      "usec": 13815357
+    },
+    {
+      "bodies": 1,
+      "tick": 161,
+      "usec": 13851337
+    },
+    {
+      "bodies": 1,
+      "tick": 162,
+      "usec": 13878848
+    },
+    {
+      "bodies": 1,
+      "tick": 163,
+      "usec": 13904683
+    },
+    {
+      "bodies": 1,
+      "tick": 164,
+      "usec": 13931582
+    },
+    {
+      "bodies": 1,
+      "tick": 165,
+      "usec": 13958798
+    },
+    {
+      "bodies": 1,
+      "tick": 166,
+      "usec": 13984974
+    },
+    {
+      "bodies": 1,
+      "tick": 167,
+      "usec": 14018904
+    },
+    {
+      "bodies": 1,
+      "tick": 168,
+      "usec": 14049658
+    },
+    {
+      "bodies": 1,
+      "tick": 169,
+      "usec": 14075337
+    },
+    {
+      "bodies": 1,
+      "tick": 170,
+      "usec": 14103685
+    },
+    {
+      "bodies": 1,
+      "tick": 171,
+      "usec": 14139906
+    },
+    {
+      "bodies": 1,
+      "tick": 172,
+      "usec": 14171805
+    },
+    {
+      "bodies": 1,
+      "tick": 173,
+      "usec": 14202164
+    },
+    {
+      "bodies": 1,
+      "tick": 174,
+      "usec": 14231188
+    },
+    {
+      "bodies": 1,
+      "tick": 175,
+      "usec": 14255435
+    },
+    {
+      "bodies": 1,
+      "tick": 176,
+      "usec": 14287685
+    },
+    {
+      "bodies": 1,
+      "tick": 177,
+      "usec": 14333554
+    },
+    {
+      "bodies": 1,
+      "tick": 178,
+      "usec": 14369428
+    },
+    {
+      "bodies": 1,
+      "tick": 179,
+      "usec": 14400181
+    },
+    {
+      "bodies": 1,
+      "tick": 180,
+      "usec": 14441491
+    },
+    {
+      "bodies": 1,
+      "tick": 181,
+      "usec": 14467074
+    },
+    {
+      "bodies": 1,
+      "tick": 182,
+      "usec": 14492495
+    },
+    {
+      "bodies": 1,
+      "tick": 183,
+      "usec": 14520023
+    },
+    {
+      "bodies": 1,
+      "tick": 184,
+      "usec": 14546715
+    },
+    {
+      "bodies": 1,
+      "tick": 185,
+      "usec": 14582347
+    },
+    {
+      "bodies": 1,
+      "tick": 186,
+      "usec": 14609643
+    },
+    {
+      "bodies": 1,
+      "tick": 187,
+      "usec": 14643523
+    },
+    {
+      "bodies": 1,
+      "tick": 188,
+      "usec": 14678439
+    },
+    {
+      "bodies": 1,
+      "tick": 189,
+      "usec": 14711576
+    },
+    {
+      "bodies": 1,
+      "tick": 190,
+      "usec": 14745247
+    },
+    {
+      "bodies": 1,
+      "tick": 191,
+      "usec": 14783900
+    },
+    {
+      "bodies": 1,
+      "tick": 192,
+      "usec": 14816215
+    },
+    {
+      "bodies": 1,
+      "tick": 193,
+      "usec": 14853449
+    },
+    {
+      "bodies": 1,
+      "tick": 194,
+      "usec": 14886816
+    },
+    {
+      "bodies": 1,
+      "tick": 195,
+      "usec": 14919429
+    },
+    {
+      "bodies": 1,
+      "tick": 196,
+      "usec": 14955367
+    },
+    {
+      "bodies": 1,
+      "tick": 197,
+      "usec": 14989843
+    },
+    {
+      "bodies": 1,
+      "tick": 198,
+      "usec": 15024807
+    },
+    {
+      "bodies": 1,
+      "tick": 199,
+      "usec": 15055423
+    },
+    {
+      "bodies": 1,
+      "tick": 200,
+      "usec": 15081033
+    },
+    {
+      "bodies": 1,
+      "tick": 201,
+      "usec": 15115829
+    },
+    {
+      "bodies": 1,
+      "tick": 202,
+      "usec": 15145632
+    },
+    {
+      "bodies": 1,
+      "tick": 203,
+      "usec": 15192008
+    },
+    {
+      "bodies": 1,
+      "tick": 204,
+      "usec": 15219756
+    },
+    {
+      "bodies": 1,
+      "tick": 205,
+      "usec": 15245998
+    },
+    {
+      "bodies": 1,
+      "tick": 206,
+      "usec": 15329632
+    }
+  ],
+  "performance_scope": "process callbacks and actual renderer frame_post_draw submissions; physical GPU presentation OWNER-PENDING",
+  "physical_progress_scope": "completed actual 1/60-second Main intervals; partial in-flight segments excluded",
+  "platform": "Linux",
+  "process_callbacks_per_wall_second": 135.088530166024,
+  "process_intervals": {
+    "count": 858,
+    "maximum_usec": 32096,
+    "p50_usec": 8031,
+    "p95_usec": 10625
+  },
+  "receipt_pump_usec_delta": 4060388,
+  "recording_enabled": true,
+  "render_submission_intervals": {
+    "count": 0,
+    "maximum_usec": 0,
+    "p50_usec": 0,
+    "p95_usec": 0
+  },
+  "render_submissions": 0,
+  "render_submissions_per_wall_second": 0.0,
+  "rendering_method": "gl_compatibility",
+  "sampling": "light",
+  "scene": "tower",
+  "schema": "objectshard-m4-workbench-profile-v1",
+  "semantic_ticks_per_wall_second": 28.3072589404939,
+  "shard_dimensions": [
+    {
+      "height": 125,
+      "width": 98
+    }
+  ],
+  "simulated_physical_seconds": 3.0,
+  "simulated_physical_seconds_per_wall_second": 0.471787649008232,
+  "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "stage_scope": "window deltas; native occupancy includes relocation, and Main receipt pump includes waits and its nested stages; these counters must not be summed as independent wall time",
+  "worker_stage_deltas": {
+    "frame_copy_calls": 180,
+    "frame_copy_usec": 39741,
+    "snapshot_calls": 1080,
+    "snapshot_usec": 916278
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+  "camera": "overview",
+  "canvas_extent": [
+    512,
+    512
+  ],
+  "checks": 21,
+  "control_view": {
+    "origin": [
+      0.0,
+      0.0
+    ],
+    "size": [
+      512,
+      512
+    ]
+  },
+  "display_driver": "headless",
+  "failures": [],
+  "rendering_method": "gl_compatibility",
+  "scene": "tower",
+  "schema": "objectshard-m4-disabled-control-v1",
+  "scope": "ordinary native Workbench tower with ObjectShard disabled; renderer submissions and semantic progression are independent; physical monitor presentation owner-pending",
+  "seconds_per_window": 12.0,
+  "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "windows": [
+    {
+      "actual_physics_steps": 0,
+      "callback_intervals": {
+        "count": 1738,
+        "maximum_usec": 14954,
+        "p50_usec": 6900,
+        "p95_usec": 7626
+      },
+      "elapsed_usec": 12005854,
+      "label": "disabled_intact_paused",
+      "material_body_count": 0,
+      "objectshard_enabled": false,
+      "objectshard_native_attached": false,
+      "ordinary_actor_count": 1,
+      "paused": true,
+      "process_callbacks": 1739,
+      "render_intervals": {
+        "count": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_second": 0.0,
+      "semantic_ticks": 0,
+      "semantic_ticks_per_second": 0.0,
+      "worker_snapshot_calls": 0,
+      "worker_snapshot_usec": 0
+    },
+    {
+      "actual_physics_steps": 719,
+      "callback_intervals": {
+        "count": 1738,
+        "maximum_usec": 22509,
+        "p50_usec": 6885,
+        "p95_usec": 8118
+      },
+      "elapsed_usec": 12003803,
+      "label": "disabled_intact_playing",
+      "material_body_count": 0,
+      "objectshard_enabled": false,
+      "objectshard_native_attached": false,
+      "ordinary_actor_count": 1,
+      "paused": false,
+      "process_callbacks": 1739,
+      "render_intervals": {
+        "count": 0
+      },
+      "render_submissions": 0,
+      "render_submissions_per_second": 0.0,
+      "semantic_ticks": 719,
+      "semantic_ticks_per_second": 59.8976840922831,
+      "worker_snapshot_calls": 0,
+      "worker_snapshot_usec": 0
+    }
+  ]
+}

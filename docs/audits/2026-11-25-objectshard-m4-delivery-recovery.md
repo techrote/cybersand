@@ -165,3 +165,66 @@ provenance refusals and the complete extracted-package replay. The current
 checkpoint is **repair implemented / local contracts PASS / replacement
 platform and delivery qualification required**. PR #754 remains Draft/HOLD,
 and physical Windows 11/NVIDIA acceptance remains HOLD.
+
+## Independent performance-control and publication-scope review
+
+Delivery lane C independently reviewed performance commit
+`61213289ccaf2ec9771274f73576752ac1d648ff`: **APPROVE source/test scope**, with
+actual replacement platform execution still required. All ten focused Python
+qualification-validator tests passed. A synthetic enumeration of the actual
+qualifier (without executing any engine) established 42 headless, 31 graphical
+and 16 extracted-package cases. Eighteen cases in the graphical lane require a
+display. Comparing names with the recovered original 38/27 reports found no
+removed cases and exactly four additions in each full lane.
+
+The disabled/enabled controls share the native tower recipe, ordinary actor,
+canvas, view and exact authored-rectangle digest. The qualifier compares these
+identities. Light tower recording-on/off trials retain the same 180 semantic
+ticks, Rapier motion and acknowledgements. Both diagnostics variants exercise
+the actual graphical checkbox path when a renderer is requested. No physics,
+material, worker-barrier or actor-coverage reduction was found. The
+[machine-readable review](objectshard-m4-recovery-20261125/delivery-independent-review.json)
+retains inspected input hashes and complete expected case names.
+
+The repository's retained-runtime status is a separate, unresolved gate.
+[Repository release policy](../operations/github-development-and-release.md)
+requires exact-head Documentation/provenance and broad implementation gates
+before Ready/merge. [Current validation policy](../operations/current-and-historical-validation.md)
+and `check_repository.py` explicitly check the two **published retained** native
+manifests. Their stale source inputs remain real failures; candidate execution
+does not make those failures pass. The M4 integration contract explicitly
+excludes qualifying retained production binaries. A source-matched portable
+candidate can therefore be qualified for owner evaluation while the retained
+repository runtime/publication and merge gates remain open. This scoped result
+must never be described as complete repository production readiness, and the
+accepted production manifests remain untouched.
+
+## Independent pinned-engine acquisition
+
+The recovery reviewer separately downloaded both official Godot 4.7 archives
+through the repository's approved direct `godotengine/godot-builds` release
+route. The Linux ZIP matched the locked 75,664,355-byte size and SHA-256 above,
+passed ZIP CRC inspection, and its extracted executable returned exactly
+`4.7.stable.official.5b4e0cb0f`. This independently exercises the repaired
+acquisition route; the new hosted Linux Workbench job still owns application
+qualification. The [original local acquisition receipt](objectshard-m4-recovery-20261125/independent-linux-engine.json)
+records executable size and hash.
+
+The Windows archive was 83,764,371 bytes and matched the existing locked
+SHA-512. Both executables have valid AMD64 PE32+ headers. Their independently
+measured SHA-256 values are
+`b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8`
+(graphical engine, 178,485,256 bytes) and
+`d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c`
+(console wrapper, 198,152 bytes). The
+[archive receipt](objectshard-m4-recovery-20261125/independent-windows-engine.json)
+retains both identities. This is independent byte/format inspection on Linux,
+not a Windows execution claim.
+
+The [independent final-ZIP reviewer](objectshard-m4-recovery-20261125/inspect_windows_evaluator.py)
+imports no package producer or shipped verifier code. It checks ZIP paths and
+CRC, the complete immutable payload, candidate/native input identities, the
+frozen canonical Git source, preserved reference provenance, actual AMD64
+images and direct equality with the separately acquired approved engine. Its
+final execution must target the newly delivered archive and be combined with
+original Windows launcher and pristine-replay receipts.

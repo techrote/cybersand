@@ -1,0 +1,3279 @@
+{
+  "active_body_cohorts": {
+    "3": {
+      "actual_physics_steps": 104,
+      "native_pose_acknowledgements": 832,
+      "process_callbacks": 146,
+      "render_submissions": 0,
+      "semantic_ticks": 27,
+      "wall_usec": 1293158
+    },
+    "4": {
+      "actual_physics_steps": 248,
+      "native_pose_acknowledgements": 1984,
+      "process_callbacks": 352,
+      "render_submissions": 0,
+      "semantic_ticks": 62,
+      "wall_usec": 3157802
+    },
+    "5": {
+      "actual_physics_steps": 4,
+      "native_pose_acknowledgements": 32,
+      "process_callbacks": 5,
+      "render_submissions": 0,
+      "semantic_ticks": 1,
+      "wall_usec": 53176
+    },
+    "6": {
+      "actual_physics_steps": 4,
+      "native_pose_acknowledgements": 32,
+      "process_callbacks": 5,
+      "render_submissions": 0,
+      "semantic_ticks": 1,
+      "wall_usec": 43634
+    },
+    "7": {
+      "actual_physics_steps": 4,
+      "native_pose_acknowledgements": 32,
+      "process_callbacks": 5,
+      "render_submissions": 0,
+      "semantic_ticks": 1,
+      "wall_usec": 51317
+    },
+    "8": {
+      "actual_physics_steps": 356,
+      "native_pose_acknowledgements": 2848,
+      "process_callbacks": 740,
+      "render_submissions": 0,
+      "semantic_ticks": 88,
+      "wall_usec": 5911291
+    }
+  },
+  "active_body_count_max": 8,
+  "actual_physics_steps": 720,
+  "before_cut_supports": {
+    "authored_material_populations": {
+      "1": 28832,
+      "43": 704,
+      "7": 8512
+    },
+    "material_bodies_before_cut": 0,
+    "missing_support_cells": 0,
+    "native_tick": 1,
+    "scope": "actual coherent native material image before ordinary support cuts; authored recipe populations are reported separately",
+    "support_cells": 1488
+  },
+  "body_count_max": 8,
+  "body_count_min": 8,
+  "camera": "overview",
+  "checks": 369,
+  "cohort_scope": "intervals classified by observed real Rapier awake body count at callback end; transition intervals are not exact GPU samples",
+  "completed_physical_intervals": 180,
+  "completed_semantic_ticks": 180,
+  "diagnostics": {
+    "attached": true,
+    "body_count": 8,
+    "controls_completed": 1110,
+    "deferred_world_uploads": 75,
+    "enabled": true,
+    "has_live_inventory": true,
+    "held_reason": "",
+    "last_motion_permit": {
+      "lease": 217,
+      "ok": true,
+      "outcome": "MotionReserved"
+    },
+    "main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+    "main_costs": {
+      "owner_control_admission": {
+        "calls": 1110,
+        "max_usec": 510,
+        "usec": 69780
+      },
+      "pose_packet_capture": {
+        "calls": 868,
+        "max_usec": 1756,
+        "usec": 133840
+      },
+      "rapier_segment": {
+        "calls": 868,
+        "max_usec": 3233,
+        "usec": 250014
+      }
+    },
+    "motion_lease": 0,
+    "motion_permits_refused": 153,
+    "native_instance_id": -9223371955099400592,
+    "native_pose_acknowledgements": 5872,
+    "native_pose_echo_checks": 5872,
+    "native_tick": 218,
+    "owner_replacements": 1,
+    "pending_kind": "",
+    "pending_serial": 0,
+    "phase": "Ready",
+    "physical_intervals": 217,
+    "physical_steps": 868,
+    "physics": {
+      "awaiting_native": false,
+      "bodies": [
+        {
+          "active": true,
+          "angular_velocity": 0.0290016699582338,
+          "backend_rotation": 0.0981539860367775,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 997660.375,
+          "last_geometry_step": 120,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.199516638834029,
+          "nominal_translation_headroom": 3.98262451887131,
+          "reported_contacts": 7,
+          "rotation": 0.0981539860367775,
+          "shape_count": 9,
+          "sleeping": false,
+          "vx": 1.04252886772156,
+          "vy": -1.25527240015799e-05,
+          "x": 46.6155433654785,
+          "y": 385.111511230469
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.00132388132624328,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 2,
+          "inertia": 997660.375,
+          "last_geometry_step": 124,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.00132388132624328,
+          "shape_count": 9,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 95.1013031005859,
+          "y": 386.970062255859
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.00132794713135809,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 3,
+          "inertia": 997660.375,
+          "last_geometry_step": 128,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.00132794713135809,
+          "shape_count": 9,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 151.101425170898,
+          "y": 386.969909667969
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.00135562883224338,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 4,
+          "inertia": 997660.375,
+          "last_geometry_step": 132,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.00135562883224338,
+          "shape_count": 9,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 207.104049682617,
+          "y": 386.969451904297
+        },
+        {
+          "active": true,
+          "angular_velocity": -0.0388161838054657,
+          "backend_rotation": -0.0748146399855614,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 5,
+          "inertia": 997660.375,
+          "last_geometry_step": 136,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.199353063603242,
+          "nominal_translation_headroom": 3.97652010321617,
+          "reported_contacts": 6,
+          "rotation": -0.0748146399855614,
+          "shape_count": 9,
+          "sleeping": false,
+          "vx": -1.40825545787811,
+          "vy": -0.0389455333352089,
+          "x": 257.323425292969,
+          "y": 388.856597900391
+        },
+        {
+          "active": true,
+          "angular_velocity": -0.00449173618108034,
+          "backend_rotation": -0.184095650911331,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 6,
+          "inertia": 997660.375,
+          "last_geometry_step": 140,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.199925137730315,
+          "nominal_translation_headroom": 3.99728294064601,
+          "reported_contacts": 12,
+          "rotation": -0.184095650911331,
+          "shape_count": 9,
+          "sleeping": false,
+          "vx": -0.162961259484291,
+          "vy": -0.0045066000893712,
+          "x": 304.980560302734,
+          "y": 392.312927246094
+        },
+        {
+          "active": true,
+          "angular_velocity": -0.00408024899661541,
+          "backend_rotation": -0.359854578971863,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 7,
+          "inertia": 997660.375,
+          "last_geometry_step": 144,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.199931995850056,
+          "nominal_translation_headroom": 3.99732927630345,
+          "reported_contacts": 6,
+          "rotation": -0.359854578971863,
+          "shape_count": 9,
+          "sleeping": false,
+          "vx": -0.153680130839348,
+          "vy": -0.0453913323581219,
+          "x": 350.241271972656,
+          "y": 396.028594970703
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.00137602735776454,
+          "body_generation": 1,
+          "com_x": 22.9995670318604,
+          "com_y": 40.646068572998,
+          "generation": 1,
+          "geometry_digest": "15774498492241021392",
+          "geometry_revision": 1,
+          "id": 8,
+          "inertia": 997660.375,
+          "last_geometry_step": 148,
+          "last_geometry_usec": 0,
+          "mass": 1157.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.00137602735776454,
+          "shape_count": 9,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 431.107177734375,
+          "y": 386.968811035156
+        }
+      ],
+      "events": [
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 1,
+          "kind": "BodyActivated",
+          "physics_step": 120
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 2,
+          "kind": "BodyActivated",
+          "physics_step": 124
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 3,
+          "kind": "BodyActivated",
+          "physics_step": 128
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 4,
+          "kind": "BodyActivated",
+          "physics_step": 132
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 5,
+          "kind": "BodyActivated",
+          "physics_step": 136
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 6,
+          "kind": "BodyActivated",
+          "physics_step": 140
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 7,
+          "kind": "BodyActivated",
+          "physics_step": 144
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 8,
+          "kind": "BodyActivated",
+          "physics_step": 148
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 2,
+          "kind": "Sleeping",
+          "physics_step": 504
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 3,
+          "kind": "Sleeping",
+          "physics_step": 508
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 4,
+          "kind": "Sleeping",
+          "physics_step": 512
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 5,
+          "kind": "Sleeping",
+          "physics_step": 516
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 8,
+          "kind": "Sleeping",
+          "physics_step": 528
+        },
+        {
+          "detail": {
+            "geometry_revision": 1
+          },
+          "id": 5,
+          "kind": "Waking",
+          "physics_step": 632
+        }
+      ],
+      "last_completed_semantic_tick": -1,
+      "last_error": "",
+      "last_physics_session": 1,
+      "last_sampled_pose_serial": 868,
+      "motion": {},
+      "motion_phase": "Idle",
+      "motion_refused": false,
+      "operation_sequence": 0,
+      "physics_steps": 868,
+      "segment_sequence": 0,
+      "session": 1
+    },
+    "physics_ready": true,
+    "publication_sequence": 1165,
+    "pump_usec_max": 13694,
+    "pump_usec_total": 7481945,
+    "reabsorption_receipt": {},
+    "receipt": {
+      "captured_effect_count": 0,
+      "captured_equipment_request_ids": [],
+      "completed_interval": true,
+      "native_tick_after_prepare": 217,
+      "native_tick_before_prepare": 217,
+      "ok": true,
+      "outcome": "NativeBarrierReleased",
+      "workbench_sample_serial": 1090
+    },
+    "redundant_readiness_receipts_suppressed": 389,
+    "save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+    "shared_main_space_id": 18563,
+    "worker_profile": {
+      "actor_work": {
+        "due_effects": 0,
+        "due_usables": 0,
+        "pending_effects": 0,
+        "pending_usables": 0
+      },
+      "counter_scope": "cumulative ordinary worker lifetime",
+      "frame_copy_calls": 390,
+      "frame_copy_max_usec": 727,
+      "frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+      "frame_copy_usec": 85772,
+      "motion_fence": {
+        "completed_sample": 1090,
+        "current_sample": 1090,
+        "due_sample": -1,
+        "lease": 0,
+        "ordinary_refusal": "",
+        "owner_busy": false,
+        "prepared_sample": 1090,
+        "reused_prepared_samples": 217,
+        "tick_due": false
+      },
+      "snapshot_calls": 1503,
+      "snapshot_max_usec": 9232,
+      "snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+      "snapshot_usec": 2516184
+    },
+    "world_generation": 3
+  },
+  "display_coherence": {
+    "between_callback_observations": 1697,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "display_driver": "headless",
+  "elapsed_usec": 10510631,
+  "failures": [],
+  "final_boundary": {
+    "displayed_native_tick": 218,
+    "displayed_poses": [
+      {
+        "id": 1,
+        "pose_serial": 868,
+        "position_x": 46.6155433654785,
+        "position_y": 385.111511230469,
+        "rotation": 0.0981539860367775
+      },
+      {
+        "id": 2,
+        "pose_serial": 868,
+        "position_x": 95.1013031005859,
+        "position_y": 386.970062255859,
+        "rotation": 0.00132388132624328
+      },
+      {
+        "id": 3,
+        "pose_serial": 868,
+        "position_x": 151.101425170898,
+        "position_y": 386.969909667969,
+        "rotation": 0.00132794713135809
+      },
+      {
+        "id": 4,
+        "pose_serial": 868,
+        "position_x": 207.104049682617,
+        "position_y": 386.969451904297,
+        "rotation": 0.00135562883224338
+      },
+      {
+        "id": 5,
+        "pose_serial": 868,
+        "position_x": 257.323425292969,
+        "position_y": 388.856597900391,
+        "rotation": -0.0748146399855614
+      },
+      {
+        "id": 6,
+        "pose_serial": 868,
+        "position_x": 304.980560302734,
+        "position_y": 392.312927246094,
+        "rotation": -0.184095650911331
+      },
+      {
+        "id": 7,
+        "pose_serial": 868,
+        "position_x": 350.241271972656,
+        "position_y": 396.028594970703,
+        "rotation": -0.359854578971863
+      },
+      {
+        "id": 8,
+        "pose_serial": 868,
+        "position_x": 431.107177734375,
+        "position_y": 386.968811035156,
+        "rotation": 0.00137602735776454
+      }
+    ],
+    "displayed_publication_sequence": 1165,
+    "displayed_world_revision": 187,
+    "image_format": 3,
+    "latest_native_tick": 218,
+    "latest_publication_sequence": 1165,
+    "physics": [
+      {
+        "active": true,
+        "angular_velocity": 0.0290016699582338,
+        "backend_rotation": 0.0981539860367775,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 1,
+        "inertia": 997660.375,
+        "last_geometry_step": 120,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.199516638834029,
+        "nominal_translation_headroom": 3.98262451887131,
+        "reported_contacts": 7,
+        "rotation": 0.0981539860367775,
+        "shape_count": 9,
+        "sleeping": false,
+        "vx": 1.04252886772156,
+        "vy": -1.25527240015799e-05,
+        "x": 46.6155433654785,
+        "y": 385.111511230469
+      },
+      {
+        "active": true,
+        "angular_velocity": 0.0,
+        "backend_rotation": 0.00132388132624328,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 2,
+        "inertia": 997660.375,
+        "last_geometry_step": 124,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.2,
+        "nominal_translation_headroom": 4.0,
+        "reported_contacts": 0,
+        "rotation": 0.00132388132624328,
+        "shape_count": 9,
+        "sleeping": true,
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 95.1013031005859,
+        "y": 386.970062255859
+      },
+      {
+        "active": true,
+        "angular_velocity": 0.0,
+        "backend_rotation": 0.00132794713135809,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 3,
+        "inertia": 997660.375,
+        "last_geometry_step": 128,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.2,
+        "nominal_translation_headroom": 4.0,
+        "reported_contacts": 0,
+        "rotation": 0.00132794713135809,
+        "shape_count": 9,
+        "sleeping": true,
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 151.101425170898,
+        "y": 386.969909667969
+      },
+      {
+        "active": true,
+        "angular_velocity": 0.0,
+        "backend_rotation": 0.00135562883224338,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 4,
+        "inertia": 997660.375,
+        "last_geometry_step": 132,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.2,
+        "nominal_translation_headroom": 4.0,
+        "reported_contacts": 0,
+        "rotation": 0.00135562883224338,
+        "shape_count": 9,
+        "sleeping": true,
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 207.104049682617,
+        "y": 386.969451904297
+      },
+      {
+        "active": true,
+        "angular_velocity": -0.0388161838054657,
+        "backend_rotation": -0.0748146399855614,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 5,
+        "inertia": 997660.375,
+        "last_geometry_step": 136,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.199353063603242,
+        "nominal_translation_headroom": 3.97652010321617,
+        "reported_contacts": 6,
+        "rotation": -0.0748146399855614,
+        "shape_count": 9,
+        "sleeping": false,
+        "vx": -1.40825545787811,
+        "vy": -0.0389455333352089,
+        "x": 257.323425292969,
+        "y": 388.856597900391
+      },
+      {
+        "active": true,
+        "angular_velocity": -0.00449173618108034,
+        "backend_rotation": -0.184095650911331,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 6,
+        "inertia": 997660.375,
+        "last_geometry_step": 140,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.199925137730315,
+        "nominal_translation_headroom": 3.99728294064601,
+        "reported_contacts": 12,
+        "rotation": -0.184095650911331,
+        "shape_count": 9,
+        "sleeping": false,
+        "vx": -0.162961259484291,
+        "vy": -0.0045066000893712,
+        "x": 304.980560302734,
+        "y": 392.312927246094
+      },
+      {
+        "active": true,
+        "angular_velocity": -0.00408024899661541,
+        "backend_rotation": -0.359854578971863,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 7,
+        "inertia": 997660.375,
+        "last_geometry_step": 144,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.199931995850056,
+        "nominal_translation_headroom": 3.99732927630345,
+        "reported_contacts": 6,
+        "rotation": -0.359854578971863,
+        "shape_count": 9,
+        "sleeping": false,
+        "vx": -0.153680130839348,
+        "vy": -0.0453913323581219,
+        "x": 350.241271972656,
+        "y": 396.028594970703
+      },
+      {
+        "active": true,
+        "angular_velocity": 0.0,
+        "backend_rotation": 0.00137602735776454,
+        "body_generation": 1,
+        "com_x": 22.9995670318604,
+        "com_y": 40.646068572998,
+        "generation": 1,
+        "geometry_digest": "15774498492241021392",
+        "geometry_revision": 1,
+        "id": 8,
+        "inertia": 997660.375,
+        "last_geometry_step": 148,
+        "last_geometry_usec": 0,
+        "mass": 1157.0,
+        "nominal_rotation_headroom": 0.2,
+        "nominal_translation_headroom": 4.0,
+        "reported_contacts": 0,
+        "rotation": 0.00137602735776454,
+        "shape_count": 9,
+        "sleeping": true,
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 431.107177734375,
+        "y": 386.968811035156
+      }
+    ],
+    "rendered_water_pixels": 0,
+    "uploaded_world_revision": 187,
+    "world_water_ledger": 0
+  },
+  "instrumentation_scope": "one diagnostic state readback per callback; ordinary latency probe enabled",
+  "inventory_after": {
+    "brick": 704,
+    "wood": 8512
+  },
+  "inventory_before": {
+    "brick": 704,
+    "wood": 8512
+  },
+  "inventory_witnesses": [
+    {
+      "owned_inventory": [],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        224096,
+        28832,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8512,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        704,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 1,
+        "owner_epoch": 2,
+        "publication_sequence": 1,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 3
+      },
+      "total_material_counts": [
+        0,
+        28832,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8512,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        704,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 0,
+        "independent_total_quantity": 0,
+        "native_ledger": {
+          "ballistic": 0,
+          "expected": 0,
+          "overfill": 0,
+          "total": 0,
+          "visible": 0
+        },
+        "parcel_count": 0,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 0,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "1b42e39dacdff05b",
+          "state_hash": "6fbe32c821943f9b",
+          "tick": 1,
+          "water_cells": 0,
+          "water_integer": 0,
+          "water_overfill": 0,
+          "water_visible": 0
+        }
+      }
+    },
+    {
+      "owned_inventory": [
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 1,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 2,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 3,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 4,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 5,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 6,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 7,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        },
+        {
+          "body_generation": 1,
+          "generation": 1,
+          "id": 8,
+          "materials": {
+            "bytes": 3542,
+            "reason": "runner did not request raw artifact retention",
+            "retained": false
+          }
+        }
+      ],
+      "presentation_projection_mismatches": [],
+      "raw_grid": {
+        "bytes": 262144,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "raw_world_material_counts": [
+        234776,
+        27368,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rendered_grid": {
+        "bytes": 524288,
+        "reason": "runner did not request raw artifact retention",
+        "retained": false
+      },
+      "schema": "objectshard-m4-independent-inventory-v1",
+      "scope": "raw native stored-material census plus owned carriers; independently scanned Water state/overfill and complete parcel sum; rendered parcel pixels are separate from stored grid inventory",
+      "source": {
+        "native_instance_id": -9223371955099400592,
+        "next_transaction": 9,
+        "owner_epoch": 2,
+        "publication_sequence": 1165,
+        "session": 1,
+        "shard_session": 1,
+        "tick": 218,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 187
+      },
+      "total_material_counts": [
+        0,
+        27408,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8512,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        704,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "water": {
+        "independent_parcel_quantity": 0,
+        "independent_total_quantity": 0,
+        "native_ledger": {
+          "ballistic": 0,
+          "expected": 0,
+          "overfill": 0,
+          "total": 0,
+          "visible": 0
+        },
+        "parcel_count": 0,
+        "parcel_material_pixels": 0,
+        "raw_parcels_float64": {
+          "bytes": 0,
+          "reason": "runner did not request raw artifact retention",
+          "retained": false
+        },
+        "raw_state_scan": {
+          "content_hash": "69fd5184f058c64f",
+          "state_hash": "b9b550a5c0f62d64",
+          "tick": 218,
+          "water_cells": 0,
+          "water_integer": 0,
+          "water_overfill": 0,
+          "water_visible": 0
+        }
+      }
+    }
+  ],
+  "latency": {
+    "cadence": {
+      "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+      "capacity_dropped_intervals": 0,
+      "cohort_capacity": 64,
+      "display_backend": "headless",
+      "hardware_present_verified": false,
+      "native_progress_delivery": [
+        {
+          "elapsed_usec": 521489,
+          "interval_count": 28,
+          "maximum_interval_usec": 40045,
+          "observed_units_per_second": 53.6924077017924,
+          "recent_interval_samples": 28,
+          "recent_p50_interval_usec": 17673,
+          "recent_p95_interval_usec": 20214,
+          "units": "native_semantic_ticks",
+          "units_observed": 28,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 0,
+            "paused": false
+          }
+        },
+        {
+          "elapsed_usec": 59802,
+          "interval_count": 1,
+          "maximum_interval_usec": 59802,
+          "observed_units_per_second": 16.7218487675997,
+          "recent_interval_samples": 1,
+          "recent_p50_interval_usec": 59802,
+          "recent_p95_interval_usec": 59802,
+          "units": "native_semantic_ticks",
+          "units_observed": 1,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 7,
+            "paused": false
+          }
+        },
+        {
+          "elapsed_usec": 8892223,
+          "interval_count": 178,
+          "maximum_interval_usec": 81724,
+          "observed_units_per_second": 20.0174916890861,
+          "recent_interval_samples": 178,
+          "recent_p50_interval_usec": 48676,
+          "recent_p95_interval_usec": 59707,
+          "units": "native_semantic_ticks",
+          "units_observed": 178,
+          "workload": {
+            "camera": "free",
+            "owned_material_bodies": 8,
+            "paused": false
+          }
+        }
+      ],
+      "percentile_scope": "most_recent_bounded_intervals_per_workload",
+      "post_draw_intervals": [],
+      "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+      "render_scope": "headless_callback_only"
+    },
+    "enabled": true,
+    "epoch": 2,
+    "events_retained": 512,
+    "frame_serial_coherence_proven": false,
+    "input_to_post_draw_causally_proven": false,
+    "no_additive_stage_total": true,
+    "post_draw_callbacks_after_upload": 0,
+    "proven_presented_uploads": 0,
+    "schema": "objectshard-m4-workbench-latency-v1",
+    "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+    "stages": {
+      "physics_work": {
+        "count": 256,
+        "maximum_usec": 3233,
+        "p50_usec": 325,
+        "p95_usec": 1109
+      },
+      "publication_prepare": {
+        "count": 256,
+        "maximum_usec": 1756,
+        "p50_usec": 149,
+        "p95_usec": 312
+      },
+      "queue_admission": {
+        "count": 256,
+        "maximum_usec": 510,
+        "p50_usec": 62,
+        "p95_usec": 126
+      },
+      "receipt_delivery": {
+        "count": 256,
+        "maximum_usec": 10339,
+        "p50_usec": 2905,
+        "p95_usec": 8547
+      },
+      "scene_callback": {
+        "count": 256,
+        "maximum_usec": 19914,
+        "p50_usec": 8564,
+        "p95_usec": 9743
+      },
+      "texture_upload_submission": {
+        "count": 71,
+        "maximum_usec": 140,
+        "p50_usec": 32,
+        "p95_usec": 107
+      }
+    },
+    "worker_metrics": {
+      "hard_surface_packet_time_ms": 0.0,
+      "render_exchange_time_ms": 0.0,
+      "scope": "worker_reported_potentially_nested_not_a_sum",
+      "snapshot_copy_time_ms": 0.125,
+      "snapshot_publication_time_ms": 0.565,
+      "snapshot_serial": 9578,
+      "tick": 217,
+      "worker_step_time_ms": 0.06,
+      "world_generation": 3,
+      "world_revision": 187
+    }
+  },
+  "main_stage_deltas": {
+    "owner_control_admission": {
+      "calls": 900,
+      "cumulative_max_usec": 510,
+      "usec": 58562
+    },
+    "pose_packet_capture": {
+      "calls": 720,
+      "cumulative_max_usec": 1756,
+      "usec": 124944
+    },
+    "rapier_segment": {
+      "calls": 720,
+      "cumulative_max_usec": 3233,
+      "usec": 224542
+    }
+  },
+  "material_contact_deltas": {
+    "accepted_exposures": 0,
+    "consumed_exposures": 0,
+    "external_ignitions": 0,
+    "extinguished": 0,
+    "output_blocked": 0,
+    "products_created": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "sand_ingested": 0
+  },
+  "material_interaction_scope": "committed native carrier relocation, source-bound chemistry/exposure and optional Sand custody; no cellular fluid force or buoyancy transfer to Rapier is implemented",
+  "material_population_scope": "displayed material pixels plus owned material; Water pixels may include ballistic projection; raw grid census and exact quantity are in inventory_witnesses",
+  "material_populations_before": {
+    "brick": 704,
+    "fire": 0,
+    "sand": 0,
+    "water": 0,
+    "wood": 8512
+  },
+  "native_cost_deltas": {
+    "chemistry_cells": 1157,
+    "chemistry_ns": 28845162,
+    "composed_reuses": 794,
+    "contact_ns": 122472716,
+    "discovery_ns": 461609,
+    "exchange_ns": 19819419,
+    "geometry_ns": 0,
+    "mask_cells": 11021254,
+    "occupancy_ns": 2613591418,
+    "relocation_ns": 1795779749,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "snapshot_ns": 6959674,
+    "sweep_samples": 0,
+    "terrain_ns": 0,
+    "world_ns": 0
+  },
+  "native_metrics_after": {
+    "chemistry_cells": 9256,
+    "chemistry_ns": 29475451,
+    "composed_overlap_cells": 21385,
+    "composed_reuses": 997,
+    "contact_ns": 125500731,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 36624,
+    "discovery_ns": 9809107,
+    "exchange_ns": 20176865,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66721464,
+    "mask_cells": 11241712,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 17514877,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 2669566906,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66757680,
+    "products_created": 0,
+    "promotions": 8,
+    "reabsorptions": 0,
+    "refusals": 1,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 1837728419,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "retained_bytes": 66757680,
+    "sand_ingested": 0,
+    "snapshot_ns": 525667481,
+    "stale_messages": 0,
+    "steps": 217,
+    "sweep_samples": 0,
+    "terrain_ns": 540523528,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_metrics_before": {
+    "chemistry_cells": 8099,
+    "chemistry_ns": 630289,
+    "composed_overlap_cells": 0,
+    "composed_reuses": 203,
+    "contact_ns": 3028015,
+    "coordinator_bytes": 59722064,
+    "discovered_cells": 36624,
+    "discovery_ns": 9347498,
+    "exchange_ns": 357446,
+    "exposure_overflows": 0,
+    "fragment_refusals": 0,
+    "fragments": 0,
+    "geometry_ns": 0,
+    "ingress_blocked": 0,
+    "live_bytes": 66721464,
+    "mask_cells": 220458,
+    "maximum_geometry_age": 0,
+    "maximum_geometry_wait_ns": 0,
+    "maximum_pause_ns": 17514877,
+    "maximum_product_age": 0,
+    "memory_scope": "Accounted native storage lower bound; excludes World non-cell metadata, allocator overhead, Godot and Rapier",
+    "occupancy_ns": 55975488,
+    "occupancy_timing_scope": "Inclusive of contact capture and conservative overlap relocation; do not sum nested counters",
+    "output_blocked": 0,
+    "paused_calls": 0,
+    "peak_bytes": 66757680,
+    "products_created": 0,
+    "promotions": 8,
+    "reabsorptions": 0,
+    "refusals": 0,
+    "relocated_cells": 0,
+    "relocated_sand_cells": 0,
+    "relocated_water_cells": 0,
+    "relocation_ns": 41948670,
+    "relocation_probe_limit_hits": 0,
+    "relocation_probes": 0,
+    "retained_bytes": 66757680,
+    "sand_ingested": 0,
+    "snapshot_ns": 518707807,
+    "stale_messages": 0,
+    "steps": 37,
+    "sweep_samples": 0,
+    "terrain_ns": 540523528,
+    "world_bytes": 5907456,
+    "world_ns": 0
+  },
+  "native_pose_acknowledgements": 5760,
+  "native_pose_echo_checks": 5760,
+  "native_progress_observations": [
+    {
+      "bodies": 8,
+      "tick": 38,
+      "usec": 9916413
+    },
+    {
+      "bodies": 8,
+      "tick": 39,
+      "usec": 11454198
+    },
+    {
+      "bodies": 8,
+      "tick": 40,
+      "usec": 11503246
+    },
+    {
+      "bodies": 8,
+      "tick": 41,
+      "usec": 11550574
+    },
+    {
+      "bodies": 8,
+      "tick": 42,
+      "usec": 11596490
+    },
+    {
+      "bodies": 8,
+      "tick": 43,
+      "usec": 11643908
+    },
+    {
+      "bodies": 8,
+      "tick": 44,
+      "usec": 11697944
+    },
+    {
+      "bodies": 8,
+      "tick": 45,
+      "usec": 11740555
+    },
+    {
+      "bodies": 8,
+      "tick": 46,
+      "usec": 11792020
+    },
+    {
+      "bodies": 8,
+      "tick": 47,
+      "usec": 11841954
+    },
+    {
+      "bodies": 8,
+      "tick": 48,
+      "usec": 11884763
+    },
+    {
+      "bodies": 8,
+      "tick": 49,
+      "usec": 11928350
+    },
+    {
+      "bodies": 8,
+      "tick": 50,
+      "usec": 11975688
+    },
+    {
+      "bodies": 8,
+      "tick": 51,
+      "usec": 12021486
+    },
+    {
+      "bodies": 8,
+      "tick": 52,
+      "usec": 12066605
+    },
+    {
+      "bodies": 8,
+      "tick": 53,
+      "usec": 12113500
+    },
+    {
+      "bodies": 8,
+      "tick": 54,
+      "usec": 12161430
+    },
+    {
+      "bodies": 8,
+      "tick": 55,
+      "usec": 12243434
+    },
+    {
+      "bodies": 8,
+      "tick": 56,
+      "usec": 12290095
+    },
+    {
+      "bodies": 8,
+      "tick": 57,
+      "usec": 12337725
+    },
+    {
+      "bodies": 8,
+      "tick": 58,
+      "usec": 12378817
+    },
+    {
+      "bodies": 8,
+      "tick": 59,
+      "usec": 12430431
+    },
+    {
+      "bodies": 8,
+      "tick": 60,
+      "usec": 12482176
+    },
+    {
+      "bodies": 8,
+      "tick": 61,
+      "usec": 12537379
+    },
+    {
+      "bodies": 8,
+      "tick": 62,
+      "usec": 12592182
+    },
+    {
+      "bodies": 8,
+      "tick": 63,
+      "usec": 12639220
+    },
+    {
+      "bodies": 8,
+      "tick": 64,
+      "usec": 12685596
+    },
+    {
+      "bodies": 8,
+      "tick": 65,
+      "usec": 12743033
+    },
+    {
+      "bodies": 8,
+      "tick": 66,
+      "usec": 12790881
+    },
+    {
+      "bodies": 8,
+      "tick": 67,
+      "usec": 12838196
+    },
+    {
+      "bodies": 8,
+      "tick": 68,
+      "usec": 12883782
+    },
+    {
+      "bodies": 8,
+      "tick": 69,
+      "usec": 12927273
+    },
+    {
+      "bodies": 8,
+      "tick": 70,
+      "usec": 12978224
+    },
+    {
+      "bodies": 8,
+      "tick": 71,
+      "usec": 13025970
+    },
+    {
+      "bodies": 8,
+      "tick": 72,
+      "usec": 13073218
+    },
+    {
+      "bodies": 8,
+      "tick": 73,
+      "usec": 13121744
+    },
+    {
+      "bodies": 8,
+      "tick": 74,
+      "usec": 13166634
+    },
+    {
+      "bodies": 8,
+      "tick": 75,
+      "usec": 13230350
+    },
+    {
+      "bodies": 8,
+      "tick": 76,
+      "usec": 13273698
+    },
+    {
+      "bodies": 8,
+      "tick": 77,
+      "usec": 13326638
+    },
+    {
+      "bodies": 8,
+      "tick": 78,
+      "usec": 13380914
+    },
+    {
+      "bodies": 8,
+      "tick": 79,
+      "usec": 13430501
+    },
+    {
+      "bodies": 8,
+      "tick": 80,
+      "usec": 13475591
+    },
+    {
+      "bodies": 8,
+      "tick": 81,
+      "usec": 13519353
+    },
+    {
+      "bodies": 8,
+      "tick": 82,
+      "usec": 13565282
+    },
+    {
+      "bodies": 8,
+      "tick": 83,
+      "usec": 13630624
+    },
+    {
+      "bodies": 8,
+      "tick": 84,
+      "usec": 13682488
+    },
+    {
+      "bodies": 8,
+      "tick": 85,
+      "usec": 13740068
+    },
+    {
+      "bodies": 8,
+      "tick": 86,
+      "usec": 13786556
+    },
+    {
+      "bodies": 8,
+      "tick": 87,
+      "usec": 13842994
+    },
+    {
+      "bodies": 8,
+      "tick": 88,
+      "usec": 13888986
+    },
+    {
+      "bodies": 8,
+      "tick": 89,
+      "usec": 13937517
+    },
+    {
+      "bodies": 8,
+      "tick": 90,
+      "usec": 13989737
+    },
+    {
+      "bodies": 8,
+      "tick": 91,
+      "usec": 14036716
+    },
+    {
+      "bodies": 8,
+      "tick": 92,
+      "usec": 14088398
+    },
+    {
+      "bodies": 8,
+      "tick": 93,
+      "usec": 14129442
+    },
+    {
+      "bodies": 8,
+      "tick": 94,
+      "usec": 14171459
+    },
+    {
+      "bodies": 8,
+      "tick": 95,
+      "usec": 14216774
+    },
+    {
+      "bodies": 8,
+      "tick": 96,
+      "usec": 14269346
+    },
+    {
+      "bodies": 8,
+      "tick": 97,
+      "usec": 14315868
+    },
+    {
+      "bodies": 8,
+      "tick": 98,
+      "usec": 14355820
+    },
+    {
+      "bodies": 8,
+      "tick": 99,
+      "usec": 14403241
+    },
+    {
+      "bodies": 8,
+      "tick": 100,
+      "usec": 14447444
+    },
+    {
+      "bodies": 8,
+      "tick": 101,
+      "usec": 14507082
+    },
+    {
+      "bodies": 8,
+      "tick": 102,
+      "usec": 14555809
+    },
+    {
+      "bodies": 8,
+      "tick": 103,
+      "usec": 14614528
+    },
+    {
+      "bodies": 8,
+      "tick": 104,
+      "usec": 14658767
+    },
+    {
+      "bodies": 8,
+      "tick": 105,
+      "usec": 14712996
+    },
+    {
+      "bodies": 8,
+      "tick": 106,
+      "usec": 14759960
+    },
+    {
+      "bodies": 8,
+      "tick": 107,
+      "usec": 14818439
+    },
+    {
+      "bodies": 8,
+      "tick": 108,
+      "usec": 14865590
+    },
+    {
+      "bodies": 8,
+      "tick": 109,
+      "usec": 14913919
+    },
+    {
+      "bodies": 8,
+      "tick": 110,
+      "usec": 14970692
+    },
+    {
+      "bodies": 8,
+      "tick": 111,
+      "usec": 15018395
+    },
+    {
+      "bodies": 8,
+      "tick": 112,
+      "usec": 15069651
+    },
+    {
+      "bodies": 8,
+      "tick": 113,
+      "usec": 15117268
+    },
+    {
+      "bodies": 8,
+      "tick": 114,
+      "usec": 15162576
+    },
+    {
+      "bodies": 8,
+      "tick": 115,
+      "usec": 15227217
+    },
+    {
+      "bodies": 8,
+      "tick": 116,
+      "usec": 15274008
+    },
+    {
+      "bodies": 8,
+      "tick": 117,
+      "usec": 15327263
+    },
+    {
+      "bodies": 8,
+      "tick": 118,
+      "usec": 15375096
+    },
+    {
+      "bodies": 8,
+      "tick": 119,
+      "usec": 15424472
+    },
+    {
+      "bodies": 8,
+      "tick": 120,
+      "usec": 15470930
+    },
+    {
+      "bodies": 8,
+      "tick": 121,
+      "usec": 15528450
+    },
+    {
+      "bodies": 8,
+      "tick": 122,
+      "usec": 15577622
+    },
+    {
+      "bodies": 8,
+      "tick": 123,
+      "usec": 15628655
+    },
+    {
+      "bodies": 8,
+      "tick": 124,
+      "usec": 15678325
+    },
+    {
+      "bodies": 8,
+      "tick": 125,
+      "usec": 15726188
+    },
+    {
+      "bodies": 8,
+      "tick": 126,
+      "usec": 15783579
+    },
+    {
+      "bodies": 8,
+      "tick": 127,
+      "usec": 15835871
+    },
+    {
+      "bodies": 8,
+      "tick": 128,
+      "usec": 15880985
+    },
+    {
+      "bodies": 8,
+      "tick": 129,
+      "usec": 15931031
+    },
+    {
+      "bodies": 8,
+      "tick": 130,
+      "usec": 15977366
+    },
+    {
+      "bodies": 8,
+      "tick": 131,
+      "usec": 16027076
+    },
+    {
+      "bodies": 8,
+      "tick": 132,
+      "usec": 16076883
+    },
+    {
+      "bodies": 8,
+      "tick": 133,
+      "usec": 16128158
+    },
+    {
+      "bodies": 8,
+      "tick": 134,
+      "usec": 16176432
+    },
+    {
+      "bodies": 8,
+      "tick": 135,
+      "usec": 16230485
+    },
+    {
+      "bodies": 8,
+      "tick": 136,
+      "usec": 16276289
+    },
+    {
+      "bodies": 8,
+      "tick": 137,
+      "usec": 16329072
+    },
+    {
+      "bodies": 8,
+      "tick": 138,
+      "usec": 16383897
+    },
+    {
+      "bodies": 8,
+      "tick": 139,
+      "usec": 16438426
+    },
+    {
+      "bodies": 8,
+      "tick": 140,
+      "usec": 16490385
+    },
+    {
+      "bodies": 8,
+      "tick": 141,
+      "usec": 16538899
+    },
+    {
+      "bodies": 8,
+      "tick": 142,
+      "usec": 16588952
+    },
+    {
+      "bodies": 8,
+      "tick": 143,
+      "usec": 16631340
+    },
+    {
+      "bodies": 8,
+      "tick": 144,
+      "usec": 16678517
+    },
+    {
+      "bodies": 8,
+      "tick": 145,
+      "usec": 16720604
+    },
+    {
+      "bodies": 8,
+      "tick": 146,
+      "usec": 16767549
+    },
+    {
+      "bodies": 8,
+      "tick": 147,
+      "usec": 16813963
+    },
+    {
+      "bodies": 8,
+      "tick": 148,
+      "usec": 16860824
+    },
+    {
+      "bodies": 8,
+      "tick": 149,
+      "usec": 16905763
+    },
+    {
+      "bodies": 8,
+      "tick": 150,
+      "usec": 16953784
+    },
+    {
+      "bodies": 8,
+      "tick": 151,
+      "usec": 17003796
+    },
+    {
+      "bodies": 8,
+      "tick": 152,
+      "usec": 17052062
+    },
+    {
+      "bodies": 8,
+      "tick": 153,
+      "usec": 17099310
+    },
+    {
+      "bodies": 8,
+      "tick": 154,
+      "usec": 17144782
+    },
+    {
+      "bodies": 8,
+      "tick": 155,
+      "usec": 17204485
+    },
+    {
+      "bodies": 8,
+      "tick": 156,
+      "usec": 17256391
+    },
+    {
+      "bodies": 8,
+      "tick": 157,
+      "usec": 17303771
+    },
+    {
+      "bodies": 8,
+      "tick": 158,
+      "usec": 17356813
+    },
+    {
+      "bodies": 8,
+      "tick": 159,
+      "usec": 17409412
+    },
+    {
+      "bodies": 8,
+      "tick": 160,
+      "usec": 17456997
+    },
+    {
+      "bodies": 8,
+      "tick": 161,
+      "usec": 17514759
+    },
+    {
+      "bodies": 8,
+      "tick": 162,
+      "usec": 17561750
+    },
+    {
+      "bodies": 8,
+      "tick": 163,
+      "usec": 17610885
+    },
+    {
+      "bodies": 8,
+      "tick": 164,
+      "usec": 17661457
+    },
+    {
+      "bodies": 8,
+      "tick": 165,
+      "usec": 17707937
+    },
+    {
+      "bodies": 8,
+      "tick": 166,
+      "usec": 17765916
+    },
+    {
+      "bodies": 8,
+      "tick": 167,
+      "usec": 17814078
+    },
+    {
+      "bodies": 8,
+      "tick": 168,
+      "usec": 17863164
+    },
+    {
+      "bodies": 8,
+      "tick": 169,
+      "usec": 17908309
+    },
+    {
+      "bodies": 8,
+      "tick": 170,
+      "usec": 17955995
+    },
+    {
+      "bodies": 8,
+      "tick": 171,
+      "usec": 18007688
+    },
+    {
+      "bodies": 8,
+      "tick": 172,
+      "usec": 18054703
+    },
+    {
+      "bodies": 8,
+      "tick": 173,
+      "usec": 18099694
+    },
+    {
+      "bodies": 8,
+      "tick": 174,
+      "usec": 18146036
+    },
+    {
+      "bodies": 8,
+      "tick": 175,
+      "usec": 18187622
+    },
+    {
+      "bodies": 8,
+      "tick": 176,
+      "usec": 18239068
+    },
+    {
+      "bodies": 8,
+      "tick": 177,
+      "usec": 18282552
+    },
+    {
+      "bodies": 8,
+      "tick": 178,
+      "usec": 18334861
+    },
+    {
+      "bodies": 8,
+      "tick": 179,
+      "usec": 18382776
+    },
+    {
+      "bodies": 8,
+      "tick": 180,
+      "usec": 18432337
+    },
+    {
+      "bodies": 8,
+      "tick": 181,
+      "usec": 18474451
+    },
+    {
+      "bodies": 8,
+      "tick": 182,
+      "usec": 18528390
+    },
+    {
+      "bodies": 8,
+      "tick": 183,
+      "usec": 18574170
+    },
+    {
+      "bodies": 8,
+      "tick": 184,
+      "usec": 18627035
+    },
+    {
+      "bodies": 8,
+      "tick": 185,
+      "usec": 18669082
+    },
+    {
+      "bodies": 8,
+      "tick": 186,
+      "usec": 18715154
+    },
+    {
+      "bodies": 8,
+      "tick": 187,
+      "usec": 18763694
+    },
+    {
+      "bodies": 8,
+      "tick": 188,
+      "usec": 18812079
+    },
+    {
+      "bodies": 8,
+      "tick": 189,
+      "usec": 18862279
+    },
+    {
+      "bodies": 8,
+      "tick": 190,
+      "usec": 18912555
+    },
+    {
+      "bodies": 8,
+      "tick": 191,
+      "usec": 18960231
+    },
+    {
+      "bodies": 8,
+      "tick": 192,
+      "usec": 19007064
+    },
+    {
+      "bodies": 8,
+      "tick": 193,
+      "usec": 19056420
+    },
+    {
+      "bodies": 8,
+      "tick": 194,
+      "usec": 19101865
+    },
+    {
+      "bodies": 8,
+      "tick": 195,
+      "usec": 19147581
+    },
+    {
+      "bodies": 8,
+      "tick": 196,
+      "usec": 19195507
+    },
+    {
+      "bodies": 8,
+      "tick": 197,
+      "usec": 19248210
+    },
+    {
+      "bodies": 8,
+      "tick": 198,
+      "usec": 19291623
+    },
+    {
+      "bodies": 8,
+      "tick": 199,
+      "usec": 19341414
+    },
+    {
+      "bodies": 8,
+      "tick": 200,
+      "usec": 19387993
+    },
+    {
+      "bodies": 8,
+      "tick": 201,
+      "usec": 19476765
+    },
+    {
+      "bodies": 8,
+      "tick": 202,
+      "usec": 19523751
+    },
+    {
+      "bodies": 8,
+      "tick": 203,
+      "usec": 19596976
+    },
+    {
+      "bodies": 8,
+      "tick": 204,
+      "usec": 19651588
+    },
+    {
+      "bodies": 8,
+      "tick": 205,
+      "usec": 19705415
+    },
+    {
+      "bodies": 8,
+      "tick": 206,
+      "usec": 19774049
+    },
+    {
+      "bodies": 8,
+      "tick": 207,
+      "usec": 19821454
+    },
+    {
+      "bodies": 8,
+      "tick": 208,
+      "usec": 19871882
+    },
+    {
+      "bodies": 8,
+      "tick": 209,
+      "usec": 19917933
+    },
+    {
+      "bodies": 8,
+      "tick": 210,
+      "usec": 19971026
+    },
+    {
+      "bodies": 8,
+      "tick": 211,
+      "usec": 20037582
+    },
+    {
+      "bodies": 8,
+      "tick": 212,
+      "usec": 20087910
+    },
+    {
+      "bodies": 8,
+      "tick": 213,
+      "usec": 20139268
+    },
+    {
+      "bodies": 8,
+      "tick": 214,
+      "usec": 20186749
+    },
+    {
+      "bodies": 8,
+      "tick": 215,
+      "usec": 20236568
+    },
+    {
+      "bodies": 8,
+      "tick": 216,
+      "usec": 20293413
+    },
+    {
+      "bodies": 8,
+      "tick": 217,
+      "usec": 20343251
+    },
+    {
+      "bodies": 8,
+      "tick": 218,
+      "usec": 20424225
+    }
+  ],
+  "performance_scope": "process callbacks and actual renderer frame_post_draw submissions; physical GPU presentation OWNER-PENDING",
+  "physical_progress_scope": "completed actual 1/60-second Main intervals; partial in-flight segments excluded",
+  "platform": "Linux",
+  "process_callbacks_per_wall_second": 119.212633380432,
+  "process_intervals": {
+    "count": 1252,
+    "maximum_usec": 28420,
+    "p50_usec": 9574,
+    "p95_usec": 11277
+  },
+  "receipt_pump_usec_delta": 6638284,
+  "recording_enabled": true,
+  "render_submission_intervals": {
+    "count": 0,
+    "maximum_usec": 0,
+    "p50_usec": 0,
+    "p95_usec": 0
+  },
+  "render_submissions": 0,
+  "render_submissions_per_wall_second": 0.0,
+  "rendering_method": "gl_compatibility",
+  "sampling": "cohorts",
+  "scene": "stress",
+  "schema": "objectshard-m4-workbench-profile-v1",
+  "semantic_ticks_per_wall_second": 17.1255179636694,
+  "shard_dimensions": [
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    },
+    {
+      "height": 77,
+      "width": 46
+    }
+  ],
+  "simulated_physical_seconds": 3.0,
+  "simulated_physical_seconds_per_wall_second": 0.285425299394489,
+  "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "stage_scope": "window deltas; native occupancy includes relocation, and Main receipt pump includes waits and its nested stages; these counters must not be summed as independent wall time",
+  "worker_stage_deltas": {
+    "frame_copy_calls": 180,
+    "frame_copy_usec": 52646,
+    "snapshot_calls": 1080,
+    "snapshot_usec": 1806201
+  }
+}

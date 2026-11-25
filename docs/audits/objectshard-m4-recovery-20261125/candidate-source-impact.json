@@ -1,0 +1,133 @@
+{
+  "candidate_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+  "candidate_local_equivalent": "537ddef6e88eca2a59b8a02816a149601504dc7e",
+  "candidate_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+  "changed_registered_inputs": [
+    {
+      "candidate_sha256": "d87eb1400151d5ef70114d34bef3c7bcca50f658a6529eb2fd22d5ae1d3f2bf3",
+      "original_sha256": "0fc77df8386799c87ef3d90f3fc80e26cea9478e1f1d372f917246e2bcd012da",
+      "path": "godot/scripts/main.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "dc3c2f3aca3dacc48ec38ea26026a3e62378be1b76ea6040ad280965f5955990",
+      "original_sha256": "e18199c0832545972d51f3b1c637a43a867caa9ff654cd775ddb0273da364948",
+      "path": "godot/scripts/object_shard_m4_latency_probe.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "c8405e32db3a81e9f48d6c94a05b35346b68203307be52721f69d9c6e1519a26",
+      "original_sha256": "84b755934a4a7792e3c82c3f36491a3376141505007836da04bcbf0732df3ce8",
+      "path": "godot/scripts/shared_workbench.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "dbabbc94d87fc449d89ae3cc0c99ee12ba6f4b6db526dfacb7397259a5fdefb0",
+      "original_sha256": null,
+      "path": "godot/tests/profile_object_shard_m4_disabled_control.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "ac53eb4c975a50422921ad59e0f60b241e5b13d69ebf2d0724ed93f76973357f",
+      "original_sha256": "3d4095d2551d9ce5a4b3f34cda64157aff2fec60acf5fa66fe5af31f7b50de64",
+      "path": "godot/tests/profile_object_shard_m4_render_control.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "824006412e6941bb1a3503d2ca51f7437cffcbd8a724ce87f0fbd13b3ca00b53",
+      "original_sha256": "5b29ad4019141fa38ae96baa8785bdf774337441cb47ed1f113c9340f57bb4cc",
+      "path": "godot/tests/profile_object_shard_m4_workbench.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "44e95f94d8e21175502afce112ec9d766bb6e078cf0adc1a9744e69df4e156a7",
+      "original_sha256": "b0e95cb2ed5073dcb15a76785258457d3a205c8bc36920c592362bcb1216fab4",
+      "path": "godot/tests/test_object_shard_m4_latency_probe.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "8ed6a9571acf00fd2219dbb64009780fcbea29fed0a466775ebf10775acc29db",
+      "original_sha256": null,
+      "path": "godot/tests/test_object_shard_m4_optional_diagnostics.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "77692165235442be584773b2a0ef1fd3007b8d711dcdfcab7b621d61f80e9201",
+      "original_sha256": "0e3d2d39b63fc25dd665d3f20ff460113e29275a99af8162191c93cb298ed0fa",
+      "path": "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "c474a1e64ba6e50cc87771df4f2f28f826535fbf1021b92baf157183ec2c2086",
+      "original_sha256": "de8232e53714e239a2507163dc3f727c94ff9b177de5d4016c87ecd72cd04308",
+      "path": "tools/objectshard/package_windows_workbench.py",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "fab4ff0df15c8404ba2661e19d483ef057d4c3ac3f5f9d5bc73f0bc7dc8b7b03",
+      "original_sha256": "dc6a43fa0b6312993953e8282b24cd3933952c4231fdbe5d4883d8d27679b766",
+      "path": "tools/objectshard/qualify_workbench.py",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "025016ec763e527fb142fee0aa645cc8c08248ef78c2d7119573a6519fb78e58",
+      "original_sha256": "763bae834ad13538ba6821f17d5000ad48137747b3c633843fbb4eb20832bd1c",
+      "path": "tools/objectshard/qualify_workbench_zip.py",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "3686175bda7a03eb94621912a76be6f233cb5db5235109f5329e349ee718bf3c",
+      "original_sha256": null,
+      "path": "tools/objectshard/test_workbench_provenance.py",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "685cdeea760b22db6b77c847d685ec8ad65d0ace9b5e28eb66276d0caee11d85",
+      "original_sha256": "fabc095cf828ed6d0ee41b03193a53392471047e6256695660b09b45a9ce3d0c",
+      "path": "tools/objectshard/test_workbench_qualification.py",
+      "scope": "application-or-qualification-input"
+    },
+    {
+      "candidate_sha256": "f51dff570f0453af8ffdc684d8b387ed058bda9bb96f06ed196102ef3bf82ac8",
+      "original_sha256": "0712bf2a3fa65020dd82a7e1cded95e1bffb737cdb7550de6f66aa75aecc6c8c",
+      "path": "tools/objectshard/verify_workbench_package.py",
+      "scope": "application-or-qualification-input"
+    }
+  ],
+  "executed_inputs_after": 1077,
+  "executed_inputs_before": 1074,
+  "impact": "Native and material implementation unchanged. New optional-recording and performance-control scripts plus provenance, package replay and qualifier inputs require new ordinary and actual graphical platform execution. The Linux workflow acquisition route changes but keeps exact engine pins. Original positives remain source-scoped; this new campaign rebuilds and qualifies its exact source. Audit-only additions after freeze do not change execution inputs.",
+  "native_inputs_after": 117,
+  "native_inputs_before": 117,
+  "native_inputs_changed": 0,
+  "other_changed_paths": [
+    ".github/workflows/objectshard-m4-completion.yml",
+    "docs/audits/2026-11-24-objectshard-m4-completion-qualification.md",
+    "docs/audits/2026-11-25-objectshard-m4-delivery-recovery.md",
+    "docs/audits/2026-11-25-objectshard-m4-native-recovery-review.md",
+    "docs/audits/2026-11-25-objectshard-m4-performance-recovery.md",
+    "docs/audits/2026-11-25-objectshard-m4-recovery.md",
+    "docs/audits/objectshard-m4-completion-20261124/hosted-f5b7-native-review.json",
+    "docs/audits/objectshard-m4-completion-20261124/hosted-f5b7-windows-native-cross-review.json",
+    "docs/audits/objectshard-m4-recovery-20261125/challenge_workbench_evidence.py",
+    "docs/audits/objectshard-m4-recovery-20261125/combined-source-review.json",
+    "docs/audits/objectshard-m4-recovery-20261125/delivery-recovery.json",
+    "docs/audits/objectshard-m4-recovery-20261125/earlier-native-job-recovery.json",
+    "docs/audits/objectshard-m4-recovery-20261125/earlier-platform-recovery.json",
+    "docs/audits/objectshard-m4-recovery-20261125/evidence-reviewer-adversity.json",
+    "docs/audits/objectshard-m4-recovery-20261125/intake.json",
+    "docs/audits/objectshard-m4-recovery-20261125/native-recovery-review.json",
+    "docs/audits/objectshard-m4-recovery-20261125/native-replay.json",
+    "docs/audits/objectshard-m4-recovery-20261125/original-windows-independent-review.json",
+    "docs/audits/objectshard-m4-recovery-20261125/performance-controls-review.json",
+    "docs/audits/objectshard-m4-recovery-20261125/registered-workbench-inventory.json",
+    "docs/audits/objectshard-m4-recovery-20261125/review_native_recovery.py",
+    "docs/audits/objectshard-m4-recovery-20261125/review_workbench_evidence.py",
+    "docs/audits/objectshard-m4-recovery-20261125/windows-native-recovery-review.json",
+    "docs/operations/objectshard-workbench-playtest.md",
+    "docs/research/objectshard-m4-workbench.md",
+    "tools/objectshard/verify_workbench_package.ps1"
+  ],
+  "predecessor_commit": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+  "schema": "objectshard-m4-recovery-input-impact-v1"
+}

@@ -172,3 +172,111 @@ PR checks do not qualify the later repair.
 Next: freeze the integrated source, refresh the branch lease and live campaign
 queue, publish one existing marker-gated qualification request, and independently
 review original native, Linux, Windows and actual delivered-ZIP artifacts.
+
+## Frozen replacement campaign
+
+The integrated candidate was published through a non-force branch lease as
+`51903088118d2a04f2dc79dd6fff7c25b226970c`, tree
+`a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919`. The API-created Git tree exactly
+matches reviewed local commit `537ddef6e88eca2a59b8a02816a149601504dc7e`.
+The existing marker-gated [completion campaign, run 45517975210](https://github.com/techrote/cybersand/actions/runs/45517975210),
+attempt 1, started on that source. At this checkpoint it is running, not passed.
+The initial jobs are native sanitizers `138882242884`, Linux Workbench
+`138882242425`, and Windows native build `138882243010`; Windows Workbench
+depends on the source-bound Windows native artifact. No other programme's run
+was cancelled or imported.
+
+[Input impact](objectshard-m4-recovery-20261125/candidate-source-impact.json)
+independently compares the predecessor and frozen Git objects: all 117 native
+implementation inputs are unchanged; the executed application/qualification
+inventory increases from 1,074 to 1,077 paths. Changed inputs and their old/new
+hashes are listed individually. Original native positives remain valid for
+their original inputs, but changed platform and package execution is not
+qualified by that reuse. The replacement campaign performs its full existing
+native gate as well.
+
+The source-bound opt-in evaluator and accepted production runtimes have distinct
+custody. Independent review of AGENTS, release policy and the M4 contract
+confirms that retained-runtime checks are prerequisites for Ready/merge, which
+this mission does not authorize. The retained production provenance check
+remains **FAIL/OPEN**, with 16 stale-input errors across its two manifests.
+The candidate must pass its own native, application, package and actual-platform
+gates. A successful evaluator will not convert the retained-runtime gate into
+a pass or authorize production publication.
+
+The [independent delivery review](objectshard-m4-recovery-20261125/delivery-independent-review.json)
+records that policy scope and the complete replacement process inventory.
+The [performance recovery](objectshard-m4-recovery-20261125/performance-recovery.json)
+retains original archive/report/capture custody and 13 source-scoped local
+processes. The matched off/on/on/off development comparison found no consistent
+recording-off throughput benefit. Optional recording is not claimed as an FPS
+repair. Setup-inclusive bounded stage samples and full timed-window counters
+remain separate, and no hosted renderer observation qualifies physical NVIDIA
+presentation.
+
+The independent offline reviewer was itself challenged with 15 altered
+evidence controls, including omitted overlay receipts and synchronized wrong
+profile schemas. Every altered control now refuses. Intermediate false passes
+remain recorded in the [schema adversity review](objectshard-m4-recovery-20261125/evidence-reviewer-schema-adversity.json).
+All later changes so far are audit/documentation only; the tested application
+freeze remains the source above. Next: consume the four actual terminal job
+outcomes and independently verify every delivered archive before deciding
+engineering readiness.
+
+## First replacement failure and exact clock correction
+
+Run 45517975210 must remain **FAILED overall** because Windows Workbench job
+`138885301327` failed its primary matrix, with **41 of 42 cases passing**.
+The native sanitizer and Windows-native jobs passed. Linux passed its primary
+matrix and was still executing the graphical stage at this checkpoint. The
+Windows graphical, launcher, package and replay stages did not execute.
+
+The lead independently rehashed Windows artifact `14980020675`:
+5,242,715 bytes, SHA-256
+`9e65cbe3bf9e8b84fe6906b04d39639920ff83d3334cc2e3610a94f774d7b5f6`.
+All source maps and 42 original process logs passed the independent custody
+review; application qualification correctly remains failed/incomplete.
+The failed case is `test_object_shard_m4_long_burn`, natural exit 1 after
+22.138 seconds, not a timeout. Its [original-byte review](objectshard-m4-recovery-20261125/first-replacement-windows-independent-review.json)
+and [lead clock diagnosis](objectshard-m4-recovery-20261125/first-replacement-long-burn-diagnosis.json)
+retain the exact failure and distinguish it from the original packaging failure.
+
+All three specialists independently confirmed a fixture clock mismatch.
+`f.tick()` and `_shard()` read the copied native frame, whereas
+`f.owned_cell_state()` intentionally reads the coherently displayed publication.
+The retained raw inventory establishes start tick 34. At native tick 514,
+exactly 480 ticks later, the native structure already had eight surviving cells
+and geometry revision 2; the displayed cell was still Wood with burn state 1
+while physical geometry revision 1 awaited replacement. At tick 515, the
+acknowledged display showed Air. All 2,084 observed display identities remained
+coherent. The old assertion incorrectly labelled delayed displayed material
+with a newer native tick.
+
+The narrow correction captures one immutable native frame and reads the
+semantic tick, material, burn state and incarnation together. It separately
+retains displayed state, tick and publication sequence, then requires visible
+Air and matching native/physical/publication identities after the ordinary
+Pause acknowledgement. The **240-opportunity lifetime and maximum 480 native
+ticks are unchanged**. The shared displayed-source helper remains unchanged
+because moving-tool tests correctly depend on it. No native, chemistry,
+physics, runtime scheduling or presentation implementation changed.
+
+A focused assertion-equivalent corrected fixture passed **233 checks** in the
+established Linux development environment: native tick 34 to exhaustion 514,
+then one admitted native interval drained while obtaining the final coherent
+paused display. Last-cell physical and native retirement also passed. The
+final source adds two explicit derived receipt fields for lifetime ticks and
+post-exhaustion ticks; that exact final script passes parsing. The successful
+development runtime and fixture identities are retained separately from the
+new hosted qualification requirement. Two earlier local attempts ended with
+SIGKILL and no completion receipt; no kernel/cgroup cause was available and
+they are not counted as passes.
+
+The existing candidate publisher requires `source_commit == build_commit ==`
+the package-producing source, and the registered completion workflow has no
+selective gate mode. Rewriting the earlier DLL ledger would violate custody.
+After focused proof and independent source review, one new marker campaign is
+therefore required for the corrected fixture/package source. The 117 native
+implementation inputs remain unchanged and all earlier positives retain their
+exact scope. The earlier Linux graphical job is left running; its result will
+be retained rather than cancelled or relabelled.

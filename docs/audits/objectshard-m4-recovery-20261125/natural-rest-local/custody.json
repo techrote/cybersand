@@ -1,0 +1,102 @@
+{
+  "application_source": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "application_tree": "639b3709c7ae82236aacab86ff3cb13327b5e446",
+  "boundary_interpretation": {
+    "complete_window": "At both start and end a first segment was executed and awaiting its native acknowledgement. Each edge has interval_active=true,interval_segments1,interval_completed_delta0 and pending_kind motion. Window deltas400native ticks/400intervals/1600steps/1600acknowledgements do not count either pending edge as completed.",
+    "explicit_pause_drain": "After measurement, ordinary Pause finishes the already admitted interval: actual steps3505\u21923508, ACKs3404\u21923408, intervals876\u2192877,native tick877\u2192878. It reaches Ready,pending_serial0,motion_lease0 and required_native_tick878.",
+    "initial_window": "373 observed semantic ticks,374 completed physical intervals,1496 actual segments retained unchanged. Observed native tick477 before,850 after,851 after explicit Pause. Exact before/after phases were not retained, so their precise states are not asserted.",
+    "source_rule": "object_shard_m4_runtime.gd increments physical_intervals only after native motion receipt validity and exact pose echo; subsequently the due native tick must be delivered before Ready."
+  },
+  "complete_checks": 109,
+  "complete_log_sha256": "596f596e99a870e790f9291830e220e66a647ac88fec42a731bdea22b2eb35be",
+  "complete_motion": {
+    "callbacks": 1642,
+    "maximum_abs_angular_velocity": 0.0,
+    "maximum_angle_drift": 0.0,
+    "maximum_position_drift": 0.0,
+    "maximum_speed": 0.0,
+    "nonquiet_callbacks": 0,
+    "sleeping_callbacks": 1642
+  },
+  "complete_observer_sha256": "ce79c9126362461dd2e5e9ad41d90e4b6d04132d4dbfb05ced4d4309480bbd41",
+  "complete_report_sha256": "62a9023380e7e0d0b3f9fd125f7630e6cda014101fb10540258f4afc566a13d4",
+  "complete_window": {
+    "actual_physics_steps": 1600,
+    "awake_bodies_after": 0,
+    "awake_bodies_before": 0,
+    "body_count_after": 1,
+    "body_count_before": 1,
+    "callback_intervals": {
+      "count": 1641,
+      "maximum_usec": 62409,
+      "p50_usec": 8930,
+      "p95_usec": 10497
+    },
+    "completed_physical_intervals": 400,
+    "elapsed_usec": 12000172,
+    "label": "naturally_quiet_playing",
+    "main_stage_deltas": {
+      "owner_control_admission": {
+        "calls": 2000,
+        "usec": 98956
+      },
+      "pose_packet_capture": {
+        "calls": 1600,
+        "usec": 122509
+      },
+      "rapier_segment": {
+        "calls": 1600,
+        "usec": 233879
+      }
+    },
+    "native_pose_acknowledgements": 1600,
+    "native_pose_echo_checks": 1600,
+    "paused": false,
+    "process_callbacks": 1642,
+    "receipt_pump_usec": 8448745,
+    "render_intervals": {
+      "count": 0
+    },
+    "render_submissions": 0,
+    "render_submissions_per_second": 0.0,
+    "semantic_ticks": 400,
+    "semantic_ticks_per_second": 33.3328555624036,
+    "simulated_physical_seconds": 6.66666666666667,
+    "worker_snapshot_calls": 2400,
+    "worker_snapshot_usec": 1993086
+  },
+  "equivalence_scope": "No changed paths under godot/native between application and integration source; external observer is separately identified input",
+  "first_run_limit": "Before/after pose/native tick and final post-Pause diagnostics retained; exact window-edge full phases were not retained. Complete replay adds those fields and independent inventory witness without changing application or physical behavior.",
+  "hardware_performance_acceptance": "HOLD; headless only",
+  "independent_inventory_witnesses": 1,
+  "initial_log_sha256": "3c306d3016c9d93f1bdbfd43c4d9c9f29b0265ad6c6b8ea264fc13cd359156b5",
+  "initial_observer_sha256": "3492969181909574ad58d49899d9390b38d17703bb6cf216b24a80d81bda5467",
+  "initial_report_sha256": "42e7c5b50227bb6ab4f0689c887a33f65fd1824b1230f3be2d6903fdb49097c2",
+  "integration_source": "537ddef6e88eca2a59b8a02816a149601504dc7e",
+  "integration_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+  "load_observed_during_complete_replay": [
+    0.86328125,
+    0.509765625,
+    0.50732421875
+  ],
+  "local_concurrency": "Native reviewer finished author/reopen before initial run and held its separate canvas execution during both timing windows; host is shared and not exclusive",
+  "main_observation": "Actual Rapier transform, linear/angular velocity and sleep state read at every callback; added observer cost disclosed",
+  "material_after": {
+    "brick": 2232,
+    "wood": 2184
+  },
+  "material_before": {
+    "brick": 2232,
+    "wood": 2184
+  },
+  "observed_utc": "2026-11-25T00:45:50Z",
+  "raw_logs": {
+    "complete_path": "build/recovery-performance/natural-rest-final.log",
+    "initial_path": "build/recovery-performance/natural-rest-initial/execution.log",
+    "retention_scope": "Raw logs retained in local build evidence and hashed here; repository AGENTS.md excludes log bodies from commits. Complete parsed reports and observer source are committed."
+  },
+  "recording_enabled": false,
+  "runtime_input_custody": "../performance-local-61213289c/campaign.json",
+  "schema": "objectshard-m4-natural-rest-custody-v1",
+  "status": "passed"
+}

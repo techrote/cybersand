@@ -84,6 +84,7 @@ def main() -> None:
     mutations = ["wrong-source", "wrong-tree", "altered-log", "altered-receipt",
                  "missing-focused-receipt", "dropped-native-key", "dropped-script-key",
                  "removed-registered-case", "duplicated-footer", "wrong-focused-schema",
+                 "missing-overlay-receipt", "wrong-profile-schema",
                  "altered-launcher-receipt", "partial-inventory", "absent-inventory"]
     output = {"schema": "objectshard-m4-independent-evidence-reviewer-adversity-v1",
               "reviewer_sha256": {"before": sha(options.reviewer_before.read_bytes()),
@@ -98,7 +99,8 @@ def main() -> None:
             changed = members.copy()
             expected = copy.deepcopy(inventory)
             headless = json.loads(changed["headless/qualification.json"])
-            focused = next(c for c in headless["cases"] if c["name"] == "test_object_shard_m4_latency_probe")
+            focus_name = "m4_workbench_tower_overview_headless" if mutation == "wrong-profile-schema" else "test_object_shard_m4_latency_probe"
+            focused = next(c for c in headless["cases"] if c["name"] == focus_name)
             log_name = "headless/" + focused["log"]
             if mutation == "wrong-source":
                 headless["source_commit"] = "0" * 40
@@ -110,6 +112,11 @@ def main() -> None:
                 focused["receipt"]["checks"] += 1
             elif mutation == "missing-focused-receipt":
                 focused.pop("receipt")
+            elif mutation == "missing-overlay-receipt":
+                graphical = json.loads(changed["graphical/qualification.json"])
+                overlay = next(c for c in graphical["cases"] if c["name"] == "test_object_shard_m4_overlay_identity")
+                overlay.pop("receipt")
+                changed["graphical/qualification.json"] = encoded(graphical)
             elif mutation == "dropped-native-key":
                 del headless["native_source_inputs"][next(iter(headless["native_source_inputs"]))]
             elif mutation == "dropped-script-key":
@@ -119,7 +126,7 @@ def main() -> None:
             elif mutation == "duplicated-footer":
                 changed[log_name] += encoded(focused["receipt"])
                 focused["log_sha256"] = sha(changed[log_name])
-            elif mutation == "wrong-focused-schema":
+            elif mutation in ("wrong-focused-schema", "wrong-profile-schema"):
                 old_schema = focused["receipt"]["schema"]
                 focused["receipt"]["schema"] = "synthetic-unregistered-schema"
                 lines = changed[log_name].decode().splitlines()

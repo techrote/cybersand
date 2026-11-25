@@ -70,10 +70,31 @@ def registered_inputs(repo: Path, ref: str) -> tuple[set[str], set[str]]:
 
 
 def registered_footers(source: bytes) -> dict[str, str]:
-    for node in ast.parse(source).body:
+    tree = ast.parse(source)
+    result = None
+    for node in tree.body:
         if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == "FOCUSED" for t in node.targets):
-            return dict(ast.literal_eval(node.value))
-    raise ValueError("Test source lacks its explicit focused inventory")
+            result = dict(ast.literal_eval(node.value))
+    need(result is not None, "Test source lacks its explicit focused inventory")
+    profile_schemas = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Tuple) or len(node.elts) != 2:
+            continue
+        case, schema = node.elts
+        if not (isinstance(case, ast.Call) and isinstance(case.func, ast.Attribute)
+                and case.func.attr == "Case" and case.args
+                and isinstance(schema, ast.Constant) and isinstance(schema.value, str)):
+            continue
+        name = case.args[0]
+        if isinstance(name, ast.Constant) and isinstance(name.value, str):
+            need(name.value not in result or result[name.value] == schema.value,
+                 "Conflicting registered footer schema: " + name.value)
+            result[name.value] = schema.value
+        elif isinstance(name, ast.Name) and name.id in ("name", "recorded_name"):
+            profile_schemas.add(schema.value)
+    need(len(profile_schemas) == 1, "Missing or ambiguous Workbench profile schema")
+    result["m4_workbench_*"] = profile_schemas.pop()
+    return result
 
 
 def review(args: argparse.Namespace) -> dict:
@@ -143,6 +164,8 @@ def review(args: argparse.Namespace) -> dict:
                 need(("--headless" in command) != displayed, "Process render scope differs: " + log_name)
                 receipt = case.get("receipt")
                 registered_schema = expected_footers.get(case["name"])
+                if case["name"].startswith("m4_workbench_") and case["name"] != "m4_workbench_import":
+                    registered_schema = expected_footers["m4_workbench_*"]
                 for suffix in ("_cli", "_render", "_graphical"):
                     if case["name"].endswith(suffix):
                         registered_schema = registered_schema or expected_footers.get(case["name"][:-len(suffix)])

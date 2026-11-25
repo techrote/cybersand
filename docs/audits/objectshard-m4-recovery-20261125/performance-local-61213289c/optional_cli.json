@@ -1,0 +1,197 @@
+{
+  "checks": 36,
+  "failures": [],
+  "observations": {
+    "cli_recording": true,
+    "display_coherence": {
+      "between_callback_observations": 351,
+      "draw_observations": 0,
+      "examples": [],
+      "foreign_draw_callbacks": 0,
+      "incoherent_observations": 0,
+      "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+    },
+    "final_native_tick": 32,
+    "final_physical_intervals": 31,
+    "recorded": {
+      "cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [
+          {
+            "elapsed_usec": 1248404,
+            "interval_count": 12,
+            "maximum_interval_usec": 1038174,
+            "observed_units_per_second": 9.61227295010269,
+            "recent_interval_samples": 12,
+            "recent_p50_interval_usec": 18670,
+            "recent_p95_interval_usec": 1038174,
+            "units": "native_semantic_ticks",
+            "units_observed": 12,
+            "workload": {
+              "camera": "free",
+              "owned_material_bodies": 0,
+              "paused": false
+            }
+          }
+        ],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "enabled": true,
+      "epoch": 5,
+      "events_retained": 512,
+      "frame_serial_coherence_proven": false,
+      "input_to_post_draw_causally_proven": false,
+      "no_additive_stage_total": true,
+      "post_draw_callbacks_after_upload": 0,
+      "proven_presented_uploads": 0,
+      "schema": "objectshard-m4-workbench-latency-v1",
+      "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+      "stages": {
+        "physics_work": {
+          "count": 52,
+          "maximum_usec": 1117,
+          "p50_usec": 113,
+          "p95_usec": 258
+        },
+        "publication_prepare": {
+          "count": 52,
+          "maximum_usec": 78,
+          "p50_usec": 44,
+          "p95_usec": 67
+        },
+        "queue_admission": {
+          "count": 65,
+          "maximum_usec": 215,
+          "p50_usec": 26,
+          "p95_usec": 166
+        },
+        "receipt_delivery": {
+          "count": 175,
+          "maximum_usec": 8704,
+          "p50_usec": 586,
+          "p95_usec": 3766
+        },
+        "scene_callback": {
+          "count": 178,
+          "maximum_usec": 9844,
+          "p50_usec": 854,
+          "p95_usec": 9042
+        }
+      },
+      "worker_metrics": {
+        "hard_surface_packet_time_ms": 0.0,
+        "render_exchange_time_ms": 0.0,
+        "scope": "worker_reported_potentially_nested_not_a_sum",
+        "snapshot_copy_time_ms": 0.004,
+        "snapshot_publication_time_ms": 0.43,
+        "snapshot_serial": 3894,
+        "tick": 22,
+        "worker_step_time_ms": 0.996,
+        "world_generation": 3,
+        "world_revision": 3
+      }
+    },
+    "saved_report": {
+      "ok": true,
+      "outcome": "DiagnosticsSaved",
+      "path": "/home/agent/objectshard-recovery-20261125/performance/build/recovery-performance/committed-61213289c/user-optional_cli/godot/app_userdata/Cyber Sand Reference Sandbox/objectshard-diagnostics/objectshard-2026-11-25-00-18-27-9417578.json",
+      "schema": "objectshard-m4-workbench-diagnostics-v1",
+      "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+      "user_path": "user://objectshard-diagnostics/objectshard-2026-11-25-00-18-27-9417578.json"
+    },
+    "stopped": {
+      "cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [
+          {
+            "elapsed_usec": 1248404,
+            "interval_count": 12,
+            "maximum_interval_usec": 1038174,
+            "observed_units_per_second": 9.61227295010269,
+            "recent_interval_samples": 12,
+            "recent_p50_interval_usec": 18670,
+            "recent_p95_interval_usec": 1038174,
+            "units": "native_semantic_ticks",
+            "units_observed": 12,
+            "workload": {
+              "camera": "free",
+              "owned_material_bodies": 0,
+              "paused": false
+            }
+          }
+        ],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "enabled": false,
+      "epoch": 5,
+      "events_retained": 512,
+      "frame_serial_coherence_proven": false,
+      "input_to_post_draw_causally_proven": false,
+      "no_additive_stage_total": true,
+      "post_draw_callbacks_after_upload": 0,
+      "proven_presented_uploads": 0,
+      "schema": "objectshard-m4-workbench-latency-v1",
+      "scope": "ordinary_Workbench_opt_in_main_thread_observation",
+      "stages": {
+        "physics_work": {
+          "count": 52,
+          "maximum_usec": 1117,
+          "p50_usec": 113,
+          "p95_usec": 258
+        },
+        "publication_prepare": {
+          "count": 52,
+          "maximum_usec": 78,
+          "p50_usec": 44,
+          "p95_usec": 67
+        },
+        "queue_admission": {
+          "count": 65,
+          "maximum_usec": 215,
+          "p50_usec": 26,
+          "p95_usec": 166
+        },
+        "receipt_delivery": {
+          "count": 175,
+          "maximum_usec": 8704,
+          "p50_usec": 586,
+          "p95_usec": 3766
+        },
+        "scene_callback": {
+          "count": 178,
+          "maximum_usec": 9844,
+          "p50_usec": 854,
+          "p95_usec": 9042
+        }
+      },
+      "worker_metrics": {
+        "hard_surface_packet_time_ms": 0.0,
+        "render_exchange_time_ms": 0.0,
+        "scope": "worker_reported_potentially_nested_not_a_sum",
+        "snapshot_copy_time_ms": 0.004,
+        "snapshot_publication_time_ms": 0.43,
+        "snapshot_serial": 3894,
+        "tick": 22,
+        "worker_step_time_ms": 0.996,
+        "world_generation": 3,
+        "world_revision": 3
+      }
+    }
+  },
+  "schema": "objectshard-m4-optional-diagnostics-v1",
+  "scope": "actual ordinary Workbench recording controls and saved reports; physical monitor acceptance remains owner-pending"
+}

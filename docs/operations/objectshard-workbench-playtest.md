@@ -30,8 +30,9 @@ renderer and adapter in performance observations. The repository's ordinary
 project renderer defaults are preserved.
 
 The launcher exposes the experimental **Structures…** panel in ordinary
-Workbench. Select a demonstration or choose **Enable on current canvas** for
-your own authored scene. Ordinary launches keep their existing defaults.
+Workbench and selects the **Multi-storey tower** start. Select another
+demonstration in that panel or choose **Enable on current canvas** for your own
+authored scene. Ordinary launches keep their existing defaults.
 The candidate is bounded; an unsupported canvas, roster or exhausted geometry
 budget must show a refusal while preserving existing ownership.
 
@@ -53,15 +54,17 @@ portable evaluator supplies one; an arbitrary retained DLL is not a substitute.
 ## First collapse
 
 Choose **Multi-storey tower**, start play, and erase the narrow vertical support
-stems below its bottom floor with the ordinary Erase tool. Clear enough of their
+stems below its bottom floor. Keep the first mode selector on **Paint**, then
+choose **Eraser** in the drawing-tool selector or press **E**. Clear enough of their
 height for a full drop. A small notch can let the structure land on the remaining
 stumps, which is a valid physical result. The native structural inventory is
 transferred into coherent physical bodies only after genuine geometry and
 mass installation receipts. The falling material should keep its identity,
 interact with the terrain, and remain available for further edits.
 
-Use **Cut moving** for a witnessed edit of a moving structure, and
-**Ignite moving** to ignite supported combustible material. These tools mark
+In the first mode selector, choose **Cut moving** for a witnessed edit of a
+moving structure, or **Ignite moving** to ignite supported combustible
+material. These tools mark
 one visible cell, and the ordinary paint radius is disabled. Hold and move
 slowly to make successive edits; each edit waits for the preceding native and
 geometry receipts. Releasing the button or switching tools cancels the held
@@ -73,6 +76,12 @@ outcome; it must not erase unrelated native terrain.
 Ordinary painting remains available around the moving structures. Use Sand,
 Water and Fire to observe coupled behavior. Switching tools or camera modes
 must not replace the native World, duplicate the material, or restart a body.
+Select **Paint** again to return to the ordinary Brush/Eraser controls.
+
+Choose **Overview** to frame the whole canvas. Over the canvas, use the mouse
+wheel to zoom and drag the middle mouse button to pan; the toolbar's **+** and
+**−** buttons also change zoom. **Follow selected** tracks the selected ordinary
+actor. Free camera, zoom and pan let you inspect the moving structures directly.
 
 For a quiet body lying almost horizontally or vertically, **Pause**, choose
 **Settle into canvas**, and select its material. The candidate freezes the real body, checks
@@ -140,7 +149,9 @@ publication protocol. Open **Structures… → Record performance timings
 recording off and select **Save diagnostics**. Stopping preserves the recorded
 timings while normal play continues; starting another recording clears the
 previous timing samples. The explicit `--objectshard-diagnostics` launch flag
-is an alternative to the checkbox.
+is an alternative when invoking the packaged Godot engine directly; **Open
+Workbench.cmd** uses its fixed qualified launch arguments. The checkbox is the
+normal portable-evaluator control.
 
 **Save diagnostics** writes a local JSON snapshot of the current scene, camera,
 source identity, renderer and native/physics receipts, together with the

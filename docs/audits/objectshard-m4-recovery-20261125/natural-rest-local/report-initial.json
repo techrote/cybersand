@@ -1,0 +1,371 @@
+{
+	"camera": "overview",
+	"canvas_extent": [
+		512,
+		512
+	],
+	"checks": 109,
+	"display_coherence": {
+		"between_callback_observations": 3861,
+		"draw_observations": 0,
+		"examples": [],
+		"foreign_draw_callbacks": 0,
+		"incoherent_observations": 0,
+		"scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+	},
+	"display_driver": "headless",
+	"external_observer_sha256": "3492969181909574ad58d49899d9390b38d17703bb6cf216b24a80d81bda5467",
+	"failures": [],
+	"final_diagnostics": {
+		"attached": true,
+		"body_count": 1,
+		"controls_completed": 4254,
+		"deferred_world_uploads": 16,
+		"enabled": true,
+		"has_live_inventory": true,
+		"held_reason": "",
+		"last_motion_permit": {
+			"lease": 850,
+			"ok": true,
+			"outcome": "MotionReserved"
+		},
+		"main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"main_costs": {
+			"owner_control_admission": {
+				"calls": 4254,
+				"max_usec": 3597,
+				"usec": 200596
+			},
+			"pose_packet_capture": {
+				"calls": 3400,
+				"max_usec": 13839,
+				"usec": 322581
+			},
+			"rapier_segment": {
+				"calls": 3400,
+				"max_usec": 24472,
+				"usec": 892455
+			}
+		},
+		"motion_lease": 0,
+		"motion_permits_refused": 80,
+		"native_instance_id": -9223371954797410703,
+		"native_pose_acknowledgements": 3300,
+		"native_pose_echo_checks": 3300,
+		"native_tick": 851,
+		"owner_replacements": 1,
+		"pending_kind": "",
+		"pending_serial": 0,
+		"phase": "Ready",
+		"physical_intervals": 850,
+		"physical_steps": 3400,
+		"physics": {
+			"awaiting_native": false,
+			"bodies": [
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": -0.0970492139458656,
+					"body_generation": 1,
+					"com_x": 48.869987487793,
+					"com_y": 58.9033355712891,
+					"generation": 1,
+					"geometry_digest": "10373625284739529515",
+					"geometry_revision": 1,
+					"id": 1,
+					"inertia": 11497506.0,
+					"last_geometry_step": 100,
+					"last_geometry_usec": 0,
+					"mass": 4438.0,
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 4.0,
+					"reported_contacts": 0,
+					"rotation": -0.0970492139458656,
+					"shape_count": 23,
+					"sleeping": true,
+					"vx": 0.0,
+					"vy": 0.0,
+					"x": 107.584213256836,
+					"y": 341.4248046875
+				}
+			],
+			"events": [
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 1,
+					"kind": "BodyActivated",
+					"physics_step": 100
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 1,
+					"kind": "Sleeping",
+					"physics_step": 1517
+				}
+			],
+			"last_completed_semantic_tick": -1,
+			"last_error": "",
+			"last_physics_session": 1,
+			"last_sampled_pose_serial": 3400,
+			"motion": {},
+			"motion_phase": "Idle",
+			"motion_refused": false,
+			"operation_sequence": 0,
+			"physics_steps": 3400,
+			"segment_sequence": 0,
+			"session": 1
+		},
+		"physics_ready": true,
+		"publication_sequence": 4201,
+		"pump_usec_max": 35432,
+		"pump_usec_total": 20188661,
+		"reabsorption_receipt": {},
+		"receipt": {
+			"captured_effect_count": 0,
+			"captured_equipment_request_ids": [],
+			"completed_interval": true,
+			"native_tick_after_prepare": 850,
+			"native_tick_before_prepare": 850,
+			"ok": true,
+			"outcome": "NativeBarrierReleased",
+			"workbench_sample_serial": 4255
+		},
+		"redundant_readiness_receipts_suppressed": 895,
+		"save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+		"shared_main_space_id": 18571,
+		"worker_profile": {
+			"actor_work": {
+				"due_effects": 0,
+				"due_usables": 0,
+				"pending_effects": 0,
+				"pending_usables": 0
+			},
+			"counter_scope": "cumulative ordinary worker lifetime",
+			"frame_copy_calls": 896,
+			"frame_copy_max_usec": 2330,
+			"frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+			"frame_copy_usec": 204173,
+			"motion_fence": {
+				"completed_sample": 4255,
+				"current_sample": 4255,
+				"due_sample": -1,
+				"lease": 0,
+				"ordinary_refusal": "",
+				"owner_busy": true,
+				"prepared_sample": 4255,
+				"reused_prepared_samples": 850,
+				"tick_due": false
+			},
+			"snapshot_calls": 5152,
+			"snapshot_max_usec": 9906,
+			"snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+			"snapshot_usec": 4745932
+		},
+		"world_generation": 3
+	},
+	"initial_body": {
+		"angular_velocity": 0.0,
+		"native_tick": 26,
+		"rotation": 0.0,
+		"sleeping": false,
+		"speed": 0.0,
+		"vx": 0.0,
+		"vy": 0.0,
+		"x": 119.0,
+		"y": 243.0
+	},
+	"measurement_after": {
+		"angular_velocity": 0.0,
+		"native_tick": 850,
+		"rotation": -0.0970492139458656,
+		"sleeping": true,
+		"speed": 0.0,
+		"vx": 0.0,
+		"vy": 0.0,
+		"x": 107.584213256836,
+		"y": 341.4248046875
+	},
+	"measurement_before": {
+		"angular_velocity": 0.0,
+		"native_tick": 477,
+		"rotation": -0.0970492139458656,
+		"sleeping": true,
+		"speed": 0.0,
+		"vx": 0.0,
+		"vy": 0.0,
+		"x": 107.584213256836,
+		"y": 341.4248046875
+	},
+	"observation_scope": "per-callback actual Rapier state readback plus existing publication coherence observer; headless timing cannot qualify rendered or physical monitor performance",
+	"quiet_reached": true,
+	"quiet_requirement": {
+		"angle_drift_max": 0.005,
+		"angular_speed_max": 0.001,
+		"linear_speed_max": 0.01,
+		"native_ticks": 120,
+		"position_drift_max": 0.05
+	},
+	"quiet_start_native_tick": 357,
+	"rest_history": [
+		{
+			"angular_velocity": 0.0,
+			"elapsed_usec": 1078,
+			"native_tick": 26,
+			"rotation": 0.0,
+			"sleeping": false,
+			"speed": 0.0,
+			"vx": 0.0,
+			"vy": 0.0,
+			"x": 119.0,
+			"y": 243.0
+		},
+		{
+			"angular_velocity": 0.0,
+			"elapsed_usec": 2491175,
+			"native_tick": 86,
+			"rotation": 0.0,
+			"sleeping": false,
+			"speed": 149.012786865234,
+			"vx": 0.0,
+			"vy": 149.012786865234,
+			"x": 119.000007629395,
+			"y": 319.16455078125
+		},
+		{
+			"angular_velocity": -0.0272281151264906,
+			"elapsed_usec": 5164207,
+			"native_tick": 146,
+			"rotation": -0.303729236125946,
+			"sleeping": false,
+			"speed": 2.14290165901184,
+			"vx": -1.99308049678802,
+			"vy": -0.787183105945587,
+			"x": 82.5573806762695,
+			"y": 348.83740234375
+		},
+		{
+			"angular_velocity": 0.30336132645607,
+			"elapsed_usec": 7644207,
+			"native_tick": 206,
+			"rotation": -0.117743171751499,
+			"sleeping": false,
+			"speed": 22.7108459472656,
+			"vx": 22.2845458984375,
+			"vy": 4.37967729568481,
+			"x": 105.005081176758,
+			"y": 342.003234863281
+		},
+		{
+			"angular_velocity": -0.0376552641391754,
+			"elapsed_usec": 9810014,
+			"native_tick": 266,
+			"rotation": -0.125709563493729,
+			"sleeping": false,
+			"speed": 2.71135783195496,
+			"vx": -2.55932760238647,
+			"vy": -0.895156145095825,
+			"x": 104.148056030273,
+			"y": 342.360382080078
+		},
+		{
+			"angular_velocity": 0.0546651147305965,
+			"elapsed_usec": 11776937,
+			"native_tick": 326,
+			"rotation": -0.100123390555382,
+			"sleeping": false,
+			"speed": 3.93371105194092,
+			"vx": 3.71544194221497,
+			"vy": 1.29211962223053,
+			"x": 107.216941833496,
+			"y": 341.522155761719
+		},
+		{
+			"angular_velocity": 0.0,
+			"elapsed_usec": 13603099,
+			"native_tick": 386,
+			"rotation": -0.0970492139458656,
+			"sleeping": true,
+			"speed": 0.0,
+			"vx": 0.0,
+			"vy": 0.0,
+			"x": 107.584213256836,
+			"y": 341.4248046875
+		},
+		{
+			"angular_velocity": 0.0,
+			"elapsed_usec": 15330078,
+			"native_tick": 446,
+			"rotation": -0.0970492139458656,
+			"sleeping": true,
+			"speed": 0.0,
+			"vx": 0.0,
+			"vy": 0.0,
+			"x": 107.584213256836,
+			"y": 341.4248046875
+		}
+	],
+	"rest_wait_native_ticks": 451,
+	"rest_wait_usec": 16271391,
+	"running_quiet_observations": {
+		"callbacks": 1633,
+		"maximum_abs_angular_velocity": 0.0,
+		"maximum_angle_drift": 0.0,
+		"maximum_position_drift": 0.0,
+		"maximum_speed": 0.0,
+		"nonquiet_callbacks": 0,
+		"sleeping_callbacks": 1633
+	},
+	"scene": "tower",
+	"schema": "objectshard-m4-natural-rest-observer-v1",
+	"scope": "frozen ordinary Workbench and actual Rapier; only observation, ordinary support erase/play/pause; no forced pose, velocity, sleep, physics or chemistry suppression",
+	"source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+	"window": {
+		"actual_physics_steps": 1496,
+		"awake_bodies_after": 0,
+		"awake_bodies_before": 0,
+		"body_count_after": 1,
+		"body_count_before": 1,
+		"callback_intervals": {
+			"count": 1632,
+			"maximum_usec": 27920,
+			"p50_usec": 8903,
+			"p95_usec": 10374
+		},
+		"completed_physical_intervals": 374,
+		"elapsed_usec": 12006129,
+		"label": "naturally_quiet_playing",
+		"main_stage_deltas": {
+			"owner_control_admission": {
+				"calls": 1870,
+				"usec": 88612
+			},
+			"pose_packet_capture": {
+				"calls": 1496,
+				"usec": 128978
+			},
+			"rapier_segment": {
+				"calls": 1496,
+				"usec": 333738
+			}
+		},
+		"native_pose_acknowledgements": 1496,
+		"native_pose_echo_checks": 1496,
+		"paused": false,
+		"process_callbacks": 1633,
+		"receipt_pump_usec": 8412380,
+		"render_intervals": {
+			"count": 0
+		},
+		"render_submissions": 0,
+		"render_submissions_per_second": 0.0,
+		"semantic_ticks": 373,
+		"semantic_ticks_per_second": 31.0674656252652,
+		"simulated_physical_seconds": 6.23333333333333,
+		"worker_snapshot_calls": 2243,
+		"worker_snapshot_usec": 1915783
+	}
+}
