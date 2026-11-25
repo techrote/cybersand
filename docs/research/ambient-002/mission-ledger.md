@@ -703,9 +703,9 @@ Windows job 138997623535 both completed successfully. Each source platform
 passed 24 cases and 15,349 assertions, including 648 living-core and 895
 predecessor-core assertions. Freshly extracted Windows separately passed 8 cases
 and 9,300 assertions. Both Windows mounted-editor receipts pass 96 checks and
-retain the admitted control generations 4, 5, 5, 6. Original and extracted ordinary
-launcher checks, pristine and post-launch payload inventories, Save/Reopen,
-authority/lifecycle and actual graphical gates all passed.
+retain the admitted control generations 4, 5, 5, 6. Original and extracted project execution, lifecycle/control compatibility,
+Save/Reopen and actual graphical gates passed. The freshly extracted ordinary
+launcher, pristine inventory and post-launch payload inventory also passed.
 
 The final registered programme contains 194 actual actor episodes in 122 fresh
 World campaigns: 178 subjects and 16 passive companions, 4,560 World simulation
