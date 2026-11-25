@@ -118,7 +118,14 @@ func run() -> void:
 	var snapshot = Snapshot.new()
 	snapshot.rigid_body_epoch = session.epoch
 	snapshot.render_world_generation = 42
+	snapshot.serial = -1
+	session.ingest_ambient_snapshot(snapshot)
+	check(session._ambient_world_generation == -1, "negative publication serial cannot establish World knowledge")
 	snapshot.serial = 10
+	snapshot.tick_index = -1
+	session.ingest_ambient_snapshot(snapshot)
+	check(session._ambient_world_generation == -1, "negative native tick cannot establish World knowledge")
+	snapshot.tick_index = 0
 	session.ingest_ambient_snapshot(snapshot)
 	check(session._ambient_world_generation == 42 and not session._ambient_sensor_active,
 		"no-material profile still receives valid copied World identity")

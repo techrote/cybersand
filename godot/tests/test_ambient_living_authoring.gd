@@ -67,6 +67,7 @@ func run() -> void:
 			check(Catalog.control_error(str(actor.model), actor.control).is_empty(), "profile respects actual actor capabilities")
 			check(not actor.control.ambient.has("runtime") and not actor.control.ambient.has("rng_state"), "private runtime memory is absent from saved profile")
 			total_actors += 1
+		_spawn_clearance(data, native, str(entry.id))
 		var copied := data.duplicate(true)
 		copied.actors[0].control.ambient.name = "Independent override"
 		check(JSON.stringify(data) == original, "individual override does not alias shared library or constructor")
@@ -95,6 +96,31 @@ func run() -> void:
 			DirAccess.remove_absolute(Setup._path(label))
 	print("AMBIENT_LIVING_AUTHORING ", JSON.stringify({"checks":checks, "failures":failures, "profiles":profiles.size(), "scenes":Examples.entries().size(), "actors":total_actors}))
 	quit(0 if failures.is_empty() else 1)
+
+
+func _spawn_clearance(data: Dictionary, native: RefCounted, scene_id: String) -> void:
+	# This is a conservative authored AABB check, not a physics/contact test.
+	# Replay ordered edits only inside each actual catalogue hull bound. It
+	# catches decorative trusses painted through a spawn without allocating a
+	# second World or assuming Solid means hard terrain.
+	for actor: Dictionary in data.actors:
+		var hull := Catalog.bounds(str(actor.model))
+		hull.position += Setup.point(actor.spawn)
+		var low := Vector2i(floori(hull.position.x), floori(hull.position.y))
+		var high := Vector2i(ceili(hull.end.x), ceili(hull.end.y))
+		var rect := Rect2i(low, high - low)
+		var cells := PackedInt32Array()
+		cells.resize(rect.size.x * rect.size.y)
+		for edit: Array in data.edits:
+			var overlap := rect.intersection(Rect2i(int(edit[0]), int(edit[1]), int(edit[2]), int(edit[3])))
+			for y: int in range(overlap.position.y, overlap.end.y):
+				for x: int in range(overlap.position.x, overlap.end.x):
+					cells[(y - low.y) * rect.size.x + x - low.x] = int(edit[4])
+		var hard_cells := 0
+		for material: int in cells:
+			if material >= 0 and material < native.materials.size() and bool(native.materials[material].hard_surface):
+				hard_cells += 1
+		check(hard_cells == 0, "authored spawn AABB clear of actual native hard surfaces: %s #%d (%d cells)" % [scene_id, int(actor.id), hard_cells])
 
 
 func _library_refusals(profiles: Array) -> void:

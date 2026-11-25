@@ -206,7 +206,7 @@ jobs:
           python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --output evidence/ambient
       - name: Capture all eleven ordinary native examples and editors
         run: |
-          python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --capture --output evidence/ambient-graphical
+          xvfb-run -a -s "-screen 0 1600x1000x24" python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --capture --output evidence/ambient-graphical
       - name: Execute full matched physical episode programme
         env:
           CYBERSAND_AMBIENT2_EPISODES_MODE: full

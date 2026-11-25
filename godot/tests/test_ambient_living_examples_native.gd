@@ -216,6 +216,17 @@ func example_case(example: Dictionary) -> void:
 		check(int(row.get("rejected_commands", 0)) == 0 and str(row.get("last_error", "")).is_empty(),
 			"no refused procedural commands: " + label)
 		check(str(row.get("last_status", "")) == "policy", "live policy authority remains active: " + label)
+	if str(example.id) == "ambient2-refinery":
+		# The adverse target must enter real copied material observations. A
+		# visually labelled cabinet outside the actor's radius proves nothing.
+		var observed_sealed_oil := false
+		for entry: Dictionary in rows.get(5, {}).get("trace", []):
+			var target: Dictionary = entry.get("targets", {}).get(16, entry.get("targets", {}).get("16", {}))
+			var position: Variant = target.get("nearest")
+			if bool(target.get("available", false)) and bool(target.get("present", false)) and position is Vector2 \
+				and Rect2(962, 500, 56, 47).has_point(position):
+				observed_sealed_oil = true
+		check(observed_sealed_oil, "refinery scavenger actually observes the sealed native Oil cabinet")
 	case_record["passed"] = failures.is_empty()
 	cases.append(case_record)
 	print("AMBIENT_LIVING_EXAMPLE ", example.id, " actors=", rows.size(), " native=", case_record.native_ticks,

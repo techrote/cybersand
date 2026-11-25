@@ -134,3 +134,36 @@ receipt is retained under `lead/integrated-first`; no source parser defect was
 reported and no pass is inferred. Identical retained Linux runtime binaries in
 the four owned worktrees were hash-verified and hardlinked, recovering about
 368 MB without modifying their bytes or deleting another project's work.
+
+## Qualified integration and second infrastructure recovery
+
+The next immutable published source, `35187eda20fcff25a87e1936f84934247ca617e2`,
+passed [hosted iteration45530324844](https://github.com/techrote/cybersand/actions/runs/45530324844).
+Its original [artifact14985115658](https://github.com/techrote/cybersand/actions/runs/45530324844/artifacts/14985115658)
+retains895 engine,214 independent,130 perception,2644 spatial,38 group,
+21 clock,238 living-authoring,69 mounted-editor,209 native-example and
+5091 physical-episode assertions: **9549 checks passed**. The physical smoke
+contains13 actual actor episodes in9 fresh Worlds, not the final long programme.
+This source fixed the six original-profile upgrade failures by preserving String
+keys in explicitly upgraded v2 dictionaries. It does not qualify later edits.
+The published tree is `4fed7b1cb209e236cb894364d573a8d462398da2`, byte-identical
+to the former local integration commit `7dc85eb88a44b3ac04945eb8bc0b5b89766580d3`.
+
+At approximately02:29 UTC the execution environment restarted and cleared its
+entire temporary filesystem. The published branch and hosted evidence survived.
+Unpublished local successor commits, runtime downloads and raw local execution
+outputs did not. In particular, local integration `6708edb964ba03946ce454696ccabeb2051d1034`
+was **not published**, and cannot be cited as a recoverable or qualified source.
+The specialists are reconstructing later changes from retained patch text and
+recorded semantics against actual published35187. These reconstructions receive
+new identities and must be qualified again. Reported pre-restart local pass
+counts whose original files were lost are observations only, not replacement
+receipts. Failed/aborted attempts remain part of the account; no original report
+is fabricated or re-attested to new bytes.
+
+The lead reconstructed the explicit nonnegative publication-serial/native-tick
+admission fence and its two synthetic edge probes. Independent authoring review
+also found that the Linux graphical workflow installed Xvfb without starting a
+display server; it now wraps actual capture in an owned `xvfb-run` invocation.
+This checkpoint is source recovery, not a new runtime pass. Full Linux, Windows,
+extracted-package, graphical and matched194-episode qualification remains pending.

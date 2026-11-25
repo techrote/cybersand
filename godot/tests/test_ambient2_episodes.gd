@@ -14,7 +14,7 @@ const DT := 1.0 / 60.0
 const EXTENT := Vector2i(512,256)
 const CADENCE := 6
 const SEEDS := [605,1701,2909]
-const MAIN_ARMS := ["legacy","random","scripted","stateful","no_memory","no_traits","coarse_only"]
+const MAIN_ARMS := ["legacy","random","random_hold","scripted","stateful","no_memory","no_traits","coarse_only"]
 const SOCIAL_TYPES := ["follow_actor","avoid_crowding","observe_actor","regroup","align_peers","disperse","avoid_peer"]
 var checks := 0
 var failures: Array[String] = []
@@ -51,9 +51,10 @@ func identity() -> Dictionary:
 		"scripts/ambient/ambient_profile.gd","scripts/ambient/ambient_perception.gd",
 		"scripts/ambient/ambient_actuator.gd","scripts/physical_actor_session.gd",
 		"scripts/physical_actor_rig.gd","scripts/physical_actor_catalog.gd",
+		"scripts/physical_actor_script.gd","scripts/physical_usable_runtime.gd","scripts/physical_actor_effects.gd",
 		"scripts/workbench_actor_control.gd","scripts/workbench_actor_catalog.gd",
 		"scripts/workbench_physics_bridge.gd","scripts/rapier_physics_bridge.gd",
-		"scripts/physical_flight_controller.gd","data/ambient/profiles.json",
+		"scripts/physical_flight_controller.gd","scripts/physical_flight_profile.gd","data/ambient/profiles.json",
 		"tests/test_ambient2_episodes.gd","tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"]
 	var hashes := {}
 	for path: String in paths:
@@ -93,12 +94,20 @@ func registry() -> Array:
 				cases.append(make_case("adverse",layout,"runner",arm,seed))
 		for arm: String in ["stateful","no_social"]:
 			cases.append(make_case("departure","peer_departure","runner",arm,seed,2))
-		cases.append(make_case("capacity","courtyard","runner","stateful",seed,8))
+		for arm: String in ["legacy","stateful"]:
+			cases.append(make_case("capacity","courtyard","runner",arm,seed,8))
 	for model: String in ["runner","4ly_trainer"]:
 		for arm: String in ["stateful","no_memory"]:
 			cases.append(make_case("sustained","pockets",model,arm,1701,1,120))
 	for arm: String in ["stateful","no_memory"]:
 		cases.append(make_case("sustained","pockets","monowheel",arm,1701,1,300))
+	# One descriptive ordinary preset subject and one actual passive auxiliary.
+	# Companion episodes are never counted as personality treatment replicates.
+	for profile: Dictionary in Profile.presets():
+		var model := "4ly_trainer" if str(profile.id) in ["drifting_flyer","cautious_flyer","boundary_grazer"] else "runner"
+		var item := make_case("catalogue","pockets",model,str(profile.id),1701,2)
+		item["profile_id"] = str(profile.id)
+		cases.append(item)
 	if full_mode: return cases
 	var smoke: Array = []
 	for item: Dictionary in cases:
@@ -117,6 +126,7 @@ func registry() -> Array:
 
 
 func start_position(item: Dictionary, slot: int) -> Vector2:
+	if item.group == "catalogue": return Vector2(220 + slot * 55,130 if item.model == "4ly_trainer" else 175)
 	if int(item.actor_count) == 8: return Vector2(96 + slot * 40,175)
 	if int(item.actor_count) == 4: return Vector2(170 + slot * 28,175)
 	if item.group == "departure": return Vector2(210 + slot * 35,175)
@@ -124,6 +134,10 @@ func start_position(item: Dictionary, slot: int) -> Vector2:
 
 
 func profile_for(item: Dictionary, slot: int) -> Dictionary:
+	if item.group == "catalogue":
+		var selected: Dictionary = Profile.preset(str(item.profile_id))
+		if not selected.is_empty(): selected.seed = int(item.seed)
+		return selected
 	var legacy := str(item.arm) == "legacy"
 	var id := "drifting_flyer" if item.model == "4ly_trainer" else "oil_moth"
 	if item.group in ["social","capacity"]: id = "social_roamer"
@@ -155,6 +169,7 @@ func profile_for(item: Dictionary, slot: int) -> Dictionary:
 
 
 func control_mode(item: Dictionary, slot: int) -> String:
+	if item.group == "catalogue": return "passive_companion" if slot == 1 else "catalogue_subject"
 	if item.group == "departure" and slot == 1: return "departing_peer"
 	return str(item.arm)
 
@@ -162,11 +177,11 @@ func control_mode(item: Dictionary, slot: int) -> String:
 func definition(item: Dictionary, slot: int) -> Dictionary:
 	var control := Registry.default_control(str(item.model))
 	var mode := control_mode(item,slot)
-	control.source = "scripted" if mode == "scripted" else "policy"
-	control.policy = "external" if mode in ["random","departing_peer","scripted"] else "ambient"
+	control.source = "passive" if mode == "passive_companion" else "scripted" if mode == "scripted" else "policy"
+	control.policy = "external" if mode in ["random","random_hold","departing_peer","scripted","passive_companion"] else "ambient"
 	control.usable_index = -1
 	control.decision_ticks = CADENCE
-	if mode not in ["random","departing_peer","scripted"]:
+	if mode not in ["random","random_hold","departing_peer","scripted","passive_companion"]:
 		control["ambient"] = profile_for(item,slot)
 	return {"model":str(item.model),"instance_id":100+slot,"position":start_position(item,slot),
 		"producer":Registry.producer_for(control.source),"usable_index":-1,"canvas_extent":EXTENT,
@@ -232,13 +247,18 @@ func random_unit(state: Dictionary) -> float:
 func external_commands(session: Node, item: Dictionary, states: Array, step: int) -> void:
 	for slot: int in range(int(item.actor_count)):
 		var mode := control_mode(item,slot)
-		if mode not in ["random","departing_peer"]: continue
+		if mode not in ["random","random_hold","departing_peer"]: continue
 		var observed: Dictionary = session.workbench_policy_observation(100+slot)
 		var movement := Vector2.ZERO
-		if mode == "random":
+		if mode in ["random","random_hold"]:
 			var state: Dictionary = states[slot]
-			movement.x = float(floori(random_unit(state)*3.0)-1)*0.45
-			if item.model == "4ly_trainer": movement.y = float(floori(random_unit(state)*3.0)-1)*0.35
+			# Renew every six ticks; held random only resamples once per second.
+			if mode == "random" or step % 60 == 0 or not state.has("held_movement"):
+				movement.x = float(floori(random_unit(state)*3.0)-1)*0.45
+				if item.model == "4ly_trainer": movement.y = float(floori(random_unit(state)*3.0)-1)*0.35
+				state["held_movement"] = movement
+			else:
+				movement = state.held_movement
 		elif step >= int(item.seconds)*30:
 			# Actual embodied departure; no pose setter, despawn or false missing
 			# observation is used. Whether it leaves sensory range is measured.
@@ -333,7 +353,8 @@ func record_decisions(session: Node, evaluator: RefCounted, item: Dictionary, ro
 			var prior: Dictionary = row.trace.back()
 			if Vector2(prior.action_move).length() > 0.05:
 				row.active_intervals += 1
-				if Vector2(observed.position).distance_to(prior.position) < 0.25:
+				var progress := Vector2(observed.position).distance_to(prior.position) if item.model == "4ly_trainer" else absf(float(observed.position.x)-float(prior.position.x))
+				if progress < 0.25:
 					row.stalled_active_intervals += 1
 		row.trace.append(record)
 		row.sensor_usec_total += int(control.sensor_usec)
@@ -511,7 +532,8 @@ func run_case(item: Dictionary) -> void:
 		row["final_pose"] = physical_pose(control.observation)
 		row["final_memory"] = control.diagnostics.get("ambient",{}).get("memory",{})
 		row["final_drives"] = control.diagnostics.get("ambient",{}).get("drives",{})
-		check(row.trace.size() == ticks/CADENCE and row.accepted_commands == ticks/CADENCE and row.rejected_commands == 0,
+		var expected_commands := 0 if str(row.controller) == "passive_companion" else ticks/CADENCE
+		check(row.trace.size() == ticks/CADENCE and row.accepted_commands == expected_commands and row.rejected_commands == 0,
 			str(row.episode_id)+": actual command/decision budget completed without rejection")
 		check(row.outcome_sensor_unavailable == 0,str(row.episode_id)+": matched outcome observation coverage maintained")
 	campaign["episodes"] = rows
@@ -523,20 +545,37 @@ func run_case(item: Dictionary) -> void:
 
 
 func run() -> void:
-	full_mode = OS.get_environment("CYBERSAND_AMBIENT2_EPISODES_MODE") == "full"
+	var requested_mode := OS.get_environment("CYBERSAND_AMBIENT2_EPISODES_MODE")
+	full_mode = requested_mode in ["full","registry"]
 	report_path = OS.get_environment("CYBERSAND_AMBIENT2_EPISODES_REPORT")
 	var source := identity()
 	var cases := registry()
+	var complete_registry := cases.duplicate(true)
+	if requested_mode == "registry":
+		checkpoint_report({"case":"AMBIENT-002 physical campaign registry","source_identity":source,
+			"registration":complete_registry,"actual_episodes_executed":0})
+		print("AMBIENT2_REGISTRY ",JSON.stringify({"campaigns":cases.size(),"actual_episodes_executed":0,
+			"source_revision":source.source_revision}))
+		quit(0)
+		return
+	var selected_case := OS.get_environment("CYBERSAND_AMBIENT2_EPISODES_CASE")
+	if not selected_case.is_empty():
+		var selected: Array = []
+		for item: Dictionary in cases:
+			if str(item.id) == selected_case: selected.append(item)
+		cases = selected
+		check(cases.size() == 1,"exact registered physical shard selected")
 	var expected_episodes := 0
 	for item: Dictionary in cases: expected_episodes += int(item.actor_count)
 	check(source.runtime_supported,"actual source custody supports current runtime")
 	check(ClassDB.class_exists("CyberNativeCellWorld") and ClassDB.class_exists("RapierPhysicsServer2D"),
 		"genuine native/Rapier extensions exist")
-	check((expected_episodes == 137 if full_mode else expected_episodes == 13),"registered physical episode count")
-	var report := {"case":"AMBIENT-002 matched physical actor episodes","mode":"full" if full_mode else "smoke",
+	if selected_case.is_empty():
+		check((expected_episodes == 194 if full_mode else expected_episodes == 13),"registered physical episode count")
+	var report := {"case":"AMBIENT-002 matched physical actor episodes","mode":"shard" if not selected_case.is_empty() else "full" if full_mode else "smoke",
 		"source_identity":source,"expected_campaigns":cases.size(),"expected_actor_episodes":expected_episodes,
 		"extent":EXTENT,"native_threads":1,"decision_period_ticks":CADENCE,"actor_limit":8,
-		"registration":cases,"seed_semantics":"matched authored seeds; procedural module mixing and independent baseline LCG streams differ",
+		"registration":cases,"complete_registration":complete_registry,"seed_semantics":"matched authored seeds; procedural module mixing and independent baseline LCG streams differ",
 		"observation_scope":"common independent Oil/Water radius50 near8 observer for every controller; causal ablations retain their base profile and request scope; legacy/new system comparisons include the declared profile/sensor differences",
 		"metric_scope":"actual center path includes gait; stable16-cell coverage/intentions/social outcomes are reduced independently; neutral action does not guarantee stillness",
 		"scope":"ordinary production session and native/Rapier runtime in a synchronous apparatus; no global routing or physical NVIDIA playfeel acceptance",
@@ -544,6 +583,9 @@ func run() -> void:
 	if failures.is_empty():
 		for item: Dictionary in cases:
 			run_case(item)
+			# Owners are closed before deferred reclamation; no active episode
+			# accrues extra simulation time in this idle frame.
+			await process_frame
 			report.checks = checks
 			report.failures = failures
 			report["completed_campaigns"] = completed.size()
@@ -561,6 +603,6 @@ func run() -> void:
 	checkpoint_report(report)
 	print("AMBIENT2_EPISODES ",JSON.stringify({"mode":report.mode,"checks":checks,"failures":failures,
 		"complete":report.complete,"campaigns":completed.size(),"episodes":episodes,
-		"expected_episodes":expected_episodes,"report":report_path,"source_revision":source.source_revision}))
+		"expected_episodes":expected_episodes,"report":report_path,"source_revision":source.source_revision,"case_id":selected_case}))
 	quit(0 if failures.is_empty() else 1)
 

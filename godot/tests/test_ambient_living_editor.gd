@@ -1,8 +1,9 @@
 extends SceneTree
 
 # Real main.tscn, native prepared owner, Rapier session and mounted Window.
-# All cases start paused; gameplay motion and timed behaviour have their own
-# focused fixture. No World, body or owner acknowledgement is replaced here.
+# Authoring starts paused, then a short live audition checks Apply/Revert while
+# both owners advance. Sustained gameplay has its own focused fixture.
+# No World, body or owner acknowledgement is replaced here.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Catalog = preload("res://scripts/workbench_actor_catalog.gd")
 const Profile = preload("res://scripts/ambient/ambient_profile.gd")
@@ -192,6 +193,7 @@ func run() -> void:
 	check(editor.add_region("home") and editor.add_region("interest") and editor.add_region("avoid"), "home, interest and avoidance rectangles authored through ordinary controls")
 	check(not editor.add_region("home"), "second home has explicit refusal")
 	check(Catalog.control_for(ui.actor(ui.applied, 1)) == before_search, "search and region editing never change admitted controller")
+	await _living_tab_layout()
 	check(editor.store_library_profile(), "scene library store receives actual owner acknowledgement")
 	check(ui.ambient_library().profiles.size() == 1, "complete authored living profile stored")
 	check(Catalog.control_for(ui.actor(ui.applied, 1)) == before_search, "library store never applies silently")
@@ -223,6 +225,7 @@ func run() -> void:
 	invalid_library.profiles[0].memory.capacity = -1
 	check(not ui.set_ambient_library(invalid_library, library_before, editor._bound_run, editor._bound_epoch), "invalid library rejected through actual host seam")
 	check(ui.ambient_library() == library_before, "invalid library retains exact admitted library")
+	await _live_audition()
 	# The normal Save route persists authored data, with no module runtime state.
 	var label := OS.get_environment("CYBERSAND_AMBIENT_LIVING_EDITOR_SAVE")
 	if not label.is_empty(): save_name = label
@@ -243,7 +246,7 @@ func finish() -> void:
 	var report := {"checks":checks, "failures":failures, "platform":OS.get_name(), "display":DisplayServer.get_name(),
 		"godot":Engine.get_version_info().string, "elapsed_seconds":float(Time.get_ticks_msec()-started)/1000.0,
 		"layout":layout,
-		"scope":"actual mounted editor + ordinary native/Rapier owner; paused authoring, not motion or physical display acceptance"}
+		"scope":"actual mounted editor + ordinary native/Rapier owner; staged and live Apply/Revert, not sustained behavioural or physical display acceptance"}
 	var path := OS.get_environment("CYBERSAND_AMBIENT_LIVING_EDITOR_REPORT")
 	if not path.is_empty():
 		var file := FileAccess.open(path, FileAccess.WRITE)
@@ -254,6 +257,78 @@ func finish() -> void:
 		await process_frame
 		await process_frame
 	quit(0 if failures.is_empty() else 1)
+
+
+func _live_audition() -> void:
+	ui.open_ambient_profile(1)
+	var admitted := Catalog.control_for(ui.actor(ui.applied, 1))
+	var draft: Dictionary = editor.staged_profile()
+	draft.seed = int(draft.seed) + 31
+	draft.personality.curiosity = 0.17
+	draft.memory.enabled = false
+	check(editor.replace_draft(draft), "live audition stages a complete edited profile")
+	var old_generation: int = host.physical_actor_session.workbench_control(1).generation
+	var old_run: String = host.physical_actor_session.run_id
+	var old_epoch: int = host.physical_actor_session.epoch
+	var old_world: int = host.latest_snapshot.render_world_generation
+	var initial_tick: int = host.physical_actor_session.tick
+	var initial_native: int = host.latest_snapshot.tick_index
+	if not check(ui.toggle_pause() and not host.paused, "ordinary Play begins live configuration audition"): return
+	var moving := await until(func() -> bool:
+		return int(host.physical_actor_session.tick) >= initial_tick + 12 and int(host.latest_snapshot.tick_index) >= initial_native + 11,
+		"actual native and physical owners progress with an unapplied draft")
+	if moving:
+		check(Catalog.control_for(ui.actor(ui.applied, 1)) == admitted and host.physical_actor_session.workbench_control(1).generation == old_generation,
+			"unapplied live draft cannot change admitted control or authority")
+		check(editor.apply_draft() and not host.paused, "Apply receives acknowledgement without stopping Play")
+		var current := Catalog.control_for(ui.actor(ui.applied, 1))
+		check(current.ambient == editor.staged_profile() and current.ambient.seed == draft.seed and not current.ambient.memory.enabled,
+			"live acknowledgement admits the exact edited personality, seed and memory configuration")
+		var new_generation: int = host.physical_actor_session.workbench_control(1).generation
+		check(new_generation > old_generation and host.physical_actor_session.run_id == old_run and host.physical_actor_session.epoch == old_epoch
+			and host.latest_snapshot.render_world_generation == old_world, "live Apply retires controller authority while retaining both owner identities")
+		var applied_tick: int = host.physical_actor_session.tick
+		var applied_native: int = host.latest_snapshot.tick_index
+		if await until(func() -> bool:
+			return int(host.physical_actor_session.tick) >= applied_tick + 18 and int(host.latest_snapshot.tick_index) >= applied_native + 17,
+			"native and physical owners continue after live Apply"):
+			var diagnostics: Dictionary = host.physical_actor_session.workbench_control(1).diagnostics.get("ambient", {})
+			check(int(diagnostics.get("decisions", 0)) > 0 and diagnostics.get("memory", {}).get("enabled", true) == false,
+				"new live controller makes actual decisions with disabled memory")
+		var discarded: Dictionary = editor.staged_profile()
+		discarded.name = "Discarded live draft"
+		check(editor.replace_draft(discarded), "another live draft can be staged")
+		editor.revert_draft()
+		check(editor.staged_profile() == current.ambient and host.physical_actor_session.workbench_control(1).generation == new_generation,
+			"live Revert discards only the draft and preserves admitted controller authority")
+	if not host.paused: check(ui.toggle_pause() and host.paused, "ordinary Pause ends bounded live audition")
+
+
+func _living_tab_layout() -> void:
+	var tabs: TabContainer = editor._living_body.get_parent().get_parent()
+	var measured: Array = []
+	for target_size: Vector2i in [Vector2i(1020, 760), Vector2i(740, 480)]:
+		editor.size = target_size
+		for index: int in tabs.get_tab_count():
+			tabs.current_tab = index
+			editor._content_scroll.scroll_vertical = 0
+			await process_frame
+			await process_frame
+			var bounds := Rect2(Vector2.ZERO, Vector2(editor.size))
+			check(tabs.get_global_rect().end.x <= bounds.end.x,
+				"living tab has no unreachable horizontal overflow: %s at %s" % [tabs.get_tab_title(index), target_size])
+			if target_size.y == 480:
+				editor._content_scroll.scroll_vertical = 1000000
+				await process_frame
+			check(bounds.encloses(editor._apply_button.get_global_rect()) and bounds.encloses(editor._inspector.get_global_rect()),
+				"Apply and inspector remain reachable on living tab: %s at %s" % [tabs.get_tab_title(index), target_size])
+			measured.append({"tab":tabs.get_tab_title(index), "size":editor.size,
+				"tab_rect":tabs.get_global_rect(), "apply_rect":editor._apply_button.get_global_rect(), "inspector_rect":editor._inspector.get_global_rect()})
+	layout["living_tabs"] = measured
+	tabs.current_tab = 0
+	editor.size = Vector2i(1020, 760)
+	editor._content_scroll.scroll_vertical = 0
+	await process_frame
 
 
 func _select_group(ids: Array) -> void:

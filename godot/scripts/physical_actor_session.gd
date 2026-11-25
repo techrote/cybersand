@@ -491,6 +491,7 @@ func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Read only the accepted owner's immutable envelope; do not invent a World
 	# generation from a render frame counter, missing cache or wall-clock time.
 	if snapshot != null and snapshot.rigid_body_epoch == epoch \
+		and snapshot.serial >= 0 and snapshot.tick_index >= 0 \
 		and snapshot.render_world_generation >= 0 and snapshot.serial >= _ambient_world_serial \
 		and snapshot.render_world_generation >= _ambient_world_generation:
 		_ambient_world_generation = int(snapshot.render_world_generation)
