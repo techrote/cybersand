@@ -1,0 +1,283 @@
+{
+  "scope": "One same-host sequential headless near-cap Apply pair after environment restart; no Windows, displayed or statistical acceptance",
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "host": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpu_count": 9,
+    "cpu_models": [
+      "INTEL(R) XEON(R) PLATINUM 8573C"
+    ],
+    "memory": [
+      "MemTotal:       10206468 kB",
+      "MemAvailable:    6732824 kB",
+      "SwapTotal:             0 kB",
+      "Shmem:           2261480 kB"
+    ]
+  },
+  "arms": [
+    {
+      "arm": "baseline-e536",
+      "source_before": {
+        "commit": "e536d128f85e948223b25e13931a7a801faf956d",
+        "tree": "61d38ec119665270a9fb4eea9ae78836348d7092",
+        "tracked_source_clean": true
+      },
+      "command": [
+        "python3",
+        "/tmp/art-apply-v2-baseline/tools/ci/run_art_workbench_final.py",
+        "--godot",
+        "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--project",
+        "/tmp/art-apply-v2-baseline/godot",
+        "--output",
+        "/tmp/art-apply-v2-pair/baseline-e536",
+        "--group",
+        "conversation-apply",
+        "--timeout",
+        "180"
+      ],
+      "memory_before": [
+        "MemTotal:       10206468 kB",
+        "MemAvailable:    6735332 kB",
+        "SwapTotal:             0 kB",
+        "Shmem:           2261480 kB"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 11.728477429001941,
+      "source_after": {
+        "commit": "e536d128f85e948223b25e13931a7a801faf956d",
+        "tree": "61d38ec119665270a9fb4eea9ae78836348d7092",
+        "tracked_source_clean": true
+      },
+      "memory_after": [
+        "MemTotal:       10206468 kB",
+        "MemAvailable:    6637744 kB",
+        "SwapTotal:             0 kB",
+        "Shmem:           2295492 kB"
+      ],
+      "runner_log_sha256": "412154dadc9148e2ad69fa66fd39de68e514b7fea5e621893328fce1cf551508",
+      "report": {
+        "baseline_frames": {
+          "frames": 50,
+          "max_usec": 7468,
+          "p95_usec": 7325
+        },
+        "cases": [
+          {
+            "actual_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+            "apply_usec": 620436,
+            "case": "loaded-near-cap-edited-apply",
+            "context_bytes": 16769024,
+            "expected_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+            "fixture_admission_usec": 1128323,
+            "frames": {
+              "frames": 12,
+              "max_usec": 639012,
+              "p95_usec": 639012
+            },
+            "last_audit": {
+              "format_usec": 152611,
+              "kind": "conversation_edited",
+              "sanitize_usec": 2429,
+              "schema": 1,
+              "sequence": 2,
+              "signal_usec": 18,
+              "stored": true,
+              "total_usec": 259717,
+              "write_usec": 54013
+            },
+            "open_frames": {
+              "frames": 12,
+              "max_usec": 75832,
+              "p95_usec": 75832
+            },
+            "open_usec": 15768,
+            "visible_characters": 4096
+          }
+        ],
+        "checks": 22,
+        "completion_phase": "completed",
+        "display": "headless",
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "input_path": "InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
+        "manual_during_provider_activity_cases": 0,
+        "manual_during_transport_cases": 0,
+        "native_activity_cases": 0,
+        "os": "Linux",
+        "preparation_budgets": [],
+        "process_watchdog": {
+          "graphical": false,
+          "graphical_group_defaults_seconds": {
+            "all": 2400.0,
+            "network": 600.0,
+            "preparation": 900.0
+          },
+          "group": "conversation-apply",
+          "ordinary_default_seconds": 300.0,
+          "seconds": 180.0,
+          "source": "explicit_override"
+        },
+        "scope": "synthetic loopback only, isolated profile, ordinary native Workbench",
+        "shutdown": {},
+        "unavailable": [],
+        "loopback_conditions": {
+          "slow_connect_condition": "loopback_accept_backlog_saturated",
+          "slow_connect_prefilled_sockets": 2
+        }
+      },
+      "audit": {
+        "archives": 1,
+        "credential_redacted": true,
+        "complete_bodies": [],
+        "complete_conversations": [
+          {
+            "bytes": 16769024,
+            "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+            "complete_changed_conversation": true,
+            "model_requests": 0
+          }
+        ],
+        "measurement_scope": "post-exit independent verification; excluded from application frame timing"
+      }
+    },
+    {
+      "arm": "prepared-8a0",
+      "source_before": {
+        "commit": "8a015efbeb7926a3c835303d3b163c01d353aca3",
+        "tree": "ad991f1fe8e2c8945120526377d85392d0a3212a",
+        "tracked_source_clean": true
+      },
+      "command": [
+        "python3",
+        "/tmp/art-apply-v2-prepared/tools/ci/run_art_workbench_final.py",
+        "--godot",
+        "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--project",
+        "/tmp/art-apply-v2-prepared/godot",
+        "--output",
+        "/tmp/art-apply-v2-pair/prepared-8a0",
+        "--group",
+        "conversation-apply",
+        "--timeout",
+        "180"
+      ],
+      "memory_before": [
+        "MemTotal:       10206468 kB",
+        "MemAvailable:    6640976 kB",
+        "SwapTotal:             0 kB",
+        "Shmem:           2295504 kB"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.190601176997006,
+      "source_after": {
+        "commit": "8a015efbeb7926a3c835303d3b163c01d353aca3",
+        "tree": "ad991f1fe8e2c8945120526377d85392d0a3212a",
+        "tracked_source_clean": true
+      },
+      "memory_after": [
+        "MemTotal:       10206468 kB",
+        "MemAvailable:    6581524 kB",
+        "SwapTotal:             0 kB",
+        "Shmem:           2328328 kB"
+      ],
+      "runner_log_sha256": "9d3d54ded76e8df3219b8d20987b91ed678eccb8269937d46c1ed40fff648341",
+      "report": {
+        "baseline_frames": {
+          "frames": 50,
+          "max_usec": 7283,
+          "p95_usec": 7254
+        },
+        "cases": [
+          {
+            "actual_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+            "apply_completion_usec": 644979,
+            "apply_preparation": {
+              "admission_usec": 43221,
+              "asynchronous": true,
+              "commit_usec": 49149,
+              "handle": 1,
+              "prepared_after_usec": 582968,
+              "status": "committed",
+              "total_usec": 629538
+            },
+            "apply_usec": 43440,
+            "asynchronous_apply": true,
+            "case": "loaded-near-cap-edited-apply",
+            "context_bytes": 16769024,
+            "expected_sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+            "fixture_admission_usec": 1064809,
+            "frames": {
+              "frames": 91,
+              "max_usec": 73356,
+              "p95_usec": 8726
+            },
+            "last_audit": {
+              "format_usec": 7414,
+              "kind": "conversation_edited",
+              "sanitize_usec": 14,
+              "schema": 1,
+              "sequence": 2,
+              "signal_usec": 8,
+              "stored": true,
+              "total_usec": 46978,
+              "write_usec": 28262
+            },
+            "open_frames": {
+              "frames": 12,
+              "max_usec": 82597,
+              "p95_usec": 82597
+            },
+            "open_usec": 17491,
+            "timing_scope": "apply_usec is click-return; completion includes preparation and durable owner commit; frames cover both",
+            "visible_characters": 4096
+          }
+        ],
+        "checks": 23,
+        "completion_phase": "completed",
+        "display": "headless",
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "input_path": "InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
+        "manual_during_provider_activity_cases": 0,
+        "manual_during_transport_cases": 0,
+        "native_activity_cases": 0,
+        "os": "Linux",
+        "preparation_budgets": [],
+        "process_watchdog": {
+          "graphical": false,
+          "graphical_group_defaults_seconds": {
+            "all": 2400.0,
+            "network": 600.0,
+            "preparation": 900.0
+          },
+          "group": "conversation-apply",
+          "ordinary_default_seconds": 300.0,
+          "seconds": 180.0,
+          "source": "explicit_override"
+        },
+        "scope": "synthetic loopback only, isolated profile, ordinary native Workbench",
+        "shutdown": {},
+        "unavailable": [],
+        "loopback_conditions": {
+          "slow_connect_condition": "loopback_accept_backlog_saturated",
+          "slow_connect_prefilled_sockets": 2
+        }
+      },
+      "audit": {
+        "archives": 1,
+        "credential_redacted": true,
+        "complete_bodies": [],
+        "complete_conversations": [
+          {
+            "bytes": 16769024,
+            "sha256": "ffc422efd777b216bfece96071e4fdd4ffed8e05375783e43dd47fde6b7c7a7a",
+            "complete_changed_conversation": true,
+            "model_requests": 0
+          }
+        ],
+        "measurement_scope": "post-exit independent verification; excluded from application frame timing"
+      }
+    }
+  ]
+}

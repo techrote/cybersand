@@ -125,3 +125,7 @@ wrong marker/intentional-error classification rejection is also retained beside
 its corrected parse of the unchanged original logs. These fixture observations
 do not demonstrate language-model creativity, physical-device acceptance or
 Windows qualification of the new asynchronous feature.
+
+## Later completed comparison
+
+After a fresh environment restored memory headroom, the exact e536 and 8a near-cap arms completed. See [the separate paired result](near-cap-apply-pair-observations.md). That later result retains both incomplete attempts here and explicitly reports slower total completion alongside reduced action/frame blocking.
