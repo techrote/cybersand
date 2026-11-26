@@ -39,7 +39,10 @@ SOURCE_FILES = (
     "tools/fixtures/mergedown-mainline-windows-request.json",
 )
 SOURCE_CONTRACTS = {
-    "tools/gip014/Open-goblin.ps1": "ecab5353a894e7b481542e38090685e8d3ae5779f57741b41587ffb1e8129620",
+    "tools/ci/run_godot_regressions.py": "5fef8460cecc6edb966495837c05736eb64b90ab9cd31418df07f3975660e7be",
+    "tools/ci/run_windows_godot_regressions.py": "c915776899aaf5711ed99aa91015cc4d73d2244cb84dba66fd53104b14b726f2",
+    "tools/ci/_architecture_campaign_context.py": "02ef1ff88ae5d3e85b93e9418180c6cbacdc363a37470c47233f9e94831f33c0",
+    "tools/gip014/Open-goblin.ps1": "2840e70bbf729dcdb3d6adabfa40d9b1d22a8f6a2b3cce5c6568c1215a8f8dbc",
     "tools/qualify_ambient.py": "7e014097f39f9d416067bcace63fda4dacf4d1de91f89d4fbff87bc970dc07ae",
     "tools/qualify_workbench_landscapes.py": "4a07fbb56600038ed16500d24c632ab1ae88a55337cb8d8b3f1cf12fbd895c86",
     "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
@@ -137,7 +140,10 @@ def execution_budget(policy: dict, default_case) -> dict:
     # Preserve the existing source-helper allowances, including four separate
     # AMBIENT processes (two imports and two actual case processes).
     workbench = values["godot_import_seconds"] + values["graphical_case_seconds"] + 60
-    goblin = 240 + 2 * 180 + 180 + 120
+    # V3: import, authored lineage, three campaigns, one64-action portable
+    # replay, three corpus admissions and graphics. The source tape is produced
+    # in a separate finite job before this delivery phase.
+    goblin = 240 + 300 + 3 * 180 + 210 + 3 * 60 + 180 + 120
     rows = [
         {"name": "checkout, dependencies and admission", "seconds": values["godot_setup_seconds"]},
         {"name": "source/runtime metadata operations", "seconds": values["godot_metadata_seconds"]},
@@ -151,12 +157,21 @@ def execution_budget(policy: dict, default_case) -> dict:
     total = sum(row["seconds"] for row in rows)
     require(total <= 360 * 60 and values["godot_job_minutes"] >= 360,
             "Complete source-derived delivery allowance exceeds the supported 360-minute parent; reconcile phases without reducing case watchdogs")
+    source_rows = {"setup_and_acquisition": values["godot_setup_seconds"],
+                   "source_and_runtime_metadata": values["godot_metadata_seconds"],
+                   "original_import": 240, "source_control64": 180,
+                   "owned_cleanup_and_receipts": 120,
+                   "evidence_retention": values["aggregate_headroom_seconds"]}
+    source_total = sum(source_rows.values())
+    require(source_total <= 120 * 60,
+            "Complete source-tape allowance exceeds its separate120-minute parent")
     return {"schema": "cybersand-mainline-evaluator-budget-v1", "policy": policy, "rows": rows,
             "total_seconds": total, "required_minutes": math.ceil(total / 60), "parent_minutes": 360,
             "default_off_registered_case": {"name": default_case.name, "flags": list(default_case.flags),
                                             "timeout_seconds": default_case.timeout, "requires_display": default_case.requires_display},
             "launcher_watchdogs": {"workbench": int(workbench), "goblin": goblin},
-            "expected_case_inventory": ["default_off_68", "ambient_five_example_ANGLE", "goblin_actor_workshop64", "goblin_save_reopen64", "goblin_graphics", "ordinary_CMD", "goblin_CMD"],
+            "source_tape_job": {"parent_minutes": 120, "total_seconds": source_total, "rows": source_rows},
+            "expected_case_inventory": ["default_off_68", "ambient_five_example_ANGLE", "goblin_authored_lineage20", "goblin_actor_workshop64", "goblin_save_reopen64", "goblin_alchemy64", "goblin_replay64", "goblin_memory_roundtrip", "goblin_graphics", "ordinary_CMD", "goblin_CMD"],
             "full_ambient_feature_campaign_claimed": False}
 
 
@@ -319,6 +334,20 @@ def goblin_launcher() -> str:
             '-File "%~dp0workbench\\Open goblin.ps1" %*\nexit /b %errorlevel%\n')
 
 
+def verify_successor_replay(folder: Path, goblin: dict) -> None:
+    require(goblin.get("successor_contract_version") == 3,
+            "Final accepted source requires the complete Goblin002 v3 contract")
+    portable = goblin.get("portable_replay_index", {})
+    require(portable.get("path") == "replay-corpus/index.json"
+            and sha(folder / portable["path"]) == portable.get("sha256"),
+            "Missing exact successor portable replay index")
+    cases = read(folder / portable["path"]).get("cases", [])
+    require(len(cases) == 1 and cases[0].get("id") == portable.get("required_replay_case")
+            and type(cases[0].get("attempted_actions")) is int
+            and cases[0]["attempted_actions"] == 64,
+            "Delivery watchdog requires its one actual64-action source tape")
+
+
 def assemble(args) -> None:
     admission = read(args.admission)
     require(not args.output.exists() and not args.archive.exists(), "Delivery outputs must be new")
@@ -331,6 +360,7 @@ def assemble(args) -> None:
     stage = product_module(args.product, "package_explore001_candidate")
     ambient_runner = product_module(args.product, "qualify_ambient")
     runtime = product_module(args.product, "run_windows_godot_regressions").verify_retained_runtime(args.product.resolve())
+    verify_successor_replay(args.output / "workbench", goblin)
     require(len(runtime["native_source_inputs"]) == 105, "Changed native input contract")
     require(runtime["cybersand_runtime"]["sha256"] == goblin["provenance"]["native_sha256"]
             and runtime["rapier_runtime"]["sha256"] == goblin["provenance"]["rapier_sha256"]
@@ -342,7 +372,10 @@ def assemble(args) -> None:
                 "Accepted pinned engine/notice/redistribution bytes differ: " + name)
     stage.verify_vc_runtime(args.output / "workbench")
     profiles = stage.stage_generator_profiles(args.output / "workbench")
-    guides = ["docs/operations/ambient-workbench.md", "docs/systems/ambient-actors.md"]
+    guides = ["docs/operations/ambient-workbench.md", "docs/systems/ambient-actors.md",
+              "docs/operations/ambient-living-workbench.md", "docs/systems/ambient-living-inhabitants.md",
+              "docs/operations/art-workbench-collaborative-evaluation.md",
+              "docs/operations/world-steer-collaborative-architecture.md"]
     guide_archive = subprocess.check_output(["git", "archive", "HEAD", "--", *guides], cwd=args.product, timeout=60)
     with tarfile.open(fileobj=io.BytesIO(guide_archive)) as source:
         for entry in source:
@@ -355,7 +388,9 @@ def assemble(args) -> None:
     examples = {p.name: sha(p) for p in (args.output / "workbench/godot/examples/workbench").glob("ambient-*.json")}
     require(set(examples) == {name + ".json" for name in ambient_runner.EXAMPLES},
             "Ordinary package requires all five committed AMBIENT examples")
-    goblin_guides = ["workbench/docs/operations/gip014-goblin-gameplay-qa.md", "workbench/docs/research/gip014-goblin-gameplay-qa.md"]
+    goblin_guides = ["workbench/docs/research/gip014-goblin-002.md",
+                     "workbench/docs/operations/gip014-goblin-gameplay-qa.md",
+                     "workbench/docs/research/gip014-goblin-gameplay-qa.md"]
     goblin_guide = next((name for name in goblin_guides if (args.output / name).is_file()), None)
     require(goblin_guide is not None and (args.output / "workbench/docs/operations/ambient-workbench.md").is_file(),
             "Both named owner guides must actually exist in this package")
@@ -384,12 +419,24 @@ def assemble(args) -> None:
         "# CyberSand — accepted-main Windows Workbench\n\n"
         f"**Accepted product source:** `{admission['source_commit']}`.\n\n"
         "Extract the whole ZIP into a writable folder. Double-click **Open Workbench.cmd**. "
-        "The first launch imports resources locally. Ordinary blank startup keeps both new experimental features off.\n\n"
+        "The first launch imports resources locally. Experimental actor behaviours and Goblin remain opt-in.\n\n"
         "## Try procedural inhabitants\n\n"
         "Open **Actor Composition…**, choose one of the five ambient examples, select **Load scene**, then **Play**. "
         "The examples cover Oil/Water interests, ledges, an industrial yard, a settlement and flight. "
         "The example selector and profile editor expose the opt-in behaviour; loading an example is an explicit action. "
-        "Read `workbench/docs/operations/ambient-workbench.md` for profile editing, manual piloting, and save/reopen.\n\n"
+        "The six living-inhabitant scenes and staged behaviour editor are also available; "
+        "read `workbench/docs/operations/ambient-living-workbench.md` for their controls and limits.\n\n"
+        "## Art and Architecture\n\n"
+        "Open **Art batches** or **Architecture…** from the Workbench toolbar. "
+        "In Architecture, **Add curated templates** supplies all forty bundled authored templates; "
+        "their native replay and application still use the explicit stage controls. The committed guides are "
+        "`workbench/docs/operations/art-workbench-collaborative-evaluation.md` and "
+        "`workbench/docs/operations/world-steer-collaborative-architecture.md`. "
+        "These workflows retain explicit proposal and application controls. "
+        "Those guides also describe their historical standalone evaluators: this mainline package "
+        "does not include their diagnostic/start installers, nine evaluated starts or "
+        "`architecture-evidence` flagship and curated-library files. Use their control references "
+        "with the ordinary tools and committed examples available here.\n\n"
         "## Try the optional Goblin gameplay explorer\n\n"
         "Double-click **Open Goblin.cmd** for its separate opt-in developer scene. "
         "It creates a fresh disposable profile under `workbench/test-output`; it does not run during ordinary Workbench startup. "
@@ -424,7 +471,7 @@ def assemble(args) -> None:
         "execution_budget": admission["execution_budget"],
         "experimental_default_enabled": False,
         "qualification": "Explicit extracted-package proof is required; full application qualification remains the accepted-source Ready campaign",
-        "expected_package_proof": ["ambient_default_off_68_checks", "ambient_five_example_ANGLE_capture", "goblin_actor_workshop_64", "goblin_save_reopen_64", "goblin_graphical_smoke", "delivered_workbench_CMD", "delivered_goblin_CMD"],
+        "expected_package_proof": ["ambient_default_off_68_checks", "ambient_five_example_ANGLE_capture", "goblin_authored_lineage_20", "goblin_actor_workshop_64", "goblin_save_reopen_64", "goblin_alchemy_64", "goblin_portable_replay_64", "goblin_memory_roundtrip", "goblin_graphical_smoke", "delivered_workbench_CMD", "delivered_goblin_CMD"],
         "constituent_archive_sha256": sha(args.goblin_archive),
         "constituent_manifest_sha256": sha(args.output / "workbench/goblin-evaluator-manifest.json"),
         "generator_profiles_sha256": profiles, "ambient_examples_sha256": examples,

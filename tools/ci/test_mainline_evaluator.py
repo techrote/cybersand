@@ -232,11 +232,36 @@ class DeliveryCustody(unittest.TestCase):
         actual = next(row for row in budget["rows"] if row["name"].startswith("default-OFF"))
         self.assertEqual(actual["seconds"], self.policy()["watchdogs"]["godot_import_seconds"] + registered.timeout + 30)
         self.assertEqual(budget["default_off_registered_case"]["timeout_seconds"], registered.timeout)
-        self.assertEqual(budget["total_seconds"], 20420)
-        self.assertEqual(budget["required_minutes"], 341)
+        self.assertEqual(budget["total_seconds"], 21290)
+        self.assertEqual(budget["required_minutes"], 355)
         self.assertEqual(budget["parent_minutes"], 360)
-        self.assertEqual(budget["launcher_watchdogs"], {"workbench": 2460, "goblin": 900})
+        self.assertEqual(budget["launcher_watchdogs"], {"workbench": 2460, "goblin": 1770})
+        self.assertEqual(budget["source_tape_job"]["total_seconds"], 6240)
+        self.assertEqual(budget["source_tape_job"]["parent_minutes"], 120)
         self.assertFalse(budget["full_ambient_feature_campaign_claimed"])
+
+    def test_delivery_budget_requires_one_exact_64_action_successor_tape(self):
+        folder = self.root / "successor"
+        index = folder / "replay-corpus/index.json"
+        case = {"id": "case-000", "attempted_actions": 64}
+        delivery.write(index, {"cases": [case]})
+        manifest = {"successor_contract_version": 3, "portable_replay_index": {
+            "path": "replay-corpus/index.json", "sha256": delivery.sha(index),
+            "required_replay_case": "case-000"}}
+        delivery.verify_successor_replay(folder, manifest)
+        for cases in ([], [case, case], [{**case, "attempted_actions": True}],
+                      [{**case, "attempted_actions": 128}], [{**case, "id": "case-001"}]):
+            delivery.write(index, {"cases": cases})
+            changed = copy.deepcopy(manifest)
+            changed["portable_replay_index"]["sha256"] = delivery.sha(index)
+            with self.subTest(cases=cases), self.assertRaises(ValueError):
+                delivery.verify_successor_replay(folder, changed)
+        delivery.write(index, {"cases": [case]})
+        with self.assertRaises(ValueError):
+            delivery.verify_successor_replay(folder, {**manifest, "successor_contract_version": 2})
+        index.write_bytes(index.read_bytes() + b" ")
+        with self.assertRaisesRegex(ValueError, "exact successor"):
+            delivery.verify_successor_replay(folder, manifest)
 
     def test_changed_policy_cannot_silently_overrun_parent(self):
         product, harness, value = self.admission_fixture()
