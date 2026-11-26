@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: AMBIENT-001 opt-in copied perception, pure procedural decisions, capability adapters and authored profiles
 canonical-for: [ambient-actor-intelligence, ambient-behaviour-modules]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-26
 related-documents: [workbench-actor-composition.md, physical-actor-rigs.md, physical-free-flight.md, ../operations/ambient-workbench.md, ../architecture/data-ownership-and-lifetimes.md, ../research/ambient-001/mission-ledger.md, ../research/ambient-001/behaviour-ledger.md]
 ---
 
@@ -12,7 +12,8 @@ related-documents: [workbench-actor-composition.md, physical-actor-rigs.md, phys
 
 ## Status and ownership
 
-**AMBIENT-001 is an opt-in Draft/HOLD implementation candidate.** It adds
+**The opt-in AMBIENT-001 foundation is accepted through
+[#775](https://github.com/techrote/cybersand/pull/775) at main `67c1413a`.** It adds
 **Procedural NPC / Ambient** to ordinary Workbench actor authoring through the
 existing local `policy` producer. The authored selector is `source: "policy"`,
 `policy: "ambient"`; Human, Scripted, external Policy and Passive keep their
@@ -24,9 +25,11 @@ unaccepted Actor Compose #762 candidate is not a dependency.
 The [owner guide](../operations/ambient-workbench.md) covers the actual editor,
 presets, example scenes, painting, handoff and save/reopen procedure. The
 [mission ledger](../research/ambient-001/mission-ledger.md) owns exact source,
-runtime, qualification and delivery dispositions. This contract explains the
-candidate source and its bounds; controller admission does not certify every
-eligible rig's playfeel.
+runtime, qualification and delivery dispositions of the dated campaigns. This
+contract explains the accepted foundation and its bounds; controller admission
+does not certify every eligible rig's playfeel. The living-inhabitants successor
+[#779](https://github.com/techrote/cybersand/pull/779) remains separate candidate
+work and does not extend this contract merely because its foundation merged.
 
 | Source | Responsibility |
 |---|---|
@@ -95,7 +98,7 @@ grant it new physical information.
 | Material query | At most eight IDs, radius 1–96 world cells, default example 50; each ID uses the largest requested radius in the profile and individual modules recheck their own radius |
 | Material resolution | Fixed four-cell lattice. Samples use cell centres `(4k + 0.5, 4j + 0.5)`, inclusive Euclidean distance from actor centre, clipped to canvas. Maximum bounding lattice is 2,401 sites per query; only sites inside the circle are read |
 | Material result | Per-ID availability, observed presence/count, nearest observed location, distance and direction, radius, coverage sample count, native sampling tick and material revision |
-| Boundary | Copied rectangle. The ordinary Workbench adapter supplies the canvas; the pure contract can also accept an authored region rectangle. There is no separate region-painting UI in this candidate |
+| Boundary | Copied rectangle. The ordinary Workbench adapter supplies the canvas; the pure contract can also accept an authored region rectangle. There is no separate region-painting UI in the accepted foundation |
 | Physical ledge/drop | Two downward terrain probes outside the current attached hull, one on each side, at that module's exact lookahead of 1–32 cells. Allowed drop is 0–64 cells; searched depth and no-hit lower-bound semantics are explicit |
 | Obstacle | Existing local horizontal terrain distances with a 30-cell no-hit sentinel. Obstruction threshold is at most 29 cells; a no-hit value never establishes a wall |
 | Nearby actors | At most seven others from the accepted eight-actor host, within 96 cells, with matching run, epoch and physical tick. Missing poses are omitted. Compatible means supported adapters with the same vertical-movement affordance; ground and wheel rigs can share a group |
@@ -245,7 +248,7 @@ session run/epoch and baseline profile before invoking the existing owner
 transaction. A replaced world reusing the same actor ID cannot accept a stale
 draft; Revert explicitly binds to the current actor. Pause alone does not make
 a draft stale. Group application is not implemented; assignment is deliberately
-per actor in this candidate.
+per actor in the accepted foundation.
 
 ## Capability-aware actuation
 
@@ -260,7 +263,7 @@ normalization. Unsupported combinations are refused with a reason.
 | Ground/walk | Horizontal desired motion with existing local velocity and attitude feedback; outputs supported `move`, `aim`, `effort`, `trim`, and optional ordinary `primary` jump. Vertical desire gives no vertical motor |
 | Roll/wheel | Horizontal movement through the existing rolling mechanism and bounded trim feedback. A wheel's unrelated primary ability is not treated as jump |
 | 4LY Trainer/Hauler/Drifter/Dart | Exactly one `move` key in world-frame desired velocity; pace scales the request. The existing controller owns hover, braking, gravity compensation and thrust/attitude. Its API has no separate effort channel; the editor disables Effort for these rigs while retaining the authored value for compatible profiles |
-| Other rigs | Existing fleet flyers, other legacy flight/hover mechanisms, SetP player controllers and passive bodies have no ambient adapter in this candidate |
+| Other rigs | Existing fleet flyers, other legacy flight/hover mechanisms, SetP player controllers and passive bodies have no ambient adapter in the accepted foundation |
 
 No adapter fires equipment, teleports a body, sets its velocity directly or
 retunes its motor to improve a demonstration. Material distance is not a
@@ -331,8 +334,10 @@ native/physical progression, ordinary Workbench lifecycle and editor persistence
 - [`test_ambient_authoring.gd`](../../godot/tests/test_ambient_authoring.gd): schema,
   profile persistence and genuine native/actor example data.
 
-The mission ledger adds ordinary host and interactive evidence and the current
-Windows delivery disposition. Synthetic decision outputs are not physical
+The mission ledger retains ordinary host and interactive evidence and the
+Windows delivery disposition for its named source. A later source requires
+its own qualification; the merge does not rerun those campaigns. Synthetic
+decision outputs are not physical
 motion; headless Linux/Rapier observations are not Windows/NVIDIA playfeel
 acceptance. Human assessment of whether a scene feels inhabited remains separate
 from automated correctness.

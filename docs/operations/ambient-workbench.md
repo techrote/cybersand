@@ -2,9 +2,9 @@
 title: Procedural ambient actors in Shared Workbench
 status: Current
 document-kind: guide
-scope: Opt-in AMBIENT-001 Draft/HOLD profile authoring, ordinary play, presets, examples and current limits
+scope: Accepted opt-in AMBIENT-001 profile authoring, ordinary play, presets, examples and current limits
 canonical-for: [ambient-workbench-owner-guide]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-26
 related-documents: [../systems/workbench-actor-composition.md, ../systems/physical-actor-rigs.md, ../research/ambient-001/authoring-ledger.md, ../research/ambient-001/mission-ledger.md]
 ---
 
@@ -17,11 +17,14 @@ commands. The actor still uses the existing physical rig, collisions and
 resources. A preference to approach Oil is an intention; a wall, slope, depleted
 resource or unsuitable rig can prevent travel.
 
-AMBIENT-001 is a Draft/HOLD candidate pending owner acceptance. It does not
-change the default controller of ordinary scenes. The existing Human, Scripted,
+The AMBIENT-001 foundation was accepted through
+[#775](https://github.com/techrote/cybersand/pull/775) at main `67c1413a`.
+It remains opt-in and does not change the default controller of ordinary scenes.
+The existing Human, Scripted,
 External Policy and Passive choices remain available. The accepted Workbench
 capacity is eight logical actors; the examples do not rely on an unaccepted
-larger population host.
+larger population host. The living-inhabitants successor
+[#779](https://github.com/techrote/cybersand/pull/779) is separate candidate work.
 
 ## Start with an inhabited scene
 
@@ -73,7 +76,7 @@ supported actors. A ground actor starts from Oil Moth; a 4LY flyer starts from
 Drifting Flyer. An enabled ground ledge rule on a flyer is diagnosed and refused.
 Disable or remove an inapplicable module before applying that profile.
 
-Assignment is individual in this release. To reuse a personality, choose the
+Assignment is individual in this implementation. To reuse a personality, choose the
 same preset for another compatible actor and apply it there. **Share identical
 seed across actors** is off by default: each stable authored actor ID contributes
 to its independent random stream. Turning it on deliberately gives the actors
@@ -219,10 +222,13 @@ is the source of final source identities, gameplay measurements, remaining gates
 and delivery status. Module-level results, native material observations, physical
 motion, graphical evidence and human judgement are recorded separately.
 
-The Windows evaluator gate is pending until the lead records an exact-source
-package, verified pristine extraction and launch receipts. Retained official
-Godot executable hashes and source-matched native reuse eligibility are already
-identified; those facts alone do not prove a new Windows launch. Linux headless
-or software-rendered observations cannot establish physical Windows/NVIDIA
-playfeel acceptance. Keep the feature opt-in and the implementation Draft/HOLD
-until the owner reviews the candidate.
+The [dated final evaluator record](../research/ambient-001/mission-ledger.md#final-disposition--verified-evaluator-drafthold)
+records source, extracted-package and ordinary-launcher qualification for
+`f4f94631d61d492554627949497e727b26043ccb`. Its Windows graphics used ANGLE with
+Microsoft Basic Render Driver. That package and its results retain that exact
+source; the later merge does not make them an execution of current main.
+Use [source-matched qualification](local-build-and-validation.md#ambient-001-scoped-gameplay-qualification)
+for a new build or evaluator. Linux headless, software rendering and hosted
+Windows graphics do not establish physical Windows/NVIDIA playfeel or an owner's
+judgement of whether the scene feels inhabited. The accepted feature remains
+opt-in.
