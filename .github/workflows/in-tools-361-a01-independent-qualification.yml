@@ -84,9 +84,9 @@ jobs:
           git rev-parse 'HEAD^{tree}' | tee "$RUNNER_TEMP/in-tools-361-new-main/tree.txt"
           python3 tools/lcb/in_tools_current_main_admission.py | tee "$RUNNER_TEMP/in-tools-361-new-main/admission.json"
           python3 tools/lcb/test_in_tools_current_main_admission.py -v 2>&1 | tee "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
-          # The v3 renewal adds four independent custody/causal controls.
+          # The v4 renewal retains v3 controls and adds two custody controls.
           # Keep the immutable #404 witness's original 14-test contract above.
-          grep -Eq 'Ran 19 tests' "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
+          grep -Eq 'Ran 21 tests' "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
           grep -Eq '^OK$' "$RUNNER_TEMP/in-tools-361-new-main/tests.log"
           git diff --exit-code
       - name: Preserve exact successor source report
