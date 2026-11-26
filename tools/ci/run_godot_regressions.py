@@ -236,18 +236,22 @@ def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> flo
     return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
 
 
+def _case_requires_display(name: str) -> bool:
+    return name.endswith("_render") or name in architecture_context.GRAPHICAL_CASES
+
+
 def discover_cases(root: Path = ROOT) -> list[Case]:
     profile = scheduling.load_profile(root / "tools/ci/godot_scheduling_profile.json")
     cases = [
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
-            execution_policy.case_seconds(p.stem, p.stem.endswith("_render"),
+            execution_policy.case_seconds(p.stem, _case_requires_display(p.stem),
                 complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
             _weight(p.stem, profile=profile, root=root),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.
-            requires_display=p.stem.endswith("_render") or p.stem in architecture_context.GRAPHICAL_CASES,
+            requires_display=_case_requires_display(p.stem),
         )
         for p in sorted((root / "godot/tests").glob("test_*.gd"))
     ]
