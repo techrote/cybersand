@@ -65,6 +65,7 @@ HARNESS_PATHS = frozenset((
 ))
 SOURCE_CONTRACTS = frozenset((
     "tools/ci/run_godot_regressions.py", "tools/ci/run_windows_godot_regressions.py",
+    "tools/ci/_architecture_campaign_context.py",
     "tools/ci/godot_timeout_diagnostics.py", "tools/ci/godot_process_monitor.py",
     "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py", "tools/ci/godot_scheduling.py",
     "tools/ci/run_art_storage_qualification.py", "tools/ci/windows_file_lock.py",

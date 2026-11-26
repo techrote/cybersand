@@ -67,14 +67,16 @@ class AdmissionTests(unittest.TestCase):
             q.read(path)
 
     def test_required_source_contract_cannot_be_omitted_or_substituted(self):
-        for substitution in (False, True):
-            value = q.read(REQUEST)
-            del value["source_contracts_sha256"]["tools/ci/run_art_storage_qualification.py"]
-            if substitution:
-                value["source_contracts_sha256"]["unrelated.py"] = "a" * 64
-            q.write(self.root / "request.json", value)
-            with self.assertRaisesRegex(ValueError, "qualification contracts"):
-                q.request(self.root / "request.json")
+        for required in ("tools/ci/run_art_storage_qualification.py", "tools/ci/_architecture_campaign_context.py"):
+            for substitution in (False, True):
+                with self.subTest(required=required, substitution=substitution):
+                    value = q.read(REQUEST)
+                    del value["source_contracts_sha256"][required]
+                    if substitution:
+                        value["source_contracts_sha256"]["unrelated.py"] = "a" * 64
+                    q.write(self.root / "request.json", value)
+                    with self.assertRaisesRegex(ValueError, "qualification contracts"):
+                        q.request(self.root / "request.json")
 
     def test_untracked_executable_input_refused_in_either_real_git_checkout(self):
         product, harness = self.root / "product", self.root / "harness"
@@ -326,7 +328,8 @@ class AdmissionTests(unittest.TestCase):
         def git(*args):
             return subprocess.check_output(["git", "-C", str(root), *args], text=True, stderr=subprocess.DEVNULL).strip()
         for args in (("init", "-q"), ("config", "user.name", "Fixture"),
-                     ("config", "user.email", "fixture@example.invalid"), ("lfs", "install", "--local")):
+                     ("config", "user.email", "fixture@example.invalid"),
+                     ("config", "core.autocrlf", "false"), ("lfs", "install", "--local")):
             git(*args)
         (root / ".gitattributes").write_text("*.dll filter=lfs diff=lfs merge=lfs -text\n")
         (root / "application.gd").write_text("# tracked application\n")
