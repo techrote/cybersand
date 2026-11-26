@@ -135,3 +135,33 @@ also remain separate owner/deployment work. The
 [owner checklist](../owner-qualification-checklist.md) names the exact package,
 manual tasks, failure preservation and scope required. The fresh Art/Tower pass
 above closes those Linux manual observations without changing these boundaries.
+
+## Fresh public context review at fe24da6f
+
+B independently reviewed the actual final DR01–12 and DR25–36 passages against
+the surviving [67245ba5 review](../context-applicability-67245ba5.json), without
+using lost e487 raw results. The [new per-question receipt](context-applicability-fe24da6f.json)
+records all 120 context identities, expected facts and judgments. Eight ordered
+sets match exactly; 16 changed sets were re-adjudicated, including full reads of
+21 unique new passages. Every actual text hash and returned document hash was
+checked against the pinned source. This was a familiar, non-blind review with
+some B-authored manuals, not a generated-answer or holdout evaluation.
+
+First-pass results remain **22 sufficient / two partial / zero wholly wrong
+question contexts / zero identified wrong authority**. DR04 still lacks the
+focused C-header/cheap-validation detail; DR08 still lacks the complete
+Wave-release/ballistic distinction. Explicit human-selected source reads supply
+those missing facts, costing **98,272 + 48,842 bytes** of additional full-document
+context. Those reads do not change the initial partial judgments. DR36 supports
+correct abstention from inventing a future owner decision. The separate layout
+question remains sufficiently supported at canonical rank three.
+
+The additional OI01 inspection preserves its **primary-record top-five miss**.
+Its rank-two owner-confirmed summary supports the bounded product-intent answer,
+but that does not place the primary decision in the returned five passages.
+A familiar human selected the exposed document-level route to the 8458-byte
+primary record, which B read in full and found sufficient. That route comes from
+the complete verified summary's link metadata, not an inline link in the
+returned passage; neither autonomous discovery nor a model answer was tested.
+No ranker, corpus or fixture was tuned during this review. A owns the other 12
+additive questions and the integrated report owns the all-36 result.
