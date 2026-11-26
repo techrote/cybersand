@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: LCB versioned scenario catalogue, protected Current-default runner and historical campaign accounting; current-main four-family support and bounded successor comparison registration remain distinct from retained results
 canonical-for: [lcb-scenario-catalogue]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-ux.md, ../architecture/liquid-solver-family-policy.md, microscenarios.md, ../audits/2026-10-23-lcb003-scenario-qualification.md]
 ---
 
@@ -51,6 +51,16 @@ scope. Its then-blocked native-family prerequisites have since landed; their
 retained campaign arms still need separately qualified successor execution.
 
 **Original October admission record — LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). That initial decision admitted a separately scoped opt-in #200 start. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) was Current in that October source; #212 was no longer held but remained outside that checkpoint. Both families are implemented in the current source described above. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+
+The merged foundation comprises the comparison contract and protected fixtures
+in [#215](https://github.com/techrote/cybersand/pull/215), the controlled scenario
+runner and qualification in [#217](https://github.com/techrote/cybersand/pull/217),
+and the mechanism, transition and handoff records in
+[#226](https://github.com/techrote/cybersand/pull/226). Their combined foundation
+entered main at
+[`e95fe85d`](https://github.com/techrote/cybersand/commit/e95fe85d82e108a682a2ae0212d85569f1c03cd8).
+These links establish the original contracts and apparatus in accepted ancestry;
+they are not fresh execution of today's registered campaign.
 
 The original #213 prerequisite was satisfied. The registered historical arm
 inventories below remain unchanged; a blocked registry arm is an unqualified
