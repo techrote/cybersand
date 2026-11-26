@@ -151,6 +151,9 @@ class StorageAdapter(unittest.TestCase):
             adapter.retain_generated_uids(root, self.root / "changed-descriptor-refusal")
         self.assertIn(b"changed=true", descriptor.read_bytes())
 
+    # The synthetic reproduction intentionally selects CRLF. The workflow's
+    # command-scope LF configuration must not override this private Git fixture.
+    @mock.patch.dict(os.environ, {"GIT_CONFIG_COUNT": "0"})
     def test_false_crlf_index_dirt_refresh_preserves_the_exact_committed_tree(self):
         root, _, _, descriptor = self.metadata_fixture()
         original = descriptor.read_bytes()
