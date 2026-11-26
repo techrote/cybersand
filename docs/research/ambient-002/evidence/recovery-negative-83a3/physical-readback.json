@@ -1,0 +1,2418 @@
+[
+  {
+    "contact_run_reset_reasons": {
+      "forward_speed_at_least_one": 1,
+      "no_confirmed_contact_in_prior_heading": 43,
+      "no_prior_intent": 8
+    },
+    "episode_id": "main-pockets-runner-s605-t30-n1-stateful-a100",
+    "horizontal_fallback_classification": {
+      "confirmed_horizontal_contact": 52,
+      "forward_speed_at_least_one": 134,
+      "no_confirmed_contact_in_prior_heading": 53,
+      "no_prior_intent": 60
+    },
+    "longest_confirmed_horizontal_contact_run_seconds": 0.1000000000001009,
+    "reported_internal_memory_failures": 0,
+    "reported_retained_obstructions": 0,
+    "scope": "Horizontal fallback reconstruction only; raw trace does not retain fresh hull navigation rays or goal_key. Actual final internal failure counter is separately copied from the engine.",
+    "selected_withdrawal_seconds": 0.0,
+    "window": {
+      "all_same_selected_module_and_phase": true,
+      "end_seconds": 8.5,
+      "horizontal_intent_reversals": 20,
+      "max_right_wall_distance": 6.21238708496094,
+      "min_right_wall_distance": 6.12451171875,
+      "net_x_cells": -0.07572937011698855,
+      "sample_count": 21,
+      "start_seconds": 6.5,
+      "trace": [
+        {
+          "action_move": [
+            -0.678629517555237,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.753280000000002,
+            "social": 0.492249999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4819145202637,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6393386130458,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.863342285156,
+            194.738830566406
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.49999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 390,
+          "velocity": [
+            0.259099125862122,
+            0.646235764026642
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.13665771484375,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.827537775039673,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.752629000000002,
+            "social": 0.492899999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.5003204345703,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999923706055,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6531132978586,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.850936889648,
+            194.793731689453
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.59999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 396,
+          "velocity": [
+            -2.90166568756104,
+            0.126860216259956
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.14906311035156,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.671493232250214,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.751978000000002,
+            "social": 0.493549999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4942359924316,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6378595060569,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.865295410156,
+            194.759063720703
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.69999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 402,
+          "velocity": [
+            -0.682890594005585,
+            -0.150424614548683
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.13470458984375,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.824389696121216,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.751327000000002,
+            "social": 0.494199999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.492301940918,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999923706055,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6442244795245,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.859085083008,
+            194.765411376953
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.79999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 408,
+          "velocity": [
+            -2.48612380027771,
+            0.314600318670273
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.14091491699219,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.675927579402924,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.750676000000002,
+            "social": 0.494849999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4866142272949,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6550163382768,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.848449707031,
+            194.771759033203
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.89999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 414,
+          "velocity": [
+            -0.0975616350769997,
+            0.736636638641357
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.15155029296875,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.818961918354034,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.750025000000002,
+            "social": 0.495499999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.5221977233887,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6286248699433,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.87548828125,
+            194.795669555664
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.99999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 420,
+          "velocity": [
+            -1.76964235305786,
+            -1.09838736057281
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.12451171875,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.671261072158813,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.749374000000002,
+            "social": 0.496149999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.474365234375,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6533729047681,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.849487304688,
+            194.746856689453
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.09999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 426,
+          "velocity": [
+            -0.713536083698273,
+            0.510248303413391
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.1505126953125,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.825304448604584,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.748723000000002,
+            "social": 0.496799999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.5119590759277,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6412168721907,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.862915039062,
+            194.796508789062
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.19999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 432,
+          "velocity": [
+            -2.606853723526,
+            0.546072125434875
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.1370849609375,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.673887729644775,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.748072000000002,
+            "social": 0.497449999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4697875976562,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6641100760157,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.838943481445,
+            194.755172729492
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.29999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 438,
+          "velocity": [
+            -0.366818785667419,
+            -0.161658823490143
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.16105651855469,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.821174681186676,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.747421000000002,
+            "social": 0.498099999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4847869873047,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6635237672986,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.840194702148,
+            194.781585693359
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.39999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 444,
+          "velocity": [
+            -2.06172513961792,
+            -0.32087767124176
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.15980529785156,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.671139657497406,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.746770000000002,
+            "social": 0.498749999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4844360351562,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6658126568653,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.837982177734,
+            194.784484863281
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.49999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 450,
+          "velocity": [
+            -0.72956120967865,
+            1.03200376033783
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.16201782226562,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.818654894828796,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.746119000000003,
+            "social": 0.499399999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.5011558532715,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999923706055,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6470743091807,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.85676574707,
+            194.785934448242
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.59999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 456,
+          "velocity": [
+            -1.72912871837616,
+            -1.00916516780853
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.14323425292969,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.668727040290833,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.745468000000003,
+            "social": 0.500049999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4707870483398,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6606067689475,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.842361450195,
+            194.751556396484
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.69999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 462,
+          "velocity": [
+            -1.04803192615509,
+            0.75857949256897
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.15763854980469,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.820689380168915,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.744817000000003,
+            "social": 0.500699999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4890060424805,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6584556288236,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.845260620117,
+            194.781433105469
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.79999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 468,
+          "velocity": [
+            -1.99767076969147,
+            -0.177275165915489
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.15473937988281,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.676648020744324,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.744166000000003,
+            "social": 0.501349999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4467239379883,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.695383833765,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.807815551758,
+            194.761581420898
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.89999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 474,
+          "velocity": [
+            -0.00245868042111397,
+            0.344124674797058
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.19218444824219,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.822725474834442,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.743515000000003,
+            "social": 0.501999999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4731178283691,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.6745176827241,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.829086303711,
+            194.777359008789
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.99999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 480,
+          "velocity": [
+            -2.26643085479736,
+            -0.394384473562241
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.17091369628906,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.668687164783478,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.742864000000003,
+            "social": 0.502649999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4318580627441,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6906904845809,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.811721801758,
+            194.727096557617
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.09999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 486,
+          "velocity": [
+            -1.0532922744751,
+            0.106013581156731
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.18827819824219,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.823923289775848,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.742213000000003,
+            "social": 0.503299999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4440612792969,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.580000042915344,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6970999807446,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.806045532227,
+            194.759384155273
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.19999999999999,
+          "selection": "explore_unfamiliar",
+          "tick": 492,
+          "velocity": [
+            -2.42452955245972,
+            0.0227689389139414
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.19395446777344,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.680055022239685,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.741562000000002,
+            "social": 0.503949999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.439525604248,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 10.7025971442601,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.800552368164,
+            194.759628295898
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.29999999999999,
+          "selection": "explore_unfamiliar",
+          "tick": 498,
+          "velocity": [
+            0.447266519069672,
+            0.00955350510776043
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.19944763183594,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.826229870319366,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.740911000000002,
+            "social": 0.504599999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.453067779541,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999923706055,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 10.6800825468724,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.822830200195,
+            194.749420166016
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.4,
+          "selection": "explore_unfamiliar",
+          "tick": 504,
+          "velocity": [
+            -2.72902631759644,
+            -0.476064682006836
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.17716979980469,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.667394995689392,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.740260000000002,
+            "social": 0.505249999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 37.4011497497559,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.487199991941452,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 704,
+            "distance": 10.7144001400605,
+            "nearest": [
+              262.5,
+              194.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            251.787612915039,
+            194.707702636719
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.5,
+          "selection": "explore_unfamiliar",
+          "tick": 510,
+          "velocity": [
+            -1.22385990619659,
+            0.820755064487457
+          ],
+          "wall_left": 30.0,
+          "wall_right": 6.21238708496094,
+          "water": {
+            "available": true,
+            "coverage_samples": 704,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        }
+      ],
+      "x_range_cells": 0.08787536621099434,
+      "y_range_cells": 0.08880615234298261
+    }
+  },
+  {
+    "contact_run_reset_reasons": {
+      "no_confirmed_contact_in_prior_heading": 43
+    },
+    "episode_id": "main-pockets-monowheel-s605-t30-n1-stateful-a100",
+    "horizontal_fallback_classification": {
+      "confirmed_horizontal_contact": 43,
+      "forward_speed_at_least_one": 136,
+      "no_confirmed_contact_in_prior_heading": 49,
+      "no_prior_intent": 71
+    },
+    "longest_confirmed_horizontal_contact_run_seconds": 0.1000000000001009,
+    "reported_internal_memory_failures": 0,
+    "reported_retained_obstructions": 0,
+    "scope": "Horizontal fallback reconstruction only; raw trace does not retain fresh hull navigation rays or goal_key. Actual final internal failure counter is separately copied from the engine.",
+    "selected_withdrawal_seconds": 0.0,
+    "window": {
+      "all_same_selected_module_and_phase": true,
+      "end_seconds": 8.5,
+      "horizontal_intent_reversals": 20,
+      "max_right_wall_distance": 4.06367492675781,
+      "min_right_wall_distance": 3.973876953125,
+      "net_x_cells": -0.025085449219005795,
+      "sample_count": 21,
+      "start_seconds": 6.5,
+      "trace": [
+        {
+          "action_move": [
+            -0.144268944859505,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.754489000000002,
+            "social": 0.492249999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7963943481445,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.11059794574976,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 708,
+            "distance": 8.48249315499351,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            254.026123046875,
+            196.117767333984
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.49999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 390,
+          "velocity": [
+            -1.27761793136597,
+            0.318687617778778
+          ],
+          "wall_left": 30.0,
+          "wall_right": 3.973876953125,
+          "water": {
+            "available": true,
+            "coverage_samples": 708,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.816487789154053,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.752629000000002,
+            "social": 0.492899999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7321472167969,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 705,
+            "distance": 8.56945340241785,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.936325073242,
+            196.185348510742
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.59999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 396,
+          "velocity": [
+            -1.49553334712982,
+            0.626013994216919
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.06367492675781,
+          "water": {
+            "available": true,
+            "coverage_samples": 705,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.149797216057777,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.751978000000002,
+            "social": 0.493549999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.751148223877,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.111160933971405,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.54568054667733,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.960601806641,
+            196.172378540039
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.69999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 402,
+          "velocity": [
+            -0.628318607807159,
+            -0.16005639731884
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.03939819335938,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.806978404521942,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.751327000000002,
+            "social": 0.494199999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7474250793457,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.54697676184849,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.959655761719,
+            196.163345336914
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.79999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 408,
+          "velocity": [
+            -0.194647893309593,
+            -0.189443960785866
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.04034423828125,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.146314904093742,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.750676000000002,
+            "social": 0.494849999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7559814453125,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.111453205347061,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.53873280327603,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.967803955078,
+            196.165954589844
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.89999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 414,
+          "velocity": [
+            -1.16022944450378,
+            0.104409284889698
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.03219604492188,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.806113302707672,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.750025000000002,
+            "social": 0.495499999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7618751525879,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.5268315202029,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.980514526367,
+            196.146133422852
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 6.99999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 420,
+          "velocity": [
+            -0.0763029083609581,
+            -0.349901527166367
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.01948547363281,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.144545942544937,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.749374000000002,
+            "social": 0.496149999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.769775390625,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.111745737493038,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.51966826316924,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.987518310547,
+            196.150131225586
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.09999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 426,
+          "velocity": [
+            -1.45780456066132,
+            0.578968226909637
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.01248168945312,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.803562164306641,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.748723000000002,
+            "social": 0.496799999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.772575378418,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.51018452570925,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.997985839844,
+            196.127182006836
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.19999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 432,
+          "velocity": [
+            0.27269583940506,
+            -0.336774170398712
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.00201416015625,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.144156500697136,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.748072000000002,
+            "social": 0.497449999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.785270690918,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.112038508057594,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.49718832747964,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            254.010940551758,
+            196.12841796875
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.29999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 438,
+          "velocity": [
+            -1.56670653820038,
+            0.747188746929169
+          ],
+          "wall_left": 30.0,
+          "wall_right": 3.98905944824219,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.802381694316864,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.747421000000002,
+            "social": 0.498099999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7635955810547,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 706,
+            "distance": 8.5238868322213,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.983627319336,
+            196.142166137695
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.39999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 444,
+          "velocity": [
+            0.43418163061142,
+            -0.25222846865654
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.01637268066406,
+          "water": {
+            "available": true,
+            "coverage_samples": 706,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.144233912229538,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.746770000000002,
+            "social": 0.498749999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7774391174316,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.112331561744213,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.50833260003466,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.99934387207,
+            196.138656616211
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.49999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 450,
+          "velocity": [
+            -1.61179733276367,
+            1.04856824874878
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.00065612792969,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.803948402404785,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.746119000000003,
+            "social": 0.499399999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7663764953613,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.51953930965919,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.988189697266,
+            196.137176513672
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.59999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 456,
+          "velocity": [
+            0.219855636358261,
+            -0.247299194335938
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.01181030273438,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.144438728690147,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.745468000000003,
+            "social": 0.500049999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7769546508789,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.112624824047089,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.50920817939789,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.998413085938,
+            196.139938354492
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.69999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 462,
+          "velocity": [
+            -1.63949775695801,
+            0.934483885765076
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.0015869140625,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.803714692592621,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.744817000000003,
+            "social": 0.500699999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7671127319336,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.51843103495962,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.989349365234,
+            196.136001586914
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.79999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 468,
+          "velocity": [
+            0.251825153827667,
+            -0.317842960357666
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.01065063476562,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.145229011774063,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.744166000000003,
+            "social": 0.501349999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7782135009766,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.112918354570866,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.50725784105085,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            254.000457763672,
+            196.137756347656
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.89999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 474,
+          "velocity": [
+            -1.58715856075287,
+            0.810003697872162
+          ],
+          "wall_left": 30.0,
+          "wall_right": 3.99954223632812,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.803715169429779,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.743515000000003,
+            "social": 0.501999999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7654495239258,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.52127151170936,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.986343383789,
+            196.139831542969
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 7.99999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 480,
+          "velocity": [
+            0.251757681369781,
+            -0.192426115274429
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.01365661621094,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.145323783159256,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.742864000000003,
+            "social": 0.502649999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7764549255371,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.113212116062641,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.50992632931514,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.997665405273,
+            196.140625
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.09999999999998,
+          "selection": "explore_unfamiliar",
+          "tick": 486,
+          "velocity": [
+            -1.63000798225403,
+            0.951360106468201
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.00233459472656,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.80398815870285,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.742213000000003,
+            "social": 0.503299999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7667617797852,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.51877136899489,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.989013671875,
+            196.135894775391
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.19999999999999,
+          "selection": "explore_unfamiliar",
+          "tick": 492,
+          "velocity": [
+            0.214420288801193,
+            -0.326264202594757
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.010986328125,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.145717218518257,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.741562000000002,
+            "social": 0.503949999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7768096923828,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.113506153225899,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.50925390610565,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.998382568359,
+            196.139572143555
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.29999999999999,
+          "selection": "explore_unfamiliar",
+          "tick": 498,
+          "velocity": [
+            -1.63205456733704,
+            0.855020225048065
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.00161743164062,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            0.803780972957611,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.740911000000002,
+            "social": 0.504599999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7683258056641,
+          "intent_direction": [
+            1.0,
+            0.0
+          ],
+          "intent_pace": 0.579999983310699,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.51636948437161,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            253.99153137207,
+            196.133239746094
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.4,
+          "selection": "explore_unfamiliar",
+          "tick": 504,
+          "velocity": [
+            0.242760553956032,
+            -0.320387721061707
+          ],
+          "wall_left": 30.0,
+          "wall_right": 4.00846862792969,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        },
+        {
+          "action_move": [
+            -0.146622106432915,
+            0.0
+          ],
+          "drives": {
+            "exploration": 0.740260000000002,
+            "social": 0.505249999999999
+          },
+          "energy": 1.0,
+          "grounded": true,
+          "has_procedural_intent": true,
+          "home_distance": 35.7787284851074,
+          "intent_direction": [
+            -1.0,
+            0.0
+          ],
+          "intent_pace": 0.113800428807735,
+          "material_revision": 2,
+          "material_sample_tick": 0,
+          "nearest_peer": null,
+          "nearest_peer_id": -1,
+          "observed_peer_count": 0,
+          "oil": {
+            "available": true,
+            "coverage_samples": 707,
+            "distance": 8.50668386324078,
+            "nearest": [
+              262.5,
+              196.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "phase": "approach",
+          "position": [
+            254.001037597656,
+            196.137634277344
+          ],
+          "reason": "exploring a less familiar local destination",
+          "seconds": 8.5,
+          "selection": "explore_unfamiliar",
+          "tick": 510,
+          "velocity": [
+            -1.56417787075043,
+            0.714104175567627
+          ],
+          "wall_left": 30.0,
+          "wall_right": 3.99896240234375,
+          "water": {
+            "available": true,
+            "coverage_samples": 707,
+            "present": false,
+            "status": "unobserved_in_incomplete_coverage"
+          }
+        }
+      ],
+      "x_range_cells": 0.08979797363301145,
+      "y_range_cells": 0.06758117675798303
+    }
+  }
+]

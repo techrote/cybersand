@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/home/runner/work/_temp/ambient-observation-engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/home/runner/work/cybersand/cybersand/application/godot",
+    "--editor",
+    "--quit"
+  ],
+  "exit_code": 0,
+  "log_sha256": "889d60e2057a2c846e5bbbaf65bdf7a05cfeddd23b318609068d7afe1b313434",
+  "pid": 3988,
+  "seconds": 5.428,
+  "status": "passed",
+  "timeout_seconds": 1200.0
+}

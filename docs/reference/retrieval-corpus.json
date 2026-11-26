@@ -152,7 +152,9 @@
     "tools/world-art-capture.md",
     "tools/world-art-evaluation.md",
     "systems/ambient-actors.md",
-    "operations/ambient-workbench.md"
+    "operations/ambient-workbench.md",
+    "systems/ambient-living-inhabitants.md",
+    "operations/ambient-living-workbench.md"
   ],
   "navigation": [
     "README.md",
@@ -744,6 +746,94 @@
     {
       "path": "research/ambient-001/perception-ledger.md",
       "reason": "Dated AMBIENT-001 Draft/HOLD source and qualification evidence; current module and owner answers belong to systems/ambient-actors.md and operations/ambient-workbench.md. Read directly for explicit evidence review."
+    },
+    {
+      "path": "research/ambient-002/mission-ledger.md",
+      "reason": "Dated AMBIENT-002 Draft/HOLD source, experiments and qualification evidence. Read directly for explicit evidence review; canonical configuration and ownership answers belong to systems/ambient-living-inhabitants.md and operations/ambient-living-workbench.md."
+    },
+    {
+      "path": "research/ambient-002/behaviour-ledger.md",
+      "reason": "Dated AMBIENT-002 Draft/HOLD source, experiments and qualification evidence. Read directly for explicit evidence review; canonical configuration and ownership answers belong to systems/ambient-living-inhabitants.md and operations/ambient-living-workbench.md."
+    },
+    {
+      "path": "research/ambient-002/perception-ledger.md",
+      "reason": "Dated AMBIENT-002 Draft/HOLD source, experiments and qualification evidence. Read directly for explicit evidence review; canonical configuration and ownership answers belong to systems/ambient-living-inhabitants.md and operations/ambient-living-workbench.md."
+    },
+    {
+      "path": "research/ambient-002/authoring-ledger.md",
+      "reason": "Dated AMBIENT-002 Draft/HOLD source, experiments and qualification evidence. Read directly for explicit evidence review; canonical configuration and ownership answers belong to systems/ambient-living-inhabitants.md and operations/ambient-living-workbench.md."
+    },
+    {
+      "path": "research/ambient-002/decision-packet.md",
+      "reason": "Dated AMBIENT-002 Draft/HOLD source, experiments and qualification evidence. Read directly for explicit evidence review; canonical configuration and ownership answers belong to systems/ambient-living-inhabitants.md and operations/ambient-living-workbench.md."
+    },
+    {
+      "path": "research/ambient-002/integration-ledger.md",
+      "reason": "Dated AMBIENT-002 Draft/HOLD source, experiments and qualification evidence. Read directly for explicit evidence review; canonical configuration and ownership answers belong to systems/ambient-living-inhabitants.md and operations/ambient-living-workbench.md."
+    },
+    {
+      "path": "research/ambient-002/independent-science-review.md",
+      "reason": "Dated independent AMBIENT-002 source, apparatus and preflight review; inspect directly for scientific evidence. It does not establish accepted-main behavior or complete platform/gameplay qualification."
+    },
+    {
+      "path": "research/ambient-002/recovery-negative-review.md",
+      "reason": "Dated independent review of canonical 83a3 physical obstacle oscillation and a copied-value reproduction. Read directly for the retained negative evidence and bounded correction proposal; it does not qualify a later recovery implementation."
+    },
+    {
+      "path": "research/ambient-002/curiosity-preregistration.md",
+      "reason": "Dated preregistration for a supplementary one-trait physical contrast. Read directly for experiment design and source scope; it is not accepted application behavior or a completed result."
+    },
+    {
+      "path": "research/ambient-002/curiosity-results.md",
+      "reason": "Dated six-episode curiosity-only physical contrast and retained novelty-grid limitation. Read directly for source-bound evidence; it does not establish universal personality effects or owner acceptance."
+    },
+    {
+      "path": "research/ambient-002/evidence/full83a3-independent/independent-review.md",
+      "reason": "Dated independent review of the retained AMBIENT-002 83a physical baseline. Read directly for original evidence; later application qualification is recorded separately."
+    },
+    {
+      "path": "research/ambient-002/evidence/native-thin-a725/README.md",
+      "reason": "Dated actual-native thin-patch perception probe, costs and incomplete-coverage counterexample. Read directly for experiment scope; it is not a production performance guarantee."
+    },
+    {
+      "path": "research/ambient-002/evidence/local-83a-complete/README.md",
+      "reason": "Reconstruction instructions for exact retained baseline evidence bytes. Read directly for evidence custody; it does not qualify the later application."
+    },
+    {
+      "path": "research/ambient-002/evidence/hosted-83a-independent/scientific-findings.md",
+      "reason": "Dated source-bound hosted baseline science and negative outcomes. Read directly for explicit comparative review; it is not the final application result."
+    },
+    {
+      "path": "research/ambient-002/evidence/hosted-a725-independent/scientific-findings.md",
+      "reason": "Dated final application physical science, paired ablations, elapsed costs and retained counterexamples. Read directly for evidence review; owner acceptance and hardware playfeel remain separate."
+    },
+    {
+      "path": "research/ambient-002/evidence/hosted-a725-complete/README.md",
+      "reason": "Reconstruction instructions and hashes for the exact complete final Linux evidence artifact. Read directly for durable raw-trace custody."
+    },
+    {
+      "path": "research/ambient-002/graphical-watch-review.md",
+      "reason": "Dated sustained native Workbench observation with separately identified observer and frozen application. Read directly for actual sampled graphics, behavior and presentation limits; it is not physical Windows/NVIDIA acceptance."
+    },
+    {
+      "path": "research/ambient-002/evidence/sustained-2eea3dbb/README.md",
+      "reason": "Restoration and source identities for the original a725/2ee sustained graphical observation, including the retained home-rest recharge mismatch. Read directly for dated evidence; later corrections have separate qualifications."
+    },
+    {
+      "path": "research/ambient-002/home-recharge-observation.md",
+      "reason": "Dated source-bound ordinary Workbench confirmation of selected-home-rest recharge, with original graphics and retained limits. Read directly for evidence; it is not physical Windows/NVIDIA acceptance."
+    },
+    {
+      "path": "research/ambient-002/evidence/hosted-50c6-independent/scientific-findings.md",
+      "reason": "Dated final50c6 source-bound physical programme, original evidence and comparison. Read directly for explicit scientific review; it does not establish owner hardware acceptance or change canonical runtime contracts."
+    },
+    {
+      "path": "research/ambient-002/evidence/hosted-50c6-independent/old-to-new-comparison.md",
+      "reason": "Dated final50c6 source-bound physical programme, original evidence and comparison. Read directly for explicit scientific review; it does not establish owner hardware acceptance or change canonical runtime contracts."
+    },
+    {
+      "path": "research/ambient-002/evidence/hosted-50c6-complete/README.md",
+      "reason": "Dated final50c6 source-bound physical programme, original evidence and comparison. Read directly for explicit scientific review; it does not establish owner hardware acceptance or change canonical runtime contracts."
     },
     {
       "path": "operations/gentek80-physical-owner-acceptance.md",

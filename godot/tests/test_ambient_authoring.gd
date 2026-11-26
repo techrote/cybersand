@@ -32,10 +32,11 @@ func run() -> void:
 		if int(material.id) > 0 and bool(material.valid): material_ids.append(int(material.id))
 	check(16 in material_ids and 3 in material_ids and 10 not in material_ids, "actual native Oil16 / Water3; unused10 excluded")
 	var presets := Profile.presets()
-	check(presets.size() == 6, "six complete independent personality profiles are readable")
+	check(presets.size() >= 16, "six preserved and at least ten living personality profiles are readable")
 	var expected_models := {"oil_moth":"runner", "shy_crawler":"crawler", "curious_surveyor":"monowheel",
 		"idle_mechanic":"monowheel", "drifting_flyer":"4ly_trainer", "social_roamer":"runner"}
 	for profile: Dictionary in presets:
+		if int(profile.version) != 1: continue
 		var before := JSON.stringify(profile)
 		check(Profile.validate(profile, material_ids).is_empty(), "native-catalogue profile validation: " + str(profile.id))
 		var caps := Actuator.capabilities(str(expected_models[profile.id]))
@@ -62,7 +63,7 @@ func run() -> void:
 		var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
 		policy = bridge.call(&"default_liquid_policy")
 	var total_actors := 0
-	for entry: Dictionary in Examples.entries():
+	for entry: Dictionary in Examples.legacy_entries():
 		var scene := Examples.make(str(entry.id), policy)
 		var error := Setup.validate(scene)
 		check(error.is_empty(), "ordinary authored example validates: " + str(entry.id) + " / " + error)
@@ -111,7 +112,7 @@ func run() -> void:
 				check(actor.control.ambient.seed is int and actor.control.ambient.version is int, "fresh-process authored profile integer canonicalization")
 				check(not actor.control.ambient.has("runtime") and not actor.control.ambient.has("rng_state"), "save contains no ephemeral runtime continuation")
 			DirAccess.remove_absolute(Setup._path(label))
-	print("AMBIENT_AUTHORING ", JSON.stringify({"checks":checks, "failures":failures, "presets":presets.size(), "examples":Examples.entries().size(), "actors":total_actors}))
+	print("AMBIENT_AUTHORING ", JSON.stringify({"checks":checks, "failures":failures, "presets":presets.size(), "examples":Examples.legacy_entries().size(), "actors":total_actors}))
 	quit(0 if failures.is_empty() else 1)
 
 

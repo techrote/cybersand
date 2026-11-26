@@ -11,6 +11,13 @@ last-reviewed: 2026-11-20
 
 # Data ownership and lifetimes
 
+The opt-in [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md)
+adds bounded per-actor ephemeral memory and copied peer caches to the same owner.
+World generation is observed independently of material-sensor activation; missing
+identity cannot grant remembered knowledge. Group controls prepare every adapter
+before cancellation and publish all configurations before notifying observers.
+Authored profiles and places persist; private memories, drives and goals do not.
+
 The opt-in [AMBIENT-001 actor controller](../systems/ambient-actors.md) adds no
 World or physics owner. One main-thread session cache copies existing native
 material-ID publications while preserving their epoch, generation, revision,
