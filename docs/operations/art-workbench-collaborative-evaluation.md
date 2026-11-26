@@ -21,8 +21,11 @@ real model's creativity, model availability or a fix on the owner's hardware.
 
 ## Open the portable evaluator
 
-Extract the entire **art-workbench-collaborative-002-windows.zip** to a writable
-folder, then double-click **Open Workbench.cmd**. Keep the supplied engine,
+For the recovered combined application, extract the entire
+**art-architecture-integration-windows.zip** to a writable folder, then
+double-click **Open Workbench.cmd**. The earlier frozen Art-only package remains
+**art-workbench-collaborative-002-windows.zip**; consult its original source and
+qualification identity. Keep the supplied engine,
 libraries, source, dependencies and notices together. Ordinary evaluation needs
 no compiler, Git, Python or model server.
 
@@ -234,6 +237,13 @@ Opening either panel sends no request, approves no task and writes no native
 cells. The ordinary Workbench starts with experimental Goblin and AMBIENT control
 off. The combined Windows campaign, when completed, establishes deterministic
 engineering qualification; it does not grant physical or genuine-model acceptance.
+
+This frozen candidate retains the accepted `67c1413a` Goblin001 audit writer,
+including its known buffered-write acknowledgement defect. The separate narrow
+Goblin repair is not part of this Art/Architecture source. Keep optional Goblin
+auditing off here; use the separately source-labelled corrected accepted-main
+evaluator for Goblin storage acceptance. The Art storage mechanisms and their
+own source-bound qualification remain separately identified.
 
 For a short offline evaluation, open **Architecture…**, choose **Intent and
 tasks**, describe a small structure and select a bounded region. **Inspect region
