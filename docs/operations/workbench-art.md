@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Direct drawing and configured provider use, native result handling, session lifetime and private traffic
 canonical-for: [workbench-art-user-guide]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [workbench-painting-and-history.md, workbench-saving.md, ../systems/workbench-art-providers.md, ../systems/workbench-direct-art-batches.md]
 ---
 
@@ -135,14 +135,16 @@ failures, rejection and missing acknowledgements are not success receipts.
 Each new Workbench session starts with an empty in-memory conversation. Hiding
 and reopening Art within that session keeps it; ending the session discards it.
 Provider/model/endpoint/control preferences can persist in
-`user://art-provider.cfg`. Previous conversations are not automatically restored.
+`user://art-provider.cfg`. Art saves the current profile when you change providers
+or send a request. To save it without a model call, switch to another provider,
+then switch back. Previous conversations are not automatically restored.
 
 The **ULTIMA candidate** verifies the complete closed preference file before
 replacing the previous configuration. If Art reports **Could not save Art
 preferences**, the old on-disk preferences remain; the controls can still show
-the changes made in this session. Restore write access or free space, adjust the
-preference again, and check that the save error clears. A changed control alone
-is not evidence that its preference was saved. If the error reports the 1 MiB
+the changes made in this session. Restore write access or free space, switch to
+another provider and back, and check that the save error clears. A changed
+control alone is not evidence that its preference was saved. If the error reports the 1 MiB
 file budget, shorten oversized saved guidance instead. The separately hardened,
 retained private receipt journal does not restore an old conversation or replay
 a completed drawing after restart.
