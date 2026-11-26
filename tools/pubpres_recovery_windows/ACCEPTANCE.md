@@ -4,7 +4,7 @@
 certify your Windows 11 NVIDIA device. The package does not promote or merge code.
 
 1. Extract into a new writable folder and open **Open Workbench.cmd**. Confirm
-   the printed source, official 4.7, Safe rendering and Full two-slot selection.
+   the printed source, exact selected engine, render ownership and Full two-slot selection.
    Check Water Lab's active readback and the launcher's recovery Water selection, not just a staged setting.
 2. Open **Open Wave 512.cmd**, press **P**, pilot the Needle and test **Follow
    selected** plus Free camera. Fly and paint for at least five minutes. Record

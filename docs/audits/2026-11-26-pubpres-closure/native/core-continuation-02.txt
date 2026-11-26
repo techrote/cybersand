@@ -1,0 +1,2 @@
+[pass] Active-core capacity counts distinct cores
+1 tests passed

@@ -150,6 +150,17 @@ var presentation_enabled := OS.get_environment("CYBERSAND_DIAG_PRESENTATION_OBSE
     text = replace_once(text, '"CYBERSAND_MATERIAL_PUBLICATION","CYBERSAND_DIAG_PHYSICS_PUBLICATION",', '"CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL","CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ","CYBERSAND_DIAG_PRESENTATION_OBSERVER","CYBERSAND_DIAG_FULL_IMAGE_SLOTS","CYBERSAND_MATERIAL_PUBLICATION","CYBERSAND_DIAG_PHYSICS_PUBLICATION",')
     text = replace_once(text, 'return {"requested":requested,',
                         'return {"requested":requested,\n\t\t"material_steps_api_present":host.has_method("material_step_status"),\n\t\t"material_steps":host.call("material_step_status") if host.has_method("material_step_status") else null,\n\t\t"material_deadline":host.call("material_deadline_status") if host.has_method("material_deadline_status") else null,')
+    # The recovered actual-task candidate adds only a pre-owner selector and
+    # immutable native readback. Keep these exact changes in the derivation;
+    # accepting an arbitrary observer diff would erase the original callbacks.
+    text = replace_once(text,
+                        '\t\t["CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE","cybersand/pubpres_wave_column_probe"]]:',
+                        '\t\t["CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE","cybersand/pubpres_wave_column_probe"],\n\t\t["CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER","cybersand/pubpres_task_completion_barrier"]]:')
+    text = replace_once(text,
+                        '\t\t"CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE"]:',
+                        '\t\t"CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE",\n\t\t"CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER"]:')
+    anchor = '\t\t"wave_column_probe":host.latest_snapshot.lab_context.get("wave_flow",{}).get("column_probe",null) if host.latest_snapshot != null else null,'
+    text = replace_once(text, anchor, anchor + '\n\t\t"task_completion":host.latest_snapshot.lab_context.get("wave_flow",{}).get("task_completion",null) if host.latest_snapshot != null else null,')
     text = replace_once(text, '\t_run.call_deferred()', '''\t_run.call_deferred()
 \tif presentation_enabled:
 \t\tRenderingServer.frame_pre_draw.connect(_presentation_pre_draw)
@@ -263,4 +274,4 @@ def verify_mixed_contract(root: Path) -> dict:
     return {"observer_base_sha256": BASE_OBSERVER_SHA256, "frozen_v3_sha256": FROZEN_V3_SHA256,
             "observer_sha256": hashlib.sha256(observer.read_bytes()).hexdigest(),
             "reducer_sha256": hashlib.sha256(reducer.read_bytes()).hexdigest(),
-            "scope": "Explicit eight-actor fixture and ownership cardinality, ordinary paint tape and additive material/control observations; original callback/native/terrain predicates retained."}
+            "scope": "Explicit eight-actor fixture and ownership cardinality, ordinary paint tape, pre-owner native task selector and additive material/control/native-mode observations; original callback/native/terrain predicates retained."}

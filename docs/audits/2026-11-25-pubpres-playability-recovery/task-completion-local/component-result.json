@@ -1,0 +1,34 @@
+{
+  "schema": "pubpres-task-pool-component-v1",
+  "base_source": "f2f9cab4b2fc650d0d5e034561b9dddabcf3b24f",
+  "implementation_scope": "Exact source files below were tested as a working delta before this checkpoint commit",
+  "sources_sha256": {
+    "native/src/persistent_worker_pool.hpp": "09b1a61c9a9e83bb2994ec24cb60c71353ea0c3035a21fbcf7d29115d97b6c36",
+    "native/tests/test_persistent_worker_pool.cpp": "9bd29e4208ac0e5160fec5f7a5bc69e72160bc13aa7fe4efac0e73702b739439"
+  },
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "normal": {
+    "checks": 495,
+    "failures": []
+  },
+  "address_undefined": {
+    "checks": 495,
+    "failures": [],
+    "environment": {
+      "ASAN_OPTIONS": "detect_leaks=0",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "leak_qualification": false
+  },
+  "thread_sanitizer": {
+    "checks": 495,
+    "failures": [],
+    "environment": {
+      "TSAN_OPTIONS": "halt_on_error=1"
+    }
+  },
+  "native_world_parity": "not yet executed",
+  "application_native": "not yet executed",
+  "performance_selection": "not established",
+  "review": "Lead and presentation specialist independently inspected claim/context/lifetime and delayed-worker adversaries; no source blocker, actual World parity mandatory"
+}

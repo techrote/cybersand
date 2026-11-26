@@ -1,0 +1,21 @@
+mkdir -p build
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_task_completion_world.cpp -o build/test_task_completion_world
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3254:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3254 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5575:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~

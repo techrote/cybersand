@@ -1,0 +1,93 @@
+{
+  "schema": "pubpres-independent-multipart-receipt-review-v1",
+  "original_application": "6472c00b31a02b38dfee4506eccf3256fe6b8dc2",
+  "original_tree": "7e21b15531a0ff56c2bb34b2e8ced884c95a28fa",
+  "summary_sha256": "c7ffb236481c313fefb8a5dd0d35e18ccce50ba43991231cd5200f383bb6869b",
+  "reader_sha256": "64006d62054f0be842083b5404c3da2bcf4fe488267d9e4d080115c2f72923f3",
+  "positive": [
+    {
+      "test": "test_workbench_presentation_history",
+      "checks": 17,
+      "admitted": true
+    },
+    {
+      "test": "test_workbench_presentation_member_history",
+      "checks": 23,
+      "admitted": true
+    },
+    {
+      "test": "test_workbench_member_presentation",
+      "checks": 574,
+      "admitted": true
+    }
+  ],
+  "adversaries": [
+    {
+      "case": "missing_member_click",
+      "rejected": true,
+      "reason": "Ordinary root/member mouse input or no-physical-credit inventory is incomplete"
+    },
+    {
+      "case": "duplicate_member_click",
+      "rejected": true,
+      "reason": "Ordinary root/member mouse input or no-physical-credit inventory is incomplete"
+    },
+    {
+      "case": "missing_observation",
+      "rejected": true,
+      "reason": "Multipart actual owner/member/physical history inventory is incomplete"
+    },
+    {
+      "case": "duplicate_observation",
+      "rejected": true,
+      "reason": "Multipart actual owner/member/physical history inventory is incomplete"
+    },
+    {
+      "case": "missing_foreign_owner_refusal",
+      "rejected": true,
+      "reason": "Multipart withheld, foreign or retired owner refusal is incomplete"
+    },
+    {
+      "case": "wrong_atomic_mode",
+      "rejected": true,
+      "reason": "Multipart engine, render owner, actual atomic mode or bounded selector differs"
+    },
+    {
+      "case": "wrong_bound",
+      "rejected": true,
+      "reason": "Multipart engine, render owner, actual atomic mode or bounded selector differs"
+    },
+    {
+      "case": "wrong_engine",
+      "rejected": true,
+      "reason": "Multipart engine, render owner, actual atomic mode or bounded selector differs"
+    },
+    {
+      "case": "wrong_render_owner",
+      "rejected": true,
+      "reason": "Multipart engine, render owner, actual atomic mode or bounded selector differs"
+    },
+    {
+      "case": "wrong_native",
+      "rejected": true,
+      "reason": "Multipart native or Rapier bytes differ"
+    },
+    {
+      "case": "wrong_framebuffer_hash",
+      "rejected": true,
+      "reason": "Actual body23 framebuffer show/hide/restore control differs"
+    },
+    {
+      "case": "wrong_check_count",
+      "rejected": true,
+      "reason": "Incomplete supplemental assertions: test_workbench_member_presentation"
+    },
+    {
+      "case": "fabricated_physical_credit",
+      "rejected": true,
+      "reason": "Ordinary root/member mouse input or no-physical-credit inventory is incomplete"
+    }
+  ],
+  "scope": "Independent raw evidence replay and corruption refusal only; no new graphical execution.",
+  "pass": true
+}

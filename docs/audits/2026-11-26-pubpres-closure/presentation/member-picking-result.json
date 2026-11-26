@@ -1,0 +1,66 @@
+{
+  "schema": "pubpres-member-picking-resulting-source-v1",
+  "disposition": "LINUX_STOCK_SAFE_COMPONENT_QUALIFIED",
+  "before": {
+    "source": "7854af9ff4fb3a45a9df4414c4dde8d467aa1e23",
+    "checks": 574,
+    "failures": [
+      "initialized refuses click through withheld_member instead of the static whole-actor bounds",
+      "initialized refuses click through foreign_member_generation instead of the static whole-actor bounds",
+      "completed refuses click through withheld_member instead of the static whole-actor bounds",
+      "completed refuses click through foreign_member_generation instead of the static whole-actor bounds",
+      "replacement refuses click through withheld_member instead of the static whole-actor bounds",
+      "replacement refuses click through foreign_member_generation instead of the static whole-actor bounds"
+    ]
+  },
+  "after": {
+    "source": "6472c00b31a02b38dfee4506eccf3256fe6b8dc2",
+    "checks": 574,
+    "failures": []
+  },
+  "physical_observations": 72,
+  "picking_inventory": {
+    "ordinary_mouse_click": 12,
+    "withheld_root": 2,
+    "wrong_member_generation": 2,
+    "individual_member_mouse_click": 72,
+    "withheld_member": 3,
+    "foreign_member_generation": 3,
+    "retired_owner": 1
+  },
+  "framebuffer": {
+    "body_slot": 23,
+    "hidden": [
+      0.0313720703125,
+      0.043121337890625,
+      0.070556640625,
+      1.0
+    ],
+    "pixel": [
+      640,
+      409
+    ],
+    "png_sha256": "c3fd18baef7d623f24e6936f791ab9101288f8a0e37facd8c3ba5f67a50ec91e",
+    "restored": [
+      0.7841796875,
+      0.52734375,
+      0.30859375,
+      1.0
+    ],
+    "shown": [
+      0.7841796875,
+      0.52734375,
+      0.30859375,
+      1.0
+    ]
+  },
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "remaining": [
+    "Exact integrated final source and chosen custom-engine replay",
+    "Windows graphical replay",
+    "Ordinary sustained gameplay and physical owner acceptance"
+  ],
+  "scope": "Same stock4.7 native-compatible Linux development host; actual source-bound graphical input and pixels. No comparative timing, GPU completion, compositor or physical scanout claims."
+}

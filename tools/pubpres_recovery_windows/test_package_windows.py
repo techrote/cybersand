@@ -55,7 +55,8 @@ class FinalPackageTests(unittest.TestCase):
             'source_tree':self.record['sources']['C']['source_tree'],'selection':configured,
             'engine_sha256':self.record['engine']['gui']['sha256'],
             'native_sha256':self.record['sources']['C']['native']['sha256'],'physical_acceptance':'HOLD',
-            'stock':{'outcomes':19,'raw_inputs_and_supplemental_replayed':True},'water':None}))
+            'stock':{'outcomes':19,'raw_inputs_and_supplemental_replayed':True},'water':None,
+            'members':{'outcomes':4,'raw_inputs_and_supplemental_replayed':True}}))
         for name in ("Start-PUBPRES-Final.ps1", "owner_start.gd", "Collect-Results.ps1", "ACCEPTANCE.md"):
             fixtures.put(self.root, package.TOOLS + "/" + name, "synthetic source-only " + name + "\n")
         fixtures.put(self.root, "ACCEPTANCE.md", (self.root / package.TOOLS / "ACCEPTANCE.md").read_bytes())

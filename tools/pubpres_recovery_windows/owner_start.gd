@@ -14,6 +14,11 @@ var ready_frames := 0
 
 
 func _initialize() -> void:
+	if OS.get_environment("CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER") != "0":
+		push_error("PUBPRES owner package has no selected task-completion treatment")
+		quit(2)
+		return
+	ProjectSettings.set_setting("cybersand/pubpres_task_completion_barrier",false)
 	scene_name = OS.get_environment("CYBERSAND_FINAL_SCENE")
 	if scene_name not in ["ordinary","wave512","wave1024","wave2048","mixed2048"]:
 		push_error("PUBPRES unknown owner scene")
@@ -75,6 +80,12 @@ func _poll() -> void:
 		or app._actor_reset_receipt != 0): return
 	ready_frames += 1
 	if ready_frames < 2: return
+	if OS.get_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION") == "1":
+		var submitted: Dictionary = app.workbench_presentation_submission_status()
+		if not bool(submitted.get("enabled",false)) or not bool(submitted.get("engine_atomic_admission",false)) \
+			or int(submitted.get("committed_count",0)) <= 0 \
+			or int(app.workbench_presentation_frame.get("world_generation",-1)) != app.last_uploaded_world_generation:
+			return
 	var scene_material_witness: Dictionary = {}
 	if scene_name == "mixed2048":
 		# Read the already accepted Main CPU image produced by the native owner.
@@ -143,10 +154,14 @@ func _recovery_readback() -> Dictionary:
 		"water_enabled":bool(app.call("_workbench_water_composition_enabled")) if water_available else false,
 		"actual_submission_requested":OS.get_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION"),
 		"actual_submission_enabled":bool(submission.get("enabled",false)),
+		"submission":submission.duplicate(true),
+		"engine_capability":RenderingServer.get_meta(&"cybersand_actual_submission_v2",{}),
 		"render_lookahead_requested":OS.get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD"),
 		"material_step_interval_requested":OS.get_environment("CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL"),
 		"sample_idle_requested":OS.get_environment("CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE"),
 		"sample_idle_enabled":bool(idle.get("enabled",false)),
+		"task_completion_requested":OS.get_environment("CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER"),
+		"task_completion":app.latest_snapshot.lab_context.get("wave_flow",{}).get("task_completion",{}).duplicate(true),
 		"scope":"Observed effective application policy after native startup, not physical performance or display acceptance."}
 
 

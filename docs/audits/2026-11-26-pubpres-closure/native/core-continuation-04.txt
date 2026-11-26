@@ -1,0 +1,2 @@
+[pass] Hard-surface invalidation is independent and tile exact
+1 tests passed

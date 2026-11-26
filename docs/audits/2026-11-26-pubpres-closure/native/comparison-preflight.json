@@ -1,0 +1,179 @@
+{
+  "schema": "pubpres-native-comparison-preflight-v1",
+  "source": {
+    "root": "/workspace/scratch/9cef565acfec/native-comparison-b695",
+    "source_commit": "b6956cd94382218a270ad85df7bc84f30a66776f",
+    "source_tree": "bf514d096c33ed6f69361641c4c95785edc38543",
+    "working_tree_changes": [],
+    "untracked_source_files": [],
+    "qualified_exact_head": true
+  },
+  "driver": {
+    "source_commit": "b6956cd94382218a270ad85df7bc84f30a66776f",
+    "source_tree": "bf514d096c33ed6f69361641c4c95785edc38543",
+    "files_sha256": {
+      "godot/tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+      "godot/tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+      "godot/tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18",
+      "tools/pubpres003/audit_traces.py": "1e9d8fc361a2dcc9ffcf206ed51cb41783988b6aac6396da9afb6826eebf7f8b",
+      "tools/pubpres003/causal_trace.py": "ebd370d4c7132d8160791e1ef84a98e107d7527d5fd6977bc06adda651084470",
+      "tools/pubpres003/native_probe.py": "e9216a7351a4f27a6ff62f2be09716255fc4f1e48266812153da758e4301a261",
+      "tools/pubpres003/pubpres_causal_gameplay.gd": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e",
+      "tools/pubpres003/run_focus.py": "ce187d83fc761b457573412b5b330baebb302cdb47b988ed089c996b3a112fca",
+      "tools/pubpres003/test_audit_traces.py": "2dd81095126378681e3ea3bef664d0345214fa4eec84ebdc65a1bc5bc1a1c54f",
+      "tools/pubpres003/test_causal_trace.py": "c47064ddc5282afd9ed1bdd350a6bd9bba24f350a22bed8508efb7bd52350bd8",
+      "tools/pubpres003/test_completion_trace.py": "f265d57e673e79da77f9564439a6f2eb07e9d20531f6cc8833194d070ed6c501",
+      "tools/pubpres_playability/campaign.json": "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef",
+      "tools/pubpres_playability/results.py": "3cc39c23157a4daa091aadd91b003c6694135e2fd4547933c73755760a0bb91c",
+      "tools/pubpres_playability/results_same_frame.py": "896126129f035e4ed39f776d6514f562ff0e6815d6ba1132d8f2a685982a3be2",
+      "tools/pubpres_playability/run_campaign.py": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+      "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+      "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+      "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
+      "tools/pubpres_completion/run_source_abba.py": "61bc275af02c52372182f1bf40523c2deaa9b8d19e6a87db9531519bfad19d55",
+      "tools/pubpres_final/causal_completion_contract.py": "ffa71febfba4066694a7b694ec9ac4cc5c0c9ac90ff68752dc38c1708a33af1d",
+      "tools/pubpres_final/causal_completion_registration.json": "3379642aafbb59bb60f4a2b1b23a2093c38fb916acb988c1f42dfe6693e7814a",
+      "tools/pubpres_final/causal_intervals.py": "2e30b18ae7370f7e41f6515bc13d34f30716e1a0c64d99de71b7711764a86246",
+      "tools/pubpres_final/deadline_contract.py": "d5b46c4173bdf8d075a7557a4f98cee3d1a2a2532dfeecc5cfaf5d46b291eb69",
+      "tools/pubpres_final/deadline_registration.json": "6cbaa4399c71c8b3edd26667258c277098e392ad0347dfe11a51d5662fa0ff16",
+      "tools/pubpres_final/font_renderer_registration.json": "6c6dc1ad3d4afc402ccd407d18654c652a6607e7c2c13f2d4bb8a056115a65d8",
+      "tools/pubpres_final/identity_domains.py": "95817383d25b8eda6f2709031a93571b1a9e0a57ac61660046aa7af57a395207",
+      "tools/pubpres_final/independent_reduction.py": "57bed41ffd3b382c1d4d3154b0d51d87e4aa4583d07a2a5437d6487056076024",
+      "tools/pubpres_final/material_deadline_oracle.py": "03483ba03ce2ee8eaa950a704b12cfcb7598856d6d2a61c2672ee76c5456e68c",
+      "tools/pubpres_final/material_steps_contract.py": "2632c5e32a51100c495f752c62ab422468dfa7066a5c522107ae6c1e4e8e749f",
+      "tools/pubpres_final/material_steps_oracle.py": "bf5dc8095d785a9cd2628d34a56b2c603cbaa7b2b77ca10c54f4fa838f9d750f",
+      "tools/pubpres_final/material_steps_registration.json": "b058e8410ed5c2e6572d06efd84a00ce148a97933e5663895c64366f7888f242",
+      "tools/pubpres_final/material_steps_status.py": "cba875c94f68fcb1943938a313cce418d8f4fca442ebf68e816e82c4a5b31698",
+      "tools/pubpres_final/metrics.py": "4df9ec66b7aa6329ef3b74504cc4b76b9c7dce85875f505e8db360971708acf2",
+      "tools/pubpres_final/mixed_contract.py": "93c298748ec5e915d8ab6b773c2c340783a3feb20a090c3a99e9b4646cee8482",
+      "tools/pubpres_final/mixed_oracles.py": "f29b5d29cbfaeac182ced356478921eec48a356274a5154945dc3a353ae7b84d",
+      "tools/pubpres_final/mixed_registration.json": "a292a77508eebfb4f1c16704916a527f6c52f9e93e4a23648b834c5728c278ea",
+      "tools/pubpres_final/native_abba.py": "c1cca2c9c91e3123801a7804e8abc71e1cd603d412a890bc4dd0e256ba4c2263",
+      "tools/pubpres_final/native_empty_derived.py": "214df3f9b8d0f7ef1d1ee4965b9277e86a303d323c0ac5c2f6628a187d215d69",
+      "tools/pubpres_final/native_mask_applicability.py": "6cacc361579f874af5e786c33ab144db657ac4a56e5a8bc9594e90007b10df8d",
+      "tools/pubpres_final/observer_registration.json": "4a06c92023039e97ae4c455338cf8ea2ab14622d48719a3f08fa5b9b719ca9de",
+      "tools/pubpres_final/observer_support.py": "7cc9e10bf962833ef87dc6bc4f1927e57fde98e9de25c2781cd7b03d9255d8cd",
+      "tools/pubpres_final/prepare_windows_dependencies.ps1": "9d424f6347601087f32840099cbf60cb58a9c809ebd3fdcd1ce93415f7f86d2c",
+      "tools/pubpres_final/progression_scope.json": "db8c075bc74722520e49726d107b92de12afd6be1db00b7fd2819ed779d9b437",
+      "tools/pubpres_final/pubpres_final_deadline_gameplay.gd": "0facd5edcba0950c44ef7fca3c4604f0768332339a8dd2eb418067bacccc47d5",
+      "tools/pubpres_final/pubpres_final_font_gameplay.gd": "e2484f49c3433a15f46892f15207b49e1449ce3269561dcb652deee4f40a17a3",
+      "tools/pubpres_final/pubpres_final_gameplay.gd": "8588130f302d944690057572707f0677fc9b0aa130cca51022f9fcdeffadea9f",
+      "tools/pubpres_final/pubpres_final_material_steps_gameplay.gd": "5225dc25b7f191e5e4122400ae8d28e9c24e638dace91b869778bd782d0fa4b7",
+      "tools/pubpres_final/pubpres_final_mixed_gameplay.gd": "315e66bd937dd79dd21038f6f980246842559db5943fc517403f58e615675c7c",
+      "tools/pubpres_final/qualification_oracles.py": "67e28d16fe39862360282d540fdc26a4d936fc2fb4ad73012dbe9dce6f1a7ad4",
+      "tools/pubpres_final/registration.json": "28baf9d65353045dc0fa87dcdb09096bda0bf554e0862423175d7254c451e311",
+      "tools/pubpres_final/renderer_contract.py": "b4ca65bd8d0bc5b5f264b8e857d9d7b32473d5603fe68501786a54cdb8cc130a",
+      "tools/pubpres_final/renderer_registration.json": "5682d7cc2638ccddd24ea11471593794d60f83856189eb4db8c80ac9b88a287d",
+      "tools/pubpres_final/replay_extent_check.py": "417cc2c685ed8f66d0c78cc446650db6fbb2ca005bc0f342745b609145d474dc",
+      "tools/pubpres_final/request.py": "695f7a0ae02ecd6ed496d1df5404baa0e213ddf0590e66897dbfbdd90868ad78",
+      "tools/pubpres_final/results_registered_mixed.py": "bd1bcc6cfe560308f8d6464e4cd912b6bbd2cc235f855ca8c12f233df821b427",
+      "tools/pubpres_final/results_registered_renderer.py": "85d3706be03317959aea715ca6cee74a88a02bd4d24e798d8521c7d3c480a1b2",
+      "tools/pubpres_final/retired_experiments.json": "3f130ae326c2114af62f7d109510d1b5092d791e532d8f8e3d9e53b0273e6ddc",
+      "tools/pubpres_final/run_causal_comparison.py": "e469ef4cf3f17b2c2d4a19c4a1beef8ed3d1b77d1214a56ef0909a4d3727f9bd",
+      "tools/pubpres_final/run_comparison.py": "74c116a849dae2d7718ec69de76564604e92405d98c9f816eabfd98f252698b7",
+      "tools/pubpres_final/run_deadline_comparison.py": "8acca2c48ed85e2d4954a041dd84e56e95f668b7cc6041480bf2feb476e1e680",
+      "tools/pubpres_final/run_font_renderer_comparison.py": "de1fd27a2ed5fb2deff34cbc4592c1a34526aa33391b48e739918afc0feebf90",
+      "tools/pubpres_final/run_hosted.py": "a4fe85dff258a9211ad8652ddc8824d37fe0f67036a3f003d80739560d3eb741",
+      "tools/pubpres_final/run_material_steps_comparison.py": "63779339800d5e074eddc8e860d8c7530cffaf65f0a02539dec371fdc23d74a9",
+      "tools/pubpres_final/run_mixed_qualification.py": "5db5c6c2df0ecc657b327f6253021a9f0e1db9962013b87a91a83b4e9be2e09b",
+      "tools/pubpres_final/run_native_mask_applicability.py": "95658a63e66d02f292cbcf34357174d04664c220a1deaa28969630d97e3750a4",
+      "tools/pubpres_final/run_qualification.py": "c7b41ba074c03afe2d2cb17ccc62d2884d485d09753ced0fc3975f4918217d69",
+      "tools/pubpres_final/run_renderer_comparison.py": "c0784a654d236c114a943740326010f54be8f68f864292cada6c39429d5df599",
+      "tools/pubpres_final/runtime_replay.py": "bc910288c80813c14524a727e49a65ed98b404918b95830c4b2af95a172941ef",
+      "tools/pubpres_final/test_causal_completion_contract.py": "04ac7e08c099c2fce29d90377eba27858b44b0a7fda914657857f67af232864c",
+      "tools/pubpres_final/test_causal_intervals.py": "e0eea4daba77602d434b192217f2ef224e358b330b8c1a8c48e698f717d2d7ce",
+      "tools/pubpres_final/test_contract.py": "3d6985ae7e2f0dd2a279dbaeb5a3215df02d6db97149c7edfd89cadd5d51aef2",
+      "tools/pubpres_final/test_deadline_baseline.py": "931891c75cc9223a30c63792d919050f3978427a787873d69a99599e5e3124cd",
+      "tools/pubpres_final/test_deadline_contract.py": "43c135cac9bbf07626a66e52a1018c28b1313bffcc8c675d361ebfd04f508aee",
+      "tools/pubpres_final/test_font_renderer_contract.py": "13dfcfef6b0022167552ff9a5e9b1db290187725f3ad62adb0ba9ac9be665458",
+      "tools/pubpres_final/test_material_deadline_oracle.py": "3cce6c79f4959e026982fd9a1f4f7a92f684b19bca59416d753227630cca034f",
+      "tools/pubpres_final/test_material_steps_contract.py": "d122fddab8703702572cea9e689d5013ec5da53668b00f2f0bd4d35124e44c80",
+      "tools/pubpres_final/test_material_steps_oracle.py": "65902c2003259200cf2cc49145a98d868a5c16056294d4a086a5f1c086d412b1",
+      "tools/pubpres_final/test_mixed_contract.py": "436092a28c5a2d2bec1b99577be0effec07f3ffc93595e72495d206904100162",
+      "tools/pubpres_final/test_native_empty_derived.py": "79edfe173a16107783406ab00db3d40c8a8ef6a25661e14b2bcc81bd9c7d6e2b",
+      "tools/pubpres_final/test_native_mask_applicability.py": "34d55d0b254ca0821d49473ef22c50aaeccb47910f0a94d1d26c2b280eace0ee",
+      "tools/pubpres_final/test_observer_integration.py": "2e3034bb540c14a8d76b48a205662dbed7f1f02101838b9f7f209b6a548c2062",
+      "tools/pubpres_final/test_qualification_oracles.py": "e9180e3f22605898a956dbe7f0de39e08e98f67ab7fb17e1e66b06b8c7e48706",
+      "tools/pubpres_final/test_renderer_contract.py": "f0be0276b3b18b20f1297edf2ccfb882b5c63de3a0f66056f990ce5fd0127777",
+      "tools/pubpres_final/test_runtime_replay.py": "da0cb4d59a1faa613dd50da8125af06f2503e58d7517adf9662ad1b97229db95",
+      "tools/pubpres_final/test_sample_idle_contract.py": "8a6860df3220d8941b9d458e91b55c79959d49ef2591f5a23cfe3230a6b55261",
+      "tools/pubpres_final/test_task_completion_contract.py": "d7ecd1ae9b97787495d5fb3fe03b138c0656081d24670c5356aedcd516591d84",
+      "tools/pubpres_final_observers/bundle.py": "9670be3961a2a760e2954e858ed7770849b7aeeeee35d87ceaa8413c3c8ae106",
+      "tools/pubpres_final_observers/execute_with_resources.py": "dfea9ee2b1bb1e91634ef6299b47129c88d8e859f0d7058fd95ee168f22123cb",
+      "tools/pubpres_final_observers/execution_contract.py": "f15e6bf9a298b589161ae3e804c59bbf5009239d56c30600e5f21a5347a64989",
+      "tools/pubpres_final_observers/presentation_metrics.py": "39127c13209b5cb41322e13ec73aeae49d2799032973c8e5d13ea3cd48a75733",
+      "tools/pubpres_final_observers/presentation_probe.gd": "49d116cb2465bc7cff090eb3c80c2d26bc30ac88e33a8f06b6739ddfcad881b8",
+      "tools/pubpres_final_observers/resource_sampler.py": "a1e56c7b2b5c9012b4be995f58dece8adf336fac1122d327577aa2578d67fe59",
+      "tools/pubpres_final_observers/test_observers.py": "dd2982e801a5d093861730400431b58578773798cecb102df2f7c68b3a1080cf",
+      "tools/pubpres_final_recovery/retained_runtime.py": "93b0bc57eec98c51d447214b666b0959a0c39c39360c86aa72310f1f5fd1bc7c"
+    },
+    "scope": "Actual committed measurement code and frozen imported oracle/runner/build-driver closure; distinct from tested application source.",
+    "supplementary_observer_bundle": {
+      "schema": "pubpres-final-observer-bundle-v1",
+      "files_sha256": {
+        "tools/pubpres_final_observers/bundle.py": "9670be3961a2a760e2954e858ed7770849b7aeeeee35d87ceaa8413c3c8ae106",
+        "tools/pubpres_final_observers/execute_with_resources.py": "dfea9ee2b1bb1e91634ef6299b47129c88d8e859f0d7058fd95ee168f22123cb",
+        "tools/pubpres_final_observers/execution_contract.py": "f15e6bf9a298b589161ae3e804c59bbf5009239d56c30600e5f21a5347a64989",
+        "tools/pubpres_final_observers/presentation_metrics.py": "39127c13209b5cb41322e13ec73aeae49d2799032973c8e5d13ea3cd48a75733",
+        "tools/pubpres_final_observers/presentation_probe.gd": "49d116cb2465bc7cff090eb3c80c2d26bc30ac88e33a8f06b6739ddfcad881b8",
+        "tools/pubpres_final_observers/resource_sampler.py": "a1e56c7b2b5c9012b4be995f58dece8adf336fac1122d327577aa2578d67fe59",
+        "tools/pubpres_final_observers/test_observers.py": "dd2982e801a5d093861730400431b58578773798cecb102df2f7c68b3a1080cf"
+      },
+      "execution_derivation": {
+        "frozen_runner_sha256": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+        "runner_sha256": "dfea9ee2b1bb1e91634ef6299b47129c88d8e859f0d7058fd95ee168f22123cb",
+        "scope": "Only additive same-iteration CPU reads and a bounded sidecar; all frozen process ownership and completion gates remain exact."
+      },
+      "scope": "Explicit supplementary Main presentation and whole-process CPU observations; frozen physical gates and production defaults unchanged."
+    }
+  },
+  "cases": [
+    "wave_512_follow",
+    "wave_gameplay_2048_follow"
+  ],
+  "fixtures": {
+    "wave_512_follow": {
+      "extent": [
+        512,
+        512
+      ],
+      "kind": "authored_setup_v2",
+      "water_invariant": "Closed Water/Steel basin; exact native ledger and unchanged total. Authored recipe is bound by the frozen overlay hash."
+    },
+    "wave_gameplay_2048_follow": {
+      "extent": [
+        2048,
+        2048
+      ],
+      "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+      "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+      "receipts": 256,
+      "water_invariant": "Reacting owner fixture (Water3, Lava8, Acid12): healthy ledger, visible+overfill+ballistic=total=expected baseline+produced-consumed; record quantities by native tick. Global initial=final Water is not a valid invariant."
+    }
+  },
+  "order": [
+    {
+      "role": "C",
+      "slots": 2,
+      "task_completion": false
+    },
+    {
+      "role": "C",
+      "slots": 2,
+      "task_completion": true
+    },
+    {
+      "role": "C",
+      "slots": 2,
+      "task_completion": true
+    },
+    {
+      "role": "C",
+      "slots": 2,
+      "task_completion": false
+    }
+  ],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "scope": "Source/driver/frozen fixture/engine/Rapier admission only; no performance executed or inferred."
+}

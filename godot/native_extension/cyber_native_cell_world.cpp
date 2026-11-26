@@ -318,6 +318,11 @@ void CyberNativeCellWorld::create_world() {
         if (column_probe.get_type() != Variant::BOOL)
             throw std::invalid_argument("PUBPRES Wave column probe setting must be boolean");
         pubpres_wave_column_probe_ = static_cast<bool>(column_probe);
+        const Variant task_completion = ProjectSettings::get_singleton()->get_setting(
+            "cybersand/pubpres_task_completion_barrier", false);
+        if (task_completion.get_type() != Variant::BOOL)
+            throw std::invalid_argument("PUBPRES task completion barrier setting must be boolean");
+        pubpres_task_completion_barrier_ = static_cast<bool>(task_completion);
         const auto processors = std::max(1U, std::thread::hardware_concurrency());
         const auto automatic_threads = static_cast<std::uint32_t>(auto_worker_threads(processors));
         const auto requested_threads = static_cast<std::int64_t>(
@@ -332,6 +337,7 @@ void CyberNativeCellWorld::create_world() {
 #endif
         cybersand::WorldConfig config{};
         config.worker_threads = worker_threads_;
+        config.pubpres_task_completion_barrier = pubpres_task_completion_barrier_;
         config.backend = cybersand::SimulationBackend::PhasedInPlace;
         config.initial_chunk_reserve = 64;
         config.maximum_chunk_count = 128;
@@ -1966,6 +1972,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
         cybersand::WorldConfig config;
+        config.pubpres_task_completion_barrier = pubpres_task_completion_barrier_;
         const auto extent_value = options.get("extent", Vector2i{kWorldWidth, kWorldHeight});
         if (extent_value.get_type() != Variant::VECTOR2I)
             throw std::invalid_argument("diagnostic extent must be Vector2i");
@@ -2549,6 +2556,7 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
                                      static_cast<int>(config.interaction_policy.side_support_cells), ":",
                                      config.interaction_policy.mercury_exchange_period));
     add("workers", concat(config.worker_threads));
+    if (config.pubpres_task_completion_barrier) add("task_completion_barrier", "actual_tasks_v1");
     add("backend", concat(static_cast<int>(config.backend)));
     add("scheduler", concat(config.chunk_size, ":", config.activity_block_size, ":", config.scheduling_core_size, ":",
                             config.maximum_rule_radius, ":", config.sleep_after_quiet_ticks));
@@ -2723,6 +2731,13 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
     }
     out["workers_requested"] = static_cast<std::int64_t>(config.worker_threads);
     out["workers_observed"] = static_cast<std::int64_t>(last_stats_.worker_threads_observed);
+    const auto pool = world_->worker_pool_diagnostics();
+    Dictionary completion;
+    completion["schema"] = "PUBPRES-TASK-COMPLETION-V1";
+    completion["mode"] = pool.task_completion_barrier ? "actual_tasks" : "all_workers";
+    completion["completed_dispatches"] = static_cast<std::int64_t>(pool.completed_dispatches);
+    completion["completed_tasks"] = static_cast<std::int64_t>(pool.completed_tasks);
+    out["task_completion"] = completion;
     out["maximum_participants"] = static_cast<std::int64_t>(wave.maximum_participants);
     out["ticks"] = static_cast<std::int64_t>(wave.ticks);
     out["rounds"] = static_cast<std::int64_t>(wave.rounds);

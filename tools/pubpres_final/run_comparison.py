@@ -42,9 +42,12 @@ sys.path.insert(0, str(ROOT / "tools/pubpres_final_recovery"))
 from retained_runtime import validate_runtime
 
 OBSERVER = "tests/pubpres_final_gameplay.gd"
-MODES = ("source-abba", "slots-abba", "observer-abba", "sample-idle-abba", "single")
+MODES = ("source-abba", "slots-abba", "observer-abba", "sample-idle-abba", "task-completion-abba", "single")
 SAMPLE_IDLE_SELECTOR = "CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE"
 SAMPLE_IDLE_REGISTRATION = ROOT / "tools/pubpres_recovery/sample_idle_registration.json"
+TASK_COMPLETION_SELECTOR = "CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER"
+TASK_COMPLETION_REGISTRATION = ROOT / "tools/pubpres_recovery/task_completion_registration.json"
+TASK_COMPLETION_AMENDMENT = ROOT / "tools/pubpres_recovery/task_completion_registration_amendment.json"
 
 
 def driver_identity() -> dict:
@@ -82,7 +85,31 @@ def comparison_plan(mode: str, slots: int) -> list[dict]:
     if mode == "sample-idle-abba":
         need(slots == 2, "Sample idle comparison must retain two Full slots")
         return [{"role": "C", "slots": 2, "sample_idle": value} for value in (False, True, True, False)]
+    if mode == "task-completion-abba":
+        need(slots == 2, "Task completion comparison must retain two Full slots")
+        return [{"role": "C", "slots": 2, "task_completion": value} for value in (False, True, True, False)]
     return [{"role": "C", "slots": slots}]
+
+
+def comparison_role(mode: str, index: int, source_role: str) -> str:
+    """Keep actual source identity separate from same-source ABBA treatment."""
+    if mode in ("slots-abba", "observer-abba", "sample-idle-abba", "task-completion-abba"):
+        need(index in range(4), "Same-source ABBA arm index is outside the registration")
+        return "D" if index in (0, 3) else "C"
+    return source_role
+
+
+def task_completion_cases(registration: dict, amendment: dict) -> list[str]:
+    """Apply only the preregistered typo correction, retaining original bytes."""
+    need(amendment.get("schema") == "pubpres-task-completion-registration-amendment-v1"
+         and amendment.get("original_registration_sha256") == digest(TASK_COMPLETION_REGISTRATION)
+         and amendment.get("workload_identifiers") == {"wave512_follow": "wave_512_follow"},
+         "Task completion workload amendment differs")
+    need(registration.get("schema") == "pubpres-recovery-task-completion-v1"
+         and registration["comparison"]["workloads"] == ["wave512_follow", "wave_gameplay_2048_follow"],
+         "Original task completion workload registration differs")
+    return [amendment["workload_identifiers"].get(name, name)
+            for name in registration["comparison"]["workloads"]]
 
 
 def validate_sample_idle(data: dict, expected: bool) -> dict:
@@ -112,6 +139,31 @@ def validate_sample_idle(data: dict, expected: bool) -> dict:
              "Sample idle control unexpectedly exercised treatment")
     return {"enabled": expected, "capture_waits": values[1]["waits"]-values[0]["waits"],
             "capture_wait_usec": values[1]["wait_usec"]-values[0]["wait_usec"], "physical_credit": 0}
+
+
+def validate_task_completion(data: dict, expected: bool) -> dict:
+    """Require the selected actual native pool, never just a requested flag."""
+    need(type(expected) is bool, "Task completion selector must be explicit")
+    values = []
+    for phase in ("selectors_before", "selectors_after"):
+        selected = data[phase]
+        need(selected["requested"].get(TASK_COMPLETION_SELECTOR) == ("1" if expected else "0"),
+             "Task completion requested selector changed")
+        value = selected.get("task_completion")
+        need(isinstance(value, dict) and value.get("schema") == "PUBPRES-TASK-COMPLETION-V1"
+             and value.get("mode") == ("actual_tasks" if expected else "all_workers"),
+             "Actual native task completion policy is absent or differs")
+        need(all(type(value.get(key)) is int and value[key] >= 0
+                 for key in ("completed_dispatches", "completed_tasks"))
+             and value["completed_tasks"] >= value["completed_dispatches"],
+             "Invalid actual native task/dispatch count")
+        values.append(value)
+    differences = {key: values[1][key]-values[0][key] for key in ("completed_dispatches", "completed_tasks")}
+    need(all(value > 0 for value in differences.values()),
+         "Selected native task completion path did not execute during capture")
+    need(differences["completed_tasks"] >= differences["completed_dispatches"],
+         "Native pool reports completed dispatches without their actual tasks")
+    return {"enabled": expected, "mode": values[1]["mode"], **differences}
 
 
 def validate_registered_sources(sources: dict, driver: dict, registration: dict, mode: str):
@@ -218,6 +270,8 @@ def validate_final_cohort(arms: list[dict], mode: str, plan: list[dict]) -> dict
              "Final cohort supplementary observer treatment differs")
         if mode == "sample-idle-abba":
             need(arm["sample_idle"]["enabled"] is treatment["sample_idle"], "Sample idle order differs")
+        if mode == "task-completion-abba":
+            need(arm["task_completion"]["enabled"] is treatment["task_completion"], "Task completion order differs")
     return parity
 
 
@@ -247,6 +301,8 @@ def main() -> int:
     need(registration["schema"] == "pubpres-playability-final-registration-v1", "Unknown final registration")
     plan = comparison_plan(args.mode, args.slots)
     sample_idle_registration = None
+    task_completion_registration = None
+    task_completion_amendment = None
     if args.mode == "sample-idle-abba":
         sample_idle_registration = json.loads(SAMPLE_IDLE_REGISTRATION.read_bytes())
         committed = subprocess.check_output(["git", "-C", str(ROOT), "show",
@@ -256,6 +312,19 @@ def main() -> int:
              and sample_idle_registration["order"] == ["0", "1", "1", "0"]
              and set(args.case) <= set(sample_idle_registration["primary_cases"])
              and args.presentation_observer, "Sample idle comparison requires registered primaries and pose observer")
+    if args.mode == "task-completion-abba":
+        task_completion_registration = json.loads(TASK_COMPLETION_REGISTRATION.read_bytes())
+        committed = subprocess.check_output(["git", "-C", str(ROOT), "show",
+                                            "HEAD:tools/pubpres_recovery/task_completion_registration.json"])
+        need(committed == TASK_COMPLETION_REGISTRATION.read_bytes(), "Uncommitted task completion registration")
+        task_completion_amendment = json.loads(TASK_COMPLETION_AMENDMENT.read_bytes())
+        amendment_committed = subprocess.check_output(["git", "-C", str(ROOT), "show",
+                                            "HEAD:tools/pubpres_recovery/task_completion_registration_amendment.json"])
+        need(amendment_committed == TASK_COMPLETION_AMENDMENT.read_bytes(), "Uncommitted task completion workload amendment")
+        need(task_completion_registration["schema"] == "pubpres-recovery-task-completion-v1"
+             and task_completion_registration["comparison"]["order"] == [0, 1, 1, 0]
+             and set(args.case) <= set(task_completion_cases(task_completion_registration, task_completion_amendment))
+             and args.presentation_observer, "Task completion comparison requires registered primaries and pose observer")
     observer_registration = None
     if args.mode == "observer-abba":
         observer_registration = json.loads((HERE / "observer_registration.json").read_bytes())
@@ -294,6 +363,10 @@ def main() -> int:
               "observer_registration": observer_registration,
               "sample_idle_registration": sample_idle_registration,
               "sample_idle_registration_sha256": digest(SAMPLE_IDLE_REGISTRATION) if sample_idle_registration else None,
+              "task_completion_registration": task_completion_registration,
+              "task_completion_registration_sha256": digest(TASK_COMPLETION_REGISTRATION) if task_completion_registration else None,
+              "task_completion_workload_amendment": task_completion_amendment,
+              "task_completion_workload_amendment_sha256": digest(TASK_COMPLETION_AMENDMENT) if task_completion_amendment else None,
               "observer_registration_sha256": digest(HERE / "observer_registration.json") if observer_registration else None}
     write_json(output / "SUMMARY.json", report)
     templates = {}
@@ -319,6 +392,7 @@ def main() -> int:
             settings["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"] = "0"
             settings[PRESENTATION_SELECTOR] = "1" if treatment["presentation_observer"] else "0"
             settings[SAMPLE_IDLE_SELECTOR] = "1" if treatment.get("sample_idle", False) else "0"
+            settings[TASK_COMPLETION_SELECTOR] = "1" if treatment.get("task_completion", False) else "0"
             arguments = ["--path", str(project), "--rendering-method", "gl_compatibility",
                          "--rendering-driver", rendering_driver, "--render-thread", "safe", "--audio-driver", "Dummy",
                          "--log-file", str(folder / "godot.log"), "--script", "res://" + OBSERVER, "--",
@@ -342,6 +416,7 @@ def main() -> int:
                 analysis["material_deadline_baseline"] = validate_deadline_baseline(data, required=role == "C")
                 observers = validate_observers(receipt, process, project, treatment["presentation_observer"])
                 sample_idle = validate_sample_idle(data, treatment["sample_idle"]) if args.mode == "sample-idle-abba" else None
+                task_completion = validate_task_completion(data, treatment["task_completion"]) if args.mode == "task-completion-abba" else None
                 events = [json.loads(line) for line in receipt.with_name("receipt-events.jsonl").read_text().splitlines()]
                 slot_evidence = validate_slot_treatment(data, events, slots,
                                                         require_status=args.mode == "slots-abba" or slots == 3,
@@ -356,10 +431,11 @@ def main() -> int:
                 write_json(folder / "supplementary.json", supplement)
                 write_json(folder / "observers.json", observers)
                 write_json(folder / "process.json", process)
-                arm_role = ("D" if index in (0, 3) else "C") if args.mode in ("slots-abba", "observer-abba", "sample-idle-abba") else role
+                arm_role = comparison_role(args.mode, index, role)
                 arms.append({"arm": arm_role, "index": index, "source_role": role, "statistics": analysis,
                              "supplementary": supplement, "slots": slot_evidence, "process": process,"observers":observers,
                              "sample_idle": sample_idle,
+                             "task_completion": task_completion,
                              "receipt_sha256": digest(receipt)})
                 shutil.rmtree(project)
             except Exception as error:

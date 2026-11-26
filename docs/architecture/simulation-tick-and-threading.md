@@ -260,6 +260,42 @@ Geometry and write restrictions are defined in
 and hash limits belong in [determinism](determinism-and-boundary-transfers.md).
 `SerialInPlace` is executable. `Buffered` throws as unimplemented.
 
+### Experimental actual-task completion barrier
+
+The PUBPRES recovery candidate adds an explicit default-off execution policy,
+`WorldConfig::pubpres_task_completion_barrier`. Its
+[private production pool](../../native/src/persistent_worker_pool.hpp) keeps the
+original all-worker completion path as control. In that path every awakened
+worker borrows the dispatch context, so the caller must wait even for workers
+that claim no task. The alternative acquires a real task and its current
+context together under the existing mutex. It releases the lock while that
+task runs, then decrements the actual unfinished-task count only after the
+callback and its destructors have returned. The caller reacquires the same
+mutex after all actual tasks finish before retiring or reusing context.
+
+A late idle thread cannot retain an old dispatch context. Task decomposition,
+region ownership, random keys, deterministic merges, required physical work,
+worker capacity and physical hash/save formats remain unchanged. Participant
+masks count actual task workers. Owner-only completed dispatch/task counters
+report whether a treatment executed; they supply no physical completion credit.
+Prepared/replacement Worlds inherit the immutable policy, while their counters
+start at zero. One-worker Worlds do not create a pool and report no pool work.
+
+The pool admits only 1..256 workers, matching its fixed participant mask, and
+requires a non-null callback for nonempty dispatches. An overlapping or reentrant
+dispatch is explicitly refused before any borrowed context or counters change;
+it does not wait for the active task. Empty dispatches remain storage-free and
+receive no completion credit. World mutation, diagnostics and destruction still
+require the external owner's serialized access. The admission guard does not
+make concurrent World access or concurrent object destruction valid.
+
+The [prospective registration](../../tools/pubpres_recovery/task_completion_registration.json)
+requires exact native semantic parity, production-class adversarial lifetime
+tests, scoped sanitizers, independent review and matched physical progression
+experiments. Component execution is not a performance selection or gameplay
+qualification. See the [implementation checkpoint](../audits/2026-11-25-pubpres-playability-recovery/task-completion.md)
+for exact scope and remaining gates.
+
 ## What happens when a tick fails or overloads?
 
 **Current, chosen for issue #1:** a thrown tick latches `World::has_failed()`.

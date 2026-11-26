@@ -1,0 +1,14 @@
+{
+  "schema": "pubpres-native-closure-intake-v1",
+  "utc": "2026-11-26T07:53:19.718905+00:00",
+  "source": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+  "tree": "d2e28f7ab3db5106a7f1ea173a802e3628fa6705",
+  "scope": "Exact recovered 864cf7dc original full World semantic execution; not gameplay or performance selection",
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "host": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "commands": [
+    "make -j1 build/test_task_completion_world",
+    "timeout 360 build/test_task_completion_world"
+  ],
+  "selection_unchanged": true
+}

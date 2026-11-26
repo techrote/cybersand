@@ -9,6 +9,9 @@ var presentation_probe = PresentationProbe.new()
 var presentation_enabled := OS.get_environment("CYBERSAND_DIAG_PRESENTATION_OBSERVER") == "1"
 
 func _initialize() -> void:
+	if OS.has_environment("CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER"):
+		ProjectSettings.set_setting("cybersand/pubpres_task_completion_barrier",
+			OS.get_environment("CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER") == "1")
 	super._initialize()
 	if presentation_enabled:
 		RenderingServer.frame_pre_draw.connect(_presentation_pre_draw)
@@ -34,6 +37,9 @@ func effective_selectors() -> Dictionary:
 	result.requested["CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"] = OS.get_environment("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ")
 	result.requested["CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL"] = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL")
 	result.requested["CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE"] = OS.get_environment("CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE")
+	result.requested["CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER"] = OS.get_environment("CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER")
+	result["task_completion"] = host.latest_snapshot.lab_context.get("wave_flow",{}).get("task_completion",null) \
+		if host.latest_snapshot != null else null
 	result["workbench_sample_idle"] = host.simulation_worker.workbench_sample_idle_status() \
 		if host.simulation_worker.has_method("workbench_sample_idle_status") else null
 	result["material_steps_api_present"] = host.has_method("material_step_status")

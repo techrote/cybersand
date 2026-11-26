@@ -1,0 +1,2265 @@
+{
+  "schema": "pubpres-water-composition-native-v1",
+  "source_revision": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+  "checks": 151,
+  "failures": [],
+  "observed_frames": 4837,
+  "composed_body_frames": 16694,
+  "hidden_body_frames": 214,
+  "moving_wet_distinct_poses": 19,
+  "observed_frames_by_stage": {
+    "completed_paused_history": 2338,
+    "dry_large_erase": 1,
+    "dry_step": 1,
+    "dry_to_wet_entry": 74,
+    "initial_authoring_framebuffer": 4,
+    "initialized_paused_history": 2338,
+    "install": 1,
+    "mixed_sand_small_edit": 1,
+    "mixed_step": 1,
+    "moving_submerged": 39,
+    "repair_step": 1,
+    "restore": 14,
+    "restored_step": 11,
+    "single_step": 2,
+    "submerged_framebuffer": 4,
+    "water_refill_framebuffer": 4,
+    "water_small_repair": 1,
+    "wet_large_fill": 1,
+    "wet_step": 1
+  },
+  "omitted_by_stage_and_slot": {
+    "dry_large_erase:0": 1,
+    "dry_large_erase:3": 1,
+    "dry_to_wet_entry:0": 16,
+    "dry_to_wet_entry:1": 20,
+    "dry_to_wet_entry:2": 12,
+    "dry_to_wet_entry:3": 16,
+    "initialized_paused_history:1": 1,
+    "mixed_step:3": 1,
+    "moving_submerged:0": 19,
+    "moving_submerged:1": 17,
+    "moving_submerged:2": 8,
+    "moving_submerged:3": 19,
+    "repair_step:0": 1,
+    "repair_step:1": 1,
+    "restore:0": 13,
+    "restore:1": 13,
+    "restore:2": 13,
+    "restore:3": 14,
+    "restored_step:0": 5,
+    "restored_step:1": 6,
+    "restored_step:2": 3,
+    "restored_step:3": 3,
+    "single_step:0": 2,
+    "single_step:1": 1,
+    "single_step:2": 1,
+    "single_step:3": 2,
+    "submerged_framebuffer:1": 1,
+    "submerged_framebuffer:2": 1,
+    "water_refill_framebuffer:1": 1,
+    "water_small_repair:0": 1,
+    "wet_step:0": 1
+  },
+  "omission_reasons": {
+    "dry_large_erase:0:material_in_swept_mask": 1,
+    "dry_large_erase:3:material_in_swept_mask": 1,
+    "dry_to_wet_entry:0:material_in_swept_mask": 10,
+    "dry_to_wet_entry:0:shared_budget": 5,
+    "dry_to_wet_entry:0:time_budget": 1,
+    "dry_to_wet_entry:1:material_in_swept_mask": 10,
+    "dry_to_wet_entry:1:shared_budget": 7,
+    "dry_to_wet_entry:1:time_budget": 3,
+    "dry_to_wet_entry:2:shared_budget": 12,
+    "dry_to_wet_entry:3:material_in_swept_mask": 14,
+    "dry_to_wet_entry:3:shared_budget": 1,
+    "dry_to_wet_entry:3:time_budget": 1,
+    "initialized_paused_history:1:material_in_swept_mask": 1,
+    "mixed_step:3:material_in_swept_mask": 1,
+    "moving_submerged:0:material_in_swept_mask": 2,
+    "moving_submerged:0:shared_budget": 16,
+    "moving_submerged:0:time_budget": 1,
+    "moving_submerged:1:material_in_swept_mask": 4,
+    "moving_submerged:1:shared_budget": 12,
+    "moving_submerged:1:time_budget": 1,
+    "moving_submerged:2:shared_budget": 8,
+    "moving_submerged:3:material_in_swept_mask": 16,
+    "moving_submerged:3:shared_budget": 1,
+    "moving_submerged:3:time_budget": 2,
+    "repair_step:0:material_in_swept_mask": 1,
+    "repair_step:1:shared_budget": 1,
+    "restore:0:material_in_swept_mask": 12,
+    "restore:0:shared_budget": 1,
+    "restore:1:material_in_swept_mask": 13,
+    "restore:2:material_in_swept_mask": 13,
+    "restore:3:material_in_swept_mask": 13,
+    "restore:3:time_budget": 1,
+    "restored_step:0:material_in_swept_mask": 1,
+    "restored_step:0:shared_budget": 3,
+    "restored_step:0:time_budget": 1,
+    "restored_step:1:material_in_swept_mask": 2,
+    "restored_step:1:shared_budget": 4,
+    "restored_step:2:shared_budget": 3,
+    "restored_step:3:material_in_swept_mask": 2,
+    "restored_step:3:time_budget": 1,
+    "single_step:0:material_in_swept_mask": 2,
+    "single_step:1:material_in_swept_mask": 1,
+    "single_step:2:material_in_swept_mask": 1,
+    "single_step:3:material_in_swept_mask": 2,
+    "submerged_framebuffer:1:material_in_swept_mask": 1,
+    "submerged_framebuffer:2:shared_budget": 1,
+    "water_refill_framebuffer:1:material_in_swept_mask": 1,
+    "water_small_repair:0:material_in_swept_mask": 1,
+    "wet_step:0:material_in_swept_mask": 1
+  },
+  "proof_kinds": {
+    "current_completed_native_dependency": 379,
+    "current_step_sampled_closure": 8,
+    "initialized_authoring_closure": 151
+  },
+  "framebuffer": [
+    {
+      "control_scope": "ordinary presentation policy transition, no physical/material mutation",
+      "hidden_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 4,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-1465.0, -2137.0)]",
+        "overlay_origin": "(270.0554, 379.9889)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 0,
+        "pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (350.0, 430.0)]",
+        "previous_content": 4,
+        "revision": 3,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 4,
+        "world": 3
+      },
+      "label": "initial_authoring_framebuffer",
+      "maximum_restored_error": 0.009033203125,
+      "maximum_visible_difference": 0.528076171875,
+      "pixel_point": [
+        639,
+        408
+      ],
+      "pixels": [
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            637,
+            406
+          ],
+          "restored": [
+            0.332763671875,
+            0.5859375,
+            0.51220703125
+          ],
+          "shown": [
+            0.3310546875,
+            0.58251953125,
+            0.5078125
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            638,
+            406
+          ],
+          "restored": [
+            0.34716796875,
+            0.61083984375,
+            0.5302734375
+          ],
+          "shown": [
+            0.345703125,
+            0.607421875,
+            0.52587890625
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            639,
+            406
+          ],
+          "restored": [
+            0.381591796875,
+            0.669921875,
+            0.57275390625
+          ],
+          "shown": [
+            0.380126953125,
+            0.66748046875,
+            0.56982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.11065673828125,
+            0.295654296875,
+            0.5
+          ],
+          "pixel": [
+            640,
+            406
+          ],
+          "restored": [
+            0.1373291015625,
+            0.25,
+            0.26318359375
+          ],
+          "shown": [
+            0.133544921875,
+            0.242919921875,
+            0.254150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.11065673828125,
+            0.295654296875,
+            0.5
+          ],
+          "pixel": [
+            641,
+            406
+          ],
+          "restored": [
+            0.405517578125,
+            0.7109375,
+            0.6015625
+          ],
+          "shown": [
+            0.404541015625,
+            0.708984375,
+            0.59912109375
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            637,
+            407
+          ],
+          "restored": [
+            0.449951171875,
+            0.77099609375,
+            0.64453125
+          ],
+          "shown": [
+            0.44970703125,
+            0.7705078125,
+            0.64404296875
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            638,
+            407
+          ],
+          "restored": [
+            0.34765625,
+            0.56787109375,
+            0.493408203125
+          ],
+          "shown": [
+            0.346923828125,
+            0.56640625,
+            0.49169921875
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            639,
+            407
+          ],
+          "restored": [
+            0.39013671875,
+            0.65234375,
+            0.55615234375
+          ],
+          "shown": [
+            0.3896484375,
+            0.6513671875,
+            0.55517578125
+          ]
+        },
+        {
+          "hidden": [
+            0.11065673828125,
+            0.295654296875,
+            0.5
+          ],
+          "pixel": [
+            640,
+            407
+          ],
+          "restored": [
+            0.263427734375,
+            0.40087890625,
+            0.367431640625
+          ],
+          "shown": [
+            0.26220703125,
+            0.39892578125,
+            0.364990234375
+          ]
+        },
+        {
+          "hidden": [
+            0.11065673828125,
+            0.295654296875,
+            0.5
+          ],
+          "pixel": [
+            641,
+            407
+          ],
+          "restored": [
+            0.4765625,
+            0.82421875,
+            0.68359375
+          ],
+          "shown": [
+            0.476318359375,
+            0.82373046875,
+            0.68359375
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            637,
+            408
+          ],
+          "restored": [
+            0.401123046875,
+            0.67431640625,
+            0.572265625
+          ],
+          "shown": [
+            0.400634765625,
+            0.67333984375,
+            0.5712890625
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            638,
+            408
+          ],
+          "restored": [
+            0.10870361328125,
+            0.0927734375,
+            0.1395263671875
+          ],
+          "shown": [
+            0.1070556640625,
+            0.08966064453125,
+            0.1356201171875
+          ]
+        },
+        {
+          "hidden": [
+            0.154296875,
+            0.37158203125,
+            0.6005859375
+          ],
+          "pixel": [
+            639,
+            408
+          ],
+          "restored": [
+            0.10870361328125,
+            0.0927734375,
+            0.1395263671875
+          ],
+          "shown": [
+            0.1070556640625,
+            0.08966064453125,
+            0.1356201171875
+          ]
+        },
+        {
+          "hidden": [
+            0.11065673828125,
+            0.295654296875,
+            0.5
+          ],
+          "pixel": [
+            640,
+            408
+          ],
+          "restored": [
+            0.15087890625,
+            0.17724609375,
+            0.20068359375
+          ],
+          "shown": [
+            0.1494140625,
+            0.174560546875,
+            0.1971435546875
+          ]
+        },
+        {
+          "hidden": [
+            0.11065673828125,
+            0.295654296875,
+            0.5
+          ],
+          "pixel": [
+            641,
+            408
+          ],
+          "restored": [
+            0.428955078125,
+            0.72998046875,
+            0.61328125
+          ],
+          "shown": [
+            0.4287109375,
+            0.72900390625,
+            0.61279296875
+          ]
+        },
+        {
+          "hidden": [
+            0.1192626953125,
+            0.308837890625,
+            0.51806640625
+          ],
+          "pixel": [
+            637,
+            409
+          ],
+          "restored": [
+            0.3525390625,
+            0.57763671875,
+            0.49951171875
+          ],
+          "shown": [
+            0.353515625,
+            0.57958984375,
+            0.50146484375
+          ]
+        },
+        {
+          "hidden": [
+            0.1192626953125,
+            0.308837890625,
+            0.51806640625
+          ],
+          "pixel": [
+            638,
+            409
+          ],
+          "restored": [
+            0.38427734375,
+            0.64111328125,
+            0.54638671875
+          ],
+          "shown": [
+            0.385009765625,
+            0.64208984375,
+            0.54833984375
+          ]
+        },
+        {
+          "hidden": [
+            0.1192626953125,
+            0.308837890625,
+            0.51806640625
+          ],
+          "pixel": [
+            639,
+            409
+          ],
+          "restored": [
+            0.3828125,
+            0.6376953125,
+            0.54443359375
+          ],
+          "shown": [
+            0.383544921875,
+            0.63916015625,
+            0.5458984375
+          ]
+        },
+        {
+          "hidden": [
+            0.1767578125,
+            0.419189453125,
+            0.662109375
+          ],
+          "pixel": [
+            640,
+            409
+          ],
+          "restored": [
+            0.205078125,
+            0.28466796875,
+            0.281982421875
+          ],
+          "shown": [
+            0.2059326171875,
+            0.286376953125,
+            0.283935546875
+          ]
+        },
+        {
+          "hidden": [
+            0.1767578125,
+            0.419189453125,
+            0.662109375
+          ],
+          "pixel": [
+            641,
+            409
+          ],
+          "restored": [
+            0.42919921875,
+            0.72998046875,
+            0.61376953125
+          ],
+          "shown": [
+            0.429443359375,
+            0.73046875,
+            0.6142578125
+          ]
+        },
+        {
+          "hidden": [
+            0.1192626953125,
+            0.308837890625,
+            0.51806640625
+          ],
+          "pixel": [
+            637,
+            410
+          ],
+          "restored": [
+            0.10516357421875,
+            0.0863037109375,
+            0.1312255859375
+          ],
+          "shown": [
+            0.1075439453125,
+            0.09075927734375,
+            0.1368408203125
+          ]
+        },
+        {
+          "hidden": [
+            0.1192626953125,
+            0.308837890625,
+            0.51806640625
+          ],
+          "pixel": [
+            638,
+            410
+          ],
+          "restored": [
+            0.10516357421875,
+            0.0863037109375,
+            0.1312255859375
+          ],
+          "shown": [
+            0.1075439453125,
+            0.09075927734375,
+            0.1368408203125
+          ]
+        },
+        {
+          "hidden": [
+            0.1192626953125,
+            0.308837890625,
+            0.51806640625
+          ],
+          "pixel": [
+            639,
+            410
+          ],
+          "restored": [
+            0.10516357421875,
+            0.0863037109375,
+            0.1312255859375
+          ],
+          "shown": [
+            0.1075439453125,
+            0.09075927734375,
+            0.1368408203125
+          ]
+        },
+        {
+          "hidden": [
+            0.1767578125,
+            0.419189453125,
+            0.662109375
+          ],
+          "pixel": [
+            640,
+            410
+          ],
+          "restored": [
+            0.10772705078125,
+            0.09124755859375,
+            0.1375732421875
+          ],
+          "shown": [
+            0.10882568359375,
+            0.09332275390625,
+            0.1402587890625
+          ]
+        },
+        {
+          "hidden": [
+            0.1767578125,
+            0.419189453125,
+            0.662109375
+          ],
+          "pixel": [
+            641,
+            410
+          ],
+          "restored": [
+            0.10772705078125,
+            0.09124755859375,
+            0.1375732421875
+          ],
+          "shown": [
+            0.10882568359375,
+            0.09332275390625,
+            0.1402587890625
+          ]
+        }
+      ],
+      "policy_order": [
+        "1",
+        "0",
+        "1"
+      ],
+      "proof": {
+        "completed_usec": 0,
+        "consumed_by_step": false,
+        "coverage": {
+          "coverage_reused": true,
+          "dilation_cells": 0.0,
+          "original_scanned": 884,
+          "reason": "water_composed_swept_mask",
+          "safe": true,
+          "scanned": 0,
+          "steps": 1,
+          "water_contacts": 436
+        },
+        "generation": 1,
+        "instance_id": 4,
+        "kind": "initialized_authoring_closure",
+        "native_tick": 0,
+        "physical_completion_claim": false,
+        "sample": 1,
+        "schema": "workbench-water-composition-v2",
+        "step": 0,
+        "visible_material": {
+          "current_content": 4,
+          "native_sample": 1,
+          "native_tick": 0,
+          "previous_content": 4,
+          "revision": 3,
+          "upload_serial": 4,
+          "world": 3
+        }
+      },
+      "restored_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 4,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-1465.0, -2137.0)]",
+        "overlay_origin": "(270.0554, 379.9889)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 0,
+        "pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (350.0, 430.0)]",
+        "previous_content": 4,
+        "revision": 3,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 4,
+        "world": 3
+      },
+      "selected_pose": {
+        "radians": 0.0,
+        "xy": [
+          350.0,
+          430.0
+        ]
+      },
+      "shown_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 4,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-1465.0, -2137.0)]",
+        "overlay_origin": "(270.0554, 379.9889)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 0,
+        "pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (350.0, 430.0)]",
+        "previous_content": 4,
+        "revision": 3,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 4,
+        "world": 3
+      },
+      "size": [
+        1280,
+        720
+      ],
+      "slot": 3,
+      "viewport_point": [
+        959.500183105469,
+        613.100158691406
+      ]
+    },
+    {
+      "control_scope": "ordinary presentation policy transition, no physical/material mutation",
+      "hidden_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 109,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-442.0, -1171.0)]",
+        "overlay_origin": "(99.93347, 219.3459)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 130,
+        "pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (180.0, 269.3641)]",
+        "previous_content": 109,
+        "revision": 136,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 137,
+        "world": 3
+      },
+      "label": "submerged_framebuffer",
+      "maximum_restored_error": 0.0,
+      "maximum_visible_difference": 0.847015380859375,
+      "pixel_point": [
+        640,
+        408
+      ],
+      "pixels": [
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            638,
+            406
+          ],
+          "restored": [
+            0.46630859375,
+            0.68115234375,
+            0.80810546875
+          ],
+          "shown": [
+            0.46630859375,
+            0.68115234375,
+            0.80810546875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            639,
+            406
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            640,
+            406
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            641,
+            406
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            642,
+            406
+          ],
+          "restored": [
+            0.509765625,
+            0.89013671875,
+            0.73291015625
+          ],
+          "shown": [
+            0.509765625,
+            0.89013671875,
+            0.73291015625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            638,
+            407
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            639,
+            407
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            640,
+            407
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            641,
+            407
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            642,
+            407
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            638,
+            408
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            639,
+            408
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            640,
+            408
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            641,
+            408
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            642,
+            408
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            638,
+            409
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            639,
+            409
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            640,
+            409
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            641,
+            409
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            642,
+            409
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            638,
+            410
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            639,
+            410
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            640,
+            410
+          ],
+          "restored": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ],
+          "shown": [
+            0.12939453125,
+            0.203857421875,
+            0.2822265625
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            641,
+            410
+          ],
+          "restored": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ],
+          "shown": [
+            0.459716796875,
+            0.6494140625,
+            0.81982421875
+          ]
+        },
+        {
+          "hidden": [
+            0.0313720703125,
+            0.043121337890625,
+            0.070556640625
+          ],
+          "pixel": [
+            642,
+            410
+          ],
+          "restored": [
+            0.4814453125,
+            0.75439453125,
+            0.78173828125
+          ],
+          "shown": [
+            0.4814453125,
+            0.75439453125,
+            0.78173828125
+          ]
+        }
+      ],
+      "policy_order": [
+        "1",
+        "0",
+        "1"
+      ],
+      "proof": {
+        "completed_usec": 215162303,
+        "consumed_by_step": true,
+        "coverage": {
+          "dilation_cells": 0.0,
+          "reason": "water_composed_swept_mask",
+          "safe": true,
+          "scanned": 64,
+          "steps": 1,
+          "water_contacts": 8
+        },
+        "generation": 1,
+        "instance_id": 3,
+        "kind": "current_completed_native_dependency",
+        "native_completed_usec": 215093265,
+        "native_revision": 134,
+        "native_tick": 131,
+        "physical_completion_claim": true,
+        "sample": 2187,
+        "schema": "workbench-water-composition-v2",
+        "step": 130,
+        "visible_material": {
+          "current_content": 109,
+          "native_sample": 2188,
+          "native_tick": 132,
+          "previous_content": 109,
+          "revision": 136,
+          "upload_serial": 137,
+          "world": 3
+        }
+      },
+      "restored_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 109,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-442.0, -1171.0)]",
+        "overlay_origin": "(99.93347, 219.3459)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 130,
+        "pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (180.0, 269.3641)]",
+        "previous_content": 109,
+        "revision": 136,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 137,
+        "world": 3
+      },
+      "selected_pose": {
+        "radians": 0.0,
+        "xy": [
+          180.0,
+          269.364105224609
+        ]
+      },
+      "shown_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 109,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-442.0, -1171.0)]",
+        "overlay_origin": "(99.93347, 219.3459)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 130,
+        "pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (180.0, 269.3641)]",
+        "previous_content": 109,
+        "revision": 136,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 137,
+        "world": 3
+      },
+      "size": [
+        1280,
+        720
+      ],
+      "slot": 2,
+      "viewport_point": [
+        960.600158691406,
+        613.164306640625
+      ]
+    },
+    {
+      "control_scope": "ordinary presentation policy transition, no physical/material mutation",
+      "hidden_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 114,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-683.0, -2329.0)]",
+        "overlay_origin": "(140.0111, 411.9179)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 133,
+        "pose": "[X: (1.0, 0.0), Y: (-0.0, 1.0), O: (220.0107, 489.0011)]",
+        "previous_content": 113,
+        "revision": 5962,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 142,
+        "world": 3
+      },
+      "label": "water_refill_framebuffer",
+      "maximum_restored_error": 0.005615234375,
+      "maximum_visible_difference": 0.454833984375,
+      "pixel_point": [
+        639,
+        571
+      ],
+      "pixels": [
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            637,
+            569
+          ],
+          "restored": [
+            0.521484375,
+            0.7294921875,
+            0.60302734375
+          ],
+          "shown": [
+            0.521484375,
+            0.72900390625,
+            0.60302734375
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            638,
+            569
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            639,
+            569
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.10516357421875,
+            0.287841796875,
+            0.49853515625
+          ],
+          "pixel": [
+            640,
+            569
+          ],
+          "restored": [
+            0.546875,
+            0.443603515625,
+            0.37548828125
+          ],
+          "shown": [
+            0.54736328125,
+            0.44580078125,
+            0.379150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.10516357421875,
+            0.287841796875,
+            0.49853515625
+          ],
+          "pixel": [
+            641,
+            569
+          ],
+          "restored": [
+            0.546875,
+            0.443603515625,
+            0.37548828125
+          ],
+          "shown": [
+            0.54736328125,
+            0.44580078125,
+            0.379150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            637,
+            570
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            638,
+            570
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            639,
+            570
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.10516357421875,
+            0.287841796875,
+            0.49853515625
+          ],
+          "pixel": [
+            640,
+            570
+          ],
+          "restored": [
+            0.546875,
+            0.443603515625,
+            0.37548828125
+          ],
+          "shown": [
+            0.54736328125,
+            0.44580078125,
+            0.379150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.10516357421875,
+            0.287841796875,
+            0.49853515625
+          ],
+          "pixel": [
+            641,
+            570
+          ],
+          "restored": [
+            0.546875,
+            0.443603515625,
+            0.37548828125
+          ],
+          "shown": [
+            0.54736328125,
+            0.44580078125,
+            0.379150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            637,
+            571
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            638,
+            571
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.09735107421875,
+            0.274169921875,
+            0.479248046875
+          ],
+          "pixel": [
+            639,
+            571
+          ],
+          "restored": [
+            0.5439453125,
+            0.43896484375,
+            0.368408203125
+          ],
+          "shown": [
+            0.5439453125,
+            0.4384765625,
+            0.367919921875
+          ]
+        },
+        {
+          "hidden": [
+            0.10516357421875,
+            0.287841796875,
+            0.49853515625
+          ],
+          "pixel": [
+            640,
+            571
+          ],
+          "restored": [
+            0.546875,
+            0.443603515625,
+            0.37548828125
+          ],
+          "shown": [
+            0.54736328125,
+            0.44580078125,
+            0.379150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.10516357421875,
+            0.287841796875,
+            0.49853515625
+          ],
+          "pixel": [
+            641,
+            571
+          ],
+          "restored": [
+            0.546875,
+            0.443603515625,
+            0.37548828125
+          ],
+          "shown": [
+            0.54736328125,
+            0.44580078125,
+            0.379150390625
+          ]
+        },
+        {
+          "hidden": [
+            0.0950927734375,
+            0.26953125,
+            0.473876953125
+          ],
+          "pixel": [
+            637,
+            572
+          ],
+          "restored": [
+            0.5439453125,
+            0.439697265625,
+            0.37109375
+          ],
+          "shown": [
+            0.54296875,
+            0.4365234375,
+            0.365478515625
+          ]
+        },
+        {
+          "hidden": [
+            0.0950927734375,
+            0.26953125,
+            0.473876953125
+          ],
+          "pixel": [
+            638,
+            572
+          ],
+          "restored": [
+            0.5439453125,
+            0.439697265625,
+            0.37109375
+          ],
+          "shown": [
+            0.54296875,
+            0.4365234375,
+            0.365478515625
+          ]
+        },
+        {
+          "hidden": [
+            0.0950927734375,
+            0.26953125,
+            0.473876953125
+          ],
+          "pixel": [
+            639,
+            572
+          ],
+          "restored": [
+            0.5439453125,
+            0.439697265625,
+            0.37109375
+          ],
+          "shown": [
+            0.54296875,
+            0.4365234375,
+            0.365478515625
+          ]
+        },
+        {
+          "hidden": [
+            0.10430908203125,
+            0.283447265625,
+            0.49267578125
+          ],
+          "pixel": [
+            640,
+            572
+          ],
+          "restored": [
+            0.54638671875,
+            0.442138671875,
+            0.373291015625
+          ],
+          "shown": [
+            0.54638671875,
+            0.44189453125,
+            0.372802734375
+          ]
+        },
+        {
+          "hidden": [
+            0.10430908203125,
+            0.283447265625,
+            0.49267578125
+          ],
+          "pixel": [
+            641,
+            572
+          ],
+          "restored": [
+            0.54638671875,
+            0.442138671875,
+            0.373291015625
+          ],
+          "shown": [
+            0.54638671875,
+            0.44189453125,
+            0.372802734375
+          ]
+        },
+        {
+          "hidden": [
+            0.0950927734375,
+            0.26953125,
+            0.473876953125
+          ],
+          "pixel": [
+            637,
+            573
+          ],
+          "restored": [
+            0.52490234375,
+            0.6904296875,
+            0.57275390625
+          ],
+          "shown": [
+            0.5244140625,
+            0.68896484375,
+            0.5703125
+          ]
+        },
+        {
+          "hidden": [
+            0.0950927734375,
+            0.26953125,
+            0.473876953125
+          ],
+          "pixel": [
+            638,
+            573
+          ],
+          "restored": [
+            0.5439453125,
+            0.439697265625,
+            0.37109375
+          ],
+          "shown": [
+            0.54296875,
+            0.4365234375,
+            0.365478515625
+          ]
+        },
+        {
+          "hidden": [
+            0.0950927734375,
+            0.26953125,
+            0.473876953125
+          ],
+          "pixel": [
+            639,
+            573
+          ],
+          "restored": [
+            0.5439453125,
+            0.439697265625,
+            0.37109375
+          ],
+          "shown": [
+            0.54296875,
+            0.4365234375,
+            0.365478515625
+          ]
+        },
+        {
+          "hidden": [
+            0.10430908203125,
+            0.283447265625,
+            0.49267578125
+          ],
+          "pixel": [
+            640,
+            573
+          ],
+          "restored": [
+            0.54638671875,
+            0.442138671875,
+            0.373291015625
+          ],
+          "shown": [
+            0.54638671875,
+            0.44189453125,
+            0.372802734375
+          ]
+        },
+        {
+          "hidden": [
+            0.10430908203125,
+            0.283447265625,
+            0.49267578125
+          ],
+          "pixel": [
+            641,
+            573
+          ],
+          "restored": [
+            0.54638671875,
+            0.442138671875,
+            0.373291015625
+          ],
+          "shown": [
+            0.54638671875,
+            0.44189453125,
+            0.372802734375
+          ]
+        }
+      ],
+      "policy_order": [
+        "1",
+        "0",
+        "1"
+      ],
+      "proof": {
+        "completed_usec": 408248115,
+        "consumed_by_step": true,
+        "coverage": {
+          "dilation_cells": 0.0,
+          "reason": "water_composed_swept_mask",
+          "safe": true,
+          "scanned": 270,
+          "steps": 1,
+          "water_contacts": 224
+        },
+        "generation": 1,
+        "instance_id": 2,
+        "kind": "current_completed_native_dependency",
+        "native_completed_usec": 407936368,
+        "native_revision": 5956,
+        "native_tick": 134,
+        "physical_completion_claim": true,
+        "sample": 4246,
+        "schema": "workbench-water-composition-v2",
+        "step": 133,
+        "visible_material": {
+          "current_content": 114,
+          "native_sample": 4247,
+          "native_tick": 135,
+          "previous_content": 113,
+          "revision": 5962,
+          "upload_serial": 142,
+          "world": 3
+        }
+      },
+      "restored_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 114,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-683.0, -2329.0)]",
+        "overlay_origin": "(140.0111, 411.9179)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 133,
+        "pose": "[X: (1.0, 0.0), Y: (-0.0, 1.0), O: (220.0107, 489.0011)]",
+        "previous_content": 113,
+        "revision": 5962,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 142,
+        "world": 3
+      },
+      "selected_pose": {
+        "radians": 4.53264135558129e-07,
+        "xy": [
+          220.010665893555,
+          489.001129150391
+        ]
+      },
+      "shown_identity": {
+        "bridge": -9223371700354152907,
+        "current_content": 114,
+        "epoch": 1,
+        "labels": {
+          "0": {
+            "color": "(1.0, 0.8275, 0.4824, 1.0)",
+            "selected": false,
+            "text": "#1 needle \u00b7 PILOT"
+          },
+          "1": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": true,
+            "text": "#2 reference_barrel \u00b7 passive"
+          },
+          "2": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#3 needle \u00b7 human"
+          },
+          "3": {
+            "color": "(0.5098, 0.8902, 0.7333, 1.0)",
+            "selected": false,
+            "text": "#4 scooper \u00b7 human"
+          }
+        },
+        "mapping": "[X: (6.013334, 0.0), Y: (0.0, 6.013334), O: (-683.0, -2329.0)]",
+        "overlay_origin": "(140.0111, 411.9179)",
+        "overlay_position": "(218.4, -0.000031)",
+        "overlay_size": "(1443.2, 902.0)",
+        "overlay_view_size": "(160.0, 100.0)",
+        "physical_step": 133,
+        "pose": "[X: (1.0, 0.0), Y: (-0.0, 1.0), O: (220.0107, 489.0011)]",
+        "previous_content": 113,
+        "revision": 5962,
+        "screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (13.33333, 148.0)]",
+        "session": 1,
+        "upload_serial": 142,
+        "world": 3
+      },
+      "size": [
+        1280,
+        720
+      ],
+      "slot": 1,
+      "viewport_point": [
+        959.996337890625,
+        857.290405273438
+      ]
+    }
+  ],
+  "selectors": {
+    "actual_submission": "0",
+    "actual_submission_status": {
+      "candidate_ready": false,
+      "committed_count": 0,
+      "connected": false,
+      "enabled": false,
+      "engine_atomic_admission": false,
+      "refusal": "",
+      "requested": false,
+      "schema": "pubpres-actual-submission-v1"
+    },
+    "water_composition": "1"
+  },
+  "disposition": "COMPONENT_ASSERTIONS_PASS_MOVING_AND_RESTORED_VISIBILITY_HOLD",
+  "interpretation": "Corrected labels and actual Sand2 fixture complete the 151-check component gate. Raw observations retain 214 omitted body-frames, including moving, initialized and restored bodies. Assertion success does not establish continuous actor visibility, physical performance or physical GPU acceptance."
+}

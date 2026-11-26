@@ -19,6 +19,7 @@ var pre_draw_count: int = 0
 var post_draw_count: int = 0
 var refusal_framebuffers: Array[Dictionary] = []
 var fallback_ui: Array[Dictionary] = []
+var unsubmitted_material_picking: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -264,6 +265,86 @@ func _transaction_cases() -> void:
 	host.camera_origin = camera_before
 	_record("picking")
 	await _transformed_pointer_case()
+	await _uploaded_material_pointer_case()
+
+
+func _uploaded_material_pointer_case() -> void:
+	# The worker performs a real ordinary edit and Main uploads its result,
+	# while the atomic owner has no prepared draw. The last framebuffer and
+	# its actor hit mapping must remain usable until the next admitted draw.
+	await _settle_render_notifications()
+	var submitted: Dictionary = host.workbench_presentation_frame
+	var before_pixels: String = _pixels_sha256(root.get_texture().get_image())
+	var count: int = host.workbench_presentation_submission_status().committed_count
+	var before_draw: int = pre_draw_count
+	var before_step: int = host.physical_actor_session.tick
+	var actor_id: int = int(ui.applied.actors[0].id)
+	var bridge: Variant = host.physical_actor_session.bridge
+	var body_slot: int = bridge.actor_body_index(host.physical_actor_session.slot_for_instance(actor_id))
+	if not check(submitted.get("poses",{}).has(body_slot),"unsubmitted material witness starts with a genuinely visible actor"): return
+	var prior_revision: int = host.last_uploaded_revision
+	var prior_serial: int = host.last_uploaded_render_snapshot_serial
+	var paint_cell := Vector2i(180,120)
+	check(host.image.get_pixelv(paint_cell).r8==0 and ui.paint(paint_cell,2),
+		"ordinary Sand edit enters native owner while actual drawing is unprepared")
+	check(await until(func() -> bool:
+		host.consume_worker_snapshot()
+		return host.last_uploaded_revision>prior_revision and host.last_uploaded_render_snapshot_serial>prior_serial \
+			and host.image.get_pixelv(paint_cell).r8==2),
+		"actual newer native material reaches the production texture upload path")
+	await _settle_render_notifications()
+	var held_pixels: String = _pixels_sha256(root.get_texture().get_image())
+	check(host.workbench_presentation_frame==submitted and held_pixels==before_pixels \
+		and host.workbench_presentation_submission_status().committed_count==count and pre_draw_count==before_draw,
+		"new uploaded material grants no framebuffer, mapping or draw credit without actual admission")
+	var pose: Transform2D = submitted.poses[body_slot]
+	var local: Vector2 = host._world_view_screen_transform().affine_inverse()*(submitted.camera_mapping*pose.origin)
+	var cell: Vector2i = host.world_cell_from_local_point(local,true)
+	var selected_before: int = ui.selected_id()
+	ui._tool.select(2)
+	check(ui.select_instance(0),"unsubmitted material actual mouse witness clears prior selection")
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = local
+	ui._world_input(click)
+	var selected_after: int = ui.selected_id()
+	check(selected_after==actor_id,"actual mouse still selects the submitted actor while newer material remains unsubmitted")
+	check(host.physical_actor_session.tick==before_step,"material authoring and submitted-actor picking invent no Rapier completion")
+	var refused: Array[Dictionary] = []
+	for kind: String in ["future_submission","foreign_world","material_join"]:
+		# Frozen copies isolate one refusal fence. They are never submitted or
+		# drawn and cannot replace the exact unchanged framebuffer witness.
+		var injected: Dictionary = submitted.duplicate(true)
+		if kind=="future_submission": injected.submission_serial = count+1
+		elif kind=="foreign_world": injected.world_generation = int(submitted.world_generation)+1
+		else: injected.mask_frame.revision = int(submitted.material_revision)+1
+		Transaction.freeze(injected)
+		host.workbench_presentation_frame = injected
+		ui.select_instance(0)
+		ui._pick(cell)
+		check(ui.selected_id()==0,"submitted actor picking refuses copied "+kind+" identity")
+		refused.append({"kind":kind,"selected_id":ui.selected_id(),"fixture_injected_refusal":true})
+		host.workbench_presentation_frame = submitted
+	unsubmitted_material_picking = {"actor_id":actor_id,"body_slot":body_slot,"selected_id":selected_after,
+		"cell":[cell.x,cell.y],"local":[local.x,local.y],"paint_cell":[paint_cell.x,paint_cell.y],
+		"uploaded_material_id":host.image.get_pixelv(paint_cell).r8,
+		"submitted_revision":int(submitted.material_revision),"previous_uploaded_revision":prior_revision,
+		"uploaded_revision":host.last_uploaded_revision,"previous_uploaded_serial":prior_serial,
+		"uploaded_serial":host.last_uploaded_render_snapshot_serial,
+		"before_sha256":before_pixels,"held_sha256":held_pixels,
+		"mapping_unchanged":host.workbench_presentation_frame==submitted,
+		"submission_delta":host.workbench_presentation_submission_status().committed_count-count,
+		"pre_draw_delta":pre_draw_count-before_draw,"step_before":before_step,"step_after":host.physical_actor_session.tick,
+		"refusal_controls":refused}
+	ui.select_instance(selected_before)
+	_prepare()
+	await _await_actual_draw(count)
+	check(host.workbench_presentation_frame.material_revision==host.last_uploaded_revision,
+		"next genuine draw adopts the new material with its own interaction frame")
+	unsubmitted_material_picking["next_submission_delta"] = host.workbench_presentation_submission_status().committed_count-count
+	unsubmitted_material_picking["next_material_revision"] = int(host.workbench_presentation_frame.material_revision)
+	_record("unsubmitted_material_picking")
 
 
 func _transformed_pointer_case() -> void:
@@ -637,8 +718,9 @@ func _finish() -> void:
 		"engine_atomic_admission":Transaction.atomic_admission_supported(),
 		"refusal_framebuffers":refusal_framebuffers,
 		"fallback_ui":fallback_ui,
+		"unsubmitted_material_picking":unsubmitted_material_picking,
 		"input_hashes":{},"scope":"native mounted graphical draw admission; first framebuffer read; no GPU completion or physical NVIDIA acceptance"}
-	for path: String in ["res://scripts/main.gd","res://scripts/workbench_presentation_submission.gd",
+	for path: String in ["res://scripts/main.gd","res://scripts/shared_workbench.gd","res://scripts/workbench_presentation_submission.gd",
 			"res://tests/test_workbench_presentation_submission.gd"]:
 		result.input_hashes[path] = FileAccess.get_sha256(path)
 	if not output.is_empty():

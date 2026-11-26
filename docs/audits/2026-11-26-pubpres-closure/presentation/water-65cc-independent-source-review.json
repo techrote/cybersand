@@ -1,0 +1,32 @@
+{
+  "schema": "pubpres-independent-source-review-v1",
+  "reviewer": "Specialist B, atomic presentation and physical ownership",
+  "source_commit": "65cc0791739437a4a239f7028ad5a6489f2cacd6",
+  "files": {
+    "godot/scripts/main.gd": "892e9b85b9473a33b5e025c46db41add0814ad4e2d1c58d9cb28837e804bfdca",
+    "godot/scripts/workbench_presentation_coherence.gd": "a19d8b06bbd33a8ff3f56ff2f4898fdb9f5eb644c38356823183d36dbb65618b",
+    "godot/tests/test_workbench_water_composition.gd": "207df009a3e92993845ef3bbb7a564bfaf9a0066cad86d3c4752dfcde6c8a15b"
+  },
+  "disposition": "SOURCE_SAFETY_REVIEW_PASS_GRAPHICAL_VISIBILITY_PENDING",
+  "accepted_reasoning": [
+    "Current physical/native dependency is still separately established before any Water-compatible coverage can grant presentation.",
+    "The bounded fast proof covers the complete continuously swept AABB, not just endpoints, and only material IDs0/3 in both contributing images can pass.",
+    "Converting a bounded RG8 copy to R8 reads material IDs independently of state bytes without mutating the immutable source images.",
+    "Existing rigid-transform, World extent, previous-history, scan/cell and cooperative elapsed limits remain. Any failed fast proof still charges its scan and must satisfy the existing exact geometric guard.",
+    "Initial adoption and reentry use the previously explicit endpoint rules; consecutive visible motion still requires the continuous sweep.",
+    "Only a positive Water-in-bounds or actual Water-contact proof selects the clipped Water layer. Entirely Empty proofs preserve ordinary dry certificates and rendering.",
+    "No native solver, physical completion, actor capacity or ownership policy is changed."
+  ],
+  "challenge_addressed": "The first source draft put completely dry bodies into the Water layer;65cc0791 excludes that case and preserves ordinary Empty certificates.",
+  "required_execution": [
+    "Resulting-source mounted Water/Sand fixture with phase-by-phase omissions inspected, not just terminal assertion count",
+    "Moving submerged, dry-to-wet, restore and both paused history windows",
+    "Actual framebuffer and custom atomic render-owner scopes",
+    "Final native/engine/application source binding and ordinary mixed gameplay"
+  ],
+  "limits": [
+    "This review does not prove absence of intermittent omissions or performance benefit.",
+    "The whole-bounds fast proof may remain conservative around hard material outside actual geometry; the exact fallback retains original safety constraints.",
+    "The scan budget counts bounded world-cell coverage, not GPU memory or rendering command bytes."
+  ]
+}

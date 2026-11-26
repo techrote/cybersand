@@ -19,13 +19,16 @@ import recovery_policy
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/pubpres_playability_build"))
 from run_regressions import run, validate_completion, terminal_json, check_framebuffer, digest, continuation_policy
+ACTIVE_MODE='selected'
 
 
 def full_policy():
     policy = continuation_policy("off")
     policy["selectors"]["CYBERSAND_MATERIAL_PUBLICATION"] = "full"
     policy["selectors"]["CYBERSAND_DIAG_FULL_IMAGE_SLOTS"] = "2"
-    policy["selectors"].update(recovery_policy.selectors(recovery_policy.selection()))
+    configured=recovery_policy.configuration(recovery_policy.selection(),ACTIVE_MODE)
+    policy["selectors"]["CYBERSAND_MATERIAL_QUEUE_THREAD"]=configured['render_thread']
+    policy["selectors"].update(recovery_policy.selectors(recovery_policy.selection(),ACTIVE_MODE))
     return policy
 
 
@@ -35,8 +38,9 @@ def validate_full_policy(evidence):
                            "maximum_attempts_per_process_frame": 1, "maximum_mailbox_reads_per_attempt": 1,
                            "wait_usec": 0, "new_physics_callbacks": 0, "carried_time_credit": False},
                 "material": {"requested_mode": "full", "backend": "full", "full_image_slots": 2, "fallback_reason": ""},
-                "recovery":{"water_enabled":bool(recovery_policy.selection()['water_composition']),
-                    "actual_submission_enabled":False,"sample_idle_enabled":False}}
+                "recovery":{"water_enabled":full_policy()['selectors']['CYBERSAND_DIAG_WATER_COMPOSITION']=='1',
+                    "actual_submission_enabled":full_policy()['selectors']['CYBERSAND_DIAG_ACTUAL_SUBMISSION']=='1',
+                    "sample_idle_enabled":False}}
     package.need(isinstance(evidence, dict) and set(evidence) == {"schema", "mode", "claim", "before", "after"}
                  and evidence["schema"] == "pubpres-authoring-continuation-evidence-v1"
                  and evidence["mode"] == "off" and evidence["claim"] == "configuration-only",
@@ -100,11 +104,14 @@ def authoring_evidence(text, project, native_sha, screenshots, *, graphical, reo
 
 
 def main():
+    global ACTIVE_MODE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--package", type=Path, required=True)
     parser.add_argument("--candidate", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--mode",choices=('selected','fallback','experimental'),default='selected')
     args = parser.parse_args()
+    ACTIVE_MODE=args.mode
     package.need(os.name == "nt", "Installed authoring requires actual Windows")
     payload, output = args.package.resolve(), args.output.resolve()
     package.need(not output.exists(), "Preserve previous evidence; output must be new")
@@ -117,7 +124,9 @@ def main():
     overlay = project / "tests/pubpres_final_authoring.gd"
     package.need(not overlay.exists(), "Run-only authoring observer collides with committed source")
     shutil.copyfile(payload / package.TOOLS / "authoring.gd", overlay)
-    engine = payload / manifest["engine"]["gui"]["path"]
+    configured=recovery_policy.configuration(recovery_policy.selection(),ACTIVE_MODE)
+    engine_record=manifest['engine' if configured['engine']=='stock' else 'atomic_engine']
+    engine = payload / engine_record["gui"]["path"]
     authored = {p.relative_to(staged).as_posix(): digest(p) for p in staged.rglob("*")
                 if p.is_file() and not p.relative_to(staged).as_posix().startswith("godot/.godot/")}
     environment = {key: value for key, value in os.environ.items() if not key.startswith(("CYBERSAND_", "WB_COMBINED_"))}
@@ -141,7 +150,7 @@ def main():
             folder = output / label
             environment.update(WB_COMBINED_REOPEN="1" if reopen else "0", WB_COMBINED_SCREENSHOTS=str(folder / "screenshots"))
             item = run(prefix + ["--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle",
-                                "--render-thread", "safe", "--script", "res://tests/pubpres_final_authoring.gd"], environment, folder, 600)
+                                "--render-thread", configured['render_thread'], "--script", "res://tests/pubpres_final_authoring.gd"], environment, folder, 600)
             text = (folder / "stdout.log").read_text(errors="replace")
             item["validation_errors"] = validate_completion("test_workbench_combined_authoring", text, item["returncode"], reopen=reopen)
             outcomes.append(item)
@@ -151,7 +160,7 @@ def main():
             expected_profile=output/'profile/APPDATA/godot/app_userdata/Cyber Sand Reference Sandbox'
             package.need(Path(identity.get('user_data_directory','')).resolve()==expected_profile.resolve(),
                          'Actual author/reopen user directory escaped the exact isolated profile')
-            package.need(identity["engine_sha256"] == manifest["engine"]["gui"]["sha256"] and identity["render_thread_inline"] is True
+            package.need(identity["engine_sha256"] == engine_record["gui"]["sha256"] and identity["render_thread_inline"] is (configured['render_thread']=='safe')
                          and identity["tests/pubpres_final_authoring.gd"] == digest(overlay), "Actual authoring engine/owner/wrapper differs")
             item["authoring_evidence"] = evidence
             if reopen:
@@ -170,8 +179,8 @@ def main():
                    "manifest_sha256": digest(payload / package.MANIFEST), "engine_sha256": digest(engine),
                    "native_sha256": source["native"]["sha256"], "overlay_sha256": digest(overlay),
                    "complete": failure is None and len(outcomes) == 3, "failure": failure, "outcomes": outcomes,
-                   "policy": full_policy(), "physical_acceptance": "HOLD",
-                   "scope": "Actual 512-square graphical native author/Save/fresh-process reopen under ordinary Full/two-slot/Safe; no sustained gameplay or physical NVIDIA acceptance."}
+                   "policy": full_policy(),"configuration":configured,"mode":ACTIVE_MODE, "physical_acceptance": "HOLD",
+                   "scope": "Actual 512-square graphical native author/Save/fresh-process reopen under the explicit source-pinned owner configuration; no sustained gameplay or physical NVIDIA acceptance."}
         package.write_json(output / "SUMMARY.json", summary)
     return 0 if summary["complete"] else 1
 

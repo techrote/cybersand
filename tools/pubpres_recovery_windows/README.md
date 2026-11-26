@@ -2,7 +2,9 @@
 
 **Draft / HOLD.** Extract the complete ZIP into a fresh writable folder and double-click **Open Workbench.cmd**. The package includes its engine, native runtime, Rapier, resources and launchers. It needs no installed Git, Python, compiler or Godot.
 
-The ordinary configuration is official Godot 4.7, Safe rendering and Full publication with two image slots. The committed `selection.json` records the recovery configuration and its engineering disposition. Water composition is enabled only when that record selects it and the package includes resulting-source native graphical correctness. The launcher prints the selected mode and verifies the application's actual readback. Atomic submission, bounded render lookahead, material coalescing, sample-idle waiting and same-frame continuation remain disabled in this stock evaluator.
+The committed `selection.json` identifies the selected configuration and its engineering disposition. The launcher prints the exact application, engine, native runtime, renderer and policy. Official Godot 4.7 / Stock Safe remains the explicit fallback. A custom atomic engine can be included only with its exact recovered build02 identity and complete resulting-source Windows application qualification. Full publication keeps two image slots. Material coalescing, sample-idle waiting, the unselected native task-completion experiment and same-frame continuation remain disabled.
+
+If present, **Open Bounded Experimental.cmd** starts the separately identified atomic Separate4 candidate in its own profile. Its presence establishes technical qualification for testing; it does not establish that the performance targets passed. Water composition is enabled only when selected explicitly and supported by the native graphical qualification. Ordinary startup records actual effective policy once and then disconnects the observer.
 
 ## Open and play
 
@@ -27,7 +29,7 @@ Use the normal named authored Save controls. **Save start [Ctrl+S]** stores auth
 
 Each scene and selection has its own persistent profile in the sibling `Runs` folder. The fallback and frozen control keep separate profiles; opening them cannot replace the selected profile's saves. To compare playability, reproduce the same authored scene and interaction sequence in each profile. A second process cannot use a locked profile. Keep the launcher console available: it identifies the selected configuration, save location and any refusal.
 
-**Open Stock Safe Fallback.cmd** gives a clear recovery path if the selected Water presentation causes a problem. It preserves the same candidate source, official engine, Full two-slot publisher and ordinary controls, with the new Water composition disabled. It is a fallback configuration, not a guarantee that historical progression stalls are solved.
+**Open Stock Safe Fallback.cmd** gives a clear recovery path if the selected presentation causes a problem. It preserves the same candidate source and ordinary controls, using the official engine, Safe rendering, the Full two-slot publisher, and recovery Water/atomic/native-task treatments disabled. It is a fallback configuration, not a guarantee that historical progression stalls are solved.
 
 ## Reports and optional diagnostics
 

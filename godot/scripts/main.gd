@@ -4177,48 +4177,42 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			elif certificate_valid and anchor == target:
 				decision = {"safe":true,"reason":"same_presented_pose"}
 			else:
-				# A previously COMPLETE scan of the exact same immutable images and
-				# sweep may be reused before the shared scan deadline. This prevents
-				# repeated static submerged actors losing visibility solely because
-				# earlier peers spent this frame's budget. Native authority is fresh.
+				# Prove the actual current physical/native authority FIRST, then
+				# ask the Water-compatible guard once. An empty-only guard would
+				# inevitably reject Water, spend its refinement budget and starve
+				# this same valid composition or a later member. The compatible
+				# guard still scans both immutable histories, refuses hard material,
+				# retains the same sweep/cell/time bounds and creates no completion.
 				if _workbench_water_composition_enabled() and target_step == physical_actor_session.tick \
 						and target == desired:
-					var retained_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
-					var retained_start: Transform2D = desired if initial or retained_reentry else anchor
-					var retained_check: Dictionary = _assess_workbench_water_sweep(slot,retained_start,
-						desired,bridge._rects[slot],resolved,summary,true)
-					if not retained_check.is_empty():
-						var retained_proof: Dictionary = _workbench_water_dependency(slot,frame,entry,desired_observation)
-						if not retained_proof.is_empty():
-							retained_proof["coverage"] = retained_check
-							resolved.water_proofs[slot] = retained_proof
-							resolved.explicit_reentries[slot] = retained_reentry
-							_workbench_water_coverage_cache_hits += 1
-							summary.water_coverage_reuses += 1
-							decision = {"safe":true,"reason":"water_composed:"+str(retained_proof.kind)}
+					var water_proof: Dictionary = _workbench_water_dependency(slot,frame,entry,desired_observation)
+					if not water_proof.is_empty():
+						# Exact COMPLETE image/sweep cache entries are checked before
+						# the shared deadline. Any changed input requires a new scan.
+						# Only an initial or actually withheld body may re-enter at
+						# its endpoint; consecutive visible poses require the sweep.
+						var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
+						var water_start: Transform2D = desired if initial or water_reentry else anchor
+						var water_check: Dictionary = _assess_workbench_water_sweep(slot,water_start,
+							desired,bridge._rects[slot],resolved,summary)
+						decision = water_check
+						if bool(water_check.safe):
+							if water_check.get("coverage_reused",false):
+								_workbench_water_coverage_cache_hits += 1
+								summary.water_coverage_reuses += 1
+							resolved.explicit_reentries[slot] = water_reentry
+							# A complete Empty proof needs no Water layer or native
+							# composition exception. Keep its ordinary certificate,
+							# including across unchanged dry frames.
+							if bool(water_check.get("water_in_bounds",false)) or int(water_check.get("water_contacts",0)) > 0:
+								water_proof["coverage"] = water_check.duplicate()
+								resolved.water_proofs[slot] = water_proof
+								decision = {"safe":true,"reason":"water_composed:"+str(water_proof.kind)}
 				# Certify only the motion since the last presented state. Old
 				# material behind that state cannot invalidate elapsed motion.
 				if decision.is_empty():
 					if recovering: resolved.recovery_attempts[slot] += 1
 					decision = _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
-			if not bool(decision.safe) and _workbench_water_composition_enabled() \
-					and target_step == physical_actor_session.tick and target == desired \
-					and str(decision.reason) in ["material_in_swept_mask","bounded_pose_delta"]:
-				var water_proof: Dictionary = _workbench_water_dependency(slot,frame,entry,desired_observation)
-				if not water_proof.is_empty():
-					# A withheld actual submission permits explicit endpoint reentry;
-					# consecutive visible poses still require the full continuous sweep.
-					var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
-					var water_start: Transform2D = desired if initial or water_reentry else anchor
-					var water_check: Dictionary = _assess_workbench_water_sweep(slot,water_start,desired,bridge._rects[slot],resolved,summary)
-					if bool(water_check.safe):
-						if water_check.get("coverage_reused",false):
-							_workbench_water_coverage_cache_hits += 1
-							summary.water_coverage_reuses += 1
-						water_proof["coverage"] = water_check.duplicate()
-						resolved.water_proofs[slot] = water_proof
-						resolved.explicit_reentries[slot] = water_reentry
-						decision = {"safe":true,"reason":"water_composed:"+str(water_proof.kind)}
 			if bool(decision.safe):
 				selected = target
 				selected_step = target_step

@@ -15,7 +15,8 @@ Assert-PP (-not (Test-Path -LiteralPath $ProbeOutput) -and
 $Report=[ordered]@{schema='pubpres-recovery-extracted-evaluator-v1';candidate=$Probe.candidate;complete=$false;
     checks=[Collections.Generic.List[object]]::new();launches=[Collections.Generic.List[object]]::new();failure=$null;physical_acceptance='HOLD';
     scope='Actual extracted Windows source/runtime/launcher/reopen/scene/collector/process-owner qualification. No physical NVIDIA or sustained gameplay acceptance.'}
-$Extracted=Join-Path $ProbeOutput 'extracted'
+$Extracted=Join-Path $ProbeOutput 'extracted package with spaces'
+$Report['extracted_package']=$Extracted
 function Refuses([string]$Name,[scriptblock]$Operation) {
     $Rejected=$false
     try { & $Operation|Out-Null } catch { $Rejected=$true }
@@ -75,9 +76,10 @@ try {
     & $PowerShell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Extracted 'tools/pubpres_playability_windows/Test-ProcessOwner.ps1') -Output (Join-Path $ProbeOutput 'process-owner')
     Assert-PP ($LASTEXITCODE -eq 0) 'Retained actual-Windows process owner tests failed'
     $Report.checks.Add(@{name='creation-time-job-owner-controls';passed=$true})
-    Refuses 'frozen-donor-cannot-use-three-slots' { Get-PFSettings 'D' 'stock' 'safe' 3 'opengl3_angle' 'ordinary' }
-    Refuses 'stock-separate-is-not-qualified' { Get-PFSettings 'C' 'stock' 'separate' 2 'opengl3_angle' 'ordinary' }
-    Refuses 'selected-three-slots-is-not-qualified' { Get-PFSettings 'C' 'stock' 'safe' 3 'opengl3_angle' 'ordinary' }
+    $Selected=Get-PFConfiguration 'C' 'Selected'
+    Refuses 'frozen-donor-cannot-use-three-slots' { Get-PFSettings 'D' 'stock' 'safe' 3 'opengl3_angle' 'ordinary' 'Fallback' }
+    Refuses 'stock-separate-is-not-qualified' { Get-PFSettings 'C' 'stock' 'separate' 2 'opengl3_angle' 'ordinary' 'Fallback' }
+    Refuses 'selected-three-slots-is-not-qualified' { Get-PFSettings 'C' $Selected.engine $Selected.render_thread 3 'opengl3_angle' 'ordinary' }
     Refuses 'selected-egl-is-not-qualified' { Get-PFSettings 'C' 'egl' 'safe' 2 'opengl3_angle' 'ordinary' }
     Refuses 'unknown-scene' { Get-PFSettings 'C' 'stock' 'safe' 2 'opengl3_angle' 'made-up' }
     $Native=Join-PPSafe $Extracted $Manifest.sources.C.native.path
@@ -121,6 +123,16 @@ try {
     $FallbackRecord=Test-PFRun $Fallback[0].FullName $Extracted $Manifest
     Assert-PP ($FallbackRecord.settings.CYBERSAND_DIAG_WATER_COMPOSITION -ceq '0' -and
         $FallbackRecord.settings.CYBERSAND_DIAG_ACTUAL_SUBMISSION -ceq '0') 'Fallback enabled a recovery treatment'
+    if($Manifest.recovery_selection.experimental_architecture -cne 'none') {
+        Refuses 'experimental-cannot-select-stock' { Get-PFSettings 'C' 'stock' 'safe' 2 'opengl3_angle' 'ordinary' 'Experimental' }
+        $ExperimentalCommand=Join-PPSafe $Extracted 'Open Bounded Experimental.cmd'
+        Check-NewLaunch 'bounded-experimental-open' { & $ExperimentalCommand --hosted-smoke } 'ordinary'
+        Check-NewLaunch 'bounded-experimental-reopen' { & $ExperimentalCommand --hosted-smoke } 'ordinary'
+        $Experimental=@(Get-ChildItem -LiteralPath (Join-Path $ProbeOutput 'Runs') -Directory|Where-Object {$_.Name -like '*-C-atomic-separate-slots2-opengl3_angle-Experimental-ordinary'})
+        Assert-PP ($Experimental.Count -eq 1 -and $Experimental[0].FullName -cne $RunPath) 'Experimental launch must preserve an independent owner profile'
+    } else {
+        Refuses 'unregistered-experimental-mode-refused' { Get-PFConfiguration 'C' 'Experimental' }
+    }
     $Launcher=Join-PPSafe $Extracted $Manifest.owner_launcher
     if('D' -cin @($Manifest.sources.PSObject.Properties.Name)) {
         $DonorLaunchIndex=$Report.launches.Count

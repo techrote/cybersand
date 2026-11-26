@@ -1,0 +1,2 @@
+[pass] Hard-surface bits match the display projection
+1 tests passed

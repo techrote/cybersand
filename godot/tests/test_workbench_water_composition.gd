@@ -31,6 +31,50 @@ func proof(current: Image, previous: Image, allow: bool = true,
 		limit,0,previous,true,current.get_data(),previous.get_data() if previous != null else PackedByteArray(),
 		0,false,allow)
 
+
+func bounded_water_clearance_checks() -> void:
+	var start := Transform2D(-0.15,Vector2(32.5,32.5))
+	var finish := Transform2D(0.15,Vector2(32.5,32.5))
+	var thin: Array = [{"center":Vector2(5,0),"size":Vector2(8,0.15)}]
+	for format: Image.Format in [Image.FORMAT_R8,Image.FORMAT_RG8]:
+		var current := Image.create(64,64,false,format)
+		var previous := Image.create(64,64,false,format)
+		# Green contains a Sand-like state byte, which is NOT a second ID.
+		current.fill(Color(3.0/255.0,2.0/255.0,0,1))
+		previous.fill(Color(0,3.0/255.0,0,1))
+		var current_bytes := current.get_data()
+		var previous_bytes := previous.get_data()
+		var sweep: Dictionary = Coherence.assess(start,finish,thin,current,{},false,true,
+			12000,0,previous,true,current_bytes,previous_bytes,24000,true,true)
+		check(sweep.safe and sweep.get("proof")=="water_composable_bounds"
+			and sweep.scanned > 0 and sweep.scanned <= 24000,
+			"bounded full Water/Empty clearance uses exact material IDs in format "+str(format))
+		check(current.get_data()==current_bytes and previous.get_data()==previous_bytes,
+			"bounded conversion leaves both immutable uploaded images unchanged "+str(format))
+		check(not Coherence.assess(start,finish,thin,current,{},false,true,
+			12000,0,previous,true,current_bytes,previous_bytes,24000,true,false).safe,
+			"ordinary non-composition still refuses genuine Water "+str(format))
+		# Both endpoints miss this cell, but the true intermediate rotation
+		# crosses its centre. Full bounds must not hide the thin Sand witness.
+		current.set_pixel(37,32,Color(2.0/255.0,3.0/255.0,0,1))
+		check(not Coherence.assess(start,finish,thin,current,{},false,true,
+			12000,0,previous,true,current.get_data(),previous_bytes,24000,true,true).safe,
+			"thin current Sand between sampled endpoints remains blocking "+str(format))
+		current.set_pixel(37,32,Color(3.0/255.0,2.0/255.0,0,1))
+		previous.set_pixel(37,32,Color(58.0/255.0,0,0,1))
+		check(not Coherence.assess(start,finish,thin,current,{},false,true,
+			12000,0,previous,true,current.get_data(),previous.get_data(),24000,true,true).safe,
+			"old-only hard material remains blocking through active crossfade "+str(format))
+		check(Coherence.assess(start,finish,thin,current,{},false,false,
+			12000,0,previous,true,current.get_data(),previous.get_data(),24000,true,true).safe,
+			"explicitly expired previous material contributes no clearance pixels "+str(format))
+		check(not Coherence.assess(start,finish,thin,current,{},false,false,
+			1,0,null,true,current.get_data(),PackedByteArray(),1,true,true).safe,
+			"insufficient shared cell allowance still refuses complete coverage "+str(format))
+		check(not Coherence.assess(start,finish,thin,current,{},false,false,
+			12000,Time.get_ticks_usec()-1,null,true,current.get_data(),PackedByteArray(),24000,true,true).safe,
+			"expired shared elapsed deadline cannot admit even clear Water bounds "+str(format))
+
 func identity_checks() -> void:
 	var pose := Transform2D(0,Vector2(3.5,3))
 	var context := {"bridge":-9223372036854775000,"session":1,"epoch":7,"world":3,
@@ -306,6 +350,7 @@ func graphical_checks() -> void:
 func _run() -> void:
 	identity_checks()
 	independent_authority_checks()
+	bounded_water_clearance_checks()
 	coverage_cache_checks()
 	check(coverage_checks_completed,"the complete production coverage fixture actually executed")
 	var water: Image = picture(3)

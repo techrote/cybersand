@@ -27,7 +27,7 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
          and proof['native']['binary_sha256']==source['native_runtime']['binary_sha256']
          and proof['import_source_mutations']==proof['final_source_mutations']==[],
          'Correctness source, driver, native, engine or authored bytes differ')
-    expected={'frozen':19,'submission':2,'water':4}[focus]
+    expected={'frozen':19,'submission':2,'water':4,'members':4}[focus]
     need(len(proof['outcomes'])==expected and len({(row['test'],row['slots']) for row in proof['outcomes']})==expected,
          'Correctness inventory is incomplete or duplicated')
     module=load_qualification()
@@ -43,7 +43,8 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
              and row.get('log_sha256')==digest(log) and 'ERROR:' not in text
              and row.get('display_owner_verified',True) is True,'Correctness actual process/log failed or changed')
         if row['test'] in module.SUPPLEMENTAL:
-            actual=module.supplemental_result(row['test'],text,folder,source,project,engine_sha=digest(engine),expected_inline=thread=='safe',expected_lookahead=budget)
+            actual=module.supplemental_result(row['test'],text,folder,source,project,engine_sha=digest(engine),
+                expected_inline=thread=='safe',expected_lookahead=budget,expected_atomic=bool(proof.get('engine_admission')))
             need(actual==row['evidence'],'Supplemental raw evidence no longer reproduces its exact original result')
         elif row['test']=='import':
             need('--import' in row['command'] and '--editor' in row['command'],'Import did not execute actual editor import')
@@ -147,5 +148,12 @@ def verify_inventory(path,source,driver,stock,custom,water):
             need(observed==row['receipt'] and process['observed_application_pid']==observed['context']['process_id'],
                  'Original-size first GPU reads do not reproduce')
     finally: fixture.unlink()
-    return {'inventory_sha256':digest(path),'correctness':verified,'graphical_controls_sha256':digest(graph),
+    members=[]
+    if data.get('closure_members_required') is True:
+        for name,engine,thread,budget in (
+            ('stock-members-correctness',stock,'safe',0),
+            ('atomic-members-safe-0',custom,'safe',0),
+            ('atomic-members-separate-4',custom,'separate',4)):
+            members.append(verify_summary(path.parent/name/'SUMMARY.json',source,driver,engine,'members',thread,budget))
+    return {'inventory_sha256':digest(path),'correctness':verified,'members':members,'graphical_controls_sha256':digest(graph),
             'scope':'Exact resulting source and raw prerequisite custody; timing remains separately qualified.'}

@@ -1,0 +1,35 @@
+PASS disabled default and typed refusal
+PASS coherent Water edits refuse before zero-mass normalization
+PASS dam break conserves and spreads
+PASS worker counts are cell identical
+PASS waves propagate and interfere
+PASS quiet water sleeps and wakes
+PASS sealed passage equalises
+PASS bodies block water and receive contacts
+PASS other materials still interact
+PASS documented Water-owned chemistry is disabled
+PASS ledger population follows spreading
+PASS chunk capacity is an explicit outcome
+PASS tiny drops cross sleep and chunk boundaries
+PASS erasing support reactivates a dormant film
+PASS region pause freezes cells and reentry resumes
+PASS fixed-seed edits masks and seams conserve
+PASS physical identity names Wave and substeps
+PASS paused flux is retained and edits retire faces
+PASS region boundary flux freezes while source falls
+PASS C API construction and overfill are lossless
+PASS extreme legal overfill conserves and remains editable
+PASS coordinate extrema refuse before mutation
+PASS distant positive masks preserve Wave transport
+PASS distant negative masks preserve Wave transport
+PASS mask overlap at signed bounds preserves bodies
+PASS sparse mask bounds follow clear move and reconfigure
+PASS tall extreme column preserves head sign
+PASS disturbed water reaches exact rest
+PASS films level and rest
+PASS supported film uses an adhesion threshold
+PASS state hash binds retained momentum
+PASS prepared uint16 payload and quantity are lossless
+PASS slosh short ripples and shallow front
+PASS slosh admission identity and worker parity
+WAVE_FLOW: 34 tests; 0 failures (34 registered)

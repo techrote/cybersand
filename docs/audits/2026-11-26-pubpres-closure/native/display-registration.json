@@ -1,0 +1,22 @@
+{
+  "schema": "pubpres-native-local-comparison-display-registration-v1",
+  "registered_before_comparative_execution": "2026-11-26T08:11:22.228084+00:00",
+  "application_and_driver": "b6956cd94382218a270ad85df7bc84f30a66776f",
+  "wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+  "parent_wrapper_sha256": "f405f03a1bfe301ebb8f9567092c23ce37d71749f0762eb0a72a009f5212b235",
+  "process_owner_sha256": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
+  "display": "Actual1920x1080 Xorg dummy/llvmpipe, privateMITcookie; all arms use identical wrapper and source",
+  "changes_from_component_wrapper": [
+    "Pinned process_owner import to immutable comparison source.",
+    "Fail closed unless owned server and application both end cleanly with no leaked descendants or forced server kill."
+  ],
+  "frozen_runner": "Unchanged original whole-process and actual-physical/presentation/resource gates. Xorg retains its own schema, never mislabeled Xvfb.",
+  "independent_readback_required": "Each display receipt must match recorded wrapperPID and pre-registered wrapperhash, terminal_ownership_verified true, server alive before requested shutdown, reaped, no unexpected members/forced kill, application0/not timed out and server0/-15.",
+  "physical_gpu_acceptance": false,
+  "interpretation": "Development-host comparative CPU physical progression and presentation receipts on software rendering. The inherited wrapper scope wording says correctness; this registration permits matched timing only on the common recorded display and never physical GPU acceptance.",
+  "independent_source_review": {
+    "reviewer": "Specialist B",
+    "verdict": "GO",
+    "scope": "Exact process-owner import and strict terminal checks reviewed; independent PID/hash/treatment checks still mandatory."
+  }
+}

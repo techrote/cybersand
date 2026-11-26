@@ -566,7 +566,8 @@ func _initialize() -> void:
 	# Explicit experimental arm settings are installed before the sole worker
 	# creates its native World. Absent settings on historical sources stay absent.
 	for pair: Array in [["CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","cybersand/experimental_wave_column_tiles"],
-		["CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE","cybersand/pubpres_wave_column_probe"]]:
+		["CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE","cybersand/pubpres_wave_column_probe"],
+		["CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER","cybersand/pubpres_task_completion_barrier"]]:
 		if OS.has_environment(str(pair[0])):
 			ProjectSettings.set_setting(str(pair[1]),OS.get_environment(str(pair[0])) == "1")
 	DirAccess.make_dir_recursive_absolute(output.get_base_dir())
@@ -634,7 +635,8 @@ func effective_selectors() -> Dictionary:
 		"CYBERSAND_DIAG_NATIVE_RENDEZVOUS","CYBERSAND_DIAG_MATERIAL_POOL_POLICY",
 		"CYBERSAND_DIAG_SAME_FRAME_CONTINUATION","CYBERSAND_DIAG_MATERIAL_RETIREMENT_SOURCE",
 		"CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE",
-		"CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE"]:
+		"CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE",
+		"CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER"]:
 		requested[key] = OS.get_environment(key)
 	var properties := {}
 	for item: Dictionary in host.get_property_list(): properties[str(item.name)] = true
@@ -653,6 +655,7 @@ func effective_selectors() -> Dictionary:
 		"pixel_pacing":host.simulation_worker.call("engine_lab_pixel_pacing") if host.simulation_worker.has_method("engine_lab_pixel_pacing") else null,
 		"render_snapshot_hz":host.render_snapshot_hz,"cadence_lod_enabled":host.cadence_lod_enabled,
 		"wave_column_probe":host.latest_snapshot.lab_context.get("wave_flow",{}).get("column_probe",null) if host.latest_snapshot != null else null,
+		"task_completion":host.latest_snapshot.lab_context.get("wave_flow",{}).get("task_completion",null) if host.latest_snapshot != null else null,
 		"null_meaning":"source has no diagnostic selector/status API; inspect hashed original source, not a substituted implementation"}
 
 func physical_owner_identity() -> Dictionary:

@@ -16,6 +16,7 @@ import shutil
 import sys
 import zipfile
 import recovery_policy
+import atomic_delivery
 
 ROOT = Path(__file__).resolve().parents[2]
 TOOLS = "tools/pubpres_recovery_windows"
@@ -26,7 +27,7 @@ spec.loader.exec_module(base)
 need, digest, write_json = base.need, base.digest, base.write_json
 MANIFEST = base.MANIFEST
 SCHEMA = "pubpres-playability-recovery-windows-v1"
-MISSION = "PUBPRES-PLAYABILITY-FINAL-RECOVERY-001"
+MISSION = "PUBPRES-PLAYABILITY-FINAL-CLOSURE-001"
 DONOR = "c90dbc46e1f57f28e06b1f4205b83467335ff657"
 PATCHED_GUI = "Godot-PUBPRES-EGL-4.7.exe"
 PATCHED_SHA = "d6a1e5795205eb7968131df55f39916af112f716ec419fce5f97ccb48990fd45"
@@ -37,9 +38,12 @@ SCENES = {"ordinary", "wave512", "wave1024", "wave2048", "mixed2048"}
 
 def command(candidate: str, scene: str = "ordinary", collector: bool = False, *, mode="Selected", donor=False) -> bytes:
     need(base.COMMIT.fullmatch(candidate) and scene in SCENES, "Unknown exact source or owner scene")
-    need(mode in ("Selected","Fallback") and (not donor or mode=="Fallback"),"Unknown recovery command selection")
+    need(mode in ("Selected","Fallback","Experimental") and (not donor or mode=="Fallback"),"Unknown recovery command selection")
     script = "Collect-Results.ps1" if collector else "Start-PUBPRES-Final.ps1"
+    configured=recovery_policy.configuration(recovery_policy.selection(),mode.lower(),'D' if donor else 'C')
+    engine_args=f" -Engine {configured['engine'].title()} -RenderThread {configured['render_thread'].title()}"
     args = "" if collector else f" -Action Open -OwnerProfile -Scene {scene} -RecoveryMode {mode}" + (" -Source Donor" if donor else "") + " %adapter%"
+    if not collector: args+=engine_args
     lines = ["@echo off", "setlocal", 'set "adapter="']
     if not collector:
         lines.append('if /i "%~1"=="--hosted-smoke" set "adapter=-RenderingDriver opengl3_angle -QuitAfterReady"')
@@ -48,6 +52,11 @@ def command(candidate: str, scene: str = "ordinary", collector: bool = False, *,
               f'-ExpectedCandidate {candidate}{args}', 'set "result=%errorlevel%"',
               'if not "%result%"=="0" if /i not "%~1"=="--hosted-smoke" pause', 'exit /b %result%', ""]
     return "\r\n".join(lines).encode("ascii")
+
+
+def selected_defaults():
+    chosen=recovery_policy.configuration(recovery_policy.selection())
+    return dict(DEFAULTS,engine=chosen['engine'],render_thread=chosen['render_thread'])
 
 
 def engine_restorer():
@@ -138,7 +147,7 @@ def verify(output: Path, candidate: str) -> dict:
     record = json.loads((output / MANIFEST).read_text(encoding="utf-8"))
     need(base.COMMIT.fullmatch(candidate) and record["schema"] == SCHEMA and record["mission"] == MISSION
          and record["candidate_commit"] == candidate and record["physical_acceptance"] == "HOLD"
-         and record["production_defaults_changed"] is False and record["defaults"] == DEFAULTS, "Final package identity/default/HOLD differs")
+         and record["production_defaults_changed"] is False and record["defaults"] == selected_defaults(), "Final package identity/default/HOLD differs")
     need(record["package_filename"] == f"CyberSand-{MISSION}-{candidate[:12]}-Windows.zip", "Package filename differs")
     need(record.get('patched_engine') is None,'Recovery stock selection cannot include an unqualified optional engine')
     need((output / (MANIFEST + ".sha256")).read_text(encoding="ascii") == f"{digest(output / MANIFEST)}  {MANIFEST}\n", "Manifest checksum differs")
@@ -173,11 +182,20 @@ def verify(output: Path, candidate: str) -> dict:
     need(record.get('recovery_selection')==configured and configured==recovery_policy.selection()
          and record.get('recovery_selection_sha256')==digest(output/TOOLS/recovery_policy.SELECTION),
          'Source-pinned recovery owner selection differs')
+    if recovery_policy.requires_atomic(configured):
+        atomic_delivery.verify(output,record.get('atomic_engine'),selected=configured['architecture']!='stock_safe')
+    else:
+        need(record.get('atomic_engine') is None,'Unregistered optional atomic engine')
     need((output/recovery_policy.FALLBACK_COMMAND).read_bytes()==command(candidate,mode='Fallback'),
          'Stock Safe fallback command differs')
     if 'D' in record['sources']:
         need((output/recovery_policy.DONOR_COMMAND).read_bytes()==command(candidate,mode='Fallback',donor=True),
              'Frozen control command differs')
+    if configured['experimental_architecture']!='none':
+        need((output/recovery_policy.EXPERIMENTAL_COMMAND).read_bytes()==command(candidate,mode='Experimental'),
+             'Explicit bounded experimental command differs')
+    else:
+        need(not (output/recovery_policy.EXPERIMENTAL_COMMAND).exists(),'Unregistered experimental launcher')
     gate=json.loads((output/'qualification/recovery-correctness.json').read_bytes())
     need(gate.get('schema')=='pubpres-recovery-owner-correctness-v1' and gate.get('source_commit')==candidate
          and gate.get('source_tree')==record['sources']['C']['source_tree'] and gate.get('selection')==configured
@@ -185,10 +203,15 @@ def verify(output: Path, candidate: str) -> dict:
          and gate.get('native_sha256')==record['sources']['C']['native']['sha256']
          and gate.get('physical_acceptance')=='HOLD' and gate.get('stock',{}).get('outcomes')==19
          and gate['stock'].get('raw_inputs_and_supplemental_replayed') is True
+         and gate.get('members',{}).get('outcomes')==4 and gate['members'].get('raw_inputs_and_supplemental_replayed') is True
          and ((configured['water_composition']==0 and gate.get('water') is None)
               or (configured['water_composition']==1 and gate.get('water',{}).get('outcomes')==4
                   and gate['water'].get('raw_inputs_and_supplemental_replayed') is True)),
          'Selected recovery configuration lacks resulting-source graphical correctness custody')
+    if recovery_policy.requires_atomic(configured):
+        atomic_delivery.verify_gate(gate.get('atomic'),record['atomic_engine'],candidate,record['sources']['C'],
+            bool(configured['water_composition']),safe_water=bool(configured['water_composition']) and configured['architecture']=='atomic_safe0')
+    else: need(gate.get('atomic') is None,'Stock-only package cannot claim atomic qualification')
     need(digest(output / "ACCEPTANCE.md") == digest(output / TOOLS / "ACCEPTANCE.md"), "Owner acceptance instructions differ")
     registration = json.loads((output / "tools/pubpres_final/registration.json").read_text())
     need(registration["schema"] == "pubpres-playability-final-registration-v1"
@@ -199,7 +222,7 @@ def verify(output: Path, candidate: str) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("candidate-root", "candidate-runtime", "donor-root", "donor-runtime", "godot-zip", "vc-runtime", "notices", "archive", "patched-engine-archive", "stock-correctness", "water-correctness"):
+    for name in ("candidate-root", "candidate-runtime", "donor-root", "donor-runtime", "godot-zip", "vc-runtime", "notices", "archive", "patched-engine-archive", "stock-correctness", "water-correctness", "members-correctness", "atomic-engine-directory", "atomic-inventory"):
         parser.add_argument("--" + name, type=Path)
     parser.add_argument("--candidate-sha", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -232,9 +255,19 @@ def main():
              "third_party/patches/godot-egl-current-window.patch"]
     base.archive_source(root, args.candidate_sha, output, paths)
     engine = base.stage_dependencies(output, args.godot_zip, args.vc_runtime, args.notices)
+    configured=recovery_policy.selection()
+    atomic=None
+    if recovery_policy.requires_atomic(configured):
+        need(args.atomic_engine_directory is not None and args.atomic_inventory is not None,
+             'Registered atomic configuration lacks exact engine and actual Windows application evidence')
+        atomic=atomic_delivery.stage(args.atomic_engine_directory.resolve(),output,selected=configured['architecture']!='stock_safe')
+    else:
+        need(args.atomic_engine_directory is None and args.atomic_inventory is None,'Stock-only package cannot carry unregistered atomic inputs')
     need(args.stock_correctness is not None,'Recovery evaluator requires retained actual Windows correctness')
     gate=recovery_policy.qualify(root,args.candidate_runtime.resolve(),output/engine['gui']['path'],
-        args.stock_correctness,args.water_correctness)
+        args.stock_correctness,args.water_correctness,members_summary=args.members_correctness,
+        atomic_root=None if atomic is None else output/atomic['root'],
+        atomic_inventory=args.atomic_inventory)
     write_json(output/'qualification/recovery-correctness.json',gate)
     patched = None
     if args.patched_engine_archive:
@@ -255,11 +288,13 @@ def main():
     (output/recovery_policy.FALLBACK_COMMAND).write_bytes(command(args.candidate_sha,mode='Fallback'))
     if 'D' in sources:
         (output/recovery_policy.DONOR_COMMAND).write_bytes(command(args.candidate_sha,mode='Fallback',donor=True))
+    if configured['experimental_architecture']!='none':
+        (output/recovery_policy.EXPERIMENTAL_COMMAND).write_bytes(command(args.candidate_sha,mode='Experimental'))
     shutil.copyfile(output / TOOLS / "README.md", output / "READ-ME.md")
     shutil.copyfile(output / TOOLS / "ACCEPTANCE.md", output / "ACCEPTANCE.md")
     record = {"schema": SCHEMA, "mission": MISSION, "candidate_commit": args.candidate_sha,
-              "package_filename": archive.name, "sources": sources, "engine": engine, "patched_engine": patched,
-              "defaults": DEFAULTS, "owner_commands": commands, "owner_launcher": TOOLS + "/Start-PUBPRES-Final.ps1",
+              "package_filename": archive.name, "sources": sources, "engine": engine, "patched_engine": patched,"atomic_engine":atomic,
+              "defaults": selected_defaults(), "owner_commands": commands, "owner_launcher": TOOLS + "/Start-PUBPRES-Final.ps1",
               "owner_observer": TOOLS + "/owner_start.gd", "owner_results_collector": TOOLS + "/Collect-Results.ps1",
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "recovery_selection":recovery_policy.selection(),

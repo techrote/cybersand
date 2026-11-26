@@ -411,6 +411,7 @@ subset, with the separate liquid-policy entry point noted below.
 | `maximum_rule_radius` | 2 | Prepared write expansion; active catalogue requires at least 2 |
 | `worker_threads` | 1 | Standalone worker count; adapter overrides below |
 | `parallel_job_threshold` | 8 | Minimum phase jobs before pool dispatch |
+| `pubpres_task_completion_barrier` | false | Experimental PUBPRES execution policy; retire a dispatch after all real task borrowers return instead of all configured workers acknowledging. No physical/save/hash semantics change; not selected by default. |
 | `active_core_capacity` | 4096 | Gathered core candidates/results; distinct cores per chunk are checked, cross-chunk duplicates removed after |
 | `active_chunk_capacity` | 4096 | Active-chunk scratch bound |
 | `maximum_chunk_count` | 4096 | Resident chunk limit |

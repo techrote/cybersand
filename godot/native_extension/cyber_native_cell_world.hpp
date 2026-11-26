@@ -226,6 +226,7 @@ private:
     // Captured once by the external owner during adapter construction. Native
     // pool tasks never access ProjectSettings or any Godot object.
     bool pubpres_wave_column_probe_ = false;
+    bool pubpres_task_completion_barrier_ = false;
     cybersand::TickStats last_stats_{};
     BodyStates current_bodies_{};
     BodyStates previous_bodies_{};

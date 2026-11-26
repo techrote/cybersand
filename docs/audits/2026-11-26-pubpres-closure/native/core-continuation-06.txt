@@ -1,0 +1,2 @@
+[pass] LCB-002 PressureFlow pocket sealed from open air is atmospheric
+1 tests passed

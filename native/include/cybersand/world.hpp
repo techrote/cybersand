@@ -48,6 +48,9 @@ struct WorldConfig {
     std::int32_t maximum_rule_radius = 2;
     std::uint32_t worker_threads = 1;
     std::size_t parallel_job_threshold = 8;
+    // PUBPRES recovery: execution-only, default-off actual-task completion.
+    // Does not alter physical laws, task geometry, saves or physical hashes.
+    bool pubpres_task_completion_barrier = false;
     std::size_t active_core_capacity = 4'096;
     std::size_t active_chunk_capacity = 4'096;
     std::size_t maximum_chunk_count = 4'096;
@@ -82,6 +85,12 @@ struct WorldConfig {
     // WAVE-MT-001 wave_flow_v1 (experimental): opt-in bulk strip-parallel Water
     // law. Disabled leaves every Current kernel, hash and format unchanged.
     WaveFlowConfig wave_flow{};
+};
+
+struct WorkerPoolDiagnostics {
+    bool task_completion_barrier = false;
+    std::uint64_t completed_dispatches = 0;
+    std::uint64_t completed_tasks = 0;
 };
 
 struct ChunkCoord {
@@ -211,6 +220,9 @@ public:
     World& operator=(World&&) noexcept;
 
     [[nodiscard]] const WorldConfig& config() const noexcept;
+    // Exclusive owner readback after dispatch completion; no timing or fake
+    // progress credit. A selected one-worker World can legitimately report0.
+    [[nodiscard]] WorkerPoolDiagnostics worker_pool_diagnostics() const noexcept;
     [[nodiscard]] const LiquidSolverPolicy& liquid_solver_policy() const noexcept {
         return config_.liquid_solver_policy;
     }

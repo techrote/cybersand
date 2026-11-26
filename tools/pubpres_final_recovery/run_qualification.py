@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -40,8 +41,19 @@ def need(value, message):
 
 
 SUPPLEMENTAL = {
+    "test_workbench_presentation_history": {
+        "text_footer": r"^WORKBENCH_PRESENTATION_HISTORY 17 checks; 0 failures$",
+        "exact_checks": 17, "minimum_checks": 17, "environment": {}},
+    "test_workbench_presentation_member_history": {
+        "prefix": "PUBPRES_MEMBER_HISTORY_RESULT ", "exact_checks": 23,
+        "minimum_checks": 23, "environment": {}},
+    "test_workbench_member_presentation": {
+        "prefix": "PUBPRES_MEMBER_PRESENTATION_RESULT ", "minimum_checks": 574, "exact_checks": 574,
+        "environment": {"CYBERSAND_DIAG_PRESENTATION": "coherent"},
+        "output_environment": "CYBERSAND_MEMBER_PRESENTATION_OUTPUT",
+        "schema": "pubpres-member-presentation-v1"},
     "test_workbench_presentation_submission": {
-        "prefix": "ACTUAL_SUBMISSION_RESULT ", "minimum_checks": 40,
+        "prefix": "ACTUAL_SUBMISSION_RESULT ", "minimum_checks": 110,
         "environment": {"CYBERSAND_DIAG_ACTUAL_SUBMISSION": "1", "CYBERSAND_DIAG_WATER_COMPOSITION": "0"},
         "output_argument": "--submission-evidence=",
         "schema": "workbench-actual-submission-graphical-v1"},
@@ -55,13 +67,20 @@ SUPPLEMENTAL = {
 }
 
 
-def supplemental_result(test, text, folder, source, project, *, engine_sha=None, expected_inline=None, expected_lookahead=None, receipt_path=None):
+def supplemental_result(test, text, folder, source, project, *, engine_sha=None, expected_inline=None, expected_lookahead=None, expected_atomic=False, receipt_path=None):
     expected = SUPPLEMENTAL[test]
-    lines = [line.removeprefix(expected["prefix"]) for line in text.splitlines() if line.startswith(expected["prefix"])]
-    need(len(lines) == 1, "Missing/duplicate exact supplemental completion: " + test)
-    terminal = json.loads(lines[0])
+    if "text_footer" in expected:
+        need(len(re.findall(expected["text_footer"], text, re.M)) == 1,
+             "Missing/duplicate unchanged history completion: " + test)
+        terminal = {"checks": expected["exact_checks"], "failures": []}
+    else:
+        lines = [line.removeprefix(expected["prefix"]) for line in text.splitlines() if line.startswith(expected["prefix"])]
+        need(len(lines) == 1, "Missing/duplicate exact supplemental completion: " + test)
+        terminal = json.loads(lines[0])
     need(terminal.get("failures") == [] and type(terminal.get("checks")) is int
          and terminal["checks"] >= expected["minimum_checks"], "Incomplete supplemental assertions: " + test)
+    if "exact_checks" in expected:
+        need(terminal["checks"] == expected["exact_checks"], "Supplemental assertion inventory differs: " + test)
     result = {"terminal": terminal, "test_sha256": digest(project / "tests" / (test + ".gd"))}
     if expected.get("output_environment") or expected.get("output_argument"):
         path = receipt_path or folder / "receipt.json"
@@ -71,6 +90,54 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
              "Supplemental source/failure evidence differs: " + test)
         if "schema" in expected:
             need(data.get("schema") == expected["schema"], "Unknown supplemental receipt schema")
+        if test == "test_workbench_member_presentation":
+            need(data == terminal and data.get("graphical") is True
+                 and type(data.get("process_id")) is int and data["process_id"] > 0,
+                 "Multipart terminal, actual graphical receipt or process identity differs")
+            if engine_sha is not None:
+                need(data.get("engine_sha256") == engine_sha
+                     and data.get("render_thread_inline") is expected_inline
+                     and data.get("actual_submission_enabled") is expected_atomic
+                     and data.get("requested_render_lookahead") == (str(expected_lookahead) if expected_atomic else ""),
+                     "Multipart engine, render owner, actual atomic mode or bounded selector differs")
+            native_file = "cybersand_native.windows.x86_64.dll" if os.name == "nt" else "libcybersand_native.linux.x86_64.so"
+            rapier_file = "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if os.name == "nt" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+            need(data.get("native_sha256") == digest(project / "addons/cybersand_native/bin" / native_file)
+                 and data.get("rapier_sha256") == digest(project / "addons/godot-rapier2d/bin" / rapier_file),
+                 "Multipart native or Rapier bytes differ")
+            observations = data.get("observations", [])
+            expected_members = {(stage, slot) for stage in ("initialized", "completed", "replacement") for slot in range(24)}
+            need(len(observations) == 72 and {(row.get("stage"), row.get("slot")) for row in observations} == expected_members
+                 and all(row.get("valid") is True and row.get("pose") == row.get("observed_pose")
+                         and row.get("step") == row.get("manual_steps") for row in observations),
+                 "Multipart actual owner/member/physical history inventory is incomplete")
+            picking = data.get("picking", [])
+            root_clicks = [row for row in picking if row.get("kind") == "ordinary_mouse_click"]
+            member_clicks = [row for row in picking if row.get("kind") == "individual_member_mouse_click"]
+            need(len(root_clicks) == 12
+                 and {(row.get("stage"),row.get("actor_slot")) for row in root_clicks} == {
+                     (stage,slot) for stage in ("initialized","replacement") for slot in range(6)}
+                 and len(member_clicks) == 72
+                 and {(row.get("stage"),row.get("body_slot")) for row in member_clicks} == expected_members
+                 and all(row.get("selected_id") == row.get("actor_id")
+                         and row.get("step_before") == row.get("step_after") for row in root_clicks + member_clicks),
+                 "Ordinary root/member mouse input or no-physical-credit inventory is incomplete")
+            refusals = [row for row in picking if row.get("fixture_injected_refusal") is True]
+            expected_refusals = {(stage,kind) for stage in ("initialized","replacement")
+                                 for kind in ("withheld_root","wrong_member_generation")}
+            expected_refusals.add(("replacement","retired_owner"))
+            expected_refusals.update((stage,kind) for stage in ("initialized","completed","replacement")
+                                     for kind in ("withheld_member","foreign_member_generation"))
+            need(len(refusals) == 11 and {(row.get("stage"),row.get("kind")) for row in refusals} == expected_refusals
+                 and all(row.get("selected_id") == 0 for row in refusals),
+                 "Multipart withheld, foreign or retired owner refusal is incomplete")
+            pixels = data.get("framebuffer", {})
+            need(pixels.get("body_slot") == 23 and all(isinstance(pixels.get(key),list) and len(pixels[key]) == 4
+                 for key in ("shown","hidden","restored"))
+                 and max(abs(a-b) for a,b in zip(pixels["shown"],pixels["hidden"])) > 0.02
+                 and max(abs(a-b) for a,b in zip(pixels["shown"],pixels["restored"])) < 0.005
+                 and pixels.get("png_sha256") == digest(Path(path).with_suffix(".png")),
+                 "Actual body23 framebuffer show/hide/restore control differs")
         if test == "test_workbench_presentation_submission":
             if engine_sha is not None:
                 need(data.get("engine_sha256") == engine_sha and type(data.get("process_id")) is int
@@ -79,6 +146,27 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
                      "Actual transaction executable, PID, render owner or bounded selector differs")
             need(data.get("engine_atomic_admission") is True,
                  "Journal-only pre-draw refusal cannot reject already-flushed candidate pixels")
+            picking = data.get("unsubmitted_material_picking", {})
+            need(all(type(picking.get(key)) is int for key in ("actor_id", "selected_id", "body_slot",
+                 "submitted_revision", "previous_uploaded_revision", "uploaded_revision", "previous_uploaded_serial",
+                 "uploaded_serial", "step_before", "step_after", "next_material_revision"))
+                 and picking["actor_id"] > 0 and picking["selected_id"] == picking["actor_id"]
+                 and picking["uploaded_material_id"] == 2
+                 and picking["uploaded_revision"] > picking["previous_uploaded_revision"] == picking["submitted_revision"]
+                 and picking["uploaded_serial"] > picking["previous_uploaded_serial"]
+                 and picking["mapping_unchanged"] is True
+                 and isinstance(picking.get("before_sha256"), str) and len(picking["before_sha256"]) == 64
+                 and picking["held_sha256"] == picking["before_sha256"]
+                 and picking["submission_delta"] == picking["pre_draw_delta"] == 0
+                 and picking["step_before"] == picking["step_after"]
+                 and picking["next_submission_delta"] == 1
+                 and picking["next_material_revision"] == picking["uploaded_revision"],
+                 "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw")
+            pick_refusals = picking.get("refusal_controls", [])
+            need(len(pick_refusals) == 3
+                 and {row.get("kind") for row in pick_refusals} == {"future_submission", "foreign_world", "material_join"}
+                 and all(row.get("fixture_injected_refusal") is True and row.get("selected_id") == 0 for row in pick_refusals),
+                 "Submitted-frame picking lacks serial, World or material join refusals")
             refusals = data.get("refusal_framebuffers", [])
             need(isinstance(refusals, list) and len(refusals) == 8
                  and {row.get("case") for row in refusals} == {
@@ -140,7 +228,7 @@ def main():
     parser.add_argument("--display-wrapper", type=Path)
     parser.add_argument("--allow-development-toolchain-drift", action="store_true")
     parser.add_argument("--headless-only", action="store_true")
-    parser.add_argument("--focus", choices=("all", "submission", "water", "frozen"), default="all")
+    parser.add_argument("--focus", choices=("all", "submission", "water", "members", "frozen"), default="all")
     parser.add_argument("--render-thread", choices=("safe", "separate"), default="safe")
     parser.add_argument("--lookahead", type=int, choices=(0, 4), default=0)
     engine_admission.add_arguments(parser)
@@ -158,7 +246,7 @@ def main():
         need(digest(engine) == ENGINE_SHA256[platform], "Stock control requires the exact official Godot 4.7 executable")
         need(args.render_thread == "safe", "Unregistered stock Separate control")
         need(args.lookahead == 0, "Stock reference has no bounded engine treatment")
-    need(args.render_thread == "safe" or args.focus in ("submission", "water"),
+    need(args.render_thread == "safe" or args.focus in ("submission", "water", "members"),
          "Frozen correctness inventory retains its original Safe owner; new Separate gates run separately")
     rapier = json.loads((source_root / f"godot/addons/godot-rapier2d/runtime-provenance.{platform}.json").read_text())
     need(digest(source_root / rapier["artifact"]) == rapier["sha256"], "Rapier runtime differs")
@@ -204,7 +292,7 @@ def main():
                 environment["CYBERSAND_ENGINE_RENDER_LOOKAHEAD_TRACE"] = str(folder / "engine-draws.json")
         if test in SUPPLEMENTAL:
             environment.update(SUPPLEMENTAL[test]["environment"])
-            if test == "test_workbench_water_composition_native":
+            if test in ("test_workbench_water_composition_native", "test_workbench_member_presentation"):
                 environment["CYBERSAND_DIAG_ACTUAL_SUBMISSION"] = "1" if engine_proof else "0"
             if SUPPLEMENTAL[test].get("output_environment"):
                 environment[SUPPLEMENTAL[test]["output_environment"]] = str(folder / "receipt.json")
@@ -233,7 +321,8 @@ def main():
             need("SCRIPT ERROR:" not in text and "ERROR:" not in text, "Strict Godot diagnostic failure")
             if test in SUPPLEMENTAL:
                 item["evidence"] = supplemental_result(test, text, folder, source, project, engine_sha=report["engine_sha256"],
-                    expected_inline=args.render_thread == "safe", expected_lookahead=args.lookahead)
+                    expected_inline=args.render_thread == "safe", expected_lookahead=args.lookahead,
+                    expected_atomic=bool(engine_proof))
             elif test == "test_full_image_ring_publication":
                 item["evidence"] = ring_result(text, source["source_commit"], project, driver, engine_sha256=report["engine_sha256"])
             elif test == "pubpres_full_image_ring_oracle":
@@ -295,6 +384,11 @@ def main():
         if not args.headless_only:
             invoke("test_workbench_water_composition", 3, True)
             invoke("test_workbench_water_composition_native", 2, True)
+    if imported and args.focus in ("all", "members"):
+        invoke("test_workbench_presentation_history")
+        invoke("test_workbench_presentation_member_history")
+        if not args.headless_only:
+            invoke("test_workbench_member_presentation", 2, True)
     report["final_source_mutations"] = [name for name, expected in authored.items()
                                         if name not in {".godot/global_script_class_cache.cfg", ".godot/extension_list.cfg"}
                                         and (not (project / name).is_file() or digest(project / name) != expected)]

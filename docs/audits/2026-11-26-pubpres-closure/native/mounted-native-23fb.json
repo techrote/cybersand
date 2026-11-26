@@ -1,0 +1,87 @@
+{
+	"checks": 150,
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"failures": [],
+	"observations": [
+		{
+			"candidate": {
+				"completed_dispatches": 204,
+				"completed_tasks": 810,
+				"mode": "actual_tasks",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"control": {
+				"completed_dispatches": 204,
+				"completed_tasks": 810,
+				"mode": "all_workers",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"physical_hash": "863aaf46ed19ed6b",
+			"stage": "matched_native"
+		},
+		{
+			"after": {
+				"completed_dispatches": 36,
+				"completed_tasks": 132,
+				"mode": "all_workers",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"before": {
+				"completed_dispatches": 0,
+				"completed_tasks": 0,
+				"mode": "all_workers",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"completed_tick": 8,
+			"enabled": false,
+			"physical_hash": "53474db831f0c384",
+			"stage": "prepared_owner"
+		},
+		{
+			"after": {
+				"completed_dispatches": 36,
+				"completed_tasks": 132,
+				"mode": "actual_tasks",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"before": {
+				"completed_dispatches": 0,
+				"completed_tasks": 0,
+				"mode": "actual_tasks",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"completed_tick": 8,
+			"enabled": true,
+			"physical_hash": "53474db831f0c384",
+			"stage": "prepared_owner"
+		},
+		{
+			"error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
+			"stage": "refused_selector",
+			"type": 2
+		},
+		{
+			"error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
+			"stage": "refused_selector",
+			"type": 4
+		},
+		{
+			"error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
+			"stage": "refused_selector",
+			"type": 3
+		}
+	],
+	"schema": "pubpres-task-completion-native-v1",
+	"source_revision": "23fb64d89c091448550814bff1543960b9012e1b",
+	"test_sha256": "f5fe74c2ddc7c17f16a4e66c8af4364d548dc7461e8ab120693fe0c5887d288e"
+}

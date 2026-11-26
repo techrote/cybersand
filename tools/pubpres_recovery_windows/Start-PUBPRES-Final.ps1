@@ -3,12 +3,12 @@ param(
     [string]$PackageRoot='', [string]$ExpectedCandidate='',
     [ValidateSet('Verify','Open')][string]$Action='Verify',
     [ValidateSet('Candidate','Donor')][string]$Source='Candidate',
-    [ValidateSet('Stock','Egl')][string]$Engine='Stock',
+    [ValidateSet('Stock','Atomic')][string]$Engine='Stock',
     [ValidateSet('Safe','Separate')][string]$RenderThread='Safe',
     [ValidateSet(2,3)][int]$FullImageSlots=2,
     [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver='opengl3',
     [ValidateSet('ordinary','wave512','wave1024','wave2048','mixed2048')][string]$Scene='ordinary',
-    [ValidateSet('Selected','Fallback')][string]$RecoveryMode='Selected',
+    [ValidateSet('Selected','Fallback','Experimental')][string]$RecoveryMode='Selected',
     [string]$ReopenRun='', [switch]$OwnerProfile, [switch]$QuitAfterReady, [switch]$Library
 )
 # The frozen library supplies bounded path checks and creation-time Windows Job
@@ -21,27 +21,48 @@ $PFExplicit=@{}; foreach($Name in $PSBoundParameters.Keys) { $PFExplicit[$Name]=
 . (Join-Path $PSScriptRoot '../pubpres_playability_windows/Start-PUBPRES-Playability.ps1') -Library
 foreach($Name in $PFParameters.Keys) { Set-Variable -Name $Name -Value $PFParameters[$Name] }
 $script:PFDonor='c90dbc46e1f57f28e06b1f4205b83467335ff657'
-$script:PFMission='PUBPRES-PLAYABILITY-FINAL-RECOVERY-001'
+$script:PFMission='PUBPRES-PLAYABILITY-FINAL-CLOSURE-001'
 $script:PFSchema='pubpres-playability-recovery-windows-v1'
 $script:PFPatchedSha='d6a1e5795205eb7968131df55f39916af112f716ec419fce5f97ccb48990fd45'
 $script:PFSelectionPath=Join-Path $PSScriptRoot 'selection.json'
 
 function Get-PFRecoverySelection {
     $Selection=Read-PPJson $script:PFSelectionPath
-    Assert-PP (@($Selection.PSObject.Properties).Count -eq 8 -and
-        $Selection.schema -ceq 'pubpres-recovery-owner-selection-v1' -and $Selection.architecture -ceq 'stock_safe' -and
-        $Selection.water_composition -in @(0,1) -and $Selection.actual_submission -eq 0 -and $Selection.render_lookahead -eq 0 -and
+    $Architectures=@('stock_safe','atomic_safe0','atomic_separate0','atomic_separate4')
+    Assert-PP (@($Selection.PSObject.Properties).Count -eq 10 -and
+        $Selection.schema -ceq 'pubpres-closure-owner-selection-v2' -and $Selection.architecture -cin $Architectures -and
+        $Selection.water_composition -in @(0,1) -and
+        $Selection.actual_submission -eq [int]($Selection.architecture -cne 'stock_safe') -and
+        $Selection.render_lookahead -eq $(if($Selection.architecture -ceq 'atomic_separate4'){4}else{0}) -and
+        $Selection.experimental_architecture -cin @('none','atomic_separate4') -and $Selection.task_completion -eq 0 -and
         $Selection.engineering_disposition -cin @('EXPERIMENTAL / HOLD','ENGINEERING COMPLETE / QUALIFIED / DRAFT-HOLD FOR PHYSICAL OWNER ACCEPTANCE') -and
         $Selection.physical_acceptance -ceq 'HOLD' -and $Selection.rationale) 'Unsupported recovery owner configuration'
     return $Selection
 }
 
-function Get-PFRecoverySettings([string]$Key,[string]$Mode) {
-    Assert-PP ($Key -cin @('C','D') -and $Mode -cin @('Selected','Fallback')) 'Unknown recovery selection role'
+function Get-PFConfiguration([string]$Key,[string]$Mode) {
+    Assert-PP ($Key -cin @('C','D') -and $Mode -cin @('Selected','Fallback','Experimental') -and
+        ($Key -cne 'D' -or $Mode -ceq 'Fallback')) 'Unknown or unqualified recovery selection role'
     $Selection=Get-PFRecoverySelection
-    $Water=if($Key -ceq 'C' -and $Mode -ceq 'Selected') {[string]$Selection.water_composition} else {'0'}
-    return [ordered]@{CYBERSAND_DIAG_WATER_COMPOSITION=$Water;CYBERSAND_DIAG_ACTUAL_SUBMISSION='0';
-        CYBERSAND_ENGINE_RENDER_LOOKAHEAD='0';CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL='0';CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE='0'}
+    $Architecture=if($Mode -ceq 'Fallback') {'stock_safe'} else {$Selection.architecture}
+    if($Mode -ceq 'Experimental') {
+        Assert-PP ($Selection.experimental_architecture -cne 'none') 'No experimental engine is registered'
+        $Architecture=$Selection.experimental_architecture
+    }
+    return [ordered]@{architecture=$Architecture;
+        engine=$(if($Architecture -ceq 'stock_safe'){'stock'}else{'atomic'});
+        render_thread=$(if($Architecture -cin @('stock_safe','atomic_safe0')){'safe'}else{'separate'});
+        actual_submission=[int]($Architecture -cne 'stock_safe');
+        render_lookahead=$(if($Architecture -ceq 'atomic_separate4'){4}else{0})}
+}
+
+function Get-PFRecoverySettings([string]$Key,[string]$Mode) {
+    $Configuration=Get-PFConfiguration $Key $Mode
+    $Selection=Get-PFRecoverySelection
+    $Water=if($Key -ceq 'C' -and $Mode -cne 'Fallback') {[string]$Selection.water_composition} else {'0'}
+    return [ordered]@{CYBERSAND_DIAG_WATER_COMPOSITION=$Water;CYBERSAND_DIAG_ACTUAL_SUBMISSION=[string]$Configuration.actual_submission;
+        CYBERSAND_ENGINE_RENDER_LOOKAHEAD=[string]$Configuration.render_lookahead;CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL='0';
+        CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE='0';CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER='0'}
 }
 
 function Test-PFReadyProfile($Ready,[string]$RunProfile) {
@@ -65,8 +86,9 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Manifest.production_defaults_changed -eq $false) 'Final package identity or HOLD differs'
     Assert-PP ($Manifest.package_filename -ceq ('CyberSand-'+$script:PFMission+'-'+$Candidate.Substring(0,12)+'-Windows.zip')) 'Evaluator filename differs'
     $Defaults=$Manifest.defaults
-    Assert-PP (@($Defaults.PSObject.Properties).Count -eq 7 -and $Defaults.source -ceq 'C' -and $Defaults.engine -ceq 'stock' -and
-        $Defaults.render_thread -ceq 'safe' -and $Defaults.material -ceq 'full' -and $Defaults.full_image_slots -eq 2 -and
+    $SelectedConfiguration=Get-PFConfiguration 'C' 'Selected'
+    Assert-PP (@($Defaults.PSObject.Properties).Count -eq 7 -and $Defaults.source -ceq 'C' -and $Defaults.engine -ceq $SelectedConfiguration.engine -and
+        $Defaults.render_thread -ceq $SelectedConfiguration.render_thread -and $Defaults.material -ceq 'full' -and $Defaults.full_image_slots -eq 2 -and
         $Defaults.same_frame_continuation -ceq 'off' -and $Defaults.scene -ceq 'ordinary') 'Ordinary default selectors differ'
     $Selection=Get-PFRecoverySelection
     Assert-PP (($Manifest.recovery_selection|ConvertTo-Json -Depth 8 -Compress) -ceq ($Selection|ConvertTo-Json -Depth 8 -Compress) -and
@@ -199,6 +221,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         Assert-PP ((Get-PPHash (Join-PPSafe $Root $Entry.Name)) -ceq $Entry.Value) 'VC binary/licence differs'
     }
     Assert-PP ((Get-PPHash (Join-PPSafe $Root 'vcruntime140.dll')) -ceq $Manifest.engine.vc_runtime_sha256) 'VC engine binding differs'
+    Assert-PP ($null -eq $Manifest.patched_engine) 'Unqualified predecessor engine is not an owner configuration'
     if($null -ne $Manifest.patched_engine) {
         $Patch=$Manifest.patched_engine
         Assert-PP ($Patch.root -ceq 'engines/egl' -and $Patch.gui.path -ceq 'Godot-PUBPRES-EGL-4.7.exe' -and
@@ -221,6 +244,38 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
             (Get-PPHash (Join-PPSafe (Join-PPSafe $Root $Patch.root) $Proof.gui_executable)) -ceq $script:PFPatchedSha) 'Patched executable copy differs'
         Assert-PPX64 (Join-PPSafe $Root $Patch.gui.path)
     }
+    $NeedsAtomic=$Selection.architecture -cne 'stock_safe' -or $Selection.experimental_architecture -cne 'none'
+    if($NeedsAtomic) {
+        $Atomic=$Manifest.atomic_engine
+        $Pin=Read-PPJson (Join-Path $PSScriptRoot 'atomic-engine.json')
+        Assert-PP ($Atomic -and $Atomic.root -ceq 'engines/atomic' -and $Atomic.gui.path -ceq 'Godot-PUBPRES-Atomic-4.7.exe' -and
+            $Atomic.gui.sha256 -ceq $Pin.gui_sha256 -and $Atomic.provenance_sha256 -ceq $Pin.proof_sha256 -and
+            $Atomic.default -eq ($Selection.architecture -cne 'stock_safe') -and
+            ($Atomic.artifact|ConvertTo-Json -Depth 8 -Compress) -ceq ($Pin|ConvertTo-Json -Depth 8 -Compress)) 'Atomic engine role or exact original build02 pin differs'
+        $AtomicRoot=Join-PPSafe $Root $Atomic.root
+        $ProofPath=Join-PPSafe $AtomicRoot 'build-provenance.json'
+        Assert-PP ((Get-PPHash $ProofPath) -ceq $Pin.proof_sha256) 'Atomic original provenance differs'
+        $Proof=Read-PPJson $ProofPath
+        Assert-PP ($Proof.complete -eq $true -and $Proof.public_api_equivalent -eq $true -and
+            $Proof.application_source -ceq $Pin.source -and [string]$Proof.workflow_run -ceq [string]$Pin.run -and
+            [string]$Proof.workflow_attempt -ceq [string]$Pin.attempt -and $Proof.version -ceq $Atomic.version) 'Atomic source/run/API identity differs'
+        $AtomicFiles=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+        $AtomicFiles.Add('build-provenance.json')|Out-Null
+        foreach($Entry in $Proof.payload_files.PSObject.Properties) {
+            $AtomicFiles.Add($Entry.Name)|Out-Null
+            $File=Join-PPSafe $AtomicRoot $Entry.Name
+            Assert-PP ((Get-PPHash $File) -ceq $Entry.Value.sha256 -and (Get-Item -LiteralPath $File).Length -eq $Entry.Value.bytes) 'Atomic recovered payload differs'
+        }
+        $ActualAtomicFiles=@(Get-PPFiles $AtomicRoot)
+        Assert-PP ($ActualAtomicFiles.Count -eq $AtomicFiles.Count) 'Atomic payload inventory differs'
+        foreach($File in $ActualAtomicFiles) {
+            $Relative=$File.FullName.Substring($AtomicRoot.TrimEnd([char[]]'\/').Length+1).Replace('\','/')
+            Assert-PP ($AtomicFiles.Contains($Relative)) 'Unregistered atomic engine payload file'
+        }
+        Assert-PP ((Get-PPHash (Join-PPSafe $Root $Atomic.gui.path)) -ceq $Pin.gui_sha256 -and
+            (Get-PPHash (Join-PPSafe $AtomicRoot $Proof.gui_executable)) -ceq $Pin.gui_sha256) 'Atomic executable copy differs'
+        Assert-PPX64 (Join-PPSafe $Root $Atomic.gui.path)
+    } else { Assert-PP ($null -eq $Manifest.atomic_engine) 'Unregistered optional atomic engine' }
     Assert-PP ($Manifest.owner_launcher -ceq 'tools/pubpres_recovery_windows/Start-PUBPRES-Final.ps1' -and
         $Manifest.owner_observer -ceq 'tools/pubpres_recovery_windows/owner_start.gd' -and
         $Manifest.owner_results_collector -ceq 'tools/pubpres_recovery_windows/Collect-Results.ps1') 'Final owner entrypoint differs'
@@ -231,20 +286,46 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Gate.source_tree -ceq $Manifest.sources.C.source_tree -and $Gate.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and
         $Gate.native_sha256 -ceq $Manifest.sources.C.native.sha256 -and $Gate.physical_acceptance -ceq 'HOLD' -and
         ($Gate.selection|ConvertTo-Json -Depth 8 -Compress) -ceq ($Selection|ConvertTo-Json -Depth 8 -Compress) -and
-        $Gate.stock.outcomes -eq 19 -and $Gate.stock.raw_inputs_and_supplemental_replayed -eq $true) 'Original actual Windows correctness custody differs'
+        $Gate.stock.outcomes -eq 19 -and $Gate.stock.raw_inputs_and_supplemental_replayed -eq $true -and
+        $Gate.members.outcomes -eq 4 -and $Gate.members.raw_inputs_and_supplemental_replayed -eq $true) 'Original actual Windows correctness or ordinary multipart custody differs'
     if($Selection.water_composition -eq 1) {
         Assert-PP ($Gate.water.outcomes -eq 4 -and $Gate.water.raw_inputs_and_supplemental_replayed -eq $true) 'Selected Water lacks actual native graphical gates'
     } else { Assert-PP ($null -eq $Gate.water) 'Disabled Water cannot claim selected qualification' }
+    if($NeedsAtomic) {
+        $AtomicGate=$Gate.atomic
+        Assert-PP ($AtomicGate.source_commit -ceq $Candidate -and $AtomicGate.source_tree -ceq $Manifest.sources.C.source_tree -and
+            $AtomicGate.native_sha256 -ceq $Manifest.sources.C.native.sha256 -and $AtomicGate.engine_sha256 -ceq $Manifest.atomic_engine.gui.sha256 -and
+            $AtomicGate.inventory_sha256 -cmatch '^[0-9a-f]{64}$' -and $AtomicGate.graphical_controls_sha256 -cmatch '^[0-9a-f]{64}$' -and
+            @($AtomicGate.correctness).Count -eq $(if($Selection.water_composition -eq 1){8}else{5})) 'Atomic resulting-source Windows application custody differs'
+        $Counts=@{frozen=0;submission=0;water=0}
+        $ExpectedOutcomeCounts=@{frozen=19;submission=2;water=4}
+        foreach($Row in $AtomicGate.correctness) {
+            Assert-PP ($Row.focus -cin @('frozen','submission','water') -and $Row.source -ceq $Candidate -and
+                $Row.outcomes -eq $ExpectedOutcomeCounts[$Row.focus] -and $Row.raw_inputs_and_supplemental_replayed -eq $true) 'Atomic raw correctness custody differs'
+            $Counts[$Row.focus]+=1
+        }
+        Assert-PP ($Counts.frozen -eq 2 -and $Counts.submission -eq 3 -and $Counts.water -eq $(if($Selection.water_composition -eq 1){3}else{0})) 'Atomic application gate roles differ'
+        Assert-PP (@($AtomicGate.members).Count -eq 3) 'Atomic ordinary multipart inventory is incomplete'
+        foreach($Row in $AtomicGate.members) {
+            Assert-PP ($Row.focus -ceq 'members' -and $Row.outcomes -eq 4 -and $Row.source -ceq $Candidate -and
+                $Row.raw_inputs_and_supplemental_replayed -eq $true) 'Atomic ordinary multipart result differs'
+        }
+        if($Selection.water_composition -eq 1 -and $Selection.architecture -ceq 'atomic_safe0') {
+            Assert-PP ($AtomicGate.safe_water.outcomes -eq 4 -and $AtomicGate.safe_water.source -ceq $Candidate -and
+                $AtomicGate.safe_water.engine_sha256 -ceq $Manifest.atomic_engine.gui.sha256 -and
+                $AtomicGate.safe_water.raw_inputs_and_supplemental_replayed -eq $true) 'Selected Atomic Safe0 Water lacks its own graphical evidence'
+        }
+    } else { Assert-PP ($null -eq $Gate.atomic) 'Stock-only package cannot claim atomic qualification' }
     return $Manifest
 }
 
 function Get-PFSettings([string]$Key,[string]$EngineName,[string]$Thread,[int]$Slots,[string]$Driver,[string]$SceneName,[string]$Mode='Selected') {
-    Assert-PP ($Key -cin @('C','D') -and $EngineName -cin @('stock','egl') -and $Thread -cin @('safe','separate') -and
+    Assert-PP ($Key -cin @('C','D') -and $EngineName -cin @('stock','atomic') -and $Thread -cin @('safe','separate') -and
         $Slots -in @(2,3) -and ($Slots -eq 2 -or $Key -ceq 'C') -and $Driver -cin @('opengl3','opengl3_angle') -and
-        $SceneName -cin @('ordinary','wave512','wave1024','wave2048','mixed2048') -and
-        ($Thread -ceq 'safe' -or ($EngineName -ceq 'egl' -and $Driver -ceq 'opengl3_angle'))) 'Unregistered source/engine/slot/renderer selection'
+        $SceneName -cin @('ordinary','wave512','wave1024','wave2048','mixed2048')) 'Unregistered source/engine/slot/renderer selection'
     $Recovery=Get-PFRecoverySettings $Key $Mode
-    Assert-PP ($EngineName -ceq 'stock' -and $Thread -ceq 'safe' -and $Slots -eq 2) 'Selected and fallback owner profiles require their qualified Stock Safe Full two-slot architecture'
+    $Configuration=Get-PFConfiguration $Key $Mode
+    Assert-PP ($EngineName -ceq $Configuration.engine -and $Thread -ceq $Configuration.render_thread -and $Slots -eq 2) 'Owner engine/thread must match its explicitly registered source-bound configuration'
     $Settings=[ordered]@{CYBERSAND_MATERIAL_PUBLICATION='full';CYBERSAND_DIAG_FULL_IMAGE_SLOTS=[string]$Slots;
         CYBERSAND_DIAG_PHYSICS_PUBLICATION='early';CYBERSAND_DIAG_PRESENTATION='coherent';
         CYBERSAND_DIAG_MATERIAL_TIMING='measured';CYBERSAND_DIAG_RENDER_CADENCE='repaired';
@@ -257,8 +338,8 @@ function Get-PFSettings([string]$Key,[string]$EngineName,[string]$Thread,[int]$S
 }
 function Get-PFEngine($Manifest,[string]$Name) {
     if($Name -ceq 'stock') { return $Manifest.engine }
-    Assert-PP ($Name -ceq 'egl' -and $null -ne $Manifest.patched_engine) 'Explicit recovered engine is unavailable'
-    return $Manifest.patched_engine
+    Assert-PP ($Name -ceq 'atomic' -and $null -ne $Manifest.atomic_engine) 'Explicit recovered atomic engine is unavailable'
+    return $Manifest.atomic_engine
 }
 function New-PFRun([string]$Root,$Manifest,[string]$Key,[string]$EngineName,[string]$Thread,[int]$Slots,[string]$Driver,[string]$SceneName,[string]$Run,[string]$Mode='Selected') {
     Assert-PP ($Key -cin @($Manifest.sources.PSObject.Properties.Name)) 'Source is unavailable'
@@ -354,6 +435,11 @@ try {
     }
     $Item=$Manifest.sources.($Record.source); $SelectedEngine=Get-PFEngine $Manifest $Record.engine
     $Executable=Join-PPSafe $PackageRoot $SelectedEngine.gui.path
+    Write-Host ('Application '+$Item.source_commit+' / tree '+$Item.source_tree)
+    Write-Host ('Engine '+$SelectedEngine.version+' / SHA-256 '+$SelectedEngine.gui.sha256)
+    Write-Host ('Native SHA-256 '+$Item.native.sha256+' / Rapier SHA-256 '+$Item.rapier.sha256)
+    Write-Host ('Renderer '+$Record.render_driver+' / '+$Record.render_thread+' / '+$Record.recovery_mode)
+    Write-Host 'Fallback: Open Stock Safe Fallback.cmd'
     $RunProfile=Join-PPSafe $Run $Record.profile; $Project=Join-PPSafe $Run $Record.project
     $Launch=Join-Path $Run ('launches/'+[Guid]::NewGuid().ToString('N'))
     $Settings=[ordered]@{}; foreach($Entry in $Record.settings.PSObject.Properties) { $Settings[$Entry.Name]=$Entry.Value }
@@ -388,9 +474,18 @@ try {
     Assert-PP ($Recovery.schema -ceq 'pubpres-recovery-owner-readback-v1' -and
         $Recovery.water_requested -ceq $Record.settings.CYBERSAND_DIAG_WATER_COMPOSITION -and
         $Recovery.water_enabled -eq ($Record.settings.CYBERSAND_DIAG_WATER_COMPOSITION -ceq '1') -and
-        $Recovery.actual_submission_requested -ceq '0' -and $Recovery.actual_submission_enabled -eq $false -and
-        $Recovery.render_lookahead_requested -ceq '0' -and $Recovery.material_step_interval_requested -ceq '0' -and
-        $Recovery.sample_idle_requested -ceq '0' -and $Recovery.sample_idle_enabled -eq $false) 'Actual recovery policy differs from the selected owner profile'
+        $Recovery.actual_submission_requested -ceq $Record.settings.CYBERSAND_DIAG_ACTUAL_SUBMISSION -and
+        $Recovery.actual_submission_enabled -eq ($Record.settings.CYBERSAND_DIAG_ACTUAL_SUBMISSION -ceq '1') -and
+        $Recovery.render_lookahead_requested -ceq $Record.settings.CYBERSAND_ENGINE_RENDER_LOOKAHEAD -and $Recovery.material_step_interval_requested -ceq '0' -and
+        $Recovery.sample_idle_requested -ceq '0' -and $Recovery.sample_idle_enabled -eq $false -and
+        $Recovery.task_completion_requested -ceq '0') 'Actual recovery policy differs from the selected owner profile'
+    if($Record.engine -ceq 'atomic') {
+        Assert-PP ($Recovery.engine_capability.schema -ceq 'cybersand-actual-submission-v2' -and
+            $Recovery.engine_capability.engine_owned_admission -eq $true -and
+            $Recovery.submission.schema -ceq 'pubpres-actual-submission-v1' -and
+            $Recovery.submission.source_revision -ceq $Item.source_commit -and
+            $Recovery.submission.committed_count -gt 0 -and $Recovery.submission.engine_atomic_admission -eq $true) 'Actual atomic engine admission was not observed at startup'
+    }
     Assert-PP ($Material.requested_mode -ceq 'full' -and $Material.backend -ceq 'full' -and $Material.fallback_reason -ceq '') 'Full publication was not installed'
     if($Record.source -ceq 'C') {
         Assert-PP ($Recovery.water_api_available -eq $true -and $Recovery.actual_submission_api_available -eq $true -and

@@ -2,7 +2,7 @@
   "schema": "pubpres-closure-presentation-recovery-v1",
   "source": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
   "tree": "e55f15cbe8a81ed2f7db7e754b002f89d9070eb8",
-  "state": "ORIGINAL_SOURCE_MULTIPART_GRAPHICAL_PASS_WATER_RUNNING",
+  "state": "ORIGINAL_CORRECTED_WATER_COMPONENT_PASS_VISIBILITY_HOLD_AND_MEMBER_REFUSAL_REPRODUCED",
   "checks": 259,
   "failures": [],
   "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
@@ -47,5 +47,20 @@
     "original-6ea6-member/process/process.json": "7652ba41583b42fe8bc749386387cb555b5128baa28dd52b6ba97e780d0fccb6",
     "original-6ea6-member/process/stdout.log": "eb012902b439859377fb1b01ac8854226184b5aa69be1ea083287416fe3133ce",
     "original-6ea6-member/process/display-owner.json": "105702ffd93216443ce2b1ebde9bae99995b202b83849cd79e5bc2540fba2b50"
+  },
+  "water": {
+    "component_checks": 151,
+    "failures": [],
+    "actual_draws": 4837,
+    "hidden_body_frames": 214,
+    "moving_wet_distinct_poses": 19,
+    "receipt": "original-6ea6-water/test_workbench_water_composition_native-slots2/receipt.json",
+    "reduction": "original-water-omission-reduction.json"
+  },
+  "member_refusal_reproduction": {
+    "source": "7854af9ff4fb3a45a9df4414c4dde8d467aa1e23",
+    "checks": 574,
+    "failures": 6,
+    "receipt": "member-before-fix-7854/test_workbench_member_presentation-slots2/receipt.json"
   }
 }

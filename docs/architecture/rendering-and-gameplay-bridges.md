@@ -195,6 +195,31 @@ publication cadence. Neither is a strict simulation-accuracy switch.
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
 
+### PUBPRES explicit Water composition clearance
+
+**Current candidate, default OFF:** the closure keeps actual completed
+native/physical pose authority separate from uploaded current/previous material
+identity. With that authority, Main asks the Water-compatible swept-footprint
+guard directly, avoiding an empty-only scan and refinement that necessarily
+reject the same Water before composition can run. Unknown authority retains the
+ordinary clearance path. Initial or actually withheld parts may use explicit
+endpoint reentry; consecutive visible parts retain continuous swept clearance.
+
+The guard may prove that its entire bounded swept AABB contains only material
+IDs Empty(0)/Water(3) in both active uploaded images. Bounded Image copies and
+R8 conversion/counting perform this stronger proof; RG8's second state byte
+cannot impersonate a material. Hard or other material falls back to the existing
+continuous geometry proof. The same shared 24,000-cell/2 ms budget, 12,000-cell
+fine-pass cap, world/rigidity checks and post-copy deadline remain. A complete
+Empty result keeps its ordinary certificate and draw layer. A Water result still
+requires the actual native/physical dependency and Water-only shader clipping.
+No solver, completion, actor ownership or production default changes.
+
+The [closure evidence](../audits/2026-11-26-pubpres-closure/README.md) retains the
+original 151-assertion replay with 214 omitted body-frames as a moving-visibility
+HOLD; component assertions alone did not close this defect. Resulting-source
+graphical, resource, progression and owner hardware gates remain separate.
+
 ## Which gameplay command path exists today?
 
 **Current desktop:** main-thread methods replace frame state and copied body

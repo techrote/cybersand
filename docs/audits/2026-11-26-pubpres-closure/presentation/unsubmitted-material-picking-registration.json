@@ -1,0 +1,26 @@
+{
+  "schema": "pubpres-unsubmitted-material-picking-registration-v1",
+  "status": "PROSPECTIVE_TEST_ONLY_UNEXECUTED",
+  "baseline": "6472c00b31a02b38dfee4506eccf3256fe6b8dc2",
+  "question": "Does a real native material upload without an admitted atomic draw incorrectly make the previously submitted visible actor unclickable?",
+  "stimulus": [
+    "Freeze ordinary Main callbacks after genuine submitted actor frame",
+    "Issue ordinary Sand paint through Workbench to native owner",
+    "Pump unchanged production consume_worker_snapshot until genuine upload revision and image material advance",
+    "Leave atomic candidate absent; confirm actual framebuffer/hash, draw and submission remain unchanged",
+    "Send actual mouse Select event to submitted actor through submitted camera mapping",
+    "Then prepare and admit new material draw"
+  ],
+  "pass": [
+    "Actual native/upload stimulus exercised",
+    "Old visible actor remains selectable while uploaded material is not yet submitted",
+    "No fabricated draw or physical completion",
+    "New admitted draw adopts new material identity"
+  ],
+  "preserved": [
+    "Original eight stale-draw framebuffer cases",
+    "Original four fallback lifecycle cases",
+    "Normal World, session, epoch and member-generation refusal"
+  ],
+  "execution_requires": "Exact admitted custom engine; graphical application and original native binding; no timing claims"
+}

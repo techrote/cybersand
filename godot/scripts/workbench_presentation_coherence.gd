@@ -178,10 +178,14 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 	if max_scan_cells < 1:
 		return _refuse("scan_budget")
 	var pre_scanned: int = 0
-	# A complete zero rectangle is a stronger, cheaper clearance proof than
+	# A complete clear rectangle is a stronger, cheaper clearance proof than
 	# testing each occupied centre against every rotated shape. These bounded
-	# copies/counts execute in native Image/PackedByteArray code. All channels
-	# must be zero (conservative for conditioned Empty); both GPU images count.
+	# copies/counts execute in native Image/PackedByteArray code. The ordinary
+	# path still requires every channel to be zero. Explicit Water composition
+	# can prove the entire bounds contain only Empty/Water material IDs; its
+	# caller separately needs actual completed-pose authority and shader clipping.
+	# RG8's second channel is state, never another material ID. Convert a bounded
+	# copy to R8 before counting IDs, leaving both immutable source images intact.
 	# Charge the whole rectangle to the shared frame cell budget even if this
 	# fast proof fails. The 12K fine-geometry cap applies to each pass; the
 	# optional refinement also spends the query's remaining shared allowance.
@@ -189,20 +193,32 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 		if deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
 			return _refuse("time_budget")
 		var region := Rect2i(first_x,first_y,columns,rows)
-		var bytes: PackedByteArray = world_pixels.get_region(region).get_data()
-		var clear: bool = not bytes.is_empty() and bytes.count(0)==bytes.size()
+		var region_image: Image = world_pixels.get_region(region)
+		if compose_water and region_image.get_format() in [Image.FORMAT_R8,Image.FORMAT_RG8]:
+			region_image.convert(Image.FORMAT_R8)
+		var bytes: PackedByteArray = region_image.get_data()
+		var water_ids: int = bytes.count(3) if compose_water and region_image.get_format()==Image.FORMAT_R8 else 0
+		var clear: bool = not bytes.is_empty() and bytes.count(0)+water_ids==bytes.size()
+		var water_in_bounds: bool = water_ids > 0
 		if clear and previous_blend_active:
 			if previous_world_pixels != null:
-				bytes = previous_world_pixels.get_region(region).get_data()
-				clear = not bytes.is_empty() and bytes.count(0)==bytes.size()
+				region_image = previous_world_pixels.get_region(region)
+				if compose_water and region_image.get_format() in [Image.FORMAT_R8,Image.FORMAT_RG8]:
+					region_image.convert(Image.FORMAT_R8)
+				bytes = region_image.get_data()
+				water_ids = bytes.count(3) if compose_water and region_image.get_format()==Image.FORMAT_R8 else 0
+				clear = not bytes.is_empty() and bytes.count(0)+water_ids==bytes.size()
+				water_in_bounds = water_in_bounds or water_ids > 0
 			else:
 				clear = previous_occupied.is_empty()
 		pre_scanned = cells
 		if deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
 			return _refuse("time_budget",pre_scanned)
 		if clear:
-			return {"safe":true,"reason":"empty_swept_mask","scanned":pre_scanned,
-				"steps":steps,"dilation_cells":padding,"proof":"empty_bounds"}
+			return {"safe":true,"reason":"water_composed_swept_mask" if water_in_bounds else "empty_swept_mask",
+				"scanned":pre_scanned,"steps":steps,"dilation_cells":padding,
+				"proof":"water_composable_bounds" if water_in_bounds else "empty_bounds",
+				"water_in_bounds":water_in_bounds}
 		max_scan_cells = mini(max_scan_cells,max_empty_scan_cells-pre_scanned)
 	if cells > max_scan_cells:
 		return _refuse("scan_budget",pre_scanned)

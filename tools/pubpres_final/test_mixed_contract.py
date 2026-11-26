@@ -6,6 +6,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 
@@ -92,6 +93,28 @@ class MixedContractTests(unittest.TestCase):
         self.assertEqual([row["workers"] for row in campaign["cases"]],[4,4])
         self.assertEqual([row["fixture"] for row in campaign["cases"]],["basin512","basin1024"])
         with self.assertRaises(ValueError): mixed_campaign(REGISTRATION,["wave_512_follow"])
+
+    def test_native_selector_derivation_still_refuses_callback_or_readback_mutation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for relative in ("tools/pubpres_final/mixed_registration.json",
+                             "tools/pubpres_final/pubpres_final_mixed_gameplay.gd",
+                             "tools/pubpres_final/results_registered_mixed.py",
+                             "tools/pubpres003/pubpres_causal_gameplay.gd",
+                             "tools/pubpres_playability/results_same_frame.py"):
+                target = root / relative
+                target.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copyfile(ROOT / relative,target)
+            observer = root / "tools/pubpres_final/pubpres_final_mixed_gameplay.gd"
+            original = observer.read_bytes()
+            self.assertEqual(verify_mixed_contract(root)["observer_sha256"],hashlib.sha256(original).hexdigest())
+            for old,new in ((b"super._physics_process(delta)",b"pass"),
+                            (b'.get("task_completion",null)',b'.get("column_probe",null)'),
+                            (b'"cybersand/pubpres_task_completion_barrier"',b'"cybersand/native_worker_threads"')):
+                self.assertEqual(original.count(old),1)
+                observer.write_bytes(original.replace(old,new,1))
+                with self.subTest(change=old),self.assertRaisesRegex(ValueError,"unregistered callback"):
+                    verify_mixed_contract(root)
 
     def test_both_registered_extents_validate_complete_synthetic_controls(self):
         for scale in (1,2):

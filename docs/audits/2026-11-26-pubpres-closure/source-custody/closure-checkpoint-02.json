@@ -1,0 +1,29 @@
+{
+  "schema": "pubpres-original-source-bundle-v1",
+  "file": "closure-checkpoint-02.bundle",
+  "bytes": 1217131,
+  "sha256": "5199ec34b2682345e42c6289592e61d1462d7302a73565d22512a8917da1e944",
+  "refs": [
+    {
+      "ref": "refs/mission/closure/native-10df28b3",
+      "commit": "10df28b358044b46e5b9a0a025714f22e684243e",
+      "tree": "44502e06aa2187422b7a58d10732271acea4f866"
+    },
+    {
+      "ref": "refs/mission/closure/presentation-ef3f8a66",
+      "commit": "ef3f8a669222cc8b90122f50c61b16f982b90a1e",
+      "tree": "9b29d62cf6f7fd9674867450c26db8478655ba32"
+    },
+    {
+      "ref": "refs/mission/closure/guard-577e159a",
+      "commit": "577e159acf15c775791b78ada7a057ab461ce8a2",
+      "tree": "e05f028fc12c673f92922ef19f1c9921dff7b337"
+    },
+    {
+      "ref": "refs/mission/closure/integration-input",
+      "commit": "9c4b74066de298fa10787749d2c1715d1387bcf0",
+      "tree": "e312774d4778b8b7d800871080a84b8761fc5b6b"
+    }
+  ],
+  "scope": "Original executed local sources and integration input; API publication preserves exact target tree with a distinct published commit. Prior source bundles supply named prerequisites."
+}

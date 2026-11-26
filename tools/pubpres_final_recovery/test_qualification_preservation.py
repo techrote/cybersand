@@ -42,16 +42,24 @@ class FrozenPredicates(unittest.TestCase):
         self.assertEqual(ast.dump(old, include_attributes=False), ast.dump(normalized, include_attributes=False))
 
     def test_frozen_headless_and_graphical_inventory_remains_present(self):
+        supplemental = {"test_workbench_presentation_submission", "test_workbench_water_composition",
+                        "test_workbench_water_composition_native", "test_workbench_presentation_history",
+                        "test_workbench_presentation_member_history", "test_workbench_member_presentation"}
         def inventories(path):
             tree = ast.parse(path.read_text())
             calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
                      and isinstance(node.func, ast.Name) and node.func.id == "invoke"]
-            return {ast.dump(node, include_attributes=False) for node in calls
+            frozen = {ast.dump(node, include_attributes=False) for node in calls
                     if not node.args or not isinstance(node.args[0], ast.Constant)
-                    or node.args[0].value not in ("test_workbench_presentation_submission", "test_workbench_water_composition",
-                                                "test_workbench_water_composition_native")}
-        self.assertEqual(inventories(ROOT / "tools/pubpres_final/run_qualification.py"),
-                         inventories(HERE / "run_qualification.py"))
+                    or node.args[0].value not in supplemental}
+            added = {node.args[0].value for node in calls if node.args and isinstance(node.args[0], ast.Constant)
+                     and node.args[0].value in supplemental}
+            return frozen, added
+        original, original_added = inventories(ROOT / "tools/pubpres_final/run_qualification.py")
+        resulting, resulting_added = inventories(HERE / "run_qualification.py")
+        self.assertEqual(original, resulting)
+        self.assertEqual(original_added, set())
+        self.assertEqual(resulting_added, supplemental)
 
 
 class JournalOnlyIsNotAtomic(unittest.TestCase):

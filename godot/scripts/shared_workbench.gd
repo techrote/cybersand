@@ -6,6 +6,7 @@ const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
+const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
@@ -1570,30 +1571,66 @@ func _input(event: InputEvent) -> void:
 	else: return
 	get_viewport().set_input_as_handled()
 
+func _submitted_pick_frame_valid(presentation: Dictionary) -> bool:
+	if not host.workbench_presentation_submission_enabled():
+		return host._valid_workbench_mask_frame(presentation.get("mask_frame",{}))
+	# An upload can precede actual draw admission. Its newer revision cannot
+	# invalidate the actor still visible in the last submitted framebuffer.
+	# Keep the receipt's own material join, its actual submission serial and
+	# every live owner fence; retired Worlds never gain a live-pose fallback.
+	if not presentation.is_read_only() or not bool(presentation.get("valid",false)) \
+			or host.physical_actor_session == null \
+			or not host._workbench_submission.connected() or not host._workbench_submission.source_valid(): return false
+	var bridge: Variant = host.physical_actor_session.bridge
+	if not bridge is WorkbenchBridge: return false
+	var mask: Dictionary = presentation.get("mask_frame",{})
+	var serial: Variant = presentation.get("submission_serial")
+	return serial is int and int(serial)>0 and int(serial)==host._workbench_submission.committed_count \
+		and presentation.get("submission_scope")=="actual_cpu_draw_admission_no_gpu_or_display_completion" \
+		and presentation.get("session",-1)==bridge._session and presentation.get("epoch",-1)==bridge._epoch \
+		and mask.get("session",-1)==bridge._session and mask.get("epoch",-1)==bridge._epoch \
+		and presentation.get("world_generation",-1)==host.last_uploaded_world_generation \
+		and mask.get("world_generation",-1)==presentation.get("world_generation",-2) \
+		and mask.get("revision",-1)==presentation.get("material_revision",-2) \
+		and mask.get("instances") is Dictionary
+
+
 func _pick(pos: Vector2i) -> void:
 	var presentation: Dictionary = host.workbench_presentation_frame
 	var coherent: bool = host._workbench_presentation_mode() == "coherent"
-	for a: Dictionary in applied.actors:
-		var pose: Transform2D
-		if coherent:
-			# A safety hold can leave the live body ahead of its displayed pose.
-			# Hit-test the submitted actor, including its actual generation fence;
-			# withheld actors have no clickable visual footprint.
-			if not host._valid_workbench_mask_frame(presentation.get("mask_frame",{})): continue
-			var actor_slot: int = host.physical_actor_session.slot_for_instance(int(a.id))
+	if coherent:
+		# Input uses the last submitted physical members. Articulated bodies can
+		# move independently of the root, and a withheld part has no selectable
+		# footprint even while another part of its logical actor remains visible.
+		if _submitted_pick_frame_valid(presentation):
 			var bridge: Variant = host.physical_actor_session.bridge
-			var body_slot: int = bridge.actor_body_index(actor_slot)
-			if body_slot < 0 or body_slot >= bridge._members.size() \
-					or not presentation.get("poses",{}).has(body_slot): continue
-			var member: Dictionary = bridge._members[body_slot]
-			# Authored actor ids and slots are not the private physical member
-			# identities used by mask receipts or selected multipart poses.
-			if presentation.mask_frame.instances.get(int(member.instance_id),{}).get("generation",-1) != member.generation: continue
-			pose = presentation.poses[body_slot]
-		else:
-			var state := body_state(int(a.id))
-			if state.is_empty(): continue
-			pose = Transform2D(float(state.rotation),Vector2(state.position))
+			for actor: Dictionary in applied.actors:
+				var actor_slot: int = host.physical_actor_session.slot_for_instance(int(actor.id))
+				var first: int = bridge.actor_body_index(actor_slot)
+				for body_slot: int in range(first,first+bridge.actor_body_count(actor_slot)):
+					if body_slot < 0 or body_slot >= bridge._members.size() \
+							or body_slot >= bridge._rects.size(): continue
+					var member: Dictionary = bridge._members[body_slot]
+					if member.actor_slot != actor_slot or member.actor_instance_id != int(actor.id) \
+							or member.part_index != body_slot-first: continue
+					var receipt: Dictionary = presentation.mask_frame.instances.get(int(member.instance_id),{})
+					var submitted: Variant = presentation.get("poses",{}).get(body_slot)
+					if receipt.get("generation",-1) != member.generation \
+							or not receipt.get("pose") is Transform2D \
+							or not receipt.pose.is_finite() \
+							or not submitted is Transform2D or not submitted.is_finite(): continue
+					var local: Vector2 = Transform2D(submitted).affine_inverse()*Vector2(pos)
+					for rectangle: Dictionary in bridge._rects[body_slot]:
+						var bounds := Rect2(Vector2(rectangle.center)-Vector2(rectangle.size)*0.5,Vector2(rectangle.size))
+						if bounds.grow(2).has_point(local):
+							select_instance(int(actor.id))
+							return
+		select_instance(0)
+		return
+	for a: Dictionary in applied.actors:
+		var state := body_state(int(a.id))
+		if state.is_empty(): continue
+		var pose := Transform2D(float(state.rotation),Vector2(state.position))
 		var local := (Vector2(pos)-pose.origin).rotated(-pose.get_rotation())
 		if Setup.bounds(str(a.model)).grow(2).has_point(local):
 			select_instance(int(a.id))

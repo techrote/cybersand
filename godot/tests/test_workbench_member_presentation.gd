@@ -189,6 +189,7 @@ func inspect_picking(label: String) -> void:
 		var injected: Dictionary = original.duplicate(true)
 		if kind=="withheld_root": injected.poses.erase(last_slot)
 		else: injected.mask_frame.instances[int(last_member.instance_id)].generation = int(last_member.generation)+1
+		if host.workbench_presentation_submission_enabled(): host.WorkbenchPresentationSubmission.freeze(injected)
 		host.workbench_presentation_frame = injected
 		ui.select_instance(0)
 		ui._pick(point)
@@ -196,6 +197,74 @@ func inspect_picking(label: String) -> void:
 		picking.append({"stage":label,"kind":kind,"fixture_injected_refusal":true,
 			"actor_id":int(ui.applied.actors[5].id),"body_slot":last_slot,"selected_id":ui.selected_id()})
 		host.workbench_presentation_frame = original
+	ui.select_instance(int(ui.applied.actors[5].id))
+
+func member_hit(frame: Dictionary, body_slot: int, point: Vector2) -> bool:
+	if not frame.get("poses",{}).has(body_slot): return false
+	var bridge: Variant = host.physical_actor_session.bridge
+	var local: Vector2 = Transform2D(frame.poses[body_slot]).affine_inverse()*point
+	for rectangle: Dictionary in bridge._rects[body_slot]:
+		if Rect2(Vector2(rectangle.center)-Vector2(rectangle.size)*0.5,Vector2(rectangle.size)).grow(2).has_point(local):
+			return true
+	return false
+
+func inspect_member_picking(label: String) -> void:
+	ui._tool.select(2)
+	ui._camera.select(1)
+	ui.set_camera(1)
+	var isolated: Dictionary = {}
+	for actor: Dictionary in ui.applied.actors:
+		check(ui.select_instance(int(actor.id)),label+" focus logical owner for individual member picking")
+		for ignored: int in range(4): await draw()
+		var bridge: Variant = host.physical_actor_session.bridge
+		var actor_slot: int = host.physical_actor_session.slot_for_instance(int(actor.id))
+		var first: int = bridge.actor_body_index(actor_slot)
+		for body_slot: int in range(first,first+bridge.actor_body_count(actor_slot)):
+			var frame: Dictionary = host.workbench_presentation_frame
+			if not check(frame.get("poses",{}).has(body_slot),label+" individual member is actually submitted "+str(body_slot)): continue
+			var pose: Transform2D = frame.poses[body_slot]
+			var center: Vector2 = pose*Vector2(bridge._rects[body_slot][0].center)
+			var local: Vector2 = host._world_view_screen_transform().affine_inverse()*(frame.camera_mapping*center)
+			var cell: Vector2i = host.world_cell_from_local_point(local,true)
+			var step_before: int = host.physical_actor_session.tick
+			check(ui.select_instance(0),label+" clear selection before actual member mouse input")
+			var click := InputEventMouseButton.new()
+			click.button_index = MOUSE_BUTTON_LEFT
+			click.pressed = true
+			click.position = local
+			ui._world_input(click)
+			check(ui.selected_id()==int(actor.id),label+" click physical member "+str(body_slot)+" selects its logical owner "+str(actor.id))
+			check(host.physical_actor_session.tick==step_before,label+" member selection invents no physical progress")
+			picking.append({"stage":label,"kind":"individual_member_mouse_click","body_slot":body_slot,
+				"actor_slot":actor_slot,"part_index":bridge._members[body_slot].part_index,"actor_id":int(actor.id),
+				"selected_id":ui.selected_id(),"cell":[cell.x,cell.y],"local":[local.x,local.y],
+				"pose":str(pose),"step_before":step_before,"step_after":host.physical_actor_session.tick})
+			if body_slot==first or not isolated.is_empty(): continue
+			var alone: bool = member_hit(frame,body_slot,Vector2(cell))
+			for other: int in range(bridge._members.size()):
+				if other!=body_slot and member_hit(frame,other,Vector2(cell)): alone = false
+			if alone:
+				isolated = {"body_slot":body_slot,"point":cell,"actor_id":int(actor.id),"frame":frame}
+	check(not isolated.is_empty(),label+" real articulated fixture provides an independently clickable member footprint")
+	if isolated.is_empty(): return
+	# Synchronous copies of actual submitted poses isolate owner refusals. These
+	# are never drawn and never credited as additional presentation or physics.
+	var current: Dictionary = host.workbench_presentation_frame
+	var bridge: Variant = host.physical_actor_session.bridge
+	var slot: int = isolated.body_slot
+	var member: Dictionary = bridge._members[slot]
+	for kind: String in ["withheld_member","foreign_member_generation"]:
+		var injected: Dictionary = isolated.frame.duplicate(true)
+		if kind=="withheld_member": injected.poses.erase(slot)
+		else: injected.mask_frame.instances[int(member.instance_id)].generation = int(member.generation)+1
+		if host.workbench_presentation_submission_enabled(): host.WorkbenchPresentationSubmission.freeze(injected)
+		host.workbench_presentation_frame = injected
+		ui.select_instance(0)
+		ui._pick(isolated.point)
+		check(ui.selected_id()==0,label+" refuses click through "+kind+" instead of the static whole-actor bounds")
+		picking.append({"stage":label,"kind":kind,"fixture_injected_refusal":true,"body_slot":slot,
+			"actor_id":isolated.actor_id,"selected_id":ui.selected_id(),"point":str(isolated.point)})
+	host.workbench_presentation_frame = current
 	ui.select_instance(int(ui.applied.actors[5].id))
 
 func _run() -> void:
@@ -213,6 +282,7 @@ func _run() -> void:
 	await inspect_follow()
 	await first_read()
 	await inspect_picking("initialized")
+	await inspect_member_picking("initialized")
 	check(ui.toggle_pause(),"ordinary Play admits real physical movement")
 	await until(func() -> bool: return host.physical_actor_session.tick>=12,"twelve real multipart Rapier steps complete")
 	check(ui.toggle_pause(),"ordinary Pause admitted")
@@ -223,6 +293,7 @@ func _run() -> void:
 		"native owner acknowledges Pause")
 	for ignored: int in range(6): await draw()
 	inspect_members("completed")
+	await inspect_member_picking("completed")
 	var old_session: int = host.physical_actor_session.bridge._session
 	var old_observation: Dictionary = host._workbench_presentation_history.observation(23,host.physical_actor_session.tick)
 	var retired_frame: Dictionary = host.workbench_presentation_frame
@@ -234,6 +305,7 @@ func _run() -> void:
 			"retained old immutable value cannot impersonate replacement generation")
 		await inspect_follow()
 		await inspect_picking("replacement")
+		await inspect_member_picking("replacement")
 		var current_frame: Dictionary = host.workbench_presentation_frame
 		host.workbench_presentation_frame = retired_frame
 		ui.select_instance(0)
