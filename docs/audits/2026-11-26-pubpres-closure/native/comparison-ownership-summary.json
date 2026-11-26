@@ -1,0 +1,632 @@
+{
+  "schema": "pubpres-native-comparison-independent-ownership-and-summary-v1",
+  "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+  "all8_actual_process_and_display_ownership_verified": true,
+  "cases": [
+    {
+      "case": "wave_512_follow",
+      "rows": [
+        {
+          "index": 0,
+          "enabled": false,
+          "rate": 22.550350704933358,
+          "gaps": {
+            "count": 143,
+            "max": 124.179,
+            "p50": 42.132,
+            "p95": 58.419700000000006,
+            "p99": 67.34888000000004
+          },
+          "gap_counts": {
+            "100": 1,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 115.595,
+            "p50": 42.491,
+            "p95": 58.7044,
+            "p99": 76.95524000000016
+          },
+          "pose_age": {
+            "count": 142,
+            "max": 9.994,
+            "p50": 3.6005000000000003,
+            "p95": 7.413549999999996,
+            "p99": 9.51962
+          },
+          "omitted": 1,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1600,
+            "completed_tasks": 10046
+          },
+          "cpu": 3.214999611568085,
+          "peak_rss_mb": 1176.3671875,
+          "process_pid": 1126,
+          "display_verified": true,
+          "display_receipt_sha256": "dfe8b114ddc1bee47ea87852c152b9c742f9541e1f19f4af3a335bb38edc3cec"
+        },
+        {
+          "index": 1,
+          "enabled": true,
+          "rate": 22.15663448107777,
+          "gaps": {
+            "count": 143,
+            "max": 130.434,
+            "p50": 42.704,
+            "p95": 56.34230000000001,
+            "p99": 101.86456000000081
+          },
+          "gap_counts": {
+            "100": 2,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 136.134,
+            "p50": 42.977,
+            "p95": 57.685100000000006,
+            "p99": 67.97186000000004
+          },
+          "pose_age": {
+            "count": 143,
+            "max": 22.934,
+            "p50": 3.704,
+            "p95": 7.843200000000001,
+            "p99": 15.903480000000101
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1565,
+            "completed_tasks": 9821
+          },
+          "cpu": 3.240555409773427,
+          "peak_rss_mb": 1182.51171875,
+          "process_pid": 1386,
+          "display_verified": true,
+          "display_receipt_sha256": "bbb76240a4308d0b0645661e8e3e806367bd778f86597977847d037ebc9f1e0b"
+        },
+        {
+          "index": 2,
+          "enabled": true,
+          "rate": 21.677494876433766,
+          "gaps": {
+            "count": 143,
+            "max": 178.086,
+            "p50": 42.005,
+            "p95": 57.081600000000016,
+            "p99": 147.72470000000024
+          },
+          "gap_counts": {
+            "100": 3,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 202.54,
+            "p50": 42.209,
+            "p95": 58.82440000000001,
+            "p99": 163.27082000000033
+          },
+          "pose_age": {
+            "count": 143,
+            "max": 30.369,
+            "p50": 3.673,
+            "p95": 7.689500000000003,
+            "p99": 21.218340000000104
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1530,
+            "completed_tasks": 9596
+          },
+          "cpu": 3.1796380546247596,
+          "peak_rss_mb": 1176.3984375,
+          "process_pid": 1643,
+          "display_verified": true,
+          "display_receipt_sha256": "8127ff2ecca5c2d78b3a7b22a1cf6241c761dfcd5f4713cb0bec77ed258fbaa8"
+        },
+        {
+          "index": 3,
+          "enabled": false,
+          "rate": 22.62920924899783,
+          "gaps": {
+            "count": 143,
+            "max": 145.544,
+            "p50": 41.219,
+            "p95": 55.1792,
+            "p99": 129.12568000000016
+          },
+          "gap_counts": {
+            "100": 3,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 162.268,
+            "p50": 41.223,
+            "p95": 54.0703,
+            "p99": 126.43860000000001
+          },
+          "pose_age": {
+            "count": 142,
+            "max": 23.292,
+            "p50": 3.3985000000000003,
+            "p95": 6.659549999999999,
+            "p99": 13.528950000000016
+          },
+          "omitted": 1,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1614,
+            "completed_tasks": 10136
+          },
+          "cpu": 3.2520578591110363,
+          "peak_rss_mb": 1174.82421875,
+          "process_pid": 1901,
+          "display_verified": true,
+          "display_receipt_sha256": "869dd08e5e505d7cea42d3cd51a488fabfdc41365267669fb31d5bed84edea4d"
+        }
+      ],
+      "registered_direction": {
+        "window": "first_144_steps",
+        "reference_role": "D",
+        "all_candidate_rates_higher": false,
+        "all_candidate_gap_quantiles_lower": {
+          "p95": false,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": false,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "250": true,
+          "500": true,
+          "1000": true
+        },
+        "repeatable_direction": false,
+        "disposition": "NOT_ESTABLISHED"
+      },
+      "parity": {
+        "arms": [
+          {
+            "arm": "D",
+            "index": 0,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+            "body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 607,
+              "attempted": 607,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          },
+          {
+            "arm": "C",
+            "index": 1,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+            "body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 606,
+              "attempted": 606,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          },
+          {
+            "arm": "C",
+            "index": 2,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+            "body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 606,
+              "attempted": 606,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          },
+          {
+            "arm": "D",
+            "index": 3,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "historical_reference_one_round_no_spill_no_ballistic",
+            "body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 607,
+              "attempted": 607,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          }
+        ],
+        "pairs": [
+          {
+            "left_index": 0,
+            "right_index": 1,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 0,
+            "right_index": 2,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 0,
+            "right_index": 3,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 1,
+            "right_index": 2,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 1,
+            "right_index": 3,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 2,
+            "right_index": 3,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          }
+        ],
+        "same_source_pair_count": 6,
+        "same_source_pairs_equal": true,
+        "disposition": "Same-source equal-step body and admitted-move outcomes agree; cross-source outcomes are disclosed, not assumed.",
+        "scope": "Different-source speed deltas are whole-source comparisons. Identical initial workload alone does not establish identical physical outcomes. Repeated input admission counts remain explicit and can differ with cadence."
+      }
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "rows": [
+        {
+          "index": 0,
+          "enabled": false,
+          "rate": 8.602645421000025,
+          "gaps": {
+            "count": 143,
+            "max": 226.099,
+            "p50": 128.527,
+            "p95": 174.5874,
+            "p99": 185.73128000000005
+          },
+          "gap_counts": {
+            "100": 91,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 248,
+            "max": 185.383,
+            "p50": 55.5655,
+            "p95": 148.52315000000002,
+            "p99": 173.19789
+          },
+          "pose_age": {
+            "count": 248,
+            "max": 141.523,
+            "p50": 15.919,
+            "p95": 118.23865,
+            "p99": 135.24219
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.373888469414951,
+          "peak_rss_mb": 1406.51171875,
+          "process_pid": 2158,
+          "display_verified": true,
+          "display_receipt_sha256": "98ca6f521ae03aff93bafac636b146ce6acb5ca2551fd4d83f43f2de71b46c57"
+        },
+        {
+          "index": 1,
+          "enabled": true,
+          "rate": 8.910361209336498,
+          "gaps": {
+            "count": 143,
+            "max": 188.689,
+            "p50": 123.678,
+            "p95": 174.27949999999998,
+            "p99": 181.33512000000005
+          },
+          "gap_counts": {
+            "100": 90,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 260,
+            "max": 190.47,
+            "p50": 56.2315,
+            "p95": 163.05325,
+            "p99": 185.22932
+          },
+          "pose_age": {
+            "count": 260,
+            "max": 141.206,
+            "p50": 13.5075,
+            "p95": 125.74255000000001,
+            "p99": 133.65578
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.397037328823204,
+          "peak_rss_mb": 1396.65625,
+          "process_pid": 2414,
+          "display_verified": true,
+          "display_receipt_sha256": "2599eb1710bbe8f25bf183595c972c5d8a45a925ff13291ee1f2eed2c6af3ddd"
+        },
+        {
+          "index": 2,
+          "enabled": true,
+          "rate": 8.85183467182499,
+          "gaps": {
+            "count": 143,
+            "max": 225.852,
+            "p50": 123.101,
+            "p95": 173.65910000000002,
+            "p99": 206.57932000000017
+          },
+          "gap_counts": {
+            "100": 88,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 249,
+            "max": 265.312,
+            "p50": 56.563,
+            "p95": 165.22339999999997,
+            "p99": 203.07084000000003
+          },
+          "pose_age": {
+            "count": 249,
+            "max": 178.16,
+            "p50": 14.054,
+            "p95": 122.2832,
+            "p99": 147.8966400000001
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.28696917372791,
+          "peak_rss_mb": 1396.71484375,
+          "process_pid": 2673,
+          "display_verified": true,
+          "display_receipt_sha256": "4eceb3a12b84e1f0386302d66b8c2431e1459f8d357e023908ecf2de47175e3e"
+        },
+        {
+          "index": 3,
+          "enabled": false,
+          "rate": 8.876722299879843,
+          "gaps": {
+            "count": 143,
+            "max": 243.299,
+            "p50": 123.527,
+            "p95": 178.2869,
+            "p99": 230.54476000000034
+          },
+          "gap_counts": {
+            "100": 92,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 248,
+            "max": 262.113,
+            "p50": 57.7255,
+            "p95": 157.9546,
+            "p99": 179.47912000000002
+          },
+          "pose_age": {
+            "count": 247,
+            "max": 191.828,
+            "p50": 14.07,
+            "p95": 123.58759999999995,
+            "p99": 149.07879999999992
+          },
+          "omitted": 1,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.382844010345178,
+          "peak_rss_mb": 1396.9140625,
+          "process_pid": 2931,
+          "display_verified": true,
+          "display_receipt_sha256": "8d09a7147dfbc7353f50e981d7610206c1b4370b8040e689044f3a7ce84928b3"
+        }
+      ],
+      "registered_direction": {
+        "window": "first_144_steps",
+        "reference_role": "D",
+        "all_candidate_rates_higher": false,
+        "all_candidate_gap_quantiles_lower": {
+          "p95": true,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": true,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "250": true,
+          "500": true,
+          "1000": true
+        },
+        "repeatable_direction": false,
+        "disposition": "NOT_ESTABLISHED"
+      },
+      "parity": {
+        "arms": [
+          {
+            "arm": "D",
+            "index": 0,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "gameplay_main846f",
+            "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 1011,
+              "attempted": 1011,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          },
+          {
+            "arm": "C",
+            "index": 1,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "gameplay_main846f",
+            "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 978,
+              "attempted": 978,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          },
+          {
+            "arm": "C",
+            "index": 2,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "gameplay_main846f",
+            "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 985,
+              "attempted": 985,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          },
+          {
+            "arm": "D",
+            "index": 3,
+            "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+            "water_law": "wave_flow_v1",
+            "water_profile": "gameplay_main846f",
+            "body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+            "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+            "command_counts": {
+              "accepted": 978,
+              "attempted": 978,
+              "rejected": 0
+            },
+            "command_mode": "repeated_callback"
+          }
+        ],
+        "pairs": [
+          {
+            "left_index": 0,
+            "right_index": 1,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 0,
+            "right_index": 2,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 0,
+            "right_index": 3,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 1,
+            "right_index": 2,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 1,
+            "right_index": 3,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          },
+          {
+            "left_index": 2,
+            "right_index": 3,
+            "same_source": true,
+            "bodies_equal": true,
+            "admitted_moves_equal": true
+          }
+        ],
+        "same_source_pair_count": 6,
+        "same_source_pairs_equal": true,
+        "disposition": "Same-source equal-step body and admitted-move outcomes agree; cross-source outcomes are disclosed, not assumed.",
+        "scope": "Different-source speed deltas are whole-source comparisons. Identical initial workload alone does not establish identical physical outcomes. Repeated input admission counts remain explicit and can differ with cadence."
+      }
+    }
+  ],
+  "complete": true,
+  "capture_failures": [],
+  "scope": "First144 physical steps; presentation Main submission clocks, no physical scanout/input-device claim. CPU/RSS include entire sampled process lifetime."
+}

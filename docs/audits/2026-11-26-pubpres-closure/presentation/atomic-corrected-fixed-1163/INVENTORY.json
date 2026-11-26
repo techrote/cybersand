@@ -1,0 +1,46 @@
+{
+  "schema": "pubpres-preserved-graphical-evidence-v1",
+  "original_directory": "/workspace/scratch/9cef565acfec/presentation-evidence/atomic-fixed-isolated-safe0",
+  "files": {
+    "SUMMARY.json": {
+      "bytes": 414250,
+      "sha256": "6c0fdeda5799ceaeef2bbde3c27596103b1dce281a475653107ca79d786d7b61"
+    },
+    "test_workbench_presentation_submission-slots2/engine-draws.json": {
+      "bytes": 84067,
+      "sha256": "7ff10eb385483393bffb70109ef19637c343f555f0ed8df0623afdf9f7516f2e"
+    },
+    "test_workbench_presentation_submission-slots2/display-owner.xorg.log": {
+      "bytes": 54860,
+      "sha256": "c30ea5ae9a8123d06e9381f5761a5d54ce9c814408d372e7429afbf2f6585b94"
+    },
+    "test_workbench_presentation_submission-slots2/process.json": {
+      "bytes": 992,
+      "sha256": "b4627bcc76b8a0e2534be1bdfb0a1b133c45e16c4b9aea33d6d35993176af5c8"
+    },
+    "test_workbench_presentation_submission-slots2/receipt.json": {
+      "bytes": 27671,
+      "sha256": "eb4f6de034b1775d8430c4bd785926ba74c68e41aff62c70ff239882fd3eed44"
+    },
+    "test_workbench_presentation_submission-slots2/stdout.log": {
+      "bytes": 2529,
+      "sha256": "e64b5bd22e29b82de78abaa21466aa8df92af4efab7062d7e99c7ec8c0f46468"
+    },
+    "test_workbench_presentation_submission-slots2/display-owner.json": {
+      "bytes": 1134,
+      "sha256": "0dfe389dcdbfd968c7fcda3e103ff3f7b0e74c1a5c515e1b1477445addd38ff9"
+    },
+    "test_workbench_presentation_submission-slots2/submission-first-read.png": {
+      "bytes": 43484,
+      "sha256": "65e61331b7a00fd160e3a97bca42011349a8e199e81df8d6c8734dff86c0b326"
+    },
+    "import-slots2/process.json": {
+      "bytes": 521,
+      "sha256": "82cb5830932d89aab082c24996ed86a2aa7f64c6ae12cf827d50397a430cbdd8"
+    },
+    "import-slots2/stdout.log": {
+      "bytes": 51417,
+      "sha256": "81da412d1f1dffc623783a7cf37e7a1ff62dd157de74dc0db35adccd98a4ede5"
+    }
+  }
+}

@@ -182,6 +182,11 @@ def verify(output: Path, candidate: str) -> dict:
     need(record.get('recovery_selection')==configured and configured==recovery_policy.selection()
          and record.get('recovery_selection_sha256')==digest(output/TOOLS/recovery_policy.SELECTION),
          'Source-pinned recovery owner selection differs')
+    comparisons=recovery_policy.scene_comparison_commands(configured)
+    need(record.get('comparison_commands')==comparisons,'Matched scene comparison command inventory differs')
+    for name,value in comparisons.items():
+        need((output/name).read_bytes()==command(candidate,value['scene'],mode=value['mode']),
+             'Matched scene comparison command differs')
     if recovery_policy.requires_atomic(configured):
         atomic_delivery.verify(output,record.get('atomic_engine'),selected=configured['architecture']!='stock_safe')
     else:
@@ -196,6 +201,8 @@ def verify(output: Path, candidate: str) -> dict:
              'Explicit bounded experimental command differs')
     else:
         need(not (output/recovery_policy.EXPERIMENTAL_COMMAND).exists(),'Unregistered experimental launcher')
+        need(not any((output/f'Open {name} - Bounded Experimental.cmd').exists() for name in recovery_policy.SCENE_NAMES),
+             'Unregistered experimental scene launcher')
     gate=json.loads((output/'qualification/recovery-correctness.json').read_bytes())
     need(gate.get('schema')=='pubpres-recovery-owner-correctness-v1' and gate.get('source_commit')==candidate
          and gate.get('source_tree')==record['sources']['C']['source_tree'] and gate.get('selection')==configured
@@ -204,6 +211,7 @@ def verify(output: Path, candidate: str) -> dict:
          and gate.get('physical_acceptance')=='HOLD' and gate.get('stock',{}).get('outcomes')==19
          and gate['stock'].get('raw_inputs_and_supplemental_replayed') is True
          and gate.get('members',{}).get('outcomes')==4 and gate['members'].get('raw_inputs_and_supplemental_replayed') is True
+         and gate.get('native_owner',{}).get('checks')==150 and gate['native_owner'].get('raw_inputs_and_native_receipt_replayed') is True
          and ((configured['water_composition']==0 and gate.get('water') is None)
               or (configured['water_composition']==1 and gate.get('water',{}).get('outcomes')==4
                   and gate['water'].get('raw_inputs_and_supplemental_replayed') is True)),
@@ -222,7 +230,7 @@ def verify(output: Path, candidate: str) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("candidate-root", "candidate-runtime", "donor-root", "donor-runtime", "godot-zip", "vc-runtime", "notices", "archive", "patched-engine-archive", "stock-correctness", "water-correctness", "members-correctness", "atomic-engine-directory", "atomic-inventory"):
+    for name in ("candidate-root", "candidate-runtime", "donor-root", "donor-runtime", "godot-zip", "vc-runtime", "notices", "archive", "patched-engine-archive", "stock-correctness", "water-correctness", "members-correctness", "native-correctness", "atomic-engine-directory", "atomic-inventory"):
         parser.add_argument("--" + name, type=Path)
     parser.add_argument("--candidate-sha", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -265,7 +273,7 @@ def main():
         need(args.atomic_engine_directory is None and args.atomic_inventory is None,'Stock-only package cannot carry unregistered atomic inputs')
     need(args.stock_correctness is not None,'Recovery evaluator requires retained actual Windows correctness')
     gate=recovery_policy.qualify(root,args.candidate_runtime.resolve(),output/engine['gui']['path'],
-        args.stock_correctness,args.water_correctness,members_summary=args.members_correctness,
+        args.stock_correctness,args.water_correctness,members_summary=args.members_correctness,native_summary=args.native_correctness,
         atomic_root=None if atomic is None else output/atomic['root'],
         atomic_inventory=args.atomic_inventory)
     write_json(output/'qualification/recovery-correctness.json',gate)
@@ -290,11 +298,14 @@ def main():
         (output/recovery_policy.DONOR_COMMAND).write_bytes(command(args.candidate_sha,mode='Fallback',donor=True))
     if configured['experimental_architecture']!='none':
         (output/recovery_policy.EXPERIMENTAL_COMMAND).write_bytes(command(args.candidate_sha,mode='Experimental'))
+    comparisons=recovery_policy.scene_comparison_commands(configured)
+    for name,value in comparisons.items():
+        (output/name).write_bytes(command(args.candidate_sha,value['scene'],mode=value['mode']))
     shutil.copyfile(output / TOOLS / "README.md", output / "READ-ME.md")
     shutil.copyfile(output / TOOLS / "ACCEPTANCE.md", output / "ACCEPTANCE.md")
     record = {"schema": SCHEMA, "mission": MISSION, "candidate_commit": args.candidate_sha,
               "package_filename": archive.name, "sources": sources, "engine": engine, "patched_engine": patched,"atomic_engine":atomic,
-              "defaults": selected_defaults(), "owner_commands": commands, "owner_launcher": TOOLS + "/Start-PUBPRES-Final.ps1",
+              "defaults": selected_defaults(), "owner_commands": commands, "comparison_commands":comparisons,"owner_launcher": TOOLS + "/Start-PUBPRES-Final.ps1",
               "owner_observer": TOOLS + "/owner_start.gd", "owner_results_collector": TOOLS + "/Collect-Results.ps1",
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "recovery_selection":recovery_policy.selection(),

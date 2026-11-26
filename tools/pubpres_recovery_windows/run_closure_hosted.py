@@ -32,7 +32,7 @@ def main():
         'request':{'phase':'integration','engine_artifact':{k:v for k,v in pin.items() if k!='gui_sha256'}},
         'driver':identity,'source':identity['source_commit'],'run':os.environ.get('GITHUB_RUN_ID'),
         'attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),'platform':'windows','outcomes':[],'unexecuted':[],
-        'closure_members_required':True,'complete':False,'physical_acceptance':'HOLD',
+        'closure_members_required':True,'closure_native_owner_required':True,'complete':False,'physical_acceptance':'HOLD',
         'scope':'Closure resulting-source actual Windows application admission. Original frozen19/submission2/water4 retained; multipart4 added. No physical NVIDIA or comparative performance acceptance.'}
     def save():
         (output/'INVENTORY.json').write_text(json.dumps(report,indent=2)+'\n')
@@ -51,14 +51,18 @@ def main():
             '--output',output/label,'--focus',focus,'--render-thread',thread,'--lookahead',budget,
             *([] if engine==stock else exact)])
     save()
-    stock_ok=qualify('stock-frozen-correctness',stock,'frozen')
+    stock_native=execute('stock-native-owner',[ROOT/'tools/pubpres_recovery_windows/run_native_owner.py',
+        '--source',ROOT,'--runtime',runtime,'--engine',stock,'--output',output/'stock-native-owner'])
+    atomic_native=execute('atomic-native-owner',[ROOT/'tools/pubpres_recovery_windows/run_native_owner.py',
+        '--source',ROOT,'--runtime',runtime,'--engine',custom,'--output',output/'atomic-native-owner',*exact])
+    stock_ok=stock_native and qualify('stock-frozen-correctness',stock,'frozen')
     if stock_ok:
         water_ok=qualify('stock-water-correctness',stock,'water')
         members_ok=qualify('stock-members-correctness',stock,'members')
     else:
         water_ok=members_ok=False
         report['unexecuted'].append({'gate':'Water/multipart/atomic','reason':'Original resulting-source Stock correctness failed'})
-    if stock_ok and water_ok and members_ok:
+    if stock_ok and water_ok and members_ok and atomic_native:
         atomic_ok=qualify('atomic-frozen-correctness',custom,'frozen')
         if atomic_ok:
             for thread,budget in (('safe',0),('separate',0),('separate',4)):
@@ -70,7 +74,7 @@ def main():
                 '--stock-engine',stock,'--output',output/'atomic-font-and-first-read',*exact],3600)
         else:report['unexecuted'].append({'gate':'atomic application integration','reason':'Original custom-engine correctness failed'})
     elif stock_ok:
-        report['unexecuted'].append({'gate':'atomic application integration','reason':'Stock Water or ordinary multipart correctness failed'})
+        report['unexecuted'].append({'gate':'atomic application integration','reason':'Stock Water/multipart or actual atomic native ownership failed'})
     report['complete']=not report['unexecuted'] and all(row['returncode']==0 and not row['timed_out'] for row in report['outcomes'])
     save()
     if report['complete']:

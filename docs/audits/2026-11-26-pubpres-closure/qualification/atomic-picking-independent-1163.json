@@ -1,0 +1,93 @@
+{
+  "schema": "pubpres-independent-accepted-material-picking-review-v1",
+  "source": "1163ca1d4599b1d1b9e4572cd3ce4f08d7993ab9",
+  "tree": "6e732d155000e53517461e7c08313b79d96f7093",
+  "engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+  "receipt_sha256": "eb4f6de034b1775d8430c4bd785926ba74c68e41aff62c70ff239882fd3eed44",
+  "reader_sha256": "0ea850a3010c5e2ae5577ec6845361e632a3d2649be6700d0bde4afa45972f11",
+  "checks": 110,
+  "positive": true,
+  "adversaries": [
+    {
+      "case": "old_actor_not_selected",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "not_actual_sand",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "no_new_uploaded_revision",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "no_new_uploaded_serial",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "pixels_changed_while_held",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "mapping_advanced_while_held",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "premature_draw",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "premature_submission",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "fabricated_physical_credit",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "missing_actual_next_draw",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "next_material_not_adopted",
+      "rejected": true,
+      "reason": "Actual newer native material must retain the unchanged submitted framebuffer and actor mouse mapping until a genuine draw"
+    },
+    {
+      "case": "missing_world_refusal",
+      "rejected": true,
+      "reason": "Submitted-frame picking lacks serial, World or material join refusals"
+    },
+    {
+      "case": "duplicate_world_refusal",
+      "rejected": true,
+      "reason": "Submitted-frame picking lacks serial, World or material join refusals"
+    },
+    {
+      "case": "foreign_world_selected",
+      "rejected": true,
+      "reason": "Submitted-frame picking lacks serial, World or material join refusals"
+    }
+  ],
+  "scope": "Independent actual graphical receipt replay and corruption refusals; no new GPU execution or performance claim.",
+  "retained_negative": {
+    "source": "1dafd3bc5250ba44ad9038c7ab022272eb51fbce",
+    "receipt_sha256": "b7c39a5527be96569d4dd775e0077a6ec5301d9bfa17b9ab58471185ad3eecc9",
+    "checks": 110,
+    "failures": [
+      "actual mouse still selects the submitted actor while newer material remains unsubmitted"
+    ],
+    "refused": true,
+    "reason": "Incomplete supplemental assertions: test_workbench_presentation_submission"
+  }
+}

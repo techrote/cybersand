@@ -14,7 +14,7 @@ import closure_request as request
 
 class ClosureSourceAdmission(unittest.TestCase):
     def test_new_helpers_import_before_expensive_platform_work(self):
-        for name in ('verify_closure_runtimes.py','restore_atomic.py','run_closure_hosted.py'):
+        for name in ('verify_closure_runtimes.py','restore_atomic.py','run_closure_hosted.py','run_native_owner.py'):
             with self.subTest(name=name):
                 result=subprocess.run([sys.executable,str(Path(__file__).with_name(name)),'--help'],
                     text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=30)

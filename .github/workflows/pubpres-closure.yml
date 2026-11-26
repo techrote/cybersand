@@ -191,6 +191,8 @@ jobs:
           sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
           python tools/ci/lfs_runtime_artifact.py install --root . --include "$RAPIER_LINUX" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --artifact build/transport-C --output build/closure-linux/rapier-transport
           python tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Actual mounted native pool and World ownership
+        run: python tools/pubpres_recovery_windows/run_native_owner.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/mounted-native
       - name: Resulting-source original frozen correctness inventory
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-frozen --focus frozen --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - name: Actual Water and Sand native framebuffer qualification
@@ -270,7 +272,7 @@ jobs:
             $Extra+=@('--atomic-engine-directory','build/engine-build02/payload','--atomic-inventory','build/closure-windows/application/INVENTORY.json')
           }
           $Archive=Join-Path $PWD ('delivery/CyberSand-PUBPRES-PLAYABILITY-FINAL-CLOSURE-001-'+$env:GITHUB_SHA.Substring(0,12)+'-Windows.zip')
-          python tools/pubpres_recovery_windows/package_windows.py --candidate-root . --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C --donor-root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --donor-runtime build/runtime/D --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies/vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies/notices') --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-closure-payload') --archive $Archive --stock-correctness build/closure-windows/application/stock-frozen-correctness/SUMMARY.json --members-correctness build/closure-windows/application/stock-members-correctness/SUMMARY.json @Extra
+          python tools/pubpres_recovery_windows/package_windows.py --candidate-root . --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C --donor-root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --donor-runtime build/runtime/D --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies/vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies/notices') --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-closure-payload') --archive $Archive --stock-correctness build/closure-windows/application/stock-frozen-correctness/SUMMARY.json --members-correctness build/closure-windows/application/stock-members-correctness/SUMMARY.json --native-correctness build/closure-windows/application/stock-native-owner/SUMMARY.json @Extra
           if($LASTEXITCODE -ne 0){throw 'Resulting-source Windows evaluator admission or assembly failed'}
           'archive='+$Archive|Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
       - name: Actual shipped CMD launchers from pristine extraction with spaces

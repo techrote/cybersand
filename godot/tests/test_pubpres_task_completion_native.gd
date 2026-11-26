@@ -89,7 +89,9 @@ func run() -> void:
 	require(last.completed_dispatches > 0 and last.completed_tasks >= last.completed_dispatches,
 		"actual selected pool executes nonzero task batches")
 	observations.append({"stage":"matched_native","control":control.get_wave_flow_status().task_completion,
-		"candidate":last.duplicate(true),"physical_hash":candidate.get_physical_state_hash()})
+		"candidate":last.duplicate(true),"physical_hash":candidate.get_physical_state_hash(),
+		"control_completed_tick":control.get_wave_flow_status().completed_tick,
+		"candidate_completed_tick":candidate.get_wave_flow_status().completed_tick})
 	last.completed_tasks = -1
 	require(candidate.get_wave_flow_status().task_completion.completed_tasks > 0,
 		"readback cannot modify native completion authority")
@@ -107,9 +109,15 @@ func run() -> void:
 
 func finish() -> void:
 	ProjectSettings.set_setting(SETTING,saved)
+	var native_path := "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" \
+		if OS.get_name() == "Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
 	var report := {"schema":"pubpres-task-completion-native-v1","checks":checks,"failures":failures,
 		"observations":observations,"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
-		"engine":Engine.get_version_info(),"test_sha256":FileAccess.get_sha256(get_script().resource_path)}
+		"engine":Engine.get_version_info(),"test_sha256":FileAccess.get_sha256(get_script().resource_path),
+		"process_id":OS.get_process_id(),"platform":OS.get_name(),
+		"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),
+		"native_resource":native_path,"native_sha256":FileAccess.get_sha256(native_path),
+		"native_descriptor_sha256":FileAccess.get_sha256("res://addons/cybersand_native/cybersand_native.gdextension")}
 	var output := OS.get_environment("CYBERSAND_TASK_COMPLETION_NATIVE_OUTPUT")
 	if not output.is_empty():
 		var file := FileAccess.open(output,FileAccess.WRITE)

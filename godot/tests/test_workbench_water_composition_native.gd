@@ -52,6 +52,29 @@ var omitted_by_stage: Dictionary = {}
 var stored_by_stage: Dictionary = {}
 var omission_reasons: Dictionary = {}
 var observed_frames_by_stage: Dictionary = {}
+var omitted_observations: Array[Dictionary] = []
+var omitted_observations_dropped := 0
+var transition_observations: Array[Dictionary] = []
+var transition_observations_dropped := 0
+
+func transition_identity(frame: Dictionary, bridge: Variant) -> Dictionary:
+	# Read actual owners and the already-selected frame. This observer does not
+	# call the Water prover, publish a sample or manufacture a completion.
+	return {"time_usec":Time.get_ticks_usec(),"frame":Engine.get_process_frames(),"stage":stage,
+		"frame_valid":frame.get("valid",false),"frame_world":frame.get("world_generation",-1),
+		"uploaded_world":host.last_uploaded_world_generation,"uploaded_revision":host.last_uploaded_revision,
+		"upload_serial":host.last_uploaded_render_snapshot_serial,
+		"bridge":bridge.get_instance_id(),"session":bridge._session,"epoch":bridge._epoch,
+		"physical_step":host.physical_actor_session.tick,"manual_steps":bridge.manual_step_count(),
+		"completed_step":host._workbench_completed_step,"completed_usec":host._workbench_completed_step_usec,
+		"pending_apply_serial":int(host.pending_microscenario_apply.get("serial",0)),
+		"pending_apply":not host.pending_microscenario_apply.is_empty(),
+		"pending_owner":host._pending_physical_candidate.get_instance_id() if host._pending_physical_candidate != null else 0,
+		"prepared_owner_ready":host._prepared_physical_ready_sent,"terrain_ready":host._physical_terrain_ready,
+		"reset_receipt":host._actor_reset_receipt,"frame_error":host._workbench_frame_error,
+		"visible_slots":frame.get("poses",{}).keys(),"reasons":frame.get("reasons",{}).duplicate(),
+		"guard":host.workbench_presentation_last.duplicate(),
+		"selection_usec":frame.get("selection_usec",-1),"upload_cache_usec":frame.get("upload_cache_usec",-1)}
 
 func _initialize() -> void:
 	Engine.max_fps = 60
@@ -121,8 +144,12 @@ func footprint(pose: Transform2D, rectangles: Array, pixels: Image) -> Dictionar
 func observe_frame() -> void:
 	if not is_instance_valid(host) or host.physical_actor_session == null or framebuffer_control: return
 	var frame: Dictionary = host.workbench_presentation_frame
-	if not frame.get("valid",false): return
 	var bridge: Variant = host.physical_actor_session.bridge
+	if stage in ["restore","restored_paused","restored_step"]:
+		if transition_observations.size() < 512:
+			transition_observations.append(transition_identity(frame,bridge))
+		else: transition_observations_dropped += 1
+	if not frame.get("valid",false): return
 	observed_frames += 1
 	observed_frames_by_stage[stage] = int(observed_frames_by_stage.get(stage,0))+1
 	for slot: int in range(bridge._members.size()):
@@ -132,6 +159,14 @@ func observe_frame() -> void:
 			omitted_by_stage[omission_key] = int(omitted_by_stage.get(omission_key,0))+1
 			var reason_key := omission_key+":"+str(frame.get("reasons",{}).get(slot,"missing"))
 			omission_reasons[reason_key] = int(omission_reasons.get(reason_key,0))+1
+			if omitted_observations.size() < 512:
+				var hidden: Dictionary = transition_identity(frame,bridge)
+				hidden["slot"] = slot
+				hidden["reason"] = frame.get("reasons",{}).get(slot,"missing")
+				hidden["pose"] = Trace.pose_json(bridge.body_transform(slot))
+				hidden["footprint"] = footprint(bridge.body_transform(slot),bridge._rects[slot],host.image)
+				omitted_observations.append(hidden)
+			else: omitted_observations_dropped += 1
 			continue
 		var member: Dictionary = bridge._members[slot]
 		var identity := str(frame.get("world_generation",-1))+":"+str(bridge._session)+":"+str(member.instance_id)
@@ -524,6 +559,23 @@ func edits_and_lifecycle() -> void:
 		and host._physical_epoch > before_epoch and host.last_uploaded_world_generation > before_world \
 		and host.physical_actor_session != null and host._physical_terrain_ready),"Restore replaces exact World and actor owner"): return
 	check(host._workbench_water_dependencies.is_empty(),"Restore retires consumed Water authority")
+	stage = "restored_paused"
+	check(await until(func() -> bool:
+		return host.workbench_presentation_frame.get("world_generation",-1) == host.last_uploaded_world_generation \
+			and host.workbench_presentation_frame.get("water_proofs",{}).has(0)),
+		"new restored owner admits initialized Water presentation before any Step")
+	var restored_step: int = host.physical_actor_session.tick
+	var restored_manual: int = host.physical_actor_session.bridge.manual_step_count()
+	check(restored_step == 0 and restored_manual == 0 and host._workbench_completed_step_usec == 0,
+		"restored initialized presentation has no fabricated physical completion")
+	for ignored: int in range(32): await process_frame
+	for slot: int in range(host.physical_actor_session.bridge._members.size()):
+		check(int(omitted_by_stage.get(stage+":"+str(slot),0)) == 0,
+			"restored paused owner keeps actual member "+str(slot)+" visible")
+	check(host.physical_actor_session.tick == restored_step \
+		and host.physical_actor_session.bridge.manual_step_count() == restored_manual,
+		"restored paused visibility creates no physical steps")
+	await framebuffer_visibility("restored_authoring_framebuffer")
 	if not await ordinary_step("restored_step"): return
 	check(ui.toggle_pause(),"restored ordinary resume admitted")
 	var first: int = host.physical_actor_session.tick
@@ -586,6 +638,8 @@ func _run() -> void:
 		"observed_frames":observed_frames,"composed_body_frames":composed_frames,"hidden_body_frames":hidden_body_frames,
 		"omitted_by_stage_and_slot":omitted_by_stage,"omission_reasons":omission_reasons,
 		"observed_frames_by_stage":observed_frames_by_stage,
+		"omitted_observations":omitted_observations,"omitted_observations_dropped":omitted_observations_dropped,
+		"transition_observations":transition_observations,"transition_observations_dropped":transition_observations_dropped,
 		"proof_kinds":kinds,"moving_wet_distinct_poses":moving_wet_poses.size(),"compound_model":selected_compound,
 		"observations":observations,"lifecycle":lifecycle,"framebuffer":framebuffer,
 		"scope":"Actual mounted Main/native/Rapier and first-read framebuffer visibility controls; explicit injected ordinary keyboard input. No comparative performance, compositor, physical scanout or owner NVIDIA acceptance."}

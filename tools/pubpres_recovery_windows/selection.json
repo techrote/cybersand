@@ -1,12 +1,12 @@
 {
   "schema": "pubpres-closure-owner-selection-v2",
   "architecture": "stock_safe",
-  "water_composition": 0,
+  "water_composition": 1,
   "actual_submission": 0,
   "render_lookahead": 0,
   "engineering_disposition": "EXPERIMENTAL / HOLD",
   "physical_acceptance": "HOLD",
-  "rationale": "Recovery packaging foundation. Stock Safe, Full two-slot publication, continuation and Water composition disabled. Selection remains explicit and reversible until resulting-source qualification and comparative progression evidence support a change.",
-  "experimental_architecture": "none",
+  "rationale": "Prepared owner evaluator: official Stock Safe, Full two-slot publication and repaired Water composition are the primary test route, conditional on exact resulting-source Windows graphical and native qualification. Original all-worker completion is retained after the matched actual-task candidate failed its prospective selection criteria. Bounded atomic Separate4 is exposed only as a separately labelled, independently qualified experimental route; its comparative architecture decision remains HOLD. The explicit fallback keeps Stock Safe and disables recovery Water composition. This package selection does not change production defaults or assert physical owner acceptance.",
+  "experimental_architecture": "atomic_separate4",
   "task_completion": 0
 }

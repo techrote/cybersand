@@ -17,11 +17,13 @@ from run_campaign import (OwnedProcess, engine_command, descendant_pids, memory_
                           digest, need, write_json)
 from execution_contract import FROZEN_RUNNER_SHA256, verify_execution_derivation
 from resource_sampler import process_cpu_sample, summarize_cpu
+from process_discovery import discover_application, validate_discovery
 
 
 def execute_with_resources(engine, args, folder, source_sha, settings, timeout, wrapper=None):
     verify_execution_derivation()
     resource_samples, resource_errors, resource_dropped = [], [], 0
+    application_discovery = None
     folder.mkdir(parents=True, exist_ok=True)
     env = {k: v for k, v in os.environ.items() if not k.startswith("CYBERSAND_")}
     profile_variables=("APPDATA","LOCALAPPDATA") if os.name == "nt" else ("XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME")
@@ -48,11 +50,9 @@ def execute_with_resources(engine, args, folder, source_sha, settings, timeout, 
                         break
                     try:
                         if child_pid is None:
-                            for pid in descendant_pids(process.pid):
-                                executable = Path(f"/proc/{pid}/exe").resolve()
-                                if executable == engine:
-                                    child_pid = pid
-                                    break
+                            application_discovery = discover_application(process.pid, engine)
+                            if application_discovery is not None:
+                                child_pid = application_discovery["pid"]
                         if child_pid is not None:
                             samples.append(memory_sample(child_pid, (time.monotonic() - clock) * 1000))
                             if len(resource_samples) >= 4096:
@@ -97,6 +97,10 @@ def execute_with_resources(engine, args, folder, source_sha, settings, timeout, 
             and display.get("application_returncode") == 0 and display.get("returncode") == 0
             and display.get("application_timeout") is False and display.get("failure") is None)
     resource_summary = summarize_cpu(resource_samples, expected_pid=child_pid, errors=resource_errors, dropped=resource_dropped)
+    result["application_discovery"] = application_discovery
+    if os.name != "nt" and resource_summary["complete"]:
+        validate_discovery(application_discovery, owner_pid=result["wrapper_pid"], pid=child_pid,
+                           creation_identity=resource_summary["creation_identity"], executable=engine)
     resource_trace = {"schema": "pubpres-final-process-cpu-v1", "source_commit": source_sha,
                       "frozen_runner_sha256": FROZEN_RUNNER_SHA256,
                       "runner_sha256": digest(Path(__file__)), "summary": resource_summary,

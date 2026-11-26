@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "runtimes",
-  "purpose": "Corrected journal-only fixture and exact local importer preservation; all platform admission suites pass",
+  "phase": "full",
+  "purpose": "Qualify resulting Linux and Windows native/application, stock and bounded atomic Water paths, then actual pristine extracted playable evaluator; experimental HOLD",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "f8e8fcab8fe1f8eb2906267e8b5a83b488ae4c9431c8c48432531ba4a8d95b85",
+  "payload_sha256": "4d1b96f9ac0094b3a02bda20965ba5ce6c37159b3c854229064541280cf7bb71",
   "physical_acceptance": "HOLD"
 }

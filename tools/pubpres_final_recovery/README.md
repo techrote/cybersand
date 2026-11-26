@@ -124,3 +124,22 @@ reader enforces every existing `TOOLCHAIN_FIELDS` match. Old accepted-main
 archives remain useful historical custody references, but differing dependency
 receipts/static libraries cannot silently satisfy that gate. The request binds
 the complete source and never relabels old M as refreshed accepted main.
+# Current accepted-main reconciliation comparison
+
+`current-main-registration.json` separately registers **N/C/C/N** against accepted
+main `67c1413a2a84077b47fa542cf91d2bd6ba5520ee`. Historical M/C/D sources and their
+registrations remain unchanged. `run_current_main_comparison.py` retains the
+original V3 physical/native/material/body/input/framebuffer oracle and the
+existing explicit render-owner extension. It requires the same independently
+built native dependency/toolchain cohort, source-bound candidate correctness,
+and all six equal-step trajectory/input pairings to agree.
+
+The candidate architecture, Water composition and actual-task mode are explicit
+arguments. N keeps its ordinary Full/combined/legacy/source-default/Safe policy.
+Both arms use the same full physical observer and external CPU/RSS sampler;
+supplementary pose observation is OFF for both. This comparison answers whether
+the whole resulting architecture improves real physical progression against
+current accepted main. Presentation freshness remains governed by the separate
+calibrated same-source architecture cohort. It cannot infer unavailable N pose
+ages or physical input-to-visible latency.
+

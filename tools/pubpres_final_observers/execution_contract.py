@@ -31,7 +31,14 @@ def expected_execution(frozen: bytes) -> str:
     code = function_source(frozen.decode("utf-8"), "execute")
     code = replace_once(code, "def execute(", "def execute_with_resources(")
     code = replace_once(code, "    folder.mkdir(parents=True, exist_ok=True)",
-                        "    verify_execution_derivation()\n    resource_samples, resource_errors, resource_dropped = [], [], 0\n    folder.mkdir(parents=True, exist_ok=True)")
+                        "    verify_execution_derivation()\n    resource_samples, resource_errors, resource_dropped = [], [], 0\n    application_discovery = None\n    folder.mkdir(parents=True, exist_ok=True)")
+    code = replace_once(code, '''                            for pid in descendant_pids(process.pid):
+                                executable = Path(f"/proc/{pid}/exe").resolve()
+                                if executable == engine:
+                                    child_pid = pid
+                                    break''', '''                            application_discovery = discover_application(process.pid, engine)
+                            if application_discovery is not None:
+                                child_pid = application_discovery["pid"]''')
     original = "                            samples.append(memory_sample(child_pid, (time.monotonic() - clock) * 1000))"
     replacement = original + '''
                             if len(resource_samples) >= 4096:
@@ -46,6 +53,10 @@ def expected_execution(frozen: bytes) -> str:
     code = replace_once(code, original, replacement)
     original = '    write_json(folder / "process.json", result)'
     replacement = '''    resource_summary = summarize_cpu(resource_samples, expected_pid=child_pid, errors=resource_errors, dropped=resource_dropped)
+    result["application_discovery"] = application_discovery
+    if os.name != "nt" and resource_summary["complete"]:
+        validate_discovery(application_discovery, owner_pid=result["wrapper_pid"], pid=child_pid,
+                           creation_identity=resource_summary["creation_identity"], executable=engine)
     resource_trace = {"schema": "pubpres-final-process-cpu-v1", "source_commit": source_sha,
                       "frozen_runner_sha256": FROZEN_RUNNER_SHA256,
                       "runner_sha256": digest(Path(__file__)), "summary": resource_summary,
@@ -65,4 +76,5 @@ def verify_execution_derivation(root: Path = ROOT) -> dict:
         raise ValueError("CPU observer changed an undeclared ownership, timeout, cancellation, sampling or process gate")
     return {"frozen_runner_sha256": FROZEN_RUNNER_SHA256,
             "runner_sha256": hashlib.sha256(current.read_bytes()).hexdigest(),
-            "scope": "Only additive same-iteration CPU reads and a bounded sidecar; all frozen process ownership and completion gates remain exact."}
+            "process_discovery_sha256": hashlib.sha256((root / "tools/pubpres_final_observers/process_discovery.py").read_bytes()).hexdigest(),
+            "scope": "Additive same-iteration CPU reads, bounded sidecar and exact executable/ancestry/creation discovery when Linux task/children is unavailable; all frozen process lifetime and completion gates remain exact."}

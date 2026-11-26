@@ -1,0 +1,65 @@
+{
+  "command": [
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/9cef565acfec/native-mounted-55dea/project",
+    "--script",
+    "res://tests/test_pubpres_task_completion_native.gd"
+  ],
+  "source_commit": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+  "elapsed_seconds": 1.77619427099944,
+  "exit_code": 0,
+  "timed_out": false,
+  "surviving_children_at_exit": false,
+  "interruption": null,
+  "wrapper_pid": 953,
+  "observed_application_pid": 953,
+  "sampled_peak_rss_bytes": 220172288,
+  "memory_scope": "250ms actual Godot process working-set/RSS samples including setup and capture; valid only after receipt PID match. Windows virtual size unavailable; commit reported separately.",
+  "application_discovery": {
+    "schema": "pubpres-owned-application-discovery-v1",
+    "method": "owned_root",
+    "owner_pid": 953,
+    "pid": 953,
+    "executable": "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "creation_identity": "linux-start-ticks:435570",
+    "ancestry": [
+      {
+        "pid": 953,
+        "parent_pid": 5,
+        "creation_identity": "linux-start-ticks:435570",
+        "start_ticks": 435570
+      }
+    ]
+  },
+  "process_cpu": {
+    "path": "/workspace/scratch/9cef565acfec/native-mounted-55dea/mounted/process-cpu.json",
+    "sha256": "cce8a1d4f4f732c25aa25c87462c7d98110aebd213f8a2d5a508fcf5ff8341cb",
+    "summary": {
+      "schema": "pubpres-final-process-cpu-summary-v1",
+      "complete": true,
+      "problems": [],
+      "samples": 7,
+      "sample_errors": 0,
+      "dropped": 0,
+      "expected_pid": 953,
+      "sampler_sha256": "a1e56c7b2b5c9012b4be995f58dece8adf336fac1122d327577aa2578d67fe59",
+      "external_sampler_wall_usec": 2427,
+      "external_sampler_max_read_usec": 2054,
+      "scope": "Actual owned Godot process CPU accounting, all its threads. Includes scene setup and capture inside the sampled process lifetime. Samples are not aligned to Godot capture clocks. The unobserved launch/exit tail is excluded from interval deltas; last cumulative counters are lower bounds on lifetime CPU. Read time for successful and failed queries is external sampler wall cost, not Godot CPU; elapsed_ms marks query request, not an instantaneous kernel accounting timestamp. No GPU busy-time or hardware utilization claim.",
+      "creation_identity": "linux-start-ticks:435570",
+      "first_sample_elapsed_ms": 1.5208119993985747,
+      "last_sample_elapsed_ms": 1525.0564789994314,
+      "observed_interval_seconds": 1.5235356670000328,
+      "observed_user_seconds": 1.32,
+      "observed_kernel_seconds": 0.29,
+      "mean_cpu_core_equivalents": 1.0567524179924337,
+      "last_cumulative_user_seconds": 1.32,
+      "last_cumulative_kernel_seconds": 0.29,
+      "maximum_sample_gap_ms": 268.90783099952387
+    }
+  }
+}

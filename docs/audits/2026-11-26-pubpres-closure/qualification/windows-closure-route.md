@@ -26,6 +26,8 @@ The payload fingerprint includes every tracked tree entry except the request its
 
 The original frozen correctness inventory remains 19 outcomes. Actual submission remains two outcomes and Water remains four. The additive multipart focus is four outcomes: import, unchanged 17-check history, unchanged 23-check owner/member history, and 574-check graphical fixture. Windows checks Stock Safe, atomic Safe0, and atomic Separate4 membership; missing membership blocks an atomic owner package. The stock package also requires its actual multipart gate.
 
+An independent mounted-native gate executes `test_pubpres_task_completion_native.gd` on the fresh integrated runtime: Linux Stock, Windows Stock and Windows build02. Its unchanged 150 checks exercise 32 matched actual native turns, eight turns for each prepared replacement, immutable native policy, genuine task counters and strict refusal of three nonboolean selector types. Additive source/engine/module/descriptor/PID receipts identify the actual executed fixture. The new reader rejects missing or duplicated World/refusal observations, stale replacement credit, omitted turns and mismatched input hashes. This gate remains separate from the frozen 19 and is required by package admission even when the owner task-completion treatment remains off.
+
 Original build02 is retrieved by exact artifact/source/run/attempt/digest, then re-admitted with the retained full payload verifier. Build01 is never substituted. No unchanged custom engine rebuild is requested. Accepted `materialize_lfs.py` and `lfs_runtime_artifact.py` own Rapier acquisition and same-attempt transport; there is no third acquisition implementation.
 
 Fresh package construction requires C native source and dependency-builder identity to match the resulting application exactly. A native input-equivalence binding is useful for continuing Linux engineering but does not silently grant final Windows package admission.
@@ -36,7 +38,7 @@ Hosted Windows graphics remain distinct from physical Windows 11/NVIDIA acceptan
 
 ## Local admission recorded before hosted execution
 
-- 25 recovery package/policy/authoring and source-seal tests passed.
+- 30 recovery package/policy/authoring, source-seal and mounted-native receipt tests passed.
 - 15 recovery evidence reader and frozen-predicate tests passed.
 - 14 unchanged final package tests passed.
 - Python compilation, workflow YAML parsing and CI provider policy passed.

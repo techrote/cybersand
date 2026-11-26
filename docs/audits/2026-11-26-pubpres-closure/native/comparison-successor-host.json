@@ -1,0 +1,25 @@
+{
+  "schema": "pubpres-native-comparison-host-v1",
+  "system": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "logical_cpu_count": 9,
+  "allowed_cpus": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "rendering": "Pinned stock4.7 OpenGL3/Compatibility; actual1920x1080 Xorg dummy with Mesa llvmpipe; not hardware GPU acceptance",
+  "/sys/fs/cgroup/cpu.max": {
+    "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/cpu.max'"
+  },
+  "/sys/fs/cgroup/memory.max": {
+    "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.max'"
+  },
+  "/proc/self/cgroup": "0::/"
+}

@@ -1,0 +1,122 @@
+{
+  "schema": "pubpres-raw-evidence-inventory-v1",
+  "application": "69b89da45c2e69a6bca5b00b5859a79d0e2c72aa",
+  "scope": "Original successful focused Water qualification and all omitted-frame counts; no sustained, comparative or whole-application qualification implied. Reproducible staged project and profiles excluded.",
+  "files": [
+    {
+      "path": "SUMMARY.json",
+      "bytes": 2605580,
+      "sha256": "bbeb48d0e6ad41047da61f3652f59c0135e7927fac07546130cba95138c38711"
+    },
+    {
+      "path": "import-slots2/process.json",
+      "bytes": 501,
+      "sha256": "7648726150515ee1384d8e86369fabc2aa6c69a17d675f93ecad1a8459d3c587"
+    },
+    {
+      "path": "import-slots2/stdout.log",
+      "bytes": 51475,
+      "sha256": "a7878dd14bf743d9a5eea7d09182f9c7e6f2bd8cc04a95e8fcab843dd12bc92e"
+    },
+    {
+      "path": "test_workbench_water_composition-slots2/process.json",
+      "bytes": 526,
+      "sha256": "cc1b41cc77f86686f60636a9c25bd97371a565d8a847f3ae992a19d9392caaa8"
+    },
+    {
+      "path": "test_workbench_water_composition-slots2/stdout.log",
+      "bytes": 301,
+      "sha256": "79e10d74572d1cc818708bd9dcd025e94b0b29e59d0688f48f19eaf9d4467474"
+    },
+    {
+      "path": "test_workbench_water_composition-slots3/display-owner.json",
+      "bytes": 1108,
+      "sha256": "6bc779791ea4404419b69eb57bdbef4388e4b02af0aa8f48cae9e42bbccfd1fb"
+    },
+    {
+      "path": "test_workbench_water_composition-slots3/display-owner.xorg.log",
+      "bytes": 54534,
+      "sha256": "e876da46348f607690e083c465c1dea375a023930e2db8ca09450ef8922ad35d"
+    },
+    {
+      "path": "test_workbench_water_composition-slots3/process.json",
+      "bytes": 788,
+      "sha256": "9641d13867c15d4999d81b217b132a36f9f17174a854958f53382d6b325580fc"
+    },
+    {
+      "path": "test_workbench_water_composition-slots3/stdout.log",
+      "bytes": 595,
+      "sha256": "1f07286f0236bb8d21d374ac60f1c34949ef0357025d85b7808291b2a9b98782"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/display-owner.json",
+      "bytes": 1115,
+      "sha256": "89537cb03008b371b8cdbe95b34ea175fc64a7992c133d3a2f0733ddd1a0cb42"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/display-owner.xorg.log",
+      "bytes": 57091,
+      "sha256": "478d576549308043f3f00a752d837ef411692cc2e9191f09d6009a464195d967"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/initial_authoring_framebuffer-hidden-control.png",
+      "bytes": 88355,
+      "sha256": "185a22c523bb26d12761f4321acdff6743297bcc9347338148833a1752a9ba75"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/initial_authoring_framebuffer-restored.png",
+      "bytes": 90695,
+      "sha256": "db28d5c463314f479975db83da895a8403cc62d38d0b39df3afeaded7f8c6965"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/initial_authoring_framebuffer-shown.png",
+      "bytes": 90612,
+      "sha256": "9a6aecf2ddb74ddcb2144f23b04d3259023446e69fc87962b8c33bed2f195a1c"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/process.json",
+      "bytes": 795,
+      "sha256": "64ae37961bc7d54d1d802464d53345d3cad51eee7c8a2e2165a62810a7a5c2fa"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/receipt.json",
+      "bytes": 1433642,
+      "sha256": "b0387ac8130e59868d6af20d362001f7b23130d6996ce11ab9c49804016f71ed"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/stdout.log",
+      "bytes": 585,
+      "sha256": "1ad36d70f9868d5ff4761801dbbb79c7f8711f7ae36621782b3bc77fe1588beb"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/submerged_framebuffer-hidden-control.png",
+      "bytes": 89112,
+      "sha256": "65033d593bc0364914161901a31a1961a9d9d25ef7cf5a77c03841d1ac2a4990"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/submerged_framebuffer-restored.png",
+      "bytes": 90298,
+      "sha256": "8fe055923ad6f0ef3ed2ad92f76acb10310f5d57bd2f9901a186cc78ac4e3406"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/submerged_framebuffer-shown.png",
+      "bytes": 90292,
+      "sha256": "4bb0154694a1b540d69b26e37f823f5a64cc96450da907e28972cd530a3a1567"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/water_refill_framebuffer-hidden-control.png",
+      "bytes": 89404,
+      "sha256": "f3d794d058539c8faea37b770babf00d38a312cb0f186747a93b2709a55b2da5"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/water_refill_framebuffer-restored.png",
+      "bytes": 91718,
+      "sha256": "b7ea0699a6c285b96917844a07831a523481066d74d2d741a0fd27ce28323af4"
+    },
+    {
+      "path": "test_workbench_water_composition_native-slots2/water_refill_framebuffer-shown.png",
+      "bytes": 91687,
+      "sha256": "b762a583cd51c5892f6ef708e9702cc03ece35f2cf68806faf7a88aaed8c6479"
+    }
+  ]
+}

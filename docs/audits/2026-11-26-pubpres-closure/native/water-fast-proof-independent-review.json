@@ -1,0 +1,26 @@
+{
+  "schema": "pubpres-water-fast-proof-independent-native-review-v1",
+  "reviewer": "Specialist A native progression/concurrency",
+  "utc": "2026-11-26T08:43:20.752104+00:00",
+  "implementation_commit": "65cc0791739437a4a239f7028ad5a6489f2cacd6",
+  "files_sha256": {
+    "godot/scripts/main.gd": "892e9b85b9473a33b5e025c46db41add0814ad4e2d1c58d9cb28837e804bfdca",
+    "godot/scripts/workbench_presentation_coherence.gd": "a19d8b06bbd33a8ff3f56ff2f4898fdb9f5eb644c38356823183d36dbb65618b",
+    "godot/tests/test_workbench_water_composition.gd": "207df009a3e92993845ef3bbb7a564bfaf9a0066cad86d3c4752dfcde6c8a15b"
+  },
+  "reviewed_diff_and_authority_functions": [
+    "Current actual physical/native dependency is proved before Water-compatible image sweep; no completion counter is advanced by coverage.",
+    "Initial owner adoption retains its distinct tick-zero initialized-closure path and actual sample identity.",
+    "R8 material channel alone is counted after bounded RG8 conversion; state byte cannot stand in for Sand or Water.",
+    "Both current and active previous image rectangles must contain only Empty or Water for fast admission; hard material falls through unchanged geometric refusal logic.",
+    "Fresh scans retain elapsed/shared-cell bounds; exact immutable image/geometry cache reuse remains separately guarded by current native ownership/completion proof.",
+    "Cache key retains owner/session/epoch/member generation/RID and both image content identities; no new physical or submitted-frame authority is inferred from cache hits."
+  ],
+  "verdict": "SOURCE_GO",
+  "remaining_gates": [
+    "Resulting-source moving and submerged graphical visibility",
+    "Actual first-read framebuffer and Sand/hard-mask controls",
+    "Sustained ordinary product freshness/progression"
+  ],
+  "limits": "Independent source review only. This reviewer did not execute the new graphical Water fixture or claim physical GPU behavior."
+}

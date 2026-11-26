@@ -94,6 +94,18 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     Assert-PP (($Manifest.recovery_selection|ConvertTo-Json -Depth 8 -Compress) -ceq ($Selection|ConvertTo-Json -Depth 8 -Compress) -and
         $Manifest.recovery_selection_sha256 -ceq (Get-PPHash $script:PFSelectionPath) -and
         (Get-PPHash (Join-PPSafe $Root 'tools/pubpres_recovery_windows/selection.json')) -ceq $Manifest.recovery_selection_sha256) 'Source-pinned recovery selection differs'
+    $ComparisonNames=@{'Wave 512'='wave512';'Wave 1024'='wave1024';'Wave 2048'='wave2048';'Mixed 2048'='mixed2048'}
+    $ComparisonModes=@{Fallback='Stock Safe Fallback'}
+    if($Selection.experimental_architecture -cne 'none'){$ComparisonModes.Experimental='Bounded Experimental'}
+    Assert-PP (@($Manifest.comparison_commands.PSObject.Properties).Count -eq 4*$ComparisonModes.Count) 'Matched scene launcher inventory differs'
+    foreach($Mode in $ComparisonModes.Keys) {
+        foreach($Title in $ComparisonNames.Keys) {
+            $Name='Open '+$Title+' - '+$ComparisonModes[$Mode]+'.cmd'
+            $Entry=$Manifest.comparison_commands.$Name
+            Assert-PP ($Entry.scene -ceq $ComparisonNames[$Title] -and $Entry.mode -ceq $Mode -and
+                (Test-Path -LiteralPath (Join-PPSafe $Root $Name) -PathType Leaf)) 'Matched scene launcher role differs'
+        }
+    }
     $Inventory=@($Manifest.files_sha256.PSObject.Properties)
     Assert-PP ($Inventory.Count -eq $Manifest.file_count -and $Inventory.Count -gt 0 -and $Inventory.Count -le 30000) 'Inventory count differs'
     $Names=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
@@ -287,7 +299,8 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Gate.native_sha256 -ceq $Manifest.sources.C.native.sha256 -and $Gate.physical_acceptance -ceq 'HOLD' -and
         ($Gate.selection|ConvertTo-Json -Depth 8 -Compress) -ceq ($Selection|ConvertTo-Json -Depth 8 -Compress) -and
         $Gate.stock.outcomes -eq 19 -and $Gate.stock.raw_inputs_and_supplemental_replayed -eq $true -and
-        $Gate.members.outcomes -eq 4 -and $Gate.members.raw_inputs_and_supplemental_replayed -eq $true) 'Original actual Windows correctness or ordinary multipart custody differs'
+        $Gate.members.outcomes -eq 4 -and $Gate.members.raw_inputs_and_supplemental_replayed -eq $true -and
+        $Gate.native_owner.checks -eq 150 -and $Gate.native_owner.raw_inputs_and_native_receipt_replayed -eq $true) 'Actual Windows correctness, multipart or mounted native ownership custody differs'
     if($Selection.water_composition -eq 1) {
         Assert-PP ($Gate.water.outcomes -eq 4 -and $Gate.water.raw_inputs_and_supplemental_replayed -eq $true) 'Selected Water lacks actual native graphical gates'
     } else { Assert-PP ($null -eq $Gate.water) 'Disabled Water cannot claim selected qualification' }
@@ -309,6 +322,12 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         foreach($Row in $AtomicGate.members) {
             Assert-PP ($Row.focus -ceq 'members' -and $Row.outcomes -eq 4 -and $Row.source -ceq $Candidate -and
                 $Row.raw_inputs_and_supplemental_replayed -eq $true) 'Atomic ordinary multipart result differs'
+        }
+        Assert-PP (@($AtomicGate.native_owner).Count -eq 2) 'Atomic mounted native ownership inventory is incomplete'
+        foreach($Row in $AtomicGate.native_owner) {
+            Assert-PP ($Row.source_commit -ceq $Candidate -and $Row.checks -eq 150 -and
+                $Row.native_sha256 -ceq $Manifest.sources.C.native.sha256 -and
+                $Row.raw_inputs_and_native_receipt_replayed -eq $true) 'Atomic actual native World/task ownership result differs'
         }
         if($Selection.water_composition -eq 1 -and $Selection.architecture -ceq 'atomic_safe0') {
             Assert-PP ($AtomicGate.safe_water.outcomes -eq 4 -and $AtomicGate.safe_water.source -ceq $Candidate -and

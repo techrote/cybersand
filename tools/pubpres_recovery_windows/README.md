@@ -6,6 +6,8 @@ The committed `selection.json` identifies the selected configuration and its eng
 
 If present, **Open Bounded Experimental.cmd** starts the separately identified atomic Separate4 candidate in its own profile. Its presence establishes technical qualification for testing; it does not establish that the performance targets passed. Water composition is enabled only when selected explicitly and supported by the native graphical qualification. Ordinary startup records actual effective policy once and then disconnects the observer.
 
+The prepared closure configuration opens **Stock Safe with repaired Water composition** first. The separately named **Bounded Experimental** route uses actual atomic admission and a maximum of four deferred render opportunities. Both use the original all-worker native completion mechanism: the actual-task experiment failed its registered matched progression and freshness criteria and remains disabled. **Stock Safe Fallback** disables recovery Water composition. A package is assembled only after the exact Windows application passes the gates required for its registered routes; this prepared selection alone is not that qualification.
+
 ## Open and play
 
 | Command | Ordinary authored start |
@@ -20,6 +22,8 @@ If present, **Open Bounded Experimental.cmd** starts the separately identified a
 | Collect Results.cmd | Collect exact startup, process, optional diagnostic and owner reports. |
 
 Representative scenes are installed through ordinary native Apply and begin paused. Press **Play / Pause [P]**, select the actor to pilot, and use the normal movement controls. Test fluid contact as well as free flight. Switch between **Follow selected** and **Free**, then check zoom, rotation and picking. Water Lab shows active settings; staged selections alone do not prove which solver is running.
+
+For a matched fallback scene, use the same title with **Stock Safe Fallback** in its filename, such as **Open Wave 2048 - Stock Safe Fallback.cmd**. All four representative scenes have this direct comparison route. If a bounded experiment is registered, its four corresponding **Bounded Experimental** scene launchers are also included. Each scene and mode retains its own profile, so these shortcuts do not overwrite the selected configuration's saves.
 
 The startup receipt verifies the installed native World, actor roster, uploaded material, exact engine and recovery policy. A Mixed start also checks a real uploaded Sand cell. These startup observations do not establish sustained playability.
 

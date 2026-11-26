@@ -265,7 +265,6 @@ func _transaction_cases() -> void:
 	host.camera_origin = camera_before
 	_record("picking")
 	await _transformed_pointer_case()
-	await _uploaded_material_pointer_case()
 
 
 func _uploaded_material_pointer_case() -> void:
@@ -695,6 +694,11 @@ func _run() -> void:
 		await _transaction_cases()
 		await _first_read()
 		await _invalid_actor_frame_ui()
+		# The additive real edit changes material dependencies while normal
+		# processing is deliberately frozen. Keep the original dry first-read
+		# controls before it; ordinary lifecycle processing below then reconciles
+		# the real new material without inventing a physical completion here.
+		await _uploaded_material_pointer_case()
 		await _ordinary_lifecycle()
 		await _retired_physical_owner_ui()
 		var owner: int = host.get_instance_id()

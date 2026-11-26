@@ -28,6 +28,18 @@ class FinalPackageTests(unittest.TestCase):
         self.assertEqual(ast.dump(function(old,'verify_sources')),ast.dump(function(new,'verify_sources')))
 
     def setUp(self):
+        # This synthetic PE/native fixture exercises the complete stock-only
+        # package verifier. Keep its declared policy independent of the real
+        # evaluator's subsequently selected optional engine: a fake atomic
+        # payload would defeat the actual build02 custody gate. All real policy
+        # configurations are covered separately, and hosted application/package
+        # qualification still reads the unpatched committed selection.
+        synthetic_selection=copy.deepcopy(package.recovery_policy.selection())
+        synthetic_selection.update(architecture='stock_safe',water_composition=0,
+            actual_submission=0,render_lookahead=0,experimental_architecture='none',task_completion=0)
+        selection_patch=mock.patch.object(package.recovery_policy,'selection',return_value=synthetic_selection)
+        selection_patch.start()
+        self.addCleanup(selection_patch.stop)
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         self.record = fixtures.fixture(self.root)
@@ -48,6 +60,9 @@ class FinalPackageTests(unittest.TestCase):
         fixtures.put(self.root, "Collect Results.cmd", package.command(self.candidate, collector=True))
         fixtures.put(self.root,package.recovery_policy.FALLBACK_COMMAND,package.command(self.candidate,mode='Fallback'))
         configured=package.recovery_policy.selection()
+        self.record['comparison_commands']=package.recovery_policy.scene_comparison_commands(configured)
+        for name,value in self.record['comparison_commands'].items():
+            fixtures.put(self.root,name,package.command(self.candidate,value['scene'],mode=value['mode']))
         fixtures.put(self.root,package.TOOLS+'/selection.json',json.dumps(configured))
         self.record.update(recovery_selection=configured,recovery_selection_sha256=package.digest(self.root/package.TOOLS/'selection.json'))
         fixtures.put(self.root,'qualification/recovery-correctness.json',json.dumps({
@@ -56,7 +71,8 @@ class FinalPackageTests(unittest.TestCase):
             'engine_sha256':self.record['engine']['gui']['sha256'],
             'native_sha256':self.record['sources']['C']['native']['sha256'],'physical_acceptance':'HOLD',
             'stock':{'outcomes':19,'raw_inputs_and_supplemental_replayed':True},'water':None,
-            'members':{'outcomes':4,'raw_inputs_and_supplemental_replayed':True}}))
+            'members':{'outcomes':4,'raw_inputs_and_supplemental_replayed':True},
+            'native_owner':{'checks':150,'raw_inputs_and_native_receipt_replayed':True}}))
         for name in ("Start-PUBPRES-Final.ps1", "owner_start.gd", "Collect-Results.ps1", "ACCEPTANCE.md"):
             fixtures.put(self.root, package.TOOLS + "/" + name, "synthetic source-only " + name + "\n")
         fixtures.put(self.root, "ACCEPTANCE.md", (self.root / package.TOOLS / "ACCEPTANCE.md").read_bytes())
@@ -92,11 +108,23 @@ class FinalPackageTests(unittest.TestCase):
         value['stock']['outcomes']=18;fixtures.put(self.root,'qualification/recovery-correctness.json',json.dumps(value));self.save()
         with self.assertRaisesRegex(ValueError,'graphical correctness'):self.verify()
 
+    def test_missing_mounted_native_gate_cannot_be_rehashed_into_qualification(self):
+        path=self.root/'qualification/recovery-correctness.json';value=json.loads(path.read_bytes())
+        value['native_owner']['checks']=149
+        fixtures.put(self.root,'qualification/recovery-correctness.json',json.dumps(value));self.save()
+        with self.assertRaisesRegex(ValueError,'graphical correctness'):self.verify()
+
     def test_fallback_is_explicit_and_cannot_enable_a_treatment(self):
         path=self.root/package.recovery_policy.FALLBACK_COMMAND
         path.write_bytes(path.read_bytes().replace(b'-RecoveryMode Fallback',b'-RecoveryMode Selected'))
         self.save()
         with self.assertRaisesRegex(ValueError,'fallback command'):self.verify()
+
+    def test_fallback_scene_cannot_be_relabelled_or_switched_to_selected(self):
+        name='Open Wave 2048 - Stock Safe Fallback.cmd'
+        path=self.root/name;path.write_bytes(path.read_bytes().replace(b'-RecoveryMode Fallback',b'-RecoveryMode Selected'))
+        self.save()
+        with self.assertRaisesRegex(ValueError,'Matched scene comparison command differs'):self.verify()
 
     def test_self_consistent_changed_defaults_remain_refused(self):
         for key, value in (("engine", "egl"), ("render_thread", "separate"), ("full_image_slots", 3),

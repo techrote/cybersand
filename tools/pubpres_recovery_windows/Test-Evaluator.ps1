@@ -133,6 +133,11 @@ try {
     } else {
         Refuses 'unregistered-experimental-mode-refused' { Get-PFConfiguration 'C' 'Experimental' }
     }
+    foreach($Entry in $Manifest.comparison_commands.PSObject.Properties) {
+        $SceneCommand=Join-PPSafe $Extracted $Entry.Name
+        $SceneName=[string]$Entry.Value.scene
+        Check-NewLaunch ($Entry.Value.mode.ToLowerInvariant()+'-'+$SceneName) { & $SceneCommand --hosted-smoke } $SceneName
+    }
     $Launcher=Join-PPSafe $Extracted $Manifest.owner_launcher
     if('D' -cin @($Manifest.sources.PSObject.Properties.Name)) {
         $DonorLaunchIndex=$Report.launches.Count

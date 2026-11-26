@@ -8,6 +8,7 @@ SELECTION='selection.json'
 FALLBACK_COMMAND='Open Stock Safe Fallback.cmd'
 DONOR_COMMAND='Open Frozen Control.cmd'
 EXPERIMENTAL_COMMAND='Open Bounded Experimental.cmd'
+SCENE_NAMES={'Wave 512':'wave512','Wave 1024':'wave1024','Wave 2048':'wave2048','Mixed 2048':'mixed2048'}
 ARCHITECTURES={
     'stock_safe': {'engine':'stock','render_thread':'safe','actual_submission':0,'render_lookahead':0},
     'atomic_safe0': {'engine':'atomic','render_thread':'safe','actual_submission':1,'render_lookahead':0},
@@ -51,6 +52,17 @@ def requires_atomic(value):
     return value['architecture']!='stock_safe' or value['experimental_architecture']!='none'
 
 
+def scene_comparison_commands(value):
+    validate_selection(value)
+    commands={}
+    modes=[('Fallback','Stock Safe Fallback')]
+    if value['experimental_architecture']!='none':modes.append(('Experimental','Bounded Experimental'))
+    for mode,label in modes:
+        for title,scene in SCENE_NAMES.items():
+            commands[f'Open {title} - {label}.cmd']={'scene':scene,'mode':mode}
+    return commands
+
+
 def selection(path=HERE/SELECTION):
     return validate_selection(json.loads(Path(path).read_bytes()))
 
@@ -63,7 +75,7 @@ def selectors(value,mode='selected',source='C'):
         'CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE':'0','CYBERSAND_PLAYABILITY_TASK_COMPLETION_BARRIER':'0'}
 
 
-def qualify(source_root,runtime,engine,stock_summary,water_summary=None,*,members_summary=None,atomic_root=None,atomic_inventory=None):
+def qualify(source_root,runtime,engine,stock_summary,water_summary=None,*,members_summary=None,native_summary=None,atomic_root=None,atomic_inventory=None):
     """Replay actual Windows raw gates before creating a selected owner package."""
     import sys
     sys.path.insert(0,str(HERE.parents[1]/'tools/pubpres_final_recovery'))
@@ -83,6 +95,9 @@ def qualify(source_root,runtime,engine,stock_summary,water_summary=None,*,member
     stock=verify_summary(stock_summary,source,driver,engine,'frozen')
     need(members_summary is not None,'Owner delivery requires actual ordinary multipart picking qualification')
     members=verify_summary(members_summary,source,driver,engine,'members')
+    need(native_summary is not None,'Owner delivery requires actual mounted native World/task ownership qualification')
+    from native_owner_receipt import verify_summary as verify_native
+    native_owner=verify_native(native_summary,source=source,driver=driver,engine=engine,native=source['native_runtime'])
     need(json.loads((Path(runtime)/'PUBPRES-RUNTIME.json').read_bytes())['platform']=='windows',
          'Owner Windows evaluator requires original actual Windows native correctness')
     water=None
@@ -108,5 +123,5 @@ def qualify(source_root,runtime,engine,stock_summary,water_summary=None,*,member
     return {'schema':'pubpres-recovery-owner-correctness-v1','source_commit':source['source_commit'],
         'source_tree':source['source_tree'],'engine_sha256':digest(engine),
         'native_sha256':source['native_runtime']['binary_sha256'],'selection':configured,
-        'stock':stock,'water':water,'members':members,'atomic':atomic,'physical_acceptance':'HOLD',
+        'stock':stock,'water':water,'members':members,'native_owner':native_owner,'atomic':atomic,'physical_acceptance':'HOLD',
         'scope':'Raw resulting-source Windows frozen graphical correctness replay and selected Water native/framebuffer gates. Extracted commands, authoring and fresh-process reopen must still execute separately. No physical NVIDIA or sustained-playability claim.'}

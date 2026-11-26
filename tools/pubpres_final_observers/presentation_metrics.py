@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT / "tools/pubpres_playability"))
 from results import distribution, need
 from execution_contract import FROZEN_RUNNER_SHA256, verify_execution_derivation
 from resource_sampler import summarize_cpu
+from process_discovery import validate_discovery
 
 PROBE = "tests/pubpres_final_presentation_probe.gd"
 GEOMETRY_SOURCES = ("scripts/physical_actor_session.gd", "scripts/physical_actor_rig.gd",
@@ -175,6 +176,16 @@ def validate_cpu_trace(path: Path, process: dict, receipt: dict, root: Path = RO
     summary = summarize_cpu(data["samples"], expected_pid=receipt["process_id"],
                             errors=data["errors"], dropped=data.get("summary", {}).get("dropped", -1))
     need(summary["complete"] and summary == data.get("summary"), "CPU accounting summary does not reconstruct")
+    if summary["creation_identity"].startswith("linux-start-ticks:"):
+        discovery = process.get("application_discovery")
+        need(isinstance(discovery, dict) and isinstance(discovery.get("executable"), str),
+             "Linux process has no actual executable/ancestry discovery receipt")
+        executable = Path(discovery["executable"])
+        need(str(executable) in process.get("command", [])
+             and hashlib.sha256(executable.read_bytes()).hexdigest() == receipt["source_identity"]["engine_sha256"],
+             "Discovered executable differs from actual command or engine receipt")
+        validate_discovery(discovery, owner_pid=process["wrapper_pid"], pid=receipt["process_id"],
+                           creation_identity=summary["creation_identity"], executable=executable)
     need(process.get("process_cpu", {}).get("sha256") == hashlib.sha256(raw).hexdigest()
          and process["process_cpu"].get("summary") == summary, "CPU sidecar is not bound to actual process result")
     return summary

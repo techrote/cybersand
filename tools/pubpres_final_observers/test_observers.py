@@ -25,8 +25,7 @@ def put(path, data):
 
 class CpuTests(unittest.TestCase):
     def test_exact_runner_keeps_every_ownership_and_completion_gate(self):
-        self.assertEqual(verify_execution_derivation()["scope"].split(";")[0],
-                         "Only additive same-iteration CPU reads and a bounded sidecar")
+        self.assertIn("exact executable/ancestry/creation discovery",verify_execution_derivation()["scope"])
         text = (ROOT / "tools/pubpres_final_observers/execute_with_resources.py").read_text()
         expected = expected_execution((ROOT / "tools/pubpres_playability/run_campaign.py").read_bytes())
         self.assertEqual(function_source(text, "execute_with_resources"), expected)
@@ -75,7 +74,9 @@ class CpuTests(unittest.TestCase):
             self.assertTrue(result["process_cpu"]["summary"]["complete"])
             self.assertGreater(result["process_cpu"]["summary"]["observed_user_seconds"],0)
             self.assertFalse(result["surviving_children_at_exit"])
-            receipt = {"source_identity":{"source_sha":"f"*40},"process_id":result["observed_application_pid"]}
+            receipt = {"source_identity":{"source_sha":"f"*40,
+                       "engine_sha256":hashlib.sha256(Path(sys.executable).resolve().read_bytes()).hexdigest()},
+                       "process_id":result["observed_application_pid"]}
             summary = validate_cpu_trace(path/"process-cpu.json",result,receipt)
             self.assertEqual(summary,result["process_cpu"]["summary"])
             raw = json.loads((path/"process-cpu.json").read_text())

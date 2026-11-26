@@ -195,5 +195,12 @@ def verify_inventory(path,source,driver,stock,custom,water):
             ('atomic-members-safe-0',custom,'safe',0),
             ('atomic-members-separate-4',custom,'separate',4)):
             members.append(verify_summary(path.parent/name/'SUMMARY.json',source,driver,engine,'members',thread,budget))
-    return {'inventory_sha256':digest(path),'correctness':verified,'members':members,'graphical_controls_sha256':digest(graph),
+    native_owner=[]
+    if data.get('closure_native_owner_required') is True:
+        sys.path.insert(0,str(ROOT/'tools/pubpres_recovery_windows'))
+        from native_owner_receipt import verify_summary as verify_native
+        for name,engine in (('stock-native-owner',stock),('atomic-native-owner',custom)):
+            native_owner.append(verify_native(path.parent/name/'SUMMARY.json',source=source,driver=driver,
+                engine=engine,native=source['native_runtime']))
+    return {'inventory_sha256':digest(path),'correctness':verified,'members':members,'native_owner':native_owner,'graphical_controls_sha256':digest(graph),
             'scope':'Exact resulting source and raw prerequisite custody; timing remains separately qualified.'}

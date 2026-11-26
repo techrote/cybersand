@@ -92,6 +92,12 @@ def verify_gate(gate,record,candidate,source,water,*,safe_water=False):
     need(isinstance(members,list) and len(members)==3 and all(row.get('outcomes')==4 and row.get('focus')=='members'
          and row.get('source')==candidate and row.get('raw_inputs_and_supplemental_replayed') is True for row in members),
          'Atomic owner configuration lacks ordinary multipart picking and ownership qualification')
+    native=gate.get('native_owner')
+    need(isinstance(native,list) and len(native)==2
+         and all(row.get('source_commit')==candidate and row.get('checks')==150
+             and row.get('native_sha256')==source['native']['sha256']
+             and row.get('raw_inputs_and_native_receipt_replayed') is True for row in native),
+         'Atomic owner configuration lacks actual mounted native World/task ownership qualification')
     if safe_water:
         row=gate.get('safe_water',{})
         need(row.get('outcomes')==4 and row.get('focus')=='water' and row.get('source')==candidate

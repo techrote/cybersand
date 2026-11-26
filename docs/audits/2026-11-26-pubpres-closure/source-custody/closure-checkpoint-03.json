@@ -1,0 +1,31 @@
+{
+  "schema": "pubpres-original-source-bundle-v1",
+  "file": "closure-checkpoint-03.bundle",
+  "bytes": 3221263,
+  "sha256": "17830c4286739147d4ef6b610daa6574a7c89ba6aeda8488fc7a4805d35a1463",
+  "refs": [
+    {
+      "ref": "refs/mission/closure/native-55dea232",
+      "commit": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+      "tree": "a5ac8c29a64695faa2cf10dace31efaf07262e5c"
+    },
+    {
+      "ref": "refs/mission/closure/atomic-negative-1daf",
+      "commit": "1dafd3bc5250ba44ad9038c7ab022272eb51fbce",
+      "tree": "3490f81a5965347271dc08d6a7857bc40ec8df15"
+    },
+    {
+      "ref": "refs/mission/closure/atomic-fixed-1163",
+      "commit": "1163ca1d4599b1d1b9e4572cd3ce4f08d7993ab9",
+      "tree": "6e732d155000e53517461e7c08313b79d96f7093"
+    },
+    {
+      "ref": "refs/mission/closure/water-69b89da4",
+      "commit": "69b89da45c2e69a6bca5b00b5859a79d0e2c72aa",
+      "tree": "ea665ac5cfae3fde479d09ebf72b8b7874aab625"
+    }
+  ],
+  "verify_stdout": "The bundle contains these 4 refs:\n55dea232aaeee8cda32fd85fd5b3cfd628848469 refs/mission/closure/native-55dea232\n1dafd3bc5250ba44ad9038c7ab022272eb51fbce refs/mission/closure/atomic-negative-1daf\n1163ca1d4599b1d1b9e4572cd3ce4f08d7993ab9 refs/mission/closure/atomic-fixed-1163\n69b89da45c2e69a6bca5b00b5859a79d0e2c72aa refs/mission/closure/water-69b89da4\nThe bundle requires these 4 refs:\nef3f8a669222cc8b90122f50c61b16f982b90a1e \n10df28b358044b46e5b9a0a025714f22e684243e \n65cc0791739437a4a239f7028ad5a6489f2cacd6 \nb056fb1608d8781c0379f1369aaea7987d3cd69f \nThe bundle uses this hash algorithm: sha1\n",
+  "verify_stderr": "/workspace/scratch/9cef565acfec/cybersand/docs/audits/2026-11-26-pubpres-closure/source-custody/closure-checkpoint-03.bundle is okay\n",
+  "scope": "Exact original executed native ABBA, corrected atomic negative and fixed graphical fixture, and integrated native Water sources. Existing principal history and earlier verified closure/recovery bundles supply prerequisites. This preserves original commits independently of later identical-tree GitHub API publication."
+}

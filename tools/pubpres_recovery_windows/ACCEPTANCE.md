@@ -41,6 +41,9 @@ launchers. Record its actual engine, render ownership and presentation policy;
 the printed source-bound selection identifies which configuration is being
 evaluated. Repeat useful matched rows through **Open Stock Safe Fallback.cmd**
 and label any **Open Bounded Experimental.cmd** observations separately.
+The four representative scene filenames also have **Stock Safe Fallback**
+suffixes, and **Bounded Experimental** suffixes when that experiment is present;
+use these to open the identical authored starts directly.
 Record the full package/source identity and actual startup adapter/driver, then
 the NVIDIA model and driver, Windows build, resolution, refresh rate and window
 mode. The shipped standard evaluator uses the native OpenGL path by default;

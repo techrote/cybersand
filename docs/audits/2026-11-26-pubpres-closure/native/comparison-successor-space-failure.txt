@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/9cef565acfec/native-comparison-55dea/tools/pubpres_final/run_comparison.py", line 465, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/scratch/9cef565acfec/native-comparison-55dea/tools/pubpres_final/run_comparison.py", line 374, in main
+    templates[role] = prepare(roots[role], source, output / ("template-" + role), campaign,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/9cef565acfec/native-comparison-55dea/tools/pubpres_final/run_comparison.py", line 226, in prepare
+    shutil.copyfile(rapier_binary, template / Path(rapier["artifact"]).relative_to("godot"))
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py", line 273, in copyfile
+    _fastcopy_sendfile(fsrc, fdst)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py", line 164, in _fastcopy_sendfile
+    raise err from None
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py", line 150, in _fastcopy_sendfile
+    sent = os.sendfile(outfd, infd, offset, blocksize)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 28] No space left on device: '/workspace/scratch/9cef565acfec/presentation/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' -> '/workspace/scratch/9cef565acfec/native-task-abba-55dea/template-C/project/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'

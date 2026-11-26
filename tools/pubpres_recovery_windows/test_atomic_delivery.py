@@ -37,6 +37,9 @@ class AtomicOwnerPolicyTests(unittest.TestCase):
         value=self.configuration('stock_safe','atomic_separate4')
         self.assertEqual(policy.configuration(value)['engine'],'stock')
         self.assertEqual(policy.configuration(value,'experimental')['render_lookahead'],4)
+        comparisons=policy.scene_comparison_commands(value)
+        self.assertEqual(len(comparisons),8)
+        self.assertEqual({row['scene'] for row in comparisons.values()},{'wave512','wave1024','wave2048','mixed2048'})
         with mock.patch.object(policy,'selection',return_value=value):
             command=package.command('a'*40,mode='Experimental').decode()
             self.assertIn('-RecoveryMode Experimental',command)
@@ -44,6 +47,7 @@ class AtomicOwnerPolicyTests(unittest.TestCase):
             self.assertIn('-Engine Stock -RenderThread Safe',package.command('a'*40).decode())
         value['experimental_architecture']='none'
         with self.assertRaises(ValueError):policy.configuration(value,'experimental')
+        self.assertEqual({row['mode'] for row in policy.scene_comparison_commands(value).values()},{'Fallback'})
 
     def test_unqualified_native_candidate_cannot_be_selected(self):
         value=self.configuration();value['task_completion']=1

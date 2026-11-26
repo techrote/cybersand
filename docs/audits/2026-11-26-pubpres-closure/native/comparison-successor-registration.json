@@ -1,0 +1,38 @@
+{
+  "schema": "pubpres-native-task-apparatus-successor-registration-v1",
+  "registered_before_successor_comparison_utc": "2026-11-26T08:27:31.325403+00:00",
+  "superseded_attempt": {
+    "source": "b6956cd94382218a270ad85df7bc84f30a66776f",
+    "disposition": "INADMISSIBLE: actual application PID unavailable from kernel task/children enumeration",
+    "raw_archive": "comparison-first-attempt-evidence.tar.gz",
+    "summary": "comparison-first-attempt-admission.json"
+  },
+  "original_task_registration_sha256": "4d8c113532c0770ead9ab39ae3224cc9f3182411c6d7cf799e27d3efa4144ebe",
+  "case_identifier_amendment_sha256": "7e0199167641246cbd37efa5971f6a6d7fbe6e895c57925e4fec8e7887e48cb2",
+  "changes": [
+    "Add Linux owned PPid/status fallback only when task/children is absent.",
+    "Revalidate complete ancestry, exact executable and creation identities before sampling.",
+    "Independently bind CPU creation identity and engine executable hash to actual process/receipt.",
+    "Mounted native fixture adds source/process/binary evidence fields only; its150check/tick work is unchanged."
+  ],
+  "preserved": [
+    "Original0/1/1/0 ordering separately for Wave512 and Wave2048",
+    "Frozen stock4.7 engine and real fixture/observer/input tape",
+    "Exact native production/build inputs",
+    "Original physical/task participation/trajectory gates and selection criteria",
+    "No public defaults or physical hardware acceptance claim"
+  ],
+  "native_inputs_sha256": "d49329c8892a53fe4974e05124d4c2369f64eddbe7646d1f3f084f5037410b58",
+  "checked_native_inputs": 106,
+  "binding": "Exact successor application/driver SHA, freshly built native manifest, command and wrapper identity must be frozen in a separate launch registration before execution. Frozen source/runtime guards remain mandatory.",
+  "independent_source_review": {
+    "reviewer": "Specialist B",
+    "disposition": "GO",
+    "scope": "PPid graph, ancestry/creation/executable final reread, permission refusal and PID reuse adversaries; no performance claim"
+  },
+  "tests": {
+    "observer": 16,
+    "final_driver_contracts": 61,
+    "actual_pinned_godot_wrapper_discovery": "PASS exact Godot-reported PID, CPU creation identity and clean Xorg shutdown"
+  }
+}

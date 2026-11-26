@@ -1,0 +1,32 @@
+{
+  "schema": "pubpres-owned-xorg-development-v1",
+  "wrapper_pid": 1299,
+  "scope": "Actual Linux dummy/llvmpipe correctness; not physical hardware acceptance",
+  "authorization": "private MIT-MAGIC-COOKIE-1; TCP localhost client; UNIX disabled",
+  "server_command": [
+    "/usr/bin/Xorg",
+    ":171",
+    "-config",
+    "/tmp/pubpres-xorg-s0irdncy/xorg.conf",
+    "-logfile",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/atomic-negative-d1-safe0/test_workbench_presentation_submission-slots2/display-owner.xorg.log",
+    "-noreset",
+    "-listen",
+    "tcp",
+    "-nolisten",
+    "unix",
+    "-auth",
+    "/tmp/pubpres-xorg-s0irdncy/authority"
+  ],
+  "configuration_sha256": "d2fe50179580f31a41a876e4e592767674fa7c2d405a3ed6198b0e34beb617ce",
+  "server_executable_sha256": "bca1ceb412614f4e0cb13a68b5d78e86b32ac25f7f2f66b40de73517c8f239eb",
+  "display": "127.0.0.1:171",
+  "server_pid": 1300,
+  "application_returncode": 1,
+  "application_timeout": false,
+  "server_alive_before_requested_shutdown": true,
+  "unexpected_server_members": false,
+  "server_reaped": true,
+  "server_returncode": 0,
+  "returncode": 1
+}

@@ -1,0 +1,8 @@
+{
+  "self_pid": 5,
+  "owned_child_pid": 214,
+  "utc": "2026-11-26T08:26:34.513410+00:00",
+  "children_failure": "[Errno 2] No such file or directory: '/proc/5/task/5/children'",
+  "child_status": "Name:\tsleep\nUmask:\t0022\nState:\tR (running)\nTgid:\t214\nNgid:\t0\nPid:\t214\nPPid:\t5\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t \nNStgid:\t214\nNSpid:\t214\nNSpgid:\t1\nNSsid:\t1\nKthread:\t0\nVmPeak:\t     440 kB\nVmSize:\t     440 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t      88 kB\nVmRSS:\t      88 kB\nRssAnon:\t      32 kB\nRssFile:\t      56 kB\nRssShmem:\t       0 kB\nVmData:\t      24 kB\nVmStk:\t     136 kB\nVmExe:\t      20 kB\nVmLib:\t     168 kB\nVmPTE:\t      32 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t1\nSigQ:\t0/39792\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000000000\nSigCgt:\t0000000000000000\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t2\nSeccomp_filters:\t1\nSpeculation_Store_Bypass:\tvulnerable\nSpeculationIndirectBranch:\talways enabled\nCpus_allowed:\t1ff\nCpus_allowed_list:\t0-8\nMems_allowed:\t00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t0\nnonvoluntary_ctxt_switches:\t0\n",
+  "child_executable": "/usr/bin/sleep"
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/atomic-negative-isolated-safe0/project",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--editor",
+    "--import",
+    "--quit"
+  ],
+  "timeout_seconds": 1200,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 6.962062565000451,
+  "log_sha256": "81da412d1f1dffc623783a7cf37e7a1ff62dd157de74dc0db35adccd98a4ede5"
+}

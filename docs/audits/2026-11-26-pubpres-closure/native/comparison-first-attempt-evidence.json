@@ -1,0 +1,484 @@
+{
+  "schema": "pubpres-original-evidence-archive-v1",
+  "archive": "comparison-first-attempt-evidence.tar.gz",
+  "archive_sha256": "a8eca55b538dc1e94acae78217fa86ddd4b951d324c68240c6c8505a43cd37a8",
+  "archive_bytes": 2917591,
+  "files": [
+    {
+      "path": "SUMMARY.json",
+      "bytes": 26509,
+      "sha256": "5f21b31811d865f1a9ea9d6c7eddd22ef0664f3bd21eb15fbdc8b7bbdc203485"
+    },
+    {
+      "path": "campaign.json",
+      "bytes": 13580,
+      "sha256": "f9eed91a44e3b4529e2225adf7d883f916a0f6caaf2057bdc25111d11a59de84"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/arm.json",
+      "bytes": 4286,
+      "sha256": "0a39572250f232ea6f885910ab82d989e54c1c16676bf02ee7e7945bb1f7933c"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/display-owner.json",
+      "bytes": 1126,
+      "sha256": "129c98274edaf2bd35ac95f1696e51a2bbc9bbe61e56f270ef3fb31b98561df0"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/display-owner.xorg.log",
+      "bytes": 54963,
+      "sha256": "d9543c4ea9b172047bd47da19edc1a393f2e3171e9005fd709f06fef189c9af9"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/process.json",
+      "bytes": 3037,
+      "sha256": "93e8158674199e1c6c80281d9d4769f72f191b7bf621c349a15de4cfea840fcb"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/receipt-after.png",
+      "bytes": 110190,
+      "sha256": "d3e40cf0769444a6ebf7946abc6a902138922fddb9de6e9d247ce1640c84e0c7"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/receipt-before.png",
+      "bytes": 90432,
+      "sha256": "ec285a102c94149e637144500e148c73e5cf1a5d347e536c3ee1c27dc917ae67"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "5597baece1f2b9a39608fa52c72571f372bf2c79364e2853f1ee69e93b17ef7d"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/receipt-events.jsonl",
+      "bytes": 1690198,
+      "sha256": "e2267dfaf66c7c39cbb437d72c69c92e42d01df63704c812ad7cfdd227b36043"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/receipt-presentation.json",
+      "bytes": 540371,
+      "sha256": "bb205eb749ef6adf22cd34602093eb326c23327c9f7a2c02d9bdc5048441896e"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/receipt.json",
+      "bytes": 88269,
+      "sha256": "6e62a1004ad3a7e94168163487ce5892fccc830272af1fa6d47c8fd8dbc27a62"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_512_follow/0-C-slots2/stdout.log",
+      "bytes": 579,
+      "sha256": "45f373bebbccc6789d112b89eb605a35634c7dce9eb8768f9dc170e7e868fcd0"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/arm.json",
+      "bytes": 4285,
+      "sha256": "678f819b85f5ac49e62269293f81ebe97a5ff7bc3bdd67dd0523181cd18ff187"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/display-owner.json",
+      "bytes": 1126,
+      "sha256": "9b19e900981a7b3f19639c2ab27021d92e170a85c80cc70441a0dbce7dbcd66e"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/display-owner.xorg.log",
+      "bytes": 54813,
+      "sha256": "c2d17ee562cce6322c932aa3399c08c9bd1811f1a97d459ec2b3d7f4a125b726"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/process.json",
+      "bytes": 3038,
+      "sha256": "bfb70055e2ec299439c80960e8a262732568e6023b0792adfb3f332a527ab800"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/receipt-after.png",
+      "bytes": 110017,
+      "sha256": "751c1ad7c53ff17a917da386fd19765250843cbf436857c5d0ad6b9b5a6c062e"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/receipt-before.png",
+      "bytes": 90426,
+      "sha256": "809c997f65a5e3601a760ed493f1ec12e906a0df112caabcd9e6957fa51a5d3f"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "400e70a7f00208902fe14f3f66fdff811443f8fbbcdccb38699a05d0a4b6b897"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/receipt-events.jsonl",
+      "bytes": 1739711,
+      "sha256": "1000c7bb77e6c341df1d28a68e4be555d09d4fa03578bbcd48a7072e2d718674"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/receipt-presentation.json",
+      "bytes": 575242,
+      "sha256": "353f597a0a62cc92650a2233b90104a4102a71b200cbc793fe637186dd8885c4"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/receipt.json",
+      "bytes": 88273,
+      "sha256": "29a296727c4d4fc1c027d76929411c82b6d2ca23633722a13facd600b58b33d6"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_512_follow/1-C-slots2/stdout.log",
+      "bytes": 579,
+      "sha256": "45f373bebbccc6789d112b89eb605a35634c7dce9eb8768f9dc170e7e868fcd0"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/arm.json",
+      "bytes": 4285,
+      "sha256": "20b08e1bc62ce1cad51ff6d1a2d97976f99b25789dff8fe07e1b6fda639dac0b"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/display-owner.json",
+      "bytes": 1126,
+      "sha256": "00f2623b48c7ab182d7630d428d9026ae54bb222319b839bc229bfeef74a7320"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/display-owner.xorg.log",
+      "bytes": 54813,
+      "sha256": "763e83501661975691047f24ed24451cd28ba436a524deff7bf298e704bce81c"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/process.json",
+      "bytes": 3038,
+      "sha256": "757f10436d5525ab37bfdeafcba7b176dd5d24e4f15efcd0fe200f1bcad10cc0"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/receipt-after.png",
+      "bytes": 110179,
+      "sha256": "c4903e1ee3e454f7f21380badfb4bfe7f468e1dbab8b6e81223802cf23425814"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/receipt-before.png",
+      "bytes": 90424,
+      "sha256": "02ce788658b602ca8f47d39838581905b9d2cd4f493712abf76c1570986e1081"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "46864ab7f5692cf4d947a2aa43f09c81a2db201de5b26890410406d6fc30558a"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/receipt-events.jsonl",
+      "bytes": 1694141,
+      "sha256": "f4c8c8577ba86eabb8b4fea5f2fb16c3781a0259b3dadf8bcc42429bb34642c9"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/receipt-presentation.json",
+      "bytes": 552986,
+      "sha256": "9d267f98135ba41ecbae6501233bd85ff66f7e2242b00f8ca57b5366c975618d"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/receipt.json",
+      "bytes": 88273,
+      "sha256": "f35a26d9a7d4f0001c272d091ef4f0818963236b490e7339dbca7e94e829cd31"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_512_follow/2-C-slots2/stdout.log",
+      "bytes": 579,
+      "sha256": "45f373bebbccc6789d112b89eb605a35634c7dce9eb8768f9dc170e7e868fcd0"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/arm.json",
+      "bytes": 4286,
+      "sha256": "e7fd418b00ff69ecc36392d25d1365f3515b89918438f1a8f46b875436868063"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/display-owner.json",
+      "bytes": 1126,
+      "sha256": "d31f57019d9ad9a48dd2cbe6acaa9691ab590bd0b94cd136063e495172b75bdb"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/display-owner.xorg.log",
+      "bytes": 54963,
+      "sha256": "ebd4c54a50d87bba60a5ac2dc2a5813132048cb2268adbff94f038e02661680a"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/process.json",
+      "bytes": 3038,
+      "sha256": "09558c28563ec62834f589eb1dbe17ff38deb2f3c3a99ffe40337352c20cede7"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/receipt-after.png",
+      "bytes": 109904,
+      "sha256": "20253a412ffe41258d9ee211a45a16018c6ecae5dc497bc400ec714d6f7c858c"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/receipt-before.png",
+      "bytes": 90359,
+      "sha256": "443c6bb5ebdc882a63b70f7370e111be7b3203a0e523cde3d4c64b7000231d2e"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "d2b84831ab2e64dc3c2e22d6e3c2fe9df7daa59d8cd77a4806dc035e27f9e394"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/receipt-events.jsonl",
+      "bytes": 1749719,
+      "sha256": "85d68abe977a5b6acf2db4aaeff7e5339c077a56f8ae80b42d9e330f73639e94"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/receipt-presentation.json",
+      "bytes": 584254,
+      "sha256": "cec1ec521485e329b8845968177baf032defaff071407ebbc57210b718f6b143"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/receipt.json",
+      "bytes": 88269,
+      "sha256": "ff5c6ce9246689f6b2840debead6553af00a1c62d5cc3ea82a4b09d52df09d6b"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_512_follow/3-C-slots2/stdout.log",
+      "bytes": 579,
+      "sha256": "45f373bebbccc6789d112b89eb605a35634c7dce9eb8768f9dc170e7e868fcd0"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/arm.json",
+      "bytes": 5089,
+      "sha256": "90c37099cad5ecd64b83bebbfba75fd4788a3b4ea60e8afadc8306502a91f422"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/display-owner.json",
+      "bytes": 1136,
+      "sha256": "8b24f83ed5c0494c2576829f491eb66db0c573b16b7efc36304c1fecb997a700"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/display-owner.xorg.log",
+      "bytes": 55273,
+      "sha256": "851916cfb352db2226756ee5fc25020123b76f33f2c6321732c927248cd15a16"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/process.json",
+      "bytes": 3047,
+      "sha256": "6d12916224bf1df9cc273817ae660bac999a0fa4fa37840eb14decc6fc65fe85"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/receipt-after.png",
+      "bytes": 455103,
+      "sha256": "4692d0f9bd4e8154c2d196e450c1ec2865a629959e889c978e8f295b310497f9"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/receipt-before.png",
+      "bytes": 343393,
+      "sha256": "6930eea3377d8dce8c989a8e999c54e7e4259190f6fd4c15d4040d3c5bf30dd9"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4553,
+      "sha256": "2128d8831a289541107cb02b575299c1e7fc7a8eff4cdde66190c6e4262c814a"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/receipt-events.jsonl",
+      "bytes": 1512366,
+      "sha256": "0296b9ccf1e37ed55a551ada2d73a9dbb884c0d0a0f1cf79461d6384e0861680"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/receipt-presentation.json",
+      "bytes": 684521,
+      "sha256": "c6658df50eabe7c2fac7f3bc60bdcd7f78203b50e251cee536cab45f553f2cf9"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/receipt.json",
+      "bytes": 105348,
+      "sha256": "32e7b074cc056f66ca9af4a267d5ac82090f83d6577a3b870a4e2da9bdb4ad09"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/0-C-slots2/stdout.log",
+      "bytes": 579,
+      "sha256": "45f373bebbccc6789d112b89eb605a35634c7dce9eb8768f9dc170e7e868fcd0"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/1-C-slots2/arm.json",
+      "bytes": 5088,
+      "sha256": "20cac834d69a3001b23e1dd22b9b3ffb3b53b30e9c9b37759a8b82120b7c7b83"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/1-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/1-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/1-C-slots2/process.json",
+      "bytes": 3048,
+      "sha256": "74352cfa07347a110488260aefd57b9a5aea716b71316b9d76cbb1a54a0e670a"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/1-C-slots2/stderr.log",
+      "bytes": 110,
+      "sha256": "bb5d08e005426e8d9a0e0aa428ef83dc5c662b9bba89761ad4294d47e1d8e604"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/1-C-slots2/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/2-C-slots2/arm.json",
+      "bytes": 5088,
+      "sha256": "2bbe2daa60549488cff98643ec21353cfa4e6c2d160021b9d04a25a7a2d2bd93"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/2-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/2-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/2-C-slots2/process.json",
+      "bytes": 3050,
+      "sha256": "e99eccf4506e4cf75ace5aa7e7082cfcf20302cc0b0bd3c727de60f29186dc66"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/2-C-slots2/stderr.log",
+      "bytes": 110,
+      "sha256": "bb5d08e005426e8d9a0e0aa428ef83dc5c662b9bba89761ad4294d47e1d8e604"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/2-C-slots2/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/3-C-slots2/arm.json",
+      "bytes": 5089,
+      "sha256": "9b3990dd081ddfe6aaa4c118a6448980f1783c3d8d2f10426b14ffb3cd8592b8"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/3-C-slots2/process-cpu.json",
+      "bytes": 1384,
+      "sha256": "e4c1ed2ce3025d29a539a3e27903026178a873134dc4ec122b3defab6ea83b06"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/3-C-slots2/process-memory.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/3-C-slots2/process.json",
+      "bytes": 3051,
+      "sha256": "872e1e028c6ba72fd0e03289616a3d466255081be164f71cb9fcd5bdd1c9516e"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/3-C-slots2/stderr.log",
+      "bytes": 110,
+      "sha256": "bb5d08e005426e8d9a0e0aa428ef83dc5c662b9bba89761ad4294d47e1d8e604"
+    },
+    {
+      "path": "wave_gameplay_2048_follow/3-C-slots2/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "excluded": "Disposable staged projects/native binary copies, importer template and temporary OS profile. Original raw gameplay/process/display/source receipts and logs retained."
+}

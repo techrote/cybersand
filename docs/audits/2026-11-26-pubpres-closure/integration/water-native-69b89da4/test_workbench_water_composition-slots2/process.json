@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/integration-water-69b89da4-01/project",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--script",
+    "res://tests/test_workbench_water_composition.gd"
+  ],
+  "timeout_seconds": 600,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 2.0830485779997616,
+  "log_sha256": "79e10d74572d1cc818708bd9dcd025e94b0b29e59d0688f48f19eaf9d4467474"
+}
