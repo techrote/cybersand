@@ -102,6 +102,54 @@ WINDOWS_TOWER_CASES = {
 }
 
 
+def validate_art_panel_case(case):
+    """Reject a passed summary that contradicts its retained panel observations."""
+    result = case.get("result")
+    require(isinstance(result, dict), "Missing Art panel storage observations")
+    first, retry = result.get("first"), result.get("retry")
+    require(isinstance(first, dict) and isinstance(retry, dict), "Malformed Art panel child observations")
+    normal = case["fault"] == "none"
+    require(result.get("guards_preserved") is True and result.get("stale_preserved") is True
+            and result.get("partial_files") == [] and first.get("success") is normal
+            and first.get("loadable") is True and retry.get("success") is True
+            and retry.get("loadable") is True and retry.get("message") == "",
+            "Art panel storage result contradicts successful refusal/retry or cleanup")
+    if case["operation"] == "settings":
+        ready = case.get("ready")
+        require(isinstance(ready, dict) and type(ready.get("old_bytes")) is int and ready["old_bytes"] > 0
+                and re.fullmatch(r"[0-9a-f]{64}", str(ready.get("old_sha256", ""))),
+                "Missing prior Art settings identity")
+        require(first.get("value") == (8 if normal else 7) and first.get("roundtrip") is True
+                and retry.get("value") == 8 and retry.get("roundtrip") is True
+                and retry.get("old_preserved") is False
+                and re.fullmatch(r"[0-9a-f]{64}", str(retry.get("sha256", "")))
+                and retry["sha256"] != ready["old_sha256"]
+                and type(retry.get("bytes")) is int and retry["bytes"] > 0,
+                "Art settings do not demonstrate compatible replacement")
+        if normal:
+            require(first.get("old_preserved") is False and first.get("message") == "",
+                    "Normal Art settings save was not acknowledged cleanly")
+        else:
+            require(first.get("old_preserved") is True and first.get("sha256") == ready["old_sha256"]
+                    and first.get("bytes") == ready["old_bytes"] and bool(first.get("message")),
+                    "Art settings refusal contradicts prior-file preservation")
+    else:
+        require(first.get("old_preserved") is True and retry.get("old_preserved") is True
+                and retry.get("values") == [7, 8] and retry.get("schema") == 2
+                and retry.get("frozen_projection") is True and retry.get("item_has_file") is True
+                and retry.get("item_has_order") is True,
+                "Art retained journal retry is not a complete compatible receipt")
+        if normal:
+            require(first.get("values") == [7, 8] and first.get("schema") == 2
+                    and first.get("frozen_projection") is True and first.get("item_has_file") is True
+                    and first.get("item_has_order") is True and first.get("message") == "",
+                    "Normal Art retained receipt was not admitted completely")
+        else:
+            require(first.get("values") == [7] and first.get("item_has_file") is False
+                    and first.get("item_has_order") is False and first.get("clock_unchanged") is True
+                    and bool(first.get("message")), "Refused Art receipt changed admission state")
+
+
 def validate_export_matrix(report, schema, expected_cases, head, engine, value_key, loadable_key, refusal_codes):
     require(report.get("schema") == schema and report.get("status") == "passed"
             and report.get("completed") is True and report.get("platform") == "win32"
@@ -237,6 +285,9 @@ def validate_qualification(qualification, head, tree):
             and all(c.get("passed") is True and c.get("exit_code") == 0
                     and c.get("natural_completion") is True and c.get("engine_error_detected") is False
                     for c in art_cases), "Incomplete or unsuccessful Windows Art storage matrix")
+    for case in art_cases:
+        if case["operation"] in ("settings", "pending-history"):
+            validate_art_panel_case(case)
     validate_export_matrix(qualification.get("diagnostic_storage", {}), "diagnostic-storage-qualification-v1",
                            WINDOWS_DIAGNOSTIC_CASES, head, engine, "value", "json_valid",
                            {"physics": 1, "thunderbowl": 2, "physical-thunderbowl": 2, "goblin": 2})

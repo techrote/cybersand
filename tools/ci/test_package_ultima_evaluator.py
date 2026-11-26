@@ -115,6 +115,26 @@ def valid_qualification():
                                            ('settings', 'none'), ('settings', 'locked-target'),
                                            ('pending-history', 'none'), ('pending-history', 'existing-receipt'))],
     }
+    for case in q['art_storage']['cases']:
+        if case['operation'] not in ('settings', 'pending-history'):
+            continue
+        normal = case['fault'] == 'none'
+        if case['operation'] == 'settings':
+            case['ready'] = {'old_bytes': 100, 'old_sha256': 'a' * 64}
+            first = {'success': normal, 'loadable': True, 'value': 8 if normal else 7, 'roundtrip': True,
+                     'old_preserved': not normal, 'sha256': ('b' if normal else 'a') * 64,
+                     'bytes': 101 if normal else 100, 'message': '' if normal else 'Previous file retained'}
+            retry = first | {'success': True, 'value': 8, 'old_preserved': False,
+                             'sha256': 'b' * 64, 'bytes': 101, 'message': ''}
+        else:
+            first = {'success': normal, 'loadable': True, 'old_preserved': True,
+                     'values': [7, 8] if normal else [7], 'schema': 2 if normal else 0,
+                     'frozen_projection': normal, 'item_has_file': normal, 'item_has_order': normal,
+                     'clock_unchanged': not normal, 'message': '' if normal else 'Receipt not admitted'}
+            retry = first | {'success': True, 'values': [7, 8], 'schema': 2, 'frozen_projection': True,
+                             'item_has_file': True, 'item_has_order': True, 'message': ''}
+        case['result'] = {'first': first, 'retry': retry, 'guards_preserved': True,
+                          'stale_preserved': True, 'partial_files': []}
     for key, schema, kinds, value_key, loadable_key in (
             ('diagnostic_storage', 'diagnostic-storage-qualification-v1',
              ('physics', 'thunderbowl', 'physical-thunderbowl', 'goblin'), 'value', 'json_valid'),
@@ -280,6 +300,47 @@ class QualificationAdmission(unittest.TestCase):
     def test_art_changed_inputs_refuse(self):
         self.q['art_storage']['inputs_unchanged'] = False
         self.require_refusal()
+
+    def panel_refusals(self, change, *, refused_only=False):
+        original = copy.deepcopy(self.q)
+        for index, case in enumerate(original['art_storage']['cases']):
+            if case['operation'] not in ('settings', 'pending-history') or (refused_only and case['fault'] == 'none'):
+                continue
+            with self.subTest(operation=case['operation'], fault=case['fault']):
+                self.q = copy.deepcopy(original)
+                change(self.q['art_storage']['cases'][index])
+                self.require_refusal()
+
+    def test_art_panel_missing_or_malformed_result_refuses(self):
+        for value in (None, [], {}, {'first': [], 'retry': {}}):
+            with self.subTest(value=value):
+                self.panel_refusals(lambda case: case.update(result=copy.deepcopy(value)))
+
+    def test_art_panel_false_success_on_refusal_refuses(self):
+        self.panel_refusals(lambda case: case['result']['first'].update(success=True), refused_only=True)
+
+    def test_art_panel_failed_retry_refuses(self):
+        self.panel_refusals(lambda case: case['result']['retry'].update(success=False))
+
+    def test_art_panel_false_guard_or_leaked_staging_refuses(self):
+        for key, value in (('guards_preserved', False), ('stale_preserved', False), ('partial_files', ['leaked.partial'])):
+            with self.subTest(key=key):
+                self.panel_refusals(lambda case: case['result'].update({key: value}))
+
+    def test_art_panel_settings_old_bytes_changed_refuses(self):
+        case = next(c for c in self.q['art_storage']['cases'] if c['operation'] == 'settings' and c['fault'] != 'none')
+        case['result']['first']['sha256'] = 'c' * 64
+        self.require_refusal()
+
+    def test_art_panel_journal_lost_receipt_or_clock_refuses(self):
+        original = copy.deepcopy(self.q)
+        for phase, key, value in (('first', 'clock_unchanged', False), ('retry', 'values', [8]),
+                                  ('retry', 'item_has_file', False), ('retry', 'frozen_projection', False)):
+            with self.subTest(phase=phase, key=key):
+                self.q = copy.deepcopy(original)
+                case = next(c for c in self.q['art_storage']['cases'] if c['operation'] == 'pending-history' and c['fault'] != 'none')
+                case['result'][phase][key] = value
+                self.require_refusal()
 
     def test_art_failed_case_refuses(self):
         self.q['art_storage']['cases'][-1]['passed'] = False
