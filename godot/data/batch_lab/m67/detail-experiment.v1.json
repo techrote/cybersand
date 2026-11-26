@@ -1,0 +1,42 @@
+{
+  "format": "cybersand-native-detail-experiment-v1",
+  "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
+  "phase": "frozen-before-native-comparison",
+  "jobs": ["contextual_ribs", "surface_trim", "anchored_clutter", "service_panel", "mechanical_infill", "short_pipe", "framed_opening", "edge_wear"],
+  "arms": ["deterministic", "seeded", "random_valid"],
+  "expected_cases": 24,
+  "extent": [64, 64],
+  "worker_cell_ceiling": 512,
+  "native_cell_ceiling": 512,
+  "deterministic_seed": 0,
+  "seeded_seed": 47017,
+  "random_seed": 47017,
+  "arm_contracts": {
+    "deterministic": "Code-owned job parameters and source fixture with seed zero.",
+    "seeded": "The identical code-owned parameters and source fixture with seed 47017. Jobs that do not consume seed may remain byte-identical; this is reported, not called diversity.",
+    "random_valid": "Uniform shuffled distinct writable cells within the same job region and common protected/fixed/attachment/clearance scopes, matching the seeded job's changed-cell count. Additions select Empty source cells; wear selects declared variable Hard wall cells. It ignores source anchoring, opening-frame structure, endpoint routing and the local topology guard. These are measured outcomes, not silently added capabilities."
+  },
+  "shared_controls": [
+    "Identical source material plane and region per job across all three arms.",
+    "Identical host material permission, protected Stone marker, declared fixed/attachment cells, common clearances and 512-cell native ceiling.",
+    "Generated opening clearances from the seeded typed proposal apply to every arm.",
+    "Every accepted program is compiled by the existing StagePlan and then applied by the existing isolated native Batch owner/executor.",
+    "Exact complete source/result planes, program/source/registration identities, raw native receipts and all refused/partial outcomes are retained."
+  ],
+  "metrics": [
+    "native_completion",
+    "exact_compiled_projection_match",
+    "region_protection_fixed_attachment_preservation",
+    "required_clearances_empty",
+    "native_changed_checked_cells",
+    "changed_component_source_anchoring",
+    "occupied_face_components_before_after",
+    "distinct_output_hashes_by_job",
+    "source_pin_refusal",
+    "elapsed_usec"
+  ],
+  "interpretation": "Matched deterministic tool and geometric-constraint diagnostics. Counts and connectivity do not establish aesthetic quality, physical stability, machine flow, actor traversal or model optimization.",
+  "model_calls": 0,
+  "retained_negative_policy": "Refused, partial, failed and stopped cases remain in the fixed 24-case denominator. No native-outcome-driven retries or parameter tuning. Development resource interruptions are separate source/configuration-specific attempts.",
+  "fixture_authority": "The exact source revision and test_native_detail_jobs.gd SHA bind the explicit code-owned fixture geometries. Source baselines are restored and independently captured by the actual native TileHost before any operation."
+}

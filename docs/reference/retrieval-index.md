@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Native architectural modules, GOLDMAPS retrieval and staged construction
+
+Use the [owner workflow](../operations/world-steer-architecture.md) for harvesting, starter parts, repeat placement, preview/approval, partial recovery and Windows inspection. The [module contract](../systems/native-architectural-modules.md) owns exact local geometry, typed roles, transformations and imported-evidence limits. The [knowledge contract](../systems/architectural-knowledge-and-evaluation.md) owns source-bound cards, family-excluded retrieval and contextual native evaluation. The [stage contract](../systems/architecture-staged-construction.md) owns host-computed permissions/budgets and the separate Art adapter. [Additive architecture questions](retrieval-questions-world-steer-architecture.json) preserve the frozen retrieval set. All remain Draft/HOLD.
+
+## Native Workbench Batch Lab
+
+For independent native tiles, 2×2/4×4 operation, Stop/replay, P0–P3 controls, source-grounded references, blinded review and Windows evaluator custody, use the [Batch Lab guide](../operations/world-steer-batch-lab.md). This is an M0–M2 Draft/HOLD candidate; model-quality and physical owner acceptance are separate. [Focused questions](retrieval-questions-batch-lab.json) are additive.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |
@@ -70,12 +78,13 @@ the frozen evaluation and existing historical fixtures retain their original sco
 
 ## Direct native art batches without inference
 
+For collaborative Discuss/Propose/Develop/Review, finite native construction and offline examples, retrieve the [collaborative owner guide](../operations/art-workbench-collaborative-evaluation.md). For one response consumer, eventual pre-dispatch guards and Architecture's `dispatch(request, completion_callback, pre_dispatch_guard)` seam, retrieve the [owned transport contract](../systems/art-owned-proposal-transport.md). For observed material context, protected regions, typed revisions, copied-value preview and actual native approval/readback, retrieve the [native context and proposal contract](../systems/art-native-context-proposals.md). These remain Draft/HOLD source contracts; fixtures do not prove real-model creativity or physical owner acceptance.
+
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
 
-For duplicate Art archives, hidden Workbench startup, linked session identity,
-missing-history refusal, crash recovery and cancellable full JSONL export,
-retrieve [conversation lifetime](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-and its [explicit capacities](../systems/workbench-art-providers.md#explicit-capacity-outcomes).
+For Art session-only logging, same-session collaboration, provider errors and complete redacted traffic, retrieve the [provider contract](../systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026). For absent-LM-Studio Send/X, the consolidated dialog repair, exact presets and Windows diagnostic evaluator, retrieve the [Art finisher guide](../operations/art-workbench-final-evaluation.md). Old linked archive restoration is an explicit diagnostic path only.
+
+For the unmerged Art integration's verified export, event append, cached preference saves and retained private receipt writes, retrieve [closed storage verification](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate). Native editing and session-only conversation ownership remain separate; real Windows storage and physical owner acceptance require their own evidence.
 
 
 ## Architectural Generator catalogue

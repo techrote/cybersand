@@ -1,0 +1,35 @@
+{
+  "schema": "cybersand-root-source-custody-review-v1",
+  "source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "run": 45520561849,
+  "artifact": 14981408538,
+  "artifact_sha256": "2d2c94c44629d9a87a322d3834ad5dd327d91467aacfdb696dcf32b92b658146",
+  "artifact_bytes": 26226147,
+  "qualification_sha256": "ce2428b05762f88c60c4c937c4e91b3646e123150a779ad5fc110b4b5962f389",
+  "process_groups": 89,
+  "passed": 89,
+  "regular_source_files_compared_with_exact_git_blobs": 297,
+  "runtime_identities": [
+    {
+      "path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "native_artifact_rehashed": true
+    },
+    {
+      "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "native_artifact_rehashed": false
+    }
+  ],
+  "collaborative_custody_file_sha256": "c5a5dad107673a7b8dd2766d18d8f7be9d3d1f6c3da6c1f11538ad1734027aa0",
+  "independently_hashed_custody_files": 499,
+  "custody_checks": 4388,
+  "source_native_capacity": 1024,
+  "cropped_routes": false,
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "elapsed_seconds": 1169.579,
+  "genuine_application_model_calls": 0,
+  "scope": "Final source Linux original artifact and all listed Git inputs/collaborative raw files. No Windows or physical owner acceptance inferred.",
+  "observed_utc": "2026-11-25T01:31:57.947138+00:00"
+}

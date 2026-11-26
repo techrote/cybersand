@@ -1,0 +1,1394 @@
+{
+	"baseline_script_sha256": "59fd1b9b517ffd742e81f1e4ec5aca6f81c9911b3e3e04bc04072692efb34415",
+	"baseline_source": "0e93cc9093aee4ddf7429c7b008a48ec87c06fd5",
+	"candidate_script_sha256": "1c3215281d39d4b48f3d088c57869b065ca0cb3fd658f72373af55fd595a21bd",
+	"checks": 168,
+	"failures": [],
+	"godot": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"knowledge_script_sha256": "9b240a13a11a9c32005a90dc0ee09f5898838b24e97b78ab7641ba226bad5c33",
+	"limits": [
+		"PNG decode, native-plane hash validation and equality assertions are outside the measured Context.build intervals.",
+		"No live native capture, graphical frame latency, provider dispatch or genuine-model experiment is performed.",
+		"Shared-host scheduling remains visible in every retained sample; medians are not a frame-latency guarantee.",
+		"Dense/uneven/thin synthetic correctness cases are reported by the separate authoring-proposal test."
+	],
+	"model_calls": 0,
+	"native_calls": 0,
+	"order": "Eight paired repetitions per input; baseline/candidate first position alternates and is counterbalanced within every input.",
+	"original_native_source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+	"outcomes": [
+		{
+			"captured_cells": 49152,
+			"context_bytes": 8342,
+			"id": "industrial_repair:before",
+			"median_usec": {
+				"baseline": {
+					"assembly_and_copy": 325,
+					"callsite": 20296,
+					"json_encoding": 278,
+					"knowledge": 130,
+					"material_hash": 778,
+					"native_scan": 18586,
+					"total": 20289,
+					"validation": 28
+				},
+				"candidate": {
+					"assembly_and_copy": 301,
+					"callsite": 5901,
+					"json_encoding": 271,
+					"knowledge": 131,
+					"material_hash": 780,
+					"native_scan": 4311,
+					"total": 5893,
+					"validation": 30
+				}
+			},
+			"model_context_digest": "8f452da6b1956a363d023a97e41f5c26073220402290587c5e419af746c05619",
+			"native_plane": "before",
+			"observed_nonempty_cells": 3889,
+			"original_native_plane_sha256": "76455b32d1acf38fe4f11884d25c40b9ff211e1803dc9c45b11df010b0fe8655",
+			"paired_samples_usec": [
+				{
+					"baseline": {
+						"assembly_and_copy": 328,
+						"callsite": 20496,
+						"json_encoding": 338,
+						"knowledge": 132,
+						"material_hash": 777,
+						"native_scan": 18886,
+						"total": 20489,
+						"validation": 28
+					},
+					"candidate": {
+						"assembly_and_copy": 306,
+						"callsite": 5744,
+						"json_encoding": 265,
+						"knowledge": 202,
+						"material_hash": 761,
+						"native_scan": 4167,
+						"total": 5735,
+						"validation": 34
+					},
+					"iteration": 0,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 367,
+						"callsite": 19928,
+						"json_encoding": 263,
+						"knowledge": 132,
+						"material_hash": 770,
+						"native_scan": 18360,
+						"total": 19920,
+						"validation": 28
+					},
+					"candidate": {
+						"assembly_and_copy": 293,
+						"callsite": 5734,
+						"json_encoding": 260,
+						"knowledge": 140,
+						"material_hash": 766,
+						"native_scan": 4234,
+						"total": 5725,
+						"validation": 32
+					},
+					"iteration": 1,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 339,
+						"callsite": 19802,
+						"json_encoding": 268,
+						"knowledge": 129,
+						"material_hash": 767,
+						"native_scan": 18260,
+						"total": 19793,
+						"validation": 30
+					},
+					"candidate": {
+						"assembly_and_copy": 327,
+						"callsite": 6064,
+						"json_encoding": 258,
+						"knowledge": 133,
+						"material_hash": 781,
+						"native_scan": 4528,
+						"total": 6056,
+						"validation": 29
+					},
+					"iteration": 2,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 336,
+						"callsite": 20897,
+						"json_encoding": 609,
+						"knowledge": 157,
+						"material_hash": 858,
+						"native_scan": 18621,
+						"total": 20889,
+						"validation": 308
+					},
+					"candidate": {
+						"assembly_and_copy": 297,
+						"callsite": 5898,
+						"json_encoding": 296,
+						"knowledge": 126,
+						"material_hash": 779,
+						"native_scan": 4361,
+						"total": 5890,
+						"validation": 31
+					},
+					"iteration": 3,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 306,
+						"callsite": 22369,
+						"json_encoding": 296,
+						"knowledge": 131,
+						"material_hash": 794,
+						"native_scan": 20804,
+						"total": 22360,
+						"validation": 29
+					},
+					"candidate": {
+						"assembly_and_copy": 292,
+						"callsite": 5920,
+						"json_encoding": 256,
+						"knowledge": 122,
+						"material_hash": 776,
+						"native_scan": 4440,
+						"total": 5913,
+						"validation": 27
+					},
+					"iteration": 4,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 277,
+						"callsite": 19294,
+						"json_encoding": 256,
+						"knowledge": 124,
+						"material_hash": 779,
+						"native_scan": 17825,
+						"total": 19287,
+						"validation": 26
+					},
+					"candidate": {
+						"assembly_and_copy": 288,
+						"callsite": 5707,
+						"json_encoding": 281,
+						"knowledge": 127,
+						"material_hash": 799,
+						"native_scan": 4088,
+						"total": 5698,
+						"validation": 115
+					},
+					"iteration": 5,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 323,
+						"callsite": 20097,
+						"json_encoding": 279,
+						"knowledge": 129,
+						"material_hash": 778,
+						"native_scan": 18552,
+						"total": 20089,
+						"validation": 28
+					},
+					"candidate": {
+						"assembly_and_copy": 320,
+						"callsite": 5904,
+						"json_encoding": 366,
+						"knowledge": 130,
+						"material_hash": 791,
+						"native_scan": 4262,
+						"total": 5896,
+						"validation": 27
+					},
+					"iteration": 6,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 299,
+						"callsite": 20962,
+						"json_encoding": 277,
+						"knowledge": 128,
+						"material_hash": 778,
+						"native_scan": 19443,
+						"total": 20953,
+						"validation": 28
+					},
+					"candidate": {
+						"assembly_and_copy": 386,
+						"callsite": 6552,
+						"json_encoding": 277,
+						"knowledge": 171,
+						"material_hash": 869,
+						"native_scan": 4813,
+						"total": 6544,
+						"validation": 28
+					},
+					"iteration": 7,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				}
+			],
+			"repetitions_per_arm": 8,
+			"warmup_timings_usec": {
+				"baseline": {
+					"assembly_and_copy": 355,
+					"callsite": 20804,
+					"json_encoding": 315,
+					"knowledge": 141,
+					"material_hash": 804,
+					"native_scan": 19146,
+					"total": 20796,
+					"validation": 35
+				},
+				"candidate": {
+					"assembly_and_copy": 305,
+					"callsite": 5764,
+					"json_encoding": 257,
+					"knowledge": 209,
+					"material_hash": 770,
+					"native_scan": 4188,
+					"total": 5756,
+					"validation": 27
+				}
+			}
+		},
+		{
+			"captured_cells": 98304,
+			"context_bytes": 7090,
+			"id": "stopped_workshop:before",
+			"median_usec": {
+				"baseline": {
+					"assembly_and_copy": 327,
+					"callsite": 39939,
+					"json_encoding": 255,
+					"knowledge": 77,
+					"material_hash": 1549,
+					"native_scan": 37649,
+					"total": 39931,
+					"validation": 29
+				},
+				"candidate": {
+					"assembly_and_copy": 322,
+					"callsite": 10521,
+					"json_encoding": 258,
+					"knowledge": 74,
+					"material_hash": 1613,
+					"native_scan": 8144,
+					"total": 10513,
+					"validation": 31
+				}
+			},
+			"model_context_digest": "be8b9880794b7f2defc7a5b5f9bb611b19d8b557289e9eacdbdb366bf0aab0c1",
+			"native_plane": "before",
+			"observed_nonempty_cells": 3830,
+			"original_native_plane_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+			"paired_samples_usec": [
+				{
+					"baseline": {
+						"assembly_and_copy": 314,
+						"callsite": 40473,
+						"json_encoding": 255,
+						"knowledge": 79,
+						"material_hash": 1618,
+						"native_scan": 38170,
+						"total": 40465,
+						"validation": 29
+					},
+					"candidate": {
+						"assembly_and_copy": 302,
+						"callsite": 10248,
+						"json_encoding": 241,
+						"knowledge": 74,
+						"material_hash": 1537,
+						"native_scan": 8054,
+						"total": 10239,
+						"validation": 31
+					},
+					"iteration": 0,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 315,
+						"callsite": 40402,
+						"json_encoding": 289,
+						"knowledge": 78,
+						"material_hash": 1551,
+						"native_scan": 38131,
+						"total": 40393,
+						"validation": 29
+					},
+					"candidate": {
+						"assembly_and_copy": 347,
+						"callsite": 10753,
+						"json_encoding": 295,
+						"knowledge": 74,
+						"material_hash": 1756,
+						"native_scan": 8214,
+						"total": 10745,
+						"validation": 59
+					},
+					"iteration": 1,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 396,
+						"callsite": 39855,
+						"json_encoding": 281,
+						"knowledge": 77,
+						"material_hash": 1600,
+						"native_scan": 37465,
+						"total": 39846,
+						"validation": 27
+					},
+					"candidate": {
+						"assembly_and_copy": 321,
+						"callsite": 10704,
+						"json_encoding": 253,
+						"knowledge": 75,
+						"material_hash": 1642,
+						"native_scan": 8373,
+						"total": 10695,
+						"validation": 31
+					},
+					"iteration": 2,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 302,
+						"callsite": 38932,
+						"json_encoding": 255,
+						"knowledge": 76,
+						"material_hash": 1541,
+						"native_scan": 36714,
+						"total": 38922,
+						"validation": 34
+					},
+					"candidate": {
+						"assembly_and_copy": 336,
+						"callsite": 10339,
+						"json_encoding": 274,
+						"knowledge": 73,
+						"material_hash": 1607,
+						"native_scan": 8013,
+						"total": 10331,
+						"validation": 28
+					},
+					"iteration": 3,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 298,
+						"callsite": 40024,
+						"json_encoding": 253,
+						"knowledge": 85,
+						"material_hash": 1519,
+						"native_scan": 37834,
+						"total": 40016,
+						"validation": 27
+					},
+					"candidate": {
+						"assembly_and_copy": 279,
+						"callsite": 10011,
+						"json_encoding": 261,
+						"knowledge": 69,
+						"material_hash": 1512,
+						"native_scan": 7853,
+						"total": 10004,
+						"validation": 30
+					},
+					"iteration": 4,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 411,
+						"callsite": 38671,
+						"json_encoding": 251,
+						"knowledge": 76,
+						"material_hash": 1507,
+						"native_scan": 36386,
+						"total": 38663,
+						"validation": 32
+					},
+					"candidate": {
+						"assembly_and_copy": 307,
+						"callsite": 10307,
+						"json_encoding": 270,
+						"knowledge": 72,
+						"material_hash": 1525,
+						"native_scan": 8075,
+						"total": 10299,
+						"validation": 50
+					},
+					"iteration": 5,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 339,
+						"callsite": 41658,
+						"json_encoding": 243,
+						"knowledge": 73,
+						"material_hash": 1548,
+						"native_scan": 39421,
+						"total": 41650,
+						"validation": 26
+					},
+					"candidate": {
+						"assembly_and_copy": 324,
+						"callsite": 10789,
+						"json_encoding": 255,
+						"knowledge": 74,
+						"material_hash": 1767,
+						"native_scan": 8330,
+						"total": 10781,
+						"validation": 31
+					},
+					"iteration": 6,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 347,
+						"callsite": 38351,
+						"json_encoding": 264,
+						"knowledge": 78,
+						"material_hash": 1978,
+						"native_scan": 35643,
+						"total": 38342,
+						"validation": 32
+					},
+					"candidate": {
+						"assembly_and_copy": 383,
+						"callsite": 11858,
+						"json_encoding": 241,
+						"knowledge": 75,
+						"material_hash": 1620,
+						"native_scan": 9503,
+						"total": 11850,
+						"validation": 28
+					},
+					"iteration": 7,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				}
+			],
+			"repetitions_per_arm": 8,
+			"warmup_timings_usec": {
+				"baseline": {
+					"assembly_and_copy": 287,
+					"callsite": 38289,
+					"json_encoding": 255,
+					"knowledge": 75,
+					"material_hash": 1676,
+					"native_scan": 35964,
+					"total": 38282,
+					"validation": 25
+				},
+				"candidate": {
+					"assembly_and_copy": 289,
+					"callsite": 10910,
+					"json_encoding": 346,
+					"knowledge": 75,
+					"material_hash": 1655,
+					"native_scan": 8515,
+					"total": 10902,
+					"validation": 22
+				}
+			}
+		},
+		{
+			"captured_cells": 262144,
+			"context_bytes": 8111,
+			"id": "staged_megaframe:before",
+			"median_usec": {
+				"baseline": {
+					"assembly_and_copy": 426,
+					"callsite": 106641,
+					"json_encoding": 337,
+					"knowledge": 135,
+					"material_hash": 4373,
+					"native_scan": 101420,
+					"total": 106629,
+					"validation": 35
+				},
+				"candidate": {
+					"assembly_and_copy": 397,
+					"callsite": 27563,
+					"json_encoding": 322,
+					"knowledge": 118,
+					"material_hash": 4329,
+					"native_scan": 22175,
+					"total": 27551,
+					"validation": 32
+				}
+			},
+			"model_context_digest": "bfdd467b6d21bce43a11a1288bb8da2d52fdcb12fdd992edf2ca7412b2a50a27",
+			"native_plane": "before",
+			"observed_nonempty_cells": 10220,
+			"original_native_plane_sha256": "6431327608e11ab33aad6e97f8e0ede4b8d7af1b68c71f57e8dd802b210215b3",
+			"paired_samples_usec": [
+				{
+					"baseline": {
+						"assembly_and_copy": 479,
+						"callsite": 109446,
+						"json_encoding": 382,
+						"knowledge": 186,
+						"material_hash": 4280,
+						"native_scan": 104033,
+						"total": 109435,
+						"validation": 75
+					},
+					"candidate": {
+						"assembly_and_copy": 472,
+						"callsite": 29975,
+						"json_encoding": 406,
+						"knowledge": 138,
+						"material_hash": 5126,
+						"native_scan": 23780,
+						"total": 29960,
+						"validation": 38
+					},
+					"iteration": 0,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 417,
+						"callsite": 106545,
+						"json_encoding": 400,
+						"knowledge": 142,
+						"material_hash": 4328,
+						"native_scan": 101212,
+						"total": 106532,
+						"validation": 33
+					},
+					"candidate": {
+						"assembly_and_copy": 378,
+						"callsite": 29621,
+						"json_encoding": 340,
+						"knowledge": 121,
+						"material_hash": 4355,
+						"native_scan": 24382,
+						"total": 29610,
+						"validation": 34
+					},
+					"iteration": 1,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 435,
+						"callsite": 105177,
+						"json_encoding": 344,
+						"knowledge": 137,
+						"material_hash": 4414,
+						"native_scan": 99797,
+						"total": 105164,
+						"validation": 37
+					},
+					"candidate": {
+						"assembly_and_copy": 563,
+						"callsite": 27492,
+						"json_encoding": 349,
+						"knowledge": 126,
+						"material_hash": 4493,
+						"native_scan": 21918,
+						"total": 27480,
+						"validation": 31
+					},
+					"iteration": 2,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 638,
+						"callsite": 120554,
+						"json_encoding": 419,
+						"knowledge": 247,
+						"material_hash": 4884,
+						"native_scan": 114294,
+						"total": 120543,
+						"validation": 61
+					},
+					"candidate": {
+						"assembly_and_copy": 351,
+						"callsite": 27183,
+						"json_encoding": 305,
+						"knowledge": 131,
+						"material_hash": 4244,
+						"native_scan": 22110,
+						"total": 27173,
+						"validation": 32
+					},
+					"iteration": 3,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 358,
+						"callsite": 104854,
+						"json_encoding": 312,
+						"knowledge": 115,
+						"material_hash": 4582,
+						"native_scan": 99438,
+						"total": 104842,
+						"validation": 37
+					},
+					"candidate": {
+						"assembly_and_copy": 411,
+						"callsite": 27634,
+						"json_encoding": 290,
+						"knowledge": 115,
+						"material_hash": 4532,
+						"native_scan": 22241,
+						"total": 27623,
+						"validation": 34
+					},
+					"iteration": 4,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 340,
+						"callsite": 106464,
+						"json_encoding": 311,
+						"knowledge": 110,
+						"material_hash": 4374,
+						"native_scan": 101290,
+						"total": 106454,
+						"validation": 29
+					},
+					"candidate": {
+						"assembly_and_copy": 338,
+						"callsite": 26927,
+						"json_encoding": 297,
+						"knowledge": 103,
+						"material_hash": 4193,
+						"native_scan": 21953,
+						"total": 26917,
+						"validation": 33
+					},
+					"iteration": 5,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 505,
+						"callsite": 106914,
+						"json_encoding": 330,
+						"knowledge": 113,
+						"material_hash": 4372,
+						"native_scan": 101551,
+						"total": 106903,
+						"validation": 32
+					},
+					"candidate": {
+						"assembly_and_copy": 481,
+						"callsite": 30257,
+						"json_encoding": 279,
+						"knowledge": 114,
+						"material_hash": 4303,
+						"native_scan": 25040,
+						"total": 30248,
+						"validation": 31
+					},
+					"iteration": 6,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 346,
+						"callsite": 106737,
+						"json_encoding": 309,
+						"knowledge": 133,
+						"material_hash": 4215,
+						"native_scan": 101690,
+						"total": 106726,
+						"validation": 33
+					},
+					"candidate": {
+						"assembly_and_copy": 384,
+						"callsite": 27004,
+						"json_encoding": 363,
+						"knowledge": 104,
+						"material_hash": 4158,
+						"native_scan": 21953,
+						"total": 26993,
+						"validation": 31
+					},
+					"iteration": 7,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				}
+			],
+			"repetitions_per_arm": 8,
+			"warmup_timings_usec": {
+				"baseline": {
+					"assembly_and_copy": 363,
+					"callsite": 107372,
+					"json_encoding": 330,
+					"knowledge": 118,
+					"material_hash": 4646,
+					"native_scan": 101878,
+					"total": 107363,
+					"validation": 28
+				},
+				"candidate": {
+					"assembly_and_copy": 392,
+					"callsite": 26917,
+					"json_encoding": 292,
+					"knowledge": 104,
+					"material_hash": 4216,
+					"native_scan": 21881,
+					"total": 26910,
+					"validation": 25
+				}
+			}
+		},
+		{
+			"captured_cells": 98304,
+			"context_bytes": 7628,
+			"id": "xeno_vault:before",
+			"median_usec": {
+				"baseline": {
+					"assembly_and_copy": 350,
+					"callsite": 40360,
+					"json_encoding": 281,
+					"knowledge": 95,
+					"material_hash": 1575,
+					"native_scan": 38017,
+					"total": 40350,
+					"validation": 30
+				},
+				"candidate": {
+					"assembly_and_copy": 327,
+					"callsite": 10642,
+					"json_encoding": 260,
+					"knowledge": 93,
+					"material_hash": 1540,
+					"native_scan": 8270,
+					"total": 10634,
+					"validation": 29
+				}
+			},
+			"model_context_digest": "d860d42c74209efa0d47ab5214d70899325911b42ec650554c283d71272f170c",
+			"native_plane": "before",
+			"observed_nonempty_cells": 3830,
+			"original_native_plane_sha256": "03ae1d60c4bc7e672dde1be0297df66c1ebb33fb26b38c2abac1ca3cea0147dd",
+			"paired_samples_usec": [
+				{
+					"baseline": {
+						"assembly_and_copy": 364,
+						"callsite": 38248,
+						"json_encoding": 376,
+						"knowledge": 96,
+						"material_hash": 1620,
+						"native_scan": 35752,
+						"total": 38238,
+						"validation": 30
+					},
+					"candidate": {
+						"assembly_and_copy": 409,
+						"callsite": 10925,
+						"json_encoding": 258,
+						"knowledge": 93,
+						"material_hash": 1540,
+						"native_scan": 8585,
+						"total": 10917,
+						"validation": 32
+					},
+					"iteration": 0,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 363,
+						"callsite": 42986,
+						"json_encoding": 352,
+						"knowledge": 98,
+						"material_hash": 1683,
+						"native_scan": 40449,
+						"total": 42977,
+						"validation": 32
+					},
+					"candidate": {
+						"assembly_and_copy": 320,
+						"callsite": 10612,
+						"json_encoding": 259,
+						"knowledge": 117,
+						"material_hash": 1692,
+						"native_scan": 8189,
+						"total": 10603,
+						"validation": 26
+					},
+					"iteration": 1,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 317,
+						"callsite": 39594,
+						"json_encoding": 308,
+						"knowledge": 95,
+						"material_hash": 1516,
+						"native_scan": 37319,
+						"total": 39582,
+						"validation": 27
+					},
+					"candidate": {
+						"assembly_and_copy": 291,
+						"callsite": 10007,
+						"json_encoding": 274,
+						"knowledge": 109,
+						"material_hash": 1526,
+						"native_scan": 7768,
+						"total": 9998,
+						"validation": 30
+					},
+					"iteration": 2,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 382,
+						"callsite": 40915,
+						"json_encoding": 281,
+						"knowledge": 95,
+						"material_hash": 1571,
+						"native_scan": 38546,
+						"total": 40906,
+						"validation": 31
+					},
+					"candidate": {
+						"assembly_and_copy": 304,
+						"callsite": 10472,
+						"json_encoding": 261,
+						"knowledge": 87,
+						"material_hash": 1533,
+						"native_scan": 8253,
+						"total": 10465,
+						"validation": 27
+					},
+					"iteration": 3,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 302,
+						"callsite": 38213,
+						"json_encoding": 244,
+						"knowledge": 90,
+						"material_hash": 1522,
+						"native_scan": 36020,
+						"total": 38206,
+						"validation": 28
+					},
+					"candidate": {
+						"assembly_and_copy": 334,
+						"callsite": 10803,
+						"json_encoding": 249,
+						"knowledge": 91,
+						"material_hash": 1690,
+						"native_scan": 8400,
+						"total": 10794,
+						"validation": 30
+					},
+					"iteration": 4,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 311,
+						"callsite": 42989,
+						"json_encoding": 263,
+						"knowledge": 94,
+						"material_hash": 1546,
+						"native_scan": 40735,
+						"total": 42980,
+						"validation": 31
+					},
+					"candidate": {
+						"assembly_and_copy": 298,
+						"callsite": 10562,
+						"json_encoding": 260,
+						"knowledge": 93,
+						"material_hash": 1516,
+						"native_scan": 8359,
+						"total": 10555,
+						"validation": 29
+					},
+					"iteration": 5,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 471,
+						"callsite": 41388,
+						"json_encoding": 282,
+						"knowledge": 96,
+						"material_hash": 1674,
+						"native_scan": 38827,
+						"total": 41379,
+						"validation": 29
+					},
+					"candidate": {
+						"assembly_and_copy": 345,
+						"callsite": 10672,
+						"json_encoding": 290,
+						"knowledge": 94,
+						"material_hash": 1619,
+						"native_scan": 8287,
+						"total": 10665,
+						"validation": 30
+					},
+					"iteration": 6,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 338,
+						"callsite": 39805,
+						"json_encoding": 260,
+						"knowledge": 97,
+						"material_hash": 1580,
+						"native_scan": 37489,
+						"total": 39795,
+						"validation": 31
+					},
+					"candidate": {
+						"assembly_and_copy": 334,
+						"callsite": 10839,
+						"json_encoding": 595,
+						"knowledge": 93,
+						"material_hash": 1540,
+						"native_scan": 8241,
+						"total": 10831,
+						"validation": 28
+					},
+					"iteration": 7,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				}
+			],
+			"repetitions_per_arm": 8,
+			"warmup_timings_usec": {
+				"baseline": {
+					"assembly_and_copy": 414,
+					"callsite": 40163,
+					"json_encoding": 291,
+					"knowledge": 100,
+					"material_hash": 1589,
+					"native_scan": 37725,
+					"total": 40154,
+					"validation": 35
+				},
+				"candidate": {
+					"assembly_and_copy": 318,
+					"callsite": 12071,
+					"json_encoding": 275,
+					"knowledge": 93,
+					"material_hash": 1522,
+					"native_scan": 9829,
+					"total": 12064,
+					"validation": 27
+				}
+			}
+		},
+		{
+			"captured_cells": 262144,
+			"context_bytes": 8575,
+			"id": "staged_megaframe:after",
+			"median_usec": {
+				"baseline": {
+					"assembly_and_copy": 424,
+					"callsite": 110739,
+					"json_encoding": 351,
+					"knowledge": 122,
+					"material_hash": 4759,
+					"native_scan": 104496,
+					"total": 110728,
+					"validation": 35
+				},
+				"candidate": {
+					"assembly_and_copy": 377,
+					"callsite": 32604,
+					"json_encoding": 302,
+					"knowledge": 120,
+					"material_hash": 4362,
+					"native_scan": 27364,
+					"total": 32593,
+					"validation": 33
+				}
+			},
+			"model_context_digest": "96eb33f4028c4d0edf5b4645277aaee451034db9effa1fc8abae119210a7a337",
+			"native_plane": "after",
+			"observed_nonempty_cells": 106957,
+			"original_native_plane_sha256": "db5a5f4d954cb29ae4043d3bd8dc9a2d947f29162f5755359f23b0a6bdc0b23f",
+			"paired_samples_usec": [
+				{
+					"baseline": {
+						"assembly_and_copy": 450,
+						"callsite": 111046,
+						"json_encoding": 523,
+						"knowledge": 121,
+						"material_hash": 4844,
+						"native_scan": 105061,
+						"total": 111035,
+						"validation": 36
+					},
+					"candidate": {
+						"assembly_and_copy": 491,
+						"callsite": 32718,
+						"json_encoding": 310,
+						"knowledge": 122,
+						"material_hash": 4411,
+						"native_scan": 27337,
+						"total": 32706,
+						"validation": 35
+					},
+					"iteration": 0,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 502,
+						"callsite": 108826,
+						"json_encoding": 326,
+						"knowledge": 145,
+						"material_hash": 4365,
+						"native_scan": 103445,
+						"total": 108815,
+						"validation": 32
+					},
+					"candidate": {
+						"assembly_and_copy": 366,
+						"callsite": 32491,
+						"json_encoding": 294,
+						"knowledge": 124,
+						"material_hash": 4313,
+						"native_scan": 27353,
+						"total": 32481,
+						"validation": 31
+					},
+					"iteration": 1,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 398,
+						"callsite": 114467,
+						"json_encoding": 338,
+						"knowledge": 118,
+						"material_hash": 4213,
+						"native_scan": 109353,
+						"total": 114456,
+						"validation": 36
+					},
+					"candidate": {
+						"assembly_and_copy": 376,
+						"callsite": 32395,
+						"json_encoding": 294,
+						"knowledge": 128,
+						"material_hash": 4077,
+						"native_scan": 27475,
+						"total": 32385,
+						"validation": 35
+					},
+					"iteration": 2,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 391,
+						"callsite": 109006,
+						"json_encoding": 337,
+						"knowledge": 124,
+						"material_hash": 4184,
+						"native_scan": 103931,
+						"total": 108995,
+						"validation": 28
+					},
+					"candidate": {
+						"assembly_and_copy": 342,
+						"callsite": 31532,
+						"json_encoding": 319,
+						"knowledge": 104,
+						"material_hash": 4264,
+						"native_scan": 26463,
+						"total": 31523,
+						"validation": 31
+					},
+					"iteration": 3,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 391,
+						"callsite": 108472,
+						"json_encoding": 342,
+						"knowledge": 122,
+						"material_hash": 4843,
+						"native_scan": 102684,
+						"total": 108461,
+						"validation": 79
+					},
+					"candidate": {
+						"assembly_and_copy": 431,
+						"callsite": 33291,
+						"json_encoding": 320,
+						"knowledge": 117,
+						"material_hash": 4469,
+						"native_scan": 27910,
+						"total": 33280,
+						"validation": 33
+					},
+					"iteration": 4,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 1531,
+						"callsite": 121940,
+						"json_encoding": 781,
+						"knowledge": 302,
+						"material_hash": 4978,
+						"native_scan": 114303,
+						"total": 121929,
+						"validation": 34
+					},
+					"candidate": {
+						"assembly_and_copy": 378,
+						"callsite": 33538,
+						"json_encoding": 281,
+						"knowledge": 104,
+						"material_hash": 5357,
+						"native_scan": 27375,
+						"total": 33527,
+						"validation": 32
+					},
+					"iteration": 5,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 369,
+						"callsite": 110432,
+						"json_encoding": 360,
+						"knowledge": 116,
+						"material_hash": 7505,
+						"native_scan": 102034,
+						"total": 110422,
+						"validation": 38
+					},
+					"candidate": {
+						"assembly_and_copy": 484,
+						"callsite": 35462,
+						"json_encoding": 311,
+						"knowledge": 134,
+						"material_hash": 4485,
+						"native_scan": 30002,
+						"total": 35451,
+						"validation": 35
+					},
+					"iteration": 6,
+					"order": [
+						"baseline",
+						"candidate"
+					]
+				},
+				{
+					"baseline": {
+						"assembly_and_copy": 535,
+						"callsite": 115656,
+						"json_encoding": 490,
+						"knowledge": 122,
+						"material_hash": 4676,
+						"native_scan": 109794,
+						"total": 115646,
+						"validation": 29
+					},
+					"candidate": {
+						"assembly_and_copy": 341,
+						"callsite": 31588,
+						"json_encoding": 295,
+						"knowledge": 118,
+						"material_hash": 4156,
+						"native_scan": 26634,
+						"total": 31577,
+						"validation": 33
+					},
+					"iteration": 7,
+					"order": [
+						"candidate",
+						"baseline"
+					]
+				}
+			],
+			"repetitions_per_arm": 8,
+			"warmup_timings_usec": {
+				"baseline": {
+					"assembly_and_copy": 346,
+					"callsite": 106119,
+					"json_encoding": 358,
+					"knowledge": 115,
+					"material_hash": 4226,
+					"native_scan": 101039,
+					"total": 106111,
+					"validation": 27
+				},
+				"candidate": {
+					"assembly_and_copy": 382,
+					"callsite": 32861,
+					"json_encoding": 356,
+					"knowledge": 113,
+					"material_hash": 4354,
+					"native_scan": 27621,
+					"total": 32853,
+					"validation": 27
+				}
+			}
+		}
+	],
+	"schema": "art-context-scan-comparison-v1",
+	"scope": "One-process alternating-order pure-value comparison over authenticated original native before planes and actual completed megaframe after plane.",
+	"source": "3f56020b3a0ed59da2a8387788a89ffe342f34d8"
+}

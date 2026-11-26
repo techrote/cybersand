@@ -1,0 +1,38 @@
+{
+  "schema": "cybersand-final-ui-image-review-v1",
+  "source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "run": 45520561849,
+  "artifact": 14981408538,
+  "observed_utc": "2026-11-25T01:52:16.508899+00:00",
+  "classification": "Informed lead review of original source-bound Godot captures, not blind human preference or physical owner acceptance",
+  "directly_inspected": [
+    {
+      "path": "gameplay/monumental-viaduct-actual-workbench.png",
+      "bytes": 675018,
+      "sha256": "62deb74a27bb1fff1772c73a6fa043b34092b4e6e3c34c3cc35abed724aa93d3",
+      "review": "direct original image inspection by lead",
+      "observations": "The full native viaduct is visible in the ordinary Workbench. Four arched spans, unlike underworks, piers, service decks and a labelled Midge are visible. No blank or clipped architecture is evident. This still frame does not itself prove movement or every-level access."
+    },
+    {
+      "path": "ui/collaborative-module-browser.png",
+      "bytes": 133850,
+      "sha256": "81d4e736be78da37bdb78f73e3f18a7e3372a83f73d90ebdd01662afb4e8c928",
+      "review": "direct original image inspection by lead",
+      "observations": "Forty-part library browser presents the selected 96 by 32 lattice truss, six declared poses, metadata and connectors. The current view explicitly says stored geometry has no current-session native replay. At 774 by 520 the lower snap controls require scrolling; the source-bound web walkthrough records this limitation."
+    },
+    {
+      "path": "ui/collaborative-zero-write-snap.png",
+      "bytes": 121545,
+      "sha256": "3255d479d168ed52af9af0cae589788048d6801eeb39df122320e02581006733",
+      "review": "direct original image inspection by lead",
+      "observations": "Selected pier snap is visibly labelled zero-write preview, 928 checked/distinct/changed cells, identity at212,186. Stage approval and revision controls are visible. The native-result area states no retained exact result; projected work is not represented as completed."
+    }
+  ],
+  "whole_scene_binding": "Four final whole-scene PNGs and intent/tasks UI match the prior directly inspected d948 frames byte for byte; visual-binding-root.json retains both original identities.",
+  "remaining_limits": [
+    "Arcology windows remain repetitive and interiors sparse.",
+    "Vault is a constructed cavern scaffold, not a simulated biological ecosystem.",
+    "Hosted representative movement proofs do not establish all-floor access, stability or functional machinery/pipe flow."
+  ]
+}

@@ -15,6 +15,8 @@ const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place s
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
 var _materials_lab_window: Window
 var _materials_lab_panel: Control
+var batch_lab: Window
+var architecture_lab: Window
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
 var _generated_active: Dictionary = {}
@@ -233,6 +235,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"+",func() -> void: zoom_by(-1))
 	_button(row,"Actor Composition…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
+	_button(row,"Batch Lab…",open_batch_lab)
+	_button(row,"Architecture…",open_architecture_lab)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
@@ -373,6 +377,32 @@ func _ensure_art_batches() -> Window:
 func open_art_batches() -> void:
 	_cancel()
 	_ensure_art_batches().popup_centered()
+
+
+func open_batch_lab() -> void:
+	_cancel()
+	# Optional and lazy: ordinary Workbench startup creates no tile workers,
+	# provider sessions, experiment files or render targets.
+	if not is_instance_valid(batch_lab):
+		batch_lab = preload("res://scripts/batch_lab/batch_lab_panel.gd").new()
+		batch_lab.wb = self
+		batch_lab.hide()
+		add_child(batch_lab)
+	batch_lab.popup_centered_clamped(Vector2i(1180,780),0.92)
+
+
+func capture_batch_source(region: Rect2i) -> Dictionary:
+	return await preload("res://scripts/batch_lab/batch_lab_source.gd").capture(self,region)
+
+
+func open_architecture_lab() -> void:
+	_cancel()
+	if not is_instance_valid(architecture_lab):
+		architecture_lab = preload("res://scripts/batch_lab/architecture_stage_panel.gd").new()
+		architecture_lab.wb = self
+		architecture_lab.hide()
+		add_child(architecture_lab)
+	architecture_lab.popup_centered_clamped(Vector2i(1160,780),0.92)
 
 
 func open_actor_composition() -> void:

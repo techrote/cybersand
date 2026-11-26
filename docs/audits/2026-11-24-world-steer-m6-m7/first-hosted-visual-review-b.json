@@ -1,0 +1,688 @@
+{
+  "schema": "cybersand-first-hosted-visual-review-b.v1",
+  "source_revision": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+  "tree": "d632b6b77f7829c1e61d035844b52060c972e908",
+  "run_id": 45506178712,
+  "reviewer": "Specialist B; independent of flagship recipe owner and hosted runner; not a blinded human assessor",
+  "observed_utc": "2026-11-24T23:49:34.899205+00:00",
+  "scope": "Original Godot native material frame inspection plus read-only file/hash/dimension and cross-platform native-plane verification. No new simulation, geometry, preference experiment or owner acceptance.",
+  "all_24_original_frames_visually_inspected": true,
+  "application": {
+    "linux": {
+      "qualification_sha256": "1c60fc9d04f2e0270ffd10a6b852c52ac310891fd0efed37e7a9ada67ff4a37d",
+      "status": "passed",
+      "graphical": true,
+      "packaged": false,
+      "results": 89,
+      "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "error": null,
+      "elapsed_seconds": 1167.862
+    },
+    "windows_source": {
+      "qualification_sha256": "fa47f6e9537b9e288be73acd1fa6ff32cfbb0b73b9ef8ea0b7153776d0e3586f",
+      "status": "failed",
+      "graphical": true,
+      "packaged": false,
+      "results": 64,
+      "godot_executable_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "error": "collaborative-full-world-gameplay failed; retained log: D:\\a\\cybersand\\cybersand\\evidence\\application\\collaborative-full-world-gameplay.log",
+      "elapsed_seconds": 1323.672
+    }
+  },
+  "platforms": {
+    "linux": {
+      "render_report_sha256": "8705229da2a07b8ebf898ed3669e068494d65a355e068655bd4d367b943d464f",
+      "render_checks": 40,
+      "render_failures": 0,
+      "native_report_sha256": "fd0af4050af4325d9ae0fe041c339102e9d315f35bc15c9e49bcb83943699a6b",
+      "native_checks": 446,
+      "native_failures": 0,
+      "native_core_capacity": 1024,
+      "frames": [
+        {
+          "id": "orbital-fabrication",
+          "image": "orbital-fabrication-whole-godot.png",
+          "image_sha256": "a3b337216a9d6c53e119da050437e9a81dd0470b17aa2961e4ef41a9f20bd945",
+          "image_bytes": 679257,
+          "pixels": [
+            1024,
+            1024
+          ],
+          "region": [
+            0,
+            0,
+            1024,
+            1024
+          ],
+          "view": "whole",
+          "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "orbital-fabrication",
+          "image": "orbital-fabrication-district-upper-godot.png",
+          "image_sha256": "a63ef608f71fbcb2a2e9822ede62a352af451881b2b2d975fca2d59a572307a1",
+          "image_bytes": 119900,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "orbital-fabrication",
+          "image": "orbital-fabrication-district-lower-godot.png",
+          "image_sha256": "2fcbd1f09934d1dcd325ea47ad5b70b15c3de857ed0314890131c7d027d46adc",
+          "image_bytes": 108514,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            512,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "terraced-arcology",
+          "image": "terraced-arcology-whole-godot.png",
+          "image_sha256": "f29f8d2b2da5ef757b60984886f9316776a5ed0b6d22337e3ab23dcc02a0fe1d",
+          "image_bytes": 631252,
+          "pixels": [
+            1024,
+            1024
+          ],
+          "region": [
+            0,
+            0,
+            1024,
+            1024
+          ],
+          "view": "whole",
+          "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "terraced-arcology",
+          "image": "terraced-arcology-district-upper-godot.png",
+          "image_sha256": "f2c9ba786dffcea61e6182255a7599d9285008f964e8dd5d50979569b6aef53c",
+          "image_bytes": 143047,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "terraced-arcology",
+          "image": "terraced-arcology-district-lower-godot.png",
+          "image_sha256": "1ee23220baebeb695cd5622b435462b5d005a81552eddb5a710fb412fe121fc8",
+          "image_bytes": 211549,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            512,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "monumental-viaduct",
+          "image": "monumental-viaduct-whole-godot.png",
+          "image_sha256": "a2747c2f4b5b842405a599b9b7a6323fd07c6dcc7b7e67c32bb95b212495bd36",
+          "image_bytes": 1017171,
+          "pixels": [
+            1536,
+            768
+          ],
+          "region": [
+            0,
+            0,
+            1536,
+            768
+          ],
+          "view": "whole",
+          "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "monumental-viaduct",
+          "image": "monumental-viaduct-district-upper-godot.png",
+          "image_sha256": "16495a66d94752bc677e3f6011dc732a2cecfbc15b7ed54f99a2ae1a5ec9a7cb",
+          "image_bytes": 221025,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            512,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "monumental-viaduct",
+          "image": "monumental-viaduct-district-lower-godot.png",
+          "image_sha256": "0330b7d61822cad2cdb5cb7c5925c7a5d19eca33a4182f95c5dc196cba4b5ac0",
+          "image_bytes": 217845,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            512,
+            256,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "biomechanical-vault",
+          "image": "biomechanical-vault-whole-godot.png",
+          "image_sha256": "18d7a362cb55d02e8aa9cfdc4ee6a67125b65b1b454c129604c05f70d90dc3d5",
+          "image_bytes": 754599,
+          "pixels": [
+            1024,
+            768
+          ],
+          "region": [
+            0,
+            0,
+            1024,
+            768
+          ],
+          "view": "whole",
+          "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "biomechanical-vault",
+          "image": "biomechanical-vault-district-upper-godot.png",
+          "image_sha256": "c37f11f4ac711c01b7527c22da5f4680a975452e252313c6efd972e4ecc3269a",
+          "image_bytes": 150339,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "biomechanical-vault",
+          "image": "biomechanical-vault-district-lower-godot.png",
+          "image_sha256": "f319312b270cbdb9aff8c57c9f11faa820c38c5cd9eb511f9a41a7bb8c587a42",
+          "image_bytes": 148871,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            256,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        }
+      ]
+    },
+    "windows_source": {
+      "render_report_sha256": "a0088bdda9e7782f28fbf3b98e4535f2dd9be2402e3e51a0e17291ebebc62edb",
+      "render_checks": 40,
+      "render_failures": 0,
+      "native_report_sha256": "df74d621f727efb0576d493359a97d0b44204a7f688daa73c77a4444efa7c21e",
+      "native_checks": 446,
+      "native_failures": 0,
+      "native_core_capacity": 1024,
+      "frames": [
+        {
+          "id": "orbital-fabrication",
+          "image": "orbital-fabrication-whole-godot.png",
+          "image_sha256": "74a08a93ae35b1b3f1614d102475c1df776fa0aab8f38b9b90ec6802f96861b1",
+          "image_bytes": 680234,
+          "pixels": [
+            1024,
+            1024
+          ],
+          "region": [
+            0,
+            0,
+            1024,
+            1024
+          ],
+          "view": "whole",
+          "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "orbital-fabrication",
+          "image": "orbital-fabrication-district-upper-godot.png",
+          "image_sha256": "4553e805f12e04bed7d3d259f18db8697c7f165789b0ea9bd767e488dc9e3a01",
+          "image_bytes": 119992,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "orbital-fabrication",
+          "image": "orbital-fabrication-district-lower-godot.png",
+          "image_sha256": "1d9d72942b6bc33b3d138102cd004895bac157ddb7b13c9b8320f6d9af2b102f",
+          "image_bytes": 108727,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            512,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "terraced-arcology",
+          "image": "terraced-arcology-whole-godot.png",
+          "image_sha256": "e94db2f14d8fa271d2ea04287efc7d1a6679b21b62492a3d16885ec3e76c741a",
+          "image_bytes": 632333,
+          "pixels": [
+            1024,
+            1024
+          ],
+          "region": [
+            0,
+            0,
+            1024,
+            1024
+          ],
+          "view": "whole",
+          "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "terraced-arcology",
+          "image": "terraced-arcology-district-upper-godot.png",
+          "image_sha256": "78d5d1bbb560d4954eda2e160713b0ec57a3544b3d1efdc361da89f9282c1ac2",
+          "image_bytes": 143295,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "terraced-arcology",
+          "image": "terraced-arcology-district-lower-godot.png",
+          "image_sha256": "2e087b6a7947e8fc21eeebb44b052131e3215991d410eee34982aa288e3c1230",
+          "image_bytes": 211744,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            512,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "monumental-viaduct",
+          "image": "monumental-viaduct-whole-godot.png",
+          "image_sha256": "d8f83bcc6ced85e0bf7256ace3968b79dd179e70f07c960380f55859b95e03d6",
+          "image_bytes": 1018418,
+          "pixels": [
+            1536,
+            768
+          ],
+          "region": [
+            0,
+            0,
+            1536,
+            768
+          ],
+          "view": "whole",
+          "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "monumental-viaduct",
+          "image": "monumental-viaduct-district-upper-godot.png",
+          "image_sha256": "5525337fb7b58e14f1f82e06ca88709fbce503420b98ba4131a92a67b4fdd92d",
+          "image_bytes": 221230,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            512,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "monumental-viaduct",
+          "image": "monumental-viaduct-district-lower-godot.png",
+          "image_sha256": "10b132f76d9c47c475aac54a06be536bcee333209c61ad4143cdb4299cba1e65",
+          "image_bytes": 218102,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            512,
+            256,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "biomechanical-vault",
+          "image": "biomechanical-vault-whole-godot.png",
+          "image_sha256": "a36a8be356073cdf3af861ae5025921aebc0a9f28436b9965f7a6e33b24ebdcc",
+          "image_bytes": 755818,
+          "pixels": [
+            1024,
+            768
+          ],
+          "region": [
+            0,
+            0,
+            1024,
+            768
+          ],
+          "view": "whole",
+          "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "biomechanical-vault",
+          "image": "biomechanical-vault-district-upper-godot.png",
+          "image_sha256": "019c25a015b059e416eb0bd3b9442cb76b1c1b0686c82fa09ed00359931831e6",
+          "image_bytes": 150817,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            0,
+            512,
+            512
+          ],
+          "view": "district-upper",
+          "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        },
+        {
+          "id": "biomechanical-vault",
+          "image": "biomechanical-vault-district-lower-godot.png",
+          "image_sha256": "f27b8f1811e0e0b00d8bb233f0ea0204276dd488b39fb2b59949865575d73f2c",
+          "image_bytes": 149091,
+          "pixels": [
+            512,
+            512
+          ],
+          "region": [
+            256,
+            256,
+            512,
+            512
+          ],
+          "view": "district-lower",
+          "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+          "palette_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "kind": "godot-rendered-native-material-plane",
+          "visually_inspected": true
+        }
+      ]
+    }
+  },
+  "cross_platform": [
+    {
+      "id": "biomechanical-vault",
+      "native_plane_bytes_equal": true,
+      "native_plane_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+      "native_plane_bytes": 1572864,
+      "frames": [
+        {
+          "image": "biomechanical-vault-whole-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "biomechanical-vault-district-upper-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "biomechanical-vault-district-lower-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        }
+      ]
+    },
+    {
+      "id": "monumental-viaduct",
+      "native_plane_bytes_equal": true,
+      "native_plane_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+      "native_plane_bytes": 2359296,
+      "frames": [
+        {
+          "image": "monumental-viaduct-whole-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "monumental-viaduct-district-upper-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "monumental-viaduct-district-lower-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        }
+      ]
+    },
+    {
+      "id": "orbital-fabrication",
+      "native_plane_bytes_equal": true,
+      "native_plane_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+      "native_plane_bytes": 2097152,
+      "frames": [
+        {
+          "image": "orbital-fabrication-whole-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "orbital-fabrication-district-upper-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "orbital-fabrication-district-lower-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        }
+      ]
+    },
+    {
+      "id": "terraced-arcology",
+      "native_plane_bytes_equal": true,
+      "native_plane_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+      "native_plane_bytes": 2097152,
+      "frames": [
+        {
+          "image": "terraced-arcology-whole-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "terraced-arcology-district-upper-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        },
+        {
+          "image": "terraced-arcology-district-lower-godot.png",
+          "png_bytes_equal": false,
+          "decoded_rgba_equal": false
+        }
+      ]
+    }
+  ],
+  "owner_accepted": false,
+  "actual_model_calls": 0,
+  "windows_package_qualified": false,
+  "limitations": [
+    "Windows source campaign failed later at its cached native-publication counter witness; no packaged/extracted evaluator ran in this campaign.",
+    "Cross-platform native material bytes are identical; original PNG bytes and decoded RGBA are not identical. Pixel equality is not claimed.",
+    "Static frames do not establish physical load paths, arbitrary actor traversal, mutual room connectivity, ecological or fluid behavior, or owner preference.",
+    "District-upper/lower captures are predetermined central crops, not an exhaustive survey of every district.",
+    "Architecture opinions are informed non-blinded model-specialist assessments."
+  ]
+}

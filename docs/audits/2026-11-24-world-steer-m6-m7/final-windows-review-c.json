@@ -1,0 +1,583 @@
+{
+  "full_independent_review": {
+    "bytes": 427888,
+    "checks": 1493,
+    "consumed_files": 1150,
+    "errors": [],
+    "evidence_path": "m67-evidence/hosted-final/45520561849/windows-outcomes-review-c.json",
+    "reader": "docs/audits/2026-11-24-world-steer-m6-m7/review_windows_outcomes_c.py",
+    "sha256": "5477d5c9d85d97445add0007ed5a03f2c3b501166a41529ad1809da71af40c9a"
+  },
+  "job": 138893152369,
+  "job_log": {
+    "bytes": 447508,
+    "scope": "Complete decoded GitHub job log retained as UTF-8, preserving its line endings.",
+    "sha256": "a7b51d35c8c50720c8677d850c758a3bba29553a2937c13d846bd5e32cf37aa7"
+  },
+  "launcher": {
+    "checks": 10,
+    "cleanup": "Only exact observed child image/PID/creation identities closed; none remain",
+    "cleanup_failures": null,
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "elapsed_seconds": 27.329,
+    "final_route_log_bytes": 925,
+    "generated_import_changes": 688,
+    "gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "last_monitor_elapsed_seconds": 15.063,
+    "launcher_command": [
+      "C:\\Windows\\system32\\cmd.exe",
+      "/d",
+      "/c",
+      "D:\\a\\_temp\\batch-lab-extracted-evaluator\\Open Workbench.cmd"
+    ],
+    "launcher_exit_code": 0,
+    "launcher_pid": 6032,
+    "launcher_sha256": "33aa00ed325aae248c81251198db8e060d5fb1aed5d1cf38eb5c7f73f655c9ae",
+    "manifest_sha256": "728150baaa29662bad1393278fa655835828b5af2196a0393231170ab297de90",
+    "monitor_samples": 11,
+    "native_binary_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+    "observed_process": {
+      "CommandLine": "\"D:\\a\\_temp\\batch-lab-extracted-evaluator\\Godot_v4.7-stable_win64.exe\"  --path \"D:\\a\\_temp\\batch-lab-extracted-evaluator\\godot\" -- --workbench",
+      "CreationDate": "2026-11-25T01:19:40.8540830Z",
+      "ExecutablePath": "D:\\a\\_temp\\batch-lab-extracted-evaluator\\Godot_v4.7-stable_win64.exe",
+      "MainWindowHandle": 852438,
+      "ParentProcessId": 6032,
+      "ProcessId": 3972
+    },
+    "passed": true,
+    "pristine_payload_verified": true,
+    "report_sha256": "48922d7ebdb52818b0aef968844f404b5eea6689699cb5c3066ef4dc965f9232",
+    "route_log": "fresh-userdata/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+    "route_log_sha256": "a98167365468a0e10a4b9a52238ae13fc644fe87205bc258c028544d6106b6d4"
+  },
+  "legacy_partial_plane_differences": [],
+  "original_outcomes_artifact": {
+    "bytes": 48540546,
+    "id": 14983835743,
+    "sha256": "6117b1cce68461c267b0df1f11c98d9efa4e557abac2acafa505fab1dd043ea0",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45520561849/artifacts/14983835743"
+  },
+  "paired_native_outcomes": {
+    "catalogue_native_planes": {
+      "identical": true,
+      "members": 100
+    },
+    "comparison_native_outcomes": {
+      "identical": true,
+      "members": 60
+    },
+    "detail_native_planes": {
+      "identical": true,
+      "members": 24
+    },
+    "full_flagship_planes": {
+      "identical": true,
+      "members": 4
+    },
+    "module_geometry": {
+      "identical": true,
+      "members": 40
+    },
+    "original_30_architecture_outcomes": {
+      "identical": true,
+      "members": 30
+    },
+    "original_nine_native_examples": {
+      "identical": true,
+      "members": 9
+    }
+  },
+  "phases": {
+    "application": {
+      "actor_observations": [
+        {
+          "actor_ticks": 1107,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "orbital-fabrication",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 5,
+          "native_ticks": 1107,
+          "render_cached_native_ticks": 1104
+        },
+        {
+          "actor_ticks": 1035,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "terraced-arcology",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 1035,
+          "render_cached_native_ticks": 1033
+        },
+        {
+          "actor_ticks": 1054,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "monumental-viaduct",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 1054,
+          "render_cached_native_ticks": 1053
+        },
+        {
+          "actor_ticks": 1127,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "biomechanical-vault",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 5,
+          "native_ticks": 1128,
+          "render_cached_native_ticks": 1126
+        },
+        {
+          "actor_ticks": 92,
+          "id": "orbital-fabrication",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 92,
+          "render_cached_native_ticks": 88
+        },
+        {
+          "actor_ticks": 92,
+          "id": "terraced-arcology",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 92,
+          "render_cached_native_ticks": 89
+        },
+        {
+          "actor_ticks": 92,
+          "id": "monumental-viaduct",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 3,
+          "native_ticks": 92,
+          "render_cached_native_ticks": 89
+        },
+        {
+          "actor_ticks": 91,
+          "id": "biomechanical-vault",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 91,
+          "render_cached_native_ticks": 90
+        }
+      ],
+      "cohort_counts": {
+        "catalogue_native_observations": 100,
+        "catalogue_part_frames": 40,
+        "collaborative_ui_frames": 7,
+        "comparison_native_completed": 23,
+        "comparison_pre_native_refusals": 37,
+        "comparison_proposals": 60,
+        "delegated_local_workers": 3,
+        "detail_cases": 24,
+        "flagship_frames": 12,
+        "fresh_actor_reopens": 4,
+        "full_native_flagships": 4,
+        "full_world_actor_trials": 4,
+        "hierarchy_frames": 3,
+        "modules": 40
+      },
+      "custody_checks": 4388,
+      "elapsed_seconds": 1651.797,
+      "failed": 0,
+      "hierarchy": {
+        "changed_readback_rows": 49898,
+        "delegated_workers": 3,
+        "final_campaign_state": "completed",
+        "final_plane_sha256": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe",
+        "native_stages": 10,
+        "partial_checked_cells": 4096,
+        "prior_campaigns": 1,
+        "receipt_chunks": 20,
+        "recovery": {
+          "all_other_outside_cells_preserved": true,
+          "approved_outside_recovery_cells": 256,
+          "attachment_cells": 1024,
+          "cleared_exact_native_prefix": true,
+          "partial_checked_cells": 4096,
+          "prefix_authority": "Actual changed-only native rows in approved order; elapsed timing unused.",
+          "protected_passage_empty": true,
+          "solid_contact_requirements": 128
+        },
+        "session_records": 16,
+        "session_sha256": "a1b7e96612157fbc77ca2d9b53f9ea3ce0dbfc68fa4d4130158364d05b6e89a4"
+      },
+      "original_pilot": {
+        "attempts": 75,
+        "evaluable": 72,
+        "statuses": {
+          "completed": 68,
+          "partial": 4,
+          "refused": 2,
+          "stopped": 1
+        }
+      },
+      "passed": 89,
+      "processes": 89,
+      "qualification_sha256": "acc1abfa05f6c0a5f6808c1a76a90ebd0f44645f3987354d988f63f57cd7abf1",
+      "reports": {
+        "custody.json": {
+          "checks": 4388,
+          "failures": [],
+          "sha256": "b111d7c991c6b6f1aa3c2b7ad217d9619c3d7f454ffc08b1ed97953b979a10de"
+        },
+        "gameplay/architecture-gameplay-reopen.json": {
+          "checks": 66,
+          "failures": [],
+          "sha256": "48d5c29a508d26b267c157b7df40bce495b5b7f2dbf28af22df470d048a3b9dd"
+        },
+        "gameplay/architecture-gameplay.json": {
+          "checks": 126,
+          "failures": [],
+          "sha256": "49fdcb7e452321dbd5ab2d0f5dfd8fe0c302cd544f5a64e6a8bfe1de270a56e1"
+        },
+        "hierarchy/hierarchy-native.json": {
+          "checks": 89,
+          "failures": 0,
+          "sha256": "b5638692d8841d53dd16abf04a7fc3808b7f999d514482e5582dc868a834e219"
+        },
+        "hierarchy/hierarchy-render.json": {
+          "checks": 15,
+          "failures": 0,
+          "sha256": "530386f3b6c18d9750c7673e192891c1b9df12add1824d9e53e294d6c03a441e"
+        },
+        "hierarchy/hierarchy-reopen.json": {
+          "checks": 12,
+          "failures": 0,
+          "sha256": "48b6c9902770ce5ab4c822e2a622e879a9c71f7c9276f2f681f7fc7bc19da99c"
+        },
+        "hierarchy/independent-hierarchy-verification.json": {
+          "checks": null,
+          "failures": [],
+          "sha256": "a0cf3b690dfa0c56fbc2681bed1eb7ff2bf1ea709046fcbe3c31f63eb6669dec"
+        },
+        "ui/collaborative-ui.json": {
+          "checks": 57,
+          "failures": [],
+          "sha256": "8e115332640af5cd3e92dd051c2c35b526dfa01f3783152fcc33fd8174659972"
+        }
+      },
+      "source_file_identities": 299
+    },
+    "extracted-evaluator": {
+      "actor_observations": [
+        {
+          "actor_ticks": 1101,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "orbital-fabrication",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 5,
+          "native_ticks": 1102,
+          "render_cached_native_ticks": 1099
+        },
+        {
+          "actor_ticks": 1033,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "terraced-arcology",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 1033,
+          "render_cached_native_ticks": 1031
+        },
+        {
+          "actor_ticks": 1051,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "monumental-viaduct",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 5,
+          "native_ticks": 1051,
+          "render_cached_native_ticks": 1050
+        },
+        {
+          "actor_ticks": 1126,
+          "command_refusals": 0,
+          "contact_samples": 12,
+          "id": "biomechanical-vault",
+          "kind": "route",
+          "left_corridor": false,
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 5,
+          "native_ticks": 1126,
+          "render_cached_native_ticks": 1124
+        },
+        {
+          "actor_ticks": 91,
+          "id": "orbital-fabrication",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 3,
+          "native_ticks": 91,
+          "render_cached_native_ticks": 89
+        },
+        {
+          "actor_ticks": 90,
+          "id": "terraced-arcology",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 90,
+          "render_cached_native_ticks": 88
+        },
+        {
+          "actor_ticks": 91,
+          "id": "monumental-viaduct",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 92,
+          "render_cached_native_ticks": 89
+        },
+        {
+          "actor_ticks": 90,
+          "id": "biomechanical-vault",
+          "kind": "fresh_reopen",
+          "max_actor_minus_native_publication": 0,
+          "max_actor_minus_render_cache": 4,
+          "native_ticks": 90,
+          "render_cached_native_ticks": 88
+        }
+      ],
+      "cohort_counts": {
+        "catalogue_native_observations": 100,
+        "catalogue_part_frames": 40,
+        "collaborative_ui_frames": 7,
+        "comparison_native_completed": 23,
+        "comparison_pre_native_refusals": 37,
+        "comparison_proposals": 60,
+        "delegated_local_workers": 3,
+        "detail_cases": 24,
+        "flagship_frames": 12,
+        "fresh_actor_reopens": 4,
+        "full_native_flagships": 4,
+        "full_world_actor_trials": 4,
+        "hierarchy_frames": 3,
+        "modules": 40
+      },
+      "custody_checks": 4388,
+      "elapsed_seconds": 1382.532,
+      "failed": 0,
+      "hierarchy": {
+        "changed_readback_rows": 47978,
+        "delegated_workers": 3,
+        "final_campaign_state": "completed",
+        "final_plane_sha256": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe",
+        "native_stages": 10,
+        "partial_checked_cells": 3136,
+        "prior_campaigns": 1,
+        "receipt_chunks": 20,
+        "recovery": {
+          "all_other_outside_cells_preserved": true,
+          "approved_outside_recovery_cells": 256,
+          "attachment_cells": 1024,
+          "cleared_exact_native_prefix": true,
+          "partial_checked_cells": 3136,
+          "prefix_authority": "Actual changed-only native rows in approved order; elapsed timing unused.",
+          "protected_passage_empty": true,
+          "solid_contact_requirements": 128
+        },
+        "session_records": 16,
+        "session_sha256": "b0f3acc89541df144a1bb6dea67b805bf9347cfb84d81e41be66ee2a74c39139"
+      },
+      "original_pilot": {
+        "attempts": 75,
+        "evaluable": 72,
+        "statuses": {
+          "completed": 68,
+          "partial": 4,
+          "refused": 2,
+          "stopped": 1
+        }
+      },
+      "passed": 72,
+      "processes": 72,
+      "qualification_sha256": "5b86b258ac78532a603809dd56268507582ec8c8e0b68a50759263e4ced7212d",
+      "reports": {
+        "custody.json": {
+          "checks": 4388,
+          "failures": [],
+          "sha256": "aafbf36a738199a71bbc46aeddce779382a0651a413c663f4dff396eafea9308"
+        },
+        "gameplay/architecture-gameplay-reopen.json": {
+          "checks": 66,
+          "failures": [],
+          "sha256": "41d442da4beb78de0aec2b70cbe758387715cfe004e1c164524d9c675390af4c"
+        },
+        "gameplay/architecture-gameplay.json": {
+          "checks": 126,
+          "failures": [],
+          "sha256": "2f5ba7df750e17f5e723748df7103358ff99310eb463ebf4d7936d95541ed7f7"
+        },
+        "hierarchy/hierarchy-native.json": {
+          "checks": 89,
+          "failures": 0,
+          "sha256": "f48bfcfcacc9fcdf9c759b91882d41ba148b358b871c90ae92307ec17f914e9c"
+        },
+        "hierarchy/hierarchy-render.json": {
+          "checks": 15,
+          "failures": 0,
+          "sha256": "9865884f5fd964c653c84301da968c2de856ea6ad5c8d769feba2c82391b1849"
+        },
+        "hierarchy/hierarchy-reopen.json": {
+          "checks": 12,
+          "failures": 0,
+          "sha256": "225028ee167ef35a7f3b449c274783203fa627ed3cb3ed0fcf46f1a9a400fa1f"
+        },
+        "hierarchy/independent-hierarchy-verification.json": {
+          "checks": null,
+          "failures": [],
+          "sha256": "40c9c4d54d70a1230c9ee4acd1679ec17568ae41e3a0ae40c60c482708bf856c"
+        },
+        "ui/collaborative-ui.json": {
+          "checks": 57,
+          "failures": [],
+          "sha256": "82088d59fb88424ae0771b373d265665c1d1306d7b80be716f2d373a06d07e56"
+        }
+      },
+      "source_file_identities": 299
+    }
+  },
+  "png_pairing": {
+    "all_collaborative_pngs": 154,
+    "byte_identical": 144,
+    "different": [
+      "gameplay/biomechanical-vault-actual-workbench.png",
+      "gameplay/monumental-viaduct-actual-workbench.png",
+      "gameplay/orbital-fabrication-actual-workbench.png",
+      "gameplay/terraced-arcology-actual-workbench.png",
+      "hierarchy/stopped-prefix-godot.png",
+      "ui/collaborative-module-browser.png",
+      "ui/collaborative-module-semantics.png",
+      "ui/collaborative-native-result.png",
+      "ui/collaborative-native-snap.png",
+      "ui/collaborative-zero-write-snap.png"
+    ],
+    "manifest_groups": {
+      "collaborative_ui": {
+        "byte_identical": 2,
+        "images": 7,
+        "report_sha256": {
+          "application": "8e115332640af5cd3e92dd051c2c35b526dfa01f3783152fcc33fd8174659972",
+          "extracted-evaluator": "82088d59fb88424ae0771b373d265665c1d1306d7b80be716f2d373a06d07e56"
+        }
+      },
+      "curated_native_parts": {
+        "byte_identical": 41,
+        "images": 41,
+        "report_sha256": {
+          "application": "52bc8ceba26d6aea724865556ff95131c25a9214bb028df76982bcfa4147e03e",
+          "extracted-evaluator": "2febbb9915c4ba9b604d04dfd497acdef3934e9b1996a0654baac371b11db3f6"
+        }
+      },
+      "hierarchy": {
+        "byte_identical": 2,
+        "images": 3,
+        "report_sha256": {
+          "application": "530386f3b6c18d9750c7673e192891c1b9df12add1824d9e53e294d6c03a441e",
+          "extracted-evaluator": "9865884f5fd964c653c84301da968c2de856ea6ad5c8d769feba2c82391b1849"
+        }
+      },
+      "large_flagships": {
+        "byte_identical": 12,
+        "images": 12,
+        "report_sha256": {
+          "application": "d75c9a156a6706dd1a6723fe8a69ad71113f730697c22211cbe4e0392e94fb1e",
+          "extracted-evaluator": "d75c9a156a6706dd1a6723fe8a69ad71113f730697c22211cbe4e0392e94fb1e"
+        }
+      },
+      "original_nine_examples": {
+        "byte_identical": 9,
+        "images": 9,
+        "report_sha256": {
+          "application": "9f8df643b6df798af1cdaa00c7eb179a4d7a3f80e3c669ac2aaee886373cd2ac",
+          "extracted-evaluator": "9f8df643b6df798af1cdaa00c7eb179a4d7a3f80e3c669ac2aaee886373cd2ac"
+        }
+      }
+    },
+    "manifest_review_sha256": "875b07ee19182fe071037dd529eb49db299ccadce4dc9f9fd396b259768f0782",
+    "scope": "154 includes diagnostic and actual-render PNGs. The manifest groups separately identify actual native part renders, labelled gallery, flagship views, UI frames, hierarchy views and original nine examples. No cross-platform pixel equality is claimed."
+  },
+  "preserved_prior_failures": [
+    {
+      "run": 45506178712,
+      "scope": "Windows source witness read a render cache instead of the live worker publication; original failure retained."
+    },
+    {
+      "run": 45512988153,
+      "scope": "Both source suites passed; extracted CMD query filter failed under Windows PowerShell5.1. Original failure retained; no prior package acceptance inferred."
+    }
+  ],
+  "query_self_test": {
+    "early_actual_checks": 3,
+    "early_log_path": "windows-launcher-query-self-test.log",
+    "early_log_sha256": "80699504f86698b7d5ce272b78a1c593c0cab27b36c4be7820c6dea3583bb745",
+    "early_passed": true,
+    "nested_checks": 3,
+    "nested_passed": true,
+    "powershell_version": "5.1.20348.5773",
+    "scope": "Real Windows query found its exact Python caller PID, image and creation identity with two scalar path filters before accepting an empty engine inventory."
+  },
+  "run": 45520561849,
+  "runtime": {
+    "cropped_route_worlds": false,
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "godot_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "native_active_core_capacity": 1024,
+    "native_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+    "same_299_source_identities": true,
+    "same_source_extracted_runtime": true
+  },
+  "schema": "cybersand-final-windows-review-c-v1",
+  "scope_limits": {
+    "actor_trials": "Selected Midge routes in four full-sized Worlds, original controller and default native capacity. Each phase records twelve grounded landing observations per route, no command refusals or corridor escapes; this is not general traversability, a frame-rate benchmark or twelve distinct collision events.",
+    "blind_architectural_preference": "not performed",
+    "disposition": "Draft/HOLD",
+    "fresh_reopen": "Four fresh-process authored-start inspections and new movement trials per phase, exact route material crop, original spawn and neutral authority checks; no resume of prior trajectory is implied.",
+    "genuine_model_calls": 0,
+    "hierarchy_counts": "Changed material rows summed over stages, including acknowledged partial construction and exact recovery clearing; not unique final occupied cells.",
+    "hosted_launcher": "Actual package CMD, exact direct-child PID/image/creation identity, nonzero window handle, accepted Workbench route and bounded cleanup; subsequent native/UI/actor processes qualify functionality separately.",
+    "live_Art_proposal_route": "not integrated",
+    "physical_owner_acceptance": "pending"
+  },
+  "source_revision": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "source_tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "status": "PASS",
+  "visual_inspection": {
+    "observations": [
+      "The five differing UI images vary only in their displayed content-hash or stage-ID text bands; framed geometry and control pixels outside those bands are identical.",
+      "The stopped-prefix image differs in rows167\u2013171, consistent with the two actual acknowledged native prefixes. Both recover to the same final plane.",
+      "The actual vault Workbench pair retains readable controls and the authored scene. Actor endpoints and scattered live rendered pixels differ; their cause is not generally attributed.",
+      "The native-snap screenshot remains at the Modules top scroll position; lower candidate controls are off-screen. The semantics screenshot shows only its active Anchor and transforms tab."
+    ],
+    "representative_original_pairs_viewed": [
+      "ui/collaborative-module-browser.png",
+      "ui/collaborative-module-semantics.png",
+      "ui/collaborative-native-result.png",
+      "hierarchy/stopped-prefix-godot.png",
+      "gameplay/biomechanical-vault-actual-workbench.png"
+    ]
+  }
+}

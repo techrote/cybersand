@@ -10,6 +10,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Architectural Workbench / M3–M5 — Draft/HOLD:** [native module library, GOLDMAPS retrieval and staged construction](operations/world-steer-architecture.md) extend the preserved Batch Lab. [Module contract](systems/native-architectural-modules.md), [design knowledge and evaluation](systems/architectural-knowledge-and-evaluation.md), and [staged execution boundary](systems/architecture-staged-construction.md) keep observed native geometry, authored intent, hosted qualification and physical acceptance distinct.
+
+**Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.
 GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/gip014-goblin-002-decision.md), then the [persistent experimental playtester ledger](research/gip014-goblin-002.md) and [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Exact source capabilities, campaign evidence and defect adjudication remain separately scoped.
 
 **AMBIENT-002, opt-in Draft/HOLD:** [living inhabitants, bounded memory, copied peers and group authoring](systems/ambient-living-inhabitants.md); [living Workbench owner guide](operations/ambient-living-workbench.md); [source-bound successor mission ledger](research/ambient-002/mission-ledger.md). The original AMBIENT-001 evaluator remains frozen and separate.
@@ -77,10 +80,9 @@ MoltenGlass H1 from this Materials Lab continuation.
 
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
-Workbench Art conversation lifetime: [lazy restoration, immutable linked traffic,
-crash handling, atomic checkpoints and cancellable export](systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
-PR #681 remains Draft/HOLD; its qualification ledger owns measured platform
-results and the remaining physical Windows acceptance.
+Workbench Art uses [one write-only audit per game session](systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026), accepted in #727. New sessions do not restore old conversations. The [Art finisher and Windows evaluator](operations/art-workbench-final-evaluation.md) consolidate dialog, provider and responsiveness repairs as a separate Draft/HOLD candidate.
+
+The [collaborative Art successor](operations/art-workbench-collaborative-evaluation.md) adds Discuss, Propose, Develop and Review beside direct drawing. Read the [exclusive provider handoff](systems/art-owned-proposal-transport.md) for Architecture integration and the [native context/proposal contract](systems/art-native-context-proposals.md) for bounded observations, zero-write previews and separately approved native stages. #780 remains Draft/HOLD; qualification identities and retained failures are in its [mission ledger](audits/2026-11-25-art-workbench-collaborative-002/README.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 defines the common desktop/agent/remote foundation and the GEN-008 candidate

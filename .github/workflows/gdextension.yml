@@ -424,7 +424,7 @@ jobs:
           retention-days: 90
 
   windows-regression:
-    name: windows headless regression shard ${{ matrix.shard }}
+    name: windows regression shard ${{ matrix.shard }}
     needs: [ready_scope, execution-plan, windows-build]
     if: >-
       always() && inputs.physical_actor_stress != true &&
