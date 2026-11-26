@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "status": "approved",
+  "inputs": [
+    {
+      "path": "docs/README.md",
+      "sha256": "be6e13d51aafc603a9949ff293829f5e1c220dc5173ad82c6e05dd3d08f9a7e0"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "49f69f4c5ebbaf74848899415abc4cff7eb0b1651ac990ce43ad7b4ce7b81673"
+    },
+    {
+      "path": "docs/operations/ambient-workbench.md",
+      "sha256": "18d0091209e0738e06820b72641e6061ddb2d54f28cbbaa96a42ce455e5e0f1a"
+    },
+    {
+      "path": "docs/systems/ambient-actors.md",
+      "sha256": "7b10c8869610ea35aaa47e2523d229fe0faec2b1d0a306adc67e9ec92e7b9b83"
+    }
+  ],
+  "source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "review": [
+    "Read portal and status full merge delta; accepted opt-in #775 and unmerged #779 are separated; dated source/platform evidence is not relabelled current execution",
+    "Read both AMBIENT manual diffs and immutable original final mission-ledger disposition; actual f4f94631 evaluator/source, ANGLE/Microsoft Basic Render Driver and physical owner distinction accurately attributed",
+    "Eight-actor capacity, per-actor profile application and existing physics ownership remain explicit; no new default promotion inferred"
+  ],
+  "primary_route": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/mission-ledger.md#final-disposition--verified-evaluator-drafthold",
+  "limits": "Authority/readability and source-record review, not a new AMBIENT campaign, archive download or physical owner test"
+}

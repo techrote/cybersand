@@ -166,3 +166,10 @@ local tests of the reconciled source-bound LFS and runtime-transport helpers.
 nine local controls and review of the shipped batch invocation. Windows batch
 and graphics execution still require their actual hosted gate; neither receipt
 claims physical owner acceptance or recovery of the live LFS service.
+
+[Current-main causal admission review](closure-causal-v4-independent-review.json)
+retains 21 independent controls of the new v4 registration. Its 13 source paths
+and causal fixture match accepted main; both older registrations remain pinned.
+The registration still declares the six planned cases unexecuted and does not
+claim runtime/gameplay qualification. [Product authority review](closure-product-authority-review.json)
+binds C's independent review of the AMBIENT current-status and evaluator routes.
