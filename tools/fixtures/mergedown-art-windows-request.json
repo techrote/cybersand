@@ -3,9 +3,9 @@
   "repository": "techrote/cybersand",
   "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
   "status": "admitted",
-  "source_commit": "437bf2ab52c4c5e1ba50ce4fab207ff7586f8a4b",
-  "source_tree": "01642f790df4ba259dfa536aca092126387ff4c3",
-  "accepted_main_baseline": "b4d14fc701a8e011e33936e8466d63231769a918",
+  "source_commit": "2637cd17d0802419988429bbb56bffa716952e2c",
+  "source_tree": "16e4d267641933f1a4577c67be95473c6ece7c0d",
+  "accepted_main_baseline": "597cfaa68ac4e8940a3e9a93025fd6320765d028",
   "art_parent": "d503d824aac4128968f7dfba5dccd540c3c07b59",
   "architecture_parent": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
   "local_qualified_source": "29a19e5d2bf5676bc4e65d6bf5b0cfe2c63f5b6a",
@@ -26,9 +26,9 @@
   "owner_accepted": false,
   "public_release": false,
   "source_contracts_sha256": {
-    "tools/ci/run_godot_regressions.py": "5fef8460cecc6edb966495837c05736eb64b90ab9cd31418df07f3975660e7be",
-    "tools/ci/run_windows_godot_regressions.py": "c915776899aaf5711ed99aa91015cc4d73d2244cb84dba66fd53104b14b726f2",
-    "tools/ci/_architecture_campaign_context.py": "02ef1ff88ae5d3e85b93e9418180c6cbacdc363a37470c47233f9e94831f33c0",
+    "tools/ci/run_godot_regressions.py": "de44f7c52fb8319fbc93580529484f4da293737610f7676ca7a7b0a57a3a40ff",
+    "tools/ci/run_windows_godot_regressions.py": "efa0af63383349e4e1497288fc3490c20ac6df1279c6df491f1216bfe2b29a64",
+    "tools/ci/_architecture_campaign_context.py": "ae023d410758cc01b5a1ff45ad2fc240c03def2e4d5aa0cb21be6865be4dddd3",
     "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd",
     "tools/ci/godot_process_monitor.py": "8012d2f9d6e8b9153325adf8d5866c9d0ae4e3f95e20ae06eeea0bbcd6904571",
     "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
@@ -54,8 +54,8 @@
     ".github/workflows/art-session-logging.yml": "905211b34cf77df5cb800bf5bcc75c7105349ce6ba3c43ef53cf438492a5fed9",
     "docs/operations/art-workbench-collaborative-evaluation.md": "4dafcb3c6548be42f6da368d32c79c02e7c3ebba9e0f63336510fd942a410bda"
   },
-  "qualification_revision": "closure-final-mainline-context-custody-004",
-  "purpose": "Fresh complete Windows qualification of the frozen combined Art/Architecture application with scoped prompt custody, visible Art fixture status and existing Architecture producer/consumer context repaired; reconciled with AMBIENT002, Goblin002 and accepted Goblin001 storage repair. Preserve every original failed campaign and all readiness/performance limits. No paid inference, owner physical/creative acceptance or default activation.",
+  "qualification_revision": "closure-final-accepted-base-scoped-context-005",
+  "purpose": "Fresh complete Windows qualification of the combined Art/Architecture candidate on accepted main after Goblin002, with concrete prompt custody, fixture visibility/output labels and existing Architecture/Batch CI context and argv integration repairs. Preserve all earlier positive and negative sources, unchanged readiness/native-owner/process limits and physical/creative acceptance holds. No paid inference or default activation.",
   "published_original_tree_union": "7f7d97a6dda8d0ed2ed6231f1cf7549b342fa221",
   "prior_campaigns": [
     {
@@ -124,6 +124,65 @@
         "collaborative-displayed"
       ],
       "timed_out": false
+    },
+    {
+      "run_id": 45904941875,
+      "attempt": 1,
+      "harness_commit": "6653bdc8affeba868e19dc4d8cc3d25163b766b5",
+      "source_commit": "437bf2ab52c4c5e1ba50ce4fab207ff7586f8a4b",
+      "source_tree": "01642f790df4ba259dfa536aca092126387ff4c3",
+      "status": "passed-all-nine-original-modes-and-provisional-delivered-cmd",
+      "successful_modes": [
+        "retained-core-0",
+        "retained-core-1",
+        "retained-core-2",
+        "retained-headless",
+        "retained-displayed",
+        "storage",
+        "integration-displayed",
+        "collaborative-headless",
+        "collaborative-displayed"
+      ],
+      "provisional_package_artifact_id": 15158567476,
+      "provisional_package_artifact_sha256": "55c5170b2767d544a9694c8484bd149149a1fd293ba656ccff5ed59713456454",
+      "provisional_archive_sha256": "4fb42c88d30097d0fbe51c10f7a410a2a7e8ff53ab2ddbfdf0907d8b81cd48e7",
+      "accepted_main": false,
+      "physical_owner_accepted": false,
+      "not_reused_for_successor": true
     }
-  ]
+  ],
+  "prior_integration_qualification_failures": [
+    {
+      "head_commit": "6653bdc8affeba868e19dc4d8cc3d25163b766b5",
+      "executed_pr_merge": "e96b1ce12954390b54c9929306cabbf250ffa1e6",
+      "executed_tree": "98725c37cc82d45e9d3f7790f522540a2d0b28e0",
+      "palette_run_id": 45904949278,
+      "godot_run_id": 45904949244,
+      "boundaries": [
+        "Windows legacy scoped argv received duplicate automatic ANGLE despite explicit caller flags; original processes passed and strict command verifier refused.",
+        "Hosted Windows sharding test compared canonical context paths with a lexical tempfile alias.",
+        "Successful Architecture negative-control labels contained reserved skipped wording; original predicates passed and strict skip reader refused.",
+        "Batch UI was discovered headless, and mounted Batch Workbench inherited unrelated raw Art traffic instead of the dedicated driver profile/order."
+      ],
+      "refusal_readers_unchanged": true
+    }
+  ],
+  "retained_local_limit": {
+    "platform": "Windows NVIDIA TITAN RTX ANGLE",
+    "fixture": "test_batch_lab_ui",
+    "source_commit": "6e533c3ca04a15cad943d855453bf46890e799aa",
+    "checks": 164,
+    "first_grid_failure_count": 6,
+    "owner_phase_timeout_ms": 90000,
+    "process_watchdog_seconds": 1200,
+    "first_draw_control": {
+      "head_commit": "d2ae9641dd4e099235ffa4d23e863ab418c8a278",
+      "dirty_fixture_sha256": "263113d0436e5a13017d57371bfe8ba5d6a64b9f3e7716c384d7a07f70b8bd57",
+      "same_failure_count": 6,
+      "first_presentation_ms": 82.007,
+      "natural_process_seconds": 140.437,
+      "applied_to_successor": false
+    },
+    "disposition": "Preserved local cold native-owner phase refusal; no guard or shader/native change. Successor requires unchanged 164-check actual hosted ANGLE case; physical/local cold-performance acceptance remains held."
+  }
 }
