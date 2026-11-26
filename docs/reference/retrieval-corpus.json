@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-24",
+  "reviewed": "2026-11-26",
   "scope": "Explicit current-answer corpus; status and scope accompany every chunk. Navigation and retrieval: explicit-only packets are excluded in manifest and fallback modes. Historical authority remains separately opt-in.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",

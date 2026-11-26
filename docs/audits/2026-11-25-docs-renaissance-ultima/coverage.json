@@ -1,9 +1,9 @@
 {
   "authority": "historical-non-authoritative",
-  "current_documents": 151,
-  "full_text_reviewed_current_documents": 151,
+  "current_documents": 153,
+  "full_text_reviewed_current_documents": 153,
   "missing": [],
-  "scope": "Full-body semantic reading is not exhaustive source-level or runtime proof of every claim; individual lane records and technical matrix define selected source checks and execution.",
+  "scope": "All 153 canonical current document bodies have a recorded semantic review. Eleven later amendments have complete lead diff/context follow-up and separately named lane reviews. Full-text coverage is distinct from source validation of selected consequential claims, actual runtime execution, GUI tasks, and reference-context applicability.",
   "documents": [
     {
       "path": "docs/MATERIAL_LAB.md",
@@ -216,14 +216,21 @@
     },
     {
       "path": "docs/architecture/shared-workbench-authoring-data.md",
-      "sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066",
+      "sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
           "reviewer": "Specialist B",
           "depth": "full-text semantic review with selected source-contract checks"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066"
     },
     {
       "path": "docs/architecture/simulation-tick-and-threading.md",
@@ -479,15 +486,39 @@
       ]
     },
     {
+      "path": "docs/operations/ci-campaign-coordination.md",
+      "sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c-new-main.json",
+          "reviewer": "Specialist C",
+          "depth": "full-body semantic read and targeted source-contract/authority review",
+          "reviewed_sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/accepted-ci-reader-review.json",
+          "reviewer": "Specialist B",
+          "depth": "Independent current-reader and accepted-source boundary review"
+        }
+      ]
+    },
+    {
       "path": "docs/operations/ci-execution-and-performance.md",
-      "sha256": "bf07fe2f9781906e4db8c226dd8fc33020b99927f6fdba681d49c45a39891f55",
+      "sha256": "0eafa45b1c6c0bf840340c91242f9e14980a70d978d3b2197030d8da9e465194",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
           "reviewer": "Astra lead",
           "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "0eafa45b1c6c0bf840340c91242f9e14980a70d978d3b2197030d8da9e465194"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "bf07fe2f9781906e4db8c226dd8fc33020b99927f6fdba681d49c45a39891f55"
     },
     {
       "path": "docs/operations/configuration-and-capacity-budgets.md",
@@ -546,25 +577,39 @@
     },
     {
       "path": "docs/operations/documentation-maintenance.md",
-      "sha256": "57f5a6e0162d8f6f91e009e8cc52b9dfacfccd3602c503a2eda51a8a5a542bef",
+      "sha256": "d9dd0dab4ae46e06050e5e8b0b2f369fa3a3d5f8de4cb8d36ff1d5b8244f4ec0",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
           "reviewer": "Specialist C",
           "depth": "full-text semantic read plus targeted source/authority review"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "d9dd0dab4ae46e06050e5e8b0b2f369fa3a3d5f8de4cb8d36ff1d5b8244f4ec0"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "57f5a6e0162d8f6f91e009e8cc52b9dfacfccd3602c503a2eda51a8a5a542bef"
     },
     {
       "path": "docs/operations/experiment-tower.md",
-      "sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8",
+      "sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
           "reviewer": "Astra lead",
           "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8"
     },
     {
       "path": "docs/operations/explore001-desktop-playtest.md",
@@ -601,14 +646,21 @@
     },
     {
       "path": "docs/operations/gentek80-evaluation.md",
-      "sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
           "reviewer": "Astra lead",
           "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db"
     },
     {
       "path": "docs/operations/getting-started.md",
@@ -650,14 +702,21 @@
     },
     {
       "path": "docs/operations/lcb-scenario-catalogue.md",
-      "sha256": "7d2d376a06f4fb80731a54d93abfa5326901d032840f358915d241eda9f17c08",
+      "sha256": "41422db565378841a3ac135dfde94541e0026488a76ab194f6249216ff772d74",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
           "reviewer": "Astra lead",
           "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "41422db565378841a3ac135dfde94541e0026488a76ab194f6249216ff772d74"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "7d2d376a06f4fb80731a54d93abfa5326901d032840f358915d241eda9f17c08"
     },
     {
       "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
@@ -716,14 +775,21 @@
     },
     {
       "path": "docs/operations/materials-lab-authoring.md",
-      "sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "sha256": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
           "reviewer": "Specialist B",
           "depth": "full-text semantic review and selected actual UI tasks"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
     },
     {
       "path": "docs/operations/microscenario-reference-pack.md",
@@ -832,6 +898,23 @@
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
           "reviewer": "Astra lead",
           "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/publication-custody.md",
+      "sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c-new-main.json",
+          "reviewer": "Specialist C",
+          "depth": "full-body semantic read and targeted source-contract/authority review",
+          "reviewed_sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/accepted-ci-reader-review.json",
+          "reviewer": "Specialist B",
+          "depth": "Independent current-reader and accepted-source boundary review"
         }
       ]
     },
@@ -1035,14 +1118,21 @@
     },
     {
       "path": "docs/operations/workbench-art.md",
-      "sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+      "sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
           "reviewer": "Specialist B",
           "depth": "full-text semantic review, selected source tracing and non-generative UI exercise"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570"
     },
     {
       "path": "docs/operations/workbench-first-session.md",
@@ -1178,14 +1268,21 @@
     },
     {
       "path": "docs/reference/status-and-roadmap.md",
-      "sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+      "sha256": "fc47275b4e037182c4d438cb1cf0dcfaea4528d9a852d7055115cb5fb4d140ad",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
           "reviewer": "Specialist C",
           "depth": "full-text semantic read plus targeted source/authority review"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "fc47275b4e037182c4d438cb1cf0dcfaea4528d9a852d7055115cb5fb4d140ad"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408"
     },
     {
       "path": "docs/reference/validation-evidence.md",
@@ -1321,25 +1418,39 @@
     },
     {
       "path": "docs/systems/flow-transport-and-profiles.md",
-      "sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "sha256": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
           "reviewer": "Specialist A",
           "depth": "complete-body semantic read plus targeted consequential source inspection"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc"
     },
     {
       "path": "docs/systems/generation-workbench-2.md",
-      "sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "sha256": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2",
       "reviews": [
         {
           "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
           "reviewer": "Specialist B",
           "depth": "full-text semantic review with selected native API and ownership checks"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2"
         }
-      ]
+      ],
+      "prior_coverage_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606"
     },
     {
       "path": "docs/systems/granular-interaction-policy.md",
@@ -1672,5 +1783,6 @@
       ]
     }
   ],
-  "source_head": "32eb3e86de2095db1323d3ddf405509224225175"
+  "source_head": "21f5f78e85bd9a6323bc4b3bb768fe89f1ee7fde",
+  "latest_amendment_review": "lead/final-canonical-delta-review.json"
 }

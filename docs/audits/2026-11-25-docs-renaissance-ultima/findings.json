@@ -234,8 +234,7 @@
         "lead"
       ],
       "aliases": [
-        "A-ULT-01",
-        "A-ULT-04"
+        "A-ULT-01"
       ],
       "remaining_boundary": null,
       "locators": [
@@ -266,7 +265,9 @@
         "C",
         "lead"
       ],
-      "aliases": [],
+      "aliases": [
+        "A-ULT-11"
+      ],
       "remaining_boundary": "Fresh Windows public-caller lock cases are required by final non-publishing qualification; no power-loss or formal blind-study claim.",
       "locators": [
         {
@@ -1000,8 +1001,13 @@
       "status": "unresolved",
       "observed_failure_or_question": "A mounted panel save under real 128-byte RLIMIT overwrote a valid 1108-byte ConfigFile with invalid truncated content and returned true.",
       "expected_contract": "Preserve the prior readable preferences and display refusal; acknowledge only complete compatible replacement.",
-      "implemented_outcome": "Two-function Art perimeter remediation is in qualification. No final closure is claimed.",
-      "evidence": [],
+      "implemented_outcome": "Complete ConfigFile encoding passes shared verified-byte replacement before acknowledgement; actual Linux13 combined matrix and 400 Art assertions pass with independent B/C/lead review. Exact final Windows settings lock cases pending.",
+      "evidence": [
+        "technical/art-panel-storage-before.json",
+        "technical/art-panel-storage-linux.json",
+        "technical/art-panel-storage-regressions.json",
+        "retrieval/review-final-storage-and-ci-by-c.json"
+      ],
       "independent_reviewers": [
         "B",
         "C",
@@ -1026,8 +1032,13 @@
       "status": "unresolved",
       "observed_failure_or_question": "A mounted panel journal write published an invalid 128-byte receipt and returned true, risking loss of restart history despite retaining an older receipt.",
       "expected_contract": "A retained receipt must be complete and readable before order/clock/admission state advances; duplicate identity remains refused.",
-      "implemented_outcome": "Checked close plus exact-byte verification retains the established short staging-name and native replacement contract. Qualification remains in progress.",
-      "evidence": [],
+      "implemented_outcome": "The retained private path preserves its short staging name and verifies complete closed bytes before native commit and order/clock admission. Linux schema1/schema2, duplicate, real short-write/permission and retry cases pass; it is not reactivated as a live session workflow. Final Windows private admission cases pending.",
+      "evidence": [
+        "technical/art-panel-storage-source-binding.json",
+        "technical/art-panel-storage-linux.json",
+        "technical/remaining-writer-dispositions.json",
+        "retrieval/review-final-storage-and-ci-by-c.json"
+      ],
       "independent_reviewers": [
         "B",
         "C",
@@ -1055,7 +1066,10 @@
       "expected_contract": "Preserve prior report bytes; failed output returns a nonzero command result without a success message.",
       "implemented_outcome": "Shared verified-byte replacement with existing relative-path/format compatibility; Linux9 public CLI cases independently passed, normal source suites passed. Final Windows6 pending.",
       "evidence": [
-        "retrieval/review-diagnostic-storage-by-c.json"
+        "retrieval/review-diagnostic-storage-by-c.json",
+        "technical/diagnostic-storage-before.json",
+        "technical/diagnostic-storage-linux-with-goblin.json",
+        "technical/diagnostic-storage-regressions.json"
       ],
       "independent_reviewers": [
         "C",
@@ -1255,7 +1269,9 @@
       "evidence": [
         "retrieval/package-contradictory-profile-before.json",
         "retrieval/package-contradictory-profile-after.json",
-        "retrieval/art-package-contradiction-before.json"
+        "retrieval/art-package-contradiction-before.json",
+        "retrieval/art-package-contradiction-after.json",
+        "retrieval/review-final-storage-and-ci-by-c.json"
       ],
       "independent_reviewers": [
         "C",
@@ -1286,7 +1302,9 @@
       "evidence": [
         "lead/lfs-service-failures/causal-139578569494.log.txt.gz.json",
         "lead/lfs-service-failures/art-windows-139578571692.log.txt.gz.json",
-        "lead/lfs-service-failures/play-linux-139578735020.log.txt.gz.json"
+        "lead/lfs-service-failures/play-linux-139578735020.log.txt.gz.json",
+        "technical/storage-perimeter-independent-reviews.json",
+        "retrieval/review-final-storage-and-ci-by-c.json"
       ],
       "independent_reviewers": [
         "C",
@@ -1306,6 +1324,54 @@
         {
           "path": ".github/workflows/art-session-logging.yml",
           "sha256": "c7e8d9ab74ab07f3e3a780836eec1db2a8359696cbe1a0835879ae738cca8794"
+        }
+      ]
+    },
+    {
+      "id": "ULT-NATIVE-01",
+      "priority": "P3",
+      "owner": "A",
+      "title": "Existing native material-baseline replacement is reusable without changing its stronger writer",
+      "status": "verified-not-a-defect",
+      "observed_failure_or_question": "Determine whether the accepted native same-directory replace primitive can safely support bounded text callers while retaining the separate baseline writer.",
+      "implemented_outcome": "Source/ABI inspection and actual caller execution establish reusable POSIX/Windows replacement. No native binary, ABI, baseline format or stronger material-baseline writer was changed.",
+      "evidence": [
+        "technical/persistence-design-and-results.md",
+        "technical/material-baseline-tail-fault.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-04"
+      ],
+      "remaining_boundary": "No fsync/power-loss inference from file replacement."
+    },
+    {
+      "id": "ULT-WEB-01",
+      "priority": "P1",
+      "owner": "owner / Web programme #3",
+      "title": "Unqualified optional Web local-slot writer retains potential truncation and replacement risk",
+      "status": "owner-decision-required",
+      "observed_failure_or_question": "Source-only perimeter inspection finds buffered write/get_error and fixed temporary rename in retained experimental Web save_slot. No real browser fault reproduction is claimed.",
+      "implemented_outcome": "Explicitly retained as an unqualified experimental route under the existing owner closure of ongoing Web maintenance. No desktop native primitive was transplanted into browser virtual storage.",
+      "evidence": [
+        "technical/remaining-writer-dispositions.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "aliases": [
+        "PERIMETER-WEB-SLOT"
+      ],
+      "remaining_boundary": "Owner closed ongoing Web CI/toolchain/export maintenance as not planned (issue3 comment5593128559). A newly authorized Web experiment must first qualify engine/templates and isolated browser filesystem persistence. The available browser route also encountered an explicit security denial, which was not bypassed.",
+      "next_action": "Use the exact executable handoff in technical/remaining-writer-dispositions.json when Web scope is reopened; preserve prior slot and test actual browser reload separately from virtual-FS visibility.",
+      "locators": [
+        {
+          "path": "godot/scripts/web_demo_controller.gd",
+          "sha256": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb"
         }
       ]
     }
