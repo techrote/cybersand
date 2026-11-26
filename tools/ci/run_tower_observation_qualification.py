@@ -150,7 +150,7 @@ def main():
     args = parser.parse_args()
     runner = Runner(args)
     root = runner.project.parent
-    inputs = ["godot/scripts/main.gd", "godot/scripts/tower_panel.gd",
+    inputs = ["godot/scripts/main.gd", "godot/scripts/web_demo_controller.gd", "godot/scripts/tower_panel.gd",
               "godot/scripts/workbench_file_transaction.gd", "godot/native_extension/material_baseline_file.cpp",
               "godot/scripts/experiment_tower.gd", "godot/scripts/water_experiment_profiles.gd",
               "godot/scripts/water_experiment_blind.gd", "godot/scripts/water_feel_scenarios.gd",

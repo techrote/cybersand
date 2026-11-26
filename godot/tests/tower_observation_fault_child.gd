@@ -3,11 +3,19 @@ extends SceneTree
 # Public controller/button calls with disposable user data. The Python runner
 # supplies real OS failure boundaries; no production fault switches are used.
 const Controller = preload("res://scripts/main.gd")
+# The retained subclass must compile against the parent's result contract.
+# This is a desktop script check, not browser filesystem qualification.
+const WebController = preload("res://scripts/web_demo_controller.gd")
 
 func _initialize() -> void:
 	run.call_deferred()
 
 func run() -> void:
+	var retained_script: Script = WebController
+	if not retained_script.can_instantiate():
+		push_error("TOWER_OBSERVATION_FIXTURE: retained controller subclass did not compile")
+		quit(2)
+		return
 	var kind := OS.get_environment("CYBERSAND_OBSERVATION_KIND")
 	var value := int(OS.get_environment("CYBERSAND_OBSERVATION_VALUE"))
 	var through_button := OS.get_environment("CYBERSAND_OBSERVATION_BUTTON") == "1"
