@@ -1,6 +1,6 @@
 extends RefCounted
 
-# Already-validated authored/capture JSON documents only. Keep validation and
+# Already-validated bounded text documents only. Keep validation and
 # directory/naming policy in each owning format. This helper establishes one
 # complete closed staging file, then reuses the accepted native sibling-file
 # replacement primitive. It does not serialize live simulation state or promise
