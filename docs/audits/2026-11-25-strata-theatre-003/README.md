@@ -11,21 +11,23 @@ The frozen application is `fd0830abcfadd9ae19162e5677943bb131223e59`, tree
 archived separately; their later Git commits do not pretend that a different
 application was tested. The main final-source campaign is
 [run 45721790366](https://github.com/techrote/cybersand/actions/runs/45721790366).
-Final Linux full optical/native, inherited authoring and original-predecessor
-comparisons passed their unchanged strict readers. The full Windows optical
-step has succeeded; independent Windows artifact review, compatibility controls
-and the actual pristine extracted portable evaluator remain in progress at this
-checkpoint.
+Both actual Linux and Windows full optical/native, inherited authoring and
+original-predecessor workflow jobs succeeded. The unchanged frozen full optical
+reader independently admitted both final artifacts. Linux inherited/paired
+readers also pass. The Windows paired artifact needs a narrow cross-host reader
+portability correction: Linux Path does not parse a Windows command basename.
+That original Linux-side rejection and the actual Windows success are preserved
+separately. The pristine extracted portable evaluator is still running.
 
-The Linux corpus contains 99 matched profile captures from nine native scenes,
-74 supplementary captures and 40 movement keyframes. Its actual renderer
-passed 109 assertions, including an exact 16,384-byte Classic wipe comparison
+Each final platform corpus contains 99 matched profile captures from nine native
+scenes, 74 supplementary captures and 40 movement keyframes. Each actual renderer
+passed 109 assertions, including an exact same-backend 16,384-byte Classic wipe comparison
 at nontrivial haze and parent opacity. All five original Strata002 scene recipes
 remain byte-identical. Selected untouched originals and their full identities
 are retained in [the capture manifest](selected-captures/manifest.json).
 
 **Enabled optical profiles failed the separately registered physical-progression
-performance gate on Linux.** The failure is material and cannot be dismissed as
+performance gate on both hosted platforms.** The failure is material and cannot be dismissed as
 repeat spread. The original threshold remains at least 90% of Classic's native
 and Rapier progression, with physical p95 no greater than the larger of 1.20
 times Classic p95 or Classic p95 plus 10 ms.
@@ -45,6 +47,16 @@ the two cohorts are not interchangeable. See the independently recomputed
 [performance review](c-performance-review-linux.md) and complete compact
 [profile observations](profile-observations-linux.json).
 
+The final Windows cohort also fails every enabled native/Rapier rate gate:
+Architectural 0.841219, Deep Focus 0.830409, Clarity 0.759216 and Diorama High
+0.756614 relative to Classic. Architectural's median p95 of 397.219 ms meets
+that host's 402.738 ms limit; the other enabled p95 values do not. Median p99
+values exceed one second in all four enabled profiles. All nine initial scene
+admissions are 46.620–52.362 s and fail 45 s. Fresh-process reopens take
+5.871–8.934 s and pass. The [complete Windows summary](profile-observations-windows.json)
+retains all repeat populations, admissions and whole-process CPU/RSS, independently
+of the forthcoming package extraction results.
+
 Both five-minute sustained v2 sessions passed original source, native isolation,
 visible-widget and bounded-resource checks. The Windows session nevertheless
 took 69.196 seconds to admit its scene and had a physical p95 of 662.318 ms.
@@ -55,7 +67,7 @@ steps do not establish uninterrupted travel. The [independent sustained
 review](c-sustained-v2-review.md) preserves all these limits.
 
 An isolated [exact-output shader cost experiment](shader-cost-probe-registration.md)
-is running against the unchanged application. It skips downstream work only
+has completed against the unchanged application on both hosted backends. It skips downstream work only
 where both central and filtered coverage are exactly zero, and requires exact
 graphical/native pixel comparisons before timings count. Its original observer was
 `c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e`,
@@ -68,14 +80,22 @@ preserves both observations. V2 requires direct pre/post material attachment
 witnesses and a per-host diagnostic. Its published observer is
 `55951750466dc76e0482954f3d9e8bd9a9d1ada4`,
 [run 45733231981](https://github.com/techrote/cybersand/actions/runs/45733231981). V1 is not retroactively admitted, and no
-application adoption or speed improvement is inferred.
+application adoption is inferred. V2 actual same-host output is exact for 18
+synthetic and six native-world pairs per backend. All twelve same-repeat
+profile comparisons improve progression. Clarity narrowly meets the registered
+rate/p95 numeric flags on both hosts; Architectural remains below 90% on Linux
+at 89.682079%. Windows first admission still fails at 63.802 s. These findings
+are preserved in [A's Linux](optical-a1-v2-linux-review-a.md) and
+[Windows](optical-a1-v2-windows-review-a.md) reviews. A separate ordinary
+application revision, dense-scene witness and new package qualification would
+be required before adopting the candidate. The principal delivery remains frozen fd.
 
 The independent [blind readability and movement review](c-readability-and-motion-review.md)
 favours Gameplay Clarity and Noir for difficult false platforms. Architectural
 and Deep Focus preserve more detail but do not reliably resolve deliberately
 aligned decorative routes. [B's environment review](b-final-corpus-review.json)
 finds Diorama particularly useful as an optional lunar composition, with a
-greater texture loss in the cavern. These are recorded expert judgments, not
+greater texture loss in the cavern. These are recorded specialist-agent judgments, not
 a human perceptual study or a manufactured consensus.
 
 ## Source and ownership registration

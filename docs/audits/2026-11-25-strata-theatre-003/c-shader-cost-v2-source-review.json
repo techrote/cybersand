@@ -1,0 +1,71 @@
+{
+  "schema": "strata003-independent-shader-cost-v2-source-review-v1",
+  "assessor": "Specialist C",
+  "observer_source": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+  "observer_tree": "edc750a1e2205b079dca5fd284af9091038aca6d",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "reviewed_inputs_sha256": {
+    "tools/ci/strata3_shader_cost.gd": "9b87a8130c70160e359af4b6264c567a80ede18d58a785cc60ffeb39c63162dd",
+    "tools/ci/strata3_shader_cost.py": "5207ed01a7efde62e74a889381f9bb6b74a9c50499cef12c275c0b81cd0117f6",
+    "tools/ci/test_strata3_shader_cost.py": "b42c1be857b82571f033ffe10690ccf1f67d530b3a9589bbb5cef4b6dd811878",
+    "tools/ci/experiments/strata3_optical_override_test.gd": "a9b41d173ce33e3d3a321cc6e1d81772c52b39c10590c6db3d1d1a1751733242",
+    "tools/ci/experiments/strata3_optical_empty_coverage_a1.gdshader": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+    "tools/ci/experiments/strata3_shader_identity_diagnostic.gd": "5c88b7229b7a617b08dd7016b633d1cc00ecd0dff08ef4e2ccbef339944d986c",
+    "tools/ci/strata3_sustained.py": "7c64e246f08d2138bcd572d0107969683b734016d909526c23e6af7578375cf0",
+    ".github/workflows/strata-theatre-003-cost-probe.yml": "3a3b3fbbdfd9893dafaeb4e7ed386e2ac03b88845630db8a05697edb2520ebf5",
+    "docs/audits/2026-11-25-strata-theatre-003/shader-cost-probe-registration.md": "05594b9630261652719c9d5ae556c82f3fc1962af22541ab34b5c01e95376bdc"
+  },
+  "actual_adverse_controls": {
+    "command": [
+      "python3",
+      "tools/ci/test_strata3_shader_cost.py"
+    ],
+    "tests": 16,
+    "failures": 0,
+    "exit_code": 0
+  },
+  "headless_native_diagnostic": {
+    "report_sha256": "e7d46e7356645b840f9d5aa36dc3dea5efa8f845f1cbbe2926ae10997d7f40d7",
+    "driver_sha256": "9b87a8130c70160e359af4b6264c567a80ede18d58a785cc60ffeb39c63162dd",
+    "checks": 3087,
+    "failures": [],
+    "window_count": 15,
+    "actual_candidate_windows_with_attached_candidate_code": 6,
+    "pre_post_attachments_equal_all_windows": true,
+    "actual_shared_shader_resources": 1,
+    "restored_resources": [
+      {
+        "shader_instance_id": "-9223371868898061518",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb"
+      }
+    ],
+    "scope": "Source/attachment diagnostic; explicitly headless. Not complete graphical strict-reader admission."
+  },
+  "v1_rejections": {
+    "linux": {
+      "artifact": 15075884273,
+      "zip_sha256": "60f8265419830d411022978f70311575a6877b1fa3faa1f6a7fb56db57bf0564",
+      "receipt_sha256": "3ffb0dbcca296f8b0f4cb0d1a54c971bf712880401ecffd82326869a94da2f86",
+      "verified_file_hashes": 70
+    },
+    "windows": {
+      "artifact": 15077761504,
+      "zip_sha256": "e8e19df1885f08545c912e53eeb269550d663adcfd1ea5dc7b6ecd71afe1f0cd",
+      "receipt_sha256": "82f13d894fb76a0aa041c3d4cbacec3984b8c6a33137ba6d7e25047f00ce80c9",
+      "verified_file_hashes": 70
+    }
+  },
+  "current_interpretation": "V1 rejected under its registered contract, native attachment unestablished; infer neither original-only execution nor A1 gain. Direct same-resource diagnostic distinguishes runtime code from frozen constant/property metadata.",
+  "source_review_disposition": "Ready for hosted graphical and timing qualification; no blocking source-contract issue found.",
+  "performance_gate_unchanged": true,
+  "application_unchanged_by_c_review": true,
+  "owner_guide_reviewed_sha256": "d59fffbed037c36993c3a5838430c0fb4669f180f9b9037e8022fd654094e7b6",
+  "owner_guide_disposition": "Measured performance/feedback paragraphs accurate; minor suggested scope clarification identifies Linux explicitly for paired Classic and capture findings.",
+  "limits": [
+    "No new hosted v2 cost result is asserted here.",
+    "No retroactive admission of v1 artifacts.",
+    "No physical Windows11/NVIDIA observation.",
+    "No automatic adoption of external shader candidate.",
+    "Frozen application enabled-optics performance HOLD remains."
+  ]
+}

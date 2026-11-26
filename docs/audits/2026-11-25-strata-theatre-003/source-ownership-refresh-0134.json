@@ -1,0 +1,50 @@
+{
+  "schema": "strata3-programme-ownership-refresh-v1",
+  "observed_utc": "2026-11-26T01:33:40Z",
+  "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "programmes": {
+    "776": {
+      "head": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    "784": {
+      "head": "a3cddc4703ecea7abdfe2db55d1de5ef79874447",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    "767": {
+      "head": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    "777": {
+      "head": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    "780": {
+      "head": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    "783": {
+      "head": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    "785": {
+      "head": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    }
+  },
+  "decision": "Keep ancestry-preserving #785 stacked on unmerged #776. No programme imported; no source rebase or merge. Separate accepted-main evaluator belongs to #784 and is not the Strata003 evaluator."
+}

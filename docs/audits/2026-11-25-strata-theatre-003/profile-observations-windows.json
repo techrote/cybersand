@@ -1,0 +1,1374 @@
+{
+  "campaigns": [
+    {
+      "admissions": [
+        {
+          "elapsed_ms": 46620,
+          "phase": "install",
+          "scene": "orbital-terminal",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 8934,
+          "phase": "reopen",
+          "scene": "orbital-terminal",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 48504,
+          "phase": "install",
+          "scene": "neon-rain-arcology",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 8074,
+          "phase": "reopen",
+          "scene": "neon-rain-arcology",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 50673,
+          "phase": "install",
+          "scene": "industrial-underworks",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 6560,
+          "phase": "reopen",
+          "scene": "industrial-underworks",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 47628,
+          "phase": "install",
+          "scene": "abyss-foundry",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 7732,
+          "phase": "reopen",
+          "scene": "abyss-foundry",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 47487,
+          "phase": "install",
+          "scene": "vertical-transfer-spine",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 7518,
+          "phase": "reopen",
+          "scene": "vertical-transfer-spine",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 47599,
+          "phase": "install",
+          "scene": "sunward-freight-megastructure",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 7176,
+          "phase": "reopen",
+          "scene": "sunward-freight-megastructure",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 47915,
+          "phase": "install",
+          "scene": "xeno-resonance-grotto",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 7013,
+          "phase": "reopen",
+          "scene": "xeno-resonance-grotto",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 47700,
+          "phase": "install",
+          "scene": "lunar-terminator-observatory",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 6478,
+          "phase": "reopen",
+          "scene": "lunar-terminator-observatory",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 52362,
+          "phase": "install",
+          "scene": "optics-readability-challenge",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 5871,
+          "phase": "reopen",
+          "scene": "optics-readability-challenge",
+          "target_met": true,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 51798,
+          "phase": "progression",
+          "scene": "optics-readability-challenge",
+          "target_met": false,
+          "target_ms": 45000
+        },
+        {
+          "elapsed_ms": 46606,
+          "phase": "motion",
+          "scene": "optics-readability-challenge",
+          "target_met": false,
+          "target_ms": 45000
+        }
+      ],
+      "campaign_sha256": "af7fded1a69d50a12fcbbcbca61b6365af0e1cc02ccdf444366b828eafa3b1bc",
+      "case_count_including_headless_import": 31,
+      "embedded_native_harness_checks_excluding_regression_markers": 18224,
+      "godot": {
+        "path": "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "human_performance_adjudication": "PENDING independent review of raw repeat populations and host variance",
+      "platform": "win32",
+      "profiles": {
+        "architectural": {
+          "callback_p95_usec": {
+            "maximum": 400037,
+            "median": 399424,
+            "minimum": 397753,
+            "original_order": [
+              399424,
+              400037,
+              397753
+            ]
+          },
+          "godot_process_monitor_mean_ms": {
+            "maximum": 371.6175,
+            "median": 364.8564,
+            "minimum": 364.6932,
+            "original_order": [
+              364.6932,
+              364.8564,
+              371.6175
+            ]
+          },
+          "median_comparison_to_classic": {
+            "interpretation": "Observed median targets only. Review repeat spread, p99/max and stalls before adjudicating; no physical GPU or perceptual acceptance.",
+            "native_rate_ratio": 0.8412194981357827,
+            "observed_native_rate_target_met": false,
+            "observed_physical_p95_target_met": true,
+            "observed_rapier_rate_target_met": false,
+            "physical_p95_limit_usec": 402738.0,
+            "rapier_rate_ratio": 0.841219498135784
+          },
+          "native_ticks_per_second": {
+            "maximum": 2.50861674618935,
+            "median": 2.5013420824471,
+            "minimum": 2.49249513914438,
+            "original_order": [
+              2.49249513914438,
+              2.5013420824471,
+              2.50861674618935
+            ]
+          },
+          "physical_maximum_usec": {
+            "maximum": 1135599,
+            "median": 1116363,
+            "minimum": 1109866,
+            "original_order": [
+              1135599,
+              1109866,
+              1116363
+            ]
+          },
+          "physical_p95_usec": {
+            "maximum": 398772,
+            "median": 397219,
+            "minimum": 394283,
+            "original_order": [
+              398772,
+              397219,
+              394283
+            ]
+          },
+          "physical_p99_usec": {
+            "maximum": 1135599,
+            "median": 1116363,
+            "minimum": 1109866,
+            "original_order": [
+              1135599,
+              1109866,
+              1116363
+            ]
+          },
+          "quality": "balanced",
+          "rapier_ticks_per_second": {
+            "maximum": 2.53680345120271,
+            "median": 2.52944704966561,
+            "minimum": 2.52050070250555,
+            "original_order": [
+              2.52050070250555,
+              2.52944704966561,
+              2.53680345120271
+            ]
+          },
+          "repeats": [
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1128504,
+                "p50": 387987,
+                "p95": 399424,
+                "p99": 1128504,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 35707191,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1133460,
+                "p50": 387417,
+                "p95": 403630,
+                "p99": 1133460,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1135599,
+                "p50": 388206,
+                "p95": 398772,
+                "p99": 1135599,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 0,
+              "scene_admission_elapsed_ms": 7553,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1115912,
+                "p50": 386467,
+                "p95": 400037,
+                "p99": 1115912,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 35580899,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1119143,
+                "p50": 387311,
+                "p95": 403914,
+                "p99": 1119143,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1109866,
+                "p50": 386347,
+                "p95": 397219,
+                "p99": 1109866,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 1,
+              "scene_admission_elapsed_ms": 7293,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1116858,
+                "p50": 385786,
+                "p95": 397753,
+                "p99": 1116858,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 35477719,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1100448,
+                "p50": 386373,
+                "p95": 398046,
+                "p99": 1100448,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1116363,
+                "p50": 385828,
+                "p95": 394283,
+                "p99": 1116363,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 2,
+              "scene_admission_elapsed_ms": 7087,
+              "scene_admission_target_met": true
+            }
+          ]
+        },
+        "cinematic_deep_focus": {
+          "callback_p95_usec": {
+            "maximum": 412974,
+            "median": 405873,
+            "minimum": 397681,
+            "original_order": [
+              405873,
+              412974,
+              397681
+            ]
+          },
+          "godot_process_monitor_mean_ms": {
+            "maximum": 388.6534555555556,
+            "median": 374.76037777777776,
+            "minimum": 369.3969,
+            "original_order": [
+              369.3969,
+              388.6534555555556,
+              374.76037777777776
+            ]
+          },
+          "median_comparison_to_classic": {
+            "interpretation": "Observed median targets only. Review repeat spread, p99/max and stalls before adjudicating; no physical GPU or perceptual acceptance.",
+            "native_rate_ratio": 0.8304089806426581,
+            "observed_native_rate_target_met": false,
+            "observed_physical_p95_target_met": false,
+            "observed_rapier_rate_target_met": false,
+            "physical_p95_limit_usec": 402738.0,
+            "rapier_rate_ratio": 0.8304089806426579
+          },
+          "native_ticks_per_second": {
+            "maximum": 2.49513420794235,
+            "median": 2.46919731832964,
+            "minimum": 2.45306933823741,
+            "original_order": [
+              2.46919731832964,
+              2.45306933823741,
+              2.49513420794235
+            ]
+          },
+          "physical_maximum_usec": {
+            "maximum": 1139311,
+            "median": 1129581,
+            "minimum": 1128618,
+            "original_order": [
+              1128618,
+              1129581,
+              1139311
+            ]
+          },
+          "physical_p95_usec": {
+            "maximum": 407306,
+            "median": 405805,
+            "minimum": 397085,
+            "original_order": [
+              405805,
+              407306,
+              397085
+            ]
+          },
+          "physical_p99_usec": {
+            "maximum": 1139311,
+            "median": 1129581,
+            "minimum": 1128618,
+            "original_order": [
+              1128618,
+              1129581,
+              1139311
+            ]
+          },
+          "quality": "balanced",
+          "rapier_ticks_per_second": {
+            "maximum": 2.52316942376193,
+            "median": 2.49694110842323,
+            "minimum": 2.48063191507154,
+            "original_order": [
+              2.49694110842323,
+              2.48063191507154,
+              2.52316942376193
+            ]
+          },
+          "repeats": [
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1132529,
+                "p50": 391748,
+                "p95": 405873,
+                "p99": 1132529,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 36044102,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1125227,
+                "p50": 392920,
+                "p95": 410009,
+                "p99": 1125227,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1128618,
+                "p50": 393044,
+                "p95": 405805,
+                "p99": 1128618,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 0,
+              "scene_admission_elapsed_ms": 6559,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1122504,
+                "p50": 394753,
+                "p95": 412974,
+                "p99": 1122504,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 36281078,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1114462,
+                "p50": 395103,
+                "p95": 410311,
+                "p99": 1114462,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1129581,
+                "p50": 395489,
+                "p95": 407306,
+                "p99": 1129581,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 1,
+              "scene_admission_elapsed_ms": 7973,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1148166,
+                "p50": 388132,
+                "p95": 397681,
+                "p99": 1148166,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 35669424,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1148967,
+                "p50": 387642,
+                "p95": 402431,
+                "p99": 1148967,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1139311,
+                "p50": 387312,
+                "p95": 397085,
+                "p99": 1139311,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 2,
+              "scene_admission_elapsed_ms": 7671,
+              "scene_admission_target_met": true
+            }
+          ]
+        },
+        "classic": {
+          "callback_p95_usec": {
+            "maximum": 343934,
+            "median": 336747,
+            "minimum": 332039,
+            "original_order": [
+              336747,
+              332039,
+              343934
+            ]
+          },
+          "godot_process_monitor_mean_ms": {
+            "maximum": 315.43232222222224,
+            "median": 310.24842222222225,
+            "minimum": 310.08081111111113,
+            "original_order": [
+              310.08081111111113,
+              315.43232222222224,
+              310.24842222222225
+            ]
+          },
+          "median_comparison_to_classic": {
+            "interpretation": "Observed median targets only. Review repeat spread, p99/max and stalls before adjudicating; no physical GPU or perceptual acceptance.",
+            "native_rate_ratio": 1.0,
+            "observed_native_rate_target_met": true,
+            "observed_physical_p95_target_met": true,
+            "observed_rapier_rate_target_met": true,
+            "physical_p95_limit_usec": 402738.0,
+            "rapier_rate_ratio": 1.0
+          },
+          "native_ticks_per_second": {
+            "maximum": 2.99678202852041,
+            "median": 2.97347135675088,
+            "minimum": 2.91859995219399,
+            "original_order": [
+              2.97347135675088,
+              2.99678202852041,
+              2.91859995219399
+            ]
+          },
+          "physical_maximum_usec": {
+            "maximum": 949293,
+            "median": 925127,
+            "minimum": 339449,
+            "original_order": [
+              339449,
+              949293,
+              925127
+            ]
+          },
+          "physical_p95_usec": {
+            "maximum": 342028,
+            "median": 335615,
+            "minimum": 331870,
+            "original_order": [
+              335615,
+              331870,
+              342028
+            ]
+          },
+          "physical_p99_usec": {
+            "maximum": 949293,
+            "median": 925127,
+            "minimum": 339449,
+            "original_order": [
+              339449,
+              949293,
+              925127
+            ]
+          },
+          "quality": "balanced",
+          "rapier_ticks_per_second": {
+            "maximum": 3.03045373670603,
+            "median": 3.00688114727617,
+            "minimum": 2.95139321008381,
+            "original_order": [
+              3.00688114727617,
+              3.03045373670603,
+              2.95139321008381
+            ]
+          },
+          "repeats": [
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 958107,
+                "p50": 325499,
+                "p95": 336747,
+                "p99": 958107,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 0,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 29931346,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 916417,
+                "p50": 325545,
+                "p95": 337990,
+                "p99": 916417,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 339449,
+                "p50": 325827,
+                "p95": 335615,
+                "p99": 339449,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 0
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 0,
+              "scene_admission_elapsed_ms": 6400,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 951346,
+                "p50": 323042,
+                "p95": 332039,
+                "p99": 951346,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 0,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 29698523,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 959076,
+                "p50": 321400,
+                "p95": 340071,
+                "p99": 959076,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 949293,
+                "p50": 323265,
+                "p95": 331870,
+                "p99": 949293,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 1,
+              "scene_admission_elapsed_ms": 7081,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 925245,
+                "p50": 332417,
+                "p95": 343934,
+                "p99": 925245,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 0,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 30494073,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 920312,
+                "p50": 332408,
+                "p95": 349941,
+                "p99": 920312,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 925127,
+                "p50": 333016,
+                "p95": 342028,
+                "p99": 925127,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 2,
+              "scene_admission_elapsed_ms": 6613,
+              "scene_admission_target_met": true
+            }
+          ]
+        },
+        "diorama": {
+          "callback_p95_usec": {
+            "maximum": 451860,
+            "median": 445808,
+            "minimum": 438484,
+            "original_order": [
+              438484,
+              445808,
+              451860
+            ]
+          },
+          "godot_process_monitor_mean_ms": {
+            "maximum": 426.37811111111114,
+            "median": 417.58674444444443,
+            "minimum": 408.9411777777778,
+            "original_order": [
+              426.37811111111114,
+              408.9411777777778,
+              417.58674444444443
+            ]
+          },
+          "median_comparison_to_classic": {
+            "interpretation": "Observed median targets only. Review repeat spread, p99/max and stalls before adjudicating; no physical GPU or perceptual acceptance.",
+            "native_rate_ratio": 0.7566136255410741,
+            "observed_native_rate_target_met": false,
+            "observed_physical_p95_target_met": false,
+            "observed_rapier_rate_target_met": false,
+            "physical_p95_limit_usec": 402738.0,
+            "rapier_rate_ratio": 0.7568637986097484
+          },
+          "native_ticks_per_second": {
+            "maximum": 2.25051282612776,
+            "median": 2.24976894367382,
+            "minimum": 2.19855387031324,
+            "original_order": [
+              2.25051282612776,
+              2.24976894367382,
+              2.19855387031324
+            ]
+          },
+          "physical_maximum_usec": {
+            "maximum": 1258146,
+            "median": 1247809,
+            "minimum": 443763,
+            "original_order": [
+              443763,
+              1247809,
+              1258146
+            ]
+          },
+          "physical_p95_usec": {
+            "maximum": 450511,
+            "median": 438785,
+            "minimum": 438256,
+            "original_order": [
+              438256,
+              438785,
+              450511
+            ]
+          },
+          "physical_p99_usec": {
+            "maximum": 1258146,
+            "median": 1247809,
+            "minimum": 443763,
+            "original_order": [
+              443763,
+              1247809,
+              1258146
+            ]
+          },
+          "quality": "high",
+          "rapier_ticks_per_second": {
+            "maximum": 2.30032554914964,
+            "median": 2.27579948709548,
+            "minimum": 2.22325672278867,
+            "original_order": [
+              2.27579948709548,
+              2.30032554914964,
+              2.22325672278867
+            ]
+          },
+          "repeats": [
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1270014,
+                "p50": 430167,
+                "p95": 438484,
+                "p99": 1270014,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 39546542,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1220055,
+                "p50": 429972,
+                "p95": 444065,
+                "p99": 1220055,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 443763,
+                "p50": 430179,
+                "p95": 438256,
+                "p99": 443763,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 0,
+                  "250000": 89,
+                  "500000": 0
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 0,
+              "scene_admission_elapsed_ms": 6961,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 127.828315734863,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1247095,
+                "p50": 429753,
+                "p95": 445808,
+                "p99": 1247095,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 39559618,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1247200,
+                "p50": 429555,
+                "p95": 447647,
+                "p99": 1247200,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 90,
+                "max": 1247809,
+                "p50": 429970,
+                "p95": 438785,
+                "p99": 1247809,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 91,
+              "repeat": 1,
+              "scene_admission_elapsed_ms": 7405,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1263952,
+                "p50": 439878,
+                "p95": 451860,
+                "p99": 1263952,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 40481155,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1254117,
+                "p50": 442020,
+                "p95": 456764,
+                "p99": 1254117,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1258146,
+                "p50": 441000,
+                "p95": 450511,
+                "p99": 1258146,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 2,
+              "scene_admission_elapsed_ms": 7335,
+              "scene_admission_target_met": true
+            }
+          ]
+        },
+        "gameplay_clarity": {
+          "callback_p95_usec": {
+            "maximum": 450886,
+            "median": 439118,
+            "minimum": 439038,
+            "original_order": [
+              439118,
+              450886,
+              439038
+            ]
+          },
+          "godot_process_monitor_mean_ms": {
+            "maximum": 410.31522222222225,
+            "median": 406.7299888888889,
+            "minimum": 404.7888888888889,
+            "original_order": [
+              406.7299888888889,
+              410.31522222222225,
+              404.7888888888889
+            ]
+          },
+          "median_comparison_to_classic": {
+            "interpretation": "Observed median targets only. Review repeat spread, p99/max and stalls before adjudicating; no physical GPU or perceptual acceptance.",
+            "native_rate_ratio": 0.7592157109036567,
+            "observed_native_rate_target_met": false,
+            "observed_physical_p95_target_met": false,
+            "observed_rapier_rate_target_met": false,
+            "physical_p95_limit_usec": 402738.0,
+            "rapier_rate_ratio": 0.7601074619483991
+          },
+          "native_ticks_per_second": {
+            "maximum": 2.27318649587254,
+            "median": 2.25750616996728,
+            "minimum": 2.23532086762699,
+            "original_order": [
+              2.25750616996728,
+              2.23532086762699,
+              2.27318649587254
+            ]
+          },
+          "physical_maximum_usec": {
+            "maximum": 1268316,
+            "median": 1254142,
+            "minimum": 1240605,
+            "original_order": [
+              1268316,
+              1254142,
+              1240605
+            ]
+          },
+          "physical_p95_usec": {
+            "maximum": 447796,
+            "median": 439741,
+            "minimum": 438262,
+            "original_order": [
+              439741,
+              447796,
+              438262
+            ]
+          },
+          "physical_p99_usec": {
+            "maximum": 1268316,
+            "median": 1254142,
+            "minimum": 1240605,
+            "original_order": [
+              1268316,
+              1254142,
+              1240605
+            ]
+          },
+          "quality": "balanced",
+          "rapier_ticks_per_second": {
+            "maximum": 2.29872791717448,
+            "median": 2.28555279723658,
+            "minimum": 2.28287140783209,
+            "original_order": [
+              2.28287140783209,
+              2.28555279723658,
+              2.29872791717448
+            ]
+          },
+          "repeats": [
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1275123,
+                "p50": 427921,
+                "p95": 439118,
+                "p99": 1275123,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 39424034,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1279310,
+                "p50": 427560,
+                "p95": 443007,
+                "p99": 1279310,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1268316,
+                "p50": 428358,
+                "p95": 439741,
+                "p99": 1268316,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 0,
+              "scene_admission_elapsed_ms": 5762,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 127.828315734863,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1253040,
+                "p50": 433960,
+                "p95": 450886,
+                "p99": 1253040,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 39815313,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1249035,
+                "p50": 432891,
+                "p95": 449016,
+                "p99": 1249035,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 90,
+                "max": 1254142,
+                "p50": 432896,
+                "p95": 447796,
+                "p99": 1254142,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 91,
+              "repeat": 1,
+              "scene_admission_elapsed_ms": 7297,
+              "scene_admission_target_met": true
+            },
+            {
+              "actor_distance_cells": 125.500831604004,
+              "callback_intervals_usec": {
+                "count": 90,
+                "max": 1240604,
+                "p50": 425937,
+                "p95": 439038,
+                "p99": 1240604,
+                "stalls_at_least_usec": {
+                  "100000": 90,
+                  "1000000": 1,
+                  "250000": 90,
+                  "500000": 1
+                }
+              },
+              "decorative_upload_delta": 0,
+              "elapsed_usec": 39152089,
+              "native_capture_delta": 0,
+              "native_publication_intervals_usec": {
+                "count": 89,
+                "max": 1233509,
+                "p50": 424898,
+                "p95": 443101,
+                "p99": 1233509,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "native_tick_delta": 89,
+              "physical_intervals_usec": {
+                "count": 89,
+                "max": 1240605,
+                "p50": 425808,
+                "p95": 438262,
+                "p99": 1240605,
+                "stalls_at_least_usec": {
+                  "100000": 89,
+                  "1000000": 1,
+                  "250000": 89,
+                  "500000": 1
+                }
+              },
+              "rapier_tick_delta": 90,
+              "repeat": 2,
+              "scene_admission_elapsed_ms": 6614,
+              "scene_admission_target_met": true
+            }
+          ]
+        }
+      },
+      "progression_report_sha256": "38caabe80197e78d3ad2e2d370e24b6135ff21a87d9fded22a4d9d6e314db4ce",
+      "rendering_adapters": [
+        "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ],
+      "resource_scope": "Includes initial admission, fifteen per-window scene reloads, warmups and observation. Not per-profile CPU, RSS or GPU time.",
+      "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+      "suite": "full",
+      "whole_progression_process_elapsed_seconds": 821.594,
+      "whole_progression_process_resources": {
+        "available": true,
+        "observation_errors": [],
+        "observed_cpu_seconds": 2833.046875,
+        "observer_wall_seconds": 81.30000000000064,
+        "peak_observed_tree_rss_bytes": 1107976192,
+        "process_identities": [
+          [
+            2792,
+            134401255785396573
+          ],
+          [
+            6572,
+            134401255785467235
+          ]
+        ],
+        "root_pid": 2792,
+        "root_start_id": 134401255785396573,
+        "sample_count": 1164,
+        "sample_interval_seconds": 0.5,
+        "schema": "strata-process-resources-v1",
+        "scope": "observed_process_and_descendants",
+        "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+      }
+    }
+  ],
+  "qualification_reader": "Frozen application tools/ci/qualify_strata3_workbench.py; full verification performed before summary",
+  "registration": {
+    "minimum_median_native_rate_ratio": 0.9,
+    "minimum_median_rapier_rate_ratio": 0.9,
+    "physical_gpu_acceptance": false,
+    "physical_p95_limit": "max(1.20 * Classic p95, Classic p95 + 10000 usec)"
+  },
+  "schema": "strata3-profile-research-summary-v1",
+  "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "summarizer_sha256": "79ade14f9ca7a25263a0ef236b14283337c4440ef263d97707d934e2c1d374ba"
+}

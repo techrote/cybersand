@@ -1,0 +1,21 @@
+{
+  "scope": "Minimal isolated Linux importer reproduction using original934 PNG and import metadata with CRLF; not the historical Windows post-import file and not application qualification",
+  "base_source": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "png_sha256": "d3387239654b30b3e24ca3c42e9c320a11b130031df7ac65caee8d39341212f2",
+  "source_import_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+  "before_sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+  "after_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+  "only_CRLF_to_LF": true,
+  "after_equals_git_blob": true,
+  "exit_code": 0,
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "command": [
+    "/tmp/strata003-runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--editor",
+    "--path",
+    "/tmp/strata003-crlf-import-diagnostic",
+    "--quit"
+  ],
+  "log_sha256": "31a2b2a97d6961ade473cc2525a44d125094c3764d3d0ba0e5df59a88e5ebe4d"
+}

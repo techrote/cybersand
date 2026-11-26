@@ -1,11 +1,11 @@
 {
   "schema": "strata3-unified-experiment-register-v1",
-  "stage": "Frozen application fd0830ab: final Linux graphical/native and disabled-path controls admitted; enabled-optics performance gates failed; Windows controls and pristine portable qualification in progress",
+  "stage": "Frozen fd0830ab final full Linux and Windows graphical/native artifacts independently admitted. Both hosted authoring/predecessor jobs succeeded; cross-host Windows paired-reader portability correction in review. Enabled-optics PERFORMANCE HOLD on both platforms. Pristine portable package qualification in progress; separate A1 v2 not adopted.",
   "draft_hold": true,
   "principal_qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
   "principal_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
-  "accepted_main_refresh": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
-  "accepted_main_refresh_utc": "2026-11-26T00:10:04Z",
+  "accepted_main_refresh": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "accepted_main_refresh_utc": "2026-11-26T01:33:40Z",
   "stacked_pr": 785,
   "base_pr": 776,
   "implementation_inputs_sha256": {
@@ -54,7 +54,7 @@
     {
       "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
       "run": 45721790366,
-      "scope": "Full Linux final-source graphical/native/authoring campaign; independent strict readers pass. Performance disposition is separate and FAIL for every measured enabled profile.",
+      "scope": "Both actual hosted full optical/native workflow jobs succeeded, including inherited authoring and original934 paired processes. Full optical original artifacts independently admitted; Windows controls cross-host reader correction tracked separately. All measured enabled profiles fail native/Rapier rate criteria on both platforms; no blanket performance acceptance.",
       "linux_artifact": 15075800269,
       "linux_artifact_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
       "linux_controls_artifact": 15074613066,
@@ -68,7 +68,14 @@
       "embedded_native_harness_checks_excluding_regression_markers": 18175,
       "optical_disabled_predecessor_comparison": "Six interleaved same-host original934/candidateClassic processes: exact world RGBA, matching native geometry/camera/actor, rate and p95 criteria all met",
       "evidence": "profile-observations-linux.json",
-      "independent_performance_review": "c-performance-review-linux.md"
+      "independent_performance_review": "c-performance-review-linux.md",
+      "windows_artifact": 15078368890,
+      "windows_artifact_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13",
+      "windows_controls_artifact": 15078378766,
+      "windows_controls_artifact_sha256": "5cf98513696d691071ad388fb698e015ad8fba78bf985ea5341c2da969155928",
+      "windows_full_strict_reader": "PASS unchanged frozen reader independently executed by lead and B",
+      "windows_embedded_native_harness_checks_excluding_regression_markers": 18224,
+      "windows_performance_summary": "profile-observations-windows.json"
     },
     {
       "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
@@ -172,14 +179,14 @@
       "treatment": "Matched completed-physics and predecessor comparisons",
       "hypothesis": "Separate appearance/per-frame callbacks from real physical progression and disabled-path regression.",
       "disposition": "performance-hold-enabled-profiles-failed",
-      "qualification_scope": "Linux median enabled native/Rapier ratios to Classic: Architectural0.799483, DeepFocus0.815296, Clarity0.750602, DioramaHigh0.754460. All physical p95 gates also fail. Separate six-process predecessor/disabled Classic comparison passes. Windows full cohort pending."
+      "qualification_scope": "Final Linux and Windows 15-window cohorts admitted. All enabled native/Rapier rate gates fail on both hosts. Linux all p95 gates fail; Windows Architectural p95 passes while Deep/Clarity/Diorama p95 fail. Windows initial9scene admissions46.620\u201352.362s all fail45s; fresh reopens5.871\u20138.934s pass. Original934 paired comparison remains a separate disabled-path cohort."
     },
     {
       "id": "S003-13",
       "treatment": "Literal Classic blend boundary after premultiplied internal filtering",
       "hypothesis": "Preserve exact RGBA8 legacy output despite finite precision at nontrivial haze and parent opacity.",
-      "disposition": "selected-actual-linux-exactness-pass",
-      "qualification_scope": "Prior real Godot failure retained. Isolated EGL reproduced arithmetic cause without being called Godot qualification. Final Godot109/0 includes16384-byte exact Classic wipe under haze0.3/opacity0.5.",
+      "disposition": "selected-actual-two-backend-same-host-classic-exactness-pass",
+      "qualification_scope": "Prior real Godot failure retained. Isolated EGL reproduced arithmetic cause without being called Godot qualification. Final Godot109/0 includes16384-byte exact Classic wipe under haze0.3/opacity0.5. Final Windows109/0 and same-backend16384-byte Classic wipe exact. Linux-to-Windows7/18 technical PNG pairs differ by at most1u8 channel; no cross-backend byte-identity claim.",
       "review": "renderer-campaign-06-review-a.md"
     },
     {
@@ -194,18 +201,51 @@
       "id": "S003-15",
       "treatment": "A1 exact empty-coverage optical shader guard",
       "hypothesis": "Skip downstream tone/mask/actor work only when both centre and low alpha are exactly zero, preserving output while reducing sparse-plane cost.",
-      "disposition": "v1-native-annex-rejected-hash-semantics-resolved-v2-hosted-running",
+      "disposition": "v2-two-host-exact-output-and-native-gates-pass-narrow-clarity-rate-pass-architectural-linux-rate-fail-not-adopted",
       "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
       "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
       "observer_tree": "250a63d1e4fa968c3420b18106df6415da0648bc",
       "run": 45730815481,
       "candidate_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
       "registration": "shader-cost-probe-registration.md",
-      "qualification_scope": "V1 actual original/A1 synthetic renderer109/0 each and18exactRGBApairs passed. Native annex rejected on mutable-code versus frozen-statistics identity mismatch; direct attachment absent, final application-after receipt absent. Separate pinned resource diagnostic shows the same resource mutates while const/property expression stays original. No v1 native optimisation rate admitted. V2 adds mandatory direct pre/post all-three-drawable code/identity witnesses and per-host diagnostic, preserving original pixel/native/performance gates.",
+      "qualification_scope": "V1 actual original/A1 synthetic renderer109/0 each and18exactRGBApairs passed. Native annex rejected on mutable-code versus frozen-statistics identity mismatch; direct attachment absent, final application-after receipt absent. Separate pinned resource diagnostic shows the same resource mutates while const/property expression stays original. No v1 native optimisation rate admitted. V2 adds mandatory direct pre/post all-three-drawable code/identity witnesses and per-host diagnostic, preserving original pixel/native/performance gates. V2 actual Linux and Windows strict readers pass: 18 synthetic pairs (884736 RGBA bytes) and six native world pairs (4515012 pixels) exact on each host; 15 pre/post actual shader attachments stable; one mutated resource restored; application files unchanged. All twelve same-repeat profile comparisons improve native and Rapier rates. Clarity A1 narrowly meets registered rate/p95 flags on both hosts; Architectural A1 misses Linux native/Rapier rate at 0.8968207923988454. Windows initial admission63802ms fails45000ms. Frozen appfd remains unchanged and its original performance HOLD is not lifted.",
       "review": "c-shader-identity-correction.md",
       "v2_observer_source": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
       "v2_observer_tree": "edc750a1e2205b079dca5fd284af9091038aca6d",
-      "v2_run": 45733231981
+      "v2_run": 45733231981,
+      "v2_artifacts": {
+        "linux": {
+          "id": 15077982082,
+          "bytes": 14800104,
+          "sha256": "70eccf59fc91c96d88c0f390cc48995454022a5567405457d7ea7c1c8e51464a",
+          "review": "optical-a1-v2-linux-review-a.md"
+        },
+        "windows": {
+          "id": 15078960632,
+          "bytes": 12530465,
+          "sha256": "ca2a65fc25e40e5e6bdaad898fdc8ba8fc1c7d9314bf100c81b8b4d2bb7f59e4",
+          "review": "optical-a1-v2-windows-review-a.md"
+        }
+      },
+      "v2_numeric_findings": {
+        "linux": {
+          "architectural_rate_ratio_to_classic": 0.8968207923988454,
+          "clarity_rate_ratio_to_classic": 0.904662579818878,
+          "architectural_same_profile_rate_gain": 0.0914588981217626,
+          "clarity_same_profile_rate_gain": 0.1641847801574021,
+          "initial_admission_ms": 12991
+        },
+        "windows": {
+          "architectural_rate_ratio_to_classic": 0.9075285602179282,
+          "clarity_rate_ratio_to_classic": 0.9019529236241769,
+          "architectural_same_profile_rate_gain": 0.132884103377123,
+          "clarity_same_profile_rate_gain": 0.2146432078970923,
+          "initial_admission_ms": 63802
+        },
+        "adjudication": "Numeric observation flags only; no automatic application adoption or performance acceptance."
+      },
+      "adoption_disposition": "Deferred; principal fd application and package unchanged. New source-bound ordinary shader identity, dense principal scene, native controls and rebuilt/cold package gates required.",
+      "adoption_review": "optical-a1-adoption-assessment-a.md"
     }
   ],
   "specialist_registers": [
@@ -235,7 +275,14 @@
     "c-shader-cost-source-review.md",
     "c-shader-cost-v1-rejected-review.md",
     "c-shader-identity-correction.md",
-    "c-owner-performance-and-feedback-review.md"
+    "c-owner-performance-and-feedback-review.md",
+    "optical-a1-v2-linux-review-a.md",
+    "optical-a1-v2-windows-review-a.md",
+    "optical-texel-fetch-source-note-a.md",
+    "b-decision-packet-review.json",
+    "renderer-campaign-06-windows-review-a.md",
+    "progression-campaign-06-windows-review-a.json",
+    "optical-a1-adoption-assessment-a.md"
   ],
   "preserved_negative_results": [
     "Original five extracted Windows45second admission misses:51619,66316,66200,59958,54804ms",
@@ -251,7 +298,9 @@
     "Sustained v1 reader falsely required opaque owner fences to be numeric; original rejected artifacts remain rejected, diagnostic reinterpretation is not a retroactive pass.",
     "Sustained actor reaches ceiling and remains there; continuing native ticks are not continuous travel.",
     "Light shafts and pools remain subtle in the three new overviews; authored green/cyan geometry is not evidence of volumetric scattering.",
-    "A1 observer v1 rejected because source-expression statistics hash and mutable runtime code hash differ; initial detached-shader inference was corrected by a same-object runtime diagnostic. V1 lacks new direct attachment and final post-run custody witnesses; no native A1 rate admitted."
+    "A1 observer v1 rejected because source-expression statistics hash and mutable runtime code hash differ; initial detached-shader inference was corrected by a same-object runtime diagnostic. V1 lacks new direct attachment and final post-run custody witnesses; no native A1 rate admitted.",
+    "A1 v2 exact-output optimization still misses Architectural Linux native/Rapier gate at89.682079% of Classic; Windows first admission63802ms fails45s. Clarity approximately90% margins are narrow and this sparse fixture does not establish dense-scene cost.",
+    "Final frozenfd Windows enabled native/Rapier rate ratios are0.841219 Architectural,0.830409 DeepFocus,0.759216 Clarity,0.756614 DioramaHigh. All rate gates fail; Architectural p95 alone passes. Every initial9scene admission46.620\u201352.362s exceeds45s; original extracted002 failures remain unchanged."
   ],
   "remaining_acceptance": [
     "Resolve or explicitly retain enabled-optics physical progression gate failures; isolated A1 experiment does not change appfd.",
