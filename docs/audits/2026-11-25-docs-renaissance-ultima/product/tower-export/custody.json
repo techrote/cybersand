@@ -1,0 +1,231 @@
+{
+  "schema": "ultima-product-tower-custody-v1",
+  "authority": "historical-non-authoritative",
+  "qualified_source": "f778898565fbc3cc235525c557e61f8345f59797",
+  "qualification_inputs_equal_commit": true,
+  "artifacts": [
+    {
+      "path": "before.json",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-before-02/report.json",
+      "class": "real-os-before-receipt",
+      "bytes": 2633,
+      "sha256": "c83808c60ff1241b06974f45bb654bb698c35824d45d46c144b91b52b3df22ee"
+    },
+    {
+      "path": "before-child.gd",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-before-02/child.gd",
+      "class": "executed-before-fixture",
+      "bytes": 1181,
+      "sha256": "51fece4793ad61e5e9557b29d54cd4b1971d867ec066910c6eb6d9a5fe4f6dd2"
+    },
+    {
+      "path": "before/before.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-before-02/before.log",
+      "class": "real-os-before-log",
+      "bytes": 584,
+      "sha256": "99d496f6469c0aeb5485e58ac817b22b138f443cb87f009a4d2a8425834052ef"
+    },
+    {
+      "path": "before/fault.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-before-02/fault.log",
+      "class": "real-os-before-log",
+      "bytes": 586,
+      "sha256": "f4ec956462bff58edf9fe6d963f862f838c5ecef2d923fc02272fa98d7b783eb"
+    },
+    {
+      "path": "rejected-first-parser.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-before-01/fault.log",
+      "class": "retained-harness-rejection",
+      "bytes": 816,
+      "sha256": "e929b9e54f05ee91aec58afc5bb1f8151a383e2bf56c4ab9b6ab8323a5278b6a"
+    },
+    {
+      "path": "rejected-first-parser.gd.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-before-01/child.gd",
+      "class": "retained-harness-rejection-input",
+      "bytes": 1129,
+      "sha256": "8960596c775c4463b0c76921728f6e3dd451d960267f311f68e1e8ce0732acee"
+    },
+    {
+      "path": "linux-after.json",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/report.json",
+      "class": "real-os-after-receipt",
+      "bytes": 30168,
+      "sha256": "a8ee9de9389d0e5089c89ec0f230028847a6b44066e71bc68611502061ecf526"
+    },
+    {
+      "path": "linux/01-ordinary-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/01-ordinary-7.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1092,
+      "sha256": "4dffcd85be3bfa5886a8da02b536fe2afb224b9fca5c121f2e4af6d71dbc7655"
+    },
+    {
+      "path": "linux/02-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/02-ordinary-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1180,
+      "sha256": "0de734723f9f2f34429b35a8a2ca18a8c1f1ec17f4b7ad7c3302cef960e8a0c7"
+    },
+    {
+      "path": "linux/03-ordinary-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/03-ordinary-7.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1180,
+      "sha256": "e832529cd33d7e0e72adcd21b8d633f8d4dde0c72ad001194cab261da2cd4a0b"
+    },
+    {
+      "path": "linux/04-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/04-ordinary-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1163,
+      "sha256": "50bf29b04b4137456c4cb297255020e01cb38a0eb1dbc0cae683482b802c38ce"
+    },
+    {
+      "path": "linux/05-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/05-ordinary-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1180,
+      "sha256": "3f6b5fb1e4fbb2f8fbff88c6fd0bfde733af08796061bfe7c8f90d94f4ef4f4a"
+    },
+    {
+      "path": "linux/06-ordinary-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/06-ordinary-7.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1180,
+      "sha256": "0c6825b480d0693b9aebb0bbe065619f5db9e0ef316e94b2043db1d253947866"
+    },
+    {
+      "path": "linux/07-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/07-ordinary-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1293,
+      "sha256": "a7f89aafe16ffd381700592a3d18d24dd481a18d98630b4dd10baa0a711b63fb"
+    },
+    {
+      "path": "linux/08-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/08-ordinary-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1180,
+      "sha256": "f9eb7cdc89d0875159cbf6878c8ce75ee4c909985cd07ccd40f7e8aa2c7253df"
+    },
+    {
+      "path": "linux/09-water-blind-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/09-water-blind-7.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1348,
+      "sha256": "5f93372bdd9f849ca727fa87abbf5d691c7df307fd771a25f5638b2a4cc024e7"
+    },
+    {
+      "path": "linux/10-water-blind-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/10-water-blind-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1436,
+      "sha256": "0ab12f43b8e6487818390f7457791b1c510f5f6e69eba0e26b54a9e3032d670d"
+    },
+    {
+      "path": "linux/11-water-blind-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/11-water-blind-7.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1436,
+      "sha256": "e7c447669134b68d572246e9a14008b3e6b150f66fa234b4745496badd8bb466"
+    },
+    {
+      "path": "linux/12-water-blind-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/12-water-blind-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1575,
+      "sha256": "bebcb4f36dabcefe85a72be1e58538715d1c4bee6a7ea01352901e10490aa6b4"
+    },
+    {
+      "path": "linux/13-water-blind-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/13-water-blind-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1436,
+      "sha256": "1b78bdea2eb32bfdfe9160d0fcfced5a68c59a32268a4383fe5615fe5a4de442"
+    },
+    {
+      "path": "linux/14-water-blind-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/14-water-blind-7.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1436,
+      "sha256": "96952545a42884eba4190306a444ed654ebdfbfe9d7cdbbac82a8d56b2b4e484"
+    },
+    {
+      "path": "linux/15-water-blind-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/15-water-blind-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1549,
+      "sha256": "460754d7e19053f8b7eafb4bcf5ea07bd151ca2bafff7e3415e0e4287d6e7849"
+    },
+    {
+      "path": "linux/16-water-blind-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-after-01/16-water-blind-8.log",
+      "class": "headless-public-caller-log",
+      "bytes": 1436,
+      "sha256": "349dd4cdcff8d577f484a23f79a034c4cc9f2691b0ad0a68d3ae7539b549175d"
+    },
+    {
+      "path": "x11-clipboard.json",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-01/report.json",
+      "class": "actual-x11-clipboard-receipt",
+      "bytes": 9710,
+      "sha256": "b9883258f894356fef7a607bcdee204ebca2935c3967157d88bb53fca742f3f3"
+    },
+    {
+      "path": "x11-clipboard-executed.py.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-run.py",
+      "class": "executed-native-launch-wrapper",
+      "bytes": 2771,
+      "sha256": "0004ab9204569442fc2902b424942b628e5c4b55184350d93cf85cbb9fb1f1a9"
+    },
+    {
+      "path": "x11/01-ordinary-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-01/01-ordinary-7.log",
+      "class": "native-public-caller-log",
+      "bytes": 1374,
+      "sha256": "91a2fdf5ebe686e38d2b0a2b304d6c8bb7fdc516b7bdbd68d35201c30967ff64"
+    },
+    {
+      "path": "x11/02-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-01/02-ordinary-8.log",
+      "class": "native-public-caller-log",
+      "bytes": 1447,
+      "sha256": "88ba28f87ee24f92f0fc703f2c21322f846b5169bbb036d505a6625d91e3b306"
+    },
+    {
+      "path": "x11/03-ordinary-7.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-01/03-ordinary-7.log",
+      "class": "native-public-caller-log",
+      "bytes": 1447,
+      "sha256": "5bea4813cf64a0e296277587e7f52a54038c7331331ee1dcdee5136e69897c86"
+    },
+    {
+      "path": "x11/04-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-01/04-ordinary-8.log",
+      "class": "native-public-caller-log",
+      "bytes": 1616,
+      "sha256": "19e29dc0655c29123562559ceffa0aba6d618651058e7b0c2d12b2448f23563a"
+    },
+    {
+      "path": "x11/05-ordinary-8.log.txt",
+      "source": "/workspace/scratch/1c5fccfbe328/b-tower-clipboard-01/05-ordinary-8.log",
+      "class": "native-public-caller-log",
+      "bytes": 1447,
+      "sha256": "d0088142c46f80dd70f2155b7337e0c39290cbee7496bbb67cc5aef183f961e9"
+    },
+    {
+      "path": "independent-linux.json",
+      "source": "/workspace/scratch/1c5fccfbe328/a-tower-independent-01/report.json",
+      "class": "independent-lane-a-public-caller-receipt",
+      "bytes": 30264,
+      "sha256": "b51bc74cd9e85b8fdfc13809ff82b3269d26775ffa4718838633942b8ce575f6"
+    }
+  ],
+  "runtime_payloads": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "raw_log_routes": "Original receipt .log names are preserved as byte-identical logs under before/, linux/ or x11/, with a .txt suffix; the original receipts are unchanged.",
+  "scope": "Disposable fixtures only. The before void method supplied no failure acknowledgement; no false boolean success is claimed. Native X11 tests are automatic public calls, not interactive Workbench acceptance."
+}

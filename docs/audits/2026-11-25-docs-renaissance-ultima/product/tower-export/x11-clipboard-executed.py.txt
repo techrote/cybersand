@@ -1,0 +1,49 @@
+import argparse
+import json
+import pathlib
+import resource
+import signal
+import subprocess
+import sys
+
+base = pathlib.Path('/workspace/scratch/1c5fccfbe328')
+repo = base / 'ultima-b'
+sys.path.insert(0, str(repo / 'tools/ci'))
+from run_tower_observation_qualification import Runner, require, sha
+
+runner = Runner(argparse.Namespace(
+    godot=pathlib.Path('/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64'),
+    project=repo / 'godot', evidence=base / 'b-tower-clipboard-01'))
+runner.command.remove('--headless')
+runner.command += ['--display-driver', 'x11', '--rendering-method', 'gl_compatibility', '--resolution', '320x200']
+source = json.loads((base / 'b-tower-after-01/report.json').read_text())['input_sha256']
+require(source == {p:sha(repo / p) for p in source}, 'Changed Tower qualification inputs')
+report = {'schema':'tower-observation-x11-clipboard-v1','authority':'historical-non-authoritative',
+          'source_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),
+          'input_sha256':source,'engine_sha256':sha(runner.engine),'command':runner.command,
+          'status':'running','completed':False,'cases':runner.rows,
+          'scope':'Actual X11 clipboard through the public controller/button; automatic native windows, not an interactive Workbench walkthrough. Each child restores the pre-test clipboard without recording it.'}
+try:
+    before = runner.run('ordinary',7,button=False)
+    runner.success(before,7)
+    require(before['clipboard_available'] and before['clipboard_outcome_matches'],'Actual clipboard unavailable')
+    after = runner.run('ordinary',8)
+    runner.success(after,8)
+    require(after['clipboard_outcome_matches'],'Successful export did not copy committed bytes')
+    runner.rows.append({'fault':'none','before':before,'replacement':after})
+    before = runner.run('ordinary',7)
+    def limited():
+        resource.setrlimit(resource.RLIMIT_FSIZE,(128,128))
+        resource.setrlimit(resource.RLIMIT_CORE,(0,0))
+        signal.signal(signal.SIGXFSZ,signal.SIG_IGN)
+    refused = runner.run('ordinary',8,preexec=limited)
+    require(refused['clipboard_available'] and refused['clipboard_outcome_matches'],'Refusal changed clipboard')
+    runner.preserve('ordinary',before,refused,'real-RLIMIT128-with-X11-clipboard')
+    require(source == {p:sha(repo / p) for p in source}, 'Qualification inputs changed')
+    report.update(status='passed',completed=True,inputs_unchanged=True)
+    print('Tower X11 clipboard: PASS (2 cases, naturally completed; prior clipboard restored)')
+except Exception as error:
+    report.update(status='failed',error=str(error))
+    raise
+finally:
+    (runner.evidence / 'report.json').write_text(json.dumps(report,indent=2)+'\n')

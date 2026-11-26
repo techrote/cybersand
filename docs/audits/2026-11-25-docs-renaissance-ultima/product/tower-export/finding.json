@@ -1,0 +1,24 @@
+{
+  "finding": "B-ULT-08",
+  "priority": "P1",
+  "affected": "Tower Export observation on disposable/user reports",
+  "status": "fixed-and-independently-verified",
+  "implementer": "Specialist B",
+  "reviewer": "Specialist A",
+  "review": "Source review and independent execution of all6 Linux cases approved; A did not claim graphical/clipboard execution.",
+  "qualified_source": "f778898565fbc3cc235525c557e61f8345f59797",
+  "before": "before.json",
+  "after": "linux-after.json",
+  "independent_after": "independent-linux.json",
+  "actual_clipboard": "x11-clipboard.json",
+  "expected_contract": "A failed export must not replace the prior complete observation or change clipboard; acknowledge a save only after verified closed-file replacement. Existing report format and engineering hidden-mapping scope remain unchanged.",
+  "root_cause": "Unchecked FileAccess.WRITE/store_string and buffered close could truncate an existing report without returning an observable failure.",
+  "correction": "Shared verified sibling-file replacement, bool return, independent visible result label, clipboard mutation only after committed export and readback before copying claim.",
+  "residual_limits": [
+    "No Windows execution performed by B or A in this receipt; the runner provides4 actual Windows normal/target-lock cases for hosted qualification.",
+    "Actual X11 clipboard tests are automatic public calls, not a fresh interactive Tower workflow.",
+    "No fsync/power-loss or hostile filesystem-writer guarantee.",
+    "A successful new export intentionally replaces the fixed observation filename. Multiple observations need separate retained copies.",
+    "Existing blind mapping remains revealed engineering metadata; no formal blind-study readiness or owner programme reopening."
+  ]
+}
