@@ -48,6 +48,16 @@ def inputs():
             if path and not path.startswith("godot/.godot/")}
 
 
+
+def workflow_environment(base, profiles, scenario):
+    """Isolate unrelated fixtures; explicit reopen cases reuse their scenario."""
+    require(scenario and all(c.isascii() and (c.isalnum() or c == "_") for c in scenario),
+            "Invalid workflow profile name")
+    profile = profiles / scenario
+    profile.mkdir(parents=True, exist_ok=True)
+    return base | {key: str(profile) for key in
+                   ("XDG_DATA_HOME", "XDG_CONFIG_HOME", "APPDATA", "LOCALAPPDATA")}
+
 def prepare(archive):
     require(sys.platform in ("linux", "win32"), "Actual Linux or Windows required")
     if sys.platform == "win32":
@@ -99,7 +109,8 @@ def main():
         report["source_inputs_sha256"] = hashlib.sha256((output / "source-inputs.json").read_bytes()).hexdigest()
         engine, report["engine"] = prepare(args.godot_archive.resolve())
         profile = Path(tempfile.mkdtemp(prefix="ultima-profile-", dir=output))
-        env = dict(os.environ, XDG_DATA_HOME=str(profile), APPDATA=str(profile),
+        env = dict(os.environ, XDG_DATA_HOME=str(profile), XDG_CONFIG_HOME=str(profile),
+                   APPDATA=str(profile), LOCALAPPDATA=str(profile),
                    GODOT_SILENCE_ROOT_WARNING="1", CYBERSAND_SOURCE_REVISION=source,
                    CYBERSAND_WORKBENCH_TEST_NAME="ultima-ci-canvas")
         import_case = regression.Case("import", ("--editor", "--quit"),
@@ -180,7 +191,11 @@ def main():
             case = available[name]
             if extra:
                 case = replace(case, name=name + "-reopen")
-            record, failed = regression.run_case(str(engine), case, output, "authored-workflow", env=env | extra)
+            # Several independent fixtures deliberately retain their own audit
+            # files. Only an explicit fresh-process reopen shares those files.
+            case_env = workflow_environment(env, profile / "workflows", name) | extra
+            record, failed = regression.run_case(str(engine), case, output, "authored-workflow", env=case_env)
+            record["userdata_profile"] = case_env["APPDATA"]
             report["cases"].append(record)
             require(not failed, "Workflow failed: " + case.name)
         after = inputs()
