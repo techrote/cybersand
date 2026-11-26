@@ -78,7 +78,32 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  recovery-routing:
+    name: Identify separately registered mergedown campaign
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      recovery: ${{ steps.route.outputs.recovery }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Keep ordinary qualification for any application change
+        id: route
+        shell: bash
+        run: |
+          set -euo pipefail
+          if test -f tools/ci/mergedown_art_qualification.py; then
+            python3 tools/ci/mergedown_art_qualification.py route --request tools/fixtures/mergedown-art-windows-request.json --github-output "$GITHUB_OUTPUT"
+          else
+            echo 'recovery=false' >> "$GITHUB_OUTPUT"
+          fi
+          echo 'Routing is not a passing application qualification. A registered recovery must pass its separate source-bound Windows campaign.' >> "$GITHUB_STEP_SUMMARY"
   qualification-scope:
+    needs: recovery-routing
+    if: needs.recovery-routing.outputs.recovery != 'true'
     name: Verify application qualification source
     runs-on: ubuntu-24.04
     timeout-minutes: 10
