@@ -1,0 +1,748 @@
+{
+  "abyss_readability": {
+    "findings": [
+      "Gameplay Clarity subordinates the decorative bridge and columns; their coherent false-platform shapes remain.",
+      "Cinematic Deep Focus retains architectural texture but lifts representative rear gantry/column pixels while Play basalt stays unchanged; it is not a substitute for clarity.",
+      "Actor body is too small in this overview to establish practical visibility; its label alone is not evidence."
+    ],
+    "native_plane_hashes_before_after_equal": true,
+    "original_report_sha256": "36061667c08a4b1bd2319223431c2f9299d2a176cf0662bbb4146145fa5a677d",
+    "probe_coordinates_screen_xy": {
+      "physical_basalt": [
+        500,
+        700
+      ],
+      "physical_orange_pipe": [
+        1064,
+        365
+      ],
+      "rear_bridge": [
+        630,
+        632
+      ],
+      "rear_column": [
+        670,
+        420
+      ]
+    },
+    "profiles": [
+      {
+        "actor_state": {
+          "linear_velocity": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            512.0,
+            820.0
+          ],
+          "rapier_tick": 0,
+          "rotation": 0.0
+        },
+        "camera": {
+          "content_scale_factor": 1.0,
+          "origin": [
+            0.0,
+            0.0
+          ],
+          "view_size": [
+            1024,
+            1024
+          ],
+          "window_size": [
+            1600,
+            1000
+          ],
+          "world_rect": [
+            424.166656494141,
+            135.0,
+            751.666625976562,
+            751.666625976562
+          ]
+        },
+        "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+        "filename": "abyss-foundry/install/profile-classic.png",
+        "geometry_group_sha256": "28d8e3de1ab81afd431a031007ae9112a6fdf1283fda4215798b0eec592b323f",
+        "profile": "classic",
+        "rgb_probes": {
+          "physical_basalt": [
+            48,
+            49,
+            53
+          ],
+          "physical_orange_pipe": [
+            216,
+            124,
+            72
+          ],
+          "rear_bridge": [
+            97,
+            45,
+            23
+          ],
+          "rear_column": [
+            74,
+            85,
+            94
+          ]
+        },
+        "sha256": "e9ab56cb12a74d32c42e21405c128d773546b6567f92befb3cf3152418177dda"
+      },
+      {
+        "actor_state": {
+          "linear_velocity": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            512.0,
+            820.0
+          ],
+          "rapier_tick": 0,
+          "rotation": 0.0
+        },
+        "camera": {
+          "content_scale_factor": 1.0,
+          "origin": [
+            0.0,
+            0.0
+          ],
+          "view_size": [
+            1024,
+            1024
+          ],
+          "window_size": [
+            1600,
+            1000
+          ],
+          "world_rect": [
+            424.166656494141,
+            135.0,
+            751.666625976562,
+            751.666625976562
+          ]
+        },
+        "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+        "filename": "abyss-foundry/install/profile-gameplay_clarity.png",
+        "geometry_group_sha256": "28d8e3de1ab81afd431a031007ae9112a6fdf1283fda4215798b0eec592b323f",
+        "profile": "gameplay_clarity",
+        "rgb_probes": {
+          "physical_basalt": [
+            48,
+            49,
+            53
+          ],
+          "physical_orange_pipe": [
+            216,
+            124,
+            72
+          ],
+          "rear_bridge": [
+            52,
+            41,
+            37
+          ],
+          "rear_column": [
+            50,
+            54,
+            57
+          ]
+        },
+        "sha256": "407306de90a2efe6363c6d59eddbba98dcc64afeb39c673b69ef29d5f0b287cd"
+      },
+      {
+        "actor_state": {
+          "linear_velocity": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            512.0,
+            820.0
+          ],
+          "rapier_tick": 0,
+          "rotation": 0.0
+        },
+        "camera": {
+          "content_scale_factor": 1.0,
+          "origin": [
+            0.0,
+            0.0
+          ],
+          "view_size": [
+            1024,
+            1024
+          ],
+          "window_size": [
+            1600,
+            1000
+          ],
+          "world_rect": [
+            424.166656494141,
+            135.0,
+            751.666625976562,
+            751.666625976562
+          ]
+        },
+        "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+        "filename": "abyss-foundry/install/profile-cinematic_deep_focus.png",
+        "geometry_group_sha256": "28d8e3de1ab81afd431a031007ae9112a6fdf1283fda4215798b0eec592b323f",
+        "profile": "cinematic_deep_focus",
+        "rgb_probes": {
+          "physical_basalt": [
+            48,
+            49,
+            53
+          ],
+          "physical_orange_pipe": [
+            216,
+            124,
+            72
+          ],
+          "rear_bridge": [
+            98,
+            56,
+            38
+          ],
+          "rear_column": [
+            84,
+            91,
+            95
+          ]
+        },
+        "sha256": "4032e85690a0d0643087a10c6b112d5c6dfa71b7a6f9a147cee983c57299a690"
+      }
+    ],
+    "regions_screen_xywh": {
+      "physical_left_lower_shelf": [
+        490,
+        684,
+        245,
+        31
+      ],
+      "physical_right_lower_shelf": [
+        894,
+        690,
+        224,
+        33
+      ],
+      "rear_bridge": [
+        622,
+        630,
+        343,
+        37
+      ],
+      "rear_left_column_cap": [
+        668,
+        413,
+        38,
+        12
+      ]
+    },
+    "scope": "Identified-profile expert review of three matched paused overviews; not a blind human trial or motion/actor visibility acceptance"
+  },
+  "actual_classic_wipe": {
+    "changed_channels": 0,
+    "compared_bytes": 16384,
+    "maximum_u8_delta": 0,
+    "source_capture_probes": {
+      "(142, 14)": [
+        83,
+        84,
+        86,
+        128
+      ],
+      "(143, 14)": [
+        11,
+        13,
+        15,
+        128
+      ],
+      "(168, 16)": [
+        92,
+        94,
+        95,
+        128
+      ],
+      "(172, 44)": [
+        1,
+        2,
+        25,
+        64
+      ]
+    },
+    "wipe_capture_probes": {
+      "(142, 14)": [
+        83,
+        84,
+        86,
+        128
+      ],
+      "(143, 14)": [
+        11,
+        13,
+        15,
+        128
+      ],
+      "(168, 16)": [
+        92,
+        94,
+        95,
+        128
+      ],
+      "(172, 44)": [
+        1,
+        2,
+        25,
+        64
+      ]
+    }
+  },
+  "alpha_samples": {
+    "classic_half_green": [
+      0,
+      64,
+      0,
+      128
+    ],
+    "detail_alpha_pixels_compared": 12288,
+    "detail_entire_output_alpha_exact": true,
+    "diffusion_white_halo": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "processed_half_green": [
+      0,
+      128,
+      0,
+      128
+    ]
+  },
+  "aperture_original_markers": {
+    "STRATA003_APERTURE_PROGRESSION": [
+      {
+        "checker_contrast": 0.800000004470348,
+        "radius_cells": 0.0,
+        "thin_white_hue_preserved": true
+      },
+      {
+        "checker_contrast": 0.0,
+        "radius_cells": 1.0,
+        "thin_white_hue_preserved": true
+      },
+      {
+        "checker_contrast": 0.0,
+        "radius_cells": 2.0,
+        "thin_white_hue_preserved": true
+      },
+      {
+        "checker_contrast": 0.0,
+        "radius_cells": 3.0,
+        "thin_white_hue_preserved": true
+      },
+      {
+        "checker_contrast": 0.0,
+        "radius_cells": 6.0,
+        "thin_white_hue_preserved": true
+      }
+    ],
+    "STRATA003_CLASSIC_WIPE_PRECISION": {
+      "changed_channels": 0,
+      "compared_bytes": 16384,
+      "maximum_u8_delta": 0
+    }
+  },
+  "application": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "artifact_id": 15075800269,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15075800269",
+  "artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "artifact_zip_size_bytes": 180041492,
+  "campaign_sha256": "34c26fd2953c5d605bf1aec37a55da186880d1a5548d9fdbbca8451fd44c22ff",
+  "disposition": "FINAL fd0830ab LINUX RENDERER FIXTURE PASSED; matched real-scene limitations and measured performance failures retained; owner physical/artistic acceptance open",
+  "independent_frequency_probes": [
+    {
+      "checker_contrast_u8": 204,
+      "edge_wrap_rgba8": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximum_white_rgb_alpha_delta_u8": 0,
+      "near_white_rgba8": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "radius_cells": 0,
+      "white_centre_rgba8": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "checker_contrast_u8": 0,
+      "edge_wrap_rgba8": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximum_white_rgb_alpha_delta_u8": 0,
+      "near_white_rgba8": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "radius_cells": 1,
+      "white_centre_rgba8": [
+        128,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "checker_contrast_u8": 0,
+      "edge_wrap_rgba8": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximum_white_rgb_alpha_delta_u8": 0,
+      "near_white_rgba8": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "radius_cells": 2,
+      "white_centre_rgba8": [
+        96,
+        96,
+        96,
+        96
+      ]
+    },
+    {
+      "checker_contrast_u8": 0,
+      "edge_wrap_rgba8": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximum_white_rgb_alpha_delta_u8": 0,
+      "near_white_rgba8": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "radius_cells": 3,
+      "white_centre_rgba8": [
+        80,
+        80,
+        80,
+        80
+      ]
+    },
+    {
+      "checker_contrast_u8": 0,
+      "edge_wrap_rgba8": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximum_white_rgb_alpha_delta_u8": 0,
+      "near_white_rgba8": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "radius_cells": 6,
+      "white_centre_rgba8": [
+        58,
+        58,
+        58,
+        58
+      ]
+    }
+  ],
+  "limitations": [
+    "Hosted llvmpipe is not physical NVIDIA acceptance.",
+    "The binomial cross retains 50 percent axial Nyquist stripe response; zero checker contrast is not isotropic blur proof.",
+    "No exhaustive graphical Cartesian sweep of intermediate effect strength, plane opacity and alpha; source review covers these relationships.",
+    "This renderer correctness result does not erase final Linux profile progression failures or qualify the isolated A1 candidate.",
+    "Masked architectural shadows and conservative actor bounds remain presentation approximations."
+  ],
+  "log_digest_matches_receipt": true,
+  "original_pngs": {
+    "actor-reveal.png": {
+      "sha256": "9cd813a26ff531bd609c25224b0317ad3c78358da94e8c36d7ac946629e7adb9",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "classic-alpha.png": {
+      "sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "detail-preserving.png": {
+      "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-aperture-0.png": {
+      "sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-aperture-1.png": {
+      "sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-aperture-2.png": {
+      "sha256": "f9e99fd295504513f1275489e3031d97b73ed047ebac3fd00b71016864893169",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-aperture-3.png": {
+      "sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-aperture-6.png": {
+      "sha256": "37f64920bd583fb9eb8c19cbb03a0c685c2191cd3886218423d22221aea654ea",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-detail.png": {
+      "sha256": "5793ad31e4cc4ca68cd76ed8fe996afb6d8125556ef2b251d4353f14a6bd3cdc",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-diffusion.png": {
+      "sha256": "eab920e760cd4902d7b34a55c1e7bb8b47a6bd96d889bec4f8839d74ce42b764",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-haze-opacity-classic.png": {
+      "sha256": "cea45e6d7b1ff00a134b7fd304bbe2d76f6535e38ae753e6bd8275af6c00dec1",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-haze-opacity-wipe.png": {
+      "sha256": "e2c0afb92f2e84a119b75623e6c8bb19f7e7e27dcc74d35eeed87cf4b29308d9",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-low-aperture.png": {
+      "sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "frequency-reference.png": {
+      "sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "highlight-diffusion.png": {
+      "sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "pixel-aperture.png": {
+      "sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "processed-alpha.png": {
+      "sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+      "size": [
+        192,
+        64
+      ]
+    },
+    "wipe-alpha.png": {
+      "sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+      "size": [
+        192,
+        64
+      ]
+    }
+  },
+  "platform": "linux",
+  "process_json_sha256": "1c2f2a50bb391e55c5e5c1f119af12d56dc025afeffcf8dd558a5d9609e898a0",
+  "process_log_sha256": "435303bf339f370501b0b8184231acbe0b281dcce897a22c8caff0df1aa8c0f1",
+  "renderer_checks": 109,
+  "renderer_failures": 0,
+  "rendering_backend": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+  "retained_performance_negative": {
+    "original_report_sha256": "999e061358c09ae67e7011e4d26c6887550439f38c8bd15727c2c2d8618e2b9e",
+    "profiles": {
+      "architectural": {
+        "median_rapier_ratio_to_classic": 0.7994833548035007,
+        "native_rate_repeats": [
+          6.97817884272628,
+          7.08527309269623,
+          7.0432912334449
+        ],
+        "physical_p95_repeats_usec": [
+          156245,
+          156087,
+          161111
+        ],
+        "rapier_rate_repeats": [
+          7.05658534657713,
+          7.16488290272652,
+          7.12242933719147
+        ]
+      },
+      "cinematic_deep_focus": {
+        "median_rapier_ratio_to_classic": 0.8152957647543425,
+        "native_rate_repeats": [
+          7.23224208280771,
+          7.18259545750066,
+          6.91215267500697
+        ],
+        "physical_p95_repeats_usec": [
+          153975,
+          156745,
+          167016
+        ],
+        "rapier_rate_repeats": [
+          7.31350322980555,
+          7.26329877724786,
+          6.9898173118048
+        ]
+      },
+      "classic": {
+        "median_rapier_ratio_to_classic": 1.0,
+        "native_rate_repeats": [
+          8.65153652260724,
+          9.10920472855747,
+          8.8098034701123
+        ],
+        "physical_p95_repeats_usec": [
+          129152,
+          119827,
+          137829
+        ],
+        "rapier_rate_repeats": [
+          8.74874479814216,
+          9.21155534348508,
+          8.90879002595625
+        ]
+      },
+      "diorama": {
+        "median_rapier_ratio_to_classic": 0.754460254584488,
+        "native_rate_repeats": [
+          6.6756570515453,
+          6.58230274687629,
+          6.64664656890022
+        ],
+        "physical_p95_repeats_usec": [
+          166191,
+          170566,
+          163903
+        ],
+        "rapier_rate_repeats": [
+          6.75066443414693,
+          6.65626120470636,
+          6.7213279910227
+        ]
+      },
+      "gameplay_clarity": {
+        "median_rapier_ratio_to_classic": 0.7506017515062734,
+        "native_rate_repeats": [
+          6.519855156656,
+          6.7113182989749,
+          6.61265391509234
+        ],
+        "physical_p95_repeats_usec": [
+          165640,
+          163072,
+          169934
+        ],
+        "rapier_rate_repeats": [
+          6.59311195616899,
+          6.7867263697499,
+          6.68695339728438
+        ]
+      }
+    },
+    "scope": "Original frozen fd0830ab full-campaign actual completed-step comparison on hosted llvmpipe; no physical GPU claim"
+  },
+  "reviewer": "Specialist A \u2014 optical rendering",
+  "root_blend_archive_review": {
+    "archive_file_hashes_match": {
+      "frequency-aperture-6.png": true,
+      "frequency-haze-opacity-wipe.png": true,
+      "frequency-reference.png": true,
+      "isolated_mesa_blend.py": true,
+      "isolated_mesa_result.json": true
+    },
+    "archived_pngs_match_originals": {
+      "frequency-aperture-6.png": true,
+      "frequency-haze-opacity-wipe.png": true,
+      "frequency-reference.png": true
+    },
+    "campaign_process_log_hashes_match": {
+      "campaign": true,
+      "log": true,
+      "process": true
+    },
+    "scope": "Isolated local EGL arithmetic evidence remains separate from actual Godot. The final real Godot baseline now confirms the four formerly predicted Classic probe values."
+  },
+  "run": 45721790366,
+  "runtime": {
+    "path": "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "schema": "strata3-independent-renderer-review-a-v1",
+  "tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499"
+}

@@ -1,0 +1,2451 @@
+{
+  "schema": "strata3-selected-original-captures-v1",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "run": 45721790366,
+  "artifact": 15075800269,
+  "artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "scope": "Unchanged selected original Godot application PNG bytes. No cropping, resizing, retouching, overlays, synthetic imagery or post-production. Complete99-profile/74-supplemental/40-motion corpus remains in original artifact; this is a small reviewable selection. Camera window_size is recorded logical/requested state; actual_image_extent is decoded from the original PNG.",
+  "captures": [
+    {
+      "file": "optics-readability-challenge--classic.png",
+      "original_artifact_path": "optics-readability-challenge/install/profile-classic.png",
+      "bytes": 548311,
+      "sha256": "851bd050a0a96fb01db5a0154b1dbbbdde3a3e194a04c8f782d35b0ff11046a5",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059",
+      "scene": "optics-readability-challenge",
+      "profile": "classic",
+      "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+      "native_plane_hashes": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          768
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          298.888885498047,
+          135.0,
+          1002.22216796875,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          410.0,
+          600.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "configuration": {
+        "atmosphere": 0.35,
+        "chromatic": 0.5,
+        "clarity": 0.0,
+        "defocus": 0.35,
+        "defocus_method": "pixel",
+        "detail": 0.25,
+        "dof_width": 0.35,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": false,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.35,
+        "planes": {
+          "background": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 1.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.65,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.4,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "classic",
+        "scattering_color": [
+          0.18,
+          0.22,
+          0.28
+        ],
+        "shadow": 0.25,
+        "shadow_offset": [
+          6.0,
+          8.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 5.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": false,
+        "active_planes": [],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 4,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 0,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "classic",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 0,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "optics-readability-challenge--gameplay_clarity.png",
+      "original_artifact_path": "optics-readability-challenge/install/profile-gameplay_clarity.png",
+      "bytes": 450025,
+      "sha256": "a54e19802fe042ac5a13bdee1b411b900cdc89216ea086aa1da88bcf233de57f",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059",
+      "scene": "optics-readability-challenge",
+      "profile": "gameplay_clarity",
+      "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+      "native_plane_hashes": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          768
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          298.888885498047,
+          135.0,
+          1002.22216796875,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          410.0,
+          600.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "configuration": {
+        "atmosphere": 0.2,
+        "chromatic": 0.5,
+        "clarity": 0.48,
+        "defocus": 0.0,
+        "defocus_method": "pixel",
+        "detail": 0.35,
+        "dof_width": 0.55,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": false,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.08,
+        "planes": {
+          "background": {
+            "atmosphere": 0.7,
+            "brightness": 0.72,
+            "contrast": 0.62,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.18,
+            "opacity": 1.0,
+            "parallax": 0.8,
+            "participates": true,
+            "saturation": 0.55,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 0.86,
+            "contrast": 0.82,
+            "defocus": 1.0,
+            "depth": 0.2,
+            "glow": 0.35,
+            "opacity": 1.0,
+            "parallax": 0.7,
+            "participates": true,
+            "saturation": 0.72,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.78,
+            "contrast": 0.7,
+            "defocus": 1.0,
+            "depth": 0.36,
+            "glow": 0.35,
+            "opacity": 1.0,
+            "parallax": 0.7,
+            "participates": true,
+            "saturation": 0.7,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "gameplay_clarity",
+        "scattering_color": [
+          0.11,
+          0.12,
+          0.13
+        ],
+        "shadow": 0.22,
+        "shadow_offset": [
+          2.0,
+          3.0
+        ],
+        "shadow_softness": 0.75,
+        "strength": 1.0,
+        "tonal": 0.9,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 1,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 6,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "gameplay_clarity",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 138,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "industrial-underworks--classic.png",
+      "original_artifact_path": "industrial-underworks/install/profile-classic.png",
+      "bytes": 578471,
+      "sha256": "01f8d519018d90ffac0a12fdca0ba801c10396fc4feca42587c6740fffafd588",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "2877c0563ac6c6156059f9c85b38915a8ddf6312f57944a7357d4f157807ed9d",
+      "scene": "industrial-underworks",
+      "profile": "classic",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "native_plane_hashes": {
+        "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+        "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+        "play": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+        "scripted": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "configuration": {
+        "atmosphere": 0.35,
+        "chromatic": 0.5,
+        "clarity": 0.0,
+        "defocus": 0.35,
+        "defocus_method": "pixel",
+        "detail": 0.25,
+        "dof_width": 0.35,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": false,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.35,
+        "planes": {
+          "background": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 1.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.65,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.4,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "classic",
+        "scattering_color": [
+          0.18,
+          0.22,
+          0.28
+        ],
+        "shadow": 0.25,
+        "shadow_offset": [
+          6.0,
+          8.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 5.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": false,
+        "active_planes": [],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 4,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 0,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "classic",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 0,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "industrial-underworks--cinematic_deep_focus.png",
+      "original_artifact_path": "industrial-underworks/install/profile-cinematic_deep_focus.png",
+      "bytes": 557945,
+      "sha256": "2c0af3aa3860f303fef1e89a734362d540357bfe8158890f21558d387d7d6558",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "2877c0563ac6c6156059f9c85b38915a8ddf6312f57944a7357d4f157807ed9d",
+      "scene": "industrial-underworks",
+      "profile": "cinematic_deep_focus",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "native_plane_hashes": {
+        "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+        "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+        "play": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+        "scripted": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "configuration": {
+        "atmosphere": 0.38,
+        "chromatic": 0.38,
+        "clarity": 0.0,
+        "defocus": 0.0,
+        "defocus_method": "pixel",
+        "detail": 0.08,
+        "dof_width": 1.5,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": false,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.45,
+        "planes": {
+          "background": {
+            "atmosphere": 0.7,
+            "brightness": 0.94,
+            "contrast": 0.82,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.7,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.82,
+            "tint": [
+              0.88,
+              0.97,
+              1.1
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 1.0,
+            "contrast": 0.95,
+            "defocus": 1.0,
+            "depth": 0.2,
+            "glow": 0.8,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.9,
+            "tint": [
+              0.96,
+              1.02,
+              1.06
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.98,
+            "contrast": 0.94,
+            "defocus": 1.0,
+            "depth": 0.36,
+            "glow": 0.7,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.92,
+            "tint": [
+              1.05,
+              1.0,
+              0.94
+            ]
+          }
+        },
+        "profile": "cinematic_deep_focus",
+        "scattering_color": [
+          0.19,
+          0.25,
+          0.3
+        ],
+        "shadow": 0.18,
+        "shadow_offset": [
+          5.0,
+          7.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 7,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "cinematic_deep_focus",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 186,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "industrial-underworks--gameplay_clarity.png",
+      "original_artifact_path": "industrial-underworks/install/profile-gameplay_clarity.png",
+      "bytes": 488744,
+      "sha256": "43dd1f5b480ff98eed89a0f3e7c0e14c6134b95613912aa80ca1e32f2ebefe70",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "2877c0563ac6c6156059f9c85b38915a8ddf6312f57944a7357d4f157807ed9d",
+      "scene": "industrial-underworks",
+      "profile": "gameplay_clarity",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "native_plane_hashes": {
+        "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+        "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+        "play": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+        "scripted": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "configuration": {
+        "atmosphere": 0.2,
+        "chromatic": 0.5,
+        "clarity": 0.48,
+        "defocus": 0.0,
+        "defocus_method": "pixel",
+        "detail": 0.35,
+        "dof_width": 0.55,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": false,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.08,
+        "planes": {
+          "background": {
+            "atmosphere": 0.7,
+            "brightness": 0.72,
+            "contrast": 0.62,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.18,
+            "opacity": 1.0,
+            "parallax": 0.8,
+            "participates": true,
+            "saturation": 0.55,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 0.86,
+            "contrast": 0.82,
+            "defocus": 1.0,
+            "depth": 0.2,
+            "glow": 0.35,
+            "opacity": 1.0,
+            "parallax": 0.7,
+            "participates": true,
+            "saturation": 0.72,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.78,
+            "contrast": 0.7,
+            "defocus": 1.0,
+            "depth": 0.36,
+            "glow": 0.35,
+            "opacity": 1.0,
+            "parallax": 0.7,
+            "participates": true,
+            "saturation": 0.7,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "gameplay_clarity",
+        "scattering_color": [
+          0.11,
+          0.12,
+          0.13
+        ],
+        "shadow": 0.22,
+        "shadow_offset": [
+          2.0,
+          3.0
+        ],
+        "shadow_softness": 0.75,
+        "strength": 1.0,
+        "tonal": 0.9,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 1,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 6,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "gameplay_clarity",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 138,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "industrial-underworks--diorama.png",
+      "original_artifact_path": "industrial-underworks/install/profile-diorama.png",
+      "bytes": 537618,
+      "sha256": "b09c1800bc689cd441b71121180a71206c1067eaaf16b27e730a0f7692d6441b",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "2877c0563ac6c6156059f9c85b38915a8ddf6312f57944a7357d4f157807ed9d",
+      "scene": "industrial-underworks",
+      "profile": "diorama",
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "native_plane_hashes": {
+        "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+        "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+        "play": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+        "scripted": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "configuration": {
+        "atmosphere": 0.18,
+        "chromatic": 0.45,
+        "clarity": 0.0,
+        "defocus": 2.2,
+        "defocus_method": "pixel",
+        "detail": 0.28,
+        "dof_width": 0.12,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.25,
+        "planes": {
+          "background": {
+            "atmosphere": 0.7,
+            "brightness": 0.94,
+            "contrast": 0.68,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.5,
+            "opacity": 1.0,
+            "parallax": 0.9,
+            "participates": true,
+            "saturation": 0.67,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 1.0,
+            "contrast": 0.95,
+            "defocus": 0.55,
+            "depth": 0.2,
+            "glow": 0.8,
+            "opacity": 1.0,
+            "parallax": 0.8,
+            "participates": true,
+            "saturation": 0.9,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.98,
+            "contrast": 0.83,
+            "defocus": 0.85,
+            "depth": 0.36,
+            "glow": 0.7,
+            "opacity": 1.0,
+            "parallax": 0.8,
+            "participates": true,
+            "saturation": 0.92,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "diorama",
+        "scattering_color": [
+          0.19,
+          0.21,
+          0.24
+        ],
+        "shadow": 0.28,
+        "shadow_offset": [
+          7.0,
+          10.0
+        ],
+        "shadow_softness": 2.0,
+        "strength": 1.0,
+        "tonal": 0.62,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 9,
+        "defocus_cells": {
+          "background": 3.0,
+          "effects": 0.5082,
+          "scripted": 1.683
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "diorama",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 249,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "xeno-resonance-grotto--classic.png",
+      "original_artifact_path": "xeno-resonance-grotto/install/profile-classic.png",
+      "bytes": 723041,
+      "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "8edb238108af0d70ec7fa26ddb9f570322e5c9db5a0832b2386ad47ab9a91425",
+      "scene": "xeno-resonance-grotto",
+      "profile": "classic",
+      "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+      "native_plane_hashes": {
+        "background": "68541d5b8ff17e1ff86329bb4adf52f5f8a3796fad4bf7b76cd1bc1f2e708814",
+        "effects": "db0d172138be98161d3b50aab7ba78355f2b388f0e5ce518fc600d0c677db350",
+        "play": "d9a49509d4d774e6fb5ca879e936636428bd04c12a5ab5c4df5c3db328559df3",
+        "scripted": "175928321210d9d69cc7217e6f58b5cfd9ae9faf6c98243f9b43ab347199be5a"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          826.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "configuration": {
+        "atmosphere": 0.35,
+        "chromatic": 0.5,
+        "clarity": 0.0,
+        "defocus": 0.35,
+        "defocus_method": "pixel",
+        "detail": 0.25,
+        "dof_width": 0.35,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": false,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.35,
+        "planes": {
+          "background": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 1.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.65,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.4,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "classic",
+        "scattering_color": [
+          0.18,
+          0.22,
+          0.28
+        ],
+        "shadow": 0.25,
+        "shadow_offset": [
+          6.0,
+          8.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 5.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": false,
+        "active_planes": [],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 4,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 0,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "classic",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 0,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "xeno-resonance-grotto--alien_bioluminescence.png",
+      "original_artifact_path": "xeno-resonance-grotto/install/profile-alien_bioluminescence.png",
+      "bytes": 662073,
+      "sha256": "9a590b90b74f41fc03378b3ef6f5151f7be201fbc01bdd1fc814fb33407f7ead",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "8edb238108af0d70ec7fa26ddb9f570322e5c9db5a0832b2386ad47ab9a91425",
+      "scene": "xeno-resonance-grotto",
+      "profile": "alien_bioluminescence",
+      "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+      "native_plane_hashes": {
+        "background": "68541d5b8ff17e1ff86329bb4adf52f5f8a3796fad4bf7b76cd1bc1f2e708814",
+        "effects": "db0d172138be98161d3b50aab7ba78355f2b388f0e5ce518fc600d0c677db350",
+        "play": "d9a49509d4d774e6fb5ca879e936636428bd04c12a5ab5c4df5c3db328559df3",
+        "scripted": "175928321210d9d69cc7217e6f58b5cfd9ae9faf6c98243f9b43ab347199be5a"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          826.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+      "configuration": {
+        "atmosphere": 0.48,
+        "chromatic": 0.65,
+        "clarity": 0.0,
+        "defocus": 0.45,
+        "defocus_method": "diffusion",
+        "detail": 0.18,
+        "dof_width": 0.55,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.95,
+        "planes": {
+          "background": {
+            "atmosphere": 0.9,
+            "brightness": 0.94,
+            "contrast": 0.82,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.55,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.65,
+            "tint": [
+              1.04,
+              0.86,
+              1.13
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 1.0,
+            "contrast": 0.95,
+            "defocus": 1.0,
+            "depth": 0.2,
+            "glow": 1.35,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.9,
+            "tint": [
+              0.86,
+              1.12,
+              1.04
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.88,
+            "contrast": 0.9,
+            "defocus": 1.0,
+            "depth": 0.36,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.78,
+            "tint": [
+              0.91,
+              1.06,
+              0.96
+            ]
+          }
+        },
+        "profile": "alien_bioluminescence",
+        "scattering_color": [
+          0.22,
+          0.16,
+          0.3
+        ],
+        "shadow": 0.17,
+        "shadow_offset": [
+          5.0,
+          7.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.62,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 13,
+        "defocus_cells": {
+          "background": 0.91125,
+          "effects": 0.0,
+          "scripted": 0.11475
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "alien_bioluminescence",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 434,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "lunar-terminator-observatory--classic.png",
+      "original_artifact_path": "lunar-terminator-observatory/install/profile-classic.png",
+      "bytes": 786240,
+      "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "37e35fcbff3eeafc349b9f6f52b50642e8730ee8faadd873a4efa6169d4e16c8",
+      "scene": "lunar-terminator-observatory",
+      "profile": "classic",
+      "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+      "native_plane_hashes": {
+        "background": "cf6c4813906de0ece7e63c273db80e4be5dcfa2e593a3ee4ef43a7222100922d",
+        "effects": "982d1c4536a04c58198920d74d9cc4b6d8afd8e49d510d052ca7d37a2654d8d1",
+        "play": "8cbcba687af16958b6b054264b862e9d951abc0863fb1b91d71a29cd3f8cfa03",
+        "scripted": "fb30ccfcc60618bdc1e02879f49bffdb1ad69d010d9f072fbf570217e02129f5"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1536,
+          768
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          48.3333320617676,
+          135.0,
+          1503.33325195312,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          768.0,
+          588.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "configuration": {
+        "atmosphere": 0.35,
+        "chromatic": 0.5,
+        "clarity": 0.0,
+        "defocus": 0.35,
+        "defocus_method": "pixel",
+        "detail": 0.25,
+        "dof_width": 0.35,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": false,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.35,
+        "planes": {
+          "background": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 1.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.65,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.4,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "classic",
+        "scattering_color": [
+          0.18,
+          0.22,
+          0.28
+        ],
+        "shadow": 0.25,
+        "shadow_offset": [
+          6.0,
+          8.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 5.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": false,
+        "active_planes": [],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 4,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 0,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "classic",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 0,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "lunar-terminator-observatory--diorama.png",
+      "original_artifact_path": "lunar-terminator-observatory/install/profile-diorama.png",
+      "bytes": 662679,
+      "sha256": "189e62faba4a07b11437c1abfa43d24e5fa0978dd65f2032d8eea1c2fcbf6495",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "37e35fcbff3eeafc349b9f6f52b50642e8730ee8faadd873a4efa6169d4e16c8",
+      "scene": "lunar-terminator-observatory",
+      "profile": "diorama",
+      "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+      "native_plane_hashes": {
+        "background": "cf6c4813906de0ece7e63c273db80e4be5dcfa2e593a3ee4ef43a7222100922d",
+        "effects": "982d1c4536a04c58198920d74d9cc4b6d8afd8e49d510d052ca7d37a2654d8d1",
+        "play": "8cbcba687af16958b6b054264b862e9d951abc0863fb1b91d71a29cd3f8cfa03",
+        "scripted": "fb30ccfcc60618bdc1e02879f49bffdb1ad69d010d9f072fbf570217e02129f5"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1536,
+          768
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          48.3333320617676,
+          135.0,
+          1503.33325195312,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          768.0,
+          588.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "configuration": {
+        "atmosphere": 0.18,
+        "chromatic": 0.45,
+        "clarity": 0.0,
+        "defocus": 2.2,
+        "defocus_method": "pixel",
+        "detail": 0.28,
+        "dof_width": 0.12,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.25,
+        "planes": {
+          "background": {
+            "atmosphere": 0.7,
+            "brightness": 0.94,
+            "contrast": 0.68,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.5,
+            "opacity": 1.0,
+            "parallax": 0.9,
+            "participates": true,
+            "saturation": 0.67,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 1.0,
+            "contrast": 0.95,
+            "defocus": 0.55,
+            "depth": 0.2,
+            "glow": 0.8,
+            "opacity": 1.0,
+            "parallax": 0.8,
+            "participates": true,
+            "saturation": 0.9,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.98,
+            "contrast": 0.83,
+            "defocus": 0.85,
+            "depth": 0.36,
+            "glow": 0.7,
+            "opacity": 1.0,
+            "parallax": 0.8,
+            "participates": true,
+            "saturation": 0.92,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "diorama",
+        "scattering_color": [
+          0.19,
+          0.21,
+          0.24
+        ],
+        "shadow": 0.28,
+        "shadow_offset": [
+          7.0,
+          10.0
+        ],
+        "shadow_softness": 2.0,
+        "strength": 1.0,
+        "tonal": 0.62,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 9,
+        "defocus_cells": {
+          "background": 3.0,
+          "effects": 0.5082,
+          "scripted": 1.683
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "diorama",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 249,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "sunward-freight-megastructure--classic.png",
+      "original_artifact_path": "sunward-freight-megastructure/install/profile-classic.png",
+      "bytes": 830566,
+      "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "7487570a928db5e69ef9286d0376f9b90c8c34b34e6325fd14ba7f08d9163694",
+      "scene": "sunward-freight-megastructure",
+      "profile": "classic",
+      "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+      "native_plane_hashes": {
+        "background": "67a4c372bd003b67d16801316ae7491feea2c7fd9407ba6dd66159661bbc367f",
+        "effects": "3f46112b4503b496a5ff1cac7d0eda06cf96060298636e52a2035138f12c6362",
+        "play": "29919ea7eb800b4f75b99e6c000adb6cf60e24d3ceb8cc91b3f3946eff97ffbb",
+        "scripted": "f0acb8dcf30b4b5a77c269edaa39d466c9f04708ef472faa808231315527905e"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1536,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          236.25,
+          135.0,
+          1127.5,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          768.0,
+          814.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "configuration": {
+        "atmosphere": 0.35,
+        "chromatic": 0.5,
+        "clarity": 0.0,
+        "defocus": 0.35,
+        "defocus_method": "pixel",
+        "detail": 0.25,
+        "dof_width": 0.35,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": true,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": false,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.35,
+        "planes": {
+          "background": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 1.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "effects": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.65,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.4,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "profile": "classic",
+        "scattering_color": [
+          0.18,
+          0.22,
+          0.28
+        ],
+        "shadow": 0.25,
+        "shadow_offset": [
+          6.0,
+          8.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 5.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": false,
+        "active_planes": [],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 4,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 0,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "classic",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 0,
+        "wipe_uses_classic_parallax": false
+      }
+    },
+    {
+      "file": "sunward-freight-megastructure--cinematic_deep_focus.png",
+      "original_artifact_path": "sunward-freight-megastructure/install/profile-cinematic_deep_focus.png",
+      "bytes": 768473,
+      "sha256": "8cc4b450030141c758bb093f22e0e7c54345b9ec9d43ab2a257dbf306054465d",
+      "actual_image_extent": [
+        1600,
+        900
+      ],
+      "source_report_sha256": "7487570a928db5e69ef9286d0376f9b90c8c34b34e6325fd14ba7f08d9163694",
+      "scene": "sunward-freight-megastructure",
+      "profile": "cinematic_deep_focus",
+      "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+      "native_plane_hashes": {
+        "background": "67a4c372bd003b67d16801316ae7491feea2c7fd9407ba6dd66159661bbc367f",
+        "effects": "3f46112b4503b496a5ff1cac7d0eda06cf96060298636e52a2035138f12c6362",
+        "play": "29919ea7eb800b4f75b99e6c000adb6cf60e24d3ceb8cc91b3f3946eff97ffbb",
+        "scripted": "f0acb8dcf30b4b5a77c269edaa39d466c9f04708ef472faa808231315527905e"
+      },
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1536,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          236.25,
+          135.0,
+          1127.5,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          768.0,
+          814.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "configuration": {
+        "atmosphere": 0.38,
+        "chromatic": 0.38,
+        "clarity": 0.0,
+        "defocus": 0.0,
+        "defocus_method": "pixel",
+        "detail": 0.08,
+        "dof_width": 1.5,
+        "effects": {
+          "atmosphere": true,
+          "chromatic": true,
+          "defocus": false,
+          "detail": true,
+          "illumination": true,
+          "shadows": true,
+          "tonal": true
+        },
+        "enabled": true,
+        "focal_plane": "play",
+        "focus_distance": 0.0,
+        "focus_mode": "play",
+        "illumination": 0.45,
+        "planes": {
+          "background": {
+            "atmosphere": 0.7,
+            "brightness": 0.94,
+            "contrast": 0.82,
+            "defocus": 1.0,
+            "depth": 0.95,
+            "glow": 0.7,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.82,
+            "tint": [
+              0.88,
+              0.97,
+              1.1
+            ]
+          },
+          "effects": {
+            "atmosphere": 0.25,
+            "brightness": 1.0,
+            "contrast": 0.95,
+            "defocus": 1.0,
+            "depth": 0.2,
+            "glow": 0.8,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.9,
+            "tint": [
+              0.96,
+              1.02,
+              1.06
+            ]
+          },
+          "play": {
+            "atmosphere": 1.0,
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "defocus": 1.0,
+            "depth": 0.0,
+            "glow": 1.0,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": false,
+            "saturation": 1.0,
+            "tint": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "scripted": {
+            "atmosphere": 0.45,
+            "brightness": 0.98,
+            "contrast": 0.94,
+            "defocus": 1.0,
+            "depth": 0.36,
+            "glow": 0.7,
+            "opacity": 1.0,
+            "parallax": 1.0,
+            "participates": true,
+            "saturation": 0.92,
+            "tint": [
+              1.05,
+              1.0,
+              0.94
+            ]
+          }
+        },
+        "profile": "cinematic_deep_focus",
+        "scattering_color": [
+          0.19,
+          0.25,
+          0.3
+        ],
+        "shadow": 0.18,
+        "shadow_offset": [
+          5.0,
+          7.0
+        ],
+        "shadow_softness": 1.0,
+        "strength": 1.0,
+        "tonal": 0.5,
+        "transition_speed": 4.0,
+        "version": 1
+      },
+      "optics_statistics": {
+        "active": true,
+        "active_planes": [
+          "background",
+          "effects",
+          "scripted"
+        ],
+        "actor_reveal_rectangles": 0,
+        "actor_reveal_source": "Published visual bounds only; up to eight actors plus the sampled player.",
+        "additional_textures": 0,
+        "additional_viewports": 0,
+        "additional_worlds": 0,
+        "alpha_contract": "Frozen SubViewport premultiplied RGBA; bounded premultiplied filtering/interpolation; one final straight-alpha conversion and blend. Classic wipe uses the literal legacy straight-alpha expression; full Classic retains its original material.",
+        "aperture_kernel": "Dense positive binomial cross; continuous weights; Low <=5, Balanced <=13, High <=25 surface reads.",
+        "aperture_max_radius_cells": 3.0,
+        "configuration_updates": 7,
+        "defocus_cells": {
+          "background": 0.0,
+          "effects": 0.0,
+          "scripted": 0.0
+        },
+        "focus_distance": 0.0,
+        "focus_updates": 0,
+        "inspection": {
+          "bypass": false,
+          "clarity": false,
+          "focus_override": "",
+          "wipe": 1.0
+        },
+        "material_count": 3,
+        "native_captures": 0,
+        "native_writes": 0,
+        "play_processed": false,
+        "profile": "cinematic_deep_focus",
+        "quality": "balanced",
+        "shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+        "target_focus": 0.0,
+        "texture_uploads": 0,
+        "transitioning": false,
+        "uniform_writes": 186,
+        "wipe_uses_classic_parallax": false
+      }
+    }
+  ]
+}

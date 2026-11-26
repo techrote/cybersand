@@ -1,0 +1,2353 @@
+{
+  "schema": "strata003-independent-motion-review-v1",
+  "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "platform": "linux",
+  "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "source_run_id": 45721790366,
+  "source_artifact_id": 15075800269,
+  "source_artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "case_report_sha256": "aa498cb1cccd31bb44c91af6a843578fcf518b572d065759f48055a51f07db3e",
+  "checks": 2043,
+  "failures": [],
+  "motion_registration": {
+    "actor_count": 3,
+    "actor_variant": [
+      {
+        "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+        "id": 1,
+        "model": "midge",
+        "options": {
+          "boost_multiplier": 2.0,
+          "budget": 20.0,
+          "inertia_multiplier": 1.0,
+          "mass_multiplier": 1.0,
+          "thrust_multiplier": 1.0,
+          "torque_multiplier": 1.0
+        },
+        "spawn": [
+          410.0,
+          600.0
+        ]
+      },
+      {
+        "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+        "id": 2,
+        "model": "midge",
+        "options": {
+          "boost_multiplier": 2.0,
+          "budget": 20.0,
+          "inertia_multiplier": 1.0,
+          "mass_multiplier": 1.0,
+          "thrust_multiplier": 1.0,
+          "torque_multiplier": 1.0
+        },
+        "spawn": [
+          372.0,
+          600.0
+        ]
+      },
+      {
+        "hash": "c226d73ae56a426820d2ef842a4856bf79ac23efabe64e66569dff8de62a7a96",
+        "id": 3,
+        "model": "midge",
+        "options": {
+          "boost_multiplier": 2.0,
+          "budget": 20.0,
+          "inertia_multiplier": 1.0,
+          "mass_multiplier": 1.0,
+          "thrust_multiplier": 1.0,
+          "torque_multiplier": 1.0
+        },
+        "spawn": [
+          448.0,
+          612.0
+        ]
+      }
+    ],
+    "camera": "Ordinary close240x135 view; pan and existing zoom operations to480x270 and back.",
+    "frame_spacing": "At least six additional actual completed Rapier steps per frame; live framebuffer readbacks perturb time.",
+    "frames_per_sequence": 10,
+    "native_geometry": "Original scene material recipes unchanged; Play Sand/Water and physical actors evolve normally while running.",
+    "presentation_variant": {
+      "layer_depths": {
+        "background": 0.7,
+        "effects": 0.4,
+        "scripted": 0.15
+      },
+      "parallax_strength": 0.65
+    },
+    "profiles": [
+      "classic",
+      "gameplay_clarity",
+      "cinematic_deep_focus",
+      "diorama"
+    ],
+    "scope": "Instrumented presentation sequence, separate from all timing windows. No presented FPS or physical GPU acceptance."
+  },
+  "scope": "Independent sequential inspection of all 40 original actual application frames, not real-time playback and not a frame-rate/performance claim. Three ordinary native Midge actors, source-pinned motion observer, camera pan and240/480-cell zoom. Readbacks perturb elapsed time.",
+  "observations": [
+    "At 240-cell width the mint rectangular bodies of all three actors are directly visible in early frames under all four profiles, unlike the overview where only annotations resolved their position. At 480-cell width they remain recognizable but smaller and their labels still assist tracking.",
+    "Gameplay Clarity reduces the rear grid prominence and keeps all three body silhouettes conspicuous during overlap. The bounded local background dimming is visible when a rear beam passes near an actor, without an obvious permanent physical outline in the inspected frames.",
+    "Classic and Cinematic Deep Focus retain strong rear material texture. Actor bodies remain visible, but the bright repetitive grid competes for attention and does little to identify which beams are physical.",
+    "Diorama High makes rear depth readily apparent at close zoom. Major frame/grid silhouettes survive while fine material texture and beam edges soften noticeably. This is an optional stylistic tradeoff, not the preferred high-detail gameplay treatment.",
+    "The pilot ascends from around(410.06,599.36) in frame0 to(434.32,476.99) in frame9 through ordinary controls. All four sequences report actual native/Rapier 9..90 ticks, with the same published pilot positions in this particular capture. No claim of identical whole rendered state is made: atmosphere/fluid presentation time and optical parallax differ.",
+    "Camera zoom changes at frame4 andframe8 are conspicuous deliberate framing changes. The two nonpiloted actors leave the final close camera view because of framing; this is not an optical culling or transparency result.",
+    "Play material edges visible at basin/ground/stub positions remain crisp. Water andSand evolve visibly. Those dynamic/translucent materials are not included in opaque RGB preservation claims.",
+    "Rear parallax shifts as the camera moves and differs between profiles; it must be treated as a presentation effect. Every recorded Play inverse-picking witness is exactly 0.0 error, and source owner/native-state witnesses remain valid.",
+    "No obvious alpha fringe, stale frame, missingbody or destructive clippedcolour was observed in these 40 frames. Sparse frame inspection cannot rule out between-frame flicker, establish temporalcomfort, or measure responsiveness."
+  ],
+  "sequences": [
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "actor_count": 3,
+      "all_ten_original_frames_visually_inspected": true,
+      "frames": [
+        {
+          "index": 0,
+          "filename": "motion-classic-00.png",
+          "sha256": "db8d554343f7c36e25fe319eaf9ce62e5525488d0f8c5ea1e212337cd780d24e",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              272.009765625,
+              532.325134277344
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              1.36303734779358,
+              -11.3372087478638
+            ],
+            "position": [
+              410.058349609375,
+              599.361877441406
+            ],
+            "rapier_tick": 9,
+            "rotation": 0.156157910823822
+          },
+          "native_tick": 9,
+          "rapier_tick": 9,
+          "captured_usec": 38405778,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.137945532798767,
+              -0.129981279373169
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 1,
+          "filename": "motion-classic-01.png",
+          "sha256": "1738c1d350e90e1480c003cda3d5fc6d4dfb9161bd2a359893515bc36d84f426",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              277.043853759766,
+              529.912170410156
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              6.55141496658325,
+              -31.4324989318848
+            ],
+            "position": [
+              410.672485351562,
+              595.93798828125
+            ],
+            "rapier_tick": 18,
+            "rotation": 0.232441291213036
+          },
+          "native_tick": 18,
+          "rapier_tick": 18,
+          "captured_usec": 39274448,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.0821158811450005,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 2,
+          "filename": "motion-classic-02.png",
+          "sha256": "2568597a40dde6c8246c71a8c903176091e25c512cb0b1c65b0934e1759c2ef9",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              282.904510498047,
+              524.518676757812
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              13.1823425292969,
+              -50.500846862793
+            ],
+            "position": [
+              412.190307617188,
+              589.585327148438
+            ],
+            "rapier_tick": 27,
+            "rotation": 0.290966868400574
+          },
+          "native_tick": 27,
+          "rapier_tick": 27,
+          "captured_usec": 40118512,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0799413025379181,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 3,
+          "filename": "motion-classic-03.png",
+          "sha256": "fdb1c640522439f416f67203a8baabce0daded7b387af37182acaa953b87e2da",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              289.794921875,
+              516.297729492188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              20.4893112182617,
+              -68.6993255615234
+            ],
+            "position": [
+              414.780029296875,
+              580.450927734375
+            ],
+            "rapier_tick": 36,
+            "rotation": 0.279163867235184
+          },
+          "native_tick": 36,
+          "rapier_tick": 36,
+          "captured_usec": 40965899,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.314510822296143,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 4,
+          "filename": "motion-classic-04.png",
+          "sha256": "758df922150495f8e25818e5efbafc0d5e138295322527eb3e051a8c75e79780",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              177.735763549805,
+              437.856323242188
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              25.6120185852051,
+              -86.7929763793945
+            ],
+            "position": [
+              418.331176757812,
+              568.605895996094
+            ],
+            "rapier_tick": 45,
+            "rotation": 0.13166318833828
+          },
+          "native_tick": 45,
+          "rapier_tick": 45,
+          "captured_usec": 41885196,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0792390406131744,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 5,
+          "filename": "motion-classic-05.png",
+          "sha256": "6a0763640bc579b6e201c0b8dcf256eeb04e71e14f40817846e82f3a87be4829",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              186.300979614258,
+              424.196105957031
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              26.5478992462158,
+              -104.880172729492
+            ],
+            "position": [
+              422.298217773438,
+              554.039794921875
+            ],
+            "rapier_tick": 54,
+            "rotation": -0.00599805871024728
+          },
+          "native_tick": 54,
+          "rapier_tick": 54,
+          "captured_usec": 42802440,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0298286844044924,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 6,
+          "filename": "motion-classic-06.png",
+          "sha256": "cce360c1552be6663a0fd37fa626399c5824db39514b5da9a96c52929c3278fb",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              194.891479492188,
+              407.843078613281
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              24.0814342498779,
+              -121.10652923584
+            ],
+            "position": [
+              426.117065429688,
+              536.85009765625
+            ],
+            "rapier_tick": 63,
+            "rotation": -0.0905513539910316
+          },
+          "native_tick": 63,
+          "rapier_tick": 63,
+          "captured_usec": 43752424,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.126145645976067,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 7,
+          "filename": "motion-classic-07.png",
+          "sha256": "235db3810d21e3749e8a5124e6e4672228bb4282476a75b662b831562e6a88da",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              203.018966674805,
+              389.288696289062
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              19.5661525726318,
+              -130.615631103516
+            ],
+            "position": [
+              429.355224609375,
+              517.787048339844
+            ],
+            "rapier_tick": 72,
+            "rotation": -0.0775033757090569
+          },
+          "native_tick": 72,
+          "rapier_tick": 72,
+          "captured_usec": 44660731,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.144250392913818,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 8,
+          "filename": "motion-classic-08.png",
+          "sha256": "6be84a441cc62f85139f122fbcbee2b10fc1d31b3481b9e9e523b6d0211b9c93",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              330.492889404297,
+              436.963745117188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              16.2308292388916,
+              -135.928863525391
+            ],
+            "position": [
+              431.984130859375,
+              497.678375244141
+            ],
+            "rapier_tick": 81,
+            "rotation": 0.00458698719739914
+          },
+          "native_tick": 81,
+          "rapier_tick": 81,
+          "captured_usec": 45538350,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.095893494784832,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 9,
+          "filename": "motion-classic-09.png",
+          "sha256": "f9668d1a718ad09a01db492c6c80500df238e389ecac4e987d4ea6dfa1f7f166",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              337.549682617188,
+              416.430725097656
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              15.4362764358521,
+              -138.792633056641
+            ],
+            "position": [
+              434.320068359375,
+              476.990936279297
+            ],
+            "rapier_tick": 90,
+            "rotation": 0.103567831218243
+          },
+          "native_tick": 90,
+          "rapier_tick": 90,
+          "captured_usec": 46381157,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.00464114639908075,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        }
+      ],
+      "native_capture_delta": 0,
+      "decorative_upload_delta": 0,
+      "static_decorative_hashes_unchanged": true,
+      "native_pose_injected": false,
+      "extra_worlds": 0
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "actor_count": 3,
+      "all_ten_original_frames_visually_inspected": true,
+      "frames": [
+        {
+          "index": 0,
+          "filename": "motion-gameplay_clarity-00.png",
+          "sha256": "5a9ecd5c893271283901994a1893b88408ad9f8a3a66545e414f3bf3112104b2",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              272.009765625,
+              532.325134277344
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              1.36303734779358,
+              -11.3372087478638
+            ],
+            "position": [
+              410.058349609375,
+              599.361877441406
+            ],
+            "rapier_tick": 9,
+            "rotation": 0.156157910823822
+          },
+          "native_tick": 9,
+          "rapier_tick": 9,
+          "captured_usec": 55161510,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.137945532798767,
+              -0.129981279373169
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 1,
+          "filename": "motion-gameplay_clarity-01.png",
+          "sha256": "7829de69e836a5e395d86b6d28d1214c151cb55f871bb5149ef464a834c11237",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              277.043853759766,
+              529.912170410156
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              6.55141496658325,
+              -31.4324989318848
+            ],
+            "position": [
+              410.672485351562,
+              595.93798828125
+            ],
+            "rapier_tick": 18,
+            "rotation": 0.232441291213036
+          },
+          "native_tick": 18,
+          "rapier_tick": 18,
+          "captured_usec": 56509867,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.0821158811450005,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 2,
+          "filename": "motion-gameplay_clarity-02.png",
+          "sha256": "3048f555979b4b7aca12d0da68f4e374ea677d2057c15802be504804f9776492",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              282.904510498047,
+              524.518676757812
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              13.1823425292969,
+              -50.500846862793
+            ],
+            "position": [
+              412.190307617188,
+              589.585327148438
+            ],
+            "rapier_tick": 27,
+            "rotation": 0.290966868400574
+          },
+          "native_tick": 27,
+          "rapier_tick": 27,
+          "captured_usec": 57764681,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0799413025379181,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 3,
+          "filename": "motion-gameplay_clarity-03.png",
+          "sha256": "b3ed6ecb870f35694e0d78c84eb84c7e296fb88b253603ff3d78eca84515c822",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              289.794921875,
+              516.297729492188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              20.4893112182617,
+              -68.6993255615234
+            ],
+            "position": [
+              414.780029296875,
+              580.450927734375
+            ],
+            "rapier_tick": 36,
+            "rotation": 0.279163867235184
+          },
+          "native_tick": 36,
+          "rapier_tick": 36,
+          "captured_usec": 59065037,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.314510822296143,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 4,
+          "filename": "motion-gameplay_clarity-04.png",
+          "sha256": "a5d84b8b14ad82c554282b125b9b50dfacb1b83c8ba0250a125145faa0cb72ed",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              177.735763549805,
+              437.856323242188
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              25.6120185852051,
+              -86.7929763793945
+            ],
+            "position": [
+              418.331176757812,
+              568.605895996094
+            ],
+            "rapier_tick": 45,
+            "rotation": 0.13166318833828
+          },
+          "native_tick": 45,
+          "rapier_tick": 45,
+          "captured_usec": 60401231,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0792390406131744,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 5,
+          "filename": "motion-gameplay_clarity-05.png",
+          "sha256": "fb4095275052d39310e0fcb6f4b1f283552aa122bb1a237434c4e07ae730507b",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              186.300979614258,
+              424.196105957031
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              26.5478992462158,
+              -104.880172729492
+            ],
+            "position": [
+              422.298217773438,
+              554.039794921875
+            ],
+            "rapier_tick": 54,
+            "rotation": -0.00599805871024728
+          },
+          "native_tick": 54,
+          "rapier_tick": 54,
+          "captured_usec": 61800369,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0298286844044924,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 6,
+          "filename": "motion-gameplay_clarity-06.png",
+          "sha256": "23a976497792779180c55aab73ce7871a4b38fb4213583f56eaf083796d16298",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              194.891479492188,
+              407.843078613281
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              24.0814342498779,
+              -121.10652923584
+            ],
+            "position": [
+              426.117065429688,
+              536.85009765625
+            ],
+            "rapier_tick": 63,
+            "rotation": -0.0905513539910316
+          },
+          "native_tick": 63,
+          "rapier_tick": 63,
+          "captured_usec": 63139461,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.126145645976067,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 7,
+          "filename": "motion-gameplay_clarity-07.png",
+          "sha256": "11f5c5d430f44102f691d39d905df5449e2e735001c278eebd0f42717f8e56a1",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              203.018966674805,
+              389.288696289062
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              19.5661525726318,
+              -130.615631103516
+            ],
+            "position": [
+              429.355224609375,
+              517.787048339844
+            ],
+            "rapier_tick": 72,
+            "rotation": -0.0775033757090569
+          },
+          "native_tick": 72,
+          "rapier_tick": 72,
+          "captured_usec": 64530311,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.144250392913818,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 8,
+          "filename": "motion-gameplay_clarity-08.png",
+          "sha256": "fca7fb5d8f00e5547debcb2df1ef5ce23875cc0d515afce6453459ff999250c3",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              330.492889404297,
+              436.963745117188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              16.2308292388916,
+              -135.928863525391
+            ],
+            "position": [
+              431.984130859375,
+              497.678375244141
+            ],
+            "rapier_tick": 81,
+            "rotation": 0.00458698719739914
+          },
+          "native_tick": 81,
+          "rapier_tick": 81,
+          "captured_usec": 65890090,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.095893494784832,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        },
+        {
+          "index": 9,
+          "filename": "motion-gameplay_clarity-09.png",
+          "sha256": "680a0a75345b96c827757e950856fc5179b7855571c8e8ef1daa96387b209801",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              337.549682617188,
+              416.430725097656
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              15.4362764358521,
+              -138.792633056641
+            ],
+            "position": [
+              434.320068359375,
+              476.990936279297
+            ],
+            "rapier_tick": 90,
+            "rotation": 0.103567831218243
+          },
+          "native_tick": 90,
+          "rapier_tick": 90,
+          "captured_usec": 67185727,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.00464114639908075,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 3
+        }
+      ],
+      "native_capture_delta": 0,
+      "decorative_upload_delta": 0,
+      "static_decorative_hashes_unchanged": true,
+      "native_pose_injected": false,
+      "extra_worlds": 0
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "actor_count": 3,
+      "all_ten_original_frames_visually_inspected": true,
+      "frames": [
+        {
+          "index": 0,
+          "filename": "motion-cinematic_deep_focus-00.png",
+          "sha256": "53d256392f981d1ad07f7850f21dbff7e59ce3420213fcf010324390e6ab5fc7",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              272.009765625,
+              532.325134277344
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              1.36303734779358,
+              -11.3372087478638
+            ],
+            "position": [
+              410.058349609375,
+              599.361877441406
+            ],
+            "rapier_tick": 9,
+            "rotation": 0.156157910823822
+          },
+          "native_tick": 9,
+          "rapier_tick": 9,
+          "captured_usec": 75864543,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.137945532798767,
+              -0.129981279373169
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 1,
+          "filename": "motion-cinematic_deep_focus-01.png",
+          "sha256": "09f34dbb8f8fa83d783d0cb2c46f65f41b731ae318769bed1b6b9ac5b19812fc",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              277.043853759766,
+              529.912170410156
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              6.55141496658325,
+              -31.4324989318848
+            ],
+            "position": [
+              410.672485351562,
+              595.93798828125
+            ],
+            "rapier_tick": 18,
+            "rotation": 0.232441291213036
+          },
+          "native_tick": 18,
+          "rapier_tick": 18,
+          "captured_usec": 77069558,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.0821158811450005,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 2,
+          "filename": "motion-cinematic_deep_focus-02.png",
+          "sha256": "2ccd0edda97497855c3b94a9ab290e5c965202eff475c0880d65be3ad6ea547c",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              282.904510498047,
+              524.518676757812
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              13.1823425292969,
+              -50.500846862793
+            ],
+            "position": [
+              412.190307617188,
+              589.585327148438
+            ],
+            "rapier_tick": 27,
+            "rotation": 0.290966868400574
+          },
+          "native_tick": 27,
+          "rapier_tick": 27,
+          "captured_usec": 78217816,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0799413025379181,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 3,
+          "filename": "motion-cinematic_deep_focus-03.png",
+          "sha256": "d6ca7dbe7619f1ab7a11f7842617089079722acd54b4c5d91606250b890ab64f",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              289.794921875,
+              516.297729492188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              20.4893112182617,
+              -68.6993255615234
+            ],
+            "position": [
+              414.780029296875,
+              580.450927734375
+            ],
+            "rapier_tick": 36,
+            "rotation": 0.279163867235184
+          },
+          "native_tick": 36,
+          "rapier_tick": 36,
+          "captured_usec": 79418686,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.314510822296143,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 4,
+          "filename": "motion-cinematic_deep_focus-04.png",
+          "sha256": "40950a7a4bdec4ed83ae0cd790ac0730a12e8ba80dbc1ab24316120348254614",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              177.735763549805,
+              437.856323242188
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              25.6120185852051,
+              -86.7929763793945
+            ],
+            "position": [
+              418.331176757812,
+              568.605895996094
+            ],
+            "rapier_tick": 45,
+            "rotation": 0.13166318833828
+          },
+          "native_tick": 45,
+          "rapier_tick": 45,
+          "captured_usec": 80598184,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0792390406131744,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 5,
+          "filename": "motion-cinematic_deep_focus-05.png",
+          "sha256": "12408bd0f24beed70d90967edb7db62c0401b948982c57662ffa45801c1b1078",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              186.300979614258,
+              424.196105957031
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              26.5478992462158,
+              -104.880172729492
+            ],
+            "position": [
+              422.298217773438,
+              554.039794921875
+            ],
+            "rapier_tick": 54,
+            "rotation": -0.00599805871024728
+          },
+          "native_tick": 54,
+          "rapier_tick": 54,
+          "captured_usec": 81868929,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0298286844044924,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 6,
+          "filename": "motion-cinematic_deep_focus-06.png",
+          "sha256": "3ad681d894a36ed1ca0783a2f9ef9904804f5db97d8fb940908f636affe78395",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              194.891479492188,
+              407.843078613281
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              24.0814342498779,
+              -121.10652923584
+            ],
+            "position": [
+              426.117065429688,
+              536.85009765625
+            ],
+            "rapier_tick": 63,
+            "rotation": -0.0905513539910316
+          },
+          "native_tick": 63,
+          "rapier_tick": 63,
+          "captured_usec": 83128491,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.126145645976067,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 7,
+          "filename": "motion-cinematic_deep_focus-07.png",
+          "sha256": "f4052ed239ac29d8a5cbabe21dfc0e894a80f70877651094fe4baf533f1cefaa",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              203.018966674805,
+              389.288696289062
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              19.5661525726318,
+              -130.615631103516
+            ],
+            "position": [
+              429.355224609375,
+              517.787048339844
+            ],
+            "rapier_tick": 72,
+            "rotation": -0.0775033757090569
+          },
+          "native_tick": 72,
+          "rapier_tick": 72,
+          "captured_usec": 84377506,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.144250392913818,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 8,
+          "filename": "motion-cinematic_deep_focus-08.png",
+          "sha256": "e9c983f9feab287b0bf3c58145e3dbccf132ffd184c0a006bae50c53d0ca8d78",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              330.492889404297,
+              436.963745117188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              16.2308292388916,
+              -135.928863525391
+            ],
+            "position": [
+              431.984130859375,
+              497.678375244141
+            ],
+            "rapier_tick": 81,
+            "rotation": 0.00458698719739914
+          },
+          "native_tick": 81,
+          "rapier_tick": 81,
+          "captured_usec": 85631214,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.095893494784832,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 9,
+          "filename": "motion-cinematic_deep_focus-09.png",
+          "sha256": "1f54835160ae7f80c67a1bab73ad45852a392fdb57b97f1f0799977fa410bd8e",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              337.549682617188,
+              416.430725097656
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              15.4362764358521,
+              -138.792633056641
+            ],
+            "position": [
+              434.320068359375,
+              476.990936279297
+            ],
+            "rapier_tick": 90,
+            "rotation": 0.103567831218243
+          },
+          "native_tick": 90,
+          "rapier_tick": 90,
+          "captured_usec": 86760305,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.00464114639908075,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        }
+      ],
+      "native_capture_delta": 0,
+      "decorative_upload_delta": 0,
+      "static_decorative_hashes_unchanged": true,
+      "native_pose_injected": false,
+      "extra_worlds": 0
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "actor_count": 3,
+      "all_ten_original_frames_visually_inspected": true,
+      "frames": [
+        {
+          "index": 0,
+          "filename": "motion-diorama-00.png",
+          "sha256": "fd774f245916c9b7b766f758e40ed3573b5a36c7aa9c50f353b0ac2d3f5bba37",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              272.009765625,
+              532.325134277344
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              1.36303734779358,
+              -11.3372087478638
+            ],
+            "position": [
+              410.058349609375,
+              599.361877441406
+            ],
+            "rapier_tick": 9,
+            "rotation": 0.156157910823822
+          },
+          "native_tick": 9,
+          "rapier_tick": 9,
+          "captured_usec": 95347241,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.137945532798767,
+              -0.129981279373169
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 1,
+          "filename": "motion-diorama-01.png",
+          "sha256": "1bcc5000ba740a49fe7771693a281b424c92100f4582d5e71f5f72818e3fa6a0",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              277.043853759766,
+              529.912170410156
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              6.55141496658325,
+              -31.4324989318848
+            ],
+            "position": [
+              410.672485351562,
+              595.93798828125
+            ],
+            "rapier_tick": 18,
+            "rotation": 0.232441291213036
+          },
+          "native_tick": 18,
+          "rapier_tick": 18,
+          "captured_usec": 96659636,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.0821158811450005,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 2,
+          "filename": "motion-diorama-02.png",
+          "sha256": "5453eb522a3ce2bd5f3c98054841b1c803f940b803713306b3067a89305a0092",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              282.904510498047,
+              524.518676757812
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              13.1823425292969,
+              -50.500846862793
+            ],
+            "position": [
+              412.190307617188,
+              589.585327148438
+            ],
+            "rapier_tick": 27,
+            "rotation": 0.290966868400574
+          },
+          "native_tick": 27,
+          "rapier_tick": 27,
+          "captured_usec": 97975372,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0799413025379181,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 3,
+          "filename": "motion-diorama-03.png",
+          "sha256": "52e5210530c2bc5ec11d9c7c48b9b27edefb29417398ef0fa54c19a32dc8efe7",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              289.794921875,
+              516.297729492188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              20.4893112182617,
+              -68.6993255615234
+            ],
+            "position": [
+              414.780029296875,
+              580.450927734375
+            ],
+            "rapier_tick": 36,
+            "rotation": 0.279163867235184
+          },
+          "native_tick": 36,
+          "rapier_tick": 36,
+          "captured_usec": 99284719,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.314510822296143,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 4,
+          "filename": "motion-diorama-04.png",
+          "sha256": "439dd569c038896d0241cf416ffcc95faf2d527829535d89664a3cf15e2d7153",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              177.735763549805,
+              437.856323242188
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              25.6120185852051,
+              -86.7929763793945
+            ],
+            "position": [
+              418.331176757812,
+              568.605895996094
+            ],
+            "rapier_tick": 45,
+            "rotation": 0.13166318833828
+          },
+          "native_tick": 45,
+          "rapier_tick": 45,
+          "captured_usec": 100669871,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0792390406131744,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 5,
+          "filename": "motion-diorama-05.png",
+          "sha256": "97c31de6ef6e031992cdd63bf5cca3affbde10df69ee62989c13f76f1659edf2",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              186.300979614258,
+              424.196105957031
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              26.5478992462158,
+              -104.880172729492
+            ],
+            "position": [
+              422.298217773438,
+              554.039794921875
+            ],
+            "rapier_tick": 54,
+            "rotation": -0.00599805871024728
+          },
+          "native_tick": 54,
+          "rapier_tick": 54,
+          "captured_usec": 102051013,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.0298286844044924,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 6,
+          "filename": "motion-diorama-06.png",
+          "sha256": "19a00f03f1f87849cb4f0d53f4ed57254c54958f371904c05c881923f7cf83ee",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              194.891479492188,
+              407.843078613281
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              24.0814342498779,
+              -121.10652923584
+            ],
+            "position": [
+              426.117065429688,
+              536.85009765625
+            ],
+            "rapier_tick": 63,
+            "rotation": -0.0905513539910316
+          },
+          "native_tick": 63,
+          "rapier_tick": 63,
+          "captured_usec": 103388319,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.126145645976067,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 7,
+          "filename": "motion-diorama-07.png",
+          "sha256": "541bf01e252b627c7100394817281df93f51042dc72adcb5bc123b0022820833",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              203.018966674805,
+              389.288696289062
+            ],
+            "view_size": [
+              480,
+              270
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              19.5661525726318,
+              -130.615631103516
+            ],
+            "position": [
+              429.355224609375,
+              517.787048339844
+            ],
+            "rapier_tick": 72,
+            "rotation": -0.0775033757090569
+          },
+          "native_tick": 72,
+          "rapier_tick": 72,
+          "captured_usec": 104767154,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.144250392913818,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 8,
+          "filename": "motion-diorama-08.png",
+          "sha256": "051d21dd49eed880280606ff4d89308d3b6dca0c1fdb6ecfe43a96df1433abb4",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              330.492889404297,
+              436.963745117188
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              16.2308292388916,
+              -135.928863525391
+            ],
+            "position": [
+              431.984130859375,
+              497.678375244141
+            ],
+            "rapier_tick": 81,
+            "rotation": 0.00458698719739914
+          },
+          "native_tick": 81,
+          "rapier_tick": 81,
+          "captured_usec": 106082917,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              0.095893494784832,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        },
+        {
+          "index": 9,
+          "filename": "motion-diorama-09.png",
+          "sha256": "288d34485770624dd7e7d56f25ab48702e422c083389ed9913b579ef7256689a",
+          "actual_image_size": [
+            1600,
+            900
+          ],
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              337.549682617188,
+              416.430725097656
+            ],
+            "view_size": [
+              240,
+              135
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              131.851852416992,
+              135.0,
+              1336.29626464844,
+              751.666625976562
+            ]
+          },
+          "actor_state": {
+            "linear_velocity": [
+              15.4362764358521,
+              -138.792633056641
+            ],
+            "position": [
+              434.320068359375,
+              476.990936279297
+            ],
+            "rapier_tick": 90,
+            "rotation": 0.103567831218243
+          },
+          "native_tick": 90,
+          "rapier_tick": 90,
+          "captured_usec": 107354500,
+          "picking_error": 0.0,
+          "submitted_action": {
+            "effort": 1.0,
+            "move": [
+              -0.00464114639908075,
+              0.0
+            ],
+            "primary": true
+          },
+          "actor_reveal_rectangles": 0
+        }
+      ],
+      "native_capture_delta": 0,
+      "decorative_upload_delta": 0,
+      "static_decorative_hashes_unchanged": true,
+      "native_pose_injected": false,
+      "extra_worlds": 0
+    }
+  ]
+}

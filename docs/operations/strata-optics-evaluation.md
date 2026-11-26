@@ -30,7 +30,7 @@ The Optics tab scrolls vertically. Basic comparison controls are near the top; *
 
 ## Explore the lens
 
-Choose **Optical Lens**. Set focus to **Manual optical distance** and move **Focus distance** through the plane depths. Widen **Sharp focus width** to retain several layers, then increase **Defocus amount** carefully. The values are artistic optical units and source-cell radii, not calibrated physical lens measurements.
+Choose **Optical Lens**. Set focus to **Manual optical distance** and move **Focus distance** through the plane depths. Widen **Sharp focus width** to retain several layers, then increase **Defocus amount** carefully. Focus uses artistic optical units. Defocus amount is an aperture-like strength, whose result also depends on distance from the sharp region and each plane's response. The resulting sampling radius is capped at one source cell on Low, three on Balanced and six on High; these are not calibrated physical lens measurements. Play is never defocused.
 
 To focus an explicit plane, set the focus-mode dropdown to **Selected focal plane**, then use the next dropdown to choose **Rear architecture**, **Atmosphere / effects** or **Distant background**. The focal-plane dropdown is disabled in other focus modes. Leave the native edit target on Play: focus is presentation only. **Follow authoring plane** deliberately follows whichever layer you select through the existing editing controls; the optics plane picker itself does not change that target. **Inspection focus** provides a temporary rear-plane inspection without rewriting the saved artistic focus.
 
@@ -66,7 +66,11 @@ Native paint, erase, Undo/Redo, import and module composition still use their or
 
 ## Performance and feedback
 
-Start with **Balanced** quality. Low caps decorative defocus to one source cell. High is useful for optional optical experiments and needs separate scrutiny during movement. Evaluate actual actor response, Water/Sand progression and pauses; a displayed FPS number cannot establish those behaviours.
+Start in **Classic** and briefly use the actor, moving Water/Sand, pan and zoom. Then compare a processed profile at **Balanced**, keeping the same scene and view. Low caps decorative defocus to one source cell; its name does not establish that the complete optical pipeline meets the progression target. High is useful for optional optical experiments and needs separate scrutiny during movement. Evaluate actual actor response, Water/Sand progression and pauses; a displayed FPS number cannot establish those behaviours.
+
+**The frozen fd0830ab candidate has an enabled-optics PERFORMANCE HOLD.** Its hosted Linux matched challenge cohort retained about 80% of Classic's native/Rapier progression for Architectural, 82% for Cinematic Deep Focus, 75% for Gameplay Clarity and 75% for Diorama High. All missed the registered 90% minimum and the physical-interval p95 criterion. Classic separately passed the hosted Linux exact-image and progression comparisons with qualified Strata002. The five-minute Windows software-host session admitted its scene in 69.196 seconds and had physical-interval p95 of 662.318 ms. The authored slider value changed quickly, but the next completed draw had p95 of 545.874 ms. These are distinct observations, not a physical input-to-photon measurement. See the [performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) and [sustained review](../audits/2026-11-25-strata-theatre-003/c-sustained-v2-review.md).
+
+In the Linux capture review, Gameplay Clarity and Noir provided the strongest ownership cues in the deliberately difficult fixture; gentle architectural profiles still left false routes convincing. At Overview, the actor body remained too small and localization relied on its marker or label. Closer movement frames resolved three actual actor bodies. Test both scales on your machine and retain misleading settings for reproduction instead of tuning away every failure before reporting it.
 
 The inherited scene-admission target is **45 seconds**. The five final Strata 002 extracted Windows scenes missed that target. New results retain the same threshold and report misses independently of functional success. Hosted Windows uses a software graphics backend; your physical Windows 11/NVIDIA observations remain the acceptance gate.
 

@@ -1,11 +1,11 @@
 {
   "schema": "strata3-unified-experiment-register-v1",
-  "stage": "integrated application awaiting full source-frozen graphical and portable qualification",
+  "stage": "Frozen application fd0830ab: final Linux graphical/native and disabled-path controls admitted; enabled-optics performance gates failed; Windows controls and pristine portable qualification in progress",
   "draft_hold": true,
   "principal_qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
   "principal_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
   "accepted_main_refresh": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
-  "accepted_main_refresh_utc": "2026-11-25T22:50:12Z",
+  "accepted_main_refresh_utc": "2026-11-26T00:10:04Z",
   "stacked_pr": 785,
   "base_pr": 776,
   "implementation_inputs_sha256": {
@@ -50,6 +50,43 @@
       "install_checks_each": 913,
       "reopen_checks_each": 415,
       "classic_world_pixels_exact": 564001
+    },
+    {
+      "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "run": 45721790366,
+      "scope": "Full Linux final-source graphical/native/authoring campaign; independent strict readers pass. Performance disposition is separate and FAIL for every measured enabled profile.",
+      "linux_artifact": 15075800269,
+      "linux_artifact_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+      "linux_controls_artifact": 15074613066,
+      "linux_controls_artifact_sha256": "c9d511b193783e13b99d875387e5b5cfd0158a26c33316f4566aa163ea66c0ce",
+      "matched_profile_captures": 99,
+      "supplementary_captures": 74,
+      "movement_captures": 40,
+      "actual_renderer_checks": 109,
+      "actual_renderer_failures": 0,
+      "campaign_cases_including_headless_import": 31,
+      "embedded_native_harness_checks_excluding_regression_markers": 18175,
+      "optical_disabled_predecessor_comparison": "Six interleaved same-host original934/candidateClassic processes: exact world RGBA, matching native geometry/camera/actor, rate and p95 criteria all met",
+      "evidence": "profile-observations-linux.json",
+      "independent_performance_review": "c-performance-review-linux.md"
+    },
+    {
+      "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "observer_source": "c4ae5ee9b4ad8d170cd9eeb44dbbbc8821266c15",
+      "run": 45726494262,
+      "scope": "Separately source-pinned five-minute native play and actual visible Optics Lab slider callbacks; no image/native readback inside timing",
+      "linux_artifact": 15075466027,
+      "windows_artifact": 15075720676,
+      "linux_artifact_sha256": "2fea64dce988dc4c6070b7e21318627153d306e7d486d35a7717c3658b6112ba",
+      "windows_artifact_sha256": "8fc0183a94fe66f105b525b82d49c6b0e86bbb022ce05849e819b691e1e3e423",
+      "independent_strict_reader": "PASS both original v2 artifacts",
+      "linux_elapsed_seconds": 300.824322,
+      "windows_elapsed_seconds": 302.668462,
+      "windows_admission_elapsed_ms": 69196,
+      "admission_target_ms": 45000,
+      "windows_admission_target_met": false,
+      "review": "c-sustained-v2-review.md",
+      "limitation": "Initial ascent followed by sustained ceiling contact, not five minutes of uninterrupted actor travel. Evolving geometry and live tonal changes preclude matched stock-profile cost inference."
     }
   ],
   "experiments": [
@@ -57,85 +94,118 @@
       "id": "S003-01",
       "treatment": "Explicit authored plane depth and discrete focal modes",
       "hypothesis": "Use authoritative plane identities for stable spatial cues without touching native geometry.",
-      "disposition": "selected",
-      "qualification_scope": "configuration/focus transitions; actual initial shader and Underworks controls passed; final dense source pending"
+      "disposition": "selected-functional-review-performance-hold",
+      "qualification_scope": "Final Linux nine-scene controls and focused transitions admitted; native authority separate. Windows controls pending."
     },
     {
       "id": "S003-02",
       "treatment": "Dense positive binomial cross aperture",
       "hypothesis": "Eliminate sparse-kernel checker contrast return while retaining nearest-cell and alpha boundaries.",
-      "disposition": "selected-pending-final-graphical",
-      "qualification_scope": "Low1/5reads, Balanced3/13reads, High6/25reads; sparse expanding rings retained as rejected lens implementation"
+      "disposition": "selected-functional-review-performance-hold",
+      "qualification_scope": "Final actual renderer109/0; dense checker contrast0 at radii1,2,3,6 with alpha/hue retained. Anisotropic cross is not a Gaussian or physically accurate lens. Windows109 controls running as part of final campaign."
     },
     {
       "id": "S003-03",
       "treatment": "Silhouette-preserving detail suppression",
       "hypothesis": "Subordinate interior frequency contrast without erasing architectural coverage.",
-      "disposition": "selected-pending-frequency-witness",
-      "qualification_scope": "Initial alpha witness passed; flat rectangles were explicitly insufficient to prove frequency suppression"
+      "disposition": "selected-functional-review-performance-hold",
+      "qualification_scope": "Final actual frequency/detail and central-alpha witnesses pass; fine architectural texture is intentionally reduced. Detail preservation and clarity are distinct artistic criteria."
     },
     {
       "id": "S003-04",
       "treatment": "Tonal/chromatic hierarchy and atmospheric transmission",
       "hypothesis": "Combine modest value, saturation, tint and exponential scattering rather than relying on blur.",
-      "disposition": "selected",
-      "qualification_scope": "Eleven editable profiles; original Underworks randomized-label critiques favour different crisp balances"
+      "disposition": "selected-functional-review-performance-hold",
+      "qualification_scope": "Final eleven-profile native challenge comparison independently scored before reveal; Gameplay Clarity/Noir distinguish false platform best. Some gentle tonal profiles slightly brighten the dark rear bar; no universal perceptual-success claim."
     },
     {
       "id": "S003-05",
       "treatment": "Play-mask architectural shadows",
       "hypothesis": "Offset existing published solid material masks to separate close rear construction.",
-      "disposition": "selected",
-      "qualification_scope": "Initial real positive/negative solid-ID shader checks passed; no native occupancy scans or physical light transport"
+      "disposition": "selected-bounded-presentation-approximation",
+      "qualification_scope": "Actual solid-ID positive/negative, alpha and mask controls passed in final Linux renderer; no physical light transport. Current published occupancy versus interpolated Play and fractional parallax remain bounded alignment limitations."
     },
     {
       "id": "S003-06",
       "treatment": "Local highlight diffusion",
       "hypothesis": "Spread selected bright machinery highlights within one bounded plane kernel.",
-      "disposition": "optional",
-      "qualification_scope": "Initial half-alpha hue witness passed; actual isolated impulse and new-scene light review pending"
+      "disposition": "optional-graphical-controls-pass",
+      "qualification_scope": "Final isolated bright/white/half-blue halo witnesses pass with alpha-correct bounded spread. This is local diffusion, not full-screen bloom or physical illumination."
     },
     {
       "id": "S003-07",
       "treatment": "Light shafts and local pools",
       "hypothesis": "Use existing bounded atmosphere nodes to connect native architecture across depth.",
-      "disposition": "selected-pending-showcase-review",
-      "qualification_scope": "8/4bands per motif, existing12region384motif limit, static by default; geometric band appearance retained as risk"
+      "disposition": "optional-understated-artistic-result",
+      "qualification_scope": "All three new native showcases rendered and independently reviewed. Shafts/pools are understated at Overview; no convincing volumetric-light success claim. Motifs retain separate CanvasItem treatment and Classic partial-wipe behaviour."
     },
     {
       "id": "S003-08",
       "treatment": "Local silhouette/actor clarity and motif suppression",
       "hypothesis": "Preserve physical edge and actor visibility without changing Play colour or opacity.",
-      "disposition": "selected-pending-multiple-actor-graphical",
-      "qualification_scope": "Existing published8actor/64part bounds; count rather than identity-number bound; explicit assistance covers excluded planes; motifopacity update-only"
+      "disposition": "selected-assistance-with-zoom-limit",
+      "qualification_scope": "Final forty motion captures show three ordinary actor bodies at closer zoom; all Clarity frames report three reveal bounds. Overview actor annotations remain more visible than bodies. No permanent Play recolouring or opacity change."
     },
     {
       "id": "S003-09",
       "treatment": "Optical parallax and single-draw wipe",
       "hypothesis": "Convey depth during ordinary pan/zoom with unchanged Play mapping.",
-      "disposition": "selected",
-      "qualification_scope": "Intermediate wipe uses Classic material alignment and Classic procedural motifs; no duplicate rendering"
+      "disposition": "selected-pan-zoom-qualified-rotation-unexecuted",
+      "qualification_scope": "All forty Play picking inverse errors exactly0; actual pan/zoom/parallax and source-bound wipe controls admitted. Camera rotation is not exposed by this Workbench and was not executed; no rotation acceptance claim."
     },
     {
       "id": "S003-10",
       "treatment": "Optics Lab and CYSSTRAT v3/preset domains",
       "hypothesis": "Make experiments editable and reusable without storing temporary inspection as scene art.",
-      "disposition": "selected",
-      "qualification_scope": "Atomic named presets, quality preference separate; initial Underworks actual UI and fresh reopen passed"
+      "disposition": "selected-functional-controls-pass",
+      "qualification_scope": "Final Linux nine-scene edits and fresh reopen admitted; both hosted five-minute visible sliders/native sessions passed strict custody. Authored callbacks p95 near2ms do not establish responsive completed frames; Windows draw p95~546ms."
     },
     {
       "id": "S003-11",
       "treatment": "Nine native scenes and adversarial truth probes",
       "hypothesis": "Judge false platforms, passages, architectural detail and actor visibility against actual native authority.",
-      "disposition": "selected-pending-full-corpus",
-      "qualification_scope": "Originalfive exact geometry hashes preserved; threenewshowcases andreadabilityfixture; motion adds3ordinaryactors explicitly"
+      "disposition": "selected-native-corpus-reviewed",
+      "qualification_scope": "Original five scene bytes unchanged; three new native showcases and adversarial fixture admitted.99 matched Linux profile originals,74 supplementary originals and40 movement originals retained in full artifact. Independent reviews are expert observations, not a human user study."
     },
     {
       "id": "S003-12",
       "treatment": "Matched completed-physics and predecessor comparisons",
       "hypothesis": "Separate appearance/per-frame callbacks from real physical progression and disabled-path regression.",
-      "disposition": "qualification-pending",
-      "qualification_scope": "15windows on1024x768challenge;6interleaved original934/candidateClassic processes on1024squareUnderworks; allrawsteps/tails retained"
+      "disposition": "performance-hold-enabled-profiles-failed",
+      "qualification_scope": "Linux median enabled native/Rapier ratios to Classic: Architectural0.799483, DeepFocus0.815296, Clarity0.750602, DioramaHigh0.754460. All physical p95 gates also fail. Separate six-process predecessor/disabled Classic comparison passes. Windows full cohort pending."
+    },
+    {
+      "id": "S003-13",
+      "treatment": "Literal Classic blend boundary after premultiplied internal filtering",
+      "hypothesis": "Preserve exact RGBA8 legacy output despite finite precision at nontrivial haze and parent opacity.",
+      "disposition": "selected-actual-linux-exactness-pass",
+      "qualification_scope": "Prior real Godot failure retained. Isolated EGL reproduced arithmetic cause without being called Godot qualification. Final Godot109/0 includes16384-byte exact Classic wipe under haze0.3/opacity0.5.",
+      "review": "renderer-campaign-06-review-a.md"
+    },
+    {
+      "id": "S003-14",
+      "treatment": "Visible-control five-minute sustained native session",
+      "hypothesis": "Bound resource retention and observe actual completion while changing the ordinary Lab slider during live native play.",
+      "disposition": "functional-native-resource-pass-responsiveness-and-admission-hold",
+      "qualification_scope": "Both v2 hosted artifacts strictly admitted;12 adjacent25s windows,72 slider updates,60 camera events. Tracked node/resource ranges0. Long physical/draw tails retained and Windows69196ms admission FAIL. Initial actor ascent then ceiling contact.",
+      "review": "c-sustained-v2-review.md"
+    },
+    {
+      "id": "S003-15",
+      "treatment": "A1 exact empty-coverage optical shader guard",
+      "hypothesis": "Skip downstream tone/mask/actor work only when both centre and low alpha are exactly zero, preserving output while reducing sparse-plane cost.",
+      "disposition": "v1-native-annex-rejected-hash-semantics-resolved-v2-hosted-running",
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+      "observer_tree": "250a63d1e4fa968c3420b18106df6415da0648bc",
+      "run": 45730815481,
+      "candidate_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "registration": "shader-cost-probe-registration.md",
+      "qualification_scope": "V1 actual original/A1 synthetic renderer109/0 each and18exactRGBApairs passed. Native annex rejected on mutable-code versus frozen-statistics identity mismatch; direct attachment absent, final application-after receipt absent. Separate pinned resource diagnostic shows the same resource mutates while const/property expression stays original. No v1 native optimisation rate admitted. V2 adds mandatory direct pre/post all-three-drawable code/identity witnesses and per-host diagnostic, preserving original pixel/native/performance gates.",
+      "review": "c-shader-identity-correction.md",
+      "v2_observer_source": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+      "v2_observer_tree": "edc750a1e2205b079dca5fd284af9091038aca6d",
+      "v2_run": 45733231981
     }
   ],
   "specialist_registers": [
@@ -148,7 +218,24 @@
     "b-underworks-blind-review.json",
     "b-underworks-reveal-review.json",
     "c-smoke-visual-review.json",
-    "blend-precision-research/README.md"
+    "blend-precision-research/README.md",
+    "renderer-campaign-06-review-a.md",
+    "b-final-corpus-review.json",
+    "b-challenge-opaque-packet.json",
+    "c-blind-review-initial.json",
+    "c-blind-review-revealed.json",
+    "c-readability-and-motion-review.md",
+    "c-performance-review-linux.md",
+    "c-sustained-v1-rejected-review.md",
+    "c-sustained-v2-review.md",
+    "c-portable-source-review.md",
+    "b-final-artistic-recommendations.md",
+    "b-motion-keyframe-review.json",
+    "b-empty-coverage-cross-review.md",
+    "c-shader-cost-source-review.md",
+    "c-shader-cost-v1-rejected-review.md",
+    "c-shader-identity-correction.md",
+    "c-owner-performance-and-feedback-review.md"
   ],
   "preserved_negative_results": [
     "Original five extracted Windows45second admission misses:51619,66316,66200,59958,54804ms",
@@ -157,13 +244,22 @@
     "Initial typed progression collector assignment caused script errors; reader rejects errors even with exit0",
     "Overview actor body remains too small; label/ring visibility is not body visibility",
     "Root environment socket creation prohibited actual local display; hosted actual backends used without physicalNVIDIA claim",
-    "Actual Mesa partial-opacity/haze Classicwipe mismatch despite real-valued alpha algebra; fixed-function output blend precision isolated by separate EGL reproduction; exact pixel oracle retained"
+    "Actual Mesa partial-opacity/haze Classicwipe mismatch despite real-valued alpha algebra; fixed-function output blend precision isolated by separate EGL reproduction; exact pixel oracle retained",
+    "Final Linux full-source enabled profiles all fail registered native/Rapier rate and physical-p95 gates; repeat spread does not explain away the throughput failure.",
+    "Sustained Windows v2 admission69196ms exceeds unchanged45000ms; physicalp95~662ms and completed-draw sliderp95~546ms preclude a responsiveness-pass claim.",
+    "Final adversarial blind review scores Architectural and Deep Focus platform/passage1/1 despite detail5; tonal nuance cannot resolve deliberately seamless false platforms.",
+    "Sustained v1 reader falsely required opaque owner fences to be numeric; original rejected artifacts remain rejected, diagnostic reinterpretation is not a retroactive pass.",
+    "Sustained actor reaches ceiling and remains there; continuing native ticks are not continuous travel.",
+    "Light shafts and pools remain subtle in the three new overviews; authored green/cyan geometry is not evidence of volumetric scattering.",
+    "A1 observer v1 rejected because source-expression statistics hash and mutable runtime code hash differ; initial detached-shader inference was corrected by a same-object runtime diagnostic. V1 lacks new direct attachment and final post-run custody witnesses; no native A1 rate admitted."
   ],
   "remaining_acceptance": [
-    "Final dense shader graphics, allnine scenes andmotion",
-    "Balanced physical cost and matched originalClassic comparison",
-    "Pristine extracted Windows commands and payload",
-    "Physical Windows11/NVIDIA owner and artistic acceptance"
+    "Resolve or explicitly retain enabled-optics physical progression gate failures; isolated A1 experiment does not change appfd.",
+    "Complete final Windows full/compatibility/paired strict artifact review and pristine extracted ordinary Windows evaluator qualification.",
+    "Record all final Windows45-second admission results without weakening target.",
+    "Physical Windows11/NVIDIA owner performance and interaction acceptance.",
+    "Owner artistic/perceptual acceptance and unprimed gameplay legibility evaluation.",
+    "Camera rotation remains unexecuted because ordinary Workbench exposes no camera-rotation control."
   ],
   "notes": "Implementation file digests identify the integrated source before publication. Final qualification and evaluator manifests bind exact published application commit/tree. Local specialist commit annotations are research checkpoints; they are not substituted for executed published source identities.",
   "failed_campaigns": [
@@ -211,5 +307,7 @@
       "failure": "Algebraically equivalent premultiplied final blending differs from legacy straight-alpha blend by1encodedcolourlevel under haze0.3andparentopacity0.5. Dense aperture frequency/hue/highlight/coverage checks passed.",
       "remedy": "Keep premultipliedinternalfilterandmix; use exactlegacyfinalblend andliteralClassicbranch. Preserveexactoracle,addClassicbaselinePNG+byte-diffdiagnostic. IndependentEGLreproduction retained inblend-precision-research. Also normalize original934 rawarchives viachild-onlyLFconversion beforecrosshostverification."
     }
-  ]
+  ],
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499"
 }

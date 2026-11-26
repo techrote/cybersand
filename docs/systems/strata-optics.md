@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Draft Strata Theatre 003 decorative-plane shader, lens, controls, ownership, presets and compatibility; no physical owner acceptance
 canonical-for: [strata-optical-rendering, strata-optical-configuration, strata-optical-persistence]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [strata-workbench.md, strata-authoring.md, strata-environments.md, ../operations/strata-optical-composition.md, ../operations/strata-optics-evaluation.md]
 ---
 
@@ -110,6 +110,8 @@ Existing authored atmosphere gains bounded architectural light shafts and local 
 The optical coordinator requires actual pinned Godot graphical execution on Linux and Windows. It retains exact source/tree, loaded input hashes, original process commands/logs, raw PNGs, native readbacks, actual completed-step timestamps, process-tree CPU/RSS observations and fresh-process restoration. Headless diagnostics cannot pass the graphical gate. Pixel fixtures, whole scenes, native isolation and performance have separate evidence scopes.
 
 The original **45-second** scene admission target remains unchanged. Its five final Strata 002 extracted Windows misses remain recorded failures. Functional scene admission and an attractive frame do not convert a missed target into performance acceptance. Hosted software rendering does not establish physical NVIDIA GPU performance or owner playfeel.
+
+The frozen `fd0830ab` Linux campaign passed its functional/native and exact Classic predecessor controls, but every measured enabled profile failed the registered median native/Rapier rate and physical-p95 criteria. The ordinary balanced profiles retained approximately 75–82% of Classic's measured progression in that hosted challenge cohort. Both separately observed five-minute sessions retained native ownership and bounded node/resource counts; the Windows session still missed admission and had substantial draw/physical interval tails. The [dated independent performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) and [sustained review](../audits/2026-11-25-strata-theatre-003/c-sustained-v2-review.md) own those exact source/platform observations. No allocation or native-isolation property implies a performance pass. Enabled-optics performance remains an engineering HOLD while isolated exact-output optimisation is evaluated.
 
 The optical renderer shares existing published presentation textures with PUBPRES but imports none of that programme's unfinished engines or publication models. Native architecture authoring, conversational Art Workbench and documentation programmes retain their own authority. Draft/HOLD remains in force pending owner artistic and physical acceptance; this feature is not merged or enabled by default.
 

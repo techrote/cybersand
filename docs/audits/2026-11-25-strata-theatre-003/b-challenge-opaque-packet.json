@@ -1,0 +1,159 @@
+{
+  "schema": "strata003-opaque-profile-packet-v1",
+  "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "platform": "linux",
+  "scene": "optics-readability-challenge",
+  "source_artifact_id": 15075800269,
+  "source_artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "report_sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059",
+  "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+  "camera": {
+    "content_scale_factor": 1.0,
+    "origin": [
+      0.0,
+      0.0
+    ],
+    "view_size": [
+      1024,
+      768
+    ],
+    "window_size": [
+      1600,
+      1000
+    ],
+    "world_rect": [
+      298.888885498047,
+      135.0,
+      1002.22216796875,
+      751.666625976562
+    ]
+  },
+  "actor_state": {
+    "linear_velocity": [
+      0.0,
+      0.0
+    ],
+    "position": [
+      410.0,
+      600.0
+    ],
+    "rapier_tick": 0,
+    "rotation": 0.0
+  },
+  "scoring_registration_sha256": "4bcba2f3147ae45be2507a60547121967998f9600707bae46d281d9e6f0e6b52",
+  "scope": "Actual unchanged PNG byte copies. Initial C six-axis scores and notes must be frozen before reading profile key or named original captures. Agent assessment, not human perceptual study.",
+  "blinding_disclosure": "No profile name was visible in the inspected Classic full-frame toolbar. Every sample header is compared byte-for-byte with that header; artistic cues may still reveal likely treatments. No image was cropped, recoloured or re-encoded.",
+  "samples": [
+    {
+      "filename": "sample-01.png",
+      "sha256": "a796e21c169d060de413d9938c71ab98a5606096c9d0ebdf92c12902f4fe09fe",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-02.png",
+      "sha256": "0989e4cddc2667b2b707a65f19af35af993da564c42443c18d1f378687743bd5",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-03.png",
+      "sha256": "30ff7421cdd85984102a5879d140e2b2236cc67a700c67183958a992031f0873",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-04.png",
+      "sha256": "63d0754a54eeb446d0d88d73d243c6d3f25fb30dee32d1734ec3ee9b6f1789bf",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-05.png",
+      "sha256": "a54e19802fe042ac5a13bdee1b411b900cdc89216ea086aa1da88bcf233de57f",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-06.png",
+      "sha256": "ef2d37dcf9e5ff0182d2a0c1c7b573840ae37be5da2d4b04157fbb89e777343c",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-07.png",
+      "sha256": "9f7b7f9c04684caec116e09f70424c888e87598443b398b6a7213dcd1ff7a1c7",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-08.png",
+      "sha256": "a50ee529aad8363f824b720c94b4742e09f27956946c30431337392b50f0ca18",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-09.png",
+      "sha256": "16417c529abda16bf755560366fad0be0b3abb6c9a982285fb557427d5f85e76",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-10.png",
+      "sha256": "0320b38159f72c0f4962481284414febf0b4b93d0bc0c937e805efea0676ec27",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "header_equal_to_inspected_reference": true
+    },
+    {
+      "filename": "sample-11.png",
+      "sha256": "851bd050a0a96fb01db5a0154b1dbbbdde3a3e194a04c8f782d35b0ff11046a5",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "header_equal_to_inspected_reference": true
+    }
+  ]
+}

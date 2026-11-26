@@ -1,0 +1,1448 @@
+{
+  "schema": "strata003-independent-sustained-review-v2",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "observer_source": "c4ae5ee9b4ad8d170cd9eeb44dbbbc8821266c15",
+  "observer_tree": "bf1e3a3b2212e8d8777a5edf59edf118a4b1d400",
+  "source_run_id": 45726494262,
+  "scope": "One uninterrupted approximately 300-second native Play session per software-rendered hosted platform. Twelve consecutive 25-second windows, four profile selections cycled three times, 72 visible live widget tonal changes and 60 ordinary camera pan/zoom events. No resetting geometry, pose injection, extra native turns or image readbacks inside timed windows.",
+  "reviewed_utc": "2026-11-26T00:37:56.388023+00:00",
+  "disposition": "BOUNDED SOURCE/NATIVE/LIFECYCLE AND VISIBLE SLIDER CALLBACK QUALIFICATION PASSED; RESPONSIVENESS AND PHYSICAL OWNER ACCEPTANCE REMAIN HOLD.",
+  "key_findings": [
+    "Both final v2 artifact readers pass without diagnostic substitutions; all retained originals remain unchanged and independently hashed.",
+    "The Windows 69,196 ms admission misses the unchanged 45,000 ms target. Linux 14,371 ms meets it. This annex does not erase the original Strata 002 five-scene admission failures.",
+    "Each platform retains every observed actual completed physical step and actual native tick delta; the counters are distinct and are not forced equal.",
+    "Authored slider values update within low single-digit milliseconds, but the next completed draw is much later on these software hosts. That observation is not input-to-photon latency or an OS mouse gesture measurement.",
+    "Tonal controls were programmatically changed through the actual visible HSlider signal, with the original callback invoked once. Actual pre-window screenshots and per-callback enclosure witnesses establish that the control remained accessible.",
+    "Static decorative hashes, owners and resources stay bounded, with no decorative capture/upload work inside timing. Play bytes evolve, as expected from actual running native physics.",
+    "The actor travels during the initial ascent but reaches the ceiling around y29.50. Later windows continue native progression, controls and camera/slider activity without continued actor travel. No claim of five uninterrupted minutes of locomotion is supported.",
+    "Sequential windows include evolving native geometry and live tonal edits, so they are not matched stock-profile cost comparisons. Use the separately preregistered full cohort for performance ratios.",
+    "Stable resource/node counts over five minutes do not establish indefinite leak freedom. Whole-process sampled RSS includes observation retention and shared pages may be counted multiple times.",
+    "The failed v1 run 45724928964 remains rejected. Its diagnostic owner-ID predicate correction is separately archived and is not substituted for final v2 proof."
+  ],
+  "platforms": [
+    {
+      "platform": "linux",
+      "artifact_id": 15075466027,
+      "artifact_zip_sha256": "2fea64dce988dc4c6070b7e21318627153d306e7d486d35a7717c3658b6112ba",
+      "source_files_sha256": {
+        "annex.json": "6e1a50daaba663cd8e18f3290eb40744c79ded8a756e982f8756a91945be4476",
+        "session/report.json": "37ed5964d794e39b0e764f5a1696fa0665f2af4252dde854ae9980650bf7ed7d",
+        "session/process.json": "a571915ad804ba0f0080414b58a963febf3e96b834acb72fdc3483772ff6386f",
+        "session/resources.json": "bb35fdba657c9658e99e0cc680fd8e82446d48a4b49e2ba76920896b44d7d1d0"
+      },
+      "strict_reader_independently_passed": true,
+      "application_project_unchanged": true,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "rendering_method": "gl_compatibility",
+      "display_server": "X11",
+      "actual_engine_process_id": 3183,
+      "checks": 2299,
+      "failures": [],
+      "admission_ms": 14371,
+      "admission_target_ms": 45000,
+      "admission_target_met": true,
+      "summary": {
+        "actor_distance_sum_of_window_endpoints_cells": 574.5011567088557,
+        "comparison_limit": "Sequential windows have evolving geometry and actor states; these are sustained observations, not matched profile-cost comparisons.",
+        "completed_physical_steps": 1816,
+        "elapsed_usec": 300824322,
+        "native_tick_delta": 1815,
+        "node_range_after_first_catalogue_cycle": 0,
+        "physical_intervals_usec_including_boundaries": {
+          "count": 1815,
+          "maximum": 381503,
+          "p50": 169167,
+          "p95": 204902,
+          "p99": 244115
+        },
+        "resource_range_after_first_catalogue_cycle": 0,
+        "scope": "One five-minute hosted session with evolving Play geometry. No physical Windows/NVIDIA acceptance or long-duration leak claim.",
+        "slider_callback_to_authored_usec": {
+          "count": 72,
+          "maximum": 2388,
+          "p50": 1540,
+          "p95": 2218,
+          "p99": 2388
+        },
+        "slider_callback_to_next_completed_draw_usec": {
+          "count": 72,
+          "maximum": 247269,
+          "p50": 169069,
+          "p95": 189486,
+          "p99": 247269
+        },
+        "slider_draw_scope": "Completed-draw observation, not input-to-photon latency.",
+        "windows": [
+          {
+            "actor_distance_cells": 346.91269256077334,
+            "completed_steps": 180,
+            "elapsed_usec": 25001140,
+            "index": 0,
+            "native_tick_delta": 179,
+            "native_ticks_per_second": 7.159673518887539,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 179,
+              "maximum": 189896,
+              "p50": 135992,
+              "p95": 175175,
+              "p99": 187903
+            },
+            "profile": "classic",
+            "rapier_ticks_per_second": 7.199671694970709,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 227.58846414808227,
+            "completed_steps": 142,
+            "elapsed_usec": 25103911,
+            "index": 1,
+            "native_tick_delta": 142,
+            "native_ticks_per_second": 5.656489142269505,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 141,
+              "maximum": 245678,
+              "p50": 170628,
+              "p95": 211467,
+              "p99": 244104
+            },
+            "profile": "architectural",
+            "rapier_ticks_per_second": 5.656489142269505,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 135,
+            "elapsed_usec": 25083552,
+            "index": 2,
+            "native_tick_delta": 135,
+            "native_ticks_per_second": 5.382012882386035,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 134,
+              "maximum": 259570,
+              "p50": 181804,
+              "p95": 210910,
+              "p99": 249858
+            },
+            "profile": "gameplay_clarity",
+            "rapier_ticks_per_second": 5.382012882386035,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 145,
+            "elapsed_usec": 25148854,
+            "index": 3,
+            "native_tick_delta": 145,
+            "native_ticks_per_second": 5.76567027666549,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 144,
+              "maximum": 244115,
+              "p50": 169774,
+              "p95": 200723,
+              "p99": 240110
+            },
+            "profile": "cinematic_deep_focus",
+            "rapier_ticks_per_second": 5.76567027666549,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 183,
+            "elapsed_usec": 25026886,
+            "index": 4,
+            "native_tick_delta": 183,
+            "native_ticks_per_second": 7.312136236206134,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 182,
+              "maximum": 186559,
+              "p50": 134202,
+              "p95": 167303,
+              "p99": 184415
+            },
+            "profile": "classic",
+            "rapier_ticks_per_second": 7.312136236206134,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 143,
+            "elapsed_usec": 25123245,
+            "index": 5,
+            "native_tick_delta": 143,
+            "native_ticks_per_second": 5.691939874805185,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 142,
+              "maximum": 243735,
+              "p50": 170096,
+              "p95": 216506,
+              "p99": 239799
+            },
+            "profile": "architectural",
+            "rapier_ticks_per_second": 5.691939874805185,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 133,
+            "elapsed_usec": 25053901,
+            "index": 6,
+            "native_tick_delta": 133,
+            "native_ticks_per_second": 5.308554544060823,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 132,
+              "maximum": 267762,
+              "p50": 182804,
+              "p95": 233249,
+              "p99": 266780
+            },
+            "profile": "gameplay_clarity",
+            "rapier_ticks_per_second": 5.308554544060823,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 146,
+            "elapsed_usec": 25145082,
+            "index": 7,
+            "native_tick_delta": 146,
+            "native_ticks_per_second": 5.8063043898604105,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 145,
+              "maximum": 244928,
+              "p50": 169543,
+              "p95": 198297,
+              "p99": 242297
+            },
+            "profile": "cinematic_deep_focus",
+            "rapier_ticks_per_second": 5.8063043898604105,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 185,
+            "elapsed_usec": 25011203,
+            "index": 8,
+            "native_tick_delta": 185,
+            "native_ticks_per_second": 7.396685397339744,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 184,
+              "maximum": 181921,
+              "p50": 133271,
+              "p95": 155667,
+              "p99": 176420
+            },
+            "profile": "classic",
+            "rapier_ticks_per_second": 7.396685397339744,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 147,
+            "elapsed_usec": 25078709,
+            "index": 9,
+            "native_tick_delta": 147,
+            "native_ticks_per_second": 5.861545743841918,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 146,
+              "maximum": 241409,
+              "p50": 168713,
+              "p95": 200079,
+              "p99": 233173
+            },
+            "profile": "architectural",
+            "rapier_ticks_per_second": 5.861545743841918,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 132,
+            "elapsed_usec": 25010887,
+            "index": 10,
+            "native_tick_delta": 132,
+            "native_ticks_per_second": 5.277701666478282,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 131,
+              "maximum": 269025,
+              "p50": 184583,
+              "p95": 233172,
+              "p99": 265211
+            },
+            "profile": "gameplay_clarity",
+            "rapier_ticks_per_second": 5.277701666478282,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 145,
+            "elapsed_usec": 25036952,
+            "index": 11,
+            "native_tick_delta": 145,
+            "native_ticks_per_second": 5.7914397886771525,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 144,
+              "maximum": 242329,
+              "p50": 169109,
+              "p95": 203848,
+              "p99": 237408
+            },
+            "profile": "cinematic_deep_focus",
+            "rapier_ticks_per_second": 5.7914397886771525,
+            "resource_count": 176
+          }
+        ]
+      },
+      "whole_process": {
+        "elapsed_seconds": 341.519,
+        "observer_scope": "observed_process_and_descendants",
+        "observed_cpu_seconds": 677.6999999999999,
+        "peak_observed_tree_rss_bytes": 1318178816,
+        "resource_observer_semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+        "sample_count": 677,
+        "sample_interval_seconds": 0.5,
+        "process_identities": [
+          [
+            3183,
+            56334
+          ],
+          [
+            3191,
+            56346
+          ]
+        ]
+      },
+      "slider_response_count": 72,
+      "camera_event_count": 60,
+      "lab_capture": {
+        "actual_image_size": [
+          817,
+          634
+        ],
+        "captured_usec": 36957365,
+        "filename": "sustained-optics-lab.png",
+        "outside_timed_windows": true,
+        "sha256": "765990750ec4ea540faa3413fd829448173c8923e677ad67a00828123100a8f7",
+        "visibility": {
+          "fully_enclosed": true,
+          "scroll_vertical": 592,
+          "slider_rect": [
+            12.0,
+            390.0,
+            839.0,
+            16.0
+          ],
+          "slider_visible": true,
+          "viewport_rect": [
+            12.0,
+            78.0,
+            956.0,
+            639.0
+          ],
+          "window_visible": true
+        }
+      },
+      "lab_visual_review": "Actual separate Optics Lab PNG independently inspected: Tonal separation label, slider track/thumb and numerical value are in view and legible; normal vertical scrolling, no horizontal clipping. Logical UI rectangle coordinates are not conflated with actual framebuffer extent.",
+      "all_slider_callbacks_fully_enclosed": true,
+      "native_capture_delta": 0,
+      "decorative_upload_delta": 0,
+      "static_decorative_hashes_unchanged": true,
+      "play_native_hash_evolved": true,
+      "final_native_world_count": 0,
+      "material_counts_observed": [
+        0,
+        3
+      ],
+      "actor_windows_with_nonzero_endpoint_displacement": [
+        0,
+        1
+      ],
+      "actor_window_endpoints": [
+        {
+          "index": 0,
+          "profile": "classic",
+          "before": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              410.0,
+              600.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "after": {
+            "linear_velocity": [
+              18.7090225219727,
+              -153.19059753418
+            ],
+            "position": [
+              461.4375,
+              256.921875
+            ],
+            "rapier_tick": 180,
+            "rotation": 0.10087076574564
+          },
+          "native_ticks": 179,
+          "rapier_ticks": 180
+        },
+        {
+          "index": 1,
+          "profile": "architectural",
+          "before": {
+            "linear_velocity": [
+              18.7090225219727,
+              -153.19059753418
+            ],
+            "position": [
+              461.4375,
+              256.921875
+            ],
+            "rapier_tick": 180,
+            "rotation": 0.10087076574564
+          },
+          "after": {
+            "linear_velocity": [
+              6.4964682678692e-05,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 322,
+            "rotation": -1.2326877367741e-06
+          },
+          "native_ticks": 142,
+          "rapier_ticks": 142
+        },
+        {
+          "index": 2,
+          "profile": "gameplay_clarity",
+          "before": {
+            "linear_velocity": [
+              6.4964682678692e-05,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 322,
+            "rotation": -1.2326877367741e-06
+          },
+          "after": {
+            "linear_velocity": [
+              4.52428423614037e-08,
+              0.475000023841858
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 457,
+            "rotation": -1.249614811627e-08
+          },
+          "native_ticks": 135,
+          "rapier_ticks": 135
+        },
+        {
+          "index": 3,
+          "profile": "cinematic_deep_focus",
+          "before": {
+            "linear_velocity": [
+              4.52428423614037e-08,
+              0.475000023841858
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 457,
+            "rotation": -1.249614811627e-08
+          },
+          "after": {
+            "linear_velocity": [
+              4.84287241420134e-08,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 602,
+            "rotation": -1.32321287260595e-09
+          },
+          "native_ticks": 145,
+          "rapier_ticks": 145
+        },
+        {
+          "index": 4,
+          "profile": "classic",
+          "before": {
+            "linear_velocity": [
+              4.84287241420134e-08,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 602,
+            "rotation": -1.32321287260595e-09
+          },
+          "after": {
+            "linear_velocity": [
+              7.59443850029129e-08,
+              0.475000023841858
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 785,
+            "rotation": -5.15159248593022e-09
+          },
+          "native_ticks": 183,
+          "rapier_ticks": 183
+        },
+        {
+          "index": 5,
+          "profile": "architectural",
+          "before": {
+            "linear_velocity": [
+              7.59443850029129e-08,
+              0.475000023841858
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 785,
+            "rotation": -5.15159248593022e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -1.30039467194365e-07,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 928,
+            "rotation": -5.69913560788393e-11
+          },
+          "native_ticks": 143,
+          "rapier_ticks": 143
+        },
+        {
+          "index": 6,
+          "profile": "gameplay_clarity",
+          "before": {
+            "linear_velocity": [
+              -1.30039467194365e-07,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 928,
+            "rotation": -5.69913560788393e-11
+          },
+          "after": {
+            "linear_velocity": [
+              7.14678591862139e-08,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1061,
+            "rotation": -5.72812508536913e-09
+          },
+          "native_ticks": 133,
+          "rapier_ticks": 133
+        },
+        {
+          "index": 7,
+          "profile": "cinematic_deep_focus",
+          "before": {
+            "linear_velocity": [
+              7.14678591862139e-08,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1061,
+            "rotation": -5.72812508536913e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -1.52269777231595e-07,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1207,
+            "rotation": 2.40038655618946e-09
+          },
+          "native_ticks": 146,
+          "rapier_ticks": 146
+        },
+        {
+          "index": 8,
+          "profile": "classic",
+          "before": {
+            "linear_velocity": [
+              -1.52269777231595e-07,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1207,
+            "rotation": 2.40038655618946e-09
+          },
+          "after": {
+            "linear_velocity": [
+              1.24545124435826e-07,
+              0.474999785423279
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1392,
+            "rotation": -5.53995471719304e-09
+          },
+          "native_ticks": 185,
+          "rapier_ticks": 185
+        },
+        {
+          "index": 9,
+          "profile": "architectural",
+          "before": {
+            "linear_velocity": [
+              1.24545124435826e-07,
+              0.474999785423279
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1392,
+            "rotation": -5.53995471719304e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -3.64098440286398e-08,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1539,
+            "rotation": -1.6157033488895e-09
+          },
+          "native_ticks": 147,
+          "rapier_ticks": 147
+        },
+        {
+          "index": 10,
+          "profile": "gameplay_clarity",
+          "before": {
+            "linear_velocity": [
+              -3.64098440286398e-08,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1539,
+            "rotation": -1.6157033488895e-09
+          },
+          "after": {
+            "linear_velocity": [
+              6.61690009451377e-08,
+              0.474999785423279
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1671,
+            "rotation": -5.39948308286853e-09
+          },
+          "native_ticks": 132,
+          "rapier_ticks": 132
+        },
+        {
+          "index": 11,
+          "profile": "cinematic_deep_focus",
+          "before": {
+            "linear_velocity": [
+              6.61690009451377e-08,
+              0.474999785423279
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1671,
+            "rotation": -5.39948308286853e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -1.29926547742798e-07,
+              0.475000262260437
+            ],
+            "position": [
+              452.62841796875,
+              29.5039577484131
+            ],
+            "rapier_tick": 1816,
+            "rotation": -3.22226134663595e-11
+          },
+          "native_ticks": 145,
+          "rapier_ticks": 145
+        }
+      ]
+    },
+    {
+      "platform": "windows",
+      "artifact_id": 15075720676,
+      "artifact_zip_sha256": "8fc0183a94fe66f105b525b82d49c6b0e86bbb022ce05849e819b691e1e3e423",
+      "source_files_sha256": {
+        "annex.json": "188a7344b5c1c0b5b01a3d63147dcdcfac3d70571fc0c5ad2861bbf9ae1649c8",
+        "session/report.json": "8389cd88bf89cffa23db62400edcf1b316d80a88f9253682e51db25d4ba9ac89",
+        "session/process.json": "0686893ba87eec1f8c834703e5563518315b61c8eea0c05428e2dd2a01e1e51e",
+        "session/resources.json": "eec0c491c983204fc7692ba996a30422627460fdc4fae84338b094e1b8006ac6"
+      },
+      "strict_reader_independently_passed": true,
+      "application_project_unchanged": true,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "rendering_method": "gl_compatibility",
+      "display_server": "Windows",
+      "actual_engine_process_id": 7908,
+      "checks": 1420,
+      "failures": [],
+      "admission_ms": 69196,
+      "admission_target_ms": 45000,
+      "admission_target_met": false,
+      "summary": {
+        "actor_distance_sum_of_window_endpoints_cells": 574.3846340597554,
+        "comparison_limit": "Sequential windows have evolving geometry and actor states; these are sustained observations, not matched profile-cost comparisons.",
+        "completed_physical_steps": 937,
+        "elapsed_usec": 302668462,
+        "native_tick_delta": 936,
+        "node_range_after_first_catalogue_cycle": 0,
+        "physical_intervals_usec_including_boundaries": {
+          "count": 936,
+          "maximum": 1029880,
+          "p50": 330997,
+          "p95": 662318,
+          "p99": 940312
+        },
+        "resource_range_after_first_catalogue_cycle": 0,
+        "scope": "One five-minute hosted session with evolving Play geometry. No physical Windows/NVIDIA acceptance or long-duration leak claim.",
+        "slider_callback_to_authored_usec": {
+          "count": 72,
+          "maximum": 2723,
+          "p50": 2360,
+          "p95": 2498,
+          "p99": 2723
+        },
+        "slider_callback_to_next_completed_draw_usec": {
+          "count": 72,
+          "maximum": 753566,
+          "p50": 322270,
+          "p95": 545874,
+          "p99": 753566
+        },
+        "slider_draw_scope": "Completed-draw observation, not input-to-photon latency.",
+        "windows": [
+          {
+            "actor_distance_cells": 123.17716774081325,
+            "completed_steps": 89,
+            "elapsed_usec": 25085395,
+            "index": 0,
+            "native_tick_delta": 88,
+            "native_ticks_per_second": 3.508017314457277,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 88,
+              "maximum": 764947,
+              "p50": 267567,
+              "p95": 520079,
+              "p99": 764947
+            },
+            "profile": "classic",
+            "rapier_ticks_per_second": 3.5478811475761094,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 167.08175011327327,
+            "completed_steps": 70,
+            "elapsed_usec": 25304525,
+            "index": 1,
+            "native_tick_delta": 70,
+            "native_ticks_per_second": 2.7663036551762974,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 69,
+              "maximum": 958895,
+              "p50": 335490,
+              "p95": 921729,
+              "p99": 958895
+            },
+            "profile": "architectural",
+            "rapier_ticks_per_second": 2.7663036551762974,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 166.88099200355117,
+            "completed_steps": 67,
+            "elapsed_usec": 25551701,
+            "index": 2,
+            "native_tick_delta": 67,
+            "native_ticks_per_second": 2.622134628140804,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 66,
+              "maximum": 850216,
+              "p50": 362857,
+              "p95": 729304,
+              "p99": 850216
+            },
+            "profile": "gameplay_clarity",
+            "rapier_ticks_per_second": 2.622134628140804,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 114.74066087090961,
+            "completed_steps": 79,
+            "elapsed_usec": 25015910,
+            "index": 3,
+            "native_tick_delta": 79,
+            "native_ticks_per_second": 3.157990255001717,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 78,
+              "maximum": 961367,
+              "p50": 333774,
+              "p95": 627298,
+              "p99": 961367
+            },
+            "profile": "cinematic_deep_focus",
+            "rapier_ticks_per_second": 3.157990255001717,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 2.5040633312080893,
+            "completed_steps": 100,
+            "elapsed_usec": 25094782,
+            "index": 4,
+            "native_tick_delta": 100,
+            "native_ticks_per_second": 3.984892158058994,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 99,
+              "maximum": 626571,
+              "p50": 269581,
+              "p95": 358094,
+              "p99": 626571
+            },
+            "profile": "classic",
+            "rapier_ticks_per_second": 3.984892158058994,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 75,
+            "elapsed_usec": 25279789,
+            "index": 5,
+            "native_tick_delta": 75,
+            "native_ticks_per_second": 2.9667969143255113,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 74,
+              "maximum": 948387,
+              "p50": 331876,
+              "p95": 346334,
+              "p99": 948387
+            },
+            "profile": "architectural",
+            "rapier_ticks_per_second": 2.9667969143255113,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 69,
+            "elapsed_usec": 25355175,
+            "index": 6,
+            "native_tick_delta": 69,
+            "native_ticks_per_second": 2.721337951719915,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 68,
+              "maximum": 689904,
+              "p50": 364523,
+              "p95": 382882,
+              "p99": 689904
+            },
+            "profile": "gameplay_clarity",
+            "rapier_ticks_per_second": 2.721337951719915,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 76,
+            "elapsed_usec": 25165187,
+            "index": 7,
+            "native_tick_delta": 76,
+            "native_ticks_per_second": 3.0200451123212395,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 75,
+              "maximum": 692740,
+              "p50": 333346,
+              "p95": 361409,
+              "p99": 692740
+            },
+            "profile": "cinematic_deep_focus",
+            "rapier_ticks_per_second": 3.0200451123212395,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 101,
+            "elapsed_usec": 25244717,
+            "index": 8,
+            "native_tick_delta": 101,
+            "native_ticks_per_second": 4.000837086032694,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 100,
+              "maximum": 517720,
+              "p50": 262967,
+              "p95": 294672,
+              "p99": 514846
+            },
+            "profile": "classic",
+            "rapier_ticks_per_second": 4.000837086032694,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 72,
+            "elapsed_usec": 25173155,
+            "index": 9,
+            "native_tick_delta": 72,
+            "native_ticks_per_second": 2.860189753727731,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 71,
+              "maximum": 946859,
+              "p50": 332583,
+              "p95": 923021,
+              "p99": 946859
+            },
+            "profile": "architectural",
+            "rapier_ticks_per_second": 2.860189753727731,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 66,
+            "elapsed_usec": 25279506,
+            "index": 10,
+            "native_tick_delta": 66,
+            "native_ticks_per_second": 2.6108105118826295,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 65,
+              "maximum": 1029880,
+              "p50": 365148,
+              "p95": 792140,
+              "p99": 1029880
+            },
+            "profile": "gameplay_clarity",
+            "rapier_ticks_per_second": 2.6108105118826295,
+            "resource_count": 176
+          },
+          {
+            "actor_distance_cells": 0.0,
+            "completed_steps": 73,
+            "elapsed_usec": 25118620,
+            "index": 11,
+            "native_tick_delta": 73,
+            "native_ticks_per_second": 2.9062106118887105,
+            "node_count": 3197,
+            "physical_intervals_usec": {
+              "count": 72,
+              "maximum": 942169,
+              "p50": 335524,
+              "p95": 670912,
+              "p99": 942169
+            },
+            "profile": "cinematic_deep_focus",
+            "rapier_ticks_per_second": 2.9062106118887105,
+            "resource_count": 176
+          }
+        ]
+      },
+      "whole_process": {
+        "elapsed_seconds": 454.25,
+        "observer_scope": "observed_process_and_descendants",
+        "observed_cpu_seconds": 1334.46875,
+        "peak_observed_tree_rss_bytes": 1006387200,
+        "resource_observer_semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement.",
+        "sample_count": 770,
+        "sample_interval_seconds": 0.5,
+        "process_identities": [
+          [
+            4840,
+            134401253453460495
+          ],
+          [
+            7908,
+            134401253453519004
+          ]
+        ]
+      },
+      "slider_response_count": 72,
+      "camera_event_count": 60,
+      "lab_capture": {
+        "actual_image_size": [
+          817,
+          607
+        ],
+        "captured_usec": 146221853,
+        "filename": "sustained-optics-lab.png",
+        "outside_timed_windows": true,
+        "sha256": "7199b6c789a38db9dac31a9f06b78629ae20e741f73e4e29d31209621def764b",
+        "visibility": {
+          "fully_enclosed": true,
+          "scroll_vertical": 608,
+          "slider_rect": [
+            12.0,
+            374.0,
+            839.0,
+            16.0
+          ],
+          "slider_visible": true,
+          "viewport_rect": [
+            12.0,
+            78.0,
+            956.0,
+            607.0
+          ],
+          "window_visible": true
+        }
+      },
+      "lab_visual_review": "Actual separate Optics Lab PNG independently inspected: Tonal separation label, slider track/thumb and numerical value are in view and legible; normal vertical scrolling, no horizontal clipping. Logical UI rectangle coordinates are not conflated with actual framebuffer extent.",
+      "all_slider_callbacks_fully_enclosed": true,
+      "native_capture_delta": 0,
+      "decorative_upload_delta": 0,
+      "static_decorative_hashes_unchanged": true,
+      "play_native_hash_evolved": true,
+      "final_native_world_count": 0,
+      "material_counts_observed": [
+        0,
+        3
+      ],
+      "actor_windows_with_nonzero_endpoint_displacement": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "actor_window_endpoints": [
+        {
+          "index": 0,
+          "profile": "classic",
+          "before": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              410.0,
+              600.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "after": {
+            "linear_velocity": [
+              15.6771173477173,
+              -138.524765014648
+            ],
+            "position": [
+              433.56787109375,
+              479.098510742188
+            ],
+            "rapier_tick": 89,
+            "rotation": 0.0582001656293869
+          },
+          "native_ticks": 88,
+          "rapier_ticks": 89
+        },
+        {
+          "index": 1,
+          "profile": "architectural",
+          "before": {
+            "linear_velocity": [
+              15.6771173477173,
+              -138.524765014648
+            ],
+            "position": [
+              433.56787109375,
+              479.098510742188
+            ],
+            "rapier_tick": 89,
+            "rotation": 0.0582001656293869
+          },
+          "after": {
+            "linear_velocity": [
+              -22.812686920166,
+              -145.936126708984
+            ],
+            "position": [
+              429.167846679688,
+              312.07470703125
+            ],
+            "rapier_tick": 159,
+            "rotation": -0.114520758390427
+          },
+          "native_ticks": 70,
+          "rapier_ticks": 70
+        },
+        {
+          "index": 2,
+          "profile": "gameplay_clarity",
+          "before": {
+            "linear_velocity": [
+              -22.812686920166,
+              -145.936126708984
+            ],
+            "position": [
+              429.167846679688,
+              312.07470703125
+            ],
+            "rapier_tick": 159,
+            "rotation": -0.114520758390427
+          },
+          "after": {
+            "linear_velocity": [
+              22.009916305542,
+              -150.64860534668
+            ],
+            "position": [
+              427.974365234375,
+              145.197982788086
+            ],
+            "rapier_tick": 226,
+            "rotation": 0.195308089256287
+          },
+          "native_ticks": 67,
+          "rapier_ticks": 67
+        },
+        {
+          "index": 3,
+          "profile": "cinematic_deep_focus",
+          "before": {
+            "linear_velocity": [
+              22.009916305542,
+              -150.64860534668
+            ],
+            "position": [
+              427.974365234375,
+              145.197982788086
+            ],
+            "rapier_tick": 226,
+            "rotation": 0.195308089256287
+          },
+          "after": {
+            "linear_velocity": [
+              29.9922389984131,
+              -24.2404613494873
+            ],
+            "position": [
+              436.282135009766,
+              30.7584781646729
+            ],
+            "rapier_tick": 305,
+            "rotation": 0.277647197246552
+          },
+          "native_ticks": 79,
+          "rapier_ticks": 79
+        },
+        {
+          "index": 4,
+          "profile": "classic",
+          "before": {
+            "linear_velocity": [
+              29.9922389984131,
+              -24.2404613494873
+            ],
+            "position": [
+              436.282135009766,
+              30.7584781646729
+            ],
+            "rapier_tick": 305,
+            "rotation": 0.277647197246552
+          },
+          "after": {
+            "linear_velocity": [
+              6.49877378577912e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 405,
+            "rotation": -2.84305823328168e-09
+          },
+          "native_ticks": 100,
+          "rapier_ticks": 100
+        },
+        {
+          "index": 5,
+          "profile": "architectural",
+          "before": {
+            "linear_velocity": [
+              6.49877378577912e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 405,
+            "rotation": -2.84305823328168e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -8.41106628790556e-10,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 480,
+            "rotation": -2.74456812832113e-08
+          },
+          "native_ticks": 75,
+          "rapier_ticks": 75
+        },
+        {
+          "index": 6,
+          "profile": "gameplay_clarity",
+          "before": {
+            "linear_velocity": [
+              -8.41106628790556e-10,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 480,
+            "rotation": -2.74456812832113e-08
+          },
+          "after": {
+            "linear_velocity": [
+              4.38219771581316e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 549,
+            "rotation": -1.10924003315915e-09
+          },
+          "native_ticks": 69,
+          "rapier_ticks": 69
+        },
+        {
+          "index": 7,
+          "profile": "cinematic_deep_focus",
+          "before": {
+            "linear_velocity": [
+              4.38219771581316e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 549,
+            "rotation": -1.10924003315915e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -4.47599124431264e-10,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 625,
+            "rotation": -2.79428942207005e-08
+          },
+          "native_ticks": 76,
+          "rapier_ticks": 76
+        },
+        {
+          "index": 8,
+          "profile": "classic",
+          "before": {
+            "linear_velocity": [
+              -4.47599124431264e-10,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 625,
+            "rotation": -2.79428942207005e-08
+          },
+          "after": {
+            "linear_velocity": [
+              5.39748121752837e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 726,
+            "rotation": -6.82965461962226e-10
+          },
+          "native_ticks": 101,
+          "rapier_ticks": 101
+        },
+        {
+          "index": 9,
+          "profile": "architectural",
+          "before": {
+            "linear_velocity": [
+              5.39748121752837e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 726,
+            "rotation": -6.82965461962226e-10
+          },
+          "after": {
+            "linear_velocity": [
+              -1.33467492613448e-09,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 798,
+            "rotation": -2.76942326848939e-08
+          },
+          "native_ticks": 72,
+          "rapier_ticks": 72
+        },
+        {
+          "index": 10,
+          "profile": "gameplay_clarity",
+          "before": {
+            "linear_velocity": [
+              -1.33467492613448e-09,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 798,
+            "rotation": -2.76942326848939e-08
+          },
+          "after": {
+            "linear_velocity": [
+              -7.40848662417193e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 864,
+            "rotation": -2.60404120489e-09
+          },
+          "native_ticks": 66,
+          "rapier_ticks": 66
+        },
+        {
+          "index": 11,
+          "profile": "cinematic_deep_focus",
+          "before": {
+            "linear_velocity": [
+              -7.40848662417193e-08,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 864,
+            "rotation": -2.60404120489e-09
+          },
+          "after": {
+            "linear_velocity": [
+              -1.02551711567145e-09,
+              0.474999785423279
+            ],
+            "position": [
+              438.449279785156,
+              29.5039596557617
+            ],
+            "rapier_tick": 937,
+            "rotation": -2.81616792108252e-08
+          },
+          "native_ticks": 73,
+          "rapier_ticks": 73
+        }
+      ]
+    }
+  ]
+}
