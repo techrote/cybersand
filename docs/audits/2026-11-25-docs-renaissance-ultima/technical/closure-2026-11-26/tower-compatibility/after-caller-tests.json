@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "source_scope": "7919 plus four reviewed working-source files; executable hashes recorded",
+  "input_sha256": {
+    "godot/scripts/main.gd": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c",
+    "godot/scripts/web_demo_controller.gd": "d3d8ad3359865e42145c5e56024e72aaae34531a457806e5e03d2d349c9aed47",
+    "godot/tests/test_tower_observation_inheritance.gd": "f7a57f4ee66af620db781c8c9d49742cae99c0db6d59c67f15b7c9afa5ea775f",
+    "godot/tests/tower_observation_fault_child.gd": "3fd4d63e77fb3544853140fb8b312d7803b2c2fc0810dc2584e902ad833783c6",
+    "tools/ci/run_tower_observation_qualification.py": "77479aa7d79fbe2c72d0fc03881b852e77347b16875a2241d1140953274db0aa"
+  },
+  "inputs_unchanged": true,
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "cases": [
+    {
+      "case": "inheritance",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+        "--script",
+        "res://tests/test_tower_observation_inheritance.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.2612912360000337,
+      "engine_error_detected": false,
+      "log": "inheritance.log",
+      "log_sha256": "f7e3b4f3ac8c11b8908d96a1c07330d64028b3061dc1f412f79f340995d7f553",
+      "passed": true
+    },
+    {
+      "case": "ordinary-child",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+        "--script",
+        "res://tests/tower_observation_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 1.9379038390000005,
+      "engine_error_detected": false,
+      "log": "ordinary-child.log",
+      "log_sha256": "14ccad9a7117fd37bf6988f9abe88e1292fc12981d893d340ab40d10e18e9c43",
+      "passed": true
+    },
+    {
+      "case": "water-child",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+        "--script",
+        "res://tests/tower_observation_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "seconds": 2.0237362909999774,
+      "engine_error_detected": false,
+      "log": "water-child.log",
+      "log_sha256": "f1ef1e8d41edfd5ae7fe699413c25ffc62b4a127e88ce1fcd59c0895b106e09b",
+      "passed": true
+    }
+  ],
+  "status": "passed",
+  "completed": true
+}

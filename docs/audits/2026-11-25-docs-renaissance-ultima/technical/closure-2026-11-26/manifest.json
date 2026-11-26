@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "files": {
+    "README.md": {
+      "bytes": 9466,
+      "sha256": "27a4cc3fe645134949fcd1e11cc2746a6687068cc7e2b9484b6f40d8450714a0"
+    },
+    "causal-guard-review.json": {
+      "bytes": 1090,
+      "sha256": "7ec1c8d03b8d9b952fc163ef70c9b347c6e1e8947602c21b5b75a09c336fcbb5"
+    },
+    "causal-guard-tests.log": {
+      "bytes": 120,
+      "sha256": "0fe9874c9a261eee1d95b49449bd19da01ac9fb997cf187f838a4e6f3e1ec801"
+    },
+    "causal-source-review.json": {
+      "bytes": 5585,
+      "sha256": "69e4c9ea6bf8da0ed948c829e570057f14dd5a8a21c0024838602d63c6c91912"
+    },
+    "closure-ledger.json": {
+      "bytes": 1515,
+      "sha256": "89f08e86523bcac0b18db2cec6c47aa9cc8fde60dfc71d172efeb4ba4d34f085"
+    },
+    "continuity-and-harness-notes.json": {
+      "bytes": 1547,
+      "sha256": "493c5e6f57c9826840b103d6a9c0c35bb5c6ad5e8e8731a1c9c42b9bfd81db70"
+    },
+    "integrated-causal-review.json": {
+      "bytes": 2536,
+      "sha256": "4b693565e3fbe908ca0c6299a49d6827b38a82b6b45166bcede6e02e6ffcb70c"
+    },
+    "local-runtime-custody.json": {
+      "bytes": 916,
+      "sha256": "250d728886fa8362aa761ea94b6c1ddb106f5c3129b70fad36996f59edf4a45f"
+    },
+    "old-runtime-identity-probes.json": {
+      "bytes": 1153,
+      "sha256": "27fd1c790d66b148477d5d671db5c53d9e1d921e124283e80be0b300989c25f7"
+    },
+    "overnight-github-metadata.json": {
+      "bytes": 7071,
+      "sha256": "39d0b823036701e7a9431f0eeebb1ddeb8016bf1c3ad30832b0abb5392684d3b"
+    },
+    "overnight-independent-readback.json": {
+      "bytes": 66915,
+      "sha256": "5e08df5fbafdeb9c03687bd3814230467eecc954313230456fe53ad4c169fcf2"
+    },
+    "tower-compatibility/after-caller-tests.json": {
+      "bytes": 2729,
+      "sha256": "fdec7d7f7c4496b73aa1beb38a89e36b74db2efa30e283f83f512f4f366d7554"
+    },
+    "tower-compatibility/before.json": {
+      "bytes": 1805,
+      "sha256": "b38f41025c13c79a39401afdf4b9f684801e98e358409ae8f3d78787d3389953"
+    },
+    "tower-compatibility/before_probe.gd": {
+      "bytes": 148,
+      "sha256": "8086acfe23f01b6c9379a20145b30e979b218dc98d5faca44388f15fbd461c87"
+    },
+    "tower-compatibility/early-admission-negative.json": {
+      "bytes": 1942,
+      "sha256": "694ffee920fcc0e809159a992910a9a6366a9959f806fab05887a8fc5da0df0a"
+    },
+    "tower-compatibility/inheritance.log": {
+      "bytes": 362,
+      "sha256": "f7e3b4f3ac8c11b8908d96a1c07330d64028b3061dc1f412f79f340995d7f553"
+    },
+    "tower-compatibility/ordinary-child.log": {
+      "bytes": 1118,
+      "sha256": "14ccad9a7117fd37bf6988f9abe88e1292fc12981d893d340ab40d10e18e9c43"
+    },
+    "tower-compatibility/restored-positive.json": {
+      "bytes": 1101,
+      "sha256": "2a42fc11bbb9f4d702ff7cdd4fdd10c096486fa043b306fb3a9b0bfa9168e708"
+    },
+    "tower-compatibility/test_water_feel_controller.log": {
+      "bytes": 582,
+      "sha256": "ececb88b2ddcda73486d5d908b7f269193236a590c7bf675840016c3fe60c23d"
+    },
+    "tower-compatibility/water-child.log": {
+      "bytes": 1371,
+      "sha256": "f1ef1e8d41edfd5ae7fe699413c25ffc62b4a127e88ce1fcd59c0895b106e09b"
+    },
+    "tower-compatibility/water-regression.json": {
+      "bytes": 2974,
+      "sha256": "8c3571a6622358e2f173013c12fa78e65b16633b5bbb21ce559e535ac1e642d7"
+    },
+    "ultima-overnight-linux.zip": {
+      "bytes": 395070,
+      "sha256": "e141fc30363b17474a53e448b8ffc145ff6505d8c3bad042f9594bfccaf6d10b"
+    },
+    "ultima-overnight-windows.zip": {
+      "bytes": 350591,
+      "sha256": "1862e59abc627d6810140230c5ea6a970b5120a6fb49a879be1a57f765ef58c4"
+    },
+    "verify-overnight.py": {
+      "bytes": 15937,
+      "sha256": "0974939e40c19dd5e9e6c1af4659211bb5713b1adcf4594d730045b13bd460bd"
+    }
+  }
+}

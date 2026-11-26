@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "26c0c09f201e39f2e4ca1194b5085707acb936cc",
+  "scope": "A independent execution in isolated26c worktree; only three reviewed guard files copied from root working tree",
+  "inputs": {
+    "tools/lcb/in_tools_current_main_admission.py": "c273337c4fce618119d2af4802ce622b01cab03514624daafd9fb11fb90fa125",
+    "tools/lcb/test_in_tools_current_main_admission.py": "b35fec8f046daa12e67bfdc1db00e15a63e9668c7af6b04c61aa3064ce228bfe",
+    "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-26.json": "8fd599d8153f4c2ebd796330922c4d3f74b2089dde076e1702635c4a74018e96"
+  },
+  "command": [
+    "python",
+    "tools/lcb/test_in_tools_current_main_admission.py"
+  ],
+  "exit_code": 0,
+  "log_sha256": "0fe9874c9a261eee1d95b49449bd19da01ac9fb997cf187f838a4e6f3e1ec801",
+  "inputs_unchanged": true,
+  "verdict": "approve",
+  "checks": 21,
+  "failures": 0,
+  "independent_reviewer": "Specialist A",
+  "preservation": "Both v2/v3 immutable registrations retain HEAD and actual working-byte checks."
+}

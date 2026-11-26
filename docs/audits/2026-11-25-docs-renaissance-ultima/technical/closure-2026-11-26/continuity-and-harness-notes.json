@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "unpublished_pre_reset_evidence": "not recovered or relied upon; fresh probes replace missing transient evidence",
+  "retained_harness_corrections": [
+    {
+      "attempt": "run_tower_compatibility.py initial full-Water append",
+      "observed": "KeyError complex_case_process_seconds before starting Water",
+      "disposition": "Three caller probes already completed; separate run_water_after.py uses discovered existing case and original3940s deadline. Actual final Water receipt retained."
+    },
+    {
+      "attempt": "early-admission-negative.json final Python assertion",
+      "observed": "Expected original parent-signature wording; new fixture instead fails naturally1 with void-return compiler error in0.722s",
+      "disposition": "Raw receipt unchanged. This is the intended fail-closed negative outcome. Restored positive passes12/0 at21fa."
+    },
+    {
+      "attempt": "overnight readback initial path mapping",
+      "observed": "Root examples/worldgen input wrongly prefixed godot in audit-only script; KeyError before final result",
+      "disposition": "Resolve exact root path first; final full readback passes with every matrix input bound."
+    },
+    {
+      "attempt": "initial progress message workflow count",
+      "observed": "26 total records was misread as26 normal plus import",
+      "disposition": "Actual recorded plan has25 workflows+import;9 passed, Water failed,15 not reached. Final verifier derives names from recorded AST."
+    }
+  ]
+}

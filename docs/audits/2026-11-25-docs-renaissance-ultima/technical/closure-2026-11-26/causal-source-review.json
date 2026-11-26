@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "registration": "in-tools-current-main-admission.2026-11-25.json",
+  "fixture": {
+    "path": "godot/tests/test_liquid_desktop_default_host.gd",
+    "prior": "0c5cd28c2bf018b55587e6f994aeeefcf9369424",
+    "accepted": "0c5cd28c2bf018b55587e6f994aeeefcf9369424"
+  },
+  "authority_paths": [
+    {
+      "path": "godot/scripts/usable_catalog.gd",
+      "prior": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+      "accepted": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+      "same": true
+    },
+    {
+      "path": "godot/scripts/usable_runtime.gd",
+      "prior": "f86a439f659e5dfcb359f704571abc814df4b2c9",
+      "accepted": "f86a439f659e5dfcb359f704571abc814df4b2c9",
+      "same": true
+    },
+    {
+      "path": "godot/scripts/physical_usable_script.gd",
+      "prior": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+      "accepted": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+      "same": true
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "prior": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+      "accepted": "676f054dfca6c601ffe863c489a61e04271bc00c",
+      "same": false
+    },
+    {
+      "path": "godot/scripts/physical_usable_equipment.gd",
+      "prior": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+      "accepted": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+      "same": true
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd",
+      "prior": "d67582b8cdb24cb86e4a5be315cdc4594a82a5b9",
+      "accepted": "d67582b8cdb24cb86e4a5be315cdc4594a82a5b9",
+      "same": true
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "prior": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+      "accepted": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+      "same": true
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.cpp",
+      "prior": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+      "accepted": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+      "same": true
+    },
+    {
+      "path": "godot/native_extension/cyber_native_cell_world.hpp",
+      "prior": "59a2a87d4611ec8f09a5db93f97d12570d9dd10f",
+      "accepted": "59a2a87d4611ec8f09a5db93f97d12570d9dd10f",
+      "same": true
+    },
+    {
+      "path": "native/include/cybersand/world.hpp",
+      "prior": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a",
+      "accepted": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a",
+      "same": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "prior": "b31fe9b37c72603662c04333ff05f50bf030a050",
+      "accepted": "b31fe9b37c72603662c04333ff05f50bf030a050",
+      "same": true
+    },
+    {
+      "path": "native/include/cybersand/water_normalization.hpp",
+      "prior": "cc63976e3de99cd4589ad471929c0f487dc9df97",
+      "accepted": "cc63976e3de99cd4589ad471929c0f487dc9df97",
+      "same": true
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "prior": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+      "accepted": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+      "same": true
+    }
+  ],
+  "authority": "historical-non-authoritative",
+  "scope": "Independent source compatibility review; actual resulting-source causal execution is separately required.",
+  "reviewed_source": {
+    "godot/scripts/main.gd": "b6d6835044de7bd43a707cd73d8d1c41c86717a9",
+    "godot/scripts/physical_actor_session.gd": "676f054dfca6c601ffe863c489a61e04271bc00c",
+    "godot/scripts/physical_actor_rig.gd": "c4dd3ef89df9afe46cc7899ffabbe1aaa71c00ed",
+    "godot/scripts/workbench_actor_control.gd": "e3c91218da9622ef2d51c6df7a8d2866ef1a5a34",
+    "godot/scripts/workbench_actor_catalog.gd": "8f9e6347f4278777a61def25a76ee2608a11613b",
+    "godot/scripts/rapier_physics_bridge.gd": "6f5c47d734bf54ef42b3d21630c65431c91445c6",
+    "godot/scripts/workbench_physics_bridge.gd": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+    "godot/scripts/ambient/ambient_perception.gd": "1ca9fde1cd358817760e39524e007fee0d55e884",
+    "godot/tests/test_ambient_clock.gd": "73757e8e1b949b998b6a22266feaab644f819fd5",
+    "godot/tests/test_ambient_default_off_integration.gd": "e9a0e0b387a4e861f459c42d4749d63a6a8903f8"
+  },
+  "review_depth": {
+    "physical_actor_session": "complete incoming diff plus surrounding ownership/configure/cancel/advance/completion paths",
+    "physical_actor_rig": "complete additive ledge-observation diff",
+    "workbench_actor_control": "complete current body and diff",
+    "workbench_actor_catalog": "complete incoming diff and defaults",
+    "main": "all three incoming hooks and ordinary feature admission",
+    "causal_fixture": "complete body; original fixture byte identity retained",
+    "ambient_clock": "complete fixture body; no execution by A in this receipt",
+    "ambient_default_off": "complete fixture body; no execution by A in this receipt",
+    "ambient_perception": "targeted authority/interface paths; no full AMBIENT re-audit"
+  },
+  "source_verdict": "compatible-for-qualified-renewal",
+  "required_execution": [
+    "Unchanged test_liquid_desktop_default_host on integrated source:86assertions/0failures and natural exit0; actual Windows for Windows claim",
+    "Accepted test_ambient_default_off_integration and test_ambient_clock on integrated source to cover changed optional-owner boundaries"
+  ],
+  "limits": [
+    "Source review is not execution.",
+    "Historical Windows access violation is not causally explained by a later passing fixture.",
+    "DefaultOFF still allocates small pure adapters/scans definitions; no zero-allocation or performance claim."
+  ]
+}

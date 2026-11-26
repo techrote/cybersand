@@ -1,0 +1,1421 @@
+{
+  "authority": "historical-non-authoritative",
+  "hosts": {
+    "linux": {
+      "aggregate_status": "failed",
+      "archive_bytes": 395070,
+      "archive_sha256": "e141fc30363b17474a53e448b8ffc145ff6505d8c3bad042f9594bfccaf6d10b",
+      "artifact_id": 15077893698,
+      "engine": {
+        "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "archive_size": 75664355,
+        "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "engine_error_logs": {
+        "test_water_feel_controller.log": [
+          "SCRIPT ERROR: Parse Error: The function signature doesn't match the parent. Parent signature is \"tower_observation() -> bool\".",
+          "ERROR: Failed to load script \"res://scripts/web_demo_controller.gd\" with error \"Parse error\".",
+          "SCRIPT ERROR: Invalid access to property or key 'ready_to_play' on a base object of type 'Control'."
+        ]
+      },
+      "failure": {
+        "capture_error": null,
+        "command": [
+          "/home/runner/work/_temp/ultima-engine-y4kwnuqb/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/runner/work/cybersand/cybersand/workspace/source/godot",
+          "--script",
+          "res://tests/test_water_feel_controller.gd"
+        ],
+        "diagnostic_error": true,
+        "diagnostic_seconds": 0.064,
+        "diagnostics": "test_water_feel_controller-diagnostics",
+        "execution_policy": {
+          "advisories": {
+            "drift_ratio": 1.2,
+            "drift_window": 5,
+            "minimum_baseline_samples": 3,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "warning_ratio": 1.5
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "schema_version": 1,
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+          "watchdogs": {
+            "aggregate_headroom_seconds": 600.0,
+            "complex_fixture_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "diagnostic_capture_seconds": 30.0,
+            "godot_import_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_metadata_seconds": 900.0,
+            "godot_setup_seconds": 4200.0,
+            "graphical_case_seconds": 1200.0,
+            "hosted_job_minutes": 180.0,
+            "main_ack_seconds": 600.0,
+            "native_case_seconds": 3600.0,
+            "native_compile_seconds": 3600.0,
+            "native_suite_seconds": 7200.0,
+            "operation_seconds": 300.0,
+            "ordinary_case_seconds": 1200.0,
+            "terminate_grace_seconds": 10.0
+          }
+        },
+        "last_heartbeat": null,
+        "last_progress": null,
+        "launch_error": null,
+        "log": "test_water_feel_controller.log",
+        "log_sha256": "4c7ac4bc749a9b406f40de1ee50b0de6289fc54f08d405a049cb925111a721b1",
+        "name": "test_water_feel_controller",
+        "natural_completion": false,
+        "pid": 6187,
+        "requires_display": false,
+        "resources": {
+          "available": true,
+          "cpu_seconds": 61.34,
+          "peak_rss_bytes": 345604096,
+          "scope": "direct_process_only"
+        },
+        "returncode": null,
+        "role": "authored-workflow",
+        "seconds": 3940.0,
+        "skip_messages": [],
+        "status": "timeout",
+        "timeout_diagnostic_error": null,
+        "timeout_diagnostics": "test_water_feel_controller.timeout-diagnostics.txt",
+        "timeout_kind": "case_deadline",
+        "timeout_seconds": 3940.0
+      },
+      "import_passed": true,
+      "materialized_lfs_objects": 18,
+      "matrices": {
+        "art-storage": {
+          "cases": 13,
+          "report_sha256": "bcd195e53a52a0fa7d97ad3f0ea88240b26e53dd4a2a03498b82f0c676010813",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "export",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "export",
+              "short-write",
+              "real-os-failure"
+            ],
+            [
+              "new-event",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "new-event",
+              "short-write",
+              "real-os-failure"
+            ],
+            [
+              "append",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "append",
+              "short-write",
+              "real-os-failure"
+            ],
+            [
+              "settings",
+              "none",
+              "real-private-writer"
+            ],
+            [
+              "settings",
+              "short-write",
+              "real-os-failure"
+            ],
+            [
+              "settings",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "pending-history",
+              "none",
+              "real-private-writer"
+            ],
+            [
+              "pending-history",
+              "existing-receipt",
+              "real-admission-refusal"
+            ],
+            [
+              "pending-history",
+              "short-write",
+              "real-os-failure"
+            ],
+            [
+              "pending-history",
+              "directory-permission-denied",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "diagnostic-storage": {
+          "cases": 12,
+          "report_sha256": "ec1a5662dfc1717c151bf2682754e7723dc2f308426c4e6f155a90ea92d7465f",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "physics",
+              "none",
+              "real-public-cli"
+            ],
+            [
+              "physics",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "physics",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "thunderbowl",
+              "none",
+              "real-public-cli"
+            ],
+            [
+              "thunderbowl",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "thunderbowl",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "physical-thunderbowl",
+              "none",
+              "real-public-cli"
+            ],
+            [
+              "physical-thunderbowl",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "physical-thunderbowl",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "goblin",
+              "none",
+              "guarded-audit-writer"
+            ],
+            [
+              "goblin",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "goblin",
+              "directory-permission-denied",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "microscenario-capture": {
+          "cases": 6,
+          "report_sha256": "dd64eee55030d5d129b41905d83f06dd10eb5cf3a11ee39e7213728ab8766495",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "controller",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "controller",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "controller",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "cli",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "cli",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "cli",
+              "directory-permission-denied",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "persistence": {
+          "cases": 13,
+          "report_sha256": "30b9bc9a7c63b1e85edca1d37dde007762d591cd399bdb45f9d4fe883470c337",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "shared-helper",
+              "none",
+              "injected-and-native-boundaries"
+            ],
+            [
+              "ordinary",
+              "none",
+              "real-writer-fresh-process-reload"
+            ],
+            [
+              "ordinary",
+              "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "ordinary",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "generated",
+              "none",
+              "real-writer-fresh-process-reload"
+            ],
+            [
+              "generated",
+              "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "generated",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "project",
+              "none",
+              "real-writer-fresh-process-reload"
+            ],
+            [
+              "project",
+              "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "project",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "helper",
+              "replacement-directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "helper",
+              "process-termination-before-commit",
+              "real-process-termination"
+            ],
+            [
+              "helper",
+              "none",
+              "real-concurrent-processes"
+            ]
+          ]
+        },
+        "profile-save": {
+          "cases": 16,
+          "report_sha256": "0a532db87f2b56690f55bf6978cf45bc1bd2bc32269a2be0ea11eface7a6fca9",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "worldgen",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "worldgen",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "worldgen",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "worldgen",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "material-lab",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "material-lab",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "material-lab",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "material-lab",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "transport",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "transport",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "transport",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "transport",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "water",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "water",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "water",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "water",
+              "directory-permission-denied",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "recorder-storage": {
+          "cases": 2,
+          "report_sha256": "e62acc0eb8f6ef4cfb6757c6fe85716176d914ed57084278342dac78e1ea3548",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "recorder",
+              "none",
+              "recorder-public-caller"
+            ],
+            [
+              "recorder",
+              "short-write",
+              "recorder-public-caller"
+            ]
+          ]
+        },
+        "tower-observation": {
+          "cases": 6,
+          "report_sha256": "acc0076b1a4bdbe79cb2ed3d064a15c873ed46d2b4f61631940823cec80eeb2e",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "ordinary",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "ordinary",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "ordinary",
+              "directory-permission-denied",
+              "real-os-failure"
+            ],
+            [
+              "water-blind",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "water-blind",
+              "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+              "real-os-failure"
+            ],
+            [
+              "water-blind",
+              "directory-permission-denied",
+              "real-os-failure"
+            ]
+          ]
+        }
+      },
+      "newline_checkout_paths": [
+        "build_windows_msvc.bat",
+        "tools/acceptance/gentek80_owner.ps1",
+        "tools/ci/check_windows_package_modules.ps1",
+        "tools/ci/stage_windows_vc_runtime.ps1",
+        "tools/gip014/Open-goblin.ps1",
+        "tools/gip014/qualify_windows.ps1",
+        "tools/launch_desktop.ps1",
+        "tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1"
+      ],
+      "normal_failed": 1,
+      "normal_not_reached": 15,
+      "normal_passed": 9,
+      "raw_log_files": 171,
+      "source_inputs": 4491,
+      "unexecuted_workflows": [
+        "test_art_storage_integrity",
+        "test_art_traffic_integrity",
+        "test_art_traffic_panel_safety",
+        "test_art_session_log",
+        "test_art_panel_ui",
+        "test_art_history_receipt_identity",
+        "test_workbench_material_baseline",
+        "test_architectural_generator_ui",
+        "test_workbench_generator_discovery",
+        "test_paint_editor_history",
+        "test_paint_editor_history-reopen",
+        "test_workbench_canvas",
+        "test_workbench_canvas-reopen",
+        "test_explore001_generated_workbench",
+        "test_explore001_generated_workbench-reopen"
+      ]
+    },
+    "windows": {
+      "aggregate_status": "failed",
+      "archive_bytes": 350591,
+      "archive_sha256": "1862e59abc627d6810140230c5ea6a970b5120a6fb49a879be1a57f765ef58c4",
+      "artifact_id": 15078821152,
+      "engine": {
+        "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "archive_size": 83764371,
+        "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "engine_error_logs": {
+        "test_water_feel_controller.log": [
+          "SCRIPT ERROR: Parse Error: The function signature doesn't match the parent. Parent signature is \"tower_observation() -> bool\".",
+          "ERROR: Failed to load script \"res://scripts/web_demo_controller.gd\" with error \"Parse error\".",
+          "SCRIPT ERROR: Invalid access to property or key 'ready_to_play' on a base object of type 'Control'."
+        ]
+      },
+      "failure": {
+        "capture_error": null,
+        "command": [
+          "D:\\a\\_temp\\ultima-godot\\Godot_v4.7-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "D:\\a\\cybersand\\cybersand\\workspace\\source\\godot",
+          "--script",
+          "res://tests/test_water_feel_controller.gd"
+        ],
+        "diagnostic_error": true,
+        "diagnostic_seconds": 0.552,
+        "diagnostics": "test_water_feel_controller-diagnostics",
+        "execution_policy": {
+          "advisories": {
+            "drift_ratio": 1.2,
+            "drift_window": 5,
+            "minimum_baseline_samples": 3,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "warning_ratio": 1.5
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "schema_version": 1,
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+          "watchdogs": {
+            "aggregate_headroom_seconds": 600.0,
+            "complex_fixture_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "diagnostic_capture_seconds": 30.0,
+            "godot_import_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_metadata_seconds": 900.0,
+            "godot_setup_seconds": 4200.0,
+            "graphical_case_seconds": 1200.0,
+            "hosted_job_minutes": 180.0,
+            "main_ack_seconds": 600.0,
+            "native_case_seconds": 3600.0,
+            "native_compile_seconds": 3600.0,
+            "native_suite_seconds": 7200.0,
+            "operation_seconds": 300.0,
+            "ordinary_case_seconds": 1200.0,
+            "terminate_grace_seconds": 10.0
+          }
+        },
+        "last_heartbeat": null,
+        "last_progress": null,
+        "launch_error": null,
+        "log": "test_water_feel_controller.log",
+        "log_sha256": "d3a0218432488b4ec74cf6f4d61a53ca1a0634ac8f0e095018e39526feb9b17d",
+        "name": "test_water_feel_controller",
+        "natural_completion": false,
+        "pid": 1620,
+        "requires_display": false,
+        "resources": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "returncode": null,
+        "role": "authored-workflow",
+        "seconds": 3940.0,
+        "skip_messages": [],
+        "status": "timeout",
+        "timeout_diagnostic_error": null,
+        "timeout_diagnostics": "test_water_feel_controller.timeout-diagnostics.txt",
+        "timeout_kind": "case_deadline",
+        "timeout_seconds": 3940.0
+      },
+      "import_passed": true,
+      "materialized_lfs_objects": 18,
+      "matrices": {
+        "art-storage": {
+          "cases": 9,
+          "report_sha256": "9ff4c99c3695ce4426dce946ee495dc49e773d2e5f0b2badf97b1c25f477abba",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "export",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "export",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "new-event",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "append",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "append",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "settings",
+              "none",
+              "real-private-writer"
+            ],
+            [
+              "settings",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "pending-history",
+              "none",
+              "real-private-writer"
+            ],
+            [
+              "pending-history",
+              "existing-receipt",
+              "real-admission-refusal"
+            ]
+          ]
+        },
+        "diagnostic-storage": {
+          "cases": 8,
+          "report_sha256": "5e14b007befc89c6c06bf954f802b651d28477b196397a36ab7dbdff8d51771f",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "physics",
+              "none",
+              "real-public-cli"
+            ],
+            [
+              "physics",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "thunderbowl",
+              "none",
+              "real-public-cli"
+            ],
+            [
+              "thunderbowl",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "physical-thunderbowl",
+              "none",
+              "real-public-cli"
+            ],
+            [
+              "physical-thunderbowl",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "goblin",
+              "none",
+              "guarded-audit-writer"
+            ],
+            [
+              "goblin",
+              "locked-target",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "microscenario-capture": {
+          "cases": 4,
+          "report_sha256": "330ee630249c28e5083b99e83ee8f6eb3e288bd1c0041e3b247c5d1538b56408",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "controller",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "controller",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "cli",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "cli",
+              "locked-target",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "persistence": {
+          "cases": 10,
+          "report_sha256": "fd153de95db18b775590c325ff5454e99bacdac3e44b5c600b4f99b5a897005c",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "shared-helper",
+              "none",
+              "injected-and-native-boundaries"
+            ],
+            [
+              "ordinary",
+              "none",
+              "real-writer-fresh-process-reload"
+            ],
+            [
+              "ordinary",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "generated",
+              "none",
+              "real-writer-fresh-process-reload"
+            ],
+            [
+              "generated",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "project",
+              "none",
+              "real-writer-fresh-process-reload"
+            ],
+            [
+              "project",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "helper",
+              "locked-source-with-unlocked-destination",
+              "real-os-failure"
+            ],
+            [
+              "helper",
+              "process-termination-before-commit",
+              "real-process-termination"
+            ],
+            [
+              "helper",
+              "none",
+              "real-concurrent-processes"
+            ]
+          ]
+        },
+        "profile-save": {
+          "cases": 12,
+          "report_sha256": "dd61ddd0c931e0a93750110be2c4b6c4a4bc5d7c16bb757729487c3ebf78b79c",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "worldgen",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "worldgen",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "worldgen",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "material-lab",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "material-lab",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "material-lab",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "transport",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "transport",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "transport",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "water",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "water",
+              "invalid-input",
+              "public-admission-refusal"
+            ],
+            [
+              "water",
+              "locked-target",
+              "real-os-failure"
+            ]
+          ]
+        },
+        "recorder-storage": {
+          "cases": 2,
+          "report_sha256": "3fa8ed02f403745da74044e6772a5f03dc492bbf0c885d27538e91c3a2bf2e5a",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "recorder",
+              "none",
+              "recorder-public-caller"
+            ],
+            [
+              "recorder",
+              "locked-manifest",
+              "recorder-public-caller"
+            ]
+          ]
+        },
+        "tower-observation": {
+          "cases": 4,
+          "report_sha256": "219443288134e718adc5f356688499399e083ca302d3b12724dab12e93d645fe",
+          "status": "verified-recorded-pass",
+          "tuples": [
+            [
+              "ordinary",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "ordinary",
+              "locked-target",
+              "real-os-failure"
+            ],
+            [
+              "water-blind",
+              "none",
+              "real-public-caller"
+            ],
+            [
+              "water-blind",
+              "locked-target",
+              "real-os-failure"
+            ]
+          ]
+        }
+      },
+      "newline_checkout_paths": [
+        ".codex/agents/issue12-stage3-connectivity-spark.toml",
+        ".codex/agents/issue12-stage3-measurement-spark.toml",
+        ".codex/agents/issue12-stage3-producer-spark.toml",
+        ".codex/agents/issue12-stage3-verifier-spark.toml",
+        ".gitattributes",
+        ".gitignore",
+        "Makefile",
+        "build_windows_msvc.bat",
+        "docs/audits/2026-11-22-art-session-logging/legacy-tests/test_art_history_durability.gd.txt",
+        "docs/audits/2026-11-22-art-session-logging/legacy-tests/test_art_lazy_traffic.gd.txt",
+        "docs/audits/2026-11-22-art-session-logging/legacy-tests/test_art_traffic_panel_safety.gd.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/CONTRIBUTING.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/README.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__README.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__item-authored-material-programs.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__soliding-lifecycle.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__wave-flow-v1.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__decisions__ADR-005-water-model.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__decisions__ADR-010-failed-tick-quarantine.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architectural-generator-playtest.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme-water-feel-addendum.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__atlas-agent-runner.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__blacksite-nine-demo.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cell-layout-experiment.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__configuration-and-capacity-budgets.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__current-and-historical-validation.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cybersand-codex-development-handover.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__development-claims-remediation-programme.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__documentation-maintenance.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__experiment-tower.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__explore001-desktop-playtest.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gameplay-recording.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gen008-flatten-qualification.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gentek80-evaluation.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__github-development-and-release.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-manual-comparison-ux.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-scenario-catalogue.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__liquid-characterization.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__local-build-and-validation.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__material-liveness-investigation.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__materials-lab-authoring.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenario-reference-pack.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios-programme.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__neon-reliquary-demo.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physical-actor-programme.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation-plan.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__play-desktop-manual-qualification.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__profiling-observability-and-performance.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__rapier-2d-migration-runbook.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-macro-fracture-fixture.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-measurement.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-programme.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3b-production-plan.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__source-checkpoint-and-recovery.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__state-precision-experiment.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__testing-validation-and-replay.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__troubleshooting.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__water-feel-lab-experiment.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wb-art-paint-integrated-candidate.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__web-threading.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__workbench-actor-composition.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__workbench-water-lab.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__material-effects-register.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__product-intent-and-priorities.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__retrieval-index.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__status-and-roadmap.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__validation-evidence.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__activity-dirty-regions-and-waking.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__actor-control-prototypes.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__actor-rigs.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__depth-layers-and-parallax.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__explore001-generated-playable-maps.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__flow-transport-and-profiles.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__generation-workbench-2.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__material-visual-pattern-library.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__paint-editor-bounded-shapes.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-flight-lab.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-free-flight.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-control-playground.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-environment-profiles-and-traversal.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__smoke-heat-pressure-roadmap.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__thunderbowl-control-reference.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__workbench-art-providers.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__workbench-direct-art-batches.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__art-pipeline-unification.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__world-art-capture.md.txt",
+        "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__world-art-preview.md.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/lead/lfs-service-failures/negative-controls.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/lead/sanitizer-recipe/dry-run.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/lead/sanitizer-recipe/inventory-tests.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/architecture-display-reopen.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/architecture-headless-attempt.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/capture-review/12-cli-new.log",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/capture-review/15-cli-new.log",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/capture-review/4-controller-new.log",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/capture-review/7-controller-new.log",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/final-workbench.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/generator-discovery-final.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/physical-catalog-final.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/04-worldgen-8-invalid.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/07-worldgen-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/10-worldgen-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/15-material-lab-8-invalid.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/18-material-lab-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/21-material-lab-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/26-transport-8-invalid.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/29-transport-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/32-transport-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/37-water-8-invalid.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/40-water-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/43-water-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/profiles/gui-engine.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/recorder/before-reproduction.gd.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/recorder/before-reproduction.py.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/recorder/normal.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/recorder/short-write.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/recorder/unit-after.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/before/before.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/before/fault.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/01-ordinary-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/02-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/03-ordinary-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/04-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/05-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/06-ordinary-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/07-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/08-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/09-water-blind-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/10-water-blind-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/11-water-blind-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/12-water-blind-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/13-water-blind-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/14-water-blind-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/15-water-blind-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/linux/16-water-blind-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/rejected-first-parser.gd.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/rejected-first-parser.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/x11-clipboard-executed.py.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/x11/01-ordinary-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/x11/02-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/x11/03-ordinary-7.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/x11/04-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/product/tower-export/x11/05-ordinary-8.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/technical/accepted-publication-custody-tests.log.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/technical/before-save-reproduction.gd.txt",
+        "docs/audits/2026-11-25-docs-renaissance-ultima/technical/retrieval-v2-tests.log.txt",
+        "docs/audits/foundation-diagnostics-2026-09-08/interest_probe.cpp.txt",
+        "docs/audits/foundation-diagnostics-2026-09-08/tick_failure_probe.cpp.txt",
+        "docs/audits/gentek691-art-durability-20261121/before-failure.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-checkpoint-growth-coherent.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-checkpoint-growth-fixed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-chronology-after.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-chronology-before.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-listing-clock-recover-fixed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-listing-clock-recover.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-listing-clock-seed-fixed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-listing-clock-seed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-redaction-recover-fixed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-redaction-recover.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-redaction-seed-fixed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-redaction-seed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-unreadable-storage-execute-fixed.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-unreadable-storage-execute.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-volatile-sequence-loaded.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/independent-volatile-sequence-unopened.log.txt",
+        "docs/audits/gentek691-art-durability-20261121/linux-development-v2.log.txt",
+        "docs/audits/issue-10-2026-09-09/native-results.csv",
+        "docs/audits/issue-10-2026-09-09/player-results.csv",
+        "docs/audits/issue-233/historical-distributions.csv",
+        "docs/audits/issue-233/historical-jobs.csv",
+        "docs/audits/issue-233/historical-observations.csv",
+        "docs/audits/issue-233/historical-reused-job-receipts.csv",
+        "docs/audits/issue-233/historical-source-distributions.csv",
+        "docs/audits/issue-233/ordinary-case-accounting.csv",
+        "docs/audits/issue-233/ordinary-distributions.csv",
+        "docs/audits/issue-233/ordinary-jobs.csv",
+        "docs/audits/issue-233/ordinary-observations.csv",
+        "docs/audits/issue-233/stress-artifacts.csv",
+        "docs/audits/issue-233/stress-batches.csv",
+        "docs/audits/issue-233/stress-distributions.csv",
+        "docs/audits/issue-233/stress-observations.csv",
+        "docs/audits/issue-233/stress-timeouts.csv",
+        "docs/audits/issue-234/ordinary-adjacent-case-accounting.csv",
+        "docs/audits/issue-234/ordinary-adjacent-distributions.csv",
+        "docs/audits/issue-234/ordinary-adjacent-observations.csv",
+        "docs/audits/issue-234/ordinary-case-accounting.csv",
+        "docs/audits/issue-234/ordinary-distributions.csv",
+        "docs/audits/issue-234/ordinary-observations.csv",
+        "docs/audits/issue-234/stress-artifacts.csv",
+        "docs/audits/issue-234/stress-batches.csv",
+        "docs/audits/issue-234/stress-distributions.csv",
+        "docs/audits/issue-234/stress-observations.csv",
+        "docs/audits/issue-499-live-smoke-2026-11-07/run2-patch.diff",
+        "docs/audits/issue-499-live-smoke-2026-11-07/run4-pack-only.diff",
+        "docs/audits/lcb-physics-prepass-2026-10-23/mechanism-diagnostics.jsonl",
+        "docs/audits/legacy-checkers/check_m11_consistency.py.txt",
+        "docs/audits/mat354-2026-11-04/recovery/.gitattributes",
+        "docs/audits/paint001-2026-11-11/logs/docs-evidence-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/docs-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/executor-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/executor-import.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/executor-native-source-bound-workers1.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/executor-native-source-bound-workers4.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/integration-workbench_canvas-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/integration-workbench_canvas-original.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/integration-workbench_canvas-reopen-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/integration-workbench_input-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/integration-worldgen_workbench-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/material-compiler.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/material-unit.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-generated-author-attempt2.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-generated-author-graphical.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-generated-author-original.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-generated-reopen-graphical.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-generated-reopen-original.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-history-first.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-history-reopen.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-mounted-first.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-recovery-qualified.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-shapes-final.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-shapes-original.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-workbench-author-qualified-display93-refused.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-workbench-author-qualified.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/paint-workbench-reopen-qualified.log.txt",
+        "docs/audits/paint001-2026-11-11/logs/repository-pointer-aware-final.log.txt",
+        "docs/audits/physics-2026-09-09/cellular-results.csv",
+        "docs/audits/physics-2026-09-09/coupled-results.csv",
+        "docs/audits/physics-2026-09-09/depth-traces.csv",
+        "docs/audits/physics-2026-09-09/material-counts.csv",
+        "docs/audits/physics-2026-09-09/ordered-events.csv",
+        "docs/audits/physics-2026-09-09/parameter-results.csv",
+        "docs/audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt",
+        "docs/audits/pre-rag-rewrite-2026-09-08/rapier-2d-migration-runbook.md.txt",
+        "docs/audits/pre-rag-rewrite-2026-09-08/status-and-roadmap.md.txt",
+        "docs/audits/pre-rag-rewrite-2026-09-08/testing-validation-and-replay.md.txt",
+        "docs/audits/wave-mt-001/baseline-dea4e53d-windows.csv",
+        "docs/audits/wave-mt-001/matrix-90a04f98-windows-existing.csv",
+        "docs/audits/wave-mt-001/matrix-90a04f98-windows-wave-flow.csv",
+        "docs/audits/wave-water-face-004-2026-11-19/waterwall-traces.csv",
+        "docs/audits/wave-water-ramp-003-2026-11-19/ramp-traces.csv",
+        "docs/audits/wave-water-ramp-003-2026-11-19/tank-profiles.csv",
+        "docs/audits/wave-water-ramp-003-2026-11-19/tank-traces.csv",
+        "docs/audits/wave-waterwall-002-2026-11-19/discharge-by-window.csv",
+        "docs/audits/wave-waterwall-002-2026-11-19/discharge-summary.csv",
+        "docs/audits/wave-waterwall-002-2026-11-19/slosh-profiles.csv",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/deferred-attempt1.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w1/author-attempt1.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w1/author-attempt2.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w1/author-attempt3.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w1/reopen-attempt1.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w1/reopen-attempt2.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w4/author-attempt2.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w4/author-attempt3.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w4/reopen-attempt1.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/combined-independent/w4/reopen-attempt2.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/build.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/import.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/test-art-stored-material.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/test-edit-ordering.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/test-paint-executor.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/test-paint-native-four.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-native/test-paint-native-one.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/art-deferred.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/art-keyless.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/art-native.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/canvas-author.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/canvas-reopen.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-generated-author.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-generated-reopen.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-history-author.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-history-reopen.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-recovery.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-shapes.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-workbench-author.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/paint-workbench-reopen.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/workbench-input.log.txt",
+        "docs/audits/wb-art-paint-2026-11-11/integrated-original-suites/worldgen-workbench.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-final.gd.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-original.gd.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-boundary-original.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final-workers1.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final-workers4.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-final.gd.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-original-harness-failure.gd.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-capacity-original-harness-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-focused-1-attempt1-original-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-focused-1-attempt2-original-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/agent-undo-local-ordering-original.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/combined-1024-author-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/combined-1024-reopen-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/combined-concurrent-source-change.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/combined-large-fill-original-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/late-fill-cancel-original-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/liquid-edges-fixture-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/paint-history-author-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/paint-history-reopen-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/paint-mounted-author-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/paint-mounted-reopen-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/paint-recovery-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/paint-shapes-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/replacement-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/replacement-original-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/shared-ordering-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/shared-save-original-failure.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/status-acknowledgement-liquid-final.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/status-acknowledgement-original-diagnostic.log.txt",
+        "docs/audits/wb-art-paint-2026-11-12/status-acknowledgement-pilot-final.log.txt",
+        "docs/images/gentek-megablock/seed-survey.csv",
+        "docs/world-design/ashroot-nursery/preview.svg",
+        "docs/world-design/ashroot-nursery/render_pack.mjs",
+        "docs/world-design/ashroot-nursery/validate_pack.mjs",
+        "docs/world-design/carved-ice-choir/preview.svg",
+        "docs/world-design/carved-ice-choir/render_pack.mjs",
+        "docs/world-design/carved-ice-choir/validate_pack.mjs",
+        "docs/world-design/cathedral-of-capacitors/preview.svg",
+        "docs/world-design/cathedral-of-capacitors/render_pack.mjs",
+        "docs/world-design/cathedral-of-capacitors/validate_pack.mjs",
+        "docs/world-design/chalkbone-coast/preview.svg",
+        "docs/world-design/coral-telegraph/preview.svg",
+        "docs/world-design/coral-telegraph/render_pack.mjs",
+        "docs/world-design/coral-telegraph/validate_pack.mjs",
+        "docs/world-design/drowned-observatory/preview.svg",
+        "docs/world-design/drowned-observatory/render_pack.mjs",
+        "docs/world-design/drowned-observatory/validate_pack.mjs",
+        "docs/world-design/dust-meridian/preview.svg",
+        "docs/world-design/dust-meridian/render_pack.mjs",
+        "docs/world-design/dust-meridian/validate_pack.mjs",
+        "docs/world-design/emberglass-fumaroles/preview.svg",
+        "docs/world-design/emberglass-fumaroles/render_pack.mjs",
+        "docs/world-design/emberglass-fumaroles/validate_pack.mjs",
+        "docs/world-design/fallow-carnival/preview.svg",
+        "docs/world-design/fallow-carnival/render_pack.mjs",
+        "docs/world-design/fallow-carnival/validate_pack.mjs",
+        "docs/world-design/ironroot-necropolis/preview.svg",
+        "docs/world-design/ironroot-necropolis/render_pack.mjs",
+        "docs/world-design/ironroot-necropolis/validate_pack.mjs",
+        "docs/world-design/lumen-fault/preview.svg",
+        "docs/world-design/lumen-fault/render_pack.mjs",
+        "docs/world-design/mirror-marsh/preview.svg",
+        "docs/world-design/mirror-marsh/render_pack.mjs",
+        "docs/world-design/mirror-marsh/validate_pack.mjs",
+        "docs/world-design/signal-orchard/preview.svg",
+        "docs/world-design/silt-clockworks/preview.svg",
+        "docs/world-design/silt-clockworks/render_pack.mjs",
+        "docs/world-design/silt-clockworks/validate_pack.mjs",
+        "docs/world-design/tectonic-archive/preview.svg",
+        "docs/world-design/tectonic-archive/render_pack.mjs",
+        "docs/world-design/tectonic-archive/validate_pack.mjs",
+        "godot/addons/cybersand_native/cybersand_native.gdextension.uid",
+        "godot/addons/godot-rapier2d/LICENSE",
+        "godot/addons/godot-rapier2d/Radial2D.svg",
+        "godot/addons/godot-rapier2d/THIRDPARTY.txt",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/Info.plist",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/Info.plist",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/Resources/Info.plist",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/_CodeSignature/CodeResources",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid",
+        "godot/addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid",
+        "godot/addons/godot-rapier2d/faucet_2d.gd.uid",
+        "godot/addons/godot-rapier2d/fluid_2d_circle.gd.uid",
+        "godot/addons/godot-rapier2d/fluid_2d_rectangle.gd.uid",
+        "godot/addons/godot-rapier2d/fluid_2d_renderer.gd.uid",
+        "godot/addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid",
+        "godot/addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+        "godot/addons/godot-rapier2d/icons/Fluid2D.svg",
+        "godot/addons/godot-rapier2d/icons/StateManager2D.svg",
+        "godot/addons/godot-rapier2d/water_shader.gdshader.uid",
+        "godot/scripts/cell_world.gd.uid",
+        "godot/scripts/demo_save_codec.gd.uid",
+        "godot/scripts/demo_worlds.gd.uid",
+        "godot/scripts/experiment_tower.gd.uid",
+        "godot/scripts/industrial_underswamp.gd.uid",
+        "godot/scripts/interaction_policy.gd.uid",
+        "godot/scripts/interaction_policy_probe.gd.uid",
+        "godot/scripts/main.gd.uid",
+        "godot/scripts/material_appearance_lut.gd.uid",
+        "godot/scripts/microscenario_catalogue.gd.uid",
+        "godot/scripts/microscenario_comparison.gd.uid",
+        "godot/scripts/microscenario_contract.gd.uid",
+        "godot/scripts/microscenario_host.gd.uid",
+        "godot/scripts/microscenario_identity.gd.uid",
+        "godot/scripts/microscenario_panel.gd.uid",
+        "godot/scripts/microscenario_reference_pack.gd.uid",
+        "godot/scripts/microscenario_telemetry.gd.uid",
+        "godot/scripts/microscenario_workbench.gd.uid",
+        "godot/scripts/middle_cyberberbia.gd.uid",
+        "godot/scripts/neon_reliquary.gd.uid",
+        "godot/scripts/physics_characterisation.gd.uid",
+        "godot/scripts/rapier_physics_bridge.gd.uid",
+        "godot/scripts/rigid_body_coupling.gd.uid",
+        "godot/scripts/sampled_character.gd.uid",
+        "godot/scripts/sewertech_alley.gd.uid",
+        "godot/scripts/showcase_presentation.gd.uid",
+        "godot/scripts/showcase_tiles.gd.uid",
+        "godot/scripts/simulation_snapshot.gd.uid",
+        "godot/scripts/simulation_worker.gd.uid",
+        "godot/scripts/tick_failure_probe.gd.uid",
+        "godot/scripts/tower_panel.gd.uid",
+        "godot/scripts/transport_probe.gd.uid",
+        "godot/scripts/transport_profile_panel.gd.uid",
+        "godot/scripts/transport_profiles.gd.uid",
+        "godot/scripts/web_capabilities.gd.uid",
+        "godot/scripts/web_demo_controller.gd.uid",
+        "godot/scripts/web_demo_menu.gd.uid",
+        "godot/scripts/web_rapier_probe.gd.uid",
+        "godot/scripts/web_worker_probe.gd.uid",
+        "godot/scripts/worker_benchmark.gd.uid",
+        "godot/shaders/glow_composite.gdshader.uid",
+        "godot/shaders/material_emission.gdshader.uid",
+        "godot/shaders/material_palette.gdshader.uid",
+        "godot/shaders/neon_reliquary_backdrop.gdshader.uid",
+        "godot/tests/export_transport_profiles.gd.uid",
+        "godot/tests/interaction_async_worker.gd.uid",
+        "godot/tests/physics_async_worker.gd.uid",
+        "godot/tests/profile_native_world.gd.uid",
+        "godot/tests/profile_scheduler.gd.uid",
+        "godot/tests/run_microscenario.gd.uid",
+        "godot/tests/run_worker_benchmark.gd.uid",
+        "godot/tests/test_auto_worker_policy.gd.uid",
+        "godot/tests/test_cell_world.gd.uid",
+        "godot/tests/test_experiment_tower.gd.uid",
+        "godot/tests/test_interaction_async.gd.uid",
+        "godot/tests/test_interaction_policy.gd.uid",
+        "godot/tests/test_material_appearance_lut.gd.uid",
+        "godot/tests/test_microscenario_controllers.gd.uid",
+        "godot/tests/test_microscenarios.gd.uid",
+        "godot/tests/test_native_edge_contact_regression.gd.uid",
+        "godot/tests/test_native_fire_presentation_regression.gd.uid",
+        "godot/tests/test_native_render_bridge_regression.gd.uid",
+        "godot/tests/test_neon_reliquary.gd.uid",
+        "godot/tests/test_physics_async.gd.uid",
+        "godot/tests/test_physics_characterisation.gd.uid",
+        "godot/tests/test_physics_instrumentation.gd.uid",
+        "godot/tests/test_presentation_controls.gd.uid",
+        "godot/tests/test_rapier_backend_preflight.gd.uid",
+        "godot/tests/test_rapier_drop_in.gd.uid",
+        "godot/tests/test_rapier_manual_step.gd.uid",
+        "godot/tests/test_render_patch_handoff_regression.gd.uid",
+        "godot/tests/test_showcase_backdrop_render.gd.uid",
+        "godot/tests/test_tick_failure_regression.gd.uid",
+        "godot/tests/test_transport_probe.gd.uid",
+        "godot/tests/test_transport_profiles.gd.uid",
+        "godot/tests/test_web_demo_setup.gd.uid",
+        "godot/tests/test_web_rapier.gd.uid",
+        "godot/tests/test_web_worker_parity.gd.uid",
+        "godot/tests/test_worker_benchmark.gd.uid",
+        "godot/tools/activate_rapier_2d.gd.uid",
+        "godot/tools/capture_neon_reliquary.gd.uid",
+        "launch-desktop.cmd",
+        "native/bench/data/neighbour_stress_rectangles.txt",
+        "tools/acceptance/gentek80_owner.ps1",
+        "tools/architecture/requirements-render-linux.txt",
+        "tools/atlas_agent/fixtures/atlas-mini/docs/world-design/mini-vault/preview.svg",
+        "tools/atlas_agent/requirements.txt",
+        "tools/ci/check_windows_package_modules.ps1",
+        "tools/ci/pf522_msvc_build_bccb.cmd",
+        "tools/ci/stage_windows_vc_runtime.ps1",
+        "tools/gip014/Open-goblin.cmd",
+        "tools/gip014/Open-goblin.ps1",
+        "tools/gip014/qualify_windows.ps1",
+        "tools/launch_desktop.ps1",
+        "tools/requirements-build.txt",
+        "tools/requirements-ci-audit.txt",
+        "tools/toolchains/g++",
+        "tools/web/ci-trigger.txt",
+        "tools/web/run_browser_probe.mjs",
+        "tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1"
+      ],
+      "normal_failed": 1,
+      "normal_not_reached": 15,
+      "normal_passed": 9,
+      "raw_log_files": 122,
+      "source_inputs": 4491,
+      "unexecuted_workflows": [
+        "test_art_storage_integrity",
+        "test_art_traffic_integrity",
+        "test_art_traffic_panel_safety",
+        "test_art_session_log",
+        "test_art_panel_ui",
+        "test_art_history_receipt_identity",
+        "test_workbench_material_baseline",
+        "test_architectural_generator_ui",
+        "test_workbench_generator_discovery",
+        "test_paint_editor_history",
+        "test_paint_editor_history-reopen",
+        "test_workbench_canvas",
+        "test_workbench_canvas-reopen",
+        "test_explore001_generated_workbench",
+        "test_explore001_generated_workbench-reopen"
+      ]
+    }
+  },
+  "schema": 1,
+  "scope": "independent readback of existing hosted execution; not a new OS run",
+  "source_head": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "source_tree": "f3dc13c5c7143c4bff1b7875d445486290869576",
+  "status": "readback-passed-aggregate-remains-failed"
+}

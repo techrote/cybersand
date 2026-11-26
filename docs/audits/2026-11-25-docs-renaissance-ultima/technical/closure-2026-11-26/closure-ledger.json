@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "Specialist A closure delta; earlier A finding ledger remains preserved",
+  "findings": [
+    {
+      "id": "A-ULT-16",
+      "alias": "ULT-TOWER-02",
+      "priority": "P1",
+      "defect": "Retained subclass void signature violates new Main boolean export contract, breaking actual Water controller compilation.",
+      "implementation_commit": "21fa575f6af8ac249739e6b76fcd2bc37ebf28e1",
+      "status": "fixed-and-independently-verified",
+      "scope": "Source-reviewed by B; actual Linux focused12checks/two child formats/full Water; integrated lead execution independently read back by A. Final hosted Windows is separate.",
+      "evidence": [
+        "tower-compatibility/before.json",
+        "tower-compatibility/after-caller-tests.json",
+        "tower-compatibility/water-regression.json",
+        "tower-compatibility/early-admission-negative.json",
+        "tower-compatibility/restored-positive.json",
+        "integrated-causal-review.json"
+      ]
+    }
+  ],
+  "reviewed_lead_changes": [
+    {
+      "name": "v4 current-main causal admission",
+      "verdict": "approve",
+      "source_record": "causal-source-review.json",
+      "guard_controls": "causal-guard-review.json",
+      "execution": "integrated-causal-review.json"
+    }
+  ],
+  "overnight_disposition": "Seven storage submatrices on each host verified; overall run remains failed/incomplete, fifteen later workflows unexecuted, evaluator packaging skipped."
+}

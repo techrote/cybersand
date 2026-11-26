@@ -1,0 +1,8 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+WATER_EXIT_RECEIPTS: 10 deterministic acknowledgement cases passed
+WEB_RAPIER_PROBE {"ok":true,"reason":"Manual-step/CCD probe passed","y":72.5059432983398}
+WEB_DEMO_READY CYBERSAND/NATIVE · THREADED · 4 WORKERS · RAPIER2D · AUTO (9 logical threads)
+WATER_FEEL_CONTROLLER: transactional rejection/body collision isolation/desktop+Web blind lifecycle passed
