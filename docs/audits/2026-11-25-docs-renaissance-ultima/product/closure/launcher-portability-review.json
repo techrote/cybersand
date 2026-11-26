@@ -15,7 +15,11 @@
   },
   "decoded_full_job_log_LF_normalized": {
     "bytes": 164075,
-    "sha256": "feb0ce3edd646f74b313a7fd9a93818346d50cd8d1a9c613dcf499c3a06446bf"
+    "sha256": "feb0ce3edd646f74b313a7fd9a93818346d50cd8d1a9c613dcf499c3a06446bf",
+    "compressed_path": "windows-job-139768161914.log.gz",
+    "compressed_bytes": 29054,
+    "compressed_sha256": "6c567656a1ce166ddabb17da925f30bd1104c5897da1568e65600066ce58a32d",
+    "normalization": "GitHub decoded job text; CRLF normalized to LF before durable compression."
   },
   "retained_failure_excerpt": {
     "path": "windows-launcher-guard-before.log.txt",

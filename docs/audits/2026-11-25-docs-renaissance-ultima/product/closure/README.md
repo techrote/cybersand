@@ -60,6 +60,9 @@ entire `godot/` path to the published integrated source
 `fe24da6fc790a38760de28a0ef08c3f5904cd3a6` finds only the separately qualified
 IN-TOOLS admission fixture. The executable application inputs are unchanged;
 the GUI process is still named by its actual 4b7 source.
+The [source-custody bundle](../../closure/README.md#preliminary-local-source-custody)
+retains that exact local commit with its documented durable prerequisites;
+B independently verified the bundle and its named refs.
 
 The freshly verified executable is Godot
 `4.7.stable.official.5b4e0cb0f`, SHA-256
@@ -119,7 +122,9 @@ all 79 package guards passed, but one launcher unit assertion incorrectly
 expected forward slashes from Windows `Path`. The actual command retained the
 required nested quotes and correctly used native backslashes. The
 [failure and correction receipt](launcher-portability-review.json) preserves
-the exact hosted failure excerpt. The corrected test checks an explicit
+the hosted failure excerpt and
+[complete decoded job log](windows-job-139768161914.log.gz), with newline
+normalization and both compressed/uncompressed identities declared. The corrected test checks an explicit
 `PureWindowsPath` command on every host and the host's native path separately;
 it keeps the shell-metacharacter refusals. Nine local controls then passed.
 The graphical qualification argument also explicitly selects the existing
