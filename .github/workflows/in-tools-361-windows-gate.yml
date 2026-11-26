@@ -57,7 +57,7 @@ jobs:
           git rev-parse HEAD > build/in-tools-windows-gate/source-sha.txt
           git rev-parse HEAD^{tree} > build/in-tools-windows-gate/source-tree.txt
           python tools/ci/materialize_lfs.py \
-            --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' \
+            --expected-source='${{ github.event.pull_request.head.sha || github.sha }}' --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' \
             --output build/in-tools-windows-gate/materialization
 
       - name: Authenticate successor source authority

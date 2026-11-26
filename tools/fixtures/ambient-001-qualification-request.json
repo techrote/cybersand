@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "mission": "AMBIENT-001",
+  "request": "source-freeze-03-shader-uid-custody",
+  "requested_date_utc": "2026-11-24",
+  "branch": "feature/ambient-001-20261124",
+  "accepted_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "implementation_checkpoint": "c63cea9ef10d21f264c9a235437f7fd40acb1072",
+  "previous_qualification_source": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+  "change_reason": "Admit post-launch shader UID metadata only for original manifest-bound shaders; preserve pristine inventory, source hashes and executable-input refusal",
+  "scope": "Sixteen focused Godot/native/Rapier cases, actual Windows ANGLE captures, portable evaluator and pristine extraction",
+  "runtime_policy": "Reuse exact accepted source-matched native and Rapier binaries; no native rebuild or publication",
+  "disposition": "Draft/HOLD; opt-in; owner playfeel and believability pending"
+}

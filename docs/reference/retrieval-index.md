@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; source-backed answers live in the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, status-and-roadmap.md]
 ---
 
@@ -49,6 +49,9 @@ unmerged candidates and dated test evidence are different claims.
 | Does compiling a material make it active in the current Workbench scene? | [Candidate states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions), [current-state register](status-and-roadmap.md) |
 | How do I select Water families and compare their behavior? | [Water Lab](../operations/workbench-water-lab.md), [solver-family policy](../architecture/liquid-solver-family-policy.md) |
 | How do I compose multiple actors, change control source and add equipment? | [Actor procedure](../operations/workbench-actor-composition.md), [composition contract](../systems/workbench-actor-composition.md), [equipment](../systems/workbench-liquid-equipment.md) |
+
+| How do I author an opt-in Procedural NPC / Ambient profile, assign a personality and reopen it? | [Ambient Workbench guide](../operations/ambient-workbench.md); the foundation is accepted through [#775](https://github.com/techrote/cybersand/pull/775), with physical owner acceptance separate. |
+| How do ambient material sensing, timers, capabilities and reusable modules work? | [Ambient source contract](../systems/ambient-actors.md); dated implementation ledgers remain explicit evidence. |
 
 ## Understand cells, physics and presentation
 
@@ -113,7 +116,9 @@ Use separate fixtures for separate questions:
 - [DOCS-RENAISSANCE v1](retrieval-questions-docs-renaissance-v1.json) adds current
   onboarding, authoring, material, status and authority counterexamples.
 - Focused implementation question files remain beside these fixtures; an additive
-  suite does not replace or rewrite a frozen one.
+  suite does not replace or rewrite a frozen one. The accepted
+  [AMBIENT-001 four-question set](retrieval-questions-ambient-001.json) is one such
+  separate source-bound suite.
 - The accepted [33-question CI input](retrieval-questions.json) preserves its
   dated CI closure expectations. The [current CI correction](retrieval-questions-ci-closure-current-v1.json)
   is separate; its newer source facts do not alter the frozen 32 or rewrite the

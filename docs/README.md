@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Audience-oriented routes to current user guides, canonical technical contracts, development procedures and explicitly historical evidence
 canonical-for: []
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [reference/status-and-roadmap.md, reference/retrieval-index.md, operations/local-build-and-validation.md, operations/documentation-maintenance.md]
 ---
 
@@ -34,6 +34,7 @@ necessarily a mode of the ordinary Shared Workbench.
 |---|---|
 | Shared Workbench: generated maps and editable starts | [First Workbench session](operations/workbench-first-session.md) |
 | Materials sandbox and manual interaction recipes | [Materials sandbox guide](MATERIAL_LAB.md) |
+| Opt-in procedural inhabitants | [AMBIENT profiles, personalities and editable examples](operations/ambient-workbench.md); ordinary scene controllers remain unchanged unless selected |
 | Composed actors and the Mixed Actor Workshop | [Actor composition guide](operations/workbench-actor-composition.md) |
 | Player and rig experiments | [Player playground](systems/player-control-playground.md), [physical rigs](systems/physical-actor-rigs.md), [free flight](systems/physical-free-flight.md) |
 | Deepworks material exhibition | [Districts, controls and reset behavior](operations/deepworks-exhibition.md) |
@@ -55,6 +56,7 @@ necessarily a mode of the ordinary Shared Workbench.
 | Inspect materials and test isolated candidates | [Materials Lab authoring](operations/materials-lab-authoring.md) |
 | Compare Water families and configure experiments | [Water Lab](operations/workbench-water-lab.md), [family policy](architecture/liquid-solver-family-policy.md) |
 | Draw through Art and configure a provider | [Art user guide](operations/workbench-art.md), [native batches](systems/workbench-direct-art-batches.md), [provider contract](systems/workbench-art-providers.md) |
+| Assign procedural actor behaviour | [AMBIENT profile authoring](operations/ambient-workbench.md), [module and sensor contract](systems/ambient-actors.md) |
 | Compose actors and use supported equipment | [Actor composition](operations/workbench-actor-composition.md), [liquid equipment](systems/workbench-liquid-equipment.md), [usable contracts](systems/actor-usables.md) |
 | Find material identity and appearance | [Material kernels](systems/materials-and-rule-kernels.md), [building catalogue](systems/building-material-catalogue.md), [visual patterns](systems/material-visual-pattern-library.md) |
 

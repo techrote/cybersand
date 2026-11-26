@@ -703,6 +703,8 @@ static func canonical_actor_numbers(actor: Dictionary) -> void:
 	if actor.has("control"):
 		for key: String in ["version","decision_ticks","usable_index"]:
 			actor.control[key] = int(actor.control[key])
+		if actor.control.has("ambient"):
+			actor.control.ambient = ActorCatalog.AmbientProfile.canonicalize(actor.control.ambient)
 
 
 static func read_named(label: String) -> Dictionary:

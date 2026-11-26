@@ -51,7 +51,7 @@ jobs:
           git rev-parse HEAD > evidence/source-sha.txt
           git rev-parse HEAD^{tree} > evidence/source-tree.txt
           python tools/ci/materialize_lfs.py \
-            --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' \
+            --expected-source='${{ github.event.pull_request.head.sha || github.sha }}' --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so' --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' \
             --output evidence/materialization
           test -s godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           test -s godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
@@ -113,7 +113,7 @@ jobs:
           New-Item -ItemType Directory -Force evidence | Out-Null
           git rev-parse HEAD | Set-Content evidence/source-sha.txt
           git rev-parse 'HEAD^{tree}' | Set-Content evidence/source-tree.txt
-          python tools/ci/materialize_lfs.py --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --output evidence/materialization
+          python tools/ci/materialize_lfs.py --expected-source='${{ github.event.pull_request.head.sha || github.sha }}' --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --output evidence/materialization
           if ($LASTEXITCODE -ne 0) { throw 'LFS materialization failed' }
       - name: Authenticate official Godot 4.7
         shell: pwsh

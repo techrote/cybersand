@@ -155,7 +155,9 @@
     "operations/workbench-painting-and-history.md",
     "operations/workbench-saving.md",
     "operations/workbench-art.md",
-    "operations/showcase-guide.md"
+    "operations/showcase-guide.md",
+    "systems/ambient-actors.md",
+    "operations/ambient-workbench.md"
   ],
   "navigation": [
     "README.md",
@@ -711,6 +713,22 @@
     {
       "path": "research/gentek-80-integration-001.md",
       "reason": "Draft/HOLD integration source reconciliation and dated qualification; not accepted-main or merge authority."
+    },
+    {
+      "path": "research/ambient-001/authoring-ledger.md",
+      "reason": "Dated AMBIENT-001 implementation and qualification evidence; foundation accepted in #775 at67c1413a, while the recorded Draft/HOLD instructions and campaign results retain their original source scope. Current contracts belong to systems/ambient-actors.md and operations/ambient-workbench.md; use the explicit evidence route for these preserved ledgers."
+    },
+    {
+      "path": "research/ambient-001/behaviour-ledger.md",
+      "reason": "Dated AMBIENT-001 implementation and qualification evidence; foundation accepted in #775 at67c1413a, while the recorded Draft/HOLD instructions and campaign results retain their original source scope. Current contracts belong to systems/ambient-actors.md and operations/ambient-workbench.md; use the explicit evidence route for these preserved ledgers."
+    },
+    {
+      "path": "research/ambient-001/mission-ledger.md",
+      "reason": "Dated AMBIENT-001 implementation and qualification evidence; foundation accepted in #775 at67c1413a, while the recorded Draft/HOLD instructions and campaign results retain their original source scope. Current contracts belong to systems/ambient-actors.md and operations/ambient-workbench.md; use the explicit evidence route for these preserved ledgers."
+    },
+    {
+      "path": "research/ambient-001/perception-ledger.md",
+      "reason": "Dated AMBIENT-001 implementation and qualification evidence; foundation accepted in #775 at67c1413a, while the recorded Draft/HOLD instructions and campaign results retain their original source scope. Current contracts belong to systems/ambient-actors.md and operations/ambient-workbench.md; use the explicit evidence route for these preserved ledgers."
     },
     {
       "path": "operations/gentek80-physical-owner-acceptance.md",

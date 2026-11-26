@@ -153,7 +153,11 @@ failed or successful owner evaluation.
 
 Authored sources are `human`, `scripted`, `policy` and `passive`. `scripted` maps
 to the existing session's `demo` producer. The UI calls it **Scripted NPC**, not
-AI. A policy source additionally chooses `fixture` or `external`. The fixture is
+AI. A policy source additionally chooses `fixture`, `external`, or the opt-in
+AMBIENT-001 `ambient` adapter. The latter appears as **Procedural NPC / Ambient**
+and composes validated modules over copied observations; see the
+[ambient contract](ambient-actors.md) and [owner guide](../operations/ambient-workbench.md).
+It uses the existing issued-observation and leased-command path. The fixture is
 a deterministic local test producer that obtains actual issued observations and
 submits the same leased command envelope as an external caller. Selecting
 External Policy does not start an HTTP service, neural model, SLM or LLM.
@@ -299,7 +303,11 @@ The root remains **Setup-v2**. An actor retains `id`, `model`, `hash`,
 }
 ```
 
-All six keys are required when the optional block is present; unknown keys,
+All six keys are required when the optional block is present. The ambient
+candidate additionally permits `ambient`, an authored version-1 profile; the
+`ambient` policy adapter requires it. A retained valid profile may remain attached
+during human handoff. No ephemeral timers, RNG state or command authority enter
+the saved profile. Other unknown keys,
 versions, sources, adapters, nonintegral numeric fields, incompatible items and
 out-of-range cadence refuse. `usable_index: -1` means no starting usable.
 Absent control on valid legacy flyers/barrel uses the established human/passive

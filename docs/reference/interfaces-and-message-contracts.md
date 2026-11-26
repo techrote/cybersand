@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 ---
 
 # Interfaces and message contracts
@@ -32,6 +32,16 @@ Sources: [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd),
 operation-specific receipt/history contracts. The generic GameplayBridge remains
 a planned broader abstraction; these implemented paths are not absent merely
 because the general schema is unfinished.
+
+## Accepted opt-in AMBIENT value schemas
+
+The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
+`ambient-observation/v1` copied environment and authored profile version 1.
+These are local value schemas. Existing physical issued observation/command
+version 2, native material formats and Rapier interfaces remain unchanged.
+`control.source = "policy"`, `control.policy = "ambient"` and the validated
+`control.ambient` profile select the adapter. Unavailable sensor fields remain
+explicitly unavailable; they do not become safe ground or an absent material.
 
 ## Accepted Wave and native failure interfaces
 

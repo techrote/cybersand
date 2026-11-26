@@ -1,0 +1,1683 @@
+{
+	"actors": [
+		{
+			"control": {
+				"ambient": {
+					"description": "A ground roamer drawn to the nearest observed Oil within 50 cells. Water and real ledges interrupt its curiosity; a name does not add flight or immunity.",
+					"id": "oil_moth",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.12,
+								"idle_seconds": 1.5,
+								"jitter": 0.35,
+								"pace": 0.28,
+								"turn_rate": 2.0,
+								"turn_seconds": 4.0
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.35
+						},
+						{
+							"enabled": true,
+							"id": "seek_material",
+							"params": {
+								"dwell_seconds": 1.6,
+								"effort": 0.7,
+								"hysteresis": 2.0,
+								"material_id": 16,
+								"pace": 0.5,
+								"radius": 50,
+								"reacquire_seconds": 0.5,
+								"standoff": 10.0
+							},
+							"priority": 30,
+							"type": "seek_material",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 34.0,
+								"exit_distance": 46.0,
+								"material_id": 3,
+								"pace": 0.62,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.3
+						},
+						{
+							"enabled": true,
+							"id": "avoid_ledge",
+							"params": {
+								"allowed_drop": 8.0,
+								"duration": 10.0,
+								"effort": 0.75,
+								"lookahead": 12.0,
+								"pace": 0.4,
+								"rearm_seconds": 0.5
+							},
+							"priority": 100,
+							"type": "avoid_ledge",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 1.5,
+								"effort": 0.8,
+								"margin": 16.0,
+								"pace": 0.6,
+								"release_margin": 24.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "escape_obstruction",
+							"params": {
+								"cooldown": 2.0,
+								"duration": 1.5,
+								"effort": 0.9,
+								"jump": false,
+								"min_progress": 1.0,
+								"pace": 0.5,
+								"stall_seconds": 1.0,
+								"wall_distance": 10.0
+							},
+							"priority": 85,
+							"type": "escape_obstruction",
+							"weight": 1.0
+						}
+					],
+					"name": "Oil Moth",
+					"seed": 1722,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:a87408991457e9564d55fb535f1f1c727ad858a6bab89d7ec8346eb695cbe57d",
+			"id": 1,
+			"model": "runner",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				146.0,
+				412.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "Slow, hesitant ground movement. Water causes an early retreat, and a ledge starts one ten-second retreat whose direction remains latched.",
+					"id": "shy_crawler",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.55,
+								"idle_probability": 0.28,
+								"idle_seconds": 2.2,
+								"jitter": 0.35,
+								"pace": 0.18,
+								"turn_rate": 2.0,
+								"turn_seconds": 5.0
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.5
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 43.0,
+								"exit_distance": 49.0,
+								"material_id": 3,
+								"pace": 0.5,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 2.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_ledge",
+							"params": {
+								"allowed_drop": 4.0,
+								"duration": 10.0,
+								"effort": 0.75,
+								"lookahead": 16.0,
+								"pace": 0.32,
+								"rearm_seconds": 0.5
+							},
+							"priority": 100,
+							"type": "avoid_ledge",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 1.5,
+								"effort": 0.8,
+								"margin": 24.0,
+								"pace": 0.35,
+								"release_margin": 36.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "escape_obstruction",
+							"params": {
+								"cooldown": 3.0,
+								"duration": 2.0,
+								"effort": 0.9,
+								"jump": false,
+								"min_progress": 1.0,
+								"pace": 0.32,
+								"stall_seconds": 1.5,
+								"wall_distance": 10.0
+							},
+							"priority": 85,
+							"type": "escape_obstruction",
+							"weight": 1.0
+						}
+					],
+					"name": "Shy Crawler",
+					"seed": 2723,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:d6d568b2ed7163dc056037d2080b0697537a6647088f967e1ba6d040937bfa86",
+			"id": 2,
+			"model": "crawler",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				366.0,
+				410.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "An unhurried local worker. Short activity bouts alternate with longer rests, returning toward its placement and keeping modest separation from other actors.",
+					"id": "idle_mechanic",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.1,
+								"idle_seconds": 1.5,
+								"jitter": 0.35,
+								"pace": 0.2,
+								"turn_rate": 2.0,
+								"turn_seconds": 6.0
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.6
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.28,
+								"radius": 48.0,
+								"release_radius": 20.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 1.5
+						},
+						{
+							"enabled": true,
+							"id": "rest",
+							"params": {
+								"active_seconds": 7.0,
+								"jitter": 0.4,
+								"rest_seconds": 5.0
+							},
+							"priority": 60,
+							"type": "rest",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.25,
+								"radius": 26.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 1.1
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 28.0,
+								"exit_distance": 40.0,
+								"material_id": 3,
+								"pace": 0.4,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 1.5,
+								"effort": 0.8,
+								"margin": 16.0,
+								"pace": 0.35,
+								"release_margin": 24.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "escape_obstruction",
+							"params": {
+								"cooldown": 2.0,
+								"duration": 1.3,
+								"effort": 0.9,
+								"jump": false,
+								"min_progress": 1.0,
+								"pace": 0.35,
+								"stall_seconds": 1.0,
+								"wall_distance": 10.0
+							},
+							"priority": 85,
+							"type": "escape_obstruction",
+							"weight": 1.0
+						}
+					],
+					"name": "Idle Mechanic",
+					"seed": 4724,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:de18151c7793e67a4a533c92794f914373aa03816c1acd26cdbdd6f36192cae5",
+			"id": 3,
+			"model": "monowheel",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				468.0,
+				410.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "A more active ground surveyor using the same wander, Oil interest and recovery modules. Short pauses and a home radius keep its exploration local.",
+					"id": "curious_surveyor",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.08,
+								"idle_seconds": 1.5,
+								"jitter": 0.35,
+								"pace": 0.48,
+								"turn_rate": 2.0,
+								"turn_seconds": 2.3
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.8
+						},
+						{
+							"enabled": true,
+							"id": "seek_material",
+							"params": {
+								"dwell_seconds": 2.5,
+								"effort": 0.7,
+								"hysteresis": 2.0,
+								"material_id": 16,
+								"pace": 0.4,
+								"radius": 50,
+								"reacquire_seconds": 0.5,
+								"standoff": 12.0
+							},
+							"priority": 30,
+							"type": "seek_material",
+							"weight": 0.65
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 25.0,
+								"exit_distance": 38.0,
+								"material_id": 3,
+								"pace": 0.7,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_ledge",
+							"params": {
+								"allowed_drop": 8.0,
+								"duration": 4.0,
+								"effort": 0.75,
+								"lookahead": 12.0,
+								"pace": 0.5,
+								"rearm_seconds": 0.5
+							},
+							"priority": 100,
+							"type": "avoid_ledge",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.5,
+								"radius": 110.0,
+								"release_radius": 55.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 1.2
+						},
+						{
+							"enabled": true,
+							"id": "rest",
+							"params": {
+								"active_seconds": 13.0,
+								"jitter": 0.25,
+								"rest_seconds": 1.2
+							},
+							"priority": 60,
+							"type": "rest",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 1.5,
+								"effort": 0.8,
+								"margin": 16.0,
+								"pace": 0.6,
+								"release_margin": 24.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "escape_obstruction",
+							"params": {
+								"cooldown": 2.0,
+								"duration": 1.5,
+								"effort": 0.9,
+								"jump": false,
+								"min_progress": 1.0,
+								"pace": 0.55,
+								"stall_seconds": 1.2,
+								"wall_distance": 10.0
+							},
+							"priority": 85,
+							"type": "escape_obstruction",
+							"weight": 1.0
+						}
+					],
+					"name": "Curious Surveyor",
+					"seed": 3725,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:a87408991457e9564d55fb535f1f1c727ad858a6bab89d7ec8346eb695cbe57d",
+			"id": 4,
+			"model": "runner",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				566.0,
+				412.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "A sociable ground roamer attracted to nearby compatible actors, with a comfortable gap and gentle crowd separation. Each authored actor retains its own seed stream.",
+					"id": "social_roamer",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.12,
+								"idle_seconds": 1.5,
+								"jitter": 0.35,
+								"pace": 0.3,
+								"turn_rate": 2.0,
+								"turn_seconds": 4.5
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.3
+						},
+						{
+							"enabled": true,
+							"id": "follow_actor",
+							"params": {
+								"effort": 0.6,
+								"hysteresis": 6.0,
+								"pace": 0.4,
+								"radius": 96.0,
+								"separation": 35.0
+							},
+							"priority": 25,
+							"type": "follow_actor",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.45,
+								"radius": 25.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 1.5
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.5,
+								"radius": 180.0,
+								"release_radius": 100.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 0.6
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 30.0,
+								"exit_distance": 44.0,
+								"material_id": 3,
+								"pace": 0.7,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_ledge",
+							"params": {
+								"allowed_drop": 8.0,
+								"duration": 6.0,
+								"effort": 0.75,
+								"lookahead": 12.0,
+								"pace": 0.4,
+								"rearm_seconds": 0.5
+							},
+							"priority": 100,
+							"type": "avoid_ledge",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 1.5,
+								"effort": 0.8,
+								"margin": 16.0,
+								"pace": 0.6,
+								"release_margin": 24.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "escape_obstruction",
+							"params": {
+								"cooldown": 2.0,
+								"duration": 1.5,
+								"effort": 0.9,
+								"jump": false,
+								"min_progress": 1.0,
+								"pace": 0.45,
+								"stall_seconds": 1.0,
+								"wall_distance": 10.0
+							},
+							"priority": 85,
+							"type": "escape_obstruction",
+							"weight": 1.0
+						}
+					],
+					"name": "Social Roamer",
+					"seed": 6726,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:a87408991457e9564d55fb535f1f1c727ad858a6bab89d7ec8346eb695cbe57d",
+			"id": 5,
+			"model": "runner",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				626.0,
+				412.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "A sociable ground roamer attracted to nearby compatible actors, with a comfortable gap and gentle crowd separation. Each authored actor retains its own seed stream.",
+					"id": "social_roamer",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.12,
+								"idle_seconds": 1.5,
+								"jitter": 0.35,
+								"pace": 0.3,
+								"turn_rate": 2.0,
+								"turn_seconds": 4.5
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.3
+						},
+						{
+							"enabled": true,
+							"id": "follow_actor",
+							"params": {
+								"effort": 0.6,
+								"hysteresis": 6.0,
+								"pace": 0.4,
+								"radius": 96.0,
+								"separation": 35.0
+							},
+							"priority": 25,
+							"type": "follow_actor",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.45,
+								"radius": 25.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 1.5
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.5,
+								"radius": 180.0,
+								"release_radius": 100.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 0.6
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 30.0,
+								"exit_distance": 44.0,
+								"material_id": 3,
+								"pace": 0.7,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_ledge",
+							"params": {
+								"allowed_drop": 8.0,
+								"duration": 6.0,
+								"effort": 0.75,
+								"lookahead": 12.0,
+								"pace": 0.4,
+								"rearm_seconds": 0.5
+							},
+							"priority": 100,
+							"type": "avoid_ledge",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 1.5,
+								"effort": 0.8,
+								"margin": 16.0,
+								"pace": 0.6,
+								"release_margin": 24.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "escape_obstruction",
+							"params": {
+								"cooldown": 2.0,
+								"duration": 1.5,
+								"effort": 0.9,
+								"jump": false,
+								"min_progress": 1.0,
+								"pace": 0.45,
+								"stall_seconds": 1.0,
+								"wall_distance": 10.0
+							},
+							"priority": 85,
+							"type": "escape_obstruction",
+							"weight": 1.0
+						}
+					],
+					"name": "Social Roamer",
+					"seed": 6727,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:d6d568b2ed7163dc056037d2080b0697537a6647088f967e1ba6d040937bfa86",
+			"id": 6,
+			"model": "crawler",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				858.0,
+				410.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "For supported two-axis 4LY flight rigs. Seeded drifting, home-relative altitude and boundary retreat use the rig's existing velocity controller; no ground ledge reflex is assigned.",
+					"id": "drifting_flyer",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.18,
+								"idle_seconds": 1.8,
+								"jitter": 0.5,
+								"pace": 0.28,
+								"turn_rate": 0.6,
+								"turn_seconds": 3.8
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.75
+						},
+						{
+							"enabled": true,
+							"id": "maintain_altitude",
+							"params": {
+								"effort": 0.7,
+								"offset": 0.0,
+								"pace": 0.3,
+								"tolerance": 12.0
+							},
+							"priority": 25,
+							"type": "maintain_altitude",
+							"weight": 1.2
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.35,
+								"radius": 150.0,
+								"release_radius": 85.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 0.7
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 26.0,
+								"exit_distance": 42.0,
+								"material_id": 3,
+								"pace": 0.45,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 2.0,
+								"effort": 0.8,
+								"margin": 28.0,
+								"pace": 0.45,
+								"release_margin": 45.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.3,
+								"radius": 32.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 0.6
+						}
+					],
+					"name": "Drifting Flyer",
+					"seed": 5728,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:dffa50697ad7a09f9a257a6463e354b1c302f0744901096ff9f883b093090657",
+			"id": 7,
+			"model": "4ly_trainer",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				226.0,
+				294.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "For supported two-axis 4LY flight rigs. Seeded drifting, home-relative altitude and boundary retreat use the rig's existing velocity controller; no ground ledge reflex is assigned.",
+					"id": "drifting_flyer",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.18,
+								"idle_seconds": 1.8,
+								"jitter": 0.5,
+								"pace": 0.28,
+								"turn_rate": 0.6,
+								"turn_seconds": 3.8
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.75
+						},
+						{
+							"enabled": true,
+							"id": "maintain_altitude",
+							"params": {
+								"effort": 0.7,
+								"offset": 0.0,
+								"pace": 0.3,
+								"tolerance": 12.0
+							},
+							"priority": 25,
+							"type": "maintain_altitude",
+							"weight": 1.2
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.35,
+								"radius": 150.0,
+								"release_radius": 85.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 0.7
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 26.0,
+								"exit_distance": 42.0,
+								"material_id": 3,
+								"pace": 0.45,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 2.0,
+								"effort": 0.8,
+								"margin": 28.0,
+								"pace": 0.45,
+								"release_margin": 45.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.3,
+								"radius": 32.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 0.6
+						}
+					],
+					"name": "Drifting Flyer",
+					"seed": 5729,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:9e9a6cbcf6c30c656a9971f6ef63e2723f129038dd371d28ea42fda25714020e",
+			"id": 8,
+			"model": "4ly_drifter",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				794.0,
+				280.0
+			]
+		}
+	],
+	"brush": 8,
+	"edits": [
+		[
+			0,
+			436,
+			1024,
+			12,
+			58
+		],
+		[
+			0,
+			436,
+			1024,
+			3,
+			62
+		],
+		[
+			0,
+			50,
+			8,
+			386,
+			58
+		],
+		[
+			1016,
+			50,
+			8,
+			386,
+			58
+		],
+		[
+			24,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			36,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			88,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			100,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			152,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			164,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			216,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			228,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			280,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			292,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			344,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			356,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			408,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			420,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			472,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			484,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			536,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			548,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			600,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			612,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			664,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			676,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			728,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			740,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			792,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			804,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			856,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			868,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			920,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			932,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			984,
+			448,
+			8,
+			28,
+			62
+		],
+		[
+			996,
+			452,
+			22,
+			3,
+			79
+		],
+		[
+			48,
+			210,
+			928,
+			10,
+			62
+		],
+		[
+			48,
+			220,
+			10,
+			216,
+			58
+		],
+		[
+			966,
+			220,
+			10,
+			216,
+			58
+		],
+		[
+			90,
+			82,
+			144,
+			8,
+			57
+		],
+		[
+			90,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			226,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			102,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			174,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			102,
+			143,
+			44,
+			3,
+			77
+		],
+		[
+			174,
+			143,
+			44,
+			3,
+			79
+		],
+		[
+			150,
+			90,
+			24,
+			8,
+			62
+		],
+		[
+			296,
+			82,
+			144,
+			8,
+			57
+		],
+		[
+			296,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			432,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			308,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			380,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			308,
+			143,
+			44,
+			3,
+			77
+		],
+		[
+			380,
+			143,
+			44,
+			3,
+			79
+		],
+		[
+			356,
+			90,
+			24,
+			8,
+			62
+		],
+		[
+			502,
+			82,
+			144,
+			8,
+			57
+		],
+		[
+			502,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			638,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			514,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			586,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			514,
+			143,
+			44,
+			3,
+			77
+		],
+		[
+			586,
+			143,
+			44,
+			3,
+			79
+		],
+		[
+			562,
+			90,
+			24,
+			8,
+			62
+		],
+		[
+			708,
+			82,
+			144,
+			8,
+			57
+		],
+		[
+			708,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			844,
+			90,
+			8,
+			120,
+			57
+		],
+		[
+			720,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			792,
+			104,
+			44,
+			30,
+			71
+		],
+		[
+			720,
+			143,
+			44,
+			3,
+			77
+		],
+		[
+			792,
+			143,
+			44,
+			3,
+			79
+		],
+		[
+			768,
+			90,
+			24,
+			8,
+			62
+		],
+		[
+			256,
+			428,
+			3,
+			8,
+			62
+		],
+		[
+			289,
+			428,
+			3,
+			8,
+			62
+		],
+		[
+			259,
+			431,
+			30,
+			5,
+			16
+		],
+		[
+			740,
+			428,
+			3,
+			8,
+			62
+		],
+		[
+			773,
+			428,
+			3,
+			8,
+			62
+		],
+		[
+			743,
+			431,
+			30,
+			5,
+			3
+		]
+	],
+	"extent": [
+		1024,
+		512
+	],
+	"fire": false,
+	"liquid_policy": [
+		1279479895,
+		1,
+		1,
+		-2102023270,
+		1854385793,
+		1886533889,
+		84225930,
+		1522979054,
+		582168604,
+		-646713377,
+		-939672877,
+		868616440,
+		1977866421,
+		1930370363,
+		-2119873090,
+		-6981196,
+		870342995,
+		1443932351,
+		-1569267145,
+		11,
+		3,
+		1,
+		0,
+		8,
+		2,
+		0,
+		12,
+		2,
+		0,
+		16,
+		2,
+		0,
+		20,
+		2,
+		0,
+		21,
+		2,
+		0,
+		24,
+		2,
+		0,
+		30,
+		2,
+		0,
+		32,
+		2,
+		0,
+		33,
+		2,
+		0,
+		36,
+		2,
+		0,
+		0,
+		0
+	],
+	"material": 16,
+	"next_id": 9,
+	"normalize": false,
+	"response": "LA-SELECTIVE",
+	"rule_radius": 2,
+	"selected": 1,
+	"source": [],
+	"version": 2
+}

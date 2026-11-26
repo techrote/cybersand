@@ -1,0 +1,2413 @@
+{
+  "budget_ticks": 1800,
+  "campaigns": [
+    {
+      "accepted_commands": 300,
+      "action_x_sign_changes": 11,
+      "active_intervals": 299,
+      "admitted_profile": {
+        "description": "A ground roamer drawn to the nearest observed Oil within 50 cells. Water and real ledges interrupt its curiosity; a name does not add flight or immunity.",
+        "id": "oil_moth",
+        "modules": [
+          {
+            "enabled": true,
+            "id": "wander",
+            "params": {
+              "effort": 0.65,
+              "idle_probability": 0.12,
+              "idle_seconds": 1.5,
+              "jitter": 0.35,
+              "pace": 0.28,
+              "turn_rate": 2.0,
+              "turn_seconds": 4.0
+            },
+            "priority": 10,
+            "type": "wander",
+            "weight": 0.35
+          },
+          {
+            "enabled": true,
+            "id": "seek_material",
+            "params": {
+              "dwell_seconds": 1.6,
+              "effort": 0.7,
+              "hysteresis": 2.0,
+              "material_id": 16,
+              "pace": 0.5,
+              "radius": 50,
+              "reacquire_seconds": 0.5,
+              "standoff": 10.0
+            },
+            "priority": 30,
+            "type": "seek_material",
+            "weight": 1.4
+          },
+          {
+            "enabled": true,
+            "id": "avoid_material",
+            "params": {
+              "effort": 0.85,
+              "enter_distance": 34.0,
+              "exit_distance": 46.0,
+              "material_id": 3,
+              "pace": 0.62,
+              "radius": 50
+            },
+            "priority": 80,
+            "type": "avoid_material",
+            "weight": 1.3
+          },
+          {
+            "enabled": true,
+            "id": "avoid_ledge",
+            "params": {
+              "allowed_drop": 8.0,
+              "duration": 10.0,
+              "effort": 0.75,
+              "lookahead": 12.0,
+              "pace": 0.4,
+              "rearm_seconds": 0.5
+            },
+            "priority": 100,
+            "type": "avoid_ledge",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_boundary",
+            "params": {
+              "duration": 1.5,
+              "effort": 0.8,
+              "margin": 16.0,
+              "pace": 0.6,
+              "release_margin": 24.0
+            },
+            "priority": 90,
+            "type": "avoid_boundary",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "escape_obstruction",
+            "params": {
+              "cooldown": 2.0,
+              "duration": 1.5,
+              "effort": 0.9,
+              "jump": false,
+              "min_progress": 1.0,
+              "pace": 0.5,
+              "stall_seconds": 1.0,
+              "wall_distance": 10.0
+            },
+            "priority": 85,
+            "type": "escape_obstruction",
+            "weight": 1.0
+          }
+        ],
+        "name": "Oil Moth",
+        "seed": 1701,
+        "shared_seed": false,
+        "version": 1
+      },
+      "canvas_center_incidents": 0,
+      "completed_rapier_ticks": 1800,
+      "completed_seconds": 29.9999999999996,
+      "consecutive_selected_override_intervals": [
+        {
+          "duration_seconds": 1.5,
+          "end_seconds": 5.09999999999999,
+          "override": "escape_obstruction",
+          "sample_count": 15,
+          "start_seconds": 3.59999999999999,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 1.5000000000000693,
+          "end_seconds": 9.70000000000006,
+          "override": "escape_obstruction",
+          "sample_count": 15,
+          "start_seconds": 8.19999999999999,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 1.5000000000001013,
+          "end_seconds": 14.9000000000003,
+          "override": "escape_obstruction",
+          "sample_count": 15,
+          "start_seconds": 13.4000000000002,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 1.4999999999999005,
+          "end_seconds": 20.1000000000001,
+          "override": "escape_obstruction",
+          "sample_count": 15,
+          "start_seconds": 18.6000000000002,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 1.4999999999999005,
+          "end_seconds": 25.2999999999998,
+          "override": "escape_obstruction",
+          "sample_count": 15,
+          "start_seconds": 23.7999999999999,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.7999999999999972,
+          "end_seconds": 29.9999999999996,
+          "override": "escape_obstruction",
+          "sample_count": 8,
+          "start_seconds": 29.1999999999996,
+          "window_truncated": true
+        }
+      ],
+      "decision_usec_max": 1580,
+      "derived": {
+        "intentional_idle_share": 0.0,
+        "net_displacement_cells": 22.958451804237257,
+        "neutral_move_share": 0.0,
+        "selected_rest_share": 0.0,
+        "stalled_active_share": 0.2140468227424749,
+        "x_range_cells": 35.49697875976602
+      },
+      "elapsed_usec": 4529399,
+      "engine_last_decision_seconds": 29.8999999999996,
+      "epoch": 11,
+      "final_pose": {
+        "angular_velocity": -1.07053232192993,
+        "charge": 0.0,
+        "cooldown": 0.0,
+        "energy": 1.0,
+        "fault": "",
+        "grounded": true,
+        "parts": [
+          {
+            "angular_velocity": -1.07053232192993,
+            "detached": false,
+            "id": "chassis",
+            "index": 0,
+            "mass": 1.35000002384186,
+            "native_mask": "matching_rectangle",
+            "position": [
+              236.004989624023,
+              191.459976196289
+            ],
+            "rotation": -0.0437608882784843,
+            "shape": "rectangle",
+            "size": [
+              6.0,
+              8.0
+            ],
+            "velocity": [
+              -25.2534999847412,
+              -2.65861368179321
+            ]
+          },
+          {
+            "angular_velocity": -2.56247544288635,
+            "detached": false,
+            "id": "leg_-1",
+            "index": 1,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              233.946090698242,
+              196.432891845703
+            ],
+            "rotation": -0.740287244319916,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              -6.72044229507446,
+              -3.47960567474365
+            ]
+          },
+          {
+            "angular_velocity": -1.50066995620728,
+            "detached": false,
+            "id": "foot_-1",
+            "index": 2,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              234.340942382812,
+              198.526519775391
+            ],
+            "rotation": -0.262099236249924,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              -2.09230732917786,
+              -2.82554459571838
+            ]
+          },
+          {
+            "angular_velocity": -5.57555627822876,
+            "detached": false,
+            "id": "leg_1",
+            "index": 3,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              239.421142578125,
+              196.714782714844
+            ],
+            "rotation": 0.304209411144257,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              -8.21946716308594,
+              -3.82453227043152
+            ]
+          },
+          {
+            "angular_velocity": 2.21705007553101,
+            "detached": false,
+            "id": "foot_1",
+            "index": 4,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              240.12077331543,
+              198.992935180664
+            ],
+            "rotation": -0.01273931004107,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              2.29695653915405,
+              3.27542066574097
+            ]
+          },
+          {
+            "angular_velocity": -3.74203658103943,
+            "detached": false,
+            "id": "equipment",
+            "index": 5,
+            "mass": 0.119999997317791,
+            "native_mask": "matching_rectangle",
+            "position": [
+              237.626373291016,
+              193.533020019531
+            ],
+            "rotation": 2.16555166244507,
+            "shape": "rectangle",
+            "size": [
+              5.0,
+              2.5
+            ],
+            "velocity": [
+              -8.09320163726807,
+              -1.25249242782593
+            ]
+          }
+        ],
+        "position": [
+          236.004989624023,
+          191.459976196289
+        ],
+        "rotation": -0.0437608882784843,
+        "velocity": [
+          -25.2534999847412,
+          -2.65861368179321
+        ]
+      },
+      "first": [
+        220.0,
+        175.0
+      ],
+      "ground_support_loss_events": 0,
+      "grounded_steps": 1774,
+      "id": "oil_moth",
+      "independent_evaluator": {
+        "available": true,
+        "backend": "native-phased",
+        "cache_bytes": 262144,
+        "current_tick": 1794,
+        "extent": [
+          512,
+          256
+        ],
+        "ignored_older_publications": 0,
+        "ingest_usec_max": 137,
+        "ingest_usec_total": 137,
+        "ingestions": 1,
+        "maximum_materials": 8,
+        "maximum_radius_cells": 96,
+        "maximum_samples_per_query": 2401,
+        "owner_epoch": 11,
+        "owner_snapshot_serial": 1795,
+        "patches": 1,
+        "publication_serial": 1,
+        "queries": 300,
+        "query_samples": 147240,
+        "query_usec_max": 973,
+        "query_usec_total": 115061,
+        "reason": "",
+        "revision": 2,
+        "sample_spacing_cells": 4,
+        "sample_tick": 0,
+        "source_bytes": 262144,
+        "version": "ambient-perception/v1",
+        "world_generation": 1
+      },
+      "initial_material_payload": {
+        "bytes": 262144,
+        "channels": 2,
+        "full_refresh": true,
+        "native_tick": 0,
+        "rectangles": [
+          0,
+          0,
+          512,
+          256,
+          0,
+          1024
+        ],
+        "sha256": "a59d5c958f02b03e1b8e0739e6dbf82050b05134167893615adcce485f2753aa",
+        "world_revision": 2
+      },
+      "initial_pose": {
+        "angular_velocity": 0.0,
+        "charge": 0.0,
+        "cooldown": 0.0,
+        "energy": 1.0,
+        "fault": "",
+        "grounded": false,
+        "parts": [
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "chassis",
+            "index": 0,
+            "mass": 1.35000002384186,
+            "native_mask": "matching_rectangle",
+            "position": [
+              220.0,
+              175.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              6.0,
+              8.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "leg_-1",
+            "index": 1,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              216.399993896484,
+              180.5
+            ],
+            "rotation": -0.180000007152557,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "foot_-1",
+            "index": 2,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              215.399993896484,
+              183.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "leg_1",
+            "index": 3,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              223.600006103516,
+              180.5
+            ],
+            "rotation": 0.180000007152557,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "foot_1",
+            "index": 4,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              224.600006103516,
+              183.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "equipment",
+            "index": 5,
+            "mass": 0.119999997317791,
+            "native_mask": "matching_rectangle",
+            "position": [
+              225.5,
+              175.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              5.0,
+              2.5
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "position": [
+          220.0,
+          175.0
+        ],
+        "rotation": 0.0,
+        "velocity": [
+          0.0,
+          0.0
+        ]
+      },
+      "instance_id": 100,
+      "intent_x_sign_changes": 11,
+      "intentional_idle_decisions": 0,
+      "last": [
+        236.004989624023,
+        191.459976196289
+      ],
+      "last_energy": 1.0,
+      "materials": {
+        "16": {
+          "absent_observed": 0,
+          "last_distance": 26.097037358419,
+          "maximum_distance": 47.8173608640209,
+          "minimum_distance": 11.2977920940851,
+          "present": 300,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 242,
+          "last_distance": 48.8177238922056,
+          "maximum_distance": 49.7450899547822,
+          "minimum_distance": 41.430025603231,
+          "present": 58,
+          "unavailable": 0
+        }
+      },
+      "max_x": 253.327835083008,
+      "maximum_energy": 1.0,
+      "min_x": 217.830856323242,
+      "minimum_energy": 1.0,
+      "model": "runner",
+      "move_active_decisions": 300,
+      "native_masks": 6,
+      "native_ticks": 1800,
+      "neutral_move_decisions": 0,
+      "observed_decisions": 300,
+      "original_preset": {
+        "description": "A ground roamer drawn to the nearest observed Oil within 50 cells. Water and real ledges interrupt its curiosity; a name does not add flight or immunity.",
+        "id": "oil_moth",
+        "modules": [
+          {
+            "enabled": true,
+            "id": "wander",
+            "params": {
+              "effort": 0.65,
+              "idle_probability": 0.12,
+              "idle_seconds": 1.5,
+              "jitter": 0.35,
+              "pace": 0.28,
+              "turn_rate": 2.0,
+              "turn_seconds": 4.0
+            },
+            "priority": 10,
+            "type": "wander",
+            "weight": 0.35
+          },
+          {
+            "enabled": true,
+            "id": "seek_material",
+            "params": {
+              "dwell_seconds": 1.6,
+              "effort": 0.7,
+              "hysteresis": 2.0,
+              "material_id": 16,
+              "pace": 0.5,
+              "radius": 50,
+              "reacquire_seconds": 0.5,
+              "standoff": 10.0
+            },
+            "priority": 30,
+            "type": "seek_material",
+            "weight": 1.4
+          },
+          {
+            "enabled": true,
+            "id": "avoid_material",
+            "params": {
+              "effort": 0.85,
+              "enter_distance": 34.0,
+              "exit_distance": 46.0,
+              "material_id": 3,
+              "pace": 0.62,
+              "radius": 50
+            },
+            "priority": 80,
+            "type": "avoid_material",
+            "weight": 1.3
+          },
+          {
+            "enabled": true,
+            "id": "avoid_ledge",
+            "params": {
+              "allowed_drop": 8.0,
+              "duration": 10.0,
+              "effort": 0.75,
+              "lookahead": 12.0,
+              "pace": 0.4,
+              "rearm_seconds": 0.5
+            },
+            "priority": 100,
+            "type": "avoid_ledge",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_boundary",
+            "params": {
+              "duration": 1.5,
+              "effort": 0.8,
+              "margin": 16.0,
+              "pace": 0.6,
+              "release_margin": 24.0
+            },
+            "priority": 90,
+            "type": "avoid_boundary",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "escape_obstruction",
+            "params": {
+              "cooldown": 2.0,
+              "duration": 1.5,
+              "effort": 0.9,
+              "jump": false,
+              "min_progress": 1.0,
+              "pace": 0.5,
+              "stall_seconds": 1.0,
+              "wall_distance": 10.0
+            },
+            "priority": 85,
+            "type": "escape_obstruction",
+            "weight": 1.0
+          }
+        ],
+        "name": "Oil Moth",
+        "seed": 1701,
+        "shared_seed": false,
+        "version": 1
+      },
+      "overrides": {
+        "escape_obstruction": 83
+      },
+      "perception": {
+        "available": true,
+        "backend": "native-phased",
+        "cache_bytes": 262144,
+        "current_tick": 1794,
+        "extent": [
+          512,
+          256
+        ],
+        "ignored_older_publications": 0,
+        "ingest_usec_max": 129,
+        "ingest_usec_total": 129,
+        "ingestions": 1,
+        "maximum_materials": 8,
+        "maximum_radius_cells": 96,
+        "maximum_samples_per_query": 2401,
+        "owner_epoch": 11,
+        "owner_snapshot_serial": 1795,
+        "patches": 1,
+        "publication_serial": 1,
+        "queries": 300,
+        "query_samples": 147240,
+        "query_usec_max": 907,
+        "query_usec_total": 118570,
+        "reason": "",
+        "revision": 2,
+        "sample_spacing_cells": 4,
+        "sample_tick": 0,
+        "source_bytes": 262144,
+        "version": "ambient-perception/v1",
+        "world_generation": 1
+      },
+      "physical_parts": 6,
+      "physical_path_cells": 443.928673828021,
+      "physical_path_during_selected_rest": 0.0,
+      "rejected_commands": 0,
+      "resource_observations": 300,
+      "resource_unavailable": 0,
+      "rest_candidate_decisions": 0,
+      "rest_completed_episodes": 0,
+      "rest_entries": 0,
+      "rest_episodes": [],
+      "rest_exits": 0,
+      "rest_to_active_resumptions": 0,
+      "resume_events": [],
+      "run_id": "e42470559c3c683409f1dccbd9c31548",
+      "selected_rest_decisions": 0,
+      "sensor_usec_max": 1672,
+      "session_ticks": 1800,
+      "stalled_active_intervals": 64,
+      "total_decision_usec": 69578,
+      "wander_idle_candidates": 0
+    },
+    {
+      "accepted_commands": 300,
+      "action_x_sign_changes": 18,
+      "active_intervals": 277,
+      "admitted_profile": {
+        "description": "Slow, hesitant ground movement. Water causes an early retreat, and a ledge starts one ten-second retreat whose direction remains latched.",
+        "id": "shy_crawler",
+        "modules": [
+          {
+            "enabled": true,
+            "id": "wander",
+            "params": {
+              "effort": 0.55,
+              "idle_probability": 0.28,
+              "idle_seconds": 2.2,
+              "jitter": 0.35,
+              "pace": 0.18,
+              "turn_rate": 2.0,
+              "turn_seconds": 5.0
+            },
+            "priority": 10,
+            "type": "wander",
+            "weight": 0.5
+          },
+          {
+            "enabled": true,
+            "id": "avoid_material",
+            "params": {
+              "effort": 0.85,
+              "enter_distance": 43.0,
+              "exit_distance": 49.0,
+              "material_id": 3,
+              "pace": 0.5,
+              "radius": 50
+            },
+            "priority": 80,
+            "type": "avoid_material",
+            "weight": 2.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_ledge",
+            "params": {
+              "allowed_drop": 4.0,
+              "duration": 10.0,
+              "effort": 0.75,
+              "lookahead": 16.0,
+              "pace": 0.32,
+              "rearm_seconds": 0.5
+            },
+            "priority": 100,
+            "type": "avoid_ledge",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_boundary",
+            "params": {
+              "duration": 1.5,
+              "effort": 0.8,
+              "margin": 24.0,
+              "pace": 0.35,
+              "release_margin": 36.0
+            },
+            "priority": 90,
+            "type": "avoid_boundary",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "escape_obstruction",
+            "params": {
+              "cooldown": 3.0,
+              "duration": 2.0,
+              "effort": 0.9,
+              "jump": false,
+              "min_progress": 1.0,
+              "pace": 0.32,
+              "stall_seconds": 1.5,
+              "wall_distance": 10.0
+            },
+            "priority": 85,
+            "type": "escape_obstruction",
+            "weight": 1.0
+          }
+        ],
+        "name": "Shy Crawler",
+        "seed": 1701,
+        "shared_seed": false,
+        "version": 1
+      },
+      "canvas_center_incidents": 0,
+      "completed_rapier_ticks": 1800,
+      "completed_seconds": 29.9999999999996,
+      "consecutive_selected_override_intervals": [
+        {
+          "duration_seconds": 2.000000000000119,
+          "end_seconds": 10.1000000000001,
+          "override": "escape_obstruction",
+          "sample_count": 20,
+          "start_seconds": 8.09999999999998,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.40000000000009983,
+          "end_seconds": 13.8000000000003,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 13.4000000000002,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.40000000000009983,
+          "end_seconds": 15.9000000000004,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 15.5000000000003,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.3999999999999986,
+          "end_seconds": 18.0000000000003,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 17.6000000000003,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.39999999999990266,
+          "end_seconds": 20.1000000000001,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 19.7000000000002,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.40000000000000213,
+          "end_seconds": 22.3,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 21.9,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.3999999999999986,
+          "end_seconds": 24.3999999999999,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 23.9999999999999,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.40000000000000213,
+          "end_seconds": 26.4999999999998,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 26.0999999999998,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.40000000000000213,
+          "end_seconds": 28.4999999999997,
+          "override": "avoid_material",
+          "sample_count": 4,
+          "start_seconds": 28.0999999999997,
+          "window_truncated": false
+        }
+      ],
+      "decision_usec_max": 590,
+      "derived": {
+        "intentional_idle_share": 0.07333333333333333,
+        "net_displacement_cells": 20.641586385246057,
+        "neutral_move_share": 0.07666666666666666,
+        "selected_rest_share": 0.0,
+        "stalled_active_share": 0.07581227436823104,
+        "x_range_cells": 34.438232421875
+      },
+      "elapsed_usec": 4135117,
+      "engine_last_decision_seconds": 29.8999999999996,
+      "epoch": 11,
+      "final_pose": {
+        "angular_velocity": 0.00410018488764763,
+        "charge": 0.0,
+        "cooldown": 0.0,
+        "energy": 1.0,
+        "fault": "",
+        "grounded": true,
+        "parts": [
+          {
+            "angular_velocity": 0.00410018488764763,
+            "detached": false,
+            "id": "chassis",
+            "index": 0,
+            "mass": 1.35000002384186,
+            "native_mask": "matching_rectangle",
+            "position": [
+              232.549423217773,
+              191.388626098633
+            ],
+            "rotation": 0.02320989780128,
+            "shape": "rectangle",
+            "size": [
+              6.0,
+              8.0
+            ],
+            "velocity": [
+              -6.20006465911865,
+              1.30093419551849
+            ]
+          },
+          {
+            "angular_velocity": -1.89813649654388,
+            "detached": false,
+            "id": "leg_-1",
+            "index": 1,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              229.553009033203,
+              196.595672607422
+            ],
+            "rotation": -0.427995711565018,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              -2.8607189655304,
+              1.16600739955902
+            ]
+          },
+          {
+            "angular_velocity": -0.30120775103569,
+            "detached": false,
+            "id": "foot_-1",
+            "index": 2,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              229.102142333984,
+              199.008544921875
+            ],
+            "rotation": 0.00180933915544301,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              -0.299996733665466,
+              -4.76043766184375e-07
+            ]
+          },
+          {
+            "angular_velocity": -0.495645672082901,
+            "detached": false,
+            "id": "leg_1",
+            "index": 3,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              235.223983764648,
+              196.823501586914
+            ],
+            "rotation": 0.503453135490417,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              -3.71525740623474,
+              1.42290961742401
+            ]
+          },
+          {
+            "angular_velocity": -1.31150877475739,
+            "detached": false,
+            "id": "foot_1",
+            "index": 4,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              235.447006225586,
+              198.974075317383
+            ],
+            "rotation": 0.0199092552065849,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              -1.39655494689941,
+              2.59127402305603
+            ]
+          },
+          {
+            "angular_velocity": -2.63774418830872,
+            "detached": false,
+            "id": "equipment",
+            "index": 5,
+            "mass": 0.119999997317791,
+            "native_mask": "matching_rectangle",
+            "position": [
+              234.620071411133,
+              193.787811279297
+            ],
+            "rotation": 1.94939434528351,
+            "shape": "rectangle",
+            "size": [
+              5.0,
+              2.5
+            ],
+            "velocity": [
+              -0.405715882778168,
+              3.59243631362915
+            ]
+          }
+        ],
+        "position": [
+          232.549423217773,
+          191.388626098633
+        ],
+        "rotation": 0.02320989780128,
+        "velocity": [
+          -6.20006465911865,
+          1.30093419551849
+        ]
+      },
+      "first": [
+        220.0,
+        175.0
+      ],
+      "ground_support_loss_events": 0,
+      "grounded_steps": 1774,
+      "id": "shy_crawler",
+      "independent_evaluator": {
+        "available": true,
+        "backend": "native-phased",
+        "cache_bytes": 262144,
+        "current_tick": 1794,
+        "extent": [
+          512,
+          256
+        ],
+        "ignored_older_publications": 0,
+        "ingest_usec_max": 147,
+        "ingest_usec_total": 147,
+        "ingestions": 1,
+        "maximum_materials": 8,
+        "maximum_radius_cells": 96,
+        "maximum_samples_per_query": 2401,
+        "owner_epoch": 11,
+        "owner_snapshot_serial": 1795,
+        "patches": 1,
+        "publication_serial": 1,
+        "queries": 300,
+        "query_samples": 147210,
+        "query_usec_max": 1984,
+        "query_usec_total": 117953,
+        "reason": "",
+        "revision": 2,
+        "sample_spacing_cells": 4,
+        "sample_tick": 0,
+        "source_bytes": 262144,
+        "version": "ambient-perception/v1",
+        "world_generation": 1
+      },
+      "initial_material_payload": {
+        "bytes": 262144,
+        "channels": 2,
+        "full_refresh": true,
+        "native_tick": 0,
+        "rectangles": [
+          0,
+          0,
+          512,
+          256,
+          0,
+          1024
+        ],
+        "sha256": "a59d5c958f02b03e1b8e0739e6dbf82050b05134167893615adcce485f2753aa",
+        "world_revision": 2
+      },
+      "initial_pose": {
+        "angular_velocity": 0.0,
+        "charge": 0.0,
+        "cooldown": 0.0,
+        "energy": 1.0,
+        "fault": "",
+        "grounded": false,
+        "parts": [
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "chassis",
+            "index": 0,
+            "mass": 1.35000002384186,
+            "native_mask": "matching_rectangle",
+            "position": [
+              220.0,
+              175.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              6.0,
+              8.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "leg_-1",
+            "index": 1,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              216.399993896484,
+              180.5
+            ],
+            "rotation": -0.180000007152557,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "foot_-1",
+            "index": 2,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              215.399993896484,
+              183.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "leg_1",
+            "index": 3,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              223.600006103516,
+              180.5
+            ],
+            "rotation": 0.180000007152557,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "foot_1",
+            "index": 4,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              224.600006103516,
+              183.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "equipment",
+            "index": 5,
+            "mass": 0.119999997317791,
+            "native_mask": "matching_rectangle",
+            "position": [
+              225.5,
+              175.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              5.0,
+              2.5
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "position": [
+          220.0,
+          175.0
+        ],
+        "rotation": 0.0,
+        "velocity": [
+          0.0,
+          0.0
+        ]
+      },
+      "instance_id": 100,
+      "intent_x_sign_changes": 18,
+      "intentional_idle_decisions": 22,
+      "last": [
+        232.549423217773,
+        191.388626098633
+      ],
+      "last_energy": 1.0,
+      "materials": {
+        "16": {
+          "absent_observed": 0,
+          "last_distance": 31.4194002319825,
+          "maximum_distance": 47.8173608640209,
+          "minimum_distance": 11.192264842174,
+          "present": 300,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 150,
+          "last_distance": 48.6912055313252,
+          "maximum_distance": 49.9416920760788,
+          "minimum_distance": 42.5636099111891,
+          "present": 150,
+          "unavailable": 0
+        }
+      },
+      "max_x": 253.412994384766,
+      "maximum_energy": 1.0,
+      "min_x": 218.974761962891,
+      "minimum_energy": 1.0,
+      "model": "runner",
+      "move_active_decisions": 277,
+      "native_masks": 6,
+      "native_ticks": 1800,
+      "neutral_move_decisions": 23,
+      "observed_decisions": 300,
+      "original_preset": {
+        "description": "Slow, hesitant ground movement. Water causes an early retreat, and a ledge starts one ten-second retreat whose direction remains latched.",
+        "id": "shy_crawler",
+        "modules": [
+          {
+            "enabled": true,
+            "id": "wander",
+            "params": {
+              "effort": 0.55,
+              "idle_probability": 0.28,
+              "idle_seconds": 2.2,
+              "jitter": 0.35,
+              "pace": 0.18,
+              "turn_rate": 2.0,
+              "turn_seconds": 5.0
+            },
+            "priority": 10,
+            "type": "wander",
+            "weight": 0.5
+          },
+          {
+            "enabled": true,
+            "id": "avoid_material",
+            "params": {
+              "effort": 0.85,
+              "enter_distance": 43.0,
+              "exit_distance": 49.0,
+              "material_id": 3,
+              "pace": 0.5,
+              "radius": 50
+            },
+            "priority": 80,
+            "type": "avoid_material",
+            "weight": 2.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_ledge",
+            "params": {
+              "allowed_drop": 4.0,
+              "duration": 10.0,
+              "effort": 0.75,
+              "lookahead": 16.0,
+              "pace": 0.32,
+              "rearm_seconds": 0.5
+            },
+            "priority": 100,
+            "type": "avoid_ledge",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_boundary",
+            "params": {
+              "duration": 1.5,
+              "effort": 0.8,
+              "margin": 24.0,
+              "pace": 0.35,
+              "release_margin": 36.0
+            },
+            "priority": 90,
+            "type": "avoid_boundary",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "escape_obstruction",
+            "params": {
+              "cooldown": 3.0,
+              "duration": 2.0,
+              "effort": 0.9,
+              "jump": false,
+              "min_progress": 1.0,
+              "pace": 0.32,
+              "stall_seconds": 1.5,
+              "wall_distance": 10.0
+            },
+            "priority": 85,
+            "type": "escape_obstruction",
+            "weight": 1.0
+          }
+        ],
+        "name": "Shy Crawler",
+        "seed": 2701,
+        "shared_seed": false,
+        "version": 1
+      },
+      "overrides": {
+        "avoid_material": 32,
+        "escape_obstruction": 20
+      },
+      "perception": {
+        "available": true,
+        "backend": "native-phased",
+        "cache_bytes": 262144,
+        "current_tick": 1794,
+        "extent": [
+          512,
+          256
+        ],
+        "ignored_older_publications": 0,
+        "ingest_usec_max": 117,
+        "ingest_usec_total": 117,
+        "ingestions": 1,
+        "maximum_materials": 8,
+        "maximum_radius_cells": 96,
+        "maximum_samples_per_query": 2401,
+        "owner_epoch": 11,
+        "owner_snapshot_serial": 1795,
+        "patches": 1,
+        "publication_serial": 1,
+        "queries": 300,
+        "query_samples": 147210,
+        "query_usec_max": 1355,
+        "query_usec_total": 111386,
+        "reason": "",
+        "revision": 2,
+        "sample_spacing_cells": 4,
+        "sample_tick": 0,
+        "source_bytes": 262144,
+        "version": "ambient-perception/v1",
+        "world_generation": 1
+      },
+      "physical_parts": 6,
+      "physical_path_cells": 271.049198832305,
+      "physical_path_during_selected_rest": 0.0,
+      "rejected_commands": 0,
+      "resource_observations": 300,
+      "resource_unavailable": 0,
+      "rest_candidate_decisions": 0,
+      "rest_completed_episodes": 0,
+      "rest_entries": 0,
+      "rest_episodes": [],
+      "rest_exits": 0,
+      "rest_to_active_resumptions": 0,
+      "resume_events": [],
+      "run_id": "497311a03762e730ac303d963cbe69bf",
+      "selected_rest_decisions": 0,
+      "sensor_usec_max": 1632,
+      "session_ticks": 1800,
+      "stalled_active_intervals": 21,
+      "total_decision_usec": 57003,
+      "wander_idle_candidates": 25
+    },
+    {
+      "accepted_commands": 300,
+      "action_x_sign_changes": 7,
+      "active_intervals": 169,
+      "admitted_profile": {
+        "description": "An unhurried local worker. Short activity bouts alternate with longer rests, returning toward its placement and keeping modest separation from other actors.",
+        "id": "idle_mechanic",
+        "modules": [
+          {
+            "enabled": true,
+            "id": "wander",
+            "params": {
+              "effort": 0.65,
+              "idle_probability": 0.1,
+              "idle_seconds": 1.5,
+              "jitter": 0.35,
+              "pace": 0.2,
+              "turn_rate": 2.0,
+              "turn_seconds": 6.0
+            },
+            "priority": 10,
+            "type": "wander",
+            "weight": 0.6
+          },
+          {
+            "enabled": true,
+            "id": "return_home",
+            "params": {
+              "effort": 0.7,
+              "pace": 0.28,
+              "radius": 48.0,
+              "release_radius": 20.0
+            },
+            "priority": 40,
+            "type": "return_home",
+            "weight": 1.5
+          },
+          {
+            "enabled": true,
+            "id": "rest",
+            "params": {
+              "active_seconds": 7.0,
+              "jitter": 0.4,
+              "rest_seconds": 5.0
+            },
+            "priority": 60,
+            "type": "rest",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_crowding",
+            "params": {
+              "effort": 0.7,
+              "pace": 0.25,
+              "radius": 26.0
+            },
+            "priority": 35,
+            "type": "avoid_crowding",
+            "weight": 1.1
+          },
+          {
+            "enabled": true,
+            "id": "avoid_material",
+            "params": {
+              "effort": 0.85,
+              "enter_distance": 28.0,
+              "exit_distance": 40.0,
+              "material_id": 3,
+              "pace": 0.4,
+              "radius": 50
+            },
+            "priority": 80,
+            "type": "avoid_material",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_boundary",
+            "params": {
+              "duration": 1.5,
+              "effort": 0.8,
+              "margin": 16.0,
+              "pace": 0.35,
+              "release_margin": 24.0
+            },
+            "priority": 90,
+            "type": "avoid_boundary",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "escape_obstruction",
+            "params": {
+              "cooldown": 2.0,
+              "duration": 1.3,
+              "effort": 0.9,
+              "jump": false,
+              "min_progress": 1.0,
+              "pace": 0.35,
+              "stall_seconds": 1.0,
+              "wall_distance": 10.0
+            },
+            "priority": 85,
+            "type": "escape_obstruction",
+            "weight": 1.0
+          }
+        ],
+        "name": "Idle Mechanic",
+        "seed": 1701,
+        "shared_seed": false,
+        "version": 1
+      },
+      "canvas_center_incidents": 0,
+      "completed_rapier_ticks": 1800,
+      "completed_seconds": 29.9999999999996,
+      "consecutive_selected_override_intervals": [
+        {
+          "duration_seconds": 1.2999999999999998,
+          "end_seconds": 7.49999999999998,
+          "override": "escape_obstruction",
+          "sample_count": 13,
+          "start_seconds": 6.19999999999998,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 5.00000000000022,
+          "end_seconds": 12.6000000000002,
+          "override": "rest",
+          "sample_count": 50,
+          "start_seconds": 7.59999999999998,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 4.999999999999698,
+          "end_seconds": 22.2,
+          "override": "rest",
+          "sample_count": 50,
+          "start_seconds": 17.2000000000003,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.7999999999999012,
+          "end_seconds": 24.1999999999999,
+          "override": "avoid_material",
+          "sample_count": 8,
+          "start_seconds": 23.4,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 0.6999999999999993,
+          "end_seconds": 26.8999999999998,
+          "override": "avoid_material",
+          "sample_count": 7,
+          "start_seconds": 26.1999999999998,
+          "window_truncated": false
+        },
+        {
+          "duration_seconds": 2.899999999999899,
+          "end_seconds": 29.9999999999996,
+          "override": "rest",
+          "sample_count": 29,
+          "start_seconds": 27.0999999999997,
+          "window_truncated": true
+        }
+      ],
+      "decision_usec_max": 4315,
+      "derived": {
+        "intentional_idle_share": 0.43333333333333335,
+        "net_displacement_cells": 16.84667791380301,
+        "neutral_move_share": 0.43666666666666665,
+        "selected_rest_share": 0.43,
+        "stalled_active_share": 0.07100591715976332,
+        "x_range_cells": 49.321472167969006
+      },
+      "elapsed_usec": 4267101,
+      "engine_last_decision_seconds": 29.8999999999996,
+      "epoch": 11,
+      "final_pose": {
+        "angular_velocity": 0.221288651227951,
+        "charge": 0.0,
+        "cooldown": 0.0,
+        "energy": 1.0,
+        "fault": "",
+        "grounded": true,
+        "parts": [
+          {
+            "angular_velocity": 0.221288651227951,
+            "detached": false,
+            "id": "chassis",
+            "index": 0,
+            "mass": 1.35000002384186,
+            "native_mask": "matching_rectangle",
+            "position": [
+              216.472244262695,
+              191.473175048828
+            ],
+            "rotation": -0.103182792663574,
+            "shape": "rectangle",
+            "size": [
+              6.0,
+              8.0
+            ],
+            "velocity": [
+              -0.531758725643158,
+              -0.96939080953598
+            ]
+          },
+          {
+            "angular_velocity": -0.274190217256546,
+            "detached": false,
+            "id": "leg_-1",
+            "index": 1,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              215.165664672852,
+              196.149002075195
+            ],
+            "rotation": -1.02680468559265,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              3.34455060958862,
+              -0.312411218881607
+            ]
+          },
+          {
+            "angular_velocity": 0.964037537574768,
+            "detached": false,
+            "id": "foot_-1",
+            "index": 2,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              216.119506835938,
+              198.111312866211
+            ],
+            "rotation": -0.55006742477417,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              1.83729887008667,
+              0.510982751846313
+            ]
+          },
+          {
+            "angular_velocity": 0.129627197980881,
+            "detached": false,
+            "id": "leg_1",
+            "index": 3,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              220.426177978516,
+              196.572311401367
+            ],
+            "rotation": 0.149782180786133,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              -0.552304923534393,
+              0.207834720611572
+            ]
+          },
+          {
+            "angular_velocity": -0.0954704582691193,
+            "detached": false,
+            "id": "foot_1",
+            "index": 4,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              221.499649047852,
+              199.008972167969
+            ],
+            "rotation": -0.00305359135381877,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              -0.0955879017710686,
+              -6.16345460002776e-06
+            ]
+          },
+          {
+            "angular_velocity": 0.628254592418671,
+            "detached": false,
+            "id": "equipment",
+            "index": 5,
+            "mass": 0.119999997317791,
+            "native_mask": "matching_rectangle",
+            "position": [
+              218.588516235352,
+              193.517272949219
+            ],
+            "rotation": 1.92381954193115,
+            "shape": "rectangle",
+            "size": [
+              5.0,
+              2.5
+            ],
+            "velocity": [
+              -2.54720711708069,
+              -1.02720332145691
+            ]
+          }
+        ],
+        "position": [
+          216.472244262695,
+          191.473175048828
+        ],
+        "rotation": -0.103182792663574,
+        "velocity": [
+          -0.531758725643158,
+          -0.96939080953598
+        ]
+      },
+      "first": [
+        220.0,
+        175.0
+      ],
+      "ground_support_loss_events": 0,
+      "grounded_steps": 1774,
+      "id": "idle_mechanic",
+      "independent_evaluator": {
+        "available": true,
+        "backend": "native-phased",
+        "cache_bytes": 262144,
+        "current_tick": 1794,
+        "extent": [
+          512,
+          256
+        ],
+        "ignored_older_publications": 0,
+        "ingest_usec_max": 151,
+        "ingest_usec_total": 151,
+        "ingestions": 1,
+        "maximum_materials": 8,
+        "maximum_radius_cells": 96,
+        "maximum_samples_per_query": 2401,
+        "owner_epoch": 11,
+        "owner_snapshot_serial": 1795,
+        "patches": 1,
+        "publication_serial": 1,
+        "queries": 300,
+        "query_samples": 147207,
+        "query_usec_max": 944,
+        "query_usec_total": 112048,
+        "reason": "",
+        "revision": 2,
+        "sample_spacing_cells": 4,
+        "sample_tick": 0,
+        "source_bytes": 262144,
+        "version": "ambient-perception/v1",
+        "world_generation": 1
+      },
+      "initial_material_payload": {
+        "bytes": 262144,
+        "channels": 2,
+        "full_refresh": true,
+        "native_tick": 0,
+        "rectangles": [
+          0,
+          0,
+          512,
+          256,
+          0,
+          1024
+        ],
+        "sha256": "a59d5c958f02b03e1b8e0739e6dbf82050b05134167893615adcce485f2753aa",
+        "world_revision": 2
+      },
+      "initial_pose": {
+        "angular_velocity": 0.0,
+        "charge": 0.0,
+        "cooldown": 0.0,
+        "energy": 1.0,
+        "fault": "",
+        "grounded": false,
+        "parts": [
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "chassis",
+            "index": 0,
+            "mass": 1.35000002384186,
+            "native_mask": "matching_rectangle",
+            "position": [
+              220.0,
+              175.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              6.0,
+              8.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "leg_-1",
+            "index": 1,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              216.399993896484,
+              180.5
+            ],
+            "rotation": -0.180000007152557,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "foot_-1",
+            "index": 2,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              215.399993896484,
+              183.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "leg_1",
+            "index": 3,
+            "mass": 0.280000001192093,
+            "native_mask": "matching_rectangle",
+            "position": [
+              223.600006103516,
+              180.5
+            ],
+            "rotation": 0.180000007152557,
+            "shape": "rectangle",
+            "size": [
+              2.0,
+              5.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "foot_1",
+            "index": 4,
+            "mass": 0.230000004172325,
+            "native_mask": "matching_rectangle",
+            "position": [
+              224.600006103516,
+              183.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              4.0,
+              2.0
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "angular_velocity": 0.0,
+            "detached": false,
+            "id": "equipment",
+            "index": 5,
+            "mass": 0.119999997317791,
+            "native_mask": "matching_rectangle",
+            "position": [
+              225.5,
+              175.0
+            ],
+            "rotation": 0.0,
+            "shape": "rectangle",
+            "size": [
+              5.0,
+              2.5
+            ],
+            "velocity": [
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "position": [
+          220.0,
+          175.0
+        ],
+        "rotation": 0.0,
+        "velocity": [
+          0.0,
+          0.0
+        ]
+      },
+      "instance_id": 100,
+      "intent_x_sign_changes": 7,
+      "intentional_idle_decisions": 130,
+      "last": [
+        216.472244262695,
+        191.473175048828
+      ],
+      "last_energy": 1.0,
+      "materials": {
+        "16": {
+          "absent_observed": 93,
+          "last_distance": 48.0737653410101,
+          "maximum_distance": 49.9353659392256,
+          "minimum_distance": 11.1339551908079,
+          "present": 207,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 135,
+          "last_distance": 39.9508548191556,
+          "maximum_distance": 49.8212478595353,
+          "minimum_distance": 27.7125144920604,
+          "present": 165,
+          "unavailable": 0
+        }
+      },
+      "max_x": 253.465591430664,
+      "maximum_energy": 1.0,
+      "min_x": 204.144119262695,
+      "minimum_energy": 1.0,
+      "model": "runner",
+      "move_active_decisions": 169,
+      "native_masks": 6,
+      "native_ticks": 1800,
+      "neutral_move_decisions": 131,
+      "observed_decisions": 300,
+      "original_preset": {
+        "description": "An unhurried local worker. Short activity bouts alternate with longer rests, returning toward its placement and keeping modest separation from other actors.",
+        "id": "idle_mechanic",
+        "modules": [
+          {
+            "enabled": true,
+            "id": "wander",
+            "params": {
+              "effort": 0.65,
+              "idle_probability": 0.1,
+              "idle_seconds": 1.5,
+              "jitter": 0.35,
+              "pace": 0.2,
+              "turn_rate": 2.0,
+              "turn_seconds": 6.0
+            },
+            "priority": 10,
+            "type": "wander",
+            "weight": 0.6
+          },
+          {
+            "enabled": true,
+            "id": "return_home",
+            "params": {
+              "effort": 0.7,
+              "pace": 0.28,
+              "radius": 48.0,
+              "release_radius": 20.0
+            },
+            "priority": 40,
+            "type": "return_home",
+            "weight": 1.5
+          },
+          {
+            "enabled": true,
+            "id": "rest",
+            "params": {
+              "active_seconds": 7.0,
+              "jitter": 0.4,
+              "rest_seconds": 5.0
+            },
+            "priority": 60,
+            "type": "rest",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_crowding",
+            "params": {
+              "effort": 0.7,
+              "pace": 0.25,
+              "radius": 26.0
+            },
+            "priority": 35,
+            "type": "avoid_crowding",
+            "weight": 1.1
+          },
+          {
+            "enabled": true,
+            "id": "avoid_material",
+            "params": {
+              "effort": 0.85,
+              "enter_distance": 28.0,
+              "exit_distance": 40.0,
+              "material_id": 3,
+              "pace": 0.4,
+              "radius": 50
+            },
+            "priority": 80,
+            "type": "avoid_material",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "avoid_boundary",
+            "params": {
+              "duration": 1.5,
+              "effort": 0.8,
+              "margin": 16.0,
+              "pace": 0.35,
+              "release_margin": 24.0
+            },
+            "priority": 90,
+            "type": "avoid_boundary",
+            "weight": 1.0
+          },
+          {
+            "enabled": true,
+            "id": "escape_obstruction",
+            "params": {
+              "cooldown": 2.0,
+              "duration": 1.3,
+              "effort": 0.9,
+              "jump": false,
+              "min_progress": 1.0,
+              "pace": 0.35,
+              "stall_seconds": 1.0,
+              "wall_distance": 10.0
+            },
+            "priority": 85,
+            "type": "escape_obstruction",
+            "weight": 1.0
+          }
+        ],
+        "name": "Idle Mechanic",
+        "seed": 4701,
+        "shared_seed": false,
+        "version": 1
+      },
+      "overrides": {
+        "avoid_material": 15,
+        "escape_obstruction": 13,
+        "rest": 129
+      },
+      "perception": {
+        "available": true,
+        "backend": "native-phased",
+        "cache_bytes": 262144,
+        "current_tick": 1794,
+        "extent": [
+          512,
+          256
+        ],
+        "ignored_older_publications": 0,
+        "ingest_usec_max": 126,
+        "ingest_usec_total": 126,
+        "ingestions": 1,
+        "maximum_materials": 8,
+        "maximum_radius_cells": 96,
+        "maximum_samples_per_query": 2401,
+        "owner_epoch": 11,
+        "owner_snapshot_serial": 1795,
+        "patches": 1,
+        "publication_serial": 1,
+        "queries": 300,
+        "query_samples": 147207,
+        "query_usec_max": 2998,
+        "query_usec_total": 115204,
+        "reason": "",
+        "revision": 2,
+        "sample_spacing_cells": 4,
+        "sample_tick": 0,
+        "source_bytes": 262144,
+        "version": "ambient-perception/v1",
+        "world_generation": 1
+      },
+      "physical_parts": 6,
+      "physical_path_cells": 201.152959549334,
+      "physical_path_during_selected_rest": 37.2286194011103,
+      "rejected_commands": 0,
+      "resource_observations": 300,
+      "resource_unavailable": 0,
+      "rest_candidate_decisions": 129,
+      "rest_completed_episodes": 2,
+      "rest_entries": 3,
+      "rest_episodes": [
+        {
+          "completed": true,
+          "duration_seconds": 5.00000000000023,
+          "end_reason": "timer_expired",
+          "end_seconds": 12.6000000000002,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 7.59999999999998
+        },
+        {
+          "completed": true,
+          "duration_seconds": 4.99999999999972,
+          "end_reason": "timer_expired",
+          "end_seconds": 22.2,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 17.2000000000003
+        },
+        {
+          "completed": false,
+          "duration_seconds": 2.89999999999984,
+          "end_reason": "observation_window_ended",
+          "end_seconds": 29.9999999999996,
+          "selected_decisions": 29,
+          "start_seconds": 27.0999999999997
+        }
+      ],
+      "rest_exits": 2,
+      "rest_to_active_resumptions": 2,
+      "resume_events": [
+        {
+          "action_move": [
+            0.268307775259018,
+            0.0
+          ],
+          "direction": [
+            1.0,
+            0.0
+          ],
+          "pace": 0.200000002980232,
+          "position": [
+            228.86164855957,
+            194.771820068359
+          ],
+          "seconds": 12.6000000000002
+        },
+        {
+          "action_move": [
+            -0.270326286554337,
+            0.0
+          ],
+          "direction": [
+            -1.0,
+            0.0
+          ],
+          "pace": 0.200000002980232,
+          "position": [
+            212.447998046875,
+            194.945327758789
+          ],
+          "seconds": 22.2
+        }
+      ],
+      "run_id": "a3b85172a7b12818463b75430ebd4195",
+      "selected_rest_decisions": 129,
+      "sensor_usec_max": 3926,
+      "session_ticks": 1800,
+      "stalled_active_intervals": 12,
+      "total_decision_usec": 62893,
+      "wander_idle_candidates": 0
+    }
+  ],
+  "case": "AMBIENT-001 long matched personality observation",
+  "checks": 2877,
+  "decision_period_ticks": 6,
+  "execution_receipt": {
+    "captured_utc": "2026-11-24T19:18:19.061806+00:00",
+    "command": [
+      "/workspace/scratch/befe4151f3cf/runtime-cache/godot-runtime/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/befe4151f3cf/ambient-workspace/source/godot",
+      "--script",
+      "res://tests/test_ambient_personalities_native.gd"
+    ],
+    "console_sha256": "408aa5cbdd953269c13a0fb11ecd891d050259823eeb21dfa3e9615f01f84a79",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "exit_code": 0,
+    "peak_rss_kib": 254012,
+    "report_sha256": "951b457382b15f622c05f4f57ccd2f056082f72e800e291915823361c8280b99",
+    "schema": "ambient-personalities-execution/v1",
+    "script_sha256": "ff3095cd90955ccc87b0cd398e086c9ca63eeabf8b7c4176860ec56a1ce82f2e",
+    "script_unchanged": true,
+    "source_delta": " M docs/research/ambient-001/evidence/native-motion-trajectories.csv\n M docs/research/ambient-001/evidence/qualification-custody.json\n M docs/research/ambient-001/evidence/reduce_evidence.py\n M tools/package_ambient_evaluator.py\n?? godot/tests/test_ambient_personalities_native.gd\n",
+    "source_head": "c63cea9ef10d21f264c9a235437f7fd40acb1072",
+    "timeout_seconds": 300,
+    "wall_seconds": 15.448726790000364
+  },
+  "extent": [
+    512,
+    256
+  ],
+  "failures": [],
+  "geometry": [
+    0,
+    200,
+    512,
+    8,
+    1,
+    0,
+    0,
+    8,
+    200,
+    1,
+    504,
+    0,
+    8,
+    200,
+    1,
+    152,
+    184,
+    4,
+    16,
+    1,
+    180,
+    184,
+    4,
+    16,
+    1,
+    156,
+    190,
+    24,
+    10,
+    3,
+    258,
+    184,
+    4,
+    16,
+    1,
+    290,
+    184,
+    4,
+    16,
+    1,
+    262,
+    190,
+    28,
+    10,
+    16
+  ],
+  "independent_sensor": {
+    "material_ids": [
+      16,
+      3
+    ],
+    "radius_cells": 50,
+    "sampling": "same inclusive sparse circular query for every profile"
+  },
+  "interpretation": [
+    "Only the common seed changes each original preset; module configuration and original shared_seed=false remain intact, with the same authored instance 100.",
+    "Each arm owns a fresh native World, a fresh World2D/Rapier space and the same initial native publication bytes and complete copied actor part/pose/resource values.",
+    "Every arm completes 1800 native and Rapier steps, 30 simulated seconds and 300 issued decisions. Last pre-step decision time 29.9 s is distinct from terminal time 30 s.",
+    "The independent evaluator observes Oil and Water within 50 world cells for all profiles; it does not feed controls.",
+    "Path sums actual center movement each physical step, including vertical motion and gait. It is neither net displacement nor a measure of useful exploration.",
+    "Oil Moth has 64/299 stalled active intervals and 83 obstruction-escape decisions against the physically obstructed Oil cup; this limitation is retained.",
+    "Idle Mechanic completes two selected five-second rests and resumes genuine nonzero intent and command; a third rest is truncated by the observation window.",
+    "Idle Mechanic moves 37.2286 cells while its selected rest intentions and commands remain neutral. Physical inertia and articulated response are separate from decision resumption.",
+    "Nearest material distances are nearest observed native samples. Dynamic material can change distance independently of actor approach; this controlled cup run retained unchanged material revision 2.",
+    "All profiles receive 300 real own-energy observations with value 1.0. Resource coverage does not establish resource-sensitive decisions or depletion.",
+    "This is one matched 30-second Linux headless observation per profile with no confidence interval, cross-platform trajectory determinism, subjective believability ranking or Windows/NVIDIA playfeel claim."
+  ],
+  "metric_definitions": {
+    "material_range": "nearest observed native numeric-ID sample within50 cells; cups may be inaccessible",
+    "oscillation": "nonzero X sign changes with 0.05 deadzone; includes legitimate braking or reflexes",
+    "physical_path_during_rest": "actual body travel while selected rest remains neutral; drift is not active intention",
+    "rest": "selected scheduled-rest override; candidate activity reported separately",
+    "resume": "selected rest ended, then nonzero procedural intention and normalized command observed",
+    "stall": "preceding command move length >0.05 and displacement <0.25 cells over six physical ticks",
+    "time": "decisions precede their step; terminal physical time30s and last decision time29.9s are distinct"
+  },
+  "model": "runner",
+  "native_setup_seed": 0,
+  "native_threads": 1,
+  "profile_comparison_seed": 1701,
+  "profile_seed_mode": "original shared_seed=false; same authored instance and seed in every arm",
+  "reduction": {
+    "independent_review": {
+      "path": "personality-independent-review.json",
+      "sha256": "9fa4a811a36c07b5cf525014121acf75d2b4462dc7cbd2a08064c8988679b8a4"
+    },
+    "method": "Retain campaign metrics, profiles, initial/final states, source hashes and execution custody. Remove only per-decision trace arrays; derive labelled fractions, ranges and consecutive selected-override intervals from the original trace.",
+    "raw_console_sha256": "408aa5cbdd953269c13a0fb11ecd891d050259823eeb21dfa3e9615f01f84a79",
+    "raw_evidence_location": "/workspace/scratch/befe4151f3cf/ambient-evidence/personalities/run-01",
+    "raw_execution_receipt_sha256": "6ce8b2298f561597c22c794dfa5a836f80280ded86e6232b64560090523ed5bd",
+    "raw_report_bytes": 1960296,
+    "raw_report_sha256": "951b457382b15f622c05f4f57ccd2f056082f72e800e291915823361c8280b99",
+    "schema": "ambient-personality-summary/v1",
+    "source_form": "Committed product c63cea9ef10d21f264c9a235437f7fd40acb1072 plus explicitly recorded local new test file; product sources hash-matched at execution. Later final committed-source qualification is separate."
+  },
+  "scope": "Synchronous native/Rapier observation. No subjective personality, global route or Windows/NVIDIA playfeel acceptance.",
+  "source_identity": {
+    "captured_utc": "2026-11-24T19:18:20",
+    "display_server": "headless",
+    "godot": "4.7-stable (official)",
+    "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "platform": "Linux",
+    "runtime_artifacts": {
+      "native": {
+        "path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+      },
+      "rapier": {
+        "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    },
+    "runtime_supported": true,
+    "sha256": {
+      "addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+      "data/ambient/profiles.json": "f6b36b8af1b183a8368a8fe2466e1d53797314aca8e7f0c6bf1a197e57163c6f",
+      "scripts/ambient/ambient_actuator.gd": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef",
+      "scripts/ambient/ambient_engine.gd": "4c05449d0390782ab4f2427e3f1d03ca1f8c9fbee8ac54cf132894c7638b6834",
+      "scripts/ambient/ambient_modules.gd": "6077e1aff117747c2217a20cd698cda587f9dc47434d8f63e0ee616cac33c2f1",
+      "scripts/ambient/ambient_perception.gd": "8b76fd57be2eb79efeb316b32e544a42663c80b9aa3dae7f9fc697c03089f624",
+      "scripts/ambient/ambient_profile.gd": "cd0233dc4863a6acad9ff74feeb871e4766714e68bbac22b11712353a2141157",
+      "scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+      "scripts/physical_actor_rig.gd": "183fab96f2fd8a33694ff8bad6c2ae074548ce24b6d4a0a908f1b8e38b376ed2",
+      "scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+      "scripts/physical_actor_session.gd": "edb16c4fa1c7915baa24f1a7e0f5012584dfdea5272e15b877a1fa9631df48c7",
+      "scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+      "scripts/workbench_actor_catalog.gd": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7",
+      "scripts/workbench_actor_control.gd": "342a925a2ba0df06599768879fbb04e9f687dac21c0d72147cb1253b51c0cbff",
+      "scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+      "tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json": "7c7c13125fcbf4e6f07317efa2190656840417c8ce328820adb7dfea7ba9f78e",
+      "tests/test_ambient_personalities_native.gd": "ff3095cd90955ccc87b0cd398e086c9ca63eeabf8b7c4176860ec56a1ce82f2e"
+    },
+    "source_revision": "c63cea9ef10d21f264c9a235437f7fd40acb1072"
+  }
+}

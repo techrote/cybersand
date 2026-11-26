@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 ---
 
 # Data ownership and lifetimes
@@ -31,6 +31,19 @@ Sources: [worker](../../godot/scripts/simulation_worker.gd),
 A prepared candidate may exist privately while the installed owner remains
 valid. Only the explicit commit changes the active owner; a queued proposal,
 preview, provider answer or copied observation cannot perform that commit.
+
+## Accepted opt-in AMBIENT ownership
+
+The opt-in [AMBIENT-001 actor controller](../systems/ambient-actors.md) is accepted through
+[#775](https://github.com/techrote/cybersand/pull/775), remains off until selected,
+and adds no World or physics owner. One main-thread session cache copies existing native
+material-ID publications while preserving their epoch, generation, revision,
+serial and native tick. Pure modules receive copied values; only the existing
+session issues policy observations and submits bounded normalized commands.
+Optional ledge rays remain in the physical rig owner and return copied geometry.
+Retiring the session clears the cache and every actor's private intention state.
+Pause revokes command authority while preserving gameplay timers; handback
+reconfigures ephemeral state. Debug inspection does not issue observations.
 
 ## Accepted Workbench actors
 
