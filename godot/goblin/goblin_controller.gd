@@ -714,4 +714,5 @@ func _write_fixed(path: String, value: Dictionary) -> bool:
 	if not saved.get("ok", false):
 		last_error = str(saved.get("error", "Audit output was not replaced."))
 		return false
+	last_error = ""
 	return true
