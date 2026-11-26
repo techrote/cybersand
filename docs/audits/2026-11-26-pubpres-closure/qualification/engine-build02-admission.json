@@ -1,0 +1,14 @@
+{
+  "schema": "pubpres-font-engine-admission-v1",
+  "complete": true,
+  "build_source": "1290c31dc262cdc6d31e9d53bde80fe3527585d7",
+  "build_run": 45716469250,
+  "build_attempt": 1,
+  "proof_sha256": "21904131d3d27f982604ff90cd8cc60263fcf242d84dcda945ae371d89e23003",
+  "archive_sha256": "462e7d06bdcb44420019724d7bb0c015e5e7c30f99898cca0ef357752320bd12",
+  "version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+  "gui_sha256": "39928036d0acf292139ea4dde47d3a5cda9765406be13497fa78b99ad9da95ff",
+  "console_sha256": "d9e5d285da99eb3efe200f7bc8ede0588100226401da44bb91f1224c3f957003",
+  "public_api_equivalent": true,
+  "physical_acceptance": "HOLD"
+}

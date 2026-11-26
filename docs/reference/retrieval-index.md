@@ -32,6 +32,14 @@ are separate from the frozen evaluation set.
 
 ## Independently controlled actors in ordinary Shared Workbench
 
+For **Procedural NPC / Ambient**, material sensing, module composition, timers,
+capability adapters and extension rules, use the
+[ambient contract](../systems/ambient-actors.md). For profile editing, six
+personalities, five playable examples, painting and authored save/reopen, use the
+[ambient owner guide](../operations/ambient-workbench.md). The
+[focused ambient questions](retrieval-questions-ambient-001.json) are additive to
+the unchanged frozen evaluation set. This feature remains opt-in Draft/HOLD.
+
 For actor families, safe composition capacity, controller authority, live
 takeover, copied policy observations and the research boundary, use the
 [actor composition contract](../systems/workbench-actor-composition.md). For
@@ -245,6 +253,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How can concurrent qualification campaigns be inspected without cancelling work or accepting metadata as evidence? | [Read-only CI coordination](../operations/ci-campaign-coordination.md); bounded repository observations preserve partial/racing inventories and require each programme verifier. |
+| Can unchanged native LFS pointers satisfy source-exact publication custody? | [Publication custody migration contract](../operations/publication-custody.md); both provenance changes and actual-byte, input, report, LFS and lease checks remain mandatory. |
+| Which CI experiments are selected, which capacity claims are known, and what remains before closure? | [CI engineering closure decision packet](../operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md); historical cohorts do not qualify the resulting tooling source, and capacity observations are scoped lower bounds. |
 | How are CI scheduling costs separated from watchdogs, how do hosted parents admit children, and do performance ratios fail correctness? | [Shared execution and advisory history](../operations/ci-execution-and-performance.md), [focused implementation audit](../audits/2026-10-31-execution-watchdog-modernization.md). Complete original suites and source-matched review remain required; [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [all-workflow audit](../audits/2026-11-01-ci-workflow-audit.md) record capacity and concurrency. |
 | How are imported CYSD temperatures and heated Empty cells preserved when preparing another liquid solver, and is the normal importer complete? | [Native payload preparation and explicit normalization](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation), [local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md). Bounded ordinary body-free import is implemented; physical importers, complete host identity and final platforms remain open. |
 | Can the Water IN publisher run without disturbing the Brine branch, and is its request armed? | [Separate Water profile, actual native-repair sequence2 publication and required final-head gates](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication). Preparation does not qualify new runtime artifacts or waive full gates. |

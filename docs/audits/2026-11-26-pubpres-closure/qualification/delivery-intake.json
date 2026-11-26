@@ -1,0 +1,30 @@
+{
+  "schema": "pubpres-closure-windows-delivery-intake-v1",
+  "inspected_utc": "2026-11-26T07:54:35.767890+00:00",
+  "source": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+  "disposition": "PREPARED_SOURCE_ONLY_WINDOWS_EXECUTION_PENDING",
+  "finding": {
+    "id": "CMD_PREDECESSOR_PATH",
+    "original_command_source_sha256": "aeee1da4f9fa84c05ee2da0db370506bbe484ade55bf19a7203c734c2fea5de6",
+    "original_operand": "tools/pubpres_final_windows/Start-PUBPRES-Final.ps1",
+    "staged_directory": "tools/pubpres_recovery_windows",
+    "effect": "Generated CMD launchers reference a predecessor directory absent from assembled payload; collector has the same defect.",
+    "repair": "CMD -File now matches source-owned manifest entrypoint; independent operand-to-inventory regression checks actual files."
+  },
+  "tests": {
+    "python_package_authoring": {
+      "checks": 17,
+      "result": "PASS",
+      "scope": "Synthetic manifest/source adversaries; not actual Windows execution"
+    }
+  },
+  "build02_admission": "engine-build02-admission.json",
+  "remaining": [
+    "Actual Windows source-matched native runtime",
+    "Selected engine application admission",
+    "Extracted CMD execution including spaces",
+    "Native authoring Save fresh-process reopen",
+    "Collector and independent final archive inspection"
+  ],
+  "physical_acceptance": "HOLD"
+}

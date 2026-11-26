@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
+[Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),
+and [exact-source qualification and remaining acceptance](research/ambient-001/mission-ledger.md).
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
@@ -163,6 +167,8 @@ and decision work. Historical pre-merge records below retain their dated scope.
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 is merged (main `070c7a22`, apparatus only) but its exact-head hosted campaign remains a separate PLAY lane.
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
+
+CI engineering closure: [current decision packet](operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md) separates recovered experiment evidence, generic custody tooling and read-only coordination from the remaining exact-source hosted and owner gates.
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md), and [Linux display setup qualification](audits/2026-11-03-linux-display-mesa-utils-removal.md).
 

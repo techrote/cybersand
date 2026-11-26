@@ -44,7 +44,7 @@ def command(candidate: str, scene: str = "ordinary", collector: bool = False, *,
     if not collector:
         lines.append('if /i "%~1"=="--hosted-smoke" set "adapter=-RenderingDriver opengl3_angle -QuitAfterReady"')
     lines += ['"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -ExecutionPolicy Bypass '
-              f'-File "%~dp0tools\\pubpres_final_windows\\{script}" -PackageRoot "%~dp0." '
+              f'-File "%~dp0tools\\pubpres_recovery_windows\\{script}" -PackageRoot "%~dp0." '
               f'-ExpectedCandidate {candidate}{args}', 'set "result=%errorlevel%"',
               'if not "%result%"=="0" if /i not "%~1"=="--hosted-smoke" pause', 'exit /b %result%', ""]
     return "\r\n".join(lines).encode("ascii")

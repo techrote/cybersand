@@ -170,6 +170,19 @@ class FinalPackageTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             package.command(self.candidate, "unknown")
 
+    def test_commands_target_the_shipped_manifest_entrypoints(self):
+        # Resolve the actual CMD -File operand against the package's declared
+        # source paths. Comparing only command() with itself missed a stale
+        # predecessor directory that was never included in the new archive.
+        import re
+        for collector, field in ((False, "owner_launcher"), (True, "owner_results_collector")):
+            cmd = package.command(self.candidate, collector=collector).decode("ascii")
+            operand = re.search(r'-File "%~dp0([^"\r\n]+)"', cmd).group(1).replace("\\", "/")
+            self.assertEqual(operand, self.record[field])
+            self.assertTrue((self.root / operand).is_file())
+            self.assertTrue((package.ROOT / operand).is_file())
+            self.assertNotIn("tools/pubpres_final_windows/", operand)
+
 
 if __name__ == "__main__":
     unittest.main()

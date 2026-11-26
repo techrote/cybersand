@@ -10,6 +10,8 @@ const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const Usables = preload("res://scripts/usable_catalog.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
+const AmbientProfile = preload("res://scripts/ambient/ambient_profile.gd")
+const AmbientActuator = preload("res://scripts/ambient/ambient_actuator.gd")
 const BARREL := "reference_barrel"
 const VERSION := 1
 const MAX_ACTORS := 8
@@ -125,15 +127,22 @@ static func equipment_error(model: String, usable_index: Variant) -> String:
 
 
 static func control_error(model: String, value: Variant) -> String:
-	if not value is Dictionary or value.size() != CONTROL_KEYS.size() or not value.has_all(CONTROL_KEYS):
+	if not value is Dictionary or value.size() != CONTROL_KEYS.size() + (1 if value.has("ambient") else 0) or not value.has_all(CONTROL_KEYS):
 		return "Missing or unknown actor control fields."
 	if not _integer(value.version, VERSION, VERSION): return "Unsupported actor control version."
 	if not value.source is String or not supports(model, value.source):
 		return "Controller source is unsupported for " + model + "."
 	if not value.enabled is bool: return "Controller enabled must be true or false."
 	if not _integer(value.decision_ticks, 1, 12): return "Controller decisions must be spaced 1–12 physical ticks."
-	if not value.policy is String or value.policy not in ["fixture", "external"]:
+	if not value.policy is String or value.policy not in ["fixture", "external", "ambient"]:
 		return "Unknown external-policy adapter."
+	if value.policy == "ambient" and not value.has("ambient"):
+		return "Procedural NPC control requires an authored behaviour profile."
+	if value.has("ambient"):
+		var caps := AmbientActuator.capabilities(model)
+		if not bool(caps.supported): return "No supported procedural locomotion adapter for " + model + "."
+		var profile_error := AmbientProfile.validate(value.ambient, [], caps)
+		if not profile_error.is_empty(): return profile_error
 	return equipment_error(model, value.usable_index)
 
 

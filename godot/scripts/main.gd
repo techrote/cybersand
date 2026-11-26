@@ -2235,6 +2235,9 @@ func _process(delta: float) -> void:
 		_pubpres_packet_observed("material_consumption", material_started_usec, latest_snapshot,
 			{"uploaded_serial":last_uploaded_render_snapshot_serial, "ack_serial":_engine_lab_last_ack_serial})
 	_advance_prepared_physical_candidate()
+	if shared_workbench != null and physical_actor_session != null:
+		physical_actor_session.ingest_ambient_snapshot(latest_snapshot)
+		if physical_actor_session.take_ambient_refresh_request(): simulation_worker.request_render_full_refresh()
 	if _pending_physical_candidate == null and shared_workbench == null: refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
@@ -2384,6 +2387,7 @@ func _physics_process(_delta: float) -> void:
 		if not (_pubpres_terrain_installed(physics_snapshot) if _pubpres_trace_enabled else _workbench_terrain_installed(physics_snapshot)):
 			_cadence_physics_hold("terrain_installation",physics_snapshot)
 			return
+		physical_actor_session.ingest_ambient_snapshot(physics_snapshot)
 		if paused and not single_step:
 			_workbench_wait_sample = -1
 			_cadence_physics_hold("paused",physics_snapshot)
@@ -3709,6 +3713,8 @@ func consume_worker_snapshot() -> void:
 				snapshot.failed_tick_index,snapshot.last_tick_error]
 	if not player_uses_barrel():
 		character_position = snapshot.character_position
+	if shared_workbench != null and physical_actor_session != null:
+		physical_actor_session.ingest_ambient_snapshot(snapshot)
 	_offer_material_snapshot(snapshot)
 	gameplay_recorder.ingest_snapshot(snapshot)
 

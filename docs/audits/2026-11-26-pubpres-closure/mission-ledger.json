@@ -1,0 +1,71 @@
+{
+  "schema": "pubpres-final-closure-ledger-v1",
+  "mission": "PUBPRES-PLAYABILITY-FINAL-CLOSURE-001",
+  "updated_utc": "2026-11-26T07:58:58.569215+00:00",
+  "principal_pr": 767,
+  "disposition": "ENGINEERING_IN_PROGRESS_DRAFT_HOLD",
+  "source": {
+    "intake": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+    "intake_tree": "e55f15cbe8a81ed2f7db7e754b002f89d9070eb8",
+    "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "donor_D": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "restored_f197": "f197d0010699682ab7a7ed4e593a718857c9ed47",
+    "restored_f197_tree": "3d3a9d4f2d5915f8689924d03cc81cdf5ae009bc",
+    "restored_native_candidate": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+    "restored_native_candidate_tree": "d2e28f7ab3db5106a7f1ea173a802e3628fa6705",
+    "bundle_verification": "Both original digests/sizes/prerequisites and all 15 advertised commit/tree pairs verified before import",
+    "current_checkpoint": "64a4a744e6a44299b9860260e9e3b219ad9e6c62",
+    "accepted_main_reconciliation": "Implemented, pending resulting-source functional execution",
+    "current_checkpoint_tree": "b22ed398febf33d234dfe46c70b1f34537f04cf8"
+  },
+  "ownership": {
+    "lead": "architecture, source integration, Linux engine, application campaigns and final decision",
+    "native_progression": "isolated native worktree; pool/World/adapter semantics and matched native investigation",
+    "atomic_presentation": "isolated presentation worktree; Water/Sand, actual submission, history/Follow/picking",
+    "qualification_delivery": "isolated delivery worktree; independent evidence, exact Windows payload and extracted launchers"
+  },
+  "prior_activity": {
+    "last_pr_update_utc": "2026-11-26T01:11:53Z",
+    "accessible_live_pubpres_process": false,
+    "remote_process_status": "Not observable; absence of newer publication is not proof of terminal failure",
+    "f197_raw_successful_campaign": "Not recovered; only published calibration summaries and exact source are available",
+    "f197_completed_architecture_comparison": "Not established"
+  },
+  "original_engine02": {
+    "run": 45716469250,
+    "payload_artifact": 15072815424,
+    "proof_artifact": 15072590485,
+    "payload_zip_sha256": "462e7d06bdcb44420019724d7bb0c015e5e7c30f99898cca0ef357752320bd12",
+    "gui_sha256": "39928036d0acf292139ea4dde47d3a5cda9765406be13497fa78b99ad9da95ff",
+    "admission": "Independent full payload/API/PE/source/manifest checks PASS; actual resulting Windows application pending"
+  },
+  "protected_c2": {
+    "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "artifact": 14952245528,
+    "inner_sha256": "56a9218fe7e041abea7941b9866114b0d96514abda6e5c40b308ac00b76c3b01",
+    "mutation": "NONE"
+  },
+  "new_findings": [
+    "Windows CMD target directory differs from actual staged recovery package directory; repair in delivery lane",
+    "Native private pool lacks explicit overlapping-dispatch/invalid-input refusal; original and repair qualification kept separate",
+    "Exact original prepared multipart replay passed259 graphical/native/ordinary-mouse assertions at6ea6c85c, stock4.7; newly integrated source replay pending"
+  ],
+  "pending": [
+    "Resulting Water/Sand/multipart/ordinary picking graphical replay",
+    "Full World, mounted runtime and matched actual-task-completion qualification",
+    "Fresh Linux custom engine identity and actual graphical gates",
+    "Source-bound observer calibration and original six-arm architecture comparison",
+    "Freshness, resource retention, meaningful sustained product workloads",
+    "Current accepted-main comparison and opt-in AMBIENT isolation/handoff",
+    "Fresh source-exact Windows native and selected/fallback application qualification",
+    "Pristine extracted CMD, authored Save/fresh reopen, collector, independent archive verification",
+    "Physical owner Windows11/NVIDIA acceptance"
+  ],
+  "authority": {
+    "merge": false,
+    "ready": false,
+    "production_default_activation": false,
+    "public_release": false
+  }
+}
