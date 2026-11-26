@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/gip014-goblin-002-decision.md), then the [persistent experimental playtester ledger](research/gip014-goblin-002.md) and [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Exact source capabilities, campaign evidence and defect adjudication remain separately scoped.
+
 **AMBIENT-002, opt-in Draft/HOLD:** [living inhabitants, bounded memory, copied peers and group authoring](systems/ambient-living-inhabitants.md); [living Workbench owner guide](operations/ambient-living-workbench.md); [source-bound successor mission ledger](research/ambient-002/mission-ledger.md). The original AMBIENT-001 evaluator remains frozen and separate.
 
 **AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),

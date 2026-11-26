@@ -8,14 +8,19 @@ signal action_admitted(action: Dictionary, admission: Dictionary, observation: D
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Shapes = preload("res://scripts/workbench_paint_editor_shapes.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+const Gameplay = preload("res://goblin/goblin_gameplay_actions.gd")
+const GameplayOracles = preload("res://goblin/goblin_gameplay_oracles.gd")
+const Capabilities = preload("res://goblin/goblin_capabilities.gd")
+const Fixtures = preload("res://goblin/goblin_fixtures.gd")
+const MaterialLineage = preload("res://goblin/goblin_material_lineage.gd")
 const SAVE_NAME := "goblin-layout"
 const PROFILE_SCHEMA := "cybersand-goblin-profile-v1"
 const BODY_CAPTURE_REFUSAL := "Move or remove the body before editing or copying its covered cells."
-const MATERIALS := [0, 2, 3, 7, 58]
+const MATERIALS := Gameplay.MATERIALS
 const ACTION_IDS := ["pause", "play", "wait_ticks", "select_material", "brush", "erase",
 	"rectangle", "outline", "line", "select_region", "copy", "paste", "undo", "redo",
 	"fill", "camera", "actor_select", "actor_drive", "panel", "save_layout",
-	"reopen_layout", "reset_fixture", "actor_place", "actor_pilot", "actor_reset", "single_step"]
+	"reopen_layout", "reset_fixture", "actor_place", "actor_pilot", "actor_reset", "single_step"] + Gameplay.IDS
 const EDIT_IDS := ["brush", "erase", "rectangle", "outline", "line", "paste", "fill", "undo", "redo"]
 const ARGUMENTS := {
 	"pause": [], "play": ["ticks"], "wait_ticks": ["ticks"], "select_material": ["material"],
@@ -57,7 +62,12 @@ var _saved_authored_digest := ""
 var _saved_material_digest := ""
 var _saved_native_tick := -1
 var _saved_capture: Dictionary = {}
+var _saved_material_lineage: Dictionary = {}
+var _material_history := MaterialLineage.new()
 var _last_edit_region := Rect2i(32, 32, 64, 64)
+var _probe_key := ""
+var _probe_counts: Dictionary = {}
+var _model_capabilities: Dictionary = {}
 
 static func _integer(value: Variant, low: int, high: int) -> bool:
 	return typeof(value) in [TYPE_INT, TYPE_FLOAT] and is_finite(float(value)) \
@@ -72,6 +82,7 @@ static func validate_action(action: Variant) -> Dictionary:
 	if not action.get("args") is Dictionary: return {"ok": false, "error": "args must be an explicit object"}
 	if action.has("goal") and (not action.goal is String or action.goal.length() > 240):
 		return {"ok": false, "error": "goal must be a bounded string"}
+	if str(action.id) in Gameplay.IDS: return Gameplay.validate_action(action)
 	var id: String = action.id
 	var args: Dictionary = action.get("args", {})
 	for key: Variant in args:
@@ -101,9 +112,9 @@ static func validate_action(action: Variant) -> Dictionary:
 				or int(args.width) not in [240, 480] or int(args.height) not in [135, 270]:
 				return {"ok": false, "error": "camera outside bounded views"}
 		"actor_select", "actor_pilot":
-			if not _integer(args.actor_id, 1, 8): return {"ok": false, "error": "actor id outside 1..8"}
+			if not _integer(args.actor_id, 1, Gameplay.MAX_ACTOR_ID): return {"ok": false, "error": "actor id outside bounded identity budget"}
 		"actor_place":
-			if args.model not in ["kestrel", "reference_barrel"] or not _integer(args.x, 32, 448) or not _integer(args.y, 32, 224):
+			if args.model not in Gameplay.MODELS or not _integer(args.x, 32, 448) or not _integer(args.y, 32, 224):
 				return {"ok": false, "error": "actor placement outside the admitted fixture models and spawn region"}
 		"actor_drive":
 			if args.direction not in ["left", "right", "up", "down"] or not _integer(args.ticks, 1, 16):
@@ -186,7 +197,7 @@ func initialize(id: String, data: Dictionary) -> Dictionary:
 
 func install_fixture(id: String, data: Dictionary, admission_row: Dictionary = {}) -> Dictionary:
 	if not mounted: return {"ok": false, "error": "adapter is not mounted"}
-	if id not in ["material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen"]:
+	if id not in Fixtures.IDS:
 		return {"ok": false, "error": "unknown committed fixture"}
 	if Setup.extent_of(data) != Vector2i(512, 512) or not Setup.validate(data).is_empty():
 		return {"ok": false, "error": "fixture must be a valid 512 by 512 authored setup"}
@@ -217,15 +228,42 @@ func install_fixture(id: String, data: Dictionary, admission_row: Dictionary = {
 	_saved_material_digest = ""
 	_saved_native_tick = -1
 	_saved_capture.clear()
+	_saved_material_lineage.clear()
+	_material_history.authored(_capture_source(), json_value(host.tower_context.get("liquid_construction_receipt", {})), "fixture_install", host.paused)
 	_last_edit_region = Rect2i(32, 32, 64, 64)
 	return {"ok": true, "observation": observe(), "native_receipt": json_value(host.tower_context.get("liquid_construction_receipt", {}))}
 
 func observe() -> Dictionary:
 	if host == null or worker == null: return {"mounted": false, "fixture_id": fixture_id}
 	var source: Dictionary = worker.paint_state()
+	# Read the bounded worker queue under its actual owner mutex; never mutate
+	# it. An unchanged configure still needs observed command consumption.
+	worker._mutex.lock()
+	var pending_source_commands: int = worker._workbench_source_commands.size()
+	# Keep command identity and current source state with this exact count.
+	# A later callback can see a drained queue at the same native tick. Copy
+	# only bounded data here; conversion and all other observations stay
+	# outside the owner's critical section.
+	var source_queue_evidence := {"schema": "cybersand-goblin-source-queue-v1",
+		"command_count": pending_source_commands, "copy_complete": pending_source_commands <= 16,
+		"commands": worker._workbench_source_commands.duplicate(true) if pending_source_commands <= 16 else [],
+		"owner_generation": worker._world_generation, "owner_paused": worker._paused,
+		"current_source_receipt": worker._workbench_source.receipt().duplicate(true)}
+	worker._mutex.unlock()
+	var native := {"generation": int(source.get("generation", -1)), "revision": int(source.get("revision", -1)),
+		"tick": int(source.get("tick", -1)), "paused": bool(source.get("paused", false)),
+		"busy": bool(source.get("busy", true)), "failed": worker.has_failed()}
+	var lineage: Dictionary = _material_history.observe(native, host.paused)
 	var actors: Array = []
 	var actor_ids: Array = []
 	var controllable_ids: Array = []
+	var physical_body_count := 0
+	var physical_proxy_count := 0
+	if host.physical_actor_session != null:
+		physical_body_count = host.physical_actor_session.bodies().size()
+		for record: Dictionary in bench.applied.get("actors", []):
+			var slot: int = host.physical_actor_session.slot_for_instance(int(record.id))
+			physical_proxy_count += int(host.physical_actor_session.bridge.actor_proxy_range(slot).get("count", 0))
 	if bench != null:
 		for record: Dictionary in bench.applied.get("actors", []):
 			var id: int = int(record.id)
@@ -235,15 +273,29 @@ func observe() -> Dictionary:
 			actors.append({"id": id, "model": str(record.model), "state": json_value(actual),
 				"authored_spawn": json_value(record.get("spawn", [])),
 				"control_observation": json_value(bench.actor_observation(id, false)),
+				"authored_control": json_value(Setup.ActorCatalog.control_for(record)),
+				"options": json_value(record.get("options", {})),
+				"capabilities": json_value(_capabilities_for(str(record.model))),
 				"position": json_value(actual.get("position")),
 				"rotation": actual.get("rotation"), "linear_velocity": json_value(actual.get("linear_velocity")),
 				"controller": json_value(actual.get("controller", {})), "observed": not actual.is_empty()})
 	var undo: bool = editor != null and editor.history_available("undo")
 	var redo: bool = editor != null and editor.history_available("redo")
 	return {"mounted": mounted, "fixture_id": fixture_id, "scene_identity": fixture_digest,
-		"native": {"generation": int(source.get("generation", -1)), "revision": int(source.get("revision", -1)),
-			"tick": int(source.get("tick", -1)), "paused": bool(source.get("paused", false)),
-			"busy": bool(source.get("busy", true)), "failed": worker.has_failed()},
+		"progress_refusal": _observed_progress_refusal(source),
+		"world_size": json_value(Setup.extent_of(bench.applied)),
+		"adapter_version": 3, "material_lineage": lineage, "feature_capabilities": Capabilities.negotiate(host, bench),
+		"configuration": {"response": str(bench.applied.get("response", "")), "thruster_fire": bool(bench.applied.get("fire", false))},
+		"source": {"authored": json_value(bench.applied.get("source", [])),
+			"pending_commands": pending_source_commands,
+			"queue_evidence": json_value(source_queue_evidence),
+			"snapshot_serial": int(host.latest_snapshot.serial) if host.latest_snapshot != null else -1,
+			"receipt": json_value(host.latest_snapshot.lab_context.get("workbench_source", {})) if host.latest_snapshot != null else {},
+			"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1},
+		"paint_preview": {"dragging": bool(editor.dragging), "samples": editor.stroke.size(),
+			"anchor": json_value(editor.anchor), "cursor": json_value(editor.cursor)},
+		"material_probe": _material_probe(source),
+		"native": native,
 		"paused": host.paused, "material": int(editor.material_id) if editor != null else -1,
 		"tool": editor.tool_name() if editor != null else "", "brush_radius": editor.radius() if editor != null else -1,
 		"selection": json_value(editor.selection) if editor != null else [],
@@ -258,15 +310,21 @@ func observe() -> Dictionary:
 		"controllable_actor_ids": controllable_ids,
 		"next_actor_id": int(bench.applied.get("next_id", -1)) if bench != null else -1,
 		"actor_tick": int(host.physical_actor_session.tick) if host.physical_actor_session != null else -1,
-		"camera": {"origin": json_value(host.camera_origin), "size": json_value(host.current_view_size)},
+		"camera": {"origin": json_value(host.camera_origin), "size": json_value(host.current_view_size),
+			"mode": int(bench._camera.selected), "zoom_index": int(bench._zoom)},
 		"panels": {"details": bench._details.visible if bench != null else false},
 		"details_open": bench._details.visible if bench != null else false,
 		"authored_digest": digest(bench.applied) if bench != null else "",
 		"saved_authored_digest": _saved_authored_digest, "saved_material_digest": _saved_material_digest,
 		"saved_native_tick": _saved_native_tick,
+		"saved_material_lineage": _saved_material_lineage.duplicate(true),
 		"snapshot_tick": int(host.latest_snapshot.tick_index) if host.latest_snapshot != null else -1,
+		"snapshot_serial": int(host.latest_snapshot.serial) if host.latest_snapshot != null else -1,
 		"native_worker_request": int(host.latest_snapshot.native_worker_request) if host.latest_snapshot != null else -1,
 		"physical_epoch": int(host._physical_epoch),
+		"physical_session_active": host.physical_actor_session != null,
+		"physical_body_count": physical_body_count, "physical_proxy_count": physical_proxy_count,
+		"physical_ready": bool(host._physical_terrain_ready),
 		"step_serial": int(bench.step_serial) if bench != null else -1,
 		"step_observed_serial": int(host.tower_context.get("workbench_step_serial", -1)),
 		"message": str(bench.message) if bench != null else "", "stopped": stopped}
@@ -280,6 +338,7 @@ func available_actions() -> Array[Dictionary]:
 		if bench.pilot_id() > 0:
 			for direction: String in ["left", "right", "up", "down"]:
 				menu.append({"id": "actor_drive", "args": {"direction": direction, "ticks": 8}})
+		menu.append_array(Gameplay.available_actions(self))
 		return menu
 	menu.append({"id": "play", "args": {"ticks": 4}})
 	menu.append({"id": "pause", "args": {}})
@@ -309,13 +368,15 @@ func available_actions() -> Array[Dictionary]:
 	for actor_id: int in observe().controllable_actor_ids:
 		menu.append({"id": "actor_pilot", "args": {"actor_id": actor_id}})
 	if bench.selected_id() > 0: menu.append({"id": "actor_reset", "args": {}})
-	if bench.applied.actors.size() < 8 and int(bench.applied.next_id) <= 8:
-		menu.append({"id": "actor_place", "args": {"model": "kestrel", "x": 256, "y": 96}})
-		menu.append({"id": "actor_place", "args": {"model": "reference_barrel", "x": 288, "y": 128}})
+	if bench.applied.actors.size() < 8 and int(bench.applied.next_id) <= Gameplay.MAX_ACTOR_ID:
+		for model: String in Gameplay.MODELS:
+			if Setup.ActorCatalog.has_model(model):
+				menu.append({"id": "actor_place", "args": {"model": model, "x": 256, "y": 96}})
 	menu.append({"id": "panel", "args": {"panel": "details", "open": not bench._details.visible}})
 	menu.append({"id": "save_layout", "args": {}})
 	if not _saved_authored_digest.is_empty(): menu.append({"id": "reopen_layout", "args": {}})
 	menu.append({"id": "reset_fixture", "args": {}})
+	menu.append_array(Gameplay.available_actions(self))
 	return menu
 
 func execute(action: Dictionary) -> Dictionary:
@@ -333,6 +394,7 @@ func execute(action: Dictionary) -> Dictionary:
 	row._owns_execution = true
 	var id: String = action.id
 	var args: Dictionary = action.get("args", {})
+	if id in Gameplay.IDS: return await Gameplay.execute(self, action, row, started)
 	if id in EDIT_IDS + ["select_region", "copy", "save_layout", "reopen_layout", "reset_fixture",
 		"actor_place", "actor_pilot", "actor_reset", "single_step"] and not host.paused:
 		return _finish(row, started, "refused", "not_applicable", "this goblin action requires paused authoring")
@@ -471,8 +533,8 @@ func execute(action: Dictionary) -> Dictionary:
 				"control": json_value(host.physical_actor_session.workbench_control(int(args.actor_id))),
 				"body": json_value(bench.body_state(int(args.actor_id)))}
 		"actor_place", "actor_reset":
-			if id == "actor_place" and (bench.applied.actors.size() >= 8 or int(bench.applied.next_id) > 8):
-				return _finish(row, started, "refused", "not_applicable", "fixture's eight-actor identity budget is full")
+			if id == "actor_place" and (bench.applied.actors.size() >= 8 or int(bench.applied.next_id) > Gameplay.MAX_ACTOR_ID):
+				return _finish(row, started, "refused", "not_applicable", "fixture's eight live actors or 64 identities budget is full")
 			if id == "actor_reset" and bench.selected_id() <= 0:
 				return _finish(row, started, "refused", "not_applicable", "select an actual actor first")
 			var instance_id: int = int(bench.applied.next_id) if id == "actor_place" else bench.selected_id()
@@ -546,11 +608,14 @@ func execute(action: Dictionary) -> Dictionary:
 			_saved_material_digest = str(material.get("material_sha256", ""))
 			_saved_native_tick = int(worker.paint_state().get("tick", -1))
 			_saved_capture = material.duplicate(true)
-			var comparison: bool = _saved_native_tick == 0 and not material.has("error")
+			_saved_material_lineage = observe().get("material_lineage", {}).duplicate(true)
+			var comparison: bool = _saved_material_lineage.get("state") == "authored_compatible" and not material.has("error")
 			row["persistence"] = {"name": SAVE_NAME, "read_authored_digest": _saved_authored_digest,
 				"material_sha256": _saved_material_digest, "saved_native_tick": _saved_native_tick,
+				"saved_material_lineage": _saved_material_lineage.duplicate(true),
 				"native_material_equality_applicable": comparison,
-				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(material) else "evolved_native_tick"),
+				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(material) else (
+					"simulation_exposed_lineage" if _saved_material_lineage.get("state") == "simulation_exposed" else "unknown_material_lineage")),
 				"semantics": "authored start, not evolved simulation"}
 		"reopen_layout":
 			if _saved_authored_digest.is_empty(): return _finish(row, started, "refused", "not_applicable", "no layout saved in this campaign")
@@ -564,15 +629,18 @@ func execute(action: Dictionary) -> Dictionary:
 			if int(worker.paint_state().generation) <= generation:
 				row["native_attempt"] = json_value(host.tower_context.get("liquid_construction_attempt", {}))
 				return _finish(row, started, "refused", "game_observation", str(host.microscenario_error))
+			row.native_receipt = json_value(host.tower_context.get("liquid_construction_receipt", {}))
 			var material: Dictionary = await capture(Rect2i(0, 0, 512, 512), false)
 			row["persistence_capture"] = material.duplicate(true)
-			var comparison: bool = _saved_native_tick == 0 and not _saved_material_digest.is_empty() and not material.has("error")
+			var comparison: bool = _saved_material_lineage.get("state") == "authored_compatible" and not _saved_material_digest.is_empty() and not material.has("error")
 			row["persistence"] = {"name": SAVE_NAME, "expected_authored_digest": _saved_authored_digest,
 				"reopened_authored_digest": digest(bench.applied), "saved_material_sha256": _saved_material_digest,
 				"reopened_material_sha256": material.get("material_sha256", ""),
 				"saved_native_tick": _saved_native_tick, "saved_capture": _saved_capture.duplicate(true),
+				"saved_material_lineage": _saved_material_lineage.duplicate(true),
 				"native_material_equality_applicable": comparison,
-				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(_saved_capture) or _body_protected_capture(material) else "evolved_native_tick"),
+				"native_material_equality_reason": "available" if comparison else ("native_body_protection" if _body_protected_capture(_saved_capture) or _body_protected_capture(material) else (
+					"simulation_exposed_lineage" if _saved_material_lineage.get("state") == "simulation_exposed" else "unknown_material_lineage")),
 				"semantics": "authored start, not evolved simulation"}
 			if material.has("error") and not _body_protected_capture(material):
 				return _finish(row, started, "partial", _capture_failure_classification(material), material.error)
@@ -581,6 +649,7 @@ func execute(action: Dictionary) -> Dictionary:
 			if not result.get("ok", false):
 				return _finish(row, started, "partial" if row.admission.get("accepted", false) else "refused",
 					result.get("classification", "game_observation"), result.get("error", "fixture reset refused"))
+			row.native_receipt = result.get("native_receipt", {}).duplicate(true)
 	if id in EDIT_IDS:
 		var receipt_status: String = str(row.native_receipt.get("status", ""))
 		if receipt_status != "completed":
@@ -610,7 +679,21 @@ func _finish(row: Dictionary, started: int, status: String, classification: Stri
 	row.status = status
 	row.classification = classification
 	row.error = error
+	if worker != null and host != null: _material_history.finish(row, _capture_source(), host.paused)
 	row.after = observe()
+	if status == "partial" and classification != "native_failure":
+		var interval: Dictionary = row.get("interval", {})
+		if interval.get("progress_refusal", {}).is_empty():
+			interval = row.get("actor_delivery", {}).get("release_interval", {})
+		if not interval.get("progress_refusal", {}).is_empty():
+			row["expected_refusal"] = interval.progress_refusal.duplicate(true)
+			row.classification = "game_observation"
+			if GameplayOracles.expected_boundary_refusal(row):
+				row.error = str(row.expected_refusal.reason)
+			else:
+				# A stale publication or a different owner never downgrades failure.
+				row.erase("expected_refusal")
+				row.classification = classification
 	row.duration_usec = Time.get_ticks_usec() - started
 	if row.get("_owns_execution", false): executing = false
 	row.erase("_owns_execution")
@@ -629,6 +712,10 @@ func capture(region: Rect2i, include_materials: bool = true) -> Dictionary:
 	if admission.get("status", "") != "queued":
 		result.source_after = _capture_source()
 		result.error = "native capture refused"
+		if admission.get("status") == "refused" and admission.get("reason") == GameplayOracles.FINITE_CANVAS_REFUSAL:
+			var proof := _observed_progress_refusal(result.source_after)
+			if not proof.is_empty(): result["progress_refusal"] = proof
+			if GameplayOracles.expected_boundary_capture_refusal(result): result.error = str(admission.reason)
 		return result
 	if not await _until(func() -> bool: return worker.paint_state().get("receipt_ready", false), "operation_seconds", true):
 		result.source_after = _capture_source()
@@ -690,7 +777,8 @@ static func _body_protected_capture(captured: Dictionary) -> bool:
 static func _capture_failure_classification(captured: Dictionary) -> String:
 	var wait_failure: String = str(captured.get("wait_failure_classification", ""))
 	if wait_failure in ["timeout", "cancelled", "native_failure"]: return wait_failure
-	return "not_applicable" if _body_protected_capture(captured) else "adapter_failure"
+	return "not_applicable" if _body_protected_capture(captured) \
+		or GameplayOracles.expected_boundary_capture_refusal(captured) else "adapter_failure"
 
 func _action_region(action: Dictionary) -> Rect2i:
 	var id: String = action.id
@@ -766,17 +854,40 @@ func _wait_failure_classification() -> String:
 	if worker != null and worker.has_failed(): return "native_failure"
 	return "cancelled" if stopped else "timeout"
 
+
+func _observed_progress_refusal(state: Dictionary) -> Dictionary:
+	if host == null or host.latest_snapshot == null or worker == null: return {}
+	var snapshot: Variant = host.latest_snapshot
+	var published: Dictionary = snapshot.lab_context
+	var native: Dictionary = {"generation": state.get("generation"), "revision": state.get("revision"),
+		"tick": state.get("tick"), "paused": state.get("paused"), "failed": worker.has_failed()}
+	return GameplayOracles.finite_canvas_refusal(native, {
+		"reason": str(published.get("workbench_refusal", "")),
+		"generation": published.get("liquid_construction_receipt", {}).get("session_generation", -1),
+		"tick": int(snapshot.tick_index), "serial": int(snapshot.serial),
+		"paused": bool(host.paused), "failed": bool(snapshot.simulation_failed)})
+
+
 func _tick_interval(ticks: int, require_actor: bool = false) -> Dictionary:
 	var start: Dictionary = observe()
 	var frames: int = Engine.get_process_frames()
+	var refusal := {}
 	var ok: bool = await _until(func() -> bool:
-		return int(worker.paint_state().get("tick", -1)) >= int(start.native.tick) + ticks \
+		var state: Dictionary = worker.paint_state()
+		var published_refusal := _observed_progress_refusal(state)
+		if not published_refusal.is_empty():
+			refusal.merge(published_refusal, true)
+			return true
+		return int(state.get("tick", -1)) >= int(start.native.tick) + ticks \
 			and (not require_actor or (host.physical_actor_session != null and host.physical_actor_session.tick >= int(start.actor_tick) + ticks)),
 		"operation_seconds")
 	var end: Dictionary = observe()
+	if not refusal.is_empty():
+		ok = false
+		last_error = str(refusal.reason)
 	return {"ok": ok, "requested_ticks": ticks, "start_tick": start.native.tick, "end_tick": end.native.tick,
 		"observed_frames": Engine.get_process_frames() - frames,
-		"start_actor_tick": start.actor_tick, "end_actor_tick": end.actor_tick}
+		"start_actor_tick": start.actor_tick, "end_actor_tick": end.actor_tick, "progress_refusal": refusal}
 
 func _paused_interval() -> Dictionary:
 	var start: Dictionary = observe()
@@ -829,3 +940,27 @@ func close() -> void:
 	worker = null
 	mounted = false
 	if get_tree().get_meta("cybersand_feature", "") == "shared_workbench": get_tree().remove_meta("cybersand_feature")
+
+# The probe is a retained native observation, explicitly marked stale after any
+# source change. It is never reconstructed from authored edits or palette choice.
+func _material_probe(source: Dictionary) -> Dictionary:
+	if last_capture.is_empty() or last_capture.has("error") or not last_capture.get("materials") is Array:
+		return {}
+	var receipt: Dictionary = last_capture.get("native_receipt", {})
+	var observed_key: String = "%s:%s" % [receipt.get("generation", -1), receipt.get("operation_id", -1)]
+	if observed_key != _probe_key:
+		_probe_key = observed_key
+		_probe_counts.clear()
+		for material: Variant in last_capture.materials:
+			var key: String = str(int(material))
+			_probe_counts[key] = int(_probe_counts.get(key, 0)) + 1
+	return {"region": last_capture.get("region", []).duplicate(), "counts": _probe_counts.duplicate(),
+		"generation": receipt.get("generation", -1), "revision": receipt.get("revision", -1), "tick": receipt.get("tick", -1),
+		"current": receipt.get("generation") == source.get("generation") and receipt.get("revision") == source.get("revision") and receipt.get("tick") == source.get("tick"),
+		"evidence_kind": "actual_native_material_capture"}
+
+func _capabilities_for(model: String) -> Dictionary:
+	if not _model_capabilities.has(model):
+		_model_capabilities[model] = Setup.ActorCatalog.entry(model)
+		_model_capabilities[model]["actuators"] = Gameplay.ports_for(model)
+	return _model_capabilities[model]

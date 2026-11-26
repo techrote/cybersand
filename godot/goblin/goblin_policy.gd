@@ -4,7 +4,12 @@ extends RefCounted
 # decides action success, reads a file, or performs an application operation.
 # The adapter remains the range/capability authority; the independent oracle
 # judges the returned application observations.
-const PERSONALITIES := ["CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM"]
+const Coverage = preload("res://goblin/goblin_coverage.gd")
+const State = preload("res://goblin/goblin_state.gd")
+const BASELINE_PERSONALITIES := ["CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM"]
+const PERSONALITIES := ["CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM",
+	"STATEFUL", "NOVELTY", "COVERAGE_HUNTER", "DISASTER_ARTIST", "BOUNDARY_GOBLIN", "HISTORY_GOBLIN",
+	"MATERIAL_ALCHEMIST", "ACTOR_ENTHUSIAST", "IMPATIENT_SWITCHER", "OBSESSIVE_REPRODUCER"]
 const MATERIALS := [2, 3, 7, 58]
 const HISTORY_LIMIT := 64
 const WAYPOINTS := [[64, 60], [224, 80], [128, 160], [336, 144]]
@@ -25,6 +30,19 @@ var _pair_counts: Dictionary = {}
 var _transition_counts: Dictionary = {}
 var _status_counts: Dictionary = {}
 var _recent: Array[Dictionary] = []
+var _coverage: RefCounted = Coverage.new()
+var _corpus: RefCounted
+var _last_novelty: Dictionary = {}
+var _memory_result: Dictionary = {}
+var _reuse_prefix: Array[Dictionary] = []
+var _reuse_requested := false
+var _reused_actions := 0
+var _reuse_queued_actions := 0
+var _reuse_remaining := 0
+var _last_family := ""
+var _intention: Dictionary = {}
+var _intentions_started: Dictionary = {}
+var _repeat_location := Vector2i(64, 48)
 
 
 func configure(name: String, seed_value: int) -> bool:
@@ -42,6 +60,19 @@ func configure(name: String, seed_value: int) -> bool:
 	_transition_counts.clear()
 	_status_counts.clear()
 	_recent.clear()
+	_coverage.reset()
+	_corpus = null
+	_last_novelty.clear()
+	_memory_result.clear()
+	_reuse_prefix.clear()
+	_reuse_requested = false
+	_reused_actions = 0
+	_reuse_queued_actions = 0
+	_reuse_remaining = 0
+	_last_family = ""
+	_intention.clear()
+	_intentions_started.clear()
+	_repeat_location = Vector2i(64, 48)
 	_configured = personality in PERSONALITIES and seed_value >= -2147483648 and seed_value <= 2147483647
 	goal = "Ready to explore" if _configured else "Unsupported personality or seed"
 	return _configured
@@ -51,6 +82,13 @@ func next_action(observation: Dictionary, legal_actions: Array) -> Dictionary:
 	if not _configured or legal_actions.is_empty():
 		goal = "No applicable in-game action"
 		return {}
+	if _emitted == 0 and not _reuse_prefix.is_empty():
+		goal = "Revisit an explicitly selected matching authored prefix"
+		_set_intention("retained_prefix", "revisit", _reuse_prefix.size())
+		_queue = _reuse_prefix.duplicate(true)
+		_reuse_prefix.clear()
+		_reuse_queued_actions = _queue.size()
+		_reuse_remaining = _queue.size()
 	if personality == "RANDOM":
 		goal = "Try one seeded legal action"
 		return _emit(legal_actions[_rng.randi_range(0, legal_actions.size() - 1)])
@@ -63,7 +101,10 @@ func next_action(observation: Dictionary, legal_actions: Array) -> Dictionary:
 		if _queue.is_empty():
 			break
 		var candidate: Dictionary = _queue.pop_front()
+		var retained_candidate: bool = _reuse_remaining > 0
+		if retained_candidate: _reuse_remaining -= 1
 		if _has_id(legal_actions, str(candidate.id)) and _observed_preconditions(candidate, observation):
+			if retained_candidate: _reused_actions += 1
 			return _emit(candidate)
 		_skipped += 1
 	goal = "Inspect an available control"
@@ -92,6 +133,10 @@ func observe_result(record: Dictionary) -> void:
 		_recent.pop_front()
 	_last_observed_id = action_id
 	_observed += 1
+	_last_novelty = _coverage.observe(record)
+	if _corpus != null:
+		_memory_result = _corpus.observe(record, _last_novelty)
+	_intention["actions_observed"] = int(_intention.get("actions_observed", 0)) + 1
 
 
 func summary() -> Dictionary:
@@ -99,12 +144,21 @@ func summary() -> Dictionary:
 		"goals_started":_goal_number, "actions_proposed":_emitted, "actions_observed":_observed,
 		"unavailable_goal_steps_skipped":_skipped, "observed_action_counts":_action_counts.duplicate(true),
 		"observed_status_counts":_status_counts.duplicate(true), "distinct_observed_pairs":_pair_counts.size(),
-		"distinct_observed_transitions":_transition_counts.size(), "recent_observations":_recent.duplicate(true)}
+		"distinct_observed_transitions":_transition_counts.size(), "recent_observations":_recent.duplicate(true),
+		"coverage":_coverage.summary(), "last_novelty":_last_novelty.duplicate(true),
+		"intention":_intention.duplicate(true), "intentions_started":_intentions_started.duplicate(true),
+		"memory":_corpus.summary() if _corpus != null else {"records":0, "enabled":false},
+		"memory_result":_memory_result.duplicate(true), "prefix_reuse_requested":_reuse_requested,
+		"retained_prefix_actions_proposed":_reused_actions, "retained_prefix_actions_queued":_reuse_queued_actions,
+		"decision_contract":"seeded supplied-observation decisions; no predicted action success"}
 
 
 func _emit(action: Dictionary) -> Dictionary:
 	var result := {"id":str(action.get("id", "")), "args":Dictionary(action.get("args", {})).duplicate(true), "goal":goal}
 	_emitted += 1
+	_last_family = _family(str(result.id))
+	if not _intention.is_empty():
+		_intention["remaining_actions"] = _queue.size()
 	return result
 
 
@@ -141,6 +195,7 @@ func _make_goal(observation: Dictionary, legal_actions: Array) -> void:
 		"BUILDER": _builder_goal(observation)
 		"TINKERER": _tinkerer_goal(observation)
 		"CURIOSITY": _curiosity_goal(observation, legal_actions)
+		_: _modern_goal(observation, legal_actions)
 
 
 func _control_goal(observation: Dictionary) -> void:
@@ -374,3 +429,270 @@ func _state_key(observation: Dictionary) -> String:
 		str(observation.get("selected_actor", "unknown")),
 		str(observation.get("undo_available", observation.get("can_undo", "unknown"))),
 		str(observation.get("redo_available", observation.get("can_redo", "unknown")))]
+
+
+func bind_memory(corpus: RefCounted, context: Dictionary, reuse_prefix: bool = false) -> bool:
+	if not _configured or _emitted != 0 or corpus == null or not corpus.begin_episode(context): return false
+	_corpus = corpus
+	_coverage.load_memory(corpus.search_hints())
+	_reuse_requested = reuse_prefix
+	# Matching context binds the authored fixture, fixture version and exact
+	# provenance. This is a proposed action prefix, never a physics checkpoint.
+	if reuse_prefix and personality not in BASELINE_PERSONALITIES:
+		_reuse_prefix = corpus.reuse_actions(context, posmod(campaign_seed, 64))
+	return true
+
+
+func coverage_memory() -> Dictionary:
+	return _coverage.memory()
+
+
+static func describe(name: String) -> Dictionary:
+	var entries := {
+		"CONTROL":["Control", "Preserved deterministic tour of the predecessor controls.", "baseline"],
+		"WANDERER":["Wanderer", "Visits waypoints, leaves material trails and tries an observed pilot.", "baseline"],
+		"BUILDER":["Builder", "Builds little cups, watches them and removes their supporting ledges.", "baseline"],
+		"TINKERER":["Tinkerer", "Edits, copies, revisits history and reopens authored starts.", "baseline"],
+		"CURIOSITY":["Curiosity", "Preserved least-exercised control search from the predecessor.", "baseline"],
+		"RANDOM":["Seeded random", "Samples the adapter's currently offered legal actions.", "baseline"],
+		"STATEFUL":["Stateful explorer", "Chooses finite construction, editing and actor intentions from actual observations.", "stateful"],
+		"NOVELTY":["Novelty seeker", "Prefers unseen state/action combinations and parameter variants.", "novelty"],
+		"COVERAGE_HUNTER":["Coverage hunter", "Balances admitted action, transition and parameter coverage.", "coverage"],
+		"DISASTER_ARTIST":["Disaster artist", "Builds bounded reservoirs, introduces materials and breaches their walls.", "stateful"],
+		"BOUNDARY_GOBLIN":["Boundary goblin", "Visits fixture edges and probes legal geometry and view limits.", "coverage"],
+		"HISTORY_GOBLIN":["History goblin", "Repeats reversible edits, copy/paste and authored persistence experiments.", "stateful"],
+		"MATERIAL_ALCHEMIST":["Material alchemist", "Places different admitted materials together and observes their development.", "novelty"],
+		"ACTOR_ENTHUSIAST":["Actor enthusiast", "Selects observed actors and explores available controls and equipment.", "coverage"],
+		"IMPATIENT_SWITCHER":["Impatient switcher", "Alternates action families, controls and simulation states.", "coverage"],
+		"OBSESSIVE_REPRODUCER":["Obsessive reproducer", "Revisits a small edit relationship; can explicitly reuse a retained prefix.", "stateful"],
+	}
+	if not entries.has(name): return {}
+	return {"id":name, "label":entries[name][0], "description":entries[name][1], "search_mode":entries[name][2]}
+
+
+func _modern_goal(observation: Dictionary, menu: Array) -> void:
+	match personality:
+		"DISASTER_ARTIST": _reservoir_intention(observation, menu, true)
+		"BOUNDARY_GOBLIN": _boundary_intention(menu)
+		"HISTORY_GOBLIN": _history_intention(menu, false)
+		"MATERIAL_ALCHEMIST": _reservoir_intention(observation, menu, false)
+		"ACTOR_ENTHUSIAST": _actor_intention(observation, menu)
+		"IMPATIENT_SWITCHER":
+			goal = "Switch from " + _last_family + " to another ordinary game control"
+			_queue.append(_choose(menu, observation, "coverage", true))
+			_set_intention("switch_family", "ui", _queue.size())
+		"OBSESSIVE_REPRODUCER": _history_intention(menu, true)
+		"STATEFUL":
+			if observation.get("paused") == false:
+				goal = "Watch the running experiment and pause to inspect it"
+				_append_available(menu, "wait_ticks")
+				_append_available(menu, "pause")
+				_set_intention("observe_running", "simulation", _queue.size())
+			elif _goal_number % 4 == 1:
+				_reservoir_intention(observation, menu, false)
+			elif _goal_number % 4 == 2:
+				_history_intention(menu, false)
+			elif _goal_number % 4 == 3:
+				_actor_intention(observation, menu)
+			else:
+				goal = "Use the observed state to choose the next ordinary control"
+				_queue.append(_choose(menu, observation, "stateful"))
+				_set_intention("state_sensitive_choice", "exploration", _queue.size())
+		_:
+			var mode := "novelty" if personality == "NOVELTY" else "coverage"
+			goal = "Explore an under-observed " + mode + " transition"
+			_queue.append(_choose(menu, observation, mode))
+			_set_intention(mode + "_choice", "exploration", _queue.size())
+	if _queue.size() > 128: _queue.resize(128)
+
+
+func _set_intention(id: String, family: String, planned: int) -> void:
+	_intention = {"id":id, "family":family, "sequence":_goal_number,
+		"planned_actions":planned, "remaining_actions":planned, "actions_observed":0, "goal":goal}
+	_intentions_started[id] = int(_intentions_started.get(id, 0)) + 1
+
+
+func _choose(menu: Array, observation: Dictionary, mode: String, change_family: bool = false) -> Dictionary:
+	var weights: Array[float] = []
+	var total := 0.0
+	for candidate: Dictionary in menu:
+		var id := str(candidate.get("id", ""))
+		var family := _family(id)
+		var weight: float = _coverage.score(candidate, observation, mode) * _personality_weight(family)
+		if change_family and family == _last_family: weight *= 0.06
+		# Context-sensitive weights use actual observer facts. They never turn a
+		# proposed actor, history edit or save into an admitted capability.
+		if id == "actor_place" and observation.get("actors", []).size() >= 6: weight *= 0.1
+		if id in ["reset_fixture", "replace_fixture", "restore_start"] and _observed < 16: weight *= 0.1
+		if id == "pause" and observation.get("paused") == true: weight *= 0.12
+		if id == "select_material" and candidate.get("args", {}).get("material") == observation.get("material"): weight *= 0.12
+		if id == "select_tool" and candidate.get("args", {}).get("tool") == observation.get("tool"): weight *= 0.12
+		if id == "actor_pilot" and candidate.get("args", {}).get("actor_id") == observation.get("pilot_actor"): weight *= 0.12
+		weight = maxf(weight, 0.001)
+		weights.append(weight)
+		total += weight
+	var choice: float = _rng.randf() * total
+	for index: int in range(menu.size()):
+		choice -= weights[index]
+		if choice <= 0.0: return menu[index].duplicate(true)
+	return menu.back().duplicate(true)
+
+
+func _personality_weight(family: String) -> float:
+	var favored := {
+		"DISASTER_ARTIST":["material", "construction", "simulation"],
+		"BOUNDARY_GOBLIN":["navigation", "construction", "lifecycle"],
+		"HISTORY_GOBLIN":["history", "construction"],
+		"MATERIAL_ALCHEMIST":["material", "construction", "simulation"],
+		"ACTOR_ENTHUSIAST":["actor"],
+		"IMPATIENT_SWITCHER":["ui", "actor", "lifecycle"],
+		"OBSESSIVE_REPRODUCER":["history", "construction"],
+	}
+	return 4.0 if family in favored.get(personality, []) else 1.0
+
+
+static func _family(id: String) -> String:
+	if id.begins_with("actor_"): return "actor"
+	if id.begins_with("camera"): return "navigation"
+	if id.begins_with("source_") or id == "select_material": return "material"
+	if id in ["brush", "erase", "rectangle", "outline", "line", "fill", "stroke", "live_stroke", "interrupt_stroke"]: return "construction"
+	if id in ["undo", "redo", "copy", "paste", "select_region", "save_layout", "reopen_layout"]: return "history"
+	if id in ["play", "pause", "wait_ticks", "single_step"]: return "simulation"
+	if id in ["reset_fixture", "replace_fixture", "restore_start"]: return "lifecycle"
+	return "ui"
+
+
+func _available_materials(menu: Array) -> Array[int]:
+	var values: Array[int] = []
+	for candidate: Dictionary in menu:
+		if candidate.get("id") == "select_material":
+			var value := int(candidate.get("args", {}).get("material", -1))
+			if value > 0 and value != 58 and value != 7 and value not in values: values.append(value)
+	return values
+
+
+func _append_available(menu: Array, id: String) -> bool:
+	var choices: Array[Dictionary] = []
+	for candidate: Dictionary in menu:
+		if candidate.get("id") == id: choices.append(candidate)
+	if choices.is_empty(): return false
+	_queue.append(choices[_rng.randi_range(0, choices.size() - 1)].duplicate(true))
+	return true
+
+
+func _reservoir_intention(observation: Dictionary, menu: Array, breach: bool) -> void:
+	if observation.get("paused") == false:
+		goal = "Pause before constructing the next material experiment"
+		_append_available(menu, "pause")
+		_set_intention("pause_for_construction", "simulation", _queue.size())
+		return
+	var materials := _available_materials(menu)
+	if materials.is_empty():
+		goal = "Inspect the available material controls for " + personality.to_lower()
+		_queue.append(_choose(menu, observation, "coverage" if breach else "novelty"))
+		_set_intention("material_inspection", "material", _queue.size())
+		return
+	var x := 32 + _rng.randi_range(0, 5) * 64
+	var y := 40 + _rng.randi_range(0, 2) * 52
+	var first := materials[_rng.randi_range(0, materials.size() - 1)]
+	var second := materials[_rng.randi_range(0, materials.size() - 1)]
+	goal = "Build a cup, combine materials %d and %d, %s and observe" % [first, second, "breach its gate" if breach else "compare after stepping"]
+	_step("pause")
+	_step("camera", {"x":0, "y":0, "width":480, "height":270})
+	_step("select_material", {"material":58})
+	_container(x, y, 36, 30)
+	_step("select_material", {"material":first})
+	_box("rectangle", x + 4, y + 14, x + 15, y + 22)
+	_step("select_material", {"material":second})
+	_box("rectangle", x + 20, y + 4, x + 29, y + 11)
+	_step("play", {"ticks":8})
+	_step("wait_ticks", {"ticks":8})
+	_step("pause")
+	if breach:
+		_step("erase", {"x":x + 34, "y":y + 23, "radius":3})
+		_step("play", {"ticks":12})
+		_step("pause")
+		_step("select_material", {"material":58})
+		_box("rectangle", x + 33, y + 18, x + 35, y + 29)
+	else:
+		_step("single_step")
+		_step("undo")
+		_step("redo")
+	_set_intention("reservoir_breach_repair" if breach else "material_pair", "material", _queue.size())
+
+
+func _container(x: int, y: int, width: int, height: int) -> void:
+	_box("rectangle", x, y + height - 3, x + width - 1, y + height - 1)
+	_box("rectangle", x, y, x + 2, y + height - 4)
+	_box("rectangle", x + width - 3, y, x + width - 1, y + height - 4)
+
+
+func _history_intention(menu: Array, repeat: bool) -> void:
+	if not _has_id(menu, "rectangle"):
+		goal = "Pause to investigate reversible editing"
+		if not _append_available(menu, "pause"): _queue.append(menu[0].duplicate(true))
+		_set_intention("history_prepare", "history", _queue.size())
+		return
+	if not repeat or _goal_number % 4 == 1:
+		_repeat_location = Vector2i(32 + _rng.randi_range(0, 12) * 24, 32 + _rng.randi_range(0, 5) * 24)
+	var x := _repeat_location.x
+	var y := _repeat_location.y
+	goal = "Revisit edit, Undo, Redo, copy and authored reopen at (%d, %d)" % [x, y]
+	_step("pause")
+	_step("camera", {"x":0, "y":0, "width":480, "height":270})
+	_step("select_material", {"material":58})
+	_box("rectangle", x, y, x + 11, y + 7)
+	_step("undo")
+	_step("redo")
+	_box("select_region", x, y, x + 11, y + 7)
+	_step("copy")
+	_step("paste", {"x":x + 16, "y":y + 12})
+	_step("undo")
+	_step("redo")
+	_step("save_layout")
+	_step("reopen_layout")
+	_step("single_step")
+	_set_intention("repeat_edit_relationship" if repeat else "history_roundtrip", "history", _queue.size())
+
+
+func _boundary_intention(menu: Array) -> void:
+	if not _has_id(menu, "brush"):
+		goal = "Pause before inspecting a world edge"
+		if not _append_available(menu, "pause"): _queue.append(menu[0].duplicate(true))
+		_set_intention("edge_prepare", "navigation", _queue.size())
+		return
+	var side := posmod(_goal_number - 1, 4)
+	var x := 8 if side in [0, 2] else 480
+	var y := 8 if side in [0, 1] else 480
+	goal = "Inspect the admitted corner near (%d, %d), then undo the small mark" % [x, y]
+	_step("pause")
+	_step("camera", {"x":0 if x < 256 else 256, "y":0 if y < 256 else 256, "width":480, "height":270})
+	_step("select_material", {"material":58})
+	_box("outline", x, y, x + 15, y + 15)
+	_step("brush", {"x":x + 7, "y":y + 7, "radius":0})
+	_step("erase", {"x":x + 7, "y":y + 7, "radius":4})
+	_step("undo")
+	_step("redo")
+	_step("single_step")
+	_step("camera", {"x":0, "y":0, "width":480, "height":270})
+	_set_intention("bounded_corner_probe", "navigation", _queue.size())
+
+
+func _actor_intention(observation: Dictionary, menu: Array) -> void:
+	goal = "Investigate an observed actor and its admitted capabilities"
+	if observation.get("paused") == false:
+		var actor_choices: Array[Dictionary] = []
+		for action: Dictionary in menu:
+			if _family(str(action.id)) == "actor": actor_choices.append(action)
+		if not actor_choices.is_empty(): _queue.append(_choose(actor_choices, observation, "coverage"))
+		_append_available(menu, "pause")
+	elif observation.get("actors", []).is_empty():
+		if not _append_available(menu, "actor_place"): _queue.append(_choose(menu, observation, "coverage"))
+	else:
+		var preferred: Array[Dictionary] = []
+		for action: Dictionary in menu:
+			if _family(str(action.id)) == "actor": preferred.append(action)
+		if not preferred.is_empty(): _queue.append(_choose(preferred, observation, "coverage"))
+		if _goal_number % 2 == 0: _append_available(menu, "play")
+		if _queue.is_empty(): _queue.append(_choose(menu, observation, "coverage"))
+	_set_intention("actor_capability_experiment", "actor", _queue.size())

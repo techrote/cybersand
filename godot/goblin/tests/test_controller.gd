@@ -113,19 +113,19 @@ func retain(label: String, tape: Dictionary) -> void:
 
 
 func storage_contract() -> void:
-	# This remains the accepted Goblin001 four-path writer. The successor's
-	# corpus and memory paths are deliberately not granted authority here.
+	# Retain the accepted writer's shared-path and same-controller retry checks.
+	# The separate storage case covers the successor's ten paths and byte budgets.
 	var previous_archive: String = controller._run_archive
 	controller._run_archive = "user://goblin/run-storage-contract.json"
-	var value := {"seed":13, "nested":{"label":"preserve tab-indented representation"}}
-	var expected := JSON.stringify(value, "\t", true) + "\n"
+	var value := {"seed":13, "nested":{"label":"preserve compact representation"}}
+	var expected := JSON.stringify(value, "", true) + "\n"
 	for path: String in [Controller.TRANSCRIPT_PATH, Controller.SUMMARY_PATH,
 			Controller.REPLAY_RESULT_PATH, controller._run_archive]:
 		check(controller._write_fixed(path, value), "fixed output succeeds: " + path)
 		check(FileAccess.get_file_as_string(path) == expected,
 			"fixed output retains exact accepted serialization: " + path)
 	var previous_digest := FileAccess.get_sha256(Controller.TRANSCRIPT_PATH)
-	for path: String in ["", "user://goblin/corpus.json", "user://outside-goblin.json",
+	for path: String in ["", "user://outside-goblin.json",
 			"user://goblin/../outside-goblin.json"]:
 		check(not controller._write_fixed(path, value), "non-allowlisted output refuses: " + path)
 	check(FileAccess.get_sha256(Controller.TRANSCRIPT_PATH) == previous_digest,

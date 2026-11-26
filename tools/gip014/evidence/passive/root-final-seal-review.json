@@ -1,0 +1,82 @@
+{
+  "schema": "cybersand-goblin-root-seal-result-review-v1",
+  "status": "pass",
+  "checks": {
+    "exact_results": true,
+    "exact_game": true,
+    "exact_driver": true,
+    "exact_stage": true,
+    "unchanged_payload": true,
+    "complete_archive": true,
+    "verified_bytes": true,
+    "no_new_gameplay": true,
+    "builder_bound": true,
+    "supervisor_bound": true,
+    "missing_historical_bytes_preserved": true,
+    "artifact_count": true,
+    "artifact_source": true,
+    "distinct_outer_inner_sha": true
+  },
+  "source": "6f359ce2b24291ee219810773c641d53802fd31d",
+  "results_commit": "e8df89b48757096428ee6a9d12e55c7e417c10d5",
+  "seal_run_id": 45582958798,
+  "seal_job_id": 139097304609,
+  "decoded_job_log_blob": "4a1102beef673b8fbd6f6229f0ec2b80a712e132",
+  "archive": {
+    "all_original_bytes_preserved": true,
+    "bytes": 666742658,
+    "elapsed_seconds": 2.296,
+    "input_bytes": 667245516,
+    "manifest_sha256": "e12b4f5625671020e81ae5b547b0f0874ab5034c856e2d314f848a198553df49",
+    "member_count": 29,
+    "original_artifact_count": 13,
+    "output": "/home/agent/goblin002/deliverables/CyberSand-goblin-campaign-evidence.zip",
+    "post_write_member_hashes_verified": true,
+    "review_count": 14,
+    "schema": "cybersand-goblin-durable-evidence-archive-receipt-v1",
+    "sha256": "0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f",
+    "status": "pass"
+  },
+  "artifacts": [
+    {
+      "id": 15008615196,
+      "name": "gip014-goblin-002-passive-evidence-archive-f3324f462091d1778b9472ebcafbab35372e6411-1",
+      "size_in_bytes": 666742848,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15008615196",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15008615196/zip",
+      "expired": false,
+      "created_at": "2026-11-25T09:12:35Z",
+      "expires_at": "2026-12-25T09:12:25Z",
+      "updated_at": "2026-11-25T09:12:35Z",
+      "digest": "sha256:104e680cf4e85f445a549886a0b847efac288e9e30535e508c5ef2ac67e2bbce",
+      "workflow_run": {
+        "id": 45582958798,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/gip014-goblin-002-20261125",
+        "head_sha": "f3324f462091d1778b9472ebcafbab35372e6411"
+      }
+    },
+    {
+      "id": 15006703996,
+      "name": "gip014-goblin-002-passive-seal-receipts-f3324f462091d1778b9472ebcafbab35372e6411-1",
+      "size_in_bytes": 22862,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15006703996",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15006703996/zip",
+      "expired": false,
+      "created_at": "2026-11-25T09:12:37Z",
+      "expires_at": "2026-12-25T09:12:36Z",
+      "updated_at": "2026-11-25T09:12:37Z",
+      "digest": "sha256:4639a253a2af5192f185eb73b3845568fe813758708848fa4b694555b2402e1a",
+      "workflow_run": {
+        "id": 45582958798,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/gip014-goblin-002-20261125",
+        "head_sha": "f3324f462091d1778b9472ebcafbab35372e6411"
+      }
+    }
+  ],
+  "scope": "Independent review of exact source, reported hosted digest/closure and artifact metadata; no extra local archive download or native execution.",
+  "historical_scope_note": "This receipt records the state at hosted sealing. Later executor recovery and separate local download/saving are described by the final DELIVERY record; neither changes this sealed archive or its RESULTS snapshot."
+}
