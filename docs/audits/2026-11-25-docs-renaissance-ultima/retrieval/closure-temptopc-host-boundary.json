@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "execution": "Fresh read-only GitHub source fetch after the environment reset; no provisioning or credential access",
+  "repository": "techrote/temptopc",
+  "main": "309640fa5e6258a941426ae8c6316a7de5faa878",
+  "records": [
+    {
+      "path": "README.md",
+      "git_blob": "551c49853e1b76da78576386452ec2a243083ecc",
+      "sha256": "57b7942c8fb1c51e0a356ecd4227730c2e87a7af07d5c5e8ae64153e173576ea",
+      "bytes": 2192,
+      "url": "https://github.com/techrote/temptopc/blob/309640fa5e6258a941426ae8c6316a7de5faa878/README.md"
+    },
+    {
+      "path": "docs/SETUP.md",
+      "git_blob": "f4ea1016415e1c4cce2103e2b7ebd2ea74068416",
+      "sha256": "be5870dd20c6fd21cc70255022fe326c6ad2feb0cf8cc1a08dec8a2998740e71",
+      "bytes": 13695,
+      "url": "https://github.com/techrote/temptopc/blob/309640fa5e6258a941426ae8c6316a7de5faa878/docs/SETUP.md"
+    },
+    {
+      "path": ".github/workflows/windows-desktop.yml",
+      "git_blob": "dcf079475fef051fd1cbe7282eb4c39ff0f51942",
+      "sha256": "e7a43c8e62104c905f268e55fcfd904076621126bb1d6d5234f84a96f31ff5da",
+      "bytes": 12929,
+      "url": "https://github.com/techrote/temptopc/blob/309640fa5e6258a941426ae8c6316a7de5faa878/.github/workflows/windows-desktop.yml"
+    }
+  ],
+  "local_platform": {
+    "system": "Linux",
+    "machine": "x86_64"
+  },
+  "cybersand_source": "419afa6cdb199058984a2118a104a085a5b2d04a",
+  "workflow_scan": {
+    "command": "git grep -n -i temptopc HEAD -- .github/workflows",
+    "tracked_files": 98,
+    "exit_code": 1,
+    "matches": []
+  },
+  "findings": [
+    "README and setup explicitly describe reusable source with live qualification pending; creating files does not instantiate a host",
+    "Windows component requires an explicit same-project manual workflow dispatch and private authenticated RDP/Tailscale setup",
+    "A fresh ephemeral Windows Server 2022 Actions machine uses virtual graphics; it cannot establish physical Windows/NVIDIA acceptance",
+    "The inspected CyberSand workflow set has no TempToPC caller",
+    "No already-connected Windows or owner host is established by these source records; the connected native desktop remains Linux as separately observed by B"
+  ],
+  "limits": [
+    "No Codespace or Windows machine was created, restarted or dispatched",
+    "No secret values or secret-name inventories were accessed; no desktop endpoint was probed or exposed",
+    "This source inspection does not prove that the owner has no separately configured private machine",
+    "Hosted Windows automatic qualification remains a separate evidence class"
+  ],
+  "recovery": "The previous TempToPC scratch receipt was lost. This is a new source-pinned readback, not a claimed recovery of that receipt."
+}

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "status": "approved source review; hosted execution pending",
+  "root_head": "419afa6cdb199058984a2118a104a085a5b2d04a",
+  "input_sha256": {
+    ".github/workflows/ultima-qualification.yml": "92143d233322a23f41a87884886eaec5315eb6fe5716981b38ab53af7d48002b",
+    "tools/ci/materialize_lfs.py": "febbf8c996c97bff1126f770d24c236ad42bddaa36acef1210c5cf49f37cc4cf",
+    "tools/ci/qualify_ultima_launcher.py": "4bc34838ac8f92ae5c61255c9d9fbbe730fa9db9795329d53cc1de28dfad8d55",
+    "tools/ci/package_ultima_evaluator.py": "4bcfad9671059b3f327eeee5406eddf8cd31db1b44260e3807db05ec753df827"
+  },
+  "working_delta": "Reviewed pending final workflow wiring, not represented as committed or executed at this receipt",
+  "lfs_literal_inventory": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+  ],
+  "review": [
+    "Both jobs check out exact PR head and pass that same expected source into the reconciled helper",
+    "All 18 committed LFS objects are literal repeated include arguments; acquisition preserves the existing shared1200-second allowance and pointer/size/digest/source validation",
+    "Both jobs run package and launcher adverse unit controls; Windows runs actual shipped cmd plus author/reopen and compatibility renderer before upload of the owner evaluator",
+    "Original evaluator module/import validation remains; non-publishing evidence upload retains acquisition and launcher logs even on failure",
+    "No Ready transition, runtime release, auto-merge or owner hardware claim is introduced"
+  ],
+  "limits": "C reviewed complete changed job contexts and shipped helper contracts; this receipt is not a hosted run, real LFS outage recovery or Windows/physical acceptance."
+}

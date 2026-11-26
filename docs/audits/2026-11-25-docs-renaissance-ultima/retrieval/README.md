@@ -173,3 +173,9 @@ and causal fixture match accepted main; both older registrations remain pinned.
 The registration still declares the six planned cases unexecuted and does not
 claim runtime/gameplay qualification. [Product authority review](closure-product-authority-review.json)
 binds C's independent review of the AMBIENT current-status and evaluator routes.
+
+[Final workflow wiring review](closure-workflow-scope-review.json) records the
+literal 18-object acquisition and actual Windows launcher gate, with hosted
+execution still pending at review. [TempToPC source readback](closure-temptopc-host-boundary.json)
+inspects the reusable infrastructure instructions without creating a machine or
+accessing credentials; it does not establish an available connected owner host.
