@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Required documentation synchronization, canonical ownership, retrieval corpus and evidence workflow
 canonical-for: [documentation-update-checklist, rag-schema, retrieval-policy]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [../reference/retrieval-index.md, ../reference/validation-evidence.md, source-checkpoint-and-recovery.md, microscenarios-programme.md]
 ---
 
@@ -280,3 +280,38 @@ captured evidence and frozen question sets. Rerun structure, containment, rankin
 and a small source-grounded answer audit; explicitly distinguish the three
 results. Update the asset manifest if an image's feature/source scope changes.
 A changed status or screenshot caption must not imply tests that never ran.
+
+## Durable evidence before an expensive campaign
+
+Keep each qualification campaign tied to a committed application source, test
+apparatus and dependency identity. Before starting it, record the intended
+checks and decision. Retain original failed logs and successful subresults even
+when the aggregate fails; publish compact receipts and unique reproduction inputs
+promptly after completion. A later evidence-only commit must demonstrate equality
+of the qualification inputs before referring to an earlier pass.
+
+A digest proves identity only when the underlying bytes remain available. Store
+sealed evaluation questions and raw treatment outputs in a durable, permitted
+location before tuning or judging results. Keep implementers blinded through
+explicit access discipline, not by relying on a transient workspace as the only
+copy. Verify the remote readback. If custody is lost, record the missing evidence
+and its surviving seal; a reconstructed or new question set is a separate
+experiment. Never relabel it as the original holdout.
+
+Keep current contracts and short decision records in the ordinary checkout.
+Preserve bulky unique originals at their immutable repository identity with a
+manifest of path, size and SHA-256. Derived reports should name the inputs and
+reproduction command instead of copying every context repeatedly. Expiring CI
+artifacts can carry an evaluator, but cannot be the sole permanent custody of a
+material failure or acceptance receipt. Deleting a current file does not remove
+its historical Git storage.
+
+For a future independent knowledge-base acceptance exercise, freeze source and
+method first. Ask a reviewer who did not tune retrieval to supply realistic user,
+developer and owner-intent tasks, including an obsolete premise, an unresolved
+decision and a multi-source implementation question. Seal and retain expected
+facts before execution. Judge the actual passages, authority, source-following
+steps and safe next action; record model output only if a model actually ran.
+Keep these new tasks separate from frozen benchmark questions and report failures
+without tuning against them. This protocol is preparation for future evaluation,
+not a claim that such an exercise has executed.

@@ -49,7 +49,6 @@ unmerged candidates and dated test evidence are different claims.
 | Does compiling a material make it active in the current Workbench scene? | [Candidate states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions), [current-state register](status-and-roadmap.md) |
 | How do I select Water families and compare their behavior? | [Water Lab](../operations/workbench-water-lab.md), [solver-family policy](../architecture/liquid-solver-family-policy.md) |
 | How do I compose multiple actors, change control source and add equipment? | [Actor procedure](../operations/workbench-actor-composition.md), [composition contract](../systems/workbench-actor-composition.md), [equipment](../systems/workbench-liquid-equipment.md) |
-
 | How do I author an opt-in Procedural NPC / Ambient profile, assign a personality and reopen it? | [Ambient Workbench guide](../operations/ambient-workbench.md); the foundation is accepted through [#775](https://github.com/techrote/cybersand/pull/775), with physical owner acceptance separate. |
 | How do ambient material sensing, timers, capabilities and reusable modules work? | [Ambient source contract](../systems/ambient-actors.md); dated implementation ledgers remain explicit evidence. |
 

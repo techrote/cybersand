@@ -11,7 +11,7 @@ related-documents: [../../systems/ambient-actors.md, ../../operations/ambient-wo
 
 # AMBIENT-001 behaviour lane
 
-This page preserves the route to the original November2026 implementation and
+This page preserves the route to the original November 2026 implementation and
 qualification ledger. Its full original body remains in accepted Git; the old
 Draft/HOLD instructions and source-bound results are historical records.
 
