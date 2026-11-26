@@ -338,8 +338,8 @@ class AdmissionTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             data = ("MZsynthetic-real-lfs-object-" + str(index)).encode()
             payloads[relative] = data
-            path.write_text("version https://git-lfs.github.com/spec/v1\noid sha256:"
-                            + hashlib.sha256(data).hexdigest() + "\nsize " + str(len(data)) + "\n")
+            path.write_bytes(("version https://git-lfs.github.com/spec/v1\noid sha256:"
+                              + hashlib.sha256(data).hexdigest() + "\nsize " + str(len(data)) + "\n").encode())
         provenance = root / "godot/addons/godot-rapier2d/runtime-provenance.windows.json"
         q.write(provenance, {"source_inputs": {str(i): "a" * 64 for i in range(4)}})
         git("add", ".")
