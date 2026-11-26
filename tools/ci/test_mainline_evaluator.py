@@ -195,7 +195,11 @@ class DeliveryCustody(unittest.TestCase):
         before.write_text(original, encoding="utf-8", newline="\r\n")
         repaired.write_text(delivery.goblin_launcher(), encoding="utf-8", newline="\r\n")
         def execute(path):
-            return subprocess.run([os.environ["ComSpec"], "/d", "/s", "/c", '"' + str(path) + '"'],
+            # cmd.exe does not use the C-runtime backslash-quote grammar that
+            # subprocess.list2cmdline applies to a list. Match the real proof's
+            # /s /c outer quoting instead of manufacturing literal backslashes.
+            command = '"' + os.environ["ComSpec"] + '" /d /s /c ""' + str(path) + '""'
+            return subprocess.run(command,
                                   cwd=folder, capture_output=True, text=True, timeout=30)
         baseline = execute(before)
         result = execute(repaired)
