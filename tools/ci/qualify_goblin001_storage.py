@@ -123,9 +123,10 @@ def budget(root):
     limits = policy["watchdogs"]
     rows = {"setup_and_acquisition": limits["godot_setup_seconds"],
             "metadata_and_receipt_verification": limits["godot_metadata_seconds"],
-            # Two metadata-retention passes, each with eight bounded Git calls:
-            # status, diff, tree, four exact descriptors, final status.
-            "import_metadata_custody": 2 * 8 * 60,
+            # Two metadata passes, each with14 bounded Git calls: original
+            # status/diff/tree, four descriptors, HEAD/index/config, exact-path
+            # index refresh, post-index/cached-diff, and final status.
+            "import_metadata_custody": 2 * 14 * 60,
             "one_project_import": limits["godot_import_seconds"] + 30,
             "canonical_native_boundary": cases[CASES[0]].timeout + 30,
             "canonical_default_off": cases[CASES[1]].timeout + 30,
@@ -217,6 +218,11 @@ def retain_generated_uids(root, output):
             metadata, name = row.split("\t", 1)
             mode, kind, digest = metadata.split(" ")
             committed[name] = (mode, kind, digest)
+    head_tree = git(root, "rev-parse", "HEAD^{tree}")
+    index_before = git(root, "write-tree")
+    require(index_before == head_tree, "Existing staged source changes cannot be refreshed")
+    configuration = subprocess.check_output(["git", "-C", str(root), "config", "--show-origin", "--get-all", "core.autocrlf"], timeout=60)
+    (output / "git-autocrlf.txt").write_bytes(configuration)
     owners = {name + ".uid": (name, digest) for name, (mode, kind, digest) in committed.items()
               if name.endswith((".gd", ".gdshader")) and mode in ("100644", "100755")
               and kind == "blob" and name + ".uid" not in committed}
@@ -268,6 +274,26 @@ def retain_generated_uids(root, output):
             require(path.read_bytes() == actual, "Rapier descriptor changed during retention")
             path.write_bytes(original)
     write(output / "import-descriptors.json", descriptors)
+    # Git can retain a false modified status when import writes exact HEAD LF
+    # bytes over a CRLF checkout. Refresh only the independently byte-proven
+    # descriptors, and prove the complete index tree is identical before/after.
+    for name, record in descriptors.items():
+        require(sha(root / name) == record["committed_sha256"], "Descriptor differs before exact-path index refresh")
+    refresh = {"head_tree": head_tree, "index_before": index_before, "paths": sorted(descriptors)}
+    if descriptors:
+        result = subprocess.run(["git", "-C", str(root), "add", "--", *sorted(descriptors)],
+                                capture_output=True, check=False, timeout=60)
+        (output / "git-index-refresh.stdout").write_bytes(result.stdout)
+        (output / "git-index-refresh.stderr").write_bytes(result.stderr)
+        refresh["exit_code"] = result.returncode
+        require(result.returncode == 0, "Exact descriptor index refresh failed")
+    refresh["index_after"] = git(root, "write-tree")
+    write(output / "git-index-refresh.json", refresh)
+    require(refresh["index_after"] == head_tree, "Descriptor refresh changed a committed index mode or blob")
+    result = subprocess.run(["git", "-C", str(root), "diff", "--cached", "--exit-code", "HEAD", "--"],
+                            capture_output=True, check=False, timeout=60)
+    (output / "git-cached-diff.patch").write_bytes(result.stdout + result.stderr)
+    require(result.returncode == 0, "Descriptor refresh staged a source change")
     status = subprocess.check_output(["git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"], timeout=60)
     (output / "git-status-after.txt").write_bytes(status)
     # A different new file or any source mutation remains an actual refusal.

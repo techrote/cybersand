@@ -64,6 +64,9 @@ jobs:
         shell: pwsh
         working-directory: product
         run: |
+          git config --local core.autocrlf false
+          if ($LASTEXITCODE -ne 0) { throw 'Product checkout configuration failed' }
+          git config --show-origin --get-all core.autocrlf
           $evidence = Join-Path $env:RUNNER_TEMP 'goblin001-storage-evidence'
           New-Item -ItemType Directory $evidence | Out-Null
           'GOBLIN001_STORAGE_EVIDENCE=' + $evidence | Out-File -Append -FilePath $env:GITHUB_ENV

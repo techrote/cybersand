@@ -61,6 +61,7 @@ class StorageAdapter(unittest.TestCase):
         root = self.root / "synthetic-source"
         root.mkdir()
         subprocess.run(["git", "init", str(root)], check=True, capture_output=True)
+        adapter.git(root, "config", "core.autocrlf", "false")
         for name in FIXTURE_UIDS:
             path = root / name.removesuffix(".uid")
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -150,13 +151,42 @@ class StorageAdapter(unittest.TestCase):
             adapter.retain_generated_uids(root, self.root / "changed-descriptor-refusal")
         self.assertIn(b"changed=true", descriptor.read_bytes())
 
+    def test_false_crlf_index_dirt_refresh_preserves_the_exact_committed_tree(self):
+        root, _, _, descriptor = self.metadata_fixture()
+        original = descriptor.read_bytes()
+        tree = adapter.git(root, "rev-parse", "HEAD^{tree}")
+        adapter.git(root, "config", "core.autocrlf", "true")
+        descriptor.unlink()
+        adapter.git(root, "checkout", "--", descriptor.relative_to(root).as_posix())
+        self.assertIn(b"\r\n", descriptor.read_bytes())
+        descriptor.write_bytes(original)
+        self.assertIn(descriptor.relative_to(root).as_posix(), adapter.git(root, "status", "--porcelain"))
+        self.assertEqual(adapter.git(root, "diff", "--", descriptor.relative_to(root).as_posix()), "")
+        output = self.root / "false-index-dirt"
+        adapter.retain_generated_uids(root, output)
+        receipt = adapter.read(output / "git-index-refresh.json")
+        self.assertEqual(receipt["index_before"], tree)
+        self.assertEqual(receipt["index_after"], tree)
+        self.assertEqual(receipt["paths"], [descriptor.relative_to(root).as_posix()])
+        self.assertEqual(descriptor.read_bytes(), original)
+        self.assertEqual(adapter.git(root, "status", "--porcelain", "--untracked-files=all"), "")
+
+    def test_preexisting_staged_change_is_not_an_index_refresh_allowance(self):
+        root, owner, _, _ = self.metadata_fixture()
+        owner.write_text("extends RefCounted\n# staged unexpected source\n")
+        adapter.git(root, "add", "--", owner.relative_to(root).as_posix())
+        staged = adapter.git(root, "write-tree")
+        with self.assertRaisesRegex(ValueError, "Existing staged source changes"):
+            adapter.retain_generated_uids(root, self.root / "staged-refusal")
+        self.assertEqual(adapter.git(root, "write-tree"), staged)
+
     def test_complete_budget_uses_actual_canonical_fixture_discovery(self):
         result = adapter.budget(ROOT)
         self.assertEqual(result["fixture_seconds"], {adapter.CASES[0]: 1200, adapter.CASES[1]: 3940})
         self.assertEqual(result["rows"]["original_windows_os_runner"], 630)
         self.assertEqual(result["rows"]["original_controller_runner"], 540)
-        self.assertEqual(result["rows"]["import_metadata_custody"], 960)
-        self.assertEqual(result["total_seconds"], 14260)
+        self.assertEqual(result["rows"]["import_metadata_custody"], 1680)
+        self.assertEqual(result["total_seconds"], 14980)
         self.assertLessEqual(result["total_seconds"], result["parent_minutes"] * 60)
 
     def test_increased_canonical_watchdogs_refuse_underbudget_parent(self):
