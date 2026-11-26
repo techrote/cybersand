@@ -16,8 +16,15 @@ on:
       - 'godot/scripts/art_provider.gd'
       - 'godot/scripts/art_traffic_archive.gd'
       - 'godot/scripts/art_batch_panel.gd'
+      - 'godot/scripts/physics_characterisation.gd'
+      - 'godot/examples/thunderbowl/**'
       - 'godot/tests/profile_save_fault_child.gd'
       - 'godot/tests/art_storage_fault_child.gd'
+      - 'godot/tests/tower_observation_fault_child.gd'
+      - 'godot/tests/goblin_storage_fault_child.gd'
+      - 'godot/tests/test_physics_instrumentation.gd'
+      - 'godot/tests/test_thunderbowl_arena.gd'
+      - 'godot/tests/test_thunderbowl_controllers.gd'
       - 'godot/tests/test_art*.gd'
       - 'godot/tests/test_goblin*.gd'
       - 'godot/goblin/**'
@@ -36,6 +43,8 @@ on:
       - 'tools/ci/run_recorder_storage_qualification.py'
       - 'tools/ci/run_profile_save_qualification.py'
       - 'tools/ci/run_art_storage_qualification.py'
+      - 'tools/ci/run_diagnostic_storage_qualification.py'
+      - 'tools/ci/run_tower_observation_qualification.py'
       - 'tools/ci/run_ultima_qualification.py'
       - 'tools/ci/package_ultima_evaluator.py'
       - 'tools/ci/test_package_ultima_evaluator.py'
@@ -116,6 +125,10 @@ jobs:
             workspace/source/build/ultima/profile-save/*.log
             workspace/source/build/ultima/art-storage/*.json
             workspace/source/build/ultima/art-storage/*/*.log
+            workspace/source/build/ultima/diagnostic-storage/*.json
+            workspace/source/build/ultima/diagnostic-storage/*.log
+            workspace/source/build/ultima/tower-observation/*.json
+            workspace/source/build/ultima/tower-observation/*.log
           if-no-files-found: error
           retention-days: 90
 
@@ -234,5 +247,9 @@ jobs:
             workspace/source/build/ultima/profile-save/*.log
             workspace/source/build/ultima/art-storage/*.json
             workspace/source/build/ultima/art-storage/*/*.log
+            workspace/source/build/ultima/diagnostic-storage/*.json
+            workspace/source/build/ultima/diagnostic-storage/*.log
+            workspace/source/build/ultima/tower-observation/*.json
+            workspace/source/build/ultima/tower-observation/*.log
           if-no-files-found: error
           retention-days: 90

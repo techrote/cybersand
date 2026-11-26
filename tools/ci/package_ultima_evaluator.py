@@ -57,6 +57,7 @@ def git(*args, env=None):
 
 NORMAL_CASES = {
     "test_goblin_contract", "test_goblin_policies",
+    "test_physics_instrumentation", "test_thunderbowl_arena", "test_thunderbowl_controllers",
     "import", "test_gameplay_recorder", "test_workbench_material_baseline", "test_architectural_generator_ui",
     "test_workbench_generator_discovery", "test_paint_editor_history", "test_paint_editor_history-reopen",
     "test_workbench_canvas", "test_workbench_canvas-reopen", "test_explore001_generated_workbench",
@@ -64,6 +65,7 @@ NORMAL_CASES = {
     "test_worldgen_workbench", "test_material_lab_experiment", "test_transport_profiles",
     "test_water_feel_controller", "test_art_storage_integrity", "test_art_traffic_integrity",
     "test_art_traffic_panel_safety", "test_art_session_log", "test_art_panel_ui",
+    "test_art_history_receipt_identity",
 }
 WINDOWS_FAULT_CASES = {
     ("shared-helper", None, "injected-and-native-boundaries"),
@@ -85,8 +87,54 @@ WINDOWS_PROFILE_CASES = {
 }
 WINDOWS_ART_CASES = {
     *((operation, "none") for operation in ("export", "new-event", "append")),
-    *((operation, "locked-target") for operation in ("export", "append")),
+    *((operation, "locked-target") for operation in ("export", "append", "settings")),
+    ("settings", "none"), ("pending-history", "none"), ("pending-history", "existing-receipt"),
 }
+WINDOWS_DIAGNOSTIC_CASES = {
+    *((kind, "none", "guarded-audit-writer" if kind == "goblin" else "real-public-cli")
+      for kind in ("physics", "thunderbowl", "physical-thunderbowl", "goblin")),
+    *((kind, "locked-target", "real-os-failure")
+      for kind in ("physics", "thunderbowl", "physical-thunderbowl", "goblin")),
+}
+WINDOWS_TOWER_CASES = {
+    *((kind, "none", "real-public-caller") for kind in ("ordinary", "water-blind")),
+    *((kind, "locked-target", "real-os-failure") for kind in ("ordinary", "water-blind")),
+}
+
+
+def validate_export_matrix(report, schema, expected_cases, head, engine, value_key, loadable_key, refusal_codes):
+    require(report.get("schema") == schema and report.get("status") == "passed"
+            and report.get("completed") is True and report.get("platform") == "win32"
+            and report.get("source_head") == head and report.get("engine_version") == engine["version"]
+            and report.get("engine_sha256") == engine["console_sha256"],
+            "Incomplete or mismatched " + schema)
+    cases = report.get("cases", [])
+    require(len(cases) == len(expected_cases)
+            and {(c.get("kind"), c.get("fault"), c.get("evidence_class")) for c in cases} == expected_cases,
+            "Incomplete or duplicate " + schema)
+    for case in cases:
+        names = ("before", "replacement") if case["fault"] == "none" else ("before", "refusal", "retry")
+        for name in names:
+            child = case.get(name, {})
+            code = refusal_codes[case["kind"]] if name == "refusal" else 0
+            require(child.get("exit_code") == code and child.get("natural_completion") is True
+                    and child.get("engine_error_detected") is False and child.get(loadable_key) is True,
+                    schema + " child did not complete with the expected storage result")
+        before = case["before"]
+        replacement = case["replacement"] if case["fault"] == "none" else case["retry"]
+        require(before.get("acknowledged") is True and before.get(value_key) == 7
+                and replacement.get("acknowledged") is True and replacement.get(value_key) == 8
+                and re.fullmatch(r"[0-9a-f]{64}", str(before.get("sha256", "")))
+                and re.fullmatch(r"[0-9a-f]{64}", str(replacement.get("sha256", "")))
+                and before["sha256"] != replacement["sha256"]
+                and type(before.get("bytes")) is int and before["bytes"] > 0
+                and type(replacement.get("bytes")) is int and replacement["bytes"] > 0,
+                schema + " does not demonstrate compatible replacement")
+        if case["fault"] != "none":
+            refusal = case["refusal"]
+            require(refusal.get("acknowledged") is False and refusal.get(value_key) == 7
+                    and refusal.get("sha256") == before["sha256"] and refusal.get("bytes") == before["bytes"],
+                    schema + " refusal contradicts prior-file preservation")
 
 
 def validate_qualification(qualification, head, tree):
@@ -179,7 +227,7 @@ def validate_qualification(qualification, head, tree):
                     "Profile refusal contradicts prior-file preservation")
     art = qualification.get("art_storage", {})
     require(art.get("schema") == 1 and art.get("status") == "passed" and art.get("passed") is True
-            and art.get("completed") is True and art.get("platform") == "win32"
+            and art.get("completed") is True and art.get("inputs_unchanged") is True and art.get("platform") == "win32"
             and art.get("source_head") == head and art.get("engine_version") == engine["version"]
             and art.get("engine_sha256") == engine["console_sha256"],
             "Incomplete or mismatched Art storage qualification")
@@ -189,6 +237,13 @@ def validate_qualification(qualification, head, tree):
             and all(c.get("passed") is True and c.get("exit_code") == 0
                     and c.get("natural_completion") is True and c.get("engine_error_detected") is False
                     for c in art_cases), "Incomplete or unsuccessful Windows Art storage matrix")
+    validate_export_matrix(qualification.get("diagnostic_storage", {}), "diagnostic-storage-qualification-v1",
+                           WINDOWS_DIAGNOSTIC_CASES, head, engine, "value", "json_valid",
+                           {"physics": 1, "thunderbowl": 2, "physical-thunderbowl": 2, "goblin": 2})
+    tower = qualification.get("tower_observation", {})
+    require(tower.get("inputs_unchanged") is True, "Tower qualification changed inputs")
+    validate_export_matrix(tower, "tower-observation-qualification-v1", WINDOWS_TOWER_CASES,
+                           head, engine, "loaded_value", "json_loadable", {"ordinary": 0, "water-blind": 0})
 
 
 def verify(folder, expected_manifest_sha256):

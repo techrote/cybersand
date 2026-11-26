@@ -127,7 +127,9 @@ def main():
         report["recorder_storage"] = json.loads((output / "recorder-storage/report.json").read_text())
         for key, runner, directory in (
                 ("profile_save", "run_profile_save_qualification.py", "profile-save"),
-                ("art_storage", "run_art_storage_qualification.py", "art-storage")):
+                ("art_storage", "run_art_storage_qualification.py", "art-storage"),
+                ("diagnostic_storage", "run_diagnostic_storage_qualification.py", "diagnostic-storage"),
+                ("tower_observation", "run_tower_observation_qualification.py", "tower-observation")):
             result = subprocess.run([sys.executable, str(ROOT / "tools/ci" / runner),
                                      "--godot", str(engine), "--project", str(ROOT / "godot"),
                                      "--evidence", str(output / directory)], env=env, cwd=ROOT,
@@ -139,6 +141,9 @@ def main():
             ("test_gameplay_recorder", {}),
             ("test_goblin_contract", {}),
             ("test_goblin_policies", {}),
+            ("test_physics_instrumentation", {}),
+            ("test_thunderbowl_arena", {}),
+            ("test_thunderbowl_controllers", {}),
             ("test_worldgen_workbench", {}),
             ("test_material_lab_experiment", {}),
             ("test_transport_profiles", {}),
@@ -148,6 +153,7 @@ def main():
             ("test_art_traffic_panel_safety", {}),
             ("test_art_session_log", {}),
             ("test_art_panel_ui", {}),
+            ("test_art_history_receipt_identity", {}),
             ("test_workbench_material_baseline", {}),
             ("test_architectural_generator_ui", {}),
             ("test_workbench_generator_discovery", {}),

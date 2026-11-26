@@ -17,6 +17,7 @@ HEAD = '1' * 40
 TREE = '2' * 40
 CASE_NAMES = (
     'test_goblin_contract', 'test_goblin_policies',
+    'test_physics_instrumentation', 'test_thunderbowl_arena', 'test_thunderbowl_controllers',
     'import', 'test_gameplay_recorder', 'test_workbench_material_baseline', 'test_architectural_generator_ui',
     'test_workbench_generator_discovery', 'test_paint_editor_history',
     'test_paint_editor_history-reopen', 'test_workbench_canvas',
@@ -25,6 +26,7 @@ CASE_NAMES = (
     'test_worldgen_workbench', 'test_material_lab_experiment', 'test_transport_profiles',
     'test_water_feel_controller', 'test_art_storage_integrity', 'test_art_traffic_integrity',
     'test_art_traffic_panel_safety', 'test_art_session_log', 'test_art_panel_ui',
+    'test_art_history_receipt_identity',
 )
 
 
@@ -104,13 +106,38 @@ def valid_qualification():
                                           ('locked-target', 'real-os-failure'))],
     }
     q['art_storage'] = {
-        'schema': 1, 'status': 'passed', 'passed': True, 'completed': True,
+        'schema': 1, 'status': 'passed', 'passed': True, 'completed': True, 'inputs_unchanged': True,
         'source_head': HEAD, 'platform': 'win32', 'engine_version': q['engine']['version'],
         'engine_sha256': q['engine']['console_sha256'],
         'cases': [{'operation': operation, 'fault': fault, 'passed': True, **child}
                   for operation, fault in (('export', 'none'), ('new-event', 'none'), ('append', 'none'),
-                                           ('export', 'locked-target'), ('append', 'locked-target'))],
+                                           ('export', 'locked-target'), ('append', 'locked-target'),
+                                           ('settings', 'none'), ('settings', 'locked-target'),
+                                           ('pending-history', 'none'), ('pending-history', 'existing-receipt'))],
     }
+    for key, schema, kinds, value_key, loadable_key in (
+            ('diagnostic_storage', 'diagnostic-storage-qualification-v1',
+             ('physics', 'thunderbowl', 'physical-thunderbowl', 'goblin'), 'value', 'json_valid'),
+            ('tower_observation', 'tower-observation-qualification-v1',
+             ('ordinary', 'water-blind'), 'loaded_value', 'json_loadable')):
+        records = []
+        for kind in kinds:
+            for fault in ('none', 'locked-target'):
+                evidence = ('guarded-audit-writer' if kind == 'goblin' else 'real-public-cli') \
+                    if key == 'diagnostic_storage' else 'real-public-caller'
+                record = {'kind': kind, 'fault': fault,
+                          'evidence_class': evidence if fault == 'none' else 'real-os-failure'}
+                for name in (('before', 'replacement') if fault == 'none' else ('before', 'refusal', 'retry')):
+                    child_record = copy.deepcopy(profile_children[name])
+                    child_record[loadable_key] = child_record.pop('format_loadable')
+                    child_record[value_key] = child_record.pop('loaded_value')
+                    if name == 'refusal' and key == 'diagnostic_storage':
+                        child_record['exit_code'] = 1 if kind == 'physics' else 2
+                    record[name] = child_record
+                records.append(record)
+        q[key] = {'schema': schema, 'status': 'passed', 'completed': True, 'platform': 'win32',
+                  'source_head': HEAD, 'engine_version': q['engine']['version'],
+                  'engine_sha256': q['engine']['console_sha256'], 'cases': records, 'inputs_unchanged': True}
     return q
 
 
@@ -237,8 +264,21 @@ class QualificationAdmission(unittest.TestCase):
         self.q['art_storage']['engine_sha256'] = 'f' * 64
         self.require_refusal()
 
-    def test_art_missing_lock_refuses_even_with_five_rows(self):
+    def test_art_duplicate_row_refuses_even_with_nine_rows(self):
         self.q['art_storage']['cases'][-1] = copy.deepcopy(self.q['art_storage']['cases'][-2])
+        self.require_refusal()
+
+    def test_art_settings_and_retained_journal_are_required(self):
+        original = copy.deepcopy(self.q)
+        for operation in ('settings', 'pending-history'):
+            with self.subTest(operation=operation):
+                self.q = copy.deepcopy(original)
+                self.q['art_storage']['cases'] = [case for case in self.q['art_storage']['cases']
+                                                  if case['operation'] != operation]
+                self.require_refusal()
+
+    def test_art_changed_inputs_refuse(self):
+        self.q['art_storage']['inputs_unchanged'] = False
         self.require_refusal()
 
     def test_art_failed_case_refuses(self):
@@ -251,6 +291,46 @@ class QualificationAdmission(unittest.TestCase):
 
     def test_art_engine_error_refuses(self):
         self.q['art_storage']['cases'][-1]['engine_error_detected'] = True
+        self.require_refusal()
+
+    def additional_export_refusals(self, change):
+        original = copy.deepcopy(self.q)
+        for key in ('diagnostic_storage', 'tower_observation'):
+            with self.subTest(matrix=key):
+                self.q = copy.deepcopy(original)
+                change(self.q, key)
+                self.require_refusal()
+
+    def test_additional_export_missing_refuses(self):
+        self.additional_export_refusals(lambda q, key: q.pop(key))
+
+    def test_additional_export_wrong_source_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key].update(source_head='f' * 40))
+
+    def test_additional_export_wrong_engine_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key].update(engine_sha256='f' * 64))
+
+    def test_additional_export_duplicate_lock_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key]['cases'].__setitem__(-1, copy.deepcopy(q[key]['cases'][-2])))
+
+    def test_additional_export_false_failure_ack_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key]['cases'][-1]['refusal'].update(acknowledged=True))
+
+    def test_additional_export_changed_old_bytes_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key]['cases'][-1]['refusal'].update(sha256='f' * 64))
+
+    def test_additional_export_failed_retry_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key]['cases'][-1]['retry'].update(acknowledged=False))
+
+    def test_additional_export_engine_error_refuses(self):
+        self.additional_export_refusals(lambda q, key: q[key]['cases'][-1]['retry'].update(engine_error_detected=True))
+
+    def test_diagnostic_false_zero_exit_on_refusal_refuses(self):
+        self.q['diagnostic_storage']['cases'][-1]['refusal']['exit_code'] = 0
+        self.require_refusal()
+
+    def test_tower_changed_inputs_refuses(self):
+        self.q['tower_observation']['inputs_unchanged'] = False
         self.require_refusal()
 
     def test_capture_missing_refuses(self):
