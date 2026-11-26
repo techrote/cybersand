@@ -33,6 +33,7 @@ TESTS = {
     "adapter": ("goblin_adapter",),
     "expanded": ("goblin_expanded",),
     "ambient_integration": ("goblin_ambient_integration",),
+    "storage": ("goblin_storage_contract",),
     "metamorphic": ("goblin_metamorphic",),
     "authored_lineage": ("goblin_authored_lineage",),
     "discovery": ("goblin_exploration",),
@@ -44,7 +45,7 @@ TESTS = {
 }
 PROFILE_SCHEMA = "cybersand-goblin-profile-v1"
 ERROR_MARKERS = ("SCRIPT ERROR:", "Parse Error:", "ERROR:", "Fatal signal", "Segmentation fault")
-COMPLETION_MARKERS = {"goblin_ambient_integration": "GOBLIN_AMBIENT_INTEGRATION_RESULT ", "campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_gameplay_contracts": "GOBLIN_GAMEPLAY_CONTRACT_RESULT ", "goblin_expanded": "GOBLIN_EXPANDED_RESULT ",
+COMPLETION_MARKERS = {"goblin_storage_contract": "GOBLIN_STORAGE_CONTRACT_RESULT ", "goblin_ambient_integration": "GOBLIN_AMBIENT_INTEGRATION_RESULT ", "campaign": "GOBLIN_CAMPAIGN_COMPLETE", "goblin_gameplay_contracts": "GOBLIN_GAMEPLAY_CONTRACT_RESULT ", "goblin_expanded": "GOBLIN_EXPANDED_RESULT ",
                       "goblin_metamorphic": "GOBLIN_METAMORPHIC_RESULT ", "goblin_exploration": "GOBLIN_EXPLORATION_UNIT ", "goblin_laboratory": "GOBLIN_LABORATORY ", "goblin_adapter": "GOBLIN_ADAPTER ",
                       "goblin_authored_lineage": "GOBLIN_AUTHORED_LINEAGE_RESULT ",
                       "goblin_controller": "GOBLIN_CONTROLLER ", "test_goblin_policies": "GOBLIN_POLICY_UNIT ",
@@ -418,7 +419,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 if case == "campaign":
                     script = "res://goblin/run_campaign.gd"
-                elif case in ("goblin_ambient_integration", "goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_authored_lineage", "goblin_exploration", "goblin_laboratory", "goblin_gameplay_contracts"):
+                elif case in ("goblin_storage_contract", "goblin_ambient_integration", "goblin_adapter", "goblin_controller", "goblin_interactive", "goblin_gameplay", "goblin_expanded", "goblin_metamorphic", "goblin_authored_lineage", "goblin_exploration", "goblin_laboratory", "goblin_gameplay_contracts"):
                     script = f"res://goblin/tests/test_{case.removeprefix('goblin_')}.gd"
                 else:
                     script = f"res://tests/{case}.gd"
@@ -439,7 +440,10 @@ def main(argv: list[str] | None = None) -> int:
                                                     for line in log_text.splitlines()) == 1
                 if result["status"] == "pass" and not result["completion_observed"]:
                     result["status"] = "incomplete_test"
-            transcript, transcript_path = read_transcript(active_profile)
+            # The storage contract deliberately writes a non-campaign JSON fixture.
+            # Its fixed output bytes are checked by that test; all actual campaign
+            # and controller cases retain the complete transcript validator.
+            transcript, transcript_path = (None, None) if case == "goblin_storage_contract" else read_transcript(active_profile)
             if transcript is not None:
                 write_json(out / "transcript.json", transcript)
                 result["transcript_sha256"] = sha_file(transcript_path)

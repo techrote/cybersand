@@ -14,6 +14,7 @@ const Assertions = preload("res://goblin/goblin_assertions.gd")
 const Transcript = preload("res://goblin/goblin_transcript.gd")
 const Corpus = preload("res://goblin/goblin_corpus.gd")
 const Findings = preload("res://goblin/goblin_findings.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const OUTPUT_DIR := "user://goblin"
 const TRANSCRIPT_PATH := "user://goblin/transcript.json"
 const SUMMARY_PATH := "user://goblin/summary.json"
@@ -694,26 +695,23 @@ func _write_fixed(path: String, value: Dictionary) -> bool:
 	if path not in [TRANSCRIPT_PATH, SUMMARY_PATH, REPLAY_RESULT_PATH, _run_archive, _candidate_archive,
 		CORPUS_PATH, CORPUS_EXPORT_PATH, FINDINGS_PATH, REPRODUCTION_PATH, REDUCTION_PATH] or path.is_empty(): return false
 	if not Adapter.verify_profile().get("ok", false): return false
-	if DirAccess.make_dir_recursive_absolute(OUTPUT_DIR) != OK: return false
-	var pending: String = path + ".partial"
-	var file := FileAccess.open(pending, FileAccess.WRITE)
-	if file == null:
-		last_error = "could not export to the fixed test output location"
-		return false
 	# Compact snapshots avoid repeatedly expanding long native tapes with tabs.
 	# The fixed byte bound applies to the actual serialized bytes before writing.
 	var serialized := JSON.stringify(value, "", true) + "\n"
 	var byte_limit: int = Corpus.MAX_BYTES if path in [CORPUS_PATH, CORPUS_EXPORT_PATH] else Transcript.MAX_BYTES
 	var encoded_bytes := serialized.to_utf8_buffer().size()
 	if encoded_bytes > byte_limit or (path in [_run_archive, _candidate_archive] and _archive_bytes + encoded_bytes > MAX_PROFILE_EVIDENCE_BYTES):
-		file.close()
 		last_error = "fixed evidence byte budget exceeded"
 		return false
-	file.store_string(serialized)
-	file.flush()
-	var error: Error = file.get_error()
-	file.close()
-	if error != OK or DirAccess.rename_absolute(pending, path) != OK:
-		last_error = "could not atomically retain the observed transcript"
+	if DirAccess.make_dir_recursive_absolute(OUTPUT_DIR) != OK:
+		last_error = "could not export to the fixed test output location"
+		return false
+	# Retain the successor's compact bytes and separate corpus/transcript/profile
+	# limits before creating staging. Verify closed bytes, then replace one file
+	# through the accepted native owner. Distinct evidence files are not one
+	# transaction and this does not promise power-loss durability.
+	var saved := FileTransaction.write_text(path, serialized, byte_limit)
+	if not saved.get("ok", false):
+		last_error = str(saved.get("error", "Audit output was not replaced."))
 		return false
 	return true
