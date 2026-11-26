@@ -1,0 +1,182 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "before_head": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "after_head": "4895e9ce88b685ab9f29a1327ae4476e01bb59b8",
+  "source_scope": "committed resulting source; root dirty qualifier apparatus is separately reviewed",
+  "matrices": [
+    {
+      "matrix": "persistence",
+      "unchanged_inputs": [
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/scripts/workbench_generated_map.gd",
+        "godot/scripts/architectural_generator_dialog.gd",
+        "godot/scripts/workbench_material_baseline.gd",
+        "godot/native_extension/material_baseline_file.cpp",
+        "godot/tests/test_workbench_file_transaction.gd",
+        "godot/tests/workbench_save_fault_child.gd",
+        "tools/ci/run_workbench_save_qualification.py"
+      ],
+      "changed_inputs": [
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "old_sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0",
+          "new_sha256": "c15cec9beea26b22c0bb09056795543dda4d7d4df6f518bf18df5bba03799b64"
+        }
+      ]
+    },
+    {
+      "matrix": "microscenario-capture",
+      "unchanged_inputs": [
+        "godot/tests/run_microscenario.gd",
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/native_extension/material_baseline_file.cpp",
+        "godot/tests/microscenario_capture_fault_child.gd",
+        "tools/ci/run_microscenario_capture_qualification.py",
+        "tools/ci/run_workbench_save_qualification.py"
+      ],
+      "changed_inputs": [
+        {
+          "path": "godot/scripts/main.gd",
+          "old_sha256": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c",
+          "new_sha256": "5b14cc8ce5abac290ac6ade2fede2276ea12242d9a72698e2d1e2d027d59bed5"
+        }
+      ]
+    },
+    {
+      "matrix": "recorder-storage",
+      "unchanged_inputs": [
+        "godot/scripts/gameplay_recorder.gd",
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/tests/gameplay_recorder_fault_child.gd"
+      ],
+      "changed_inputs": []
+    },
+    {
+      "matrix": "profile-save",
+      "unchanged_inputs": [
+        "godot/scripts/worldgen_workbench.gd",
+        "godot/scripts/material_lab_panel.gd",
+        "godot/scripts/transport_profile_panel.gd",
+        "godot/scripts/tower_panel.gd",
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/native_extension/material_baseline_file.cpp",
+        "godot/tests/profile_save_fault_child.gd",
+        "tools/ci/run_profile_save_qualification.py",
+        "tools/ci/run_workbench_save_qualification.py",
+        "godot/scripts/material_lab_experiment.gd",
+        "godot/scripts/transport_profiles.gd",
+        "godot/scripts/water_experiment_profiles.gd",
+        "examples/worldgen/hilbert-seams.json"
+      ],
+      "changed_inputs": [
+        {
+          "path": "godot/scripts/main.gd",
+          "old_sha256": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c",
+          "new_sha256": "5b14cc8ce5abac290ac6ade2fede2276ea12242d9a72698e2d1e2d027d59bed5"
+        }
+      ]
+    },
+    {
+      "matrix": "art-storage",
+      "unchanged_inputs": [
+        "godot/scripts/art_provider.gd",
+        "godot/scripts/art_traffic_archive.gd",
+        "godot/scripts/art_batch_panel.gd",
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/native_extension/material_baseline_file.cpp",
+        "godot/tests/art_storage_fault_child.gd"
+      ],
+      "changed_inputs": []
+    },
+    {
+      "matrix": "diagnostic-storage",
+      "unchanged_inputs": [
+        "godot/scripts/physics_characterisation.gd",
+        "godot/tests/test_physics_characterisation.gd",
+        "godot/examples/thunderbowl/thunderbowl_driver.gd",
+        "godot/examples/thunderbowl/run_thunderbowl.gd",
+        "godot/examples/thunderbowl/run_physical_thunderbowl.gd",
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/native_extension/material_baseline_file.cpp",
+        "tools/ci/run_diagnostic_storage_qualification.py",
+        "tools/ci/run_workbench_save_qualification.py",
+        "godot/examples/thunderbowl/matches/mixed.json",
+        "godot/goblin/goblin_controller.gd",
+        "godot/goblin/goblin_adapter.gd",
+        "godot/tests/goblin_storage_fault_child.gd"
+      ],
+      "changed_inputs": []
+    },
+    {
+      "matrix": "tower-observation",
+      "unchanged_inputs": [
+        "godot/scripts/tower_panel.gd",
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/native_extension/material_baseline_file.cpp",
+        "godot/scripts/experiment_tower.gd",
+        "godot/scripts/water_experiment_profiles.gd",
+        "godot/scripts/water_experiment_blind.gd",
+        "godot/scripts/water_feel_scenarios.gd",
+        "tools/ci/run_workbench_save_qualification.py"
+      ],
+      "changed_inputs": [
+        {
+          "path": "godot/scripts/main.gd",
+          "old_sha256": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c",
+          "new_sha256": "5b14cc8ce5abac290ac6ade2fede2276ea12242d9a72698e2d1e2d027d59bed5"
+        },
+        {
+          "path": "godot/tests/tower_observation_fault_child.gd",
+          "old_sha256": "c6fdaa77f40bb95f11641b477dee2bddf849b331bdbfa625cbeabe021f846b9a",
+          "new_sha256": "3fd4d63e77fb3544853140fb8b312d7803b2c2fc0810dc2584e902ad833783c6"
+        },
+        {
+          "path": "tools/ci/run_tower_observation_qualification.py",
+          "old_sha256": "ef2122cb1a070e244ac3865afc37c6edee5647f4f3cb31eb06924eef7e29422a",
+          "new_sha256": "77479aa7d79fbe2c72d0fc03881b852e77347b16875a2241d1140953274db0aa"
+        }
+      ]
+    }
+  ],
+  "identical_writer_function_bodies": [
+    {
+      "path": "godot/scripts/main.gd",
+      "function": "_write_microscenario_capture",
+      "identical": true,
+      "sha256": "996fea7a66fbac417feaa07d7c5856c27e06e0e005150ebd22e7b8a653eadce2"
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "function": "water_lab_save_profile",
+      "identical": true,
+      "sha256": "77ff9f411c00a145fb14853f93416c3c93ac0018d13a5f2e762c7927bbb911a6"
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "function": "tower_observation",
+      "identical": true,
+      "sha256": "9221aa8cf22fd64780c17933c045d53dd218db87df651c313aba7a5531af8e26"
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "function": "write_named",
+      "identical": true,
+      "sha256": "edef24163750386f3439235110d5370a77cd8aeea38c04fe8667085f9b7a5fc7"
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "function": "read_named",
+      "identical": true,
+      "sha256": "686d997f139374a5a4f0b171728db8c6a6651494d6a4a8961e3a795cd3790ae7"
+    }
+  ],
+  "native_source_and_dependency_pointer_trees_unchanged": true,
+  "semantic_review": [
+    "Only workbench_setup change is conditional canonicalization of an explicitly present accepted ambient profile; old records without that key follow the same route.",
+    "Main three retained writer bodies are byte-identical; incoming Main changes are guarded optional ambient ingestion hooks.",
+    "Tower child and runner changed only for retained subclass compile guard/source binding.",
+    "Web bool override fixes signature and parent result propagation; actual focused fixture and Water run qualified separately.",
+    "All full resulting-source matrices remain required; transitive optional actor modules are covered by resulting-source regressions, not declared byte equality."
+  ]
+}

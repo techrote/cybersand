@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "4895e9ce88b685ab9f29a1327ae4476e01bb59b8",
+  "scope": "Independent negative-control execution in isolated worktree with exact current package+test bytes; source review of early admission and all29 names",
+  "inputs": {
+    "tools/ci/package_ultima_evaluator.py": "4bcfad9671059b3f327eeee5406eddf8cd31db1b44260e3807db05ec753df827",
+    "tools/ci/test_package_ultima_evaluator.py": "0102314a6150b73bf12670cdbe44e499a5d165a92159416d1f5a0b8f4eb4a78a",
+    "tools/ci/run_ultima_qualification.py": "576fdae4ff775823fc4a9aafe0834d99e0ba2971ac623e234c8707e12df3efec"
+  },
+  "command": [
+    "python",
+    "tools/ci/test_package_ultima_evaluator.py"
+  ],
+  "exit_code": 0,
+  "expected_case_names": [
+    "import",
+    "test_tower_observation_inheritance",
+    "test_gameplay_recorder",
+    "test_goblin_contract",
+    "test_goblin_policies",
+    "test_ambient_default_off_integration",
+    "test_ambient_clock",
+    "test_physics_instrumentation",
+    "test_thunderbowl_arena",
+    "test_thunderbowl_controllers",
+    "test_worldgen_workbench",
+    "test_material_lab_experiment",
+    "test_transport_profiles",
+    "test_water_feel_controller",
+    "test_art_storage_integrity",
+    "test_art_traffic_integrity",
+    "test_art_traffic_panel_safety",
+    "test_art_session_log",
+    "test_art_panel_ui",
+    "test_art_history_receipt_identity",
+    "test_workbench_material_baseline",
+    "test_architectural_generator_ui",
+    "test_workbench_generator_discovery",
+    "test_paint_editor_history",
+    "test_paint_editor_history-reopen",
+    "test_workbench_canvas",
+    "test_workbench_canvas-reopen",
+    "test_explore001_generated_workbench",
+    "test_explore001_generated_workbench-reopen"
+  ],
+  "log_sha256": "effd895c1ce72538fa05a7ec2fbbb50041acb6ec5d30bcd29a49c2bddeb8a81a",
+  "verdict": "approve29-case admission; LFS acquisition and launcher code are separate owning-lane reviews"
+}

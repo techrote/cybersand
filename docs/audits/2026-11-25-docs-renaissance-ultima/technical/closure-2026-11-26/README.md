@@ -140,6 +140,24 @@ lead receipt and records A's independent readback. A later successful Windows
 run must still be assessed as “historical crash not reproduced”; it cannot
 establish a cause for the old access violation.
 
+The resulting qualifier adds early inheritance admission and the two bounded
+AMBIENT regressions while retaining all 25 original workflow cases. Together
+with import this is **29 required process records**. A checked exact name-set
+equivalence between runner and package admission and independently executed
+the current **79 package integrity controls** in a separate worktree. See
+[package-29-review.json](package-29-review.json). This review does not substitute
+for the other lanes' LFS acquisition and actual-launcher qualification.
+
+[storage-integration-input-map.json](storage-integration-input-map.json) compares
+every declared storage-matrix input against the recovered hosted source. The
+helper, native replacement primitive, all native source/dependency/pointer
+trees, and the five Main/setup persistence function bodies are unchanged. The
+accepted setup delta canonicalizes an explicitly present ambient profile;
+ordinary records without that field retain their route. Main adds guarded
+ambient ingestion, and the Tower fixture/runner add the subclass guard and
+source binding. These checks support the controlled integration; final complete
+matrix execution on the resulting source is still required.
+
 ## Custody and remaining scope
 
 [manifest.json](manifest.json) binds this compact packet. Runtime recovery
