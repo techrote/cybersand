@@ -2,10 +2,11 @@ extends RefCounted
 
 ## Bounded value-only tape. No paths, dispatch, subprocesses or game authority.
 const SCHEMA := "cybersand-goblin-transcript-v1"
-const MAX_ACTIONS := 256
+const MAX_ACTIONS := 1024
+const ExpandedActions = preload("res://goblin/goblin_gameplay_actions.gd")
 const MAX_BYTES := 33554432
-const POLICIES := ["CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM"]
-const FIXTURES := ["material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen"]
+const POLICIES := ["CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM", "STATEFUL", "NOVELTY", "COVERAGE_HUNTER", "DISASTER_ARTIST", "BOUNDARY_GOBLIN", "HISTORY_GOBLIN", "MATERIAL_ALCHEMIST", "ACTOR_ENTHUSIAST", "IMPATIENT_SWITCHER", "OBSESSIVE_REPRODUCER"]
+const FIXTURES := ["material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen", "history_edges", "boundary_lab", "alchemy", "mixed_stress", "conservation_cell"]
 const STATUS := ["proposed", "accepted", "refused", "partial", "completed"]
 const CLASSIFICATIONS := ["game_observation", "not_applicable", "invalid_action", "timeout", "cancelled", "native_failure", "adapter_failure"]
 const EMPTY_ACTIONS := ["pause", "copy", "undo", "redo", "save_layout", "reopen_layout", "reset_fixture", "actor_reset", "single_step"]
@@ -25,6 +26,32 @@ static func _hex(value: Variant, count: int) -> bool:
 	for character: String in value:
 		if not character in "0123456789abcdef": return false
 	return true
+
+
+static func _valid_replay_identity(provenance: Dictionary) -> bool:
+	var value: Variant = provenance.get("replay_identity")
+	if not value is Dictionary or not _keys_exact(value, ["schema", "source_commit", "source_tree", "platform",
+		"godot_sha256", "native_sha256", "rapier_sha256", "game_sources_sha256", "game_source_files", "import_normalization"]): return false
+	if value.schema != "cybersand-goblin-replay-identity-v1" or value.platform not in ["linux", "windows"] \
+		or value.import_normalization != "existing-four-rapier-import-descriptors-crlf-to-lf" \
+		or typeof(provenance.get("source_dirty")) != TYPE_BOOL or not _in_range(value.game_source_files, 1, 100000): return false
+	for key: String in ["source_commit", "source_tree", "platform", "godot_sha256", "native_sha256", "rapier_sha256"]:
+		if value[key] != provenance.get(key): return false
+	for key: String in ["source_commit", "source_tree"]:
+		if not _hex(value[key], 40): return false
+	for key: String in ["godot_sha256", "native_sha256", "rapier_sha256", "game_sources_sha256"]:
+		if not _hex(value[key], 64): return false
+	return true
+
+
+static func same_execution_identity(first: Variant, second: Variant) -> bool:
+	if not first is Dictionary or not second is Dictionary: return false
+	if first.has("replay_identity") or second.has("replay_identity"):
+		return _valid_replay_identity(first) and _valid_replay_identity(second) \
+			and first.source_dirty == second.source_dirty \
+			and JSON.stringify(_json_value(first.replay_identity), "", true) == JSON.stringify(_json_value(second.replay_identity), "", true)
+	# Legacy evidence retains its original exact-provenance contract.
+	return JSON.stringify(_json_value(first), "", true) == JSON.stringify(_json_value(second), "", true)
 
 
 static func _keys_exact(args: Dictionary, required: Array, optional: Array = []) -> bool:
@@ -52,7 +79,7 @@ static func validate_action(action: Variant) -> Dictionary:
 	elif id == "wait_ticks":
 		valid = _keys_exact(args, ["ticks"]) and _in_range(args.get("ticks"), 1, 32)
 	elif id == "select_material":
-		valid = _keys_exact(args, ["material"]) and integer(args.get("material")) and int(args.material) in [0, 2, 3, 7, 58]
+		valid = _keys_exact(args, ["material"]) and integer(args.get("material")) and int(args.material) in [0, 2, 3, 7, 8, 9, 12, 13, 14, 16, 19, 23, 25, 26, 27, 28, 29, 58]
 	elif id in ["brush", "erase"]:
 		valid = _keys_exact(args, ["x", "y", "radius"]) and _in_range(args.get("x"), 8, 503) \
 			and _in_range(args.get("y"), 8, 503) and _in_range(args.get("radius"), 0, 4)
@@ -69,15 +96,17 @@ static func validate_action(action: Variant) -> Dictionary:
 			and _in_range(args.get("y"), 0, 256) and integer(args.get("width")) and integer(args.get("height")) \
 			and int(args.get("width")) in [240, 480] and int(args.get("height")) in [135, 270]
 	elif id in ["actor_select", "actor_pilot"]:
-		valid = _keys_exact(args, ["actor_id"]) and _in_range(args.get("actor_id"), 1, 8)
+		valid = _keys_exact(args, ["actor_id"]) and _in_range(args.get("actor_id"), 1, 64)
 	elif id == "actor_place":
-		valid = _keys_exact(args, ["model", "x", "y"]) and args.get("model") in ["kestrel", "reference_barrel"] \
+		valid = _keys_exact(args, ["model", "x", "y"]) and args.get("model") in ["kestrel", "reference_barrel", "runner", "crawler", "monowheel", "stuntbuggy"] \
 			and _in_range(args.get("x"), 32, 448) and _in_range(args.get("y"), 32, 224)
 	elif id == "actor_drive":
 		valid = _keys_exact(args, ["direction", "ticks"]) and args.get("direction") in ["left", "right", "up", "down"] \
 			and _in_range(args.get("ticks"), 1, 16)
 	elif id == "panel":
 		valid = _keys_exact(args, ["panel", "open"]) and args.get("panel") == "details" and args.get("open") is bool
+	elif id in ExpandedActions.IDS:
+		valid = bool(ExpandedActions.validate_action(action).get("ok", false))
 	if not valid: errors.append("Unknown action or arguments outside the finite goblin vocabulary.")
 	return {"ok": errors.is_empty(), "errors": errors}
 
@@ -101,7 +130,10 @@ static func _json_value(value: Variant, depth: int = 0) -> Variant:
 
 
 static func create(metadata: Dictionary) -> Dictionary:
-	return {"schema": SCHEMA, "header": _json_value(metadata), "steps": [], "summary": {}}
+	# This estimate only avoids repeated whole-tape serialization while playing.
+	# Validators and the controller writer still enforce the actual encoded limit.
+	return {"schema": SCHEMA, "header": _json_value(metadata), "steps": [], "summary": {},
+		"storage_estimate_bytes": JSON.stringify(_json_value(metadata)).to_utf8_buffer().size() + 2097152}
 
 
 static func semantic_projection(record: Dictionary) -> Dictionary:
@@ -167,10 +199,14 @@ static func append(transcript: Dictionary, record: Dictionary, assertions: Array
 	row.assertions = _json_value(assertions)
 	row.observation_sha256 = JSON.stringify(_json_value(observation_projection(row))).sha256_text()
 	row.semantic_sha256 = JSON.stringify(_json_value(semantic_projection(row))).sha256_text()
-	transcript.steps.append(row)
-	if JSON.stringify(transcript).to_utf8_buffer().size() > MAX_BYTES:
-		transcript.steps.pop_back()
+	var row_bytes: int = JSON.stringify(row).to_utf8_buffer().size() + 2
+	var previous_bytes: int = int(transcript.get("storage_estimate_bytes", 0))
+	if previous_bytes <= 0:
+		previous_bytes = JSON.stringify(transcript).to_utf8_buffer().size() + 2097152
+	if previous_bytes + row_bytes > MAX_BYTES:
 		return {"ok": false, "error": "Transcript byte budget exhausted."}
+	transcript.steps.append(row)
+	transcript.storage_estimate_bytes = previous_bytes + row_bytes
 	return {"ok": true, "index": row.index}
 
 
@@ -278,8 +314,9 @@ static func validate(transcript: Variant) -> Dictionary:
 		and transcript.summary.get("termination") in ["stopped", "initialization_failure", "fixture_failure"]
 	if not no_installed_scene and (not header.get("initial_scene_identity") is String \
 		or header.get("initial_scene_identity", "").is_empty()): errors.append("Missing initial authored scene identity.")
-	if not _in_range(header.get("fixture_version"), 1, 1): errors.append("Unknown committed fixture version.")
+	if not _in_range(header.get("fixture_version"), 1, 2): errors.append("Unknown committed fixture version.")
 	if header.get("policy") not in POLICIES: errors.append("Unknown policy.")
+	if header.has("pacing_ms") and not _in_range(header.pacing_ms, 0, 3000): errors.append("Invalid recorded pacing.")
 	if not _in_range(header.get("seed"), -2147483648, 2147483647): errors.append("Seed must be a signed int32.")
 	if not _in_range(header.get("budget"), 1, MAX_ACTIONS): errors.append("Invalid action budget.")
 	if transcript.steps.size() > MAX_ACTIONS or transcript.steps.size() > int(header.get("budget", 0)): errors.append("Too many actions.")
@@ -291,6 +328,7 @@ static func validate(transcript: Variant) -> Dictionary:
 		if not _hex(provenance.get(key), 40): errors.append("Missing full " + key + ".")
 	for key: String in ["godot_sha256", "native_sha256", "rapier_sha256"]:
 		if not _hex(provenance.get(key), 64): errors.append("Missing runtime " + key + ".")
+	if provenance.has("replay_identity") and not _valid_replay_identity(provenance): errors.append("Invalid portable replay identity.")
 	for index: int in range(transcript.steps.size()):
 		var row: Variant = transcript.steps[index]
 		if not row is Dictionary:
@@ -350,7 +388,9 @@ static func compare(expected: Dictionary, actual: Dictionary) -> Dictionary:
 		and expected.header.seed == actual.header.seed \
 		and expected.header.get("initial_scene_identity", "") == actual.header.get("initial_scene_identity", "") \
 		and expected.header.get("fixture_version", 1) == actual.header.get("fixture_version", 1) \
-		and JSON.stringify(_json_value(expected.header.provenance)) == JSON.stringify(_json_value(actual.header.provenance))
+		and expected.header.get("fixture_sha256") == actual.header.get("fixture_sha256") \
+		and expected.header.get("pacing_ms", 0) == actual.header.get("pacing_ms", 0) \
+		and same_execution_identity(expected.header.provenance, actual.header.provenance)
 	var same_count: bool = expected.steps.size() == actual.steps.size()
 	var semantic_match: bool = same_header and same_count
 	var exact_match: bool = semantic_match

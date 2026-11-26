@@ -13,6 +13,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 **Architectural Workbench / M3–M5 — Draft/HOLD:** [native module library, GOLDMAPS retrieval and staged construction](operations/world-steer-architecture.md) extend the preserved Batch Lab. [Module contract](systems/native-architectural-modules.md), [design knowledge and evaluation](systems/architectural-knowledge-and-evaluation.md), and [staged execution boundary](systems/architecture-staged-construction.md) keep observed native geometry, authored intent, hosted qualification and physical acceptance distinct.
 
 **Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.
+GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/gip014-goblin-002-decision.md), then the [persistent experimental playtester ledger](research/gip014-goblin-002.md) and [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Exact source capabilities, campaign evidence and defect adjudication remain separately scoped.
+
+**AMBIENT-002, opt-in Draft/HOLD:** [living inhabitants, bounded memory, copied peers and group authoring](systems/ambient-living-inhabitants.md); [living Workbench owner guide](operations/ambient-living-workbench.md); [source-bound successor mission ledger](research/ambient-002/mission-ledger.md). The original AMBIENT-001 evaluator remains frozen and separate.
 
 **AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
 [Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),

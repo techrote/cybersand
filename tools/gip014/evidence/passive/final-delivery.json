@@ -1,0 +1,223 @@
+{
+  "schema": "cybersand-goblin-002-final-delivery-v1",
+  "mission": "GIP-014-goblin-002",
+  "date": "2026-11-25",
+  "decision": "draft_hold",
+  "pull_request": "https://github.com/techrote/cybersand/pull/781",
+  "qualified_runtime": {
+    "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+  },
+  "results_snapshot": {
+    "commit": "e8df89b48757096428ee6a9d12e55c7e417c10d5",
+    "tree": "c5c6f89c377d78843c919101671aff1c2001f6c0"
+  },
+  "seal_source": {
+    "driver_commit": "f3324f462091d1778b9472ebcafbab35372e6411",
+    "driver_tree": "23955d51fbe0f570fed1589c5f2a82ff5e36eb98",
+    "qualified_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "qualified_dirty": false,
+    "qualified_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+  },
+  "windows": {
+    "filename": "CyberSand-goblin-Windows-evaluator.zip",
+    "inner_original_name": "CyberSand-goblin.zip",
+    "bytes": 95816253,
+    "sha256": "daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e",
+    "qualification_run": 45565621408,
+    "qualification_job": 139039653335,
+    "artifact_id": 15001055330,
+    "direct_owner_copy_previously_saved": true,
+    "changed_by_late_evidence_delivery": false,
+    "private_delivery_identity_intentionally_omitted": true
+  },
+  "campaign_archive": {
+    "filename": "CyberSand-goblin-campaign-evidence.zip",
+    "bytes": 666742658,
+    "sha256": "0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f",
+    "members": 29,
+    "original_artifacts": 13,
+    "review_inputs": 14,
+    "index_sha256": "e12b4f5625671020e81ae5b547b0f0874ab5034c856e2d314f848a198553df49",
+    "post_write_member_hashes_verified": true,
+    "sealing_run": 45582958798,
+    "sealing_job": 139097304609,
+    "provider_url": "https://github.com/techrote/cybersand/actions/runs/45582958798/artifacts/15008615196",
+    "provider_artifact_id": 15008615196,
+    "provider_wrapper_bytes": 666742848,
+    "provider_wrapper_sha256": "104e680cf4e85f445a549886a0b847efac288e9e30535e508c5ef2ac67e2bbce",
+    "provider_expires_at": "2026-12-25T09:12:25Z",
+    "direct_owner_copy_saved": false,
+    "local_download_started": false,
+    "delivery_classification": "provider_download_available_direct_copy_blocked",
+    "transfer_blocker_git_blob": "a453ef274f363daca19fd0e5e51c48a446482cbf",
+    "connector_cap_bytes": 536870912,
+    "observed_workspace_free_bytes": 69832704,
+    "archive_unchanged": true
+  },
+  "predecessor_supplement": {
+    "filename": "predecessor-six-tapes-recovery-v1.zip",
+    "bytes": 960187,
+    "sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+    "members": 11,
+    "selected_native_tape_bodies": 6,
+    "selected_native_tape_bytes": 20516496,
+    "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+    "kind": "new_supplement_exact_original_bodies",
+    "historical_metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+    "recovery_record_git_blob": "ba46c0d4fcde350923ee796aa9bd691e1b58e75c",
+    "independent_review_git_blob": "a7273bfcdd601940e273ee094317052d594afd58",
+    "historical_counts": {
+      "completed_processes": 5,
+      "confirmed_production_defects": 0,
+      "episodes": 7,
+      "episodes_with_raw_tape": 6,
+      "incomplete_processes": 2,
+      "observed_completed_actions": 988,
+      "requested_actions": 1280
+    },
+    "raw_bodies_verified": true,
+    "additional_compact_aliases": 5,
+    "compact_paths_total": 11,
+    "pretty_serializations_reverified": false,
+    "original_assembled_zip_recovered": false,
+    "original_zip_search_scope": "two named old evidence/delivery roots only",
+    "interrupted_download_completion": null,
+    "interrupted_download_survivors": null,
+    "no_historical_outcome_promotion": true,
+    "direct_owner_copy_saved": true,
+    "delivery_review_git_blob": "86e1dc88d8863e5d69fa2d73bf1addf7a9e5f31e",
+    "root_byte_review_git_blob": "dd8ec240e2f54bc0cedf36361ad6ff4ee02e5f19",
+    "saved_owner_version": 0,
+    "private_delivery_identity_intentionally_omitted": true,
+    "delivery_process": {
+      "elapsed_seconds": 8.056,
+      "sampled_peak_tree_rss_bytes": 53104640,
+      "exit_code": 0,
+      "surviving_owned_pids": [],
+      "timeout_seconds": 180,
+      "memory_limit_mib": 512,
+      "log_limit_bytes": 16777216
+    }
+  },
+  "seal_process": {
+    "builder": {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-B",
+        "/home/agent/goblin002/evidence/durable-data-archive/build_archive.py"
+      ],
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 591,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 2.357,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 591,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "734bfc892f30d10fb1f86b9d7f96f4fa83cf3aa7751bcee0285e0afd63824f26",
+      "memory_limit_mib": 512,
+      "observed_processes": 1,
+      "peak_tree_rss_bytes": 21237760,
+      "process_exit_status": "pass",
+      "resource_samples": 23,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 180
+    },
+    "supervisor": {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-B",
+        "/home/runner/work/cybersand/cybersand/driver/tools/gip014/passive_seal.py",
+        "--worker"
+      ],
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 2975,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 30.148,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 2975,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "415a20ab7fcb44ed623f715c96bb39cd9debf1e1bc043ea05a222a2ce5e95d29",
+      "memory_limit_mib": 1536,
+      "observed_processes": 2,
+      "peak_tree_rss_bytes": 58462208,
+      "process_exit_status": "pass",
+      "resource_samples": 294,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 1200
+    },
+    "resource_fence": {}
+  },
+  "independent_reviews": {
+    "A_results": {
+      "git_blob": "b946696c686598936f43f176312923e084851b73",
+      "checks": 13
+    },
+    "B_seal_bindings": {
+      "git_blob": "e8981dff499a2a836d712ba7b2b2eca4f33e70c9"
+    },
+    "C_actual_seal": {
+      "git_blob": "71d44072202b6be2bfc5367d3e0d9ce4c4aba1af",
+      "checks": 26,
+      "scope": "At sealing, before executor returned. Historical delivery limits are superseded only by the separately documented final custody state."
+    },
+    "root_actual_seal": {
+      "git_blob": "e071192947400c93c6af7329232e6237b06d887f",
+      "checks": 14
+    },
+    "B_predecessor_recovery": {
+      "git_blob": "a7273bfcdd601940e273ee094317052d594afd58",
+      "checks": 13
+    },
+    "C_final_delivery": {
+      "git_blob": "86e1dc88d8863e5d69fa2d73bf1addf7a9e5f31e",
+      "status": "supplement_saved_main_archive_provider_available_direct_copy_blocked"
+    }
+  },
+  "classification": {
+    "confirmed_production_gameplay_defects": 0,
+    "substantive_test_oracle_defects": 2,
+    "material_lineage_counterexample_actions": 5,
+    "material_lineage_counterexample_automatically_minimized": false,
+    "monowheel_original_actions": 44,
+    "monowheel_reduced_actions": 1,
+    "original_failures_preserved": true
+  },
+  "qualification_limits": {
+    "full_comparison_source": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+    "full_comparison_episodes": 142,
+    "full_comparison_budget_complete": 139,
+    "full_comparison_completed_actions": 11538,
+    "final_linux_source": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "final_linux_long_episodes": 8,
+    "final_linux_long_budget_complete": 4,
+    "final_linux_long_completed_actions": 2847,
+    "final_linux_long_incomplete": 4,
+    "final_linux_job_conclusion": "failure",
+    "final_linux_512_or_1024_budget_complete": 0,
+    "final_linux_memory_episodes": 7,
+    "final_linux_memory_completed_actions": 448,
+    "no_new_gameplay_during_passive_delivery": true,
+    "semantic_replay_not_exact_async_observation_replay": true,
+    "physical_nvidia_acceptance": false
+  },
+  "final_repository_observation": {
+    "main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "pr_open": true,
+    "pr_draft": true,
+    "pr_mergeable_at_observation": true,
+    "runtime_changed_since_qualification": false,
+    "default_activation": false,
+    "ready_promotion": false,
+    "merge_performed": false,
+    "unfinished_programme_imports": false,
+    "control_1024_experiment_launched": false
+  },
+  "private_identifiers_recorded": false
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "ambient2-external-watch-revision-seam/v1",
+  "status": "passed",
+  "exit_code": 0,
+  "elapsed_wall_seconds": 0.1293027410065406,
+  "source_files": {
+    "tools/ambient/run_graphical_watch.py": {
+      "bytes": 20851,
+      "sha256": "24e6556d0591cca4b1d7b1f8147d06fdb07d1294f32f585f961c93bc7b06e7fb",
+      "git_blob_sha1": "6a75a39f8bd93baf927eba7b4279c0699f44b981"
+    },
+    "tools/ambient/test_graphical_watch.py": {
+      "bytes": 7573,
+      "sha256": "456f45b9ee5905aaff51105bdd464497546051ce066e5733266d371b4a534b73",
+      "git_blob_sha1": "c42f36d134c9cccf66906036e9940e3102c493d9"
+    }
+  },
+  "original_observer_commit": "2eea3dbb921058db418fbb243b4abc493cddbdb9",
+  "unchanged_gdscript_sha256": "aac731d1d44fcc46beca22ea6b0ee84e1acfe4c09ad51cc47bd52abb8c922379",
+  "tests": 12,
+  "original_tests_retained": 9,
+  "new_tests": 3,
+  "scope": "Synthetic receipt/source-admission tests only. No Godot, physical World or graphical observation was executed.",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "af2aa8bd5ac619ff5ffda9a540feda21de2e3cb92bc5fb975f720df1f822256c",
+  "default_application_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45"
+}

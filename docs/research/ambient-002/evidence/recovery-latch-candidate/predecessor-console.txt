@@ -1,0 +1,6 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+AMBIENT_ENGINE_BENCHMARK {"actors":8,"decisions":2400,"determinism":"decision outputs, not Rapier trajectories","elapsed_usec":576652,"mean_usec":240.271666666667,"modules_per_actor":10,"renderer":"headless","scope":"pure copied-value decisions; no material readback or physics"}
+AMBIENT_ENGINE_RESULT {"checks":895,"failures":0,"scope":"pure-data modules and arbitration"}

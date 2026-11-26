@@ -1,0 +1,189 @@
+{
+  "advisory": {
+    "attempt": 1,
+    "conclusion": "failure",
+    "error": "ValueError: Refusing scope report from a changed or untracked worktree",
+    "event": "pull_request",
+    "existing_native_merge_gate_changed": false,
+    "failed_step": "Report the immutable Git comparison without authorizing a skip",
+    "failure_time_utc": "2026-11-25T06:16:14.1115005Z",
+    "job_id": 139018742701,
+    "job_url": "https://github.com/techrote/cybersand/actions/runs/45559264505/job/139018742701",
+    "native_skip_authorized": false,
+    "original_candidate_advisory_produced": false,
+    "original_classifier_console_bytes": 0,
+    "run_id": 45559264505,
+    "run_url": "https://github.com/techrote/cybersand/actions/runs/45559264505"
+  },
+  "comparison": {
+    "actual_checked_out_merge_sha": "42856ef30ee9ca7acab03422ca10cc3a9292df49",
+    "actual_head_and_merge_tree_sha": "070ef527d922b3b8c9b639d2c77504fdce86101e",
+    "application_godot_tree_sha": "a54e0b0907c17b52e5c8d55683093097580cba24",
+    "application_tree_matches_qualified_source": true,
+    "base_sha": "d0af9b6015c27417fddd67f79afdcf656a609571",
+    "closing_changed_paths": 80,
+    "closing_comparison_base": "353c973e0b86cff3db021fcf771dc866aed94315",
+    "closing_paths_all_under_docs": true,
+    "immediate_parent": "f0663e79bdc4b6c01ef5390c094c207eeb7e1609",
+    "immediate_parent_diff": [
+      "docs/research/ambient-002/mission-ledger.md"
+    ],
+    "pr_head_sha": "62a05adf12dfddb744a1e043c2bb4581c7b334e7",
+    "qualified_application_sha": "50c6df89528dc9ecdc5316d8c67abf203e192254"
+  },
+  "disposition": "Evidence checkout normalization conflict; original scope decision was refused and remains failed.",
+  "five_original_json_blobs": [
+    {
+      "blob": "035c7a40ecbfb415d269d861134ddd0c295ecfe4",
+      "bytes": 348338,
+      "crlf": 2866,
+      "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+      "sha256": "767e3350a3c3aa5f544a5044a3fc8bd7648546d8e30868ea4108bfe2c1129712"
+    },
+    {
+      "blob": "a5c2061c10f98123e0afddafab27413357bda7d7",
+      "bytes": 272556,
+      "crlf": 2834,
+      "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+      "sha256": "2d4fbdd0ab9b05162dd04303cb06616daaf583b682f0ec02bed1aa8430331fae"
+    },
+    {
+      "blob": "4f036866883394bfbe725252a0b2b5d5ff77903b",
+      "bytes": 259368,
+      "crlf": 2418,
+      "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+      "sha256": "12f76c73aae5845abea07664764ac7f3f57998d7846ca216c9b16a41477d4b1e"
+    },
+    {
+      "blob": "4fbe91cf77e73c873f24eddc6cfeab32e6853b21",
+      "bytes": 256665,
+      "crlf": 2265,
+      "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+      "sha256": "dd2485a591b6e5324eb80229890adf8fd7445342220fd946273424f5a8a149e9"
+    },
+    {
+      "blob": "aa1135e61713ee0693deefbcdef8560b12f60453",
+      "bytes": 256625,
+      "crlf": 2265,
+      "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+      "sha256": "81c5792588f1e9e900e71b7a0cd32b4d1fca57c5663188ee3ba9be633f9e4d09"
+    }
+  ],
+  "independent_reproduction": {
+    "candidate_change_scope": "Five exact-path raw-byte exceptions; original evidence blobs unchanged.",
+    "core_autocrlf_values": [
+      "false",
+      "true"
+    ],
+    "passed": true,
+    "reader_sha256": "c9907cfcfc26bbd4ceb3d4281398e226e9865ef36e3eccd14b6eac7afa6ede06",
+    "receipt_bytes": 15198,
+    "receipt_sha256": "38905033166bbae0fc72702392404124de8395bbc490396b00316d317846cb2a"
+  },
+  "interpretation": {
+    "category": "evidence-checkout-normalization",
+    "excluded_alternatives": "The available evidence does not indicate a parser failure, GitHub service failure, changed native/application runtime, or a defective clean-tree guard.",
+    "explanation": "Five retained original Windows JSON blobs contain CRLF bytes. The existing '*.json text eol=lf' rule makes an untouched checkout report those paths as modified. The classifier correctly fails its clean-worktree admission before calculating the scope decision.",
+    "original_log_limit": "The hosted log does not include the dirty porcelain path inventory. The five-path cause is supported by independent exact-blob Git reproduction, not by a recovered hosted status listing.",
+    "output_ignores": "The existing .gitignore excludes /build/ and __pycache__/; these expected test/output paths do not explain the reproduced dirty status.",
+    "scope_limits": "This is documentation/evidence custody analysis. It is not a new native, application, physical-episode or hardware qualification.",
+    "source_contract": "The advisory's clean-tree contract was not met; the actual qualified application subtree and all original runtime qualification remain unchanged.",
+    "test_scope": "The original job passed the classifier's 20 classification fixtures and 17 source tests in both normal and optimized Python before refusing the checkout."
+  },
+  "original_artifact": {
+    "bytes": 9053,
+    "id": 14996259597,
+    "members": [
+      {
+        "bytes": 0,
+        "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "path": "classifier-console.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 8469,
+        "git_blob": "bba54d9614bc4176f20d3b490a8e4929035d6fcb",
+        "path": "source/native_scope_classifier.py",
+        "sha256": "ebbffe10aa6041d6ca7b3e893c3abf839cb6fa2da325bee31cf7a8af2651fccb"
+      },
+      {
+        "bytes": 5015,
+        "git_blob": "d05efcff91b0a94c4c0a72cd4709111285ae6981",
+        "path": "source/native-scope-advisory.yml",
+        "sha256": "f5a34961a64dc160277a787897fc57414fffad3d04e34f2ba8a8ab273e034777"
+      },
+      {
+        "bytes": 10603,
+        "git_blob": "dcdab5327270d735b9d4d49d78f641bdedbb95eb",
+        "path": "source/test_native_scope_classifier.py",
+        "sha256": "d774cf988ef3e88c06869781bf8e0b867f1abb878dffb6fcb225a3c6728232cf"
+      },
+      {
+        "bytes": 1210,
+        "git_blob": "31fac3d7d295775d963cd57ee829cf1257d18887",
+        "path": "workflow-receipt.json",
+        "sha256": "33b86de9b692596acd67f0f86df2584d9f9ae31e484d8c604b89360e7a9e78bd"
+      }
+    ],
+    "name": "native-scope-advisory-45559264505-1",
+    "retained_path": "original-artifact.zip",
+    "sha256": "7176f0785e2bc4abbd58629677444d179b10b112f96664e98798a813dccf02ff"
+  },
+  "original_attributes": {
+    "gitattributes_blob": "cc8288dabac3402cc88e3e575f9e42e895deac90",
+    "gitignore_blob": "552232f6ab578614f3f93bf9be10602fbbdf17fd"
+  },
+  "original_decoded_job_log": {
+    "bytes": 139154,
+    "encoding": "UTF-8, preserving the decoded GitHub response including its initial BOM",
+    "retained_path": "original-job.log",
+    "sha256": "02cc7cda52de432efb27789770e0461a4c072abfd97756f05110a62bd17d1c5e"
+  },
+  "original_workflow_receipt": {
+    "event": "pull_request",
+    "existing_native_merge_gate_changed": false,
+    "native_skip_authorized": false,
+    "outputs": {
+      "classifier-console.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "run_attempt": 1,
+    "run_id": 45559264505,
+    "schema": "cybersand-native-scope-workflow-receipt-v1",
+    "scope": "Report-only committed Git dependency advice; no native/runtime qualification",
+    "source_sha": "42856ef30ee9ca7acab03422ca10cc3a9292df49",
+    "sources": {
+      ".github/workflows/native-scope-advisory.yml": {
+        "bytes": 5015,
+        "retained_path": "source/native-scope-advisory.yml",
+        "sha256": "f5a34961a64dc160277a787897fc57414fffad3d04e34f2ba8a8ab273e034777"
+      },
+      "tools/ci/native_scope_classifier.py": {
+        "bytes": 8469,
+        "retained_path": "source/native_scope_classifier.py",
+        "sha256": "ebbffe10aa6041d6ca7b3e893c3abf839cb6fa2da325bee31cf7a8af2651fccb"
+      },
+      "tools/ci/test_native_scope_classifier.py": {
+        "bytes": 10603,
+        "retained_path": "source/test_native_scope_classifier.py",
+        "sha256": "d774cf988ef3e88c06869781bf8e0b867f1abb878dffb6fcb225a3c6728232cf"
+      }
+    }
+  },
+  "pr": 779,
+  "proposed_correction": {
+    "applied_by_this_reader": false,
+    "change_application_or_workflow": false,
+    "owner": "lead",
+    "path": "docs/research/ambient-002/evidence/windows-50c6-complete/.gitattributes",
+    "preserve_all_five_original_git_blobs": true,
+    "rerun_requested_by_this_reader": false,
+    "rule": "Five exact relative paths with '-text whitespace=cr-at-eol'",
+    "weaken_clean_tree_guard": false
+  },
+  "repository": "techrote/cybersand",
+  "retained_apparatus_matches_published_blobs": true,
+  "schema": "cybersand-ambient002-closing-scope-diagnosis-v1"
+}

@@ -1,0 +1,2583 @@
+{
+  "scope": "Independent phase/drive/memory interpretation of three selected actors in original ordinary Workbench graphical observation. No runtime rerun, no new physical episode count, and no replacement for the authoring lane full artifact/frame/custody audit.",
+  "application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "observer_source": "2eea3dbb921058db418fbb243b4abc493cddbdb9",
+  "workflow_run": 45544614719,
+  "artifact_id": 14992866806,
+  "original_artifact_sha256": "907f8bcdd11ef4c7150dc252844ec8545a0a7a46e66abf41ff10e889ad868cef",
+  "reader_sha256": "db2ab51d6043f2c488a277ab2a7ba27bfa609854d1f460ae9251d9cd3ad743f8",
+  "scenes": {
+    "ambient2-courtyard": {
+      "original_watch_report_sha256": "f65af557ec7365ccbf9f57615af65da6cfcdc22054b8de2f340715c2717aff9d",
+      "selected_instance_id": 1,
+      "internal_actor_id": 0,
+      "profile_id": "social_drifter",
+      "copied_samples": 61,
+      "post_start_sample_count": 60,
+      "actual_simulation_seconds": 60.0166666666645,
+      "physical_ticks": 3601,
+      "native_ticks": 3601,
+      "sampled_selection_counts": [
+        {
+          "override": "",
+          "goal": "",
+          "phase": "",
+          "samples": 6
+        },
+        {
+          "override": "",
+          "goal": "disperse",
+          "phase": "disperse",
+          "samples": 11
+        },
+        {
+          "override": "",
+          "goal": "observe_actor",
+          "phase": "approach",
+          "samples": 13
+        },
+        {
+          "override": "",
+          "goal": "observe_actor",
+          "phase": "watch",
+          "samples": 12
+        },
+        {
+          "override": "",
+          "goal": "regroup",
+          "phase": "regroup",
+          "samples": 18
+        }
+      ],
+      "sampled_goal_keys_by_module": {
+        "regroup": [
+          "0"
+        ],
+        "observe_actor": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7"
+        ],
+        "disperse": [
+          "1",
+          "2",
+          "3"
+        ]
+      },
+      "timeline": [
+        {
+          "requested_second": 1,
+          "copied_simulation_seconds": 1.01666666666667,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            277.747741699219,
+            537.365356445312
+          ],
+          "position": [
+            226.179901123047,
+            536.330139160156
+          ],
+          "pace": 0.270065426826477,
+          "phase_selected_seconds": 1.0,
+          "drives": {
+            "exploration": 0.8332,
+            "social": 0.44215
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 3,
+          "copied_simulation_seconds": 3.01666666666666,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "1",
+          "target": [
+            277.318328857422,
+            537.355712890625
+          ],
+          "position": [
+            245.374969482422,
+            538.888061523438
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.800692,
+            "social": 0.32215
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 5,
+          "copied_simulation_seconds": 5.01666666666665,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "1",
+          "target": [
+            279.111083984375,
+            537.399230957031
+          ],
+          "position": [
+            247.838531494141,
+            538.864807128906
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 1.2,
+          "drives": {
+            "exploration": 0.771459999999999,
+            "social": 0.20215
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 6,
+          "copied_simulation_seconds": 6.01666666666665,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            301.165649414062,
+            536.488037109375
+          ],
+          "position": [
+            261.373107910156,
+            539.357604980469
+          ],
+          "pace": 0.21980907022953,
+          "phase_selected_seconds": 3.59999999999999,
+          "drives": {
+            "exploration": 0.755751999999999,
+            "social": 0.14215
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 7,
+          "copied_simulation_seconds": 7.01666666666665,
+          "override": "",
+          "selected_goal": "disperse",
+          "phase": "disperse",
+          "goal_key": "1",
+          "target": [
+            213.287139892578,
+            539.601257324219
+          ],
+          "position": [
+            266.904541015625,
+            537.992492675781
+          ],
+          "pace": 0.510156571865082,
+          "phase_selected_seconds": 0.199999999999999,
+          "drives": {
+            "exploration": 0.738951999999999,
+            "social": 0.0821500000000005
+          },
+          "reason": "dispersing after a temporary congregation"
+        },
+        {
+          "requested_second": 10,
+          "copied_simulation_seconds": 10.0166666666667,
+          "override": "",
+          "selected_goal": "disperse",
+          "phase": "disperse",
+          "goal_key": "1",
+          "target": [
+            213.287139892578,
+            539.601257324219
+          ],
+          "position": [
+            206.661224365234,
+            540.274108886719
+          ],
+          "pace": 0.510156571865082,
+          "phase_selected_seconds": 3.2000000000001,
+          "drives": {
+            "exploration": 0.688551999999996,
+            "social": 0.0188500000000009
+          },
+          "reason": "dispersing after a temporary congregation"
+        },
+        {
+          "requested_second": 11,
+          "copied_simulation_seconds": 11.0166666666668,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            276.010833740234,
+            537.394958496094
+          ],
+          "position": [
+            213.762329101562,
+            535.580871582031
+          ],
+          "pace": 0.146083667874336,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.671751999999995,
+            "social": 0.0333500000000017
+          },
+          "reason": "approaching a copied peer for a temporary observation"
+        },
+        {
+          "requested_second": 14,
+          "copied_simulation_seconds": 14.0166666666669,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "2",
+          "target": [
+            264.896545410156,
+            537.333801269531
+          ],
+          "position": [
+            232.978546142578,
+            538.780334472656
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.20000000000001,
+          "drives": {
+            "exploration": 0.642711999999992,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 15,
+          "copied_simulation_seconds": 15.016666666667,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "2",
+          "target": [
+            266.495788574219,
+            537.372985839844
+          ],
+          "position": [
+            234.413497924805,
+            538.876647949219
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.689991999999994,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 17,
+          "copied_simulation_seconds": 17.016666666667,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            290.294219970703,
+            536.976318359375
+          ],
+          "position": [
+            248.117828369141,
+            539.0791015625
+          ],
+          "pace": 0.441034406423569,
+          "phase_selected_seconds": 5.19999999999994,
+          "drives": {
+            "exploration": 0.784551999999999,
+            "social": 0.0
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 20,
+          "copied_simulation_seconds": 20.0166666666668,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            251.014495849609,
+            537.274291992188
+          ],
+          "pace": 0.261567115783691,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.734152000000001,
+            "social": 0.0
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 22,
+          "copied_simulation_seconds": 22.0166666666667,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "3",
+          "target": [
+            290.656188964844,
+            537.411437988281
+          ],
+          "position": [
+            266.489013671875,
+            538.958435058594
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.199999999999989,
+          "drives": {
+            "exploration": 0.700552000000003,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 24,
+          "copied_simulation_seconds": 24.0166666666666,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            281.827758789062,
+            539.007446289062
+          ],
+          "pace": 0.413062989711761,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.671320000000005,
+            "social": 0.0
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 25,
+          "copied_simulation_seconds": 25.0166666666665,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            276.756072998047,
+            536.616943359375
+          ],
+          "pace": 0.196210265159607,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.655612000000006,
+            "social": 0.0
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 28,
+          "copied_simulation_seconds": 28.0166666666664,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            349.942535400391,
+            536.063842773438
+          ],
+          "position": [
+            296.268768310547,
+            538.931457519531
+          ],
+          "pace": 0.0624088011682034,
+          "phase_selected_seconds": 8.89999999999973,
+          "drives": {
+            "exploration": 0.605212000000009,
+            "social": 0.0
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 29,
+          "copied_simulation_seconds": 29.0166666666663,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "4",
+          "target": [
+            320.479461669922,
+            536.094909667969
+          ],
+          "position": [
+            296.758087158203,
+            538.647705078125
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.399999999999977,
+          "drives": {
+            "exploration": 0.58841200000001,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 30,
+          "copied_simulation_seconds": 30.0166666666662,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            352.760711669922,
+            535.943237304688
+          ],
+          "position": [
+            298.287231445312,
+            538.642944335938
+          ],
+          "pace": 0.441034406423569,
+          "phase_selected_seconds": 9.59999999999969,
+          "drives": {
+            "exploration": 0.573796000000011,
+            "social": 0.0
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 35,
+          "copied_simulation_seconds": 35.016666666666,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "approach",
+          "goal_key": "5",
+          "target": [
+            344.753692626953,
+            537.395812988281
+          ],
+          "position": [
+            306.097564697266,
+            535.483032226562
+          ],
+          "pace": 0.316482454538345,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.490888000000016,
+            "social": 0.0
+          },
+          "reason": "approaching a copied peer for a temporary observation"
+        },
+        {
+          "requested_second": 36,
+          "copied_simulation_seconds": 36.0166666666659,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "5",
+          "target": [
+            349.736267089844,
+            537.415710449219
+          ],
+          "position": [
+            317.620758056641,
+            537.039001464844
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.299999999999983,
+          "drives": {
+            "exploration": 0.474088000000017,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 37,
+          "copied_simulation_seconds": 37.0166666666658,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "approach",
+          "goal_key": "5",
+          "target": [
+            354.531188964844,
+            537.422790527344
+          ],
+          "position": [
+            320.943725585938,
+            537.169677734375
+          ],
+          "pace": 0.343336015939713,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.459472000000017,
+            "social": 0.0
+          },
+          "reason": "approaching a copied peer for a temporary observation"
+        },
+        {
+          "requested_second": 39,
+          "copied_simulation_seconds": 39.0166666666657,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "5",
+          "target": [
+            355.026702880859,
+            537.410400390625
+          ],
+          "position": [
+            326.406097412109,
+            538.858581542969
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.899999999999949,
+          "drives": {
+            "exploration": 0.430240000000019,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 40,
+          "copied_simulation_seconds": 40.0166666666657,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            392.475128173828,
+            537.677429199219
+          ],
+          "position": [
+            334.989807128906,
+            538.907104492188
+          ],
+          "pace": 0.394073873758316,
+          "phase_selected_seconds": 15.1999999999994,
+          "drives": {
+            "exploration": 0.41780800000002,
+            "social": 0.0
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 42,
+          "copied_simulation_seconds": 42.0166666666656,
+          "override": "",
+          "selected_goal": "disperse",
+          "phase": "disperse",
+          "goal_key": "2",
+          "target": [
+            293.916656494141,
+            539.225646972656
+          ],
+          "position": [
+            342.14794921875,
+            535.982360839844
+          ],
+          "pace": 0.489935219287872,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.384208000000022,
+            "social": 0.0
+          },
+          "reason": "dispersing after a temporary congregation"
+        },
+        {
+          "requested_second": 45,
+          "copied_simulation_seconds": 45.0166666666654,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "approach",
+          "goal_key": "6",
+          "target": [
+            363.405395507812,
+            537.329895019531
+          ],
+          "position": [
+            306.137268066406,
+            538.965026855469
+          ],
+          "pace": 0.388368934392929,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.333808000000025,
+            "social": 0.0144999999999992
+          },
+          "reason": "approaching a copied peer for a temporary observation"
+        },
+        {
+          "requested_second": 49,
+          "copied_simulation_seconds": 49.0166666666652,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "watch",
+          "goal_key": "6",
+          "target": [
+            373.008056640625,
+            537.408996582031
+          ],
+          "position": [
+            342.353668212891,
+            538.836669921875
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.69999999999996,
+          "drives": {
+            "exploration": 0.267700000000028,
+            "social": 0.0
+          },
+          "reason": "watching a copied peer from a comfortable distance"
+        },
+        {
+          "requested_second": 50,
+          "copied_simulation_seconds": 50.0166666666651,
+          "override": "",
+          "selected_goal": "regroup",
+          "phase": "regroup",
+          "goal_key": "0",
+          "target": [
+            394.733612060547,
+            538.588928222656
+          ],
+          "position": [
+            345.648681640625,
+            538.684448242188
+          ],
+          "pace": 0.18495287001133,
+          "phase_selected_seconds": 17.5999999999992,
+          "drives": {
+            "exploration": 0.255268000000029,
+            "social": 0.0
+          },
+          "reason": "regrouping toward the copied local peer centroid"
+        },
+        {
+          "requested_second": 54,
+          "copied_simulation_seconds": 54.0166666666649,
+          "override": "",
+          "selected_goal": "disperse",
+          "phase": "disperse",
+          "goal_key": "3",
+          "target": [
+            287.702056884766,
+            537.062744140625
+          ],
+          "position": [
+            335.219818115234,
+            535.245544433594
+          ],
+          "pace": 0.467052519321442,
+          "phase_selected_seconds": 0.399999999999977,
+          "drives": {
+            "exploration": 0.188068000000033,
+            "social": 0.0
+          },
+          "reason": "dispersing after a temporary congregation"
+        },
+        {
+          "requested_second": 55,
+          "copied_simulation_seconds": 55.0166666666648,
+          "override": "",
+          "selected_goal": "disperse",
+          "phase": "disperse",
+          "goal_key": "3",
+          "target": [
+            287.702056884766,
+            537.062744140625
+          ],
+          "position": [
+            316.416320800781,
+            538.883850097656
+          ],
+          "pace": 0.474539160728455,
+          "phase_selected_seconds": 1.39999999999992,
+          "drives": {
+            "exploration": 0.171268000000034,
+            "social": 0.0
+          },
+          "reason": "dispersing after a temporary congregation"
+        },
+        {
+          "requested_second": 58,
+          "copied_simulation_seconds": 58.0166666666647,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "approach",
+          "goal_key": "7",
+          "target": [
+            342.304260253906,
+            537.353149414062
+          ],
+          "position": [
+            281.020843505859,
+            537.556518554688
+          ],
+          "pace": 0.18999856710434,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.120868000000037,
+            "social": 0.0275499999999984
+          },
+          "reason": "approaching a copied peer for a temporary observation"
+        },
+        {
+          "requested_second": 60,
+          "copied_simulation_seconds": 60.0166666666645,
+          "override": "",
+          "selected_goal": "observe_actor",
+          "phase": "approach",
+          "goal_key": "7",
+          "target": [
+            332.235656738281,
+            537.404418945312
+          ],
+          "position": [
+            293.981292724609,
+            537.082824707031
+          ],
+          "pace": 0.142487749457359,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.0872680000000386,
+            "social": 0.0
+          },
+          "reason": "approaching a copied peer for a temporary observation"
+        }
+      ],
+      "memory_changes": [
+        {
+          "requested_second": 1,
+          "failure_events": 0,
+          "forgotten": 0,
+          "obstructions_count": 0,
+          "copied_obstructions": []
+        }
+      ],
+      "first_post_start_drives": {
+        "exploration": 0.8332,
+        "social": 0.44215
+      },
+      "final_drives": {
+        "exploration": 0.0872680000000386,
+        "social": 0.0
+      },
+      "viewed_original_graphics_sha256": {
+        "frames/frame-0010.png": "d03a93b5a5a6d794d792c4da09583e73ba2add12b17a2715fe22de88c2cb4d58",
+        "frames/frame-0036.png": "681b4775ab268a721a3c0d1064ace490a9dab93c7277b8de8b4ede0fa3c6401e",
+        "media/ambient2-courtyard-contact-sheet.png": "c8cb6de5c5b159bd4db009fd3247f635fd1ddcb09c605609c4e31c2dc1591cdf"
+      }
+    },
+    "ambient2-refinery": {
+      "original_watch_report_sha256": "de7678b1e4876b89273270e6b2046da965a3e27d9e80bc33223dac622203c16c",
+      "selected_instance_id": 5,
+      "internal_actor_id": 4,
+      "profile_id": "persistent_scavenger",
+      "copied_samples": 61,
+      "post_start_sample_count": 60,
+      "actual_simulation_seconds": 60.0166666666645,
+      "physical_ticks": 3601,
+      "native_ticks": 3601,
+      "sampled_selection_counts": [
+        {
+          "override": "",
+          "goal": "explore_unfamiliar",
+          "phase": "approach",
+          "samples": 3
+        },
+        {
+          "override": "",
+          "goal": "investigate_material",
+          "phase": "approach",
+          "samples": 10
+        },
+        {
+          "override": "",
+          "goal": "investigate_material",
+          "phase": "inspect",
+          "samples": 3
+        },
+        {
+          "override": "",
+          "goal": "revisit_interest",
+          "phase": "approach",
+          "samples": 27
+        },
+        {
+          "override": "seek_material",
+          "goal": "",
+          "phase": "",
+          "samples": 1
+        },
+        {
+          "override": "withdraw_obstruction",
+          "goal": "",
+          "phase": "",
+          "samples": 16
+        }
+      ],
+      "sampled_goal_keys_by_module": {
+        "investigate_material": [
+          "1",
+          "2"
+        ],
+        "revisit_interest": [
+          "1",
+          "2"
+        ],
+        "explore_unfamiliar": [
+          "3"
+        ]
+      },
+      "timeline": [
+        {
+          "requested_second": 1,
+          "copied_simulation_seconds": 1.01666666666667,
+          "override": "",
+          "selected_goal": "investigate_material",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            543.5
+          ],
+          "position": [
+            939.161010742188,
+            543.867431640625
+          ],
+          "pace": 0.185499414801598,
+          "phase_selected_seconds": 1.0,
+          "drives": {
+            "exploration": 0.8314,
+            "social": 0.4565
+          },
+          "reason": "investigating a novel observed material patch"
+        },
+        {
+          "requested_second": 5,
+          "copied_simulation_seconds": 5.01666666666665,
+          "override": "",
+          "selected_goal": "investigate_material",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            546.5
+          ],
+          "position": [
+            945.069213867188,
+            546.182373046875
+          ],
+          "pace": 0.131387531757355,
+          "phase_selected_seconds": 4.99999999999999,
+          "drives": {
+            "exploration": 0.793270000000002,
+            "social": 0.482499999999999
+          },
+          "reason": "investigating a novel observed material patch"
+        },
+        {
+          "requested_second": 10,
+          "copied_simulation_seconds": 10.0166666666667,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            926.817504882812,
+            543.698547363281
+          ],
+          "pace": 0.5,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.751048000000002,
+            "social": 0.515
+          },
+          "reason": "withdrawing from repeated failed approaches"
+        },
+        {
+          "requested_second": 13,
+          "copied_simulation_seconds": 13.0166666666669,
+          "override": "",
+          "selected_goal": "investigate_material",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            543.5
+          ],
+          "position": [
+            914.725769042969,
+            543.492370605469
+          ],
+          "pace": 0.389859825372696,
+          "phase_selected_seconds": 10.0000000000001,
+          "drives": {
+            "exploration": 0.695247999999999,
+            "social": 0.534500000000001
+          },
+          "reason": "investigating a novel observed material patch"
+        },
+        {
+          "requested_second": 14,
+          "copied_simulation_seconds": 14.0166666666669,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            930.189270019531,
+            544.910339355469
+          ],
+          "pace": 0.480787873268127,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.676647999999998,
+            "social": 0.541000000000001
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 15,
+          "copied_simulation_seconds": 15.016666666667,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            939.727783203125,
+            546.702941894531
+          ],
+          "pace": 0.0839943662285805,
+          "phase_selected_seconds": 1.00000000000005,
+          "drives": {
+            "exploration": 0.658047999999997,
+            "social": 0.547500000000002
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 18,
+          "copied_simulation_seconds": 18.0166666666669,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            927.026000976562,
+            543.520690917969
+          ],
+          "pace": 0.5,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.602247999999999,
+            "social": 0.567000000000001
+          },
+          "reason": "withdrawing from repeated failed approaches"
+        },
+        {
+          "requested_second": 20,
+          "copied_simulation_seconds": 20.0166666666668,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            902.93603515625,
+            546.051025390625
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.565048000000002,
+            "social": 0.579999999999999
+          },
+          "reason": "quiet interval after repeated-obstruction withdrawal"
+        },
+        {
+          "requested_second": 21,
+          "copied_simulation_seconds": 21.0166666666668,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            911.19482421875,
+            543.461303710938
+          ],
+          "pace": 0.312908530235291,
+          "phase_selected_seconds": 3.89999999999999,
+          "drives": {
+            "exploration": 0.546448000000003,
+            "social": 0.586499999999998
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 25,
+          "copied_simulation_seconds": 25.0166666666665,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            944.12841796875,
+            546.723754882812
+          ],
+          "pace": 0.0839943662285805,
+          "phase_selected_seconds": 7.89999999999976,
+          "drives": {
+            "exploration": 0.472048000000008,
+            "social": 0.612499999999996
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 26,
+          "copied_simulation_seconds": 26.0166666666665,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            928.906372070312,
+            543.426696777344
+          ],
+          "pace": 0.5,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.453448000000009,
+            "social": 0.618999999999995
+          },
+          "reason": "withdrawing from repeated failed approaches"
+        },
+        {
+          "requested_second": 29,
+          "copied_simulation_seconds": 29.0166666666663,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            910.047058105469,
+            543.780029296875
+          ],
+          "pace": 0.312908530235291,
+          "phase_selected_seconds": 8.79999999999971,
+          "drives": {
+            "exploration": 0.398857000000011,
+            "social": 0.638499999999993
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 30,
+          "copied_simulation_seconds": 30.0166666666662,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            922.715698242188,
+            544.913513183594
+          ],
+          "pace": 0.312908530235291,
+          "phase_selected_seconds": 9.79999999999965,
+          "drives": {
+            "exploration": 0.380257000000012,
+            "social": 0.644999999999992
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 34,
+          "copied_simulation_seconds": 34.016666666666,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            931.286865234375,
+            543.244140625
+          ],
+          "pace": 0.5,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.305857000000015,
+            "social": 0.670999999999989
+          },
+          "reason": "withdrawing from repeated failed approaches"
+        },
+        {
+          "requested_second": 35,
+          "copied_simulation_seconds": 35.016666666666,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            908.103759765625,
+            547.495483398438
+          ],
+          "pace": 0.5,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.287257000000016,
+            "social": 0.677499999999989
+          },
+          "reason": "withdrawing from repeated failed approaches"
+        },
+        {
+          "requested_second": 37,
+          "copied_simulation_seconds": 37.0166666666658,
+          "override": "",
+          "selected_goal": "investigate_material",
+          "phase": "inspect",
+          "goal_key": "2",
+          "target": [
+            892.5,
+            547.5
+          ],
+          "position": [
+            902.358581542969,
+            547.04150390625
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.499999999999972,
+          "drives": {
+            "exploration": 0.252475000000018,
+            "social": 0.690499999999987
+          },
+          "reason": "inspecting a newly observed material patch"
+        },
+        {
+          "requested_second": 40,
+          "copied_simulation_seconds": 40.0166666666657,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "3",
+          "target": [
+            843.856750488281,
+            546.963256835938
+          ],
+          "position": [
+            906.5439453125,
+            543.79638671875
+          ],
+          "pace": 0.143705174326897,
+          "phase_selected_seconds": 0.899999999999949,
+          "drives": {
+            "exploration": 0.197884000000021,
+            "social": 0.709999999999985
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 42,
+          "copied_simulation_seconds": 42.0166666666656,
+          "override": "seek_material",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            900.868408203125,
+            544.92041015625
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.165520000000023,
+            "social": 0.722999999999984
+          },
+          "reason": "dwelling at observed material standoff"
+        },
+        {
+          "requested_second": 43,
+          "copied_simulation_seconds": 43.0166666666655,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "3",
+          "target": [
+            843.856750488281,
+            546.963256835938
+          ],
+          "position": [
+            905.303283691406,
+            543.783630371094
+          ],
+          "pace": 0.155541688203812,
+          "phase_selected_seconds": 2.89999999999984,
+          "drives": {
+            "exploration": 0.150547000000024,
+            "social": 0.729499999999983
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 44,
+          "copied_simulation_seconds": 44.0166666666655,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            912.826293945312,
+            544.068908691406
+          ],
+          "pace": 0.312908530235291,
+          "phase_selected_seconds": 0.0999999999999943,
+          "drives": {
+            "exploration": 0.131947000000025,
+            "social": 0.735999999999982
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 45,
+          "copied_simulation_seconds": 45.0166666666654,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            925.282348632812,
+            546.640808105469
+          ],
+          "pace": 0.312908530235291,
+          "phase_selected_seconds": 1.09999999999994,
+          "drives": {
+            "exploration": 0.113347000000026,
+            "social": 0.742499999999981
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 50,
+          "copied_simulation_seconds": 50.0166666666651,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            945.316650390625,
+            546.836120605469
+          ],
+          "pace": 0.0839943662285805,
+          "phase_selected_seconds": 6.09999999999965,
+          "drives": {
+            "exploration": 0.0384820000000305,
+            "social": 0.774999999999978
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 55,
+          "copied_simulation_seconds": 55.0166666666648,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            945.514282226562,
+            547.09521484375
+          ],
+          "pace": 0.0839943662285805,
+          "phase_selected_seconds": 11.0999999999994,
+          "drives": {
+            "exploration": 0.00593200000003232,
+            "social": 0.807499999999974
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        },
+        {
+          "requested_second": 56,
+          "copied_simulation_seconds": 56.0166666666648,
+          "override": "withdraw_obstruction",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            945.52587890625,
+            547.222778320312
+          ],
+          "pace": 0.5,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.0,
+            "social": 0.813999999999974
+          },
+          "reason": "repeated failed approaches triggered a finite withdrawal"
+        },
+        {
+          "requested_second": 60,
+          "copied_simulation_seconds": 60.0166666666645,
+          "override": "",
+          "selected_goal": "revisit_interest",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            962.5,
+            526.5
+          ],
+          "position": [
+            914.091674804688,
+            543.527954101562
+          ],
+          "pace": 0.312908530235291,
+          "phase_selected_seconds": 12.9999999999993,
+          "drives": {
+            "exploration": 0.0,
+            "social": 0.839999999999971
+          },
+          "reason": "returning to a historical material observation; presence is unconfirmed"
+        }
+      ],
+      "memory_changes": [
+        {
+          "requested_second": 1,
+          "failure_events": 0,
+          "forgotten": 0,
+          "obstructions_count": 0,
+          "copied_obstructions": []
+        },
+        {
+          "requested_second": 3,
+          "failure_events": 1,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 1,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 2.79999999999999,
+              "position": [
+                945.105590820312,
+                546.014038085938
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 4,
+          "failure_events": 2,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 2,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 3.89999999999999,
+              "position": [
+                945.08544921875,
+                546.100158691406
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 5,
+          "failure_events": 3,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 3,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 4.99999999999999,
+              "position": [
+                945.069030761719,
+                546.180358886719
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 7,
+          "failure_events": 4,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 4,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 6.09999999999998,
+              "position": [
+                945.056396484375,
+                546.250549316406
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 8,
+          "failure_events": 5,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 5,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 7.19999999999998,
+              "position": [
+                945.045471191406,
+                546.322937011719
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 9,
+          "failure_events": 6,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 6,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 8.19999999999999,
+              "position": [
+                945.035522460938,
+                546.387512207031
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 10,
+          "failure_events": 7,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 7,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 9.20000000000004,
+              "position": [
+                945.025146484375,
+                546.442749023438
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 40,
+          "failure_events": 7,
+          "forgotten": 1,
+          "obstructions_count": 0,
+          "copied_obstructions": []
+        },
+        {
+          "requested_second": 50,
+          "failure_events": 8,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 1,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 49.3999999999985,
+              "position": [
+                945.30517578125,
+                546.800903320312
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 51,
+          "failure_events": 9,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 2,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 50.4999999999984,
+              "position": [
+                945.30029296875,
+                546.814636230469
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 52,
+          "failure_events": 10,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 3,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 51.5999999999984,
+              "position": [
+                945.327209472656,
+                546.834838867188
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 53,
+          "failure_events": 11,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 4,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 52.6999999999983,
+              "position": [
+                945.386047363281,
+                546.915832519531
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 54,
+          "failure_events": 12,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 5,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 53.7999999999982,
+              "position": [
+                945.444519042969,
+                547.0146484375
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 55,
+          "failure_events": 13,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 6,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 54.8999999999982,
+              "position": [
+                945.510498046875,
+                547.090576171875
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 56,
+          "failure_events": 14,
+          "forgotten": 1,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 7,
+              "direction": [
+                1.0,
+                0.0
+              ],
+              "key": "39:22:0",
+              "last_seen": 55.9999999999981,
+              "position": [
+                945.549987792969,
+                547.216369628906
+              ]
+            }
+          ]
+        }
+      ],
+      "first_post_start_drives": {
+        "exploration": 0.8314,
+        "social": 0.4565
+      },
+      "final_drives": {
+        "exploration": 0.0,
+        "social": 0.839999999999971
+      },
+      "viewed_original_graphics_sha256": {
+        "frames/frame-0038.png": "5ff6a16a3d49d113da506ec7f969e4626fea5589f100796536aa7486ad4f2532",
+        "frames/frame-0055.png": "93e9920e773d43ca169cc701ee891e9824d656a4c06f24254ca286b95dcff8a0",
+        "media/ambient2-refinery-contact-sheet.png": "f9ad4802ca8b6326f945c1e73661758976b1c1dfb59754a928af7a8d54832387"
+      }
+    },
+    "ambient2-settlement": {
+      "original_watch_report_sha256": "241b442f92b4564b844b47c2c0f4d09ec6ddc42c940f6a8322a6b4890d3db466",
+      "selected_instance_id": 7,
+      "internal_actor_id": 6,
+      "profile_id": "cautious_flyer",
+      "copied_samples": 61,
+      "post_start_sample_count": 60,
+      "actual_simulation_seconds": 60.0166666666645,
+      "physical_ticks": 3601,
+      "native_ticks": 3601,
+      "sampled_selection_counts": [
+        {
+          "override": "",
+          "goal": "",
+          "phase": "",
+          "samples": 5
+        },
+        {
+          "override": "",
+          "goal": "explore_unfamiliar",
+          "phase": "approach",
+          "samples": 47
+        },
+        {
+          "override": "",
+          "goal": "seek_home_drive",
+          "phase": "approach",
+          "samples": 4
+        },
+        {
+          "override": "",
+          "goal": "seek_home_drive",
+          "phase": "home_rest",
+          "samples": 4
+        }
+      ],
+      "sampled_goal_keys_by_module": {
+        "explore_unfamiliar": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "seek_home_drive": [
+          "1"
+        ]
+      },
+      "timeline": [
+        {
+          "requested_second": 1,
+          "copied_simulation_seconds": 1.01666666666667,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            408.338897705078,
+            398.338897705078
+          ],
+          "position": [
+            377.107360839844,
+            367.212585449219
+          ],
+          "pace": 0.268799990415573,
+          "phase_selected_seconds": 1.0,
+          "drives": {
+            "exploration": 0.8386,
+            "social": 0.458
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 5,
+          "copied_simulation_seconds": 5.01666666666665,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            405.220062255859,
+            388.641754150391
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.792999999999998,
+            "social": 0.490000000000001
+          },
+          "reason": "no applicable modules"
+        },
+        {
+          "requested_second": 6,
+          "copied_simulation_seconds": 6.01666666666665,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "2",
+          "target": [
+            367.866638183594,
+            350.881805419922
+          ],
+          "position": [
+            400.890686035156,
+            384.894256591797
+          ],
+          "pace": 0.268799990415573,
+          "phase_selected_seconds": 0.699999999999998,
+          "drives": {
+            "exploration": 0.782340999999998,
+            "social": 0.498000000000001
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 10,
+          "copied_simulation_seconds": 10.0166666666667,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            365.620941162109,
+            357.986785888672
+          ],
+          "pace": 0.352800011634827,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.736740999999997,
+            "social": 0.530000000000002
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 11,
+          "copied_simulation_seconds": 11.0166666666668,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "3",
+          "target": [
+            295.712371826172,
+            357.921569824219
+          ],
+          "position": [
+            349.433776855469,
+            357.919311523438
+          ],
+          "pace": 0.319351524114609,
+          "phase_selected_seconds": 0.500000000000025,
+          "drives": {
+            "exploration": 0.725340999999997,
+            "social": 0.538000000000002
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 15,
+          "copied_simulation_seconds": 15.016666666667,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "3",
+          "target": [
+            295.712371826172,
+            357.921569824219
+          ],
+          "position": [
+            325.341827392578,
+            369.427764892578
+          ],
+          "pace": 0.20318366587162,
+          "phase_selected_seconds": 4.50000000000022,
+          "drives": {
+            "exploration": 0.679740999999995,
+            "social": 0.570000000000003
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 20,
+          "copied_simulation_seconds": 20.0166666666668,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "3",
+          "target": [
+            295.712371826172,
+            357.921569824219
+          ],
+          "position": [
+            325.612335205078,
+            382.243225097656
+          ],
+          "pace": 0.175678953528404,
+          "phase_selected_seconds": 9.50000000000004,
+          "drives": {
+            "exploration": 0.622740999999998,
+            "social": 0.61
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 25,
+          "copied_simulation_seconds": 25.0166666666665,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "3",
+          "target": [
+            295.712371826172,
+            357.921569824219
+          ],
+          "position": [
+            325.531890869141,
+            375.472534179688
+          ],
+          "pace": 0.287119895219803,
+          "phase_selected_seconds": 14.4999999999998,
+          "drives": {
+            "exploration": 0.576115000000002,
+            "social": 0.649999999999996
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 26,
+          "copied_simulation_seconds": 26.0166666666665,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            325.045471191406,
+            364.903594970703
+          ],
+          "pace": 0.352800011634827,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.564715000000003,
+            "social": 0.657999999999995
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 27,
+          "copied_simulation_seconds": 27.0166666666664,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "4",
+          "target": [
+            286.126007080078,
+            321.187042236328
+          ],
+          "position": [
+            327.329803466797,
+            355.252716064453
+          ],
+          "pace": 0.165044575929642,
+          "phase_selected_seconds": 0.599999999999966,
+          "drives": {
+            "exploration": 0.553315000000004,
+            "social": 0.665999999999994
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 30,
+          "copied_simulation_seconds": 30.0166666666662,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "4",
+          "target": [
+            286.126007080078,
+            321.187042236328
+          ],
+          "position": [
+            348.098480224609,
+            350.02978515625
+          ],
+          "pace": 0.150755509734154,
+          "phase_selected_seconds": 3.5999999999998,
+          "drives": {
+            "exploration": 0.519115000000006,
+            "social": 0.689999999999991
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 35,
+          "copied_simulation_seconds": 35.016666666666,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "4",
+          "target": [
+            286.126007080078,
+            321.187042236328
+          ],
+          "position": [
+            378.468139648438,
+            349.999938964844
+          ],
+          "pace": 0.152783647179604,
+          "phase_selected_seconds": 8.59999999999951,
+          "drives": {
+            "exploration": 0.46211500000001,
+            "social": 0.729999999999987
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 40,
+          "copied_simulation_seconds": 40.0166666666657,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "4",
+          "target": [
+            286.126007080078,
+            321.187042236328
+          ],
+          "position": [
+            409.720092773438,
+            349.999969482422
+          ],
+          "pace": 0.159896045923233,
+          "phase_selected_seconds": 13.5999999999992,
+          "drives": {
+            "exploration": 0.405115000000014,
+            "social": 0.769999999999983
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 42,
+          "copied_simulation_seconds": 42.0166666666656,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            429.438629150391,
+            349.999969482422
+          ],
+          "pace": 0.352800011634827,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.382315000000016,
+            "social": 0.785999999999981
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 43,
+          "copied_simulation_seconds": 43.0166666666655,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "5",
+          "target": [
+            387.928161621094,
+            304.408172607422
+          ],
+          "position": [
+            436.563995361328,
+            354.706848144531
+          ],
+          "pace": 0.194593667984009,
+          "phase_selected_seconds": 0.69999999999996,
+          "drives": {
+            "exploration": 0.370915000000017,
+            "social": 0.79399999999998
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 44,
+          "copied_simulation_seconds": 44.0166666666655,
+          "override": "",
+          "selected_goal": "seek_home_drive",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            365.0,
+            355.0
+          ],
+          "position": [
+            432.890930175781,
+            360.841461181641
+          ],
+          "pace": 0.268799990415573,
+          "phase_selected_seconds": 0.399999999999977,
+          "drives": {
+            "exploration": 0.359515000000018,
+            "social": 0.801999999999979
+          },
+          "reason": "returning home as exploration drive declines"
+        },
+        {
+          "requested_second": 45,
+          "copied_simulation_seconds": 45.0166666666654,
+          "override": "",
+          "selected_goal": "seek_home_drive",
+          "phase": "approach",
+          "goal_key": "1",
+          "target": [
+            365.0,
+            355.0
+          ],
+          "position": [
+            421.361572265625,
+            361.099395751953
+          ],
+          "pace": 0.268799990415573,
+          "phase_selected_seconds": 1.39999999999992,
+          "drives": {
+            "exploration": 0.348115000000019,
+            "social": 0.809999999999978
+          },
+          "reason": "returning home as exploration drive declines"
+        },
+        {
+          "requested_second": 48,
+          "copied_simulation_seconds": 48.0166666666652,
+          "override": "",
+          "selected_goal": "seek_home_drive",
+          "phase": "home_rest",
+          "goal_key": "1",
+          "target": [
+            365.0,
+            355.0
+          ],
+          "position": [
+            383.144836425781,
+            357.848785400391
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 0.0999999999999943,
+          "drives": {
+            "exploration": 0.313915000000021,
+            "social": 0.833999999999976
+          },
+          "reason": "resting at home after an exploration cycle"
+        },
+        {
+          "requested_second": 50,
+          "copied_simulation_seconds": 50.0166666666651,
+          "override": "",
+          "selected_goal": "seek_home_drive",
+          "phase": "home_rest",
+          "goal_key": "1",
+          "target": [
+            365.0,
+            355.0
+          ],
+          "position": [
+            381.261932373047,
+            357.730316162109
+          ],
+          "pace": 0.0,
+          "phase_selected_seconds": 2.09999999999988,
+          "drives": {
+            "exploration": 0.302971000000022,
+            "social": 0.849999999999974
+          },
+          "reason": "resting at home after an exploration cycle"
+        },
+        {
+          "requested_second": 52,
+          "copied_simulation_seconds": 52.016666666665,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "5",
+          "target": [
+            387.928161621094,
+            304.408172607422
+          ],
+          "position": [
+            381.262237548828,
+            357.728698730469
+          ],
+          "pace": 0.268799990415573,
+          "phase_selected_seconds": 1.29999999999993,
+          "drives": {
+            "exploration": 0.294991000000022,
+            "social": 0.865999999999972
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 55,
+          "copied_simulation_seconds": 55.0166666666648,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "5",
+          "target": [
+            387.928161621094,
+            304.408172607422
+          ],
+          "position": [
+            412.45751953125,
+            350.057983398438
+          ],
+          "pace": 0.231919318437576,
+          "phase_selected_seconds": 4.29999999999976,
+          "drives": {
+            "exploration": 0.261532000000024,
+            "social": 0.889999999999969
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 58,
+          "copied_simulation_seconds": 58.0166666666647,
+          "override": "",
+          "selected_goal": "",
+          "phase": "",
+          "goal_key": "",
+          "target": [
+            0.0,
+            0.0
+          ],
+          "position": [
+            437.345581054688,
+            357.010711669922
+          ],
+          "pace": 0.352800011634827,
+          "phase_selected_seconds": 0.0,
+          "drives": {
+            "exploration": 0.227332000000026,
+            "social": 0.913999999999967
+          },
+          "reason": "weighted local steering"
+        },
+        {
+          "requested_second": 59,
+          "copied_simulation_seconds": 59.0166666666646,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "6",
+          "target": [
+            477.252593994141,
+            399.087738037109
+          ],
+          "position": [
+            438.880615234375,
+            368.604553222656
+          ],
+          "pace": 0.310177832841873,
+          "phase_selected_seconds": 0.799999999999955,
+          "drives": {
+            "exploration": 0.215932000000027,
+            "social": 0.921999999999966
+          },
+          "reason": "exploring a less familiar local destination"
+        },
+        {
+          "requested_second": 60,
+          "copied_simulation_seconds": 60.0166666666645,
+          "override": "",
+          "selected_goal": "explore_unfamiliar",
+          "phase": "approach",
+          "goal_key": "6",
+          "target": [
+            477.252593994141,
+            399.087738037109
+          ],
+          "position": [
+            440.468048095703,
+            378.635559082031
+          ],
+          "pace": 0.302875906229019,
+          "phase_selected_seconds": 1.7999999999999,
+          "drives": {
+            "exploration": 0.204532000000027,
+            "social": 0.929999999999965
+          },
+          "reason": "exploring a less familiar local destination"
+        }
+      ],
+      "memory_changes": [
+        {
+          "requested_second": 1,
+          "failure_events": 0,
+          "forgotten": 0,
+          "obstructions_count": 0,
+          "copied_obstructions": []
+        },
+        {
+          "requested_second": 21,
+          "failure_events": 1,
+          "forgotten": 0,
+          "obstructions_count": 1,
+          "copied_obstructions": [
+            {
+              "attempts": 1,
+              "direction": [
+                -0.442074179649353,
+                0.896978497505188
+              ],
+              "key": "13:15:3",
+              "last_seen": 20.6000000000001,
+              "position": [
+                325.811889648438,
+                382.664093017578
+              ]
+            }
+          ]
+        },
+        {
+          "requested_second": 51,
+          "failure_events": 1,
+          "forgotten": 1,
+          "obstructions_count": 0,
+          "copied_obstructions": []
+        }
+      ],
+      "first_post_start_drives": {
+        "exploration": 0.8386,
+        "social": 0.458
+      },
+      "final_drives": {
+        "exploration": 0.204532000000027,
+        "social": 0.929999999999965
+      },
+      "viewed_original_graphics_sha256": {
+        "frames/frame-0024.png": "08d8e5a41a5838779ff0a4e59aa47130bb6e052c49050bf829dee8245a9c38f1",
+        "frames/frame-0044.png": "4a9187ba66543f4a3235b96ce0f2def986546ddbc4897d9cde67061a72c7311a",
+        "frames/frame-0050.png": "a4cdc768a08460a0e46e9d2089f0598da85314f8a203652cc7ababc35afeb49f",
+        "media/ambient2-settlement-contact-sheet.png": "6856cd4d363932861930e4acd31a42f76c8d0c652e49fb023dc3435a79c9ab33"
+      },
+      "home_rest_negative": {
+        "authored_home": [
+          365.0,
+          355.0
+        ],
+        "verified_arrival_radius": 20.0,
+        "frozen_engine_ordinary_recharge_radius": 16.0,
+        "verified_rest_seconds": 4.0,
+        "sampled_details": [
+          {
+            "requested_second": 43,
+            "selected_goal": "explore_unfamiliar",
+            "phase": "approach",
+            "goal_key": "5",
+            "position": [
+              436.563995361328,
+              354.706848144531
+            ],
+            "distance_to_authored_home": 71.56459578650984,
+            "exploration_drive": 0.370915000000017,
+            "selected_phase_seconds": 0.69999999999996,
+            "pace": 0.194593667984009
+          },
+          {
+            "requested_second": 44,
+            "selected_goal": "seek_home_drive",
+            "phase": "approach",
+            "goal_key": "1",
+            "position": [
+              432.890930175781,
+              360.841461181641
+            ],
+            "distance_to_authored_home": 68.14177183541233,
+            "exploration_drive": 0.359515000000018,
+            "selected_phase_seconds": 0.399999999999977,
+            "pace": 0.268799990415573
+          },
+          {
+            "requested_second": 45,
+            "selected_goal": "seek_home_drive",
+            "phase": "approach",
+            "goal_key": "1",
+            "position": [
+              421.361572265625,
+              361.099395751953
+            ],
+            "distance_to_authored_home": 56.690646995710075,
+            "exploration_drive": 0.348115000000019,
+            "selected_phase_seconds": 1.39999999999992,
+            "pace": 0.268799990415573
+          },
+          {
+            "requested_second": 46,
+            "selected_goal": "seek_home_drive",
+            "phase": "approach",
+            "goal_key": "1",
+            "position": [
+              408.689727783203,
+              360.059143066406
+            ],
+            "distance_to_authored_home": 43.98166939006232,
+            "exploration_drive": 0.336715000000019,
+            "selected_phase_seconds": 2.39999999999986,
+            "pace": 0.268800020217896
+          },
+          {
+            "requested_second": 47,
+            "selected_goal": "seek_home_drive",
+            "phase": "approach",
+            "goal_key": "1",
+            "position": [
+              396.027862548828,
+              358.938568115234
+            ],
+            "distance_to_authored_home": 31.27683764620876,
+            "exploration_drive": 0.32531500000002,
+            "selected_phase_seconds": 3.39999999999981,
+            "pace": 0.268799990415573
+          },
+          {
+            "requested_second": 48,
+            "selected_goal": "seek_home_drive",
+            "phase": "home_rest",
+            "goal_key": "1",
+            "position": [
+              383.144836425781,
+              357.848785400391
+            ],
+            "distance_to_authored_home": 18.367108296512843,
+            "exploration_drive": 0.313915000000021,
+            "selected_phase_seconds": 0.0999999999999943,
+            "pace": 0.0
+          },
+          {
+            "requested_second": 49,
+            "selected_goal": "seek_home_drive",
+            "phase": "home_rest",
+            "goal_key": "1",
+            "position": [
+              381.264495849609,
+              357.730316162109
+            ],
+            "distance_to_authored_home": 16.492072386059345,
+            "exploration_drive": 0.306961000000021,
+            "selected_phase_seconds": 1.09999999999994,
+            "pace": 0.0
+          },
+          {
+            "requested_second": 50,
+            "selected_goal": "seek_home_drive",
+            "phase": "home_rest",
+            "goal_key": "1",
+            "position": [
+              381.261932373047,
+              357.730316162109
+            ],
+            "distance_to_authored_home": 16.489544288749375,
+            "exploration_drive": 0.302971000000022,
+            "selected_phase_seconds": 2.09999999999988,
+            "pace": 0.0
+          },
+          {
+            "requested_second": 51,
+            "selected_goal": "seek_home_drive",
+            "phase": "home_rest",
+            "goal_key": "1",
+            "position": [
+              381.261932373047,
+              357.730316162109
+            ],
+            "distance_to_authored_home": 16.489544288749375,
+            "exploration_drive": 0.298981000000022,
+            "selected_phase_seconds": 3.09999999999982,
+            "pace": 0.0
+          },
+          {
+            "requested_second": 52,
+            "selected_goal": "explore_unfamiliar",
+            "phase": "approach",
+            "goal_key": "5",
+            "position": [
+              381.262237548828,
+              357.728698730469
+            ],
+            "distance_to_authored_home": 16.489577522064497,
+            "exploration_drive": 0.294991000000022,
+            "selected_phase_seconds": 1.29999999999993,
+            "pace": 0.268799990415573
+          },
+          {
+            "requested_second": 53,
+            "selected_goal": "explore_unfamiliar",
+            "phase": "approach",
+            "goal_key": "5",
+            "position": [
+              389.819488525391,
+              354.968017578125
+            ],
+            "distance_to_authored_home": 24.81950913167554,
+            "exploration_drive": 0.284332000000023,
+            "selected_phase_seconds": 2.29999999999987,
+            "pace": 0.262911856174469
+          }
+        ],
+        "drive_change_48_to_51": -0.014933999999999004,
+        "interpretation": "The selected home-rest phase is physically inside its authored20-cell arrival region but outside the engine16-cell recharge region. Drive declines during the observed rest. This is a visible finite homeward/rest sequence, not successful recharge or a16-cell geometric-return result."
+      }
+    }
+  },
+  "qualitative_review": {
+    "ambient2-courtyard": "The original Follow frames show a visible small group with readable body silhouettes. Copied phases show repeated approach/watch, regroup and three sampled dispersal goal keys. This is the clearest social activity of the three watched selections. The same peer observation can switch approach/watch as distance changes; sampled counts are not a complete transition history or evidence of coordinated planning.",
+    "ambient2-refinery": "The original Follow frames make the sealed attraction and adjacent accessible pocket legible. The selected actor repeatedly returns, records failures and withdraws; an accessible second patch receives an inspection phase at sampled37-39s. The loop remains confined and repetitive. Historical target962.5,526.5 is retained while current nearest observations often differ; its current material occupancy is unconfirmed, not inferred from rendered colors. One earlier obstruction record expires by sampled40s before seven further failures accumulate.",
+    "ambient2-settlement": "The flyer moves around the visible canopy and support geometry, retains temporary destinations, selects a homeward/rest interval, then resumes its prior exploration goal key5. Local approaches are visibly constrained by the supports. The sampled home-rest interval exposes a real arrival/recharge radius mismatch. The selected body and diagnostic overlay are readable in the original Follow frame; this does not establish hardware playfeel."
+  },
+  "limits": [
+    "Samples are approximately1Hz and their copied physical times differ from rendered-frame stamps. Counts are sampled selections, not exact durations or complete10Hz transitions.",
+    "Goal keys are scoped to module instances; regroup key0 is continuous guidance and must not be counted as a sequence of new goals.",
+    "A zero sampled pace does not prove uninterrupted zero commands between samples or physical stillness.",
+    "Original images support qualitative scene/body legibility; material identity and behavioral state come from copied diagnostics, not image colors.",
+    "All a725 originals remain an unfavorable baseline for the newly proposed shared recharge correction."
+  ]
+}

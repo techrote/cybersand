@@ -44,6 +44,17 @@ The [architectural Workbench successor](../operations/world-steer-architecture.m
 ## WORLD-STEER-BATCH-001 M0–M2 — Draft/HOLD
 
 The [Native Batch Lab guide](../operations/world-steer-batch-lab.md) owns optional independent native construction, comparative inspection, retained attempts and bounded experiments on the dedicated branch from accepted `846fe0533b3170e7b01f690518da49fc40cc24d1`. Qualification artifacts distinguish actual native/control outcomes, protocol fixtures, pending real model comparisons and physical owner acceptance. The subsequent M3–M5 authorization is scoped above; this original record grants no merge, production default, paid call or schedule.
+## AMBIENT-002 living inhabitants — 25 November 2026
+
+**Successor implementation in progress, Draft/HOLD:** [the living-inhabitant
+contract](../systems/ambient-living-inhabitants.md) extends the retained version-1
+foundation with version-2 stateful profiles, bounded memory and social perception,
+staged profile libraries, atomic group assignment and six native authored scenes.
+The accepted limit remains eight actual logical actors; #762 remains unaccepted.
+No production default, native law, motor or model-service change is introduced.
+The [successor ledger](../research/ambient-002/mission-ledger.md) distinguishes
+source implementation, actual hosted/local tests, physical experiments and final
+portable Windows delivery. Predecessor passes retain their original source scope.
 
 ## AMBIENT-001 modular procedural actors — 24 November 2026
 

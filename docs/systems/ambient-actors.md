@@ -10,6 +10,12 @@ related-documents: [workbench-actor-composition.md, physical-actor-rigs.md, phys
 
 # Modular procedural ambient actors
 
+The [AMBIENT-002 successor contract](ambient-living-inhabitants.md) extends this
+retained version-1 foundation with explicit version-2 stateful profiles and
+transactional population authoring. The sections below document the original
+AMBIENT-001 vocabulary and qualification scope; successor execution is separately
+recorded in its [mission ledger](../research/ambient-002/mission-ledger.md).
+
 ## Status and ownership
 
 **AMBIENT-001 is an opt-in Draft/HOLD implementation candidate.** It adds

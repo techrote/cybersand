@@ -1,0 +1,2 @@
+SAMPLED TIMELAPSE - approximately one frame per simulation second; playback six samples per second.
+Not continuous video or hardware FPS. Actual tick and wall timestamps are in watch-report.json.

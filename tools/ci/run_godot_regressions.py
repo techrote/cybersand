@@ -51,6 +51,10 @@ CASE_WEIGHTS_SECONDS = {
     # 30s is a conservative provisional cross-platform scheduling hint, not
     # a measured Windows result or a new timeout; the usual margin applies.
     "test_ambient_default_off_integration": 30.0,
+    # One Linux Godot4.7 group/ordinary-owner integration run took 6.943s.
+    # This is a provisional scheduling hint, not a Windows measurement or a
+    # change to either the existing operation or complex-fixture watchdog.
+    "test_ambient_living_group_integration": 30.0,
     # Provisional upper-platform hints from run 41250780110 (one sample per
     # fixture, 2026-10-31). These correct severe underestimates; they are not a
     # qualified rolling baseline. A separate 1.5x scheduling margin is applied.

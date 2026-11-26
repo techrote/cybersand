@@ -34,7 +34,7 @@ func _initialize() -> void:
 		"scripts/ambient/ambient_engine.gd", "scripts/ambient/ambient_modules.gd",
 		"scripts/ambient/ambient_perception.gd", "scripts/ambient/ambient_actuator.gd",
 		"data/ambient/profiles.json", "tests/test_ambient_examples_native.gd"]
-	for example: Dictionary in Examples.entries(): files.append("examples/workbench/" + str(example.id) + ".json")
+	for example: Dictionary in Examples.legacy_entries(): files.append("examples/workbench/" + str(example.id) + ".json")
 	if OS.get_name() == "Windows":
 		files.append("addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll")
 		files.append("addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll")
@@ -230,10 +230,10 @@ func run() -> void:
 	if await until(func() -> bool: return host.shared_workbench != null, "ordinary Workbench opens"):
 		wb = host.shared_workbench
 		if await until(installed, "initial bounded native owner"):
-			for example: Dictionary in Examples.entries():
+			for example: Dictionary in Examples.legacy_entries():
 				await example_case(example)
 				if not failures.is_empty(): break
-	check(cases.size() == Examples.entries().size(), "all five ordinary examples reached a completed play interval")
+	check(cases.size() == Examples.legacy_entries().size(), "all five ordinary examples reached a completed play interval")
 	await finish()
 
 

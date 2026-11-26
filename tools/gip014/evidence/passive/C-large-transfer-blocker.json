@@ -1,0 +1,40 @@
+{
+  "schema": "cybersand-goblin-delivery-transfer-observation-v1",
+  "status": "blocked_before_local_download",
+  "scope": "Delivery only; no game, reader, builder, or Library write executed",
+  "artifact": {
+    "repository": "techrote/cybersand",
+    "run_id": 45582958798,
+    "artifact_id": 15008615196,
+    "size_bytes": 666742848,
+    "sha256": "104e680cf4e85f445a549886a0b847efac288e9e30535e508c5ef2ac67e2bbce"
+  },
+  "expected_inner": {
+    "filename": "CyberSand-goblin-campaign-evidence.zip",
+    "size_bytes": 666742658,
+    "sha256": "0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f"
+  },
+  "observations": [
+    {
+      "kind": "connector_size_limit",
+      "limit_bytes": 536870912,
+      "error": "Artifact exceeds max size of 536870912 bytes: 666742848 bytes."
+    },
+    {
+      "kind": "local_space",
+      "free_bytes": 69832704,
+      "needed_for_wrapper_and_inner_bytes": 1333485506
+    }
+  ],
+  "local_download_started": false,
+  "library_write_started": false,
+  "qualified_windows_evaluator_changed": false,
+  "supplement": {
+    "filename": "predecessor-six-tapes-recovery-v1.zip",
+    "reported_size_bytes": 960187,
+    "reported_sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+    "local_file_exists": true,
+    "independent_C_rehash_performed": false
+  },
+  "disposition": "Original sealed archive remains unchanged and available through its GitHub artifact link; awaiting supported transfer capacity or an explicitly revised delivery scope."
+}
