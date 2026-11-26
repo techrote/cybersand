@@ -1,0 +1,47 @@
+{
+  "reviewer": "Specialist A, independent scientific editor",
+  "status": "no material remaining issue within the reviewed scope",
+  "reviewed_at_utc": "2026-11-25T06:05:35.091792+00:00",
+  "packet_sha256": "1e6478c683912f2429465a1dbe626269b0ada6257f2692d3fdb483da1996b153",
+  "packet_bytes": 57667,
+  "application_source": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "reviewed_claim_groups": [
+    "Composable module/goal/phase semantics, finite opportunity deadlines, selected rather than suppressed dwell, and camera-independent progression.",
+    "Exact selected-home-instance recharge geometry, previous-intent/current-position integration, authored20-cell arrival versus separate16-cell return metric, and retained physical movement after neutral intention.",
+    "Configured trait mechanisms versus the isolated a725 curiosity contrast; unchanged sensing mechanism versus the separately identified a725 thin-patch probe.",
+    "Module-label changes versus unique goals; peer-observation module occupancy versus watch phase; grouping thresholds versus durable cooperation or leadership.",
+    "Local obstruction evidence and sampled recovery versus pathfinding, including blocked-route failure records12.6seconds before the15-second intervention.",
+    "Final main paired memory X/stall deltas, actual long-flight rest windows and reversed geometric-return counts, while retaining the earlier negative source.",
+    "Original/extracted Windows648-check living core and96-check mounted editor process/report/terminal chains, plus staged control generations4\u21925\u21925\u21926."
+  ],
+  "resolved_prior_findings": [
+    {
+      "earlier_wording": "without changing drive rates or physical movement",
+      "resolution": "Rates, actuators and physics rules are unchanged; resulting motion can change and later divergence is retained."
+    },
+    {
+      "earlier_wording": "8.3/14.1 seconds watching",
+      "resolution": "Those are selected peer-observation module totals including approach; watch phase is kept distinct."
+    },
+    {
+      "earlier_wording": "selected exploration goal and phase did not change",
+      "resolution": "The packet now says selected exploration module label and phase; it does not infer unique goal identity from primary labels."
+    },
+    {
+      "earlier_wording": "cannot complete inspection/rest by waiting offscreen",
+      "resolution": "The condition is being unselected; camera visibility does not gate policies."
+    }
+  ],
+  "source_bound_independent_evidence": [
+    "evidence/sustained-watch-50c6/independent-readback.json",
+    "evidence/sustained-watch-50c6/home-recharge-comparison.json",
+    "evidence/final-home-memory-independent/readback.json",
+    "evidence/windows-50c6-independent/spotcheck.json"
+  ],
+  "remaining_material_issues": [],
+  "scope_limits": [
+    "This signs off the exact reviewed packet snapshot and listed scientific/mechanism claim groups, not later revisions.",
+    "Full final122-chain custody, all numerical tables and performance plots have the perception lane independent audit; full Windows payload/launcher/graphical custody has the authoring lane audit. This review does not substitute for those complete audits.",
+    "No new runtime execution, physical actor episode or owner/NVIDIA playfeel acceptance was created by this review."
+  ]
+}

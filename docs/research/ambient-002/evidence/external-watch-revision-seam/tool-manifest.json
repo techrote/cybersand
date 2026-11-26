@@ -1,0 +1,16 @@
+[
+  {
+    "path": "tools/ambient/run_graphical_watch.py",
+    "sha": "6a75a39f8bd93baf927eba7b4279c0699f44b981",
+    "bytes": 20851,
+    "sha256": "24e6556d0591cca4b1d7b1f8147d06fdb07d1294f32f585f961c93bc7b06e7fb",
+    "immutable_uploaded_and_verified": true
+  },
+  {
+    "path": "tools/ambient/test_graphical_watch.py",
+    "sha": "c42f36d134c9cccf66906036e9940e3102c493d9",
+    "bytes": 7573,
+    "sha256": "456f45b9ee5905aaff51105bdd464497546051ce066e5733266d371b4a534b73",
+    "immutable_uploaded_and_verified": true
+  }
+]

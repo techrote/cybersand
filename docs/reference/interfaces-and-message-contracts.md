@@ -11,6 +11,14 @@ last-reviewed: 2026-11-20
 
 # Interfaces and message contracts
 
+The [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md) adds strict
+profile version 2 alongside version 1 and an optional scene-local
+`ambient_authoring` library. Copied environments additionally carry explicit
+World generation, bounded navigation and tagged peer observations. The physical
+command ABI and native material wire formats remain unchanged. Group authoring
+uses captured run/epoch/configuration identities and all-member preflight before
+one synchronous owner commit; it grants no new body or World ownership.
+
 The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
 `ambient-observation/v1` copied environment and authored profile version 1.
 These are local value schemas. Existing physical issued observation/command

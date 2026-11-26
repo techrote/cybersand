@@ -374,7 +374,7 @@ func _additional_modules_and_schema() -> void:
 	invalid.modules[0].params.wall_distance = 30.0
 	check(not Profile.validate(invalid).is_empty(),"wall proximity cannot include the no-hit sentinel or unsensed range")
 	var all_types: Dictionary = Modules.module_specs()
-	check(all_types.size() == 11,"eleven implemented bounded module types")
+	check(all_types.size() == 29,"eleven predecessor and eighteen living module types")
 	for type: String in all_types:
 		var single := profile([type])
 		check(Profile.validate(single).is_empty(),"metadata defaults validate: " + type)

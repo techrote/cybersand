@@ -1,0 +1,577 @@
+﻿2026-11-25T05:19:41.1330306Z Current runner version: '2.338.2'
+2026-11-25T05:19:41.1364583Z ##[group]Runner Image Provisioner
+2026-11-25T05:19:41.1365827Z Hosted Compute Agent
+2026-11-25T05:19:41.1366747Z Version: 20261111.635
+2026-11-25T05:19:41.1367708Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-25T05:19:41.1368848Z Build Date: 2026-11-11T01:49:01Z
+2026-11-25T05:19:41.1369951Z Worker ID: {181d712e-e588-4732-95fe-4262f50f0702}
+2026-11-25T05:19:41.1371080Z Region: centralus
+2026-11-25T05:19:41.1371949Z Cloud: Azure
+2026-11-25T05:19:41.1372723Z ##[endgroup]
+2026-11-25T05:19:41.1374890Z ##[group]Operating System
+2026-11-25T05:19:41.1375928Z Microsoft Windows Server 2022
+2026-11-25T05:19:41.1376832Z 10.0.20348
+2026-11-25T05:19:41.1377578Z Datacenter
+2026-11-25T05:19:41.1378327Z ##[endgroup]
+2026-11-25T05:19:41.1379125Z ##[group]Runner Image
+2026-11-25T05:19:41.1380092Z Image: windows-2022
+2026-11-25T05:19:41.1380963Z Version: 20261116.370.1
+2026-11-25T05:19:41.1384307Z Included Software: https://github.com/actions/runner-images/blob/win22/20261116.370/images/windows/Windows2022-Readme.md
+2026-11-25T05:19:41.1387070Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261116.370
+2026-11-25T05:19:41.1388665Z ##[endgroup]
+2026-11-25T05:19:41.1390487Z ##[group]GITHUB_TOKEN Permissions
+2026-11-25T05:19:41.1392975Z Actions: read
+2026-11-25T05:19:41.1393876Z Contents: read
+2026-11-25T05:19:41.1394714Z Metadata: read
+2026-11-25T05:19:41.1395589Z ##[endgroup]
+2026-11-25T05:19:41.1398352Z Secret source: Actions
+2026-11-25T05:19:41.1399730Z Cache mode: write
+2026-11-25T05:19:41.1400754Z Prepare workflow directory
+2026-11-25T05:19:41.1964343Z Prepare all required actions
+2026-11-25T05:19:41.2034078Z Getting action download info
+2026-11-25T05:19:41.4746758Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-25T05:19:41.5925950Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-25T05:19:41.9161053Z Complete job name: Actual Windows ambient gameplay and portable evaluator
+2026-11-25T05:19:42.0769937Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-25T05:19:42.0771173Z with:
+2026-11-25T05:19:42.0771594Z   persist-credentials: false
+2026-11-25T05:19:42.0772095Z   repository: techrote/cybersand
+2026-11-25T05:19:42.0776228Z   token: ***
+2026-11-25T05:19:42.0776617Z   ssh-strict: true
+2026-11-25T05:19:42.0777013Z   ssh-user: git
+2026-11-25T05:19:42.0777388Z   clean: true
+2026-11-25T05:19:42.0777786Z   sparse-checkout-cone-mode: true
+2026-11-25T05:19:42.0778269Z   fetch-depth: 1
+2026-11-25T05:19:42.0778752Z   fetch-tags: false
+2026-11-25T05:19:42.0779255Z   show-progress: true
+2026-11-25T05:19:42.0779755Z   lfs: false
+2026-11-25T05:19:42.0780215Z   submodules: false
+2026-11-25T05:19:42.0780715Z   set-safe-directory: true
+2026-11-25T05:19:42.0781508Z env:
+2026-11-25T05:19:42.0781987Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:19:42.0782517Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:19:42.0783104Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:19:42.0783670Z ##[endgroup]
+2026-11-25T05:19:42.2276001Z Syncing repository: techrote/cybersand
+2026-11-25T05:19:42.2277690Z ##[group]Getting Git version info
+2026-11-25T05:19:42.2278294Z Working directory is 'D:\a\cybersand\cybersand'
+2026-11-25T05:19:42.3295864Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-25T05:19:42.6533945Z git version 2.56.1.windows.1
+2026-11-25T05:19:42.6586690Z ##[endgroup]
+2026-11-25T05:19:42.6612352Z Temporarily overriding HOME='D:\a\_temp\6594443b-c37e-4ade-9373-3947be02bcb0' before making global git config changes
+2026-11-25T05:19:42.6614832Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-25T05:19:42.6626027Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\cybersand\cybersand
+2026-11-25T05:19:42.7191963Z Deleting the contents of 'D:\a\cybersand\cybersand'
+2026-11-25T05:19:42.7197244Z ##[group]Initializing the repository
+2026-11-25T05:19:42.7206739Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\cybersand\cybersand
+2026-11-25T05:19:42.7826513Z Initialized empty Git repository in D:/a/cybersand/cybersand/.git/
+2026-11-25T05:19:42.7876763Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/techrote/cybersand
+2026-11-25T05:19:42.8630531Z ##[endgroup]
+2026-11-25T05:19:42.8631233Z ##[group]Disabling automatic garbage collection
+2026-11-25T05:19:42.8640819Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-11-25T05:19:42.8936602Z ##[endgroup]
+2026-11-25T05:19:42.8937324Z ##[group]Setting up auth
+2026-11-25T05:19:42.8949464Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-25T05:19:42.9246792Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-25T05:19:44.2257763Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-25T05:19:44.2586245Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-25T05:19:44.7696783Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-11-25T05:19:44.8015649Z ##[endgroup]
+2026-11-25T05:19:44.8016616Z ##[group]Fetching the repository
+2026-11-25T05:19:44.8030178Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +50c6df89528dc9ecdc5316d8c67abf203e192254:refs/remotes/origin/feature/ambient-002-living-inhabitants-20261125
+2026-11-25T05:20:08.2695968Z From https://github.com/techrote/cybersand
+2026-11-25T05:20:08.2700001Z  * [new ref]         50c6df89528dc9ecdc5316d8c67abf203e192254 -> origin/feature/ambient-002-living-inhabitants-20261125
+2026-11-25T05:20:08.2729839Z ##[endgroup]
+2026-11-25T05:20:08.2730352Z ##[group]Determining the checkout info
+2026-11-25T05:20:08.2733067Z ##[endgroup]
+2026-11-25T05:20:08.2743500Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-11-25T05:20:08.3171434Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-11-25T05:20:08.3467888Z ##[group]Checking out the ref
+2026-11-25T05:20:08.3477305Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B feature/ambient-002-living-inhabitants-20261125 refs/remotes/origin/feature/ambient-002-living-inhabitants-20261125
+2026-11-25T05:20:09.4000591Z Updating files:  36% (1606/4413)
+2026-11-25T05:20:09.4116976Z Updating files:  37% (1633/4413)
+2026-11-25T05:20:09.4263812Z Updating files:  38% (1677/4413)
+2026-11-25T05:20:09.4368340Z Updating files:  39% (1722/4413)
+2026-11-25T05:20:09.4457022Z Updating files:  40% (1766/4413)
+2026-11-25T05:20:09.4560484Z Updating files:  41% (1810/4413)
+2026-11-25T05:20:09.4676850Z Updating files:  42% (1854/4413)
+2026-11-25T05:20:09.4791171Z Updating files:  43% (1898/4413)
+2026-11-25T05:20:09.4929196Z Updating files:  44% (1942/4413)
+2026-11-25T05:20:09.5042028Z Updating files:  45% (1986/4413)
+2026-11-25T05:20:09.6130127Z Updating files:  46% (2030/4413)
+2026-11-25T05:20:09.6409189Z Updating files:  47% (2075/4413)
+2026-11-25T05:20:09.6531889Z Updating files:  48% (2119/4413)
+2026-11-25T05:20:09.6667582Z Updating files:  49% (2163/4413)
+2026-11-25T05:20:09.6825599Z Updating files:  50% (2207/4413)
+2026-11-25T05:20:09.7095179Z Updating files:  51% (2251/4413)
+2026-11-25T05:20:09.9073988Z Updating files:  52% (2295/4413)
+2026-11-25T05:20:10.0249692Z Updating files:  53% (2339/4413)
+2026-11-25T05:20:10.0982188Z Updating files:  54% (2384/4413)
+2026-11-25T05:20:10.3958027Z Updating files:  55% (2428/4413)
+2026-11-25T05:20:10.3958906Z Updating files:  55% (2471/4413)
+2026-11-25T05:20:10.4073150Z Updating files:  56% (2472/4413)
+2026-11-25T05:20:10.4273645Z Updating files:  57% (2516/4413)
+2026-11-25T05:20:10.5003470Z Updating files:  58% (2560/4413)
+2026-11-25T05:20:10.5408551Z Updating files:  59% (2604/4413)
+2026-11-25T05:20:10.5470076Z Updating files:  60% (2648/4413)
+2026-11-25T05:20:10.5550444Z Updating files:  61% (2692/4413)
+2026-11-25T05:20:11.9192140Z Updating files:  62% (2737/4413)
+2026-11-25T05:20:11.9434330Z Updating files:  62% (2749/4413)
+2026-11-25T05:20:11.9505360Z Updating files:  63% (2781/4413)
+2026-11-25T05:20:11.9592763Z Updating files:  64% (2825/4413)
+2026-11-25T05:20:11.9695105Z Updating files:  65% (2869/4413)
+2026-11-25T05:20:11.9800338Z Updating files:  66% (2913/4413)
+2026-11-25T05:20:11.9902230Z Updating files:  67% (2957/4413)
+2026-11-25T05:20:12.0012130Z Updating files:  68% (3001/4413)
+2026-11-25T05:20:12.0103957Z Updating files:  69% (3045/4413)
+2026-11-25T05:20:12.0194515Z Updating files:  70% (3090/4413)
+2026-11-25T05:20:12.0297925Z Updating files:  71% (3134/4413)
+2026-11-25T05:20:12.0393943Z Updating files:  72% (3178/4413)
+2026-11-25T05:20:12.0471111Z Updating files:  73% (3222/4413)
+2026-11-25T05:20:12.0562048Z Updating files:  74% (3266/4413)
+2026-11-25T05:20:12.0673193Z Updating files:  75% (3310/4413)
+2026-11-25T05:20:12.0761646Z Updating files:  76% (3354/4413)
+2026-11-25T05:20:12.0856228Z Updating files:  77% (3399/4413)
+2026-11-25T05:20:12.0946055Z Updating files:  78% (3443/4413)
+2026-11-25T05:20:12.1040160Z Updating files:  79% (3487/4413)
+2026-11-25T05:20:12.1106667Z Updating files:  80% (3531/4413)
+2026-11-25T05:20:12.1177698Z Updating files:  81% (3575/4413)
+2026-11-25T05:20:12.1258802Z Updating files:  82% (3619/4413)
+2026-11-25T05:20:12.1361548Z Updating files:  83% (3663/4413)
+2026-11-25T05:20:12.1467425Z Updating files:  84% (3707/4413)
+2026-11-25T05:20:12.1564941Z Updating files:  85% (3752/4413)
+2026-11-25T05:20:12.1677664Z Updating files:  86% (3796/4413)
+2026-11-25T05:20:12.1817268Z Updating files:  87% (3840/4413)
+2026-11-25T05:20:12.1947213Z Updating files:  88% (3884/4413)
+2026-11-25T05:20:12.2051142Z Updating files:  89% (3928/4413)
+2026-11-25T05:20:12.2139679Z Updating files:  90% (3972/4413)
+2026-11-25T05:20:12.2233166Z Updating files:  91% (4016/4413)
+2026-11-25T05:20:12.2321415Z Updating files:  92% (4060/4413)
+2026-11-25T05:20:12.2415807Z Updating files:  93% (4105/4413)
+2026-11-25T05:20:12.2513962Z Updating files:  94% (4149/4413)
+2026-11-25T05:20:12.2603754Z Updating files:  95% (4193/4413)
+2026-11-25T05:20:12.2712061Z Updating files:  96% (4237/4413)
+2026-11-25T05:20:12.2826134Z Updating files:  97% (4281/4413)
+2026-11-25T05:20:12.2929333Z Updating files:  98% (4325/4413)
+2026-11-25T05:20:12.3028749Z Updating files:  99% (4369/4413)
+2026-11-25T05:20:12.3029104Z Updating files: 100% (4413/4413)
+2026-11-25T05:20:12.3029367Z Updating files: 100% (4413/4413), done.
+2026-11-25T05:20:12.3191210Z Switched to a new branch 'feature/ambient-002-living-inhabitants-20261125'
+2026-11-25T05:20:12.3205470Z branch 'feature/ambient-002-living-inhabitants-20261125' set up to track 'origin/feature/ambient-002-living-inhabitants-20261125'.
+2026-11-25T05:20:12.6448627Z ##[endgroup]
+2026-11-25T05:20:12.6804743Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-11-25T05:20:12.7083657Z 50c6df89528dc9ecdc5316d8c67abf203e192254
+2026-11-25T05:20:12.7117484Z ##[group]Removing auth
+2026-11-25T05:20:12.7126239Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-25T05:20:12.7423817Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-25T05:20:13.2925067Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-25T05:20:13.3196439Z http.https://github.com/.extraheader
+2026-11-25T05:20:13.3233665Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-11-25T05:20:13.3544062Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-25T05:20:13.8548983Z ##[endgroup]
+2026-11-25T05:20:13.8929241Z ##[group]Run New-Item -ItemType Directory -Force evidence | Out-Null
+2026-11-25T05:20:13.8929924Z [36;1mNew-Item -ItemType Directory -Force evidence | Out-Null[0m
+2026-11-25T05:20:13.8930386Z [36;1mgit rev-parse HEAD | Set-Content evidence/source-commit.txt[0m
+2026-11-25T05:20:13.8930803Z [36;1mpython tools/ci/check_ci_provider_policy.py[0m
+2026-11-25T05:20:13.8931245Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }[0m
+2026-11-25T05:20:13.8931682Z [36;1mpython tools/ci/test_ambient_living_delivery.py[0m
+2026-11-25T05:20:13.8932179Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Ambient completion and delivery custody tests failed' }[0m
+2026-11-25T05:20:13.8932676Z [36;1mpython tools/ambient/test_episode_tools.py[0m
+2026-11-25T05:20:13.8933148Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Physical episode reduction and custody tests failed' }[0m
+2026-11-25T05:20:13.8933641Z [36;1mpython tools/ambient/test_independent_review.py[0m
+2026-11-25T05:20:13.8934165Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Independent physical readback boundary tests failed' }[0m
+2026-11-25T05:20:13.8934641Z [36;1mpython tools/ambient/test_recovery_probe.py[0m
+2026-11-25T05:20:13.8935093Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Matched recovery comparison custody tests failed' }[0m
+2026-11-25T05:20:13.8935531Z [36;1mgit lfs install --local[0m
+2026-11-25T05:20:13.8935840Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }[0m
+2026-11-25T05:20:13.8936734Z [36;1mgit lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''[0m
+2026-11-25T05:20:13.8937685Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }[0m
+2026-11-25T05:20:13.8938042Z [36;1m@'[0m
+2026-11-25T05:20:13.8938231Z [36;1mimport json, pathlib, sys[0m
+2026-11-25T05:20:13.8938492Z [36;1msys.path.insert(0, 'tools/ci')[0m
+2026-11-25T05:20:13.8938866Z [36;1mfrom run_windows_godot_regressions import verify_retained_runtime[0m
+2026-11-25T05:20:13.8939310Z [36;1mresult = verify_retained_runtime(pathlib.Path.cwd())[0m
+2026-11-25T05:20:13.8939918Z [36;1mpathlib.Path('evidence/retained-runtime.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')[0m
+2026-11-25T05:20:13.8940461Z [36;1m'@ | python -[0m
+2026-11-25T05:20:13.8940864Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Source-matched retained runtime verification failed' }[0m
+2026-11-25T05:20:13.9048727Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-25T05:20:13.9049126Z env:
+2026-11-25T05:20:13.9049317Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:20:13.9049539Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:20:13.9049778Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:20:13.9049993Z ##[endgroup]
+2026-11-25T05:20:15.3859128Z {
+2026-11-25T05:20:15.3859475Z   "status": "passed",
+2026-11-25T05:20:15.3859936Z   "scope": "active CI provider and runner routing",
+2026-11-25T05:20:15.3860412Z   "errors": [],
+2026-11-25T05:20:15.3860686Z   "policy": {
+2026-11-25T05:20:15.3861007Z     "routine_provider": "GitHub-hosted Actions",
+2026-11-25T05:20:15.3861661Z     "external_provider_config": "forbidden unless policy is explicitly changed",
+2026-11-25T05:20:15.3862272Z     "runner_indirection": "forbidden"
+2026-11-25T05:20:15.3862975Z   }
+2026-11-25T05:20:15.3863193Z }
+2026-11-25T05:20:16.7719652Z test_ansi_decoration_is_not_a_missing_terminal (__main__.AmbientDeliveryCustody.test_ansi_decoration_is_not_a_missing_terminal) ... ok
+2026-11-25T05:20:16.8268844Z test_capture_call_checks_expected_source_engine_and_backend (__main__.AmbientDeliveryCustody.test_capture_call_checks_expected_source_engine_and_backend) ... ok
+2026-11-25T05:20:16.8610721Z test_changed_captured_image_is_refused (__main__.AmbientDeliveryCustody.test_changed_captured_image_is_refused) ... ok
+2026-11-25T05:20:16.8942719Z test_changed_graphical_receipt_is_refused (__main__.AmbientDeliveryCustody.test_changed_graphical_receipt_is_refused) ... ok
+2026-11-25T05:20:16.8997347Z test_changed_log_is_refused_even_with_successful_summary (__main__.AmbientDeliveryCustody.test_changed_log_is_refused_even_with_successful_summary) ... ok
+2026-11-25T05:20:16.9051133Z test_changed_process_receipt_is_refused (__main__.AmbientDeliveryCustody.test_changed_process_receipt_is_refused) ... ok
+2026-11-25T05:20:16.9108608Z test_changed_report_is_refused (__main__.AmbientDeliveryCustody.test_changed_report_is_refused) ... ok
+2026-11-25T05:20:16.9585511Z test_complete_capture_inventory_is_admitted (__main__.AmbientDeliveryCustody.test_complete_capture_inventory_is_admitted) ... ok
+2026-11-25T05:20:16.9726130Z test_every_scoped_case_has_a_positive_unique_completion_contract (__main__.AmbientDeliveryCustody.test_every_scoped_case_has_a_positive_unique_completion_contract) ... ok
+2026-11-25T05:20:17.0110081Z test_explicit_new_json_is_hashed_and_dirty_source_refused (__main__.AmbientDeliveryCustody.test_explicit_new_json_is_hashed_and_dirty_source_refused) ... ok
+2026-11-25T05:20:17.0600505Z test_explicit_unavailable_displayed_frame_does_not_claim_a_matched_frame (__main__.AmbientDeliveryCustody.test_explicit_unavailable_displayed_frame_does_not_claim_a_matched_frame) ... ok
+2026-11-25T05:20:17.0947107Z test_headless_or_missing_renderer_cannot_supply_graphical_evidence (__main__.AmbientDeliveryCustody.test_headless_or_missing_renderer_cannot_supply_graphical_evidence) ... ok
+2026-11-25T05:20:17.1283627Z test_incomplete_native_or_physical_capture_progress_is_refused (__main__.AmbientDeliveryCustody.test_incomplete_native_or_physical_capture_progress_is_refused) ... ok
+2026-11-25T05:20:17.1614912Z test_linux_graphics_cannot_qualify_windows_evaluator (__main__.AmbientDeliveryCustody.test_linux_graphics_cannot_qualify_windows_evaluator) ... ok
+2026-11-25T05:20:17.1860331Z test_missing_and_repeated_terminals_are_refused (__main__.AmbientDeliveryCustody.test_missing_and_repeated_terminals_are_refused) ... ok
+2026-11-25T05:20:17.1867424Z test_missing_graphical_campaign_cannot_build_windows_evaluator (__main__.AmbientDeliveryCustody.test_missing_graphical_campaign_cannot_build_windows_evaluator) ... ok
+2026-11-25T05:20:17.2259791Z test_missing_or_duplicate_example_phase_is_refused (__main__.AmbientDeliveryCustody.test_missing_or_duplicate_example_phase_is_refused) ... ok
+2026-11-25T05:20:17.2591889Z test_missing_or_duplicate_named_capture_is_refused (__main__.AmbientDeliveryCustody.test_missing_or_duplicate_named_capture_is_refused) ... ok
+2026-11-25T05:20:17.2968234Z test_missing_or_mismatched_display_publication_identity_is_refused (__main__.AmbientDeliveryCustody.test_missing_or_mismatched_display_publication_identity_is_refused) ... ok
+2026-11-25T05:20:17.3303592Z test_named_capture_with_invalid_png_signature_is_refused (__main__.AmbientDeliveryCustody.test_named_capture_with_invalid_png_signature_is_refused) ... ok
+2026-11-25T05:20:17.3641942Z test_named_png_outside_capture_directory_is_refused (__main__.AmbientDeliveryCustody.test_named_png_outside_capture_directory_is_refused) ... ok
+2026-11-25T05:20:17.3887755Z test_nonzero_failures_and_zero_checks_are_refused (__main__.AmbientDeliveryCustody.test_nonzero_failures_and_zero_checks_are_refused) ... ok
+2026-11-25T05:20:17.4247640Z test_original_graphical_receipt_with_summary_digest_is_admitted (__main__.AmbientDeliveryCustody.test_original_graphical_receipt_with_summary_digest_is_admitted) ... ok
+2026-11-25T05:20:17.4296957Z test_original_nonzero_process_exit_is_refused (__main__.AmbientDeliveryCustody.test_original_nonzero_process_exit_is_refused) ... ok
+2026-11-25T05:20:17.4349635Z test_original_qualification_receipts_are_admitted (__main__.AmbientDeliveryCustody.test_original_qualification_receipts_are_admitted) ... ok
+2026-11-25T05:20:17.4448811Z test_postlaunch_executable_project_script_is_refused (__main__.AmbientDeliveryCustody.test_postlaunch_executable_project_script_is_refused) ... ok
+2026-11-25T05:20:17.4630672Z test_postlaunch_expected_import_metadata_and_authored_data_are_allowed (__main__.AmbientDeliveryCustody.test_postlaunch_expected_import_metadata_and_authored_data_are_allowed) ... ok
+2026-11-25T05:20:17.4741071Z test_postlaunch_import_metadata_requires_an_original_asset (__main__.AmbientDeliveryCustody.test_postlaunch_import_metadata_requires_an_original_asset) ... ok
+2026-11-25T05:20:17.4878980Z test_postlaunch_injected_shader_and_uid_are_refused (__main__.AmbientDeliveryCustody.test_postlaunch_injected_shader_and_uid_are_refused) ... ok
+2026-11-25T05:20:17.4962117Z test_postlaunch_original_input_changes_are_refused (__main__.AmbientDeliveryCustody.test_postlaunch_original_input_changes_are_refused) ... ok
+2026-11-25T05:20:17.5046656Z test_postlaunch_original_shader_mutation_with_uid_is_refused (__main__.AmbientDeliveryCustody.test_postlaunch_original_shader_mutation_with_uid_is_refused) ... ok
+2026-11-25T05:20:17.5142687Z test_postlaunch_shader_uid_requires_manifested_original (__main__.AmbientDeliveryCustody.test_postlaunch_shader_uid_requires_manifested_original) ... ok
+2026-11-25T05:20:17.5239858Z test_postlaunch_uid_for_original_shader_is_admitted (__main__.AmbientDeliveryCustody.test_postlaunch_uid_for_original_shader_is_admitted) ... ok
+2026-11-25T05:20:17.5346447Z test_postlaunch_uid_for_other_original_asset_type_is_refused (__main__.AmbientDeliveryCustody.test_postlaunch_uid_for_other_original_asset_type_is_refused) ... ok
+2026-11-25T05:20:17.5360306Z test_preservation_skip_cannot_count_as_complete_owner_execution (__main__.AmbientDeliveryCustody.test_preservation_skip_cannot_count_as_complete_owner_execution) ... ok
+2026-11-25T05:20:17.5449757Z test_pristine_original_package_is_admitted (__main__.AmbientDeliveryCustody.test_pristine_original_package_is_admitted) ... ok
+2026-11-25T05:20:17.5545999Z test_pristine_shader_uid_sidecar_is_refused (__main__.AmbientDeliveryCustody.test_pristine_shader_uid_sidecar_is_refused) ... ok
+2026-11-25T05:20:17.5646310Z test_pristine_unexpected_file_is_refused (__main__.AmbientDeliveryCustody.test_pristine_unexpected_file_is_refused) ... ok
+2026-11-25T05:20:17.5700472Z test_truncated_process_receipt_cannot_pass_vacuous_key_comparison (__main__.AmbientDeliveryCustody.test_truncated_process_receipt_cannot_pass_vacuous_key_comparison) ... ok
+2026-11-25T05:20:17.5724328Z test_typed_json_results_do_not_accept_boolean_success_counts (__main__.AmbientDeliveryCustody.test_typed_json_results_do_not_accept_boolean_success_counts) ... ok
+2026-11-25T05:20:17.5737862Z test_unauthenticated_godot_executable_is_refused (__main__.AmbientDeliveryCustody.test_unauthenticated_godot_executable_is_refused) ... ok
+2026-11-25T05:20:17.5830081Z test_unreviewed_import_exemption_is_refused (__main__.AmbientDeliveryCustody.test_unreviewed_import_exemption_is_refused) ... ok
+2026-11-25T05:20:17.6367533Z test_wrong_or_missing_graphical_source_engine_and_backend_are_refused (__main__.AmbientDeliveryCustody.test_wrong_or_missing_graphical_source_engine_and_backend_are_refused) ... ok
+2026-11-25T05:20:17.6368520Z 
+2026-11-25T05:20:17.6368721Z ----------------------------------------------------------------------
+2026-11-25T05:20:17.6369165Z Ran 43 tests in 0.868s
+2026-11-25T05:20:17.6369324Z 
+2026-11-25T05:20:17.6369403Z OK
+2026-11-25T05:20:18.0170387Z ...........
+2026-11-25T05:20:18.0170762Z ----------------------------------------------------------------------
+2026-11-25T05:20:18.0171435Z Ran 11 tests in 0.135s
+2026-11-25T05:20:18.0171603Z 
+2026-11-25T05:20:18.0171679Z OK
+2026-11-25T05:20:18.1225540Z .........
+2026-11-25T05:20:18.1225941Z ----------------------------------------------------------------------
+2026-11-25T05:20:18.1226340Z Ran 9 tests in 0.001s
+2026-11-25T05:20:18.1226509Z 
+2026-11-25T05:20:18.1226593Z OK
+2026-11-25T05:20:18.3885525Z .........
+2026-11-25T05:20:18.3886097Z ----------------------------------------------------------------------
+2026-11-25T05:20:18.3886592Z Ran 9 tests in 0.117s
+2026-11-25T05:20:18.3886792Z 
+2026-11-25T05:20:18.3886887Z OK
+2026-11-25T05:20:18.7218745Z Updated Git hooks.
+2026-11-25T05:20:18.7219917Z Git LFS initialized.
+2026-11-25T05:20:20.6556660Z ##[group]Run $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+2026-11-25T05:20:20.6557318Z [36;1m$archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'[0m
+2026-11-25T05:20:20.6558289Z [36;1mcurl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'[0m
+2026-11-25T05:20:20.6559284Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }[0m
+2026-11-25T05:20:20.6559725Z [36;1m$env:AMBIENT_GODOT_ARCHIVE = $archive[0m
+2026-11-25T05:20:20.6559983Z [36;1m@'[0m
+2026-11-25T05:20:20.6560170Z [36;1mimport json, os, pathlib, sys[0m
+2026-11-25T05:20:20.6560430Z [36;1msys.path.insert(0, 'tools/ci')[0m
+2026-11-25T05:20:20.6560760Z [36;1mfrom run_windows_godot_regressions import prepare_godot[0m
+2026-11-25T05:20:20.6561313Z [36;1mexecutable, record = prepare_godot(pathlib.Path(os.environ['AMBIENT_GODOT_ARCHIVE']))[0m
+2026-11-25T05:20:20.6562019Z [36;1mpathlib.Path('evidence/godot-archive.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')[0m
+2026-11-25T05:20:20.6562647Z [36;1mwith open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:[0m
+2026-11-25T05:20:20.6563231Z [36;1m    stream.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')[0m
+2026-11-25T05:20:20.6563705Z [36;1m'@ | python -[0m
+2026-11-25T05:20:20.6564093Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Pinned Godot archive/version verification failed' }[0m
+2026-11-25T05:20:20.6564608Z [36;1m$dependencies = Join-Path $env:RUNNER_TEMP 'godot-windows'[0m
+2026-11-25T05:20:20.6565017Z [36;1mforeach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {[0m
+2026-11-25T05:20:20.6565902Z [36;1m  curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"[0m
+2026-11-25T05:20:20.6566844Z [36;1m  if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notice download failed' }[0m
+2026-11-25T05:20:20.6567210Z [36;1m}[0m
+2026-11-25T05:20:20.6567569Z [36;1m$runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'[0m
+2026-11-25T05:20:20.6568215Z [36;1m$developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'[0m
+2026-11-25T05:20:20.6569279Z [36;1mcurl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'[0m
+2026-11-25T05:20:20.6570261Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice download failed' }[0m
+2026-11-25T05:20:20.6571339Z [36;1mcurl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'[0m
+2026-11-25T05:20:20.6572462Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice download failed' }[0m
+2026-11-25T05:20:20.6572935Z [36;1m$vc = Join-Path $env:RUNNER_TEMP 'ambient-vc-runtime'[0m
+2026-11-25T05:20:20.6573542Z [36;1m& tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense[0m
+2026-11-25T05:20:20.6574424Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Portable VC runtime staging failed' }[0m
+2026-11-25T05:20:20.6574894Z [36;1mCopy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies[0m
+2026-11-25T05:20:20.6575400Z [36;1mCopy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies[0m
+2026-11-25T05:20:20.6617277Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-25T05:20:20.6617622Z env:
+2026-11-25T05:20:20.6617860Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:20:20.6618097Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:20:20.6618328Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:20:20.6620112Z ##[endgroup]
+2026-11-25T05:20:21.1572069Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-25T05:20:21.1572878Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-25T05:20:21.1573591Z 
+2026-11-25T05:20:21.2558207Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:21.2559342Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:21.2560472Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:21.4538991Z 
+2026-11-25T05:20:21.8649346Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:21.8650248Z 100 79.88M 100 79.88M   0      0 98.54M      0                              0
+2026-11-25T05:20:21.8651140Z 100 79.88M 100 79.88M   0      0 98.53M      0                              0
+2026-11-25T05:20:21.8651852Z 100 79.88M 100 79.88M   0      0 98.51M      0                              0
+2026-11-25T05:20:24.1327935Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-25T05:20:24.1328958Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-25T05:20:24.1329250Z 
+2026-11-25T05:20:24.1961084Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:24.1962330Z 100   1149 100   1149   0      0  10765      0                              0
+2026-11-25T05:20:24.1963069Z 100   1149 100   1149   0      0  10754      0                              0
+2026-11-25T05:20:24.1964788Z 100   1149 100   1149   0      0  10732      0                              0
+2026-11-25T05:20:24.2549164Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-25T05:20:24.2550098Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-25T05:20:24.2550366Z 
+2026-11-25T05:20:24.3677631Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:24.3678397Z 100 97.76k 100 97.76k   0      0 616.2k      0                              0
+2026-11-25T05:20:24.3679060Z 100 97.76k 100 97.76k   0      0 615.8k      0                              0
+2026-11-25T05:20:24.3679910Z 100 97.76k 100 97.76k   0      0 615.3k      0                              0
+2026-11-25T05:20:24.5928554Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-25T05:20:24.5929321Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-25T05:20:24.5929760Z 
+2026-11-25T05:20:24.6506644Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:24.6508426Z 100  39644 100  39644   0      0 143.3k      0                              0
+2026-11-25T05:20:24.6509449Z 100  39644 100  39644   0      0 143.2k      0                              0
+2026-11-25T05:20:24.6511357Z 100  39644 100  39644   0      0 143.1k      0                              0
+2026-11-25T05:20:24.7510229Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-11-25T05:20:24.7510958Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-11-25T05:20:24.7511503Z 
+2026-11-25T05:20:24.8188076Z   0      0   0      0   0      0      0      0                              0
+2026-11-25T05:20:24.8189064Z 100  63513 100  63513   0      0 398.6k      0                              0
+2026-11-25T05:20:24.8190071Z 100  63513 100  63513   0      0 398.4k      0                              0
+2026-11-25T05:20:24.8191319Z 100  63513 100  63513   0      0 398.0k      0                              0
+2026-11-25T05:20:25.6786074Z Staged VS2022 x64 Visual C++ runtime 14.44.35211.0; SHA256 d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066
+2026-11-25T05:20:25.7411991Z ##[group]Run python tools/qualify_ambient_living.py --godot $env:GODOT_EXE --output evidence/ambient
+2026-11-25T05:20:25.7412794Z [36;1mpython tools/qualify_ambient_living.py --godot $env:GODOT_EXE --output evidence/ambient[0m
+2026-11-25T05:20:25.7413510Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Actual Windows ambient qualification failed; original receipts retained' }[0m
+2026-11-25T05:20:25.7453151Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-25T05:20:25.7453498Z env:
+2026-11-25T05:20:25.7453669Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:20:25.7453880Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:20:25.7454109Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:20:25.7454425Z   GODOT_EXE: D:\a\_temp\godot-windows\Godot_v4.7-stable_win64_console.exe
+2026-11-25T05:20:25.7454832Z   WINDOWS_DEPENDENCIES: D:\a\_temp\godot-windows
+2026-11-25T05:20:25.7455112Z ##[endgroup]
+2026-11-25T05:20:37.9170126Z AMBIENT qualification: engine
+2026-11-25T05:20:39.3390794Z AMBIENT qualification: independent
+2026-11-25T05:20:39.9170039Z AMBIENT qualification: perception
+2026-11-25T05:20:41.8911039Z AMBIENT qualification: ledge_geometry
+2026-11-25T05:20:42.5734749Z AMBIENT qualification: clock
+2026-11-25T05:20:43.7990653Z AMBIENT qualification: authoring_save
+2026-11-25T05:20:47.6337489Z AMBIENT qualification: authoring_reopen
+2026-11-25T05:20:51.0867937Z AMBIENT qualification: editor
+2026-11-25T05:20:59.3801113Z AMBIENT qualification: native_motion
+2026-11-25T05:21:06.0017830Z AMBIENT qualification: personalities
+2026-11-25T05:21:20.1609858Z AMBIENT qualification: workbench
+2026-11-25T05:21:52.0573121Z AMBIENT qualification: examples
+2026-11-25T05:22:55.6464163Z AMBIENT qualification: living_authoring_save
+2026-11-25T05:22:57.5244246Z AMBIENT qualification: living_authoring_reopen
+2026-11-25T05:22:59.4039471Z AMBIENT qualification: living_editor
+2026-11-25T05:23:09.6458081Z AMBIENT qualification: living_engine
+2026-11-25T05:23:11.4319781Z AMBIENT qualification: living_group
+2026-11-25T05:23:12.5657252Z AMBIENT qualification: living_spatial
+2026-11-25T05:23:15.8334842Z AMBIENT qualification: living_episodes
+2026-11-25T05:23:25.6170346Z AMBIENT qualification: living_examples
+2026-11-25T05:25:12.1914081Z AMBIENT qualification: legacy_catalog
+2026-11-25T05:25:13.3249478Z AMBIENT qualification: legacy_composition
+2026-11-25T05:25:57.3087417Z AMBIENT qualification: legacy_session
+2026-11-25T05:25:58.5374468Z AMBIENT qualification: legacy_physical
+2026-11-25T05:26:01.2552320Z D:\a\cybersand\cybersand\evidence\ambient\qualification.json
+2026-11-25T05:26:01.3880282Z ##[group]Run python tools/qualify_ambient_living.py --godot $env:GODOT_EXE --capture --output evidence/ambient-graphical
+2026-11-25T05:26:01.3881288Z [36;1mpython tools/qualify_ambient_living.py --godot $env:GODOT_EXE --capture --output evidence/ambient-graphical[0m
+2026-11-25T05:26:01.3882155Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Actual Windows graphical ambient examples failed; headless is not a substitute' }[0m
+2026-11-25T05:26:01.3923915Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-25T05:26:01.3924339Z env:
+2026-11-25T05:26:01.3924566Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:26:01.3924826Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:26:01.3925112Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:26:01.3925481Z   GODOT_EXE: D:\a\_temp\godot-windows\Godot_v4.7-stable_win64_console.exe
+2026-11-25T05:26:01.3926783Z   WINDOWS_DEPENDENCIES: D:\a\_temp\godot-windows
+2026-11-25T05:26:01.3927135Z ##[endgroup]
+2026-11-25T05:32:33.8933927Z D:\a\cybersand\cybersand\evidence\ambient-graphical\qualification.json
+2026-11-25T05:32:34.0283917Z ##[group]Run $archive = "build/CyberSand-AMBIENT-002-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+2026-11-25T05:32:34.0284805Z [36;1m$archive = "build/CyberSand-AMBIENT-002-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"[0m
+2026-11-25T05:32:34.0286104Z [36;1mpython tools/package_ambient_living_evaluator.py build --dependencies $env:WINDOWS_DEPENDENCIES --qualification evidence/ambient --graphical-qualification evidence/ambient-graphical --output build/ambient-evaluation --archive $archive[0m
+2026-11-25T05:32:34.0287361Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Source-bound evaluator construction failed' }[0m
+2026-11-25T05:32:34.0287992Z [36;1m'AMBIENT_EVALUATION_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV[0m
+2026-11-25T05:32:34.0327769Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-25T05:32:34.0328185Z env:
+2026-11-25T05:32:34.0328418Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:32:34.0328781Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:32:34.0329070Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:32:34.0329445Z   GODOT_EXE: D:\a\_temp\godot-windows\Godot_v4.7-stable_win64_console.exe
+2026-11-25T05:32:34.0329888Z   WINDOWS_DEPENDENCIES: D:\a\_temp\godot-windows
+2026-11-25T05:32:34.0330229Z ##[endgroup]
+2026-11-25T05:32:58.7400815Z build\CyberSand-AMBIENT-002-Windows-50c6df89528d.zip
+2026-11-25T05:32:58.8917483Z ##[group]Run $extracted = Join-Path $env:RUNNER_TEMP 'ambient owner package'
+2026-11-25T05:32:58.8918283Z [36;1m$extracted = Join-Path $env:RUNNER_TEMP 'ambient owner package'[0m
+2026-11-25T05:32:58.8918924Z [36;1mExpand-Archive -LiteralPath $env:AMBIENT_EVALUATION_ARCHIVE -DestinationPath $extracted[0m
+2026-11-25T05:32:58.8919592Z [36;1mpython tools/package_ambient_living_evaluator.py verify $extracted --pristine[0m
+2026-11-25T05:32:58.8920208Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator identity failed' }[0m
+2026-11-25T05:32:58.8920752Z [36;1m$console = Join-Path $extracted 'Godot_v4.7-stable_win64_console.exe'[0m
+2026-11-25T05:32:58.8922243Z [36;1mpython tools/qualify_ambient_living.py --godot $console --project (Join-Path $extracted 'godot') --case living_engine --case living_spatial --case living_authoring_save --case living_authoring_reopen --case living_editor --case living_group --case living_examples --case living_episodes --output evidence/extracted-package[0m
+2026-11-25T05:32:58.8923699Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Extracted Windows gameplay or reopening failed' }[0m
+2026-11-25T05:32:58.8924537Z [36;1mpython tools/qualify_ambient_living.py --godot $console --project (Join-Path $extracted 'godot') --capture --output evidence/extracted-graphical[0m
+2026-11-25T05:32:58.8925407Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Pristine extracted package graphical launch failed' }[0m
+2026-11-25T05:32:58.8925987Z [36;1m$start = New-Object System.Diagnostics.ProcessStartInfo[0m
+2026-11-25T05:32:58.8926391Z [36;1m$start.FileName = $env:ComSpec[0m
+2026-11-25T05:32:58.8926935Z [36;1m$start.Arguments = '/d /s /c ""' + (Join-Path $extracted 'Open Workbench.cmd') + '" --headless --quit-after 180"'[0m
+2026-11-25T05:32:58.8927492Z [36;1m$start.UseShellExecute = $false[0m
+2026-11-25T05:32:58.8927828Z [36;1m$start.RedirectStandardOutput = $true[0m
+2026-11-25T05:32:58.8928182Z [36;1m$start.RedirectStandardError = $true[0m
+2026-11-25T05:32:58.8928590Z [36;1m$process = New-Object System.Diagnostics.Process[0m
+2026-11-25T05:32:58.8929002Z [36;1m$process.StartInfo = $start[0m
+2026-11-25T05:32:58.8929308Z [36;1m[void]$process.Start()[0m
+2026-11-25T05:32:58.8929663Z [36;1m$stdout = $process.StandardOutput.ReadToEndAsync()[0m
+2026-11-25T05:32:58.8930093Z [36;1m$stderr = $process.StandardError.ReadToEndAsync()[0m
+2026-11-25T05:32:58.8930473Z [36;1mif (!$process.WaitForExit(300000)) {[0m
+2026-11-25T05:32:58.8930976Z [36;1m  $process.Kill($true)[0m
+2026-11-25T05:32:58.8931328Z [36;1m  throw 'Ordinary packaged launcher exceeded300 seconds'[0m
+2026-11-25T05:32:58.8931692Z [36;1m}[0m
+2026-11-25T05:32:58.8932058Z [36;1m$stdout.Result | Set-Content evidence/packaged-launcher.stdout.log[0m
+2026-11-25T05:32:58.8932587Z [36;1m$stderr.Result | Set-Content evidence/packaged-launcher.stderr.log[0m
+2026-11-25T05:32:58.8933504Z [36;1mif ($process.ExitCode -ne 0 -or ($stdout.Result + $stderr.Result) -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|ERROR:') { throw 'Ordinary packaged launcher failed' }[0m
+2026-11-25T05:32:58.8934540Z [36;1mif ($stdout.Result -notmatch 'SHARED_WORKBENCH_LAUNCH_READY') { throw 'Ordinary Workbench launch marker absent' }[0m
+2026-11-25T05:32:58.8935238Z [36;1mpython tools/package_ambient_living_evaluator.py verify $extracted[0m
+2026-11-25T05:32:58.8935837Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Original evaluator input changed during execution' }[0m
+2026-11-25T05:32:58.8975912Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-11-25T05:32:58.8976324Z env:
+2026-11-25T05:32:58.8976551Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:32:58.8976814Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:32:58.8977099Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:32:58.8977468Z   GODOT_EXE: D:\a\_temp\godot-windows\Godot_v4.7-stable_win64_console.exe
+2026-11-25T05:32:58.8978149Z   WINDOWS_DEPENDENCIES: D:\a\_temp\godot-windows
+2026-11-25T05:32:58.8980964Z   AMBIENT_EVALUATION_ARCHIVE: build/CyberSand-AMBIENT-002-Windows-50c6df89528d.zip
+2026-11-25T05:32:58.8981538Z ##[endgroup]
+2026-11-25T05:33:02.9003487Z {"verified": true, "source_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254", "files": 1473}
+2026-11-25T05:33:13.6968054Z AMBIENT qualification: living_authoring_save
+2026-11-25T05:33:15.5868227Z AMBIENT qualification: living_authoring_reopen
+2026-11-25T05:33:17.4606454Z AMBIENT qualification: living_editor
+2026-11-25T05:33:27.7957587Z AMBIENT qualification: living_engine
+2026-11-25T05:33:29.5879075Z AMBIENT qualification: living_group
+2026-11-25T05:33:30.7258893Z AMBIENT qualification: living_spatial
+2026-11-25T05:33:33.8991203Z AMBIENT qualification: living_episodes
+2026-11-25T05:33:43.6755676Z AMBIENT qualification: living_examples
+2026-11-25T05:35:29.8826710Z D:\a\cybersand\cybersand\evidence\extracted-package\qualification.json
+2026-11-25T05:41:56.2620651Z D:\a\cybersand\cybersand\evidence\extracted-graphical\qualification.json
+2026-11-25T05:42:08.4417824Z {"verified": true, "source_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254", "files": 1473}
+2026-11-25T05:42:08.5111389Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-25T05:42:08.5111961Z with:
+2026-11-25T05:42:08.5112328Z   name: ambient-002-windows-50c6df89528dc9ecdc5316d8c67abf203e192254
+2026-11-25T05:42:08.5113046Z   path: build/CyberSand-AMBIENT-002-Windows-*.zip
+build/CyberSand-AMBIENT-002-Windows-*.zip.sha256
+
+2026-11-25T05:42:08.5113605Z   if-no-files-found: error
+2026-11-25T05:42:08.5113860Z   retention-days: 30
+2026-11-25T05:42:08.5114111Z   compression-level: 6
+2026-11-25T05:42:08.5114345Z   overwrite: false
+2026-11-25T05:42:08.5114553Z   include-hidden-files: false
+2026-11-25T05:42:08.5114776Z env:
+2026-11-25T05:42:08.5114990Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:42:08.5115254Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:42:08.5115541Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:42:08.5115905Z   GODOT_EXE: D:\a\_temp\godot-windows\Godot_v4.7-stable_win64_console.exe
+2026-11-25T05:42:08.5116399Z   WINDOWS_DEPENDENCIES: D:\a\_temp\godot-windows
+2026-11-25T05:42:08.5116870Z   AMBIENT_EVALUATION_ARCHIVE: build/CyberSand-AMBIENT-002-Windows-50c6df89528d.zip
+2026-11-25T05:42:08.5117304Z ##[endgroup]
+2026-11-25T05:42:08.6952255Z (node:3008) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-25T05:42:08.6953431Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-25T05:42:08.7021688Z With the provided path, there will be 2 files uploaded
+2026-11-25T05:42:08.7026865Z Artifact name is valid!
+2026-11-25T05:42:08.7029494Z Root directory input is valid!
+2026-11-25T05:42:09.0066146Z Beginning upload of artifact content to blob storage
+2026-11-25T05:42:09.2781633Z (node:3008) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-25T05:42:09.7804716Z Uploaded bytes 8388608
+2026-11-25T05:42:10.0125326Z Uploaded bytes 16777216
+2026-11-25T05:42:10.1664013Z Uploaded bytes 25165824
+2026-11-25T05:42:10.2394539Z Uploaded bytes 33554432
+2026-11-25T05:42:10.4819647Z Uploaded bytes 41943040
+2026-11-25T05:42:10.7524422Z Uploaded bytes 50331648
+2026-11-25T05:42:10.9546393Z Uploaded bytes 58720256
+2026-11-25T05:42:11.2453187Z Uploaded bytes 67108864
+2026-11-25T05:42:11.4801514Z Uploaded bytes 75497472
+2026-11-25T05:42:11.7641422Z Uploaded bytes 83886080
+2026-11-25T05:42:11.9214029Z Uploaded bytes 92274688
+2026-11-25T05:42:12.2170295Z Uploaded bytes 100663296
+2026-11-25T05:42:12.4175658Z Uploaded bytes 109051904
+2026-11-25T05:42:12.6116674Z Uploaded bytes 117440512
+2026-11-25T05:42:12.9179637Z Uploaded bytes 125829120
+2026-11-25T05:42:13.1774849Z Uploaded bytes 134217728
+2026-11-25T05:42:13.4845874Z Uploaded bytes 142606336
+2026-11-25T05:42:13.7962443Z Uploaded bytes 150994944
+2026-11-25T05:42:14.0807396Z Uploaded bytes 159383552
+2026-11-25T05:42:14.1955570Z Uploaded bytes 167772160
+2026-11-25T05:42:14.4496770Z Uploaded bytes 176160768
+2026-11-25T05:42:14.6083391Z Uploaded bytes 184549376
+2026-11-25T05:42:14.8998591Z Uploaded bytes 192937984
+2026-11-25T05:42:15.1280497Z Uploaded bytes 201326592
+2026-11-25T05:42:15.8194666Z Uploaded bytes 209715200
+2026-11-25T05:42:16.1166190Z Uploaded bytes 218103808
+2026-11-25T05:42:16.2159712Z Uploaded bytes 226492416
+2026-11-25T05:42:16.2747614Z Uploaded bytes 234881024
+2026-11-25T05:42:16.4027471Z Uploaded bytes 243269632
+2026-11-25T05:42:17.3447359Z Uploaded bytes 251658240
+2026-11-25T05:42:17.5594016Z Uploaded bytes 259389255
+2026-11-25T05:42:17.6012119Z Finished uploading artifact content to blob storage!
+2026-11-25T05:42:17.6016890Z SHA256 digest of uploaded artifact zip is 8be206e40ad48f467d16b8f618a415169f5c80f2456f56b9caca06cf3d472608
+2026-11-25T05:42:17.6019476Z Finalizing artifact upload
+2026-11-25T05:42:17.9861683Z Artifact ambient-002-windows-50c6df89528dc9ecdc5316d8c67abf203e192254.zip successfully finalized. Artifact ID 14995966187
+2026-11-25T05:42:17.9863727Z Artifact ambient-002-windows-50c6df89528dc9ecdc5316d8c67abf203e192254 has been successfully uploaded! Final size is 259389255 bytes. Artifact ID is 14995966187
+2026-11-25T05:42:17.9871580Z Artifact download URL: https://github.com/techrote/cybersand/actions/runs/45552786466/artifacts/14995966187
+2026-11-25T05:42:18.0192020Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-25T05:42:18.0192539Z with:
+2026-11-25T05:42:18.0192891Z   name: ambient-002-evidence-50c6df89528dc9ecdc5316d8c67abf203e192254
+2026-11-25T05:42:18.0193302Z   path: evidence
+2026-11-25T05:42:18.0193565Z   if-no-files-found: error
+2026-11-25T05:42:18.0193824Z   retention-days: 30
+2026-11-25T05:42:18.0194085Z   compression-level: 6
+2026-11-25T05:42:18.0194342Z   overwrite: false
+2026-11-25T05:42:18.0194579Z   include-hidden-files: false
+2026-11-25T05:42:18.0194840Z env:
+2026-11-25T05:42:18.0195043Z   GIT_CONFIG_COUNT: 1
+2026-11-25T05:42:18.0195302Z   GIT_CONFIG_KEY_0: core.autocrlf
+2026-11-25T05:42:18.0195579Z   GIT_CONFIG_VALUE_0: false
+2026-11-25T05:42:18.0195929Z   GODOT_EXE: D:\a\_temp\godot-windows\Godot_v4.7-stable_win64_console.exe
+2026-11-25T05:42:18.0196358Z   WINDOWS_DEPENDENCIES: D:\a\_temp\godot-windows
+2026-11-25T05:42:18.0196890Z   AMBIENT_EVALUATION_ARCHIVE: build/CyberSand-AMBIENT-002-Windows-50c6df89528d.zip
+2026-11-25T05:42:18.0197542Z ##[endgroup]
+2026-11-25T05:42:18.2237355Z (node:3896) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-25T05:42:18.2238891Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-25T05:42:18.6461662Z With the provided path, there will be 278 files uploaded
+2026-11-25T05:42:18.6468988Z Artifact name is valid!
+2026-11-25T05:42:18.6470855Z Root directory input is valid!
+2026-11-25T05:42:18.9591668Z Beginning upload of artifact content to blob storage
+2026-11-25T05:42:19.5037976Z (node:3896) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-25T05:42:20.2148061Z Uploaded bytes 8388608
+2026-11-25T05:42:20.5804011Z Uploaded bytes 16777216
+2026-11-25T05:42:20.6317754Z Uploaded bytes 25165824
+2026-11-25T05:42:20.7647853Z Uploaded bytes 28268700
+2026-11-25T05:42:20.8152874Z Finished uploading artifact content to blob storage!
+2026-11-25T05:42:20.8157347Z SHA256 digest of uploaded artifact zip is 5d12ce325cc0c3024a7c60e4e303e8fed8ef55a437596def809624c561c1101d
+2026-11-25T05:42:20.8160001Z Finalizing artifact upload
+2026-11-25T05:42:21.1450140Z Artifact ambient-002-evidence-50c6df89528dc9ecdc5316d8c67abf203e192254.zip successfully finalized. Artifact ID 14995491989
+2026-11-25T05:42:21.1452332Z Artifact ambient-002-evidence-50c6df89528dc9ecdc5316d8c67abf203e192254 has been successfully uploaded! Final size is 28268700 bytes. Artifact ID is 14995491989
+2026-11-25T05:42:21.1462378Z Artifact download URL: https://github.com/techrote/cybersand/actions/runs/45552786466/artifacts/14995491989
+2026-11-25T05:42:21.1777629Z Post job cleanup.
+2026-11-25T05:42:21.3625111Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-11-25T05:42:21.3898196Z git version 2.56.1.windows.1
+2026-11-25T05:42:21.3970992Z Temporarily overriding HOME='D:\a\_temp\dd723c95-1c38-4ff8-a6a5-c4494131ad6f' before making global git config changes
+2026-11-25T05:42:21.3972148Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-25T05:42:21.3984171Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\cybersand\cybersand
+2026-11-25T05:42:21.4384653Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-11-25T05:42:21.4690623Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-11-25T05:42:21.9467938Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-25T05:42:21.9776834Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-11-25T05:42:22.4794812Z Cleaning up orphan processes
+2026-11-25T05:42:22.4879982Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
