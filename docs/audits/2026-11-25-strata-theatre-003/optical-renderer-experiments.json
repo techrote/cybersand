@@ -2,7 +2,7 @@
   "schema": "cybersand-strata003-specialist-experiment-register-v1",
   "created_utc_date": "2026-11-25",
   "owner": "Specialist A",
-  "integration_note": "Lead must bind final application/platform evidence before changing dispositions. All local graphical fields are pending.",
+  "integration_note": "Initial per-experiment checkpoints remain historical. Later source-bound observations are recorded in subsequent_evidence; a positive subtest does not qualify a whole failed application or a later changed source.",
   "experiments": [
     {
       "implementation": {
@@ -418,7 +418,49 @@
         "registered_witness": "Near/far local attenuation, retired actor reveal clearing, multiple-actor native scene motion."
       },
       "artistic_assessment": "Conservative unions can include empty gaps between articulated parts; no perfect foreground occlusion or collision mask is claimed.",
-      "disposition": "implemented_bounded_candidate_pending_integrated_graphical_qualification"
+      "disposition": "implemented_bounded_candidate_pending_integrated_graphical_qualification",
+      "capacity_review": {
+        "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "finding": "Ordinary Workbench admission independently bounds eight active actors and64parts/proxies; current physical render_parts emits slot indices0..7. High persistent instance IDs map separately. Sampled player_rectangle is a separate character, not a fallback for a selected physical actor.",
+        "future_limit": "No selected-actor priority if a future publisher admits more than eight combined actors."
+      }
+    },
+    {
+      "id": "A010-exact-framebuffer-boundary",
+      "implementation": {
+        "source_commit": "bdd7a6cf7c004b7b020d9ef2c95be4153a250013",
+        "files": {
+          "godot/shaders/strata_optical_plane.gdshader": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+          "godot/scripts/depth/strata_optical_renderer.gd": "69c7e3086fe00137a29d4010e0a8c03578c710021d632dda5794c4a427b9d7ba",
+          "godot/tests/test_strata_optical_renderer.gd": "e819a172204a041378e57cbdc32c9a0f06e2495660d47bd6b9c55bacdec0e170"
+        },
+        "published_application": "fd0830abcfadd9ae19162e5677943bb131223e59"
+      },
+      "hypothesis": "Premultiplied filtering and interpolation can retain alpha correctness while a direct legacy Classic branch and matching straight-alpha framebuffer blend preserve exact RGBA8 comparison bytes.",
+      "parameters": [
+        "comparison_wipe",
+        "effect_strength",
+        "classic_haze",
+        "plane_opacity",
+        "parent opacity"
+      ],
+      "applicable_scenes": [
+        "Haze 0.3 / parent opacity 0.5 checker, impulse and partial-blue fixture",
+        "Every integrated Classic comparison"
+      ],
+      "cost_contract": {
+        "new_texture_reads": 0,
+        "new_render_targets": 0,
+        "arithmetic_change": "One final unpremultiply on processed output; direct Classic branch avoids conversion roundtrip."
+      },
+      "correctness_evidence": {
+        "source_review": "optical-boundary-review-a.md",
+        "local_headless_checks": 21,
+        "local_failures": 0,
+        "actual_graphical": "Required at published application; run45721790366 pending when recorded."
+      },
+      "disposition": "focused_correction_pending_actual_graphical_requalification",
+      "research_record": "optical-assertion-review-a.md"
     }
   ],
   "retained_negative_results": [
@@ -474,7 +516,19 @@
       "finding": "Initial helper conflated the eight-active-actor budget with numeric identity range0..7; later monotonic IDs such as8 and100 could be omitted.",
       "reviewer": "Integration lead",
       "fix_commit": "333e9a73525e0ecf8928bb792407fd45386c5795",
-      "disposition": "Bound eight distinct active nonnegative identities and64parts; stable sorted output;29pure checks pass."
+      "disposition": "Bound eight distinct active nonnegative identities and64parts; stable sorted output;29pure checks pass.",
+      "subsequent_scope_clarification": "This is a helper-level capacity defect demonstrated with synthetic high IDs. Current ordinary physical render_parts publishes slot indices0..7, so no actual omitted high-instance-ID actor was established; the repair remains defensive and tested."
+    },
+    {
+      "id": "A-negative-framebuffer-precision",
+      "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+      "artifact_id": 15070878821,
+      "finding": "Classic wipe failed exact bytes under haze0.3 and parent opacity0.5: fixed-function straight blending and shader premultiplication round differently on actual llvmpipe RGBA8.",
+      "initial_review_error": "Algebraic equivalence was incorrectly treated as sufficient for bit-exact framebuffer output.",
+      "fix_commit": "bdd7a6cf7c004b7b020d9ef2c95be4153a250013",
+      "oracle": "Exact bytes retained; both baseline and wipe are now captured with changed-channel/max-delta diagnostics.",
+      "disposition": "Candidate failed1/108 actual renderer checks; focused correction requires fresh actual qualification."
     }
   ],
   "subsequent_evidence": [
@@ -515,6 +569,30 @@
         "One paused overview per profile, not a human navigation study.",
         "Whole-scene Linux/Windows pixels differ; each same-backend Classic return is exact.",
         "A/B artistic ordering differs and ties remain."
+      ]
+    },
+    {
+      "id": "hosted-renderer-05-negative",
+      "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+      "artifact_id": 15070878821,
+      "renderers": [
+        "Mesa25.2.8 llvmpipe LLVM20.1.2"
+      ],
+      "checks": 108,
+      "failures": 1,
+      "review": "renderer-campaign-05-review-a.json",
+      "positive_scope": [
+        "Dense checker contrast204 RGBA8 levels at radius0, zero at radii1/2/3/6",
+        "Thin white RGB equals coverage throughout the tested radii",
+        "Detail contrast204 to51 with every alpha unchanged",
+        "Bounded diffusion halo4/255 with opaque impulse centre",
+        "Published actor near/far and retirement fixture"
+      ],
+      "negative_scope": "Classic wipe with haze/parent opacity failed; whole candidate is not qualified.",
+      "limits": [
+        "Synthetic pixels cannot establish human readability or physical GPU performance.",
+        "The failed campaign did not separately save the Classic-haze baseline; later correction adds it."
       ]
     }
   ]

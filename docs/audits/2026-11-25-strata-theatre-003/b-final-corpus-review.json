@@ -1,0 +1,409 @@
+{
+  "schema": "strata3-final-corpus-artistic-review-v1",
+  "reviewer": "Specialist B",
+  "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "status": "awaiting-original-campaign-artifacts",
+  "source_frozen_for_package": true,
+  "review_scope": "This is a pending review plan. Empty findings are unrecorded, not passes. Findings will be added only after original source/configuration/image custody is checked.",
+  "axes": [
+    "physical_route_distinction",
+    "selected_actor_localization",
+    "retained_rear_architectural_detail",
+    "perceived_layer_depth",
+    "absence_of_visible_artifacts"
+  ],
+  "performance_scope": {
+    "registered_profile_cost_scene": "optics-readability-challenge",
+    "registered_profile_cost_extent": [
+      1024,
+      768
+    ],
+    "paired_predecessor_classic_scene": "industrial-underworks",
+    "paired_predecessor_classic_extent": [
+      1024,
+      1024
+    ],
+    "all_scene_physical_performance_claim": false,
+    "physical_windows_nvidia_acceptance": false,
+    "scene_admission_target_ms": 45000,
+    "retained_original_windows_misses_ms": [
+      51619,
+      66316,
+      66200,
+      59958,
+      54804
+    ]
+  },
+  "scenes": [
+    {
+      "scene": "orbital-terminal",
+      "title": "Orbital Fabrication Terminal",
+      "extent": [
+        2048,
+        1024
+      ],
+      "source_path": "godot/data/strata2/orbital-terminal.json",
+      "source_sha256": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Can a player separate physical decks from suspended rear frames while retaining dark distant docking detail?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "title": "Rain over the Arcology",
+      "extent": [
+        2048,
+        1024
+      ],
+      "source_path": "godot/data/strata2/neon-rain-arcology.json",
+      "source_sha256": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Does the rear orange skybridge still imply a false route across the central gap?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "industrial-underworks",
+      "title": "Underworks / Reactor Service",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source_path": "godot/data/strata2/industrial-underworks.json",
+      "source_sha256": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Do revised dense lens kernels preserve wheel spokes without the rear lower truss competing with Play?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "abyss-foundry",
+      "title": "Abyss Foundry",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source_path": "godot/data/strata2/abyss-foundry.json",
+      "source_sha256": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Can dark physical basalt shelves remain dominant over a lifted rear industrial gantry?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "title": "Vertical Transfer Spine",
+      "extent": [
+        1024,
+        1536
+      ],
+      "source_path": "godot/data/strata2/vertical-transfer-spine.json",
+      "source_sha256": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Are rear silver cross-shaft trusses visibly subordinate to physical horizontal deck lips?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "sunward-freight-megastructure",
+      "title": "Sunward Freight Megastructure",
+      "extent": [
+        1536,
+        1024
+      ],
+      "source_path": "godot/data/strata3/sunward-freight-megastructure.json",
+      "source_sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Do warm shafts and local cool machinery pools support depth without resembling solid panels or closing the central shaft?",
+      "new_light_motifs": [
+        {
+          "id": "sun-shafts",
+          "kind": "light_shaft",
+          "plane": "effects",
+          "region": [
+            330,
+            155,
+            900,
+            680
+          ],
+          "seed": 3,
+          "count": 4,
+          "speed": 0.0,
+          "strength": 0.6,
+          "direction": [
+            0.26,
+            1.0
+          ],
+          "colour": [
+            1.0,
+            0.82,
+            0.48,
+            0.45
+          ],
+          "enabled": true
+        },
+        {
+          "id": "machine-pools",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            126,
+            670,
+            1280,
+            105
+          ],
+          "seed": 4,
+          "count": 5,
+          "speed": 0.0,
+          "strength": 0.7,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.26,
+            0.7,
+            0.84,
+            0.42
+          ],
+          "enabled": true
+        }
+      ],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "xeno-resonance-grotto",
+      "title": "Xeno Resonance Grotto",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source_path": "godot/data/strata3/xeno-resonance-grotto.json",
+      "source_sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Do physical shelves remain distinguishable from organic rear mineral rings under bioluminescence and haze?",
+      "new_light_motifs": [
+        {
+          "id": "organic-light",
+          "kind": "light_pool",
+          "plane": "effects",
+          "region": [
+            118,
+            212,
+            800,
+            580
+          ],
+          "seed": 11,
+          "count": 6,
+          "speed": 0.22,
+          "strength": 0.62,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.21,
+            0.84,
+            0.66,
+            0.42
+          ],
+          "enabled": true
+        },
+        {
+          "id": "ceiling-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            340,
+            156,
+            360,
+            700
+          ],
+          "seed": 14,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            -0.08,
+            1.0
+          ],
+          "colour": [
+            0.42,
+            0.55,
+            0.78,
+            0.4
+          ],
+          "enabled": true
+        }
+      ],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "lunar-terminator-observatory",
+      "title": "Lunar Terminator Observatory",
+      "extent": [
+        1536,
+        768
+      ],
+      "source_path": "godot/data/strata3/lunar-terminator-observatory.json",
+      "source_sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Is large negative sky space retained while instrument frames and planetary context remain behind physical decks?",
+      "new_light_motifs": [
+        {
+          "id": "instrument-light",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            510,
+            360,
+            640,
+            155
+          ],
+          "seed": 21,
+          "count": 3,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.32,
+            0.6,
+            0.85,
+            0.38
+          ],
+          "enabled": true
+        },
+        {
+          "id": "sunward-rim-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            320,
+            100,
+            940,
+            530
+          ],
+          "seed": 22,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.32,
+          "direction": [
+            0.42,
+            1.0
+          ],
+          "colour": [
+            0.92,
+            0.82,
+            0.59,
+            0.32
+          ],
+          "enabled": true
+        }
+      ],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    },
+    {
+      "scene": "optics-readability-challenge",
+      "title": "Optics Readability Challenge",
+      "extent": [
+        1024,
+        768
+      ],
+      "source_path": "godot/scripts/depth/strata_optics_fixtures.gd",
+      "source_sha256": "06a2dd457d5bfc5e3ef2d4c350d10b4a87e41c9774f18844559e1cfdb798a68e",
+      "status": "awaiting-actual-original-captures",
+      "original_install_report": null,
+      "original_capture_manifest": [],
+      "principal_question": "Can same-colour false platforms, stairs, ladder and blocked-looking passage be distinguished from actual Play, including moving actors and materials?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": null,
+      "artistic_disposition": null
+    }
+  ],
+  "motion_review": {
+    "status": "awaiting-actual-original-frames",
+    "scene": "optics-readability-challenge",
+    "profiles": [
+      "classic",
+      "gameplay_clarity",
+      "cinematic_deep_focus",
+      "diorama"
+    ],
+    "frames_per_profile": 10,
+    "review_cadence_fps": 3,
+    "cadence_is_actual_runtime_fps": false,
+    "camera_and_native_state_evolve": true,
+    "actor_variant_count": 3,
+    "final_findings": null
+  },
+  "independent_challenge_review": {
+    "reviewer": "Specialist C",
+    "status": "awaiting-opaque-byte-copies",
+    "key_reveal_before_initial_score": false,
+    "human_perceptual_study": false,
+    "expected_profile_count": 11,
+    "score_all_profiles": true,
+    "minimum_profiles_with_detailed_commentary": 6,
+    "scoring_registration": "c-blind-review-registration.json",
+    "scoring_registration_sha256": "4bcba2f3147ae45be2507a60547121967998f9600707bae46d281d9e6f0e6b52",
+    "criteria_count": 6,
+    "marker_only_actor_score_cap": 2,
+    "numerical_ratings_comparable_to_b_five_axes": false
+  },
+  "local_freeze_commit": "07ccee81573c3a2d025d61ffb82c6bf9d9b1351f",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45721790366",
+  "source_publication_scope": "Expected repaired delivery source; earlier actual captures remain historical source-bound findings. Final-source image/configuration confirmation is required.",
+  "candidate_history": [
+    {
+      "source_commit": "88d6a7c5194876c998ded0b6061429a11f3ac118",
+      "source_tree": "4dd90196509fad85c94ffda9ac49a0a340c4ed01",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45718951534",
+      "scope": "Earlier full campaign; historical evidence only until image/configuration source is reconciled."
+    },
+    {
+      "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+      "source_tree": "822866601a062d44969c462d951a40b4d4daf93d",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+      "scope": "Linux full graphical shader run exposed an exact partial-opacity Classic-wipe failure; do not mark this application qualified."
+    }
+  ],
+  "pending_shader_scope": "Lead reports legacy straight-alpha final blending with premultiplied internal filtering, preserving the exact wipe oracle. Await actual final-source results."
+}

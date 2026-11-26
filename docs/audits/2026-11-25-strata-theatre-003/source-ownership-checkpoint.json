@@ -1,0 +1,135 @@
+{
+  "schema": "strata3-source-ownership-checkpoint-v1",
+  "observed_utc": "2026-11-26 00:10:04 UTC",
+  "application_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "qualified_predecessor": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "predecessor_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "pull_requests": [
+    {
+      "number": 776,
+      "url": "https://github.com/techrote/cybersand/pull/776",
+      "title": "STRATA-THEATRE-002: layered native authoring and environmental atmosphere — Draft/HOLD",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "feat/strata-theatre-002-20261124",
+      "head_sha": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "updated_at": "2026-11-25T01:18:57Z"
+    },
+    {
+      "number": 784,
+      "url": "https://github.com/techrote/cybersand/pull/784",
+      "title": "MERGEDOWN-RENAISSANCE-001: source-pinned integration ledger and coordinated mainline consolidation",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "integration/mergedown-renaissance-001",
+      "head_sha": "1b41c6edea78b02d702d33683db892c2cec49899",
+      "base": "main",
+      "base_sha": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "updated_at": "2026-11-26T00:02:25Z"
+    },
+    {
+      "number": 767,
+      "url": "https://github.com/techrote/cybersand/pull/767",
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "codex/pubpres-playability-final-001-20261124",
+      "head_sha": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "updated_at": "2026-11-25T23:36:23Z"
+    },
+    {
+      "number": 777,
+      "url": "https://github.com/techrote/cybersand/pull/777",
+      "title": "[Draft/HOLD] WORLD-STEER M6–M7 — Collaborative native architecture, rich parts and bounded delegation",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "feat/world-steer-collaborative-architecture-20261124",
+      "head_sha": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "updated_at": "2026-11-25T06:55:38Z"
+    },
+    {
+      "number": 780,
+      "url": "https://github.com/techrote/cybersand/pull/780",
+      "title": "[Draft/HOLD] ART-WORKBENCH-COLLABORATIVE-002 — Conversational native world authoring",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "art/collaborative-002",
+      "head_sha": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "updated_at": "2026-11-25T23:38:44Z"
+    },
+    {
+      "number": 783,
+      "url": "https://github.com/techrote/cybersand/pull/783",
+      "title": "DOCS-RENAISSANCE-ULTIMA-001: failure-safe authoring, trusted retrieval and compact knowledge custody",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "docs/docs-renaissance-ultima-001",
+      "head_sha": "77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7",
+      "base": "main",
+      "base_sha": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "updated_at": "2026-11-25T23:59:37Z"
+    },
+    {
+      "number": 785,
+      "url": "https://github.com/techrote/cybersand/pull/785",
+      "title": "[Draft/HOLD] STRATA-THEATRE-003 — Optical depth, Optics Lab and gameplay legibility",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "feat/strata-theatre-003-20261125",
+      "head_sha": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "base": "feat/strata-theatre-002-20261124",
+      "base_sha": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "updated_at": "2026-11-25T23:29:45Z"
+    }
+  ],
+  "full_campaign": {
+    "run_id": 45721790366,
+    "linux_last_observed": "Full optical step completed successfully; inherited native authoring and paired original application still running.",
+    "windows_last_observed": "Full optical campaign running.",
+    "package": "Pending both platform gates; no evaluator acceptance claim."
+  },
+  "separate_sustained_annex": {
+    "application_unchanged": true,
+    "current_observer": "c4ae5ee9b4ad8d170cd9eeb44dbbbc8821266c15",
+    "observer_tree": "bf1e3a3b2212e8d8777a5edf59edf118a4b1d400",
+    "run_id": 45726494262,
+    "schema_version": 2,
+    "prior_run": 45724928964,
+    "prior_observer": "a1c4df06e42a345c929fd065a599a217ecfddf85",
+    "prior_result": "Actual sessions completed five minutes with zero GDScript failures; evidence reader rejected its erroneous numeric assumption for opaque decorative owner IDs. Original reports remain rejected. Independent posthoc correction is diagnostic only."
+  },
+  "archive_branch": "evidence/strata-theatre-003-final",
+  "disposition": "DRAFT-HOLD; final engineering, package and human/physical owner acceptance not yet complete.",
+  "protected_seams": [
+    "Existing Strata controller/presentation and Workbench panel",
+    "Versioned authored scene envelope",
+    "Unchanged native runtime and simulation ownership"
+  ],
+  "integration_comment": {
+    "pull": 784,
+    "id": 7178328780
+  },
+  "prohibitions": [
+    "No merge",
+    "No Ready promotion",
+    "No public release",
+    "No default activation",
+    "No import of unfinished protected programme architectures"
+  ]
+}

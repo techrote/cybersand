@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Portable Draft Strata Theatre 003 Workbench walkthrough and owner acceptance observations
 canonical-for: [strata-optics-owner-evaluation]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [strata-optical-composition.md, strata-workbench-evaluation.md, ../systems/strata-optics.md, ../systems/strata-workbench.md]
 ---
 
@@ -16,23 +16,25 @@ The exact application commit, source tree, official Godot hashes, retained nativ
 
 ## First ten minutes
 
-1. Open **Strata Theatre…** in the Workbench toolbar, then **Scenes**. Choose **Underworks / Reactor Service** and load it. Scene loading intentionally replaces the authored start; use Save first if you have work to keep.
-2. Use **Layers → Play → Solo** to inspect the physical route. Return to **Stack**. Rear architecture, effects and background have their own native authored pixels but do not provide physical Play collision.
-3. Open the **Optics** tab, titled **Strata Optics Lab**. Select **Architectural**. The physical material surface remains crisp while the rear composition changes.
+1. Open **Strata Theatre…** in the Workbench toolbar, then **Scenes**. Choose **Underworks / Reactor Service** and click **Load selected example…**. Scene loading intentionally replaces the authored start; use the ordinary **Save start [Ctrl+S]** first if you have work to keep.
+2. In **Layers**, select **Play · actors and collision** and check **Solo** to inspect the physical route. Then **uncheck Solo** and select **Stack · all visible planes**. Stack and Solo are separate controls: choosing Stack alone does not clear Solo. Rear architecture, effects and background have their own native authored pixels but do not provide physical Play collision.
+3. Open the **Optics** tab, titled **Strata Optics Lab**. The profile menu is the wide dropdown immediately below **Enable optical processing**. Choose **Architectural**. The physical material surface remains crisp while the rear composition changes.
 4. Compare **Gameplay Clarity**, **Cinematic Deep Focus**, **Atmospheric Industrial** and **Classic**. Watch the large reactor frames, central wheel, lower orange rear truss and actual silver physical platforms. A decorative ladder does not become traversable because it looks bright.
 5. Toggle **Bypass / before** repeatedly. It restores Classic without deleting the settings. Use **Processed share** to move the single-draw wipe. The camera alignment is shared during the wipe.
-6. Try **Show physical Play**. It suppresses competing decorative content using luminance and local separation, so the distinction does not depend only on hue. Release it to return to the authored profile.
+6. Switch on **Show physical Play**. It suppresses competing decorative content using luminance and local separation, so the distinction does not depend only on hue. Switch it off to return to the authored profile.
 7. Close or move the Strata window, resume ordinary play and pilot the selected actor. Pan, zoom, inspect openings, and return to the Lab. Evaluate movement and input response as well as the still image.
 
 Classic is always immediately available. A strong treatment is an editable starting point, not a new mandatory default.
+
+The Optics tab scrolls vertically. Basic comparison controls are near the top; **Depth and atmosphere**, **Per-plane composition** and **Named custom presets** are further down. Use its right-hand scrollbar or the mouse wheel, and move or resize the Strata window as needed. **Classic** selects the reference authored profile; **Bypass / before** is the temporary comparison that preserves your edited settings.
 
 ## Explore the lens
 
 Choose **Optical Lens**. Set focus to **Manual optical distance** and move **Focus distance** through the plane depths. Widen **Sharp focus width** to retain several layers, then increase **Defocus amount** carefully. The values are artistic optical units and source-cell radii, not calibrated physical lens measurements.
 
-Choose an explicit focal plane while leaving the native edit target on Play. Focus is presentation only. **Follow authoring plane** deliberately follows whichever layer you select through the existing editing controls; the optics plane picker itself does not change that target. **Inspection focus** provides a temporary rear-plane inspection without rewriting the saved artistic focus.
+To focus an explicit plane, set the focus-mode dropdown to **Selected focal plane**, then use the next dropdown to choose **Rear architecture**, **Atmosphere / effects** or **Distant background**. The focal-plane dropdown is disabled in other focus modes. Leave the native edit target on Play: focus is presentation only. **Follow authoring plane** deliberately follows whichever layer you select through the existing editing controls; the optics plane picker itself does not change that target. **Inspection focus** provides a temporary rear-plane inspection without rewriting the saved artistic focus.
 
-Compare **Pixel kernel**, **Diffusion** and **Detail** in the advanced controls. Pixel sampling spreads coverage; Detail retains architectural silhouettes while quieting interior texture; Diffusion spreads selected highlights. Diorama deliberately pushes shallow depth and is a useful stress test. Reject a lens setting if it makes stairs, braces or moving actors hard to interpret.
+Scroll to **Advanced optical experiments** and switch that section on to compare **Pixel kernel**, **Diffusion** and **Detail**. Pixel sampling spreads coverage; Detail retains architectural silhouettes while quieting interior texture; Diffusion spreads selected highlights. Diorama deliberately pushes shallow depth and is a useful stress test. Reject a lens setting if it makes stairs, braces or moving actors hard to interpret.
 
 ## Shape atmosphere and detail
 
@@ -40,7 +42,7 @@ Tonal separation, saturation, scattering colour, per-plane brightness and local 
 
 The original **Atmosphere** tab still owns authored steam, haze, rain, dust and light motifs. The optical atmosphere controls change how decorative planes transmit and scatter colour; they do not create native gas or physical light. New light shafts and local pools remain bounded visual motifs. Strong overlapping regions can look like panels; reduce strength or the region rather than assuming more haze always means more depth.
 
-In per-plane optics, choose Rear architecture, Effects or Background and adjust depth, contrast, saturation, tint, brightness, atmosphere, illumination, opacity and parallax. The native edit target is displayed separately. Zero optical opacity hides decoration without removing its native authoring target; heed the Lab's explicit warning while painting.
+Scroll to **Per-plane composition**, choose **Rear architecture**, **Atmosphere / effects** or **Distant background**, and adjust depth, contrast, saturation, brightness, defocus and haze response. Switch on **Advanced plane controls** to reveal light response, optical opacity, parallax response and plane tint. The native edit target is displayed separately. Zero optical opacity hides decoration without removing its native authoring target; heed the Lab's explicit warning while painting.
 
 ## Compare the nine native environments
 
@@ -52,9 +54,13 @@ Open the bundled **Gallery.html** for offline matched native captures, profile a
 
 ## Save and reopen your work
 
-Use **Save / duplicate as named preset** to keep a complete edited optical configuration. Built-in profiles remain available. Named custom presets live with this portable installation's user data. Saving a preset does not save the native scene; use the Workbench's ordinary **Save start** as well.
+There are two independent names and save operations:
 
-Exit completely, run **Open Workbench.cmd** again and load the saved start. Check the four authored layouts and optical values. Temporary bypass, clarity assistance, wipe and inspection focus should be gone. Quality remains an application preference. Old Strata v1/v2 documents without optical values open in Classic; explicitly editing authored optics upgrades that scene to v3.
+1. To keep reusable optical settings, scroll to **Named custom presets** at the bottom of the Optics tab. Enter a name in **Name for this optical composition**, then click **Save / duplicate as named preset**. Built-in profiles remain available. This saves the optical configuration in the portable installation's user data.
+2. To keep the complete authored scene, move or close the Strata window and use the ordinary Workbench's map-name field beside **Save start [Ctrl+S]**. Enter a scene name, for example `optics-underworks`, then click **Save start [Ctrl+S]**. This saves the four authored layouts and their optical settings. The map name is independent of the optical preset name.
+3. Exit completely and run **Open Workbench.cmd** again. Enter that **same scene name** in the ordinary Workbench's map-name field, then click **Load start**. This reads the named saved start; it does not open a file-selection dialog.
+
+Check the four authored layouts and optical values after reopening. Temporary bypass, clarity assistance, wipe and inspection focus should be gone. Quality remains an application preference. Old Strata v1/v2 documents without optical values open in Classic; explicitly editing authored optics upgrades that scene to v3.
 
 Native paint, erase, Undo/Redo, import and module composition still use their ordinary owners and history. Optical changes are not material edits. Save preserves the authored start, not evolved physical state or native Undo stacks.
 
@@ -71,7 +77,7 @@ Record feedback in `OWNER-FEEDBACK.md` with the package/source identity, hardwar
 - Which profiles preserve architecture while making Play clear? Which are attractive but tiring or misleading?
 - Does focus transition smoothly, and is manual optical distance intelligible?
 - Which atmosphere/light treatment feels spatially convincing? Where do haze panels or diffuse edges become visible?
-- Do pan, zoom, rotation, picking and ordinary editing remain predictable?
+- Do pan, zoom, actor rotation, picking and ordinary editing remain predictable? This Workbench does not expose a rotated-camera control.
 - Did admission, slider response, simulation progression or shutdown regress? Distinguish a visual preference from a reproducible engineering fault.
 - Which custom values and further experiments would you keep?
 

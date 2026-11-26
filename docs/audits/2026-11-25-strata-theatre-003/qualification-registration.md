@@ -67,6 +67,11 @@ The original scene geometry is never rewritten to improve an optical score.
   inspection plane do not enter authored saves. Malformed or unsupported optical
   state must refuse without replacing the active scene.
 
+Implementation-scope note added after registration: the ordinary Workbench
+exposes pan and zoom but no rotated-camera control. The registered camera
+rotation case therefore remains unexecuted; actor rotation coverage does not
+substitute for it. This limitation must remain visible in the final disposition.
+
 ## Comparative performance interpretation
 
 Warm-up precedes each observed sample, and samples retain all intervals including

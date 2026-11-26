@@ -163,6 +163,28 @@ positive assertion count did not override repeated runtime errors. The fix
 retained as a failed integration attempt; the pure helper and renderer tests
 alone had not exercised that presenter boundary.
 
+### Actor-capacity and selection clarification
+
+An independent source review after the high-ID helper repair checked whether
+a selected ninth actor could be omitted while eight earlier actors remained
+alive. Ordinary Workbench admission rejects this population: `WorkbenchSetup`
+limits authored actors to eight, `WorkbenchActorCatalog.capacity_error` also
+enforces eight logical actors and 64 combined parts/proxies, and
+`PhysicalActorSession.valid_definitions` repeats those limits. The current
+`render_parts` publisher uses slot indices 0–7 for `actor_id`; persistent
+Workbench instance IDs such as 9 or 100 map separately to those slots. The
+helper's acceptance of arbitrary nonnegative IDs is defensive capacity
+handling, not evidence that the ordinary publisher emits a ninth active slot.
+
+The `player_origin_px` path is the separate sampled-character position. It is
+hidden offscreen when the ordinary Workbench disables that sampled player or
+when sampled prototypes replace it. It is not a fallback rectangle for the
+selected Rapier/Midge actor. All currently admitted ordinary physical actors
+fit the eight-rectangle and 64-part bounds. If a future programme admits more
+actors or combines both overlay families concurrently, selection priority must
+be revisited: the helper currently has no priority guarantee for a ninth
+published actor. No authority or admission limit was changed by this review.
+
 ## Frequency and quality witness extension
 
 The first hosted 59-check source (`12b6beed`, campaign `45711742479`) passed its
