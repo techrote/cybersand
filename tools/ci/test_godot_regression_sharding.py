@@ -1229,6 +1229,19 @@ def registered_cases():
 
 
 class ArchitectureContextTests(unittest.TestCase):
+    def test_legacy_graphical_driver_flags_keep_the_exact_original_windows_command(self):
+        flags = ("--rendering-driver", "opengl3_angle", "--script", "res://tests/test_water_presentation_render.gd")
+        case = subject.Case("water-render", flags, 1200, 0, True)
+        command = subject.case_command("godot", case, "win32")
+        self.assertEqual(command, ["godot", "--rendering-method", "gl_compatibility", "--audio-driver", "Dummy",
+                                   "--path", str(subject.ROOT / "godot"), *flags])
+        self.assertEqual(command.count("--rendering-driver"), 1)
+        for name in context.GRAPHICAL_CASES:
+            architecture = subject.Case(name, ("--script", "res://tests/" + name + ".gd"), 1200, 0, True)
+            command = subject.case_command("godot", architecture, "win32")
+            self.assertEqual(command.count("--rendering-driver"), 1)
+            self.assertEqual(command[command.index("--rendering-driver") + 1], "opengl3_angle")
+
     def test_registered_graphics_use_the_graphical_watchdog_without_shortening_complex_cases(self):
         original = {case.name: case for case in subject.discover_cases()}
         policy = json.loads(json.dumps(subject.execution_policy.identity()))
