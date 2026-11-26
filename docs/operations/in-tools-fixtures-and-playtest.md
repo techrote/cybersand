@@ -3,7 +3,7 @@ retrieval: explicit-only
 title: IN-TOOLS successor fixtures and playtest
 status: Planned
 scope: Issue 361 current-main successor fixture definitions and acceptance intent; all successor fixtures NOT_RUN until implemented and executed
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [../architecture/in-tools-gameplay-admission.md, ../audits/2026-11-07-in-tools-361-source-authority-renewal.md]
 ---
 
@@ -14,11 +14,11 @@ The original 7 November six-fixture plan remains **Planned / NOT_RUN** at its re
 ## Current source registration
 
 Use the [admission contract](../architecture/in-tools-gameplay-admission.md) and
-its explicit 25 November registration for the ULTIMA candidate. The original
-7 November registration and historical Windows observations remain unchanged.
-`python3 tools/lcb/in_tools_current_main_admission.py` now authenticates accepted
-main `00cdb02f` source, the unchanged causal fixture and retained historical
-registration bytes. It refuses later source drift. This is source admission,
+its explicit 26 November v4 registration for the ULTIMA continuation. The
+7 and 25 November registrations and their historical Windows observations remain
+unchanged. `python3 tools/lcb/in_tools_current_main_admission.py` authenticates
+accepted main `67c1413a` source, the unchanged causal fixture and both retained
+historical registrations' bytes. It refuses later source drift. This is source admission,
 not execution of the six proposed gameplay fixtures, physical acceptance, or
 permission to merge.
 

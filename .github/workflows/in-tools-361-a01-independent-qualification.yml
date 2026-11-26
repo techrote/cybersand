@@ -7,6 +7,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - '.github/workflows/in-tools-361-a01-independent-qualification.yml'
+      - 'godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.*.json'
       - 'tools/lcb/in_tools_current_main_admission.py'
       - 'tools/lcb/test_in_tools_current_main_admission.py'
   workflow_dispatch:
