@@ -1,0 +1,185 @@
+{
+  "schema": "diagnostic-storage-before-v1",
+  "authority": "historical-non-authoritative",
+  "source_head": "1bf5fde543b73993a6a4f08f957b6851f11d9a50",
+  "input_sha256": {
+    "godot/scripts/physics_characterisation.gd": "43eca3584031d6059872d2d4b5e0b6b48d35511d01658673b5c78468dc7a1783",
+    "godot/tests/test_physics_characterisation.gd": "d5a93b5cb4b9eef772380ad954bd7ab7b0229bd1f88f12ed7cf52b83e5839d30",
+    "godot/examples/thunderbowl/thunderbowl_driver.gd": "18874191f0abecfc6aa1ab5d96afc7f98c5057e62d66285f5f21b06e8bba901b",
+    "godot/examples/thunderbowl/run_thunderbowl.gd": "320b83df4b5219e10cc1f6ee0cf5bcd1eb638705f4da7960b319d3e1b5f11a82",
+    "godot/examples/thunderbowl/run_physical_thunderbowl.gd": "fc2aa9b820086c6f84ee2106487951e96bf21a160b5cbd894c8f824d402cad7f",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "platform": "linux",
+  "cases": [
+    {
+      "kind": "physics",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 128,
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/physics.json",
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://tests/test_physics_characterisation.gd",
+          "--",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/case.json",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before"
+        ],
+        "exit_code": 0,
+        "acknowledged": true,
+        "json_valid": true,
+        "value": 7.0,
+        "bytes": 3883,
+        "sha256": "d177ed11f74f8f494dffbf119e61481c2d250a97a3a2b4ecc9aa5df288f96a68",
+        "log": "physics-normal.log",
+        "log_sha256": "d59be1010c7a75e656b78a98bf903741fbaa75d1ec7dc4818656dbad74b26a1a"
+      },
+      "after": {
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/physics.json",
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://tests/test_physics_characterisation.gd",
+          "--",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/case.json",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before"
+        ],
+        "exit_code": 0,
+        "acknowledged": true,
+        "json_valid": false,
+        "value": null,
+        "bytes": 128,
+        "sha256": "09602918d6eb68ae8b575060e2afbe4ca64de27ca14a162c16feab4c304348f2",
+        "log": "physics-rlimit.log",
+        "log_sha256": "8cd57d21a4df093adfa7ce66d1b8e0e490b5ff52bd38f07d5de6deea5e05a637"
+      }
+    },
+    {
+      "kind": "thunderbowl",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 69760,
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/thunderbowl.json",
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://examples/thunderbowl/run_thunderbowl.gd",
+          "--",
+          "--ticks=1",
+          "--seed=7",
+          "--output=/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/thunderbowl.json"
+        ],
+        "exit_code": 0,
+        "acknowledged": true,
+        "json_valid": true,
+        "value": 7,
+        "bytes": 71579,
+        "sha256": "0fbd2db35cfc2fe879f599a7a15df38547d7ead0198eba73b030f0b25feebdbd",
+        "log": "thunderbowl-normal.log",
+        "log_sha256": "3b1219cb2c711d0a31dc2934ab2f1c02cd34e9ae507f662ed45a0a618225ddfe"
+      },
+      "after": {
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/thunderbowl.json",
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://examples/thunderbowl/run_thunderbowl.gd",
+          "--",
+          "--ticks=1",
+          "--seed=8",
+          "--output=/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/thunderbowl.json"
+        ],
+        "exit_code": 0,
+        "acknowledged": true,
+        "json_valid": false,
+        "value": null,
+        "bytes": 69760,
+        "sha256": "c0b169728a8898f997fd5cc1fe80ec78c6706fd5c7b8722aa8a53874cc5026f1",
+        "log": "thunderbowl-rlimit.log",
+        "log_sha256": "d2a53a79a90720cf05227332509f91d3b45b12f7eb9597387df8a3619810678c"
+      }
+    },
+    {
+      "kind": "physical-thunderbowl",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 8320,
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/physical-thunderbowl.json",
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://examples/thunderbowl/run_physical_thunderbowl.gd",
+          "--",
+          "--actors=1",
+          "--ticks=1",
+          "--seed=7",
+          "--output=/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/physical-thunderbowl.json"
+        ],
+        "exit_code": 0,
+        "acknowledged": true,
+        "json_valid": true,
+        "value": 7,
+        "bytes": 9063,
+        "sha256": "cb97bda3da2ecdce6012cca002fbf3251d6a551dc894972ad9463792d6a71fd6",
+        "log": "physical-thunderbowl-normal.log",
+        "log_sha256": "79fe001152c81daba3a902384db60769c11a2132de88803598cafa8bf7fffd5f"
+      },
+      "after": {
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/physical-thunderbowl.json",
+        "command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+          "--script",
+          "res://examples/thunderbowl/run_physical_thunderbowl.gd",
+          "--",
+          "--actors=1",
+          "--ticks=1",
+          "--seed=8",
+          "--output=/workspace/scratch/1c5fccfbe328/ultima-a/a-results/diagnostic-storage-before/physical-thunderbowl.json"
+        ],
+        "exit_code": 0,
+        "acknowledged": true,
+        "json_valid": false,
+        "value": null,
+        "bytes": 8320,
+        "sha256": "d886971d2ae03be415fe30950ff20388df32ad94b47c97d8487cecb628f45cd8",
+        "log": "physical-thunderbowl-rlimit.log",
+        "log_sha256": "2118573ff45e64aa54601c1cdda72bb0ebde6a631f7b85b06adfc8362d9a5677"
+      }
+    }
+  ],
+  "status": "reproduced-all-three",
+  "completed": true
+}

@@ -402,3 +402,135 @@ source-follow to the linked status register supplies it. That second step is
 reported separately. Four intermediate contexts contained a stale save-writer
 paragraph; the corrected final contexts were read and verified. No generative
 model answer score or autonomous source-following result is claimed.
+
+## Expanded diagnostic writer correction: A-ULT-13
+
+The [fresh diagnostic reproduction](diagnostic-storage-before.json) called the
+actual physics-characterisation, prototype Thunderbowl and physical Thunderbowl
+CLIs against disposable one-tick fixtures. All three returned successful process
+completion after a real Linux buffered-tail write failure replaced a valid
+report with truncated, invalid JSON:
+
+| Actual caller | Previous complete bytes | Failed output bytes | Original acknowledgement |
+|---|---:|---:|---|
+| Physics characterisation | 3,883 | 128 | `PHYSICS_RESULT` reported success; exit 0 |
+| Prototype Thunderbowl | 71,579 | 69,760 | Successful report marker; exit 0 |
+| Physical Thunderbowl | 9,063 | 8,320 | Successful report JSON; exit 0 |
+
+Commit `e6796b8e226d061b415195a1993737832e7c38c6` applies the existing verified
+single-file transaction to those report writers. The existing report formats,
+controller logic and scientific recipes are unchanged. The callers now expose
+the storage refusal and exit unsuccessfully. Relative output paths containing
+spaces remain supported. An empty in-memory output route still avoids disk I/O.
+The [original three-writer Linux matrix](diagnostic-storage-linux-original3.json)
+passed nine cases: normal replacement, actual file-size failure and actual
+directory-permission refusal for each caller. Failed writes retained the exact
+previous digest and seed 7; retries loaded seed 8.
+
+Accepted-main drift added the optional Goblin foundation. The lead independently
+reproduced the same false-success failure in its guarded fixed audit writer and
+corrected that function in `34ae4faa`. A reviewed the unchanged fixed-path
+allowlist, real profile marker/containment checks, formatted envelope and builder
+budgets. The [extended integrated matrix](diagnostic-storage-linux-with-goblin.json)
+passed 12 cases; C independently repeated all 12. Its Goblin probe invokes the
+fixed `TRANSCRIPT_PATH` writer under a genuinely admitted disposable profile and
+also proves wrong-path and wrong-profile refusal. The payload identifies itself
+as a storage fixture. It is not an actual campaign transcript, replay acceptance
+or a transaction over all campaign files.
+
+The [three normal diagnostic regressions](diagnostic-storage-regressions.json)
+also completed naturally: physics instrumentation, Thunderbowl arena (621
+assertions) and Thunderbowl controllers (712 assertions). These runs do not
+re-establish a historical physics or performance campaign. Final Windows fault
+coverage remains a separate eight-case hosted gate; Linux execution does not
+close that platform obligation.
+
+## Art preference and retained-journal correction: A-ULT-14 and A-ULT-15
+
+The [actual pre-fix Art probe](art-panel-storage-before.json) demonstrated two
+further false acknowledgements on root source `b4257547`: `_save_settings`
+replaced a valid 1,108-byte configuration with 128 corrupt bytes while returning
+success, and `_persist_history_receipt` admitted a new 128-byte corrupt record.
+The latter left the previous 1,528-byte record intact but falsely marked the new
+item as saved. Both used a real Linux file-size limit and nonsecret synthetic
+inputs. No provider request or native editing operation was executed. The
+initial off-tree probe leaked UI objects during teardown; its complete logs are
+retained and are not counted as passing runtime qualification.
+
+Commit `73da90d5b1b7f907b7e30510762c8b7f4488d20d` changes only the required
+storage boundaries. Preferences use `ConfigFile.encode_to_text()` and the shared
+verified replacement with the existing 1 MiB profile bound. A failed save leaves
+the disk configuration intact; live controls can retain their new values. A
+successful retry clears only the matching prior save error. The retained journal
+writer keeps its short `pending-<UUID>.partial` sibling name, preserving its
+Windows pathname behavior. It checks `store_buffer`, closes the file, invokes the
+shared exact-byte verifier and then uses its unchanged native replacement. It
+assigns the item's file/order fields only after that succeeds. Identity, schema,
+frozen-turn, capacity and quota admission remain intact.
+
+**The journal helper is a retained private recovery/testing surface.** Current
+Art construction starts with an empty live conversation; `history_edited()`
+appends native-action information to that session's log. This fix does not enable
+automatic old-history restoration or create a new user recovery workflow. No
+real completed native edit was reported lost by the synthetic reproduction.
+
+The [expanded Linux Art matrix](art-panel-storage-linux.json) passed 13 cases,
+including the original six export/append/new-event cases. New checks cover
+preferences and the private journal under real file-size and permission failures,
+duplicate receipt refusal, exact previous bytes, recovery retries, typed/Unicode
+configuration roundtrip, schema-1 loading, schema-2 frozen projections/order,
+unchanged receipt clock on refusal, preserved admission/size guards and staging
+cleanup. C independently ran all 13; B reviewed source and user-facing semantics.
+The [normal regressions](art-panel-storage-regressions.json) retained the original
+278 passing Art assertions and added the unchanged 122-assertion receipt-identity
+suite: 400 assertions across six naturally completed processes.
+
+The [source binding](art-panel-storage-source-binding.json) records the exact
+input hashes and implemented function bodies. The final commit also changes one
+inactive legacy error phrase from “durable journal” to “verified journal file”;
+that wording is the only panel-file difference from these local run inputs.
+Both implemented function bodies, the child and runner are byte-identical. The
+final integrated qualification must still run on its own source checkpoint.
+The Windows plan contains nine cases: the original five, normal/locked-target
+preferences, normal journal publication and duplicate-record admission refusal.
+A new immutable receipt has no old destination to lock; the duplicate case is
+not represented as a Windows replacement failure.
+
+## Remaining writer perimeter and evidence custody
+
+The [one-to-one lane register](lane-findings-register.json) retains every
+`A-ULT-01` through `A-ULT-15` identity, reviewer and evidence route. Expanded
+callers remain explicitly pending final integrated platform receipts at this
+snapshot. The [remaining-writer dispositions](remaining-writer-dispositions.json)
+record source-grounded boundaries that were not silently treated as fixed:
+
+- Materials Lab job requests and cancellation markers are transient IPC. Their
+  guarded response/cancellation contract does not admit a truncated request as a
+  compiled/tested candidate. This was source inspection, not new OS fault testing.
+- Physical-flight development outputs already close and compare the complete
+  serialized bytes and refuse a mismatch. They are replaceable run artifacts;
+  the mechanism does not preserve a previous run when an output directory is
+  reused. Independent qualification uses a separate retained run directory.
+- The optional Web local-slot writer still has the old buffered-write/rename
+  pattern. No browser failure-safety qualification or desktop-helper port is
+  claimed. Its future experiment is an explicit owner boundary under
+  [issue #3's closure](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559),
+  with an executable follow-up in the register. The best-effort Web benchmark
+  cache is separate from the in-memory/UI/stdout result and does not acknowledge
+  a successful file save.
+
+The [additional independent reviews](storage-perimeter-independent-reviews.json)
+cover B's Tower export correction (six independently executed Linux cases), Art
+manuals, the lead's Goblin fixed writer and the lead's bounded LFS acquisition
+retry helper (nine executed negative controls). B's separate X11 clipboard
+observations are not attributed to A's headless Tower run.
+
+The [raw custody manifest](diagnostic-and-art-raw-custody.json) describes a
+51,065-byte compressed packet containing 131 exact text files (533,968 bytes
+before compression). Every extracted entry was rehashed. It preserves the
+diagnostic/Art reproductions, unique corrupt outputs, actual logs, relevant
+fixtures and failed harness attempts. The sole failed expanded Art run was
+correctly rejected because its cleanup tried to list a nonexistent journal
+directory; the exact earlier child and all failed results remain reconstructible.
+These failures were corrected before the successful 13-case run. No owner data,
+credentials, binary duplication or external artifact relocation is involved.

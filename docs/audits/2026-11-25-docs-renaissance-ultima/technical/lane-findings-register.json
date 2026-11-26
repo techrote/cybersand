@@ -1,0 +1,375 @@
+{
+  "schema": "ultima-a-findings-v1",
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "recorded_root_head": "171f5e970b1687e26afb5ead56f5ef5fbc55b7c8",
+  "scope": "One-to-one A-ULT01 through15 disposition snapshot, subordinate to later integrated final qualification. Unresolved means a named final platform gate remains, not unimplemented advice. No original LIMIT IDs are replaced by these lane IDs.",
+  "findings": [
+    {
+      "id": "A-ULT-01",
+      "priority": "P1",
+      "title": "Windows delete-before-move endangered existing authored saves",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd::write_named",
+        "godot/scripts/workbench_generated_map.gd::write_named",
+        "godot/scripts/architectural_generator_dialog.gd::save_project",
+        "godot/scripts/workbench_file_transaction.gd"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "before-buffered-flush.json",
+        "persistence-focused-latest.json",
+        "persistence-linux-final.json",
+        "hosted-independent-review.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "APPROVE source and independent Linux reproduction; A independently read actual Windows hosted archive at bfa40c84964b10b8bc15b2d836ce93d389f20836"
+      },
+      "fix_commit": "6fec5da5",
+      "status_reason": "Underlying original three-writer mechanism was qualified on Linux and Windows. Later expanded callers have separate IDs and pending platform status."
+    },
+    {
+      "id": "A-ULT-02",
+      "priority": "P1",
+      "title": "Buffered write errors silently committed truncated authored saves",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd::write_named",
+        "godot/scripts/workbench_generated_map.gd::write_named",
+        "godot/scripts/architectural_generator_dialog.gd::save_project",
+        "godot/scripts/workbench_file_transaction.gd"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "before-buffered-flush.json",
+        "persistence-focused-latest.json",
+        "persistence-linux-final.json",
+        "hosted-independent-review.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "APPROVE source and independent Linux reproduction; A independently read actual Windows hosted archive at bfa40c84964b10b8bc15b2d836ce93d389f20836"
+      },
+      "fix_commit": "6fec5da5",
+      "status_reason": "Underlying original three-writer mechanism was qualified on Linux and Windows. Later expanded callers have separate IDs and pending platform status."
+    },
+    {
+      "id": "A-ULT-03",
+      "priority": "P2",
+      "title": "Generated/project save messages overstated old-file preservation",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/workbench_setup.gd::write_named",
+        "godot/scripts/workbench_generated_map.gd::write_named",
+        "godot/scripts/architectural_generator_dialog.gd::save_project",
+        "godot/scripts/workbench_file_transaction.gd"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "before-buffered-flush.json",
+        "persistence-focused-latest.json",
+        "persistence-linux-final.json",
+        "hosted-independent-review.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "APPROVE source and independent Linux reproduction; A independently read actual Windows hosted archive at bfa40c84964b10b8bc15b2d836ce93d389f20836"
+      },
+      "fix_commit": "6fec5da5",
+      "status_reason": "Underlying original three-writer mechanism was qualified on Linux and Windows. Later expanded callers have separate IDs and pending platform status."
+    },
+    {
+      "id": "A-ULT-04",
+      "priority": "P2",
+      "title": "Existing native replacement primitive is format-neutral and reusable",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/native_extension/material_baseline_file.cpp",
+        "godot/scripts/workbench_material_baseline.gd"
+      ],
+      "status": "verified-not-a-defect",
+      "evidence": [
+        "independent-observations.json",
+        "material-baseline-tail-fault.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "lanes": [
+          "C",
+          "lead"
+        ],
+        "verdict": "Native primitive/source remained byte-identical; no ABI or format change required"
+      }
+    },
+    {
+      "id": "A-ULT-05",
+      "priority": "P1",
+      "title": "Workbench torque/COM ownership differs from ordinary body packet",
+      "implementing_lane": "A",
+      "source_locators": [
+        "docs/architecture/module-boundaries.md",
+        "docs/architecture/rendering-and-gameplay-bridges.md",
+        "docs/architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "technical-review-coverage.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "verdict": "B source review",
+        "limits": "Current source/ancestry checks; no new historical physics or performance campaign claimed"
+      },
+      "fix_commit": "3af3370d"
+    },
+    {
+      "id": "A-ULT-06",
+      "priority": "P1",
+      "title": "Optional accepted settled discovery was incorrectly described as absent",
+      "implementing_lane": "A",
+      "source_locators": [
+        "docs/architecture/soliding-lifecycle.md",
+        "docs/systems/settled-region-discovery.md"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "technical-review-coverage.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "verdict": "C source review",
+        "limits": "Current source/ancestry checks; no new historical physics or performance campaign claimed"
+      },
+      "fix_commit": "20c82d6e"
+    },
+    {
+      "id": "A-ULT-07",
+      "priority": "P2",
+      "title": "Ordinary brush queue bounds and admission semantics were stale",
+      "implementing_lane": "A",
+      "source_locators": [
+        "docs/architecture/data-ownership-and-lifetimes.md"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "technical-review-coverage.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "verdict": "C source review",
+        "limits": "Current source/ancestry checks; no new historical physics or performance campaign claimed"
+      },
+      "fix_commit": "117579d4"
+    },
+    {
+      "id": "A-ULT-08",
+      "priority": "P2",
+      "title": "Wave catch_falling prose omitted the four-tick grace rule",
+      "implementing_lane": "A",
+      "source_locators": [
+        "docs/architecture/wave-flow-v1.md"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "technical-review-coverage.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "verdict": "B source review",
+        "limits": "Current source/ancestry checks; no new historical physics or performance campaign claimed"
+      },
+      "fix_commit": "4482ff99"
+    },
+    {
+      "id": "A-ULT-09",
+      "priority": "P1",
+      "title": "Pressure/IN accepted integration and actual state versions were stale",
+      "implementing_lane": "A",
+      "source_locators": [
+        "docs/architecture/inertial-cellular-v1.md",
+        "docs/architecture/pressure-flow-v1.md"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "technical-review-coverage.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "verdict": "C source review",
+        "limits": "Current source/ancestry checks; no new historical physics or performance campaign claimed"
+      },
+      "fix_commit": "f591124e"
+    },
+    {
+      "id": "A-ULT-10",
+      "priority": "P1",
+      "title": "Prepared limits, quantity codec and cache/normalization claims were stale",
+      "implementing_lane": "A",
+      "source_locators": [
+        "docs/architecture/liquid-prepared-setup-and-receipts.md",
+        "docs/architecture/lcb-pressure-inertial-handoff.md",
+        "docs/architecture/liquid-state-transition-matrix.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/architecture/pressure-optimization.md"
+      ],
+      "status": "fixed-and-independently-verified",
+      "evidence": [
+        "technical-review-coverage.json",
+        "persistence-design-and-results.md"
+      ],
+      "independent_review": {
+        "verdict": "C source review",
+        "limits": "Current source/ancestry checks; no new historical physics or performance campaign claimed"
+      },
+      "fix_commit": "5c0fcdc8"
+    },
+    {
+      "id": "A-ULT-11",
+      "priority": "P1",
+      "title": "MicroScenario Main and CLI captures silently replaced valid JSON",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/main.gd::_write_microscenario_capture",
+        "godot/tests/run_microscenario.gd"
+      ],
+      "status": "unresolved",
+      "evidence": [
+        "microscenario-capture-before.json",
+        "microscenario-capture-linux.json",
+        "microscenario-capture-regressions.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "APPROVE source and independently executed Linux6; headless caller scope"
+      },
+      "fix_commit": "fcec6b70",
+      "status_reason": "Fix exists and independent Linux execution passed; final integrated Windows/hosted qualification is still pending at this lane receipt. The final unified register must bind later executed receipts before promoting status."
+    },
+    {
+      "id": "A-ULT-12",
+      "priority": "P1",
+      "title": "Four authored profile writers silently lost previous complete files",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/worldgen_workbench.gd::save_profile",
+        "godot/scripts/material_lab_panel.gd::_file_selected",
+        "godot/scripts/transport_profile_panel.gd::save_copy",
+        "godot/scripts/main.gd::water_lab_save_profile",
+        "godot/scripts/tower_panel.gd::_save_water_policy"
+      ],
+      "status": "unresolved",
+      "evidence": [
+        "profile-save-finding.json",
+        "profile-save-before.json",
+        "profile-save-linux.json",
+        "profile-save-regressions.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "Both independently executed Linux16 and confirmed all14 input hashes equal b698a2b2; B actual GUI separate"
+      },
+      "fix_commit": "b698a2b2447ece2076bfa83ac56093f34487450f",
+      "status_reason": "Fix exists and independent Linux execution passed; final integrated Windows/hosted qualification is still pending at this lane receipt. The final unified register must bind later executed receipts before promoting status."
+    },
+    {
+      "id": "A-ULT-13",
+      "priority": "P1",
+      "title": "Diagnostic CLI and guarded audit writers falsely acknowledged truncated files",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/physics_characterisation.gd",
+        "godot/examples/thunderbowl/thunderbowl_driver.gd::write_json",
+        "godot/examples/thunderbowl/run_physical_thunderbowl.gd::_finish",
+        "godot/goblin/goblin_controller.gd::_write_fixed"
+      ],
+      "status": "unresolved",
+      "evidence": [
+        "diagnostic-storage-before.json",
+        "diagnostic-storage-linux-original3.json",
+        "diagnostic-storage-linux-with-goblin.json",
+        "diagnostic-storage-regressions.json",
+        "diagnostic-and-art-raw-custody.json"
+      ],
+      "independent_review": {
+        "lane": "C",
+        "verdict": "APPROVE source and independently executed9 original CLI cases plus12 integrated cases",
+        "original3_report_sha256": "f36eb67beb3ff6e7a925e41c5345d8442e28f9b0aa52d187d6254e6665689033",
+        "integrated12_report_sha256": "d5a19410a05bac1cd0e4d3e9126c80a5e14eb9aea2d245bf77f0b39b8648c3a6"
+      },
+      "fix_commit": [
+        "e6796b8e226d061b415195a1993737832e7c38c6",
+        "34ae4faa",
+        "e0ba493b831e8869f79832e43509b3a518c241d1"
+      ],
+      "status_reason": "Fix exists and independent Linux execution passed; final integrated Windows/hosted qualification is still pending at this lane receipt. The final unified register must bind later executed receipts before promoting status. Goblin production fix is lead-owned; its guarded fixed writer is not a public CLI or whole-campaign transaction."
+    },
+    {
+      "id": "A-ULT-14",
+      "priority": "P1",
+      "title": "Live Art preference save acknowledged a truncated replacement",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_save_settings"
+      ],
+      "status": "unresolved",
+      "evidence": [
+        "art-panel-storage-before.json",
+        "art-panel-storage-linux.json",
+        "art-panel-storage-regressions.json",
+        "art-panel-storage-source-binding.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "B UX source approval; C independent source and Linux13 approval",
+        "C_report_sha256": "ecc87c5a7e9d19d32f5701abb87872b66353880335f26060f8e35b596ef67a33"
+      },
+      "fix_commit": "73da90d5b1b7f907b7e30510762c8b7f4488d20d",
+      "status_reason": "Fix exists and independent Linux execution passed; final integrated Windows/hosted qualification is still pending at this lane receipt. The final unified register must bind later executed receipts before promoting status."
+    },
+    {
+      "id": "A-ULT-15",
+      "priority": "P2",
+      "title": "Retained private Art receipt writer falsely admitted incomplete journal bytes",
+      "implementing_lane": "A",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_persist_history_receipt"
+      ],
+      "status": "unresolved",
+      "evidence": [
+        "art-panel-storage-before.json",
+        "art-panel-storage-linux.json",
+        "art-panel-storage-source-binding.json"
+      ],
+      "independent_review": {
+        "lanes": [
+          "B",
+          "C"
+        ],
+        "verdict": "Source review plus C independent actual Linux13; schema1 compatibility and schema2 frozen projection/order retained",
+        "C_report_sha256": "ecc87c5a7e9d19d32f5701abb87872b66353880335f26060f8e35b596ef67a33"
+      },
+      "fix_commit": "73da90d5b1b7f907b7e30510762c8b7f4488d20d",
+      "status_reason": "Fix exists and independent Linux execution passed; final integrated Windows/hosted qualification is still pending at this lane receipt. The final unified register must bind later executed receipts before promoting status. This is dormant retained recovery code: current history_edited logs live-session native actions directly. No completed real native edit was executed or reported lost in this fixture."
+    }
+  ]
+}

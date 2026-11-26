@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "171f5e970b1687e26afb5ead56f5ef5fbc55b7c8",
+  "source_sha256": {
+    "godot/scripts/material_lab_service.gd": "0981980b6500703aba771e7bd54f4a97070491db4b54bab8015ec8fa08dfb3e9",
+    "godot/scripts/physical_flight_development_scoring.gd": "dc938fcb80a41dc5990662f9428cc871f80d8c488c7582866c5276dbbd73095e",
+    "godot/scripts/web_demo_controller.gd": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb",
+    "godot/scripts/art_batch_panel.gd": "f49cb12c8b5c02bbc538f9ae9d95f5589cb0bbdcb44ac29e1d3cf85406e3ab4d"
+  },
+  "depth": "Complete relevant write/response/acknowledgement functions and selected downstream guards inspected. No fresh fault execution for the explicitly source-only classifications below. This is not a claim to have rewritten every test fixture, screenshot or diagnostic cache writer.",
+  "entries": [
+    {
+      "id": "PERIMETER-MATERIAL-IPC",
+      "status": "verified-not-a-defect",
+      "contract": "Transient per-job request/cancel messages, not a committed user save",
+      "source": [
+        "godot/scripts/material_lab_service.gd::request",
+        "godot/scripts/material_lab_service.gd::cancel",
+        "godot/scripts/material_lab_service.gd::_read_result",
+        "godot/scripts/material_lab_service.gd::poll"
+      ],
+      "finding": "Private job directory separates requests; malformed/truncated request fails backend parsing and cannot alone promote compiled_tested. Result admission checks types/state/receipt/process exit; cancel reason is latched first and overrides response, with a2second bounded termination fallback if marker delivery fails.",
+      "limits": "No new I/O fault injection or crash-safe IPC claim; interprocess request admission is not completion."
+    },
+    {
+      "id": "PERIMETER-FLIGHT-DEVELOPMENT",
+      "status": "verified-not-a-defect",
+      "contract": "Reconstructible DEVELOPMENT-run artifacts with explicit readback failure, not named user saves",
+      "source": [
+        "godot/scripts/physical_flight_development_scoring.gd::_archive_dir",
+        "godot/scripts/physical_flight_development_scoring.gd::_save"
+      ],
+      "finding": "Existing writer closes and compares complete serialized text; mismatch returns ok:false/write_readback_mismatch. No false-success gap like the repaired diagnostic writers was found. Output group is designated development evidence via CYBERSAND_PRESENTATION_EVIDENCE or user data.",
+      "limits": "Repeated use of the same output directory may overwrite prior run files before a failure. No old-run preservation, whole evidence-set transaction or new4LY campaign is claimed; qualified runners must retain each run in its own evidence directory."
+    },
+    {
+      "id": "PERIMETER-WEB-SLOT",
+      "priority": "P1 potential data loss in unqualified experimental route",
+      "status": "owner-decision-required",
+      "source": [
+        "godot/scripts/web_demo_controller.gd::save_slot"
+      ],
+      "finding": "Retained optional browser local-slot code still uses buffered write/get_error and fixed.tmp Godot rename; desktop verified replacement has not been ported or qualified for browser virtual filesystem/persistence. No real browser short-write reproduction was performed.",
+      "owner_record": "https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559",
+      "owner_record_readback_sha256": "0dd224c0537c85c65074965c25aba97b41c70ce28c4c2164631cf6c1244496c7",
+      "boundary": "Owner closed ongoing Web CI/toolchain/export maintenance as not planned, retaining only disposable experiments. Lead explicitly kept this route outside maintained desktop remediation; this is not marked fixed.",
+      "executable_next_action": "If an owner authorizes a new Web experiment, pin its actual engine/templates/Emscripten source, exercise local-slot complete-byte verification and interrupted replacement on a disposable browser profile, then verify browser persistence/reload separately from in-memory virtual-FS visibility. Preserve the prior slot and portable export; do not transplant a desktop-only native assumption."
+    },
+    {
+      "id": "PERIMETER-WEB-BENCHMARK-CACHE",
+      "status": "verified-not-a-defect",
+      "source": [
+        "godot/scripts/web_demo_controller.gd::run_worker_benchmark"
+      ],
+      "contract": "Best-effort derived cache",
+      "finding": "The full benchmark result remains in memory, visible UI and stdout. last_worker_benchmark.json is not used as proof of successful file save and no saved-file acknowledgement is emitted.",
+      "limits": "No browser cache persistence qualification; owner Web boundary applies."
+    },
+    {
+      "id": "PERIMETER-ART-JOURNAL-AUTHORITY",
+      "status": "verified-not-a-defect",
+      "source": [
+        "godot/scripts/art_batch_panel.gd::mount_provider_controls",
+        "godot/scripts/art_batch_panel.gd::history_edited",
+        "godot/scripts/art_batch_panel.gd::capture_unopened_history_receipt"
+      ],
+      "finding": "Current panel construction does not restore old transcripts; live history_edited appends a native_history_action to the current-session audit. Retained journal helpers are private legacy recovery/testing surfaces. A-ULT15 repairs their storage truth without reactivating them or declaring cross-session recovery."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "archive": "diagnostic-and-art-storage-raw.json.gz",
+  "sha256": "56445f04919de6305165872dce7e2111593774b94aa1c9b8e0539dfa19049b64",
+  "compressed_bytes": 51065,
+  "uncompressed_bytes": 533968,
+  "file_count": 131,
+  "reconstruction": "gzip.decompress then parse JSON; write each files[].text as UTF-8 under a new disposable directory after validating relative paths and sha256. No binary or owner save is present.",
+  "qualification_scope": "Actual native desktop Linux storage probes; before experiments retain harness errors and are not passing qualification. Current production changes still need final integrated Windows qualification.",
+  "failed_attempts": [
+    {
+      "path": "art-panel-before/settings-normal-probe-parse-failure.log",
+      "reason": "Initial probe const Panel collided with native Godot class; corrected to Batch before reproducing the file defect."
+    },
+    {
+      "path": "art-panel-before/settings-normal.log",
+      "reason": "Off-tree panel probe left UI objects at teardown; file bytes/ACK prove the writer failure, but these logs do not count as clean runtime qualification."
+    },
+    {
+      "path": "art-panel-after-failed-harness/report.json",
+      "reason": "Strict runner rejected three settings cases because fixture cleanup listed a nonexistent journal directory. Added an existence check, retained entire failed report/logs and exact executed child; all13 then passed."
+    }
+  ]
+}
