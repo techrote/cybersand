@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Draft/HOLD collaborative Art, source-specific evaluator and physical owner acceptance
 canonical-for: [art-workbench-collaborative-evaluation]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [art-workbench-final-evaluation.md, ../systems/workbench-art-providers.md, ../systems/workbench-direct-art-batches.md, ../systems/art-native-context-proposals.md]
 ---
 
@@ -221,9 +221,61 @@ unchanged.
 
 The deterministic cohort demonstrates context, validation, lifecycle, preview,
 native construction and recovery behavior. It does not prove that retrieval
-improves a real model's creative decisions. Architectural part placement through
-a separate programme requires its source-pinned owner handoff and separately
-qualified integration; a native primitive example is not a substitute claim.
+improves a real model's creative decisions. The recovered mergedown integration
+also mounts the Architecture proposal route described below. The manifest and
+accompanying qualification receipts identify this combined application; earlier
+frozen Art and Architecture evaluators retain their original separate identities.
+
+## Evaluate the combined Architecture route
+
+This recovered integration keeps one World, one Art request owner and
+Architecture's existing native construction authority. It remains **Draft/HOLD**.
+Opening either panel sends no request, approves no task and writes no native
+cells. The ordinary Workbench starts with experimental Goblin and AMBIENT control
+off. The combined Windows campaign, when completed, establishes deterministic
+engineering qualification; it does not grant physical or genuine-model acceptance.
+
+For a short offline evaluation, open **Architecture…**, choose **Intent and
+tasks**, describe a small structure and select a bounded region. **Inspect region
++ propose options** uses the deterministic local planner and needs no provider.
+Adopt one option for review. Select a native task, obtain its fresh preview, and
+choose **Approve stage** only after reviewing its exact footprint and budget.
+Each following task needs its own preview and approval. Inspect the completed
+native result, use ordinary **Undo**, then **Redo**. A proposed task is not a
+completed construction. **Stop / cancel** retires pending work and preserves any
+acknowledged native prefix for ordinary history.
+
+For an optional owner-operated provider evaluation, choose **Configure Art…** in
+Architecture and configure the existing Art provider, endpoint, model and finite
+limits. No provider is installed or started by this package. Return to Architecture
+and choose **Prepare Art proposal…**. This observes the native source and opens a
+review dialog without making a request. Review the destination, model, limits,
+intent, inspected material summary and bounded architectural references. The
+request contains no prior Art conversation or image. **Send this proposal request**
+authorizes exactly one request; Cancel sends none. Changing the World, intent,
+provider credentials or session requires a fresh review.
+
+A returned valid option still changes no cells. Adopt it for review, obtain the
+selected task's current native preview, then explicitly approve its stage.
+Architecture owns execution and the ordinary history owns Undo. Architecture
+Stop cancels its proposal; closing the Art panel continues to mean Hide.
+An absent or failed provider should leave the World unchanged and display a
+failure. Do not treat a failed response, refusal or timed-out request as approved
+work. Paid inference requires a separate explicit owner choice.
+
+To check persistence, save an authored start under a new name through ordinary
+Workbench controls, close the complete application, reopen **Open Workbench.cmd**
+and load that named start. Verify geometry and authored settings. Art conversation
+and creative history remain session-only; reopening a saved World does not resume
+pending provider requests or native approvals. A failed storage acknowledgement
+must remain a failure, preserving a previous valid destination for retry.
+
+Owner acceptance asks whether context disclosure is clear, approval and Stop feel
+responsive, ordinary Undo/Redo restores the expected geometry, saved work reopens
+correctly, and the chosen real model produces useful bounded proposals. Physical
+playfeel, creative quality and the predecessor's reported NVIDIA no-listener
+behavior require their own owner observations. See the exact package receipt for
+which technical checks actually ran; an archive's existence is not qualification.
 
 ## Configure a real provider explicitly
 
