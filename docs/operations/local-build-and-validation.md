@@ -89,10 +89,48 @@ tree; the Windows runner's explicit `--native-candidate` mode and independent
 coverage reducer verify those bytes. The default retained-runtime mode keeps
 its original committed provenance checks. Candidate manifests do not rewrite
 published provenance or waive `check_repository.py`.
-Candidate download and verification each have a five-minute allowance; only
-Rapier is fetched through LFS in the shard. The complete setup remains within
+Candidate download and verification each have a five-minute allowance. Rapier
+comes from its separate same-attempt producer artifact, with five minutes for
+download and five for committed-pointer and byte verification. The complete setup remains within
 the existing 70-minute reserve. Use **rerun all jobs** when retrying this
 same-run/attempt artifact chain, so producer and consumers share an attempt.
+
+GDExtension and Palette producers use
+[`materialize_lfs.py`](../../tools/ci/materialize_lfs.py) for exact committed LFS
+objects. A single monotonic allowance covers source/pointer admission, setup,
+all download attempts, backoff, byte verification and bounded owned-process
+cleanup. Linux uses its existing 1,200-second dependency allowance. The Windows
+native producer acquires Rapier once within 600 seconds; the Palette plan
+acquires its four exact retained objects once within 1,200 seconds. Ten seconds
+are reserved for owned-process cleanup inside the acquisition allowance.
+No test or native execution timeout changes.
+
+Only the observed Git LFS batch service-timeout response may be retried, at most
+three total attempts (two retries), with two- and four-second backoff.
+Authentication, permanent and unknown errors, exhausted allowance, source movement and wrong materialized
+bytes remain failures. Each original attempt retains its full output, exit,
+elapsed time and log hash beside a source/pointer/actual-byte receipt. Existing
+native, Rapier and downstream qualification checks remain mandatory; successful
+acquisition alone is not runtime qualification.
+
+[`lfs_runtime_artifact.py`](../../tools/ci/lfs_runtime_artifact.py) stages that
+producer's exact bytes and original acquisition logs in a source/run/attempt-bound
+artifact. Each consumer verifies the complete expected object inventory against
+its own committed LFS pointers, the actual bytes, original command receipts and
+sealed logs before installing its explicitly selected platform files. Palette
+requires all four objects even when installing only its platform pair. Consumers
+never fall back to the LFS service, a different attempt, or another runtime.
+Final seal and receipt writes are part of the shared deadline; a late seal is
+retained as failed evidence and cannot authorize execution.
+
+The Windows shard retains its original ten-minute dependency slot as five
+minutes for artifact download and five for verified installation. Palette
+retains its independent dependency clocks and adds the separately budgeted
+artifact-download step. Producer parents explicitly include moved acquisition
+and upload costs; case watchdogs, native inputs and concurrency are unchanged.
+Retry a complete source/attempt chain: GDE's common `ready_scope` ancestor or
+Palette's `plan`, including producers, all consumers and reducers. A failed-only
+consumer retry cannot satisfy same-attempt runtime custody.
 
 The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
 `tools/package_explore001_candidate.py` from committed project/profile bytes,
