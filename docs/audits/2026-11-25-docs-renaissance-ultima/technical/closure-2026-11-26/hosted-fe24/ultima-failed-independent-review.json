@@ -1,0 +1,209 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "source_head": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "source_tree": "9c14659bc6a57c1f1e28b71e10c504b184078d63",
+  "run_id": 45778534551,
+  "scope": "Independent readback of actual failed hosted attempts. No local Windows execution or aggregate success is inferred.",
+  "shared_readback_helpers_sha256": "0974939e40c19dd5e9e6c1af4659211bb5713b1adcf4594d730045b13bd460bd",
+  "hosts": {
+    "linux": {
+      "job_id": 139768161480,
+      "artifact_id": 15097426761,
+      "archive": "fe24-ultima-linux-failed.zip",
+      "archive_sha256": "218adfc794fad4295119699a7afd208540c99ee41f0b361c3d777d366a0947d3",
+      "archive_bytes": 412305,
+      "members": 193,
+      "lfs_materialization": {
+        "status": "passed",
+        "objects": 18,
+        "all_actual_sizes_and_digests_match_exact_source_pointers": true,
+        "receipt_sha256": "e72b054749afe101cf2a44dda7619bcc4ce8fc64902a2efab0987bd3e83ba451"
+      },
+      "aggregate_status": "failed",
+      "source_inputs": 4609,
+      "materialized_lfs_objects": 18,
+      "checkout_newline_paths": [
+        "build_windows_msvc.bat",
+        "tools/acceptance/gentek80_owner.ps1",
+        "tools/ci/check_windows_package_modules.ps1",
+        "tools/ci/stage_windows_vc_runtime.ps1",
+        "tools/gip014/Open-goblin.ps1",
+        "tools/gip014/qualify_windows.ps1",
+        "tools/launch_desktop.ps1",
+        "tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1"
+      ],
+      "raw_log_files": 181,
+      "engine_error_logs": {
+        "ultima/test_art_session_log.log": [
+          "ERROR: idle Art creates no new file"
+        ]
+      },
+      "matrices": {
+        "persistence": {
+          "cases": 13,
+          "status": "passed",
+          "report_sha256": "e1d71fc13a343800e27ad8ee8608cd27804133b7e9280a5adc5a95ccf5a07c37"
+        },
+        "microscenario-capture": {
+          "cases": 6,
+          "status": "passed",
+          "report_sha256": "d171944820aacdc6e4001962b8e7b74d391d565fb6d8772879ee0f1b20a65acc"
+        },
+        "recorder-storage": {
+          "cases": 2,
+          "status": "passed",
+          "report_sha256": "cefbc11545e5cd3b51311e22e01e1bd241c768f9a38b92787c06fb00aa3d2d2d"
+        },
+        "profile-save": {
+          "cases": 16,
+          "status": "passed",
+          "report_sha256": "bca574886ea1e689e015a2192f6a5f77bcd2df7c1e81124667c94fa810f9d010"
+        },
+        "art-storage": {
+          "cases": 13,
+          "status": "passed",
+          "report_sha256": "559e296d173ce35174d61f11d1c7f2d6234e489ec2feae089dcb4692864ca3b1"
+        },
+        "diagnostic-storage": {
+          "cases": 12,
+          "status": "passed",
+          "report_sha256": "391c217ce8d90f9df07dc14f4f938809853a615a2e379f5014e3f4e378631ae1"
+        },
+        "tower-observation": {
+          "cases": 6,
+          "status": "passed",
+          "report_sha256": "d1d479b4731ca50af3054d6830010b0d58415ead0bcedc90ab97610d88039edf"
+        }
+      },
+      "storage_cases": 68,
+      "process_records_passed": 17,
+      "process_records_failed": 1,
+      "process_records_not_reached": 11,
+      "unexecuted_workflows": [
+        "test_art_panel_ui",
+        "test_art_history_receipt_identity",
+        "test_workbench_material_baseline",
+        "test_architectural_generator_ui",
+        "test_workbench_generator_discovery",
+        "test_paint_editor_history",
+        "test_paint_editor_history-reopen",
+        "test_workbench_canvas",
+        "test_workbench_canvas-reopen",
+        "test_explore001_generated_workbench",
+        "test_explore001_generated_workbench-reopen"
+      ],
+      "failed_case": {
+        "capture_error": null,
+        "command": [
+          "/home/runner/work/_temp/ultima-engine-1g01uftm/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/runner/work/cybersand/cybersand/workspace/source/godot",
+          "--script",
+          "res://tests/test_art_session_log.gd"
+        ],
+        "diagnostic_error": true,
+        "diagnostic_seconds": 0.0,
+        "diagnostics": null,
+        "execution_policy": {
+          "advisories": {
+            "drift_ratio": 1.2,
+            "drift_window": 5,
+            "minimum_baseline_samples": 3,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "warning_ratio": 1.5
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "schema_version": 1,
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+          "watchdogs": {
+            "aggregate_headroom_seconds": 600.0,
+            "complex_fixture_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "diagnostic_capture_seconds": 30.0,
+            "godot_import_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_metadata_seconds": 900.0,
+            "godot_setup_seconds": 4200.0,
+            "graphical_case_seconds": 1200.0,
+            "hosted_job_minutes": 180.0,
+            "main_ack_seconds": 600.0,
+            "native_case_seconds": 3600.0,
+            "native_compile_seconds": 3600.0,
+            "native_suite_seconds": 7200.0,
+            "operation_seconds": 300.0,
+            "ordinary_case_seconds": 1200.0,
+            "terminate_grace_seconds": 10.0
+          }
+        },
+        "last_heartbeat": null,
+        "last_progress": null,
+        "launch_error": null,
+        "log": "test_art_session_log.log",
+        "log_sha256": "2874e51610ac02e24978c93fe0028f867ba019be51200ccd17043121ac705356",
+        "name": "test_art_session_log",
+        "natural_completion": true,
+        "pid": 6306,
+        "requires_display": false,
+        "resources": {
+          "available": true,
+          "cpu_seconds": 4.04,
+          "peak_rss_bytes": 565276672,
+          "scope": "direct_process_only"
+        },
+        "returncode": 1,
+        "role": "authored-workflow",
+        "seconds": 4.219,
+        "skip_messages": [],
+        "status": "failed",
+        "timeout_diagnostic_error": null,
+        "timeout_diagnostics": null,
+        "timeout_kind": null,
+        "timeout_seconds": 1200.0
+      },
+      "engine": {
+        "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "archive_size": 75664355,
+        "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      }
+    },
+    "windows": {
+      "job_id": 139768161914,
+      "artifact_id": 15096349928,
+      "archive": "fe24-ultima-windows-failed.zip",
+      "archive_sha256": "e96430e373f6f56a31ee075ce0dabf3c798e19a05a9daacc326a0c1d312f21d9",
+      "archive_bytes": 4922,
+      "members": 5,
+      "lfs_materialization": {
+        "status": "passed",
+        "objects": 18,
+        "all_actual_sizes_and_digests_match_exact_source_pointers": true,
+        "receipt_sha256": "48ce29bd6aa9dd4265251d89efcb0ff45ef137780b1da299e90b53279f5158a9"
+      },
+      "aggregate_status": "failed",
+      "evaluator_integrity_controls": {
+        "executed": 79,
+        "status": "passed"
+      },
+      "launcher_controls": {
+        "planned": 9,
+        "passed": 5,
+        "failed": 1,
+        "skipped": 3,
+        "failure": "POSIX slash spelling expected after native Windows Path normalization"
+      },
+      "storage_matrices": "NOT RUN",
+      "normal_workflows": "NOT RUN",
+      "engine_acquisition": "SKIPPED",
+      "evaluator_package": "SKIPPED",
+      "actual_launcher": "SKIPPED"
+    }
+  },
+  "status": "readback-passed-both-aggregates-remain-failed"
+}

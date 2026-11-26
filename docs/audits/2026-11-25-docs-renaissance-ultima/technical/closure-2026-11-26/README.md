@@ -211,6 +211,26 @@ links the lead's retained four-case packet; A's independent raw 35-check control
 is retained in [art-session-isolation-control](art-session-isolation-control/report.json).
 Final resulting-source full qualification remains separate.
 
+The fresh [hosted ULTIMA run 45778534551](https://github.com/techrote/cybersand/actions/runs/45778534551)
+also failed and is retained independently of the local campaign. Its Linux
+artifact `15097426761` is 412,305 bytes, SHA-256
+`218adfc794fad4295119699a7afd208540c99ee41f0b361c3d777d366a0947d3`.
+A verified all 4,609 source inputs, eighteen materialized LFS identities and
+181 raw logs. It likewise passed all 68 storage cases and seventeen process
+records, then failed the same single Art session assertion; eleven processes
+were not reached. Its Windows artifact `15096349928` is 4,922 bytes, SHA-256
+`e96430e373f6f56a31ee075ce0dabf3c798e19a05a9daacc326a0c1d312f21d9`.
+All eighteen Windows acquisition identities passed and 79 evaluator integrity
+controls passed. Launcher controls recorded five passes, the one path-spelling
+failure, and three explicit POSIX-only skips. Windows engine acquisition,
+storage matrices, normal workflows, evaluator construction and actual-launcher
+qualification were all skipped. These are **two failed aggregate attempts**.
+
+[ultima-failed-independent-review.json](hosted-fe24/ultima-failed-independent-review.json)
+binds those original ZIPs, job and artifact metadata, actual outcomes and
+unexecuted cases. The archives are retained once each; their contents have not
+been duplicated as extracted files or treated as later successful evidence.
+
 The [launcher portability review](launcher-portable-review.json) independently
 checks the actual Windows test failure and B's focused correction: a native
 Windows path used backslashes while the test expected POSIX slashes. The new

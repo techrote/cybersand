@@ -6,8 +6,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 15942,
-      "sha256": "f7ccb72083f4d0a2f6eea495bb0d36629d6d708a472beeef42f62c9a17739c31"
+      "bytes": 17324,
+      "sha256": "c0bda6fb28b0f1f2caf30463169ec3d7c0be16b2d5765af01bd38230e0cf65be"
     },
     {
       "path": "art-session-isolation-control/report.json",
@@ -80,9 +80,29 @@
       "sha256": "bcce7d7a60984734573eb8244b3093b6d5da8dc71eccde65e9be0fec01117405"
     },
     {
+      "path": "hosted-fe24/fe24-ultima-linux-failed.zip",
+      "bytes": 412305,
+      "sha256": "218adfc794fad4295119699a7afd208540c99ee41f0b361c3d777d366a0947d3"
+    },
+    {
+      "path": "hosted-fe24/fe24-ultima-windows-failed.zip",
+      "bytes": 4922,
+      "sha256": "e96430e373f6f56a31ee075ce0dabf3c798e19a05a9daacc326a0c1d312f21d9"
+    },
+    {
       "path": "hosted-fe24/metadata.json",
       "bytes": 7928,
       "sha256": "e760c97e81ff5dd88a97253348bfe7cc107da444d11a5523475f3ea00e346590"
+    },
+    {
+      "path": "hosted-fe24/ultima-failed-independent-review.json",
+      "bytes": 7770,
+      "sha256": "6066a6b2b6e21f5d44d519f240d725b6a84b8ff6a2c986002fe0727d77e2972a"
+    },
+    {
+      "path": "hosted-fe24/ultima-failed-metadata.json",
+      "bytes": 8236,
+      "sha256": "055a450e76de4a03074e82f18f07623583e6298e428d0d3d6eb769e8ce0ae675"
     },
     {
       "path": "integrated-causal-review.json",
