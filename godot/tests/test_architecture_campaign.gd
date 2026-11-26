@@ -129,7 +129,7 @@ func _initialize() -> void:
 	check(second_restore.open_history(restored.export_history()).ok and second_restore.export_history().historical.size()==2,"history remains flat on repeated reopen")
 	check(not restored.reserve_approval(ticket).ok,"saved ticket cannot cross coordinator lifetime")
 	check(campaign.skip("services").ok and not campaign.skip("services").ok,"skip is explicit and cannot inflate repeated history")
-	check(restored.skip("frame").ok and restored.ready_jobs().is_empty(),"skipped dependency never acts as completion")
+	check(restored.skip("frame").ok and restored.ready_jobs().is_empty(),"declined dependency never acts as completion")
 
 	campaign=Campaign.new(); campaign.load_campaign(sample()); ticket=prepare(campaign)
 	check(campaign.reserve_approval(ticket).ok and campaign.reject_admission(ticket,"Host source changed").ok,"prequeue refusal retires without invented terminal")

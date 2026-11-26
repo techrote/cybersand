@@ -115,11 +115,11 @@ func run() -> void:
 	check(workflow.open_history(history).ok,"historical graph and planning records reopen")
 	check(workflow.campaign.summary().historical_only and session.completed_ids().is_empty() and not workflow.summary().has_review_ticket,"reopen restores no approval, queue or current completion")
 	check(workflow.skip().ok,"owner skip is recorded")
-	check(workflow.select(1).ok and not (await workflow.preview_selected()).ok,"skipped parent blocks later task")
+	check(workflow.select(1).ok and not (await workflow.preview_selected()).ok,"declined parent blocks later task")
 	check(workflow.load_campaign(graph()).ok,"fresh independent campaign")
 	check(workflow.summary().prior_campaigns>=1,"replacing a campaign preserves its earlier owner decisions in bounded history")
 	var archived:=workflow.export_history()
-	check(archived.prior_campaigns.any(func(entry: Dictionary)->bool:return entry.history.decisions.any(func(decision: Dictionary)->bool:return decision.kind=="owner-skip")),"skipped proposals survive a fresh recovery campaign without becoming dependencies")
+	check(archived.prior_campaigns.any(func(entry: Dictionary)->bool:return entry.history.decisions.any(func(decision: Dictionary)->bool:return decision.kind=="owner-skip")),"declined proposals survive a fresh recovery campaign without becoming dependencies")
 	var corrupted:=archived.duplicate(true); corrupted.prior_campaigns[0].sha256="bad"
 	check(not workflow.open_history(corrupted).ok,"tampered historical campaign identity is rejected without replacing the live workflow")
 	var options:=workflow.submit_intent("large industrial hangar",{"mode":"offline","max_alternatives":2})
