@@ -150,6 +150,7 @@ jobs:
           'MAINLINE_EXTRACTED=' + $extracted | Out-File -Append -FilePath $env:GITHUB_ENV
 
       - name: Execute both delivered CMDs and original Goblin gameplay/save-reopen/graphics proof
+        id: delivered_proof
         shell: pwsh
         working-directory: product
         run: |
@@ -180,5 +181,16 @@ jobs:
             ${{ runner.temp }}/mergedown-mainline-evidence/extracted-graphics/**
             ${{ runner.temp }}/mergedown-mainline-evidence/launchers/**
             ${{ runner.temp }}/CyberSand accepted main owner package/workbench/test-output/**
+          if-no-files-found: warn
+          retention-days: 90
+
+      # Mutually exclusive with a successful delivery path: preserve the same
+      # already-constructed bytes for diagnosis, without an owner download claim.
+      - name: Preserve constructed archive when delivery fails
+        if: failure() && steps.delivered_proof.outcome != 'success' && env.MAINLINE_DELIVERY != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unqualified-mainline-candidate-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: ${{ env.MAINLINE_DELIVERY }}
           if-no-files-found: warn
           retention-days: 90

@@ -127,6 +127,9 @@ try {
     $report.status = 'passed'
     Write-Report
     Write-Host "MAINLINE_LAUNCHERS_PASS $reportPath"
+    # An invoked PowerShell script must publish its successful exit explicitly;
+    # .NET Process.ExitCode does not set the caller's LASTEXITCODE variable.
+    exit 0
 } catch {
     $report.status = 'failed'
     $report.error = $_.Exception.Message
