@@ -1,0 +1,186 @@
+name: REC001 hosted Windows recorder-path cost probe
+
+on:
+  push:
+    branches: [tools/rec001-windows-recorder-cost-probe-20261105]
+    paths:
+      - godot/tests/performance/test_rec001_windows_hosted_path_cost.gd
+      - .github/workflows/rec001-windows-recorder-path-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recorder-hosted-path-probe:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve checkout line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize exact committed Windows runtime inputs
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Execute bounded real-host GDScript recording-path experiment
+        timeout-minutes: 20
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p build/rec001-hosted-path-cost
+          python tools/ci/check_ci_provider_policy.py > build/rec001-hosted-path-cost/provider-policy.log 2>&1
+          git diff --check
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import shutil
+          import subprocess
+          import sys
+          import urllib.request
+          import zipfile
+
+          out = Path("build/rec001-hosted-path-cost").resolve()
+          def save(name, data):
+              (out / name).write_text(data, encoding="utf-8")
+          def cmd(*args):
+              return subprocess.check_output(args, text=True, timeout=30).strip()
+          head = cmd("git", "rev-parse", "HEAD")
+          tree = cmd("git", "rev-parse", "HEAD^{tree}")
+          if head != os.environ["EXPECTED_HEAD"]:
+              raise RuntimeError("Wrong checked-out triggering source")
+          recorder_blob = cmd("git", "hash-object", "godot/scripts/gameplay_recorder.gd")
+          if recorder_blob != "e2d8d72361d38f48b15a8eba213a72ff7ca68c0d":
+              raise RuntimeError("Accepted REC v2 production recorder changed: refuse unreviewed profile")
+          probe_path = Path("godot/tests/performance/test_rec001_windows_hosted_path_cost.gd")
+          source = {
+              "sha":head,"tree":tree,"recorder_blob":recorder_blob,
+              "probe_sha256":hashlib.sha256(probe_path.read_bytes()).hexdigest()
+          }
+          save("source-identity.json",json.dumps(source,indent=2)+"\n")
+          sys.path.insert(0,"tools/ci")
+          import run_windows_godot_regressions as runtime
+          with runtime.metadata_budget():
+              native = runtime.verify_retained_runtime(Path.cwd())
+          save("runtime-identity.json",json.dumps(native,indent=2)+"\n")
+          url = "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip"
+          archive = out / "godot-official.zip"
+          urllib.request.urlretrieve(url,archive)
+          sha512 = hashlib.sha512(archive.read_bytes()).hexdigest()
+          if sha512 != runtime.GODOT_SHA512:
+              raise RuntimeError("Official Godot 4.7 SHA512 mismatch")
+          target = out / "engine"
+          target.mkdir()
+          with zipfile.ZipFile(archive) as bundle:
+              if bundle.testzip() is not None:
+                  raise RuntimeError("Godot archive CRC invalid")
+              for name in ("Godot_v4.7-stable_win64.exe","Godot_v4.7-stable_win64_console.exe"):
+                  if bundle.namelist().count(name)!=1:
+                      raise RuntimeError("Godot executable missing/duplicated: "+name)
+                  bundle.extract(name,target)
+          archive.unlink()
+          save("engine-identity.json",json.dumps({"url":url,"sha512":sha512},indent=2)+"\n")
+          for name,ps in (
+              ("processor.json","Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors | ConvertTo-Json"),
+              ("os.json","Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber | ConvertTo-Json"),
+              ("gpu.json","Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion | ConvertTo-Json")
+          ):
+              result = subprocess.run(["powershell","-NoProfile","-NonInteractive","-Command",ps],
+                  capture_output=True,text=True,timeout=30)
+              save(name,result.stdout+"\n"+result.stderr)
+              if result.returncode:
+                  raise RuntimeError("Cannot establish machine identity: "+name)
+          engine = target/"Godot_v4.7-stable_win64_console.exe"
+          env = {**os.environ,
+              "CYBERSAND_SOURCE_REVISION":head,
+              "GODOT_SILENCE_ROOT_WARNING":"1"}
+          imp = subprocess.run([str(engine),"--headless","--editor","--path","godot","--import"],
+              stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=110,env=env)
+          save("godot-import.log",imp.stdout)
+          if imp.returncode:
+              print(imp.stdout[-6000:])
+              raise RuntimeError("Godot project import failed; source/runtime not qualified")
+          argv=[str(engine),"--headless","--path","godot","--script",
+                "res://tests/performance/test_rec001_windows_hosted_path_cost.gd"]
+          save("command.json",json.dumps(argv,indent=2)+"\n")
+          run=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+              text=True,timeout=120,env=env)
+          save("godot-run.log",run.stdout)
+          prefix="REC001_HOST_PROBE "
+          reports=[line[len(prefix):] for line in run.stdout.splitlines() if line.startswith(prefix)]
+          if run.returncode or len(reports)!=1:
+              print(run.stdout[-8000:])
+              raise RuntimeError(f"No qualified Godot probe result: exit={run.returncode}, reports={len(reports)}")
+          result=json.loads(reports[0])
+          rows=result["rows"]
+          if (result["schema"]!="rec001-hosted-recorder-path-cost-v1"
+              or result["platform"]!="Windows"
+              or result["failures"]
+              or [r["arm"] for r in rows]!=["off","on","on","off"]
+              or result["authoritative_native_world_ticks"]!=0
+              or result["observed_native_worker_participation"]!=0):
+              raise RuntimeError("Probe output invalid, missing, or overclaiming native participation")
+          captures = []
+          for row in rows:
+              if row["synthetic_published_snapshots"]!=72:
+                  raise RuntimeError("Missing synthetic publication samples")
+              for key in ("operation_p50_usec","operation_p95_usec","operation_p99_usec",
+                          "publication_interval_p50_usec","publication_interval_p95_usec"):
+                  if type(row[key]) is not int or row[key]<0:
+                      raise RuntimeError("Missing actual monotonic timing: "+key)
+              if row["arm"]!="on":
+                  continue
+              counters=row["recorder"]
+              if counters["capture_attempts"]!=counters["enqueued_frames"]+counters["dropped_frames"]:
+                  raise RuntimeError("Recorder missing drop/attempt accounting")
+              if counters["written_frames"]!=counters["enqueued_frames"] or counters["written_frames"]<4:
+                  raise RuntimeError("Missing retained actual writer output")
+              cap=Path(row["output_directory"]).resolve()
+              metadata=json.loads((cap/"recording.json").read_text(encoding="utf-8"))
+              if (metadata.get("schema_id")!="cybersand-state-recording-v2"
+                  or metadata.get("disposition")!="complete"
+                  or metadata["counters"]["written_frames"]!=counters["written_frames"]):
+                  raise RuntimeError("Invalid finalized manifest")
+              frames=sorted(cap.glob("frame-*.ids"))
+              if len(frames)!=counters["written_frames"] or any(p.stat().st_size!=128*96 for p in frames):
+                  raise RuntimeError("Raw material-frame count or dimensions invalid")
+              name=f"capture-{row['sequence']}"
+              shutil.copytree(cap,out/name,symlinks=False)
+              captures.append({"arm":row["arm"],"output":name,"written_frames":len(frames)})
+          save("result.json",json.dumps(result,indent=2)+"\n")
+          save("capture-inventory.json",json.dumps(captures,indent=2)+"\n")
+          print("PASS: real Windows Godot REC v2, two counterbalanced synthetic snapshot OFF/ON pairs; no native World gameplay")
+          print(json.dumps([{"arm":r["arm"],"op_p50_us":r["operation_p50_usec"],
+              "op_p95_us":r["operation_p95_usec"],"cadence_p95_us":r["publication_interval_p95_usec"],
+              "written":r["recorder"].get("written_frames",0),
+              "drops":r["recorder"].get("dropped_frames",0)} for r in rows],indent=2))
+          PY
+      - name: Preserve results, all failures, manifests, and real encoded frames
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rec001-windows-hosted-path-cost-${{ github.run_id }}
+          path: |
+            build/rec001-hosted-path-cost/*.log
+            build/rec001-hosted-path-cost/*.json
+            build/rec001-hosted-path-cost/capture-*/
+          if-no-files-found: warn
+          retention-days: 30
