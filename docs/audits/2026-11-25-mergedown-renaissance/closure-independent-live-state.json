@@ -1,0 +1,1138 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist C, independent recovery review",
+  "observed_at": "2026-11-26T07:46:46.120Z",
+  "ledger_head": "a3cddc4703ecea7abdfe2db55d1de5ef79874447",
+  "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "source": "Live GitHub connector metadata and original repository evidence; this record does not claim new platform execution",
+  "prs": {
+    "688": {
+      "url": "https://github.com/techrote/cybersand/pull/688",
+      "title": "[DRAFT / HOLD] GENTEK-2048-SQUARE-001 — bounded 2048² architectural Workbench",
+      "head": "4cbd94927fda1a4437616ea5df439d8f6d4c711d",
+      "branch": "feature/gentek-2048-square-001",
+      "base": "integration/gentek-80-001",
+      "base_sha": "87148d66e816f3fd4033e8227a7d310652e2812a",
+      "state": "open",
+      "merged": false,
+      "draft": false,
+      "merge_commit": null,
+      "updated_at": "2026-11-21T10:43:27Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "720": {
+      "url": "https://github.com/techrote/cybersand/pull/720",
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M0–M2 — Native Workbench Batch Lab",
+      "head": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "branch": "feat/world-steer-batch-001-20261121",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T21:55:55Z",
+      "closed_at": "2026-11-25T21:55:55Z",
+      "merged_at": null
+    },
+    "729": {
+      "url": "https://github.com/techrote/cybersand/pull/729",
+      "title": "SWARM-004/005/006: consolidated reciprocal Workbench integration (Draft/HOLD)",
+      "head": "acc5dc1ca1a4ce0a3b1579d555102f797b2c55cc",
+      "branch": "integration/swarm004-005-006-unified-20261122",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-24T21:03:03Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "736": {
+      "url": "https://github.com/techrote/cybersand/pull/736",
+      "title": "CI-OPT-004 Palette — run 3 Windows cohorts concurrently [MERGE HOLD]",
+      "head": "3c9900ef426c7b50d682c569e06363e821aa31df",
+      "branch": "ci/palette-win3-parallel-20261122",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "merge_commit": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "updated_at": "2026-11-25T21:38:31Z",
+      "closed_at": "2026-11-25T21:38:31Z",
+      "merged_at": "2026-11-25T21:38:30Z"
+    },
+    "745": {
+      "url": "https://github.com/techrote/cybersand/pull/745",
+      "title": "[Draft/HOLD] GEN-006 RAMCACHE finisher — accepted-main integration and lifecycle qualification",
+      "head": "47e4fee8aa50ef007cdd9769841712edb5be40b5",
+      "branch": "exp/gen006-ramcache-finisher-001-20261122",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-23T03:25:49Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "749": {
+      "url": "https://github.com/techrote/cybersand/pull/749",
+      "title": "[Draft/HOLD] GIP-013: deterministic Gremlin contract-model PoC with optional Sprocket",
+      "head": "a6fce059fa5620fcf4adb60cb9d2e7ed79050401",
+      "branch": "experiment/gip013-gremlin-20261122",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-22T20:31:46Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "754": {
+      "url": "https://github.com/techrote/cybersand/pull/754",
+      "title": "ObjectShard M4: qualified ordinary Workbench and Windows evaluator (Draft / owner hold)",
+      "head": "75865127fee19c56dacb0ae80307f438dd866cd1",
+      "branch": "integration/objectshard-m4-mainline-20261122",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T06:55:41Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "758": {
+      "url": "https://github.com/techrote/cybersand/pull/758",
+      "title": "[DRAFT / HOLD] GENTEK-WINDOWS-FINAL-B — current-mainline source-exact evaluator and offline owner acceptance",
+      "head": "da83f83ff20a5ae0ec0184079146d6d696a9c0e3",
+      "branch": "qualification/gentek-windows-final-20261122",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "merge_commit": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "updated_at": "2026-11-25T21:40:01Z",
+      "closed_at": "2026-11-25T21:40:01Z",
+      "merged_at": "2026-11-25T21:40:01Z"
+    },
+    "762": {
+      "url": "https://github.com/techrote/cybersand/pull/762",
+      "title": "[Draft/HOLD] ACTOR-COMPOSE-FINAL-001: integrated pilot, stack and Windows acceptance",
+      "head": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "branch": "integration/actor-compose-final-001-20261123",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T21:58:04Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "763": {
+      "url": "https://github.com/techrote/cybersand/pull/763",
+      "title": "[Draft/HOLD] WB-ART-UI-APPLY-001: bound conversation editor and keep Apply visible (#713)",
+      "head": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "branch": "fix/art-conversation-bounded-713-20261123",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T00:28:49Z",
+      "closed_at": "2026-11-26T00:28:49Z",
+      "merged_at": null
+    },
+    "765": {
+      "url": "https://github.com/techrote/cybersand/pull/765",
+      "title": "[Draft/HOLD] ART-LOCAL-CLOSE-744: absent LM Studio server / Art-close timing probe",
+      "head": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "branch": "investigation/art-local-close-744-20261123",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T00:28:52Z",
+      "closed_at": "2026-11-26T00:28:52Z",
+      "merged_at": null
+    },
+    "766": {
+      "url": "https://github.com/techrote/cybersand/pull/766",
+      "title": "[Draft/HOLD] ART-INVALID-MODEL-CLOSE-744: bound failed HTTP path and hidden Art UI work",
+      "head": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "branch": "fix/art-invalid-model-close-latency-744-20261123",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T00:28:55Z",
+      "closed_at": "2026-11-26T00:28:55Z",
+      "merged_at": null
+    },
+    "767": {
+      "url": "https://github.com/techrote/cybersand/pull/767",
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification",
+      "head": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+      "branch": "codex/pubpres-playability-final-001-20261124",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T01:11:53Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "768": {
+      "url": "https://github.com/techrote/cybersand/pull/768",
+      "title": "MAT-AUDITION-LIVE-001: current-scene native material audition",
+      "head": "858ef9e7285fcaa22c9cc1381d0cb0082057a456",
+      "branch": "mat/audition-live-001",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T23:39:11Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "769": {
+      "url": "https://github.com/techrote/cybersand/pull/769",
+      "title": "[Draft/HOLD] STRATA-THEATRE-WORKBENCH-001: editable four-plane composition",
+      "head": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "branch": "feat/strata-theatre-workbench-001-20261124",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T21:56:02Z",
+      "closed_at": "2026-11-25T21:56:02Z",
+      "merged_at": null
+    },
+    "770": {
+      "url": "https://github.com/techrote/cybersand/pull/770",
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M3–M5: native modules, GOLDMAPS retrieval and staged architecture",
+      "head": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "branch": "feat/world-steer-m3-m5-20261124",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T21:55:59Z",
+      "closed_at": "2026-11-25T21:55:59Z",
+      "merged_at": null
+    },
+    "771": {
+      "url": "https://github.com/techrote/cybersand/pull/771",
+      "title": "CI closure + Ready recovery: coordinated campaigns and runtime custody",
+      "head": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "branch": "codex/ci-engineering-closure-001",
+      "base": "main",
+      "base_sha": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "merge_commit": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "updated_at": "2026-11-25T22:35:32Z",
+      "closed_at": "2026-11-25T22:09:27Z",
+      "merged_at": "2026-11-25T22:09:27Z"
+    },
+    "772": {
+      "url": "https://github.com/techrote/cybersand/pull/772",
+      "title": "Draft/HOLD: GIP-014 goblin real-game playtesting",
+      "head": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+      "branch": "experiment/gip014-goblin-gameplay-20261124",
+      "base": "main",
+      "base_sha": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "merge_commit": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "updated_at": "2026-11-25T22:38:01Z",
+      "closed_at": "2026-11-25T22:38:01Z",
+      "merged_at": "2026-11-25T22:38:01Z"
+    },
+    "773": {
+      "url": "https://github.com/techrote/cybersand/pull/773",
+      "title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 — Art Workbench finisher",
+      "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "branch": "art/workbench-final-001",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": false,
+      "draft": false,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T00:28:59Z",
+      "closed_at": "2026-11-26T00:28:59Z",
+      "merged_at": null
+    },
+    "775": {
+      "url": "https://github.com/techrote/cybersand/pull/775",
+      "title": "AMBIENT-001 opt-in actor foundation — resulting-source qualification",
+      "head": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "branch": "feature/ambient-001-20261124",
+      "base": "main",
+      "base_sha": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "state": "closed",
+      "merged": true,
+      "draft": false,
+      "merge_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "updated_at": "2026-11-26T01:02:45Z",
+      "closed_at": "2026-11-26T01:02:45Z",
+      "merged_at": "2026-11-26T01:02:45Z"
+    },
+    "776": {
+      "url": "https://github.com/techrote/cybersand/pull/776",
+      "title": "STRATA-THEATRE-002: layered native authoring and environmental atmosphere — Draft/HOLD",
+      "head": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "branch": "feat/strata-theatre-002-20261124",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T01:18:57Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "777": {
+      "url": "https://github.com/techrote/cybersand/pull/777",
+      "title": "[Draft/HOLD] WORLD-STEER M6–M7 — Collaborative native architecture, rich parts and bounded delegation",
+      "head": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "branch": "feat/world-steer-collaborative-architecture-20261124",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-25T06:55:38Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "778": {
+      "url": "https://github.com/techrote/cybersand/pull/778",
+      "title": "[Draft/HOLD] CI-READY-RECOVERY-001 — exact Godot asset and scalable regression planning",
+      "head": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+      "branch": "ci/ready-foundation-repair-20261125",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "closed",
+      "merged": true,
+      "draft": true,
+      "merge_commit": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "updated_at": "2026-11-25T22:34:15Z",
+      "closed_at": "2026-11-25T22:09:29Z",
+      "merged_at": "2026-11-25T22:09:29Z"
+    },
+    "779": {
+      "url": "https://github.com/techrote/cybersand/pull/779",
+      "title": "Draft/HOLD: AMBIENT-002 living inhabitants, spatial memory and settlements",
+      "head": "6b5ef1fed14b3e37ef9350f7c7810a3523d626a2",
+      "branch": "feature/ambient-002-living-inhabitants-20261125",
+      "base": "main",
+      "base_sha": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T01:30:24Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "780": {
+      "url": "https://github.com/techrote/cybersand/pull/780",
+      "title": "[Draft/HOLD] ART-WORKBENCH-COLLABORATIVE-002 — Conversational native world authoring",
+      "head": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "branch": "art/collaborative-002",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T00:50:43Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "781": {
+      "url": "https://github.com/techrote/cybersand/pull/781",
+      "title": "Draft/HOLD: GIP-014 goblin 002 persistent gameplay discovery laboratory",
+      "head": "36d82cae75e5fd8dad11646663248de8003f5bf9",
+      "branch": "experiment/gip014-goblin-002-20261125",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T00:47:37Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "783": {
+      "url": "https://github.com/techrote/cybersand/pull/783",
+      "title": "DOCS-RENAISSANCE-ULTIMA-001: failure-safe authoring, trusted retrieval and compact knowledge custody",
+      "head": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "branch": "docs/docs-renaissance-ultima-001",
+      "base": "main",
+      "base_sha": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T01:11:54Z",
+      "closed_at": null,
+      "merged_at": null
+    },
+    "785": {
+      "url": "https://github.com/techrote/cybersand/pull/785",
+      "title": "[Draft/HOLD] STRATA-THEATRE-003 — Optical depth, Optics Lab and gameplay legibility",
+      "head": "d37fea86dbed2d9ae4b22e59c676d98f525c1ea8",
+      "branch": "feat/strata-theatre-003-20261125",
+      "base": "feat/strata-theatre-002-20261124",
+      "base_sha": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "state": "open",
+      "merged": false,
+      "draft": true,
+      "merge_commit": null,
+      "updated_at": "2026-11-26T03:09:26Z",
+      "closed_at": null,
+      "merged_at": null
+    }
+  },
+  "workflow_runs": {
+    "688": [
+      {
+        "id": 44895691625,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 5881,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691625/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691625/logs",
+        "workflow_id": 344993861
+      },
+      {
+        "id": 44895691567,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 5861,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691567/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691567/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 44895691613,
+        "name": "Native source-scope advisory (report only)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 4286,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691613/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691613/logs",
+        "workflow_id": 402341461
+      },
+      {
+        "id": 44895691586,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 6080,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691586/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44895691586/logs",
+        "workflow_id": 344993860
+      },
+      {
+        "id": 44817978508,
+        "name": "Architectural Generator A+B source qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 318,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978508/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978508/logs",
+        "workflow_id": 417954798
+      },
+      {
+        "id": 44817978661,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 5790,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978661/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978661/logs",
+        "workflow_id": 344993861
+      },
+      {
+        "id": 44817978494,
+        "name": "Native source-scope advisory (report only)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 4194,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978494/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978494/logs",
+        "workflow_id": 402341461
+      },
+      {
+        "id": 44817978529,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 5770,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978529/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978529/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 44817978522,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 5987,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978522/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/44817978522/logs",
+        "workflow_id": 344993860
+      }
+    ],
+    "729": [
+      {
+        "id": 45484212103,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 6234,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484212103/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484212103/logs",
+        "workflow_id": 344993861
+      },
+      {
+        "id": 45484211944,
+        "name": "Palette shader actual backend qualification",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 1786,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211944/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211944/logs",
+        "workflow_id": 403062058
+      },
+      {
+        "id": 45484211045,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 6213,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211045/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211045/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 45484211224,
+        "name": "Wave Flow native qualification",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 361,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211224/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211224/logs",
+        "workflow_id": 419287784
+      },
+      {
+        "id": 45484211296,
+        "name": "Native",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 365,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211296/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211296/logs",
+        "workflow_id": 410565224
+      },
+      {
+        "id": 45484211845,
+        "name": "Art session-only logging qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 118,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211845/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211845/logs",
+        "workflow_id": 426427472
+      },
+      {
+        "id": 45484211771,
+        "name": "PLAY desktop manual packet identity",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 45,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211771/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211771/logs",
+        "workflow_id": 402516490
+      },
+      {
+        "id": 45484211328,
+        "name": "Issue 49 Water apparatus v2",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 1228,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211328/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211328/logs",
+        "workflow_id": 362873238
+      },
+      {
+        "id": 45484211485,
+        "name": "GEN-008 Flatten + accepted MAT-AUTH/Workbench source-matched native runtime publication",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 76,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211485/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211485/logs",
+        "workflow_id": 417791404
+      },
+      {
+        "id": 45484211691,
+        "name": "MAT-AUTH + Workbench source-matched native runtime publication",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 84,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211691/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211691/logs",
+        "workflow_id": 416714727
+      },
+      {
+        "id": 45484212233,
+        "name": "Architectural Generator A+B source qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 682,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484212233/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484212233/logs",
+        "workflow_id": 417954798
+      },
+      {
+        "id": 45484211144,
+        "name": "Native source-scope advisory (report only)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 4629,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211144/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484211144/logs",
+        "workflow_id": 402341461
+      },
+      {
+        "id": 45484212310,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 6438,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484212310/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45484212310/logs",
+        "workflow_id": 344993860
+      }
+    ],
+    "745": [
+      {
+        "id": 45099468932,
+        "name": "GEN-006 RAM cache qualification and runtime publication",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 40,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468932/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468932/logs",
+        "workflow_id": 426493026
+      },
+      {
+        "id": 45099468941,
+        "name": "Palette shader actual backend qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 1732,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468941/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468941/logs",
+        "workflow_id": 403062058
+      },
+      {
+        "id": 45099468881,
+        "name": "Art session-only logging qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 54,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468881/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468881/logs",
+        "workflow_id": 426427472
+      },
+      {
+        "id": 45099468997,
+        "name": "Architectural Generator A+B source qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 614,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468997/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468997/logs",
+        "workflow_id": 417954798
+      },
+      {
+        "id": 45099469017,
+        "name": "GEN-006 persistent areas qualification and runtime publication",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 31,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469017/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469017/logs",
+        "workflow_id": 426341819
+      },
+      {
+        "id": 45099469013,
+        "name": "Wave Flow native qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 329,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469013/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469013/logs",
+        "workflow_id": 419287784
+      },
+      {
+        "id": 45099468945,
+        "name": "Issue 49 Water apparatus v2",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 1199,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468945/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468945/logs",
+        "workflow_id": 362873238
+      },
+      {
+        "id": 45099468880,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 6137,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468880/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468880/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 45099468965,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 6362,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468965/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468965/logs",
+        "workflow_id": 344993860
+      },
+      {
+        "id": 45099468914,
+        "name": "Native",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 336,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468914/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099468914/logs",
+        "workflow_id": 410565224
+      },
+      {
+        "id": 45099469188,
+        "name": "Native source-scope advisory (report only)",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 4555,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469188/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469188/logs",
+        "workflow_id": 402341461
+      },
+      {
+        "id": 45099469074,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 6157,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469074/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45099469074/logs",
+        "workflow_id": 344993861
+      }
+    ],
+    "754": [
+      {
+        "id": 45542924468,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 6288,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924468/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924468/logs",
+        "workflow_id": 344993861
+      },
+      {
+        "id": 45542924226,
+        "name": "Issue 49 Water apparatus v2",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 1238,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924226/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924226/logs",
+        "workflow_id": 362873238
+      },
+      {
+        "id": 45542924200,
+        "name": "Wave Flow native qualification",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 371,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924200/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924200/logs",
+        "workflow_id": 419287784
+      },
+      {
+        "id": 45542924239,
+        "name": "Palette shader actual backend qualification",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 1832,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924239/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924239/logs",
+        "workflow_id": 403062058
+      },
+      {
+        "id": 45542924243,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "skipped",
+        "run_number": 6267,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924243/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924243/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 45542924362,
+        "name": "Native source-scope advisory (report only)",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 4684,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924362/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924362/logs",
+        "workflow_id": 402341461
+      },
+      {
+        "id": 45542924413,
+        "name": "Architectural Generator A+B source qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 726,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924413/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924413/logs",
+        "workflow_id": 417954798
+      },
+      {
+        "id": 45542924233,
+        "name": "Native",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 375,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924233/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924233/logs",
+        "workflow_id": 410565224
+      },
+      {
+        "id": 45542924210,
+        "name": "Art session-only logging qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 161,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924210/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924210/logs",
+        "workflow_id": 426427472
+      },
+      {
+        "id": 45542924211,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 6493,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924211/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45542924211/logs",
+        "workflow_id": 344993860
+      }
+    ],
+    "762": [
+      {
+        "id": 45117402518,
+        "name": "Art session-only logging qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 65,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402518/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402518/logs",
+        "workflow_id": 426427472
+      },
+      {
+        "id": 45117402379,
+        "name": "Palette shader actual backend qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 1736,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402379/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402379/logs",
+        "workflow_id": 403062058
+      },
+      {
+        "id": 45117402416,
+        "name": "Architectural Generator A+B source qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 627,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402416/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402416/logs",
+        "workflow_id": 417954798
+      },
+      {
+        "id": 45117402437,
+        "name": "Wave Flow native qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 332,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402437/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402437/logs",
+        "workflow_id": 419287784
+      },
+      {
+        "id": 45117402694,
+        "name": "PressureFlow source-built Windows native qualification",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 200,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402694/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402694/logs",
+        "workflow_id": 410013764
+      },
+      {
+        "id": 45117402415,
+        "name": "Native C++ validation",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 6151,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402415/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402415/logs",
+        "workflow_id": 344993864
+      },
+      {
+        "id": 45117402537,
+        "name": "Issue 49 Water apparatus v2",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 1202,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402537/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402537/logs",
+        "workflow_id": 362873238
+      },
+      {
+        "id": 45117402679,
+        "name": "GDExtension build and current Godot regression",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 6171,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402679/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402679/logs",
+        "workflow_id": 344993861
+      },
+      {
+        "id": 45117402531,
+        "name": "Documentation and provenance",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 6376,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402531/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402531/logs",
+        "workflow_id": 344993860
+      },
+      {
+        "id": 45117402459,
+        "name": "Native",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 339,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402459/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402459/logs",
+        "workflow_id": 410565224
+      },
+      {
+        "id": 45117402454,
+        "name": "Native source-scope advisory (report only)",
+        "status": "completed",
+        "conclusion": "action_required",
+        "run_number": 4569,
+        "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402454/jobs",
+        "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45117402454/logs",
+        "workflow_id": 402341461
+      }
+    ]
+  },
+  "focused_jobs": {
+    "44817963944": [
+      {
+        "id": 136572930759,
+        "name": "linux",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 44817963944,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Fetch pinned native runtime and validate exact source",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Download pinned Godot 4.7 and setup display",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Project contract, existing UI and 2048-square graphical author and independent reopen",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Preserve retained qualification and negative logs",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          }
+        ]
+      },
+      {
+        "id": 136572931421,
+        "name": "windows",
+        "status": "completed",
+        "conclusion": "success",
+        "run_id": 44817963944,
+        "logs_url": null,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 1
+          },
+          {
+            "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 2
+          },
+          {
+            "name": "Materialize and attest unchanged source-qualified native DLL and Rapier",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 3
+          },
+          {
+            "name": "Retrieve pinned Godot 4.7 Windows console executable",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 4
+          },
+          {
+            "name": "Contract, UI, 2048-square graphical author and fresh-process reopen",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 5
+          },
+          {
+            "name": "Retain exact-source Windows graphical and fresh-process evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 6
+          },
+          {
+            "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 12
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "number": 13
+          }
+        ]
+      }
+    ],
+    "45117402531": [],
+    "45099468965": []
+  },
+  "gentek2048_original_failure": {
+    "run": 44895691625,
+    "job": 136822294676,
+    "failed_case": "test_gentek2048_workbench",
+    "phase": "",
+    "checks": 3,
+    "failures": 2,
+    "exit": 1,
+    "elapsed_seconds": 0.365,
+    "original_lines": [
+      "2026-11-21T10:54:27.4808951Z ERROR: ARCHITECTURE: registered actual Workbench phase",
+      "2026-11-21T10:54:27.4810817Z ERROR: ARCHITECTURE: both 2048-square registered scenarios completed; timing records are separate",
+      "2026-11-21T10:54:27.4812840Z test_gentek2048_workbench failed; elapsed=0.365s; exit=1; log=build/godot-regressions/shard-12/test_gentek2048_workbench.log; snapshot=None",
+      "2026-11-21T10:56:20.4224679Z Failed shard 13/24: import plus 15 assigned cases (329 unique suite cases across all shards)"
+    ],
+    "scope": "Connector jobs endpoint returns first page only. This original failing Linux job was inspected; unreturned Windows jobs are not claimed complete."
+  },
+  "ramcache_owner_clarification": [
+    {
+      "url": "https://github.com/techrote/cybersand/pull/745#issuecomment-7090736100",
+      "created_at": "2026-11-23T03:25:49Z",
+      "body": "### Owner performance-acceptance correction — no new HOT-latency blocker\n\nThe owner has clarified the applicable target: **HOT area returns in less than a few seconds**, not a mandatory p50 below 250 ms. The 250 ms figure in earlier historical benchmarking was a **preference**, not the owner's functional exit gate. Source-qualified hosted Windows HOT p50 **514–521.5 ms**, p95 **570–592 ms**, worst **639 ms**, and correlated Main-frame intervals of ~**360–377 ms** are **within this stated target**. The final 8/8 CI PASS, exact-source durability/restore results, and independent publication/evaluator verification remain valid.\n\nTherefore **do not classify HOT return latency as a blocking P2 regression or launch another optimisation campaign solely to chase 250 ms**. The separately measured WARM p50 of 3.48–3.52 seconds is slower, but WARM involves native reconstruction and is not the same zero-debt HOT route; assess WARM by owner preference if it becomes material. Physical Windows 11/NVIDIA handling and appearance still await owner acceptance. This clarification supersedes the *priority/acceptance interpretation*, not the original timing measurements. Mistaken follow-up [#764](https://github.com/techrote/cybersand/issues/764) has been closed as not planned. **#745 stays source-qualified Draft/HOLD**; no source changes, CI reruns, merging or default activation."
+    }
+  ]
+}

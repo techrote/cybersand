@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "purpose": "Exact byte transport of original independent evidence archive; no member reconstruction or repackaging. GitHub connector refuses request bodies above16MiB, so14.6MiB archive cannot be uploaded as one base64 blob. Ordered concatenation recovers original archive exactly.",
+  "original_archive": "closure-independent-source-reviews-evidence.tar.gz",
+  "bytes": 14619001,
+  "sha256": "4403ed0df021f2cbe20e9e861ad797b0ca48fa4d5d60bfe3c59d425fc234fb6d",
+  "parts": [
+    {
+      "path": "closure-independent-source-reviews-evidence.tar.gz.part-001",
+      "offset": 0,
+      "bytes": 8388608,
+      "sha256": "884300da2d7396d91844c575e11cbdb6fa9f6dcc487cdb02ded9c60a0e05f985"
+    },
+    {
+      "path": "closure-independent-source-reviews-evidence.tar.gz.part-002",
+      "offset": 8388608,
+      "bytes": 6230393,
+      "sha256": "0ca66f29cef0e673284ffbc24e9ac1665f716fe74a5f2e2bb91f76ddf26c3883"
+    }
+  ],
+  "reassemble_python": "from pathlib import Path; p=Path('.'); (p/'closure-independent-source-reviews-evidence.tar.gz').write_bytes(b''.join((p/n).read_bytes() for n in ['closure-independent-source-reviews-evidence.tar.gz.part-001', 'closure-independent-source-reviews-evidence.tar.gz.part-002']))"
+}

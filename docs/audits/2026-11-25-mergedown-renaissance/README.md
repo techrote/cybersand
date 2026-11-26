@@ -14,6 +14,17 @@ related-documents: [../../operations/github-development-and-release.md]
 
 Intake accepted main: `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. Repository settings permit merge commits; main is unprotected and has no rulesets. Procedural source/runtime and CI gates remain required.
 
+## 26 November recovery continuation
+
+The owner commissioned **MERGEDOWN-RENAISSANCE-CLOSURE-001** to finish this existing programme. The six completed integrations and all original failed campaigns remain preserved. Accepted main remains `67c1413a2a84077b47fa542cf91d2bd6ba5520ee`; its six actual post-merge workflows passed. Recovery has not yet claimed a qualified final Windows package or a new merge.
+
+- [Current recovery ledger](closure-recovery-ledger.json): completed, prepared, failed, active and blocked work with exact next actions.
+- [Independent implementation review](closure-independent-product-reviews.md): reproduced original source tests, storage faults and adapter refusals.
+- [Narrow accepted Goblin storage repair](closure-goblin001-recovery.json): original false acknowledgement, exact source bundle and original results.
+- [Native dispositions and practical owner queue](closure-native-dispositions-and-owner-queue.md): exact frozen evaluators, sources, limits and remaining decisions.
+
+The recovery is active. The final disposition will replace this checkpoint only after actual Windows delivery and source qualification have been assessed.
+
 ## Authority and ownership
 
 The owner's 25 November mission authorizes qualified infrastructure/tooling and the opt-in #772/#775 foundations. Their physical owner acceptance remains outstanding. Other gameplay/authoring owner gates are preserved.

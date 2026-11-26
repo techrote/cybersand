@@ -1,0 +1,207 @@
+{
+  "schema": 1,
+  "date": "2026-11-26",
+  "scope": "Independent exact Git-source/provenance hash comparison; no new binary download or platform execution claimed",
+  "candidates": {
+    "main": {
+      "source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "actual_native_count": 105,
+      "platforms": {
+        "windows": {
+          "recorded_native_count": 105,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "all_current_inputs_match": true
+        },
+        "linux": {
+          "recorded_native_count": 105,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "all_current_inputs_match": true
+        }
+      }
+    },
+    "SWARM": {
+      "source": "acc5dc1ca1a4ce0a3b1579d555102f797b2c55cc",
+      "actual_native_count": 106,
+      "platforms": {
+        "windows": {
+          "recorded_native_count": 106,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+          "runtime_source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "runtime_build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "all_current_inputs_match": true
+        },
+        "linux": {
+          "recorded_native_count": 106,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+          "runtime_source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "runtime_build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "all_current_inputs_match": true
+        }
+      }
+    },
+    "Actor Compose": {
+      "source": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "actual_native_count": 105,
+      "platforms": {
+        "windows": {
+          "recorded_native_count": 105,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+          "runtime_source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "runtime_build_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "all_current_inputs_match": true
+        },
+        "linux": {
+          "recorded_native_count": 105,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+          "runtime_source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "runtime_build_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "all_current_inputs_match": true
+        }
+      }
+    },
+    "ObjectShard": {
+      "source": "75865127fee19c56dacb0ae80307f438dd866cd1",
+      "actual_native_count": 117,
+      "platforms": {
+        "windows": {
+          "recorded_native_count": 105,
+          "missing_from_provenance": [
+            "godot/native_extension/cyber_object_shard_lab.cpp",
+            "godot/native_extension/cyber_object_shard_lab.hpp",
+            "native/include/cybersand/material_lifecycle.hpp",
+            "native/include/cybersand/object_shard.hpp",
+            "native/include/cybersand/object_shard_contact.hpp",
+            "native/include/cybersand/object_shard_coordinator.hpp",
+            "native/include/cybersand/object_shard_discovery.hpp",
+            "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+            "native/include/cybersand/object_shard_mutation.hpp",
+            "native/src/object_shard.cpp",
+            "native/src/object_shard_coordinator.cpp",
+            "native/src/object_shard_fire.inc"
+          ],
+          "stale_hashes": [
+            "godot/native_extension/cyber_demo_bridge.hpp",
+            "godot/native_extension/cyber_native_cell_world.cpp",
+            "godot/native_extension/cyber_native_cell_world.hpp",
+            "godot/native_extension/cyber_prepared_liquid_world.hpp",
+            "godot/native_extension/register_types.cpp",
+            "godot/native_extension/workbench_granular_coupling.inc",
+            "native/include/cybersand/world.hpp",
+            "native/src/world.cpp"
+          ],
+          "extra_in_provenance": [],
+          "runtime_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "all_current_inputs_match": false
+        },
+        "linux": {
+          "recorded_native_count": 105,
+          "missing_from_provenance": [
+            "godot/native_extension/cyber_object_shard_lab.cpp",
+            "godot/native_extension/cyber_object_shard_lab.hpp",
+            "native/include/cybersand/material_lifecycle.hpp",
+            "native/include/cybersand/object_shard.hpp",
+            "native/include/cybersand/object_shard_contact.hpp",
+            "native/include/cybersand/object_shard_coordinator.hpp",
+            "native/include/cybersand/object_shard_discovery.hpp",
+            "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+            "native/include/cybersand/object_shard_mutation.hpp",
+            "native/src/object_shard.cpp",
+            "native/src/object_shard_coordinator.cpp",
+            "native/src/object_shard_fire.inc"
+          ],
+          "stale_hashes": [
+            "godot/native_extension/cyber_demo_bridge.hpp",
+            "godot/native_extension/cyber_native_cell_world.cpp",
+            "godot/native_extension/cyber_native_cell_world.hpp",
+            "godot/native_extension/cyber_prepared_liquid_world.hpp",
+            "godot/native_extension/register_types.cpp",
+            "godot/native_extension/workbench_granular_coupling.inc",
+            "native/include/cybersand/world.hpp",
+            "native/src/world.cpp"
+          ],
+          "extra_in_provenance": [],
+          "runtime_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "all_current_inputs_match": false
+        }
+      }
+    },
+    "RAMCACHE": {
+      "source": "47e4fee8aa50ef007cdd9769841712edb5be40b5",
+      "actual_native_count": 110,
+      "platforms": {
+        "windows": {
+          "recorded_native_count": 110,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "6767893bdba0972fb0758f089a5e446d3c93d749da6385352753e380f52e99b0",
+          "runtime_source_commit": "3ffa41559d21daee4ce9993ebd217afeff5407e7",
+          "runtime_build_commit": "3ffa41559d21daee4ce9993ebd217afeff5407e7",
+          "all_current_inputs_match": true
+        },
+        "linux": {
+          "recorded_native_count": 110,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "ff36100640e57909211a42482aa482b0f5a36c05095a9f152d9bbbfe2099ae60",
+          "runtime_source_commit": "3ffa41559d21daee4ce9993ebd217afeff5407e7",
+          "runtime_build_commit": "3ffa41559d21daee4ce9993ebd217afeff5407e7",
+          "all_current_inputs_match": true
+        }
+      }
+    },
+    "Material Audition": {
+      "source": "858ef9e7285fcaa22c9cc1381d0cb0082057a456",
+      "actual_native_count": 108,
+      "platforms": {
+        "windows": {
+          "recorded_native_count": 108,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+          "runtime_source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "runtime_build_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "all_current_inputs_match": true
+        },
+        "linux": {
+          "recorded_native_count": 108,
+          "missing_from_provenance": [],
+          "stale_hashes": [],
+          "extra_in_provenance": [],
+          "runtime_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+          "runtime_source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "runtime_build_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "all_current_inputs_match": true
+        }
+      }
+    }
+  }
+}

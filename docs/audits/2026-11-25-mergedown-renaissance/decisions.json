@@ -609,5 +609,14 @@
       "status": "ACTIVE PROGRAMME \u2014 PROTECT; no source/campaign mutation, Ready promotion or merge",
       "coordination": "https://github.com/techrote/cybersand/pull/785#issuecomment-7178821806"
     }
-  ]
+  ],
+  "closure_recovery": {
+    "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
+    "ledger": "closure-recovery-ledger.json",
+    "observed_at": "2026-11-26T08:10:38.863668+00:00",
+    "current_accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "new_merges": [],
+    "status": "Recovery executing; no final completion claim",
+    "owner_queue": "closure-native-dispositions-and-owner-queue.md"
+  }
 }

@@ -1,0 +1,635 @@
+{
+  "schema": "mergedown-independent-source-evidence-v1",
+  "archive": "closure-independent-source-reviews-evidence.tar.gz",
+  "archive_sha256": "4403ed0df021f2cbe20e9e861ad797b0ca48fa4d5d60bfe3c59d425fc234fb6d",
+  "archive_bytes": 14619001,
+  "files": {
+    "art-independent-os/append-normal/child.log": {
+      "bytes": 921,
+      "sha256": "c7586aac9f2601c5722b5f135c6f02a8ea037cb6365de97abedafeb574c1a3a1"
+    },
+    "art-independent-os/append-normal/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/append-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/7b9d1062c9e4282f63c8e23b02d1070a.jsonl": {
+      "bytes": 3159,
+      "sha256": "e8104fabedf4957cbed0a0762ed75a45209b0fd9426aa768f1aa4b6fdf7cbeb4"
+    },
+    "art-independent-os/append-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 807,
+      "sha256": "2a2d84b9bc446fdd490e961b29ab8ac2706b58daa367c9a3ccbdac8a8eae4ff5"
+    },
+    "art-independent-os/append-short-write/child.log": {
+      "bytes": 1030,
+      "sha256": "50a51768e2a706c8578dd0661f3f157eb269f3e67eccf35791cf45f595e8f366"
+    },
+    "art-independent-os/append-short-write/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/append-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/ed0b69bf9dd2542f343d9977433de1a1.jsonl": {
+      "bytes": 466,
+      "sha256": "e1f92832a678814fc6c5db772bdabedda72c83d281a9562534519543bc92ee2b"
+    },
+    "art-independent-os/append-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 466,
+      "sha256": "a569595d0364cb3dc9cfca7223388bc17f5aa4d63f3e54e285b48aeee4388d56"
+    },
+    "art-independent-os/export-normal/child.log": {
+      "bytes": 882,
+      "sha256": "e4b9315e10b5274a61346c5bd26e24c226cb97418f8e2ba44bffc1f46d111ba2"
+    },
+    "art-independent-os/export-normal/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/replay-copy.jsonl": {
+      "bytes": 2660,
+      "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50"
+    },
+    "art-independent-os/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/source.jsonl": {
+      "bytes": 2660,
+      "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50"
+    },
+    "art-independent-os/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl": {
+      "bytes": 2660,
+      "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50"
+    },
+    "art-independent-os/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 768,
+      "sha256": "e0a66fcbdaab255494b2f866ce000788f946eae65e9312ea6e8170d7b8c8e4b0"
+    },
+    "art-independent-os/export-short-write/child.log": {
+      "bytes": 1018,
+      "sha256": "9ca2f66471ce797e874cc39e878e717a1cdc445b106198fa239665888b5a34d8"
+    },
+    "art-independent-os/export-short-write/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/replay-copy.jsonl": {
+      "bytes": 84,
+      "sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265"
+    },
+    "art-independent-os/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/source.jsonl": {
+      "bytes": 2660,
+      "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50"
+    },
+    "art-independent-os/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl": {
+      "bytes": 84,
+      "sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265"
+    },
+    "art-independent-os/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 406,
+      "sha256": "bb16a801874508cfcc1de4ab62ca8d11fe83d2f8c502df89d0730be8b752ff61"
+    },
+    "art-independent-os/new-event-normal/child.log": {
+      "bytes": 741,
+      "sha256": "9a95ecec5ed188177ac8872bb3b6a51e8a07baee95740d331930ffcf92c71851"
+    },
+    "art-independent-os/new-event-normal/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/new-event-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/e5cb83445048582988afe81da04c81c0.jsonl": {
+      "bytes": 2915,
+      "sha256": "fbc0e7ee1a775ba6577af84ef1aebc5913c76fd90a7b1787b7e2e4b4cab2ce78"
+    },
+    "art-independent-os/new-event-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 627,
+      "sha256": "44d1b731f4c7c3f2ed173c41e3f77f97ea28262fc7f78b802f238afab3c07576"
+    },
+    "art-independent-os/new-event-short-write/child.log": {
+      "bytes": 843,
+      "sha256": "c478414efad797d0832e2bb40e692b2905541512aebe873cab4093ecd7fd0aaf"
+    },
+    "art-independent-os/new-event-short-write/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/new-event-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 257,
+      "sha256": "1ace09b24ab3b0ff660b241c4bec2e9f59aaf812f0e8ed9b89cae280d3b1878d"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/child.log": {
+      "bytes": 1580,
+      "sha256": "bdf62b171e597d27ce7cf84354c5b1215a1dec21aebf510bab374ece958b87bb"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json": {
+      "bytes": 2298,
+      "sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00001795679584798930_00000000000000000008-00000000000000000000000000000008.json": {
+      "bytes": 2596,
+      "sha256": "37eec4d797b5834c03f8302afe9a3c1cfc025ed0f68e91adc8013b1b9af0e171"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/pending-stale.partial": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/pending-history-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1466,
+      "sha256": "322ac03ad78c39294491cd614028894f4212114a498a7e5e0d6a070251a60b44"
+    },
+    "art-independent-os/pending-history-existing-receipt/child.log": {
+      "bytes": 1569,
+      "sha256": "1952d38e4551abb2a46f1455fefb9f303f0d4b590752102f837be04b3d6194d4"
+    },
+    "art-independent-os/pending-history-existing-receipt/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/pending-history-existing-receipt/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/pending-history-existing-receipt/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json": {
+      "bytes": 2298,
+      "sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932"
+    },
+    "art-independent-os/pending-history-existing-receipt/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00001795679583052006_00000000000000000008-00000000000000000000000000000008.json": {
+      "bytes": 2596,
+      "sha256": "893a3d76c6aff2f6f2a40bd93695519e71914d49c4cd9215e43e1a5504900eba"
+    },
+    "art-independent-os/pending-history-existing-receipt/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/pending-stale.partial": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/pending-history-existing-receipt/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1455,
+      "sha256": "883ccc9049b39ec07d04076b331338cd4a6692ae3ea2b70567d22d2decd400c0"
+    },
+    "art-independent-os/pending-history-none/child.log": {
+      "bytes": 1419,
+      "sha256": "e0abf8fc2e820e8c8a4ce7cb3bf17fb87c00fdeeb558e2c2e3e1da8740640319"
+    },
+    "art-independent-os/pending-history-none/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/pending-history-none/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/pending-history-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json": {
+      "bytes": 2298,
+      "sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932"
+    },
+    "art-independent-os/pending-history-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00001795679582129009_00000000000000000008-00000000000000000000000000000008.json": {
+      "bytes": 2596,
+      "sha256": "3f5827270facba40808926d855e11795b53c17f409b73e329f5fbe8e7fbb1afd"
+    },
+    "art-independent-os/pending-history-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/pending-stale.partial": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/pending-history-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1305,
+      "sha256": "108f77d97417d670081ad03a14bbbf3306c18caa28daba7fa17eda8c04e9aba8"
+    },
+    "art-independent-os/pending-history-short-write/child.log": {
+      "bytes": 1564,
+      "sha256": "1c1b0e478b861db4549108b59e3ea266d165fdd8b94156e2b95700000a119c71"
+    },
+    "art-independent-os/pending-history-short-write/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/pending-history-short-write/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/pending-history-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json": {
+      "bytes": 2298,
+      "sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932"
+    },
+    "art-independent-os/pending-history-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00001795679583803474_00000000000000000008-00000000000000000000000000000008.json": {
+      "bytes": 2596,
+      "sha256": "3bc18f7e9399a723a2641789fca033acc2f90cdb3bf9101367148ba2e4f52998"
+    },
+    "art-independent-os/pending-history-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/pending-stale.partial": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/pending-history-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1172,
+      "sha256": "f10e6e21fea0b52a540ae3132babd45ccd12b0f915d690d73ebce8ec9ef9491d"
+    },
+    "art-independent-os/report.json": {
+      "bytes": 25872,
+      "sha256": "2ffc31a2b76ba1941a01352a566513ea145405b554bc451929cc91c38a9c6107"
+    },
+    "art-independent-os/settings-directory-permission-denied/child.log": {
+      "bytes": 1862,
+      "sha256": "e0528b8f2bf9f00241d78f414a3116fa325f39c49b0ad641658474158d501a86"
+    },
+    "art-independent-os/settings-directory-permission-denied/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/settings-directory-permission-denied/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/settings-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg": {
+      "bytes": 1970,
+      "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c"
+    },
+    "art-independent-os/settings-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg.tmp": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/settings-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1748,
+      "sha256": "979e3d8714260a2173a3eff936ed5b677c2e56f8cbd05bd4b907abe2baabb248"
+    },
+    "art-independent-os/settings-none/child.log": {
+      "bytes": 1403,
+      "sha256": "00fe34ee77fdfd731c55042bc79cdab5f5019689c7c99e239aecfd3234550ee9"
+    },
+    "art-independent-os/settings-none/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/settings-none/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/settings-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg": {
+      "bytes": 1970,
+      "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c"
+    },
+    "art-independent-os/settings-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg.tmp": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/settings-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1289,
+      "sha256": "6658ea0a90c2a2d985cf0cdc23306e8e9898638f88d2301d66e58ab909ec4dd2"
+    },
+    "art-independent-os/settings-short-write/child.log": {
+      "bytes": 1872,
+      "sha256": "13cf0fbde797c3b367d6b3130315acc98b9dfea02b38bb9e5cc08306bd9bf623"
+    },
+    "art-independent-os/settings-short-write/continue": {
+      "bytes": 9,
+      "sha256": "7134fe6667b4b2287cb806d21d2f2488b9b2077f52c6b8e06b16a4aa27c1cc13"
+    },
+    "art-independent-os/settings-short-write/continue.retry": {
+      "bytes": 6,
+      "sha256": "6ce680c6f22beba3ba0135ac7cd5799c5b532286bff192bdc1587b66bb4c1114"
+    },
+    "art-independent-os/settings-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg": {
+      "bytes": 1970,
+      "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c"
+    },
+    "art-independent-os/settings-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg.tmp": {
+      "bytes": 55,
+      "sha256": "e689b5e6b19dc7e0ac4c4344d078a647aa9cd031684fb1649af08ca80c8488b5"
+    },
+    "art-independent-os/settings-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 1296,
+      "sha256": "b168c479dd2b6d97ed0f959b81b41f43b93cad42259ab662db691889febc4d92"
+    },
+    "art-independent-native/import.log": {
+      "bytes": 53919,
+      "sha256": "ceb517f143b52d1c5dfcfb47ee23fca8f1613d91a55654b0e0d46841bbc9062c"
+    },
+    "art-independent-native/profile/cache/godot/editor_doc_cache-4.7.res": {
+      "bytes": 3268746,
+      "sha256": "7df05d39c9915b7571fa5fdbaa3be0c498752adde3784fec20fffaf43c154003"
+    },
+    "art-independent-native/profile/config/godot/editor_settings-4.7.tres": {
+      "bytes": 17725,
+      "sha256": "7559b82d9769b4156f0fb288c694313c54deb3b07b4c2d3474f9faa08a0d8eab"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/96c28919e55189245803e2e8bd814db7.jsonl": {
+      "bytes": 36269,
+      "sha256": "7f0a94ccd448ca7c9680995df14e265f93dcf8a599caed7c987aa79e5f7dc103"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/fresh-\u6c34.json": {
+      "bytes": 45,
+      "sha256": "7a30ac647c527349f75de836d9c86ea05c2e01c3a36241823d5a36f0a52c5c9f"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/named.json": {
+      "bytes": 45,
+      "sha256": "7a30ac647c527349f75de836d9c86ea05c2e01c3a36241823d5a36f0a52c5c9f"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/named.json.1234567890abcdef1234567890abcdef.tmp": {
+      "bytes": 29,
+      "sha256": "bdf782c3c1590a02813ce4799096556035a9bd13642a23a5c5a4c5c212ae0f94"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/occupied.json/keep.txt": {
+      "bytes": 45,
+      "sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 9208,
+      "sha256": "a5442d4eb0d99cc219453f49a1240d8c828bc4058db62c07566dee3dce8ed33c"
+    },
+    "art-independent-native/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.53.56.log": {
+      "bytes": 2675,
+      "sha256": "28e6bd7e5aaf3a9504af89c140779cba1255ed71707dc5fffa1d1486829bed77"
+    },
+    "art-independent-native/report.json": {
+      "bytes": 5734,
+      "sha256": "0107e09b27011a4f2218498a5d4743be97d6b3e6a638ee032f49498016013a57"
+    },
+    "art-independent-native/test_art_architecture_workbench.log": {
+      "bytes": 9322,
+      "sha256": "03702012a4a525d7118621835dd3ac35785f46e31ea8b7ed0053028866913bf2"
+    },
+    "art-independent-native/test_workbench_file_transaction.log": {
+      "bytes": 2789,
+      "sha256": "3aa4ab0653791f31a7324abf0c2048b4c84ad826a8aaa7f5cfbf9c868c87ea7a"
+    },
+    "goblin001-independent-os/01-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    "goblin001-independent-os/01-seed-7.log": {
+      "bytes": 549,
+      "sha256": "e55d1ad1d10cac5f2dbec45812b9ef8d041d7240e90d632b6d2ee174d9aa9f4b"
+    },
+    "goblin001-independent-os/02-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    "goblin001-independent-os/02-seed-8.log": {
+      "bytes": 549,
+      "sha256": "e55d1ad1d10cac5f2dbec45812b9ef8d041d7240e90d632b6d2ee174d9aa9f4b"
+    },
+    "goblin001-independent-os/03-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    "goblin001-independent-os/03-seed-7.log": {
+      "bytes": 549,
+      "sha256": "e55d1ad1d10cac5f2dbec45812b9ef8d041d7240e90d632b6d2ee174d9aa9f4b"
+    },
+    "goblin001-independent-os/04-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    "goblin001-independent-os/04-seed-8.log": {
+      "bytes": 679,
+      "sha256": "2ca5bb0542d353e8730703be343f852c22bee5c1391ccb51824c0b62e88e70d8"
+    },
+    "goblin001-independent-os/05-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    "goblin001-independent-os/05-seed-8.log": {
+      "bytes": 549,
+      "sha256": "e55d1ad1d10cac5f2dbec45812b9ef8d041d7240e90d632b6d2ee174d9aa9f4b"
+    },
+    "goblin001-independent-os/06-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    "goblin001-independent-os/06-seed-7.log": {
+      "bytes": 549,
+      "sha256": "e55d1ad1d10cac5f2dbec45812b9ef8d041d7240e90d632b6d2ee174d9aa9f4b"
+    },
+    "goblin001-independent-os/07-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    "goblin001-independent-os/07-seed-8.log": {
+      "bytes": 666,
+      "sha256": "3e5c2620d38386be68286881ea0f1ed8b78ed3a88a07c61b08a0f2df3e8aebae"
+    },
+    "goblin001-independent-os/08-observed-output.bin": {
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    "goblin001-independent-os/08-seed-8.log": {
+      "bytes": 549,
+      "sha256": "e55d1ad1d10cac5f2dbec45812b9ef8d041d7240e90d632b6d2ee174d9aa9f4b"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/goblin-profile.json": {
+      "bytes": 41,
+      "sha256": "1f86a098df03066a02fbcc290fa0c626cb82952bf7ad23f52924fe93b57b793e"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json": {
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json.partial": {
+      "bytes": 38,
+      "sha256": "d929b7e73e0140e2da2771f2af5bcd225dd7910f06e514a268a63d0ff387bd08"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 435,
+      "sha256": "0644ab6cee6ee72ba790a4611e83dd32d9f5af8eeeff8f5a0967550bcd442c25"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.53.24.log": {
+      "bytes": 128,
+      "sha256": "64fbbc73265baec79739ddf486aa11752635d65f460c60cd7542288969b16898"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.53.27.log": {
+      "bytes": 435,
+      "sha256": "0644ab6cee6ee72ba790a4611e83dd32d9f5af8eeeff8f5a0967550bcd442c25"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.53.29.log": {
+      "bytes": 435,
+      "sha256": "0644ab6cee6ee72ba790a4611e83dd32d9f5af8eeeff8f5a0967550bcd442c25"
+    },
+    "goblin001-independent-os/profile-pm_1f86i/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.53.31.log": {
+      "bytes": 552,
+      "sha256": "508943ccabdc8719d67221b5815919914474aad8338c9b4d0eba0a23669e66e7"
+    },
+    "goblin001-independent-os/report.json": {
+      "bytes": 26000,
+      "sha256": "9fe4d76c9b5939a8477b4a948e5fe5e45a6c47c1b2c415b5d20c6b5e84511f29"
+    },
+    "goblin001-independent-native/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/fresh-\u6c34.json": {
+      "bytes": 45,
+      "sha256": "7a30ac647c527349f75de836d9c86ea05c2e01c3a36241823d5a36f0a52c5c9f"
+    },
+    "goblin001-independent-native/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/named.json": {
+      "bytes": 45,
+      "sha256": "7a30ac647c527349f75de836d9c86ea05c2e01c3a36241823d5a36f0a52c5c9f"
+    },
+    "goblin001-independent-native/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/named.json.1234567890abcdef1234567890abcdef.tmp": {
+      "bytes": 29,
+      "sha256": "bdf782c3c1590a02813ce4799096556035a9bd13642a23a5c5a4c5c212ae0f94"
+    },
+    "goblin001-independent-native/data/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/occupied.json/keep.txt": {
+      "bytes": 45,
+      "sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f"
+    },
+    "goblin001-independent-native/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "bytes": 2675,
+      "sha256": "28e6bd7e5aaf3a9504af89c140779cba1255ed71707dc5fffa1d1486829bed77"
+    },
+    "goblin001-independent-native/generated-uid-cleanup.json": {
+      "bytes": 138,
+      "sha256": "7751c536919f7c04c347eef30363c3f9ef208d9e3275d3fae8d9d032789dd864"
+    },
+    "goblin001-independent-native/native-boundary.log": {
+      "bytes": 2789,
+      "sha256": "3aa4ab0653791f31a7324abf0c2048b4c84ad826a8aaa7f5cfbf9c868c87ea7a"
+    },
+    "goblin001-independent-native/report.json": {
+      "bytes": 3846,
+      "sha256": "e47b51ced0f87f454a7dde5de178d52813d294fa4e8d3be059455739dec4bf23"
+    },
+    "goblin001-independent-controller/executed-game-source.zip": {
+      "bytes": 2852149,
+      "sha256": "fbf2b66ce5e33d080d5ec8b916cab8584584e86459ba66b1ab73a5acef310c6d"
+    },
+    "goblin001-independent-controller/goblin_controller-independent-readback.json": {
+      "bytes": 753,
+      "sha256": "1ebc6f82e35e64afeafe99a888b6f43fbe5bd9c57185eeee314d50065c39efc8"
+    },
+    "goblin001-independent-controller/goblin_controller.log": {
+      "bytes": 317,
+      "sha256": "32443598a0f175d5de9307f7b54ac2d74d3810917edb92d20f54f51757284d0e"
+    },
+    "goblin001-independent-controller/import-result.json": {
+      "bytes": 472,
+      "sha256": "c0cbad2706a1d49ce8b74a207088f1c69388c499a0fe5fab436fa428e6bfe6d0"
+    },
+    "goblin001-independent-controller/import.log": {
+      "bytes": 46205,
+      "sha256": "8b6f8425a3c9ce66ae2a24a6b0d5149c721a83dd2326b959814799c2f7915179"
+    },
+    "goblin001-independent-controller/provenance.json": {
+      "bytes": 1065,
+      "sha256": "2a2e298aaa0e6559d83fb67c0cbafb16b4c6d1b84f2c1f51bc5503fe9953ae5b"
+    },
+    "goblin001-independent-controller/qualification.json": {
+      "bytes": 2644,
+      "sha256": "95ac42207948cc91cd4dbee49a349cbc81fbb190f3a0c961b8e4bbaf91e8e509"
+    },
+    "goblin001-independent-controller/source-snapshot.json": {
+      "bytes": 113689,
+      "sha256": "58e726cf4fa3cf83fa3dac299a008a6c502107933c4e564bb248eaa6346b7a81"
+    },
+    "goblin001-independent-controller/transcript.json": {
+      "bytes": 4631,
+      "sha256": "368ed5ca2005d6da808d2d91a813ee139b4688cb038cc74ff8bddb74787ee713"
+    },
+    "goblin001-independent-controller-clean/executed-game-source.zip": {
+      "bytes": 2852149,
+      "sha256": "fbf2b66ce5e33d080d5ec8b916cab8584584e86459ba66b1ab73a5acef310c6d"
+    },
+    "goblin001-independent-controller-clean/goblin_controller-independent-readback.json": {
+      "bytes": 753,
+      "sha256": "1ebc6f82e35e64afeafe99a888b6f43fbe5bd9c57185eeee314d50065c39efc8"
+    },
+    "goblin001-independent-controller-clean/goblin_controller.log": {
+      "bytes": 317,
+      "sha256": "32443598a0f175d5de9307f7b54ac2d74d3810917edb92d20f54f51757284d0e"
+    },
+    "goblin001-independent-controller-clean/import-result.json": {
+      "bytes": 479,
+      "sha256": "d2f26971294e69b1e54f2d1f38f69af75173aa2db37bc53fe361b2b2cdf466e2"
+    },
+    "goblin001-independent-controller-clean/import.log": {
+      "bytes": 46205,
+      "sha256": "8b6f8425a3c9ce66ae2a24a6b0d5149c721a83dd2326b959814799c2f7915179"
+    },
+    "goblin001-independent-controller-clean/provenance.json": {
+      "bytes": 1065,
+      "sha256": "2a2e298aaa0e6559d83fb67c0cbafb16b4c6d1b84f2c1f51bc5503fe9953ae5b"
+    },
+    "goblin001-independent-controller-clean/qualification.json": {
+      "bytes": 2650,
+      "sha256": "678ee299ae34dd038a71ec2aea1ff271688ab519407c57bb638b3fdaf2ed12b7"
+    },
+    "goblin001-independent-controller-clean/source-snapshot.json": {
+      "bytes": 113689,
+      "sha256": "58e726cf4fa3cf83fa3dac299a008a6c502107933c4e564bb248eaa6346b7a81"
+    },
+    "goblin001-independent-controller-clean/transcript.json": {
+      "bytes": 4632,
+      "sha256": "dbbba235d7ad716d0b9649144975782e50e80cfea42127a5137f2a190be06c86"
+    },
+    "goblin001-independent-controller-refreshed/executed-game-source.zip": {
+      "bytes": 2852149,
+      "sha256": "fbf2b66ce5e33d080d5ec8b916cab8584584e86459ba66b1ab73a5acef310c6d"
+    },
+    "goblin001-independent-controller-refreshed/goblin_controller-independent-readback.json": {
+      "bytes": 753,
+      "sha256": "1ebc6f82e35e64afeafe99a888b6f43fbe5bd9c57185eeee314d50065c39efc8"
+    },
+    "goblin001-independent-controller-refreshed/goblin_controller.log": {
+      "bytes": 317,
+      "sha256": "32443598a0f175d5de9307f7b54ac2d74d3810917edb92d20f54f51757284d0e"
+    },
+    "goblin001-independent-controller-refreshed/import-result.json": {
+      "bytes": 483,
+      "sha256": "81065dd2c743041289bd6c81af3ba87a3a1479d3cb1ee5b8ccc6a0ad7bddfa67"
+    },
+    "goblin001-independent-controller-refreshed/import.log": {
+      "bytes": 46205,
+      "sha256": "8b6f8425a3c9ce66ae2a24a6b0d5149c721a83dd2326b959814799c2f7915179"
+    },
+    "goblin001-independent-controller-refreshed/provenance.json": {
+      "bytes": 1065,
+      "sha256": "2a2e298aaa0e6559d83fb67c0cbafb16b4c6d1b84f2c1f51bc5503fe9953ae5b"
+    },
+    "goblin001-independent-controller-refreshed/qualification.json": {
+      "bytes": 2653,
+      "sha256": "22fe745155ced5228e25dd2bccbe7b9f7b526ec9ef491f1328cf42f0de3b296d"
+    },
+    "goblin001-independent-controller-refreshed/source-snapshot.json": {
+      "bytes": 113689,
+      "sha256": "58e726cf4fa3cf83fa3dac299a008a6c502107933c4e564bb248eaa6346b7a81"
+    },
+    "goblin001-independent-controller-refreshed/transcript.json": {
+      "bytes": 4632,
+      "sha256": "4c743da3804d099fb839be9fa00f152c13cd1cdac85f7f9cec27e0c351cf3110"
+    },
+    "goblin001-independent-controller-final/executed-game-source.zip": {
+      "bytes": 2852149,
+      "sha256": "fbf2b66ce5e33d080d5ec8b916cab8584584e86459ba66b1ab73a5acef310c6d"
+    },
+    "goblin001-independent-controller-final/goblin_controller-independent-readback.json": {
+      "bytes": 753,
+      "sha256": "1ebc6f82e35e64afeafe99a888b6f43fbe5bd9c57185eeee314d50065c39efc8"
+    },
+    "goblin001-independent-controller-final/goblin_controller.log": {
+      "bytes": 317,
+      "sha256": "32443598a0f175d5de9307f7b54ac2d74d3810917edb92d20f54f51757284d0e"
+    },
+    "goblin001-independent-controller-final/import-result.json": {
+      "bytes": 479,
+      "sha256": "b04ad789d54e8545620cbcf05c99d73ef023cd59cf24dc259b21b09837fadd3d"
+    },
+    "goblin001-independent-controller-final/import.log": {
+      "bytes": 46205,
+      "sha256": "8b6f8425a3c9ce66ae2a24a6b0d5149c721a83dd2326b959814799c2f7915179"
+    },
+    "goblin001-independent-controller-final/provenance.json": {
+      "bytes": 1066,
+      "sha256": "2e7d1ce80bed4beeceac6ac7f69b5b1a0ba935e145d7a9fadf99cdb1b912aadc"
+    },
+    "goblin001-independent-controller-final/qualification.json": {
+      "bytes": 2651,
+      "sha256": "e4d577442d6e153fe56d97047e6e5c7721840ddf86df76f33429ef92bd1380bd"
+    },
+    "goblin001-independent-controller-final/source-snapshot.json": {
+      "bytes": 113689,
+      "sha256": "58e726cf4fa3cf83fa3dac299a008a6c502107933c4e564bb248eaa6346b7a81"
+    },
+    "goblin001-independent-controller-final/transcript.json": {
+      "bytes": 4634,
+      "sha256": "5bd06669158345d3e1f9527e7b30e38c7867954725522d5f275c0925a99d537d"
+    }
+  },
+  "scope": "Actual independent Linux Godot4.7 execution, original readbacks and failed/dirty metadata receipts; no Windows or graphical qualification implied.",
+  "exact_archive_transport": "closure-independent-evidence-transport.json",
+  "archive_representation": "Two ordered raw byte parts; concatenate and verify original archive_sha256 before extracting"
+}
