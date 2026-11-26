@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import stat
 import subprocess
+import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -176,6 +177,35 @@ class DeliveryCustody(unittest.TestCase):
                                    (matches[0], text + text)):
             with self.subTest(arguments=arguments, log=changed), self.assertRaises(ValueError):
                 delivery.verify_workbench_launcher(arguments, changed)
+
+    @unittest.skipUnless(sys.platform == "win32", "Actual Windows shell autoload requires Windows")
+    def test_delivered_cmd_preserves_hashing_through_powershell7_intermediate(self):
+        folder = self.root / "Actual CMD path with spaces"
+        workbench = folder / "workbench"
+        workbench.mkdir(parents=True)
+        original = ('@echo off\nsetlocal\npowershell.exe -NoProfile -ExecutionPolicy Bypass '
+                    '-File "%~dp0workbench\\Open goblin.ps1" %*\nexit /b %errorlevel%\n')
+        content = workbench / "fixture.txt"
+        content.write_bytes(b"Synthetic shell custody fixture, not product qualification.\n")
+        (workbench / "Open goblin.ps1").write_text(
+            "$ErrorActionPreference = 'Stop'\n(Get-FileHash -LiteralPath (Join-Path $PSScriptRoot 'fixture.txt') -Algorithm SHA256).Hash.ToLowerInvariant()\n",
+            encoding="utf-8")
+        before = folder / "Before.cmd"
+        repaired = folder / "Open Goblin.cmd"
+        before.write_text(original, encoding="utf-8", newline="\r\n")
+        repaired.write_text(delivery.goblin_launcher(), encoding="utf-8", newline="\r\n")
+        def execute(path):
+            return subprocess.run([os.environ["ComSpec"], "/d", "/s", "/c", '"' + str(path) + '"'],
+                                  cwd=folder, capture_output=True, text=True, timeout=30)
+        baseline = execute(before)
+        result = execute(repaired)
+        print("MAINLINE_SHELL_AUTOLOAD_CONTROL " + json.dumps({
+            "original_exit": baseline.returncode, "original_stdout": baseline.stdout, "original_stderr": baseline.stderr,
+            "corrected_exit": result.returncode, "corrected_stdout": result.stdout, "corrected_stderr": result.stderr,
+            "inherited_module_path": os.environ.get("PSModulePath"), "expected_sha256": delivery.sha(content)}))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), delivery.sha(content))
+        self.assertEqual(result.stderr.strip(), "")
 
     def test_other_source_and_other_runtime_are_refused(self):
         for mutate in (lambda g: g.update(source_commit="9" * 40),

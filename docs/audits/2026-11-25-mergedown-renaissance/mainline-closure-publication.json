@@ -1,0 +1,23 @@
+{
+  "schema": "cybersand-mainline-closure-publication-v1",
+  "local_commit": "ac9eae778aa4a129b56e36f5039cf8f426a89c59",
+  "remote_commit": "a4f7cf9b0b9a318b001901dca9ae184a591081ed",
+  "exact_tree": "d3dc51c39971458eaf20c16af561e424b6f7ba5b",
+  "parent_commit": "a3cddc4703ecea7abdfe2db55d1de5ef79874447",
+  "tree_equality_verified_by": "GitHub create_tree result and fresh git fetch/rev-parse",
+  "local_source_bundle": {
+    "path": "mainline-closure-ac9eae77.bundle",
+    "sha256": "a4b2316fe8e1293152776edbbe6639536ae26355fdecc2879a4b1a41fb8779fe",
+    "required_commit": "a3cddc4703ecea7abdfe2db55d1de5ef79874447",
+    "verification": "git bundle verify passed"
+  },
+  "source_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "request_revision": "closure-direct-runtime-launcher-recovery-001",
+  "run_id": 45778120328,
+  "run_attempt": 1,
+  "registration_comment": "https://github.com/techrote/cybersand/pull/784#issuecomment-7185862624",
+  "independent_review": "Specialist C approved25 custody/refusal tests plus5 supplemental refusal controls and provider policy; no Windows success inferred",
+  "original_unavailable_commit": "2709e8cb6f83cd4d9bf7af5feb91ae0965c2c133",
+  "original_equivalence_claimed": false
+}

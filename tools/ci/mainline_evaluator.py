@@ -310,6 +310,15 @@ def verify_archive(archive: Path, manifest_path: Path) -> None:
                     "Delivered archive bytes differ from its tested manifest: " + item.filename)
 
 
+def goblin_launcher() -> str:
+    # A cmd.exe intermediate inherits PowerShell7's module paths unchanged.
+    # Let stock WindowsPowerShell reconstruct its own standard module search
+    # path so its unchanged source-owned Get-FileHash verifier can autoload.
+    return ('@echo off\nsetlocal\nset "PSModulePath="\n'
+            '"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -ExecutionPolicy Bypass '
+            '-File "%~dp0workbench\\Open goblin.ps1" %*\nexit /b %errorlevel%\n')
+
+
 def assemble(args) -> None:
     admission = read(args.admission)
     require(not args.output.exists() and not args.archive.exists(), "Delivery outputs must be new")
@@ -367,7 +376,7 @@ def assemble(args) -> None:
             'set "mainline_exit=%errorlevel%"\n'
             'if not "%mainline_exit%"=="0" if not "%CYBERSAND_EVALUATOR_AUTOMATION%"=="1" if not "%~1"=="--headless" pause\n'
             'exit /b %mainline_exit%\n'),
-        "Open Goblin.cmd": '@echo off\nsetlocal\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0workbench\\Open goblin.ps1" %*\nexit /b %errorlevel%\n',
+        "Open Goblin.cmd": goblin_launcher(),
     }
     for name, value in launchers.items():
         (args.output / name).write_text(value, encoding="utf-8", newline="\r\n")
