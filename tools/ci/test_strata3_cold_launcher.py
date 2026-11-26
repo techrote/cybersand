@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import tempfile
+import types
 import unittest
 from unittest import mock
 import zipfile
@@ -216,6 +217,65 @@ class ColdControls(unittest.TestCase):
             self.assertIn('tree constructor failed',receipt['failure'])
             self.assertEqual(receipt['cleanup_errors'],['RuntimeError: cleanup failed'])
             self.assertTrue((folder/'evidence/resources.json').is_file())
+
+
+    def test_dynamic_package_load_enters_required_source_inventory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp).resolve()
+            (root/'tools/ci').mkdir(parents=True)
+            package=root/'tools/package_strata3_workbench.py'
+            package.write_bytes(('\n'.join([
+                'from pathlib import Path',
+                'from types import SimpleNamespace',
+                'ROOT=Path(__file__).resolve().parents[1]',
+                'optics=SimpleNamespace(ROOT=ROOT,identity=lambda:dict(source_commit='+repr(cold.APPLICATION)+'))',
+                'compatibility=SimpleNamespace(ROOT=ROOT)',
+                '',
+            ])).encode('utf-8'))
+            metric_path=root/'tools/ci/strata_process_metrics.py'
+            metric_path.write_bytes(b'# Source-inventory fixture; never runs a child process.\n')
+            metric_module=types.ModuleType('strata003_cold_test_metrics')
+            metric_module.__file__=str(metric_path)
+            def git_read(checkout,*args):
+                self.assertEqual(Path(checkout),root)
+                if args==('rev-parse','HEAD'):return cold.APPLICATION.encode()
+                if args==('rev-parse','HEAD^{tree}'):return cold.TREE.encode()
+                if args==('show',cold.APPLICATION+':tools/package_strata3_workbench.py'):return package.read_bytes()
+                if args==('show',cold.APPLICATION+':tools/ci/strata_process_metrics.py'):return metric_path.read_bytes()
+                raise AssertionError('Unexpected frozen-source query: '+repr(args))
+            old_path=list(cold.sys.path)
+            try:
+                with mock.patch.object(cold,'git',side_effect=git_read),\
+                     mock.patch.dict(cold.sys.modules,{'strata003_cold_test_metrics':metric_module}):
+                    loaded=cold.application_tools(root)
+                    self.assertIs(cold.sys.modules['strata003_frozen_package_verifier'],loaded)
+                    self.assertEqual(cold.verifier_inputs(root),{
+                        'tools/package_strata3_workbench.py':cold.sha(package),
+                        'tools/ci/strata_process_metrics.py':cold.sha(metric_path),
+                    })
+            finally:
+                cold.sys.path[:]=old_path
+
+    def test_failed_dynamic_package_load_removes_incomplete_registration(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp).resolve()
+            (root/'tools').mkdir()
+            (root/'tools/package_strata3_workbench.py').write_bytes(
+                b"raise RuntimeError('deliberate package load failure')\n")
+            def git_read(checkout,*args):
+                self.assertEqual(Path(checkout),root)
+                if args==('rev-parse','HEAD'):return cold.APPLICATION.encode()
+                if args==('rev-parse','HEAD^{tree}'):return cold.TREE.encode()
+                raise AssertionError('Unexpected frozen-source query: '+repr(args))
+            old_path=list(cold.sys.path)
+            try:
+                with mock.patch.object(cold,'git',side_effect=git_read),mock.patch.dict(cold.sys.modules):
+                    cold.sys.modules.pop('strata003_frozen_package_verifier',None)
+                    with self.assertRaisesRegex(RuntimeError,'deliberate package load failure'):
+                        cold.application_tools(root)
+                    self.assertNotIn('strata003_frozen_package_verifier',cold.sys.modules)
+            finally:
+                cold.sys.path[:]=old_path
 
 
 if __name__=='__main__':unittest.main()

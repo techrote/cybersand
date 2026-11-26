@@ -139,11 +139,21 @@ def application_tools(root):
             and git(root,'rev-parse','HEAD^{tree}').decode().strip()==TREE, 'Application verifier checkout is not immutable fd0830ab')
     sys.path.insert(0,str(root/'tools')); sys.path.insert(0,str(root/'tools/ci'))
     spec = importlib.util.spec_from_file_location('strata003_frozen_package_verifier',root/'tools/package_strata3_workbench.py')
-    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
-    require(module.ROOT==root and module.optics.ROOT==root and module.compatibility.ROOT==root,
-            'Application verifier imported modules from a different checkout')
-    require(module.optics.identity()['source_commit']==APPLICATION, 'Frozen verifier source identity changed')
-    return module
+    module = importlib.util.module_from_spec(spec)
+    previous = sys.modules.get(spec.name)
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+        require(module.ROOT==root and module.optics.ROOT==root and module.compatibility.ROOT==root,
+                'Application verifier imported modules from a different checkout')
+        require(module.optics.identity()['source_commit']==APPLICATION, 'Frozen verifier source identity changed')
+        return module
+    except BaseException:
+        if previous is None:
+            sys.modules.pop(spec.name, None)
+        else:
+            sys.modules[spec.name] = previous
+        raise
 
 
 def inspect_archive(archive, request):

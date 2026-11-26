@@ -78,5 +78,6 @@ jobs:
       with:
         name: strata3-cold-windows-fd0830ab-${{ github.sha }}-${{ github.run_attempt }}
         path: build/strata3-cold-windows/
+        include-hidden-files: true
         if-no-files-found: error
         retention-days: 90
