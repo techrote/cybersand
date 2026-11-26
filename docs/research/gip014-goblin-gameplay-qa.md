@@ -1,26 +1,52 @@
 ---
 title: GIP-014 goblin in-game gameplay QA
-status: Planned
+status: Current
 document-kind: research
-scope: Branch-scoped developer-only real Godot gameplay tests; Draft/HOLD
+scope: Accepted opt-in Goblin001 foundation, guarded audit storage and source-bound developer qualification
 canonical-for: [gip014-goblin-gameplay-qa]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-26
 related-documents: [../operations/local-build-and-validation.md, ../operations/github-development-and-release.md]
 ---
 
-# GIP-014 goblin gameplay QA — Draft/HOLD
+# GIP-014 goblin gameplay QA
 
-This candidate starts from accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`.
-It owns only an opt-in developer scene, bounded in-game action adapters, disposable
+The Goblin001 foundation was accepted through
+[PR #772](https://github.com/techrote/cybersand/pull/772) at main
+`c8421a81b8f7f61516ed055f3200b49aee57bd65`. It owns an opt-in developer scene, bounded in-game action adapters, disposable
 fixtures, policies, evidence readers and focused documentation. It does not change
-ordinary Workbench startup or production gameplay. No Ready promotion or merge is
-authorized. The branch now implements a real in-process Godot controller and has
+ordinary Workbench startup or enable autonomous gameplay by default. Physical
+owner acceptance remains separate. The foundation implements a real in-process Godot controller and has
 passed native Linux campaigns, the actual hosted Windows developer UI test and
 the separate extracted-package custody gate. The qualified Windows developer
 evaluator is an unchanged source-matched artifact of commit
 `3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`; this final documentation update
-does not change or relabel that runtime. [PR #772](https://github.com/techrote/cybersand/pull/772)
-remains Draft/HOLD.
+does not change or relabel that runtime. The separate Goblin002 successor
+[PR #781](https://github.com/techrote/cybersand/pull/781) retains its own qualification
+and owner gates; its memory, corpus and expanded output paths are not part of this foundation.
+
+## Verified audit storage
+
+The four permitted output destinations remain the transcript, summary, replay
+result and the controller's selected run archive. The actual isolated-profile
+guard, existing document/campaign budgets and tab-indented JSON representation
+are unchanged. No game action receives an arbitrary filesystem path.
+
+The guarded writer now writes a unique sibling staging file, flushes and closes
+it, then reopens and compares all bytes before using the already accepted
+`CyberDemoBridge.replace_material_baseline_file` primitive. A failed write or
+replacement reports failure and preserves the previous complete destination;
+a successful retry on the same controller clears its earlier error. Unrelated
+old staging files remain untouched. Each output file is a separate transaction;
+this does not promise power-loss durability or a transaction across several files.
+
+The 26 November closure reproduced the prior buffered-write defect on the accepted
+foundation: a valid 1,699-byte audit was replaced by 128 bytes while returning
+success. The corrected Linux source passed actual short-write, permission and
+retry controls, 84 native/injected boundary checks, and the real five-case
+controller test with 75 assertions. These local results do not establish Windows
+sharing-lock behavior or final merge qualification. The
+[mergedown ledger](https://github.com/techrote/cybersand/pull/784) records exact
+source identities, original failures and later platform/merge receipts.
 
 ## Shared progress and ownership ledger
 
