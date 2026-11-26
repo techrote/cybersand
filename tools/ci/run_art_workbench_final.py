@@ -183,8 +183,22 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 if model == "fixture-malicious-usage":
                     packet["usage"] = {"input_tokens":CANARY,"output_tokens":"x" * (1024 * 1024)}
                 payload = json.dumps(packet).encode()
+            redacted_payload = payload.replace(CANARY.encode(), b"[redacted]")
+            wire_redacted_sha256 = hashlib.sha256(redacted_payload).hexdigest()
+            representation = "wire-text"
+            if model == "fixture-malicious-usage":
+                # This fixture puts a credential inside a decoded JSON value.
+                # The provider's structured redactor reserializes that changed
+                # object with JSON.stringify; whitespace is no longer wire text.
+                # Compare every retained byte with this independently constructed
+                # complete object, including the entire 1 MiB usage value.
+                redacted_payload = json.dumps(json.loads(redacted_payload), sort_keys=True,
+                                              separators=(",", ":")).encode()
+                representation = "structured-redaction-json"
             receipt.update(http_code=code, response_bytes=len(payload), response_sha256=hashlib.sha256(payload).hexdigest(),
-                           redacted_body_sha256=hashlib.sha256(payload.replace(CANARY.encode(), b"[redacted]")).hexdigest())
+                           wire_redacted_body_sha256=wire_redacted_sha256,
+                           redacted_body_bytes=len(redacted_payload), redacted_body_representation=representation,
+                           redacted_body_sha256=hashlib.sha256(redacted_payload).hexdigest())
             self.send_response(code)
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(len(payload)))
