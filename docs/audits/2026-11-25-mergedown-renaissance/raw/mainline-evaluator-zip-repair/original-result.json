@@ -1,0 +1,9 @@
+{
+  "source": "cf5031f2322a9576c9c0751c562ecb3ffa4d27ed",
+  "scope": "New explicit raw-metadata controls against original delivery module; standard-library Windows separator behavior simulated on Linux, not actual Windows execution",
+  "tests": 2,
+  "failures": 3,
+  "errors": 0,
+  "expected_failure_count": 3,
+  "original_bad_alias_admission_reproduced": true
+}

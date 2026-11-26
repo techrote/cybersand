@@ -213,7 +213,17 @@ def admit(request_path: Path, product: Path, harness: Path) -> dict:
 
 def safe_name(name: str) -> bool:
     path = PurePosixPath(name)
-    return bool(path.parts) and path.as_posix() == name and not path.is_absolute() and ".." not in path.parts and "\\" not in name and ":" not in name
+    return bool(path.parts) and path.as_posix() == name and not path.is_absolute() and ".." not in path.parts and "\\" not in name and ":" not in name and "\x00" not in name
+
+
+def raw_member_name(item: zipfile.ZipInfo) -> str:
+    # ZipInfo retains the archive name before truncating NUL or normalizing
+    # Windows separators. Validate that original identity, not only the safe-
+    # looking spelling the reader may have manufactured for the local host.
+    require(item.orig_filename == item.filename, "ZIP metadata normalized an unsafe original filename")
+    name = item.orig_filename
+    require(safe_name(name[:-1] if item.is_dir() else name), "Unsafe original ZIP path: " + name)
+    return name
 
 
 def extract(archive: Path, destination: Path, prefix: str = "") -> None:
@@ -223,10 +233,11 @@ def extract(archive: Path, destination: Path, prefix: str = "") -> None:
     with zipfile.ZipFile(archive) as bundle:
         require(bundle.testzip() is None, "Constituent ZIP has a CRC failure")
         for item in bundle.infolist():
-            require(item.filename.startswith(prefix), "Unexpected constituent ZIP root")
+            original = raw_member_name(item)
+            require(original.startswith(prefix), "Unexpected constituent ZIP root")
             if item.is_dir():
                 continue
-            name = item.filename[len(prefix):]
+            name = original[len(prefix):]
             require(safe_name(name), "Unsafe constituent path: " + name)
             require(name.casefold() not in seen, "Duplicate or Windows-colliding constituent path")
             seen.add(name.casefold())
@@ -288,6 +299,8 @@ def verify_archive(archive: Path, manifest_path: Path) -> None:
     expected = {**manifest["files_sha256"], MANIFEST: sha(manifest_path)}
     with zipfile.ZipFile(archive) as bundle:
         require(bundle.testzip() is None, "Delivered archive has a CRC failure")
+        for item in bundle.infolist():
+            raw_member_name(item)
         members = [item for item in bundle.infolist() if not item.is_dir()]
         require(len(members) == len(expected) and {item.filename for item in members} == set(expected),
                 "Delivered archive inventory differs from its tested manifest")

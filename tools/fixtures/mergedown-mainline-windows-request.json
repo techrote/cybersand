@@ -14,5 +14,6 @@
   "rapier_source_input_count": 4,
   "owner_playfeel_accepted": false,
   "public_release": false,
-  "purpose": "Build and qualify one frozen accepted-main checkpoint after both opt-in foundations merged; physical owner acceptance remains pending."
+  "purpose": "Build and qualify one frozen accepted-main checkpoint after both opt-in foundations merged; physical owner acceptance remains pending.",
+  "qualification_revision": "raw-archive-name-guard-001"
 }

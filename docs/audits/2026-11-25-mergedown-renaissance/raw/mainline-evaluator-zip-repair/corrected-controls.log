@@ -1,0 +1,28 @@
+test_actual_git_ancestry_and_separate_harness_are_admitted (__main__.DeliveryCustody.test_actual_git_ancestry_and_separate_harness_are_admitted) ... ok
+test_changed_original_or_injected_script_is_refused (__main__.DeliveryCustody.test_changed_original_or_injected_script_is_refused) ... ok
+test_changed_policy_cannot_silently_overrun_parent (__main__.DeliveryCustody.test_changed_policy_cannot_silently_overrun_parent) ... ok
+test_changed_source_proof_contract_requires_review (__main__.DeliveryCustody.test_changed_source_proof_contract_requires_review) ... ok
+test_complete_budget_covers_each_declared_process_and_retention (__main__.DeliveryCustody.test_complete_budget_covers_each_declared_process_and_retention) ... ok
+test_delivered_archive_cannot_change_after_extraction (__main__.DeliveryCustody.test_delivered_archive_cannot_change_after_extraction) ... ok
+test_dirty_source_and_wrong_harness_run_are_refused (__main__.DeliveryCustody.test_dirty_source_and_wrong_harness_run_are_refused) ... ok
+test_duplicate_request_key_is_refused (__main__.DeliveryCustody.test_duplicate_request_key_is_refused) ... ok
+test_exact_admitted_request_is_read (__main__.DeliveryCustody.test_exact_admitted_request_is_read) ... ok
+test_final_archive_readback_rejects_normalized_aliases (__main__.DeliveryCustody.test_final_archive_readback_rejects_normalized_aliases) ... ok
+test_graphics_log_requires_unique_clean_completion_and_actual_renderer (__main__.DeliveryCustody.test_graphics_log_requires_unique_clean_completion_and_actual_renderer) ... ok
+test_graphics_status_cannot_hide_missing_or_changed_original_logs (__main__.DeliveryCustody.test_graphics_status_cannot_hide_missing_or_changed_original_logs) ... ok
+test_matching_constituent_identities_are_admitted (__main__.DeliveryCustody.test_matching_constituent_identities_are_admitted) ... ok
+test_original_import_and_graphics_log_bytes_are_read_back (__main__.DeliveryCustody.test_original_import_and_graphics_log_bytes_are_read_back) ... ok
+test_original_payload_and_scoped_user_outputs_are_distinguished (__main__.DeliveryCustody.test_original_payload_and_scoped_user_outputs_are_distinguished) ... ok
+test_other_source_and_other_runtime_are_refused (__main__.DeliveryCustody.test_other_source_and_other_runtime_are_refused) ... ok
+test_powershell_source_text_normalization_does_not_relax_raw_payload_hashes (__main__.DeliveryCustody.test_powershell_source_text_normalization_does_not_relax_raw_payload_hashes) ... ok
+test_prepared_incomplete_or_moved_request_is_refused (__main__.DeliveryCustody.test_prepared_incomplete_or_moved_request_is_refused) ... ok
+test_pristine_constituent_zip_preserves_exact_bytes (__main__.DeliveryCustody.test_pristine_constituent_zip_preserves_exact_bytes) ... ok
+test_traversal_and_windows_collision_zip_are_refused (__main__.DeliveryCustody.test_traversal_and_windows_collision_zip_are_refused) ... ok
+test_unmerged_source_is_refused_even_when_self_declared_accepted (__main__.DeliveryCustody.test_unmerged_source_is_refused_even_when_self_declared_accepted) ... ok
+test_windows_reader_normalization_cannot_hide_raw_metadata (__main__.DeliveryCustody.test_windows_reader_normalization_cannot_hide_raw_metadata) ... ok
+test_zip_symlink_is_refused_on_all_platforms (__main__.DeliveryCustody.test_zip_symlink_is_refused_on_all_platforms) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.324s
+
+OK

@@ -237,9 +237,16 @@ class DeliveryCustody(unittest.TestCase):
         with zipfile.ZipFile(archive, "w") as bundle:
             for name, content in names:
                 info = zipfile.ZipInfo(name)
+                # ZipInfo normally sanitizes names at construction on Windows.
+                # Serialize the actual adversarial metadata on every host.
+                info.filename = name
+                info.orig_filename = name
                 if attributes is not None:
                     info.external_attr = attributes
                 bundle.writestr(info, content)
+        with zipfile.ZipFile(archive) as observed:
+            self.assertEqual([item.orig_filename for item in observed.infolist()],
+                             [name for name, _content in names])
         return archive
 
     def test_pristine_constituent_zip_preserves_exact_bytes(self):
@@ -249,9 +256,34 @@ class DeliveryCustody(unittest.TestCase):
         self.assertEqual((target / "godot/example.gd").read_bytes(), b"fixture\r\n")
 
     def test_traversal_and_windows_collision_zip_are_refused(self):
-        for index, names in enumerate(([('../escape', b'x')], [('File', b'x'), ('file', b'y')], [('bad\\path', b'x')], [('C:/bad', b'x')])):
+        for index, names in enumerate(([('../escape', b'x')], [('File', b'x'), ('file', b'y')], [('bad\\path', b'x')], [('C:/bad', b'x')], [('hidden\x00suffix', b'x')])):
             with self.subTest(names=names), self.assertRaises(ValueError):
                 delivery.extract(self.archive(names), self.root / str(index))
+
+    def test_windows_reader_normalization_cannot_hide_raw_metadata(self):
+        # This exercises the actual standard-library normalization path on
+        # every host; it is not a claim of Windows package execution.
+        with mock.patch.object(zipfile.os, "sep", "\\"):
+            archive = self.archive([("bad\\path", b"fixture")])
+            with zipfile.ZipFile(archive) as observed:
+                info = observed.infolist()[0]
+                self.assertEqual(info.orig_filename, "bad\\path")
+                self.assertEqual(info.filename, "bad/path")
+            with self.assertRaisesRegex(ValueError, "original filename"):
+                delivery.extract(archive, self.root / "normalized-payload")
+
+    def test_final_archive_readback_rejects_normalized_aliases(self):
+        folder = self.payload()
+        contents = [(p.relative_to(folder).as_posix(), p.read_bytes())
+                    for p in sorted(folder.rglob("*")) if p.is_file()]
+        selected = "workbench/godot/example.gd"
+        for suffix, separator in (("\x00hidden", "/"), ("", "\\")):
+            names = [((name + suffix if suffix else name.replace("/", "\\")) if name == selected else name, data)
+                     for name, data in contents]
+            with self.subTest(suffix=suffix, separator=separator), mock.patch.object(zipfile.os, "sep", separator):
+                archive = self.archive(names)
+                with self.assertRaisesRegex(ValueError, "original filename"):
+                    delivery.verify_archive(archive, folder / delivery.MANIFEST)
 
     def test_zip_symlink_is_refused_on_all_platforms(self):
         archive = self.archive([("link", b"outside")], (stat.S_IFLNK | 0o777) << 16)
