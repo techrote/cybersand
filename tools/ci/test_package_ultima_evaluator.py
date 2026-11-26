@@ -16,7 +16,8 @@ import package_ultima_evaluator as package
 HEAD = '1' * 40
 TREE = '2' * 40
 CASE_NAMES = (
-    'test_goblin_contract', 'test_goblin_policies',
+    'test_tower_observation_inheritance', 'test_goblin_contract', 'test_goblin_policies',
+    'test_ambient_default_off_integration', 'test_ambient_clock',
     'test_physics_instrumentation', 'test_thunderbowl_arena', 'test_thunderbowl_controllers',
     'import', 'test_gameplay_recorder', 'test_workbench_material_baseline', 'test_architectural_generator_ui',
     'test_workbench_generator_discovery', 'test_paint_editor_history',
@@ -444,6 +445,11 @@ class QualificationAdmission(unittest.TestCase):
 
     def test_no_helper_assertions_is_not_qualification(self):
         self.q['persistence']['cases'][0]['result']['checks'] = 0
+        self.require_refusal()
+
+    def test_missing_script_admission_refuses(self):
+        self.q['cases'] = [case for case in self.q['cases']
+                           if case['name'] != 'test_tower_observation_inheritance']
         self.require_refusal()
 
     def test_empty_claimed_pass_has_no_executed_cases(self):

@@ -107,6 +107,15 @@ def main():
         record, failed = regression.run_case(str(engine), import_case, output, "preflight", env=env)
         report["cases"].append(record)
         require(not failed, "Source-matched Godot import failed")
+        # A genuine inherited-script compile failure cannot become ready. Load
+        # and exercise this interface before any storage or long-running case.
+        # Existing long-running allowances and Water Feel coverage are unchanged.
+        admission = regression.Case("test_tower_observation_inheritance",
+            ("--script", "res://tests/test_tower_observation_inheritance.gd"),
+            execution_policy.watchdog_seconds("godot_import_seconds"), 3.0)
+        record, failed = regression.run_case(str(engine), admission, output, "script-admission", env=env)
+        report["cases"].append(record)
+        require(not failed, "Controller script/interface admission failed")
         fault = subprocess.run([sys.executable, str(ROOT / "tools/ci/run_workbench_save_qualification.py"),
                                 "--godot", str(engine), "--project", str(ROOT / "godot"),
                                 "--evidence", str(output / "persistence")], env=env, cwd=ROOT,
@@ -141,6 +150,8 @@ def main():
             ("test_gameplay_recorder", {}),
             ("test_goblin_contract", {}),
             ("test_goblin_policies", {}),
+            ("test_ambient_default_off_integration", {}),
+            ("test_ambient_clock", {}),
             ("test_physics_instrumentation", {}),
             ("test_thunderbowl_arena", {}),
             ("test_thunderbowl_controllers", {}),

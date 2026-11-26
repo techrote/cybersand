@@ -56,7 +56,8 @@ def git(*args, env=None):
 
 
 NORMAL_CASES = {
-    "test_goblin_contract", "test_goblin_policies",
+    "test_tower_observation_inheritance", "test_goblin_contract", "test_goblin_policies",
+    "test_ambient_default_off_integration", "test_ambient_clock",
     "test_physics_instrumentation", "test_thunderbowl_arena", "test_thunderbowl_controllers",
     "import", "test_gameplay_recorder", "test_workbench_material_baseline", "test_architectural_generator_ui",
     "test_workbench_generator_discovery", "test_paint_editor_history", "test_paint_editor_history-reopen",
