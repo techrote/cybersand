@@ -1,0 +1,256 @@
+{
+  "schema": "strata3-hosted-package-log-independent-review-v1",
+  "application": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "run": 45721790366,
+  "job": 139629241289,
+  "job_conclusion": "success",
+  "case_count": 31,
+  "cases": [
+    {
+      "at": "2026-11-26T01:30:22.2925939Z",
+      "case": "import",
+      "process_seconds": 7.641
+    },
+    {
+      "at": "2026-11-26T01:30:24.7577237Z",
+      "case": "regressions/test_actor_presentation_bounds",
+      "process_seconds": 2.453
+    },
+    {
+      "at": "2026-11-26T01:30:27.3338666Z",
+      "case": "regressions/test_strata_optics_configuration",
+      "process_seconds": 2.578
+    },
+    {
+      "at": "2026-11-26T01:30:29.6810103Z",
+      "case": "regressions/test_strata_optics_ui",
+      "process_seconds": 2.359
+    },
+    {
+      "at": "2026-11-26T01:30:31.9354115Z",
+      "case": "regressions/test_strata_optical_profiles",
+      "process_seconds": 2.235
+    },
+    {
+      "at": "2026-11-26T01:30:34.6709295Z",
+      "case": "regressions/test_strata_optical_showcases",
+      "process_seconds": 2.719
+    },
+    {
+      "at": "2026-11-26T01:30:36.7174944Z",
+      "case": "regressions/test_strata_atmosphere",
+      "process_seconds": 2.046
+    },
+    {
+      "at": "2026-11-26T01:30:40.5302682Z",
+      "case": "regressions/test_strata_optical_renderer",
+      "process_seconds": 3.813
+    },
+    {
+      "at": "2026-11-26T01:30:43.0830520Z",
+      "case": "regressions/test_workbench_strata_document",
+      "process_seconds": 2.547
+    },
+    {
+      "at": "2026-11-26T01:30:45.7159169Z",
+      "case": "regressions/test_workbench_strata_layers",
+      "process_seconds": 2.625
+    },
+    {
+      "at": "2026-11-26T01:30:47.9619492Z",
+      "case": "regressions/test_strata2_authoring_ui",
+      "process_seconds": 2.235
+    },
+    {
+      "at": "2026-11-26T01:33:40.6079751Z",
+      "case": "orbital-terminal/install",
+      "process_seconds": 172.64
+    },
+    {
+      "at": "2026-11-26T01:34:08.0555984Z",
+      "case": "orbital-terminal/reopen",
+      "process_seconds": 27.438
+    },
+    {
+      "at": "2026-11-26T01:37:11.7304888Z",
+      "case": "neon-rain-arcology/install",
+      "process_seconds": 183.656
+    },
+    {
+      "at": "2026-11-26T01:37:39.3548780Z",
+      "case": "neon-rain-arcology/reopen",
+      "process_seconds": 27.61
+    },
+    {
+      "at": "2026-11-26T01:39:53.9706728Z",
+      "case": "industrial-underworks/install",
+      "process_seconds": 134.609
+    },
+    {
+      "at": "2026-11-26T01:40:11.7857571Z",
+      "case": "industrial-underworks/reopen",
+      "process_seconds": 17.812
+    },
+    {
+      "at": "2026-11-26T01:42:23.7560809Z",
+      "case": "abyss-foundry/install",
+      "process_seconds": 131.937
+    },
+    {
+      "at": "2026-11-26T01:42:41.8876405Z",
+      "case": "abyss-foundry/reopen",
+      "process_seconds": 18.125
+    },
+    {
+      "at": "2026-11-26T01:44:53.0866587Z",
+      "case": "vertical-transfer-spine/install",
+      "process_seconds": 131.172
+    },
+    {
+      "at": "2026-11-26T01:45:13.8332838Z",
+      "case": "vertical-transfer-spine/reopen",
+      "process_seconds": 20.735
+    },
+    {
+      "at": "2026-11-26T01:47:41.0379933Z",
+      "case": "sunward-freight-megastructure/install",
+      "process_seconds": 147.156
+    },
+    {
+      "at": "2026-11-26T01:48:02.3796125Z",
+      "case": "sunward-freight-megastructure/reopen",
+      "process_seconds": 21.328
+    },
+    {
+      "at": "2026-11-26T01:50:11.1896377Z",
+      "case": "xeno-resonance-grotto/install",
+      "process_seconds": 128.781
+    },
+    {
+      "at": "2026-11-26T01:50:28.4480884Z",
+      "case": "xeno-resonance-grotto/reopen",
+      "process_seconds": 17.234
+    },
+    {
+      "at": "2026-11-26T01:52:58.9264309Z",
+      "case": "lunar-terminator-observatory/install",
+      "process_seconds": 150.453
+    },
+    {
+      "at": "2026-11-26T01:53:18.3029866Z",
+      "case": "lunar-terminator-observatory/reopen",
+      "process_seconds": 19.36
+    },
+    {
+      "at": "2026-11-26T01:55:45.2399911Z",
+      "case": "optics-readability-challenge/install",
+      "process_seconds": 146.922
+    },
+    {
+      "at": "2026-11-26T01:56:02.0859220Z",
+      "case": "optics-readability-challenge/reopen",
+      "process_seconds": 16.797
+    },
+    {
+      "at": "2026-11-26T02:04:24.8915682Z",
+      "case": "optics-readability-challenge/progression",
+      "process_seconds": 502.735
+    },
+    {
+      "at": "2026-11-26T02:07:43.9229700Z",
+      "case": "optics-readability-challenge/motion",
+      "process_seconds": 198.969
+    }
+  ],
+  "observed_markers": {
+    "pristine_static_verifier": "2026-11-26T01:30:13.5388774Z",
+    "full_extracted_campaign_pass": "2026-11-26T02:07:45.3910326Z",
+    "post_launcher_static_verifier": "2026-11-26T02:08:40.8930097Z"
+  },
+  "evaluator_artifact": {
+    "id": 15080761776,
+    "bytes": 477073937,
+    "sha256": "cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee"
+  },
+  "evidence_artifact": {
+    "id": 15080936111,
+    "bytes": 464793280,
+    "sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513"
+  },
+  "limits": [
+    "The independent local strict-reader invocation was rejected before process creation because the workspace became unavailable.",
+    "The original hosted frozen reader completed successfully, as shown by the actual final status marker after its strict read.",
+    "The shipped CMD guard passed under the pinned workflow; original launcher JSON/log values were not independently read by this reviewer.",
+    "Process case durations above are whole process durations, not scene-admission times.",
+    "This log review does not qualify a cold first command or physical Windows/NVIDIA performance."
+  ],
+  "recorded_at_utc": "2026-11-26 02:20:22 UTC",
+  "scope": "Docs-only remote recovery after workspace outage. Original hosted gates are observed; blocked local reread is not counted.",
+  "parent_evidence_commit": "75b60f4aab9512ca668da12d58d51220e5b2cdef",
+  "parent_evidence_tree": "7fae61ebc6a5de794089fc1e73e5abcbeb3d5728",
+  "actual_package": {
+    "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+    "filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "bytes": 477296145,
+    "sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "source_of_inner_identity": "B/C original byte verification before outage; A read their retained identity record but did not independently rehash the inner ZIP."
+  },
+  "technical_review": {
+    "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "run": 45721790366,
+    "linux_artifact": 15075800269,
+    "windows_artifact": 15078368890,
+    "assertions_each": 109,
+    "failures_each": 0,
+    "within_backend_classic_exact": true,
+    "cross_backend_png_pairs": 18,
+    "cross_backend_exact_pairs": 11,
+    "cross_backend_differing_pairs": 7,
+    "cross_backend_max_channel_delta_u8": 1,
+    "cross_backend_differing_channels": 5524,
+    "cross_backend_compared_channels": 884736
+  },
+  "performance_disposition": "Frozen application's enabled-optics PERFORMANCE HOLD; no physical Windows/NVIDIA or perceptual acceptance.",
+  "a1": {
+    "candidate_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+    "original_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+    "observer_source": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+    "run": 45733231981,
+    "linux_architectural_rate_ratio": 0.8968207923988454,
+    "linux_clarity_rate_ratio": 0.904662579818878,
+    "windows_architectural_native_rate_ratio": 0.9075285602179282,
+    "windows_clarity_native_rate_ratio": 0.9019529236241769,
+    "adopted": false,
+    "scope": "Separate same-host exact-output experiment; sparse-fixture narrow numerical flags cannot transfer to frozen application."
+  },
+  "counterparts": [
+    {
+      "number": 777,
+      "url": "https://github.com/techrote/cybersand/pull/777",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "updated_at": "2026-11-25T06:55:38Z"
+    },
+    {
+      "number": 780,
+      "url": "https://github.com/techrote/cybersand/pull/780",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "updated_at": "2026-11-26T00:50:43Z"
+    }
+  ],
+  "recovery": {
+    "local_checks_rejected_before_process_creation": true,
+    "cold_first_command_actual_status": "not reviewed in this record",
+    "product_files_changed": false
+  }
+}

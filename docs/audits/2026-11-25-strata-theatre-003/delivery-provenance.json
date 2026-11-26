@@ -1,0 +1,142 @@
+{
+  "schema": "strata3-delivery-provenance-v1",
+  "recorded_at_utc": "2026-11-26T02:34:00Z",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "draft_pr": 785,
+  "base_pr": 776,
+  "draft_hold": true,
+  "enabled_optics_performance": "HOLD: every measured enabled native/Rapier rate failed the registered final-source gate on both hosted platforms",
+  "a1_adopted": false,
+  "evaluator": {
+    "artifact_id": 15080761776,
+    "artifact_name": "strata3-workbench-windows-evaluator-fd0830abcfadd9ae19162e5677943bb131223e59-1",
+    "download_url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776",
+    "outer_zip_bytes": 477073937,
+    "outer_zip_sha256": "cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee",
+    "inner_zip_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "inner_zip_bytes": 477296145,
+    "inner_zip_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "inner_members": 2549,
+    "inner_uncompressed_bytes": 622420427,
+    "verified_before_outage": [
+      "Outer artifact byte count and SHA-256 match GitHub metadata.",
+      "All three outer members streamed completely, CRC checked, and target bytes rehashed.",
+      "Inner ZIP SHA-256 matches the supplied checksum.",
+      "Embedded evaluation-manifest.json is byte-identical to the separate manifest file.",
+      "Embedded source/tree exactly equal frozen fd0830ab/fd4dc12d.",
+      "Specialist C independently streamed and checked all 2549 inner members and complete manifest inventory."
+    ],
+    "expires_at": "2027-02-23T23:29:46Z"
+  },
+  "package_evidence": {
+    "artifact_id": 15080936111,
+    "run_id": 45721790366,
+    "download_url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080936111",
+    "outer_bytes": 464793280,
+    "outer_sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513",
+    "verified_member_count": 4245,
+    "uncompressed_bytes": 619413588,
+    "verification_scope": "B original safe extraction, CRC and target hashes completed before outage. Additional final full-package Linux reader had no observed completion."
+  },
+  "hosted_package": {
+    "run_id": 45721790366,
+    "job_id": 139629241289,
+    "conclusion": "success",
+    "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "pristine_static": "passed",
+    "extracted_full_suite_cases": 31,
+    "full_suite_result_utc": "2026-11-26T02:07:45.3910326Z",
+    "actual_unchanged_cmd": "passed after full-suite resource preparation; not cold-first-command",
+    "post_cmd_static_result_utc": "2026-11-26T02:08:40.8930097Z",
+    "job_completed_utc": "2026-11-26T02:09:10Z",
+    "independent_review": "package-recovery-review-a.md",
+    "local_additional_full_reader": "UNCONFIRMED; root/A commands never started, B had no observed completion"
+  },
+  "runtime": {
+    "godot": {
+      "version": "4.7.stable.official.5b4e0cb0f",
+      "windows_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "complete_inventory": "embedded evaluation-manifest.json"
+    },
+    "native_windows": {
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "bytes": 5820416,
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "source_tree": "81c57e073ef94522e17a09d1981e0fb2389aca6e",
+      "provenance": "godot/addons/cybersand_native/runtime-provenance.json"
+    },
+    "rapier_windows": {
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "bytes": 9987072,
+      "build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "addon_tag": "v0.35.2",
+      "rapier2d": "0.35.1",
+      "status": "retained qualified cooperative BVH backport",
+      "provenance": "godot/addons/godot-rapier2d/runtime-provenance.windows.json"
+    }
+  },
+  "cold_annex": {
+    "state": "v1 rejected before Godot; v2 correction in independent review",
+    "frozen_package_unchanged": true,
+    "first_observer": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
+    "first_run": 45741693665,
+    "first_job": 139647997400,
+    "first_artifact": 15081990856,
+    "first_artifact_bytes": 242423,
+    "first_artifact_sha256": "00595d7c3830b17ba2d5eceb0a9539d960fbc9553f19d7a2095def295c8b5cfc",
+    "controls_passed": 21,
+    "reason": "Dynamically loaded frozen package verifier omitted from sys.modules-based required-source inventory; no Godot process launched.",
+    "additional_custody_issue": "Pinned artifact upload default omitted retained observer/.github source; corrected observer must explicitly include hidden files for bounded output.",
+    "timeout_seconds": 180
+  },
+  "preserved_predecessor": {
+    "application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+    "run": 45509477752,
+    "artifact": 14978334114,
+    "inner_filename": "CyberSand-Strata2-Workbench-Windows-934cc0c0eef7.zip",
+    "inner_sha256": "1a619b8b9c6af51529517f1609b457a7f25ed727deccbac8cd92269c7c23a547",
+    "inner_bytes": 208785019,
+    "admission_target_ms": 45000,
+    "original_extracted_windows_admission_ms": [
+      51619,
+      66316,
+      66200,
+      59958,
+      54804
+    ],
+    "all_original_admission_targets_met": false
+  },
+  "recovery": {
+    "last_preoutage_durable_archive": "75b60f4aab9512ca668da12d58d51220e5b2cdef",
+    "unpublished_local_archive_tip": "ac511fc9",
+    "kind": "Compact remote recovery of material completed observations; not byte-identical recovery of unavailable local review files.",
+    "review_commits": {
+      "a": "cb89bc93a07a402aaee0c3449b0a4852b295baf2",
+      "b": "803b3260cb9707693378c1f1f242650c237a6e6b",
+      "c": "da895726985006ff6d422a45ef5a1e873a937c4a"
+    },
+    "final_local_doc_gate": "not rerun; isolated archive check lacked six companion expected-fact files; not a pass"
+  },
+  "owner_steps": [
+    "Extract downloaded GitHub artifact ZIP.",
+    "Extract inner CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip into writable folder.",
+    "Run Open Workbench.cmd from the inner folder.",
+    "Use corrected online owner guide/addendum beside immutable package guide.",
+    "Record actual physical Windows 11/NVIDIA observations separately."
+  ],
+  "remaining": [
+    "Enabled-optics physical progression target unmet.",
+    "Cold-first-command v2 execution not yet admitted at this checkpoint.",
+    "Physical Windows 11/NVIDIA owner acceptance.",
+    "Unprimed human platform/passage understanding.",
+    "Bright-daylight native readability corpus.",
+    "Camera rotation unavailable and unqualified.",
+    "A1 dense-scene and ordinary-source adoption gates deferred."
+  ]
+}

@@ -1,10 +1,15 @@
 # Strata Theatre 003 — optical architecture and owner decision packet
 
-**Working disposition, 26 November 2026: integrated optical research Workbench;
-functional and native evidence available; enabled-optics PERFORMANCE HOLD;
-portable Windows qualification in progress; Draft/HOLD.** This packet will gain
-the exact evaluator identity only after its actual pristine-extraction checks
-finish. It does not announce an available qualified package prematurely.
+**Disposition, 26 November 2026: optical Workbench integrated; actual hosted
+graphical/native functional gates and the main extracted Windows package gates
+passed; enabled-optics PERFORMANCE HOLD; Draft/HOLD.**
+
+**[Download the portable interactive Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776).**
+Extract the GitHub artifact ZIP, then its inner
+**CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip**, and run
+**Open Workbench.cmd**. The separate cold-first-command annex is still an open
+execution gate at this checkpoint; its first observer failed before Godot.
+No blanket engineering acceptance or physical Windows 11/NVIDIA result is claimed.
 
 The application is frozen at `fd0830abcfadd9ae19162e5677943bb131223e59`, source
 tree `fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499`. [Draft PR #785](https://github.com/techrote/cybersand/pull/785)
@@ -30,7 +35,7 @@ Changing focus cannot select a paint target or make a decorative platform solid.
 Bypass always restores the original material objects. Classic and zero strength
 also restore them when temporary Show physical Play is released; that explicit
 assistance deliberately overrides authored enablement and strength.
-A fresh Classic session has zero optical materials and zero optical uniform
+A fresh Classic session with temporary assistance off has zero optical materials and zero optical uniform
 writes; a previously used processed session may retain at most three materials
 as a bounded cache until retirement.
 
@@ -137,7 +142,7 @@ The three new native showcases are **Sunward Freight Megastructure**,
 **Xeno Resonance Grotto** and **Lunar Terminator Observatory**. They use the same
 ordinary native authoring/compiler path as the original five environments.
 They are usable Workbench compositions, not promotional raster images. A ninth
-scene, **Physical Readability Challenge**, supplies deliberate false platforms,
+scene, **Optics Readability Challenge**, supplies deliberate false platforms,
 stairs, ladders and filled rear panels, plus real Water, Sand and actors.
 
 [B's source-bound recommendations](b-final-artistic-recommendations.md) cover
@@ -215,6 +220,38 @@ gap or negative-space route instead of relying on a gentle profile to repair
 every misleading alignment. Abyss's rear bridge and dark rock masses, and
 Vertical's repeated rear floors, remain concrete owner inspection cases.
 
+## Graphical and native functional qualification
+
+The frozen application completed the full Linux and Windows optical/native
+campaigns, inherited authoring checks and original-predecessor comparisons.
+Each hosted corpus contains 99 matched native scene/profile captures, 74
+supplementary captures and 40 movement keyframes. The actual renderer passes
+109 assertions with zero failures on each backend. The full campaign has 31
+cases including its explicitly headless import preparation; the graphical
+cases ran with actual presentation. Embedded native harness totals are 18,175
+on Linux and 18,224 on Windows, excluding other regression markers.
+
+Exact Classic alpha restoration is a **same-backend** claim, including the
+16,384-byte partial-haze/parent-opacity fixture. Across the 18 technical
+Linux/Windows PNG pairs, 11 are identical; seven differ by at most one u8 level
+per channel, affecting 5,524 of 884,736 compared channels. Whole-scene pixels
+are not claimed bit-identical across drivers. Selected matching world-rectangle
+JSON numbers also differ in their last decimal digits while their binary32
+values match; raw camera metadata is not byte-identical across platforms.
+
+Native/editing qualification covers optical-only changes, live native paint
+and erase, imports, supported module composition, Undo/Redo, pause/step,
+profile/focus/quality changes, Stack/Flat/Solo, save/fresh-process reopening,
+scene replacement, retirement and shutdown. The optical path keeps the native
+owners, material truth and Play picking unchanged. These functional results do
+not waive the physical-progression failures below.
+
+The native corpus is predominantly dark. Sunward/Sunlit is a warm industrial
+study, not established bright-daylight readability. Pale backgrounds, bright sky,
+dark physical silhouettes and both light and dark actors remain a coverage gap.
+Synthetic bright/white checks establish numerical handling, not that perceptual
+outcome. Reviews remain specialist-agent judgments rather than a human study.
+
 ## Physical progression and performance disposition
 
 The registered full Linux comparison resets identical native challenge geometry
@@ -263,11 +300,23 @@ retain all repeats and exact identities. Its 821.594-second progression process 
 1,107,976,192 bytes. That scope includes admission, reloads and readbacks and is
 not a per-profile CPU/GPU measurement; shared process pages may be counted twice.
 
-The separate six-process hosted Linux Industrial Underworks comparison of original 934cc0c0
+The separate six-process Industrial Underworks comparisons of original 934cc0c0
 against candidate Classic passed exact world RGBA, native/camera/actor matching
-and its progression criteria. That disabled-path success must not be substituted
-for the enabled challenge results above. Different scenes and observation
-populations are explicitly separate.
+and progression criteria on both actual hosted platforms. Linux native medians
+were 9.1446 versus 9.1808 ticks/s; Windows medians were 2.9055 versus 2.9379.
+Windows physical p95 was 335.406 versus 329.010 ms. All six paired Windows
+admissions still failed 45 s: original 50.911/57.214/49.280 s and candidate
+48.930/53.168/51.531 s. These disabled-path successes cannot substitute for the
+enabled challenge results above; the scenes and populations are separate.
+
+The original Windows comparator passed on Windows. Its Linux re-reader initially
+refused a Windows command basename because host Path did not parse backslashes.
+A separately reviewed external adapter changes that one expression to a
+recorded-platform PureWindowsPath/PurePosixPath choice, keeping exact filename
+and all other gates. B and A independently passed the actual Windows artifact
+and eight positive/adverse controls. The original rejection is preserved in the
+[delivery recovery record](b-delivery-recovery-2026-11-26.md). This is reader
+portability work, not a changed performance threshold.
 
 Both five-minute v2 sessions retained native authority, visible controls and
 bounded node/resource counts. Linux completed 1,816 physical steps in 300.824 s;
@@ -339,32 +388,99 @@ The [independent adoption assessment](optical-a1-adoption-assessment-a.md)
 records the missing dense-scene, ordinary-source and rebuilt-package gates.
 A1 is deferred; it is not silently substituted into the principal evaluator.
 
-## Owner walkthrough and remaining delivery gate
+## Delivered Windows evaluator and custody
 
-The final download must be the portable ordinary Workbench with bundled official
-Godot, exact native and Rapier dependencies, all nine native scenes, shaders,
-profiles, original-capture gallery, documentation, manifest and
-**Open Workbench.cmd**. The package job first runs the full optical/native campaign from a pristine
-extracted folder with spaces, and then exercises the actual shipped command on
-that unchanged payload. A separate supplemental annex will use a second fresh
-extraction and run the shipped command before any editor import, cache creation
-or qualification process, closing the cold-first-launch scope explicitly. Until
-the original package and these receipts exist, this packet deliberately supplies
-no final download identity.
+The [downloadable original evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776)
+contains the ordinary Workbench, bundled official Godot, source-matched native
+and Rapier dependencies, all nine principal native scenes, optical shaders,
+eleven profiles, the offline original-capture gallery, documentation,
+`evaluation-manifest.json` and **Open Workbench.cmd**. No Git, Python,
+compilation or separate Godot installation is needed.
 
-Use the corrected [owner walkthrough](../../operations/strata-optics-evaluation.md)
-and [navigation addendum](OWNER-GUIDE-ADDENDUM.md) alongside the immutable package
-guide. Begin with Underworks in Classic. Inspect **Layers → Play → Solo**, then
-**uncheck Solo** and return to Stack. Open **Optics**, compare Gameplay Clarity
-and Deep Focus, try bypass and Show physical Play, and then explore the lens.
-Manual optical distance and selected focal-plane mode are distinct choices.
-The Lab scrolls normally at desktop size; lower sections are not missing.
+| Object | Exact identity |
+| --- | --- |
+| Application | `fd0830abcfadd9ae19162e5677943bb131223e59` |
+| Application tree | `fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499` |
+| Main run / package job | `45721790366` / `139629241289` |
+| Evaluator artifact | `15080761776`; 477,073,937 outer bytes |
+| Outer GitHub ZIP SHA-256 | `cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee` |
+| Inner portable ZIP | `CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip`; 477,296,145 bytes |
+| Inner ZIP SHA-256 | `f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07` |
+| Manifest SHA-256 | `a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c` |
+| Inner payload | 2,549 files; 622,420,427 uncompressed bytes |
+| Godot | `4.7.stable.official.5b4e0cb0f` |
+| Windows console runtime SHA-256 | `d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c` |
+| Native Windows DLL SHA-256 | `668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e` |
+| Native source/build | `c53fd6f9d3d0f2b3f39396c7e605654f65c17299` |
+| Rapier Windows DLL SHA-256 | `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7` |
+| Rapier build | `96dcb2ab6e35c9104726b2a541d1c2fbb298eecb`; retained cooperative BVH backport |
+| Main package evidence | [artifact 15080936111](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080936111) |
+
+The embedded and separately supplied manifests are identical. B verified the
+original outer artifact, all three outer members, inner checksum and manifest
+identity. C independently streamed all 2,549 inner member hashes against the
+complete manifest. These checks completed before the local workspace outage.
+The original package evidence's outer SHA-256 is
+`c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513`;
+B safely extracted and verified its 4,245 files before that outage.
+
+The actual Windows package job passed its pristine static verification, all
+31 extracted full-suite cases, actual shipped CMD and post-execution payload
+verification. Its full-campaign pass was emitted at 02:07:45 UTC; post-command
+verification completed at 02:08:40. The shipped command gate required exit 0
+within 180 s, no script/parse/engine errors and exactly one source-matched
+ordinary native Workbench admission with 2048-square extent and Strata off.
+A independently read the original hosted log and its frozen enforcing workflow.
+This command followed suite preparation and is not a cold-first-command claim.
+
+The supplemental cold annex uses a second absent spaced-path extraction and
+the untouched delivered CMD before any Godot preparation. Its first observer,
+`3f37d27bb7637e6ef7107e968d6e27fb4128ce2e`,
+[run 45741693665](https://github.com/techrote/cybersand/actions/runs/45741693665),
+passed 21 controls and authenticated the exact download, then rejected its own
+missing dynamic verifier inventory before invoking Godot. The
+[original rejection](c-cold-first-command-v1-rejection.md) is preserved.
+A narrowly corrected observer is undergoing fresh execution; no cold pass is
+anticipated in this checkpoint.
+
+The additional independent Linux full-package re-read was interrupted by loss
+of the local execution environment. A/root re-read commands did not start;
+B's optional reader had no observed completion. Its ten source/adverse controls
+passed, but its actual final-ZIP execution remains **UNCONFIRMED**. This does
+not replace or erase the original hosted Windows gates. The three
+[recovery reviews](package-recovery-review-a.md),
+[B's record](b-delivery-recovery-2026-11-26.md) and
+[C's record](c-final-recovery-receipt.md) distinguish completed observations,
+compact reconstructed notes and inaccessible original local files. Raw hosted
+artifacts remain the primary evidence.
+
+The [machine-readable delivery provenance](delivery-provenance.json) records
+these identities and scopes. GitHub reports evaluator expiration at
+2027-02-23T23:29:46Z; download it before artifact retention expires. This is an
+evaluation artifact, not a public release. Later documentation/observer commits
+are distinct from frozen application fd and never relabel its package.
+
+## Owner walkthrough and feedback
+
+Use the corrected [owner walkthrough](../../operations/strata-optics-evaluation.md),
+[navigation addendum](OWNER-GUIDE-ADDENDUM.md) and
+[25-minute feedback route](owner-feedback-route.md) alongside the immutable
+package guide. Begin with Underworks in Classic. Inspect **Layers → Play →
+Solo**, then **uncheck Solo** and return to Stack. Open **Optics**, compare
+Gameplay Clarity and Deep Focus, and try bypass and the wipe. Before testing
+**Show physical Play**, turn Bypass off and set Processed share to 1.0.
+Assistance is bounded suppression; Play Solo is definitive ownership inspection.
+
+Load **Optics Readability Challenge** to inspect deliberate false routes, and
+Lunar to explore Optical Lens and Diorama. The ordinary challenge has one actor;
+the three-actor motion evidence uses a separate fixture. Manual optical
+distance and selected focal-plane mode are distinct choices. The Lab scrolls
+normally at desktop size; lower sections are not missing.
 
 Saving a named preset and saving a native scene are separate actions. Enter a
 distinct map name before **Save start**. On a fresh launch enter the same name
-before Load. Temporary bypass, wipe, clarity assistance and inspection focus
-should not return as authored art. A preset selection or evaluation session
-does not promote the draft or activate optics automatically for old scenes.
+before **Load start**. Temporary bypass, wipe, clarity assistance and inspection
+focus should not return as authored art. Quality is an application preference.
 
 Owner feedback should separately identify platform/passage interpretation,
 actor-body visibility, retained detail, preferred palette and optical strength,
@@ -372,12 +488,39 @@ focus behavior, atmosphere, camera/picking, scene admission and actual physical
 responsiveness. Record scene, profile, quality, zoom, actors, edits, paused/live
 state, exact package/source, GPU/driver and desktop scaling. A matched Classic
 and processed capture plus an ordinary movement recording is more useful than
-an overall beauty score. Preserve settings that fail so the problem can be
-reproduced.
+an overall beauty score. Preserve settings that fail so they can be reproduced.
 
-**Engineering acceptance is incomplete while enabled-optics progression fails.**
-The coherent authoring facility and substantial actual graphical/native evidence
-are delivered as research progress; they do not justify a blanket
-"engineering qualified" statement. Final portable execution, physical owner
-performance, artistic preference and unprimed perceptual understanding remain
-separate gates. Draft/HOLD remains in force.
+## Integration and final disposition
+
+A final metadata refresh retained accepted main
+`67c1413a2a84077b47fa542cf91d2bd6ba5520ee`, mergedown #784 at
+`a3cddc4703ecea7abdfe2db55d1de5ef79874447`, and #776 open/Draft at
+`410ac8e5e613b1454928699dbc9a68cd035f0894`. #785 remains explicitly
+stacked on #776. No active programme was imported, merged or promoted.
+
+The [independent seam review](package-recovery-review-a.md) found no collision
+with #777/#780 over Strata document v3 or optics v1. Neither standalone branch
+implements this layered codec. #777's native-module v2 fixed-region/connection
+semantics are deliberately refused by the frozen v1 Strata adapter. #780's
+proposal-v1 remains Play-only and rejects optical/layer actions. Future
+reconciliation must preserve these boundaries and complete scene settings.
+Named presets as read-only model context remain a future extension.
+
+Final documentation source validation was constrained by the workspace outage.
+Before the outage, the M11 integrity check passed 18 records/28 hashes and all
+six new retrieval routes reached the top five. The general retrieval set retained
+30/32, with inherited Q19/Q32 misses. A later isolated archive check lacked six
+companion expected-fact files and failed; it is not a final full repository gate
+pass. Remote text/blob readback preserves the delivered evidence, without
+claiming that unavailable local tests ran.
+
+**STRATA-THEATRE-003 — OPTICAL WORKBENCH INTEGRATED / HOSTED GRAPHICAL AND NATIVE
+FUNCTIONAL GATES PASSED / ENABLED-OPTICS PERFORMANCE HOLD / DRAFT-HOLD FOR OWNER
+ARTISTIC AND PHYSICAL ACCEPTANCE.**
+
+Engineering acceptance is incomplete while enabled-optics progression fails.
+The cold-first-command annex remains separately open at this checkpoint.
+Bright-daylight native readability, unprimed human route understanding,
+physical Windows 11/NVIDIA performance and camera rotation remain uncovered
+or owner gates. A1 is deferred. The coherent authoring facility and substantial
+actual evidence are delivered without a blanket engineering-qualified claim.

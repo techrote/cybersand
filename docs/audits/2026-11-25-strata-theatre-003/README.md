@@ -1,6 +1,6 @@
 # Strata Theatre 003 — engineering and artistic evidence ledger
 
-**Disposition: integrated research Workbench; performance HOLD; portable qualification in progress.** The owner authorizes
+**Disposition: integrated optical Workbench; actual hosted graphical/native functional and main extracted Windows package gates passed; enabled-optics performance HOLD; Draft/HOLD.** The owner authorizes
 optical research, integration, qualification and a portable evaluator. No Ready
 transition, merge, public release or automatic default activation is authorized.
 
@@ -14,10 +14,13 @@ application was tested. The main final-source campaign is
 Both actual Linux and Windows full optical/native, inherited authoring and
 original-predecessor workflow jobs succeeded. The unchanged frozen full optical
 reader independently admitted both final artifacts. Linux inherited/paired
-readers also pass. The Windows paired artifact needs a narrow cross-host reader
-portability correction: Linux Path does not parse a Windows command basename.
-That original Linux-side rejection and the actual Windows success are preserved
-separately. The pristine extracted portable evaluator is still running.
+readers also pass. The original Windows paired comparator passed on Windows;
+a narrowly reviewed external platform-path adapter also passed the actual
+artifact and eight controls on Linux, with all acceptance gates unchanged.
+The original Linux-side basename rejection is preserved. The main pristine
+extracted Windows evaluator completed 31 cases, the actual shipped command
+and post-execution payload verification. Its cold-first-command annex remains
+separate: v1 rejected its own source inventory before Godot.
 
 Each final platform corpus contains 99 matched profile captures from nine native
 scenes, 74 supplementary captures and 40 movement keyframes. Each actual renderer
@@ -55,7 +58,7 @@ values exceed one second in all four enabled profiles. All nine initial scene
 admissions are 46.620–52.362 s and fail 45 s. Fresh-process reopens take
 5.871–8.934 s and pass. The [complete Windows summary](profile-observations-windows.json)
 retains all repeat populations, admissions and whole-process CPU/RSS, independently
-of the forthcoming package extraction results.
+of the completed package extraction results.
 
 Both five-minute sustained v2 sessions passed original source, native isolation,
 visible-widget and bounded-resource checks. The Windows session nevertheless
@@ -126,7 +129,8 @@ not establish physical NVIDIA performance or owner perceptual acceptance.
 
 The shared configuration contract is `strata_optics_configuration.gd`. Optical
 depth is independent from native coordinates and existing geometric/parallax
-depth. Play keeps its existing material renderer. Classic is exact bypass.
+depth. Play keeps its existing material renderer. Bypass is exact restoration;
+Classic restores the reference when temporary Show physical Play is released.
 Scene settings, temporary comparison/focus state and application quality are
 separate domains. No new native owner, world tick, worker, capture, readback or
 publication dependency is introduced by optical parameter changes.
@@ -144,7 +148,42 @@ runtime, scenes, cameras and observation modes. Retain failures and inconclusive
 host-variance results. Require actual graphical captures, native readback and
 resource/lifecycle evidence. Windows package delivery requires the actual
 pristine shipped commands on Windows; owner Windows 11/NVIDIA acceptance stays
-separate. This checkpoint makes no completion or measured performance claim.
+separate. The final decision packet distinguishes functional completion, measured
+performance failures and still-unqualified physical owner acceptance.
+
+## Delivered package, final recovery and owner route
+
+**[Download the interactive Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776).**
+Extract the GitHub artifact, then its inner
+`CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip`, then run
+**Open Workbench.cmd**. Its inner SHA-256 is
+`f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07`.
+The [delivery provenance](delivery-provenance.json) keeps exact source, tree,
+runtime, manifest, ZIP and original evidence identities.
+
+Read the [decision packet](decision-packet.md), corrected
+[owner walkthrough](../../operations/strata-optics-evaluation.md),
+[navigation addendum](OWNER-GUIDE-ADDENDUM.md) and
+[25-minute feedback route](owner-feedback-route.md). The exact scene selector
+label is **Optics Readability Challenge**. Turn Bypass off and return Processed
+share to 1 before testing clarity assistance; release assistance for untouched
+Classic. Play Solo remains the definitive geometry inspection.
+
+The local workspace became unavailable after the hosted package completed.
+[A](package-recovery-review-a.md), [B](b-delivery-recovery-2026-11-26.md) and
+[C](c-final-recovery-receipt.md) preserve compact recovery records of completed
+checks, exact primary artifact identities and unconfirmed local reads.
+The original hosted package gate passed; the additional Linux full-package
+read has no observed completion and is not counted as another pass.
+The [first cold observer rejection](c-cold-first-command-v1-rejection.md)
+is retained without relabelling it a shipped-command failure.
+
+The nine native scenes are predominantly dark. Bright-daylight readability,
+unprimed human understanding, camera rotation and physical Windows 11/NVIDIA
+acceptance remain uncovered or owner gates. A1 remains deferred. The accepted
+main/#784/#776 refresh and source/persistence counterpart boundaries are
+recorded in the decision packet. No merge, Ready transition or default change
+has occurred.
 
 ## Earlier integrated checkpoint — retained history
 

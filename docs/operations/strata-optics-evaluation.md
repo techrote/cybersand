@@ -10,7 +10,7 @@ related-documents: [strata-optical-composition.md, strata-workbench-evaluation.m
 
 # Strata Optics Lab — owner walkthrough
 
-The portable evaluator opens the ordinary interactive CyberSand Workbench. Extract the complete ZIP into a writable folder and run **Open Workbench.cmd**. No Git, Python, compilation or separate Godot installation is needed. The first launch prepares the bundled resource imports; keep the complete extracted directory together.
+The portable evaluator opens the ordinary interactive CyberSand Workbench. [Download the evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776), extract that GitHub ZIP, then extract its inner **CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip** into a writable folder and run **Open Workbench.cmd** from the inner folder. No Git, Python, compilation or separate Godot installation is needed. The first launch prepares the bundled resource imports; keep the complete extracted directory together.
 
 The exact application commit, source tree, official Godot hashes, retained native/Rapier provenance, source files and payload hashes are in `evaluation-manifest.json`. The hosted package execution receipt identifies the actual commands exercised from a pristine extraction. Those receipts qualify the stated execution, not physical Windows 11/NVIDIA appearance or responsiveness. This is **Draft/HOLD**, with no merge or default optical activation.
 
@@ -20,11 +20,11 @@ The exact application commit, source tree, official Godot hashes, retained nativ
 2. In **Layers**, select **Play · actors and collision** and check **Solo** to inspect the physical route. Then **uncheck Solo** and select **Stack · all visible planes**. Stack and Solo are separate controls: choosing Stack alone does not clear Solo. Rear architecture, effects and background have their own native authored pixels but do not provide physical Play collision.
 3. Open the **Optics** tab, titled **Strata Optics Lab**. The profile menu is the wide dropdown immediately below **Enable optical processing**. Choose **Architectural**. The physical material surface remains crisp while the rear composition changes.
 4. Compare **Gameplay Clarity**, **Cinematic Deep Focus**, **Atmospheric Industrial** and **Classic**. Watch the large reactor frames, central wheel, lower orange rear truss and actual silver physical platforms. A decorative ladder does not become traversable because it looks bright.
-5. Toggle **Bypass / before** repeatedly. It restores Classic without deleting the settings. Use **Processed share** to move the single-draw wipe. The camera alignment is shared during the wipe.
-6. Switch on **Show physical Play**. It suppresses competing decorative content using luminance and local separation, so the distinction does not depend only on hue. Switch it off to return to the authored profile.
+5. Toggle **Bypass / before** repeatedly. It restores Classic without deleting the settings. Use **Processed share** to move the single-draw wipe. The camera alignment is shared during the wipe. Before continuing, turn **Bypass / before off** and return **Processed share to 1.0**.
+6. Switch on **Show physical Play**. It provides bounded suppression of competing decoration using luminance and local separation, so the distinction does not depend only on hue; decorative marks can remain. Play Solo is the definitive ownership inspection. Switch assistance off to return to the authored profile. If you inspect Solo again, uncheck Solo and return to Stack afterwards.
 7. Close or move the Strata window, resume ordinary play and pilot the selected actor. Pan, zoom, inspect openings, and return to the Lab. Evaluate movement and input response as well as the still image.
 
-Classic is always immediately available. A strong treatment is an editable starting point, not a new mandatory default.
+For the untouched Classic view, switch **Show physical Play off**; **Bypass / before** restores the reference immediately while preserving the edited profile. Classic is always immediately available. A strong treatment is an editable starting point, not a new mandatory default.
 
 The Optics tab scrolls vertically. Basic comparison controls are near the top; **Depth and atmosphere**, **Per-plane composition** and **Named custom presets** are further down. Use its right-hand scrollbar or the mouse wheel, and move or resize the Strata window as needed. **Classic** selects the reference authored profile; **Bypass / before** is the temporary comparison that preserves your edited settings.
 
@@ -48,9 +48,11 @@ Scroll to **Per-plane composition**, choose **Rear architecture**, **Atmosphere 
 
 The five original Strata 002 environments retain their geometry: Orbital Fabrication Terminal, Rain over the Arcology, Underworks / Reactor Service, Abyss Foundry and Vertical Transfer Spine. Use the same camera and zoom when comparing profiles. Pay particular attention to rear gantries crossing apparent passages and repeated framework resembling physical platforms.
 
-The three new showcases are **Sunward Freight Megastructure**, **Xeno Resonance Grotto** and **Lunar Terminator Observatory**. Each uses ordinary native authored planes and the existing Workbench. **Physical Readability Challenge** deliberately includes false platforms, rear stairs/ladders, same-colour overlap, a passage that looks blocked, Water, Sand and an ordinary actor. Its material probes record physical truth; a contrast score alone does not prove a human understands the route.
+The three new showcases are **Sunward Freight Megastructure**, **Xeno Resonance Grotto** and **Lunar Terminator Observatory**. Each uses ordinary native authored planes and the existing Workbench. **Optics Readability Challenge** deliberately includes false platforms, rear stairs/ladders, same-colour overlap, a passage that looks blocked, Water, Sand and an ordinary actor. Its material probes record physical truth; a contrast score alone does not prove a human understands the route.
 
-Open the bundled **Gallery.html** for offline matched native captures, profile and wipe controls, focus inspection, source/configuration hashes and links to the retained original evidence. Gallery images are actual application captures, not generated promotional illustrations. Read the recorded 45-second admission verdicts and the separate physical progression observations. Missing evidence is labelled, never interpreted as zero cost.
+The native comparison corpus is predominantly dark. Sunward and Sunlit supply a warm industrial study, not an established bright-daylight readability result. Pale distant masses, a bright sky and dark physical silhouettes remain useful future native tests.
+
+Open the bundled **Gallery.html** for offline matched native captures, profile and wipe controls, focus inspection, source/configuration hashes and links to the retained original evidence. Gallery images are actual application captures, not generated promotional illustrations. Full-profile gallery images can have different decorative parallax, while the live wipe temporarily uses Classic decorative alignment. At an intermediate wipe, procedural atmosphere motifs retain Classic opacity across the whole view; lens and tonal processing applies to architectural textures, while the Atmosphere tab owns those motifs. Read the recorded 45-second admission verdicts and the separate physical progression observations. Missing evidence is labelled, never interpreted as zero cost.
 
 ## Save and reopen your work
 
@@ -75,6 +77,8 @@ The final Windows source campaign likewise misses the 90% rate target for all fo
 In the Linux capture review, Gameplay Clarity and Noir provided the strongest ownership cues in the deliberately difficult fixture; gentle architectural profiles still left false routes convincing. At Overview, the actor body remained too small and localization relied on its marker or label. Closer movement frames resolved three actual actor bodies. Test both scales on your machine and retain misleading settings for reproduction instead of tuning away every failure before reporting it.
 
 The inherited scene-admission target is **45 seconds**. The five final Strata 002 extracted Windows scenes missed that target. New results retain the same threshold and report misses independently of functional success. Hosted Windows uses a software graphics backend; your physical Windows 11/NVIDIA observations remain the acceptance gate.
+
+The [25-minute owner feedback route](../audits/2026-11-25-strata-theatre-003/owner-feedback-route.md) covers Underworks, the challenge, Lunar, live controls and a complete save/reopen. The [navigation addendum](../audits/2026-11-25-strata-theatre-003/OWNER-GUIDE-ADDENDUM.md) corrects the guide inside the immutable package without changing its tested bytes.
 
 Record feedback in `OWNER-FEEDBACK.md` with the package/source identity, hardware, GPU driver and desktop scaling. Useful questions are:
 
