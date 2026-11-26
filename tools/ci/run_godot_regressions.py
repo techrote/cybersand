@@ -3,6 +3,7 @@
 
 import argparse
 from collections import Counter
+from contextlib import ExitStack
 from dataclasses import dataclass
 import hashlib
 import json
@@ -22,12 +23,13 @@ import godot_process_monitor as process_monitor
 import execution_policy
 import execution_telemetry
 import godot_scheduling as scheduling
+import run_art_local_close
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
-# The Lab invokes this source-level compiler outside the Godot process. Retain
-# its exact working-tree inputs in addition to the existing Git/runtime identity.
-INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue")
+# The Lab compiler and Art's local HTTP fixture run outside the Godot process.
+# Retain their exact inputs in addition to the existing Git/runtime identity.
+INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue", "tools/ci/run_art_local_close.py")
 
 
 def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]:
@@ -42,6 +44,13 @@ def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]
 # not pass/fail thresholds. Unknown tests deliberately receive a conservative
 # weight so new fixtures are never omitted and are unlikely to overload one shard.
 CASE_WEIGHTS_SECONDS = {
+    # First Linux production-mount probe: 8.043s. This 30s provisional
+    # cross-platform hint is not a Windows measurement or a watchdog change.
+    "test_art_architecture_workbench": 30.0,
+    # MERGEDOWN-RENAISSANCE-001: one Linux Godot4.7 run took 6.331s.
+    # 30s is a conservative provisional cross-platform scheduling hint, not
+    # a measured Windows result or a new timeout; the usual margin applies.
+    "test_ambient_default_off_integration": 30.0,
     # Provisional upper-platform hints from run 41250780110 (one sample per
     # fixture, 2026-10-31). These correct severe underestimates; they are not a
     # qualified rolling baseline. A separate 1.5x scheduling margin is applied.
@@ -723,8 +732,15 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     process_env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(
         (output_dir / (case.name + "-artifacts")).resolve()
     )
-    with log_path.open("w", encoding="utf-8") as log:
+    with log_path.open("w", encoding="utf-8") as log, ExitStack() as fixtures:
         try:
+            # This registered regression requires a real local HTTP service.
+            # Keep its original Godot command, watchdog and strict diagnostics;
+            # use the same fixture as the dedicated Art qualification runner.
+            if case.name == "test_art_local_close":
+                process_env["WB_ART_CLOSE_ENDPOINT"] = fixtures.enter_context(
+                    run_art_local_close.loopback_fixture()
+                )
             options = (
                 {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
                 if sys.platform == "win32" else {"start_new_session": True}

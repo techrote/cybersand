@@ -1,0 +1,75 @@
+{
+  "schema": "cybersand-independent-qualification-history-review-a-v1",
+  "status": "PASS",
+  "archive": "/workspace/scratch/051e78157ffb/m67-delivery/CyberSand-M6-M7-Qualification-History-20261125.zip",
+  "archive_bytes": 177055307,
+  "archive_sha256": "0b83d4e29fe3c952233362923cdaaab321272d74306fa6014664b0b7f656cbaf",
+  "manifest_sha256": "f04872b24c75cfc834ec487439dfd2287e354fdaaeeecb196fb29366ac008546",
+  "manifested_payload_files": 67,
+  "total_regular_members": 68,
+  "original_actions_archives": 8,
+  "original_actions_bytes": 176578745,
+  "original_source_outcomes": [
+    {
+      "path": "original-actions/45506178712/14974993415-linux.zip",
+      "source_commit": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+      "source_status": "passed",
+      "source_process_groups": 89
+    },
+    {
+      "path": "original-actions/45506178712/14974697855-windows.zip",
+      "source_commit": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+      "source_status": "failed",
+      "source_process_groups": 64
+    },
+    {
+      "path": "original-actions/45512988153/14977921869-linux.zip",
+      "source_commit": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+      "source_status": "passed",
+      "source_process_groups": 89
+    },
+    {
+      "path": "original-actions/45512988153/14979431856-windows.zip",
+      "source_commit": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+      "source_status": "passed",
+      "source_process_groups": 89,
+      "extracted_status": "failed",
+      "extracted_process_groups": 1
+    },
+    {
+      "path": "original-actions/45520561849/14981408538-linux.zip",
+      "source_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "source_status": "passed",
+      "source_process_groups": 89
+    },
+    {
+      "path": "original-actions/45520561849/14983835743-windows.zip",
+      "source_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "source_status": "passed",
+      "source_process_groups": 89,
+      "extracted_status": "passed",
+      "extracted_process_groups": 72
+    },
+    {
+      "path": "original-actions/45520561849/14978269731-windows-runtime.zip",
+      "source_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "native_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+      "native_inputs": 105
+    },
+    {
+      "path": "original-actions/45520561849/14980481166-windows-build.zip",
+      "source_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "platform": "windows",
+      "returncode": 0,
+      "runtime_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d"
+    }
+  ],
+  "independently_pinned_review_files": 12,
+  "all_payload_sha256_and_crc_verified": true,
+  "safe_unique_casefold_paths": true,
+  "extra_unlisted_payload": false,
+  "user_profiles_outside_original_actions": false,
+  "code_checkpoint_bundles_outside_original_actions": false,
+  "portable_evaluator_repacked_here": false,
+  "scope": "Read-only manifest, retained original API digest/size and source-report audit. Original eight Actions ZIPs are byte-identical; both earlier failures and final pass remain distinct. Raw profiles within the original immutable Actions outputs are neither extracted nor rewritten. Source code, checkpoint bundle, development archive and owner evaluator remain separate deliverables. No application execution or physical owner acceptance."
+}

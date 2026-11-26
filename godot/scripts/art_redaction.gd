@@ -51,6 +51,10 @@ func _redact_unmarked(value: String) -> String:
 			if clean.contains(secret): clean = clean.replace(secret, "[redacted]")
 			var encoded := secret.uri_encode()
 			if encoded != secret and clean.contains(encoded): clean = clean.replace(encoded, "[redacted]")
+			# Keep opaque credentials protected in JSON-escaped audit text.
+			var quoted := JSON.stringify(secret)
+			var json_spelling := quoted.substr(1,quoted.length()-2)
+			if json_spelling != secret and clean.contains(json_spelling): clean = clean.replace(json_spelling,"[redacted]")
 	# Preserve the original pass order: patterns can overlap inside credential
 	# fields and URL userinfo. Run generic patterns only across the span in which
 	# their mandatory prefixes and a final possible token occur. Huge unrelated

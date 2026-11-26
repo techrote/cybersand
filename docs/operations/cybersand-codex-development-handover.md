@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Art storage mergedown — 2026-11-26
+
+The [registered storage integration](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+adapts only the reviewed ULTIMA Art export/event, preference and private-receipt
+repairs to the combined Art/Architecture candidate. Preserve the current settings
+no-op cache, lazy UI, asynchronous value preparation and owned Architecture
+dispatch. The protected ULTIMA programme and its separate CI acquisition helper
+are not imported. The
+[canonical storage boundary](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate)
+distinguishes closed-byte verification from power-loss or physical acceptance.
+
+## WORLD-STEER-BATCH-001 — 2026-11-21
+
+Continue `feat/world-steer-batch-001-20261121` as Draft/HOLD. The [canonical guide](world-steer-batch-lab.md) owns the M0–M2 controls, dependency/write-set map, native material isolation, exact-source qualification and Windows acceptance. Preserve the five concurrent missions and existing worker/provider ownership; the Batch Lab workflow is request-scoped to its own branch. Do not turn deterministic fixtures or hosted rendering into model-quality or physical desktop acceptance claims.
+
 ## Collaborative Art successor — 2026-11-25
 
 #780 preserves #773's qualified ancestry and evaluator while adding owned

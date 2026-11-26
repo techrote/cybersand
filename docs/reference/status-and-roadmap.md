@@ -10,6 +10,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Art storage integration candidate — 2026-11-26
+
+The mergedown's unmerged Art/Architecture source adopts the narrowly reviewed
+closed-file verification repair for exports, new/appended events, preferences
+and retained private receipts. The
+[provider contract](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate)
+preserves settings-cache isolation, session-only conversation behavior and
+native Architecture authority. Its
+[registered campaign](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+records exact donor boundaries and the required resulting-source fault and
+authoring tests. ULTIMA remains protected; its unrelated CI and other consumer
+changes are excluded. Windows storage, creative and physical acceptance remain
+separate gates.
+
 ## Collaborative Art candidate — 2026-11-25
 
 ART-WORKBENCH-COLLABORATIVE-002 / #780 is a Draft/HOLD successor with one owned
@@ -22,6 +36,28 @@ owns exact source/platform/package outcomes, recovery and retained failures.
 Fixture evidence is separate from genuine model creativity. Architecture
 validation/execution stays with #777; no production default, merge, Ready
 promotion or automatic model dispatch is authorized.
+
+## WORLD-STEER-BATCH-M3-M5-001 — Draft/HOLD, 24 November 2026
+
+The [architectural Workbench successor](../operations/world-steer-architecture.md) reconciles the preserved #720 Batch Lab with accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. It adds native module harvesting/replay, 25 source-bound GOLDMAPS design cards, bounded retrieval, finite staged native construction, six examples and a registered 30-attempt contextual comparison. The [integration ledger](../audits/2026-11-24-world-steer-m3-m5/integration-ledger.md) preserves original campaign custody and successor qualification. Typed offline construction is independently executable; the separate Art successor owns conversational integration. Actual model quality, physical owner acceptance and any M6/M7 training remain unqualified. No merge or Ready promotion is authorized.
+
+## WORLD-STEER-BATCH-001 M0–M2 — Draft/HOLD
+
+The [Native Batch Lab guide](../operations/world-steer-batch-lab.md) owns optional independent native construction, comparative inspection, retained attempts and bounded experiments on the dedicated branch from accepted `846fe0533b3170e7b01f690518da49fc40cc24d1`. Qualification artifacts distinguish actual native/control outcomes, protocol fixtures, pending real model comparisons and physical owner acceptance. The subsequent M3–M5 authorization is scoped above; this original record grants no merge, production default, paid call or schedule.
+
+## AMBIENT-001 modular procedural actors — 24 November 2026
+
+**Opt-in implementation candidate, Draft/HOLD:** the
+[ambient actor contract](../systems/ambient-actors.md) and
+[owner guide](../operations/ambient-workbench.md) describe eleven reusable modules,
+six profiles, five ordinary authored scenes and a staged per-actor profile editor.
+The existing policy producer, issued observations, leases, native material
+publications and physical movement mechanisms remain authoritative. Accepted
+population capacity stays eight. The [mission ledger](../research/ambient-001/mission-ledger.md)
+owns exact source/platform qualification, independent findings and remaining
+Windows/visual/owner acceptance. Global pathfinding, arbitrary script execution,
+physical immunity, inferred capabilities and exact physical-state continuation
+are outside this candidate.
 
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Art providers, same-session collaboration, failure lifecycle, consolidated Draft UI and qualification
 canonical-for: [workbench-art-providers]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-26
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -263,6 +263,48 @@ Entered keys, bearer strings, common key formats, credential URL parameters and
 URL userinfo are redacted before display/disk/export. Authorization request
 headers are never added to the logged request object. No log can identify every
 arbitrary secret the user invents; do not put unrelated credentials in prompts.
+
+### Verified closed storage in the mergedown candidate
+
+The unmerged Art/Architecture integration verifies closed output before
+acknowledging a stored event, completed export, preference update or retained
+private history receipt. `art_provider.gd::_store_event` verifies the exact new
+record region against the submitted buffers, without rereading the previous
+archive. An interrupted append leaves prior complete records readable and makes
+that session writer read-only; it does not claim to roll back an incomplete tail
+or repeat an already completed native edit.
+
+Export closes its staging file and cooperatively verifies its exact length and
+SHA-256 before the existing native atomic replacement. Traffic displays the
+verification phase; Stop and Cancel still interrupt it. Refusal or cancellation
+does not publish that export. The destination/source alias guard is checked
+again at commit. This remains a bounded streaming export, independent of model
+context and native painting authority.
+
+`art_batch_panel.gd::_save_settings` uses the shared bounded-text
+`workbench_file_transaction.gd` helper: complete closed-byte verification followed
+by the accepted native sibling-file replacement. Existing unchanged preferences
+keep their no-write cache. A failed write retains the earlier cache and file;
+only verified success updates the cache. Successful retry or reversion to the
+committed settings clears only the save-owned error. The profile's 1 MiB bound
+and prior-profile admission refusal remain authoritative.
+
+The retained private `_persist_history_receipt` method similarly verifies the
+closed payload before publication and before advancing receipt identity/order.
+Its existing schema, frozen projection, epoch and capacity checks remain. This
+does not activate old-journal restoration in ordinary Art sessions. Neither
+helper promises `fsync`, power-loss recovery, a multi-file transaction, or a
+cross-process editing lock; complete concurrent replacements remain
+last-writer-wins.
+
+The direct `test_workbench_file_transaction.gd` and
+`test_art_storage_integrity.gd` regressions exercise verification and refusal.
+`tools/ci/run_art_storage_qualification.py` runs disposable actual OS faults and
+retry, with a shared Windows sharing-lock fixture in `windows_file_lock.py`.
+The [registered mergedown campaign](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+separates inherited failure evidence, resulting-source execution and pending
+Windows/owner acceptance. These source changes do not establish physical
+acceptance or change native runtime inputs.
 
 ### Lazy reopening and traffic storage
 

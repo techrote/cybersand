@@ -119,6 +119,15 @@ func _prepare_values() -> void:
 	var raw := bytes.get_string_from_utf8()
 	metrics.utf8_decode_usec = Time.get_ticks_usec()-stage
 	if is_cancelled(): return
+	# Architecture's provider contract redacts decoded JSON values as well as
+	# raw spellings. Do that once in this same finite value worker, so escaped
+	# credentials cannot reach the durable audit and no main-thread reparse is
+	# reintroduced by the integration.
+	stage = Time.get_ticks_usec()
+	var parser := JSON.new()
+	var valid_json := parser.parse(raw) == OK
+	metrics.json_parse_usec = Time.get_ticks_usec()-stage
+	if is_cancelled(): return
 	var redactor := Redactor.new()
 	redactor.secrets = secrets_snapshot
 	redactor.cancellation = is_cancelled
@@ -130,6 +139,10 @@ func _prepare_values() -> void:
 	if is_cancelled(): return
 	sanitized_body = redactor.redact(raw)
 	if is_cancelled(): return
+	if valid_json:
+		var safe_body: Variant = redactor.redacted_value(parser.data)
+		if is_cancelled(): return
+		if safe_body != parser.data: sanitized_body = JSON.stringify(safe_body)
 	clean[redactor.redact("body")] = sanitized_body
 	metrics.sanitize_usec = Time.get_ticks_usec()-stage
 	if is_cancelled(): return
@@ -144,11 +157,8 @@ func _prepare_values() -> void:
 		metrics.utf8_encode_usec = Time.get_ticks_usec()-stage
 		if is_cancelled(): return
 	if transport_result == HTTPRequest.RESULT_SUCCESS and (http_code >= 200 and http_code < 300 or provider_name == "OpenAI" and http_code == 429):
-		stage = Time.get_ticks_usec()
-		var parser := JSON.new()
-		valid_object = parser.parse(raw) == OK and parser.data is Dictionary
+		valid_object = valid_json and parser.data is Dictionary
 		if valid_object: data = parser.data
-		metrics.json_parse_usec = Time.get_ticks_usec()-stage
 	if is_cancelled(): return
 	if valid_object and http_code >= 200 and http_code < 300:
 		stage = Time.get_ticks_usec()

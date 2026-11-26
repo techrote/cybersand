@@ -11,6 +11,16 @@ last-reviewed: 2026-11-20
 
 # Data ownership and lifetimes
 
+The opt-in [AMBIENT-001 actor controller](../systems/ambient-actors.md) adds no
+World or physics owner. One main-thread session cache copies existing native
+material-ID publications while preserving their epoch, generation, revision,
+serial and native tick. Pure modules receive copied values; only the existing
+session issues policy observations and submits bounded normalized commands.
+Optional ledge rays remain in the physical rig owner and return copied geometry.
+Retiring the session clears the cache and every actor's private intention state.
+Pause revokes command authority while preserving gameplay timers; handback
+reconfigures ephemeral state. Debug inspection does not issue observations.
+
 The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
 keeps the existing native worker and main-thread Rapier owner. Each multipart
 actor has stable authored identity and distinct per-part native response owners;

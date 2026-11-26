@@ -1,0 +1,84 @@
+{
+  "schema": "ambient-001-linux-gameplay-source-bridge/v1",
+  "reviewed_utc": "2026-11-24T19:58:32.953360+00:00",
+  "reviewer": "AMBIENT-001 specialist A",
+  "disposition": "verified-unchanged-gameplay-source; final-source Linux gameplay was not rerun",
+  "from_qualified_source": {
+    "commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+    "tree": "f00fa44682bb46318b4505700e04fee1484a0b17",
+    "qualification_sha256": "a2fa30cc2ac14dfc8a6848573551a1fd4bbb7ee5d40c300e71ef720cb8920393",
+    "independent_review_sha256": "ffdd8e15077d0d6d670592ba3497c1d7cc181e16965af522e8dfc98edb434f2c",
+    "platform": "Linux headless",
+    "completed_cases": 16,
+    "assertions": 5959,
+    "failures": 0
+  },
+  "to_source": {
+    "commit": "f4f94631d61d492554627949497e727b26043ccb",
+    "tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+    "execution_input_delta": [],
+    "recorded_inputs": 1115
+  },
+  "verified_equivalence": {
+    "identical_godot_source_data_resource_inputs": 835,
+    "identical_actual_linux_project_inputs": 837,
+    "all_committed_godot_and_native_paths_unchanged": true,
+    "retained_native_and_rapier_bytes_rehashed_unchanged": true,
+    "current_official_linux_engine_pin_unchanged": true,
+    "qualified_linux_engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "linux_engine_cache_currently_present": false,
+    "current_linux_engine_rehash": "passed by streaming decompression of the archived executable; no extraction or execution",
+    "unrecorded_or_missing_gd_scripts": [],
+    "every_current_execution_input_rehashed": true,
+    "linux_engine_archive": {
+      "path": "/workspace/scratch/befe4151f3cf/runtime-cache/godot-runtime/Godot_v4.7-stable_linux.x86_64.gz",
+      "archive_sha256": "c5ee3015824474028ee2545c13a12c36bfdeb883846e79d85599efa03140fa4f",
+      "decompressed_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "decompressed_bytes": 144186224,
+      "compression_receipt_sha256": "d45039b6d40fe2914278fab1e0d3fbd1e83485bc85c4c71ac5a5c3129f8a9115"
+    }
+  },
+  "permitted_source_changes": {
+    "committed_paths": [
+      "docs/research/ambient-001/mission-ledger.md",
+      "tools/ci/test_ambient_delivery.py",
+      "tools/fixtures/ambient-001-qualification-request.json",
+      "tools/package_ambient_evaluator.py"
+    ],
+    "changed_bound_inputs": [
+      {
+        "path": "tools/ci/test_ambient_delivery.py",
+        "before_sha256": "4bd3d8aa3920a66914a0c31b393c89dd941663461f085ece457bcf2b96329196",
+        "after_sha256": "379277bd94f60d5284e13185a3db5d72506f4c7302da438e609bbf6dc329a82b"
+      },
+      {
+        "path": "tools/fixtures/ambient-001-qualification-request.json",
+        "before_sha256": "8b5cf722f4275fc4576c5ad0805757b236ac02d20679ce6abe8db79cbbc752b9",
+        "after_sha256": "962a64c22f297d3379eaea8ce656b39ffe5bb5c5882a24b9c952346d82c6c33b"
+      },
+      {
+        "path": "tools/package_ambient_evaluator.py",
+        "before_sha256": "b6a147c9408e3d052b888930d98656fd6a510387a79a21eaf57d76594ec40d8f",
+        "after_sha256": "68ccd2a3750bb6a1d69e82b3773d84979b99ecd3765bdc75e97da3b094a4d5a3"
+      }
+    ],
+    "production_change": "Only the postlaunch package verifier also admits .gdshader.uid metadata when its exact original shader belongs to the manifest and still passes its original hash.",
+    "other_changes": "Six independent metadata custody tests, explicit freeze request and mission-ledger explanation. No gameplay, native, motor, profile, shader or asset edit."
+  },
+  "new_custody_test_execution": {
+    "receipt_path": "/workspace/scratch/befe4151f3cf/ambient-evidence/shader-uid-review/receipt.json",
+    "receipt_sha256": "f9da167a197bc36c087b0250353eae08d5efd8d1b3ea1d9b7a30abf579407a93",
+    "log_sha256": "e74d1ab9a77603d2cafc395c753478c3d3fa43b4d9d863520b1465c2b618afcd",
+    "methods_passed": 41,
+    "exit_code": 0,
+    "inputs_unchanged": true,
+    "scope": "Temporary-file verifier fixtures; no Godot/native execution."
+  },
+  "independent_review_rotation": "Specialist A reviewed the lead\u2019s verifier repair; specialist C independently read the repair and all six new tests and reported no blocker.",
+  "limits": [
+    "This is an explicit source-equivalence bridge, not a claim that a Linux campaign executed under the new commit.",
+    "The Linux executable is retained in a reversible gzip cache. Streaming decompression independently reproduced its exact authenticated execution hash without extraction, download or launch.",
+    "Final-source Windows qualification, real renderer capture and extracted-package verification require their own retained receipts.",
+    "The metadata exception applies only after launch; pristine equality, unexpected executable/shader refusal and original input hashing remain unchanged."
+  ]
+}

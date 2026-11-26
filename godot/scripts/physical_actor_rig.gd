@@ -1477,6 +1477,68 @@ func _ray(from: Vector2, to: Vector2) -> Dictionary:
 	return get_world_2d().direct_space_state.intersect_ray(query)
 
 
+# AMBIENT-001: two optional owner-mediated terrain probes. They have a separate
+# fixed budget and do not consume or retune the motor's existing ray allowance.
+# Only copied values leave this rig; RIDs, bodies and the direct-space state do
+# not cross into a procedural behaviour. UI inspection never calls this method.
+func ambient_ledge_observation(lookahead_cells: float, max_drop_cells: float,
+		canvas_extent: Vector2i = Vector2i.ZERO) -> Dictionary:
+	var unavailable := {"available":false, "reason":"physical terrain probe unavailable"}
+	var result := {"available":false, "left":unavailable.duplicate(), "right":unavailable.duplicate(),
+		"lookahead_cells":lookahead_cells, "max_drop_cells":max_drop_cells, "searched_drop_cells":max_drop_cells, "ray_queries":0}
+	if not configured or not fault.is_empty() or _parts.is_empty() \
+		or not is_finite(lookahead_cells) or not is_finite(max_drop_cells) \
+		or lookahead_cells < 0.0 or lookahead_cells > 32.0 or max_drop_cells < 1.0 or max_drop_cells > 64.0:
+		return result
+	var left := INF
+	var right := -INF
+	var bottom := -INF
+	for index: int in range(_parts.size()):
+		if _detached.has(index): continue
+		var pose: Transform2D = _transforms[index]
+		var half: Vector2 = _sizes[index] * 0.5
+		var angle: float = pose.get_rotation()
+		var half_x: float = absf(cos(angle)) * half.x + absf(sin(angle)) * half.y
+		var half_y: float = absf(sin(angle)) * half.x + absf(cos(angle)) * half.y
+		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+			half_x = half.x
+			half_y = half.x
+		left = minf(left, pose.origin.x - half_x)
+		right = maxf(right, pose.origin.x + half_x)
+		bottom = maxf(bottom, pose.origin.y + half_y)
+	if not is_finite(left) or not is_finite(right) or not is_finite(bottom): return result
+	for side: String in ["left", "right"]:
+		var x: float = left - lookahead_cells if side == "left" else right + lookahead_cells
+		var origin := Vector2(x, bottom - 2.0)
+		var target := Vector2(x, bottom + max_drop_cells)
+		if canvas_extent != Vector2i.ZERO and (x < 0.0 or x >= canvas_extent.x \
+			or origin.y < 0.0 or origin.y >= canvas_extent.y):
+			result[side] = {"available":false, "reason":"probe crosses canvas boundary",
+				"boundary":true, "origin":origin, "target":target}
+			continue
+		var clipped: bool = canvas_extent != Vector2i.ZERO and target.y >= canvas_extent.y
+		if clipped: target.y = canvas_extent.y - 0.001
+		var query := PhysicsRayQueryParameters2D.create(origin, target, TERRAIN_MASK, _exclusions)
+		# A taller adjacent block can contain the ray's starting point. Preserve
+		# that collision instead of mistaking an empty ray for a physical drop.
+		query.hit_from_inside = true
+		var hit: Dictionary = get_world_2d().direct_space_state.intersect_ray(query)
+		var support: bool = not hit.is_empty() and Vector2(hit.get("normal", Vector2.ZERO)).y < -0.35
+		var obstructed := not hit.is_empty() and not support
+		result[side] = {"available":support or (hit.is_empty() and not clipped),
+			"boundary":clipped and hit.is_empty(), "support_found":support,
+			"reason":"probe origin inside or obstructed by non-support geometry" if obstructed \
+				else "probe ends at canvas boundary" if clipped and not support else "",
+			"searched_drop_cells":maxf(0.0, target.y - bottom),
+			"drop_cells":maxf(0.0, float(hit.position.y) - bottom) if support else max_drop_cells + 0.001,
+			"lower_bound":hit.is_empty(), "origin":origin, "target":target,
+			"position":hit.get("position", target), "normal":hit.get("normal", Vector2.ZERO)}
+		if obstructed: result[side].erase("drop_cells")
+		result.ray_queries += 1
+	result.available = bool(result.left.available) or bool(result.right.available)
+	return result
+
+
 func refresh_observation() -> void:
 	if not configured:
 		return

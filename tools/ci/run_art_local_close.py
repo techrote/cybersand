@@ -6,6 +6,7 @@ provider UI. A timeout or crash fails; no cloud request, API key or model load.
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack, contextmanager
 import http.server
 import json
 import os
@@ -57,6 +58,20 @@ class Handler(http.server.BaseHTTPRequestHandler):
             pass
 
 
+@contextmanager
+def loopback_fixture():
+    """Supply the same bounded HTTP fixture to focused and shard runners."""
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_port}/v1"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--godot", required=True)
@@ -66,11 +81,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     if not Path(args.godot).is_file():
         raise SystemExit("Godot executable not found")
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-    thread = threading.Thread(target=server.serve_forever, daemon=True)
-    thread.start()
     env = dict(os.environ)
-    env["WB_ART_CLOSE_ENDPOINT"] = f"http://127.0.0.1:{server.server_port}/v1"
     if sys.platform == "win32":
         env["APPDATA"] = str((args.output / "isolated-profile").resolve())
         Path(env["APPDATA"]).mkdir(parents=True, exist_ok=True)
@@ -80,7 +91,8 @@ def main():
     command = [args.godot, "--headless", "--path", str(args.project.resolve()),
                "--script", "res://tests/test_art_local_close.gd"]
     log = args.output / "art-close.log"
-    try:
+    with ExitStack() as fixtures:
+        env["WB_ART_CLOSE_ENDPOINT"] = fixtures.enter_context(loopback_fixture())
         with log.open("w", encoding="utf-8") as out:
             proc = subprocess.run(command, cwd=ROOT, env=env, stdout=out,
                                   stderr=subprocess.STDOUT, timeout=240, check=False)
@@ -98,9 +110,6 @@ def main():
                 raise RuntimeError("Diagnostic unexpectedly contains endpoint or credential")
         (args.output / "art-close-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(f"Art local close: {report['checks']} checks, {len(report['cases'])} cases, no cloud inference.")
-    finally:
-        server.shutdown()
-        server.server_close()
 
 
 if __name__ == "__main__":

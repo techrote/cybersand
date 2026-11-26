@@ -52,6 +52,33 @@ func serve(listener: TCPServer, receipt: Dictionary) -> void:
 	listener.stop()
 	receipt.done = true
 
+func invalid_endpoint_checks(context: Array) -> void:
+	# These malformed authorities previously reached HTTPRequest and emitted an
+	# engine ERROR before returning. Exercise both real provider dispatch paths;
+	# the strict regression runner rejects any remaining native diagnostic.
+	for bad: String in ["http://localhost:abc","http://:80","http://[",
+			"http://[::1]:abc","http://127.0.0.1:65536","http://127.0.0.1:0"]:
+		var start_count := starts.size()
+		var completion_count := completions.size()
+		var error: String = provider.send("LM Studio",bad,"invalid-authority","","Return []","rules",16,1)
+		check(error.contains("Could not start") and not provider.active and provider.request == null
+			and starts.size() == start_count and completions.size() == completion_count
+			and provider.last_request_timing.status == "start_failed",
+			"synchronous malformed authority refuses without a false start or completion: "+bad)
+		error = provider.send("LM Studio",bad,"invalid-authority","","Return []","rules",16,1,"",context)
+		check(error.is_empty() and provider.request_preparation_active(),"malformed authority genuinely enters asynchronous preparation: "+bad)
+		check(await until(func() -> bool: return not provider.active and Preparation.pending_count() == 0),"asynchronous malformed authority settles: "+bad)
+		check(starts.size() == start_count and completions.size() == completion_count+1
+			and completions.back().error.contains("Could not start") and provider.request == null
+			and provider.last_request_timing.status == "start_failed",
+			"asynchronous malformed authority emits one refusal and no started handshake: "+bad)
+	for bad: String in ["http://localhost:","http://localhost:-1","http://localhost:+80",
+			"http://[::1]evil","http://[host]:1234","http://::1:1234"]:
+		check(not P._has_http_endpoint(P.request_url("LM Studio",bad)),"ambiguous authority is not admitted: "+bad)
+	for good: String in ["https://api.example/v1","http://localhost:1234/v1",
+			"http://127.0.0.1:65535/v1","http://[::1]:1234/v1","http://[2001:db8::1]/v1"]:
+		check(P._has_http_endpoint(P.request_url("LM Studio",good)),"valid endpoint syntax remains supported without probing it: "+good)
+
 func run() -> void:
 	provider = P.new()
 	root.add_child(provider)
@@ -127,6 +154,7 @@ func run() -> void:
 	check(await until(func() -> bool: return not provider.active and Preparation.pending_count() == 0),"asynchronous start failure terminates cleanly")
 	check(starts.size() == start_count and completions.size() == completion_count+1 and completions.back().error.contains("Could not start"),"async start failure emits one truthful error and no started handshake")
 	check(provider.last_request_timing.status == "start_failed","async start failure keeps its explicit terminal status")
+	await invalid_endpoint_checks(context)
 	provider.send("LM Studio",endpoint,"shutdown-fixture","","Return []","rules",4096,5,"",context)
 	check(provider.request_preparation_active(),"owner shutdown fixture has outgoing CPU work pending")
 	var archive: String = provider.log_path

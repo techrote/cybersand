@@ -178,6 +178,7 @@ var collaboration: RefCounted
 var collaboration_workspace: Control
 var collaboration_button := Button.new()
 var collaboration_page := false
+var provider_credentials_revision := 0
 var _collaboration_opened := false
 var _direct_controls: Array[Control] = []
 
@@ -1077,8 +1078,34 @@ func _open_key_dialog() -> void:
 func _apply_provider_key() -> void:
 	if key_dialog_provider.is_empty(): return
 	keys[key_dialog_provider] = key_field.text.strip_edges()
+	provider_credentials_revision += 1
 	_register_provider_keys_for_redaction()
 	key_field.clear()
+
+func proposal_configuration_identity() -> Dictionary:
+	# Public, credential-free identity for an explicit host disclosure. The key
+	# itself remains in this Art owner and enters only the dispatch snapshot.
+	return {"provider":current_provider,"endpoint":endpoint.text.strip_edges(),
+		"model":model.text.strip_edges(),"tokens":int(tokens.value),"seconds":float(seconds.value),
+		"credentials_revision":provider_credentials_revision,"ui_epoch":ui_epoch}
+
+func proposal_configuration_snapshot() -> Dictionary:
+	request_epoch = _send_request_epoch()
+	_register_provider_keys_for_redaction()
+	return {"provider":current_provider,"endpoint":endpoint.text.strip_edges(),
+		"model":model.text.strip_edges(),"key":str(keys.get(current_provider,"")),
+		"tokens":int(tokens.value),"seconds":float(seconds.value),"context":[],"png":""}
+
+func proposal_transport_block_reason() -> String:
+	if provider.active or provider.request_preparation_active() or provider.response_preparation_active():
+		return "Finish or Stop the current Art request first."
+	if provider.export_active or provider.resume_active or conversation_apply_pending():
+		return "Finish the current Art conversation or archive operation first."
+	if executor.active or capturing or remaining_turns != 0 or waiting_until_ms > Time.get_ticks_msec() or log_draw:
+		return "Finish or Stop ordinary Art drawing before requesting Architecture options."
+	if collaboration != null and collaboration.busy():
+		return "Finish or Stop collaborative Art work before requesting Architecture options."
+	return ""
 
 func _clear_hidden_key() -> void:
 	# ConfirmationDialog may hide before emitting confirmed. Defer the generic
@@ -1105,16 +1132,17 @@ func _poll_traffic_export() -> void:
 	var progress: Dictionary = provider.poll_export()
 	if bool(progress.get("done",false)):
 		var err := int(progress.get("error",FAILED))
-		export_message = "Full session export completed: "+export_destination if err == OK else "Export failed (%d); existing destination preserved. %s" % [err,provider.export_message]
+		export_message = "Full session export completed: "+export_destination if err == OK else "Export refused (%d). %s" % [err,provider.export_message]
 		if err == OK and not provider.export_message.is_empty(): export_message += " · "+provider.export_message
 	else:
-		export_message = "Exporting · %.1f / %.1f MiB · Cancel export or Stop to interrupt" % [float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
+		var phase := "Verifying closed export" if progress.get("phase", "") == "verify" else "Exporting"
+		export_message = "%s · %.1f / %.1f MiB · Cancel export or Stop to interrupt" % [phase,float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
 	_set_traffic_path(export_message)
 
 func _cancel_traffic_export() -> void:
 	if not provider.export_active: return
 	provider.cancel_export()
-	export_message = "Export cancelled; existing destination preserved."
+	export_message = provider.export_message if not provider.export_message.is_empty() else "Export cancelled; this export did not replace the destination."
 	_set_traffic_path(export_message)
 
 func _save_settings() -> Error:
@@ -1124,21 +1152,20 @@ func _save_settings() -> Error:
 	var serialized := settings.encode_to_text()
 	if _settings_were_saved and serialized == _saved_settings_text \
 			and FileAccess.file_exists("user://art-provider.cfg"):
+		if input_error.begins_with("Could not save Art preferences; "): input_error = ""
 		return OK
-	# Never truncate the only committed profile/session pointer. Reuse the native
-	# same-directory replacement; Godot's Windows rename first deletes its target.
-	var temporary := "user://art-provider.cfg."+Crypto.new().generate_random_bytes(16).hex_encode()+".partial"
-	var err := settings.save(temporary)
-	if err == OK:
-		var result: Dictionary = Provider.Archive.atomic_replace(temporary,"user://art-provider.cfg")
-		if not bool(result.get("ok",false)): err = ERR_FILE_CANT_WRITE
-	if err != OK:
-		DirAccess.remove_absolute(temporary)
-		input_error = "Could not save Art preferences; the previous configuration file is retained (%d)." % err
-	else:
-		_saved_settings_text = serialized
-		_settings_were_saved = true
-	return err
+	# ConfigFile.save can report success after a buffered short write. Verify the
+	# complete encoded configuration after close before replacing the old file.
+	# Reuse the current no-op cache, but only remember verified successful writes.
+	var saved: Dictionary = preload("res://scripts/workbench_file_transaction.gd").write_text(
+		"user://art-provider.cfg", serialized, MAX_PROFILE_BYTES)
+	if not bool(saved.get("ok",false)):
+		input_error = "Could not save Art preferences; " + str(saved.error)
+		return ERR_FILE_CANT_WRITE
+	_saved_settings_text = serialized
+	_settings_were_saved = true
+	if input_error.begins_with("Could not save Art preferences; "): input_error = ""
+	return OK
 
 var previous_mode := 1
 
@@ -1395,7 +1422,8 @@ static func _persist_history_receipt(item: Dictionary) -> bool:
 	if schema == 2:
 		record["turn"] = item.turn
 		record["order"] = order
-	var payload := (JSON.stringify(record)+"\n").to_utf8_buffer()
+	var text := JSON.stringify(record)+"\n"
+	var payload := text.to_utf8_buffer()
 	if payload.size() > MAX_HISTORY_RECEIPT_BYTES: return false
 	var count := 0
 	var bytes := payload.size()
@@ -1407,14 +1435,18 @@ static func _persist_history_receipt(item: Dictionary) -> bool:
 		bytes += existing.get_length()
 		if bytes > MAX_HISTORY_JOURNAL_BYTES: return false
 	# Keep the independent same-directory temporary name short on Windows.
+	# Retain a pending receipt only after its complete closed bytes verify;
+	# get_error() alone does not observe every buffered short write.
 	var temporary := HISTORY_RECEIPT_DIR.path_join("pending-"+Crypto.new().generate_random_bytes(16).hex_encode()+".partial")
 	var file := FileAccess.open(temporary,FileAccess.WRITE)
 	if file == null: return false
-	file.store_buffer(payload)
+	var stored := file.store_buffer(payload)
 	file.flush()
 	var error := file.get_error()
-	file = null
-	if error == OK and bool(Provider.Archive.atomic_replace(temporary,destination).get("ok",false)):
+	file.close()
+	var verification := preload("res://scripts/workbench_file_transaction.gd").FileOperations.new()
+	if stored and error == OK and verification.verify(temporary,payload).is_empty() \
+			and bool(Provider.Archive.atomic_replace(temporary,destination).get("ok",false)):
 		_history_receipt_clock_us = maxi(_history_receipt_clock_us,tick)
 		if schema == 2: item["order"] = order
 		item["file"] = destination
@@ -1504,7 +1536,7 @@ func _queue_history_receipt(receipt: Dictionary, epoch: int) -> bool:
 		input_error = _history_persistence_error
 		return false
 	if not durable:
-		_history_persistence_error = "Confirmed Art receipt awaits a durable journal. Restore access/free space; keep Workbench open for automatic retry."
+		_history_persistence_error = "Confirmed Art receipt awaits a verified journal file. Restore access/free space; keep Workbench open for automatic retry."
 		input_error = _history_persistence_error
 	return durable
 

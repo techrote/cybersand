@@ -6,10 +6,12 @@ import io
 import json
 import os
 from pathlib import Path
+import socket
 import sys
 import tempfile
 import time
 import unittest
+from urllib.parse import urlsplit
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -283,6 +285,40 @@ class ResultTests(unittest.TestCase):
             self.assertFalse(failed)
             self.assertEqual(result["status"], "passed")
             self.assertEqual((output / "fixture-artifacts/pixel-control.txt").read_text(), "retained child output")
+
+    def test_local_close_gets_real_fixture_and_always_retires_listener(self):
+        program = """
+import json, os, urllib.request, urllib.error
+endpoint = os.environ['WB_ART_CLOSE_ENDPOINT']
+print(json.dumps({'endpoint':endpoint}), flush=True)
+for model, expected in [('fixture-valid',200), ('fixture-invalid',404)]:
+    request = urllib.request.Request(endpoint + '/chat/completions',
+        data=json.dumps({'model':model}).encode(),
+        headers={'Content-Type':'application/json'})
+    try:
+        response = urllib.request.urlopen(request, timeout=2)
+    except urllib.error.HTTPError as error:
+        response = error
+    with response:
+        assert response.status == expected
+        body = json.loads(response.read())
+        assert ('choices' in body) == (expected == 200)
+"""
+        for exit_code in (0, 7):
+            with self.subTest(exit_code=exit_code), tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+                command = [sys.executable, "-c", program + f"\nraise SystemExit({exit_code})\n"]
+                output = Path(directory)
+                with mock.patch.object(subject, "case_command", return_value=command):
+                    result, failed = subject.run_case("unused", fake("test_art_local_close", 1), output, "case",
+                        env={**os.environ, "WB_ART_CLOSE_ENDPOINT":"https://untrusted.invalid/v1"})
+                self.assertEqual(failed, exit_code != 0)
+                self.assertEqual(result["returncode"], exit_code)
+                self.assertEqual(result["status"], "passed" if exit_code == 0 else "failed")
+                endpoint = json.loads((output / "test_art_local_close.log").read_text().splitlines()[0])["endpoint"]
+                parsed = urlsplit(endpoint)
+                self.assertEqual(parsed.hostname, "127.0.0.1")
+                with self.assertRaises(OSError):
+                    socket.create_connection((parsed.hostname, parsed.port), timeout=0.2)
 
     def test_zero_exit_with_script_error_fails(self):
         result, failed = self.run_child("print('SCRIPT ERROR: assertion failed')")

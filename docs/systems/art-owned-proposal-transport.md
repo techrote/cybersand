@@ -132,6 +132,32 @@ four-argument callback and `{ok, provider_id}` dispatch result. No #777 producti
 branch is rewritten. Actual combined Workbench qualification is a separately
 identified integration gate.
 
+## Ordinary Architecture entry
+
+The unmerged coherent Art/Architecture candidate mounts this adapter lazily from
+**Architecture → Intent and tasks → Prepare Art proposal…**. Preparation captures
+actual native material counts/source identity, intent and bounded architectural
+references. A dialog shows the complete admitted request and current Art
+provider/model/destination and limits. Only **Send this proposal request** binds
+transport and dispatches. Opening either panel or preparing a disclosure makes
+no request. No previous Art conversation or image enters that request.
+
+Art supplies `proposal_configuration_identity()` without credentials and
+`proposal_configuration_snapshot()` at dispatch. A credential revision prevents
+an applied Key change from reusing an old disclosure. The same provider, archive,
+nonblocking HTTP path and finite preparation worker remain authoritative. Its
+ordinary `finished` listener count is unchanged. The mount polls small identity
+values only while a disclosure or request is pending, and retires stale context.
+Architecture retains option adoption, native preview, approval, stages and Undo.
+
+The merged source preserves Batch Lab's separate traffic namespaces and moves
+its decoded/JSON-escaped credential redaction into the current Art value worker.
+Recognized missing/non-HTTP endpoint syntax returns the existing `start_failed`
+receipt without calling an engine parser that emits an error diagnostic. Both
+synchronous and asynchronous failure paths retain their original semantics.
+The [Architecture seam](architecture-proposal-owner-seam.md) owns mount lifetimes;
+full resulting-source platform and owner qualification remain separate gates.
+
 ## Capacities and truthful capability display
 
 Owned context is bounded to two MiB of serialized JSON value content, 128

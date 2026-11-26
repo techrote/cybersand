@@ -45,6 +45,7 @@ var last_conversation_edit_timing: Dictionary = {}
 var traffic := ""
 var readable := ""
 var log_path := ""
+var traffic_directory := "user://art-traffic"
 var parent_log_path := "" # Previous immutable JSONL segment; never copied on reopen.
 var log_warning := ""
 var last_event_stored := false
@@ -90,6 +91,8 @@ var _export_output: FileAccess
 var _export_temporary := ""
 var _export_destination := ""
 var _export_bytes := 0
+var _export_hash: HashingContext
+var _export_verifier: RefCounted
 const Archive = preload("res://scripts/art_traffic_archive.gd")
 const MAX_CONVERSATION_TURNS := 16384
 const MAX_CONVERSATION_BYTES := 16 * 1024 * 1024
@@ -150,10 +153,22 @@ func _redacted_value(value: Variant, redact_keys: bool = true) -> Variant:
 
 func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	# Envelope IDs, roles, offsets and segment paths are structural, not free text.
+	if kind == "response" and data is Dictionary:
+		var clean: Dictionary = _redacted_value(data,false)
+		if data.get("body") is String:
+			# The HTTP body is already JSON-escaped text. Redact its decoded values
+			# and untrusted keys so quotes/backslashes cannot hide a request secret.
+			# Keep original wire spelling when no structured redaction is needed.
+			var parser := JSON.new()
+			if parser.parse(data.body)==OK:
+				var body: Variant = _redacted_value(parser.data)
+				if body!=parser.data: clean.body = JSON.stringify(body)
+		return clean
 	if kind == "history_result" and data is Dictionary:
 		# Native history receipt keys are trusted protocol identifiers. Their
 		# names must survive even if a user deliberately chooses a short key.
 		var clean: Dictionary = _redacted_value(data, false)
+
 		for field: String in ["_history_receipt_id","_history_world_epoch","_history_turn_sha256"]:
 			if data.has(field): clean[field] = data[field]
 		return clean
@@ -170,7 +185,8 @@ func _sanitized_event_data(kind: String, data: Variant) -> Variant:
 	return _redacted_value(data)
 
 func new_log_path() -> String:
-	var folder := "user://art-traffic"
+	var folder := traffic_directory
+	if not traffic_namespace_valid(): return ""
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
 	for _attempt in range(16):
 		var candidate := folder + "/" + Crypto.new().generate_random_bytes(16).hex_encode() + ".jsonl"
@@ -178,7 +194,14 @@ func new_log_path() -> String:
 	return ""
 
 static func valid_traffic_path(path: String) -> bool:
-	return Archive.valid_path(path)
+	# Ordinary Art profiles/receipts must never bind a Batch Lab transport trace.
+	return Archive.valid_path(path) and path.get_base_dir()=="user://art-traffic"
+
+func _valid_writer_path(path: String) -> bool:
+	return Archive.bound_path(path) and path.get_base_dir()==traffic_directory
+
+func traffic_namespace_valid() -> bool:
+	return Archive.valid_directory(traffic_directory)
 
 static func valid_history_receipt_id(identity: Variant) -> bool:
 	return identity is String and _history_id_pattern.search(identity) != null
@@ -304,6 +327,10 @@ func _active_history_segments() -> Array[Dictionary]:
 
 func prepare_resume(previous: String) -> void:
 	# No existence check, open, scan or write at startup. Keep unavailable pointers.
+	if not previous.is_empty() and not _valid_writer_path(previous):
+		resume_error = "Saved conversation belongs to another traffic namespace."
+		log_warning = resume_error; resume_ok = false
+		return
 	if not _pending_history_segment.is_empty() and previous != parent_log_path:
 		resume_error = "Cannot rebind a conversation while its native history checkpoint is pending."
 		resume_ok = false
@@ -321,6 +348,9 @@ func prepare_resume(previous: String) -> void:
 func traffic_chain(latest: String) -> Array[String]:
 	var archive := Archive.new()
 	var chain: Array[String] = []
+	if not _valid_writer_path(latest):
+		log_warning = "Saved conversation belongs to another traffic namespace."
+		return chain
 	if not archive.resolve(latest):
 		log_warning = archive.error
 		return chain
@@ -347,6 +377,10 @@ func begin_export(destination: String) -> Error:
 	if export_active or resume_active: return ERR_BUSY
 	export_message = ""; export_error = OK; _export_bytes = 0
 	var latest := log_path if not log_path.is_empty() else parent_log_path
+	if not _valid_writer_path(latest):
+		export_message = "Saved conversation belongs to another traffic namespace."
+		export_error = ERR_FILE_CORRUPT
+		return export_error
 	var archive := Archive.new()
 	if not archive.resolve(latest):
 		export_message = archive.error
@@ -382,17 +416,24 @@ func begin_export(destination: String) -> Error:
 		export_message = "Cannot create export staging file."
 		return export_error
 	_export_archive = archive
+	_export_hash = HashingContext.new()
+	_export_hash.start(HashingContext.HASH_SHA256)
+	_export_verifier = null
 	_reset_image_validation()
 	export_active = true
 	return OK
 
 func _end_export(result: Error, message: String = "") -> void:
 	_export_output = null
+	if _export_verifier != null: _export_verifier.close()
+	_export_verifier = null
+	_export_hash = null
 	export_active = false
 	export_error = result
 	export_message = message
 	if result != OK and not _export_temporary.is_empty():
-		DirAccess.remove_absolute(_export_temporary)
+		if FileAccess.file_exists(_export_temporary) and DirAccess.remove_absolute(_export_temporary) != OK:
+			export_message += " An uncommitted staging file remains at " + _export_temporary + "."
 	_export_temporary = ""
 	_export_archive = null
 	_reset_image_validation()
@@ -400,12 +441,21 @@ func _end_export(result: Error, message: String = "") -> void:
 func poll_export(max_bytes: int = 1048576) -> Dictionary:
 	if not export_active: return {"done":true,"error":export_error,"bytes":_export_bytes,"total":_export_bytes}
 	var archive: RefCounted = _export_archive
+	var total: int = archive.total_bytes
+	if _export_verifier != null:
+		_export_verifier.step(clampi(max_bytes, 1, 1048576))
+		if _export_verifier.done:
+			if not str(_export_verifier.error).is_empty():
+				_end_export(ERR_FILE_CANT_WRITE, "Export refused; this export did not replace the destination. " + str(_export_verifier.error))
+			else:
+				_commit_verified_export(archive)
+		return {"done":not export_active,"error":export_error,"bytes":_export_bytes,"total":total,"phase":"verify"}
 	var callback := func(event: Dictionary, source: String, offset: int, raw: PackedByteArray) -> String:
 		var problem := _validate_conversation_event(event, source, offset, archive.segments, _queue_image)
 		if not problem.is_empty(): return problem
 		archive.paused = not _image_queue.is_empty()
-		_export_output.store_buffer(raw)
-		if _export_output.get_error() != OK: return "Traffic export disk write failed."
+		if not _export_output.store_buffer(raw) or _export_output.get_error() != OK: return "Traffic export disk write failed."
+		if _export_hash.update(raw) != OK: return "Cannot verify the submitted export buffers."
 		_export_bytes += raw.size()
 		return ""
 	if not _image_queue.is_empty():
@@ -414,32 +464,35 @@ func poll_export(max_bytes: int = 1048576) -> Dictionary:
 	else:
 		archive.paused = false
 		archive.step(clampi(max_bytes, 1, 1048576), callback)
-	var total: int = archive.total_bytes
 	if archive.done:
 		if not archive.error.is_empty():
 			_end_export(ERR_FILE_CORRUPT, archive.error)
 		else:
 			_export_output.flush()
 			var write_error := _export_output.get_error()
+			_export_output.close()
 			_export_output = null
 			if write_error != OK:
 				_end_export(write_error, "Traffic export flush failed.")
 			else:
-				# Rename is the sole commit point. The final filename never contains a
-				# partially validated export; replacing a symlink does not follow it.
-				var canonical_destination := Archive.canonical_path(_export_destination)
-				var safe := not canonical_destination.is_empty()
-				for segment: Dictionary in archive.segments:
-					if Archive.canonical_path(segment.path) == canonical_destination: safe = false
-				if not safe:
-					_end_export(ERR_INVALID_PARAMETER, "Export destination became an alias of a conversation source.")
-				else:
-					var replacement := Archive.atomic_replace(_export_temporary, _export_destination)
-					_end_export(OK if replacement.get("ok", false) else ERR_FILE_CANT_WRITE, archive.warning if replacement.get("ok", false) else "Could not commit export; previous destination preserved: " + str(replacement.get("error", "")))
+				_export_verifier = Archive.ClosedFileVerification.new(_export_temporary, 0, _export_bytes, _export_hash.finish().hex_encode())
 	return {"done":not export_active,"error":export_error,"bytes":_export_bytes,"total":total}
 
+func _commit_verified_export(archive: RefCounted) -> void:
+	# Same-directory native replacement is the sole commit point. Recheck aliases
+	# after cooperative validation; a source archive must never be replaced.
+	var canonical_destination := Archive.canonical_path(_export_destination)
+	var safe := not canonical_destination.is_empty()
+	for segment: Dictionary in archive.segments:
+		if Archive.canonical_path(segment.path) == canonical_destination: safe = false
+	if not safe:
+		_end_export(ERR_INVALID_PARAMETER, "Export destination became an alias of a conversation source.")
+	else:
+		var replacement := Archive.atomic_replace(_export_temporary, _export_destination)
+		_end_export(OK if replacement.get("ok", false) else ERR_FILE_CANT_WRITE, archive.warning if replacement.get("ok", false) else "Could not commit export; this export did not replace the destination: " + str(replacement.get("error", "")))
+
 func cancel_export() -> void:
-	if export_active: _end_export(ERR_SKIP, "Export cancelled; previous destination preserved.")
+	if export_active: _end_export(ERR_SKIP, "Export cancelled; this export did not replace the destination.")
 
 func export_traffic(destination: String) -> Error:
 	var result := begin_export(destination)
@@ -506,6 +559,10 @@ func _validate_conversation_event(event: Dictionary, source: String, offset: int
 
 func begin_resume(previous: String) -> Error:
 	if resume_active or export_active: return ERR_BUSY
+	if not previous.is_empty() and not _valid_writer_path(previous):
+		resume_error = "Saved conversation belongs to another traffic namespace."
+		log_warning = resume_error; resume_ok = false
+		return ERR_FILE_CORRUPT
 	if not _pending_history_segment.is_empty() and previous != parent_log_path:
 		resume_error = "Cannot restore another conversation while its native history checkpoint is pending."
 		log_warning = resume_error
@@ -628,6 +685,7 @@ func _poll_images(budget: int) -> String:
 		# Defend the queued reader too: a negative seek must never fall back to0.
 		if int(item.offset) < 0 or int(item.limit) <= 0 or int(item.offset) >= int(item.limit): return problem
 		if _image_file == null:
+			if not _valid_writer_path(str(item.path)): return problem
 			_image_file = FileAccess.open(item.path, FileAccess.READ)
 			if _image_file == null or int(item.offset) >= mini(int(item.limit), _image_file.get_length()): return problem
 			if int(item.offset) > 0:
@@ -656,7 +714,7 @@ func _poll_images(budget: int) -> String:
 	return ""
 
 func _read_historical_image(offset: int, path: String, limit: int) -> String:
-	if offset < 0 or not valid_traffic_path(path): return ""
+	if offset < 0 or not _valid_writer_path(path): return ""
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null or offset >= mini(limit, file.get_length()): return ""
 	if offset > 0:
@@ -1090,6 +1148,9 @@ func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: D
 		log_warning = "Pending history segment's validated parent changed; original archive and receipt preserved."
 		return false
 	var destination: String = pending.destination
+	if not _valid_writer_path(destination):
+		log_warning = "Pending traffic checkpoint belongs to another namespace."
+		return false
 	var directory := DirAccess.open(destination.get_base_dir())
 	if directory == null or directory.is_link(destination.get_file()) \
 			or str(pending.canonical).is_empty() or Archive.canonical_path(destination) != str(pending.canonical):
@@ -1116,11 +1177,18 @@ func _retry_history_segment_checkpoint(kind: String, data: Variant, admission: D
 	return true
 
 func _store_event(kind: String, data: Variant, admission: Dictionary, encoded_data: String, prepared_bytes: PackedByteArray = PackedByteArray()) -> bool:
+	if not traffic_namespace_valid() or (not parent_log_path.is_empty() and not _valid_writer_path(parent_log_path)):
+		log_warning = "Traffic namespace is invalid or differs from its parent."
+		return false
+	for ancestor: Dictionary in _validated_segments:
+		if not _valid_writer_path(str(ancestor.path)):
+			log_warning = "Traffic namespace differs from its validated ancestor."
+			return false
 	if kind in ["session_start", "session_parent"]:
 		log_warning = "Segment metadata cannot be appended as a conversation event."
 		return false
 	if _write_broken:
-		log_warning = "Traffic append was interrupted; restart Workbench to recover its complete events."
+		log_warning = "Traffic append was interrupted; this session log is read-only. Retain or export its complete events."
 		return false
 	if not _pending_history_segment.is_empty(): return _retry_history_segment_checkpoint(kind,data,admission)
 	var new_segment := log_path.is_empty()
@@ -1134,7 +1202,7 @@ func _store_event(kind: String, data: Variant, admission: Dictionary, encoded_da
 		log_warning = "Conversation reached the 4096-segment limit; prior history preserved and nothing written."
 		return false
 	var destination := new_log_path() if new_segment else log_path
-	if destination.is_empty() or not valid_traffic_path(destination):
+	if destination.is_empty() or not _valid_writer_path(destination):
 		log_warning = "Cannot create traffic archive; live traffic remains available."
 		return false
 	var id := Crypto.new().generate_random_bytes(16).hex_encode() if new_segment else _segment_id
@@ -1158,6 +1226,10 @@ func _store_event(kind: String, data: Variant, admission: Dictionary, encoded_da
 	if file == null:
 		log_warning = "Cannot write traffic log; live traffic remains available."
 		return false
+	var write_hash := HashingContext.new()
+	write_hash.start(HashingContext.HASH_SHA256)
+	var stored := true
+	var verify_offset := 0 if new_segment else _written_size
 	if new_segment:
 		var header := {"kind":"session_start","schema":2,"segment_id":id,"data":{}}
 		if not parent_log_path.is_empty():
@@ -1183,7 +1255,8 @@ func _store_event(kind: String, data: Variant, admission: Dictionary, encoded_da
 			file = null; DirAccess.remove_absolute(temporary)
 			log_warning = "Conversation metadata reached its bounded replay capacity; nothing written."
 			return false
-		file.store_buffer(header_line)
+		stored = file.store_buffer(header_line)
+		write_hash.update(header_line)
 		if retain_history_segment: history_segment_hash.update(header_line)
 	else:
 		if file.get_length() != _written_size:
@@ -1192,19 +1265,29 @@ func _store_event(kind: String, data: Variant, admission: Dictionary, encoded_da
 			return false
 		file.seek_end()
 	var offset := file.get_position()
-	file.store_buffer(encoded)
+	var event_stored := file.store_buffer(encoded)
+	stored = stored and event_stored
+	write_hash.update(encoded)
 	if retain_history_segment: history_segment_hash.update(encoded)
 	file.flush()
 	var error := file.get_error()
-	var length := file.get_position()
-	file = null # Close before signalling a durable pointer to the panel.
+	var length := offset + encoded.size()
+	file.close()
+	file = null # Close and verify before signalling a stored pointer to the panel.
+	if not stored: error = ERR_FILE_CANT_WRITE
+	if error == OK:
+		var verification := Archive.ClosedFileVerification.new(temporary, verify_offset, length, write_hash.finish().hex_encode())
+		while not verification.done: verification.step()
+		if not verification.error.is_empty(): error = ERR_FILE_CANT_WRITE
 	if error == OK and new_segment:
 		var replacement := Archive.atomic_replace(temporary, destination)
 		if not replacement.get("ok", false): error = ERR_FILE_CANT_WRITE
 	if error != OK:
-		if new_segment: DirAccess.remove_absolute(temporary)
+		log_warning = "Traffic write failed; the new event was not confirmed. Prior complete events remain in the session log."
+		if new_segment:
+			if FileAccess.file_exists(temporary) and DirAccess.remove_absolute(temporary) != OK:
+				log_warning += " An uncommitted staging file remains at " + temporary + "."
 		else: _write_broken = true
-		log_warning = "Traffic write failed; prior conversation remains preserved."
 		return false
 	if retain_history_segment:
 		var parent := _segment(parent_log_path,_validated_segments)
@@ -1732,6 +1815,39 @@ func _dispatch_allowed(id: int) -> bool:
 			return false
 	return id == serial
 
+static func _has_http_endpoint(url: String) -> bool:
+	# HTTPRequest emits an engine ERROR before returning for malformed authority
+	# values. Reject those user-input errors through our normal terminal receipt,
+	# including requests prepared asynchronously; this is not a DNS/network probe.
+	if not (url.begins_with("http://") or url.begins_with("https://")): return false
+	var authority := url.substr(url.find("://")+3).get_slice("/",0).get_slice("?",0).get_slice("#",0)
+	for forbidden: String in [" ","\t","\r","\n"]:
+		if authority.contains(forbidden): return false
+	if authority.contains("@"):
+		if authority.count("@") != 1: return false
+		authority = authority.get_slice("@",1)
+	if authority.is_empty(): return false
+	var port := ""
+	if authority.begins_with("["):
+		var closing := authority.find("]")
+		if closing < 0: return false
+		var address := authority.substr(1,closing-1)
+		if not address.contains(":") or not address.is_valid_ip_address(): return false
+		var suffix := authority.substr(closing+1)
+		if suffix.is_empty(): return true
+		if not suffix.begins_with(":"): return false
+		port = suffix.substr(1)
+	else:
+		if authority.contains("[") or authority.contains("]") or authority.count(":") > 1: return false
+		if authority.get_slice(":",0).is_empty(): return false
+		if not authority.contains(":"): return true
+		port = authority.get_slice(":",1)
+	if port.is_empty() or port.length() > 5: return false
+	for character: String in port:
+		if character < "0" or character > "9": return false
+	if port.to_int() < 1 or port.to_int() > 65535: return false
+	return true
+
 func _dispatch_prepared_request(prepared: RefCounted, asynchronous: bool) -> String:
 	var id: int = prepared.request_id
 	var timing: Dictionary = prepared.timing
@@ -1762,7 +1878,9 @@ func _dispatch_prepared_request(prepared: RefCounted, asynchronous: bool) -> Str
 	if not prepared.request_key.is_empty(): headers.append("Authorization: Bearer "+prepared.request_key)
 	var request_begin_usec := Time.get_ticks_usec()
 	var err: Error
-	if not prepared.encoded_payload_bytes.is_empty():
+	if not _has_http_endpoint(prepared.request_url):
+		err = ERR_INVALID_PARAMETER
+	elif not prepared.encoded_payload_bytes.is_empty():
 		err = request.request_raw(prepared.request_url,headers,HTTPClient.METHOD_POST,prepared.encoded_payload_bytes)
 	else:
 		err = request.request(prepared.request_url,headers,HTTPClient.METHOD_POST,prepared.encoded_payload)
