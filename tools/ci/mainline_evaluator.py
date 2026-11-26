@@ -39,9 +39,9 @@ SOURCE_FILES = (
     "tools/fixtures/mergedown-mainline-windows-request.json",
 )
 SOURCE_CONTRACTS = {
-    "tools/ci/run_godot_regressions.py": "5fef8460cecc6edb966495837c05736eb64b90ab9cd31418df07f3975660e7be",
-    "tools/ci/run_windows_godot_regressions.py": "c915776899aaf5711ed99aa91015cc4d73d2244cb84dba66fd53104b14b726f2",
-    "tools/ci/_architecture_campaign_context.py": "02ef1ff88ae5d3e85b93e9418180c6cbacdc363a37470c47233f9e94831f33c0",
+    "tools/ci/run_godot_regressions.py": "de44f7c52fb8319fbc93580529484f4da293737610f7676ca7a7b0a57a3a40ff",
+    "tools/ci/run_windows_godot_regressions.py": "efa0af63383349e4e1497288fc3490c20ac6df1279c6df491f1216bfe2b29a64",
+    "tools/ci/_architecture_campaign_context.py": "ae023d410758cc01b5a1ff45ad2fc240c03def2e4d5aa0cb21be6865be4dddd3",
     "tools/gip014/Open-goblin.ps1": "2840e70bbf729dcdb3d6adabfa40d9b1d22a8f6a2b3cce5c6568c1215a8f8dbc",
     "tools/qualify_ambient.py": "7e014097f39f9d416067bcace63fda4dacf4d1de91f89d4fbff87bc970dc07ae",
     "tools/qualify_workbench_landscapes.py": "4a07fbb56600038ed16500d24c632ab1ae88a55337cb8d8b3f1cf12fbd895c86",
