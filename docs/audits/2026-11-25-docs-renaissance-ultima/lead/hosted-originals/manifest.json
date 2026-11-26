@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "bfa40c84964b10b8bc15b2d836ce93d389f20836",
+  "scope": "Original downloaded ZIP bytes and remote readbacks from the earlier hosted checkpoint; not final-head qualification. These retain unique logs beyond Actions artifact expiry.",
+  "artifacts": [
+    {
+      "file": "causal-bfa40c84.zip",
+      "bytes": 12394,
+      "sha256": "bbdd5a9d7a88d8115e5539724e33ba6b7587f1a5eba009d1c8ee79df21ed78ea"
+    },
+    {
+      "file": "readback-bfa40c84.json",
+      "bytes": 34802,
+      "sha256": "fc7705e21d24cf631bf7b37a81d796c9e240b04eb8e4893e87fab6675cb7dd51"
+    },
+    {
+      "file": "ultima-linux-45697930828-1.zip",
+      "bytes": 243437,
+      "sha256": "1666462effaaef97921f44d00181dc8368f62d16ed052aba6db827c068ab3262"
+    },
+    {
+      "file": "ultima-windows-45697930828-1.zip",
+      "bytes": 236972,
+      "sha256": "b379b821e15bf127a3ea34710f3a8f633fab2e488e84fa80713f62404feb7562"
+    }
+  ],
+  "independent_review": "../../technical/hosted-independent-review.json"
+}

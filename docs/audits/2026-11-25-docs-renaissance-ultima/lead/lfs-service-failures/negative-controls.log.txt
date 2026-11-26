@@ -1,0 +1,14 @@
+test_empty_or_multiline_selection_refused (__main__.LfsAcquisition.test_empty_or_multiline_selection_refused) ... ok
+test_failure_precedence (__main__.LfsAcquisition.test_failure_precedence) ... ok
+test_install_failure_is_not_retried (__main__.LfsAcquisition.test_install_failure_is_not_retried) ... ok
+test_missing_git_is_a_retained_failure (__main__.LfsAcquisition.test_missing_git_is_a_retained_failure) ... ok
+test_permanent_and_ambiguous_failures_do_not_retry (__main__.LfsAcquisition.test_permanent_and_ambiguous_failures_do_not_retry) ... ok
+test_process_timeout_retains_partial_output_and_does_not_retry (__main__.LfsAcquisition.test_process_timeout_retains_partial_output_and_does_not_retry) ... ok
+test_reuse_refuses_without_overwriting_prior_evidence (__main__.LfsAcquisition.test_reuse_refuses_without_overwriting_prior_evidence) ... ok
+test_three_transient_failures_remain_failed (__main__.LfsAcquisition.test_three_transient_failures_remain_failed) ... ok
+test_transient_then_success_preserves_both_attempts (__main__.LfsAcquisition.test_transient_then_success_preserves_both_attempts) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.003s
+
+OK

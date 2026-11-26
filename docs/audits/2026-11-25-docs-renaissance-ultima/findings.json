@@ -2,7 +2,7 @@
   "schema": 2,
   "authority": "historical-non-authoritative",
   "disposition": "HOLD \u2014 INCOMPLETE",
-  "scope": "Interim integrated register; final hosted packaging and ranking adjudication pending. One-to-one predecessor IDs retained; fixed statuses refer to delivered local topology and the explicitly scoped executed evidence, not owner acceptance.",
+  "scope": "Interim integrated register at the final implementation perimeter. All original LIMIT IDs and known lane aliases retained. New P1 corrections await integrated qualification; no final acceptance is claimed.",
   "findings": [
     {
       "id": "LIMIT-01",
@@ -11,7 +11,7 @@
       "title": "Primary-record recall, canonical misses and ranking",
       "status": "unresolved",
       "observed_failure_or_question": "Primary-record recall, canonical misses and ranking",
-      "implemented_outcome": "Unchanged historical baselines reproduced; general reference adapter improves several frozen suites. Final known Q01 field-score regression is being repaired and independently reviewed; original method/results remain visible.",
+      "implemented_outcome": "All 744 historical query executions reproduced across three historical sources. Frozen v2 reference method improves owner primary-record recall and several public suites, retains ranking tradeoffs and two fixed-label canonical misses. Final integrated corpus/context adjudication is pending.",
       "evidence": [
         "retrieval/baseline-reproduction.json",
         "retrieval/README.md"
@@ -31,7 +31,7 @@
       "title": "Sufficiency of actual supplied context",
       "status": "unresolved",
       "observed_failure_or_question": "Sufficiency of actual supplied context",
-      "implemented_outcome": "All36 actual contexts independently reviewed at final corpus. First-pass deficiencies are distinguished from executed explicit source-follow; final scoring repair requires fresh passage identity reconciliation.",
+      "implemented_outcome": "All 36 additive contexts were independently reviewed at the earlier qualified corpus: 33 first-pass sufficient and three partial; explicit source-follow supplied essential missing facts or a bounded decision route. Final 153-document passage identity reconciliation remains pending; these earlier passages are not relabelled as final.",
       "evidence": [
         "technical/context-applicability-final.json",
         "product/context-applicability-81817f84.json"
@@ -336,7 +336,10 @@
         "A",
         "lead"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-01",
+        "C-ULT-04"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -370,7 +373,10 @@
         "A",
         "lead"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-02",
+        "C-ULT-03"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -390,15 +396,20 @@
       "title": "Unsaturated field bonuses regress frozen Q01 to irrelevant recovery contexts",
       "status": "unresolved",
       "observed_failure_or_question": "Unsaturated field bonuses regress frozen Q01 to irrelevant recovery contexts",
-      "implemented_outcome": "Negative result retained; independently designed coverage-scaled field bonus is undergoing review on unchanged frozen/development suites. Holdout remains unseen to implementer.",
+      "implemented_outcome": "Coverage-scaled additive field scoring corrects the independently reproduced frozen Q01 regression without query/path aliases or fixture changes. A independently reproduced all 268 public/development outputs; final integrated 153-document execution remains pending.",
       "evidence": [
-        "retrieval/README.md"
+        "retrieval/README.md",
+        "retrieval/ranking-correction-preregistration.json",
+        "retrieval/retrieval-v2-public-verification.json",
+        "technical/retrieval-v2-independent-review.json"
       ],
       "independent_reviewers": [
         "A",
         "lead"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-10"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -429,7 +440,9 @@
         "B",
         "lead"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-09"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -601,7 +614,9 @@
         "C",
         "lead"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-08"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -634,7 +649,8 @@
       "aliases": [
         "A-ULT-05",
         "A-ULT-06",
-        "A-ULT-07"
+        "A-ULT-07",
+        "C-ULT-05B"
       ],
       "remaining_boundary": null,
       "locators": [
@@ -671,7 +687,9 @@
       "aliases": [
         "A-ULT-08",
         "A-ULT-09",
-        "A-ULT-10"
+        "A-ULT-10",
+        "C-ULT-05A",
+        "C-ULT-05C"
       ],
       "remaining_boundary": null,
       "locators": [
@@ -712,7 +730,9 @@
         "B",
         "C"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-06"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -781,7 +801,9 @@
         "A",
         "C"
       ],
-      "aliases": [],
+      "aliases": [
+        "C-ULT-07"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
@@ -884,6 +906,406 @@
         {
           "path": "tools/ci/native_execution_policy.py",
           "sha256": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb"
+        }
+      ]
+    },
+    {
+      "id": "ULT-PROFILE-01",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Four profile saves acknowledge truncation and corrupt prior valid files",
+      "status": "unresolved",
+      "observed_failure_or_question": "Real RLIMIT_FSIZE faults damaged Worldgen, Materials Lab, Transport and Water policy files while every old public caller returned success.",
+      "expected_contract": "Preserve prior valid single-file content on refusal; success reloads the intended value without applying a live owner.",
+      "implemented_outcome": "Shared verified staging replaces each file only after complete closed-byte verification; UI success and draft adoption follow commit. Independent A/B/C Linux16 and normal caller regressions passed; Windows12 pending.",
+      "evidence": [
+        "technical/profile-save-finding.json",
+        "technical/profile-save-before.json",
+        "technical/profile-save-linux.json",
+        "product/profiles/independent-review.json",
+        "retrieval/review-profile-by-c.json"
+      ],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-12"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/worldgen_workbench.gd",
+          "sha256": "7c735ab9816ce5217497c687c5795670e29b43c3f7d46d1de4845be2bec4b5b6"
+        },
+        {
+          "path": "godot/scripts/material_lab_panel.gd",
+          "sha256": "a5edcf827660300fbfa7985c54cfa6c4cb4b07d820275a5ec2d547f06ecf36f9"
+        },
+        {
+          "path": "godot/scripts/transport_profile_panel.gd",
+          "sha256": "83ef93ba5e520eb06289f82008734d3593af9b5d3605d1e749977a75c6cc3e8b"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c"
+        },
+        {
+          "path": "godot/scripts/tower_panel.gd",
+          "sha256": "4b9f16268c423cbbcf5f2eebcc478e2bee71b8341f7d41a632c186459e7e908f"
+        }
+      ]
+    },
+    {
+      "id": "ULT-ART-01",
+      "priority": "P1",
+      "owner": "lead",
+      "title": "Art export and traffic records acknowledge incomplete closed files",
+      "status": "unresolved",
+      "observed_failure_or_question": "Actual export, new-segment and append RLIMIT faults produced incomplete files while old source reported success.",
+      "expected_contract": "Acknowledge only byte-verified closed output; refuse a failed export before replacement and retain complete prior event prefix.",
+      "implemented_outcome": "Incremental closed-file length/digest verification and append-tail verification preserve cancellation and bounded work. Linux6 fault cases and 278 independent C checks passed; final Windows cases pending.",
+      "evidence": [
+        "lead/storage/report.json",
+        "retrieval/review-art-storage-by-c.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "B",
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/art_provider.gd",
+          "sha256": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789"
+        },
+        {
+          "path": "godot/scripts/art_traffic_archive.gd",
+          "sha256": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811"
+        },
+        {
+          "path": "godot/tests/test_art_storage_integrity.gd",
+          "sha256": "da8b19a86019a2fd2b551d1bb914b087e99ae48d9618fbd6e750a99b3591a4df"
+        }
+      ]
+    },
+    {
+      "id": "ULT-ART-02",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Art preferences report successful save after corrupting the previous config",
+      "status": "unresolved",
+      "observed_failure_or_question": "A mounted panel save under real 128-byte RLIMIT overwrote a valid 1108-byte ConfigFile with invalid truncated content and returned true.",
+      "expected_contract": "Preserve the prior readable preferences and display refusal; acknowledge only complete compatible replacement.",
+      "implemented_outcome": "Two-function Art perimeter remediation is in qualification. No final closure is claimed.",
+      "evidence": [],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-14"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "sha256": "833c459bf58e2f3d2ac4e56c061c9d2448b30d8ab3d5a5c5c036cc0bf8833d2d"
+        }
+      ]
+    },
+    {
+      "id": "ULT-ART-03",
+      "priority": "P2",
+      "owner": "A",
+      "title": "Art retained operation receipt is admitted after a short write",
+      "status": "unresolved",
+      "observed_failure_or_question": "A mounted panel journal write published an invalid 128-byte receipt and returned true, risking loss of restart history despite retaining an older receipt.",
+      "expected_contract": "A retained receipt must be complete and readable before order/clock/admission state advances; duplicate identity remains refused.",
+      "implemented_outcome": "Checked close plus exact-byte verification retains the established short staging-name and native replacement contract. Qualification remains in progress.",
+      "evidence": [],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-15"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/art_batch_panel.gd",
+          "sha256": "833c459bf58e2f3d2ac4e56c061c9d2448b30d8ab3d5a5c5c036cc0bf8833d2d"
+        }
+      ],
+      "severity_reason": "Retained private journal methods have no active live-session caller; the reproduced compatibility defect is repaired without claiming a current cross-session workflow."
+    },
+    {
+      "id": "ULT-DIAGNOSTIC-01",
+      "priority": "P1",
+      "owner": "A",
+      "title": "Three diagnostic report writers report success after truncation",
+      "status": "unresolved",
+      "observed_failure_or_question": "Real bounded-tail failures corrupted physics and two Thunderbowl JSON reports while the old public commands exited zero.",
+      "expected_contract": "Preserve prior report bytes; failed output returns a nonzero command result without a success message.",
+      "implemented_outcome": "Shared verified-byte replacement with existing relative-path/format compatibility; Linux9 public CLI cases independently passed, normal source suites passed. Final Windows6 pending.",
+      "evidence": [
+        "retrieval/review-diagnostic-storage-by-c.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-13"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/physics_characterisation.gd",
+          "sha256": "e57fabab6ff5f53ac26e67517569c0a1d09df3f72efd29ff0068e2701065afd5"
+        },
+        {
+          "path": "godot/examples/thunderbowl/thunderbowl_driver.gd",
+          "sha256": "b5b6b8237c48a5c377a2448a1cb35d1431f543e211744548bc5eccae91af93a4"
+        },
+        {
+          "path": "godot/examples/thunderbowl/run_physical_thunderbowl.gd",
+          "sha256": "09d0289aaa38182cd28b995834a3e63804ecf84ed2f5e6da3f70714b2def580f"
+        }
+      ]
+    },
+    {
+      "id": "ULT-GOBLIN-01",
+      "priority": "P1",
+      "owner": "lead",
+      "title": "Accepted optional Goblin audit writer acknowledges a corrupt fixed-path record",
+      "status": "unresolved",
+      "observed_failure_or_question": "A disposable real-profile fixture replaced a valid 1833-byte record with 128 corrupt bytes while the guarded writer returned true.",
+      "expected_contract": "Retain complete old record on failed same-name write; preserve fixed path and isolated-profile restrictions.",
+      "implemented_outcome": "Shared verified-byte replacement retains existing output guards and document budgets. A/C source review and Linux normal/fault cases passed; final Windows lock qualification pending.",
+      "evidence": [
+        "lead/storage/report.json",
+        "retrieval/review-diagnostic-goblin-by-c.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "C"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/goblin/goblin_controller.gd",
+          "sha256": "6d539462faa10e70e66dc111fc015c57b24b26d728aa7691f08a8f3557261a17"
+        }
+      ]
+    },
+    {
+      "id": "ULT-TOWER-01",
+      "priority": "P1",
+      "owner": "B",
+      "title": "Tower observation can truncate a report and still copy success-like output",
+      "status": "unresolved",
+      "observed_failure_or_question": "Ordinary and water-blind observation used an unchecked direct writer with no explicit failure result. A real 128-byte fault damaged existing output.",
+      "expected_contract": "Verify complete observation before replacing or copying; expose independent observation status and preserve old clipboard on refusal.",
+      "implemented_outcome": "Shared per-file replacement, bool result, dedicated status and verified clipboard readback. B and A Linux6 plus B native X11 clipboard2 passed; Windows4 pending.",
+      "evidence": [
+        "product/tower-export/README.md",
+        "product/tower-export/custody.json",
+        "product/tower-export/independent-linux.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "B-ULT-08"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c"
+        },
+        {
+          "path": "godot/scripts/tower_panel.gd",
+          "sha256": "4b9f16268c423cbbcf5f2eebcc478e2bee71b8341f7d41a632c186459e7e908f"
+        },
+        {
+          "path": "tools/ci/run_tower_observation_qualification.py",
+          "sha256": "ef2122cb1a070e244ac3865afc37c6edee5647f4f3cb31eb06924eef7e29422a"
+        }
+      ]
+    },
+    {
+      "id": "ULT-AUTH-02",
+      "priority": "P1",
+      "owner": "C",
+      "title": "Newly accepted dated CI audit packet enters current answer authority",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Incoming accepted metadata admitted 12 current chunks with stale production-main/cap-selection claims.",
+      "expected_contract": "Keep dated evidence explicitly historical while current guides remain canonical; preserve prior evaluation labels byte-exact.",
+      "implemented_outcome": "Navigation wrapper and immutable body/anchor custody exclude dated text from default retrieval. Accepted33 stays unchanged; frozen32 and separate corrected CI case are explicit.",
+      "evidence": [
+        "retrieval/accepted-ci-closure-authority-probe.json",
+        "retrieval/accepted-ci-closure-correction.json",
+        "technical/accepted-ci-drift-independent.json"
+      ],
+      "independent_reviewers": [
+        "A",
+        "B",
+        "lead"
+      ],
+      "aliases": [
+        "C-ULT-11"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+          "sha256": "49e859534019e04f969f7f6ffc6507a80f66abdcbab027a7a5fe835e7b627167"
+        },
+        {
+          "path": "docs/reference/retrieval-corpus.json",
+          "sha256": "3a6977b4449b6d37b71dcaf5f3871edd1573b0e93c6e880679abce8148a06092"
+        }
+      ]
+    },
+    {
+      "id": "ULT-DOC-02",
+      "priority": "P1",
+      "owner": "C",
+      "title": "Accepted CI guides retain stale availability and ledger authority claims",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "Current CI/custody guides described accepted helpers as Draft-only, treated a dated request ledger as live and obscured remote lease reads.",
+      "expected_contract": "Separate accepted tooling, current campaign ownership, historical ledger records and actual remote staging behavior.",
+      "implemented_outcome": "Concise source-grounded guide corrections, immutable prior recovery routes, full-body B/C/lead review and executed CLI help.",
+      "evidence": [
+        "retrieval/coverage-c-new-main.json",
+        "product/accepted-ci-reader-review.json"
+      ],
+      "independent_reviewers": [
+        "B",
+        "lead"
+      ],
+      "aliases": [
+        "C-ULT-12"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/operations/ci-campaign-coordination.md",
+          "sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f"
+        },
+        {
+          "path": "docs/operations/publication-custody.md",
+          "sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7"
+        }
+      ]
+    },
+    {
+      "id": "ULT-AUTH-03",
+      "priority": "P2",
+      "owner": "C",
+      "title": "Accepted Goblin mixed research record retains obsolete Draft instructions",
+      "status": "fixed-and-independently-verified",
+      "observed_failure_or_question": "After accepted #772, the 439-line record still forbade merge and lacked consistent explicit-only exclusion metadata, causing integrated provenance refusal.",
+      "expected_contract": "State optional accepted foundation accurately; keep dated campaign instructions explicit-only and distinguish unmerged #781.",
+      "implemented_outcome": "Source-status/metadata correction preserves original accepted body through immutable source; manifest/fallback153 and direct/adapter exclusion agree.",
+      "evidence": [
+        "retrieval/goblin-authority-probe.json",
+        "retrieval/goblin-authority-check-docs.json",
+        "retrieval/coverage-c-new-main.json"
+      ],
+      "independent_reviewers": [
+        "B",
+        "lead"
+      ],
+      "aliases": [
+        "C-ULT-14"
+      ],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "docs/research/gip014-goblin-gameplay-qa.md",
+          "sha256": "2972e8ed91f302aa9aec6515bd639ab09f3f6c2f9a9fbcc18bca8193a2366828"
+        },
+        {
+          "path": "docs/reference/retrieval-corpus.json",
+          "sha256": "3a6977b4449b6d37b71dcaf5f3871edd1573b0e93c6e880679abce8148a06092"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CI-05",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Evaluator admission accepts contradictory profile and Art panel preservation receipts",
+      "status": "unresolved",
+      "observed_failure_or_question": "Independent C counterexample passed package admission with an internally contradictory profile child.",
+      "expected_contract": "Package requires complete exact-source Windows matrices with successful compatible replacement and byte-preserving refusal.",
+      "implemented_outcome": "Profile and new Art panel nested-result consistency checks now require actual compatible replacement and byte-preserving refusal, retry/admission state and cleanup. 78 current package admission tests pass; independent counterexample recheck and hosted package remain pending.",
+      "evidence": [
+        "retrieval/package-contradictory-profile-before.json",
+        "retrieval/package-contradictory-profile-after.json",
+        "retrieval/art-package-contradiction-before.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/ci/package_ultima_evaluator.py",
+          "sha256": "59468aaeda585e0945c41c235752ce59365e968bf960bce78da174d3be103d19"
+        },
+        {
+          "path": "tools/ci/test_package_ultima_evaluator.py",
+          "sha256": "6ef20a3f5464fa1f31114ddcbbad99ae4670078c9b2b52eebbadf16dfc49e929"
+        }
+      ]
+    },
+    {
+      "id": "ULT-CI-06",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Transient LFS acquisition failures lack bounded retry and early evidence",
+      "status": "unresolved",
+      "observed_failure_or_question": "Three current hosted jobs stopped at actual GitHub LFS service timeouts before runtime execution; Art and causal acquisition had no workflow-owned retry/receipt path. PLAY already exhausted three checkout retries.",
+      "expected_contract": "Retain original acquisition failures; retry only recognized transient errors within the existing allowance, never an authentication refusal, and keep all provenance admission.",
+      "implemented_outcome": "Shared helper used by causal and Art workflows; permanent/ambiguous/timeout controls and original decoded job logs retained. Hosted re-execution pending; no claim to repair GitHub service availability.",
+      "evidence": [
+        "lead/lfs-service-failures/causal-139578569494.log.txt.gz.json",
+        "lead/lfs-service-failures/art-windows-139578571692.log.txt.gz.json",
+        "lead/lfs-service-failures/play-linux-139578735020.log.txt.gz.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "A"
+      ],
+      "aliases": [],
+      "remaining_boundary": null,
+      "locators": [
+        {
+          "path": "tools/ci/materialize_lfs.py",
+          "sha256": "d17a7b0032df604871437c4ee6da2535bc58cc1e339afda62fe1075155bbd9a8"
+        },
+        {
+          "path": ".github/workflows/in-tools-361-windows-gate.yml",
+          "sha256": "ba9c1f8907b5231932942d1eb194882f0be2e26eeb296e1b3c84e3d4472b321c"
+        },
+        {
+          "path": ".github/workflows/art-session-logging.yml",
+          "sha256": "c7e8d9ab74ab07f3e3a780836eec1db2a8359696cbe1a0835879ae738cca8794"
         }
       ]
     }
