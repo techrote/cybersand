@@ -1,0 +1,8 @@
+{
+  "bytes": 9562,
+  "sha256": "f8ce769a2778ea2c40b01ce65284dc7d7c51ccb23ef0f8f52c6f8fab5fd7e16d",
+  "same_bytes_as_success": true,
+  "manual_status": "Observation export refused \u00b7 Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+  "actual_paste_after_refusal": "ULTIMA closure clipboard sentinel",
+  "clipboard_scope": "human/agent-observed native Mousepad paste via Ctrl+V; no direct clipboard API used"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "ultima-closure-native-gui-source-v1",
+  "source_head": "4b7cbcd2a0ac90e3ee5b5abfd14b6b6cba24c8b0",
+  "source_tree": "956970cca1f9383c3ed8b1209cd4a303d250e8a3",
+  "tracked_delta_before": [],
+  "files": {
+    "godot/scripts/art_batch_panel.gd": "f49cb12c8b5c02bbc538f9ae9d95f5589cb0bbdcb44ac29e1d3cf85406e3ab4d",
+    "godot/scripts/main.gd": "5b14cc8ce5abac290ac6ade2fede2276ea12242d9a72698e2d1e2d027d59bed5",
+    "godot/scripts/tower_panel.gd": "4b9f16268c423cbbcf5f2eebcc478e2bee71b8341f7d41a632c186459e7e908f",
+    "godot/scripts/shared_workbench.gd": "d78e1c4a8088440f7e30359c5d38d8e9f2336faa7e3df4baea0074d6227f1901",
+    "godot/scripts/workbench_setup.gd": "c15cec9beea26b22c0bb09056795543dda4d7d4df6f518bf18df5bba03799b64",
+    "godot/scripts/workbench_actor_panel.gd": "04a8d9fb0311d909aa75a258afc617c85bae3428f2a8491b0609b2e2278c0e95",
+    "godot/scripts/ambient/ambient_profile_editor.gd": "8de1eb538d771af3f07ef796b6f93d7aa7bed12205f6fc57a2f119fbcb46ba48",
+    "godot/scripts/workbench_file_transaction.gd": "13ef034bc836763546957c60a3f0731f6934f99a7d9ef384969b15bb2a1852f2",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    "godot/.godot/extension_list.cfg": "74559a1fa37f0cc3ec8cdd83901f0ff4a1c98deff995b88509ff252dca7c1f4a",
+    "godot/.godot/global_script_class_cache.cfg": "cc804fa70db1f8c0a0d0ad2e880cfdb8ab502dbad35d91bb9aaa0d22cb5192aa"
+  },
+  "runtime": {
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": {
+      "bytes": 144186224,
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "bytes": 5253776,
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "bytes": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "profile": "/workspace/scratch/1c5fccfbe328/b-closure-gui-4b7/profile",
+  "evidence_class": "source admission; manual GUI observations recorded separately"
+}

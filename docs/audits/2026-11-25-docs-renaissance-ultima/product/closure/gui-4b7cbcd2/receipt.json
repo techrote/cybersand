@@ -1,0 +1,165 @@
+{
+  "schema": "ultima-closure-manual-gui-v1",
+  "recorded_utc": "2026-11-26T07:53:22.346268+00:00",
+  "source_head": "4b7cbcd2a0ac90e3ee5b5abfd14b6b6cba24c8b0",
+  "source_tree": "956970cca1f9383c3ed8b1209cd4a303d250e8a3",
+  "operator_lane": "B",
+  "evidence_class": "actual manual native controls and pasted clipboard; separate file-byte readback",
+  "display": {
+    "protocol": "X11",
+    "desktop_pixels": [
+      1366,
+      1024
+    ],
+    "application_pixels": [
+      1366,
+      768
+    ],
+    "renderer": "OpenGL4.5 / Mesa25.0.7-2+deb13u1 / Compatibility / llvmpipe(LLVM19.1.7,256bits)",
+    "audio": "Dummy",
+    "physical_nvidia": false
+  },
+  "source_admission": "source-before.json",
+  "source_readback": "source-after.json",
+  "steps": [
+    {
+      "id": "GUI-C01",
+      "task": "Fresh ordinary Workbench",
+      "outcome": "passed",
+      "observed": "Paused2048-square canvas, Sand/2 palette, Free camera and ordinary controls visible. Activation click incidentally painted197 disposable Sand cells; no untouched-initial-canvas image claim.",
+      "file_record": null
+    },
+    {
+      "id": "GUI-C02",
+      "task": "Art preference save",
+      "outcome": "passed",
+      "observed": "LM Studio Toks8192\u21928193 then provider\u2192OpenAI; UIIdle and complete config written.",
+      "file_record": "art-initial.json"
+    },
+    {
+      "id": "GUI-C03",
+      "task": "Art real permission refusal",
+      "outcome": "passed",
+      "observed": "Disposable directory0700\u21920500; OpenAI Toks8192\u21928194 then provider\u2192LM Studio showed full preference-save refusal. Previous1383-byte file unchanged.",
+      "file_record": "art-refusal.json"
+    },
+    {
+      "id": "GUI-C04",
+      "task": "Art provider-switch retry",
+      "outcome": "passed",
+      "observed": "Directory restored0700; providerLM Studio\u2192OpenAI\u2192LM Studio returnedIdle and retained8194/8193 in controls and closed config. No provider/model request.",
+      "file_record": "art-retry.json"
+    },
+    {
+      "id": "GUI-C05",
+      "task": "Tower normal Export observation",
+      "outcome": "passed",
+      "observed": "F2\u2192Materials sandbox/ExperimentTower\u2192F9\u2192Export observation. Visible exported/copied feedback. CtrlV into Mousepad and nativeSaveAs produced byte-identical9562-byte JSON.",
+      "file_record": "tower-initial.json"
+    },
+    {
+      "id": "GUI-C06",
+      "task": "Tower real permission refusal and clipboard preservation",
+      "outcome": "passed",
+      "observed": "Copied harmless sentinel in Mousepad; directory0500; actualExport observation showed refusal. Previous9562 bytes identical; new Mousepad document CtrlV showed unchanged sentinel.",
+      "file_record": "tower-refusal.json"
+    },
+    {
+      "id": "GUI-C07",
+      "task": "Tower retry",
+      "outcome": "passed",
+      "observed": "Directory0700; actualExport observation returnedexported/copied status. New9562-byteJSON decoded withnewUTC; pasted clipboard equality was separately tested in first success.",
+      "file_record": "tower-retry.json"
+    }
+  ],
+  "shutdown": {
+    "returned_to_feature_launcher_with_F2": true,
+    "Alt_F4_window_close_observed": false,
+    "operator_stopped_owned_terminal_process_with_Control_C": true,
+    "natural_exit_claimed": false
+  },
+  "limits": [
+    "No Windows, physical NVIDIA, browser rendering, provider/model response or performance acceptance.",
+    "Real directory permission failure only in this manual pass; file-size/locking/kill/malformed-data faults belong to separate harnesses.",
+    "Initial material/camera observed; no full manual AMBIENT matrix.",
+    "No power-loss/fsync/cross-session journal restoration claim."
+  ],
+  "artifacts": {
+    "art-initial.cfg": {
+      "bytes": 1383,
+      "sha256": "c6e7998d4eacf4779402f226f49d315cfaf2215c4663ee415748fb31b3afe957"
+    },
+    "art-initial.json": {
+      "bytes": 452,
+      "sha256": "4c80c7de92bd8d331a662639d2598d1d0f7ec32077fce056bfc035e11ac44653"
+    },
+    "art-refusal.json": {
+      "bytes": 518,
+      "sha256": "94f03496629dc913a488f85285e95a9d907b8810e2c2710be289253e0c42f096"
+    },
+    "art-refusal.png": {
+      "bytes": 97054,
+      "sha256": "d49131a209606d613e8fc8e4965cee11cc769a8eb00e39e65fea9632aba494db"
+    },
+    "art-retry.cfg": {
+      "bytes": 1501,
+      "sha256": "ae9ae30522dbab8c37ab5043c0733b005576612d5af7e09cba851413a2ef51cc"
+    },
+    "art-retry.json": {
+      "bytes": 402,
+      "sha256": "bdcfefd7117f32a98b4ea770d5506b27dc4684c5ab207e006075dd504f88c9fb"
+    },
+    "import.log": {
+      "bytes": 46669,
+      "sha256": "b30813ff93af7d0462669dd919ad0253ff773f8acc00c2de27e2e69dab984ace"
+    },
+    "launch.sh": {
+      "bytes": 958,
+      "sha256": "90c0da7de120c8ddc33b1f617917ba1c7003979f4152c2a6e2f282e5087540d4"
+    },
+    "permission-fault.json": {
+      "bytes": 231,
+      "sha256": "74a3602b283a9aa4b9e4cbc71e2e05c1258471ce2ac2026b4fb8c18fb9f3534f"
+    },
+    "source-after.json": {
+      "bytes": 2659,
+      "sha256": "a384a170aa5cceea61f6ce27fded0c400834b30c1ab691b6a03f1a465f5ce34f"
+    },
+    "source-before.json": {
+      "bytes": 2263,
+      "sha256": "208361b750b7786ba00d628fe7200798633d7e77c53137af4abfd0512a83a3ee"
+    },
+    "tower-fault-mode.json": {
+      "bytes": 171,
+      "sha256": "8696f05d77984db67c0f402ada98f4af506a2427d80c9327ab6ee90b13bd1f11"
+    },
+    "tower-initial-report.json": {
+      "bytes": 9562,
+      "sha256": "f8ce769a2778ea2c40b01ce65284dc7d7c51ccb23ef0f8f52c6f8fab5fd7e16d"
+    },
+    "tower-initial.json": {
+      "bytes": 1280,
+      "sha256": "e98c2eb2b2d05afa5564c09654787184ca8db6ae734c41d92e732046a869ce82"
+    },
+    "tower-refusal.json": {
+      "bytes": 483,
+      "sha256": "ebb60f98ca0327c43df9d004c08cc312d9f614d93ad5f98a7577b55a7b288a88"
+    },
+    "tower-refusal.png": {
+      "bytes": 175519,
+      "sha256": "985ccf9b6dacce0e1b35e7a7e188ee99af61dcf24e77a95b9504316142ac086b"
+    },
+    "tower-retry-report.json": {
+      "bytes": 9562,
+      "sha256": "6ea8203ec48ea00844a950be03f98352393fc444316def90506e916fe78f735d"
+    },
+    "tower-retry.json": {
+      "bytes": 476,
+      "sha256": "66e0513770bb8de2db30876c8000bfa7f97e462bf87cdbbcfed84ddfc79ad911"
+    },
+    "workbench.log": {
+      "bytes": 546,
+      "sha256": "4cf2f5225b5eb283b97166621f94c84e28c2a3fabe415109d1febbfa795cc467"
+    }
+  }
+}

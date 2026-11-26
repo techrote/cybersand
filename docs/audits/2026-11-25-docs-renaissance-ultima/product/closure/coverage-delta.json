@@ -1,0 +1,98 @@
+{
+  "schema": "ultima-closure-product-review-delta-v1",
+  "prior_recovered_source": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "prior_coverage": "../coverage.json",
+  "prior_reviewed_distinct_documents": 53,
+  "prior_full_text": 46,
+  "prior_selected_sections": 7,
+  "new_full_body_canonical_documents": 2,
+  "fresh_review_deltas": [
+    {
+      "path": "docs/operations/ambient-workbench.md",
+      "sha256": "18d0091209e0738e06820b72641e6061ddb2d54f28cbbaa96a42ce455e5e0f1a",
+      "review_depth": "full canonical body plus lifecycle delta/source checks",
+      "review_scope": "accepted#775/defaultOFF vs unmerged#779 and dated platform receipt"
+    },
+    {
+      "path": "docs/systems/ambient-actors.md",
+      "sha256": "7b10c8869610ea35aaa47e2523d229fe0faec2b1d0a306adc67e9ec92e7b9b83",
+      "review_depth": "full canonical body plus lifecycle delta/source checks",
+      "review_scope": "accepted#775/defaultOFF vs unmerged#779 and dated platform receipt"
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "50e98e1b61ffe10757c7e893076735a3ca8abdb427826e47c81ec108dab19b5d",
+      "review_depth": "targeted provider-save recovery instructions and actual UI workflow",
+      "review_scope": "live versus retained preferences; provider-switch retry without model call"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "be6e13d51aafc603a9949ff293829f5e1c220dc5173ad82c6e05dd3d08f9a7e0",
+      "review_depth": "controlled-merge stage2/stage3 conflict and incoming accepted-AMBIENT delta review",
+      "review_scope": "preserve prior ULTIMA corrections while reconciling accepted67c foundation; not a new all-source experimental pass"
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "a6c5de384269ffb498ad7e1ee465066b6f163de9aa62703bb4ab07950f57245f",
+      "review_depth": "controlled-merge stage2/stage3 conflict and incoming accepted-AMBIENT delta review",
+      "review_scope": "preserve prior ULTIMA corrections while reconciling accepted67c foundation; not a new all-source experimental pass"
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "ff0e7286790bf61b385f6c4478719a2d3798ac49da28e03203327ab596c94cb9",
+      "review_depth": "controlled-merge stage2/stage3 conflict and incoming accepted-AMBIENT delta review",
+      "review_scope": "preserve prior ULTIMA corrections while reconciling accepted67c foundation; not a new all-source experimental pass"
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "e6ac9eab929d712901ac33da3e4dd80aca5e30336c37c941c7cae82322e70b10",
+      "review_depth": "controlled-merge stage2/stage3 conflict and incoming accepted-AMBIENT delta review",
+      "review_scope": "preserve prior ULTIMA corrections while reconciling accepted67c foundation; not a new all-source experimental pass"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "49f69f4c5ebbaf74848899415abc4cff7eb0b1651ac990ce43ad7b4ce7b81673",
+      "review_depth": "controlled-merge stage2/stage3 conflict and incoming accepted-AMBIENT delta review",
+      "review_scope": "preserve prior ULTIMA corrections while reconciling accepted67c foundation; not a new all-source experimental pass"
+    }
+  ],
+  "separate_independent_reviews": [
+    {
+      "subject": "C AMBIENT research/history/navigation wrappers and corpus/index",
+      "verdict": "approve after table separator correction",
+      "depth": "full four wrappers; immutable fullbody identity verification and two exact historical-body suffix comparisons"
+    },
+    {
+      "subject": "A Web/Tower bool inheritance correction21fa575f6af8ac249739e6b76fcd2bc37ebf28e1",
+      "verdict": "approve source scope",
+      "depth": "full production/test/runner diff; parent executes focused runtime; B does not claim that execution"
+    },
+    {
+      "subject": "Lead maintenance final custody/future acceptance sections",
+      "verdict": "approve",
+      "depth": "full added paragraphs; explicitly future protocol, not executed holdout"
+    }
+  ],
+  "cross_review_of_B": [
+    {
+      "reviewer": "A",
+      "subject": "Art provider retry69f2493b",
+      "verdict": "approve; fresh save_profile/change_provider/send_next source trace"
+    },
+    {
+      "reviewer": "C",
+      "subject": "launcheracfaf9d1",
+      "verdict": "approve; full source and independently9localtests passed; no Windows run claimed"
+    },
+    {
+      "reviewer": "C",
+      "subject": "AMBIENT manuals4b7cbcd2",
+      "verdict": "approve; full diff and exact original67c missionledger"
+    },
+    {
+      "reviewer": "A",
+      "subject": "resolved AMBIENT ownership/interfaces5bd1e282",
+      "verdict": "approve exact delta against actual cache/scheduler/owner source"
+    }
+  ]
+}

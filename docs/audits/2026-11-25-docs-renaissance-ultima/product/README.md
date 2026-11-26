@@ -5,7 +5,7 @@ document-kind: evidence
 authority: historical-non-authoritative
 retrieval: explicit-history-only
 scope: Product manual review, actual Linux native GUI tasks, source-scoped storage faults and independent context review
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 ---
 
 # Product documentation and graphical qualification
@@ -19,11 +19,16 @@ for the Draft/HOLD candidate, not owner acceptance or merge authority.
 
 ## Evidence index and coverage
 
-- [Document coverage](coverage.json): **51 distinct documents**, comprising
-  **44 full-text semantic reviews** and **7 selected-section reviews**. Each row
+- [Document coverage](coverage.json): **53 distinct documents**, comprising
+  **46 full-text semantic reviews** and **7 selected-section reviews**. Each row
   identifies actual depth, reviewed bytes, source locators and execution limits.
   A full-text read is not a claim that every numerical sentence was experimentally
   reproduced. Other lanes own the remaining canonical corpus.
+- [Closure recovery and fresh evidence](closure/README.md): identifies what was
+  recovered from the published candidate, what was lost with the transient
+  environment, and what was newly reviewed or executed. It adds the two accepted
+  AMBIENT manuals, a shipped-launcher qualification helper, and a fresh manual
+  Art/Tower refusal-and-retry pass at source `4b7cbcd2`.
 - [Capture manifest](captures.json): ten actual native-window screenshots, with
   source identity, bytes and SHA-256. These are evidence images, not concept art.
 - [Independent persistence reproduction](persistence-independent.json): B's

@@ -5,7 +5,7 @@ document-kind: evidence
 authority: historical-non-authoritative
 retrieval: explicit-history-only
 scope: Actual Linux interaction, separate automatic clipboard/caller checks and precise remaining browser/physical owner steps
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 ---
 
 # Graphical evidence and remaining owner steps
@@ -23,6 +23,7 @@ separate when reviewing the final Draft/HOLD candidate.
 | Manual native Workbench, `a83c6988f33499632d813d58dadd2b6f64c68941` | Launch, painting, select/copy/fill, Undo/Redo, named save/load, same-name replacement, real permission refusal/retry, generated preview cancellation, saved generated recipe/reconstruction/explicit install/edit/reopen, showcase and Thunderbowl controls. | [Exact GUI receipt](final-gui-receipt.json), [ten capture identities](captures.json). |
 | Other manual native sessions recorded by the product lane | Direct JSON drawing and invalid JSON refusal without a provider; explicit Flatten/history behavior; Water Lab and Materials Lab controls. These are the actual individual sessions named in the product report, not newly rerun final-head claims. | [Product report](README.md), retained source/steps and captures. |
 | Manual profile UI on bytes committed as `b698a2b2447ece2076bfa83ac56093f34487450f` | Generation Save accepted success, same-name directory-permission refusal and retry; Transport Save user copy success/refusal without Apply; Tower Save Water policy visible success/refusal/retry. | [Independent profile/GUI review](profiles/independent-review.json). Source hashes bind the dirty launch to the later commit. The application was stopped by the operator after returning to the launcher; natural GUI exit is not claimed. |
+| Fresh manual native UI, `4b7cbcd2a0ac90e3ee5b5abfd14b6b6cba24c8b0` | Art preference save, real permission refusal and provider-switch retry without a model call. Tower export success, actual clipboard paste and byte comparison, permission refusal preserving a harmless clipboard control and old file, then retry. | [Closure receipt and two fresh captures](closure/README.md). Software-rendered Linux; source/application-byte comparison to `fe24da6f` is explicit. The operator stopped the completed process; natural exit is not claimed. |
 | Automatic native X11 clipboard, `f778898565fbc3cc235525c557e61f8345f59797` | Public Tower export copies committed bytes, a real truncated-write refusal preserves the clipboard control and previous report, and retry succeeds. Previous clipboard contents were restored without being logged. | [Two-case clipboard receipt](tower-export/x11-clipboard.json). All child processes ended naturally. This is not a manual Tower walkthrough. |
 | Headless caller/format tests | Persistence fault matrices, profile readers, recorder state, MicroScenario capture, and separate Tower controller/button calls. Label properties and button signals are checked programmatically. | [Tower evidence](tower-export/README.md), [profile evidence](profiles/independent-linux-report.json), product/technical matrices. These are not graphical observations. |
 
@@ -56,6 +57,14 @@ directory and follow its supplied launcher/readme with disposable user data.
 Keep the package/source SHA, OS build, physical GPU and driver, rendering method,
 launch command and each observed outcome. Preserve a failure's logs and file
 digests before retrying.
+
+The ULTIMA package qualification helper exercises the actual shipped Windows
+`Open Workbench.cmd` from a copied directory containing spaces, checks its own
+isolated user-data location, and performs authored-save/fresh-process-reopen
+checks through the launcher's argument forwarding. Its optional graphical
+startup is an automatic render check. These checks require an actual Windows
+receipt; the helper's Linux unit tests do not establish that the batch file ran.
+The remaining manual and physical observations below are separate.
 
 | Workflow | Required observation |
 |---|---|

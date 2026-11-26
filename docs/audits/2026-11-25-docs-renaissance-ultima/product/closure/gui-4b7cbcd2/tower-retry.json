@@ -1,0 +1,11 @@
+{
+  "bytes": 9562,
+  "sha256": "6ea8203ec48ea00844a950be03f98352393fc444316def90506e916fe78f735d",
+  "loaded_json": true,
+  "utc": "2026-11-26T07:50:38",
+  "seed": 0,
+  "recipe_version": 4,
+  "status_observed": "Observation exported to user://tower-observation.json. Copied to clipboard.",
+  "directory_mode": "0o700",
+  "clipboard_retry_scope": "application success/readback label observed; separate first successful export clipboard was actually pasted and byte-compared"
+}
