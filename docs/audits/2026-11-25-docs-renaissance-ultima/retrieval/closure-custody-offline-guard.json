@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "finding_id": "C-CLOSURE-01",
+  "priority": "P2",
+  "status": "fixed-and-independently-verified",
+  "implementing_lane": "C",
+  "independent_reviewing_lane": "A",
+  "lead_review": "Approved explicit global --no-lazy-fetch in addition to env1, with unsupported Git failing closed.",
+  "source_head_before_patch": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "source_state": "Two source files modified after the fe24 retrieval checkpoint; exact hashes below. No application, corpus, ranking, fixture or manifest change.",
+  "problem": "The custody helper promised local-only Git object reads, but an actual blob:none promisor checkout caused Git to fetch missing immutable evidence objects implicitly. This was a custody/acquisition contract defect, not an evidence byte mismatch.",
+  "correction": "Both subprocess paths use git --no-lazy-fetch and force GIT_NO_LAZY_FETCH=1. Missing or malformed blob headers and nondecimal ls-tree sizes refuse before reconstruction. Preparation is a separate explicit operation. Unsupported older Git fails closed.",
+  "input_sha256": {
+    "tools/docs/evidence_custody.py": "601d93180c17812b0ec27b11e683e12df254239459be02d2bd2d26f3fe2f8704",
+    "tools/ci/test_evidence_custody.py": "b4f6563def115e566ce0fe75d5dd91a5106ec8000e26070c3cd8f3f6c8e02eab"
+  },
+  "original_helper_sha256": "d7506ecc178cf250c31f06d39785774af169fffdbce7a9b69cda76c409c27f77",
+  "first_control_attempt": {
+    "returncode": 1,
+    "output": "test_explicit_targeted_fetch_restores_verified_local_reads (tools.ci.test_evidence_custody.PromisorCustody.test_explicit_targeted_fetch_restores_verified_local_reads) ... ok\ntest_missing_batch_blob_refuses_without_implicit_transport (tools.ci.test_evidence_custody.PromisorCustody.test_missing_batch_blob_refuses_without_implicit_transport) ... ok\ntest_missing_tree_blob_refuses_without_implicit_transport (tools.ci.test_evidence_custody.PromisorCustody.test_missing_tree_blob_refuses_without_implicit_transport) ... FAIL\ntest_unguarded_git_control_really_fetches_the_promised_blob (tools.ci.test_evidence_custody.PromisorCustody.test_unguarded_git_control_really_fetches_the_promised_blob) ... ok\n\n======================================================================\nFAIL: test_missing_tree_blob_refuses_without_implicit_transport (tools.ci.test_evidence_custody.PromisorCustody.test_missing_tree_blob_refuses_without_implicit_transport)\n----------------------------------------------------------------------\nValueError: invalid literal for int() with base 10: 'BAD'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/scratch/1c5fccfbe328/ultima-c/tools/ci/test_evidence_custody.py\", line 66, in test_missing_tree_blob_refuses_without_implicit_transport\n    self.assert_missing_without_transport(lambda: subject.tree(self.clone, 'HEAD', 'evidence.md'))\n  File \"/workspace/scratch/1c5fccfbe328/ultima-c/tools/ci/test_evidence_custody.py\", line 60, in assert_missing_without_transport\n    with self.assertRaisesRegex(ValueError, 'unavailable locally; fetch explicitly'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: \"unavailable locally; fetch explicitly\" does not match \"invalid literal for int() with base 10: 'BAD'\"\n\n----------------------------------------------------------------------\nRan 4 tests in 0.180s\n\nFAILED (failures=1)\n"
+  },
+  "first_control_disposition": "Three controls passed; one correctly blocked transport but exposed an unclear ValueError because Git 2.56.1 reports a missing ls-tree blob size as BAD. Final parsing now explicitly checks the decimal size and emits the preparation instruction.",
+  "final_execution": {
+    "schema": 1,
+    "authority": "historical-non-authoritative",
+    "source_head": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+    "working_files_sha256": {
+      "tools/docs/evidence_custody.py": "601d93180c17812b0ec27b11e683e12df254239459be02d2bd2d26f3fe2f8704",
+      "tools/ci/test_evidence_custody.py": "b4f6563def115e566ce0fe75d5dd91a5106ec8000e26070c3cd8f3f6c8e02eab"
+    },
+    "inputs_unchanged": true,
+    "runs": [
+      {
+        "label": "controls",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-m",
+          "unittest",
+          "tools.ci.test_evidence_custody",
+          "-v"
+        ],
+        "returncode": 0,
+        "seconds": 0.2690917449999688,
+        "stdout": "",
+        "stderr": "test_explicit_targeted_fetch_restores_verified_local_reads (tools.ci.test_evidence_custody.PromisorCustody.test_explicit_targeted_fetch_restores_verified_local_reads) ... ok\ntest_missing_batch_blob_refuses_without_implicit_transport (tools.ci.test_evidence_custody.PromisorCustody.test_missing_batch_blob_refuses_without_implicit_transport) ... ok\ntest_missing_tree_blob_refuses_without_implicit_transport (tools.ci.test_evidence_custody.PromisorCustody.test_missing_tree_blob_refuses_without_implicit_transport) ... ok\ntest_unguarded_git_control_really_fetches_the_promised_blob (tools.ci.test_evidence_custody.PromisorCustody.test_unguarded_git_control_really_fetches_the_promised_blob) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.152s\n\nOK\n"
+      },
+      {
+        "label": "full-verification",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "tools/docs/evidence_custody.py",
+          "--verify",
+          "--compact"
+        ],
+        "returncode": 0,
+        "seconds": 1.492793647000326,
+        "stdout": "{\n  \"status\": \"passed\",\n  \"mode\": \"compact\",\n  \"predecessor\": \"20170bd6259498c3d2774ab274567febb043fc1d\",\n  \"verified_source_files\": 697,\n  \"verified_originals\": 82,\n  \"files\": 697,\n  \"bytes\": 170042123,\n  \"retained_files\": 84,\n  \"retained_bytes\": 2122985,\n  \"omitted_files\": 613,\n  \"omitted_bytes\": 167919138,\n  \"preserved_originals\": 82\n}\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "independent_review": {
+    "lane": "A",
+    "verdict": "APPROVE",
+    "command": [
+      "python3",
+      "tools/ci/test_evidence_custody.py",
+      "-v"
+    ],
+    "test_count": 4,
+    "reported_test_seconds": 0.136,
+    "returncode": 0,
+    "receipt_source": "Specialist A direct source review and independently executed actual disposable promisor controls, communicated 2026-11-26; retained here at reviewer request.",
+    "input_sha256": {
+      "tools/docs/evidence_custody.py": "601d93180c17812b0ec27b11e683e12df254239459be02d2bd2d26f3fe2f8704",
+      "tools/ci/test_evidence_custody.py": "b4f6563def115e566ce0fe75d5dd91a5106ec8000e26070c3cd8f3f6c8e02eab"
+    },
+    "observations": [
+      "Both Git subprocess paths, including extraction, force the offline boundary even when caller environment sets lazy fetching to zero.",
+      "Global --no-lazy-fetch makes unsupported older Git refuse rather than silently ignore an environment setting.",
+      "Malformed header shape and nondecimal size refuse before destructuring or conversion.",
+      "Actual file:// unguarded control fetches a promised blob; guarded controls issue no child fetch; explicit targeted preparation restores successful exact local reads."
+    ]
+  },
+  "explicit_preparation": {
+    "git_version": "git version 2.56.1",
+    "omitted_manifest_paths": 613,
+    "unique_omitted_blobs": 531,
+    "already_local": 192,
+    "explicitly_fetched": 339,
+    "command_template": [
+      "git",
+      "-c",
+      "fetch.writeCommitGraph=false",
+      "fetch",
+      "--no-tags",
+      "--no-write-fetch-head",
+      "--stdin",
+      "origin"
+    ],
+    "batches": [
+      {
+        "batch": 1,
+        "objects": 64,
+        "seconds": 6.542637009999908,
+        "returncode": 0,
+        "timeout": false,
+        "log": ""
+      },
+      {
+        "batch": 2,
+        "objects": 64,
+        "seconds": 6.941169195999919,
+        "returncode": 0,
+        "timeout": false,
+        "log": ""
+      },
+      {
+        "batch": 3,
+        "objects": 64,
+        "seconds": 6.7039447869997275,
+        "returncode": 0,
+        "timeout": false,
+        "log": ""
+      },
+      {
+        "batch": 4,
+        "objects": 64,
+        "seconds": 7.309753409000223,
+        "returncode": 0,
+        "timeout": false,
+        "log": ""
+      },
+      {
+        "batch": 5,
+        "objects": 64,
+        "seconds": 6.8013673680002285,
+        "returncode": 0,
+        "timeout": false,
+        "log": ""
+      },
+      {
+        "batch": 6,
+        "objects": 19,
+        "seconds": 6.088881867000055,
+        "returncode": 0,
+        "timeout": false,
+        "log": ""
+      }
+    ],
+    "scope": "Only missing blob IDs enumerated from the predecessor custody manifest; no branch/ref/ancestry or checkout payload expansion. Original full evidence remains in its predecessor lineage.",
+    "raw_receipts": [
+      {
+        "name": "custody-targeted-object-read.json",
+        "bytes": 16696,
+        "sha256": "9bb3bd3b6a96c1b344a93fa2d7503ffa610f50365174ac0e558949b0be7a5f0b"
+      },
+      {
+        "name": "custody-targeted-fetch.json",
+        "bytes": 19157,
+        "sha256": "ea23c5b196d4958bd0c2d9edc889218b7e3b0366ab29aee9f6179e7882acdf9b"
+      }
+    ]
+  },
+  "qualification_limits": [
+    "Four tests use an actual local file:// promisor transport in disposable directories, not an external GitHub outage simulation.",
+    "Complete predecessor verification reads actual locally prepared objects and compares manifest digests; it does not claim the compact branch erases historical Git storage.",
+    "No new remote host, credential, LFS policy or retrieval method is introduced."
+  ]
+}

@@ -179,3 +179,38 @@ literal 18-object acquisition and actual Windows launcher gate, with hosted
 execution still pending at review. [TempToPC source readback](closure-temptopc-host-boundary.json)
 inspects the reusable infrastructure instructions without creating a machine or
 accessing credentials; it does not establish an available connected owner host.
+
+## Explicit object preparation for a partial clone
+
+The restored checkout used Git's `blob:none` promisor mode. Git can otherwise
+fetch a missing object implicitly during `ls-tree` or `cat-file`, contradicting
+the custody helper's offline-read contract. The helper now sets
+`--no-lazy-fetch` and `GIT_NO_LAZY_FETCH=1` for both subprocess paths and refuses
+unavailable objects with an explicit preparation instruction. An older Git that
+does not support the explicit flag fails closed instead of silently ignoring
+an unknown environment variable. The manifest, source pins and
+reconstruction API are unchanged.
+
+The closure operator separately enumerated the 531 unique omitted blob IDs from
+the custody manifest, checked local presence with lazy fetching disabled, and
+explicitly fetched only the 339 missing objects in six sequential batches of
+at most 64. Each batch used:
+
+```sh
+git fetch --no-tags --no-write-fetch-head --stdin origin < missing-blob-batch.txt
+```
+
+Each input line was one exact immutable blob ID from the verified predecessor
+manifest. This was explicit object preparation, with no branch, ancestry,
+checkout or evidence-tree expansion. A whole-history unfiltered fetch was not
+used. After preparation, full offline verification read all 697 predecessor
+files and checked all 82 preserved originals. The
+[guard review](closure-custody-offline-guard.json) retains actual controls and
+source identities. Four disposable `file://` promisor tests prove refusal
+without implicit transport, a genuine unguarded transport positive control,
+and successful local verification after explicit preparation:
+
+```sh
+python -m unittest tools.ci.test_evidence_custody -v
+python tools/docs/evidence_custody.py --verify --compact
+```

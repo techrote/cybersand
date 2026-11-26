@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 
@@ -20,7 +21,8 @@ KEEP = {PACKET + '/assets-b.json', PACKET + '/closure/preservation-manifest.json
 
 
 def git(root: Path, *args: str) -> bytes:
-    return subprocess.check_output(['git', '-C', str(root), *args])
+    return subprocess.check_output(['git', '--no-lazy-fetch', '-C', str(root), *args],
+                                   env=os.environ | {'GIT_NO_LAZY_FETCH': '1'})
 
 
 def sha(data: bytes) -> str:
@@ -35,6 +37,8 @@ def tree(root: Path, revision: str, prefix: str) -> list[dict]:
         metadata, path = record.split(b'\t', 1)
         mode, kind, blob, size = metadata.decode().split()
         if kind == 'blob':
+            if not size.isdecimal():
+                raise ValueError('Immutable evidence blob unavailable locally; fetch explicitly before verifying: '+blob)
             result.append({'path': path.decode(), 'git_blob': blob, 'bytes': int(size)})
     return result
 
@@ -45,13 +49,19 @@ def read_blobs(root: Path, rows: list[dict]) -> dict[str, bytes]:
     if not ids:
         return {}
     output = subprocess.check_output(
-        ['git', '-C', str(root), 'cat-file', '--batch'], input=('\n'.join(ids)+'\n').encode())
+        ['git', '--no-lazy-fetch', '-C', str(root), 'cat-file', '--batch'], input=('\n'.join(ids)+'\n').encode(),
+        env=os.environ | {'GIT_NO_LAZY_FETCH': '1'})
     cursor = 0
     data = {}
     for expected in ids:
         end = output.index(b'\n', cursor)
-        oid, kind, length = output[cursor:end].decode().split()
-        if oid != expected or kind != 'blob':
+        header = output[cursor:end].decode().split()
+        if header == [expected, 'missing']:
+            raise ValueError('Immutable evidence blob unavailable locally; fetch explicitly before verifying: '+expected)
+        if len(header) != 3:
+            raise ValueError('Unexpected Git batch header for '+expected)
+        oid, kind, length = header
+        if oid != expected or kind != 'blob' or not length.isdecimal():
             raise ValueError('Unavailable or unexpected Git blob: '+expected)
         start = end + 1
         data[oid] = output[start:start+int(length)]
