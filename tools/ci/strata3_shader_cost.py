@@ -29,8 +29,12 @@ CANDIDATE = "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f"
 DRIVER = "tools/ci/strata3_shader_cost.gd"
 WRAPPER = "tools/ci/experiments/strata3_optical_override_test.gd"
 SHADER = "tools/ci/experiments/strata3_optical_empty_coverage_a1.gdshader"
+DIAGNOSTIC = "tools/ci/experiments/strata3_shader_identity_diagnostic.gd"
+DIAGNOSTIC_SCOPE = "Headless resource/constant evaluation diagnostic; not graphical or performance qualification"
+ENGINE_VERSION = {"build": "official", "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88", "hex": 263936,
+                  "major": 4, "minor": 7, "patch": 0, "status": "stable", "string": "4.7-stable (official)", "timestamp": 0}
 FILES = (DRIVER, "tools/ci/strata3_shader_cost.py", "tools/ci/test_strata3_shader_cost.py",
-         WRAPPER, SHADER, "tools/ci/strata3_sustained.py")
+         WRAPPER, SHADER, DIAGNOSTIC, "tools/ci/strata3_sustained.py")
 CASES = (("classic-original", "classic", "original"),
          ("architectural-original", "architectural", "original"),
          ("architectural-empty-coverage", "architectural", "empty-coverage"),
@@ -59,13 +63,16 @@ def distribution(values):
                                      for value in (100000, 250000, 500000, 1000000)}}
 
 
-def validate_statistics(value, shader, profile):
-    require(isinstance(value, dict) and value.get("shader_sha256") == shader and value.get("profile") == profile
+def validate_statistics(value, profile):
+    # The pinned runtime retains the original value of this constant-resource
+    # expression. The per-host diagnostic proves that observed distinction; actual
+    # runtime code and drawable attachments are mandatory in validate_binding.
+    require(isinstance(value, dict) and value.get("shader_sha256") == ORIGINAL and value.get("profile") == profile
             and value.get("play_processed") is False and value.get("quality") == "balanced"
-            and integer(value.get("material_count")) and value["material_count"] <= 3
+            and integer(value.get("material_count")) and value["material_count"] == (0 if profile == "classic" else 3)
             and all(value.get(key) == 0 for key in ("additional_worlds", "additional_viewports", "additional_textures",
                                                    "native_captures", "native_writes", "texture_uploads")),
-            "Actual shader, bounded resources or native isolation changed")
+            "Frozen shader-source metadata, bounded resources or native isolation changed")
     require(value.get("inspection") == {"bypass": False, "clarity": False, "wipe": 1.0, "focus_override": ""}
             and value.get("transitioning") is False, "Timed optical inspection or unsettled focus changed")
     if profile == "classic":
@@ -75,6 +82,50 @@ def validate_statistics(value, shader, profile):
     else:
         require(value.get("active") is True and set(value.get("active_planes", [])) == shared.PLANES - {"play"},
                 "Candidate/original optical profile did not actually execute")
+
+
+def instance_id(value):
+    return isinstance(value, str) and re.fullmatch(r"-?[1-9][0-9]{0,18}", value) is not None
+
+
+def validate_binding(binding, shader, profile):
+    require(isinstance(binding, dict) and instance_id(binding.get("shader_instance_id"))
+            and binding.get("shader_sha256") == shader and binding.get("statistics_shader_sha256") == ORIGINAL
+            and binding.get("profile") == profile and integer(binding.get("cached_material_count")),
+            "Actual presenter Shader attachment identity differs")
+    materials = binding.get("materials")
+    require(isinstance(materials, dict), "Missing actual material attachments")
+    if profile == "classic":
+        require(binding.get("cached_material_count") == 0 and materials == {}
+                and binding.get("classic_materials_restored") is True, "Classic did not restore original material attachments")
+    else:
+        require(binding.get("cached_material_count") == 3 and set(materials) == shared.PLANES - {"play"}
+                and binding.get("classic_materials_restored") is False, "Missing one or more active rear-plane attachments")
+        material_ids = set()
+        for material in materials.values():
+            require(isinstance(material, dict) and instance_id(material.get("material_instance_id"))
+                    and material.get("cached_shader_instance_id") == material.get("drawable_shader_instance_id") == binding["shader_instance_id"]
+                    and material.get("shader_sha256") == shader and material.get("cache_is_drawable_material") is True,
+                    "Detached cached material or drawable shader")
+            material_ids.add(material["material_instance_id"])
+        require(len(material_ids) == 3, "Rear planes unexpectedly share one mutable ShaderMaterial")
+    return binding["shader_instance_id"]
+
+
+def validate_identity_diagnostic(value, diagnostic_sha256):
+    require(isinstance(value, dict) and value.get("schema") == "strata3-live-shader-identity-v1"
+            and value.get("application") == APPLICATION and value.get("diagnostic_sha256") == diagnostic_sha256
+            and value.get("scope") == DIAGNOSTIC_SCOPE and value.get("display_server") == "headless"
+            and value.get("version") == ENGINE_VERSION and value.get("same_resource") is True
+            and instance_id(value.get("live_id")) and value["live_id"] == value.get("separate_id"),
+            "Actual platform shader-identity diagnostic is missing or changed")
+    require(value.get("before") == {"runtime_code_sha256": ORIGINAL, "statistics_sha256": ORIGINAL}
+            and value.get("after") == {"runtime_code_sha256": CANDIDATE, "separate_runtime_code_sha256": CANDIDATE,
+                                      "material_runtime_code_sha256": CANDIDATE, "statistics_sha256": ORIGINAL,
+                                      "script_constant_property_sha256": ORIGINAL}
+            and value.get("restored") == ORIGINAL,
+            "Runtime shader code and compiled source-expression semantics were not demonstrated")
+    return value
 
 
 def valid_camera(camera):
@@ -88,7 +139,7 @@ def valid_camera(camera):
 
 
 def validate_observation(result, *, observer_sha256, observer_source_revision):
-    require(result.get("schema") == "strata3-shader-cost-observation-v1" and result.get("phase") == "progression"
+    require(result.get("schema") == "strata3-shader-cost-observation-v2" and result.get("phase") == "progression"
             and result.get("scene") == "optics-readability-challenge" and result.get("completed") is True
             and result.get("failures") == [] and integer(result.get("checks"), 1), "Incomplete actual cost probe")
     require(result.get("source_revision") == APPLICATION and result.get("observer_sha256") == observer_sha256
@@ -125,6 +176,7 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
     require(isinstance(rows, list) and len(rows) == 15, "Incomplete fifteen-window comparison")
     initial_hashes, camera, actor, configurations = None, None, None, {}
     summaries = []
+    live_shader_ids = set()
     for row, (case, repeat) in zip(rows, order):
         case_id, profile, variant = case
         shader = ORIGINAL if variant == "original" else CANDIDATE
@@ -143,6 +195,10 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
                 and capture.get("physical_paused") is True and capture.get("outside_timed_window") is True
                 and capture.get("shader_sha256") == shader and integer(capture.get("captured_usec"), 1),
                 "Missing actual paused pre-timing framebuffer")
+        binding = capture.get("live_shader_binding")
+        live_shader_ids.add(validate_binding(binding, shader, profile))
+        validate_binding(row.get("live_shader_binding_after"), shader, profile)
+        require(row["live_shader_binding_after"] == binding, "Live shader/material attachments changed during the timed window")
         hashes = capture.get("plane_native_hashes", {})
         require(set(hashes) == shared.PLANES and all(shared.HEX64.fullmatch(str(value)) for value in hashes.values())
                 and hashes["play"] == row.get("initial_native_play_sha256"), "Initial native plane readback missing")
@@ -204,13 +260,20 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
         require(integer(row.get("scene_admission_elapsed_ms"))
                 and row.get("scene_admission_target_met") is (row["scene_admission_elapsed_ms"] <= 45000),
                 "Scene replacement changed the45-second admission criterion")
-        validate_statistics(row.get("optical_statistics"), shader, profile)
+        validate_statistics(row.get("optical_statistics"), profile)
         require(integer(row.get("resource_count")) and integer(row.get("godot_tracked_memory_bytes")),
                 "Missing per-window engine resource observations")
         summaries.append({key: row[key] for key in ("case_id", "profile", "variant", "repeat", "elapsed_usec",
                          "native_ticks_per_second", "rapier_ticks_per_second", "physical_distribution_usec",
                          "callback_distribution_usec", "native_publication_interval_distribution_usec", "actor_distance_cells",
                          "scene_admission_elapsed_ms", "scene_admission_target_met", "resource_count", "godot_tracked_memory_bytes")})
+    restored = result.get("restored_shader_resources", [])
+    require(isinstance(restored, list) and 1 <= len(restored) <= 15
+            and all(isinstance(row, dict) and instance_id(row.get("shader_instance_id"))
+                    and row.get("shader_sha256") == ORIGINAL for row in restored)
+            and len({row["shader_instance_id"] for row in restored}) == len(restored)
+            and {row["shader_instance_id"] for row in restored} == live_shader_ids,
+            "Every actual touched Shader resource must be restored exactly once")
     equivalence = result.get("pixel_equivalence", [])
     expected_pairs = [(prefix + "-original-" + str(repeat), prefix + "-empty-coverage-" + str(repeat), repeat)
                       for repeat in range(3) for prefix in ("architectural", "clarity")]
@@ -253,6 +316,9 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
             "initial_admission_elapsed_ms": result["admission_elapsed_ms"],
             "initial_admission_target_met": result["admission_target_met"], "native_initial_plane_hashes": initial_hashes,
             "camera": camera, "initial_actor": actor, "comparisons": comparisons,
+            "live_shader_attachment": {"actual_shader_resources": len(live_shader_ids), "windows_with_unchanged_attachment": 15,
+                                       "all_touched_resources_restored": True,
+                                       "statistics_hash_scope": "Frozen original-source expression; live shader/material code is validated separately"},
             "sampling_limit": "Three registered sequential repeats; no claim of statistical independence. Native publications may coalesce; only Rapier completion intervals cover every step.",
             "resource_scope": "Per-window engine counters are retained. Whole-process CPU/RSS includes bootstrap, initial admission, fifteen reloads, compilation, readbacks, warmups and timing; it is not per-profile CPU/GPU cost."}
 
@@ -387,6 +453,18 @@ def verify_custody(folder, record, application_root, q):
     return observer
 
 
+def identity_command(record, paths):
+    return [record["godot"]["execution_path"], "--headless", "--path", record["application_execution_project"],
+            "--script", paths["diagnostic"], "--", "--optical-shader-override=" + paths["shader"]]
+
+
+def verify_identity_process(folder, record, observer, paths, q):
+    _, text = verify_process(folder, "identity-diagnostic", record, identity_command(record, paths), 60, q)
+    require(not re.search(r"^OpenGL API ", text, re.MULTILINE), "Resource diagnostic must remain explicitly headless")
+    return validate_identity_diagnostic(marker(text, "STRATA3_SHADER_RESOURCE_DIAGNOSTIC "),
+                                        observer["source_inputs_raw_sha256"][DIAGNOSTIC])
+
+
 def verify_shader_processes(folder, record, observer, paths, q):
     backends = []
     for label in ("shader-original", "shader-candidate"):
@@ -422,7 +500,8 @@ def validate_execution_paths(execution_root, paths):
     normalized = execution_root.replace("\\", "/").rstrip("/")
     require(normalized.startswith("/") or re.match(r"^[A-Za-z]:/", normalized), "Evidence execution location must be absolute")
     expected = {"driver": "observer/" + Path(DRIVER).name, "wrapper": "observer/" + Path(WRAPPER).name,
-                "shader": "observer/" + Path(SHADER).name, "shader-original": "shader-original", "shader-candidate": "shader-candidate"}
+                "shader": "observer/" + Path(SHADER).name, "diagnostic": "observer/" + Path(DIAGNOSTIC).name,
+                "shader-original": "shader-original", "shader-candidate": "shader-candidate"}
     require(set(paths) == set(expected) and all(isinstance(paths[key], str)
             and paths[key].replace("\\", "/") == normalized + "/" + relative for key, relative in expected.items()),
             "Actual execution paths do not bind the retained observer and capture locations")
@@ -431,7 +510,7 @@ def validate_execution_paths(execution_root, paths):
 def verify(folder, application_root):
     q, predecessor = shared.application_modules(application_root)
     record = json.loads((folder / "annex.json").read_text(encoding="utf-8"))
-    require(record.get("schema") == "strata3-shader-cost-annex-v1" and record.get("completed") is True
+    require(record.get("schema") == "strata3-shader-cost-annex-v2" and record.get("completed") is True
             and record.get("failures") == [] and record.get("application_project_unchanged") is True,
             "Incomplete shader cost annex")
     require(record.get("files_sha256") == shared.evidence_files(folder), "Original experiment evidence inventory changed")
@@ -439,10 +518,12 @@ def verify(folder, application_root):
     observer = verify_custody(folder, record, application_root, q)
     paths = record.get("execution_paths", {})
     validate_execution_paths(record.get("execution_evidence_root"), paths)
-    require(set(record.get("processes", {})) == {"bootstrap", "shader-original", "shader-candidate", "progression"},
+    require(set(record.get("processes", {})) == {"bootstrap", "identity-diagnostic", "shader-original", "shader-candidate", "progression"},
             "Missing actual experiment process")
     verify_process(folder, "bootstrap", record, [record["godot"]["execution_path"], "--headless", "--editor", "--path",
                    record["application_execution_project"], "--quit"], 300, q)
+    require(record.get("identity_diagnostic") == verify_identity_process(folder, record, observer, paths, q),
+            "Retained shader-identity diagnostic differs from original process")
     backend = verify_shader_processes(folder, record, observer, paths, q)
     result = json.loads(path_in(folder, "progression/report.json").read_text(encoding="utf-8"))
     summary = validate_observation(result, observer_sha256=observer["source_inputs_raw_sha256"][DRIVER],
@@ -483,9 +564,10 @@ def run(args):
     retained = output / "observer"; retained.mkdir()
     for name in FILES: shutil.copyfile(ROOT / name, retained / Path(name).name)
     paths = {"driver": str(retained / Path(DRIVER).name), "wrapper": str(retained / Path(WRAPPER).name),
-             "shader": str(retained / Path(SHADER).name), "shader-original": str(output / "shader-original"),
+             "shader": str(retained / Path(SHADER).name), "diagnostic": str(retained / Path(DIAGNOSTIC).name),
+             "shader-original": str(output / "shader-original"),
              "shader-candidate": str(output / "shader-candidate")}
-    record = {"schema": "strata3-shader-cost-annex-v1", "completed": False, "failures": [], "processes": {},
+    record = {"schema": "strata3-shader-cost-annex-v2", "completed": False, "failures": [], "processes": {},
               "application_source": source, "application_loaded_source_sha256": loaded, "application_assets_sha256": assets,
               "application_execution_project": str(project), "observer_source": observer, "execution_paths": paths,
               "execution_evidence_root": str(output),
@@ -499,6 +581,10 @@ def run(args):
         record["processes"]["bootstrap"] = q.metrics.execute([str(godot), "--headless", "--editor", "--path", str(project), "--quit"],
                                                              output / "bootstrap", environment, 300)
         require(record["processes"]["bootstrap"]["status"] == "passed", "Immutable application import failed")
+        environment = custody.case_environment(output / "userdata/identity-diagnostic")
+        record["processes"]["identity-diagnostic"] = q.metrics.execute(identity_command(record, paths),
+                                                                       output / "identity-diagnostic", environment, 60)
+        record["identity_diagnostic"] = verify_identity_process(output, record, observer, paths, q)
         for label in ("shader-original", "shader-candidate"):
             environment = custody.case_environment(output / "userdata" / label)
             script = "res://tests/test_strata_optical_renderer.gd" if label == "shader-original" else paths["wrapper"]

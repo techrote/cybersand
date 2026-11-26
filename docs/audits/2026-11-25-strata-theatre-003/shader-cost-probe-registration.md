@@ -127,3 +127,53 @@ original fd0830ab receipts cannot be relabelled as executing the changed shader.
 The existing evaluator campaign remains on fd0830ab throughout this experiment.
 All raw originals remain in the Actions artifact and only compact evidence and
 selected captures belong in the repository. Draft/HOLD remains in force.
+
+## Observer v2 correction registered before its hosted run
+
+The v1 Linux artifact from run 45730815481 was correctly rejected by the strict
+reader: the driver's mutable-code hash and the presenter's statistics hash
+disagreed in A1-labelled native windows. The original artifact remains rejected.
+The initial interpretation that this proved a detached shader was too strong.
+V1 did not record actual drawable attachment identities, so that explanation
+could not be established from its receipt.
+
+A pinned Godot 4.7 resource diagnostic then established a narrower and different
+fact. The separately preloaded shader and the renderer's shader constant are the
+same object. After changing its code through a runtime Shader variable, that
+variable, a separately loaded variable and an attached material all report the
+candidate code. The constant/property expression and `statistics()` still report
+the original source hash. This is consistent with compile-time evaluation of the
+constant/property expression. The observed distinction is directly reproduced;
+this registration does not claim an audited Godot compiler implementation cause.
+The application is not changed to repair its diagnostics for an external override.
+
+V2 runs that short source-pinned identity diagnostic on each host before the
+actual graphical tests. It requires the frozen statistics hash to remain the
+original application-source identity, and separately requires every direct live
+shader/material code hash to match the chosen original or candidate. These two
+fields have distinct meanings under the override and neither is substituted for
+the other. Arbitrary or unexplained hash mismatches remain failures.
+
+V2 resolves the actual renderer from the freshly admitted Workbench presenter
+inside `_settle_focus`. It mutates that renderer's Shader resource, waits for
+settled draws, and verifies each of the three cached ShaderMaterials and each
+actual drawable's attached material and shader against the live resource. The
+pre-timer capture retains those identities as strings, and a second attachment
+receipt after the timed window must agree. Fresh Classic must still have zero
+optical materials and its exact original material objects restored. The driver
+retains at most 15 existing Shader references, creates no Shader resource, and
+restores every touched resource to the original code at the end. The standalone
+synthetic-fixture wrapper instead terminates its isolated process; it does not
+edit an application file.
+
+The preceding v1 isolated renderer fixtures remain a narrower positive result:
+both tests passed 109 assertions and all 18 original/candidate PNG pairs matched
+exactly. V1 lacks the stronger native attachment evidence and the final
+application-after receipt, because its reader stopped early. Those gates are not
+retroactively called passed and no v1 native optimisation rate is admitted.
+
+The observation and annex schemas advance to v2 to require the per-host identity
+diagnostic and additional attachment witnesses. All 18 pixel pairs, six native
+world-image comparisons, 15 complete timed populations, source/native guards,
+original performance criteria and watchdogs are unchanged. V1's rejection and
+the correction to its initial explanation are preserved as research evidence.

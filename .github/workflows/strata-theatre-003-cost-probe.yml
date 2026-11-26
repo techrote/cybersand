@@ -11,6 +11,7 @@ name: Strata Theatre 003 exact-output shader cost experiment
     - tools/ci/test_strata3_shader_cost.py
     - tools/ci/experiments/strata3_optical_override_test.gd
     - tools/ci/experiments/strata3_optical_empty_coverage_a1.gdshader
+    - tools/ci/experiments/strata3_shader_identity_diagnostic.gd
 permissions:
   contents: read
   actions: read
