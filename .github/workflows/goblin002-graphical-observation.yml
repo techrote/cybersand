@@ -43,6 +43,7 @@ jobs:
         run: |
           $evidence = Join-Path $env:RUNNER_TEMP 'goblin002-graphical-observation'
           New-Item -ItemType Directory $evidence | Out-Null
+          $env:GOBLIN_OBSERVATION_EVIDENCE = $evidence
           'GOBLIN_OBSERVATION_EVIDENCE=' + $evidence | Out-File -Append -FilePath $env:GITHUB_ENV
           @'
           import json, os, pathlib, subprocess
