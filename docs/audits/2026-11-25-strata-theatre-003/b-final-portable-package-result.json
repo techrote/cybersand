@@ -1,0 +1,74 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "godot_invocations": 0,
+  "original_archive_and_extracted_bytes_unchanged": true,
+  "original_frozen_package_reader_outcome": {
+    "reason": "Observation did not execute the external graphical driver",
+    "status": "rejected"
+  },
+  "original_predecessor_function_restored": true,
+  "package": {
+    "archive_bytes": 477296145,
+    "archive_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "archive_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "file_count_including_manifest": 2549,
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "uncompressed_bytes": 622420427
+  },
+  "portable_frozen_package_reader_outcome": {
+    "pristine": true,
+    "status": "passed"
+  },
+  "reader_identity": {
+    "external_adapter_sha256": "65f0b6e13a89afd9ed5500ce96d1925947e08dcb83ecb65937c1281c7945eec8",
+    "frozen_module_inputs_sha256": {
+      "tools/build_strata2_gallery.py": "420456e897cc73ca388d0f4f6b362c9af8bb0a0ec2d31134a54a5c25f221f47a",
+      "tools/build_strata3_gallery.py": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b",
+      "tools/ci/check_docs.py": "69cec3189b81770c26b368884f37c6351a5a2a150ac0c57aa06cfec9e5e55e5e",
+      "tools/ci/check_repository.py": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+      "tools/ci/execution_telemetry.py": "3022c51d9fc08316c840c68f04417108b9b4b91fa644eb2ede1a891ca7f3d137",
+      "tools/ci/godot_process_monitor.py": "8012d2f9d6e8b9153325adf8d5866c9d0ae4e3f95e20ae06eeea0bbcd6904571",
+      "tools/ci/godot_scheduling.py": "a4729708e3631ac728aa6a6ebd1dce7ca524f54325b6f62f997587a018712062",
+      "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd",
+      "tools/ci/native_candidate_identity.py": "51fdf546b8217935628e41b44e514fe757f48d62d4a15985334bf6f99c4e8720",
+      "tools/ci/performance_history.py": "dd0994efd22585e2194cbcc7e81c08d23a9b25bc6179b4ddb3a0380d1b2b937a",
+      "tools/ci/physical_progress_watchdog.py": "3e56def37106eabb44d8ce5e04eed82a431be66126cf7f365c0aac050cd3b379",
+      "tools/ci/qualify_strata2_workbench.py": "a3eb765edca19926cce1711004d6c9ae30f4112048dd875b7dabf81f899560dc",
+      "tools/ci/qualify_strata3_workbench.py": "968b541967b9942dc74efcad136af7a7f23785f9601b469046e7c2e7ffde806e",
+      "tools/ci/run_godot_regressions.py": "f7a9b2c825fe4ef9d42d3846e39fb13d197889f36114600f74d540f7cff27969",
+      "tools/ci/run_windows_godot_regressions.py": "5350e385c92d8a4b9333fa09dd310c99ceaa2b3d1b89f7a8935400471f446cb1",
+      "tools/ci/strata3_predecessor_compare.py": "f01dbdd2f616f5bfb45e4295dd5a4f2a0001a2bc29c5035c2d1bf6c5f2e99568",
+      "tools/ci/strata_process_metrics.py": "347763198ccb5f27f198cef9ae02e02cd4a7205a05c58dc4d9277a94775e2fb9",
+      "tools/ci/stress_physical_godot.py": "fdf4cf24bf10934be7c05a1dcf7313673644c69bdc5c430d68cba81e1734ed19",
+      "tools/ci/wave_mt_runtime_publication.py": "c7dfbd51b8a422598afc7fcc09e1a04691af15b65274723288cc446e0bf5bd8c",
+      "tools/docs/engineering_history.py": "e6bf4c41a2e24760eecfebe7e40bcc55e70e6ef226828aebe5851ec77ba6847b",
+      "tools/docs/retrieval_policy.py": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+      "tools/package_explore001_candidate.py": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+      "tools/package_strata2_workbench.py": "120cf0dda4e4a8eb8675e5d8e84573cb75c1b5d541689d8bde3bf3af89207037",
+      "tools/package_strata3_workbench.py": "2ef3d9cd6f529b6a5af7a6f506371012cd61fe99b405ddfade4f514a5b51f1df",
+      "tools/package_wave_flow_candidate.py": "0c7786bcf9b365ff3d3c71494fc0c1502eabbc8c54fbfb0c5ed3b701358cfb56",
+      "tools/package_workbench_landscape_review.py": "3a3830ca4e89a983cb664eeda61b6306b53d8f73d641bf596c6e3639ec5e522c",
+      "tools/qualify_workbench_landscapes.py": "4a07fbb56600038ed16500d24c632ab1ae88a55337cb8d8b3f1cf12fbd895c86"
+    },
+    "frozen_package_reader": "tools/package_strata3_workbench.py",
+    "frozen_package_reader_sha256": "2ef3d9cd6f529b6a5af7a6f506371012cd61fe99b405ddfade4f514a5b51f1df",
+    "paired_adapter": {
+      "adapter_sha256": "acc4b927e4e1addd053aedd9d505673818a84398326bca5d4bc86f9d6c031dda",
+      "all_other_frozen_gate_code_unchanged": true,
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+      "frozen_reader_path": "tools/ci/strata3_predecessor_compare.py",
+      "frozen_reader_sha256": "f01dbdd2f616f5bfb45e4295dd5a4f2a0001a2bc29c5035c2d1bf6c5f2e99568",
+      "frozen_verify_function_sha256": "e1022a145a4a5c26319364cb69f2abb4f6ec9dc41229552f355e5adf37179e60",
+      "new_expression": "_recorded_command_name(command[-1], record.get('host', {}).get('platform'))",
+      "old_expression": "Path(command[-1]).name",
+      "portable_verify_function_sha256": "cc37284f8f026ad65366abc953830ba9df13b0671fb87fcdc3916557778d018a",
+      "substitution_count": 1
+    }
+  },
+  "schema": "strata3-portable-package-verification-v1",
+  "scope": "Complete frozen static package verifier, with only the reviewed one-expression predecessor path adapter supplied in memory. Expected archive/manifest hashes come from separate download custody. No application execution, package rewrite, or weakening of any other package gate.",
+  "status": "passed"
+}

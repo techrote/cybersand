@@ -174,8 +174,14 @@ The local workspace became unavailable after the hosted package completed.
 [A](package-recovery-review-a.md), [B](b-delivery-recovery-2026-11-26.md) and
 [C](c-final-recovery-receipt.md) preserve compact recovery records of completed
 checks, exact primary artifact identities and unconfirmed local reads.
-The original hosted package gate passed; the additional Linux full-package
-read has no observed completion and is not counted as another pass.
+The original hosted package gate passed. After execution returned, a new
+complete [static package read](b-final-portable-package-result.json),
+[full extracted-campaign/launcher read](package-reader-completion-a.md) and
+[actual uploaded cold-artifact replay](c-cold-uploaded-artifact-reread.md)
+all passed. The original interrupted attempt is still unconfirmed; these later
+reads have their own receipts. All 27 missing committed review/helper files
+were recovered exactly from surviving Git objects and are inventoried in
+[original-review-recovery.json](original-review-recovery.json).
 The [first cold observer rejection](c-cold-first-command-v1-rejection.md)
 is retained without relabelling it a shipped-command failure. The corrected
 [actual cold result](cold-v2-hosted-summary.json) binds the same inner ZIP and
@@ -196,3 +202,21 @@ The [unified machine-readable register](experiment-register.json) joins shader, 
 Current accepted main was refreshed to `c8421a81b8f7f61516ed055f3200b49aee57bd65`; #776 remains open Draft at its original archive. #785 therefore retains the explicit #776 stack. Native runtime inputs remain unchanged; no active programme was imported or promoted.
 
 Local final native preflight passed842checks with explicit headless scope. Current documentation/repository checks and historical M11 integrity passed; the six new retrieval routes were found within topfive, with source-fact review separate from lexical ranking. Full graphical/native/performance/package qualification is requested by sequence3; outcomes remain pending until original artifacts are independently verified.
+
+## Extracted-package cohort and final structural checks
+
+The [actual extracted-package performance review](c-extracted-package-performance-review.md)
+recomputes all 15 original windows without rerunning Godot. Enabled native/Rapier
+rates retain 78.26% Architectural, 80.59% Deep Focus, 75.68% Clarity and 73.49%
+Diorama High relative to this cohort's own Classic. All miss 90%; Deep Focus
+alone meets its p95 limit. PERFORMANCE HOLD remains. All nine initial package
+scene admissions nevertheless pass the unchanged 45-second target, in
+27.495–34.429 seconds; fresh-process reopens take 3.091–4.573 seconds. Preserve
+these as a separate positive cohort, not a causal startup-optimisation claim
+or replacement for the earlier Windows misses.
+
+The final [documentation/source checks](closeout-documentation-validation.json)
+pass in the real companion context; the prior isolated-worktree missing-source
+failure is retained. M11 integrity remains 18 records/28 hashes, optics retrieval
+6/6 top-five, general retrieval30/32 with inherited Q19/Q32 misses. No native
+runtime execution or human perceptual acceptance is inferred from these checks.

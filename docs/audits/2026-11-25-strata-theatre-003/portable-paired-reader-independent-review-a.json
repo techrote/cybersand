@@ -1,0 +1,171 @@
+{
+  "comparison_sha256": "9b4288609b7dfb0e9cdade7d0410e29ab782b75cc0f595f27080bbb7afb96b65",
+  "original_frozen_reader_outcome": {
+    "reason": "Observation did not execute the external graphical driver",
+    "status": "rejected"
+  },
+  "portable_reader_summary": {
+    "classic_world_rgba8_identical": true,
+    "comparative_gate": "observed-targets-met",
+    "criteria": {
+      "native_progression": true,
+      "physical_p95": true,
+      "rapier_progression": true
+    },
+    "matched_actual_native_geometry_actor_camera": true,
+    "medians": {
+      "candidate": {
+        "admission_elapsed_ms": 51531,
+        "native_ticks_per_second": 2.93791599378309,
+        "physical_p95_usec": 329010,
+        "rapier_ticks_per_second": 2.97247971135701
+      },
+      "predecessor": {
+        "admission_elapsed_ms": 50911,
+        "native_ticks_per_second": 2.90549755071745,
+        "physical_p95_usec": 335406,
+        "rapier_ticks_per_second": 2.94008680727361
+      }
+    },
+    "physical_owner_acceptance": "pending",
+    "populations": {
+      "candidate": [
+        {
+          "admission_elapsed_ms": 48930,
+          "admission_target_met": false,
+          "native_ticks_per_second": 2.93791599378309,
+          "physical_intervals_usec": {
+            "count": 85,
+            "maximum": 930236,
+            "p50": 323002,
+            "p95": 329010,
+            "p99": 930236,
+            "stalls_at_least_usec": {
+              "100000": 85,
+              "1000000": 0,
+              "250000": 81,
+              "500000": 2
+            }
+          },
+          "rapier_ticks_per_second": 2.97247971135701
+        },
+        {
+          "admission_elapsed_ms": 53168,
+          "admission_target_met": false,
+          "native_ticks_per_second": 2.93454338712041,
+          "physical_intervals_usec": {
+            "count": 85,
+            "maximum": 944583,
+            "p50": 322067,
+            "p95": 329821,
+            "p99": 944583,
+            "stalls_at_least_usec": {
+              "100000": 84,
+              "1000000": 0,
+              "250000": 82,
+              "500000": 2
+            }
+          },
+          "rapier_ticks_per_second": 2.96906742696888
+        },
+        {
+          "admission_elapsed_ms": 51531,
+          "admission_target_met": false,
+          "native_ticks_per_second": 2.97621323861869,
+          "physical_intervals_usec": {
+            "count": 86,
+            "maximum": 926882,
+            "p50": 321475,
+            "p95": 327301,
+            "p99": 926882,
+            "stalls_at_least_usec": {
+              "100000": 86,
+              "1000000": 0,
+              "250000": 80,
+              "500000": 2
+            }
+          },
+          "rapier_ticks_per_second": 3.01082036930031
+        }
+      ],
+      "predecessor": [
+        {
+          "admission_elapsed_ms": 50911,
+          "admission_target_met": false,
+          "native_ticks_per_second": 2.90772279404745,
+          "physical_intervals_usec": {
+            "count": 84,
+            "maximum": 924245,
+            "p50": 321927,
+            "p95": 330255,
+            "p99": 924245,
+            "stalls_at_least_usec": {
+              "100000": 84,
+              "1000000": 0,
+              "250000": 82,
+              "500000": 2
+            }
+          },
+          "rapier_ticks_per_second": 2.94233854159563
+        },
+        {
+          "admission_elapsed_ms": 57214,
+          "admission_target_met": false,
+          "native_ticks_per_second": 2.90528491039634,
+          "physical_intervals_usec": {
+            "count": 84,
+            "maximum": 936589,
+            "p50": 321831,
+            "p95": 335406,
+            "p99": 936589,
+            "stalls_at_least_usec": {
+              "100000": 84,
+              "1000000": 0,
+              "250000": 81,
+              "500000": 2
+            }
+          },
+          "rapier_ticks_per_second": 2.93987163552011
+        },
+        {
+          "admission_elapsed_ms": 49280,
+          "admission_target_met": false,
+          "native_ticks_per_second": 2.90549755071745,
+          "physical_intervals_usec": {
+            "count": 84,
+            "maximum": 927799,
+            "p50": 321744,
+            "p95": 339119,
+            "p99": 927799,
+            "stalls_at_least_usec": {
+              "100000": 84,
+              "1000000": 0,
+              "250000": 82,
+              "500000": 2
+            }
+          },
+          "rapier_ticks_per_second": 2.94008680727361
+        }
+      ]
+    },
+    "scope": "Paired hosted observations; no physical Windows/NVIDIA acceptance. Median rates and interval tails are distinct. All original admission misses remain failures.",
+    "short_window_limit": "Three fresh processes per source and90display callbacks each; tails and host-load spread remain visible. This is not sustained hardware qualification."
+  },
+  "reader_identity": {
+    "adapter_sha256": "acc4b927e4e1addd053aedd9d505673818a84398326bca5d4bc86f9d6c031dda",
+    "all_other_frozen_gate_code_unchanged": true,
+    "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+    "frozen_reader_path": "tools/ci/strata3_predecessor_compare.py",
+    "frozen_reader_sha256": "f01dbdd2f616f5bfb45e4295dd5a4f2a0001a2bc29c5035c2d1bf6c5f2e99568",
+    "frozen_verify_function_sha256": "e1022a145a4a5c26319364cb69f2abb4f6ec9dc41229552f355e5adf37179e60",
+    "new_expression": "_recorded_command_name(command[-1], record.get('host', {}).get('platform'))",
+    "old_expression": "Path(command[-1]).name",
+    "portable_verify_function_sha256": "cc37284f8f026ad65366abc953830ba9df13b0671fb87fcdc3916557778d018a",
+    "substitution_count": 1
+  },
+  "recorded_platform": "win32",
+  "schema": "strata3-portable-predecessor-verification-v1",
+  "scope": "Cross-host retained-command basename correction only; original observations and all frozen gates remain unchanged. No application mutation or new runtime execution.",
+  "status": "passed"
+}

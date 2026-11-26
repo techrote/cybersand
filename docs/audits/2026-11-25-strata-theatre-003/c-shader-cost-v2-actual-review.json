@@ -1,0 +1,579 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "disposition": "Credible deferred optimization candidate. Frozen fd principal evaluator remains unchanged and PERFORMANCE HOLD; A1 requires new application identity and new scoped/full delivery gates.",
+  "observer_source": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+  "observer_tree": "edc750a1e2205b079dca5fd284af9091038aca6d",
+  "platforms": {
+    "linux": {
+      "actual_renderer": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+      "artifact_id": 15077982082,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45733231981/artifacts/15077982082",
+      "independent_recomputation": {
+        "checks": 4256,
+        "failures": [],
+        "groups": {
+          "architectural-empty-coverage": {
+            "admission_ms": [
+              2035,
+              2329,
+              1963
+            ],
+            "maximum_interval": 207564,
+            "native_min_med_max": [
+              6.107516445002706,
+              6.169678498053466,
+              6.262024494225428
+            ],
+            "native_ratio": 0.8968207923988452,
+            "p95_limit": 207762.0,
+            "p95_median": 201378,
+            "p95_target_met": true,
+            "per_repeat_ratios": [
+              1.0804619999934122,
+              1.121872505744176,
+              1.0745190406330174
+            ],
+            "rapier_ratio": 0.8968207923988452,
+            "rate_target_met": false,
+            "ratio_to_same_profile_original": 1.0914588981217628
+          },
+          "architectural-original": {
+            "admission_ms": [
+              1708,
+              2007,
+              1680
+            ],
+            "maximum_interval": 232796,
+            "native_min_med_max": [
+              5.581761262677183,
+              5.652689724432646,
+              5.741804718898982
+            ],
+            "native_ratio": 0.8216716121350418,
+            "p95_limit": 207762.0,
+            "p95_median": 214941,
+            "p95_target_met": false,
+            "rapier_ratio": 0.8216716121350418,
+            "rate_target_met": false
+          },
+          "clarity-empty-coverage": {
+            "admission_ms": [
+              1773,
+              1987,
+              2060
+            ],
+            "maximum_interval": 210217,
+            "native_min_med_max": [
+              6.21024483855387,
+              6.2236260733569715,
+              6.258452866853103
+            ],
+            "native_ratio": 0.9046625798188784,
+            "p95_limit": 207762.0,
+            "p95_median": 183013,
+            "p95_target_met": true,
+            "per_repeat_ratios": [
+              1.1616823929772324,
+              1.1899493184861267,
+              1.1616817008088252
+            ],
+            "rapier_ratio": 0.9046625798188784,
+            "rate_target_met": true,
+            "ratio_to_same_profile_original": 1.164184780157402
+          },
+          "clarity-original": {
+            "admission_ms": [
+              2044,
+              1969,
+              2086
+            ],
+            "maximum_interval": 249196,
+            "native_min_med_max": [
+              5.2594280862442195,
+              5.345909154142623,
+              5.357424809897198
+            ],
+            "native_ratio": 0.7770781711272371,
+            "p95_limit": 207762.0,
+            "p95_median": 240610,
+            "p95_target_met": false,
+            "rapier_ratio": 0.7770781711272372,
+            "rate_target_met": false
+          },
+          "classic-original": {
+            "admission_ms": [
+              1877,
+              2217,
+              2079
+            ],
+            "maximum_interval": 188921,
+            "native_min_med_max": [
+              6.763030992919335,
+              6.879499840264198,
+              6.8858917980363294
+            ],
+            "native_ratio": 1.0,
+            "p95_limit": 207762.0,
+            "p95_median": 173135,
+            "p95_target_met": true,
+            "rapier_ratio": 1.0,
+            "rate_target_met": true
+          }
+        },
+        "report_sha256": "72ab1f6551cdceb761b16feeecee8cd6b3455d25a05fbbef22422fab69989483",
+        "rows": [
+          {
+            "admission_ms": 1877,
+            "callbacks": 90,
+            "case": "classic-original",
+            "max": 182752,
+            "native": 6.879499840264198,
+            "native_delta": 89,
+            "p95": 173135,
+            "rapier": 6.956797591278402,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "admission_ms": 1708,
+            "callbacks": 90,
+            "case": "architectural-original",
+            "max": 232796,
+            "native": 5.652689724432646,
+            "native_delta": 89,
+            "p95": 212243,
+            "rapier": 5.716203092122901,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "admission_ms": 2035,
+            "callbacks": 90,
+            "case": "architectural-empty-coverage",
+            "max": 207564,
+            "native": 6.107516445002706,
+            "native_delta": 89,
+            "p95": 199520,
+            "rapier": 6.1761402252836355,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "admission_ms": 2044,
+            "callbacks": 90,
+            "case": "clarity-original",
+            "max": 245305,
+            "native": 5.357424809897198,
+            "native_delta": 89,
+            "p95": 240610,
+            "rapier": 5.417620594278065,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "admission_ms": 1773,
+            "callbacks": 90,
+            "case": "clarity-empty-coverage",
+            "max": 210217,
+            "native": 6.2236260733569715,
+            "native_delta": 89,
+            "p95": 182012,
+            "rapier": 6.293554456203679,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "admission_ms": 1987,
+            "callbacks": 90,
+            "case": "clarity-empty-coverage",
+            "max": 207551,
+            "native": 6.258452866853103,
+            "native_delta": 89,
+            "p95": 188739,
+            "rapier": 6.328772561986284,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "admission_ms": 1969,
+            "callbacks": 90,
+            "case": "clarity-original",
+            "max": 249196,
+            "native": 5.2594280862442195,
+            "native_delta": 89,
+            "p95": 245634,
+            "rapier": 5.31852278384247,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "admission_ms": 2329,
+            "callbacks": 90,
+            "case": "architectural-empty-coverage",
+            "max": 206973,
+            "native": 6.262024494225428,
+            "native_delta": 89,
+            "p95": 202779,
+            "rapier": 6.332384320003242,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "admission_ms": 2007,
+            "callbacks": 90,
+            "case": "architectural-original",
+            "max": 231010,
+            "native": 5.581761262677183,
+            "native_delta": 89,
+            "p95": 214941,
+            "rapier": 5.644477681358949,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "admission_ms": 2217,
+            "callbacks": 90,
+            "case": "classic-original",
+            "max": 186921,
+            "native": 6.8858917980363294,
+            "native_delta": 89,
+            "p95": 161648,
+            "rapier": 6.963261368800782,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "admission_ms": 2079,
+            "callbacks": 90,
+            "case": "classic-original",
+            "max": 188921,
+            "native": 6.763030992919335,
+            "native_delta": 89,
+            "p95": 179113,
+            "rapier": 6.839020105199327,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "admission_ms": 1680,
+            "callbacks": 90,
+            "case": "architectural-original",
+            "max": 231433,
+            "native": 5.741804718898982,
+            "native_delta": 89,
+            "p95": 225366,
+            "rapier": 5.806319378661892,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "admission_ms": 1963,
+            "callbacks": 90,
+            "case": "architectural-empty-coverage",
+            "max": 205752,
+            "native": 6.169678498053466,
+            "native_delta": 89,
+            "p95": 201378,
+            "rapier": 6.239000728368674,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "admission_ms": 2086,
+            "callbacks": 90,
+            "case": "clarity-original",
+            "max": 248963,
+            "native": 5.345909154142623,
+            "native_delta": 89,
+            "p95": 209959,
+            "rapier": 5.4059755491329895,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "admission_ms": 2060,
+            "callbacks": 90,
+            "case": "clarity-empty-coverage",
+            "max": 209787,
+            "native": 6.21024483855387,
+            "native_delta": 89,
+            "p95": 183013,
+            "rapier": 6.280022870447733,
+            "rapier_steps": 90,
+            "repeat": 2
+          }
+        ],
+        "scope": "Independent recomputation from complete actual completed-step arrays; strict published reader separately passed. No source adoption or physical GPU acceptance."
+      },
+      "initial_admission_ms": 12991,
+      "initial_admission_target_met": true,
+      "strict_reader_output_sha256": "29860e83df11cf970f6c597e68824e58806478d10217cc68353b2424dcb17b1a",
+      "strict_reader_passed": true,
+      "zip_bytes": 14800104,
+      "zip_sha256": "70eccf59fc91c96d88c0f390cc48995454022a5567405457d7ea7c1c8e51464a"
+    },
+    "windows": {
+      "actual_renderer": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "artifact_id": 15078960632,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45733231981/artifacts/15078960632",
+      "independent_recomputation": {
+        "checks": 4255,
+        "failures": [],
+        "groups": {
+          "architectural-empty-coverage": {
+            "maximum_interval": 1040738,
+            "native_min_med_max": [
+              2.6177161973278,
+              2.6787219991910263,
+              2.6847144635733873
+            ],
+            "native_ratio": 0.9075285602179264,
+            "p95_limit": 401822.39999999997,
+            "p95_median": 370074,
+            "p95_target_met": true,
+            "rapier_ratio": 0.9075285602179264,
+            "rate_target_met": true,
+            "ratio_to_same_profile_original": 1.132884103377119
+          },
+          "architectural-original": {
+            "maximum_interval": 1172932,
+            "native_min_med_max": [
+              2.3380771254408326,
+              2.3645154797439347,
+              2.412553125089968
+            ],
+            "native_ratio": 0.8010780251153586,
+            "p95_limit": 401822.39999999997,
+            "p95_median": 417686,
+            "p95_target_met": false,
+            "rapier_ratio": 0.8011791713306511,
+            "rate_target_met": false
+          },
+          "clarity-empty-coverage": {
+            "maximum_interval": 1054236,
+            "native_min_med_max": [
+              2.660808184909068,
+              2.6622645772895193,
+              2.6909095692930145
+            ],
+            "native_ratio": 0.901952923624176,
+            "p95_limit": 401822.39999999997,
+            "p95_median": 372136,
+            "p95_target_met": true,
+            "rapier_ratio": 0.901952923624176,
+            "rate_target_met": true,
+            "ratio_to_same_profile_original": 1.2146432078970895
+          },
+          "clarity-original": {
+            "maximum_interval": 1277101,
+            "native_min_med_max": [
+              2.183067422639204,
+              2.1918078987974545,
+              2.2025304996648316
+            ],
+            "native_ratio": 0.7425661443295157,
+            "p95_limit": 401822.39999999997,
+            "p95_median": 452992,
+            "p95_target_met": false,
+            "rapier_ratio": 0.7426599026810725,
+            "rate_target_met": false
+          },
+          "classic-original": {
+            "maximum_interval": 946108,
+            "native_min_med_max": [
+              2.891330113377268,
+              2.9516668858859716,
+              2.9614534227763256
+            ],
+            "native_ratio": 1.0,
+            "p95_limit": 401822.39999999997,
+            "p95_median": 334852,
+            "p95_target_met": true,
+            "rapier_ratio": 1.0,
+            "rate_target_met": true
+          }
+        },
+        "initial_admission_ms": 63802,
+        "report_sha256": "8de6ce0e282c0c05a3e7ec47a08badfdd07a60ab694ea66b0f74079047f438af",
+        "rows": [
+          {
+            "callbacks": 90,
+            "case": "classic-original",
+            "maximum": 936584,
+            "native": 2.9614534227763256,
+            "native_delta": 89,
+            "p95": 332785,
+            "rapier": 2.99472818033561,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "callbacks": 90,
+            "case": "architectural-original",
+            "maximum": 1172932,
+            "native": 2.3380771254408326,
+            "native_delta": 89,
+            "p95": 423052,
+            "rapier": 2.364347654940168,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "callbacks": 90,
+            "case": "architectural-empty-coverage",
+            "maximum": 1034765,
+            "native": 2.6177161973278,
+            "native_delta": 89,
+            "p95": 377243,
+            "rapier": 2.647128738870809,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "callbacks": 90,
+            "case": "clarity-original",
+            "maximum": 1269515,
+            "native": 2.183067422639204,
+            "native_delta": 89,
+            "p95": 454858,
+            "rapier": 2.207596270084588,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "callbacks": 90,
+            "case": "clarity-empty-coverage",
+            "maximum": 1047357,
+            "native": 2.660808184909068,
+            "native_delta": 89,
+            "p95": 372136,
+            "rapier": 2.6907049060878214,
+            "rapier_steps": 90,
+            "repeat": 0
+          },
+          {
+            "callbacks": 90,
+            "case": "clarity-empty-coverage",
+            "maximum": 1045908,
+            "native": 2.6622645772895193,
+            "native_delta": 89,
+            "p95": 371987,
+            "rapier": 2.6921776624276035,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "callbacks": 90,
+            "case": "clarity-original",
+            "maximum": 1277101,
+            "native": 2.1918078987974545,
+            "native_delta": 88,
+            "p95": 449239,
+            "rapier": 2.216714806738335,
+            "rapier_steps": 89,
+            "repeat": 1
+          },
+          {
+            "callbacks": 90,
+            "case": "architectural-empty-coverage",
+            "maximum": 1040738,
+            "native": 2.6847144635733873,
+            "native_delta": 89,
+            "p95": 367655,
+            "rapier": 2.7148797946247734,
+            "rapier_steps": 90,
+            "repeat": 1
+          },
+          {
+            "callbacks": 90,
+            "case": "architectural-original",
+            "maximum": 1172380,
+            "native": 2.3645154797439347,
+            "native_delta": 88,
+            "p95": 412409,
+            "rapier": 2.391384973831934,
+            "rapier_steps": 89,
+            "repeat": 1
+          },
+          {
+            "callbacks": 90,
+            "case": "classic-original",
+            "maximum": 946108,
+            "native": 2.891330113377268,
+            "native_delta": 88,
+            "p95": 347177,
+            "rapier": 2.9241861373929185,
+            "rapier_steps": 89,
+            "repeat": 1
+          },
+          {
+            "callbacks": 90,
+            "case": "classic-original",
+            "maximum": 945814,
+            "native": 2.9516668858859716,
+            "native_delta": 89,
+            "p95": 334852,
+            "rapier": 2.9848316823566003,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "callbacks": 90,
+            "case": "architectural-original",
+            "maximum": 1171088,
+            "native": 2.412553125089968,
+            "native_delta": 90,
+            "p95": 417686,
+            "rapier": 2.439359270924301,
+            "rapier_steps": 91,
+            "repeat": 2
+          },
+          {
+            "callbacks": 90,
+            "case": "architectural-empty-coverage",
+            "maximum": 1038689,
+            "native": 2.6787219991910263,
+            "native_delta": 89,
+            "p95": 370074,
+            "rapier": 2.7088199991819364,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "callbacks": 90,
+            "case": "clarity-original",
+            "maximum": 1266489,
+            "native": 2.2025304996648316,
+            "native_delta": 89,
+            "p95": 452992,
+            "rapier": 2.227278033368931,
+            "rapier_steps": 90,
+            "repeat": 2
+          },
+          {
+            "callbacks": 90,
+            "case": "clarity-empty-coverage",
+            "maximum": 1054236,
+            "native": 2.6909095692930145,
+            "native_delta": 90,
+            "p95": 372378,
+            "rapier": 2.720808564507381,
+            "rapier_steps": 91,
+            "repeat": 2
+          }
+        ],
+        "scope": "Independent recomputation of every actual completed-step sequence, counter-derived rate and p95 from original Windows v2 report; unchanged published strict reader separately passed. No source adoption or physical GPU acceptance."
+      },
+      "initial_admission_ms": 63802,
+      "initial_admission_target_met": false,
+      "strict_reader_output_sha256": "d8cfa07f98801530e5853ddba3601c6cae69659d42b8129d0b7751d7d39357df",
+      "strict_reader_passed": true,
+      "zip_bytes": 12530465,
+      "zip_sha256": "ca2a65fc25e40e5e6bdaad898fdc8ba8fc1c7d9314bf100c81b8b4d2bb7f59e4"
+    }
+  },
+  "reviewer": "Specialist C, gameplay/readability/qualification",
+  "run_id": 45733231981,
+  "schema": "strata3-c-independent-shader-cost-v2-review-v1",
+  "scope": "Independent unmodified published strict reader on both actual platforms plus independent recomputation of every completed-step sequence, counter-derived rate and nearest-rank p95. Small native challenge only; no physical GPU or source-adoption claim."
+}

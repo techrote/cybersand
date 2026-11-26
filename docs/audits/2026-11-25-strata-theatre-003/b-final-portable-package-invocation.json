@@ -1,0 +1,31 @@
+{
+  "command": [
+    "python3",
+    "/tmp/strata003-b-reader-recovery/strata3_package_portable_verify.py",
+    "--source-repo",
+    "/workspace/scratch/119285bae098/cybersand",
+    "--archive",
+    "/tmp/strata003-cold-upload-review/owner-package/CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "--archive-sha256",
+    "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "--manifest-sha256",
+    "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "--extract-to",
+    "/tmp/strata003-b-reader-completion/pristine-package",
+    "--output",
+    "/tmp/strata003-b-reader-completion/portable-package-result.json"
+  ],
+  "completed_at_utc": "2026-11-26T02:48:29.037260+00:00",
+  "exit_code": 0,
+  "godot_invocations": 0,
+  "prior_session_12723_result": "UNCONFIRMED; no completed receipt recovered, old session transport unavailable",
+  "receipt_sha256": "dd44915ab596b63e206107f3941428dd6aef84506a7b5d0fe1bc40cc8afe231c",
+  "receipt_status": "passed",
+  "schema": "strata3-b-recovered-static-reader-invocation-v1",
+  "source_helper_commit": "33eff6952282177be479dfa55f4b509648c66981",
+  "source_helper_sha256": "65f0b6e13a89afd9ed5500ce96d1925947e08dcb83ecb65937c1281c7945eec8",
+  "started_at_utc": "2026-11-26T02:48:08.334612+00:00",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "eea70594fca367a35c8f27edcbf53c14c3f2b82facc9e81eac6fc9b3b954208e",
+  "wall_seconds": 20.70243998300066
+}

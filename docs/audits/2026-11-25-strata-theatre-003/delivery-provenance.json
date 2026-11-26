@@ -1,6 +1,6 @@
 {
   "schema": "strata3-delivery-provenance-v1",
-  "recorded_at_utc": "2026-11-26T02:42:04Z",
+  "recorded_at_utc": "2026-11-26T02:57:06.871991+00:00",
   "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
   "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
   "draft_pr": 785,
@@ -38,7 +38,7 @@
     "outer_sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513",
     "verified_member_count": 4245,
     "uncompressed_bytes": 619413588,
-    "verification_scope": "B original safe extraction, CRC and target hashes completed before outage. Additional final full-package Linux reader had no observed completion."
+    "verification_scope": "Original artifact redownloaded and all4245 files independently verified after recovery; unchanged frozen31-case full reader and original launcher receipt checks PASS. See package-reader-completion-a.md."
   },
   "hosted_package": {
     "run_id": 45721790366,
@@ -52,7 +52,7 @@
     "post_cmd_static_result_utc": "2026-11-26T02:08:40.8930097Z",
     "job_completed_utc": "2026-11-26T02:09:10Z",
     "independent_review": "package-recovery-review-a.md",
-    "local_additional_full_reader": "UNCONFIRMED; root/A commands never started, B had no observed completion"
+    "local_additional_full_reader": "PASS on a newly observed recovered-workspace run; old interrupted session12723 remains UNCONFIRMED. B exact helper verifies all2549 pristine files/28 frozen module inputs; A unchanged full-campaign reader and actual launcher checks separately PASS."
   },
   "runtime": {
     "godot": {
@@ -89,7 +89,6 @@
     "first_artifact": 15081990856,
     "first_artifact_bytes": 242423,
     "first_artifact_sha256": "00595d7c3830b17ba2d5eceb0a9539d960fbc9553f19d7a2095def295c8b5cfc",
-    "controls_passed": 21,
     "reason": "Dynamically loaded frozen package verifier omitted from sys.modules-based required-source inventory; no Godot process launched.",
     "additional_custody_issue": "Pinned artifact upload default omitted retained observer/.github source; corrected observer must explicitly include hidden files for bounded output.",
     "timeout_seconds": 180,
@@ -136,8 +135,10 @@
       "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
     },
     "scope": "First shipped CMD on a new extraction with no prior Godot invocation. Cold import command lifetime and ordinary native Workbench admission/shutdown; no nine-scene rerun or physical GPU acceptance.",
-    "independent_after_outage_review": "Root/A/C independently read exact hosted log, strict-reader summary, workflow and artifact metadata. No local raw artifact extraction/replay was possible.",
-    "summary_file": "cold-v2-hosted-summary.json"
+    "independent_after_outage_review": "Root/A/C original hosted log review followed by C actual original uploaded artifact download/extraction and unchanged92ec strict-reader PASS against exact evaluator ZIP;15 files/14-entry ledger, hidden workflow present, no Godot invocation.",
+    "summary_file": "cold-v2-hosted-summary.json",
+    "first_controls_passed": 21,
+    "uploaded_artifact_reread": "c-cold-uploaded-artifact-reread.json"
   },
   "preserved_predecessor": {
     "application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
@@ -160,18 +161,21 @@
   "recovery": {
     "last_preoutage_durable_archive": "75b60f4aab9512ca668da12d58d51220e5b2cdef",
     "unpublished_local_archive_tip": "ac511fc9",
-    "kind": "Compact remote recovery of material completed observations; not byte-identical recovery of unavailable local review files.",
+    "kind": "Original compact outage checkpoints retained; later27 missing committed files recovered byte-for-byte from shared Git objects, plus new completed static evidence reads.",
     "review_commits": {
       "a": "cb89bc93a07a402aaee0c3449b0a4852b295baf2",
       "b": "803b3260cb9707693378c1f1f242650c237a6e6b",
       "c": "da895726985006ff6d422a45ef5a1e873a937c4a"
     },
-    "final_local_doc_gate": "not rerun; isolated archive check lacked six companion expected-fact files; not a pass",
+    "final_local_doc_gate": "PASS: unchanged documentation/repository check in actual companion context; historical M11 PASS. Prior isolated failure retained. No runtime acceptance from structural checks.",
     "final_review_commits": {
       "a": "0d76c819f2828eeb2d8b8a74e9ff35f9798e54f4",
       "b": "caf1c9312a1474d8de98c172fa2b2f5034431542",
       "c": "4c4677a39df21cf20cee957f783235b929b56bc2"
-    }
+    },
+    "initial_kind": "Compact remote recovery of material completed observations; not byte-identical recovery of unavailable local review files.",
+    "original_review_recovery": "original-review-recovery.json",
+    "final_validation": "closeout-documentation-validation.json"
   },
   "owner_steps": [
     "Extract downloaded GitHub artifact ZIP.",
@@ -187,5 +191,52 @@
     "Bright-daylight native readability corpus.",
     "Camera rotation unavailable and unqualified.",
     "A1 dense-scene and ordinary-source adoption gates deferred."
-  ]
+  ],
+  "post_recovery_reads": {
+    "a_full_campaign": "package-reader-completion-a.json",
+    "b_full_static_package": "b-final-portable-package-result.json",
+    "b_invocation": "b-final-portable-package-invocation.json",
+    "c_actual_cold_artifact": "c-cold-uploaded-artifact-reread.json",
+    "scope": "Original artifacts, new observed static reads; no runtime rerun; old incomplete attempt not relabelled."
+  },
+  "extracted_package_performance": {
+    "review": "c-extracted-package-performance-review.json",
+    "progression_report_sha256": "7de2d920e400cd950048cd5ed591b101974534bb2af031f0bd4487170745b101",
+    "windows": 15,
+    "completed_rapier_steps": 1350,
+    "physical_intervals": 1335,
+    "native_and_rapier_rate_ratios": {
+      "architectural": 0.78258824,
+      "cinematic_deep_focus": 0.80588768,
+      "gameplay_clarity": 0.75681142,
+      "diorama_high": 0.73493942
+    },
+    "all_enabled_rate_targets_met": false,
+    "classic_physical_p95_ms": 211.98,
+    "p95_limit_ms": 254.376,
+    "enabled_p95_ms": {
+      "architectural": 255.069,
+      "cinematic_deep_focus": 247.462,
+      "gameplay_clarity": 267.35,
+      "diorama_high": 272.173
+    },
+    "initial_scene_admissions_ms": [
+      28475,
+      34429,
+      30728,
+      28959,
+      28102,
+      28747,
+      27608,
+      27495,
+      31056
+    ],
+    "initial_scene_admissions_all_pass": true,
+    "admission_target_ms": 45000,
+    "reopen_range_ms": [
+      3091,
+      4573
+    ],
+    "scope": "Separate actual extracted-package cohort; does not erase prior source/predecessor failures or establish causal startup improvement. P99 descriptive only."
+  }
 }

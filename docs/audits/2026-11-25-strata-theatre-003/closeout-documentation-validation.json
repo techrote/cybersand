@@ -1,0 +1,119 @@
+{
+  "schema": "strata3-closeout-documentation-validation-v1",
+  "recorded_at_utc": "2026-11-26T02:51:41.498221+00:00",
+  "base_commit": "32b01d9ac466c35a87b884dae0e69af7fa50b244",
+  "scope": "Current canonical documentation/source identity and historical integrity, in the real companion workspace context; no runtime execution. Restored review/tool blobs are recorded separately.",
+  "source_inputs_sha256": {
+    "docs/systems/strata-optics.md": "7cd206cba471786598526faa3d01f66e75b405879922852ed11e2893d244f9ba",
+    "docs/operations/strata-optics-evaluation.md": "a3cad8a4b3ecf6ada48179d2bba93302238f15cfe51fcd6e5ae2c8e81216076c",
+    "docs/operations/strata-optical-composition.md": "280626ed752fe9cba812b820982b303db0a58fb997fe7058976da072ac5b7d95",
+    "tools/ci/check_docs.py": "69cec3189b81770c26b368884f37c6351a5a2a150ac0c57aa06cfec9e5e55e5e",
+    "tools/ci/check_repository.py": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+    "tools/ci/check_m11_consistency.py": "8d1e3ce2f92c02b388b243082b08a8b27fac2e0e02d652935a7a7cb6b9885a7c",
+    "tools/docs/retrieval_eval.py": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+    "docs/reference/retrieval-questions-strata-optics.json": "ae48653fa1e06ccccb0a31767eaba04c428c866da96c93018613bfdf9bbc2f51",
+    "docs/reference/retrieval-questions.json": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f"
+  },
+  "documentation": {
+    "status": "passed",
+    "documents": 152,
+    "navigation_link_documents": 8,
+    "canonical_claims": 289,
+    "local_links": 4191,
+    "heading_anchors": 805,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "repository": {
+    "status": "passed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 152,
+      "navigation_link_documents": 8,
+      "canonical_claims": 289,
+      "local_links": 4191,
+      "heading_anchors": 805,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [],
+    "unmaterialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "retrieval_optics": {
+    "questions": 6,
+    "canonical_hit_at_1": 3,
+    "canonical_hit_at_k": 6,
+    "mrr_at_k": 0.7222,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "retrieval_general": {
+    "questions": 32,
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 30,
+    "mrr_at_k": 0.7292,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "report_sha256": {
+    "docs": "e56d6962c1028a6c7ae000dd4d5ec9469c1e9bc8168ee30aedcc4aff0850a0f8",
+    "repository": "cb7b459c3c82b632ff7e7abd4afe36f3876cffdd6fb2ab454562f4449ebabe69",
+    "m11": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+    "retrieval-optics": "9d088ebdc1938b7a7399a238cb9f2d47d118271ee9783e2f657a98625b89ae0f",
+    "retrieval-general": "c6b4a0ce935b9e28e158a07ac2405a757eedb8a9bc38a259f27593a9d178c2a6"
+  },
+  "prior_isolated_failure": "Six expected-fact references point to real companion files outside source root. The /tmp isolated worktree lacked them; same unmodified checker passes in original companion context. No placeholder files or gate changes.",
+  "limitations": [
+    "Repository check admits committed LFS pointers; this is not new native runtime execution.",
+    "Retrieval hit@5 is not source-fact correctness; general Q19/Q32 remain inherited misses.",
+    "Original interrupted package-reader session remains unconfirmed; new independent read receipts are separate."
+  ]
+}

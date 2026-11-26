@@ -1,0 +1,31 @@
+{
+  "pull_requests": [
+    {
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "base_ref": "main",
+      "draft": true,
+      "head": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "head_ref": "feat/world-steer-collaborative-architecture-20261124",
+      "merged": false,
+      "number": 777,
+      "state": "open",
+      "updated_at": "2026-11-25T06:55:38Z",
+      "url": "https://github.com/techrote/cybersand/pull/777"
+    },
+    {
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "base_ref": "main",
+      "draft": true,
+      "head": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "head_ref": "art/collaborative-002",
+      "merged": false,
+      "number": 780,
+      "state": "open",
+      "updated_at": "2026-11-26T00:50:43Z",
+      "url": "https://github.com/techrote/cybersand/pull/780"
+    }
+  ],
+  "recorded_at_utc": "2026-11-26 02:12:50 UTC",
+  "schema": "strata3-concurrent-seam-refresh-v1",
+  "scope": "Read-only PR and source review; no merge, import or integrated runtime qualification"
+}

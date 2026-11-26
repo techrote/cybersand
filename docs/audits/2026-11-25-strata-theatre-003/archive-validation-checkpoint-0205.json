@@ -1,0 +1,59 @@
+{
+  "schema": "strata3-archive-validation-checkpoint-v1",
+  "scope": "Evidence archive at published75b60 tree plus explicitly later docs/observers; not new graphical execution",
+  "checks": {
+    "documentation": {
+      "original_summary_sha256": "0bc5b74ee4be4472517e63c2700a14ddb0d2d352367cc07809e443a2a4b991b3",
+      "status": "failed",
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "scope": "current documentation/source route checks"
+    },
+    "historical_m11": {
+      "original_summary_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "status": "passed",
+      "errors": [],
+      "scope": "historical M11 integrity; no current runtime acceptance"
+    },
+    "repository": {
+      "original_summary_sha256": "9a3becb382f4b6c5761c0983960559dde16310be26c1105f9cfb26bc154b84b0",
+      "status": "failed",
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "scope": "current source/documentation and artifact identity"
+    },
+    "strata_retrieval": {
+      "summary_sha256": "cd03673a82789bd67ccc59212ab3ca764ae6e3d747e9eed5ffb4075d355ae209",
+      "metrics": {
+        "questions": 6,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 6,
+        "mrr_at_k": 0.7222,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "general_retrieval": {
+      "summary_sha256": "88e79653c9f3b2eef0c9c2270a1214e9adc5c8d3be4c246d5caa6d14bd9e504b",
+      "metrics": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.7292,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  },
+  "interpretation": "All reported documentation/repository errors are the six inherited companion-workspace expected-fact inputs absent beside the isolated /tmp worktree. They remain failures in this context; no check or expected fact was removed. Run final gates in the established source-workspace context. Historical M11 integrity passes18records/28hashes; new Strata routes6/6 top5, general30/32 with inheritedQ19/Q32 misses; lexical success is not source-fact or runtime acceptance."
+}

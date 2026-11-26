@@ -338,6 +338,35 @@ not replace those Windows observations. Neither hosted llvmpipe nor ANGLE over
 Microsoft Basic Render Driver represents the owner's physical Windows 11/NVIDIA
 machine.
 
+### Actual extracted-package performance: separate cohort
+
+The shipped-package job provides a further matched population from the same
+frozen application. A and C independently recomputed all 15 original windows,
+1,350 completed Rapier steps and 1,335 completion intervals. No runtime was
+rerun. Its own Classic measured 5.000483 native ticks/s and physical p95 of
+211.980 ms; the unchanged p95 bound is 254.376 ms.
+
+| Profile | Native/Rapier rate relative to package Classic | Median physical p95 | Registered result |
+| --- | ---: | ---: | --- |
+| Architectural / Balanced | 0.782588 | 255.069 ms | Rate and p95 miss |
+| Cinematic Deep Focus / Balanced | 0.805888 | 247.462 ms | Rate miss; p95 meets |
+| Gameplay Clarity / Balanced | 0.756811 | 267.350 ms | Rate and p95 miss |
+| Diorama / High | 0.734939 | 272.173 ms | Rate and p95 miss |
+
+Every enabled rate remains below 90%, so the delivered package retains the
+performance HOLD. The [independent package performance review](c-extracted-package-performance-review.md)
+retains every repeat, actual interval distribution, descriptive p99/max and
+stalls. P99 is not a separately registered acceptance gate; with 89 gaps per
+window, nearest-rank p99 equals that window's maximum.
+
+All nine **initial scene admissions in this extracted-package cohort pass
+45 seconds**, ranging from 27.495 to 34.429 s; reopens take 3.091–4.573 s.
+The progression and motion fixtures initially admit in 33.794 and 27.067 s.
+These are useful positive observations, separate from the earlier source
+Windows cohort's nine misses and the five original Strata 002 failures.
+Different job conditions and populations preclude claiming a particular
+startup optimisation or causal improvement. The target is unchanged.
+
 ## Experiments, rejected approaches and limits
 
 The unified [experiment register](experiment-register.json) joins each hypothesis
@@ -458,8 +487,9 @@ read the original hosted job and emitted result; their independent
 [A review](cold-first-command-review-a.md) and
 [C review](c-cold-first-command-v2-review.md) retain the source boundaries. The
 [unaltered emitted JSON in a compact summary](cold-v2-hosted-summary.json)
-preserves exactly what was reported; no post-outage local artifact replay is
-claimed.
+preserves exactly what was reported. A later independent actual uploaded-artifact
+replay also passed, as recorded below; the original remote-only reviews retain
+their historical scope.
 
 Held process lifetimes were 90.025416 s for the whole CMD, 11.1453828 s for its
 cold import command and 78.8635987 s for the ordinary Workbench command. The
@@ -468,16 +498,38 @@ scene-admission or input-to-photon times. The 180-second command watchdog is
 separate from the unchanged 45-second Strata scene target. This annex does not
 rerun the nine-scene campaign or erase its recorded admission failures.
 
-The additional independent Linux full-package re-read was interrupted by loss
-of the local execution environment. A/root re-read commands did not start;
-B's optional reader had no observed completion. Its ten source/adverse controls
-passed, but its actual final-ZIP execution remains **UNCONFIRMED**. This does
-not replace or erase the original hosted Windows gates. The three
-[recovery reviews](package-recovery-review-a.md),
-[B's record](b-delivery-recovery-2026-11-26.md) and
-[C's record](c-final-recovery-receipt.md) distinguish completed observations,
-compact reconstructed notes and inaccessible original local files. Raw hosted
-artifacts remain the primary evidence.
+The earlier independent local reads were interrupted by loss of the execution
+environment. Those attempts remain historically unconfirmed. When execution
+returned, the temporary artifact folders were absent, but committed Git objects
+survived. All 27 previously unpublished review/helper files absent from archive
+32b were recovered byte for byte; the [recovery inventory](original-review-recovery.json)
+records every original blob and SHA-256 without overwriting the newer canonical
+guides or corrected cold observer.
+
+New, independently observed reads now close the outstanding evidence gaps:
+
+- [A's completed full extracted-campaign and launcher review](package-reader-completion-a.md)
+  re-downloads and verifies the original 4,245-file evidence artifact. The
+  unchanged frozen fd reader passes all 31 cases; actual launcher JSON/logs
+  match the ordinary native source, extent, generation and successful exit.
+- [B's completed static package result](b-final-portable-package-result.json)
+  and [invocation receipt](b-final-portable-package-invocation.json) record a
+  new exit-0 run. The exact previously reviewed helper verifies all 2,549
+  pristine members, 28 frozen Python inputs and deterministic gallery content,
+  preserves the original Windows-path rejection, applies only the reviewed
+  one-expression path adapter, and restores it afterwards. Original session
+  12723 remains unconfirmed; the new run is separate.
+- [C's actual uploaded cold-artifact re-read](c-cold-uploaded-artifact-reread.md)
+  verifies the original 15-file ZIP and complete 14-file ledger, including the
+  retained hidden workflow, then runs the unchanged reader at exact observer
+  92ec against the delivered ZIP. It exits 0 with no stderr and reproduces the
+  original hosted result.
+
+These are static reads of original evidence; no Godot process or runtime
+campaign was rerun. Earlier compact [A](package-recovery-review-a.md),
+[B](b-delivery-recovery-2026-11-26.md) and [C](c-final-recovery-receipt.md)
+recovery records remain intact as dated checkpoints. Raw hosted artifacts
+remain the primary execution evidence.
 
 The [machine-readable delivery provenance](delivery-provenance.json) records
 these identities and scopes. GitHub reports evaluator expiration at
@@ -532,13 +584,20 @@ proposal-v1 remains Play-only and rejects optical/layer actions. Future
 reconciliation must preserve these boundaries and complete scene settings.
 Named presets as read-only model context remain a future extension.
 
-Final documentation source validation was constrained by the workspace outage.
-Before the outage, the M11 integrity check passed 18 records/28 hashes and all
-six new retrieval routes reached the top five. The general retrieval set retained
-30/32, with inherited Q19/Q32 misses. A later isolated archive check lacked six
-companion expected-fact files and failed; it is not a final full repository gate
-pass. Remote text/blob readback preserves the delivered evidence, without
-claiming that unavailable local tests ran.
+Final [documentation and source-identity checks](closeout-documentation-validation.json)
+now pass in the original companion-workspace context: 152 documents, 289
+canonical claims, 4,191 local links and 805 anchors; the repository check has
+no errors. Historical M11 integrity passes 18 records and 28 source hashes.
+All six new optics retrieval routes reach the top five; general retrieval
+retains 30/32 with inherited Q19/Q32 misses. Retrieval hits alone do not prove
+answer correctness. The source checkout uses committed LFS pointers for this
+structural check; runtime acceptance remains in the dated original artifacts.
+
+The earlier isolated /tmp check's six missing expected-fact references point
+to actual companion files outside the source repository. The unchanged checker
+passes when those real files are available in their original context. No
+placeholder files, historical hashes or acceptance gates were changed. The
+original failure remains recorded.
 
 **STRATA-THEATRE-003 — OPTICAL WORKBENCH INTEGRATED / HOSTED GRAPHICAL AND NATIVE
 FUNCTIONAL GATES PASSED / ENABLED-OPTICS PERFORMANCE HOLD / DRAFT-HOLD FOR OWNER

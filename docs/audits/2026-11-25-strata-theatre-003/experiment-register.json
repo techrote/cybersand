@@ -1,11 +1,11 @@
 {
   "schema": "strata3-unified-experiment-register-v1",
-  "stage": "Frozen fd0830ab full Linux/Windows graphical/native artifacts independently admitted; both actual paired Classic comparisons pass. Main pristine extracted Windows suite31 and shipped CMD passed; exact portable artifact delivered. Cold v2 first-CMD and strict reader PASS at92ec/run45743337775 after23 hosted controls; v1 rejection retained. Enabled-optics PERFORMANCE HOLD; A1 not adopted.",
+  "stage": "Frozen fd application delivered. Full Linux/Windows graphical/native and pairedClassic gates pass. Actual extracted Windows31-case suite and shippedCMD pass. Exact cold92ec firstCMD and actual uploaded-artifact strict replay pass. New independent full static package and extracted-campaign/launcher readers pass. Package admissions9/9 meet45s; every enabled package rate still fails90%, consistent with source-cohort HOLD. A1 deferred; Draft/HOLD.",
   "draft_hold": true,
   "principal_qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
   "principal_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
   "accepted_main_refresh": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
-  "accepted_main_refresh_utc": "2026-11-26T02:28:00Z",
+  "accepted_main_refresh_utc": "2026-11-26T02:51:57Z",
   "stacked_pr": 785,
   "base_pr": 776,
   "implementation_inputs_sha256": {
@@ -82,7 +82,16 @@
       "inner_package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
       "package_evidence_artifact": 15080936111,
       "package_evidence_sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513",
-      "package_extracted_functional_result": "PASS 31-case frozen suite + untouched actual CMD after suite preparation + postpayload verification; cold-first-CMD separate"
+      "package_extracted_functional_result": "PASS 31-case frozen suite + untouched actual CMD after suite preparation + postpayload verification; cold-first-CMD separate",
+      "package_static_independent_reader": "PASS exact reviewed external path adapter; all2549 pristine members/28 frozen inputs/unchanged originals.",
+      "package_full_campaign_independent_reader": "PASS unchanged frozenfd CLI for31 cases plus actual launcher JSON/log checks.",
+      "package_performance_review": "c-extracted-package-performance-review.json",
+      "package_admission_all_pass": true,
+      "package_admission_range_ms": [
+        27495,
+        34429
+      ],
+      "package_enabled_rate_all_pass": false
     },
     {
       "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
@@ -118,7 +127,8 @@
       "cmd_process_seconds": 90.025416,
       "cold_import_command_seconds": 11.1453828,
       "ordinary_workbench_command_seconds": 78.8635987,
-      "limitation": "Times are held process lifetimes, not scene admission. No independent local artifact replay after outage; root/A/C original hosted log review."
+      "limitation": "Times are held process lifetimes, not scene admission. Both hosted execution and later independent actual uploaded-artifact replay passed; no physical GPU or runtime rerun inferred.",
+      "actual_uploaded_artifact_reader": "PASS unchanged92ec reader after exact download;15 files and14-ledgerentries including hidden workflow; exact original observations."
     }
   ],
   "experiments": [
@@ -204,7 +214,7 @@
       "treatment": "Matched completed-physics and predecessor comparisons",
       "hypothesis": "Separate appearance/per-frame callbacks from real physical progression and disabled-path regression.",
       "disposition": "performance-hold-enabled-profiles-failed",
-      "qualification_scope": "Final Linux and Windows 15-window cohorts admitted. All enabled native/Rapier rate gates fail on both hosts. Linux all p95 gates fail; Windows Architectural p95 passes while Deep/Clarity/Diorama p95 fail. Windows initial9scene admissions46.620–52.362s all fail45s; fresh reopens5.871–8.934s pass. Original934 paired comparison remains a separate disabled-path cohort."
+      "qualification_scope": "Final Linux and Windows 15-window cohorts admitted. All enabled native/Rapier rate gates fail on both hosts. Linux all p95 gates fail; Windows Architectural p95 passes while Deep/Clarity/Diorama p95 fail. Windows initial9scene admissions46.620\u201352.362s all fail45s; fresh reopens5.871\u20138.934s pass. Original934 paired comparison remains a separate disabled-path cohort."
     },
     {
       "id": "S003-13",
@@ -314,7 +324,11 @@
     "c-cold-first-command-v1-rejection.md",
     "b-final-delivery-consistency-review.md",
     "cold-first-command-review-a.md",
-    "c-cold-first-command-v2-review.md"
+    "c-cold-first-command-v2-review.md",
+    "package-reader-completion-a.md",
+    "c-cold-uploaded-artifact-reread.md",
+    "c-extracted-package-performance-review.md",
+    "b-final-portable-package-result.json"
   ],
   "preserved_negative_results": [
     "Original five extracted Windows45second admission misses:51619,66316,66200,59958,54804ms",
@@ -332,7 +346,7 @@
     "Light shafts and pools remain subtle in the three new overviews; authored green/cyan geometry is not evidence of volumetric scattering.",
     "A1 observer v1 rejected because source-expression statistics hash and mutable runtime code hash differ; initial detached-shader inference was corrected by a same-object runtime diagnostic. V1 lacks new direct attachment and final post-run custody witnesses; no native A1 rate admitted.",
     "A1 v2 exact-output optimization still misses Architectural Linux native/Rapier gate at89.682079% of Classic; Windows first admission63802ms fails45s. Clarity approximately90% margins are narrow and this sparse fixture does not establish dense-scene cost.",
-    "Final frozenfd Windows enabled native/Rapier rate ratios are0.841219 Architectural,0.830409 DeepFocus,0.759216 Clarity,0.756614 DioramaHigh. All rate gates fail; Architectural p95 alone passes. Every initial9scene admission46.620–52.362s exceeds45s; original extracted002 failures remain unchanged.",
+    "Final frozenfd Windows enabled native/Rapier rate ratios are0.841219 Architectural,0.830409 DeepFocus,0.759216 Clarity,0.756614 DioramaHigh. All rate gates fail; Architectural p95 alone passes. Every initial9scene admission46.620\u201352.362s exceeds45s; original extracted002 failures remain unchanged.",
     "Cold-first-command v1 required frozen-verifier inventory failed before Godot; do not call it a launcher failure or cold pass.",
     "Additional Linux final-package full read UNCONFIRMED after local workspace outage; completed source controls and actual hosted Windows result remain separate.",
     "Final isolated archive documentation check lacked six companion expected-fact files; not a full final repository validation pass."
@@ -407,6 +421,16 @@
   "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
   "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
   "delivery_provenance": "delivery-provenance.json",
-  "recovery_notes": "A/B/C compact remote recovery notes preserve completed observations and exact primary hosted identities. They do not recreate inaccessible original local detailed files or claim byte-identical source restoration.",
-  "final_owner_guide_review": "b-final-delivery-consistency-review.md"
+  "recovery_notes": "Original compact outage summaries retained; all27 missing committed review/helper paths now restored exactly without replacing currentcanonical/coldv2. Later static evidence reads complete all previously blocked verification scopes; original interrupted session remainshistoricallyunconfirmed.",
+  "final_owner_guide_review": "b-final-delivery-consistency-review.md",
+  "recovered_original_reviews": "original-review-recovery.json",
+  "final_documentation_validation": "closeout-documentation-validation.json",
+  "post_recovery_completion": {
+    "previous_reader_attempt": "UNCONFIRMED historical attempt retained",
+    "new_package_static_read": "PASS",
+    "new_extracted_campaign_and_launcher_read": "PASS",
+    "new_actual_cold_upload_read": "PASS",
+    "structural_doc_source_gate": "PASS in real companion context",
+    "original_committed_review_recovery": "27 exact new paths; no canonical/observer rollback"
+  }
 }

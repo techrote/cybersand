@@ -1,0 +1,263 @@
+{
+  "actual_launcher": {
+    "admitted": {
+      "extent": [
+        2048,
+        2048
+      ],
+      "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "strata_enabled": false,
+      "workbench_script": "res://scripts/shared_workbench.gd",
+      "worker_id": "-9223371959310481934",
+      "world_generation": 2
+    },
+    "command": "C:\\Windows\\system32\\cmd.exe /d /s /c \"\"D:\\a\\_temp\\strata owner package\\Open Workbench.cmd\" --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --quit-after 180\"",
+    "exit_code": 0,
+    "pristine_directory": "D:\\a\\_temp\\strata owner package",
+    "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "wrapper_pid": 6368
+  },
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "artifact": {
+    "bytes": 464793280,
+    "id": 15080936111,
+    "run_id": 45721790366,
+    "sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513",
+    "uncompressed_bytes": 619413588,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080936111",
+    "verified_files": 4245
+  },
+  "campaign": {
+    "admissions": [
+      {
+        "admission_elapsed_ms": 28475,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "orbital-terminal/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3838,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "orbital-terminal/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 34429,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "neon-rain-arcology/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 4573,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "neon-rain-arcology/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 30728,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "industrial-underworks/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3387,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "industrial-underworks/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 28959,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "abyss-foundry/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3559,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "abyss-foundry/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 28102,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "vertical-transfer-spine/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3859,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "vertical-transfer-spine/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 28747,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "sunward-freight-megastructure/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3812,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "sunward-freight-megastructure/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 27608,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "xeno-resonance-grotto/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3409,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "xeno-resonance-grotto/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 27495,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "lunar-terminator-observatory/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3479,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "lunar-terminator-observatory/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 31056,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "optics-readability-challenge/install",
+        "phase": "install"
+      },
+      {
+        "admission_elapsed_ms": 3091,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "optics-readability-challenge/reopen",
+        "phase": "reopen"
+      },
+      {
+        "admission_elapsed_ms": 33794,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "optics-readability-challenge/progression",
+        "phase": "progression"
+      },
+      {
+        "admission_elapsed_ms": 27067,
+        "admission_target_met": true,
+        "admission_target_ms": 45000,
+        "case": "optics-readability-challenge/motion",
+        "phase": "motion"
+      }
+    ],
+    "case_labels": [
+      "import",
+      "regressions/test_actor_presentation_bounds",
+      "regressions/test_strata_optics_configuration",
+      "regressions/test_strata_optics_ui",
+      "regressions/test_strata_optical_profiles",
+      "regressions/test_strata_optical_showcases",
+      "regressions/test_strata_atmosphere",
+      "regressions/test_strata_optical_renderer",
+      "regressions/test_workbench_strata_document",
+      "regressions/test_workbench_strata_layers",
+      "regressions/test_strata2_authoring_ui",
+      "orbital-terminal/install",
+      "orbital-terminal/reopen",
+      "neon-rain-arcology/install",
+      "neon-rain-arcology/reopen",
+      "industrial-underworks/install",
+      "industrial-underworks/reopen",
+      "abyss-foundry/install",
+      "abyss-foundry/reopen",
+      "vertical-transfer-spine/install",
+      "vertical-transfer-spine/reopen",
+      "sunward-freight-megastructure/install",
+      "sunward-freight-megastructure/reopen",
+      "xeno-resonance-grotto/install",
+      "xeno-resonance-grotto/reopen",
+      "lunar-terminator-observatory/install",
+      "lunar-terminator-observatory/reopen",
+      "optics-readability-challenge/install",
+      "optics-readability-challenge/reopen",
+      "optics-readability-challenge/progression",
+      "optics-readability-challenge/motion"
+    ],
+    "cases": 31,
+    "completed": true,
+    "input_custody": "passed",
+    "platform": "win32",
+    "status": "passed",
+    "suite": "full"
+  },
+  "completed_at_utc": "2026-11-26T02:51:16.990396+00:00",
+  "engine_error_patterns_absent": true,
+  "frozen_input_sha256": {
+    ".github/workflows/strata-theatre-003.yml": "a86a2e84bdd312a571180765ef75961d75ff4048194ad7690989a281da5780d5",
+    "tools/ci/qualify_strata3_workbench.py": "968b541967b9942dc74efcad136af7a7f23785f9601b469046e7c2e7ffde806e"
+  },
+  "historical_boundary": "This later completed read follows restoration of the workspace and recovery of the exact original artifact. Earlier outage-time read attempts remain unconfirmed or never started.",
+  "limits": [
+    "The shipped command followed full-suite resource preparation; the separate cold92ec annex owns first-command acceptance.",
+    "Launcher JSON has no command lifetime or scene-admission timestamp; none is inferred from it.",
+    "Package admissions are a separate hosted cohort and do not erase earlier source-campaign or Strata002 failures.",
+    "Static functional verification does not waive enabled-optics performance HOLD or physical owner gates."
+  ],
+  "original_receipt_sha256": {
+    "extracted/campaign.json": "de2e9d0da81d98933649a5774f152b6591bc3de01154cd20afbb0d490da0b8b1",
+    "launcher.json": "a755fcbb23070b37cc54a030b57051f69c165ec447b29387fc27b50cbb943b7b",
+    "launcher.stderr.log": "adeadf86b9fc0a9f5305a10791cb2669e569e2f711fdb4d10b5f97f6361e6397",
+    "launcher.stdout.log": "66841e6c13912c63fa3aa09f5b261d0dc1440bae07d3bc909755a18fa22acfcd"
+  },
+  "reader": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "tools/ci/qualify_strata3_workbench.py",
+      "--verify",
+      "/tmp/strata003-final-package-evidence/extracted",
+      "--suite",
+      "full"
+    ],
+    "completion_marker": "STRATA3_VERIFIED /tmp/strata003-final-package-evidence/extracted",
+    "cwd": "/workspace/scratch/119285bae098/cybersand",
+    "exit_code": 0,
+    "pid": 19,
+    "stderr_empty": true,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "ea2ecb7f8e08556d9c7926eef43b8a1097793a96a5750cf6a39ecb8c72981cd6",
+    "wall_seconds": 0.6961802769983478
+  },
+  "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+  "review_driver_sha256": "e02e3466b38b32201edd4527dd91a3e0dec46931b3ec21cd605d2c6a5f2e9f35",
+  "reviewer": "Specialist A",
+  "runtime_headers": [
+    "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+    "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org"
+  ],
+  "schema": "strata3-package-reader-completion-review-a-v1",
+  "scope": "Static unchanged frozen full-campaign reader plus concrete original shipped-CMD receipt/log checks. No Godot invoked and no runtime campaign rerun.",
+  "source_clean_before_and_after": true,
+  "started_at_utc": "2026-11-26T02:51:16.174150+00:00",
+  "stderr_note": "Recorded OpenGL 3.3 unavailable warning and automatic ANGLE fallback; no engine/script ERROR."
+}

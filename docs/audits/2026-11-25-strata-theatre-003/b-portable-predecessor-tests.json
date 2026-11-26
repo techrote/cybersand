@@ -1,0 +1,25 @@
+{
+  "additional_positive": "Retained Linux corpus passed; portable and original admitted summaries exactly equal.",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "command": [
+    "python3",
+    "tools/ci/test_strata3_predecessor_portable_verify.py",
+    "--source-repo",
+    "/workspace/scratch/119285bae098/cybersand",
+    "--campaign",
+    "/home/agent/strata003-campaign6-controls-windows/strata3-predecessor-windows",
+    "-v"
+  ],
+  "date": "2026-11-26",
+  "errors": 0,
+  "failures": 0,
+  "independent_review": "Specialist A repeated actual Windows positive and all eight tests, and inspected transitive import identities against the frozen Git blobs.",
+  "schema": "strata3-portable-predecessor-test-record-v1",
+  "scope": "External retained-evidence reader only; no application execution or modification.",
+  "source_sha256": {
+    "tools/ci/strata3_predecessor_portable_verify.py": "acc4b927e4e1addd053aedd9d505673818a84398326bca5d4bc86f9d6c031dda",
+    "tools/ci/test_strata3_predecessor_portable_verify.py": "4cf0d2e85b7fb884c2e939340a112d9df7ebfaa9e5c1d6668e656cc3f55feed0"
+  },
+  "status": "passed",
+  "tests_run": 8
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "strata3-execution-handoff-v1",
+  "recorded_utc": "2026-11-26T02:04:15Z",
+  "disposition": "Draft/HOLD. Actual full graphical/native evidence admitted; enabled performance HOLD. Await extracted-package and cold first-command execution.",
+  "application": {
+    "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+    "pr": 785,
+    "branch": "feat/strata-theatre-003-20261125",
+    "base": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+    "local_frozen_checkout": "/workspace/scratch/119285bae098/cybersand"
+  },
+  "evidence_archive": {
+    "published_checkpoint": "75b60f4aab9512ca668da12d58d51220e5b2cdef",
+    "published_tree": "7fae61ebc6a5de794089fc1e73e5abcbeb3d5728",
+    "branch": "evidence/strata-theatre-003-final",
+    "local_worktree": "/tmp/strata003-final-archive",
+    "principal_packet": "decision-packet.md",
+    "later_local_commits": "Additional portable-reader/art/cold-registration receipts follow this published checkpoint; preserve their identities separately."
+  },
+  "main_campaign": {
+    "run": 45721790366,
+    "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "linux_job": 139581686606,
+    "windows_job": 139581686092,
+    "linux_and_windows_status": "success",
+    "package_job": 139629241289,
+    "package_job_started_utc": "2026-11-26T01:28:23Z",
+    "package_status": "Actual pristine extracted full suite running; no final artifact identity yet",
+    "linux_full_artifact": 15075800269,
+    "linux_controls_artifact": 15074613066,
+    "windows_full_artifact": 15078368890,
+    "windows_controls_artifact": 15078378766,
+    "windows_dependencies_artifact": 15078682951
+  },
+  "cold_first_command": {
+    "unarmed_published_source": "572567ebf06709827c49d503bdde41cde4e1ec6d",
+    "tree": "f705751c327caef94b2d753b9411fdb0cd7144b2",
+    "unarmed_branch": "evidence/strata-theatre-003-cold-launch-unarmed",
+    "intended_armed_branch": "qualification/strata-theatre-003-cold-launch",
+    "application": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "local_worktree": "/home/agent/strata003-cold-launch-source",
+    "controls": 21,
+    "actual_execution": "Not yet run. Arm only with actual completed package artifact metadata, innerZIP bytes/hash and manifest hash; new source identity required after arming."
+  },
+  "a1_research": {
+    "disposition": "Deferred, not adopted. Useful exact-output two-host candidate; Linux Architectural still fails90%, Windows first admission fails45s. Dense-scene and new-application/package gates remain.",
+    "observer": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+    "run": 45733231981,
+    "linux_artifact": 15077982082,
+    "windows_artifact": 15078960632,
+    "candidate_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f"
+  },
+  "remaining_actions": [
+    "Finish actual main package extraction/native suite and shipped command; retrieve immutable ZIP+manifest+original package receipts.",
+    "Run independent complete package re-read; retain Linux host-path correction separately from original actual Windows verification.",
+    "Arm and publish exact cold observer request, execute on Windows, retrieve/strictly verify original cold receipts.",
+    "Add package/cold identities and limitations to owner packet, source register, PR and mergedown coordination.",
+    "Complete final archive/documentation checks in correct companion-workspace context; retain earlier isolated-worktree missing-source errors.",
+    "Preserve fd application identity while folding final evidence into Draft PR only after required frozen local readers finish. No Ready, merge or public release."
+  ],
+  "external_context": {
+    "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "mergedown_pr": 784,
+    "source_ownership_record": "source-ownership-refresh-0134.json",
+    "nothing_imported_from_active_programmes": true
+  }
+}

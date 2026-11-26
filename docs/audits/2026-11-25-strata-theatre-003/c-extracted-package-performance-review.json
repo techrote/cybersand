@@ -1,0 +1,744 @@
+{
+  "schema": "strata3-c-extracted-package-performance-review-v1",
+  "reviewed_at_utc": "2026-11-26T02:52:05.068000+00:00",
+  "reviewer": "Specialist C",
+  "scope": "Independent arithmetic over original extracted-package Windows campaign; no runtime rerun and no pooling with source-checkout campaigns.",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "run_id": 45721790366,
+  "job_id": 139629241289,
+  "artifact_id": 15080936111,
+  "artifact_bytes": 464793280,
+  "artifact_sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513",
+  "campaign_sha256": "de2e9d0da81d98933649a5774f152b6591bc3de01154cd20afbb0d490da0b8b1",
+  "progression_report_path": "extracted/optics-readability-challenge/progression/result.json",
+  "progression_report_sha256": "7de2d920e400cd950048cd5ed591b101974534bb2af031f0bd4487170745b101",
+  "progression_process_log_sha256": "661098f204550fa85118ecde2d002bf66ee5e80182c333c46e89877d6265a1a0",
+  "progression_process_resources_sha256": "54c7dad571304a38d9d2814e2739bf2c346d587b25081c798cfb89f673d95a88",
+  "host": {
+    "job": "package",
+    "logical_cpu_count": 4,
+    "machine": "AMD64",
+    "physical_gpu_acceptance": false,
+    "run_attempt": "1",
+    "run_id": "45721790366",
+    "system": "Windows-2022Server-10.0.20348-SP0"
+  },
+  "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+  "godot": {
+    "path": "D:\\a\\_temp\\strata owner package\\Godot_v4.7-stable_win64_console.exe",
+    "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "runtime": {
+    "cybersand_runtime": {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "size": 5820416
+    },
+    "rapier_runtime": {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "size": 9987072
+    },
+    "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+    "runtime_provenance": {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+    },
+    "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+  },
+  "registration": {
+    "path": "docs/audits/2026-11-25-strata-theatre-003/qualification-registration.md",
+    "sha256": "278e60b5cfff8235ac236cc77e43cba37f6c74bd9c7469d9ce0af79302cc0428",
+    "native_and_rapier_median_rate_minimum_ratio": 0.9,
+    "p95_limit_formula": "max(1.20 * median(Classic per-window p95), median(Classic per-window p95) + 10000 usec)",
+    "p95_limit_usec": 254376.0,
+    "p99_scope": "Descriptive inspection only; no separately registered p99 acceptance gate.",
+    "actual_sample_registration": {
+      "callbacks_per_sample": 90,
+      "confound": "Fresh authored scene and native Play hash per sample; same input control observer and callback budget. Wall-clock phase and shared hosted CPU load can vary, so repeat spread and software-renderer limitations remain material.",
+      "geometry_reset_between_samples": true,
+      "order": "forward/reverse/forward",
+      "per_sample_watchdog_usec": 90000000,
+      "physical_scope": "Hosted renderer; physical owner acceptance remains open.",
+      "quality_by_profile": {
+        "architectural": "balanced",
+        "cinematic_deep_focus": "balanced",
+        "classic": "balanced",
+        "diorama": "high",
+        "gameplay_clarity": "balanced"
+      },
+      "repeats": 3,
+      "warmup": "six display callbacks while physically paused; no native evolution before timed window"
+    }
+  },
+  "independent_calculation": {
+    "rate_formula": "(after tick - before tick) * 1000000 / elapsed_usec",
+    "interval_formula": "Differences between consecutive completed_physical_steps.completed_usec values; all steps and intervals retained.",
+    "quantile": "Nearest rank: sorted(gaps)[ceil(n*q)-1], computed separately for each window.",
+    "comparison": "Median of three per-window rates or percentiles against median of three Classic windows; min/max retained.",
+    "native_tick_deltas_recomputed": 15,
+    "completed_step_populations_and_all_gaps_checked": 15,
+    "reported_physical_distributions_exact": 15,
+    "reported_rates_match_recalculation": 15,
+    "matched_initial_play_sha256": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+    "native_capture_and_decorative_upload_deltas_zero_all_windows": true,
+    "owner_identity_stable_within_every_window": true,
+    "no_runtime_rerun": true
+  },
+  "windows": [
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "repeat": 0,
+      "elapsed_usec": 19657823,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 4.527459627650528,
+      "rapier_ticks_per_second": 4.578329960545479,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 219968,
+      "p99_usec": 225971,
+      "max_usec": 225971,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 0,
+        "500000": 0,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3625,
+      "material_count": 0,
+      "resource_count": 175
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "repeat": 0,
+      "elapsed_usec": 25194225,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.532555575732137,
+      "rapier_ticks_per_second": 3.5722472114145205,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 288326,
+      "p99_usec": 790220,
+      "max_usec": 790220,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 89,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3253,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "architectural",
+      "quality": "balanced",
+      "repeat": 0,
+      "elapsed_usec": 22888804,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.8883639354856636,
+      "rapier_ticks_per_second": 3.9320534179068507,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 255069,
+      "p99_usec": 729063,
+      "max_usec": 729063,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 46,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 4111,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "repeat": 0,
+      "elapsed_usec": 22116459,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 4.024152329267538,
+      "rapier_ticks_per_second": 4.069367523978409,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 250220,
+      "p99_usec": 688075,
+      "max_usec": 688075,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 6,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3894,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "repeat": 0,
+      "elapsed_usec": 24201212,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.677501771398887,
+      "rapier_ticks_per_second": 3.7188220160213463,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 268241,
+      "p99_usec": 278481,
+      "max_usec": 278481,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 89,
+        "500000": 0,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3965,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "repeat": 1,
+      "elapsed_usec": 24217343,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.6750522136140202,
+      "rapier_ticks_per_second": 3.7163449351153015,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 272173,
+      "p99_usec": 762816,
+      "max_usec": 762816,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 89,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3650,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "repeat": 1,
+      "elapsed_usec": 21843695,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 4.074402247421967,
+      "rapier_ticks_per_second": 4.120182047954799,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 246616,
+      "p99_usec": 695528,
+      "max_usec": 695528,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 4,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3753,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "architectural",
+      "quality": "balanced",
+      "repeat": 1,
+      "elapsed_usec": 22246990,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 4.000541196809096,
+      "rapier_ticks_per_second": 4.045491097896839,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 250781,
+      "p99_usec": 694535,
+      "max_usec": 694535,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 6,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3733,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "repeat": 1,
+      "elapsed_usec": 23517457,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.7844227800650385,
+      "rapier_ticks_per_second": 3.826944384335432,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 267350,
+      "p99_usec": 740636,
+      "max_usec": 740636,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 85,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3434,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "repeat": 1,
+      "elapsed_usec": 17798280,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 5.000483192757952,
+      "rapier_ticks_per_second": 5.056668397170963,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 211980,
+      "p99_usec": 534030,
+      "max_usec": 534030,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 1,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3909,
+      "material_count": 0,
+      "resource_count": 175
+    },
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "repeat": 2,
+      "elapsed_usec": 17768397,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 5.008893036327363,
+      "rapier_ticks_per_second": 5.065172733364749,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 210969,
+      "p99_usec": 555002,
+      "max_usec": 555002,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 1,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3441,
+      "material_count": 0,
+      "resource_count": 175
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "repeat": 2,
+      "elapsed_usec": 23461162,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.793503493134739,
+      "rapier_ticks_per_second": 3.836127127889062,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 263316,
+      "p99_usec": 746425,
+      "max_usec": 746425,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 88,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3256,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "architectural",
+      "quality": "balanced",
+      "repeat": 2,
+      "elapsed_usec": 22742841,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.913319360584722,
+      "rapier_ticks_per_second": 3.9572892410407303,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 260035,
+      "p99_usec": 690110,
+      "max_usec": 690110,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 44,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3681,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "repeat": 2,
+      "elapsed_usec": 22085311,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 4.029827789158142,
+      "rapier_ticks_per_second": 4.0751067530812675,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 247462,
+      "p99_usec": 707975,
+      "max_usec": 707975,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 2,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3750,
+      "material_count": 3,
+      "resource_count": 175
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "repeat": 2,
+      "elapsed_usec": 24562392,
+      "native_tick_delta": 89,
+      "rapier_tick_delta": 90,
+      "native_ticks_per_second": 3.6234256012199464,
+      "rapier_ticks_per_second": 3.6641382484246647,
+      "completed_steps": 90,
+      "physical_intervals": 89,
+      "p95_usec": 276895,
+      "p99_usec": 774090,
+      "max_usec": 774090,
+      "stalls_at_least_usec": {
+        "100000": 89,
+        "250000": 89,
+        "500000": 1,
+        "1000000": 0
+      },
+      "scene_readmission_ms": 3887,
+      "material_count": 3,
+      "resource_count": 175
+    }
+  ],
+  "profiles": {
+    "classic": {
+      "quality": "balanced",
+      "native_rate": {
+        "min": 4.527459627650528,
+        "median": 5.000483192757952,
+        "max": 5.008893036327363,
+        "relative_range_to_median": 0.09627737762904193
+      },
+      "rapier_rate": {
+        "min": 4.578329960545479,
+        "median": 5.056668397170963,
+        "max": 5.065172733364749,
+        "relative_range_to_median": 0.09627737762904176
+      },
+      "p95_usec": {
+        "min": 210969,
+        "median": 211980,
+        "max": 219968,
+        "relative_range_to_median": 0.04245211812435135
+      },
+      "p99_usec": {
+        "min": 225971,
+        "median": 534030,
+        "max": 555002,
+        "relative_range_to_median": 0.6161283073984608
+      },
+      "worst_interval_usec": 555002,
+      "total_completed_steps": 270,
+      "total_physical_intervals": 267,
+      "stall_counts_across_three_windows": {
+        "100000": 267,
+        "250000": 2,
+        "500000": 2,
+        "1000000": 0
+      },
+      "native_ratio_to_classic": 1.0,
+      "rapier_ratio_to_classic": 1.0,
+      "p95_ratio_to_classic": 1.0,
+      "p99_ratio_to_classic": 1.0,
+      "native_rate_meets_90_percent": true,
+      "rapier_rate_meets_90_percent": true,
+      "p95_meets_registered_limit": true,
+      "numeric_rate_and_p95_criteria_met": true
+    },
+    "gameplay_clarity": {
+      "quality": "balanced",
+      "native_rate": {
+        "min": 3.532555575732137,
+        "median": 3.7844227800650385,
+        "max": 3.793503493134739,
+        "relative_range_to_median": 0.06895316209837357
+      },
+      "rapier_rate": {
+        "min": 3.5722472114145205,
+        "median": 3.826944384335432,
+        "max": 3.836127127889062,
+        "relative_range_to_median": 0.06895316209837353
+      },
+      "p95_usec": {
+        "min": 263316,
+        "median": 267350,
+        "max": 288326,
+        "relative_range_to_median": 0.09354778380400225
+      },
+      "p99_usec": {
+        "min": 740636,
+        "median": 746425,
+        "max": 790220,
+        "relative_range_to_median": 0.06642864319924975
+      },
+      "worst_interval_usec": 790220,
+      "total_completed_steps": 270,
+      "total_physical_intervals": 267,
+      "stall_counts_across_three_windows": {
+        "100000": 267,
+        "250000": 262,
+        "500000": 3,
+        "1000000": 0
+      },
+      "native_ratio_to_classic": 0.7568114188536627,
+      "rapier_ratio_to_classic": 0.7568114188536625,
+      "p95_ratio_to_classic": 1.261203887159166,
+      "p99_ratio_to_classic": 1.3977211018107596,
+      "native_rate_meets_90_percent": false,
+      "rapier_rate_meets_90_percent": false,
+      "p95_meets_registered_limit": false,
+      "numeric_rate_and_p95_criteria_met": false
+    },
+    "architectural": {
+      "quality": "balanced",
+      "native_rate": {
+        "min": 3.8883639354856636,
+        "median": 3.913319360584722,
+        "max": 4.000541196809096,
+        "relative_range_to_median": 0.028665501326902
+      },
+      "rapier_rate": {
+        "min": 3.9320534179068507,
+        "median": 3.9572892410407303,
+        "max": 4.045491097896839,
+        "relative_range_to_median": 0.028665501326902123
+      },
+      "p95_usec": {
+        "min": 250781,
+        "median": 255069,
+        "max": 260035,
+        "relative_range_to_median": 0.03628037903469258
+      },
+      "p99_usec": {
+        "min": 690110,
+        "median": 694535,
+        "max": 729063,
+        "relative_range_to_median": 0.05608500651515042
+      },
+      "worst_interval_usec": 729063,
+      "total_completed_steps": 270,
+      "total_physical_intervals": 267,
+      "stall_counts_across_three_windows": {
+        "100000": 267,
+        "250000": 96,
+        "500000": 3,
+        "1000000": 0
+      },
+      "native_ratio_to_classic": 0.7825882439225601,
+      "rapier_ratio_to_classic": 0.7825882439225601,
+      "p95_ratio_to_classic": 1.2032691763373904,
+      "p99_ratio_to_classic": 1.300554275977005,
+      "native_rate_meets_90_percent": false,
+      "rapier_rate_meets_90_percent": false,
+      "p95_meets_registered_limit": false,
+      "numeric_rate_and_p95_criteria_met": false
+    },
+    "cinematic_deep_focus": {
+      "quality": "balanced",
+      "native_rate": {
+        "min": 4.024152329267538,
+        "median": 4.029827789158142,
+        "max": 4.074402247421967,
+        "relative_range_to_median": 0.012469495170394699
+      },
+      "rapier_rate": {
+        "min": 4.069367523978409,
+        "median": 4.0751067530812675,
+        "max": 4.120182047954799,
+        "relative_range_to_median": 0.012469495170394822
+      },
+      "p95_usec": {
+        "min": 246616,
+        "median": 247462,
+        "max": 250220,
+        "relative_range_to_median": 0.014563852227816795
+      },
+      "p99_usec": {
+        "min": 688075,
+        "median": 695528,
+        "max": 707975,
+        "relative_range_to_median": 0.028611357127247213
+      },
+      "worst_interval_usec": 707975,
+      "total_completed_steps": 270,
+      "total_physical_intervals": 267,
+      "stall_counts_across_three_windows": {
+        "100000": 267,
+        "250000": 12,
+        "500000": 3,
+        "1000000": 0
+      },
+      "native_ratio_to_classic": 0.8058876780136808,
+      "rapier_ratio_to_classic": 0.8058876780136807,
+      "p95_ratio_to_classic": 1.1673837154448532,
+      "p99_ratio_to_classic": 1.3024137220755387,
+      "native_rate_meets_90_percent": false,
+      "rapier_rate_meets_90_percent": false,
+      "p95_meets_registered_limit": true,
+      "numeric_rate_and_p95_criteria_met": false
+    },
+    "diorama": {
+      "quality": "high",
+      "native_rate": {
+        "min": 3.6234256012199464,
+        "median": 3.6750522136140202,
+        "max": 3.677501771398887,
+        "relative_range_to_median": 0.014714395071345771
+      },
+      "rapier_rate": {
+        "min": 3.6641382484246647,
+        "median": 3.7163449351153015,
+        "max": 3.7188220160213463,
+        "relative_range_to_median": 0.014714395071345818
+      },
+      "p95_usec": {
+        "min": 268241,
+        "median": 272173,
+        "max": 276895,
+        "relative_range_to_median": 0.031795953309108546
+      },
+      "p99_usec": {
+        "min": 278481,
+        "median": 762816,
+        "max": 774090,
+        "relative_range_to_median": 0.6497097596274856
+      },
+      "worst_interval_usec": 774090,
+      "total_completed_steps": 270,
+      "total_physical_intervals": 267,
+      "stall_counts_across_three_windows": {
+        "100000": 267,
+        "250000": 267,
+        "500000": 2,
+        "1000000": 0
+      },
+      "native_ratio_to_classic": 0.7349394192418218,
+      "rapier_ratio_to_classic": 0.7349394192418218,
+      "p95_ratio_to_classic": 1.2839560335880744,
+      "p99_ratio_to_classic": 1.4284141340374137,
+      "native_rate_meets_90_percent": false,
+      "rapier_rate_meets_90_percent": false,
+      "p95_meets_registered_limit": false,
+      "numeric_rate_and_p95_criteria_met": false
+    }
+  },
+  "initial_scene_admissions": [
+    {
+      "scene": "orbital-terminal",
+      "milliseconds": 28475,
+      "target_met": true,
+      "report_sha256": "35712a39103db0d8c1c6f44eadc52c5a821281caed04efea8f9df1e03a6a3ca1"
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "milliseconds": 34429,
+      "target_met": true,
+      "report_sha256": "e841d9684016217efcc8298561128e4653c5dbe17fc1a55dd10f047afff103e6"
+    },
+    {
+      "scene": "industrial-underworks",
+      "milliseconds": 30728,
+      "target_met": true,
+      "report_sha256": "526387c156104718c11f20ff7fe1e3a52338a2b6d620481fee136143f89a40eb"
+    },
+    {
+      "scene": "abyss-foundry",
+      "milliseconds": 28959,
+      "target_met": true,
+      "report_sha256": "daa0bc9db938a5324d529a688d2bf004339298e36b69d2d234a535e31e355fd2"
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "milliseconds": 28102,
+      "target_met": true,
+      "report_sha256": "43837571e8f3cd3d6cfecacc91b5714319b47400700dac4e0e71019dceea8dfb"
+    },
+    {
+      "scene": "sunward-freight-megastructure",
+      "milliseconds": 28747,
+      "target_met": true,
+      "report_sha256": "8b0a393e0356cf65525c2d5547c60c1971d2bcf9c876e3f68ef920e6f1b21169"
+    },
+    {
+      "scene": "xeno-resonance-grotto",
+      "milliseconds": 27608,
+      "target_met": true,
+      "report_sha256": "9f731d3c900f1ebc858aaf04a72f2bbd0b17b166f6f79408d61d5659c35ac7a2"
+    },
+    {
+      "scene": "lunar-terminator-observatory",
+      "milliseconds": 27495,
+      "target_met": true,
+      "report_sha256": "e30309ae1d9d42da6d15bf4d9dd2ff54fbce35a260dcf8d523a7197210c474c9"
+    },
+    {
+      "scene": "optics-readability-challenge",
+      "milliseconds": 31056,
+      "target_met": true,
+      "report_sha256": "384552e481cc929536b87733265f90d90d3d227ba97bce88bfbda9730f615e0b"
+    }
+  ],
+  "initial_scene_admissions_all_pass": true,
+  "initial_scene_admission_range_ms": [
+    27495,
+    34429
+  ],
+  "progression_initial_admission_ms": 33794,
+  "disposition": "All four enabled profiles fail the registered 90% rate criterion; PERFORMANCE HOLD remains. All nine initial scene admissions pass in this separate extracted-package cohort.",
+  "limits": [
+    "Source-checkout admission failures remain valid; this later separate cohort does not prove an optimisation or causal explanation.",
+    "Actual rendering is hosted ANGLE Microsoft Basic; no physical Windows 11/NVIDIA acceptance.",
+    "Only three short windows per profile; p99 equals each window maximum for the retained interval populations.",
+    "No threshold, source, shader, preset, geometry or observer changes.",
+    "Classic/source comparisons and A1 research are separate populations."
+  ]
+}
