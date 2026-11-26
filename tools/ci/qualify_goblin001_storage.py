@@ -23,11 +23,12 @@ import time
 SCHEMA = "cybersand-goblin001-storage-request-v1"
 ACCEPTED_BASE = "67c1413a2a84077b47fa542cf91d2bd6ba5520ee"
 CASES = ("test_workbench_file_transaction", "test_ambient_default_off_integration")
-GENERATED_UIDS = (
-    "godot/scripts/workbench_file_transaction.gd.uid",
-    "godot/tests/goblin_storage_fault_child.gd.uid",
-    "godot/tests/test_workbench_file_transaction.gd.uid",
-)
+RAPIER_IMPORT_DESCRIPTORS = frozenset({
+    "godot/addons/godot-rapier2d/Radial2D.svg.import",
+    "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+    "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+    "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+})
 OS_INPUTS = (
     "godot/goblin/goblin_controller.gd", "godot/goblin/goblin_adapter.gd",
     "godot/goblin/goblin_transcript.gd", "godot/scripts/workbench_file_transaction.gd",
@@ -122,6 +123,9 @@ def budget(root):
     limits = policy["watchdogs"]
     rows = {"setup_and_acquisition": limits["godot_setup_seconds"],
             "metadata_and_receipt_verification": limits["godot_metadata_seconds"],
+            # Two metadata-retention passes, each with eight bounded Git calls:
+            # status, diff, tree, four exact descriptors, final status.
+            "import_metadata_custody": 2 * 8 * 60,
             "one_project_import": limits["godot_import_seconds"] + 30,
             "canonical_native_boundary": cases[CASES[0]].timeout + 30,
             "canonical_default_off": cases[CASES[1]].timeout + 30,
@@ -194,27 +198,80 @@ def terminal(log, prefix):
 
 
 def retain_generated_uids(root, output):
-    """Retain/remove only three known editor-generated sidecars, never source."""
+    """Retain derivative metadata only for exact committed source owners.
+
+    A fresh Windows import generates missing sidecars throughout the project,
+    not merely for this repair's three new scripts. Enumerate the finite HEAD
+    tree; an arbitrary new file with a .uid suffix is never an allowance.
+    """
+    output.mkdir(parents=True, exist_ok=True)
+    status = subprocess.check_output(["git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"], timeout=60)
+    (output / "git-status.txt").write_bytes(status)
+    with (output / "git-diff.patch").open("wb") as stream:
+        subprocess.run(["git", "-C", str(root), "diff", "--no-ext-diff", "--no-textconv", "HEAD", "--"],
+                       stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=60)
+    tree = subprocess.check_output(["git", "-C", str(root), "ls-tree", "-r", "-z", "HEAD", "--", "godot"], timeout=60)
+    committed = {}
+    for row in tree.decode("utf-8").split("\0"):
+        if row:
+            metadata, name = row.split("\t", 1)
+            mode, kind, digest = metadata.split(" ")
+            committed[name] = (mode, kind, digest)
+    owners = {name + ".uid": (name, digest) for name, (mode, kind, digest) in committed.items()
+              if name.endswith((".gd", ".gdshader")) and mode in ("100644", "100755")
+              and kind == "blob" and name + ".uid" not in committed}
     observed = {}
-    for name in GENERATED_UIDS:
+    observed_owners = {}
+    for name, (owner, blob) in sorted(owners.items()):
         path = root / name
-        tracked = git(root, "ls-files", "--", name)
-        require(not tracked, "Generated UID allowance unexpectedly names committed source")
-        if not path.exists():
+        if not path.exists() and not path.is_symlink():
             continue
         require(path.is_file() and not path.is_symlink() and re.fullmatch(rb"uid://[a-z0-9]+\r?\n?", path.read_bytes()),
                 "Unexpected generated UID content or endpoint")
-        require((root / name.removesuffix(".uid")).is_file(), "UID has no original script owner")
+        source = root / owner
+        require(source.is_file() and not source.is_symlink() and source.resolve().is_relative_to(root.resolve()),
+                "UID has no regular committed script owner")
+        require(not any((root / Path(owner).parents[index]).is_symlink() for index in range(len(Path(owner).parents))),
+                "UID owner traverses a symlink directory")
+        data = source.read_bytes()
+        require(hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest() == blob,
+                "UID owner bytes differ from exact committed source")
         target = output / name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(path.read_bytes())
         observed[name] = sha(target)
+        observed_owners[name] = {"owner": owner, "owner_blob_sha1": blob, "owner_sha256": sha(source)}
     write(output / "retained.json", observed)
+    write(output / "owners.json", observed_owners)
     for name, digest in observed.items():
         require(sha(root / name) == digest, "Generated metadata changed during retention")
         (root / name).unlink()
+
+    # The accepted Windows runner canonically verifies only these four import
+    # descriptors. Retain actual bytes and require line-ending-only equality
+    # before restoring exact committed bytes; never normalize other inputs.
+    descriptors = {}
+    for name in sorted(RAPIER_IMPORT_DESCRIPTORS & committed.keys()):
+        path = root / name
+        require(committed[name][0] in ("100644", "100755") and path.is_file() and not path.is_symlink(),
+                "Invalid committed Rapier import descriptor endpoint")
+        original = subprocess.check_output(["git", "-C", str(root), "show", "HEAD:" + name], timeout=60)
+        actual = path.read_bytes()
+        target = output / "import-descriptors" / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(actual)
+        require(actual.replace(b"\r\n", b"\n") == original.replace(b"\r\n", b"\n"),
+                "Rapier import descriptor changed beyond accepted line endings")
+        descriptors[name] = {"observed_sha256": sha(target), "committed_sha256": hashlib.sha256(original).hexdigest(),
+                             "restored": actual != original}
+        if actual != original:
+            require(path.read_bytes() == actual, "Rapier descriptor changed during retention")
+            path.write_bytes(original)
+    write(output / "import-descriptors.json", descriptors)
+    status = subprocess.check_output(["git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"], timeout=60)
+    (output / "git-status-after.txt").write_bytes(status)
     # A different new file or any source mutation remains an actual refusal.
-    require(not git(root, "status", "--porcelain", "--untracked-files=all"), "Unexpected product change after import")
+    require(not status.strip(), "Unexpected product change after import; retained exact git-status.txt and git-diff.patch")
     return observed
 
 
@@ -266,6 +323,8 @@ def qualify(args):
         report.update(identity)
         report["request_sha256"] = sha(args.request)
         windows = module(root, "run_windows_godot_regressions")
+        require(windows.RAPIER_IMPORT_DESCRIPTORS == RAPIER_IMPORT_DESCRIPTORS,
+                "Source-owned Windows import descriptor contract changed")
         runtime = windows.verify_retained_runtime(root)
         require(len(runtime["native_source_inputs"]) == 105 and len(read(root / "godot/addons/godot-rapier2d/runtime-provenance.windows.json")["source_inputs"]) == 4,
                 "Changed native105/Rapier4 contract")
@@ -281,7 +340,9 @@ def qualify(args):
         report["import"] = run(root, command + ["--editor", "--quit"], args.output / "import", env,
                                budget_record["policy"]["watchdogs"]["godot_import_seconds"])
         report["generated_import_metadata"] = retain_generated_uids(root, args.output / "generated-import-metadata")
-        for name, label, prefix, checks in ((CASES[0], "native_file_transaction", "FILE_TRANSACTION_RESULT ", 81),
+        # The exact fixture has84 Linux assertions. Its two Linux-only blocks
+        # contribute6 (including put()'s two checks) plus3; Windows executes75.
+        for name, label, prefix, checks in ((CASES[0], "native_file_transaction", "FILE_TRANSACTION_RESULT ", 75),
                                             (CASES[1], "ordinary_default_off", "AMBIENT_DEFAULT_OFF ", 68)):
             result = run(root, command + ["--script", "res://tests/" + name + ".gd", "--", "--ci"],
                          args.output / label, env, budget_record["fixture_seconds"][name])

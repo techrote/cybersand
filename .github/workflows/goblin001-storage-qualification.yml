@@ -28,6 +28,13 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 300
     steps:
+      - name: Preserve exact committed text before both checkouts
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          if ($LASTEXITCODE -ne 0) { throw 'Exact checkout configuration failed' }
+          git config --global --get core.autocrlf
+
       - name: Check out immutable request harness
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:

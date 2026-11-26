@@ -13,6 +13,11 @@ from unittest import mock
 import qualify_goblin001_storage as adapter
 
 ROOT = Path(__file__).resolve().parents[2]
+FIXTURE_UIDS = ("godot/scripts/workbench_file_transaction.gd.uid",
+                "godot/tests/goblin_storage_fault_child.gd.uid",
+                "godot/tests/test_workbench_file_transaction.gd.uid",
+                "godot/shaders/example.gdshader.uid",
+                "godot/examples/example.gd.uid")
 
 
 class StorageAdapter(unittest.TestCase):
@@ -52,38 +57,106 @@ class StorageAdapter(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Missing required source input"):
             adapter.source_inputs(self.root)
 
-    def test_generated_metadata_allowance_retains_only_exact_three_uid_paths(self):
+    def test_generated_metadata_is_bound_to_finite_committed_owner_paths(self):
         root = self.root / "synthetic-source"
         root.mkdir()
         subprocess.run(["git", "init", str(root)], check=True, capture_output=True)
-        for name in adapter.GENERATED_UIDS:
+        for name in FIXTURE_UIDS:
             path = root / name.removesuffix(".uid")
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("extends RefCounted\n")
         adapter.git(root, "add", ".")
         subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
                         "commit", "-qm", "Synthetic UID owners"], check=True, capture_output=True)
-        for name in adapter.GENERATED_UIDS:
+        for name in FIXTURE_UIDS:
             (root / name).write_text("uid://fixture123\n")
         retained = adapter.retain_generated_uids(root, self.root / "retained-uids")
-        self.assertEqual(set(retained), set(adapter.GENERATED_UIDS))
+        self.assertEqual(set(retained), set(FIXTURE_UIDS))
         self.assertFalse(adapter.git(root, "status", "--porcelain"))
         (root / "unrelated.gd").write_text("Unexpected source\n")
         with self.assertRaisesRegex(ValueError, "Unexpected product change"):
             adapter.retain_generated_uids(root, self.root / "second-retention")
         self.assertTrue((root / "unrelated.gd").is_file())
+        self.assertIn("?? unrelated.gd", (self.root / "second-retention/git-status.txt").read_text())
+        source = root / FIXTURE_UIDS[0].removesuffix(".uid")
+        source.write_text("extends RefCounted\n# Unexpected tracked change\n")
+        with self.assertRaisesRegex(ValueError, "Unexpected product change"):
+            adapter.retain_generated_uids(root, self.root / "tracked-refusal")
+        self.assertIn("Unexpected tracked change", (self.root / "tracked-refusal/git-diff.patch").read_text())
+        self.assertIn("Unexpected tracked change", source.read_text())
 
     def test_imported_helper_must_belong_to_product(self):
         with mock.patch.object(adapter.importlib, "import_module", return_value=type("Other", (), {"__file__": str(self.root / "other.py")})):
             with self.assertRaisesRegex(ValueError, "another checkout"):
                 adapter.module(ROOT, "fixture")
 
+    def metadata_fixture(self):
+        root = self.root / "metadata-source"
+        root.mkdir()
+        subprocess.run(["git", "init", str(root)], check=True, capture_output=True)
+        adapter.git(root, "config", "core.autocrlf", "false")
+        owner = root / "godot/scripts/owned.gd"
+        owner.parent.mkdir(parents=True)
+        owner.write_text("extends RefCounted\n")
+        tracked_uid = root / "godot/scripts/tracked.gd.uid"
+        tracked_uid.with_suffix("").write_text("extends RefCounted\n")
+        tracked_uid.write_text("uid://committed123\n")
+        descriptor = root / sorted(adapter.RAPIER_IMPORT_DESCRIPTORS)[0]
+        descriptor.parent.mkdir(parents=True)
+        descriptor.write_bytes(b"[remap]\nimporter=\"texture\"\n")
+        adapter.git(root, "add", ".")
+        subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                        "commit", "-qm", "Synthetic committed metadata owners"], check=True, capture_output=True)
+        return root, owner, tracked_uid, descriptor
+
+    def test_uid_with_untracked_owner_is_not_an_allowance(self):
+        root, _, _, _ = self.metadata_fixture()
+        (root / "godot/scripts/injected.gd").write_text("extends RefCounted\n")
+        uid = root / "godot/scripts/injected.gd.uid"
+        uid.write_text("uid://injected123\n")
+        with self.assertRaisesRegex(ValueError, "Unexpected product change"):
+            adapter.retain_generated_uids(root, self.root / "unowned-refusal")
+        self.assertTrue(uid.exists())
+
+    def test_uid_owner_source_bytes_must_equal_committed_blob(self):
+        root, owner, _, _ = self.metadata_fixture()
+        owner.write_text("extends RefCounted\n# injected source\n")
+        uid = Path(str(owner) + ".uid")
+        uid.write_text("uid://fixture123\n")
+        with self.assertRaisesRegex(ValueError, "owner bytes differ"):
+            adapter.retain_generated_uids(root, self.root / "changed-owner-refusal")
+        self.assertTrue(uid.exists())
+        self.assertIn("injected source", owner.read_text())
+
+    def test_tracked_uid_is_never_removed_or_restored(self):
+        root, _, tracked, _ = self.metadata_fixture()
+        tracked.write_text("uid://changed123\n")
+        with self.assertRaisesRegex(ValueError, "Unexpected product change"):
+            adapter.retain_generated_uids(root, self.root / "tracked-uid-refusal")
+        self.assertEqual(tracked.read_text(), "uid://changed123\n")
+
+    def test_only_exact_rapier_descriptor_line_endings_can_be_restored(self):
+        root, _, _, descriptor = self.metadata_fixture()
+        original = descriptor.read_bytes()
+        descriptor.write_bytes(original.replace(b"\n", b"\r\n"))
+        output = self.root / "descriptor-retention"
+        adapter.retain_generated_uids(root, output)
+        self.assertEqual(descriptor.read_bytes(), original)
+        name = descriptor.relative_to(root).as_posix()
+        self.assertEqual((output / "import-descriptors" / name).read_bytes(), original.replace(b"\n", b"\r\n"))
+        self.assertTrue(adapter.read(output / "import-descriptors.json")[name]["restored"])
+        descriptor.write_bytes(original + b"changed=true\n")
+        with self.assertRaisesRegex(ValueError, "beyond accepted line endings"):
+            adapter.retain_generated_uids(root, self.root / "changed-descriptor-refusal")
+        self.assertIn(b"changed=true", descriptor.read_bytes())
+
     def test_complete_budget_uses_actual_canonical_fixture_discovery(self):
         result = adapter.budget(ROOT)
         self.assertEqual(result["fixture_seconds"], {adapter.CASES[0]: 1200, adapter.CASES[1]: 3940})
         self.assertEqual(result["rows"]["original_windows_os_runner"], 630)
         self.assertEqual(result["rows"]["original_controller_runner"], 540)
-        self.assertEqual(result["total_seconds"], 13300)
+        self.assertEqual(result["rows"]["import_metadata_custody"], 960)
+        self.assertEqual(result["total_seconds"], 14260)
         self.assertLessEqual(result["total_seconds"], result["parent_minutes"] * 60)
 
     def test_increased_canonical_watchdogs_refuse_underbudget_parent(self):
