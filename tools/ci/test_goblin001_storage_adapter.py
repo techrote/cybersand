@@ -72,6 +72,13 @@ class StorageAdapter(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unexpected product change"):
             adapter.retain_generated_uids(root, self.root / "second-retention")
         self.assertTrue((root / "unrelated.gd").is_file())
+        self.assertIn("?? unrelated.gd", (self.root / "second-retention/git-status.txt").read_text())
+        source = root / adapter.GENERATED_UIDS[0].removesuffix(".uid")
+        source.write_text("extends RefCounted\n# Unexpected tracked change\n")
+        with self.assertRaisesRegex(ValueError, "Unexpected product change"):
+            adapter.retain_generated_uids(root, self.root / "tracked-refusal")
+        self.assertIn("Unexpected tracked change", (self.root / "tracked-refusal/git-diff.patch").read_text())
+        self.assertIn("Unexpected tracked change", source.read_text())
 
     def test_imported_helper_must_belong_to_product(self):
         with mock.patch.object(adapter.importlib, "import_module", return_value=type("Other", (), {"__file__": str(self.root / "other.py")})):

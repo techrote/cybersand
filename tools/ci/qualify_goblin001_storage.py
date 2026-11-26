@@ -213,8 +213,15 @@ def retain_generated_uids(root, output):
     for name, digest in observed.items():
         require(sha(root / name) == digest, "Generated metadata changed during retention")
         (root / name).unlink()
+    # Retain the actual paths and tracked-byte diff before refusing. A host
+    # import's unanticipated changes must be diagnosed, never guessed away.
+    status = subprocess.check_output(["git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"], timeout=60)
+    (output / "git-status.txt").write_bytes(status)
+    with (output / "git-diff.patch").open("wb") as stream:
+        subprocess.run(["git", "-C", str(root), "diff", "--no-ext-diff", "--no-textconv", "HEAD", "--"],
+                       stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=60)
     # A different new file or any source mutation remains an actual refusal.
-    require(not git(root, "status", "--porcelain", "--untracked-files=all"), "Unexpected product change after import")
+    require(not status.strip(), "Unexpected product change after import; retained exact git-status.txt and git-diff.patch")
     return observed
 
 

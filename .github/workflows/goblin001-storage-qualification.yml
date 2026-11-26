@@ -2,7 +2,7 @@ name: Goblin001 accepted storage repair Windows qualification
 
 on:
   push:
-    branches: [fix/goblin001-verified-storage-closure]
+    branches: [qualification/goblin001-storage-import-diagnostic-002]
     paths: ['tools/fixtures/goblin001-storage-windows-request.json']
 
 permissions:
@@ -24,7 +24,7 @@ env:
 jobs:
   windows:
     name: Exact Goblin001 storage, native replacement and default-OFF
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/fix/goblin001-verified-storage-closure'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/qualification/goblin001-storage-import-diagnostic-002'
     runs-on: windows-2022
     timeout-minutes: 300
     steps:
