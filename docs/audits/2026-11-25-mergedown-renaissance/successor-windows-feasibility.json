@@ -1,0 +1,125 @@
+{
+  "schema": "mergedown-successor-windows-feasibility-v1",
+  "status": "source-and-budget-proposal-only",
+  "hosted_execution_started": false,
+  "workflow_mutations": false,
+  "goblin": {
+    "commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+    "tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207",
+    "inputs": {
+      ".github/workflows/gip014-goblin-002.yml": "8cc65d78f857ff6fbf35d83ffd54ea70dd88b536b07c4cb18cc99faab59f917b",
+      "tools/gip014/qualify_windows.ps1": "7b4828cb5ceb8630a3b4fba361c8b5cd3e5de697b49f9c94e0053c8144499ca2",
+      "tools/gip014/run_goblin.py": "1f5f971389cece3b4864629967150ef8f4d0285b09be781d9d5957d2a0c4c9c1",
+      "tools/gip014/owned_process.py": "3badcf6e7f04bac69a4a7bf03f6cd332a47de1abc4c05f8a9ace235ec1c6bb6d",
+      "tools/ci/run_goblin_storage_qualification.py": "b27739711196e1b90e77c439e12dfb28aa81fccb6ad88a5d3b2cad8b19d45ea3",
+      "tools/ci/windows_file_lock.py": "f46d3495eb61862b721188847f788b582643bb697a0b64274283510a8e3d14ef",
+      "godot/tests/test_workbench_file_transaction.gd": "61b22c7f53a12545acf3a55ae99e02e052f81110526d8aa31b288f28e98225f4"
+    },
+    "case_inventory": [
+      "storage",
+      "controller",
+      "laboratory",
+      "discovery",
+      "authored_lineage",
+      "ambient_integration"
+    ],
+    "native_boundary_case": "test_workbench_file_transaction",
+    "os_cases": [
+      "none",
+      "locked-target"
+    ],
+    "os_process_count": 5,
+    "budget": {
+      "six_canonical_cases_with_import_cleanup": 3600,
+      "source_import_with_cleanup": 270,
+      "native_boundary_with_cleanup": 330,
+      "os_matrix_with_version_cleanup": 510,
+      "setup": 4200,
+      "source_readback_seal": 900,
+      "evidence_upload": 600,
+      "aggregate_headroom": 600
+    },
+    "proposed_parent_minutes": 190,
+    "budget_total_seconds": 11010,
+    "required_parent_minutes": 184
+  },
+  "art": {
+    "commit": "368292fe99485e6ea928325f9e8d000d829a4407",
+    "tree": "64b084bb93b6a78b55fdff76d11249cbb32c4167",
+    "inputs": {
+      ".github/workflows/art-session-logging.yml": "337feea46b17fa5d51b4e1b7dae9f270f5dbe55ed9d1d485638bf7c9a21daa67",
+      "tools/ci/run_art_storage_qualification.py": "a1cec51d0ccc6f7fd283edb234d8b365578497d59fcb3f1bed80cef8c304fcf4",
+      "tools/ci/windows_file_lock.py": "f46d3495eb61862b721188847f788b582643bb697a0b64274283510a8e3d14ef",
+      "tools/ci/run_godot_regressions.py": "fee84738fbc47cb38560a69b4371b769d418f5e369a3d032cf835a9590bc6493",
+      "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+      "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+      "godot/tests/test_workbench_file_transaction.gd": "61b22c7f53a12545acf3a55ae99e02e052f81110526d8aa31b288f28e98225f4",
+      "godot/tests/test_art_storage_integrity.gd": "da8b19a86019a2fd2b551d1bb914b087e99ae48d9618fbd6e750a99b3591a4df",
+      "godot/tests/test_art_conversation_apply_preparation.gd": "ce896063700b2ff8f73e5549609eee19768656d8797ccfd6e42f792df08f59fe",
+      "godot/tests/test_art_architecture_workbench.gd": "106d31702368d6f25d7d380e6cd27bac77035f710e750a058f59970d21d6a370"
+    },
+    "case_inventory": {
+      "test_workbench_file_transaction": 1200,
+      "test_art_storage_integrity": 1200,
+      "test_art_conversation_apply_preparation": 1200,
+      "test_art_architecture_workbench": 3940
+    },
+    "os_cases": [
+      [
+        "export",
+        "none"
+      ],
+      [
+        "export",
+        "locked-target"
+      ],
+      [
+        "new-event",
+        "none"
+      ],
+      [
+        "append",
+        "none"
+      ],
+      [
+        "append",
+        "locked-target"
+      ],
+      [
+        "settings",
+        "none"
+      ],
+      [
+        "settings",
+        "locked-target"
+      ],
+      [
+        "pending-history",
+        "none"
+      ],
+      [
+        "pending-history",
+        "existing-receipt"
+      ]
+    ],
+    "budget": {
+      "four_registered_cases_with_cleanup": 8500,
+      "registered_import_with_cleanup": 1440,
+      "os_matrix_with_version_outer_cleanup": 468,
+      "setup": 4200,
+      "source_readback_seal": 900,
+      "evidence_upload": 600,
+      "aggregate_headroom": 600
+    },
+    "proposed_parent_minutes": 280,
+    "budget_total_seconds": 16708,
+    "required_parent_minutes": 279
+  },
+  "runtime_basis": "Retained source-matched105 native and4 Rapier inputs, verified byte-for-byte; no native rebuild/publication or Windows execution claimed by this note",
+  "scope_limits": [
+    "No full predecessor campaign rerun",
+    "No long-horizon, real model, package, graphical or physical owner acceptance",
+    "Exact source/harness/attempt identities and literal inventories must be registered before admission",
+    "Do not reuse old successful source evidence as a current Windows result"
+  ]
+}

@@ -1,0 +1,3836 @@
+{
+  "schema": "cybersand-independent-partial-gates-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-26T00:40:54.548226+00:00",
+  "candidate": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "synthetic_source": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+  "merge_disposition": "HOLD pending remaining native and full regenerated Windows gates",
+  "art": {
+    "run": 45727972762,
+    "workflow_latest_attempt": 2,
+    "linux_execution_attempt": 1,
+    "windows_execution_attempt": 2,
+    "linux_original_job": {
+      "id": 139602549257,
+      "run_attempt": 1,
+      "name": "Linux 4.7 native Workbench session logging",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:20:04Z",
+      "completed_at": "2026-11-26T00:21:06Z",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+    },
+    "linux_carried_record": {
+      "id": 139606817778,
+      "run_attempt": 2,
+      "name": "Linux 4.7 native Workbench session logging",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:20:04Z",
+      "completed_at": "2026-11-26T00:21:06Z",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+    },
+    "linux_record_is_fresh_execution": false,
+    "linux_same_raw_log_and_timestamps": true,
+    "linux_log": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready26317-art-original-linux-139602549257.log",
+      "bytes": 53469,
+      "sha256": "f388d2c679df9b79e458f0fe4f653c6b6c68644fabd344e6559348edab1d17aa",
+      "encoding": "connector-decoded text; LF normalized"
+    },
+    "linux_carried_log": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready26317-art-attempt2-139606817778.log",
+      "bytes": 53469,
+      "sha256": "f388d2c679df9b79e458f0fe4f653c6b6c68644fabd344e6559348edab1d17aa",
+      "encoding": "connector-decoded text; LF normalized"
+    },
+    "linux_terminal_receipts": [
+      {
+        "marker": "ART_SESSION_RESULT",
+        "report": {
+          "checks": 35,
+          "failures": [],
+          "first": "user://art-traffic/610691ddd84637c53807271728aa4f73.jsonl",
+          "godot": "4.7-stable (official)",
+          "os": "Linux",
+          "second": "user://art-traffic/2e851eab5807fbe6ebc110d12f7be2dc.jsonl"
+        }
+      },
+      {
+        "marker": "ART_MANUAL_AUDIT_RESULT",
+        "report": {
+          "checks": 12,
+          "failures": [],
+          "log": "user://art-traffic/54bfdb84a82d40991be9a4987fed64e4.jsonl"
+        }
+      },
+      {
+        "marker": "ART_LAZY_RESULT",
+        "report": {
+          "checks": 15,
+          "failures": [],
+          "scope": "one-root-log-per-game-session"
+        }
+      },
+      {
+        "marker": "ART_TRAFFIC_PANEL",
+        "report": {
+          "checks": 12,
+          "failures": [],
+          "scope": "no-history-restore"
+        }
+      },
+      {
+        "marker": "ART_HISTORY_SESSION_RESULT",
+        "report": {
+          "checks": 13,
+          "failures": [],
+          "scope": "session-only"
+        }
+      },
+      {
+        "marker": "ART_PANEL_UI",
+        "report": {
+          "checks": 64,
+          "display": "headless",
+          "failures": []
+        }
+      },
+      {
+        "marker": "ART_TRAFFIC_INTEGRITY",
+        "report": {
+          "checks": 148,
+          "failures": [],
+          "user_data": "/home/runner/work/_temp/session-test_art_traffic_integrity/godot/app_userdata/Cyber Sand Reference Sandbox"
+        }
+      },
+      {
+        "marker": "ART_HISTORY_RECEIPT_IDENTITY_RESULT",
+        "report": {
+          "checks": 122,
+          "failures": []
+        }
+      },
+      {
+        "marker": "ART_STAGE1_RESULT",
+        "report": {
+          "base": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+          "checks": 148,
+          "failures": 0,
+          "last_chunk_changed": 1808,
+          "last_native_backend": "CyberNativeCellWorld",
+          "stop_prefix": 4096
+        }
+      }
+    ],
+    "windows_fresh_job": {
+      "id": 139606815128,
+      "run_attempt": 2,
+      "name": "Windows 4.7 real Workbench session logging",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:30:40Z",
+      "completed_at": "2026-11-26T00:31:50Z",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+    },
+    "windows_log": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready26317-art-attempt2-139606815128.log",
+      "bytes": 110014,
+      "sha256": "c86c2577de55c57bf93990a6b77a2c56b15138d9abc7dcba4ec4b66fb125add2",
+      "encoding": "connector-decoded text; LF normalized"
+    },
+    "windows_terminal_receipts": [
+      {
+        "marker": "ART_SESSION_RESULT",
+        "report": {
+          "checks": 35,
+          "failures": [],
+          "first": "user://art-traffic/994c04481d5464305874945238cbf892.jsonl",
+          "godot": "4.7-stable (official)",
+          "os": "Windows",
+          "second": "user://art-traffic/5f12f8e40bf22ea323d087816db6cdcc.jsonl"
+        }
+      },
+      {
+        "marker": "ART_MANUAL_AUDIT_RESULT",
+        "report": {
+          "checks": 12,
+          "failures": [],
+          "log": "user://art-traffic/c3faca500e83af2d5013bf01b1f6e1c4.jsonl"
+        }
+      },
+      {
+        "marker": "ART_LAZY_RESULT",
+        "report": {
+          "checks": 15,
+          "failures": [],
+          "scope": "one-root-log-per-game-session"
+        }
+      },
+      {
+        "marker": "ART_TRAFFIC_PANEL",
+        "report": {
+          "checks": 12,
+          "failures": [],
+          "scope": "no-history-restore"
+        }
+      },
+      {
+        "marker": "ART_HISTORY_SESSION_RESULT",
+        "report": {
+          "checks": 13,
+          "failures": [],
+          "scope": "session-only"
+        }
+      },
+      {
+        "marker": "ART_PANEL_UI",
+        "report": {
+          "checks": 64,
+          "display": "headless",
+          "failures": []
+        }
+      },
+      {
+        "marker": "ART_TRAFFIC_INTEGRITY",
+        "report": {
+          "checks": 148,
+          "failures": [],
+          "user_data": "D:/a/_temp/art-session-test_art_traffic_integrity/Godot/app_userdata/Cyber Sand Reference Sandbox"
+        }
+      }
+    ],
+    "windows_assertions": 299,
+    "windows_terminal_cases": 7,
+    "original_failed_windows_job": 139602549515,
+    "linux_terminal_cases": 9,
+    "linux_assertions": 569,
+    "linux_receipt_deduplication": "The workflow prints session/native receipts again with grep after execution; exact duplicate JSON rows are not counted twice."
+  },
+  "gde_linux": {
+    "run": 45727973062,
+    "execution_attempt": 1,
+    "job": 139609596970,
+    "status": "passed",
+    "case_count": 354,
+    "shard_count": 25,
+    "source_inputs_verified": 41,
+    "source_sha": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+    "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+    "coverage_archive": {
+      "artifact_id": 15075308967,
+      "zip_bytes": 83122,
+      "zip_sha256": "e46ecfc5caa92ff39eebb86b75202f4800616d339e0e60b3d23b75116d4cdeaf",
+      "members": [
+        {
+          "name": "linux-coverage.json",
+          "bytes": 19355,
+          "sha256": "9e50adcd0f408b5bd0ec9081706ab71d1492b0d4df95898b3804eacd7b83e5dd"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_acrobat/verified.json",
+          "bytes": 5016,
+          "sha256": "0d03fb3249d5ea826dc27df1f70f2b402952afdf1aa8dfec5b11d9e11cc78a9b"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_acrobat/proof.json",
+          "bytes": 6885,
+          "sha256": "befee60084361342cc89e3242999e26bdea3b421362d32e71e0181e4be5fba13"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_acrobat/verifier-output.txt",
+          "bytes": 4152,
+          "sha256": "bb8d45d03fe7aa725bf044ca7f4937067767f95d6feb61d140eaac5c98da46f3"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_arcadelander/proof.json",
+          "bytes": 6956,
+          "sha256": "7a55a702d38de11710bb753e141f3c2b5ffbb02351f44893253aca676e20f288"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_arcadelander/verified.json",
+          "bytes": 5021,
+          "sha256": "82206c8d875031ba216a98c7e22b7d6b38dd78efe2b63d8f1c4ee2a0073d633d"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_arcadelander/verifier-output.txt",
+          "bytes": 4157,
+          "sha256": "5db0866e30e8ccfbb41c4010d949984b6abc713a17b2dac13472ac2f32c74ff5"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_jetbarrel/proof.json",
+          "bytes": 6913,
+          "sha256": "f41692c44278fd097d6ae3d48aacdd2cfc32a20ba58bc348106476dd67de3269"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_jetbarrel/verified.json",
+          "bytes": 5018,
+          "sha256": "a939acddc1bdd01fc84c476b30367eef7a9c1235d810451b4a3917bd32f0017a"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_jetbarrel/verifier-output.txt",
+          "bytes": 4154,
+          "sha256": "fbf981ae0c376a6d983f233b8a5b33e635033320d862e9fc883ee3aea1f3bc5f"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_stuntbuggy/proof.json",
+          "bytes": 6928,
+          "sha256": "a26157c8b6f4ff1542e6815c8095d75187286915491f92fac85b21f5d13c90eb"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_stuntbuggy/verified.json",
+          "bytes": 5019,
+          "sha256": "4dd090cc5c2f0c52ec42b2936a18a73a98397901abc392fc632f5229117ac843"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_stuntbuggy/verifier-output.txt",
+          "bytes": 4155,
+          "sha256": "5bf05b95d92f5ab458edb2064b8b3fa12f9d23b1ede4e65bc8b4a714b6d0b49f"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_trialsbike/proof.json",
+          "bytes": 6928,
+          "sha256": "a65f8893b0f5a607260220348635b6ccb69120215d8a66d9ac952c5d9b3b18ac"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_trialsbike/verified.json",
+          "bytes": 5019,
+          "sha256": "e25d87e6da00787df7528eb09da945320479aafd12b71035fe3540469ddaf3d9"
+        },
+        {
+          "name": "linux-play-readback/test_play_input011_trialsbike/verifier-output.txt",
+          "bytes": 4155,
+          "sha256": "e3fee4d4ec803bd8b1e5fe9121d4b672c0bd82ddb7a79853f42f15add4c269ef"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_acrobat/proof.json",
+          "bytes": 5913,
+          "sha256": "3b7549fe7d6d5c1facbec5cc9a251da5c5257bd211bda83ff5ddce8cac89a254"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_acrobat/verified.json",
+          "bytes": 3869,
+          "sha256": "bd70e9150731dd35c2dc9090246b1ca059c6ad58aa77eeef5a683d62f6987e84"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_acrobat/verifier-output.txt",
+          "bytes": 3183,
+          "sha256": "f0047bc925e0ea939bd6f611ca20289f6fc77bdb29a6949300dad071a1605cc6"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_arcadelander/proof.json",
+          "bytes": 6078,
+          "sha256": "dec04b67adcba4e04e64856cd48babcf81c3c2d7766c8f4830877562485266f5"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_arcadelander/verified.json",
+          "bytes": 3874,
+          "sha256": "397bf65c852be714a24d856f3ebee8bbf3a63a08f12a6ff586345c7ff4f9632e"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_arcadelander/verifier-output.txt",
+          "bytes": 3188,
+          "sha256": "94f4f07c2bfc62cc34924907b1b6f27ffd6d4896e139c87e8fb11bb14a8cada4"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_jetbarrel/proof.json",
+          "bytes": 5979,
+          "sha256": "98cd82e9f879012f01f6c446d7fc7f228cb78d7e76e2614204ca6ed2fe7174a1"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_jetbarrel/verified.json",
+          "bytes": 3871,
+          "sha256": "ccb11fdf3fcb217af48906edba2ce12a5f87b99690fdadc77dd8600834a80af3"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_stuntbuggy/proof.json",
+          "bytes": 6012,
+          "sha256": "51477afc2b3f0223770458a2b5ec48c01f7dbbfc88f5626698c8dd13598b3659"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_jetbarrel/verifier-output.txt",
+          "bytes": 3185,
+          "sha256": "19bcf795af9a68d1812365ca9478cb044d11e24dfef30dc1901d624385fb980b"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_stuntbuggy/verified.json",
+          "bytes": 3872,
+          "sha256": "baf1aa362292b623b4e4ec6c2656d8f1dd5151f7e1a7460b6b96cd29e65c4c96"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_stuntbuggy/verifier-output.txt",
+          "bytes": 3186,
+          "sha256": "67318e5e7a7a42e7613bb733379d63e7e2beba72ac665698b3306050590577f4"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_trialsbike/verified.json",
+          "bytes": 3872,
+          "sha256": "40190dbebfe4cca6245af03032ab2c8ddce5157c43b757c3a448d9e11663a1a2"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_trialsbike/verifier-output.txt",
+          "bytes": 3186,
+          "sha256": "b29a9c31ba3bb4be7f7b935e96d3a597b05097d33e00744f97dc60de75e8a3b7"
+        },
+        {
+          "name": "linux-play-readback/test_play_life010_trialsbike/proof.json",
+          "bytes": 6018,
+          "sha256": "491585d22481ca16f3c5e29599de55519fefc14fd49c900022f10812b901bc8d"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_acrobat/proof.json",
+          "bytes": 8836,
+          "sha256": "5ede091483d1b247c5181b524271b91f613e10f59c2994bf0a1d4eef69a7fcf1"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_acrobat/verified.json",
+          "bytes": 5820,
+          "sha256": "447f8b9b273a0f7e2764c43794321966fecdf18ebeb7a0cfad0e2d224636d3a1"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_acrobat/verifier-output.txt",
+          "bytes": 4760,
+          "sha256": "c29cbfb7108244627a4777c855c5404b85e2ebdeebc754a703b99561381275bd"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_arcadelander/proof.json",
+          "bytes": 8911,
+          "sha256": "2f24058eb3fc31a602e7a25c129cba1b67c407854057822fe8457945d870f273"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_arcadelander/verified.json",
+          "bytes": 5825,
+          "sha256": "7a680edd8e8e799764475c88dadaac3af9644db89d2070fc371dd7096c903bd7"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_arcadelander/verifier-output.txt",
+          "bytes": 4765,
+          "sha256": "dbcb904409fc7624206b24cfb1a2d2a96c12805740af2565cdd44b96b48e01e9"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_jetbarrel/proof.json",
+          "bytes": 8866,
+          "sha256": "d6b9c216e3e45276bd2a4d08448a04955b00daf511f25b41c7cc8866fcfa6c46"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_jetbarrel/verified.json",
+          "bytes": 5822,
+          "sha256": "53200d3b48281a31e9c1f13395f4a576d1b02743b4c756119d9124bc1062481d"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_jetbarrel/verifier-output.txt",
+          "bytes": 4762,
+          "sha256": "85a54a3b8b9d3e300ce960b6c76d8b1eb797172205471a58e42325f439130e7c"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_stuntbuggy/proof.json",
+          "bytes": 8881,
+          "sha256": "1c5e449849be808710c5d3245b24f70ae6a3ad9c3ddbbc160f21cb67dead8bb4"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_stuntbuggy/verified.json",
+          "bytes": 5824,
+          "sha256": "e1219ffbc2d945ec42e4c6ceab390703bf1b9732ccaf6b25323c5fa58a202b0e"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_stuntbuggy/verifier-output.txt",
+          "bytes": 4764,
+          "sha256": "a89fa5507d396a6d5dbbdcdb086cc1a227f96eaded91d6f42c61bc4f3c150da7"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_trialsbike/proof.json",
+          "bytes": 8881,
+          "sha256": "ef1d6f2b5bdeb0ff18dc0734589ec861846761cfa6e9c3c43010add1a6ed0823"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_trialsbike/verified.json",
+          "bytes": 5823,
+          "sha256": "b0c48969a2b9c81329166ba19aca83710a0fe5a94ca8ea500d49dae7e7644379"
+        },
+        {
+          "name": "linux-play-readback/test_play_life011_trialsbike/verifier-output.txt",
+          "bytes": 4763,
+          "sha256": "061c467ee60bbd6a6c1fba44de19224f359a96940642f595c04b2eed47b77fd8"
+        }
+      ]
+    },
+    "coverage_report": {
+      "case_count": 354,
+      "cases": [
+        "test_play_ui007_overlay_render",
+        "test_semantic_planes_examples",
+        "test_wex001_water_body_baseline",
+        "test_workbench_combined_authoring",
+        "test_workbench_wave",
+        "test_microscenarios",
+        "test_penv001_player_environment",
+        "test_physical_usable_lifecycle",
+        "test_play_life001_stuntbuggy",
+        "test_play_life009_trialsbike",
+        "test_play_ui007_stuntbuggy",
+        "test_semantic_planes_runtime",
+        "test_workbench_deferred_paint",
+        "test_workbench_wave_render",
+        "test_ambient_authoring",
+        "test_art_batch_native_render",
+        "test_building_material_integration",
+        "test_explore001_dialog_render",
+        "test_liquid_comparison_ui",
+        "test_material_lab_catalogue",
+        "test_paint_editor_generated_workbench",
+        "test_physical_flight_lab",
+        "test_play_input011_acrobat",
+        "test_play_life004_stuntbuggy",
+        "test_play_pace001_trialsbike",
+        "test_play_pace002_acrobat",
+        "test_presentation_controls",
+        "test_water_feel_integration",
+        "test_web_demo_setup",
+        "test_workbench_liquid_edges",
+        "test_ambient_clock",
+        "test_art_deferred_manual",
+        "test_cell_world",
+        "test_explore001_dialog_saved_render",
+        "test_liquid_default_demo_preparation",
+        "test_material_lab_diagnostics",
+        "test_paint_editor_history",
+        "test_physical_flight_lab_scene",
+        "test_physics_async",
+        "test_play_input011_arcadelander",
+        "test_play_life004_trialsbike",
+        "test_play_pace002_arcadelander",
+        "test_play_pace004_capture_buffer",
+        "test_rapier_backend_preflight",
+        "test_wex004_decompression",
+        "test_workbench_liquid_equipment",
+        "test_ambient_engine",
+        "test_art_history_durability",
+        "test_ci_execution_policy",
+        "test_explore001_dialog_small_render",
+        "test_liquid_desktop_default_host",
+        "test_material_lab_experiment",
+        "test_paint_editor_native",
+        "test_physical_flight_physics",
+        "test_play_input011_jetbarrel",
+        "test_play_life005_failure_recovery",
+        "test_play_pace002_jetbarrel",
+        "test_play_ui003_lap_clock",
+        "test_rapier_drop_in",
+        "test_workbench_actor_catalog",
+        "test_workbench_live_liquid_edit",
+        "scene",
+        "test_ambient_examples_native",
+        "test_art_history_receipt_identity",
+        "test_coupling_lockstep",
+        "test_explore001_generated_workbench",
+        "test_liquid_feel_census",
+        "test_material_lab_readability",
+        "test_paint_editor_recovery",
+        "test_physical_flight_pilot",
+        "test_play_input011_legacy_pause",
+        "test_play_life007_failed_session_restart",
+        "test_play_pace002_stuntbuggy",
+        "test_play_ui003_physics_cadence",
+        "test_rapier_manual_step",
+        "test_tick_failure_regression",
+        "test_workbench_actor_composition",
+        "test_workbench_material_baseline",
+        "test_ambient_independent",
+        "test_art_lazy_traffic",
+        "test_coupling_lockstep_desktop",
+        "test_experiment_tower",
+        "test_failed_world_status_survives",
+        "test_liquid_host_evidence",
+        "test_material_lab_service",
+        "test_paint_editor_shapes",
+        "test_physical_flight_profile",
+        "test_play_input011_stuntbuggy",
+        "test_play_life008_recovery_navigation",
+        "test_play_pace002_trialsbike",
+        "test_play_ui004_gamepad_events",
+        "test_rem002_body_granular",
+        "test_workbench_actor_composition_native",
+        "test_workbench_physics_play",
+        "test_ambient_ledge_geometry",
+        "test_art_manual_audit",
+        "test_coupling_lockstep_semantics",
+        "test_feature_launch_arguments",
+        "test_liquid_host_web_probe",
+        "test_material_lab_ui",
+        "test_paint_editor_workbench",
+        "test_physical_flight_selection",
+        "test_play_input011_trialsbike",
+        "test_play_life009_acrobat",
+        "test_play_ui005_session_selection",
+        "test_render_patch_handoff_regression",
+        "test_transport_probe",
+        "test_web_rapier",
+        "test_workbench_actor_composition_session",
+        "test_workbench_pilot_ui",
+        "test_actor_rig_actuation",
+        "test_ambient_workbench",
+        "test_art_traffic_panel_safety",
+        "test_depth_dimensions_render",
+        "test_goblin_contract",
+        "test_liquid_prepared_host",
+        "test_liquid_synchronous_water_reference_body",
+        "test_microscenario_reference_pack_ui",
+        "test_physical_actor_effect_cancellation",
+        "test_physics_instrumentation",
+        "test_play_life002_trialsbike",
+        "test_play_life011_acrobat",
+        "test_play_wait001_trialsbike",
+        "test_transport_profiles",
+        "test_workbench_flatten_owner_failure",
+        "test_worldgen_typed",
+        "test_actor_prototype_integration",
+        "test_ambient_native_motion",
+        "test_art_panel_ui",
+        "test_deepworks",
+        "test_feature_launcher",
+        "test_gen007_qualification",
+        "test_liquid_inertial_host",
+        "test_material_lab_workbench_integration",
+        "test_palette_crossfade_render",
+        "test_physical_flight_session",
+        "test_play_life001_acrobat",
+        "test_play_life009_arcadelander",
+        "test_play_ui007_acrobat",
+        "test_render_world_generation",
+        "test_workbench_actor_equipment_extent",
+        "test_workbench_reservoir_lab",
+        "test_actor_prototype_session",
+        "test_ambient_perception",
+        "test_art_provider",
+        "test_deepworks_controller",
+        "test_gameplay_recorder",
+        "test_lcb_pressure_reference",
+        "test_liquid_level_import_host",
+        "test_material_lab_world",
+        "test_palette_shader_compile_bounds",
+        "test_physical_usable_course",
+        "test_play_life001_arcadelander",
+        "test_play_life009_jetbarrel",
+        "test_play_ui007_arcadelander",
+        "test_script_hotpath_native_fill",
+        "test_workbench_boundary_retention",
+        "test_workbench_retained_pressure",
+        "test_actor_prototypes",
+        "test_ambient_personalities_native",
+        "test_art_session_log",
+        "test_deepworks_reactions",
+        "test_gen007_inspection",
+        "test_liquid_level_preparation",
+        "test_material_presentation_render",
+        "test_microscenario_reference_contract",
+        "test_pchar001_player_representations",
+        "test_physical_usable_equipment",
+        "test_play_life001_jetbarrel",
+        "test_play_life009_stuntbuggy",
+        "test_play_ui007_jetbarrel",
+        "test_semantic_depth_render",
+        "test_workbench_canvas",
+        "test_workbench_spray_rearm",
+        "test_interaction_policy",
+        "test_liquid_synchronous_reference_body",
+        "test_native_fire_presentation_regression",
+        "test_physical_actor_session",
+        "test_play_input010_arcadelander",
+        "test_play_life003_trialsbike",
+        "test_play_pace001_acrobat",
+        "test_player_playground_runtime",
+        "test_water_presentation_model",
+        "test_workbench_host_claim_capacity",
+        "test_worldgen_workbench",
+        "test_ambient_default_off_integration",
+        "test_art_traffic_integrity",
+        "test_depth_dimensions",
+        "test_gentek_cathedral_showcase",
+        "test_liquid_policy_worker",
+        "test_microscenario_native_observation",
+        "test_physical_actor_effect_admission",
+        "test_physics_characterisation",
+        "test_play_life002_stuntbuggy",
+        "test_play_life010_trialsbike",
+        "test_play_wait001_stuntbuggy",
+        "test_thunderbowl_controllers",
+        "test_workbench_flatten",
+        "test_worldgen_planes",
+        "profile_scheduler",
+        "test_actor_usables_integration",
+        "test_art_batch_native",
+        "test_blacksite_nine_integration",
+        "test_explore001_dialog_native_render",
+        "test_gen007_reactions",
+        "test_interaction_async",
+        "test_lcb_inertial_adapter",
+        "test_liquid_solver_policy",
+        "test_native_edge_contact_regression",
+        "test_physical_actor_script",
+        "test_play_input010_acrobat",
+        "test_play_life003_stuntbuggy",
+        "test_play_life011_trialsbike",
+        "test_player_playground_course",
+        "test_water_feel_scenarios",
+        "test_workbench_hard_placement",
+        "test_actor_rigs",
+        "test_architectural_project_contract",
+        "test_blacksite_nine",
+        "test_depth_surface_render",
+        "test_gen007_workbench_render",
+        "test_lcb_fixture_manifests",
+        "test_liquid_sampled_preparation",
+        "test_microscenario_workbench_lifecycle",
+        "test_physical_actor_rigs",
+        "test_play_comp002_five_rig_course",
+        "test_play_life003_jetbarrel",
+        "test_play_life011_stuntbuggy",
+        "test_player_material_field",
+        "test_water_experiment_profiles",
+        "test_web_worker_parity",
+        "test_workbench_generator_installed",
+        "test_act004_body_capacity",
+        "test_actor_rig_integration",
+        "test_architectural_generator",
+        "test_art_undo",
+        "test_depth_lab",
+        "test_goblin_policies",
+        "test_liquid_pressure_rapier",
+        "test_liquid_trial_body",
+        "test_microscenario_stress",
+        "test_physical_actor_effects",
+        "test_play_auto001_shared_course",
+        "test_play_life003_acrobat",
+        "test_play_life011_arcadelander",
+        "test_player_acrobat",
+        "test_usable_session",
+        "test_workbench_fleet_session",
+        "test_actor_actuator_session",
+        "test_actor_rig_session",
+        "test_architectural_generator_ui",
+        "test_auto_worker_policy",
+        "test_depth_layer_runtime",
+        "test_hard_surface_incremental_packet",
+        "test_liquid_reference_body_poses",
+        "test_liquid_water_reference_body",
+        "test_microscenario_workbench",
+        "test_physical_actor_integration",
+        "test_play_comp001_existing_host_spike",
+        "test_play_life003_arcadelander",
+        "test_play_life011_jetbarrel",
+        "test_player_acrobat_physics",
+        "test_usables",
+        "test_workbench_generator_discovery",
+        "test_liquid_tower_host",
+        "test_native_render_bridge_regression",
+        "test_physical_actor_trial",
+        "test_play_input010_jetbarrel",
+        "test_play_life004_acrobat",
+        "test_play_pace001_arcadelander",
+        "test_player_vehicle_controls",
+        "test_rem003_player_granular",
+        "test_water_presentation_render",
+        "test_workbench_host_claim_native",
+        "test_worker_benchmark",
+        "test_lcb_physics_contracts",
+        "test_liquid_ordinary_demo_host",
+        "test_material_vapour_pipeline_render",
+        "test_pf_c2048_prepared",
+        "test_physical_usable_script",
+        "test_play_life001_trialsbike",
+        "test_play_life010_acrobat",
+        "test_play_ui007_trialsbike",
+        "test_showcase_backdrop_render",
+        "test_workbench_desktop_interest",
+        "test_workbench_wave_spill",
+        "test_liquid_owner_observation",
+        "test_megablock_project",
+        "test_physical_actor_actuation",
+        "test_physical_flight_teacher_dev_obstacle",
+        "test_physical_usables_admission",
+        "test_play_life002_acrobat",
+        "test_play_life010_arcadelander",
+        "test_play_wait001_acrobat",
+        "test_showcase_tiles",
+        "test_workbench_edit_ordering",
+        "test_world_design_pack_adapter",
+        "test_deepworks_render",
+        "test_gen007_qualification_render",
+        "test_liquid_physical_preparation",
+        "test_material_appearance_lut",
+        "test_microscenario_flood_control",
+        "test_physical_actor_arena",
+        "test_physical_usables_desktop",
+        "test_play_life002_arcadelander",
+        "test_play_life010_jetbarrel",
+        "test_play_wait001_arcadelander",
+        "test_simulation_worker_interest_ownership",
+        "test_workbench_failure_containment",
+        "test_worldgen_fields",
+        "test_blacksite_nine_render",
+        "test_exploratory_actor_selection",
+        "test_explore001_dialog_native_saved_render",
+        "test_lcb_negative_contracts",
+        "test_liquid_water_feel_host",
+        "test_microscenario_controllers",
+        "test_neon_reliquary",
+        "test_physical_flight_gameplay_render",
+        "test_play_input010_stuntbuggy",
+        "test_play_life004_arcadelander",
+        "test_play_pace001_jetbarrel",
+        "test_playval001_selectable_player_fixtures",
+        "test_wave_flow",
+        "test_workbench_input",
+        "profile_native_world",
+        "test_brush_owner_commands",
+        "test_explore001_dialog_native_small_render",
+        "test_lcb_pressure_optimization",
+        "test_material_glow_control",
+        "test_paint_editor_executor",
+        "test_physical_flight_handling",
+        "test_physical_flight_teacher_dev_free",
+        "test_play_input010_trialsbike",
+        "test_play_life004_jetbarrel",
+        "test_play_pace001_stuntbuggy",
+        "test_prepared_physical_owner",
+        "test_water_feel_controller",
+        "test_wave_flow_render",
+        "test_workbench_lcb_salvage",
+        "test_ambient_profile_editor",
+        "test_art_stored_material",
+        "test_depth_compositor",
+        "test_gen007_workbench",
+        "test_lcb_scenario_catalogue",
+        "test_liquid_physical_transaction",
+        "test_microscenario_materials_lab",
+        "test_physical_actor_catalog",
+        "test_physical_usables_runtime",
+        "test_play_life002_jetbarrel",
+        "test_play_life010_stuntbuggy",
+        "test_play_wait001_jetbarrel",
+        "test_thunderbowl_arena",
+        "test_workbench_failure_recovery",
+        "test_worldgen_grammar"
+      ],
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "originals": [
+        {
+          "path": "linux-godot-shard-0-45727973062-1/godot-regressions/shard-0/timings.json",
+          "sha256": "10376d0d5692ce48eddd71ecb997040e280918ba929e983da8942b57d3faec52",
+          "shard_index": 0
+        },
+        {
+          "path": "linux-godot-shard-1-45727973062-1/godot-regressions/shard-1/timings.json",
+          "sha256": "c9e299bf039d3610eeb05a374ff8d5d94db15d32d2306cb395009f5f00c7566b",
+          "shard_index": 1
+        },
+        {
+          "path": "linux-godot-shard-10-45727973062-1/godot-regressions/shard-10/timings.json",
+          "sha256": "2807cc2852d3c388129790f95ee94bc256461ed137702913b58c5ef70bca77d7",
+          "shard_index": 10
+        },
+        {
+          "path": "linux-godot-shard-11-45727973062-1/godot-regressions/shard-11/timings.json",
+          "sha256": "af65981c317d2af2b0dfcca81be4bda25b64b54ea2aaa7317a1639ceb4ab74fd",
+          "shard_index": 11
+        },
+        {
+          "path": "linux-godot-shard-12-45727973062-1/godot-regressions/shard-12/timings.json",
+          "sha256": "b674acc696cbd259cf3342c6856191af7e194a1b06d31e8c7b46eb81396ffd8f",
+          "shard_index": 12
+        },
+        {
+          "path": "linux-godot-shard-13-45727973062-1/godot-regressions/shard-13/timings.json",
+          "sha256": "43d4f2e55c9620eff8ef6f0e7b5c07331de3e94b9273199162198011e6328e2f",
+          "shard_index": 13
+        },
+        {
+          "path": "linux-godot-shard-14-45727973062-1/godot-regressions/shard-14/timings.json",
+          "sha256": "200da3e6edaa65917a6629d87a33915818f3b3d791d4098f3a234a81bafd7dfa",
+          "shard_index": 14
+        },
+        {
+          "path": "linux-godot-shard-15-45727973062-1/godot-regressions/shard-15/timings.json",
+          "sha256": "bd1952c35a5879d6fc1126369ef946e3cd63860c41290c6b3c239961d90fb2ea",
+          "shard_index": 15
+        },
+        {
+          "path": "linux-godot-shard-16-45727973062-1/godot-regressions/shard-16/timings.json",
+          "sha256": "110bdf9c36446869bf43a27c75efa7c2d3f3f07ffa73f5f14e2ddb2c4aedb4ee",
+          "shard_index": 16
+        },
+        {
+          "path": "linux-godot-shard-17-45727973062-1/godot-regressions/shard-17/timings.json",
+          "sha256": "932212b094636b768289f9cc2e0e9bc994b1ef6fdfd5fbfda3e2eef7541c2fec",
+          "shard_index": 17
+        },
+        {
+          "path": "linux-godot-shard-18-45727973062-1/godot-regressions/shard-18/timings.json",
+          "sha256": "164620ddb778139597ad08ae9be7bc4cc05065a21cf2931ff46864de1ccc8aa8",
+          "shard_index": 18
+        },
+        {
+          "path": "linux-godot-shard-19-45727973062-1/godot-regressions/shard-19/timings.json",
+          "sha256": "e60c2f3517f9c260cac03dfb3b15b5d273ed171150c858e51fc329a4610f4bb1",
+          "shard_index": 19
+        },
+        {
+          "path": "linux-godot-shard-2-45727973062-1/godot-regressions/shard-2/timings.json",
+          "sha256": "f1b7913e2fbb475f0f89ff06a98aadaed3194f99d88b659259c6eeb3bc26b2e8",
+          "shard_index": 2
+        },
+        {
+          "path": "linux-godot-shard-20-45727973062-1/godot-regressions/shard-20/timings.json",
+          "sha256": "7b0a965329aa10379740c5774503680392facc4492a6a4bd1ddfecdaa20469e0",
+          "shard_index": 20
+        },
+        {
+          "path": "linux-godot-shard-21-45727973062-1/godot-regressions/shard-21/timings.json",
+          "sha256": "90c1a3f910a89b1cf12362bcec85b623b0b272ac01ac8a7eefee60c507f4dd2c",
+          "shard_index": 21
+        },
+        {
+          "path": "linux-godot-shard-22-45727973062-1/godot-regressions/shard-22/timings.json",
+          "sha256": "3154b8dfa68b371adde0bd52a2c8ee83e4bb196bc3f3f56c6e6c07f4eeca6b7d",
+          "shard_index": 22
+        },
+        {
+          "path": "linux-godot-shard-23-45727973062-1/godot-regressions/shard-23/timings.json",
+          "sha256": "0dbaa8c29f651e6096488c3d1212831956f0be3a16e6218818d8e8f88e1f5409",
+          "shard_index": 23
+        },
+        {
+          "path": "linux-godot-shard-24-45727973062-1/godot-regressions/shard-24/timings.json",
+          "sha256": "9449d04550e35849b5afe068427294114e18da577542e3b1e9bf03fd3619419b",
+          "shard_index": 24
+        },
+        {
+          "path": "linux-godot-shard-3-45727973062-1/godot-regressions/shard-3/timings.json",
+          "sha256": "8ea3119e6c0d2e62afb35d11ddd3f1016da42e66a5df1d69a8b2eb4dba97dbd7",
+          "shard_index": 3
+        },
+        {
+          "path": "linux-godot-shard-4-45727973062-1/godot-regressions/shard-4/timings.json",
+          "sha256": "a6ab810d3918b3e893f1084ca5025c09265f01a740bc804f4402384147a5bdd4",
+          "shard_index": 4
+        },
+        {
+          "path": "linux-godot-shard-5-45727973062-1/godot-regressions/shard-5/timings.json",
+          "sha256": "2210e3827189323e3468f2780abcc631db2607271adcac9229f0b5b4fd0075cc",
+          "shard_index": 5
+        },
+        {
+          "path": "linux-godot-shard-6-45727973062-1/godot-regressions/shard-6/timings.json",
+          "sha256": "76f2893cd327c84126c24d7d15a7df11ad6cd7e40e656e68b53062398dbaed2b",
+          "shard_index": 6
+        },
+        {
+          "path": "linux-godot-shard-7-45727973062-1/godot-regressions/shard-7/timings.json",
+          "sha256": "40c07bfff4515025f3f712825560125836fbf3e3b91058a83306c86907d45cbd",
+          "shard_index": 7
+        },
+        {
+          "path": "linux-godot-shard-8-45727973062-1/godot-regressions/shard-8/timings.json",
+          "sha256": "4b3af54cffc7c1bd693f6e8979cf5bbc90372a49058e27b3f73c1e816eecc61a",
+          "shard_index": 8
+        },
+        {
+          "path": "linux-godot-shard-9-45727973062-1/godot-regressions/shard-9/timings.json",
+          "sha256": "b727d65cc5d8f0c6a991d1479d5b5661c3c249c86459495f12b9c9d39da8de62",
+          "shard_index": 9
+        }
+      ],
+      "run_attempt": "1",
+      "run_id": "45727973062",
+      "schema": "linux-godot-coverage-v1",
+      "shard_count": 25,
+      "source_inputs_verified": 41,
+      "source_sha": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+      "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+      "status": "passed"
+    },
+    "retained_play_readback": [
+      {
+        "path": "linux-play-readback/test_play_input011_acrobat/verified.json",
+        "receipt": {
+          "status": "passed",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "rig": "acrobat",
+          "production_transitions": 6,
+          "actual_bypass_negatives": 1,
+          "completed_held_steps": 21,
+          "completed_fresh_steps": 21,
+          "native_ticks_observed": 51,
+          "fixture_usec": 2351892,
+          "teardown_usec": 49976,
+          "physical_devices_qualified": false,
+          "graphical_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_runtime_read_source",
+              "rejected_for": "consumed_source_identity"
+            },
+            {
+              "name": "late_first_main",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "failed_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "duplicate_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "callback_between_modal_edges",
+              "rejected_for": "callback_gap_missing"
+            },
+            {
+              "name": "no_pending_input",
+              "rejected_for": "pending_input_missing"
+            },
+            {
+              "name": "old_edges_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "old_generation_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "retired_primary_applied",
+              "rejected_for": "stale_input_applied"
+            },
+            {
+              "name": "missing_physical_completion",
+              "rejected_for": "completed_rapier_step_missing"
+            },
+            {
+              "name": "neutral_only_recovery",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "unbound_admitted_generation",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "expired_old_authority",
+              "rejected_for": "stale_authority_not_revoked"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "native_progress_missing"
+            },
+            {
+              "name": "wrong_negative_reason",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "no_cancel_bypass",
+              "rejected_for": "cancellation_bypass_missing"
+            },
+            {
+              "name": "focused_keyboard_toggle_admitted",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_released_text_focus",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_skipped_setter",
+              "rejected_for": "focused_button_setter_not_applied"
+            },
+            {
+              "name": "unjoined_worker",
+              "rejected_for": "teardown"
+            },
+            {
+              "name": "physical_claim",
+              "rejected_for": "qualification_scope"
+            }
+          ],
+          "process_adverse_controls": [
+            {
+              "name": "post_summary_crash",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "missing_status",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_timeout",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_over_bound",
+              "rejected_for": "process_deadline"
+            },
+            {
+              "name": "wrong_case",
+              "rejected_for": "process_case_mismatch"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "log_sha256": "07a50b94c8d0fcc2b0f3c5557266b425faa0db7ca718c50ba34b14c61578b70e",
+          "process_sha256": "4a7ba9cf575c5f1dd474b79dcae726b75c925c372307bc3653857c6570ca6d7a",
+          "raw_result_sha256": "006f78ffed7b73847b25222f708559665c83c1383444d8eb50708296d9390670",
+          "consumed_source_sha256": {
+            "fixture_sha256": "65d6b49c7b5ec306568d95849dda01bbd1a1ba6fd6beacd575d6954d8f8a1d33",
+            "main_sha256": "bfb601f767d82a9a8fb4a9fb6c0613b8867d6cc0b4fae02094597eacc52b048c",
+            "panel_sha256": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7"
+          },
+          "verifier_sha256": "feeebe2ea3f16087ae30ab262581f10d91fe847c5233ffba4378f20d849abed2"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_input011_arcadelander/verified.json",
+        "receipt": {
+          "status": "passed",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "rig": "arcadelander",
+          "production_transitions": 6,
+          "actual_bypass_negatives": 1,
+          "completed_held_steps": 21,
+          "completed_fresh_steps": 21,
+          "native_ticks_observed": 52,
+          "fixture_usec": 2023231,
+          "teardown_usec": 43243,
+          "physical_devices_qualified": false,
+          "graphical_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_runtime_read_source",
+              "rejected_for": "consumed_source_identity"
+            },
+            {
+              "name": "late_first_main",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "failed_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "duplicate_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "callback_between_modal_edges",
+              "rejected_for": "callback_gap_missing"
+            },
+            {
+              "name": "no_pending_input",
+              "rejected_for": "pending_input_missing"
+            },
+            {
+              "name": "old_edges_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "old_generation_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "retired_primary_applied",
+              "rejected_for": "stale_input_applied"
+            },
+            {
+              "name": "missing_physical_completion",
+              "rejected_for": "completed_rapier_step_missing"
+            },
+            {
+              "name": "neutral_only_recovery",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "unbound_admitted_generation",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "expired_old_authority",
+              "rejected_for": "stale_authority_not_revoked"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "native_progress_missing"
+            },
+            {
+              "name": "wrong_negative_reason",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "no_cancel_bypass",
+              "rejected_for": "cancellation_bypass_missing"
+            },
+            {
+              "name": "focused_keyboard_toggle_admitted",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_released_text_focus",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_skipped_setter",
+              "rejected_for": "focused_button_setter_not_applied"
+            },
+            {
+              "name": "unjoined_worker",
+              "rejected_for": "teardown"
+            },
+            {
+              "name": "physical_claim",
+              "rejected_for": "qualification_scope"
+            }
+          ],
+          "process_adverse_controls": [
+            {
+              "name": "post_summary_crash",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "missing_status",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_timeout",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_over_bound",
+              "rejected_for": "process_deadline"
+            },
+            {
+              "name": "wrong_case",
+              "rejected_for": "process_case_mismatch"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "log_sha256": "d0731f172a817b77dd5c429de5f2381f38c9287f30180781da74656d1f23f026",
+          "process_sha256": "f0913a6d66b6caffd670cd6a011d39e115c0ead86e3a2eb9e8e797e38c82a192",
+          "raw_result_sha256": "58a752fba9fdb06f1c84282f4145bbf0dc65918d2cf4cb1773303ee28323c4d8",
+          "consumed_source_sha256": {
+            "fixture_sha256": "65d6b49c7b5ec306568d95849dda01bbd1a1ba6fd6beacd575d6954d8f8a1d33",
+            "main_sha256": "bfb601f767d82a9a8fb4a9fb6c0613b8867d6cc0b4fae02094597eacc52b048c",
+            "panel_sha256": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7"
+          },
+          "verifier_sha256": "feeebe2ea3f16087ae30ab262581f10d91fe847c5233ffba4378f20d849abed2"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_input011_jetbarrel/verified.json",
+        "receipt": {
+          "status": "passed",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "rig": "jetbarrel",
+          "production_transitions": 6,
+          "actual_bypass_negatives": 1,
+          "completed_held_steps": 21,
+          "completed_fresh_steps": 21,
+          "native_ticks_observed": 51,
+          "fixture_usec": 2042768,
+          "teardown_usec": 44466,
+          "physical_devices_qualified": false,
+          "graphical_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_runtime_read_source",
+              "rejected_for": "consumed_source_identity"
+            },
+            {
+              "name": "late_first_main",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "failed_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "duplicate_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "callback_between_modal_edges",
+              "rejected_for": "callback_gap_missing"
+            },
+            {
+              "name": "no_pending_input",
+              "rejected_for": "pending_input_missing"
+            },
+            {
+              "name": "old_edges_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "old_generation_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "retired_primary_applied",
+              "rejected_for": "stale_input_applied"
+            },
+            {
+              "name": "missing_physical_completion",
+              "rejected_for": "completed_rapier_step_missing"
+            },
+            {
+              "name": "neutral_only_recovery",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "unbound_admitted_generation",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "expired_old_authority",
+              "rejected_for": "stale_authority_not_revoked"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "native_progress_missing"
+            },
+            {
+              "name": "wrong_negative_reason",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "no_cancel_bypass",
+              "rejected_for": "cancellation_bypass_missing"
+            },
+            {
+              "name": "focused_keyboard_toggle_admitted",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_released_text_focus",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_skipped_setter",
+              "rejected_for": "focused_button_setter_not_applied"
+            },
+            {
+              "name": "unjoined_worker",
+              "rejected_for": "teardown"
+            },
+            {
+              "name": "physical_claim",
+              "rejected_for": "qualification_scope"
+            }
+          ],
+          "process_adverse_controls": [
+            {
+              "name": "post_summary_crash",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "missing_status",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_timeout",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_over_bound",
+              "rejected_for": "process_deadline"
+            },
+            {
+              "name": "wrong_case",
+              "rejected_for": "process_case_mismatch"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "log_sha256": "fcb550eff1eb800e12d4ef5e7ee256698a8372ccc15cc0d1576130dae6d228d1",
+          "process_sha256": "e489040c2234a68aa7e71d8a5294c50b2e1b49fe77a1aa3a33d3cab4b4dbfb3a",
+          "raw_result_sha256": "e4e4939dfdd712e147dbccee62ee97ce7799f643a7527d106561c5e6054dca77",
+          "consumed_source_sha256": {
+            "fixture_sha256": "65d6b49c7b5ec306568d95849dda01bbd1a1ba6fd6beacd575d6954d8f8a1d33",
+            "main_sha256": "bfb601f767d82a9a8fb4a9fb6c0613b8867d6cc0b4fae02094597eacc52b048c",
+            "panel_sha256": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7"
+          },
+          "verifier_sha256": "feeebe2ea3f16087ae30ab262581f10d91fe847c5233ffba4378f20d849abed2"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_input011_stuntbuggy/verified.json",
+        "receipt": {
+          "status": "passed",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "rig": "stuntbuggy",
+          "production_transitions": 6,
+          "actual_bypass_negatives": 1,
+          "completed_held_steps": 21,
+          "completed_fresh_steps": 21,
+          "native_ticks_observed": 51,
+          "fixture_usec": 1944489,
+          "teardown_usec": 37872,
+          "physical_devices_qualified": false,
+          "graphical_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_runtime_read_source",
+              "rejected_for": "consumed_source_identity"
+            },
+            {
+              "name": "late_first_main",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "failed_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "duplicate_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "callback_between_modal_edges",
+              "rejected_for": "callback_gap_missing"
+            },
+            {
+              "name": "no_pending_input",
+              "rejected_for": "pending_input_missing"
+            },
+            {
+              "name": "old_edges_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "old_generation_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "retired_primary_applied",
+              "rejected_for": "stale_input_applied"
+            },
+            {
+              "name": "missing_physical_completion",
+              "rejected_for": "completed_rapier_step_missing"
+            },
+            {
+              "name": "neutral_only_recovery",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "unbound_admitted_generation",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "expired_old_authority",
+              "rejected_for": "stale_authority_not_revoked"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "native_progress_missing"
+            },
+            {
+              "name": "wrong_negative_reason",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "no_cancel_bypass",
+              "rejected_for": "cancellation_bypass_missing"
+            },
+            {
+              "name": "focused_keyboard_toggle_admitted",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_released_text_focus",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_skipped_setter",
+              "rejected_for": "focused_button_setter_not_applied"
+            },
+            {
+              "name": "unjoined_worker",
+              "rejected_for": "teardown"
+            },
+            {
+              "name": "physical_claim",
+              "rejected_for": "qualification_scope"
+            }
+          ],
+          "process_adverse_controls": [
+            {
+              "name": "post_summary_crash",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "missing_status",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_timeout",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_over_bound",
+              "rejected_for": "process_deadline"
+            },
+            {
+              "name": "wrong_case",
+              "rejected_for": "process_case_mismatch"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "log_sha256": "fe754a45ed7a63c649405353f8053babe2a2be76ca2c3c9d67a8a2b6e1889846",
+          "process_sha256": "d7cc10e90454efe5ff4a725229a21e20977661d63665cfa6e7638ad150e91f6d",
+          "raw_result_sha256": "9e61c753e188b713a7df9839958e335ac9f7ddaaa3191c660d9f3f798fe078dd",
+          "consumed_source_sha256": {
+            "fixture_sha256": "65d6b49c7b5ec306568d95849dda01bbd1a1ba6fd6beacd575d6954d8f8a1d33",
+            "main_sha256": "bfb601f767d82a9a8fb4a9fb6c0613b8867d6cc0b4fae02094597eacc52b048c",
+            "panel_sha256": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7"
+          },
+          "verifier_sha256": "feeebe2ea3f16087ae30ab262581f10d91fe847c5233ffba4378f20d849abed2"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_input011_trialsbike/verified.json",
+        "receipt": {
+          "status": "passed",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "rig": "trialsbike",
+          "production_transitions": 6,
+          "actual_bypass_negatives": 1,
+          "completed_held_steps": 21,
+          "completed_fresh_steps": 21,
+          "native_ticks_observed": 51,
+          "fixture_usec": 2320231,
+          "teardown_usec": 44577,
+          "physical_devices_qualified": false,
+          "graphical_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_runtime_read_source",
+              "rejected_for": "consumed_source_identity"
+            },
+            {
+              "name": "late_first_main",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "failed_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "duplicate_transition",
+              "rejected_for": "transition_inventory"
+            },
+            {
+              "name": "callback_between_modal_edges",
+              "rejected_for": "callback_gap_missing"
+            },
+            {
+              "name": "no_pending_input",
+              "rejected_for": "pending_input_missing"
+            },
+            {
+              "name": "old_edges_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "old_generation_retained",
+              "rejected_for": "immediate_revocation_missing"
+            },
+            {
+              "name": "retired_primary_applied",
+              "rejected_for": "stale_input_applied"
+            },
+            {
+              "name": "missing_physical_completion",
+              "rejected_for": "completed_rapier_step_missing"
+            },
+            {
+              "name": "neutral_only_recovery",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "unbound_admitted_generation",
+              "rejected_for": "fresh_input_not_applied"
+            },
+            {
+              "name": "expired_old_authority",
+              "rejected_for": "stale_authority_not_revoked"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "native_progress_missing"
+            },
+            {
+              "name": "wrong_negative_reason",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "no_cancel_bypass",
+              "rejected_for": "cancellation_bypass_missing"
+            },
+            {
+              "name": "focused_keyboard_toggle_admitted",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_released_text_focus",
+              "rejected_for": "focused_button_ownership"
+            },
+            {
+              "name": "focused_button_skipped_setter",
+              "rejected_for": "focused_button_setter_not_applied"
+            },
+            {
+              "name": "unjoined_worker",
+              "rejected_for": "teardown"
+            },
+            {
+              "name": "physical_claim",
+              "rejected_for": "qualification_scope"
+            }
+          ],
+          "process_adverse_controls": [
+            {
+              "name": "post_summary_crash",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "missing_status",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_timeout",
+              "rejected_for": "process_failed_or_incomplete"
+            },
+            {
+              "name": "process_over_bound",
+              "rejected_for": "process_deadline"
+            },
+            {
+              "name": "wrong_case",
+              "rejected_for": "process_case_mismatch"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "log_sha256": "97cc2f4b1235a46d8a1320c5dedc214e15592edbbb52e2b6e0beed9199dc2a74",
+          "process_sha256": "b47725cc72049c75ea769f7ba328adbb3fb005f7e8365af142434e6c49dc317c",
+          "raw_result_sha256": "ee88cec671da753145111fc9666909e06e651c8ddfc0019177f08faf65a83676",
+          "consumed_source_sha256": {
+            "fixture_sha256": "65d6b49c7b5ec306568d95849dda01bbd1a1ba6fd6beacd575d6954d8f8a1d33",
+            "main_sha256": "bfb601f767d82a9a8fb4a9fb6c0613b8867d6cc0b4fae02094597eacc52b048c",
+            "panel_sha256": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7"
+          },
+          "verifier_sha256": "feeebe2ea3f16087ae30ab262581f10d91fe847c5233ffba4378f20d849abed2"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life010_acrobat/verified.json",
+        "receipt": {
+          "rig": "acrobat",
+          "assertions": 148,
+          "failures": 0,
+          "real_lifetimes": 2,
+          "packets": 5,
+          "rejected_deliveries": 5,
+          "native_commits": 2,
+          "lease_valid_cancellations": 1,
+          "serial_bypass_negative": "consumer_serial_regressed",
+          "elapsed_usec": 6589396,
+          "adverse_controls": [
+            {
+              "name": "source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "duplicate_main_ack",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "swapped_main_acks",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "expired_lease",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "timeout",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_delivery",
+              "rejected_for": "delivery_inventory"
+            },
+            {
+              "name": "stale_body",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_terrain",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_lap",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "missing_physics",
+              "rejected_for": "no_completed_progress"
+            },
+            {
+              "name": "neutral_equipment",
+              "rejected_for": "input_edges"
+            },
+            {
+              "name": "blocked_physics",
+              "rejected_for": "pending_request_no_physics"
+            },
+            {
+              "name": "extracted_lease_expired",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "native_counter_only",
+              "rejected_for": "native_receipt_count"
+            },
+            {
+              "name": "cancelled_effect",
+              "rejected_for": "cancelled_effect_applied"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_teardown"
+            },
+            {
+              "name": "wrong_negative",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "altered_packet",
+              "rejected_for": "packet_digest"
+            },
+            {
+              "name": "receipt_without_step",
+              "rejected_for": "receipt_without_completed_step"
+            },
+            {
+              "name": "receipt_stale_generation",
+              "rejected_for": "receipt_step_owner"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "result_sha256": "c45853abb7aa3768035236fcf605b3cc4d4cd66d51694c4725ffb19fed7f9723",
+          "process_sha256": "10ed19728cf633fa68da1ff767eff0751a0da53b8a845fbb958e9898940718ab",
+          "log_sha256": "c2498a542d8ce33a2fdae76dd00fcef850b1b02e9d571131e5c291cfdc84df17",
+          "fixture_sha256": "7adc0937c69b3cf4057a85de4fcaf0a6831117a041a7b7134cb2c42f59aed866",
+          "worker_sha256": "258c836227140e2408f3e39cc8cc7f603db2df056b3994a0b83763d8fa7c9c81"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life010_arcadelander/verified.json",
+        "receipt": {
+          "rig": "arcadelander",
+          "assertions": 148,
+          "failures": 0,
+          "real_lifetimes": 2,
+          "packets": 5,
+          "rejected_deliveries": 5,
+          "native_commits": 2,
+          "lease_valid_cancellations": 1,
+          "serial_bypass_negative": "consumer_serial_regressed",
+          "elapsed_usec": 6543103,
+          "adverse_controls": [
+            {
+              "name": "source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "duplicate_main_ack",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "swapped_main_acks",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "expired_lease",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "timeout",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_delivery",
+              "rejected_for": "delivery_inventory"
+            },
+            {
+              "name": "stale_body",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_terrain",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_lap",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "missing_physics",
+              "rejected_for": "no_completed_progress"
+            },
+            {
+              "name": "neutral_equipment",
+              "rejected_for": "input_edges"
+            },
+            {
+              "name": "blocked_physics",
+              "rejected_for": "pending_request_no_physics"
+            },
+            {
+              "name": "extracted_lease_expired",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "native_counter_only",
+              "rejected_for": "native_receipt_count"
+            },
+            {
+              "name": "cancelled_effect",
+              "rejected_for": "cancelled_effect_applied"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_teardown"
+            },
+            {
+              "name": "wrong_negative",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "altered_packet",
+              "rejected_for": "packet_digest"
+            },
+            {
+              "name": "receipt_without_step",
+              "rejected_for": "receipt_without_completed_step"
+            },
+            {
+              "name": "receipt_stale_generation",
+              "rejected_for": "receipt_step_owner"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "result_sha256": "d2754b4733d37414e5f993963ce17ee563ade914eea39263d2eff63dea578b7d",
+          "process_sha256": "4c3359ef217276623e513e5f285cb8efcc0ec5f139783679ae69893fd65d12cc",
+          "log_sha256": "21912255ad77ea1da2f45de085813bd77a60df6c3f6ee0e1c3435ba1191292b0",
+          "fixture_sha256": "7adc0937c69b3cf4057a85de4fcaf0a6831117a041a7b7134cb2c42f59aed866",
+          "worker_sha256": "258c836227140e2408f3e39cc8cc7f603db2df056b3994a0b83763d8fa7c9c81"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life010_jetbarrel/verified.json",
+        "receipt": {
+          "rig": "jetbarrel",
+          "assertions": 148,
+          "failures": 0,
+          "real_lifetimes": 2,
+          "packets": 5,
+          "rejected_deliveries": 5,
+          "native_commits": 2,
+          "lease_valid_cancellations": 1,
+          "serial_bypass_negative": "consumer_serial_regressed",
+          "elapsed_usec": 5054688,
+          "adverse_controls": [
+            {
+              "name": "source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "duplicate_main_ack",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "swapped_main_acks",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "expired_lease",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "timeout",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_delivery",
+              "rejected_for": "delivery_inventory"
+            },
+            {
+              "name": "stale_body",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_terrain",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_lap",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "missing_physics",
+              "rejected_for": "no_completed_progress"
+            },
+            {
+              "name": "neutral_equipment",
+              "rejected_for": "input_edges"
+            },
+            {
+              "name": "blocked_physics",
+              "rejected_for": "pending_request_no_physics"
+            },
+            {
+              "name": "extracted_lease_expired",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "native_counter_only",
+              "rejected_for": "native_receipt_count"
+            },
+            {
+              "name": "cancelled_effect",
+              "rejected_for": "cancelled_effect_applied"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_teardown"
+            },
+            {
+              "name": "wrong_negative",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "altered_packet",
+              "rejected_for": "packet_digest"
+            },
+            {
+              "name": "receipt_without_step",
+              "rejected_for": "receipt_without_completed_step"
+            },
+            {
+              "name": "receipt_stale_generation",
+              "rejected_for": "receipt_step_owner"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "result_sha256": "b0c90cd75c8317e657ab7ba22f1b7737a7c2d02194c671a9039b5ce172ab1115",
+          "process_sha256": "4e94fb27fcb890f0f691b2d3f88a70f4ff1663d9814c7227a719eacefe3ad5ef",
+          "log_sha256": "883e3fe01ff5543665abea2cb538cbdd863e9f58fc94b73fdc0a5dd58af9b783",
+          "fixture_sha256": "7adc0937c69b3cf4057a85de4fcaf0a6831117a041a7b7134cb2c42f59aed866",
+          "worker_sha256": "258c836227140e2408f3e39cc8cc7f603db2df056b3994a0b83763d8fa7c9c81"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life010_stuntbuggy/verified.json",
+        "receipt": {
+          "rig": "stuntbuggy",
+          "assertions": 148,
+          "failures": 0,
+          "real_lifetimes": 2,
+          "packets": 5,
+          "rejected_deliveries": 5,
+          "native_commits": 2,
+          "lease_valid_cancellations": 1,
+          "serial_bypass_negative": "consumer_serial_regressed",
+          "elapsed_usec": 5479900,
+          "adverse_controls": [
+            {
+              "name": "source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "duplicate_main_ack",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "swapped_main_acks",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "expired_lease",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "timeout",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_delivery",
+              "rejected_for": "delivery_inventory"
+            },
+            {
+              "name": "stale_body",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_terrain",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_lap",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "missing_physics",
+              "rejected_for": "no_completed_progress"
+            },
+            {
+              "name": "neutral_equipment",
+              "rejected_for": "input_edges"
+            },
+            {
+              "name": "blocked_physics",
+              "rejected_for": "pending_request_no_physics"
+            },
+            {
+              "name": "extracted_lease_expired",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "native_counter_only",
+              "rejected_for": "native_receipt_count"
+            },
+            {
+              "name": "cancelled_effect",
+              "rejected_for": "cancelled_effect_applied"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_teardown"
+            },
+            {
+              "name": "wrong_negative",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "altered_packet",
+              "rejected_for": "packet_digest"
+            },
+            {
+              "name": "receipt_without_step",
+              "rejected_for": "receipt_without_completed_step"
+            },
+            {
+              "name": "receipt_stale_generation",
+              "rejected_for": "receipt_step_owner"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "result_sha256": "75ddbbb0d6231bbe89b7ef701225ac59399ce1b2775a05156817405efa082bf0",
+          "process_sha256": "42010d1511e5a2cbc355e8a7b149c1bd4314db0ed84e72e513abf6c37a22a2c0",
+          "log_sha256": "e7399c18f51730d473f574c1f99a1507c8e6d544baa8143106866f225bed3571",
+          "fixture_sha256": "7adc0937c69b3cf4057a85de4fcaf0a6831117a041a7b7134cb2c42f59aed866",
+          "worker_sha256": "258c836227140e2408f3e39cc8cc7f603db2df056b3994a0b83763d8fa7c9c81"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life010_trialsbike/verified.json",
+        "receipt": {
+          "rig": "trialsbike",
+          "assertions": 148,
+          "failures": 0,
+          "real_lifetimes": 2,
+          "packets": 5,
+          "rejected_deliveries": 5,
+          "native_commits": 2,
+          "lease_valid_cancellations": 1,
+          "serial_bypass_negative": "consumer_serial_regressed",
+          "elapsed_usec": 5087274,
+          "adverse_controls": [
+            {
+              "name": "source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "duplicate_main_ack",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "swapped_main_acks",
+              "rejected_for": "first_main_lifetime_binding"
+            },
+            {
+              "name": "expired_lease",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "timeout",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_delivery",
+              "rejected_for": "delivery_inventory"
+            },
+            {
+              "name": "stale_body",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_terrain",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "stale_lap",
+              "rejected_for": "stale_consumer_mutation"
+            },
+            {
+              "name": "missing_physics",
+              "rejected_for": "no_completed_progress"
+            },
+            {
+              "name": "neutral_equipment",
+              "rejected_for": "input_edges"
+            },
+            {
+              "name": "blocked_physics",
+              "rejected_for": "pending_request_no_physics"
+            },
+            {
+              "name": "extracted_lease_expired",
+              "rejected_for": "cancel_lease_expired"
+            },
+            {
+              "name": "native_counter_only",
+              "rejected_for": "native_receipt_count"
+            },
+            {
+              "name": "cancelled_effect",
+              "rejected_for": "cancelled_effect_applied"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_teardown"
+            },
+            {
+              "name": "wrong_negative",
+              "rejected_for": "negative_wrong_reason"
+            },
+            {
+              "name": "altered_packet",
+              "rejected_for": "packet_digest"
+            },
+            {
+              "name": "receipt_without_step",
+              "rejected_for": "receipt_without_completed_step"
+            },
+            {
+              "name": "receipt_stale_generation",
+              "rejected_for": "receipt_step_owner"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "result_sha256": "7cdc29d7965392a81d1b4077a3e8a1a5d66b543b8aee32e2c41c5f4e903f7930",
+          "process_sha256": "e47fe4bf16d2cd34d708647043627cbfa539f96e07569a6f539a8e131de35d40",
+          "log_sha256": "893612ddc3bca48e87cf037487a896c9119ba0b47aea324a22271f2ff8ab2f2b",
+          "fixture_sha256": "7adc0937c69b3cf4057a85de4fcaf0a6831117a041a7b7134cb2c42f59aed866",
+          "worker_sha256": "258c836227140e2408f3e39cc8cc7f603db2df056b3994a0b83763d8fa7c9c81"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life011_acrobat/verified.json",
+        "receipt": {
+          "rig": "acrobat",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "platform": "Linux",
+          "assertions": 591,
+          "failures": 0,
+          "presets": 8,
+          "constructions": 8,
+          "resets": 8,
+          "retired_graphs": 16,
+          "nonneutral_completed_physical_samples": 72,
+          "old_owner_refusals": 8,
+          "old_generation_refusals": 8,
+          "fresh_observation_admissions": 8,
+          "unsupported_oil_refusals": 8,
+          "inertial_radius_refusals": 3,
+          "waits": 75,
+          "elapsed_usec": 17845834,
+          "maximum_operation_usec": 763983,
+          "first_main_ack_usec": 197753,
+          "teardown_usec": 61752,
+          "graphical_qualification": false,
+          "physical_device_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_fixture",
+              "rejected_for": "fixture_identity"
+            },
+            {
+              "name": "wrong_platform",
+              "rejected_for": "platform_scope"
+            },
+            {
+              "name": "wrong_engine",
+              "rejected_for": "engine_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "late_fixture",
+              "rejected_for": "fixture_deadline"
+            },
+            {
+              "name": "missing_wait",
+              "rejected_for": "wait_inventory"
+            },
+            {
+              "name": "timed_out_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_preset",
+              "rejected_for": "preset_inventory"
+            },
+            {
+              "name": "relabeled_preset",
+              "rejected_for": "requested_policy_identity"
+            },
+            {
+              "name": "wrong_assignment",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "missing_material",
+              "rejected_for": "material_inventory"
+            },
+            {
+              "name": "wrong_variant",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "wrong_generation",
+              "rejected_for": "applied_world_generation"
+            },
+            {
+              "name": "wrong_geometry",
+              "rejected_for": "applied_construction_setup"
+            },
+            {
+              "name": "caller_inertial_claim",
+              "rejected_for": "applied_inertial_parameters"
+            },
+            {
+              "name": "altered_canonical",
+              "rejected_for": "canonical_receipt_digest"
+            },
+            {
+              "name": "inactive_canonical_plane",
+              "rejected_for": "canonical_receipt_header"
+            },
+            {
+              "name": "wrong_workers",
+              "rejected_for": "canonical_native_configuration"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "no_completed_native_rapier_progress"
+            },
+            {
+              "name": "no_rapier_step",
+              "rejected_for": "physical_sample_not_completed"
+            },
+            {
+              "name": "neutral_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "unadmitted_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "stale_physics_generation",
+              "rejected_for": "physical_sample_generation"
+            },
+            {
+              "name": "wrong_physics_owner",
+              "rejected_for": "physical_sample_owner_changed"
+            },
+            {
+              "name": "old_owner_accepted",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "wrong_generation_reason",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "stale_packet_mutation",
+              "rejected_for": "stale_packet_mutated_owner"
+            },
+            {
+              "name": "no_generation_change",
+              "rejected_for": "generation_not_revoked"
+            },
+            {
+              "name": "fresh_refused",
+              "rejected_for": "fresh_control_not_admitted"
+            },
+            {
+              "name": "missing_refusal",
+              "rejected_for": "refusal_inventory"
+            },
+            {
+              "name": "timeout_as_refusal",
+              "rejected_for": "native_refusal_wrong_reason"
+            },
+            {
+              "name": "refusal_replaced_owner",
+              "rejected_for": "refusal_replaced_valid_owner"
+            },
+            {
+              "name": "refusal_changed_policy",
+              "rejected_for": "refusal_changed_valid_context"
+            },
+            {
+              "name": "old_bodies_live",
+              "rejected_for": "incomplete_graph_retirement"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_worker_teardown"
+            },
+            {
+              "name": "native_adapter_live",
+              "rejected_for": "incomplete_worker_teardown"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "result_sha256": "f62039a263fa4a87ad8b0e25b718629784c3df41415adc0f7a9f4d84d4cdd423",
+          "log_sha256": "49c968acf36baa61fdd2b7d88557976b44c0c4ccd4bb8b5e7819d79e3794d04f",
+          "process_sha256": "2808c429b639c6eeac9e42eaed56e3bef93f6e793f5268cff43156b980582eca",
+          "fixture_sha256": "4f7b809a5673887a92464cde2962c76df1e8a1cb7f8b13567e5431b305fb96db",
+          "preset_source_sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life011_arcadelander/verified.json",
+        "receipt": {
+          "rig": "arcadelander",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "platform": "Linux",
+          "assertions": 591,
+          "failures": 0,
+          "presets": 8,
+          "constructions": 8,
+          "resets": 8,
+          "retired_graphs": 16,
+          "nonneutral_completed_physical_samples": 72,
+          "old_owner_refusals": 8,
+          "old_generation_refusals": 8,
+          "fresh_observation_admissions": 8,
+          "unsupported_oil_refusals": 8,
+          "inertial_radius_refusals": 3,
+          "waits": 75,
+          "elapsed_usec": 18260547,
+          "maximum_operation_usec": 778836,
+          "first_main_ack_usec": 203034,
+          "teardown_usec": 60933,
+          "graphical_qualification": false,
+          "physical_device_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_fixture",
+              "rejected_for": "fixture_identity"
+            },
+            {
+              "name": "wrong_platform",
+              "rejected_for": "platform_scope"
+            },
+            {
+              "name": "wrong_engine",
+              "rejected_for": "engine_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "late_fixture",
+              "rejected_for": "fixture_deadline"
+            },
+            {
+              "name": "missing_wait",
+              "rejected_for": "wait_inventory"
+            },
+            {
+              "name": "timed_out_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_preset",
+              "rejected_for": "preset_inventory"
+            },
+            {
+              "name": "relabeled_preset",
+              "rejected_for": "requested_policy_identity"
+            },
+            {
+              "name": "wrong_assignment",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "missing_material",
+              "rejected_for": "material_inventory"
+            },
+            {
+              "name": "wrong_variant",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "wrong_generation",
+              "rejected_for": "applied_world_generation"
+            },
+            {
+              "name": "wrong_geometry",
+              "rejected_for": "applied_construction_setup"
+            },
+            {
+              "name": "caller_inertial_claim",
+              "rejected_for": "applied_inertial_parameters"
+            },
+            {
+              "name": "altered_canonical",
+              "rejected_for": "canonical_receipt_digest"
+            },
+            {
+              "name": "inactive_canonical_plane",
+              "rejected_for": "canonical_receipt_header"
+            },
+            {
+              "name": "wrong_workers",
+              "rejected_for": "canonical_native_configuration"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "no_completed_native_rapier_progress"
+            },
+            {
+              "name": "no_rapier_step",
+              "rejected_for": "physical_sample_not_completed"
+            },
+            {
+              "name": "neutral_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "unadmitted_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "stale_physics_generation",
+              "rejected_for": "physical_sample_generation"
+            },
+            {
+              "name": "wrong_physics_owner",
+              "rejected_for": "physical_sample_owner_changed"
+            },
+            {
+              "name": "old_owner_accepted",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "wrong_generation_reason",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "stale_packet_mutation",
+              "rejected_for": "stale_packet_mutated_owner"
+            },
+            {
+              "name": "no_generation_change",
+              "rejected_for": "generation_not_revoked"
+            },
+            {
+              "name": "fresh_refused",
+              "rejected_for": "fresh_control_not_admitted"
+            },
+            {
+              "name": "missing_refusal",
+              "rejected_for": "refusal_inventory"
+            },
+            {
+              "name": "timeout_as_refusal",
+              "rejected_for": "native_refusal_wrong_reason"
+            },
+            {
+              "name": "refusal_replaced_owner",
+              "rejected_for": "refusal_replaced_valid_owner"
+            },
+            {
+              "name": "refusal_changed_policy",
+              "rejected_for": "refusal_changed_valid_context"
+            },
+            {
+              "name": "old_bodies_live",
+              "rejected_for": "incomplete_graph_retirement"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_worker_teardown"
+            },
+            {
+              "name": "native_adapter_live",
+              "rejected_for": "incomplete_worker_teardown"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "result_sha256": "3865649ae5ab653f76c0ea90f02c9e0f49dd188e5837ce1f15df65691b1a8d92",
+          "log_sha256": "164605d69beede207f254843fa3cc6d38519e8095977a6a5cfd6413afb9cd6c4",
+          "process_sha256": "7aaf0acc48c38e7fb3e0d96603fe376b0d9d52a90573f5d206d54ee891069dde",
+          "fixture_sha256": "4f7b809a5673887a92464cde2962c76df1e8a1cb7f8b13567e5431b305fb96db",
+          "preset_source_sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life011_jetbarrel/verified.json",
+        "receipt": {
+          "rig": "jetbarrel",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "platform": "Linux",
+          "assertions": 591,
+          "failures": 0,
+          "presets": 8,
+          "constructions": 8,
+          "resets": 8,
+          "retired_graphs": 16,
+          "nonneutral_completed_physical_samples": 72,
+          "old_owner_refusals": 8,
+          "old_generation_refusals": 8,
+          "fresh_observation_admissions": 8,
+          "unsupported_oil_refusals": 8,
+          "inertial_radius_refusals": 3,
+          "waits": 75,
+          "elapsed_usec": 19057233,
+          "maximum_operation_usec": 843290,
+          "first_main_ack_usec": 235453,
+          "teardown_usec": 73938,
+          "graphical_qualification": false,
+          "physical_device_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_fixture",
+              "rejected_for": "fixture_identity"
+            },
+            {
+              "name": "wrong_platform",
+              "rejected_for": "platform_scope"
+            },
+            {
+              "name": "wrong_engine",
+              "rejected_for": "engine_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "late_fixture",
+              "rejected_for": "fixture_deadline"
+            },
+            {
+              "name": "missing_wait",
+              "rejected_for": "wait_inventory"
+            },
+            {
+              "name": "timed_out_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_preset",
+              "rejected_for": "preset_inventory"
+            },
+            {
+              "name": "relabeled_preset",
+              "rejected_for": "requested_policy_identity"
+            },
+            {
+              "name": "wrong_assignment",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "missing_material",
+              "rejected_for": "material_inventory"
+            },
+            {
+              "name": "wrong_variant",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "wrong_generation",
+              "rejected_for": "applied_world_generation"
+            },
+            {
+              "name": "wrong_geometry",
+              "rejected_for": "applied_construction_setup"
+            },
+            {
+              "name": "caller_inertial_claim",
+              "rejected_for": "applied_inertial_parameters"
+            },
+            {
+              "name": "altered_canonical",
+              "rejected_for": "canonical_receipt_digest"
+            },
+            {
+              "name": "inactive_canonical_plane",
+              "rejected_for": "canonical_receipt_header"
+            },
+            {
+              "name": "wrong_workers",
+              "rejected_for": "canonical_native_configuration"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "no_completed_native_rapier_progress"
+            },
+            {
+              "name": "no_rapier_step",
+              "rejected_for": "physical_sample_not_completed"
+            },
+            {
+              "name": "neutral_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "unadmitted_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "stale_physics_generation",
+              "rejected_for": "physical_sample_generation"
+            },
+            {
+              "name": "wrong_physics_owner",
+              "rejected_for": "physical_sample_owner_changed"
+            },
+            {
+              "name": "old_owner_accepted",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "wrong_generation_reason",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "stale_packet_mutation",
+              "rejected_for": "stale_packet_mutated_owner"
+            },
+            {
+              "name": "no_generation_change",
+              "rejected_for": "generation_not_revoked"
+            },
+            {
+              "name": "fresh_refused",
+              "rejected_for": "fresh_control_not_admitted"
+            },
+            {
+              "name": "missing_refusal",
+              "rejected_for": "refusal_inventory"
+            },
+            {
+              "name": "timeout_as_refusal",
+              "rejected_for": "native_refusal_wrong_reason"
+            },
+            {
+              "name": "refusal_replaced_owner",
+              "rejected_for": "refusal_replaced_valid_owner"
+            },
+            {
+              "name": "refusal_changed_policy",
+              "rejected_for": "refusal_changed_valid_context"
+            },
+            {
+              "name": "old_bodies_live",
+              "rejected_for": "incomplete_graph_retirement"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_worker_teardown"
+            },
+            {
+              "name": "native_adapter_live",
+              "rejected_for": "incomplete_worker_teardown"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "result_sha256": "74be272262f729f065abeeaad8f35a3427ea2be221006a48703d46bf916e9e28",
+          "log_sha256": "04ead26b5e457d47d9df775eae282ddd203097ff08672118ed8905a012a7a999",
+          "process_sha256": "cc31ee2e7038a2ce55d6b40c57b61380e746bb30851b5f25806985b583aad893",
+          "fixture_sha256": "4f7b809a5673887a92464cde2962c76df1e8a1cb7f8b13567e5431b305fb96db",
+          "preset_source_sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life011_stuntbuggy/verified.json",
+        "receipt": {
+          "rig": "stuntbuggy",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "platform": "Linux",
+          "assertions": 591,
+          "failures": 0,
+          "presets": 8,
+          "constructions": 8,
+          "resets": 8,
+          "retired_graphs": 16,
+          "nonneutral_completed_physical_samples": 72,
+          "old_owner_refusals": 8,
+          "old_generation_refusals": 8,
+          "fresh_observation_admissions": 8,
+          "unsupported_oil_refusals": 8,
+          "inertial_radius_refusals": 3,
+          "waits": 75,
+          "elapsed_usec": 23542134,
+          "maximum_operation_usec": 1021370,
+          "first_main_ack_usec": 269015,
+          "teardown_usec": 71701,
+          "graphical_qualification": false,
+          "physical_device_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_fixture",
+              "rejected_for": "fixture_identity"
+            },
+            {
+              "name": "wrong_platform",
+              "rejected_for": "platform_scope"
+            },
+            {
+              "name": "wrong_engine",
+              "rejected_for": "engine_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "late_fixture",
+              "rejected_for": "fixture_deadline"
+            },
+            {
+              "name": "missing_wait",
+              "rejected_for": "wait_inventory"
+            },
+            {
+              "name": "timed_out_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_preset",
+              "rejected_for": "preset_inventory"
+            },
+            {
+              "name": "relabeled_preset",
+              "rejected_for": "requested_policy_identity"
+            },
+            {
+              "name": "wrong_assignment",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "missing_material",
+              "rejected_for": "material_inventory"
+            },
+            {
+              "name": "wrong_variant",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "wrong_generation",
+              "rejected_for": "applied_world_generation"
+            },
+            {
+              "name": "wrong_geometry",
+              "rejected_for": "applied_construction_setup"
+            },
+            {
+              "name": "caller_inertial_claim",
+              "rejected_for": "applied_inertial_parameters"
+            },
+            {
+              "name": "altered_canonical",
+              "rejected_for": "canonical_receipt_digest"
+            },
+            {
+              "name": "inactive_canonical_plane",
+              "rejected_for": "canonical_receipt_header"
+            },
+            {
+              "name": "wrong_workers",
+              "rejected_for": "canonical_native_configuration"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "no_completed_native_rapier_progress"
+            },
+            {
+              "name": "no_rapier_step",
+              "rejected_for": "physical_sample_not_completed"
+            },
+            {
+              "name": "neutral_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "unadmitted_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "stale_physics_generation",
+              "rejected_for": "physical_sample_generation"
+            },
+            {
+              "name": "wrong_physics_owner",
+              "rejected_for": "physical_sample_owner_changed"
+            },
+            {
+              "name": "old_owner_accepted",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "wrong_generation_reason",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "stale_packet_mutation",
+              "rejected_for": "stale_packet_mutated_owner"
+            },
+            {
+              "name": "no_generation_change",
+              "rejected_for": "generation_not_revoked"
+            },
+            {
+              "name": "fresh_refused",
+              "rejected_for": "fresh_control_not_admitted"
+            },
+            {
+              "name": "missing_refusal",
+              "rejected_for": "refusal_inventory"
+            },
+            {
+              "name": "timeout_as_refusal",
+              "rejected_for": "native_refusal_wrong_reason"
+            },
+            {
+              "name": "refusal_replaced_owner",
+              "rejected_for": "refusal_replaced_valid_owner"
+            },
+            {
+              "name": "refusal_changed_policy",
+              "rejected_for": "refusal_changed_valid_context"
+            },
+            {
+              "name": "old_bodies_live",
+              "rejected_for": "incomplete_graph_retirement"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_worker_teardown"
+            },
+            {
+              "name": "native_adapter_live",
+              "rejected_for": "incomplete_worker_teardown"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "result_sha256": "238c2a05c1c201e7dca97ef613123b00369c27375e6bfc4f91ce5f8867c60780",
+          "log_sha256": "3bb94a95422d594be2499481a3066b6845119deb23299c75c260b8059d853b6a",
+          "process_sha256": "25b3ff66fec5acbca3639063ed32aca8b2b3a50c641b1877c6126ac63a8ebc88",
+          "fixture_sha256": "4f7b809a5673887a92464cde2962c76df1e8a1cb7f8b13567e5431b305fb96db",
+          "preset_source_sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        }
+      },
+      {
+        "path": "linux-play-readback/test_play_life011_trialsbike/verified.json",
+        "receipt": {
+          "rig": "trialsbike",
+          "source_revision": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "platform": "Linux",
+          "assertions": 591,
+          "failures": 0,
+          "presets": 8,
+          "constructions": 8,
+          "resets": 8,
+          "retired_graphs": 16,
+          "nonneutral_completed_physical_samples": 72,
+          "old_owner_refusals": 8,
+          "old_generation_refusals": 8,
+          "fresh_observation_admissions": 8,
+          "unsupported_oil_refusals": 8,
+          "inertial_radius_refusals": 3,
+          "waits": 75,
+          "elapsed_usec": 18904878,
+          "maximum_operation_usec": 866707,
+          "first_main_ack_usec": 220683,
+          "teardown_usec": 64688,
+          "graphical_qualification": false,
+          "physical_device_qualification": false,
+          "adverse_controls": [
+            {
+              "name": "wrong_source",
+              "rejected_for": "source_identity"
+            },
+            {
+              "name": "wrong_fixture",
+              "rejected_for": "fixture_identity"
+            },
+            {
+              "name": "wrong_platform",
+              "rejected_for": "platform_scope"
+            },
+            {
+              "name": "wrong_engine",
+              "rejected_for": "engine_identity"
+            },
+            {
+              "name": "late_main_ack",
+              "rejected_for": "first_main_deadline"
+            },
+            {
+              "name": "late_fixture",
+              "rejected_for": "fixture_deadline"
+            },
+            {
+              "name": "missing_wait",
+              "rejected_for": "wait_inventory"
+            },
+            {
+              "name": "timed_out_wait",
+              "rejected_for": "operation_deadline"
+            },
+            {
+              "name": "missing_preset",
+              "rejected_for": "preset_inventory"
+            },
+            {
+              "name": "relabeled_preset",
+              "rejected_for": "requested_policy_identity"
+            },
+            {
+              "name": "wrong_assignment",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "missing_material",
+              "rejected_for": "material_inventory"
+            },
+            {
+              "name": "wrong_variant",
+              "rejected_for": "requested_applied_assignment"
+            },
+            {
+              "name": "wrong_generation",
+              "rejected_for": "applied_world_generation"
+            },
+            {
+              "name": "wrong_geometry",
+              "rejected_for": "applied_construction_setup"
+            },
+            {
+              "name": "caller_inertial_claim",
+              "rejected_for": "applied_inertial_parameters"
+            },
+            {
+              "name": "altered_canonical",
+              "rejected_for": "canonical_receipt_digest"
+            },
+            {
+              "name": "inactive_canonical_plane",
+              "rejected_for": "canonical_receipt_header"
+            },
+            {
+              "name": "wrong_workers",
+              "rejected_for": "canonical_native_configuration"
+            },
+            {
+              "name": "no_native_progress",
+              "rejected_for": "no_completed_native_rapier_progress"
+            },
+            {
+              "name": "no_rapier_step",
+              "rejected_for": "physical_sample_not_completed"
+            },
+            {
+              "name": "neutral_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "unadmitted_input",
+              "rejected_for": "nonneutral_input_not_applied"
+            },
+            {
+              "name": "stale_physics_generation",
+              "rejected_for": "physical_sample_generation"
+            },
+            {
+              "name": "wrong_physics_owner",
+              "rejected_for": "physical_sample_owner_changed"
+            },
+            {
+              "name": "old_owner_accepted",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "wrong_generation_reason",
+              "rejected_for": "stale_packet_not_refused"
+            },
+            {
+              "name": "stale_packet_mutation",
+              "rejected_for": "stale_packet_mutated_owner"
+            },
+            {
+              "name": "no_generation_change",
+              "rejected_for": "generation_not_revoked"
+            },
+            {
+              "name": "fresh_refused",
+              "rejected_for": "fresh_control_not_admitted"
+            },
+            {
+              "name": "missing_refusal",
+              "rejected_for": "refusal_inventory"
+            },
+            {
+              "name": "timeout_as_refusal",
+              "rejected_for": "native_refusal_wrong_reason"
+            },
+            {
+              "name": "refusal_replaced_owner",
+              "rejected_for": "refusal_replaced_valid_owner"
+            },
+            {
+              "name": "refusal_changed_policy",
+              "rejected_for": "refusal_changed_valid_context"
+            },
+            {
+              "name": "old_bodies_live",
+              "rejected_for": "incomplete_graph_retirement"
+            },
+            {
+              "name": "worker_unjoined",
+              "rejected_for": "incomplete_worker_teardown"
+            },
+            {
+              "name": "native_adapter_live",
+              "rejected_for": "incomplete_worker_teardown"
+            }
+          ],
+          "execution_policy": {
+            "schema_version": 1,
+            "policy_id": "github-hosted-complete-execution-v1",
+            "scale": 1.0,
+            "watchdogs": {
+              "main_ack_seconds": 600.0,
+              "graphical_case_seconds": 1200.0,
+              "godot_import_seconds": 1200.0,
+              "operation_seconds": 300.0,
+              "complex_fixture_seconds": 3600.0,
+              "hosted_job_minutes": 180.0,
+              "diagnostic_capture_seconds": 30.0,
+              "terminate_grace_seconds": 10.0,
+              "native_suite_seconds": 7200.0,
+              "native_compile_seconds": 3600.0,
+              "native_case_seconds": 3600.0,
+              "dependency_prepare_seconds": 1200.0,
+              "aggregate_headroom_seconds": 600.0,
+              "ordinary_case_seconds": 1200.0,
+              "godot_job_minutes": 360.0,
+              "godot_setup_seconds": 4200.0,
+              "godot_metadata_seconds": 900.0
+            },
+            "advisories": {
+              "warning_ratio": 1.5,
+              "prominent_ratio": 2.0,
+              "rolling_window": 10,
+              "minimum_baseline_samples": 3,
+              "drift_window": 5,
+              "drift_ratio": 1.2
+            },
+            "path": "godot/tests/support/ci_execution_policy.json",
+            "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+          },
+          "result_sha256": "00ef7511974d6efdc40d9ca42d332b619d39bfa06d7bfa9b22efd75e9b6beb19",
+          "log_sha256": "d5b422250b6ddee467714066f317638f8e3b89ecf9db96a97eefbb2065001c9a",
+          "process_sha256": "81f1069fca2431da87339c2e133cbe8cac825eabc7ae34e65f547dcd030295c1",
+          "fixture_sha256": "4f7b809a5673887a92464cde2962c76df1e8a1cb7f8b13567e5431b305fb96db",
+          "preset_source_sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        }
+      }
+    ],
+    "decoded_reducer_log": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready26317-linux-reducer-139609596970.log",
+      "bytes": 78288,
+      "sha256": "507da254b2c8a77ddf5b5db1d0073f217be607c7e2a027fc490c804f3c2d9a6d",
+      "encoding": "connector-decoded text; LF normalized"
+    }
+  },
+  "palette": {
+    "run": 45727972728,
+    "execution_attempt": 1,
+    "reducer_job": 139604558114,
+    "reducer": {
+      "bounded_cross_backend": {
+        "finished_image_diagnostic": {
+          "frames": [
+            {
+              "blend": 0.0,
+              "condition": 0,
+              "max_rgba_difference": 0.0009804069995880127,
+              "pixels_exceeding_original_threshold": 0,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.5,
+              "condition": 0,
+              "max_rgba_difference": 0.15097513794898987,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 1.0,
+              "condition": 0,
+              "max_rgba_difference": 0.3009393513202667,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.0,
+              "condition": 128,
+              "max_rgba_difference": 0.0019492805004119873,
+              "pixels_exceeding_original_threshold": 0,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.5,
+              "condition": 128,
+              "max_rgba_difference": 0.15079322457313538,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 1.0,
+              "condition": 128,
+              "max_rgba_difference": 0.3009393513202667,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.0,
+              "condition": 255,
+              "max_rgba_difference": 0.0019608139991760254,
+              "pixels_exceeding_original_threshold": 0,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.5,
+              "condition": 255,
+              "max_rgba_difference": 0.15134277939796448,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 1.0,
+              "condition": 255,
+              "max_rgba_difference": 0.3009393513202667,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            }
+          ],
+          "original_threshold": 0.00784313725490196,
+          "scope": "Retained v2 finished-image identity diagnostic, not the v3 acceptance predicate. Procedural hash finish is stable on one GPU; no tolerated-pixel allowance is introduced.",
+          "status": "failed"
+        },
+        "outgoing_base_frames": [
+          {
+            "blend": 0.0,
+            "condition": 0,
+            "max_rgba_difference": 0.0009804069995880127,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.0,
+            "condition": 128,
+            "max_rgba_difference": 0.0019492805004119873,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.0,
+            "condition": 255,
+            "max_rgba_difference": 0.0019608139991760254,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          }
+        ],
+        "schema": "palette-bounded-semantics-v3",
+        "scope": "Each backend independently passes all base/blend/full-current/camera and actual GPU-input controls; cross-backend CPU-base remains a positive fixed-tolerance gate.",
+        "status": "passed"
+      },
+      "cohorts": 6,
+      "process_cases": 19,
+      "schema": "palette-shader-suite-v3",
+      "scope": "versioned actual-input and bounded-semantic contract; separate exact native full parity and actual Main cache pairs; retained finished-image diagnostic is explicit",
+      "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "status": "passed",
+      "tolerance": 0.00784313725490196
+    },
+    "retained_v2_finished_image_diagnostic": "failed, explicitly not v3 acceptance predicate; no threshold changed",
+    "decoded_reducer_log": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready26317-palette-readback-139604558114.log",
+      "bytes": 161385,
+      "sha256": "32768df0ef54d872bb662b8c66a36cae31385eab533f40566036090feb94f6b3",
+      "encoding": "connector-decoded text; LF normalized"
+    }
+  },
+  "custody_rule": "Use original execution timestamps, original run-attempt records and raw artifact/log identity; new carried API job records alone do not establish rerun execution.",
+  "source_mutated": false,
+  "owner_acceptance": false,
+  "durable_raw_custody": [
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-art-original-linux-139602549257.log.gz",
+      "bytes": 13429,
+      "sha256": "0b8fa79f20f933b43688e4754407de3ef73e6bf65e5357f59f95b6eded8e635a",
+      "decoded_bytes": 53469,
+      "decoded_sha256": "f388d2c679df9b79e458f0fe4f653c6b6c68644fabd344e6559348edab1d17aa"
+    },
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-art-attempt2-139606815128.log.gz",
+      "bytes": 17110,
+      "sha256": "51ae404ec199bb5778d24a8eb31ccaccdb2ca4f349415c74a1d26140c9865848",
+      "decoded_bytes": 110014,
+      "decoded_sha256": "c86c2577de55c57bf93990a6b77a2c56b15138d9abc7dcba4ec4b66fb125add2"
+    },
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-art-windows-139602549515.log.gz",
+      "bytes": 4801,
+      "sha256": "6711f996aeba002f9394a0725836ad1696dd1c9db5e55c927d2196e1c43a55de",
+      "decoded_bytes": 18071,
+      "decoded_sha256": "f20a8ecbb9b4357273b0ad6d66111f942d2810dda220f0fe4defefa476dd1f56"
+    },
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-linux-reducer-139609596970.log.gz",
+      "bytes": 18292,
+      "sha256": "678b3f9a76ef8bebf94c656c3865af4de1e6a324e702d6473d8c6d1ceb55d38f",
+      "decoded_bytes": 78288,
+      "decoded_sha256": "507da254b2c8a77ddf5b5db1d0073f217be607c7e2a027fc490c804f3c2d9a6d"
+    },
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-palette-readback-139604558114.log.gz",
+      "bytes": 27745,
+      "sha256": "689ec74aa90c3e71ed240f3b16ed7d27ec69d16126aceee85cb73f5f407d70e3",
+      "decoded_bytes": 161385,
+      "decoded_sha256": "32768df0ef54d872bb662b8c66a36cae31385eab533f40566036090feb94f6b3"
+    },
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-art-attempts.json.gz",
+      "bytes": 1260,
+      "sha256": "6e5948d496be340628b126ed299ff974ee0623c36662475675c8d1b42eec7ca4",
+      "decoded_bytes": 16061,
+      "decoded_sha256": "45a865b9288c2553d98ea57279fd8280e90710abeed3428328e2a3c441516112"
+    },
+    {
+      "path": "raw/ambient001-source26317/ambient001-ready26317-gate-readback-3.json.gz",
+      "bytes": 11371,
+      "sha256": "ee78b277aa3fbf13353d54cdfe6e7486e9e72dde8e45dbeb76ef259d75a162e6",
+      "decoded_bytes": 314868,
+      "decoded_sha256": "5b46c65c334b21976b4477e9ea5550b81132853609e1b9b1c8ddb85ad8f04e82"
+    },
+    {
+      "path": "raw/ambient001-source26317/linux-coverage-45727973062-1.zip",
+      "bytes": 83122,
+      "sha256": "e46ecfc5caa92ff39eebb86b75202f4800616d339e0e60b3d23b75116d4cdeaf",
+      "kind": "original downloaded GitHub artifact ZIP, metadata digest verified"
+    }
+  ]
+}

@@ -27,6 +27,24 @@ This page owns preparation and failure semantics. Exact values belong to the
 executed checks belong to the [checkpoint](source-checkpoint-and-recovery.md)
 and [evidence ledger](../reference/validation-evidence.md).
 
+## Opt-in ambient actor budgets
+
+The [AMBIENT-001 contract](../systems/ambient-actors.md) keeps accepted actor
+capacity at eight logical actors, eight prepared parts per actor and 64 response
+bodies. It does not import the larger unaccepted Actor Compose candidate.
+
+| Bound | Current candidate |
+|---|---|
+| Profile | At most 16 enabled or disabled module instances; stable unique IDs |
+| Material request | At most 8 distinct admitted native material IDs; radius 1–96 world cells |
+| Radius convention | Inclusive circular Euclidean distance to cell centers; clipped to canvas; sample spacing 4 cells |
+| Sample work | At most 2,401 bounding-grid positions per actor decision, shared across that actor's requested materials; unsampled cells remain unknown |
+| Shared byte cache | At most one 2048×2048 two-channel publication cache per session, 8 MiB; allocated only for enabled material-dependent ambient controllers |
+| Material freshness | Current native revision, or at most 12 native ticks old after the revision changes; owner/World/serial fences also apply |
+| Decision cadence | Existing 1–12 physics ticks; default 6, independent of UI refresh |
+| Ledge probes | Two owner-mediated rays per distinct enabled ledge parameter pair, at most 32 supplemental rays per decision; identical pairs share results |
+| Neighbours | Copied current actor positions within 96 cells, bounded by accepted population; no global search |
+
 ## What can be configured now?
 
 [WorldConfig](../../native/include/cybersand/world.hpp) is a construction-time

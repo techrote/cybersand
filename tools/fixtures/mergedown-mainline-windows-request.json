@@ -1,0 +1,18 @@
+{
+  "schema": "cybersand-accepted-main-evaluator-request-v1",
+  "repository": "techrote/cybersand",
+  "mission": "MERGEDOWN-RENAISSANCE-001",
+  "status": "admitted",
+  "source_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "accepted_main_at_request": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "required_foundations": {
+    "goblin_001": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+    "ambient_001": "d0af9b6015c27417fddd67f79afdcf656a609571"
+  },
+  "native_source_input_count": 105,
+  "rapier_source_input_count": 4,
+  "owner_playfeel_accepted": false,
+  "public_release": false,
+  "purpose": "Build and qualify one frozen accepted-main checkpoint after both opt-in foundations merged; physical owner acceptance remains pending."
+}

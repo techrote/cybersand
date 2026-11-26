@@ -170,6 +170,40 @@
           "classification": "Two Windows shards failed Git LFS acquisition before Godot; reducer correctly refused21/23 reports. Exact premerge source/tree qualification remains preserved."
         }
       }
+    },
+    {
+      "pr": 775,
+      "programme": "AMBIENT001 opt-in foundation and exact runtime acquisition/transport",
+      "candidate_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "candidate_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+      "tested_preview": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+      "previous_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "merge_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "resulting_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "method": "merge",
+      "qualification_runs": [
+        45727972896,
+        45727973062,
+        45727972728,
+        45727972822,
+        45727972762,
+        45727972790,
+        45727972809
+      ],
+      "execution_attempts": {
+        "gde_linux": 1,
+        "gde_windows": 2,
+        "art_linux": 1,
+        "art_windows": 2,
+        "other_workflows": 1
+      },
+      "independent_review": "B0c77705c0 and C233c2d92a final APPROVE; complete original artifacts and strict reducers",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/775#issuecomment-7179373402",
+      "physical_owner_acceptance": "pending",
+      "experimental_default": "off",
+      "post_merge": {
+        "status": "registered; current checks pending readback"
+      }
     }
   ],
   "decisions": [
@@ -461,18 +495,60 @@
         713,
         744
       ]
+    },
+    {
+      "pr": 781,
+      "decision": "RECONCILE THEN QUALIFY",
+      "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+      "type": "production storage repair plus tests",
+      "original_failure_source": "9f3c479efbf356832a691aa2f9c1dbe947c34d32",
+      "original_failure": "Real RLIMIT_FSIZE replaced valid1689byte output with128bytes while writer returnedtrue",
+      "repair": "Closed-stage verification followed by unchanged native replacement; exact expanded allowlist, profile guard and2/32/512MiB limits preserved",
+      "evidence": "goblin-storage-integration.json",
+      "history": {
+        "bundle": "goblin-storage-source.bundle",
+        "bytes": 15584,
+        "sha256": "4fec8a4c7dcd460386bbc13d3727910a3d39b8d5a796a4820c7b10caa797cf46",
+        "prerequisite": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f"
+      },
+      "coordination_comment": 7179118858
+    },
+    {
+      "pr": 780,
+      "decision": "RECONCILE THEN QUALIFY",
+      "source": "368292fe99485e6ea928325f9e8d000d829a4407",
+      "type": "production storage repair plus tests",
+      "independent_review": "art-storage-independent-review.json",
+      "original_failure_source": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+      "original_failures": "7/13 control rows failed: five short-write false acknowledgements, oversized settings admission and stale save-error recovery",
+      "qualified_scope": "13/13 actual Linux fault controls and18/18cases1662 assertions; no native105/Rapier4 change",
+      "history": {
+        "bundle": "art-storage-source.bundle",
+        "bytes": 26652,
+        "sha256": "aac8edca0b366528cf194329eda0d9a417f9922833e04d60de6281d5309bb25f",
+        "prerequisite": "97585a0af02f1534eb254adf2d2fbe9036a281b2"
+      }
+    },
+    {
+      "decision": "Admit accepted-main Windows evaluator",
+      "source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+      "harness_implementation": "fa68e697cbb368e1c57c9215ed4ee44548acc2a6",
+      "request": "tools/fixtures/mergedown-mainline-windows-request.json",
+      "purpose": "Actual extracted ordinaryCMD/default-OFF68/fiveAmbientANGLEexamples/Goblinlaunch+gameplay+save-reopen proofs; no publicrelease orphysicalacceptance",
+      "status": "registered before publishing request; actualWindows execution pending"
     }
   ],
-  "current_accepted_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+  "current_accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
   "preparations": [
     {
       "pr": 781,
       "programme": "Goblin002",
-      "source": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
-      "tree": "72447242d2088d66c2f7f10ed5fead66a7c15ae0",
-      "qualified_scope": "Linux native combined foundation handoff/persistence447 checks,11 operations; independent reproduction. Earlier5e7d targeted9 cases3696 checks and bounded sampled resources retained.",
-      "next": "Reconcile final accepted main; publish ancestry-preserving prepared successor; full resulting-source/platform and owner gates remain. Original512/1024 long-horizon timeouts unchanged.",
-      "record": "goblin-successor-evidence-manifest.json"
+      "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+      "tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207",
+      "qualified_scope": "Prior combined447-check proof retained; narrow verified storage repair: actual short-write/perms refusal and retry3cases, all10paths/bounds67, utility84, sixcanonicalcases and136Python tests PASS on Linux.",
+      "next": "Independent current storage review; reconcile accepted main; publish existing successor; actual Windows storage/platform qualification and physical owner gates remain, original long-horizon timeouts unchanged.",
+      "record": "goblin-storage-integration.json"
     },
     {
       "pr": 779,
@@ -489,11 +565,11 @@
         777
       ],
       "programme": "Art and Architecture production integration",
-      "source": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
-      "tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
-      "qualified_scope": "Linux15 cases1104 assertions; actual loopback HTTP/native staged edits/Undo plus author/reopen; independent exact-source review.",
-      "next": "Reconcile final accepted main and publish authoritative780; adopt exact reviewed ULTIMA export donor when available; full platform/graphical/model/physical gates remain.",
-      "record": "art-current-evidence-manifest.json"
+      "source": "368292fe99485e6ea928325f9e8d000d829a4407",
+      "tree": "64b084bb93b6a78b55fdff76d11249cbb32c4167",
+      "qualified_scope": "Combined ordinary Art/Architecture plus narrow verified export/event/settings/pending-receipt storage:13 real Linux fault/refusal/retry cases and18cases1662 assertions PASS; C independently approved and reproduced original failures plus342 checks.",
+      "next": "Join final accepted main preserving777/780 ancestry, publish prepared780; actual Windows storage and combined-platform/graphical/model/physical gates remain.",
+      "record": "art-storage-integration-review.json"
     },
     {
       "pr": 768,

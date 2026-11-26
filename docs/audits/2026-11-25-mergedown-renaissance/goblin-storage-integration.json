@@ -1,0 +1,253 @@
+{
+  "schema": 1,
+  "candidate_source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+  "candidate_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207",
+  "original_preparation": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
+  "baseline_fixture_source": "9f3c479efbf356832a691aa2f9c1dbe947c34d32",
+  "production_change": "Exact reviewed verified-file utility plus narrow Goblin002 writer adaptation; native and runtime inputs unchanged",
+  "baseline": {
+    "status": "failed",
+    "error": "Failed output was acknowledged",
+    "last_original_observation": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+        "--script",
+        "res://tests/goblin_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "acknowledged": true,
+      "error": "",
+      "value": null,
+      "complete_json": false,
+      "bytes": 128,
+      "sha256": "66eb23aa9e127b81a25f5f18e7a35d093a0f0872e92fcff1d34bb0af97b37e02",
+      "retained_bytes": "04-observed-output.bin",
+      "log": "04-seed-8.log",
+      "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+      "guards": {
+        "acknowledged": true,
+        "error": "",
+        "guards_preserved": true,
+        "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "profile_verified": true,
+        "wrong_path_refused": true,
+        "wrong_profile_refused": true
+      }
+    }
+  },
+  "repaired_os_faults": {
+    "status": "passed",
+    "cases": [
+      "none",
+      "RLIMIT_FSIZE-128-buffered-tail-SIGXFSZ-ignored",
+      "directory-permission-denied"
+    ],
+    "receipt": "goblin-storage-after/report.json"
+  },
+  "targeted_cases": {
+    "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+    "cases": [
+      {
+        "case": "storage",
+        "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+        "command": [
+          "python",
+          "tools/gip014/run_goblin.py",
+          "--godot",
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--out",
+          "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/storage",
+          "--case",
+          "storage",
+          "--timeout-seconds",
+          "300",
+          "--memory-limit-mib",
+          "3072"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 11.719620332001796
+      },
+      {
+        "case": "controller",
+        "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+        "command": [
+          "python",
+          "tools/gip014/run_goblin.py",
+          "--godot",
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--out",
+          "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/controller",
+          "--case",
+          "controller",
+          "--timeout-seconds",
+          "300",
+          "--memory-limit-mib",
+          "3072"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 20.60185117799847
+      },
+      {
+        "case": "laboratory",
+        "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+        "command": [
+          "python",
+          "tools/gip014/run_goblin.py",
+          "--godot",
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--out",
+          "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/laboratory",
+          "--case",
+          "laboratory",
+          "--timeout-seconds",
+          "300",
+          "--memory-limit-mib",
+          "3072"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 33.104109851999965
+      },
+      {
+        "case": "discovery",
+        "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+        "command": [
+          "python",
+          "tools/gip014/run_goblin.py",
+          "--godot",
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--out",
+          "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/discovery",
+          "--case",
+          "discovery",
+          "--timeout-seconds",
+          "300",
+          "--memory-limit-mib",
+          "3072"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 10.621291982999537
+      },
+      {
+        "case": "authored_lineage",
+        "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+        "command": [
+          "python",
+          "tools/gip014/run_goblin.py",
+          "--godot",
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--out",
+          "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/authored_lineage",
+          "--case",
+          "authored_lineage",
+          "--timeout-seconds",
+          "300",
+          "--memory-limit-mib",
+          "3072"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 40.184857513999305
+      },
+      {
+        "case": "ambient_integration",
+        "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+        "command": [
+          "python",
+          "tools/gip014/run_goblin.py",
+          "--godot",
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--out",
+          "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/ambient_integration",
+          "--case",
+          "ambient_integration",
+          "--timeout-seconds",
+          "300",
+          "--memory-limit-mib",
+          "3072"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 16.624017141999502
+      }
+    ],
+    "scope": "Targeted Linux current-source storage/controller/memory/lineage/ambient checks; no long-horizon or Windows claim"
+  },
+  "transaction_boundaries": {
+    "checks": 84,
+    "status": "pass",
+    "receipt": "goblin-storage-boundaries/process.json"
+  },
+  "storage_contract": {
+    "checks": 67,
+    "status": "pass",
+    "scope": "all ten fixed paths, compact UTF8,2MiBCorpus/32MiBTranscript/512MiBarchive bounds, profile refusal, retained unrelated staging"
+  },
+  "python_contracts": {
+    "tests": 136,
+    "skipped": 0,
+    "status": "pass",
+    "log": "goblin-storage-python-contracts.log"
+  },
+  "native": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+    "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+    "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "native_source_input_count": 105,
+    "platform": "linux",
+    "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+    "python": "3.12.14",
+    "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+    "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "rapier_source_input_count": 4,
+    "replay_identity": {
+      "game_source_files": 989,
+      "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+      "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "platform": "linux",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "schema": "cybersand-goblin-replay-identity-v1",
+      "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+      "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+    },
+    "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+    "source_dirty": false,
+    "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+  },
+  "evidence": {
+    "path": "goblin-storage-evidence.zip",
+    "bytes": 3943246,
+    "sha256": "4a5b897d3792c83576fe629bf374b3c346ad0e6f49805be20d68fb6f2237326a",
+    "members": 184,
+    "exact_byte_aliases": 5,
+    "omitted_derived_caches": 6,
+    "custody": "All original test/source/output/log bytes retained; six derived editor doc caches recorded but excluded; five identical source ZIPs reconstruct through SHA-verified aliases"
+  },
+  "limits": [
+    "Current Linux source only; actual Windows sharing-lock qualification is pending",
+    "Physical owner and long-horizon512/1024action timeouts are unchanged",
+    "Each evidence file is independent; no power-loss durability or whole-campaign transaction claim"
+  ],
+  "source_paths": [
+    "docs/audits/2026-11-25-mergedown-renaissance/goblin-storage-preparation.md",
+    "godot/goblin/goblin_controller.gd",
+    "godot/goblin/tests/test_storage_contract.gd",
+    "godot/scripts/workbench_file_transaction.gd",
+    "godot/tests/goblin_storage_fault_child.gd",
+    "godot/tests/test_workbench_file_transaction.gd",
+    "tools/ci/run_goblin_storage_qualification.py",
+    "tools/ci/windows_file_lock.py",
+    "tools/gip014/run_goblin.py"
+  ]
+}
