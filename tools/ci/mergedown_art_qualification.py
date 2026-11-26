@@ -8,6 +8,7 @@ remain authoritative. This adapter adds no application or native mutation path.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 from dataclasses import replace
 import hashlib
 import importlib
@@ -76,6 +77,56 @@ SOURCE_CONTRACTS = frozenset((
     "godot/tests/test_workbench_combined_authoring.gd", "godot/scripts/workbench_file_transaction.gd",
     ".github/workflows/art-session-logging.yml", "docs/operations/art-workbench-collaborative-evaluation.md",
 ))
+RETAINED_MARKERS = {
+    "test_art_session_log": "ART_SESSION_RESULT ",
+    "test_art_owner_evaluator": "ART_EVALUATOR_INPUT_RESULT ",
+    "test_art_batch_native": "ART_STAGE1_RESULT ",
+    "test_art_batch_native_render": "ART_STAGE1_RESULT ",
+    "test_art_stored_material": "ART_STORED_RESULT ",
+    "test_art_undo": "ART_UNDO_RESULT ",
+}
+_METADATA_DEADLINE = None
+
+
+def metadata_remaining() -> float:
+    remaining = 900.0 if _METADATA_DEADLINE is None else _METADATA_DEADLINE - time.monotonic()
+    require(remaining > 0, "Aggregate source/readback metadata allowance exhausted")
+    return remaining
+
+
+def metadata_timeout(maximum: float = 60) -> float:
+    return min(maximum, metadata_remaining())
+
+
+class MetadataEnvelope:
+    """One cumulative source-derived allowance, paused during application cases."""
+    def __init__(self, seconds: float):
+        require(seconds > 0, "Metadata envelope must be positive")
+        self.remaining = seconds
+
+    @contextmanager
+    def phase(self):
+        global _METADATA_DEADLINE
+        require(self.remaining > 0, "Aggregate source/readback metadata allowance exhausted")
+        previous, began = _METADATA_DEADLINE, time.monotonic()
+        _METADATA_DEADLINE = min(began + self.remaining, previous) if previous is not None else began + self.remaining
+        try:
+            yield
+            metadata_remaining()
+        finally:
+            self.remaining -= time.monotonic() - began
+            _METADATA_DEADLINE = previous
+
+
+def verified_runtime(product: Path, windows) -> dict:
+    # Admit the complete source-owned operation allowance, never a shortened
+    # runtime check. Its own helper shares this allowance across all Git calls.
+    allowance = windows.execution_policy.watchdog_seconds("operation_seconds")
+    require(metadata_remaining() >= allowance, "Insufficient metadata allowance for complete runtime proof")
+    with windows.metadata_budget():
+        result = windows.verify_retained_runtime(product)
+    metadata_remaining()
+    return result
 
 
 def require(value: bool, message: str) -> None:
@@ -84,8 +135,11 @@ def require(value: bool, message: str) -> None:
 
 
 def sha(path: Path) -> str:
+    metadata_remaining()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        result = hashlib.file_digest(stream, "sha256").hexdigest()
+    metadata_remaining()
+    return result
 
 
 def read(path: Path) -> dict:
@@ -106,7 +160,7 @@ def write(path: Path, value: dict) -> None:
 
 
 def git(root: Path, *args: str) -> str:
-    return subprocess.check_output(["git", "-C", str(root), *args], text=True, timeout=60).strip()
+    return subprocess.check_output(["git", "-C", str(root), *args], text=True, timeout=metadata_timeout()).strip()
 
 
 def request(path: Path) -> dict:
@@ -199,7 +253,7 @@ def plan(product: Path, mode: str) -> dict:
               {"name": "source-owned editor import and cleanup", "seconds": 1200 + cleanup},
               {"name": "canonical source-owned cases and cleanup",
                "seconds": sum(case.timeout + cleanup for case in cases)},
-              {"name": "source and receipt readback", "seconds": 900},
+              {"name": "source and receipt readback", "seconds": policy.watchdog_seconds("godot_metadata_seconds")},
               {"name": "complete evidence upload", "seconds": 600},
               {"name": "aggregate headroom", "seconds": 600}]
     if mode in ("retained-headless", "retained-displayed"):
@@ -280,12 +334,45 @@ def inventory(directory: Path) -> dict:
 
 def capture_source_state(product: Path, output: Path) -> None:
     # Keep observed paths and original diff bytes, including failed admission.
-    (output / "source-status.txt").write_text(
-        git(product, "status", "--porcelain=v1", "--untracked-files=all") + "\n", encoding="utf-8")
+    output.mkdir(parents=True, exist_ok=True)
+    for name, extra in (("source-status.txt", []), ("source-status-nul.bin", ["-z"])):
+        (output / name).write_bytes(subprocess.check_output(
+            ["git", "-C", str(product), "status", "--porcelain=v1", "--untracked-files=all", *extra], timeout=metadata_timeout()))
     for name, flags in (("unstaged", ()), ("staged", ("--cached",))):
         data = subprocess.check_output(["git", "-C", str(product), "diff", *flags,
-                                        "--no-ext-diff", "--binary"], timeout=60)
+                                        "--no-ext-diff", "--binary"], timeout=metadata_timeout())
         (output / (name + ".diff")).write_bytes(data)
+    config = subprocess.run(["git", "-C", str(product), "config", "--show-origin", "--get-regexp",
+        r"^(core\.(autocrlf|eol|filemode|ignorecase|symlinks)|filter\.lfs\.(clean|smudge|process|required)|extensions\..*)$"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=metadata_timeout(), check=False)
+    (output / "source-relevant-config.txt").write_bytes(config.stdout)
+    changed = set()
+    for extra in ([], ["--cached"]):
+        changed.update(name for name in subprocess.check_output(
+            ["git", "-C", str(product), "diff", *extra, "--name-only", "-z"], timeout=metadata_timeout()
+            ).decode("utf-8").split("\0") if name)
+    # Git can report LFS size/stat dirt while the filtered diff is empty.
+    for row in (output / "source-status-nul.bin").read_bytes().decode("utf-8").split("\0"):
+        if row and not row.startswith("?? "):
+            changed.add(row[3:])
+    details = {"head": git(product, "rev-parse", "HEAD"), "head_tree": git(product, "rev-parse", "HEAD^{tree}"),
+               "index_tree": git(product, "write-tree"), "changed_files": {}}
+    for relative in sorted(changed):
+        path = product / relative
+        item = {"exists": path.exists(), "symlink": path.is_symlink()}
+        if path.is_file() and not path.is_symlink():
+            item.update(bytes=path.stat().st_size, sha256=sha(path))
+            original = subprocess.run(["git", "-C", str(product), "show", "HEAD:" + relative],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=metadata_timeout(), check=False)
+            if original.returncode == 0:
+                item.update(head_bytes=len(original.stdout), head_sha256=hashlib.sha256(original.stdout).hexdigest(),
+                            head_blob=git(product, "rev-parse", "HEAD:" + relative),
+                            filtered_blob=git(product, "hash-object", "--path=" + relative, relative))
+                pointer = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", original.stdout)
+                if pointer:
+                    item["committed_lfs_object"] = {"sha256": pointer[1].decode(), "bytes": int(pointer[2])}
+        details["changed_files"][relative] = item
+    write(output / "source-state.json", details)
 
 
 def admit_engine(product: Path, archive: Path, binary: Path) -> dict:
@@ -310,6 +397,68 @@ def admit_engine(product: Path, archive: Path, binary: Path) -> dict:
             "payloads_sha256": payloads}
 
 
+def refresh_verified_runtime_index(product: Path, output: Path, expected: dict) -> dict:
+    """Refresh only stat metadata for two proven committed LFS objects.
+
+    Source-owned 105/4 runtime verification, original pointer/raw-byte identity,
+    filtered Git object identity, and identical HEAD/index trees are all required.
+    Unknown paths and staged/actual source changes remain strict refusals.
+    """
+    paths = ("godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+             "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll")
+    receipt = {"status": "failed", "platform": sys.platform, "refreshed": False,
+               "scope": "same-tree index stat refresh, not application execution", "runtime_paths": list(paths)}
+    try:
+        head, tree = git(product, "rev-parse", "HEAD"), git(product, "rev-parse", "HEAD^{tree}")
+        require(head == expected["source_commit"] and tree == expected["source_tree"], "Runtime checkout source differs")
+        receipt.update(source_commit=head, source_tree=tree, index_before=git(product, "write-tree"))
+        require(receipt["index_before"] == tree, "Staged source cannot be refreshed")
+        windows = module(product, "run_windows_godot_regressions")
+        runtime = verified_runtime(product, windows)
+        require(len(runtime["native_source_inputs"]) == 105, "Changed native input contract")
+        rapier_path = "godot/addons/godot-rapier2d/runtime-provenance.windows.json"
+        rapier = read(product / rapier_path)
+        require(len(rapier.get("source_inputs", {})) == 4, "Changed Rapier input contract")
+        require((product / rapier_path).read_bytes() == subprocess.check_output(
+            ["git", "-C", str(product), "show", "HEAD:" + rapier_path], timeout=metadata_timeout()), "Rapier provenance changed")
+        receipt["runtime"] = runtime
+        receipt["objects"] = {}
+        for relative in paths:
+            original = subprocess.check_output(["git", "-C", str(product), "show", "HEAD:" + relative], timeout=metadata_timeout())
+            pointer = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", original)
+            require(pointer is not None, "Runtime is not a canonical committed pointer")
+            path = product / relative
+            require(path.is_file() and not path.is_symlink() and path.stat().st_size == int(pointer[2])
+                    and sha(path) == pointer[1].decode(), "Runtime bytes differ from the committed LFS object")
+            head_blob = git(product, "rev-parse", "HEAD:" + relative)
+            filtered = git(product, "hash-object", "--path=" + relative, relative)
+            require(filtered == head_blob, "Runtime clean filter would change its committed Git object")
+            receipt["objects"][relative] = {"sha256": pointer[1].decode(), "bytes": int(pointer[2]),
+                                            "head_blob": head_blob, "filtered_blob": filtered}
+        raw = subprocess.check_output(["git", "-C", str(product), "status", "--porcelain=v1", "-z",
+                                        "--untracked-files=all"], timeout=metadata_timeout())
+        rows = [row for row in raw.decode("utf-8").split("\0") if row]
+        receipt["status_before"] = rows
+        require(all(row in {" M " + path for path in paths} for row in rows),
+                "Unknown or actual source changes cannot be hidden by runtime index refresh")
+        if rows:
+            subprocess.run(["git", "-C", str(product), "add", "--", *paths], check=True, timeout=metadata_timeout())
+            receipt["refreshed"] = True
+        receipt["index_after"] = git(product, "write-tree")
+        require(receipt["index_after"] == tree and git(product, "rev-parse", "HEAD") == head,
+                "Runtime index refresh changed committed source")
+        require(not git(product, "status", "--porcelain=v1", "--untracked-files=all"),
+                "Source remains dirty after exact-runtime stat refresh")
+        require(verified_runtime(product, windows) == runtime, "Runtime moved during stat refresh")
+        receipt["status"] = "passed"
+        return runtime
+    except Exception as error:
+        receipt["error"] = f"{type(error).__name__}: {error}"
+        raise
+    finally:
+        write(output, receipt)
+
+
 def verify_storage(value: dict, expected: dict) -> None:
     require(value.get("passed") is True and value.get("status") == "passed"
             and value.get("completed") is True and value.get("platform") == "win32"
@@ -328,6 +477,22 @@ def original_marker(log: Path, marker: str) -> dict:
     value = json.loads(rows[0])
     require(type(value) is dict, "Original result is not an object")
     return value
+
+
+def verify_retained_case_log(name: str, log: Path, graphical: bool) -> None:
+    """Keep the existing workflow's explicit footer and native clipboard guards."""
+    marker = RETAINED_MARKERS.get(name)
+    if graphical and name == "test_art_conversation_clipboard":
+        marker = "ART_CONVERSATION_CLIPBOARD_RESULT "
+    if marker is None:
+        return
+    result = original_marker(log, marker)
+    require(type(result.get("checks")) is int and result["checks"] > 0
+            and (result.get("failures") == [] or type(result.get("failures")) is int and result["failures"] == 0),
+            "Original retained footer did not prove completed assertions")
+    if graphical and name == "test_art_conversation_clipboard":
+        require(result.get("native_clipboard_differential") is True,
+                "Displayed native clipboard differential did not execute")
 
 
 def storage_case_directory(operation: str, fault: str) -> str:
@@ -422,7 +587,18 @@ def execute(args) -> None:
     product, output = args.product.resolve(), args.output.resolve()
     require(not output.exists(), "Retain previous evidence; use a new output path")
     output.mkdir(parents=True)
-    admission = admit(args.request, product, args.harness.resolve())
+    metadata = MetadataEnvelope(module(product, "execution_policy").watchdog_seconds("godot_metadata_seconds"))
+    try:
+        with metadata.phase():
+            capture_source_state(product, output / "admission-product")
+            capture_source_state(args.harness.resolve(), output / "admission-harness")
+            runtime = refresh_verified_runtime_index(product, output / "runtime-index-admission.json", request(args.request))
+            admission = admit(args.request, product, args.harness.resolve())
+    except Exception as error:
+        write(output / "receipt.json", {"schema": SCHEMA, "status": "failed", "completed": False,
+            "phase": "pre-import source admission", "mode": args.mode, **context(),
+            "error": f"{type(error).__name__}: {error}", "files": inventory(output)})
+        raise
     write(output / "admission.json", admission)
     runner = module(product, "run_godot_regressions")
     windows = module(product, "run_windows_godot_regressions")
@@ -434,12 +610,14 @@ def execute(args) -> None:
                "model_calls": 0, "physical_owner_accepted": False, "completed": False}
     before = None
     try:
-        runtime = windows.verify_retained_runtime(product)
-        require(len(runtime["native_source_inputs"]) == 105, "Native source contract changed")
-        receipt["runtime"] = runtime
-        receipt["engine"] = admit_engine(product, args.godot_archive, args.godot)
-        before = windows.tested_inputs(product)
-        write(output / "inputs-before.json", before)
+        with metadata.phase():
+            receipt["runtime"] = runtime
+            receipt["engine"] = admit_engine(product, args.godot_archive, args.godot)
+            require(metadata_remaining() >= windows.execution_policy.watchdog_seconds("operation_seconds"),
+                    "Insufficient metadata allowance for complete input inventory")
+            with windows.metadata_budget():
+                before = windows.tested_inputs(product)
+            write(output / "inputs-before.json", before)
         env = dict(os.environ, APPDATA=str(output / "import-profile"), XDG_DATA_HOME=str(output / "import-profile"),
                    CYBERSAND_SOURCE_REVISION=admission["source_commit"])
         receipt["commands"].append(command([str(args.godot), "--headless", "--audio-driver", "Dummy",
@@ -467,6 +645,7 @@ def execute(args) -> None:
             receipt["cases"].append(record)
             write(output / "receipt.json", receipt)
             require(not failed, "Canonical source case failed: " + name)
+            verify_retained_case_log(name, case_out / record["log"], graphical)
         if args.mode in ("retained-headless", "retained-displayed"):
             graphical = args.mode == "retained-displayed"
             legacy = module(product, "run_art_workbench_final")
@@ -497,16 +676,21 @@ def execute(args) -> None:
         raise
     finally:
         try:
-            capture_source_state(product, output)
-            if before is not None:
-                after = windows.tested_inputs(product)
-                write(output / "inputs-after.json", after)
-                receipt["inputs_unchanged"] = before == after
-                if not receipt["inputs_unchanged"]:
-                    receipt.update(status="failed", error="Application/source/runtime input changed")
+            with metadata.phase():
+                capture_source_state(product, output)
+                if before is not None:
+                    require(metadata_remaining() >= windows.execution_policy.watchdog_seconds("operation_seconds"),
+                            "Insufficient metadata allowance for complete input readback")
+                    with windows.metadata_budget():
+                        after = windows.tested_inputs(product)
+                    write(output / "inputs-after.json", after)
+                    receipt["inputs_unchanged"] = before == after
+                    if not receipt["inputs_unchanged"]:
+                        receipt.update(status="failed", error="Application/source/runtime input changed")
+                receipt["files"] = inventory(output)
         except Exception as error:
             receipt.update(status="failed", readback_error=f"{type(error).__name__}: {error}")
-        receipt["files"] = inventory(output)
+        receipt["metadata_seconds_remaining"] = metadata.remaining
         write(output / "receipt.json", receipt)
     require(receipt["status"] == "passed", "Final source/runtime custody failed")
 
@@ -534,6 +718,7 @@ def verify_evidence(root: Path, value: dict, expected: dict, mode: str) -> None:
     for index, case in enumerate(value["cases"]):
         log = root / f"{index:02d}-{case['name']}" / case["log"]
         require(log.is_file() and sha(log) == case["log_sha256"], "Original case log differs")
+        verify_retained_case_log(case["name"], log, mode.endswith("displayed"))
     for command_record in value["commands"]:
         log = root / command_record["log"]
         require(log.is_file() and sha(log) == command_record["log_sha256"], "Original helper log differs")
@@ -542,6 +727,15 @@ def verify_evidence(root: Path, value: dict, expected: dict, mode: str) -> None:
 
 
 def reduce(args) -> None:
+    metadata = MetadataEnvelope(module(args.product.resolve(), "execution_policy").watchdog_seconds("godot_metadata_seconds"))
+    with metadata.phase():
+        reduce_within_metadata(args)
+
+
+def reduce_within_metadata(args) -> None:
+    args.output.mkdir(parents=True, exist_ok=True)
+    capture_source_state(args.product.resolve(), args.output / "admission-product")
+    refresh_verified_runtime_index(args.product.resolve(), args.output / "runtime-index-admission.json", request(args.request))
     admission = admit(args.request, args.product.resolve(), args.harness.resolve())
     outputs = {}
     runtime = None

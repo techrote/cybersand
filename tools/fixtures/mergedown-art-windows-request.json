@@ -53,7 +53,23 @@
     ".github/workflows/art-session-logging.yml": "337feea46b17fa5d51b4e1b7dae9f270f5dbe55ed9d1d485638bf7c9a21daa67",
     "docs/operations/art-workbench-collaborative-evaluation.md": "4dafcb3c6548be42f6da368d32c79c02e7c3ebba9e0f63336510fd942a410bda"
   },
-  "qualification_revision": "closure-current-main-original-storage-001",
+  "qualification_revision": "closure-windows-runtime-index-admission-002",
   "purpose": "Actual same-source Windows storage, complete retained Art, fresh collaborative and combined Architecture native/graphical authoring, then ordinary portable evaluator. No paid inference, merge or default activation.",
-  "published_original_tree_union": "7f7d97a6dda8d0ed2ed6231f1cf7549b342fa221"
+  "published_original_tree_union": "7f7d97a6dda8d0ed2ed6231f1cf7549b342fa221",
+  "prior_campaigns": [
+    {
+      "run_id": 45782333985,
+      "attempt": 1,
+      "harness_commit": "40a8b0d83415afa918e5e2e4a0ef966824c709df",
+      "status": "failed-before-product-import",
+      "failed_modes": 9,
+      "successful_subresults": [
+        "source/run/attempt runtime producer and consumer verification",
+        "source-pinned Godot archive and actual version lookup"
+      ],
+      "cause_boundary": "Product is not clean committed source; original run omitted exact status paths",
+      "product_execution": false,
+      "artifact_delivery": false
+    }
+  ]
 }
