@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "authority": "historical-non-authoritative",
-  "disposition": "HOLD \u2014 INCOMPLETE",
+  "disposition": "HOLD; recovered successful subresults retained; resulting-source campaign and original-holdout custody disposition pending",
   "scope": "Interim integrated register at the final implementation perimeter. All original LIMIT IDs and known lane aliases retained. New P1 corrections await integrated qualification; no final acceptance is claimed.",
   "findings": [
     {
@@ -1374,6 +1374,63 @@
           "sha256": "4c5a6197e2241c1f9a55c1e17e986d07d941f9c03053edb09845421c62fabbeb"
         }
       ]
+    },
+    {
+      "id": "ULT-TOWER-02",
+      "priority": "P1",
+      "owner": "A / lead",
+      "title": "Tower Boolean return contract breaks inherited controller loading and stalls Water readiness",
+      "status": "fixed-awaiting-specified-qualification",
+      "observed_failure_or_question": "Both7919 hosted platforms failed Web controller parsing after Main tower_observation changed to bool; Water Feel waited3940seconds for impossible readiness.",
+      "expected_contract": "Preserve Web-specific observation updates, propagate actual parent success/refusal, and admit script loading before expensive workflows.",
+      "implemented_outcome": "Override returns bool and parent result;12-check actual inheritance fixture guards update order and true/false outcomes. Full qualifier executes it immediately after import; existing Water test and timeout remain.",
+      "locators": [
+        {
+          "path": "godot/scripts/web_demo_controller.gd",
+          "symbol": "tower_observation"
+        },
+        {
+          "path": "godot/tests/test_tower_observation_inheritance.gd"
+        },
+        {
+          "path": "tools/ci/run_ultima_qualification.py"
+        }
+      ],
+      "evidence": [
+        "technical/closure-2026-11-26/README.md",
+        "technical/closure-2026-11-26/tower-compatibility/early-admission-negative.json",
+        "closure/causal-main-compatibility/report.json"
+      ],
+      "independent_reviewers": [
+        "B",
+        "C",
+        "lead"
+      ],
+      "aliases": [
+        "A-ULT-16"
+      ],
+      "remaining_boundary": "Focused actual Linux passes; complete resulting-source Linux/Windows and package execution are pending.",
+      "next_action": "Freeze published reconciled source and execute the full29-case and storage campaign on both platforms."
+    },
+    {
+      "id": "ULT-CUSTODY-02",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Original private sealed holdout payload and unpublished raw reviews were lost before durable publication",
+      "status": "unresolved",
+      "observed_failure_or_question": "The closure turn restored the published7919 repository, but the prior transient lead-sealed workspace and unpublished raw outputs were unavailable. Originalv1 seal survives; payload does not.",
+      "expected_contract": "Sealed questions, original treatment outputs and independent judgements must remain reconstructible without relying on transient session storage.",
+      "implemented_outcome": "Published source/evidence and original overnight archives recovered. Bounded repository and conversation recovery found no original60 payload. No inferred reconstruction or retrospective score is presented. New unique raw evidence is committed promptly; maintenance guidance requires durable sealed custody and remote readback.",
+      "evidence": [
+        "closure/recovery-ledger.json",
+        "retrieval/closure-recovery-custody.json"
+      ],
+      "independent_reviewers": [
+        "C",
+        "lead"
+      ],
+      "remaining_boundary": "Original holdout adjudication cannot be reproduced from a digest. Fresh public-suite/context qualification is separate and cannot retroactively establish that experiment.",
+      "next_action": "Complete fresh final public/context qualification; preserve original seal and chronology. If the original private payload is later supplied, verify its seal and resume the original adjudication without method tuning."
     }
   ]
 }

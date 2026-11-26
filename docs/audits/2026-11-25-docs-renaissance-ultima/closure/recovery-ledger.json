@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "mission": "DOCS-RENAISSANCE-ULTIMA-CLOSURE-001",
+  "recovered_source": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "recovered_tree": "f3dc13c5c7143c4bff1b7875d445486290869576",
+  "accepted_main_reconciliation": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+  "disposition": "HOLD; resulting-source qualification not yet run",
+  "original_findings": 43,
+  "retained_original_documents": 82,
+  "recoveries": [
+    "All published101commit candidate lineage restored from GitHub",
+    "Original overnight Linux and Windows artifact archives independently downloaded and SHA256/CRC verified by A",
+    "All18 retained LFS objects materialized; full check currently awaiting completed metadata/companion reconciliation",
+    "Published744query historical reproduction and publicv1/v2 evaluations restored byte-exact"
+  ],
+  "lost_unpublished_evidence": [
+    "Private originalsealed60fixture payload and raw evaluations/reviews",
+    "Unpublished e487 final context comparison/reviews",
+    "Unpublished216b specialist addendum and local parserafterprobe",
+    "Final e487 manualGUI raw receipts; prior publishedGUI evidence survives"
+  ],
+  "holdout_recovery": {
+    "original_v1_sha256": "845a0978f50f22a279b8d772cd464e3adee86144e1fbde85e64ec14330497a27",
+    "original_v1_bytes": 38904,
+    "reported_v2_sha256": "352b4e182cb704b1e0b2db07dd0f101dce638ac6fb0e7fd6bc0be64ef155b6b5",
+    "payload_recovered": false,
+    "attempts": [
+      "Restored repository/audit tree inventory",
+      "Bounded Personal Context search for exact fixture/attachment/toolwritingcode; no payload found"
+    ],
+    "policy": "Never reconstruct inferred questions or relabel a new fixture as original; old reported aggregate scores are not final reproducible evidence"
+  },
+  "work_in_progress": [
+    "A minimal inheritedreturncontractrepair and actualbeforeafterprobe",
+    "Lead acceptedmain/helper/callers reconciliation and earlyscriptadmission/packagegate",
+    "B practicaldocs/currentAMBIENT/actualshippedlauncherqualification",
+    "C final155corpus authority/publicpairedreproduction and contextfollowup"
+  ],
+  "permissions": "No merge, Ready, release, principal programme closure, forcepush, paid inference or browsersecurity bypass"
+}

@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "documents": 155,
+  "navigation_link_documents": 8,
+  "canonical_claims": 285,
+  "local_links": 3643,
+  "heading_anchors": 513,
+  "questions": 33,
+  "question_fixtures": [
+    "reference/retrieval-questions-frozen32.json",
+    "reference/retrieval-questions-ci-closure-current-v1.json"
+  ],
+  "errors": [],
+  "warnings": [],
+  "limitations": [
+    "Does not verify source semantics or runtime claims",
+    "Does not fetch external URLs",
+    "Does not rewrite or reattest historical audits",
+    "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "lead",
+  "status": "readback-passed-aggregate-remains-failed",
+  "command": "python docs/audits/2026-11-25-docs-renaissance-ultima/technical/closure-2026-11-26/verify-overnight.py --root . --output <new-output.json>",
+  "output_sha256": "5e08df5fbafdeb9c03687bd3814230467eecc954313230456fe53ad4c169fcf2",
+  "originals": "../technical/closure-2026-11-26/",
+  "source": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "scope": "Independent archive/CRC/hash/raw-report/source-map verification; no new Windows execution."
+}

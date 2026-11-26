@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "Post-reset fresh probe using immutable accepted67c originals and the unchanged frozen v4 selector/original evaluator. No ranking changes. Root merge in progress; exact current file hashes in companion originals map.",
+  "original_source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "before_after": [
+    {
+      "path": "docs/research/ambient-001/authoring-ledger.md",
+      "original_direct_current": {
+        "admitted": false,
+        "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/authoring-ledger.md"
+      },
+      "corrected_direct_current": {
+        "refused": true,
+        "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/authoring-ledger.md"
+      }
+    },
+    {
+      "path": "docs/research/ambient-001/behaviour-ledger.md",
+      "original_direct_current": {
+        "admitted": false,
+        "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/behaviour-ledger.md"
+      },
+      "corrected_direct_current": {
+        "refused": true,
+        "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/behaviour-ledger.md"
+      }
+    },
+    {
+      "path": "docs/research/ambient-001/mission-ledger.md",
+      "original_direct_current": {
+        "admitted": false,
+        "error": "Incomplete current-source metadata: related-documents"
+      },
+      "corrected_direct_current": {
+        "refused": true,
+        "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/mission-ledger.md"
+      }
+    },
+    {
+      "path": "docs/research/ambient-001/perception-ledger.md",
+      "original_direct_current": {
+        "admitted": false,
+        "error": "Incomplete current-source metadata: related-documents"
+      },
+      "corrected_direct_current": {
+        "refused": true,
+        "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/perception-ledger.md"
+      }
+    },
+    {
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "original_direct_current": {
+        "admitted": false,
+        "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md is not a default document"
+      },
+      "corrected_direct_current": {
+        "refused": true,
+        "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md is not a default document"
+      }
+    },
+    {
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "original_direct_current": {
+        "admitted": false,
+        "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md is not a default document"
+      },
+      "corrected_direct_current": {
+        "refused": true,
+        "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md is not a default document"
+      }
+    }
+  ],
+  "current_manifest_documents": 155,
+  "six_dated_records_selected": false,
+  "fallback_equality": "Actual repository fallback equality test passed in the69-test suite; all four wrappers remain excluded.",
+  "tests": {
+    "historical": 16,
+    "selection": 17,
+    "adapter_cache": 36,
+    "total": 69,
+    "status": "passed"
+  },
+  "check_docs": {
+    "status": "passed",
+    "documents": 155,
+    "navigation_link_documents": 8,
+    "canonical_claims": 285,
+    "local_links": 3641,
+    "heading_anchors": 511,
+    "questions": 33,
+    "question_fixtures": [
+      "reference/retrieval-questions-frozen32.json",
+      "reference/retrieval-questions-ci-closure-current-v1.json"
+    ],
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "limits": "Technical historical experiments are not rerun here. Direct-current refusal and source routing are the tested contracts."
+}

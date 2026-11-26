@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "records": [
+    {
+      "path": "docs/research/ambient-001/authoring-ledger.md",
+      "git_blob": "f7a64d90acc0ad20fb7eafe876c1e1bf0455f8dd",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/authoring-ledger.md",
+      "sha256": "d83c05006d8236ab29844123648aae9796955c8d73a04b8af9134f3e038702f1",
+      "bytes": 20230,
+      "verified": true
+    },
+    {
+      "path": "docs/research/ambient-001/behaviour-ledger.md",
+      "git_blob": "79edd8d11f1ce6a68df7fef3d364c9d7fe75d548",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/behaviour-ledger.md",
+      "sha256": "1865c6e94e668ff8e60d35978a6cfdfcb520f8f022103bebb1c8fa0933bafddd",
+      "bytes": 19855,
+      "verified": true
+    },
+    {
+      "path": "docs/research/ambient-001/mission-ledger.md",
+      "git_blob": "818be04de3a888b746032a6efaebdeffd06601f2",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/mission-ledger.md",
+      "sha256": "b466b357f00ce0738190b0c5b3ae70b9aa1c09e53142649f67b7b40b9221e36f",
+      "bytes": 20337,
+      "verified": true
+    },
+    {
+      "path": "docs/research/ambient-001/perception-ledger.md",
+      "git_blob": "b0481e79069a91ade2b8e59663b2ad382a020740",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/perception-ledger.md",
+      "sha256": "307495227df6c9f6f0d66cc5d3a276241d6dd4df6fb50101bef93e34ad4957a5",
+      "bytes": 23883,
+      "verified": true
+    },
+    {
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "git_blob": "b1826d16a66a16a97edd53974766461f9749d528",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "sha256": "5d77b9845607e3c03c5b47167f8505d4edb4f6208322dd8936c043947d19aae4",
+      "bytes": 4712,
+      "verified": true
+    },
+    {
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "git_blob": "e343efe863fcd035a9f0d3adaf4619ad014b45e5",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "sha256": "2e5e1a6a5845a775147776d3ea003ef667f534d5e363f462080e1f59217510db",
+      "bytes": 5284,
+      "verified": true
+    }
+  ]
+}

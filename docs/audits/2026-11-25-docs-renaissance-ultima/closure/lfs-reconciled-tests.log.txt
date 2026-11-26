@@ -1,0 +1,22 @@
+test_auth_and_permanent_errors_do_not_retry (test_materialize_lfs.AcquisitionTests.test_auth_and_permanent_errors_do_not_retry) ... ok
+test_mixed_auth_and_service_timeout_is_permanent (test_materialize_lfs.AcquisitionTests.test_mixed_auth_and_service_timeout_is_permanent) ... ok
+test_moved_source_cannot_be_reported_successful (test_materialize_lfs.AcquisitionTests.test_moved_source_cannot_be_reported_successful) ... ok
+test_nonliteral_inventory_and_previous_evidence_are_refused (test_materialize_lfs.AcquisitionTests.test_nonliteral_inventory_and_previous_evidence_are_refused) ... ok
+test_permanent_precedence_over_every_transient (test_materialize_lfs.AcquisitionTests.test_permanent_precedence_over_every_transient) ... ok
+test_previous_ultima_evidence_is_not_overwritten (test_materialize_lfs.AcquisitionTests.test_previous_ultima_evidence_is_not_overwritten) ... ok
+test_process_timeout_never_retries_even_with_service_text (test_materialize_lfs.AcquisitionTests.test_process_timeout_never_retries_even_with_service_text) ... ok
+test_real_fake_process_fail_once_then_success_and_hash_verification (test_materialize_lfs.AcquisitionTests.test_real_fake_process_fail_once_then_success_and_hash_verification) ... ok
+test_real_hung_command_retires_its_owned_descendant (test_materialize_lfs.AcquisitionTests.test_real_hung_command_retires_its_owned_descendant) ... ok
+test_real_hung_process_is_retired (test_materialize_lfs.AcquisitionTests.test_real_hung_process_is_retired) ... ok
+test_service_timeout_then_success_preserves_original_failure_and_exact_bytes (test_materialize_lfs.AcquisitionTests.test_service_timeout_then_success_preserves_original_failure_and_exact_bytes) ... ok
+test_service_unavailable_and_enumerated_transients_then_success (test_materialize_lfs.AcquisitionTests.test_service_unavailable_and_enumerated_transients_then_success) ... ok
+test_shared_deadline_refuses_another_attempt (test_materialize_lfs.AcquisitionTests.test_shared_deadline_refuses_another_attempt) ... ok
+test_successful_command_with_wrong_bytes_fails_without_retry (test_materialize_lfs.AcquisitionTests.test_successful_command_with_wrong_bytes_fails_without_retry) ... ok
+test_successful_command_with_wrong_size_fails (test_materialize_lfs.AcquisitionTests.test_successful_command_with_wrong_size_fails) ... ok
+test_three_failed_attempts_keep_all_original_logs (test_materialize_lfs.AcquisitionTests.test_three_failed_attempts_keep_all_original_logs) ... ok
+test_wrong_expected_source_is_refused_before_acquisition (test_materialize_lfs.AcquisitionTests.test_wrong_expected_source_is_refused_before_acquisition) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.805s
+
+OK
