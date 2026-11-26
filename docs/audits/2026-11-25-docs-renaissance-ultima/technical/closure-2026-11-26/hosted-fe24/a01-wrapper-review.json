@@ -1,0 +1,27 @@
+{
+  "schema": "ultima-a01-wrapper-count-review-v1",
+  "status": "local-wrapper-correction-passed-hosted-rerun-pending",
+  "source_before": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "run_id": 45778534800,
+  "job_id": 139768039946,
+  "actual_controls": 21,
+  "test_log_sha256": "92220d953ba0db7851f755c8a98a05965bdc13cd0ca7515e5fc5b5c28c6a6ab3",
+  "old_count_check_exit": 1,
+  "corrected_count_check_exit": 0,
+  "ok_check_exit": 0,
+  "historical_control_count_retained": 14,
+  "changes": "Expected current v4 suite count 19\u219221; comment corrected. No source admission checker, authority registration, fixture, runtime, or corpus change.",
+  "finding": "ULT-CI-03",
+  "alias": "A-ULT-17",
+  "fix_commit": "503f9ba2",
+  "historical": {
+    "artifact_id": 15097346110,
+    "bytes": 1695,
+    "sha256": "724e7354e4d07310c38b72c72d537467ff11dc81e9e1cb093c3a64c5688eecf2",
+    "source_commit": "20e668ce66536f9365d07718bfbb5266a2f8502c",
+    "source_tree": "19e8842f778f3a916f83805aa8af83307b4756d8",
+    "controls": 14,
+    "result": "OK; exact HEAD and working tree clean"
+  },
+  "chronology": "Original15\u219219 count correction remains preserved. This follow-up updates19\u219221 afterv4 added two controls; no checker or fixture weakened."
+}

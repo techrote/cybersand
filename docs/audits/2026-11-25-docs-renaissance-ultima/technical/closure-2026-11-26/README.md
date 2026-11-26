@@ -1,7 +1,7 @@
 ---
 status: Historical
 document-kind: audit
-scope: Recovered overnight artifacts, fresh Tower inheritance correction and accepted-main causal compatibility review
+scope: Recovered hosted artifacts, Tower inheritance correction, accepted-main causal compatibility, final-context review and bounded qualification repairs
 last-reviewed: 2026-11-26
 ---
 
@@ -157,6 +157,86 @@ ordinary records without that field retain their route. Main adds guarded
 ambient ingestion, and the Tower fixture/runner add the subclass guard and
 source binding. These checks support the controlled integration; final complete
 matrix execution on the resulting source is still required.
+
+## Fresh fe24 Windows causal execution and admission wrapper
+
+The fresh [Windows causal run 45778534596](https://github.com/techrote/cybersand/actions/runs/45778534596)
+tested exact head `fe24da6fc790a38760de28a0ef08c3f5904cd3a6`, tree
+`9c14659bc6a57c1f1e28b71e10c504b184078d63`. A downloaded artifact
+`15097815134` independently and verified its 13,713 bytes against GitHub SHA-256
+`bcce7d7a60984734573eb8244b3093b6d5da8dc71eccde65e9be0fec01117405`.
+The raw fixture completed **86 assertions / 0 failures**, naturally with
+process and wrapper exit zero. All thirteen authority blobs, 105 recorded native
+source hashes, the two materialized Windows library digests and the v4 admission
+result match the recorded source. All **21 admission controls** passed.
+The causal conclusion remains **historical crash not reproduced; cause unresolved**.
+This is hosted Windows headless execution, not a physical NVIDIA or manual GUI test.
+
+[causal-independent-review.json](hosted-fe24/causal-independent-review.json)
+binds the run, job, original archive and scoped verdict.
+[verify-fe24-causal.py](verify-fe24-causal.py) reproduces this readback with
+`--root .`; it does not execute the archive. Original archives and GitHub metadata
+are retained under [hosted-fe24](hosted-fe24/metadata.json).
+
+The separate [A01 run 45778534800](https://github.com/techrote/cybersand/actions/runs/45778534800)
+passed the immutable historical fourteen-control witness. Its current-source
+job admitted fe24 and passed all 21 controls, then failed because the workflow
+still required the old string `Ran 19 tests`. **ULT-CI-03 / A-ULT-17** retains
+the earlier 15→19 correction and this subsequent 19→21 correction separately.
+Commit `503f9ba2` changes only that count and its v4 comment; checker, registration,
+fixture and runtime guards remain unchanged. A replayed the actual downloaded
+test log against both count checks: old check exit 1, corrected check and `OK`
+check exit 0. A resulting-source hosted rerun remains required. See the
+[wrapper review](hosted-fe24/a01-wrapper-review.json) and original failed-job ZIP.
+
+## Aggregate profile isolation and launcher control review
+
+The complete local fe24 campaign passed all **68 storage-matrix cases** but
+failed at the Art session fixture: **17 process records passed, one failed and
+eleven were not reached** in the 29-record plan. The test's directory-count
+assertion found two synthetic files retained by the preceding Art fixture.
+Both file identities, earlier timestamps and producing source calls were
+independently checked. The other 34 session assertions passed. The original
+failed campaign remains failed and is retained by the lead.
+
+For **ULT-CI-07 / A-ULT-18**, A independently executed the unchanged session
+fixture with a fresh profile: **35/0**, natural exit zero. The lead's bounded
+runner correction gives unrelated fixtures separate userdata/config roots
+and keeps each explicit save/reopen pair together. A reviewed that function,
+confirmed the complete fixture plan is unchanged, exercised its name and
+environment controls, and verified all four focused raw logs: Art panel 12/0,
+Art session 35/0, Paint 1,884/0 and fresh-process reopen 1,920/0. No product or
+test assertion was changed. [profile-isolation-review.json](profile-isolation-review.json)
+links the lead's retained four-case packet; A's independent raw 35-check control
+is retained in [art-session-isolation-control](art-session-isolation-control/report.json).
+Final resulting-source full qualification remains separate.
+
+The [launcher portability review](launcher-portable-review.json) independently
+checks the actual Windows test failure and B's focused correction: a native
+Windows path used backslashes while the test expected POSIX slashes. The new
+full-command `PureWindowsPath` assertion retains nested quoting and unsafe-path
+refusals on every host. A independently ran all nine controls on Linux. The
+qualification-only graphical invocation now explicitly selects the already
+used `opengl3_angle` path; the shipped launcher is unchanged. This source/control
+review does not replace actual Windows command and evaluator execution.
+
+## Fresh additive context review
+
+A freshly read all sixty actual passages for **DR13–24** at fe24, compared with
+the durable 67245 review: 46 passage hashes are unchanged and fourteen differ.
+The result is **eleven sufficient / one partial / zero wrong-context or
+wrong-authority questions**. DR20 supplies equipment admission limits but does
+not identify the primary pending recovery record in its first five passages.
+A separately executed the same query and explicit `read_source` route to the
+current status register; it supplies the unmerged #724 boundary. All twelve are
+sufficient after that separately reported, human-selected step.
+
+[context-applicability-fe24da6f.json](context-applicability-fe24da6f.json) binds
+every passage and the actual source-follow response. The reviewer knows the
+corpus and prior judgments; this is not blind review, autonomous agent action
+or generative-model answer accuracy. The lost e487 raw packet was not
+reconstructed. Any later CI-only source must demonstrate corpus/helper identity
+before carrying these judgments forward.
 
 ## Custody and remaining scope
 
